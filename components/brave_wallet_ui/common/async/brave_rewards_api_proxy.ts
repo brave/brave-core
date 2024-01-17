@@ -12,6 +12,7 @@ import {
   externalWalletFromExtensionData //
 } from '../../../brave_rewards/resources/shared/lib/external_wallet'
 import { RewardsExternalWallet, WalletStatus } from '../../constants/types'
+import { BraveRewardsProxyOverrides } from '../../constants/testing_types'
 
 export class BraveRewardsProxy {
   getRewardsEnabled = () => {
@@ -153,4 +154,11 @@ export const getBraveRewardsProxy = () => {
   }
 
   return braveRewardsProxyInstance
+}
+
+/** For testing */
+export function resetRewardsProxy(
+  overrides?: BraveRewardsProxyOverrides | undefined
+) {
+  // no-op in production
 }

@@ -16,7 +16,7 @@ import {
   createMockStore,
   renderHookOptionsWithMockStore
 } from '../../../utils/test-utils'
-import { BraveRewardsProxyOverrides } from '../../async/__mocks__/brave_rewards_api_proxy'
+import { BraveRewardsProxyOverrides } from '../../../constants/testing_types'
 
 const mockedRewardsData: BraveRewardsProxyOverrides = {
   externalWallet: {

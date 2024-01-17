@@ -66,7 +66,7 @@ export const tokenEndpoints = ({
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            'Unable to fetch UserTokens Registry',
+            'Unable to fetch UserTokens Registry: ' + error.toString(),
             error
           )
         }

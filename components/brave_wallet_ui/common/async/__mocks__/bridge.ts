@@ -60,6 +60,7 @@ import {
   coinMarketMockData //
 } from '../../../stories/mock-data/mock-coin-market-data'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
+import { WalletApiDataOverrides } from '../../../constants/testing_types'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(
@@ -81,23 +82,6 @@ export const makeMockedStoreWithSpy = () => {
   }
 
   return { store }
-}
-
-export interface WalletApiDataOverrides {
-  selectedCoin?: BraveWallet.CoinType
-  selectedAccountId?: BraveWallet.AccountId
-  chainIdsForCoins?: Record<BraveWallet.CoinType, string>
-  networks?: BraveWallet.NetworkInfo[]
-  defaultBaseCurrency?: string
-  transactionInfos?: BraveWallet.TransactionInfo[]
-  blockchainTokens?: BraveWallet.BlockchainToken[]
-  userAssets?: BraveWallet.BlockchainToken[]
-  accountInfos?: BraveWallet.AccountInfo[]
-  nativeBalanceRegistry?: NativeAssetBalanceRegistry
-  tokenBalanceRegistry?: TokenBalanceRegistry
-  simulationOptInStatus?: TxSimulationOptInStatus
-  evmSimulationResponse?: BraveWallet.EVMSimulationResponse | null
-  svmSimulationResponse?: BraveWallet.SolanaSimulationResponse | null
 }
 
 export class MockedWalletApiProxy {
@@ -391,6 +375,21 @@ export class MockedWalletApiProxy {
     getPendingAddSuggestTokenRequests: async () => {
       return {
         requests: [{ origin: mockOriginInfo, token: mockBasicAttentionToken }]
+      }
+    },
+    removeUserAsset: async (token) => {
+      const tokenId = getAssetIdKey(token)
+      this.userAssets = this.userAssets.filter(
+        (t) => getAssetIdKey(t) !== tokenId
+      )
+      return {
+        success: true
+      }
+    },
+    addUserAsset: async (token) => {
+      this.userAssets = this.userAssets.concat(token)
+      return {
+        success: true
       }
     }
   }
@@ -1014,8 +1013,10 @@ export function getMockedAPIProxy(): WalletApiProxy & MockedWalletApiProxy {
   return getAPIProxy() as unknown as WalletApiProxy & MockedWalletApiProxy
 }
 
-export function resetMockedAPIProxy() {
-  apiProxy = undefined
+export function resetAPIProxy(overrides?: WalletApiDataOverrides | undefined) {
+  apiProxy = new MockedWalletApiProxy(
+    overrides
+  ) as unknown as Partial<WalletApiProxy> & MockedWalletApiProxy
 }
 
 export default getAPIProxy
