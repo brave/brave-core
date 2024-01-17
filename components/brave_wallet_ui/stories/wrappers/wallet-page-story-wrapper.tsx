@@ -28,10 +28,8 @@ import { LibContext } from '../../common/context/lib.context'
 // Mocks
 import * as Lib from '../../common/async/__mocks__/lib'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
-import {
-  WalletApiDataOverrides,
-  getMockedAPIProxy
-} from '../../common/async/__mocks__/bridge'
+import { getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
+import { WalletApiDataOverrides } from '../../constants/testing_types'
 
 export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>

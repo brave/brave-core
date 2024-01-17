@@ -22,11 +22,9 @@ import { LibContext } from '../../common/context/lib.context'
 // Mocks
 import * as Lib from '../../common/async/__mocks__/lib'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
-import {
-  getMockedAPIProxy,
-  WalletApiDataOverrides
-} from '../../common/async/__mocks__/bridge'
+import { getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
 import { createMockStore } from '../../utils/test-utils'
+import { WalletApiDataOverrides } from '../../constants/testing_types'
 
 const mockedProxy = getMockedAPIProxy()
 
