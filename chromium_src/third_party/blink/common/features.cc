@@ -26,7 +26,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsFormFactor, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kClientHintsMetaEquivDelegateCH, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kEventTimingReportAllEarlyEntriesOnPaintedPresentation,

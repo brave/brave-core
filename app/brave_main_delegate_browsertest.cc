@@ -133,7 +133,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
       &blink::features::kClientHintsFormFactor,
-      &blink::features::kClientHintsMetaEquivDelegateCH,
       &blink::features::kComputePressure,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kEventTimingReportAllEarlyEntriesOnPaintedPresentation,

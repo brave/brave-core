@@ -48,9 +48,6 @@ const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     blink::features::kClientHintsViewportWidth_DEPRECATED,
     blink::features::kUserAgentClientHint,
     blink::features::kViewportHeightClientHintHeader,
-    // Client hints features
-    blink::features::kClientHintsMetaHTTPEquivAcceptCH,
-    blink::features::kClientHintThirdPartyDelegation,
 };
 
 }  // namespace
