@@ -245,8 +245,8 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
 std::unique_ptr<blink::URLLoaderThrottleProvider>
 BraveContentRendererClient::CreateURLLoaderThrottleProvider(
     blink::URLLoaderThrottleProviderType provider_type) {
-  return URLLoaderThrottleProviderImpl::Create(provider_type, this,
-                                               browser_interface_broker_.get());
+  return BraveURLLoaderThrottleProviderImpl::Create(
+      provider_type, this, browser_interface_broker_.get());
 }
 
 bool BraveContentRendererClient::IsOnionAllowed() const {

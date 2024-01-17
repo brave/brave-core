@@ -16,6 +16,10 @@ class BraveContentRendererClient;
 class BraveURLLoaderThrottleProviderImpl
     : public URLLoaderThrottleProviderImpl {
  public:
+  static std::unique_ptr<blink::URLLoaderThrottleProvider> Create(
+      blink::URLLoaderThrottleProviderType type,
+      ChromeContentRendererClient* chrome_content_renderer_client,
+      blink::ThreadSafeBrowserInterfaceBrokerProxy* broker);
   BraveURLLoaderThrottleProviderImpl(
       blink::URLLoaderThrottleProviderType type,
       ChromeContentRendererClient* chrome_content_renderer_client,
@@ -25,8 +29,7 @@ class BraveURLLoaderThrottleProviderImpl
       mojo::PendingRemote<safe_browsing::mojom::ExtensionWebRequestReporter>
           pending_extension_web_request_reporter,
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
-      scoped_refptr<base::SequencedTaskRunner> main_thread_task_runner,
-      base::PassKey<URLLoaderThrottleProviderImpl>);
+      scoped_refptr<base::SequencedTaskRunner> main_thread_task_runner);
   ~BraveURLLoaderThrottleProviderImpl() override;
 
   BraveURLLoaderThrottleProviderImpl(
