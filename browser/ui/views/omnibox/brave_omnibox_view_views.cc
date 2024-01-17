@@ -11,12 +11,22 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/omnibox/clipboard_utils.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/omnibox_client.h"
+#include "components/omnibox/browser/omnibox_controller.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
+#include "components/search_engines/template_url_service.h"
+#include "ui/base/clipboard/clipboard.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/gfx/text_elider.h"
 
 namespace {
 void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
@@ -28,6 +38,13 @@ void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
     return;
   menu_contents->InsertItemWithStringIdAt(
       copy_position.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
+}
+
+std::u16string GetClipboardText() {
+  return ui::Clipboard::GetForCurrentThread()
+                 ->IsMarkedByOriginatorAsConfidential()
+             ? std::u16string()
+             : ::GetClipboardText(/*notify_if_restricted=*/false);
 }
 }  // namespace
 
@@ -120,6 +137,48 @@ void BraveOmniboxViewViews::ExecuteTextEditCommand(
   OmniboxViewViews::ExecuteTextEditCommand(command);
 }
 #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+
+void BraveOmniboxViewViews::ExecuteCommand(int command_id, int event_flags) {
+  // Early return if |location_bar_view_| is null as it's used to get Browser
+  // instance pointer.
+  if (!location_bar_view_ || command_id != IDC_PASTE_AND_GO ||
+      !ShouldExecuteForPasteAndSearch()) {
+    return OmniboxViewViews::ExecuteCommand(command_id, event_flags);
+  }
+
+  // Do paste and search here instead of delegating to
+  // OmniboxEditModel::PasteAndGo(). In OmniboxEditModel, only normal
+  // profile's search provider is used because same AutocompleteClassifier is
+  // shared between normal and private profile.
+  constexpr size_t kMaxSelectionTextLength = 50;
+  const std::u16string clipboard_text = GetClipboardText();
+  CHECK(!clipboard_text.empty());
+  std::u16string selection_text = gfx::TruncateString(
+      clipboard_text, kMaxSelectionTextLength, gfx::WORD_BREAK);
+
+  const auto* service = controller()->client()->GetTemplateURLService();
+  const auto url =
+      service->GenerateSearchURLForDefaultSearchProvider(selection_text);
+  if (!url.is_valid()) {
+    return OmniboxViewViews::ExecuteCommand(command_id, event_flags);
+  }
+
+  NavigateParams params(location_bar_view_->browser(), url,
+                        ui::PAGE_TRANSITION_GENERATED);
+  params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  Navigate(&params);
+}
+
+bool BraveOmniboxViewViews::ShouldExecuteForPasteAndSearch() {
+  const std::u16string clipboard_text = GetClipboardText();
+  if (clipboard_text.empty()) {
+    return false;
+  }
+
+  AutocompleteMatch match;
+  model()->ClassifyString(clipboard_text, &match, nullptr);
+  return AutocompleteMatch::IsSearchType(match.type);
+}
 
 void BraveOmniboxViewViews::UpdateContextMenu(
     ui::SimpleMenuModel* menu_contents) {
