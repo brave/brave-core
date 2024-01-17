@@ -14,14 +14,14 @@
 #include "brave/components/brave_service_keys/buildflags.h"
 #include "crypto/hmac.h"
 #include "crypto/sha2.h"
+#include "net/http/http_auth_scheme.h"
+#include "net/http/http_request_headers.h"
 
 namespace brave_service_keys {
 
 namespace {
 
-constexpr char kAuthorization[] = "authorization";
-constexpr char kDigest[] = "digest";
-constexpr char kRequestTarget[] = "(request-target)";
+constexpr char kRequestTargetHeader[] = "(request-target)";
 
 }  // namespace
 
@@ -29,7 +29,7 @@ std::pair<std::string, std::string> GetDigestHeader(
     const std::string& payload) {
   const std::string value = base::StrCat(
       {"SHA-256=", base::Base64Encode(crypto::SHA256HashString(payload))});
-  return std::make_pair(kDigest, value);
+  return std::make_pair(net::kDigestAuthScheme, value);
 }
 
 std::pair<std::string, std::string> CreateSignatureString(
@@ -39,9 +39,9 @@ std::pair<std::string, std::string> CreateSignatureString(
     const std::vector<std::string>& headers_to_sign) {
   // Create and add the (request-target) header if included
   if (std::find(headers_to_sign.begin(), headers_to_sign.end(),
-                kRequestTarget) != headers_to_sign.end()) {
+                kRequestTargetHeader) != headers_to_sign.end()) {
     headers.insert(std::make_pair(
-        kRequestTarget,
+        kRequestTargetHeader,
         base::StrCat({base::ToLowerASCII(method), " ", url.PathForRequest()})));
   }
 
@@ -98,7 +98,7 @@ std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
        BUILDFLAG(KEY_ID), "\",algorithm=\"hs2019\",headers=\"", header_names,
        "\",signature=\"", signature_digest_base64, "\""});
 
-  return std::make_pair(kAuthorization, value);
+  return std::make_pair(net::HttpRequestHeaders::kAuthorization, value);
 }
 
 }  // namespace brave_service_keys

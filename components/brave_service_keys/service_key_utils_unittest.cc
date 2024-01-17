@@ -99,7 +99,7 @@ TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
   auto result = GetAuthorizationHeader(
       service_key, headers, GURL("https://example.com"), "POST", {"digest"});
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->first, "authorization");
+  EXPECT_EQ(result->first, "Authorization");
   EXPECT_EQ(
       result->second,
       base::StrCat({"Signature keyId=\"", BUILDFLAG(KEY_ID),
@@ -111,7 +111,7 @@ TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
                                   GURL("https://example.com/test/v1?a=b"),
                                   "POST", {"(request-target)", "digest"});
   ASSERT_TRUE(result);
-  EXPECT_EQ(result->first, "authorization");
+  EXPECT_EQ(result->first, "Authorization");
   EXPECT_EQ(result->second,
             base::StrCat({"Signature keyId=\"", BUILDFLAG(KEY_ID),
                           "\",algorithm=\"hs2019\",headers=\"(request-target) "
