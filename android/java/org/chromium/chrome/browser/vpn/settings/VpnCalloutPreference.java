@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.settings;
+package org.chromium.chrome.browser.vpn.settings;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
@@ -49,7 +49,6 @@ public class VpnCalloutPreference extends Preference {
         params.width = width;
         params.height = height;
         mainView.setLayoutParams(params);
-        mainView.requestLayout();
 
         AppCompatImageView btnClose = (AppCompatImageView) holder.findViewById(R.id.modal_close);
         btnClose.setOnClickListener(v -> {

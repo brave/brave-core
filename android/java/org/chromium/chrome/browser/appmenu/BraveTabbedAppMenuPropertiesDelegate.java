@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser.appmenu;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -14,6 +16,8 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
@@ -47,6 +51,7 @@ import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.features.start_surface.StartSurface;
@@ -104,8 +109,35 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 braveVpnCheckedSubMenuItem.setChecked(
                         BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
             }
+
+            if (BraveVpnPrefUtils.isSubscriptionPurchase()
+                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getServerIsoCode())) {
+                String serverLocation =
+                        " "
+                                + BraveVpnUtils.countryCodeToEmoji(
+                                        BraveVpnPrefUtils.getServerIsoCode())
+                                + "   "
+                                + BraveVpnPrefUtils.getServerNamePretty();
+
+                SubMenu vpnLocationSubMenu =
+                        menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
+                MenuItem vpnLocationSubMenuItem =
+                        vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
+                vpnLocationSubMenuItem.setTitle(serverLocation);
+                MenuItem vpnLocationIconSubMenuItem =
+                        vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
+                Drawable drawable = vpnLocationIconSubMenuItem.getIcon();
+
+                drawable = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(
+                        drawable, ContextCompat.getColor(mContext, R.color.vpn_timer_icon_color));
+                vpnLocationIconSubMenuItem.setIcon(drawable);
+            } else {
+                menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
+            }
         } else {
             menu.findItem(R.id.request_brave_vpn_row_menu_id).setVisible(false);
+            menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
         }
 
         // Brave's items are only visible for page menu.
@@ -280,6 +312,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.brave_speedreader_id);
         mMenu.removeItem(R.id.exit_id);
         mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
+        mMenu.removeItem(R.id.request_vpn_location_id);
     }
 
     @Override

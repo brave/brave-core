@@ -5,18 +5,22 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/server_selection_list_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"/>
 
             <include
                 android:id="@+id/automatic_server_text"
-                android:background="@drawable/rounded_filled_bg_radius_12"
                 layout="@layout/brave_vpn_server_selection_item_layout"/>
 
             <TextView
@@ -25,20 +29,20 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="16dp"
+                android:alpha="0.6"
                 android:text="@string/automatic_server_selection_text"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/server_selection_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_filled_bg_radius_12"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
         <ProgressBar
                 android:id="@+id/server_selection_progress"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:visibility="gone"
                 android:layout_gravity="center"
                 android:indeterminate="true"/>
