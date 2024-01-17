@@ -241,7 +241,7 @@ const Config = function () {
   this.androidAabToApk = false
   this.enable_dangling_raw_ptr_checks = false
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
-  this.key_id = getNPMConfig(['key_id']) || ''
+  this.brave_services_key_id = getNPMConfig(['brave_services_key_id']) || ''
   this.service_key_ai_chat = getNPMConfig(['service_key_ai_chat']) || ''
 }
 
@@ -416,7 +416,7 @@ Config.prototype.buildArgs = function () {
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
     enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
-    key_id: this.key_id,
+    brave_services_key_id: this.brave_services_key_id,
     service_key_ai_chat: this.service_key_ai_chat,
     ...this.extraGnArgs,
   }

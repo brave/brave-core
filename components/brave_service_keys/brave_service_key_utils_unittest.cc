@@ -102,7 +102,7 @@ TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
   EXPECT_EQ(result->first, "Authorization");
   EXPECT_EQ(
       result->second,
-      base::StrCat({"Signature keyId=\"", BUILDFLAG(KEY_ID),
+      base::StrCat({"Signature keyId=\"", BUILDFLAG(BRAVE_SERVICES_KEY_ID),
                     "\",algorithm=\"hs2019\",headers=\"digest\",signature=\""
                     "jumtKp4LQDzIBpuGKIEI/mxrr9AEcSzvRGD6PfYyAq8=\""}));
 
@@ -112,11 +112,12 @@ TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
                                   "POST", {"(request-target)", "digest"});
   ASSERT_TRUE(result);
   EXPECT_EQ(result->first, "Authorization");
-  EXPECT_EQ(result->second,
-            base::StrCat({"Signature keyId=\"", BUILDFLAG(KEY_ID),
-                          "\",algorithm=\"hs2019\",headers=\"(request-target) "
-                          "digest\",signature=\""
-                          "kBICAlSiWuMoMr4Rws1KzyXOE6qK91jcAs8v9C7t4QQ=\""}));
+  EXPECT_EQ(
+      result->second,
+      base::StrCat({"Signature keyId=\"", BUILDFLAG(BRAVE_SERVICES_KEY_ID),
+                    "\",algorithm=\"hs2019\",headers=\"(request-target) "
+                    "digest\",signature=\""
+                    "kBICAlSiWuMoMr4Rws1KzyXOE6qK91jcAs8v9C7t4QQ=\""}));
 }
 
 }  // namespace brave_service_keys
