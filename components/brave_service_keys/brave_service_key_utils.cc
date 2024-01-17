@@ -52,11 +52,12 @@ std::pair<std::string, std::string> CreateSignatureString(
     auto header = headers.find(key);
     if (header != headers.end()) {
       if (!header_names.empty()) {
-        header_names += " ";
-        signature_string += "\n";
+        header_names.append(" ");
+        signature_string.append("\n");
       }
-      header_names += key;
-      signature_string += key + ": " + header->second;
+      header_names.append(key);
+      signature_string =
+          base::StrCat({signature_string, key, ": ", header->second});
     } else {
       NOTREACHED_NORETURN() << "Can't sign over non existant header " << key;
     }
