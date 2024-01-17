@@ -229,6 +229,33 @@
        As you browse, whether an ad you see is personalized depends on this setting, Site-suggested ads, your cookie settings, and if the site you’re viewing personalizes ads
   </message>
 
+  <!-- Proactive Topics Blocking -->
+  <!-- TODO(crbug.com/1515108) - Finalize and mark translateable. -->
+  <message name="IDS_SETTINGS_TOPICS_PAGE_EXPLANATION_DESCRIPTION" desc="" formatter_data="android_java" translateable="false">
+    Ad topics are just one of many things a site can use to personalize ads. Even without ad topics, sites can still show you ads but they may be less interesting.
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_HEADING_NEW" desc="" formatter_data="android_java" translateable="false">
+    Blocked topics
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_DESCRIPTION_NEW" desc="" formatter_data="android_java" translateable="false">
+    When a topic is blocked, it won’t be used to personalize ads
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_MANAGE_TOPICS_HEADING" desc="" formatter_data="android_java" translateable="false">
+    Manage topics
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_MANAGE_TOPICS_DESCRIPTION" desc="" formatter_data="android_java" translateable="false">
+    Choose which broad categories of topics can be used to personalize ads
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_MANAGE_TOPICS_EXPLANATION" desc="" formatter_data="android_java" translateable="false">
+    Choose which broad categories of topics can be used to help personalize ads. Turning off a broader category will also block its related topics. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_ACTIVE_TOPICS_HEADING" desc="" formatter_data="android_java" translateable="false">
+    Active topics
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_ACTIVE_TOPICS_DESCRIPTION" desc="" formatter_data="android_java" translateable="false">
+    Topics older than 4 weeks get auto-deleted
+  </message>
+
   <!-- Privacy Sandbox v4 - Topics Consent Details -->
   <!-- TODO(crbug.com/1378703) - Update and mark translateable. -->
   <message name="IDS_PRIVACY_SANDBOX_TOPICS_CONSENT_STATUS_LABEL" desc="Label for the text which displays the state of the user's Topics consent">
@@ -2235,8 +2262,8 @@
   <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_TITLE" desc="Title of the list of exceptions for sites that are allowed to use third-party cookies on the Tracking Protection page." formatter_data="android_java">
     Sites allowed to use third-party cookies
   </message>
-  <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_DESCRIPTION" desc="Description of the list of exceptions for sites that are allowed to use third-party cookies on the Tracking Protection page." formatter_data="android_java">
-    Affects the sites listed here and their subdomains. For example, adding “google.com” means that third-party cookies can also be active for mail.google.com, because it’s part of google.com.
+  <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_DESCRIPTION" desc="Description of the list of exceptions for sites that are allowed to use third-party cookies on the Tracking Protection page. Explains how to use a wildcard to create an exception for an entire domain." formatter_data="android_java">
+    Affects the sites listed here. Inserting “[*.]” before a domain name creates an exception for the entire domain. For example, adding “[*.]google.com” means that third-party cookies can also be active for mail.google.com, because it’s part of google.com.
   </message>
   <message name="IDS_TRACKING_PROTECTION_NEVER_EXPIRES_LABEL" desc="Label on an exception for allowing third-party cookies that indicates that it never expires." formatter_data="android_java">
     Does not expire

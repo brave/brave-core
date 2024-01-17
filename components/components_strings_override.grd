@@ -98,8 +98,7 @@
         <part file="history_clusters_strings_override.grdp" />
       </if>
       <if expr="is_android">
-        <part file="webauthn_strings_override.grdp" />
-      </if>
+        </if>
       <if expr="is_ios">
         </if>
       <if expr="enable_vr">
