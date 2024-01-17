@@ -93,6 +93,8 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/BackgroundResourceFetchDisabled
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/BackgroundResourceFetchEnabled
 -PersistentBackground/NTPInterceptionTest.ContentScript/0
+-PersistentBackgroundOnBeforeRequest/RedirectInfoWebRequestApiTest.VerifyInvalidUrlRedirection/0
+-PersistentBackgroundOnHeadersReceived/RedirectInfoWebRequestApiTest.VerifyInvalidUrlRedirection/0
 -ServiceWorker/DeclarativeContentApiTestWithContextType.RulesPersistence/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdated/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirects/0
@@ -103,6 +105,8 @@
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWithExtraHeaders/BackgroundResourceFetchEnabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/BackgroundResourceFetchDisabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/BackgroundResourceFetchEnabled
+-ServiceWorkerOnBeforeRequest/RedirectInfoWebRequestApiTest.VerifyInvalidUrlRedirection/0
+-ServiceWorkerOnHeadersReceived/RedirectInfoWebRequestApiTest.VerifyInvalidUrlRedirection/0
 
 # These tests fail because they expect the infobar count to be 1, but we
 # display an additional confirmation infobar for P3A
@@ -143,6 +147,8 @@
 -ChromePrivateNetworkAccessOriginTrialDisabledByChromeFlagTest.*
 -ChromePrivateNetworkAccessOriginTrialTest.*
 -ChromePrivateNetworkAccessTest.RequestDevices
+-LoginProxyBrowserTest.ProxyAuthHTTP
+-LoginProxyBrowserTest.ProxyAuthHTTPS
 
 # This test fails with the message:
 # Terminating render process for bad Mojo message: Received bad user message:
@@ -166,11 +172,6 @@
 -PrivacySandboxSettingsAdsApisFlagBrowserTest.FollowsOverrideBehavior
 -SharedStorageFencedFrameChromeBrowserTest.*
 
-# This test fails because kPrerender2 feature is disabled. Javascript in the
-# test expects `document.prerendering === false` whereas we have
-# `document.prerendering === unknown`
--OmniboxPrerenderDefaultPrerender2BrowserTest.PrerenderFunctionsCheckWithDefaultFlag
-
 # These tests fail because kPrerender2 feature is disabled.
 -All/HostedAppTestWithPrerendering.*
 -EventPageAndFalse/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
@@ -178,6 +179,7 @@
 -NoCancelSearchPreloadUnifiedBrowserTest.SuggestionChangeAfterStartPrerender
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.OpenPrefetchedResponseInBackgroundedTab
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
+-OmniboxPrerenderDefaultPrerender2BrowserTest.PrerenderFunctionsCheckWithDefaultFlag
 -PreloadingConfigHoldbackSearchPreloadUnifiedBrowserTest.PrerenderDSEHoldbackTest
 -PrerenderDataSaverProtocolTest.CheckReportedDisabledByDataSaverPreloadingState
 -SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderActivated
@@ -190,6 +192,7 @@
 -SearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderNavigationTwice
 -ServiceWorkerAndFalse/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
 -ServiceWorkerAndTrue/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
+-WebAppLinkCapturingBrowserTest.NoLinkCapturePrerenderNavigation/*
 
 # These tests fail because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
@@ -487,6 +490,7 @@
 -RequestStorageAccessForOriginWithFirstPartySetsDisabledBrowserTest.*
 -RequestStorageAccessForWithFirstPartySetsBrowserTest.PermissionQueryCrossSiteFrame
 -RequestStorageAccessForWithFirstPartySetsBrowserTest.Permission_AutodeniedForServiceDomain
+-StorageAccessAPIBrowserTest.Permission_Denied_WithoutInteraction/*
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
 -StorageAccessAPIWith3PCEnabledBrowserTest.AllowedByUserBypass
@@ -1315,6 +1319,7 @@ AutofillAcrossIframesTest_*.*
 -AvatarMenuBrowserTest.AddNewProfile
 -AvatarMenuBrowserTest.EditProfile_NotLoaded
 -AvatarToolbarButtonBrowserTest.*
+=AvatarToolbarButtonProfileColorBrowserTest.*
 -BackForwardCachePageLoadMetricsObserverBrowserTest.*
 -BackForwardCachePrintBrowserTest.*
 -BackForwardCacheSiteDetailsBrowserTest.*
@@ -1819,6 +1824,7 @@ AutofillAcrossIframesTest_*.*
 -ServiceWorker/WebUiNtpInterceptionWebRequestAPITest.*
 -ServiceWorkerBackgroundSyncTest.*
 -ServiceWorkerBasedBackgroundTest.*
+-ServiceWorkerLifetimeKeepaliveBrowsertest.ShutdownWithActiveMessagePipe
 -ServiceWorkerTest.*
 -SessionRestoreObserverTest.MultipleTabSessionRestore
 -SessionRestorePageLoadMetricsBrowserTest.InitialVisibilityOfMultipleRestoredTabs

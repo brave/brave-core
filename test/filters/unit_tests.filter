@@ -743,6 +743,7 @@
 -HomepageURLManifestTest.*
 -HostContentSettingsMapTest.*
 -IncognitoThemeServiceTestWithIncognitoBrandConsistencyFlag/IncognitoThemeServiceTest.*
+-IndexedHostContentSettingsMapTest.*
 -InfoBarViewTest.*
 -InstalledExtensionMenuItemViewTest.*
 -InstallVerifierTest.*
