@@ -160,8 +160,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
   headers.emplace(digest_header.first, digest_header.second);
   auto result = brave_service_keys::GetAuthorizationHeader(
-      BUILDFLAG(SERVICE_KEY_AI_CHAT), headers, api_url, kHttpMethod,
-      {"digest"});
+      BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url, kHttpMethod, {"digest"});
   if (result) {
     std::pair<std::string, std::string> authorization_header = result.value();
     headers.emplace(authorization_header.first, authorization_header.second);

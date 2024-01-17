@@ -242,7 +242,7 @@ const Config = function () {
   this.enable_dangling_raw_ptr_checks = false
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
   this.brave_services_key_id = getNPMConfig(['brave_services_key_id']) || ''
-  this.service_key_ai_chat = getNPMConfig(['service_key_ai_chat']) || ''
+  this.service_key_aichat = getNPMConfig(['service_key_aichat']) || ''
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -417,7 +417,7 @@ Config.prototype.buildArgs = function () {
     brave_services_dev_domain: this.braveServicesDevDomain,
     enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
     brave_services_key_id: this.brave_services_key_id,
-    service_key_ai_chat: this.service_key_ai_chat,
+    service_key_aichat: this.service_key_aichat,
     ...this.extraGnArgs,
   }
 
