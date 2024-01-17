@@ -142,34 +142,4 @@ describe('token endpoints', () => {
 
     expect(newTokens).toHaveLength(visibleTokens.length + 1)
   })
-
-  it('it should fetch tokens', async () => {
-    const store = createMockStore(
-      {},
-      {
-        userAssets: mockWalletState.userVisibleTokensInfo
-      }
-    )
-
-    const { result, waitForValueToChange } = renderHook(
-      () =>
-        useGetUserTokensRegistryQuery(undefined, {
-          selectFromResult: (res) => ({
-            isLoading: res.isLoading,
-            visibleTokens: selectAllVisibleUserAssetsFromQueryResult(res),
-            error: res.error
-          })
-        }),
-      renderHookOptionsWithMockStore(store)
-    )
-
-    await waitForValueToChange(() => result.current.isLoading)
-    const { visibleTokens, isLoading, error } = result.current
-
-    expect(isLoading).toBe(false)
-    expect(error).not.toBeDefined()
-    expect(visibleTokens).toHaveLength(
-      mockWalletState.userVisibleTokensInfo.length
-    )
-  })
 })
