@@ -26,8 +26,8 @@ buildflag_header("buildflags") {
 
 static_library("brave_service_keys") {
   sources = [
-    "service_key_utils.cc",
-    "service_key_utils.h",
+    "brave_service_key_utils.cc",
+    "brave_service_key_utils.h",
   ]
 
   deps = [
@@ -40,7 +40,7 @@ static_library("brave_service_keys") {
 }
 source_set("unit_tests") {
   testonly = true
-  sources = [ "service_key_utils_unittest.cc" ]
+  sources = [ "brave_service_key_utils_unittest.cc" ]
 
   deps = [
     ":brave_service_keys",
