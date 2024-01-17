@@ -31,23 +31,12 @@ class MockPlaylistServiceObserver
               (override));
 
   MOCK_METHOD(void,
-              OnMediaFileDownloadProgressed,
-              (const std::string& id,
-               int64_t total_bytes,
-               int64_t received_bytes,
-               int8_t percent_complete,
-               const std::string& time_remaining),
-              (override));
-
-  MOCK_METHOD(void,
-              OnMediaFilesUpdated,
-              (const GURL& page_url,
-               std::vector<playlist::mojom::PlaylistItemPtr> items),
-              (override));
-
-  MOCK_METHOD(void,
               OnItemCreated,
               (playlist::mojom::PlaylistItemPtr item),
+              (override));
+  MOCK_METHOD(void,
+              OnItemLocalDataDeleted,
+              (const std::string& id),
               (override));
   MOCK_METHOD(void,
               OnItemAddedToList,
@@ -57,11 +46,32 @@ class MockPlaylistServiceObserver
               OnItemRemovedFromList,
               (const std::string& playlist_id, const std::string& item_id),
               (override));
-  MOCK_METHOD(void, OnItemDeleted, (const std::string& id), (override));
+  MOCK_METHOD(void,
+              OnItemCached,
+              (playlist::mojom::PlaylistItemPtr item),
+              (override));
+  MOCK_METHOD(void,
+              OnItemUpdated,
+              (playlist::mojom::PlaylistItemPtr item),
+              (override));
 
   MOCK_METHOD(void,
               OnPlaylistUpdated,
               (playlist::mojom::PlaylistPtr),
+              (override));
+
+  MOCK_METHOD(void,
+              OnMediaFileDownloadProgressed,
+              (const std::string& id,
+               int64_t total_bytes,
+               int64_t received_bytes,
+               int8_t percent_complete,
+               const std::string& time_remaining),
+              (override));
+  MOCK_METHOD(void,
+              OnMediaFilesUpdated,
+              (const GURL& page_url,
+               std::vector<playlist::mojom::PlaylistItemPtr> items),
               (override));
 
  private:

@@ -5,6 +5,13 @@
 
 package org.chromium.chrome.browser.playlist;
 
+import com.brave.playlist.model.PlaylistItemModel;
+import com.brave.playlist.playback_service.VideoPlaybackService;
+import com.brave.playlist.util.ConstantUtils;
+import com.brave.playlist.util.MediaUtils;
+import com.brave.playlist.util.PlaylistUtils;
+
+import org.chromium.base.ContextUtils;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -13,6 +20,20 @@ import org.chromium.url.mojom.Url;
 
 public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public interface PlaylistServiceObserverImplDelegate {
+        default void onItemCreated(PlaylistItem item) {}
+
+        default void onItemLocalDataDeleted(String playlistItemId) {}
+
+        default void onItemAddedToList(String playlistId, String playlistItemId) {}
+
+        default void onItemRemovedFromList(String playlistId, String playlistItemId) {}
+
+        default void onItemCached(PlaylistItem item) {}
+
+        default void onItemUpdated(PlaylistItem item) {}
+
+        default void onPlaylistUpdated(Playlist list) {}
+
         default void onEvent(int event, String playlistId) {}
         default void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
                 byte percentComplete, String timeRemaining) {}
@@ -26,17 +47,87 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     }
 
     @Override
+    public void onItemCreated(PlaylistItem item) {
+        if (mDelegate == null) return;
+        mDelegate.onItemCreated(item);
+    }
+
+    @Override
+    public void onItemLocalDataDeleted(String playlistItemId) {
+        if (mDelegate == null) return;
+        mDelegate.onItemLocalDataDeleted(playlistItemId);
+        // if (isVideoPlaybackServiceRunning()) {
+        //     VideoPlaybackService.Companion.removePlaylistItemModel(playlistItemId);
+        // }
+    }
+
+    @Override
+    public void onItemAddedToList(String playlistId, String playlistItemId) {
+        if (mDelegate == null) return;
+        mDelegate.onItemAddedToList(playlistId, playlistItemId);
+    }
+
+    @Override
+    public void onItemRemovedFromList(String playlistId, String playlistItemId) {
+        if (mDelegate == null) return;
+        mDelegate.onItemRemovedFromList(playlistId, playlistItemId);
+        // if (isVideoPlaybackServiceRunning()) {
+        //     VideoPlaybackService.Companion.removePlaylistItemModel(playlistItemId);
+        // }
+    }
+
+    @Override
+    public void onItemCached(PlaylistItem playlistItem) {
+        if (mDelegate == null) return;
+        mDelegate.onItemCached(playlistItem);
+
+        if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url) && isVideoPlaybackServiceRunning()) {
+            PlaylistItemModel playlistItemModel =
+                    new PlaylistItemModel(
+                            playlistItem.id,
+                            ConstantUtils.DEFAULT_PLAYLIST,
+                            playlistItem.name,
+                            playlistItem.pageSource.url,
+                            playlistItem.mediaPath.url,
+                            playlistItem.hlsMediaPath.url,
+                            playlistItem.mediaSource.url,
+                            playlistItem.thumbnailPath.url,
+                            playlistItem.author,
+                            playlistItem.duration,
+                            playlistItem.lastPlayedPosition,
+                            playlistItem.mediaFileBytes,
+                            playlistItem.cached,
+                            false);
+            VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
+        }
+    }
+
+    @Override
+    public void onItemUpdated(PlaylistItem playlistItem) {
+        if (mDelegate == null) return;
+        mDelegate.onItemUpdated(playlistItem);
+    }
+
+    @Override
+    public void onPlaylistUpdated(Playlist playlist) {
+        if (mDelegate == null) return;
+        mDelegate.onPlaylistUpdated(playlist);
+    }
+
+    @Override
     public void onEvent(int event, String playlistId) {
         if (mDelegate == null) return;
-
         mDelegate.onEvent(event, playlistId);
     }
 
     @Override
-    public void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
-            byte percentComplete, String timeRemaining) {
+    public void onMediaFileDownloadProgressed(
+            String id,
+            long totalBytes,
+            long receivedBytes,
+            byte percentComplete,
+            String timeRemaining) {
         if (mDelegate == null) return;
-
         mDelegate.onMediaFileDownloadProgressed(
                 id, totalBytes, receivedBytes, percentComplete, timeRemaining);
     }
@@ -44,24 +135,8 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     @Override
     public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
         if (mDelegate == null) return;
-
         mDelegate.onMediaFilesUpdated(pageUrl, items);
     }
-
-    @Override
-    public void onItemCreated(PlaylistItem item) {}
-
-    @Override
-    public void onItemAddedToList(String playlistId, String itemId) {}
-
-    @Override
-    public void onItemRemovedFromList(String playlistId, String itemId) {}
-
-    @Override
-    public void onItemDeleted(String id) {}
-
-    @Override
-    public void onPlaylistUpdated(Playlist list) {}
 
     @Override
     public void close() {
@@ -73,5 +148,10 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     public void destroy() {
         mDelegate = null;
+    }
+
+    private boolean isVideoPlaybackServiceRunning() {
+        return PlaylistUtils.isServiceRunning(
+                ContextUtils.getApplicationContext(), VideoPlaybackService.class);
     }
 }

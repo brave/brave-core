@@ -236,7 +236,7 @@ void PlaylistTabHelper::OnItemRemovedFromList(const std::string& playlist_id,
   }
 }
 
-void PlaylistTabHelper::OnItemDeleted(const std::string& id) {
+void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
   DVLOG(2) << __FUNCTION__ << " " << id;
   auto iter = base::ranges::find_if(
       saved_items_, [&id](const auto& item) { return id == item->id; });

@@ -29,6 +29,8 @@ static_library("browser") {
     "playlist_p3a.h",
     "playlist_service.cc",
     "playlist_service.h",
+    "playlist_streaming.cc",
+    "playlist_streaming.h",
     "playlist_thumbnail_downloader.cc",
     "playlist_thumbnail_downloader.h",
     "pref_names.h",

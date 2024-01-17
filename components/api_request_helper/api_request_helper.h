@@ -95,6 +95,9 @@ class APIRequestHelper {
   using DataReceivedCallback = base::RepeatingCallback<void(
       data_decoder::DataDecoder::ValueOrError result)>;
   using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
+  using ResponseStartedCallback =
+      base::OnceCallback<void(const std::string& url,
+                              const int64_t content_length)>;
   using ResponseConversionCallback =
       base::OnceCallback<std::optional<std::string>(
           const std::string& raw_response)>;
@@ -144,6 +147,7 @@ class APIRequestHelper {
     raw_ptr<APIRequestHelper> api_request_helper_;
 
     DataReceivedCallback data_received_callback_;
+    ResponseStartedCallback response_started_callback_;
     ResultCallback result_callback_;
     ResponseConversionCallback conversion_callback_;
 
@@ -196,7 +200,8 @@ class APIRequestHelper {
       DataReceivedCallback data_received_callback,
       ResultCallback result_callback,
       const base::flat_map<std::string, std::string>& headers = {},
-      const APIRequestOptions& request_options = {});
+      const APIRequestOptions& request_options = {},
+      ResponseStartedCallback response_started_callback = base::NullCallback());
 
   void Cancel(const Ticket& ticket);
   void CancelAll();

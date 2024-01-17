@@ -215,6 +215,11 @@
 </service>
 
 <service
+    android:name="org.chromium.chrome.browser.playlist.hls_content.HlsService"
+    android:exported="false">
+</service>
+
+<service
     android:name="com.wireguard.android.backend.GoBackend$VpnService"
     android:permission="android.permission.BIND_VPN_SERVICE"
     android:exported="false">
@@ -228,8 +233,16 @@
     android:exported="false"
     android:launchMode="singleTask"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen" />
-<service android:name="com.brave.playlist.PlaylistVideoService"
-    android:exported="false"/>
+
+<service
+    android:name="com.brave.playlist.playback_service.VideoPlaybackService"
+    android:foregroundServiceType="mediaPlayback"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="androidx.media3.session.MediaSessionService"/>
+        <action android:name="android.media.browse.MediaBrowserService"/>
+    </intent-filter>
+</service>
 
 <!-- This activity is used for search provider widget -->
 <activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"
