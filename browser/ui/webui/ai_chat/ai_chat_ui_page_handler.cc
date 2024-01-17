@@ -108,15 +108,12 @@ void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
     return;
   }
 
-  std::vector<mojom::ModelPtr> models(kAllModelKeysDisplayOrder.size());
+  auto all_models = GetAllModels();
+  std::vector<mojom::ModelPtr> models(all_models.size());
   // Ensure we return only in intended display order
-  std::transform(kAllModelKeysDisplayOrder.cbegin(),
-                 kAllModelKeysDisplayOrder.cend(), models.begin(),
-                 [](auto& model_key) {
-                   auto model_match = kAllModels.find(model_key);
-                   DCHECK(model_match != kAllModels.end());
-                   return model_match->second.Clone();
-                 });
+  std::transform(all_models.cbegin(), all_models.cend(), models.begin(),
+                 [](auto& model) { return model.Clone(); });
+
   std::move(callback).Run(std::move(models),
                           active_chat_tab_helper_->GetCurrentModel().key);
 }
