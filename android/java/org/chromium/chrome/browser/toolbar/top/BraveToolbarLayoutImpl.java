@@ -965,8 +965,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 privacyPolicyIndex
                         + context.getResources().getString(R.string.privacy_policy).length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(new ForegroundColorSpan(context.getColor(
-                                  R.color.brave_rewards_modal_theme_color)),
+        tosTextSS.setSpan(
+                new ForegroundColorSpan(context.getColor(R.color.brave_rewards_modal_theme_color)),
                 privacyPolicyIndex,
                 privacyPolicyIndex
                         + context.getResources().getString(R.string.privacy_policy).length(),

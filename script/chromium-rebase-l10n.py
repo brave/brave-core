@@ -271,8 +271,8 @@ def main():
         for xtb_filename in xml_tree.xpath(
                 "//file[re:test(@path, '.*\\.xtb')]",
                 namespaces={"re": "http://exslt.org/regular-expressions"}):
-            xtb_filename.attrib['path'] = xtb_filename.attrib[
-                'path'].replace('chromium_strings', 'brave_strings')
+            xtb_filename.attrib['path'] = xtb_filename.attrib['path'].replace(
+                'chromium_strings', 'brave_strings')
 
     print(f'writing file {source_string_path}')
     write_xml_file_from_tree(source_string_path, xml_tree)

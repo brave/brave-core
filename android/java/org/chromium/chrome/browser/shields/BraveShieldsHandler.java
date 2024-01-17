@@ -529,8 +529,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         ImageView mPrivacyReportIcon = mPrivacyReportLayout.findViewById(R.id.toggle_favicon);
         mPrivacyReportIcon.setImageResource(R.drawable.ic_arrow_forward);
-        mPrivacyReportIcon.setColorFilter(
-                mContext.getColor(R.color.default_icon_color_baseline));
+        mPrivacyReportIcon.setColorFilter(mContext.getColor(R.color.default_icon_color_baseline));
         TextView mViewPrivacyReportText = mPrivacyReportLayout.findViewById(R.id.toggle_text);
         mViewPrivacyReportText.setText(R.string.view_full_privacy_report);
         mPrivacyReportLayout.setOnClickListener(new View.OnClickListener() {
