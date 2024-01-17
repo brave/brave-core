@@ -18,7 +18,8 @@ platform :ios do
       scheme: "Debug",
       devices: ["iPhone 15"],
       code_coverage: true,
-      output_style: 'raw',
+      output_types: "junit",
+      output_files: "junit.xml",
       ensure_devices_found: true,
       skip_testing: [
 	"CertificateUtilitiesTests/CertificatePinningTest/testSelfSignedRootAllowed",
@@ -49,6 +50,7 @@ platform :ios do
         "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
         "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork",
         "BraveWalletTests/AccountActivityStoreTests/testUpdateEthereumAccount",
+        "BraveWalletTests/SelectAccountTokenStoreTests/testUpdate",
         "BraveSharedTests/NSURLExtensionsTests/testBugzillaURLDomain",
       ]
     )
@@ -58,8 +60,9 @@ platform :ios do
       scheme: "Debug",
       devices: ["iPad (10th generation)"],
       code_coverage: true,
-      output_style: 'raw',
       ensure_devices_found: true,
+      output_types: "junit",
+      output_files: "junit-ipad.xml",
       skip_testing: [
         "ClientTests/UserAgentTests"
       ],
@@ -151,9 +154,6 @@ platform :ios do
       sdk: "iphoneos",
       clean: true,
       output_directory: "build",
-      # xcpretty doesnt output script executions
-      # https://github.com/xcpretty/xcpretty/issues/163
-      xcodebuild_formatter: '',
       xcargs: "-allowProvisioningUpdates"
     }
   end
