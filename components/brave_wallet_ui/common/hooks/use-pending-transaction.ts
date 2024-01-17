@@ -18,7 +18,7 @@ import { getPriceIdForToken } from '../../utils/api-utils'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
-import { UISelectors, WalletSelectors } from '../selectors'
+import { UISelectors } from '../selectors'
 import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
@@ -35,10 +35,7 @@ import { makeNetworkAsset } from '../../options/asset-options'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
 import { useAccountOrb, useAddressOrb } from './use-orb'
-import {
-  useSafeUISelector,
-  useSafeWalletSelector,
-} from './use-safe-selector'
+import { useSafeUISelector } from './use-safe-selector'
 import {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
@@ -97,9 +94,6 @@ export const usePendingTransactions = () => {
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
-  const hasFeeEstimatesError = useSafeWalletSelector(
-    WalletSelectors.hasFeeEstimatesError
-  )
 
   // queries
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
@@ -153,21 +147,25 @@ export const usePendingTransactions = () => {
     tokenPriceIds.length > 0 && defaultFiat
       ? { ids: tokenPriceIds, toCurrency: defaultFiat }
       : skipToken,
-      querySubscriptionOptions60s
+    querySubscriptionOptions60s
   )
 
-  const { data: gasEstimates, isLoading: isLoadingGasEstimates } =
-    useGetGasEstimation1559Query(
-      transactionInfo && txCoinType === BraveWallet.CoinType.ETH
-        ? transactionInfo.chainId
-        : skipToken,
-      defaultQuerySubscriptionOptions
-    )
+  const {
+    data: gasEstimates,
+    isLoading: isLoadingGasEstimates,
+    isError: hasEvmFeeEstimatesError
+  } = useGetGasEstimation1559Query(
+    transactionInfo && txCoinType === BraveWallet.CoinType.ETH
+      ? transactionInfo.chainId
+      : skipToken,
+    defaultQuerySubscriptionOptions
+  )
 
   const {
     data: solFeeEstimate,
     isLoading: isLoadingSolFeeEstimates = txCoinType ===
-      BraveWallet.CoinType.SOL
+      BraveWallet.CoinType.SOL,
+    isError: hasSolFeeEstimatesError
   } = useGetSolanaEstimatedFeeQuery(
     txCoinType === BraveWallet.CoinType.SOL &&
       transactionInfo?.chainId &&
@@ -219,14 +217,14 @@ export const usePendingTransactions = () => {
     }
 
     return parseTransactionWithPrices({
-          tx: transactionInfo,
-          accounts,
-          gasFee,
-          spotPriceRegistry,
-          tokensList: combinedTokensList,
-          transactionAccount: txAccount,
-          transactionNetwork: transactionsNetwork
-        })
+      tx: transactionInfo,
+      accounts,
+      gasFee,
+      spotPriceRegistry,
+      tokensList: combinedTokensList,
+      transactionAccount: txAccount,
+      transactionNetwork: transactionsNetwork
+    })
   }, [
     transactionInfo,
     accounts,
@@ -326,12 +324,17 @@ export const usePendingTransactions = () => {
     [gasEstimates]
   )
 
-  const transactionQueueNumber = pendingTransactions.findIndex(tx => tx.id === transactionInfo?.id) + 1
+  const transactionQueueNumber =
+    pendingTransactions.findIndex((tx) => tx.id === transactionInfo?.id) + 1
   const transactionsQueueLength = pendingTransactions.length
 
-  const isERC20Approve = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
-  const isERC721SafeTransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
-  const isERC721TransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721TransferFrom
+  const isERC20Approve =
+    transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
+  const isERC721SafeTransferFrom =
+    transactionInfo?.txType ===
+    BraveWallet.TransactionType.ERC721SafeTransferFrom
+  const isERC721TransferFrom =
+    transactionInfo?.txType === BraveWallet.TransactionType.ERC721TransferFrom
 
   const isSolanaDappTransaction = transactionInfo?.txType
     ? [
@@ -341,23 +344,30 @@ export const usePendingTransactions = () => {
     : false
 
   const isAssociatedTokenAccountCreation =
-    transactionInfo?.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+    transactionInfo?.txType ===
+    BraveWallet.TransactionType
+      .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 
   // methods
-  const onEditAllowanceSave = React.useCallback((allowance: string) => {
-    if (transactionInfo?.id && transactionDetails) {
-      dispatch(
-        walletApi.endpoints.updateUnapprovedTransactionSpendAllowance.initiate({
-          chainId: transactionInfo.chainId,
-          txMetaId: transactionInfo.id,
-          spenderAddress: transactionDetails.approvalTarget || '',
-          allowance: new Amount(allowance)
-            .multiplyByDecimals(transactionDetails.decimals)
-            .toHex()
-        })
-      )
-    }
-  }, [transactionInfo?.id, transactionDetails])
+  const onEditAllowanceSave = React.useCallback(
+    (allowance: string) => {
+      if (transactionInfo?.id && transactionDetails) {
+        dispatch(
+          walletApi.endpoints.updateUnapprovedTransactionSpendAllowance.initiate(
+            {
+              chainId: transactionInfo.chainId,
+              txMetaId: transactionInfo.id,
+              spenderAddress: transactionDetails.approvalTarget || '',
+              allowance: new Amount(allowance)
+                .multiplyByDecimals(transactionDetails.decimals)
+                .toHex()
+            }
+          )
+        )
+      }
+    },
+    [transactionInfo?.id, transactionDetails]
+  )
 
   const updateUnapprovedTransactionNonce = React.useCallback(
     (args: UpdateUnapprovedTransactionNonceType) => {
@@ -383,9 +393,7 @@ export const usePendingTransactions = () => {
         ? pendingTransactions[0]?.id // go to first item in list
         : pendingTransactions[nextIndex]?.id // go to next item in list
 
-    dispatch(
-      UIActions.setPendingTransactionId(newSelectedPendingTransactionId)
-    )
+    dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
   }, [selectedPendingTransactionId, pendingTransactions])
 
   const rejectAllTransactions = React.useCallback(
@@ -412,9 +420,7 @@ export const usePendingTransactions = () => {
     dispatch(
       walletApi.endpoints.rejectTransaction.initiate({
         chainId: transactionInfo.chainId,
-        coinType: getCoinFromTxDataUnion(
-          transactionInfo.txDataUnion
-        ),
+        coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
         id: transactionInfo.id
       })
     )
@@ -443,16 +449,11 @@ export const usePendingTransactions = () => {
         walletApi.endpoints.approveTransaction.initiate({
           chainId: transactionInfo.chainId,
           id: transactionInfo.id,
-          coinType: getCoinFromTxDataUnion(
-            transactionInfo.txDataUnion
-          ),
+          coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
           txType: transactionInfo.txType
         })
-      )
-      .unwrap()
-      dispatch(
-        PanelActions.setSelectedTransactionId(transactionInfo.id)
-      )
+      ).unwrap()
+      dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
       dispatch(PanelActions.navigateTo('transactionStatus'))
     } catch (error) {
       dispatch(
@@ -473,14 +474,15 @@ export const usePendingTransactions = () => {
       isSolanaDappTransaction
         ? getLocale('braveWalletApproveTransaction')
         : transactionDetails?.isSwap
-          ? getLocale('braveWalletSwap')
-          : getLocale('braveWalletSend')
-    , [isSolanaDappTransaction, transactionDetails?.isSwap])
+        ? getLocale('braveWalletSwap')
+        : getLocale('braveWalletSend'),
+    [isSolanaDappTransaction, transactionDetails?.isSwap]
+  )
 
   const isLoadingGasFee = React.useMemo(() => {
     // TODO(apaymyshev): handle bitcoin
     if (txCoinType === BraveWallet.CoinType.BTC) {
-      return false;
+      return false
     }
 
     // SOL
@@ -502,6 +504,11 @@ export const usePendingTransactions = () => {
     gasFee,
     isLoadingGasEstimates
   ])
+
+  const hasFeeEstimatesError =
+    txCoinType === BraveWallet.CoinType.SOL
+      ? hasSolFeeEstimatesError
+      : hasEvmFeeEstimatesError
 
   const isConfirmButtonDisabled = React.useMemo(() => {
     if (hasFeeEstimatesError || isLoadingGasFee) {
@@ -527,28 +534,26 @@ export const usePendingTransactions = () => {
     insufficientFundsForGasError
   ])
 
-  const {
-    currentTokenAllowance,
-    isCurrentAllowanceUnlimited
-  } = React.useMemo(() => {
-    if (!transactionDetails || erc20AllowanceResult === undefined) {
-      return {
-        currentTokenAllowance: undefined,
-        isCurrentAllowanceUnlimited: false
+  const { currentTokenAllowance, isCurrentAllowanceUnlimited } =
+    React.useMemo(() => {
+      if (!transactionDetails || erc20AllowanceResult === undefined) {
+        return {
+          currentTokenAllowance: undefined,
+          isCurrentAllowanceUnlimited: false
+        }
       }
-    }
 
-    const currentTokenAllowance = new Amount(erc20AllowanceResult)
-      .divideByDecimals(transactionDetails.decimals)
-      .format()
+      const currentTokenAllowance = new Amount(erc20AllowanceResult)
+        .divideByDecimals(transactionDetails.decimals)
+        .format()
 
-    const isCurrentAllowanceUnlimited = erc20AllowanceResult === MAX_UINT256
+      const isCurrentAllowanceUnlimited = erc20AllowanceResult === MAX_UINT256
 
-    return {
-      currentTokenAllowance,
-      isCurrentAllowanceUnlimited
-    }
-  }, [erc20AllowanceResult])
+      return {
+        currentTokenAllowance,
+        isCurrentAllowanceUnlimited
+      }
+    }, [erc20AllowanceResult])
 
   // effects
   React.useEffect(() => {
@@ -571,7 +576,7 @@ export const usePendingTransactions = () => {
       transactionDetails.recipient,
       txAccount.address,
       transactionDetails.approvalTarget,
-      transactionDetails.chainId,
+      transactionDetails.chainId
     )
       .then((result) => {
         subscribed && setERC20AllowanceResult(result)
