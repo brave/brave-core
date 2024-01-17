@@ -11,4 +11,5 @@ CarV1HeaderResult decode_carv1_header(const std::vector<uint8_t>& data);
 
 CarV2HeaderResult decode_carv2_header(const std::vector<uint8_t>& data);
 
+BlockDecodeResult decode(const uint64_t& offset, const std::vector<uint8_t>& data);
 }

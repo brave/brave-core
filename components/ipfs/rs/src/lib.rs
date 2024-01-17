@@ -4,8 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 pub mod car_header;
-use crate::car_header::{decode_carv1_header, decode_carv2_header};
+pub mod block_decoder;
 
+use crate::car_header::{decode_carv1_header, decode_carv2_header};
+use crate::block_decoder::decode;
 
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = ipfs)]
@@ -14,7 +16,7 @@ mod ffi {
     extern "Rust" {
         fn decode_carv1_header(data: &CxxVector<u8>) -> CarV1HeaderResult;
         fn decode_carv2_header(data: &CxxVector<u8>) -> CarV2HeaderResult;
-//        fn dagpb_decode(data: &CxxVector<u8>) -> Vec<u8>;
+        fn decode(offset: usize, data: &CxxVector<u8>) -> BlockDecodeResult;
     }
     #[derive(Debug)]
     pub struct CarV1Header {
@@ -33,7 +35,7 @@ mod ffi {
         data_offset: u64,
         data_size: u64,
         index_offset: u64,
-        data: CarV1Header,
+//        data: CarV1Header,
     }
 
     #[derive(Debug)]
@@ -51,6 +53,15 @@ mod ffi {
     #[derive(Debug)]
     pub struct CarV2HeaderResult {
         data: CarV2Header,
+        error: ErrorData
+    }
+
+    #[derive(Debug)]
+    pub struct BlockDecodeResult {
+        data_offset: usize,
+        cid: String,
+        data: String,
+        is_block_data: bool,
         error: ErrorData
     }
 }

@@ -10,6 +10,8 @@ thiserror=1.0.38
 libipld=0.16.0
 libipld-core=0.16.0
 libipld-cbor=0.16.0
+libipld-pb=0.16.0
+libipld-json=0.16.0
 
 [lib]
 name = "ipfs_cxx"
