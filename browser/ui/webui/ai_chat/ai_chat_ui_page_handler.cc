@@ -13,6 +13,8 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_keyed_service.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -74,6 +76,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
             ? true
             : false;
     active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
+    active_chat_tab_helper_->SetService(
+        AIChatServiceFactory::GetForBrowserContext(profile_));
   } else {
     // TODO(petemill): Enable conversation without the TabHelper. Conversation
     // logic should be extracted from the TabHelper to a new virtual class, e.g.

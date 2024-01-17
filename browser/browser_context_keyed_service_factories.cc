@@ -112,6 +112,11 @@
 #include "brave/browser/request_otr/request_otr_service_factory.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_service_factory.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -228,6 +233,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if !BUILDFLAG(IS_ANDROID)
   BraveGlobalInfobarServiceFactory::GetInstance();
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled()) {
+    ai_chat::AIChatServiceFactory::GetInstance();
+  }
 #endif
 }
 

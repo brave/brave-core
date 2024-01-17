@@ -256,7 +256,15 @@ void ConversationDriver::OnUserOptedIn() {
 }
 
 void ConversationDriver::AddToConversationHistory(mojom::ConversationTurn turn) {
+  auto turn_clone = turn.Clone();
   chat_history_.push_back(std::move(turn));
+
+  if (conversation_ && turn_clone->character_type == CharacterType::HUMAN) {
+    // human inputs doesnt stream and are instant
+    SyncConversationTurn(std::move(turn_clone));
+  } else {
+    CreateAndSyncConversation();
+  }
 
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
@@ -621,7 +629,9 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
       std::move(data_received_callback), std::move(data_completed_callback));
 
   // Add the human part to the conversation
+  auto turn_clone = turn.Clone();
   AddToConversationHistory(std::move(turn));
+  // TODO(Service): Persist human entry
 
   is_request_in_progress_ = true;
   for (auto& obs : observers_) {
@@ -691,6 +701,8 @@ void ConversationDriver::OnEngineCompletionComplete(
   for (auto& obs : observers_) {
     obs.OnAPIRequestInProgress(IsRequestInProgress());
   }
+
+  // TODO(Service): Persist the last AI Entry
 }
 
 void ConversationDriver::OnSuggestedQuestionsChanged() {
@@ -755,6 +767,35 @@ bool ConversationDriver::IsContentAssociationPossible() {
   }
 
   return true;
+}
+
+void ConversationDriver::CreateAndSyncConversation() {
+  if ((chat_history_.size() >= 1) && !conversation_) {
+    auto conversation = mojom::Conversation::New(
+        -1, base::Time::Now(), "A conversation", GetPageURL());
+
+    CHECK(service_);
+
+    service_->SyncConversation(
+        std::move(conversation),
+        base::BindOnce(&ConversationDriver::OnGetConversation,
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
+}
+
+void ConversationDriver::OnGetConversation(
+    std::optional<mojom::ConversationPtr> conversation) {
+  LOG(ERROR) << "OnGetConversation";
+  if (conversation.has_value()) {
+    conversation_ = std::move(conversation.value());
+  }
+}
+
+void ConversationDriver::SyncConversationTurn(mojom::ConversationTurnPtr turn) {
+  CHECK(service_);
+  CHECK(conversation_);
+
+  service_->SyncConversationTurn(conversation_->id, std::move(turn));
 }
 
 void ConversationDriver::GetPremiumStatus(
@@ -875,6 +916,15 @@ void ConversationDriver::SendFeedback(
 
   feedback_api_->SendFeedback(category, feedback, rating_id,
                               std::move(on_complete));
+}
+
+void ConversationDriver::SetService(AIChatKeyedService* service) {
+  service_ = service;
+
+  // Load
+  service_->GetConversationForGURL(
+      GetPageURL(), base::BindOnce(&ConversationDriver::OnGetConversation,
+                                   weak_ptr_factory_.GetWeakPtr()));
 }
 
 }  // namespace ai_chat
