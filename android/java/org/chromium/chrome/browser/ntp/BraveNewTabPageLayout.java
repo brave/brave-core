@@ -1373,8 +1373,7 @@ public class BraveNewTabPageLayout
         mSuperReferralSitesLayout = new LinearLayout(mActivity);
         mSuperReferralSitesLayout.setWeightSum(1f);
         mSuperReferralSitesLayout.setOrientation(LinearLayout.HORIZONTAL);
-        mSuperReferralSitesLayout.setBackgroundColor(
-                mActivity.getColor(R.color.topsite_bg_color));
+        mSuperReferralSitesLayout.setBackgroundColor(mActivity.getColor(R.color.topsite_bg_color));
 
         LayoutInflater inflater =
                 (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
