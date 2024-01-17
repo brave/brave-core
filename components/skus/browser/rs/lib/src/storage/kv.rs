@@ -286,6 +286,7 @@ where
     async fn upsert_time_limited_v2_item_creds(
         &self,
         item_id: &str,
+        request_id: &str,
         creds: Vec<Token>,
     ) -> Result<(), InternalError> {
         let mut store = self.get_store()?;
@@ -311,6 +312,7 @@ where
                 let tlv2_vec = Vec::new();
                 let tlv2_creds = Credentials::TimeLimitedV2(TimeLimitedV2Credentials {
                     item_id: item_id.to_string(),
+                    request_id: Some(request_id.to_string()),
                     creds,
                     unblinded_creds: Some(tlv2_vec),
                     state: CredentialState::GeneratedCredentials,
