@@ -607,10 +607,9 @@ void ConversationDriver::SubmitHumanConversationEntry(
     // This is possible (on desktop) if user submits multiple location bar
     // messages before an entry is complete. But that should be obvious from the
     // UI that the 1 in-progress + 1 pending message is the limit.
-    if(pending_conversation_entry_) {
-      VLOG(1)
-        << "Should not be able to add a pending conversation entry "
-        << "when there is already a pending conversation entry.";
+    if (pending_conversation_entry_) {
+      VLOG(1) << "Should not be able to add a pending conversation entry "
+              << "when there is already a pending conversation entry.";
       return;
     }
     pending_conversation_entry_ =
