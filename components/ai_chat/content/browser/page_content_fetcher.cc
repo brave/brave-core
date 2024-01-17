@@ -58,6 +58,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 class PageContentFetcher {
  public:
   void Start(mojo::Remote<mojom::PageContentExtractor> content_extractor,
+             std::string_view invalidation_token,
              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
              FetchPageContentCallback callback) {
     url_loader_factory_ = url_loader_factory;
@@ -70,9 +71,9 @@ class PageContentFetcher {
     // after it is destroyed.
     content_extractor_.set_disconnect_handler(base::BindOnce(
         &PageContentFetcher::DeleteSelf, base::Unretained(this)));
-    content_extractor_->ExtractPageContent(
-        base::BindOnce(&PageContentFetcher::OnTabContentResult,
-                       base::Unretained(this), std::move(callback)));
+    content_extractor_->ExtractPageContent(base::BindOnce(
+        &PageContentFetcher::OnTabContentResult, base::Unretained(this),
+        std::move(callback), invalidation_token));
   }
 
  private:
@@ -80,12 +81,14 @@ class PageContentFetcher {
 
   void SendResultAndDeleteSelf(FetchPageContentCallback callback,
                                std::string content = "",
+                               std::string invalidation_token = "",
                                bool is_video = false) {
-    std::move(callback).Run(content, is_video);
+    std::move(callback).Run(content, is_video, invalidation_token);
     delete this;
   }
 
   void OnTabContentResult(FetchPageContentCallback callback,
+                          std::string_view invalidation_token,
                           mojom::PageContentPtr data) {
     if (!data) {
       VLOG(1) << __func__ << " no data.";
@@ -101,7 +104,7 @@ class PageContentFetcher {
       auto content = data->content->get_content();
       DVLOG(1) << __func__ << ": Got content with char length of "
                << content.length();
-      SendResultAndDeleteSelf(std::move(callback), content, false);
+      SendResultAndDeleteSelf(std::move(callback), content, "", false);
       return;
     }
     // If it's video, we expect content url
@@ -110,7 +113,16 @@ class PageContentFetcher {
     if (content_url.is_empty() || !content_url.is_valid() ||
         !content_url.SchemeIs(url::kHttpsScheme)) {
       VLOG(1) << "Invalid content_url";
-      SendResultAndDeleteSelf(std::move(callback), "", true);
+      SendResultAndDeleteSelf(std::move(callback), "", "", true);
+      return;
+    }
+    // Subsequent calls do not need to re-fetch if the url stays the same
+    auto new_invalidation_token = content_url.spec();
+    if (new_invalidation_token == invalidation_token) {
+      VLOG(2) << "Not fetching content since invalidation token matches: "
+              << invalidation_token;
+      SendResultAndDeleteSelf(std::move(callback), "", new_invalidation_token,
+                              true);
       return;
     }
     DVLOG(1) << "Making video transcript fetch to " << content_url.spec();
@@ -132,13 +144,14 @@ class PageContentFetcher {
     auto on_response =
         base::BindOnce(&PageContentFetcher::OnTranscriptFetchResponse,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(loader), is_youtube);
+                       std::move(loader), is_youtube, new_invalidation_token);
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
   }
 
   void OnYoutubeTranscriptXMLParsed(
       FetchPageContentCallback callback,
+      std::string invalidation_token,
       base::expected<base::Value, std::string> result) {
     // Example Youtube transcript XML:
     //
@@ -182,13 +195,15 @@ class PageContentFetcher {
       transcript_text += text;
     }
 
-    SendResultAndDeleteSelf(std::move(callback), transcript_text, true);
+    SendResultAndDeleteSelf(std::move(callback), transcript_text,
+                            invalidation_token, true);
   }
 
   void OnTranscriptFetchResponse(
       FetchPageContentCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
       bool is_youtube,
+      std::string invalidation_token,
       std::unique_ptr<std::string> response_body) {
     auto response_code = -1;
     base::flat_map<std::string, std::string> headers;
@@ -215,11 +230,13 @@ class PageContentFetcher {
           data_decoder::mojom::XmlParser::WhitespaceBehavior::
               kPreserveSignificant,
           base::BindOnce(&PageContentFetcher::OnYoutubeTranscriptXMLParsed,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         invalidation_token));
       return;
     }
 
-    SendResultAndDeleteSelf(std::move(callback), transcript_content, true);
+    SendResultAndDeleteSelf(std::move(callback), transcript_content,
+                            invalidation_token, true);
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -230,6 +247,7 @@ class PageContentFetcher {
 }  // namespace
 
 void FetchPageContent(content::WebContents* web_contents,
+                      std::string_view invalidation_token,
                       FetchPageContentCallback callback) {
   VLOG(2) << __func__ << " Extracting page content from renderer...";
 
@@ -240,7 +258,7 @@ void FetchPageContent(content::WebContents* web_contents,
     LOG(ERROR)
         << "Content extraction request submitted for a WebContents without "
            "a primary main frame";
-    std::move(callback).Run("", false);
+    std::move(callback).Run("", false, "");
     return;
   }
 
@@ -255,7 +273,8 @@ void FetchPageContent(content::WebContents* web_contents,
                      ->GetDefaultStoragePartition()
                      ->GetURLLoaderFactoryForBrowserProcess()
                      .get();
-  fetcher->Start(std::move(extractor), loader, std::move(callback));
+  fetcher->Start(std::move(extractor), invalidation_token, loader,
+                 std::move(callback));
 }
 
 }  // namespace ai_chat

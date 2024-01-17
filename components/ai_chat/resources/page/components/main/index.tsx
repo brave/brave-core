@@ -141,10 +141,12 @@ function Main() {
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        {context.hasAcceptedAgreement && <ModelIntro />}
-        <ConversationList
-          onLastElementHeightChange={handleLastElementHeightChange}
-        />
+        {context.hasAcceptedAgreement && <>
+          <ModelIntro />
+          <ConversationList
+            onLastElementHeightChange={handleLastElementHeightChange}
+          />
+        </>}
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
         )}
