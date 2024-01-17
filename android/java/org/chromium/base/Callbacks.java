@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- package org.chromium.base;
+package org.chromium.base;
 
 /** Contains a generic interface for callbacks. */
 public interface Callbacks {
