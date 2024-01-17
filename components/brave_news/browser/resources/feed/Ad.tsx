@@ -71,6 +71,8 @@ export const useVisibleFor = (callback: () => void, timeout: number) => {
   }
 }
 
+const adTargetUrlAllowedSchemes = ['https:', 'chrome:', 'brave:']
+
 export default function Advert(props: Props) {
   const [advert, setAdvert] = React.useState<DisplayAd | null | undefined>(undefined)
   const imageUrl = useUnpaddedImageUrl(advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url)
@@ -89,7 +91,7 @@ export default function Advert(props: Props) {
 
     console.debug(`Brave News: Visited display ad: ${advert.uuid}`)
     await getBraveNewsController().onDisplayAdVisit(advert.uuid, advert.creativeInstanceId)
-    braveNewsCardClickHandler(advert.targetUrl.url)(e);
+    braveNewsCardClickHandler(advert.targetUrl.url, adTargetUrlAllowedSchemes)(e);
   }, [advert])
 
   const { setElementRef: setTriggerRef } = useOnVisibleCallback(async () => {
@@ -119,7 +121,7 @@ export default function Advert(props: Props) {
       {' ' + advert.description}
     </MetaInfoContainer>
     <Title>
-      <SecureLink href={advert.targetUrl.url} onClick={e => {
+      <SecureLink allowedSchemes={adTargetUrlAllowedSchemes} href={advert.targetUrl.url} onClick={e => {
         // preventDefault, so we go through onDisplayAdVisit and record the
         // result.
         e.preventDefault()
