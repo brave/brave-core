@@ -52,7 +52,7 @@ GURL ConversationDriverIOS::GetPageURL() const {
 }
 
 void ConversationDriverIOS::GetPageContent(
-    ConversationDriver::GetPageContentCallback,
+    ConversationDriver::GetPageContentCallback callback,
     std::string_view invalidation_token) const {
   [bridge_
       getPageContentWithCompletion:[callback =
