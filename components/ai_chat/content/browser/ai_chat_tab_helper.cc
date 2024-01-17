@@ -57,56 +57,45 @@ AIChatTabHelper::~AIChatTabHelper() = default;
 
 // content::WebContentsObserver
 
-void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  // We might have content here, so check.
-  // TODO(petemill): If there are other navigation events to also
-  // check if content is available at, then start a queue and make
-  // sure we don't have multiple async distills going on at the same time.
-  MaybeGeneratePageText();
-}
-
 void AIChatTabHelper::WebContentsDestroyed() {
-  CleanUp();
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
 }
 
 void AIChatTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  // Store current navigation ID of the main document
-  // so that we can ignore async responses against any navigated-away-from
-  // documents.
   if (!navigation_handle->IsInMainFrame()) {
-    DVLOG(3) << "FinishNavigation NOT in main frame";
     return;
   }
   DVLOG(2) << __func__ << navigation_handle->GetNavigationId()
            << " url: " << navigation_handle->GetURL().spec()
            << " same document? " << navigation_handle->IsSameDocument();
-  SetNavigationId(navigation_handle->GetNavigationId());
+
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
   // Content won't be retrieved immediately and we don't have a similar
   // "DOM Content Loaded" event, so let's wait for something else such as
-  // page title changing, or a timer completing before calling
-  // |MaybeGeneratePageText|.
-  SetSameDocumentNavigation(navigation_handle->IsSameDocument());
-  // Experimentally only call |CleanUp| _if_ a same-page navigation
-  // results in a page title change (see |TtileWasSet|).
-  if (!IsSameDocumentNavigation()) {
-    CleanUp();
+  // page title changing before committing to starting a new conversation
+  // and treating it as a "fresh page".
+  is_same_document_navigation_ = navigation_handle->IsSameDocument();
+  pending_navigation_id_ = navigation_handle->GetNavigationId();
+  // Experimentally only call |OnNewPage| for same-page navigations _if_
+  // it results in a page title change (see |TtileWasSet|).
+  if (!is_same_document_navigation_) {
+    OnNewPage(pending_navigation_id_);
   }
 }
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(3) << __func__ << entry->GetTitle();
   if (is_same_document_navigation_) {
-    // Seems as good a time as any to check for content after a same-document
-    // navigation.
-    // We only perform CleanUp here in case it was a minor pushState / fragment
-    // navigation and didn't result in new content.
-    CleanUp();
-    MaybeGeneratePageText();
+    DVLOG(3) << "Same document navigation detected new \"page\" - calling "
+                "OnNewPage()";
+    // Page title modification after same-document navigation seems as good a
+    // time as any to assume meaningful changes occured to the content.
+    OnNewPage(pending_navigation_id_);
+    // Don't respond to further TitleWasSet
+    is_same_document_navigation_ = false;
   }
 }
 
@@ -128,16 +117,9 @@ GURL AIChatTabHelper::GetPageURL() const {
 }
 
 void AIChatTabHelper::GetPageContent(
-    base::OnceCallback<void(std::string, bool is_video)> callback) const {
-  FetchPageContent(web_contents(), std::move(callback));
-}
-
-bool AIChatTabHelper::HasPrimaryMainFrame() const {
-  return web_contents()->GetPrimaryMainFrame() != nullptr;
-}
-
-bool AIChatTabHelper::IsDocumentOnLoadCompletedInPrimaryMainFrame() const {
-  return web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
+    GetPageContentCallback callback,
+    std::string_view invalidation_token) const {
+  FetchPageContent(web_contents(), invalidation_token, std::move(callback));
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
