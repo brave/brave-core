@@ -105,7 +105,7 @@ extension BrowserViewController {
   private func loadNewTabWithRewardsURL(_ url: URL) {
     self.presentedViewController?.dismiss(animated: true)
 
-    if let tab = tabManager.getTabForURL(url) {
+    if let tab = tabManager.getTabForURL(url, isPrivate: privateBrowsingManager.isPrivateBrowsing) {
       tabManager.selectTab(tab)
     } else {
       let request = URLRequest(url: url)

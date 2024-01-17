@@ -850,12 +850,12 @@ class TabManager: NSObject {
     return nil
   }
 
-  func getTabForURL(_ url: URL) -> Tab? {
+  func getTabForURL(_ url: URL, isPrivate: Bool) -> Tab? {
     assert(Thread.isMainThread)
     
     let tab = allTabs.filter {
-      guard let webViewURL = $0.webView?.url else {
-        return  false
+      guard let webViewURL = $0.webView?.url, $0.isPrivate else {
+        return false
       }
       
       return webViewURL.schemelessAbsoluteDisplayString == url.schemelessAbsoluteDisplayString

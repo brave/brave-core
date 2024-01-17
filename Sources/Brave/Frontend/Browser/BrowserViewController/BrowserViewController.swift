@@ -1768,6 +1768,17 @@ public class BrowserViewController: UIViewController {
         // Catch history pushState navigation, but ONLY for same origin navigation,
         // for reasons above about URL spoofing risk.
         navigateInTab(tab: tab)
+      } else {
+        updateURLBar()
+        
+        // If navigation will start from NTP, tab display url will be nil until
+        // didCommit is called and it will cause url bar be empty in that period
+        // To fix this when tab display url is empty, webview url is used
+        if tab.url?.displayURL == nil {
+          if let url = webView.url, !url.isLocal, !InternalURL.isValid(url: url) {
+            updateToolbarCurrentURL(url.displayURL)
+          }
+        }
       }
 
       // Rewards reporting
@@ -2027,7 +2038,7 @@ public class BrowserViewController: UIViewController {
       popToBVC()
     }
 
-    if let tab = tabManager.getTabForURL(url) {
+    if let tab = tabManager.getTabForURL(url, isPrivate: isPrivate) {
       tabManager.selectTab(tab)
     } else {
       openURLInNewTab(url, isPrivate: isPrivate, isPrivileged: isPrivileged)
@@ -2039,7 +2050,7 @@ public class BrowserViewController: UIViewController {
     
     if let tabID = id, let tab = tabManager.getTabForID(tabID) {
       tabManager.selectTab(tab)
-    } else if let tab = tabManager.getTabForURL(url) {
+    } else if let tab = tabManager.getTabForURL(url, isPrivate: privateBrowsingManager.isPrivateBrowsing) {
       tabManager.selectTab(tab)
     } else {
       openURLInNewTab(url, isPrivate: privateBrowsingManager.isPrivateBrowsing, isPrivileged: false)
