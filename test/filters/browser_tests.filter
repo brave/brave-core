@@ -6,59 +6,59 @@
 ##
 
 # Chromium ads are disabled
--AdTaggingBrowserTest.*
 -AdClickLandingPageMetricsBrowserTest.*
 -AdClickMetricsBrowserTest.NavigateCrossOriginIframeFromAdScript
 -AdClickMetricsBrowserTest.WindowOpen_FromAdScriptWithGesture
+-AdTaggingBrowserTest.*
 -AdTaggingFencedFrameBrowserTest.*
 -All/AdsPageLoadMetricsObserverResourceBrowserTest.*
 -All/AutomaticLazyLoadFrameBrowserTest.*
+-Browser/SubresourceFilterDnsAliasFilteringThrottleBrowserTest.*
 -LargeStickyAdViolationBrowserTest.*
 -LargeStickyAdViolationBrowserTestWithoutEnforcement.*
 -OverlayPopupAdViolationBrowserTest.*
 -OverlayPopupAdViolationBrowserTestWithoutEnforcement.*
--Browser/SubresourceFilterDnsAliasFilteringThrottleBrowserTest.*
 -Renderer/SubresourceFilterDnsAliasFilteringThrottleBrowserTest.*
 -Renderer/SubresourceFilterDnsAliasResourceLoaderBrowserTest.*
 
 # Probably failing because of feature changes - need to investigate
 # https://github.com/brave/brave-browser/issues/34185
--WithOverrideParams/ReferrerOverrideTest.CrossOriginDowngradeNavigation/ParamCapReferrerToOriginOnCrossOrigin
--NotificationPermissionBrowserTest.NonPersistentNotificationThirdPartyCountMetricTest # Histogram does not exist
--RuntimeGetContextsApiTest.GetOffscreenDocumentContext
--OpenWindowFromNTPBrowserTest.TransferFromNTPCreateNewTab # not InstantProcess
--PasswordDialogViewTest.PopupAccountChooserWithMultipleCredentialsReturnEmpty
--NewTabPageNavigationThrottleFencedFrameTest.FencedFrameDoesNotResetNewTabStartTime
+-All/BrowserFrameColorProviderTest.*
+-All/PrefersColorSchemeTest.*
+-All/WebBluetoothPermissionsPolicyTest.*
+-AlternativeErrorPageOverrideInfoBrowserTest.*
+-AudioLifetimeEnforcerBrowserTest.DocumentActiveWhilePlayingAudio
+-AudioLifetimeEnforcerBrowserTest.DocumentInactiveIfNeverPlayedAudio
+-ChromeWebPlatformSecurityMetricsBrowserTest.*
+-ChromeWebUsbTest.*
+-ContextMenuFencedFrameTest.AutomaticBeaconSentAfterContextMenuNavigation
+-CookiesTreeModelBrowserTest.NonDefaultStoragePartition
+-CredentialManagerAvatarTest.AvatarFetchIsolatedPerOrigin
 -CrossOriginRedirectReduceAcceptLanguageOTBrowserTest.*
 -DisableFeatureReduceAcceptLanguageBrowserTest.*
 -DisableReduceAcceptLanguageOTBrowserTest.*
+-IsolatedOriginNTPBrowserTest.IsolatedOriginDoesNotInterfereWithNTP
+-LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
+-NewTabPageNavigationThrottleFencedFrameTest.FencedFrameDoesNotResetNewTabStartTime
+-NotificationPermissionBrowserTest.NonPersistentNotificationThirdPartyCountMetricTest # Histogram does not exist
+-OffscreenApiTest.*
+-OffscreenDocumentBrowserTest.*
+-OffscreenDocumentManagerBrowserTest.*
+-OpenWindowFromNTPBrowserTest.TransferFromNTPCreateNewTab # not InstantProcess
+-PageViewportInLCPTest.FullSizeImageInIframe
+-PasswordDialogViewTest.PopupAccountChooserWithMultipleCredentialsReturnEmpty
+-ProfilePickerViewBrowserTest.ShowScreen_FinishesForErrorOnStandardNavigation
+-RuntimeGetContextsApiTest.GetOffscreenDocumentContext
 -SameOriginRedirectReduceAcceptLanguageOTBrowserTest.*
+-SameOriginReduceAcceptLanguageOTBrowserTest.*
 -SerialBlocklistTest.*
 -SerialTest.*
 -ThirdPartyReduceAcceptLanguageOTBrowserTest.*
+-WebAppFileHandlingBrowserTest.*
 -WebBluetoothPolicyTest.*
 -WebBluetoothTest.*
--ChromeWebUsbTest.*
--All/BrowserFrameColorProviderTest.*
--All/WebBluetoothPermissionsPolicyTest.*
--ContextMenuFencedFrameTest.AutomaticBeaconSentAfterContextMenuNavigation
--CookiesTreeModelBrowserTest.NonDefaultStoragePartition
--AlternativeErrorPageOverrideInfoBrowserTest.*
--All/PrefersColorSchemeTest.*
--AudioLifetimeEnforcerBrowserTest.DocumentActiveWhilePlayingAudio
--AudioLifetimeEnforcerBrowserTest.DocumentInactiveIfNeverPlayedAudio
--OffscreenDocumentBrowserTest.*
--OffscreenDocumentManagerBrowserTest.*
--SameOriginReduceAcceptLanguageOTBrowserTest.*
 -WebViewUsbTest.*
--ChromeWebPlatformSecurityMetricsBrowserTest.*
--OffscreenApiTest.*
--WebAppFileHandlingBrowserTest.*
--IsolatedOriginNTPBrowserTest.IsolatedOriginDoesNotInterfereWithNTP
--CredentialManagerAvatarTest.AvatarFetchIsolatedPerOrigin
--ProfilePickerViewBrowserTest.ShowScreen_FinishesForErrorOnStandardNavigation
--LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
--PageViewportInLCPTest.FullSizeImageInIframe
+-WithOverrideParams/ReferrerOverrideTest.CrossOriginDowngradeNavigation/ParamCapReferrerToOriginOnCrossOrigin
 
 # Probably shouldn't be failing - need to investigate
 # https://github.com/brave/brave-browser/issues/34185
@@ -730,6 +730,7 @@
 -ChromeSigninClientBrowserTest.BookmarksMetricsRecordOnSignin
 -ChromeSigninClientBrowserTest.BookmarksMetricsRecordOnSignin_Sync
 -ChromeSigninClientBrowserTest.ExtensionsMetricsRecordOnSignin_Sync
+-ComposeEnablingBrowserTest.EnableComposeViaSettings
 -EnterpriseSigninServiceTest.CurrentlyActiveTabIsAlreadyLoginPage
 -EnterpriseSigninServiceTest.DoesNothingIfPolicyNotSet
 -EnterpriseSigninServiceTest.OpensNewTabOnSyncPaused
@@ -1084,6 +1085,8 @@
 -SameOriginUaReductionBrowserTest.UserAgentOverride
 -SameOriginUaReductionBrowserTest.UserAgentOverrideIframeRequest
 -SameOriginUaReductionBrowserTest.UserAgentOverrideSubresourceRequest
+-QUICClientHintsTest.BasicQUICAlps
+-XRClientHintsTest.UAHintsXRMode
 
 # These tests fail because we override VariationsIdsProvider's method
 # GetClientDataHeaders to return nullptr, so the X-Client-Data header that the
@@ -1165,8 +1168,8 @@
 # c'tor. https://github.com/brave/brave-browser/issues/34103
 -All/BrowserFrameColorProviderTest.*
 
-# These tests hand trying to SetEmptyTestingFactory for
-# TemplateURLServiceFactory. The hand happens in
+# These tests hang trying to SetEmptyTestingFactory for
+# TemplateURLServiceFactory. The hang happens in
 # ChromeTemplateURLServiceClient::Shutdown -> HistoryService::RemoveObserver,
 # which calls DCHECK_CALLED_ON_VALID_SEQUENCE and hangs on obtaining a lock.
 # I haven't investigated any deeper.
@@ -1200,6 +1203,15 @@
 # Fails because we customized PIP UI.
 # https://github.com/brave/brave-browser/issues/35263
 -PictureInPicturePixelComparisonBrowserTest.VideoPlay
+
+# These tests fail because we disable autofill feedback
+AutofillAcrossIframesTest/*.*/*
+AutofillAcrossIframesTest_*.*
+
+# These tests fail because we disable lens::features::kLensStandalone
+-All/ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame/LinkPreviewDisabled
+-All/ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame/LinkPreviewEnabled
+-All/ContextMenuBrowserTest.SaveLinkAsEntryIsDisabledForBlockedUrls/LinkPreviewDisabled
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
