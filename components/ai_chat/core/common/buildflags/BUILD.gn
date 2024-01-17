@@ -11,6 +11,10 @@ declare_args() {
   service_key_ai_chat = ""
 }
 
+if (is_official_build) {
+  assert(service_key_ai_chat != "")
+}
+
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
