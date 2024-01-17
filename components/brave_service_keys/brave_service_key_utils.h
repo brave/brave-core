@@ -25,7 +25,7 @@ std::pair<std::string, std::string> GetDigestHeader(const std::string& payload);
 // header. See
 // https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-08#section-2.3:w
 std::pair<std::string, std::string> CreateSignatureString(
-    base::flat_map<std::string, std::string> headers,
+    const base::flat_map<std::string, std::string>& headers,
     const GURL& url,
     const std::string& method,
     const std::vector<std::string>& headers_to_sign);

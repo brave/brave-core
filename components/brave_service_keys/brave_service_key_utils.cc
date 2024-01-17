@@ -33,37 +33,43 @@ std::pair<std::string, std::string> GetDigestHeader(
 }
 
 std::pair<std::string, std::string> CreateSignatureString(
-    base::flat_map<std::string, std::string> headers,
+    const base::flat_map<std::string, std::string>& headers,
     const GURL& url,
     const std::string& method,
     const std::vector<std::string>& headers_to_sign) {
-  // Create and add the (request-target) header if included
-  if (std::find(headers_to_sign.begin(), headers_to_sign.end(),
-                kRequestTargetHeader) != headers_to_sign.end()) {
-    headers.insert(std::make_pair(
-        kRequestTargetHeader,
-        base::StrCat({base::ToLowerASCII(method), " ", url.PathForRequest()})));
-  }
-
   std::string header_names;
   std::string signature_string;
 
-  for (const auto& key : headers_to_sign) {
-    auto header = headers.find(key);
-    if (header != headers.end()) {
-      if (!header_names.empty()) {
-        header_names.append(" ");
-        signature_string.append("\n");
-      }
-      header_names.append(key);
-      signature_string =
-          base::StrCat({signature_string, key, ": ", header->second});
-    } else {
-      NOTREACHED_NORETURN() << "Can't sign over non existant header " << key;
+  for (const auto& header_to_sign : headers_to_sign) {
+    // Prepend some padding / newlines if this isn't the first
+    // header to sign
+    if (!header_names.empty()) {
+      header_names.append(" ");
+      signature_string.append("\n");
     }
+    header_names.append(header_to_sign);
+
+    // Handle the special case header (request-target) by constructing
+    // the value instead of getting it from headers.
+    if (header_to_sign == kRequestTargetHeader) {
+      signature_string.append(
+          base::StrCat({kRequestTargetHeader, ": ", base::ToLowerASCII(method),
+                        " ", url.PathForRequest()}));
+      continue;
+    }
+
+    // For all the headers to sign, we expect their values to be be in the
+    // headers flat_map and use the value there to add to the signature string.
+    auto header = headers.find(header_to_sign);
+    if (header == headers.end()) {
+      NOTREACHED_NORETURN()
+          << "Can't sign over non-existent header " << header_to_sign;
+    }
+    signature_string.append(
+        base::StrCat({header_to_sign, ": ", header->second}));
   }
 
-  return {header_names, signature_string};
+  return std::make_pair(header_names, signature_string);
 }
 
 std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(

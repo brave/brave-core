@@ -63,7 +63,7 @@ TEST(BraveServicesUtilsUnittest, CreateSignatureString) {
              {"digest", "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
              {"content-length", "18"}};
   result = CreateSignatureString(
-      headers, url, "GET",
+      headers, url, "POST",
       {"(request-target)", "host", "date", "digest", "content-length"});
   EXPECT_EQ(result.first, "(request-target) host date digest content-length");
   EXPECT_EQ(result.second,
