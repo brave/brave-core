@@ -39,7 +39,7 @@ class SolanaWalletProvider : public RewardsEngineHelper,
 
  private:
   void OnPostChallengesResponse(BeginExternalWalletLoginCallback callback,
-                                endpoints::PostChallenges::Result result);
+                                endpoints::PostChallenges::Result&& result);
 
   void OnAccountBalanceFetched(
       base::OnceCallback<void(mojom::Result, double)> callback,
@@ -49,7 +49,6 @@ class SolanaWalletProvider : public RewardsEngineHelper,
 
   base::RepeatingTimer polling_timer_;
   base::OneShotTimer polling_timeout_;
-  endpoints::PostChallenges post_challenges_{engine()};
   base::WeakPtrFactory<SolanaWalletProvider> weak_factory_{this};
 };
 

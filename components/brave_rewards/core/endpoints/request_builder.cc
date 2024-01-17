@@ -8,6 +8,9 @@
 #include <optional>
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/request_signer.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+
 namespace brave_rewards::internal::endpoints {
 
 RequestBuilder::~RequestBuilder() = default;
@@ -28,8 +31,25 @@ std::optional<mojom::UrlRequestPtr> RequestBuilder::Request() const {
     return std::nullopt;
   }
 
-  return mojom::UrlRequest::New(*url, Method(), std::move(*headers), *content,
-                                ContentType(), SkipLog(), LoadFlags());
+  auto request =
+      mojom::UrlRequest::New(*url, Method(), std::move(*headers), *content,
+                             ContentType(), SkipLog(), LoadFlags());
+
+  if (NeedsToBeSigned()) {
+    const auto wallet = engine_->wallet()->GetWallet();
+    if (!wallet) {
+      BLOG(0, "Rewards wallet is null!");
+      return std::nullopt;
+    }
+
+    auto request_signer = RequestSigner::FromRewardsWallet(*wallet);
+    if (!request_signer || !request_signer->SignRequest(*request)) {
+      BLOG(0, "Failed to sign request!");
+      return std::nullopt;
+    }
+  }
+
+  return request;
 }
 
 RequestBuilder::RequestBuilder(RewardsEngineImpl& engine) : engine_(engine) {}
@@ -57,6 +77,10 @@ bool RequestBuilder::SkipLog() const {
 
 uint32_t RequestBuilder::LoadFlags() const {
   return 0;
+}
+
+bool RequestBuilder::NeedsToBeSigned() const {
+  return false;
 }
 
 }  // namespace brave_rewards::internal::endpoints

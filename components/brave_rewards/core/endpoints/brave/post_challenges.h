@@ -6,15 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CHALLENGES_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CHALLENGES_H_
 
+#include <optional>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
-#include "brave/components/brave_rewards/core/rewards_engine_helper.h"
-
-namespace brave_rewards::internal::endpoints {
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom-shared.h"
+#include "brave/components/brave_rewards/core/endpoints/request_builder.h"
+#include "brave/components/brave_rewards/core/endpoints/response_handler.h"
+#include "brave/components/brave_rewards/core/endpoints/result_for.h"
 
 // POST /v3/wallet/challenges
 //
@@ -29,25 +28,35 @@ namespace brave_rewards::internal::endpoints {
 // {
 //   "challengeId": "<challenge-id>"
 // }
-class PostChallenges : public RewardsEngineHelper {
+
+namespace brave_rewards::internal {
+class RewardsEngineImpl;
+
+namespace endpoints {
+
+class PostChallenges;
+
+template <>
+struct ResultFor<PostChallenges> {
+  using Value = std::string;
+  using Error = mojom::PostChallengesError;
+};
+
+class PostChallenges final : public RequestBuilder,
+                             public ResponseHandler<PostChallenges> {
  public:
+  static Result ProcessResponse(const mojom::UrlResponse& response);
+
   explicit PostChallenges(RewardsEngineImpl& engine);
   ~PostChallenges() override;
 
-  using Error = mojom::PostChallengesError;
-  using Result = base::expected<std::string, Error>;
-  using RequestCallback = base::OnceCallback<void(Result result)>;
-
-  void Request(RequestCallback callback);
-
  private:
-  mojom::UrlRequestPtr CreateRequest();
-  Result MapResponse(const mojom::UrlResponse& response);
-  void OnResponse(RequestCallback callback, mojom::UrlResponsePtr response);
-
-  base::WeakPtrFactory<PostChallenges> weak_factory_{this};
+  std::optional<std::string> Url() const override;
+  std::optional<std::string> Content() const override;
+  std::string ContentType() const override;
+  bool NeedsToBeSigned() const override;
 };
-
-}  // namespace brave_rewards::internal::endpoints
+}  // namespace endpoints
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_POST_CHALLENGES_H_

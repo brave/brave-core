@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_util.h"
+#include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
@@ -23,6 +24,9 @@
 #include "url/gurl.h"
 
 namespace brave_rewards::internal {
+
+using endpoints::PostChallenges;
+using endpoints::RequestFor;
 
 namespace {
 
@@ -75,14 +79,15 @@ void SolanaWalletProvider::FetchBalance(
 
 void SolanaWalletProvider::BeginLogin(
     BeginExternalWalletLoginCallback callback) {
-  post_challenges_.Request(
+  // Logs at URLLoader::LogLevel::kDetailed, adjust if needed!
+  RequestFor<PostChallenges>(engine()).Send(
       base::BindOnce(&SolanaWalletProvider::OnPostChallengesResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void SolanaWalletProvider::OnPostChallengesResponse(
     BeginExternalWalletLoginCallback callback,
-    endpoints::PostChallenges::Result result) {
+    endpoints::PostChallenges::Result&& result) {
   if (!result.has_value()) {
     std::move(callback).Run(nullptr);
     return;

@@ -44,6 +44,8 @@ class RequestBuilder {
 
   virtual uint32_t LoadFlags() const;
 
+  virtual bool NeedsToBeSigned() const;
+
   const raw_ref<RewardsEngineImpl> engine_;
 };
 
