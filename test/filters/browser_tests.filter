@@ -1183,6 +1183,10 @@
 # This test fails because we disable kVisualQuerySuggestions
 -VisualQuerySuggestionsServiceBrowserTest.VisualQuerySuggestionsServiceEnabled
 
+# Fails because we customized PIP UI.
+# https://github.com/brave/brave-browser/issues/35263
+-PictureInPicturePixelComparisonBrowserTest.VideoPlay
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
