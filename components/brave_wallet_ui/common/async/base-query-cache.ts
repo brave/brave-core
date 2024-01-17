@@ -19,7 +19,8 @@ import {
   SupportedOnRampNetworks,
   SupportedOffRampNetworks,
   ERC721Metadata,
-  BraveRewardsInfo
+  BraveRewardsInfo,
+  WalletStatus
 } from '../../constants/types'
 
 // entities
@@ -52,7 +53,6 @@ import { isIpfs } from '../../utils/string-utils'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
 import {
   BraveRewardsProxy,
-  WalletStatus,
   getBraveRewardsProxy
 } from './brave_rewards_api_proxy'
 import {
