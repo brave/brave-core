@@ -101,6 +101,12 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContent) {
   // Simple page with text
   NavigateURL(https_server_.GetURL("a.com", "/text.html"));
   FetchPageContent("I have spoken", false);
+  // Main element
+  NavigateURL(https_server_.GetURL("a.com", "/text_with_main.html"));
+  FetchPageContent("Only this text", false);
+  // Main element with ignored
+  NavigateURL(https_server_.GetURL("a.com", "/text_with_main.html"));
+  FetchPageContent("Only this text", false);
   // Not a page extraction host and page with no text
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"));
   FetchPageContent("", false);
