@@ -15,6 +15,7 @@ import getBraveNewsController from '../shared/api';
 import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { MetaInfoContainer } from './ArticleMetaRow';
 import Card, { LargeImage, Title, braveNewsCardClickHandler } from './Card';
+import { useBraveNews } from '../shared/Context';
 
 interface Props {
   info: FeedV2Ad
@@ -71,9 +72,12 @@ export const useVisibleFor = (callback: () => void, timeout: number) => {
   }
 }
 
+const adTargetUrlAllowedSchemes = ['https:', 'chrome:', 'brave:']
+
 export default function Advert(props: Props) {
   const [advert, setAdvert] = React.useState<DisplayAd | null | undefined>(undefined)
   const imageUrl = useUnpaddedImageUrl(advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url)
+  const { openArticlesInNewTab } = useBraveNews()
 
   const onDisplayAdViewed = React.useCallback(() => {
     if (!advert) return
@@ -89,7 +93,7 @@ export default function Advert(props: Props) {
 
     console.debug(`Brave News: Visited display ad: ${advert.uuid}`)
     await getBraveNewsController().onDisplayAdVisit(advert.uuid, advert.creativeInstanceId)
-    braveNewsCardClickHandler(advert.targetUrl.url)(e);
+    braveNewsCardClickHandler(advert.targetUrl.url, adTargetUrlAllowedSchemes)(e);
   }, [advert])
 
   const { setElementRef: setTriggerRef } = useOnVisibleCallback(async () => {
@@ -114,12 +118,12 @@ export default function Advert(props: Props) {
   return <Container ref={setAdEl} onClick={onDisplayAdVisited}>
     <AdImage src={imageUrl} />
     <MetaInfoContainer>
-      <BatAdLabel onClick={e => e.stopPropagation()} href="chrome://rewards">{getLocale('braveNewsAdvertBadge')}</BatAdLabel>
+      <BatAdLabel onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} href="chrome://rewards">{getLocale('braveNewsAdvertBadge')}</BatAdLabel>
       •
       {' ' + advert.description}
     </MetaInfoContainer>
     <Title>
-      <SecureLink href={advert.targetUrl.url} onClick={e => {
+      <SecureLink allowedSchemes={adTargetUrlAllowedSchemes} href={advert.targetUrl.url} onClick={e => {
         // preventDefault, so we go through onDisplayAdVisit and record the
         // result.
         e.preventDefault()
