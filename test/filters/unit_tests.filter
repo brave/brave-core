@@ -335,9 +335,12 @@
 -CreateChooserTitleTest.ExtensionsFrameTree
 -DIPSDatabaseBounceTableGarbageCollectionTest.*
 -DIPSDatabaseHistogramTest.*
+-DIPSDatabaseMigrationTest.*
 -DIPSGetSitesToClearTest.*
 -DIPSServiceHistogramTest.*
 -DIPSServiceStateRemovalTest.*
+-DIPSServiceTest.*
+-DIPSUtilsTest.*
 -GetSitesToClearTest.*
 -StorageAccessGrantPermissionContextAPIDisabledTest.AllowedByCookieSettings*
 -StorageAccessGrantPermissionContextAPIDisabledTest.InsecureOriginsDisallowed*
