@@ -15,6 +15,16 @@ import ContextMenuAssistant from '../context_menu_assistant'
 import { getLocale } from '$web-common/locale'
 import SiteTitle from '../site_title'
 
+const CodeBlock = React.lazy(async () => ({ default: (await import('../code_block')).default.Block }))
+const CodeInline = React.lazy(async () => ({ default: (await import('../code_block')).default.Inline }))
+
+// Capture markdown-style code blocks and inline code.
+// It captures:
+// 1. Multiline code blocks with optional language specifiers (```lang\n...code...```).
+// 2. Inline code segments (`code`).
+// 3. Regular text outside of code segments.
+const codeFormatRegexp = /```([^\n`]+)?\n?([\s\S]*?)```|`(.*?)`|([^`]+)/gs
+
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
   mojom.SuggestionGenerationStatus.IsGenerating
@@ -22,6 +32,34 @@ const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
 
 interface ConversationListProps {
   onLastElementHeightChange: () => void
+}
+
+interface FormattedTextProps {
+  text: string
+}
+
+function FormattedTextRenderer(props: FormattedTextProps): JSX.Element {
+  const nodes = React.useMemo(() => {
+    const formattedNodes = Array.from(props.text.matchAll(codeFormatRegexp)).map((match: any) => {
+      if (match[0].substring(0,3).includes('```')) {
+        return (<React.Suspense fallback={'...'}>
+          <CodeBlock lang={match[1]} code={match[2].trim()} />
+        </React.Suspense>)
+      } else if (match[0].substring(0,1).includes('`')) {
+        return (
+          <React.Suspense fallback={'...'}>
+            <CodeInline code={match[3]}/>
+        </React.Suspense>
+        )
+      } else {
+        return match[0]
+      }
+    })
+
+    return <>{formattedNodes}</>
+  }, [props.text])
+
+  return nodes
 }
 
 function ConversationList(props: ConversationListProps) {
@@ -92,8 +130,10 @@ function ConversationList(props: ConversationListProps) {
                 <div className={avatarStyles}>
                   <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />
                 </div>
-                <div className={styles.message}>
-                  {turn.text}
+                <div
+                  className={styles.message}
+                >
+                  {<FormattedTextRenderer text={turn.text} />}
                   {isLoading && <span className={styles.caret} />}
                   {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
                 </div>
