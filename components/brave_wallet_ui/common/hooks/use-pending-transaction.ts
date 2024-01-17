@@ -18,7 +18,7 @@ import { getPriceIdForToken } from '../../utils/api-utils'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
-import { UISelectors, WalletSelectors } from '../selectors'
+import { UISelectors } from '../selectors'
 import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
@@ -35,7 +35,7 @@ import { makeNetworkAsset } from '../../options/asset-options'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
 import { useAccountOrb, useAddressOrb } from './use-orb'
-import { useSafeUISelector, useSafeWalletSelector } from './use-safe-selector'
+import { useSafeUISelector } from './use-safe-selector'
 import {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
@@ -94,9 +94,6 @@ export const usePendingTransactions = () => {
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
-  const hasFeeEstimatesError = useSafeWalletSelector(
-    WalletSelectors.hasFeeEstimatesError
-  )
 
   // queries
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
@@ -153,18 +150,22 @@ export const usePendingTransactions = () => {
     querySubscriptionOptions60s
   )
 
-  const { data: gasEstimates, isLoading: isLoadingGasEstimates } =
-    useGetGasEstimation1559Query(
-      transactionInfo && txCoinType === BraveWallet.CoinType.ETH
-        ? transactionInfo.chainId
-        : skipToken,
-      defaultQuerySubscriptionOptions
-    )
+  const {
+    data: gasEstimates,
+    isLoading: isLoadingGasEstimates,
+    isError: hasEvmFeeEstimatesError
+  } = useGetGasEstimation1559Query(
+    transactionInfo && txCoinType === BraveWallet.CoinType.ETH
+      ? transactionInfo.chainId
+      : skipToken,
+    defaultQuerySubscriptionOptions
+  )
 
   const {
     data: solFeeEstimate,
     isLoading: isLoadingSolFeeEstimates = txCoinType ===
-      BraveWallet.CoinType.SOL
+      BraveWallet.CoinType.SOL,
+    isError: hasSolFeeEstimatesError
   } = useGetSolanaEstimatedFeeQuery(
     txCoinType === BraveWallet.CoinType.SOL &&
       transactionInfo?.chainId &&
@@ -502,6 +503,11 @@ export const usePendingTransactions = () => {
     gasFee,
     isLoadingGasEstimates
   ])
+
+  const hasFeeEstimatesError =
+    txCoinType === BraveWallet.CoinType.SOL
+      ? hasSolFeeEstimatesError
+      : hasEvmFeeEstimatesError
 
   const isConfirmButtonDisabled = React.useMemo(() => {
     if (hasFeeEstimatesError || isLoadingGasFee) {
