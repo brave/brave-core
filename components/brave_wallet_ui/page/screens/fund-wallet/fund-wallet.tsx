@@ -34,7 +34,6 @@ import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-op
 
 // hooks
 import {
-  useGenerateReceiveAddressMutation,
   useGetBuyUrlQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
@@ -43,7 +42,10 @@ import {
   useGetOnRampNetworksQuery,
   useLazyGetBuyUrlQuery
 } from '../../../common/slices/api.slice'
-import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useAccountsQuery,
+  useReceiveAddressQuery
+} from '../../../common/slices/api.slice.extra'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 
 // style
@@ -508,9 +510,6 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   const [getBuyUrl] = useLazyGetBuyUrlQuery()
 
-  // mutations
-  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
-
   const accountsForSelectedAssetCoinType = React.useMemo(() => {
     return selectedAsset
       ? selectedAsset.coin === BraveWallet.CoinType.FIL
@@ -531,11 +530,10 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
-  const [generatedAddress, setGeneratedAddress] = React.useState(
-    accountsForSelectedAssetCoinType[0]?.address || ''
-  )
 
   // state-dependant queries
+  const generatedAddress = useReceiveAddressQuery(selectedAccount?.accountId)
+
   const { data: buyWithStripeUrl } = useGetBuyUrlQuery(
     selectedAsset && assetNetwork && generatedAddress
       ? {
@@ -689,34 +687,6 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     // force selected account option state
     setSelectedAccount(accountsForSelectedAssetCoinType[0])
   }, [accountsForSelectedAssetCoinType[0]])
-
-  // generate receive address
-  React.useEffect(() => {
-    let ignore = false
-    if (selectedAccount) {
-      if (
-        selectedAccount.accountId.coin === BraveWallet.CoinType.BTC ||
-        selectedAccount.accountId.coin === BraveWallet.CoinType.ZEC
-      ) {
-        generateReceiveAddress(selectedAccount.accountId)
-          .unwrap()
-          .then((address) => {
-            if (!ignore) {
-              setGeneratedAddress(address)
-            }
-          })
-      } else {
-        if (!ignore) {
-          setGeneratedAddress(selectedAccount.accountId.address)
-        }
-      }
-    }
-
-    // cleanup
-    return () => {
-      ignore = true
-    }
-  }, [selectedAccount?.accountId])
 
   // render
   if (!selectedOnRampAssetId) {
