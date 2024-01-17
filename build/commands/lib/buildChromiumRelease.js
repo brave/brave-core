@@ -149,6 +149,11 @@ function buildChromiumRelease(buildOptions = {}) {
     util.runGClient(['runhooks'])
   })
 
+  Log.progressScope('chromium fix', () => {
+    util.runGit(config.srcDir,
+      ['apply', 'brave/patches/mojo-public-tools-bindings-generators-mojom_ts_generator.py.patch'])
+  })
+
   if (chromiumConfig.extraHooks != undefined) {
     chromiumConfig.extraHooks()
   }
