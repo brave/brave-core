@@ -270,10 +270,10 @@ class PageContentFetcher {
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 void OnGetTextFromImage(
-    base::OnceCallback<void(std::string, bool is_video)> callback,
+    FetchPageContentCallback callback,
     const std::pair<bool, std::vector<std::string>>& supported_strs) {
   if (!supported_strs.first) {
-    std::move(callback).Run("", false);
+    std::move(callback).Run("", false, "");
     return;
   }
 
@@ -285,11 +285,10 @@ void OnGetTextFromImage(
       ss << "\n";
     }
   }
-  std::move(callback).Run(ss.str(), false);
+  std::move(callback).Run(ss.str(), false, "");
 }
 
-void OnScreenshot(base::OnceCallback<void(std::string, bool is_video)> callback,
-                  const SkBitmap& image) {
+void OnScreenshot(FetchPageContentCallback callback, const SkBitmap& image) {
 #if BUILDFLAG(IS_MAC)
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
