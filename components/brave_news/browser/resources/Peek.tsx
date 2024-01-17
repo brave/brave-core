@@ -112,7 +112,7 @@ export default function Peek() {
   return isShowOnNTPPrefEnabled
     ? <Container>
       {(!isOptInPrefEnabled || feedV2) && <NewsButton onClick={scrollToNews}>
-        <Icon name='news-default' />
+        <Icon name='product-brave-news' />
         {getLocale('braveNewsNewsPeek')}
         <Icon name='carat-down' />
       </NewsButton>}
