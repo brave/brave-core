@@ -19,3 +19,7 @@ INCLUDE_SETTINGS_BUNDLE = NO
 // Defines Swift Flags, (used as #if/#endif) inside *Swift* code
 // BASE 'inheritence' at end, due to dynamic nature of those flags
 OTHER_SWIFT_FLAGS=-DMOZ_CHANNEL_BETA $(OTHER_SWIFT_FLAGS_BASE)
+
+// Manual Code-Signing
+CODE_SIGN_IDENTITY = Apple Distribution: Brave Software, Inc.
+CODE_SIGN_STYLE = Manual
