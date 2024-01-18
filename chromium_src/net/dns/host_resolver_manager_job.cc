@@ -11,6 +11,6 @@
         static_cast<int>(*task_type), key_.query_types);        \
   }
 
-#include "src/net/dns/host_resolver_manager.cc"
+#include "src/net/dns/host_resolver_manager_job.cc"
 
 #undef BRAVE_RECORD_DNS_COUNTS
