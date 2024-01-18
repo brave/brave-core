@@ -36,7 +36,7 @@ deps = {
       'dep_type': 'cipd',
   },
   "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@c043566e2ff6133d110cf516ed472451039139e2",
-  "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@59916909de5e488766018c1f2ec5aa22f3e824e4",
+  "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@48910ab1e0c6a52cd757abdc234aa4d6db214c09",
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
   "third_party/rust/kuchiki/v0_8/crate": "https://github.com/brave/kuchiki.git@589eadca2c1d06ddda2919354590bfe1ace88a43",
   "third_party/macholib": {
