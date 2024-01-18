@@ -75,13 +75,8 @@ export const createMockStore = (
   resetCache() // clear base query cache
   resetRewardsProxy(rewardsApiOverrides)
   resetAPIProxy(apiOverrides)
-  // const mockedApiProxy = getAPIProxy()
-  // const mockedRewardsApiProxy = getBraveRewardsProxy()
 
   // api overrides
-  // mockedApiProxy.applyOverrides(apiOverrides)
-  // mockedRewardsApiProxy.applyOverrides(rewardsApiOverrides)
-
   setApiProxyFetcher(getAPIProxy)
   setRewardsProxyFetcher(getBraveRewardsProxy)
   const api = createWalletApi()
