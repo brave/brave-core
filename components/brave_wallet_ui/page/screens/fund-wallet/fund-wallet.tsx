@@ -42,7 +42,10 @@ import {
   useGetOnRampNetworksQuery,
   useLazyGetBuyUrlQuery
 } from '../../../common/slices/api.slice'
-import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useAccountsQuery,
+  useReceiveAddressQuery
+} from '../../../common/slices/api.slice.extra'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 
 // style
@@ -529,13 +532,15 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   >(accountsForSelectedAssetCoinType[0])
 
   // state-dependant queries
+  const generatedAddress = useReceiveAddressQuery(selectedAccount?.accountId)
+
   const { data: buyWithStripeUrl } = useGetBuyUrlQuery(
-    selectedAsset && assetNetwork && selectedAccount
+    selectedAsset && assetNetwork && generatedAddress
       ? {
           assetSymbol: selectedAsset.symbol.toLowerCase(),
           onRampProvider: BraveWallet.OnRampProvider.kStripe,
           chainId: assetNetwork.chainId,
-          address: selectedAccount.address,
+          address: generatedAddress,
           amount: params.buyAmount,
           currencyCode: currencyCode.toLowerCase()
         }
@@ -629,7 +634,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   const openBuyAssetLink = React.useCallback(
     async (buyOption: BraveWallet.OnRampProvider) => {
-      if (!selectedAsset || !assetNetwork || !selectedAccount) {
+      if (!selectedAsset || !assetNetwork || !generatedAddress) {
         return
       }
 
@@ -643,13 +648,14 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
               : selectedAsset.symbol,
           onRampProvider: buyOption,
           chainId: assetNetwork.chainId,
-          address: selectedAccount.address,
+          address: generatedAddress,
           amount: params.buyAmount,
           currencyCode:
             buyOption === BraveWallet.OnRampProvider.kStripe
               ? currencyCode.toLowerCase()
               : currencyCode
         }).unwrap()
+
         if (url && chrome.tabs !== undefined) {
           chrome.tabs.create({ url }, () => {
             if (chrome.runtime.lastError) {
@@ -669,10 +675,10 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     [
       selectedAsset,
       assetNetwork,
-      selectedAccount,
       getBuyUrl,
       params,
-      currencyCode
+      currencyCode,
+      generatedAddress
     ]
   )
 

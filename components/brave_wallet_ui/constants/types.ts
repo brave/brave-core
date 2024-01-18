@@ -760,7 +760,8 @@ export const SupportedOnRampNetworks = [
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
   BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
-  BraveWallet.AURORA_MAINNET_CHAIN_ID
+  BraveWallet.AURORA_MAINNET_CHAIN_ID,
+  BraveWallet.BITCOIN_MAINNET
 ]
 
 export const SupportedOffRampNetworks = [
@@ -772,7 +773,8 @@ export const SupportedOffRampNetworks = [
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
-  BraveWallet.ARBITRUM_MAINNET_CHAIN_ID
+  BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
+  BraveWallet.BITCOIN_MAINNET
 ]
 
 export const SupportedTestNetworks = [
