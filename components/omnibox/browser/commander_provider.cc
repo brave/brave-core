@@ -44,7 +44,7 @@ void CommanderProvider::Start(const AutocompleteInput& input,
   last_input_ = input.text();
 
   if (auto* delegate = client_->GetCommanderDelegate()) {
-    delegate->UpdateText();
+    delegate->UpdateText(input.text());
   }
 }
 
@@ -123,6 +123,10 @@ void CommanderProvider::OnCommanderUpdated() {
     matches_.push_back(match);
   }
 
-  NotifyListeners(/* updated_matches= */ true);
+  // Only call NotifyListeners if the update was triggered asynchronously, to
+  // avoid triggering a DCHECK in AutocompleteController.
+  if (!done()) {
+    NotifyListeners(/* updated_matches= */ true);
+  }
 }
 }  // namespace commander

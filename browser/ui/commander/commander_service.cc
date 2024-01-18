@@ -68,35 +68,8 @@ void CommanderService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void CommanderService::UpdateText(bool force) {
-  auto* browser = chrome::FindLastActiveWithProfile(profile_);
-
-  // The last active browser can have no tabs, if we're in the process of moving
-  // the last tab from the current window into another one.
-  if (!browser || browser->tab_strip_model()->empty()) {
-    return;
-  }
-
-  auto* window = browser->window();
-  CHECK(window);
-
-  auto text = window->GetLocationBar()->GetOmniboxView()->GetText();
-  if (!base::StartsWith(text, kCommandPrefix)) {
-    return;
-  }
-
-  std::u16string trimmed_text(base::TrimWhitespace(
-      text.substr(kCommandPrefix.size()), base::TRIM_LEADING));
-
-  // If nothing has changed (and we aren't forcing things), don't update the
-  // commands.
-  if (trimmed_text == last_searched_ && browser == last_browser_ && !force) {
-    return;
-  }
-  last_searched_ = trimmed_text;
-  last_browser_ = browser;
-
-  UpdateCommands();
+void CommanderService::UpdateText(const std::u16string& text) {
+  UpdateText(text, false);
 }
 
 void CommanderService::SelectCommand(uint32_t command_index,
@@ -183,6 +156,42 @@ void CommanderService::Reset() {
   NotifyObservers();
 }
 
+void CommanderService::UpdateTextFromCurrentBrowserOmnibox() {
+  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+
+  // The last active browser can have no tabs, if we're in the process of moving
+  // the last tab from the current window into another one.
+  if (!browser || browser->tab_strip_model()->empty()) {
+    return;
+  }
+
+  auto* window = browser->window();
+  CHECK(window);
+
+  auto text = window->GetLocationBar()->GetOmniboxView()->GetText();
+  UpdateText(text, /*force=*/true);
+}
+
+void CommanderService::UpdateText(const std::u16string& text, bool force) {
+  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+  if (!base::StartsWith(text, kCommandPrefix)) {
+    return;
+  }
+
+  std::u16string trimmed_text(base::TrimWhitespace(
+      text.substr(kCommandPrefix.size()), base::TRIM_LEADING));
+
+  // If nothing has changed (and we aren't forcing things), don't update the
+  // commands.
+  if (trimmed_text == last_searched_ && browser == last_browser_ && !force) {
+    return;
+  }
+  last_searched_ = trimmed_text;
+  last_browser_ = browser;
+
+  UpdateCommands();
+}
+
 OmniboxView* CommanderService::GetOmnibox() const {
   auto* browser = chrome::FindLastActiveWithProfile(profile_);
   if (!browser) {
@@ -236,7 +245,7 @@ void CommanderService::ShowCommander() {
     auto text = base::StrCat({commander::kCommandPrefix, u" "});
     omnibox->SetUserText(text);
     omnibox->SetCaretPos(text.size());
-    UpdateText(true);
+    UpdateTextFromCurrentBrowserOmnibox();
   }
 }
 

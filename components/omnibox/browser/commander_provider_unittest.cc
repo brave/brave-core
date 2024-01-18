@@ -71,7 +71,7 @@ class FakeCommanderDelegate : public commander::CommanderFrontendDelegate {
     NOTIMPLEMENTED();
   }
 
-  void UpdateText(bool force = false) override { NOTIMPLEMENTED(); }
+  void UpdateText(const std::u16string& text) override { NOTIMPLEMENTED(); }
 
  private:
   base::ObserverList<Observer> observers_;
