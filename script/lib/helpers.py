@@ -25,38 +25,13 @@ def get_channel_display_name():
     return d[release_channel()]
 
 
-# pylint: disable=inconsistent-return-statements
-def call_github_api(url, headers):
-    try:
-        r = urllib.request(url, headers=headers)
-    except urllib.error.URLError:
-        print("Error: Received requests.exceptions.ConnectionError, Exiting...")
-        sys.exit(1)
-
-    if r.status_code == 200:
-        return r
-
-
-# pylint: disable=unused-argument
 def get_releases_by_tag(repo, tag_name, include_drafts=False):
-
-    GITHUB_URL = 'https://api.github.com'
-
-    next_request = ""
-    headers = {
-        'Accept': 'application/vnd.github+json',
-        'Authorization': 'token ' + os.environ.get('GITHUB_TOKEN')
-    }
-    release_url = GITHUB_URL + "/repos/" + \
-        BRAVE_REPO + "/releases?page=1&per_page=100"
-    r = call_github_api(release_url, headers=headers)
-    next_request = ""
-    # The GitHub API returns paginated results of 100 items maximum per
-    # response. We will loop until there is no next link header returned
-    # in the response header. This is documented here:
-    # https://developer.github.com/v3/#pagination
-    while next_request is not None:
-        for item in r.json():
+    page = 1
+    while True:
+        releases = repo.releases().get(params={'page': page, 'per_page': 100})
+        if not releases:
+            break
+        for item in releases:
             # print("DEBUG: release: {}".format(item['name']))
             if include_drafts:
                 if item['tag_name'] == tag_name:
@@ -64,11 +39,7 @@ def get_releases_by_tag(repo, tag_name, include_drafts=False):
             else:
                 if item['tag_name'] == tag_name and not item['draft']:
                     return [item]
-        if r.links.get("next"):
-            next_request = r.links["next"]["url"]
-            r = call_github_api(next_request, headers=headers)
-        else:
-            next_request = None
+        page += 1
     return []
 
 
