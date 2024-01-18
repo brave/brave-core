@@ -11,9 +11,9 @@
 
 [package]
 edition = "2018"
-rust-version = "1.49.0"
+rust-version = "1.56.0"
 name = "tracing-core"
-version = "0.1.30"
+version = "0.1.32"
 authors = ["Tokio Contributors <team@tokio.rs>"]
 description = """
 Core primitives for application-level tracing.
@@ -35,13 +35,13 @@ repository = "https://github.com/tokio-rs/tracing"
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = [
-    "--cfg",
-    "docsrs",
+rustc-args = [
     "--cfg",
     "tracing_unstable",
 ]
-rustc-args = [
+rustdoc-args = [
+    "--cfg",
+    "docsrs",
     "--cfg",
     "tracing_unstable",
 ]

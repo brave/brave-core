@@ -8,7 +8,7 @@ name = "tracing"
 #   - README.md
 # - Update CHANGELOG.md.
 # - Create "v0.1.x" git tag
-version = "0.1.37"
+version = "0.1.40"
 authors = ["Eliza Weisman <eliza@buoyant.io>", "Tokio Contributors <team@tokio.rs>"]
 license = "MIT"
 readme = "README.md"
@@ -25,17 +25,17 @@ categories = [
 ]
 keywords = ["logging", "tracing", "metrics", "async"]
 edition = "2018"
-rust-version = "1.49.0"
+rust-version = "1.56.0"
 
 [dependencies]
-tracing-core = { path = "../tracing-core", version = "0.1.30", default-features = false }
+tracing-core = { path = "../tracing-core", version = "0.1.32", default-features = false }
 log = { version = "0.4.17", optional = true }
-tracing-attributes = { path = "../tracing-attributes", version = "0.1.23", optional = true }
-cfg-if = "1.0.0"
+tracing-attributes = { path = "../tracing-attributes", version = "0.1.27", optional = true }
 pin-project-lite = "0.2.9"
 
 [dev-dependencies]
-criterion = { version = "0.3.6", default-features = false }
+criterion = { version = "0.3.6", default_features = false }
+futures = { version = "0.3.21", default_features = false }
 log = "0.4.17"
 tracing-mock = { path = "../tracing-mock" }
 
