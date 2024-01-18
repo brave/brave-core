@@ -120,6 +120,7 @@ import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
   DefaultPanelHeader //
 } from '../../../../components/desktop/card-headers/default-panel-header'
+import { OrdinalsWarningMessage } from '../components/ordinals-warning-message/ordinals-warning-message'
 
 interface Props {
   isAndroid?: boolean
@@ -786,6 +787,9 @@ export const SendScreen = React.memo((props: Props) => {
                         : undefined
                     }
                   />
+                )}
+                {tokenFromParams?.coin === BraveWallet.CoinType.BTC && (
+                  <OrdinalsWarningMessage />
                 )}
               </Column>
               <Row

@@ -122,6 +122,8 @@ provideStrings({
   braveWalletSearchTokens: 'Search token by name',
   braveWalletSearchNFTs: 'Search NFT by name, id',
   braveWalletChooseAsset: 'Choose asset',
+  braveWalletOrdinalsWarningMessage:
+    'At this time Brave Wallet does not support bitcoin ordinals (NFTs). Sending bitcoin to any address may result in sending those ordinals as well, even if you did not intend to.',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:
@@ -964,7 +966,7 @@ provideStrings({
   braveWalletBTCMainnetAccountDescription: 'Bitcoin Mainnet',
   braveWalletBTCTestnetAccountDescription: 'Bitcoin Testnet',
   braveWalletZECAccountDescription: 'Zcash Mainnet',
-  braveWalletZECTestnetAccountDescription : 'Zcash Testnet',
+  braveWalletZECTestnetAccountDescription: 'Zcash Testnet',
   braveWalletShowNetworkLogoOnNftsTitle: 'Network Logo',
   braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
   braveWalletShowSpamNftsTitle: 'Spam NFTs',
