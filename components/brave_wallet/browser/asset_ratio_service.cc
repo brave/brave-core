@@ -101,10 +101,10 @@ std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
 
 std::optional<std::string> ChainIdToStripeChainId(const std::string& chain_id) {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
-      chain_id_lookup(
-          {{brave_wallet::mojom::kMainnetChainId, "ethereum"},
-           {brave_wallet::mojom::kSolanaMainnet, "solana"},
-           {brave_wallet::mojom::kPolygonMainnetChainId, "polygon"}});
+      chain_id_lookup({{brave_wallet::mojom::kMainnetChainId, "ethereum"},
+                       {brave_wallet::mojom::kSolanaMainnet, "solana"},
+                       {brave_wallet::mojom::kPolygonMainnetChainId, "polygon"},
+                       {brave_wallet::mojom::kBitcoinMainnet, "bitcoin"}});
   if (!chain_id_lookup->contains(chain_id)) {
     return std::nullopt;
   }
@@ -289,7 +289,7 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     transak_url = net::AppendQueryParameter(
         transak_url, "networks",
         "ethereum,arbitrum,optimism,polygon,bsc,solana,avaxcchain,osmosis,"
-        "fantom,aurora,celo");
+        "fantom,aurora,celo,mainnet");
     transak_url =
         net::AppendQueryParameter(transak_url, "apiKey", kTransakApiKey);
 
