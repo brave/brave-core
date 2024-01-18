@@ -65,7 +65,9 @@ function Block(props: CodeBlockProps) {
       <SyntaxHighlighter
         language={props.lang}
         style={hljsStyle}
+        wrapLines
         wrapLongLines
+        codeTagProps={{ style: { wordBreak: 'break-word' } }}
       >
         {props.code}
       </SyntaxHighlighter>
