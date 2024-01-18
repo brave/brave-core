@@ -69,6 +69,8 @@ class SyncServiceImplDelegateMock : public SyncServiceImplDelegate {
   void ResumeDeviceObserver() override {}
   void SetLocalDeviceAppearedCallback(
       base::OnceCallback<void()> local_device_appeared_callback) override {}
+  void GetKnownToSyncHistoryCount(
+      base::OnceCallback<void(std::pair<bool, int>)> callback) override {}
 };
 
 class SyncServiceObserverMock : public SyncServiceObserver {

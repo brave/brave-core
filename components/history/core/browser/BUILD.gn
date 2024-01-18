@@ -1,18 +1,16 @@
-# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("sync") {
+source_set("unit_tests") {
+  testonly = true
   sources = [
-    "brave_sync_service_impl_delegate.cc",
-    "brave_sync_service_impl_delegate.h",
+    "//brave/components/history/core/browser/brave_visit_database_unittest.cc",
   ]
-
   deps = [
     "//base",
     "//components/history/core/browser",
-    "//components/sync/service",
-    "//components/sync_device_info",
+    "//testing/gtest",
   ]
 }
