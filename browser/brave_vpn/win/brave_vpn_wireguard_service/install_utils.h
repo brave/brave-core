@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_INSTALLER_SETUP_BRAVE_VPN_INSTALL_UTILS_H_
-#define BRAVE_INSTALLER_SETUP_BRAVE_VPN_INSTALL_UTILS_H_
+#ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INSTALL_UTILS_H_
+#define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INSTALL_UTILS_H_
 
 #include <string>
 
@@ -18,4 +18,4 @@ bool InstallBraveVPNHelperService();
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_INSTALLER_SETUP_BRAVE_VPN_INSTALL_UTILS_H_
+#endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_INSTALL_UTILS_H_
