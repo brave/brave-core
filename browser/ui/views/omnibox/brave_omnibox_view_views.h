@@ -48,7 +48,7 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveOmniboxViewViewsTest, PasteAndSearchTest);
 
-  bool ShouldExecuteForPasteAndSearch();
+  std::optional<std::u16string> GetClipboardTextForPasteAndSearch();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_

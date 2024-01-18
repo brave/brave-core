@@ -45,14 +45,6 @@ testing::AssertionResult VerifyTemplateURLServiceLoad(
   return testing::AssertionFailure() << "TemplateURLService isn't loaded";
 }
 
-TemplateURLData CreateTestSearchEngine() {
-  TemplateURLData result;
-  result.SetShortName(u"test1");
-  result.SetKeyword(u"test.com");
-  result.SetURL("http://test.com/search?t={searchTerms}");
-  return result;
-}
-
 }  // namespace
 
 class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
@@ -89,12 +81,22 @@ class BraveOmniboxViewViewsDisabledFeatureTest
 };
 
 IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
-  // Put a search term on the clipboard to enable paste and search.
-  SetClipboardText(ui::ClipboardBuffer::kCopyPaste, u"Brave browser");
-
   auto* brave_omnibox_view =
       static_cast<BraveOmniboxViewViews*>(omnibox_view());
-  EXPECT_TRUE(brave_omnibox_view->ShouldExecuteForPasteAndSearch());
+  SetClipboardText(ui::ClipboardBuffer::kCopyPaste, u"Brave browser");
+  EXPECT_TRUE(brave_omnibox_view->GetClipboardTextForPasteAndSearch());
+
+  auto* service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
+
+  // Set custom search provider to normal profile.
+  TemplateURLData test_data;
+  test_data.SetShortName(u"test1");
+  test_data.SetKeyword(u"test1.com");
+  test_data.SetURL("https://test1.com/search?t={searchTerms}");
+  std::unique_ptr<TemplateURL> test_url(new TemplateURL(test_data));
+  service->SetUserSelectedDefaultSearchProvider(test_url.get());
 
   // Paste and search for normal window.
   brave_omnibox_view->ExecuteCommand(IDC_PASTE_AND_GO, ui::EF_NONE);
@@ -104,8 +106,6 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
 
   // Check loaded url's host and search provider's url host are same in normal
   // window.
-  auto* service =
-      TemplateURLServiceFactory::GetForProfile(browser()->profile());
   EXPECT_EQ(active_web_contents->GetVisibleURL().host(),
             GURL(service->GetDefaultSearchProvider()->url()).host());
 
@@ -115,16 +115,22 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
       TemplateURLServiceFactory::GetForProfile(private_browser->profile());
   EXPECT_TRUE(VerifyTemplateURLServiceLoad(private_service));
 
-  // Set custom search provider.
-  TemplateURLData test_data = CreateTestSearchEngine();
-  std::unique_ptr<TemplateURL> test_url(new TemplateURL(test_data));
-  private_service->SetUserSelectedDefaultSearchProvider(test_url.get());
+  // Set custom search provider to private profile.
+  TemplateURLData private_test_data;
+  private_test_data.SetShortName(u"test2");
+  private_test_data.SetKeyword(u"test2.com");
+  private_test_data.SetURL("https://test2.com/search?t={searchTerms}");
+  std::unique_ptr<TemplateURL> private_test_url(
+      new TemplateURL(private_test_data));
+  private_service->SetUserSelectedDefaultSearchProvider(private_test_url.get());
 
   auto* private_browser_view =
       BrowserView::GetBrowserViewForBrowser(private_browser);
   auto* private_brave_omnibox_view = static_cast<BraveOmniboxViewViews*>(
       private_browser_view->toolbar()->location_bar()->omnibox_view());
-  EXPECT_TRUE(private_brave_omnibox_view->ShouldExecuteForPasteAndSearch());
+
+  SetClipboardText(ui::ClipboardBuffer::kCopyPaste, u"Brave browser");
+  EXPECT_TRUE(private_brave_omnibox_view->GetClipboardTextForPasteAndSearch());
 
   // Paste and search for private window
   private_brave_omnibox_view->ExecuteCommand(IDC_PASTE_AND_GO, ui::EF_NONE);
