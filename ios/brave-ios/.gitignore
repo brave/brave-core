@@ -23,6 +23,8 @@ Package.resolved
 
 /fastlane/README.md
 /fastlane/report.xml
+/fastlane/test_output
+
 # folders for storing builds and prov profiles
 /builds
 /provisioning-profiles
