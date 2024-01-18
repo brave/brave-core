@@ -71,7 +71,8 @@ module.exports = {
 
     // mocks for brave-wallet and brave-rewards proxies
     '\\/brave_rewards_api_proxy$':
-      '<rootDir>/components/brave_wallet_ui/common/async/__mocks__/brave_rewards_api_proxy.ts',
+      '<rootDir>/components/brave_wallet_ui/' +
+      'common/async/__mocks__/brave_rewards_api_proxy.ts',
     '\\/bridge$':
       '<rootDir>/components/brave_wallet_ui/common/async/__mocks__/bridge.ts',
 
