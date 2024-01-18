@@ -14,7 +14,7 @@
 #include "base/win/process_startup_helper.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_crash_reporter_client.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/service_main.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/vpn_utils.h"
 #include "components/crash/core/app/crash_switches.h"
@@ -68,14 +68,6 @@ int main(int argc, char* argv[]) {
   base::win::RegisterInvalidParamHandler();
 
   base::win::SetupCRT(*command_line);
-
-  // Register vpn helper service in the system.
-  if (command_line->HasSwitch(brave_vpn::kBraveVpnHelperInstall)) {
-    auto success = brave_vpn::ConfigureServiceAutoRestart(
-        brave_vpn::GetBraveVpnHelperServiceName(),
-        brave_vpn::GetBraveVPNConnectionName());
-    return success ? 0 : 1;
-  }
 
   // Run the service.
   brave_vpn::ServiceMain* service = brave_vpn::ServiceMain::GetInstance();

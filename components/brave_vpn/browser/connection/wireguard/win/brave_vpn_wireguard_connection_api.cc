@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <tuple>
+#include <utility>
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
@@ -25,15 +26,21 @@ using ConnectionState = mojom::ConnectionState;
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel) {
-  return std::make_unique<BraveVPNWireguardConnectionAPI>(url_loader_factory,
-                                                          local_prefs);
+    version_info::Channel channel,
+    base::RepeatingCallback<bool()> service_installer) {
+  return std::make_unique<BraveVPNWireguardConnectionAPI>(
+      url_loader_factory, local_prefs, service_installer);
 }
 
 BraveVPNWireguardConnectionAPI::BraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs)
-    : BraveVPNWireguardConnectionAPIBase(url_loader_factory, local_prefs) {}
+    PrefService* local_prefs,
+    base::RepeatingCallback<bool()> service_installer)
+    : BraveVPNWireguardConnectionAPIBase(url_loader_factory, local_prefs) {
+  if (service_installer) {
+    install_system_service_callback_ = std::move(service_installer);
+  }
+}
 
 BraveVPNWireguardConnectionAPI::~BraveVPNWireguardConnectionAPI() {}
 

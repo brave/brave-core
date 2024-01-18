@@ -73,7 +73,7 @@ void MigrateWireguardFeatureFlag(PrefService* local_prefs) {
     local_prefs->SetBoolean(
         prefs::kBraveVPNWireguardEnabled,
         base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService) &&
-            brave_vpn::wireguard::IsWireguardServiceRegistered());
+            brave_vpn::wireguard::IsWireguardServiceInstalled());
   }
 }
 #endif  // BUILDFLAG(IS_WIN)

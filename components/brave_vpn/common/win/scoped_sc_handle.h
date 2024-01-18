@@ -11,6 +11,7 @@
 
 #include "base/types/expected.h"
 #include "base/win/scoped_handle.h"
+#include "base/win/windows_types.h"
 
 // Helper for methods which perform system operations which may fail. The
 // failure reason is returned as an HRESULT.

@@ -1,16 +1,24 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 
 #include <windows.h>
+#include <winerror.h>
+#include <winsvc.h>
+#include <winuser.h>
 
-#include "base/files/file_path.h"
+#include <algorithm>
+#include <ios>
+
+#include "base/check.h"
 #include "base/logging.h"
+#include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
+#include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
@@ -19,6 +27,19 @@
 #include "chrome/install_static/install_util.h"
 
 namespace brave_vpn {
+
+// The service starts under system user so we save crashes to
+// %PROGRAMDATA%\BraveSoftware\{service name}\Crashpad
+base::FilePath GetVpnHelperServiceProfileDir() {
+  std::wstring program_data =
+      install_static::GetEnvironmentString(L"PROGRAMDATA");
+  if (program_data.empty()) {
+    return base::FilePath();
+  }
+  return base::FilePath(program_data)
+      .Append(install_static::kCompanyPathName)
+      .Append(brave_vpn::GetBraveVpnHelperServiceName());
+}
 
 bool IsBraveVPNHelperServiceInstalled() {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
@@ -35,22 +56,6 @@ bool IsBraveVPNHelperServiceInstalled() {
   // Service registered and has not exceeded the number of auto-configured
   // restarts.
   return service.IsValid();
-}
-
-std::wstring GetBraveVPNConnectionName() {
-  return base::UTF8ToWide(
-      brave_vpn::GetBraveVPNEntryName(install_static::GetChromeChannel()));
-}
-
-std::wstring GetBraveVpnHelperServiceName() {
-  std::wstring name = GetBraveVpnHelperServiceDisplayName();
-  name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
-  return name;
-}
-
-std::wstring GetBraveVpnHelperServiceDisplayName() {
-  static constexpr wchar_t kBraveVpnServiceDisplayName[] = L" Vpn Service";
-  return install_static::GetBaseAppName() + kBraveVpnServiceDisplayName;
 }
 
 bool IsNetworkFiltersInstalled() {
@@ -70,16 +75,20 @@ bool IsNetworkFiltersInstalled() {
   return current > 0;
 }
 
-// The service starts under sytem user so we save crashes to
-// %PROGRAMDATA%\BraveSoftware\{service name}\Crashpad
-base::FilePath GetVpnHelperServiceProfileDir() {
-  auto program_data = install_static::GetEnvironmentString("PROGRAMDATA");
-  if (program_data.empty()) {
-    return base::FilePath();
-  }
-  return base::FilePath(base::UTF8ToWide(program_data))
-      .Append(install_static::kCompanyPathName)
-      .Append(brave_vpn::GetBraveVpnHelperServiceName());
+std::wstring GetBraveVPNConnectionName() {
+  return base::UTF8ToWide(
+      brave_vpn::GetBraveVPNEntryName(install_static::GetChromeChannel()));
+}
+
+std::wstring GetBraveVpnHelperServiceDisplayName() {
+  static constexpr wchar_t kBraveVpnServiceDisplayName[] = L" Vpn Service";
+  return install_static::GetBaseAppName() + kBraveVpnServiceDisplayName;
+}
+
+std::wstring GetBraveVpnHelperServiceName() {
+  std::wstring name = GetBraveVpnHelperServiceDisplayName();
+  name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
+  return name;
 }
 
 }  // namespace brave_vpn
