@@ -61,4 +61,7 @@ cargo_crate("lib") {
   build_deps = [ "//third_party/rust/autocfg/v1:buildrs_support" ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
+
+  # Explicitly enable `std` to avoid autocfg issues on android.
+  features = [ "std" ]
 }
