@@ -65,11 +65,6 @@ executable("brave_vpn_wireguard_service") {
   ]
 
   public_configs = [ "//build/config/win:windowed" ]
-
-  libs = [
-    "userenv.lib",  # For GetUserProfileDirectoryW()
-    "runtimeobject.lib",
-  ]
 }
 
 process_version_rc_template("version_resources") {
