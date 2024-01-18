@@ -8,18 +8,17 @@
 #include <fwpmu.h>
 #include <iphlpapi.h>
 #include <ras.h>
+#include <windows.h>
+#include <winerror.h>
 
+#include <ios>
 #include <optional>
 #include <vector>
 
 #include "base/logging.h"
-#include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
-#include "base/win/windows_version.h"
+#include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
-#include "brave/components/brave_vpn/common/win/utils.h"
 
 namespace brave_vpn {
 

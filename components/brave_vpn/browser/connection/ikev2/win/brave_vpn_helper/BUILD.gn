@@ -53,15 +53,12 @@ source_set("lib") {
     ":common",
     "//base",
     "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
-    "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/common/win",
     "//brave/components/brave_vpn/common/wireguard/win",
-    "//third_party/abseil-cpp:absl",
   ]
 
   libs = [
-    "Fwpuclnt.lib",
-    "Iphlpapi.lib",
+    "fwpuclnt.lib",
+    "iphlpapi.lib",
     "rasapi32.lib",
   ]
 }
@@ -112,6 +109,5 @@ source_set("unit_tests") {
     "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
     "//brave/components/brave_vpn/common",
     "//testing/gtest",
-    "//third_party/abseil-cpp:absl",
   ]
 }

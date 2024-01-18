@@ -6,19 +6,20 @@
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 
 #include <optional>
-#include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -280,7 +281,7 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
   // Installation should only be called once per session.
   // It's safe to call more than once because the install itself checks if
   // the services are already registered before doing anything.
-  if (install_performed_) {
+  if (system_service_installed_event_.is_signaled()) {
     VLOG(2)
         << __func__
         << " : installation has already been performed this session; exiting";
@@ -296,7 +297,6 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
 
 #if BUILDFLAG(IS_WIN)
   install_in_progress_ = true;
-  system_service_installed_event_.reset(new base::OneShotEvent());
   base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
       ->PostTaskAndReplyWithResult(
           FROM_HERE, install_system_service_callback_,
@@ -307,11 +307,9 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
 }
 
 void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
-  CHECK(system_service_installed_event_);
   VLOG(1) << "OnInstallSystemServicesCompleted: success=" << success;
   if (success) {
-    install_performed_ = true;
-    system_service_installed_event_->Signal();
+    system_service_installed_event_.Signal();
   }
   install_in_progress_ = false;
 }
@@ -321,8 +319,7 @@ bool BraveVPNOSConnectionAPI::ScheduleConnectRequestIfNeeded() {
     return false;
   }
 
-  CHECK(system_service_installed_event_);
-  system_service_installed_event_->Post(
+  system_service_installed_event_.Post(
       FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPI::Connect,
                                 weak_factory_.GetWeakPtr()));
   return true;

@@ -16,7 +16,7 @@ source_set("win") {
   visibility = [
     "//brave/browser/*",
     "//brave/components/brave_vpn/*",
-    "//brave/elevation_service/*",
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/*",
     "//chrome/browser/*",
   ]
   deps = [ "//base" ]

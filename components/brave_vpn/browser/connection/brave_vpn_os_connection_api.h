@@ -10,6 +10,8 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
@@ -146,16 +148,15 @@ class BraveVPNOSConnectionAPI
       mojom::ConnectionState::DISCONNECTED;
   BraveVPNRegionDataManager region_data_manager_;
   base::ObserverList<Observer> observers_;
-  // Used for tracking if the VPN dependencies have been installed.
-  // If the user has Brave VPN purchased and loaded with this profile
-  // AND they did a system level install, we should call
-  // install_system_service_callback_ once per browser open.
-  bool install_performed_ = false;
   // Used for tracking if the VPN dependencies are being installed.
   // Guard against calling install_system_service_callback_ while a call
   // is already in progress.
   bool install_in_progress_ = false;
-  std::unique_ptr<base::OneShotEvent> system_service_installed_event_;
+  // Used for tracking if the VPN dependencies have been installed.
+  // If the user has Brave VPN purchased and loaded with this profile
+  // AND they did a system level install, we should call
+  // install_system_service_callback_ once per browser open.
+  base::OneShotEvent system_service_installed_event_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_factory_;
 };
 

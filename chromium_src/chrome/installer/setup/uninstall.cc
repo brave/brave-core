@@ -3,18 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/logging.h"
 #include "base/process/launch.h"
 #include "base/process/process.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/installer/util/brave_shell_util.h"
+#include "chrome/installer/setup/modify_params.h"
+#include "chrome/installer/util/registry_util.h"
+#include "chrome/installer/util/shell_util.h"
+#include "chrome/installer/util/util_constants.h"
+#include "chrome/installer/util/work_item.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "brave/elevation_service/install_utils.h"
 #endif
 #define UninstallProduct UninstallProduct_ChromiumImpl
 

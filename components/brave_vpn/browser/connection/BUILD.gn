@@ -15,13 +15,14 @@ source_set("api") {
 
   deps = [
     "//base",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_vpn/common/mojom",
     "//components/prefs",
     "//services/network/public/cpp",
+    "//net",
   ]
 }
 

@@ -27,4 +27,3 @@ The service executable is inside the versioned folder of Brave. It's possible to
 7. After debugging, don't forget to undo step 3.
 
 These steps will let you run a locally compiled version of elevation service. This is very helpful for debugging or tracing the logic there.
-

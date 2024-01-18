@@ -3,13 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "chrome/elevation_service/elevator.h"
+
+#include <windows.h>
+#include <winerror.h>
+
+#include <intsafe.h>
+
+#include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
-#include "brave/elevation_service/install_utils.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #endif
 
 #include "src/chrome/elevation_service/elevator.cc"

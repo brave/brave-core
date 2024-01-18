@@ -3,9 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/elevation_service/install_utils.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
 
-#include <windows.h>  // needed for WM_MENUCOMMAND
+#include <windows.h>
+#include <winerror.h>
+#include <winnt.h>
+#include <winsvc.h>
+#include <winuser.h>
+
+#include <ios>
 
 #include "base/base_paths.h"
 #include "base/command_line.h"
@@ -26,7 +32,6 @@
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #include "chrome/installer/util/install_service_work_item.h"
 
 namespace brave_vpn {
@@ -145,10 +150,6 @@ bool ConfigureBraveWireguardService(const std::wstring& service_name) {
     VLOG(1) << "::OpenSCManager failed. service_name: " << service_name
             << ", error: " << std::hex << HRESULTFromLastError();
     return false;
-  }
-  base::FilePath exe_path;
-  if (!base::PathService::Get(base::FILE_EXE, &exe_path)) {
-    return S_OK;
   }
 
   ScopedScHandle service(

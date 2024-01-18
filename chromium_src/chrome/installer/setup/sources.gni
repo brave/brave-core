@@ -18,7 +18,7 @@ if (is_win) {
       "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
       "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
       "//brave/components/brave_vpn/common/wireguard/win",
-      "//brave/elevation_service",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:install_utils",
     ]
   }
   if (is_official_build) {

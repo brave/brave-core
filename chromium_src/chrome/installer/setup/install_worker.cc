@@ -5,6 +5,7 @@
 
 #include <shlobj.h>
 
+#include "base/check.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -35,9 +36,9 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
-#include "brave/elevation_service/install_utils.h"
 
 namespace {
 
@@ -60,8 +61,7 @@ void AddUninstallVpnServiceWorkItems() {
   if (!installer::InstallServiceWorkItem::DeleteService(
           brave_vpn::GetBraveVpnHelperServiceName(),
           brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {})) {
-    LOG(WARNING) << "Failed to delete "
-                 << brave_vpn::GetBraveVpnHelperServiceName();
+    VLOG(1) << "Failed to delete " << brave_vpn::GetBraveVpnHelperServiceName();
   }
 }
 
