@@ -30,12 +30,7 @@ import {
 } from '../stories/mock-data/mock-accounts-tab-state'
 import { mockUiState } from '../stories/mock-data/mock-ui-state'
 import { mockPanelState } from '../stories/mock-data/mock-panel-state'
-import {
-  apiProxyFetcher,
-  resetCache,
-  setApiProxyFetcher,
-  setRewardsProxyFetcher
-} from '../common/async/base-query-cache'
+import { resetCache } from '../common/async/base-query-cache'
 import {
   makeBraveWalletServiceObserver,
   makeJsonRpcServiceObserver,
@@ -43,10 +38,7 @@ import {
   makeTxServiceObserver
 } from '../common/wallet_api_proxy_observers'
 import getAPIProxy, { resetAPIProxy } from '../common/async/bridge'
-import {
-  getBraveRewardsProxy,
-  resetRewardsProxy
-} from '../common/async/brave_rewards_api_proxy'
+import { resetRewardsProxy } from '../common/async/brave_rewards_api_proxy'
 import {
   BraveRewardsProxyOverrides,
   WalletApiDataOverrides
@@ -76,9 +68,6 @@ export const createMockStore = (
   resetRewardsProxy(rewardsApiOverrides)
   resetAPIProxy(apiOverrides)
 
-  // api overrides
-  setApiProxyFetcher(getAPIProxy)
-  setRewardsProxyFetcher(getBraveRewardsProxy)
   const api = createWalletApi()
   // redux
   const store = configureStore({
@@ -110,7 +99,7 @@ export const createMockStore = (
       getDefaultMiddleware().concat(api.middleware)
   })
 
-  const proxy = apiProxyFetcher()
+  const proxy = getAPIProxy()
   proxy?.addJsonRpcServiceObserver?.(makeJsonRpcServiceObserver(store))
   proxy?.addKeyringServiceObserver?.(makeKeyringServiceObserver(store))
   proxy?.addTxServiceObserver?.(makeTxServiceObserver(store))
