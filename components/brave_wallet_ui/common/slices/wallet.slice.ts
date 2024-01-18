@@ -14,7 +14,6 @@ import {
   BraveWallet,
   WalletState,
   WalletInitializedPayload,
-  SolFeeEstimates,
   NetworkFilterType,
   RefreshOpts
 } from '../../constants/types'
@@ -52,7 +51,6 @@ const defaultState: WalletState = {
     eTldPlusOne: '',
     originSpec: ''
   },
-  gasEstimates: undefined,
   selectedNetworkFilter: parseJSONFromLocalStorage(
     'PORTFOLIO_NETWORK_FILTER_OPTION',
     AllNetworksOptionDefault
@@ -65,7 +63,6 @@ const defaultState: WalletState = {
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY) ||
     NoneGroupByOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
-  solFeeEstimates: undefined,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
   isNftPinningFeatureEnabled: false,
@@ -205,14 +202,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.assetAutoDiscoveryCompleted = payload
       },
 
-      setGasEstimates(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.GasEstimation1559>
-      ) {
-        state.hasFeeEstimatesError = false
-        state.gasEstimates = payload
-      },
-
       setPasswordAttempts(
         state: WalletState,
         { payload }: PayloadAction<number>
@@ -316,21 +305,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.hidePortfolioNFTsTab = payload
-      },
-
-      setSolFeeEstimates(
-        state: WalletState,
-        { payload }: PayloadAction<SolFeeEstimates>
-      ) {
-        state.hasFeeEstimatesError = false
-        state.solFeeEstimates = payload
-      },
-
-      setHasFeeEstimatesError: (
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) => {
-        state.hasFeeEstimatesError = payload
       },
 
       setVisibleTokensInfo: (

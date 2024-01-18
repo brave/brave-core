@@ -180,10 +180,6 @@ export interface ImportWalletError {
   errorMessage?: string
 }
 
-export interface SolFeeEstimates {
-  fee: bigint
-}
-
 export interface TokenRegistry {
   [chainID: string]: BraveWallet.BlockchainToken[]
 }
@@ -206,9 +202,6 @@ export interface WalletState {
   fullTokenList: BraveWallet.BlockchainToken[]
   addUserAssetError: boolean
   activeOrigin: BraveWallet.OriginInfo
-  solFeeEstimates?: SolFeeEstimates
-  hasFeeEstimatesError?: boolean
-  gasEstimates?: BraveWallet.GasEstimation1559
   selectedNetworkFilter: NetworkFilterType
   selectedAssetFilter: string
   selectedGroupAssetsByItem: string
