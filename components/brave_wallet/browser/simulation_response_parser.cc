@@ -56,29 +56,17 @@ mojom::BlowfishWarningKind ParseWarningKind(
     case simulation_responses::WarningKind::kDanglingApproval:
       return mojom::BlowfishWarningKind::kDanglingApproval;
 
-    case simulation_responses::WarningKind::kDevtoolsDisabled:
-      return mojom::BlowfishWarningKind::kDevtoolsDisabled;
-
     case simulation_responses::WarningKind::kEthSignTxHash:
       return mojom::BlowfishWarningKind::kEthSignTxHash;
 
     case simulation_responses::WarningKind::kKnownMalicious:
       return mojom::BlowfishWarningKind::kKnownMalicious;
 
-    case simulation_responses::WarningKind::kMainnetReplayPossible:
-      return mojom::BlowfishWarningKind::kMainnetReplayPossible;
-
     case simulation_responses::WarningKind::kMultiCopyCatDomain:
       return mojom::BlowfishWarningKind::kMultiCopyCatDomain;
 
     case simulation_responses::WarningKind::kNewDomain:
       return mojom::BlowfishWarningKind::kNewDomain;
-
-    case simulation_responses::WarningKind::kNonAsciiUrl:
-      return mojom::BlowfishWarningKind::kNonAsciiUrl;
-
-    case simulation_responses::WarningKind::kObfuscatedCode:
-      return mojom::BlowfishWarningKind::kObfuscatedCode;
 
     case simulation_responses::WarningKind::kPermitNoExpiration:
       return mojom::BlowfishWarningKind::kPermitNoExpiration;

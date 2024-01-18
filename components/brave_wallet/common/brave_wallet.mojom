@@ -2298,12 +2298,9 @@ enum BlowfishWarningKind {
   kPermitUnlimitedAllowance,
   kPermitNoExpiration,
   kEthSignTxHash,
-  kObfuscatedCode,
-  kDevtoolsDisabled,
   kBlocklistedDomainCrossOrigin,
   kWhitelistedDomainCrossOrigin,
   kTooManyTransactions,
-  kNonAsciiUrl,
   kCompromisedAuthorityUpgrade,
   kPoisonedAddress,
   kApprovalToEOA,
@@ -2314,7 +2311,6 @@ enum BlowfishWarningKind {
   kNewDomain,
   kUnusualGasConsumption,
   kReferencedOfacAddress,
-  kMainnetReplayPossible,
   kUnknown = -1
 };
 
