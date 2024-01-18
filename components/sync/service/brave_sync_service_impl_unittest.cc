@@ -567,4 +567,29 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
   OSCryptMocker::TearDown();
 }
 
+TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
+  OSCryptMocker::SetUp();
+  CreateSyncService();
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete(
+          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  EXPECT_TRUE(engine());
+
+  EXPECT_FALSE(
+      brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
+  auto selected_types =
+      brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
+  EXPECT_EQ(selected_types.Size(), 1u);
+  EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
+
+  OSCryptMocker::TearDown();
+}
+
 }  // namespace syncer
