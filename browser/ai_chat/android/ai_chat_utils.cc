@@ -8,10 +8,10 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "content/public/browser/web_contents.h"
 #endif
 
 namespace ai_chat {
