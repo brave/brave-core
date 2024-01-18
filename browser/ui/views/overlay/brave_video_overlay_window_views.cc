@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/views/overlay/simple_overlay_window_image_button.h"
 #include "chrome/browser/ui/views/overlay/toggle_camera_button.h"
 #include "chrome/browser/ui/views/overlay/toggle_microphone_button.h"
+#include "ui/base/hit_test.h"
 #include "ui/gfx/canvas.h"
 
 namespace {
@@ -46,7 +47,9 @@ std::u16string ToString(const media_session::MediaPosition& position) {
                        ToString(position.duration())});
 }
 
-class Seeker : public views::Slider, public views::SliderListener {
+class Seeker : public views::Slider,
+               public views::SliderListener,
+               public views::ViewTargeterDelegate {
  public:
   METADATA_HEADER(Seeker);
 
@@ -63,6 +66,8 @@ class Seeker : public views::Slider, public views::SliderListener {
     SetRenderingStyle(RenderingStyle::kMinimalStyle);
     SetPreferredSize(gfx::Size(kPreferredHeight, kPreferredHeight));
     thumb_animation_.SetSlideDuration(base::Milliseconds(150));
+
+    SetEventTargeter(std::make_unique<views::ViewTargeter>(this));
   }
   ~Seeker() override = default;
 
@@ -145,8 +150,28 @@ class Seeker : public views::Slider, public views::SliderListener {
     listener_->SliderDragEnded(sender);
   }
 
+  // views::ViewTargeterDelegate:
+  bool DoesIntersectRect(const views::View* target,
+                         const gfx::Rect& rect) const override {
+    if (!GetEnabled() || !IsDrawn()) {
+      return false;
+    }
+
+    // Exclude resize area for the window from hit test.
+    // Note that we're using half of the width of resize area specified in
+    // video_overlay_window_views.cc for corners.
+    constexpr int kResizeAreaWidth = 8;
+    auto seeker_bounds = GetLocalBounds();
+    seeker_bounds.Inset(gfx::Insets::TLBR(0, kResizeAreaWidth,
+                                          (kPreferredHeight - kLineHeight) / 2,
+                                          kResizeAreaWidth));
+    return target == this && rect.Intersects(seeker_bounds);
+  }
+
  private:
-  bool ShouldShowThumb() const { return dragging_ || IsMouseHovered(); }
+  bool ShouldShowThumb() const {
+    return GetEnabled() && (dragging_ || IsMouseHovered());
+  }
 
   raw_ptr<views::SliderListener> listener_ = nullptr;
 
@@ -180,14 +205,12 @@ void BraveVideoOverlayWindowViews::SetUpViews() {
   timestamp_->layer()->SetFillsBoundsOpaquely(false);
   timestamp_->layer()->SetName("Timestamp");
 
-  // Unlike other controls, seeker should be visible even when mouse is not
-  // hovered on this window. So seeker is attached to the root view directly.
-  auto seeker = std::make_unique<Seeker>(this);
-  seeker_ = seeker.get();
+  seeker_ =
+      controls_container_view_->AddChildView(std::make_unique<Seeker>(this));
 
-  // views in |view_holder_| will be added as child of contents view in
-  // VideoOverlayWindowViews::OnRootViewReady().
-  view_holder_.push_back(std::move(seeker));
+  // Before we get the media position, we should hide timestamp and seeker.
+  timestamp_->SetVisible(false);
+  seeker_->SetVisible(false);
 }
 
 void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
@@ -316,7 +339,9 @@ void BraveVideoOverlayWindowViews::SetPlaybackState(
 
 bool BraveVideoOverlayWindowViews::ControlsHitTestContainsPoint(
     const gfx::Point& point) {
-  if (seeker_->GetMirroredBounds().Contains(point)) {
+  gfx::Point point_in_seeker = views::View::ConvertPointToTarget(
+      seeker_->parent(), seeker_.get(), point);
+  if (seeker_->HitTestPoint(point_in_seeker)) {
     return true;
   }
 
@@ -331,6 +356,7 @@ void BraveVideoOverlayWindowViews::ShowInactive() {
   VideoOverlayWindowViews::ShowInactive();
   UpdateTimestampPeriodically();
 }
+
 void BraveVideoOverlayWindowViews::Close() {
   timestamp_update_timer_.Stop();
   VideoOverlayWindowViews::Close();
@@ -339,6 +365,36 @@ void BraveVideoOverlayWindowViews::Close() {
 void BraveVideoOverlayWindowViews::Hide() {
   timestamp_update_timer_.Stop();
   VideoOverlayWindowViews::Hide();
+}
+
+int BraveVideoOverlayWindowViews::GetNonClientComponent(
+    const gfx::Point& point) {
+  int res = VideoOverlayWindowViews::GetNonClientComponent(point);
+  if (seeker_ && seeker_->GetWidget() == this) {
+    gfx::Point point_in_seeker(point);
+    views::View::ConvertPointFromWidget(seeker_.get(), &point_in_seeker);
+    if (seeker_->HitTestPoint(point_in_seeker)) {
+      // We want to handel mouse event on seeker when it's visible, rather than
+      // consider it as non-client area
+      return HTCLIENT;
+    }
+  }
+
+  return res;
+}
+
+void BraveVideoOverlayWindowViews::OnKeyEvent(ui::KeyEvent* event) {
+  if (event->type() == ui::ET_KEY_PRESSED && media_position_) {
+    if (event->key_code() == ui::VKEY_LEFT) {
+      controller_->SeekTo(media_position_->GetPosition() - base::Seconds(10));
+    } else if (event->key_code() == ui::VKEY_RIGHT) {
+      controller_->SeekTo(media_position_->GetPosition() + base::Seconds(10));
+    }
+    event->SetHandled();
+    return;
+  }
+
+  VideoOverlayWindowViews::OnKeyEvent(event);
 }
 
 void BraveVideoOverlayWindowViews::SliderValueChanged(
@@ -392,7 +448,13 @@ void BraveVideoOverlayWindowViews::UpdateTimestampPosition() {
 
 void BraveVideoOverlayWindowViews::UpdateTimestampPeriodically() {
   // Update timestamp related UI controls
-  if (media_position_) {
+
+  // We don't need to show seeker and timestamp when the duration is less than
+  // a second, infinite or zero.
+  if (media_position_ &&
+      (!media_position_->duration().is_inf() &&
+       !media_position_->duration().is_zero() &&
+       static_cast<int>(media_position_->duration().InSecondsF()) > 0)) {
     auto new_time = ToString(*media_position_);
     if (new_time != timestamp_->GetText()) {
       timestamp_->SetText(new_time);
@@ -407,7 +469,6 @@ void BraveVideoOverlayWindowViews::UpdateTimestampPeriodically() {
     if (!seeker_->GetVisible()) {
       seeker_->SetVisible(true);
     }
-
   } else {
     timestamp_->SetText({});
     seeker_->SetValue(0);

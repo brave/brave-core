@@ -21,12 +21,16 @@
   }
 
 // Update seeker enabled state whenever actions are updated.
-#define SetSkipAdButtonVisibility(SKIP_BUTTON_VISIBILITY)         \
-  SetSkipAdButtonVisibility(SKIP_BUTTON_VISIBILITY);              \
-  media_session_action_seek_to_handled_ =                         \
-      MediaSessionImpl::Get(web_contents())                       \
-          ->ShouldRouteAction(                                    \
-              media_session::mojom::MediaSessionAction::kSeekTo); \
+// Note that we allow seeking when media session is controllable referring to
+// upstream code.
+// https://source.chromium.org/chromium/chromium/src/+/main:content/browser/media/session/media_session_impl.cc;l=1687;drc=c686e8f4fd379312469fe018f5c390e9c8f20d0d
+#define SetSkipAdButtonVisibility(SKIP_BUTTON_VISIBILITY)       \
+  SetSkipAdButtonVisibility(SKIP_BUTTON_VISIBILITY);            \
+  auto* session = MediaSessionImpl::Get(web_contents());        \
+  media_session_action_seek_to_handled_ =                       \
+      session->ShouldRouteAction(                               \
+          media_session::mojom::MediaSessionAction::kSeekTo) || \
+      session->IsControllable();                                \
   window_->SetSeekerEnabled(media_session_action_seek_to_handled_)
 
 #include "src/content/browser/picture_in_picture/video_picture_in_picture_window_controller_impl.cc"
