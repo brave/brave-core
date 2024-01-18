@@ -120,7 +120,7 @@ libc = "0.2"
 
 # challenge-bypass-ristretto-ffi
 base64 = "0.9.3"
-# challenge-bypass-ristretto = { version = "1.0.1", features = ["base64"] }
+# challenge-bypass-ristretto = { version = "1.0.2", features = ["base64"] }
 hmac = "0.10"
 rand = "0.7"
 # sha2 = "0.9"
@@ -225,7 +225,7 @@ if ((is_android || is_apple || is_linux) && target_cpu == "arm64") {
 '''
 
 [dependencies.challenge-bypass-ristretto]
-version = "1.0.1"
+version = "1.0.2"
 features = ["alloc", "base64", "serde", "serde_base64", "std", "u64_backend" ]
 
 [dependencies.iana-time-zone]

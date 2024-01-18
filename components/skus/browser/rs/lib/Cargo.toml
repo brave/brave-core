@@ -23,7 +23,7 @@ bigdecimal = { version = "0.1", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
 uuid = { version = "1", features = ["v4"] }
-challenge-bypass-ristretto = { version = "1.0.1", features = ["serde_base64"] }
+challenge-bypass-ristretto = { version = "1.0.2", features = ["serde_base64"] }
 futures-retry = "0.5.0"
 urlencoding = "1.1.1"
 hmac = "0.10"
