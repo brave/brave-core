@@ -109,13 +109,14 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
   var manager: TabManager!
   private let privateBrowsingManager = PrivateBrowsingManager()
+  private let testWindowId = UUID()
 
   override func setUp() {
     super.setUp()
 
     DataController.shared.initializeOnce()
     let profile = MockProfile()
-    manager = TabManager(windowId: UUID(), prefs: profile.prefs, rewards: nil, tabGeneratorAPI: nil, privateBrowsingManager: privateBrowsingManager)
+    manager = TabManager(windowId: testWindowId, prefs: profile.prefs, rewards: nil, tabGeneratorAPI: nil, privateBrowsingManager: privateBrowsingManager)
     privateBrowsingManager.isPrivateBrowsing = false
   }
 
@@ -609,15 +610,21 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertEqual([firstTab, forthTab, secondTab, thirdTab], reorderedTabs, "Tabs should shift and the have the correct order ignoring the private tab")
   }
 
-  func testQueryAddedTabs() {
+  func testQueryAddedSessionTabs() {
     let delegate = MockTabManagerDelegate()
     manager.addDelegate(delegate)
     DataController.shared = InMemoryDataController()
     DataController.shared.initializeOnce()
 
+    // Create a session window for SessionTab's to be added to
+    let windowCreateExpectation = expectation(forNotification: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
+    SessionWindow.createWindow(isPrivate: false, isSelected: true, uuid: testWindowId)
+    wait(for: [windowCreateExpectation], timeout: 5)
+    
     delegate.expect([willAdd, didAdd])
+    let tabAddExpectation = expectation(forNotification: .NSManagedObjectContextDidSave, object: nil)
     let tab = manager.addTab(isPrivate: false)
-    wait(1)
+    wait(for: [tabAddExpectation], timeout: 5)
     delegate.verify("Not all delegate methods were called")
 
     let storedTabs = SessionTab.all()
@@ -625,8 +632,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertEqual(storedTabs.count, 1)
   }
 
-  func testQueryAddedPrivateTabs() {
-
+  func testQueryAddedSessionPrivateTabs() {
     let delegate = MockTabManagerDelegate()
     manager.addDelegate(delegate)
     DataController.shared = InMemoryDataController()
@@ -641,19 +647,24 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertTrue(storedTabs.isEmpty)
   }
 
-  func testQueryAddedMixedTabs() {
+  func testQueryAddedSessionMixedTabs() {
     let delegate = MockTabManagerDelegate()
     manager.addDelegate(delegate)
     DataController.shared = InMemoryDataController()
     DataController.shared.initializeOnce()
 
+    // Create a session window for SessionTab's to be added to
+    let windowCreateExpectation = expectation(forNotification: .NSManagedObjectContextDidSave, object: nil)
+    SessionWindow.createWindow(isPrivate: false, isSelected: true, uuid: testWindowId)
+    wait(for: [windowCreateExpectation], timeout: 5)
+    
     delegate.expect([willAdd, didAdd, willAdd, didAdd])
     manager.addTab(isPrivate: true)
-
+    let tabAddExpectation = expectation(forNotification: .NSManagedObjectContextDidSave, object: nil)
     let tab = manager.addTab(isPrivate: false)
-    wait(1)
+    wait(for: [tabAddExpectation], timeout: 5)
     delegate.verify("Not all delegate methods were called")
-
+    
     let storedTabs = SessionTab.all()
     XCTAssertNotNil(storedTabs.first(where: { $0.tabId == tab.id }), "Couldn't find added tab: \(tab) in stored tabs: \(storedTabs)")
     // Shouldn't be storing any private tabs

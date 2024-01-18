@@ -74,7 +74,10 @@ class FarblingProtectionHelper {
     "Cecil", "Reuben", "Sylvester", "Jasper"
   ]
 
-  static func makeFarblingParams(from randomConfiguration: RandomConfiguration) throws -> String {
+  static func makeFarblingParams(
+    from randomConfiguration: RandomConfiguration,
+    encoder: JSONEncoder = .init()
+  ) throws -> String {
     srand48(randomConfiguration.domainKeyHEX.hashValue)
 
     let farblingData = FarblingData(
@@ -85,7 +88,6 @@ class FarblingProtectionHelper {
       randomHardwareIndexScale: Float(drand48())
     )
 
-    let encoder = JSONEncoder()
     let data = try encoder.encode(farblingData)
     return String(data: data, encoding: .utf8)!
   }

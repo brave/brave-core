@@ -134,6 +134,7 @@ class RecentlyClosedTests: CoreDataTestCase {
       RecentlyClosed.insert(SavedRecentlyClosed(
         url: url,
         title: title,
+        dateAdded: date,
         interactionState: Data(),
         order: Int32(historyIndex)))
     }
