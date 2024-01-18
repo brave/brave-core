@@ -28,7 +28,7 @@ cargo_crate("lib") {
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.0.1"
+  cargo_pkg_version = "1.0.2"
   cargo_pkg_authors = "eV <ev@7pr.xyz>"
   cargo_pkg_name = "challenge-bypass-ristretto"
   cargo_pkg_description = "A rust implemention of the privacy pass cryptographic protocol using the Ristretto group (WIP)"
