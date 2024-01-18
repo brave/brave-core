@@ -774,7 +774,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       fromBase64EncodedTransaction: jupiterTransaction,
       txType: .solanaSwap,
       send: .init(
-        maxRetries: .init(maxRetries: 2),
+        maxRetries: .init(maxRetries: 3),
         preflightCommitment: "processed",
         skipPreflight: .init(skipPreflight: true)
       )
