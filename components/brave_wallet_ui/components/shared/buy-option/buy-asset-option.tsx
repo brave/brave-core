@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
@@ -23,14 +24,12 @@ import {
 } from '../../../utils/asset-utils'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
-import { WalletSelectors } from '../../../common/selectors'
 
 // hooks
 import {
   useGetNetworkQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
 // components
 import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
@@ -67,10 +66,8 @@ const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(
   ({ onClick, token, isPanel, selectedCurrency }, ref) => {
-    // redux
-    const selectedOnRampAssetId = useSafeWalletSelector(
-      WalletSelectors.selectedOnRampAssetId
-    )
+    // routing
+    const { assetId: selectedOnRampAssetId } = useParams<{ assetId: string }>()
 
     // query Params
     const tokenIds = React.useMemo(() => {

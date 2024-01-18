@@ -4,17 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { Redirect, Route, Switch, useHistory } from 'react-router'
+import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
+import type { VariableSizeList as List } from 'react-window'
 
 // utils
 import { getLocale } from '../../../../common/locale'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getBatTokensFromList, getAssetIdKey } from '../../../utils/asset-utils'
-import { WalletActions } from '../../../common/slices/wallet.slice'
-import { WalletSelectors } from '../../../common/selectors'
-import { makeDepositFundsRoute } from '../../../utils/routes-utils'
+import {
+  makeDepositFundsAccountRoute,
+  makeDepositFundsRoute
+} from '../../../utils/routes-utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 
 // types
@@ -40,8 +41,6 @@ import {
   useGetCombinedTokensListQuery,
   useReceiveAddressQuery
 } from '../../../common/slices/api.slice.extra'
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 import { useDebouncedCallback } from '../swap/hooks/useDebouncedCallback'
 
 // style
@@ -111,17 +110,13 @@ interface Props {
   isAndroid?: boolean
 }
 
+interface Params {
+  assetId: string
+}
+
 export const DepositFundsScreen = ({ isAndroid }: Props) => {
   // routing
   const history = useHistory()
-
-  // redux
-  const dispatch = useDispatch()
-
-  // clear selected asset on page mount
-  React.useEffect(() => {
-    dispatch(WalletActions.selectOnRampAssetId(undefined))
-  }, [])
 
   // render
   return (
@@ -139,10 +134,7 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
             <PageTitleHeader
               title={getLocale('braveWalletDepositCryptoButton')}
               showBackButton
-              onBack={() => {
-                dispatch(WalletActions.selectOnRampAssetId(undefined))
-                history.goBack()
-              }}
+              onBack={history.goBack}
             />
           }
         >
@@ -150,7 +142,7 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
         </WalletPageWrapper>
       </Route>
 
-      <Route>
+      <Route path={WalletRoutes.DepositFundsPage}>
         <WalletPageWrapper
           hideNav={isAndroid}
           hideHeader={isAndroid}
@@ -165,6 +157,8 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
           <AssetSelection />
         </WalletPageWrapper>
       </Route>
+
+      <Redirect to={WalletRoutes.DepositFundsPage} />
     </Switch>
   )
 }
@@ -172,33 +166,14 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
 function AssetSelection() {
   // routing
   const history = useHistory()
+  const { assetId: selectedDepositAssetId } = useParams<Params>()
   const params = new URLSearchParams(history.location.search)
   const searchParam = params.get('search')
   const chainIdParam = params.get('chainId')
   const coinTypeParam = params.get('coinType')
 
-  // custom hooks
-  const scrollIntoView = useScrollIntoView()
-
-  // redux
-  const dispatch = useDispatch()
-  const selectedDepositAssetId = useSafeWalletSelector(
-    WalletSelectors.selectedOnRampAssetId
-  )
-
   // refs
-  const listItemRefs = React.useRef<Map<string, HTMLButtonElement> | null>(null)
-
-  const getRefsMap = React.useCallback(
-    function () {
-      if (!listItemRefs.current) {
-        // Initialize the Map on first usage.
-        listItemRefs.current = new Map()
-      }
-      return listItemRefs.current
-    },
-    [listItemRefs]
-  )
+  const listRef = React.useRef<List<BraveWallet.BlockchainToken[]>>(null)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>(
@@ -350,65 +325,69 @@ function AssetSelection() {
   )
 
   const nextStep = React.useCallback(() => {
+    if (!selectedDepositAssetId) {
+      return
+    }
+
     const searchValueLower = searchValue.toLowerCase()
 
     // save latest form values in router history
     history.replace(
-      makeDepositFundsRoute(
+      makeDepositFundsRoute(selectedDepositAssetId, {
         // save latest search-box value (if it matches selection name or symbol)
-        searchValue &&
+        searchText:
+          searchValue &&
           (selectedAsset?.name.toLowerCase().startsWith(searchValueLower) ||
             selectedAsset?.symbol.toLowerCase().startsWith(searchValueLower))
-          ? searchValue
-          : undefined,
+            ? searchValue
+            : undefined,
         // saving network filter (if it matches selection)
-        selectedAsset?.chainId === selectedNetworkFilter.chainId
-          ? selectedNetworkFilter.chainId || AllNetworksOption.chainId
-          : AllNetworksOption.chainId,
-        selectedAsset?.coin === selectedNetworkFilter.coin
-          ? selectedNetworkFilter.coin.toString() ||
+        chainId:
+          selectedAsset?.chainId === selectedNetworkFilter.chainId
+            ? selectedNetworkFilter.chainId || AllNetworksOption.chainId
+            : AllNetworksOption.chainId,
+        coinType:
+          selectedAsset?.coin === selectedNetworkFilter.coin
+            ? selectedNetworkFilter.coin.toString() ||
               AllNetworksOption.coin.toString()
-          : AllNetworksOption.coin.toString()
-      )
+            : AllNetworksOption.coin.toString()
+      })
     )
 
-    history.push(WalletRoutes.DepositFundsAccountPage)
-  }, [history, selectedNetworkFilter, searchValue, selectedAsset])
+    history.push(makeDepositFundsAccountRoute(selectedDepositAssetId))
+  }, [
+    selectedDepositAssetId,
+    searchValue,
+    history,
+    selectedAsset,
+    selectedNetworkFilter
+  ])
 
   const renderToken = React.useCallback<
     RenderTokenFunc<BraveWallet.BlockchainToken>
-  >(
-    ({ item: asset }) => {
-      const assetId = getAssetIdKey(asset)
-      return (
-        <BuyAssetOptionItem
-          ref={(node) => {
-            const refs = getRefsMap()
-            if (node) {
-              refs.set(assetId, node)
-            } else {
-              refs.delete(assetId)
-            }
-          }}
-          key={assetId}
-          token={asset}
-          onClick={() => dispatch(WalletActions.selectOnRampAssetId(assetId))}
-        />
-      )
-    },
-    [dispatch, getRefsMap]
-  )
+  >(({ item: asset }) => {
+    const assetId = getAssetIdKey(asset)
+    return (
+      <BuyAssetOptionItem
+        key={assetId}
+        token={asset}
+        onClick={() => history.push(makeDepositFundsRoute(assetId))}
+      />
+    )
+  }, [])
 
   // effects
   React.useEffect(() => {
     // scroll selected item into view
-    if (selectedDepositAssetId) {
-      const ref = getRefsMap().get(selectedDepositAssetId)
-      if (ref) {
-        scrollIntoView(ref, true)
+    if (listRef.current && selectedDepositAssetId) {
+      const itemIndex = assetListSearchResults.findIndex(
+        (asset) => getAssetIdKey(asset) === selectedDepositAssetId
+      )
+      if (itemIndex > -1) {
+        listRef.current.scrollToItem(itemIndex, 'smart')
       }
     }
-  }, [selectedDepositAssetId, getRefsMap, scrollIntoView])
+  }, [selectedDepositAssetId, assetListSearchResults, listRef])
 
   // render
   return (
@@ -439,6 +418,7 @@ function AssetSelection() {
 
         {fullAssetsList.length ? (
           <VirtualizedTokensList
+            listRef={listRef}
             getItemKey={getItemKey}
             getItemSize={getItemSize}
             userAssetList={assetListSearchResults}
@@ -477,12 +457,7 @@ function AssetSelection() {
 function DepositAccount() {
   // routing
   const history = useHistory()
-
-  // redux
-  const dispatch = useDispatch()
-  const selectedDepositAssetId = useSafeWalletSelector(
-    WalletSelectors.selectedOnRampAssetId
-  )
+  const { assetId: selectedDepositAssetId } = useParams<Params>()
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -620,7 +595,6 @@ function DepositAccount() {
         onCreated={setSelectedAccount}
         onCancel={() => {
           resetCopyState()
-          dispatch(WalletActions.selectOnRampAssetId(undefined))
           history.push(WalletRoutes.DepositFundsPage)
         }}
       />

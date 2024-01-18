@@ -18,6 +18,7 @@ import { getLocale } from '../../common/locale'
 import { externalWalletProviders } from '../common/async/brave_rewards_api_proxy'
 import { BraveWallet } from '../constants/types'
 import { ExternalWalletProvider } from '../../brave_rewards/resources/shared/lib/external_wallet'
+import { BatRewardsContractAddress } from '../common/constants/registry'
 
 export const getRewardsProviderName = (provider?: string) => {
   if (!provider) {
@@ -166,7 +167,7 @@ export const getRewardsBATToken = (
     return undefined
   }
   return {
-    contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
+    contractAddress: BatRewardsContractAddress,
     name: 'Basic Attention Token',
     symbol: 'BAT',
     logo: 'chrome://erc-token-images/bat.png',
@@ -182,4 +183,13 @@ export const getRewardsBATToken = (
     coin: BraveWallet.CoinType.ETH,
     chainId: provider
   }
+}
+
+export const isRewardsAssetId = (assetId: string) => {
+  const assetIdLower = assetId.toLowerCase()
+
+  return (
+    assetIdLower.includes(BatRewardsContractAddress.toLowerCase()) &&
+    externalWalletProviders.some((provider) => assetIdLower.includes(provider))
+  )
 }
