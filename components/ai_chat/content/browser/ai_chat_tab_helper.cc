@@ -89,7 +89,7 @@ void AIChatTabHelper::SetOnPDFA11yInfoLoadedCallbackForTesting(
 
 void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   DVLOG(3) << "PDF Loaded";
-  MaybeGeneratePageText();
+  // TODO(darkdh): https://github.com/brave/brave-browser/issues/35414
   pdf_load_observer_.reset();
   if (on_pdf_a11y_info_loaded_cb_) {
     std::move(on_pdf_a11y_info_loaded_cb_).Run();
@@ -147,7 +147,8 @@ void AIChatTabHelper::InnerWebContentsAttached(
   // Setting a11y mode for PDF process which is dedicated for each
   // PDF so we don't have to unset it.
   if (content::WebContents::FromRenderFrameHost(render_frame_host)
-          ->GetContentsMimeType() == "application/pdf") {
+              ->GetContentsMimeType() == "application/pdf" &&
+      HasUserOptedIn()) {
     // We need `AXMode::kNativeAPIs` for accessing pdf a11y info and
     // `AXMode::kWebContents` for observing a11y events from WebContents.
     inner_web_contents->SetAccessibilityMode(ui::AXMode(ui::kAXModeBasic));

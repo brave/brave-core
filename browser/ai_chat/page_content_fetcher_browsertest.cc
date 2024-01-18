@@ -133,6 +133,7 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
   auto* chat_tab_helper =
       ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
   ASSERT_TRUE(chat_tab_helper);
+  chat_tab_helper->SetUserOptedIn(true);
   auto run_loop = std::make_unique<base::RunLoop>();
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
       base::BindLambdaForTesting([this, &run_loop]() {

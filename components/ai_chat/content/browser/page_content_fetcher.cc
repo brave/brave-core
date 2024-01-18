@@ -347,13 +347,13 @@ void FetchPageContent(content::WebContents* web_contents,
         auto* ax_node = ax_tree_manager->GetRoot();
         auto pdf_content = ax_node->GetTextContentUTF8();
         if (!pdf_content.empty()) {
-          std::move(callback).Run(pdf_content, false);
+          std::move(callback).Run(pdf_content, false, "");
           return;
         }
       }
     }
     // No need to proceed renderer content fetching because we won't get any.
-    std::move(callback).Run("", false);
+    std::move(callback).Run("", false, "");
     return;
   }
 
