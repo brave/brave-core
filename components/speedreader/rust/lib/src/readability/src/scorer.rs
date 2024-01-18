@@ -887,7 +887,7 @@ pub fn clean(
                 local_name!("source") => {
                     if let Some(parent) = handle.parent().as_ref() {
                         if dom::get_tag_name(&parent) == Some(&local_name!("picture")) {
-                            return Some(format!("{}", line!()))
+                            return Some(format!("{}", line!()));
                         }
                     }
                     None
@@ -897,13 +897,13 @@ pub fn clean(
                     let mut heading = String::new();
                     dom::extract_text(&handle, &mut heading, true);
                     if heading.is_empty() {
-                        return Some(format!("{}", line!()))
+                        return Some(format!("{}", line!()));
                     } else if !title_tokens.is_empty() {
                         let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
                         let distance = title_tokens.difference(&heading_tokens).count() as f32;
                         let similarity = 1.0 - distance / title_tokens.len() as f32;
                         if similarity >= 0.75 {
-                            return Some(format!("{}, {}", line!(), similarity))
+                            return Some(format!("{}, {}", line!(), similarity));
                         }
                     }
                     if data.name.local == local_name!("h1") {
@@ -913,13 +913,13 @@ pub fn clean(
                         let h2 = dom.create_element(name, vec![], ElementFlags::default());
                         dom.reparent_children(&handle, &h2);
                         dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
-                        return Some(format!("{}", line!()))
+                        return Some(format!("{}", line!()));
                     } else {
                         // If <h2> has class attribute with a negative pattern
                         // (ad, hidden, etc.) remove it.
                         let weight = get_class_weight(&handle);
                         if weight < -20.0 {
-                            return Some(format!("{}, {}", line!(), weight))
+                            return Some(format!("{}, {}", line!(), weight));
                         }
                     }
                     None
@@ -931,7 +931,7 @@ pub fn clean(
                 local_name!("br") => {
                     if let Some(sibling) = handle.next_sibling() {
                         if dom::get_tag_name(&sibling) == Some(&local_name!("p")) {
-                            return Some(format!("{}", line!()))
+                            return Some(format!("{}", line!()));
                         }
                     }
                     None
@@ -1001,8 +1001,8 @@ pub fn clean(
     return useless;
 }
 
-/// Using content score and other heuristics, determine if the handle should be marked for
-/// deletion.
+/// Using content score and other heuristics, determine if the handle should be
+/// marked for deletion.
 pub fn is_useless(handle: &Handle) -> Option<String> {
     let tag_name = dom::get_tag_name(&handle);
     let weight = get_class_weight(&handle);
