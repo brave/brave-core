@@ -1273,3 +1273,9 @@ export interface BraveRewardsInfo {
   rewardsNetwork: BraveWallet.NetworkInfo | undefined
   accountLink: string | undefined
 }
+
+export type BitcoinBalances = {
+  availableBalance: string
+  pendingBalance: string
+  totalBalance: string
+}

@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import {
@@ -28,6 +29,7 @@ export const FromText = styled(Text)`
 export const BalanceText = styled(Text)`
   line-height: 26px;
   color: ${leo.color.text.primary};
+  margin-right: 4px;
 `
 
 export const NetworkText = styled(Text)`
@@ -50,4 +52,16 @@ export const SelectTokenAndInputRow = styled(Row)`
 
 export const NetworkAndFiatRow = styled(Row)`
   min-height: 22px;
+`
+
+export const InfoIcon = styled(Icon).attrs({
+  name: 'info-outline'
+})`
+  --leo-icon-size: 16px;
+  color: ${leo.color.icon.interactive};
+  margin-right: 8px;
+`
+
+export const AccountNameAndBalanceRow = styled(Row)`
+  flex-wrap: wrap;
 `
