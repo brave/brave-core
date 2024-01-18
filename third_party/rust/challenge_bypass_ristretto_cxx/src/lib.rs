@@ -33,10 +33,10 @@ macro_rules! impl_result {
                 self.error().is_ok()
             }
 
-            fn unwrap(self: &$r) -> &$t {
-                self.0.as_ref().expect(
+            fn unwrap(self: &$r) -> Box<$t> {
+                Box::new(self.0.clone().expect(
                     "Unhandled error before unwrap call, self->error().code != TokenError::None",
-                )
+                ))
             }
         }
     };
@@ -53,7 +53,7 @@ macro_rules! impl_decode_base64 {
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = cbr_cxx)]
 pub mod ffi {
-    #[derive(Debug)]
+    #[derive(Debug, Clone)]
     struct Error {
         code: TokenError,
         msg: String,
@@ -114,7 +114,7 @@ pub mod ffi {
         fn decode_base64_token_preimage(s: &str) -> Box<TokenPreimageResult>;
         fn error(self: &TokenPreimageResult) -> &Error;
         fn is_ok(self: &TokenPreimageResult) -> bool;
-        fn unwrap(self: &TokenPreimageResult) -> &TokenPreimage;
+        fn unwrap(self: &TokenPreimageResult) -> Box<TokenPreimage>;
 
         fn generate_token() -> Box<Token>;
         fn encode_base64(self: &Token) -> String;
@@ -123,21 +123,21 @@ pub mod ffi {
         fn decode_base64_token(s: &str) -> Box<TokenResult>;
         fn error(self: &TokenResult) -> &Error;
         fn is_ok(self: &TokenResult) -> bool;
-        fn unwrap(self: &TokenResult) -> &Token;
+        fn unwrap(self: &TokenResult) -> Box<Token>;
 
         fn encode_base64(self: &BlindedToken) -> String;
 
         fn decode_base64_blinded_token(s: &str) -> Box<BlindedTokenResult>;
         fn error(self: &BlindedTokenResult) -> &Error;
         fn is_ok(self: &BlindedTokenResult) -> bool;
-        fn unwrap(self: &BlindedTokenResult) -> &BlindedToken;
+        fn unwrap(self: &BlindedTokenResult) -> Box<BlindedToken>;
 
         fn encode_base64(self: &SignedToken) -> String;
 
         fn decode_base64_signed_token(s: &str) -> Box<SignedTokenResult>;
         fn error(self: &SignedTokenResult) -> &Error;
         fn is_ok(self: &SignedTokenResult) -> bool;
-        fn unwrap(self: &SignedTokenResult) -> &SignedToken;
+        fn unwrap(self: &SignedTokenResult) -> Box<SignedToken>;
 
         fn encode_base64(self: &UnblindedToken) -> String;
         fn derive_verification_key(self: &UnblindedToken) -> Box<VerificationKey>;
@@ -146,7 +146,7 @@ pub mod ffi {
         fn decode_base64_unblinded_token(s: &str) -> Box<UnblindedTokenResult>;
         fn error(self: &UnblindedTokenResult) -> &Error;
         fn is_ok(self: &UnblindedTokenResult) -> bool;
-        fn unwrap(self: &UnblindedTokenResult) -> &UnblindedToken;
+        fn unwrap(self: &UnblindedTokenResult) -> Box<UnblindedToken>;
 
         fn generate_signing_key() -> Box<SigningKey>;
         fn encode_base64(self: &SigningKey) -> String;
@@ -157,14 +157,14 @@ pub mod ffi {
         fn decode_base64_signing_key(s: &str) -> Box<SigningKeyResult>;
         fn error(self: &SigningKeyResult) -> &Error;
         fn is_ok(self: &SigningKeyResult) -> bool;
-        fn unwrap(self: &SigningKeyResult) -> &SigningKey;
+        fn unwrap(self: &SigningKeyResult) -> Box<SigningKey>;
 
         fn encode_base64(self: &PublicKey) -> String;
 
         fn decode_base64_public_key(s: &str) -> Box<PublicKeyResult>;
         fn error(self: &PublicKeyResult) -> &Error;
         fn is_ok(self: &PublicKeyResult) -> bool;
-        fn unwrap(self: &PublicKeyResult) -> &PublicKey;
+        fn unwrap(self: &PublicKeyResult) -> Box<PublicKey>;
 
         fn sign(self: &VerificationKey, msg: &CxxString) -> Box<VerificationSignature>;
         fn verify(self: &VerificationKey, sig: &VerificationSignature, msg: &CxxString) -> bool;
@@ -174,7 +174,7 @@ pub mod ffi {
         fn decode_base64_verification_signature(s: &str) -> Box<VerificationSignatureResult>;
         fn error(self: &VerificationSignatureResult) -> &Error;
         fn is_ok(self: &VerificationSignatureResult) -> bool;
-        fn unwrap(self: &VerificationSignatureResult) -> &VerificationSignature;
+        fn unwrap(self: &VerificationSignatureResult) -> Box<VerificationSignature>;
 
         fn new_batch_dleq_proof(
             self: &SigningKey,
@@ -200,27 +200,27 @@ pub mod ffi {
         fn decode_base64_batch_dleq_proof(s: &str) -> Box<BatchDLEQProofResult>;
         fn error(self: &BatchDLEQProofResult) -> &Error;
         fn is_ok(self: &BatchDLEQProofResult) -> bool;
-        fn unwrap(self: &BatchDLEQProofResult) -> &BatchDLEQProof;
+        fn unwrap(self: &BatchDLEQProofResult) -> Box<BatchDLEQProof>;
 
         fn decode_base64_tokens(s: &CxxVector<CxxString>) -> Box<TokensResult>;
         fn error(self: &TokensResult) -> &Error;
         fn is_ok(self: &TokensResult) -> bool;
-        fn unwrap(self: &TokensResult) -> &Tokens;
+        fn unwrap(self: &TokensResult) -> Box<Tokens>;
 
         fn decode_base64_blinded_tokens(s: &CxxVector<CxxString>) -> Box<BlindedTokensResult>;
         fn error(self: &BlindedTokensResult) -> &Error;
         fn is_ok(self: &BlindedTokensResult) -> bool;
-        fn unwrap(self: &BlindedTokensResult) -> &BlindedTokens;
+        fn unwrap(self: &BlindedTokensResult) -> Box<BlindedTokens>;
 
         fn decode_base64_signed_tokens(s: &CxxVector<CxxString>) -> Box<SignedTokensResult>;
         fn error(self: &SignedTokensResult) -> &Error;
         fn is_ok(self: &SignedTokensResult) -> bool;
-        fn unwrap(self: &SignedTokensResult) -> &SignedTokens;
+        fn unwrap(self: &SignedTokensResult) -> Box<SignedTokens>;
 
         fn decode_base64_unblinded_tokens(s: &CxxVector<CxxString>) -> Box<UnblindedTokensResult>;
         fn error(self: &UnblindedTokensResult) -> &Error;
         fn is_ok(self: &UnblindedTokensResult) -> bool;
-        fn unwrap(self: &UnblindedTokensResult) -> &UnblindedTokens;
+        fn unwrap(self: &UnblindedTokensResult) -> Box<UnblindedTokens>;
 
         fn as_vec(self: &UnblindedTokens) -> &Vec<UnblindedToken>;
     }
@@ -228,33 +228,33 @@ pub mod ffi {
 
 use ffi::*;
 
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct TokenPreimage(voprf::TokenPreimage);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct Token(voprf::Token);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct BlindedToken(voprf::BlindedToken);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct SignedToken(voprf::SignedToken);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct UnblindedToken(voprf::UnblindedToken);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct SigningKey(voprf::SigningKey);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct PublicKey(voprf::PublicKey);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct VerificationKey(voprf::VerificationKey);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct VerificationSignature(voprf::VerificationSignature);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct BatchDLEQProof(voprf::BatchDLEQProof);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct Tokens(Vec<voprf::Token>);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct BlindedTokens(Vec<voprf::BlindedToken>);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct SignedTokens(Vec<voprf::SignedToken>);
-#[derive(From)]
+#[derive(From, Clone)]
 pub struct UnblindedTokens(Vec<UnblindedToken>);
 
 impl Error {

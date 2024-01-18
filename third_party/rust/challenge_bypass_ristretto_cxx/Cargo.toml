@@ -5,7 +5,7 @@ authors = ["eV <ev@7pr.xyz>"]
 edition = "2018"
 
 [dependencies]
-challenge-bypass-ristretto = { version = "1.0.1", features = ["base64"] }
+challenge-bypass-ristretto = { version = "1.0.2", features = ["base64"] }
 cxx = { version = "1.0", features = [ "alloc", "std" ] }
 derive_more = "0.99"
 hmac = "0.10"
