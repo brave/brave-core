@@ -6,19 +6,24 @@
 #include "brave/components/ipfs/ipld/ipld_utils.h"
 #include "brave/components/ipfs/rs/src/lib.rs.h"
 
-
 namespace ipfs::ipld {
 
-CarV1HeaderResult decode_carv1_header(const std::vector<uint8_t>& data) {
-    return ipfs::decode_carv1_header(data);
+CarV1HeaderResult DecodeCarv1Header(const std::vector<uint8_t>& data) {
+  return ipfs::decode_carv1_header(data);
 }
 
-CarV2HeaderResult decode_carv2_header(const std::vector<uint8_t>& data) {
-    return ipfs::decode_carv2_header(data);
+CarV2HeaderResult DecodeCarv2Header(const std::vector<uint8_t>& data) {
+  return ipfs::decode_carv2_header(data);
 }
 
-BlockDecodeResult decode(const uint64_t& offset, const std::vector<uint8_t>& data) {
-    return ipfs::decode(offset, data);
+BlockDecodeResult DecodeBlockInfo(const uint64_t& offset,
+                                    const std::vector<uint8_t>& data) {
+  return ipfs::decode_block_info(offset, data);
 }
 
+BlockContentDecodeResult DecodeBlockContent(const uint64_t& offset,
+                                    const std::vector<uint8_t>& data) {
+  return ipfs::decode_block_content(offset, data); 
 }
+
+}  // namespace ipfs::ipld

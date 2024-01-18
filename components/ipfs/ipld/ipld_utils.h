@@ -7,9 +7,13 @@
 
 namespace ipfs::ipld {
 
-CarV1HeaderResult decode_carv1_header(const std::vector<uint8_t>& data);
+CarV1HeaderResult DecodeCarv1Header(const std::vector<uint8_t>& data);
 
-CarV2HeaderResult decode_carv2_header(const std::vector<uint8_t>& data);
+CarV2HeaderResult DecodeCarv2Header(const std::vector<uint8_t>& data);
 
-BlockDecodeResult decode(const uint64_t& offset, const std::vector<uint8_t>& data);
-}
+BlockDecodeResult DecodeBlockInfo(const uint64_t& offset,
+                                    const std::vector<uint8_t>& data);
+
+BlockContentDecodeResult DecodeBlockContent(const uint64_t& offset,
+                                    const std::vector<uint8_t>& data);
+}  // namespace ipfs::ipld
