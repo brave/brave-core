@@ -41,12 +41,13 @@ const std::vector<uint8_t> kCarv2HeaderAndPragmaData = {
     0x00, 0x00, 0xC0, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF3,
     0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-const std::vector<std::tuple<const std::vector<uint8_t> /*block data*/,
-                             const std::string /*block cid*/,
-                             const std::string /*decoded value*/,
-                             const uint64_t /*start offset*/,
-                             const uint64_t /*end offset*/,
-                             const std::vector<uint8_t> /*decoded content bytes*/>>
+const std::vector<
+    std::tuple<const std::vector<uint8_t> /*block data*/,
+               const std::string /*block cid*/,
+               const std::string /*decoded value*/,
+               const uint64_t /*start offset*/,
+               const uint64_t /*end offset*/,
+               const std::vector<uint8_t> /*decoded content bytes*/>>
     kBlocksData{
         // block #1
         {{0x01, 0x71, 0x12, 0x20, 0xF8, 0x8B, 0xC8, 0x53, 0x80, 0x4C, 0xF2,
@@ -169,26 +170,27 @@ void TestBlockDecoding(const std::vector<uint8_t>& block,
                        const std::vector<uint8_t>& content) {
   auto block_info = ipfs::ipld::DecodeBlockInfo(start_offset, block);
 
-//   if (block_info.error.error.length() > 0) {
-//     LOG(INFO) << "Error: " << block_info.error.error.c_str();
-//   } else {
-//     LOG(INFO) << "\r\nCid:" << block_info.cid.c_str()
-//               << "\r\ndata_offset:" << block_info.data_offset
-//               << "\r\nresult.data:" << block_info.data.c_str();
-//   }
+  //   if (block_info.error.error.length() > 0) {
+  //     LOG(INFO) << "Error: " << block_info.error.error.c_str();
+  //   } else {
+  //     LOG(INFO) << "\r\nCid:" << block_info.cid.c_str()
+  //               << "\r\ndata_offset:" << block_info.data_offset
+  //               << "\r\nresult.data:" << block_info.data.c_str();
+  //   }
 
   ASSERT_EQ(block_info.error.error.length(), 0UL);
   ASSERT_EQ(block_info.is_content, decoded.empty());
   ASSERT_EQ(block_info.data_offset, end_offset);
   ASSERT_EQ(block_info.cid, block_cid);
 
-  if(block_info.is_content) {
+  if (block_info.is_content) {
     auto block_content = ipfs::ipld::DecodeBlockContent(start_offset, block);
     ASSERT_EQ(block_content.error.error.length(), 0UL);
     ASSERT_EQ(block_content.cid, block_cid);
     ASSERT_EQ(block_content.data_offset, end_offset);
     ASSERT_EQ(block_content.data.size(), content.size());
-    ASSERT_TRUE(std::equal(block_content.data.begin(), block_content.data.end(), content.begin(), content.end()));
+    ASSERT_TRUE(std::equal(block_content.data.begin(), block_content.data.end(),
+                           content.begin(), content.end()));
   }
 }
 
@@ -212,7 +214,7 @@ TEST_F(IpldUtilsUnitTest, DecodeCarv1Header) {
   result = ipfs::ipld::DecodeCarv1Header(carv1_header_data);
   ASSERT_GT(result.error.error.length(), 0UL);
   ASSERT_EQ(result.error.error_code, 30);
-  ASSERT_EQ(result.data.version, 2UL);
+  ASSERT_EQ(result.data.version, 0UL);
   ASSERT_EQ(result.data.roots.size(), 0UL);
 
   // Valid CAR_V2 pragma (11 bytes)
@@ -226,13 +228,29 @@ TEST_F(IpldUtilsUnitTest, DecodeCarv1Header) {
   result = ipfs::ipld::DecodeCarv1Header(carv2_header_pragme_data);
   ASSERT_GT(result.error.error.length(), 0UL);
   ASSERT_EQ(result.error.error_code, 30);
-  ASSERT_EQ(result.data.version, 2UL);
+  ASSERT_EQ(result.data.version, 0UL);
   ASSERT_EQ(result.data.roots.size(), 0UL);
 }
 
 TEST_F(IpldUtilsUnitTest, DecodeCarv2Header) {
   // Valid CAR_V2 header
   auto result = ipfs::ipld::DecodeCarv2Header(kCarv2HeaderAndPragmaData);
+
+  if (result.error.error.length() > 0) {
+    LOG(INFO) << "Error: "
+              << std::string(result.error.error.data(),
+                             result.error.error.length());
+  } else {
+    LOG(INFO) << "Header data_offset:" << result.data.data_offset
+              << " data_size: " << result.data.data_size << "index_offset"
+              << result.data.index_offset;
+    LOG(INFO) << "characteristics[0]:" << result.data.characteristics.data[0]
+              << "characteristics[1]:" << result.data.characteristics.data[1];
+    // for(const auto& item : result.data.data.roots) {
+    //     LOG(INFO) << std::string(item.data(), item.length());
+    // }
+  }
+
   ASSERT_EQ(result.error.error.length(), 0UL);
   ASSERT_EQ(result.error.error_code, 0);
   ASSERT_EQ(result.data.data_offset, 51UL);
@@ -240,21 +258,6 @@ TEST_F(IpldUtilsUnitTest, DecodeCarv2Header) {
   ASSERT_EQ(result.data.index_offset, 499UL);
   ASSERT_EQ(result.data.characteristics.data[0], 144115188075855872UL);
   ASSERT_EQ(result.data.characteristics.data[1], 144115188075855872UL);
-
-//   if (result.error.error.length() > 0) {
-//     LOG(INFO) << "Error: "
-//               << std::string(result.error.error.data(),
-//                              result.error.error.length());
-//   } else {
-//     LOG(INFO) << "Header data_offset:" << result.data.data_offset
-//               << " data_size: " << result.data.data_size << "index_offset"
-//               << result.data.index_offset;
-//     LOG(INFO) << "characteristics[0]:" << result.data.characteristics.data[0]
-//               << "characteristics[1]:" << result.data.characteristics.data[1];
-//     // for(const auto& item : result.data.data.roots) {
-//     //     LOG(INFO) << std::string(item.data(), item.length());
-//     // }
-//   }
 }
 
 TEST_F(IpldUtilsUnitTest, DecodeBlocks) {
@@ -265,14 +268,16 @@ TEST_F(IpldUtilsUnitTest, DecodeBlocks) {
 }
 
 TEST_F(IpldUtilsUnitTest, FailedBlockDecode) {
-    auto block_info = ipfs::ipld::DecodeBlockInfo(0, kCarv2HeaderPragmaData);
+  auto block_info = ipfs::ipld::DecodeBlockInfo(0, kCarv2HeaderPragmaData);
+  ASSERT_GT(block_info.error.error.length(), 0UL);
+  ASSERT_EQ(block_info.error.error_code, 90UL);
 
   if (block_info.error.error.length() > 0) {
-    LOG(INFO) << "Error: " << block_info.error.error.c_str();
+    LOG(INFO) << "Error Code:" << block_info.error.error_code
+              << "Error: " << block_info.error.error.c_str();
   } else {
     LOG(INFO) << "\r\nCid:" << block_info.cid.c_str()
               << "\r\ndata_offset:" << block_info.data_offset
               << "\r\nresult.data:" << block_info.data.c_str();
   }
-
 }

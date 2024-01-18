@@ -14,6 +14,8 @@ use libipld_core::{codec::Codec, ipld::Ipld, raw::RawCodec};
 use thiserror::Error;
 use libipld_core::cid::{Cid};
 
+
+//TODO move errors to separate module
 #[derive(Error, Debug)]
 enum BlockDecoderError {
     #[error("Internal error with code {0}")]
@@ -36,28 +38,21 @@ const CODEC_RAW: u64 = 85;
 Takes vector of block bytes (without prefix length of block `variant`, version etc) and decode it
 */
 pub fn decode_block_info(offset: usize, data: &CxxVector<u8>) -> BlockDecodeResult {
-println!("p 100");
-    let (block_cid, decoded_raw_data, error) = decode(&data);
-println!("p 500");
-
-    if !error.is_none() {
-        return BlockDecodeResult {
-            data_offset: offset,
-            cid: String::new(),
-            data:  String::new(),
-            is_content: false,
-            error: error.unwrap(),
-        } 
-    }
+    let (block_cid, decoded_raw_data) = match decode(&data){
+        Ok(res) => res,
+        Err(err) => {
+            return BlockDecodeResult {
+                data_offset: offset,
+                cid: String::new(),
+                data:  String::new(),
+                is_content: false,
+                error: err,
+            } 
+        }
+    };
 
     let mut is_content = false;
     let decoded_str = match decoded_raw_data.as_ref().unwrap() {
-        // Ipld::List(ipld) => {
-        //     println!("List:{:?}", ipld);
-        // },
-        // Ipld::Link(ipld) => {
-        //     println!("Link:{:?}", ipld);
-        // },
         Ipld::Map(ipld) => {
             format!("{:?}",ipld)
         },
@@ -88,23 +83,19 @@ println!("p 500");
 
 pub fn decode_block_content(offset: usize, data: &CxxVector<u8>) -> BlockContentDecodeResult {
 
-    let (block_cid, decoded_raw_data, error) = decode(&data);
-    if !error.is_none() {
-        return BlockContentDecodeResult {
-            data_offset: offset,
-            cid: String::new(),
-            data:  Vec::new(),
-            error: error.unwrap(),
-        } 
-    }
+    let (block_cid, decoded_raw_data) = match decode(&data){
+        Ok(res) => res,
+        Err(err) => {
+            return BlockContentDecodeResult {
+                data_offset: offset,
+                cid: String::new(),
+                data:  Vec::new(),
+                error: err,
+            } 
+        }
+    };
 
     let decoded : Vec<u8> = match decoded_raw_data.unwrap() {
-        // Ipld::List(ipld) => {
-        //     println!("List:{:?}", ipld);
-        // },
-        // Ipld::Link(ipld) => {
-        //     println!("Link:{:?}", ipld);
-        // },
         Ipld::Map(_) => {
             Vec::new()
         },
@@ -130,11 +121,11 @@ pub fn decode_block_content(offset: usize, data: &CxxVector<u8>) -> BlockContent
     }    
 }
 
-fn decode(data: &CxxVector<u8>) -> (Option<Cid>, Option<Ipld>, Option<ErrorData>) {
+fn decode(data: &CxxVector<u8>) -> Result<(Option<Cid>, Option<Ipld>), ErrorData> {
     let block_cid = Cid::try_from(data.as_slice()).map_err(|e| {
         let error = BlockDecoderError::InternalError(format!("Could not decode cid. Error: {}", e), 90u16);
-        return (None::<Cid>, None::<Ipld>, Some(ErrorData { error: error.to_string(), error_code: error.to_u16() }))
-    }).unwrap();
+        ErrorData { error: error.to_string(), error_code: error.to_u16() }
+    })?;
 
     let block_cid_len = block_cid.to_bytes().len();
     let decoded_raw_data: Ipld = match block_cid.codec() {
@@ -143,42 +134,38 @@ fn decode(data: &CxxVector<u8>) -> (Option<Cid>, Option<Ipld>, Option<ErrorData>
             .decode(&data.as_slice()[block_cid_len .. data.len()])
             .map_err(|e| {
                 let error = BlockDecoderError::InternalError(format!("Could not decode block. Error:{:?}", e), 100u16);
-                return (Some(block_cid), None::<Ipld>, Some(ErrorData { error: error.to_string(), error_code: error.to_u16() }))
-            })
-            .unwrap()
+                ErrorData { error: error.to_string(), error_code: error.to_u16() }
+            })?
         },
         CODEC_DAGPB => {
             DagPbCodec
             .decode(&data.as_slice()[block_cid_len .. data.len()])
             .map_err(|e| {
                 let error = BlockDecoderError::InternalError(format!("Could not decode block. Error:{:?}", e), 101u16);
-                return (Some(block_cid), None::<Ipld>, Some(ErrorData { error: error.to_string(), error_code: error.to_u16() }))
-            })
-            .unwrap()
+                ErrorData { error: error.to_string(), error_code: error.to_u16() }
+            })?
         },
         CODEC_JSON => {
             DagJsonCodec
             .decode(&data.as_slice()[block_cid_len .. data.len()])
             .map_err(|e| {
                 let error = BlockDecoderError::InternalError(format!("Could not decode block. Error:{:?}", e), 102u16);
-                return (Some(block_cid), None::<Ipld>, Some(ErrorData { error: error.to_string(), error_code: error.to_u16() }))
-            })
-            .unwrap()
+                ErrorData { error: error.to_string(), error_code: error.to_u16() }
+            })?
         },
         CODEC_RAW => {
             RawCodec
             .decode(&data.as_slice()[block_cid_len .. data.len()])
             .map_err(|e| {
                 let error = BlockDecoderError::InternalError(format!("Could not decode block. Error:{:?}", e), 103u16);
-                return (Some(block_cid), None::<Ipld>, Some(ErrorData { error: error.to_string(), error_code: error.to_u16() }))
-            })
-            .unwrap()
+                ErrorData { error: error.to_string(), error_code: error.to_u16() }
+            })?
         }
         _ => {
             let error = BlockDecoderError::InternalError("Unknown codec selected.".to_string(), 110u16);
-            return (Some(block_cid), None::<Ipld>, Some(ErrorData { error: error.to_string(), error_code: error.to_u16() }))
+            return Err(ErrorData { error: error.to_string(), error_code: error.to_u16() })
         }
     };
 
-    (Some(block_cid), Some(decoded_raw_data), None::<ErrorData>)
+    Ok((Some(block_cid), Some(decoded_raw_data)))
 }

@@ -9,6 +9,9 @@ pub mod block_decoder;
 use crate::car_header::{decode_carv1_header, decode_carv2_header};
 use crate::block_decoder::{decode_block_info, decode_block_content};
 
+//use std::error::Error;
+use std::fmt;
+
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = ipfs)]
 mod ffi {
@@ -43,7 +46,7 @@ mod ffi {
     pub struct ErrorData {
         error: String,
         error_code: u16,
-    }
+    }    
 
     #[derive(Debug)]
     pub struct CarV1HeaderResult {
@@ -72,6 +75,14 @@ mod ffi {
         cid: String,
         data: Vec<u8>,
         error: ErrorData
+    }
+}
+
+impl std::error::Error for ffi::ErrorData {}
+    
+impl fmt::Display for ffi::ErrorData {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Error: {}  Code: {}", self.error, self.error_code)
     }
 }
 
