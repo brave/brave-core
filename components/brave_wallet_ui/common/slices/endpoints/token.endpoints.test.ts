@@ -20,65 +20,50 @@ import {
   useRemoveUserTokenMutation
 } from '../api.slice'
 
+const fetchTokensAndSetupStore = async () => {
+  const store = createMockStore(
+    {},
+    {
+      userAssets: mockWalletState.userVisibleTokensInfo
+    }
+  )
+
+  const { result, waitForValueToChange, rerender } = renderHook(
+    () =>
+      useGetUserTokensRegistryQuery(undefined, {
+        selectFromResult: (res) => ({
+          isLoading: res.isLoading,
+          visibleTokens: selectAllVisibleUserAssetsFromQueryResult(res),
+          error: res.error
+        })
+      }),
+    renderHookOptionsWithMockStore(store)
+  )
+
+  await waitForValueToChange(() => result.current.isLoading)
+  const { visibleTokens, isLoading, error } = result.current
+
+  expect(isLoading).toBe(false)
+  expect(error).not.toBeDefined()
+  expect(visibleTokens).toHaveLength(
+    mockWalletState.userVisibleTokensInfo.length
+  )
+
+  return { result, rerender, store }
+}
+
 describe('token endpoints', () => {
   it('it should fetch tokens', async () => {
-    const store = createMockStore(
-      {},
-      {
-        userAssets: mockWalletState.userVisibleTokensInfo
-      }
-    )
-
-    const { result, waitForValueToChange } = renderHook(
-      () =>
-        useGetUserTokensRegistryQuery(undefined, {
-          selectFromResult: (res) => ({
-            isLoading: res.isLoading,
-            visibleTokens: selectAllVisibleUserAssetsFromQueryResult(res),
-            error: res.error
-          })
-        }),
-      renderHookOptionsWithMockStore(store)
-    )
-
-    await waitForValueToChange(() => result.current.isLoading)
-    const { visibleTokens, isLoading, error } = result.current
-
-    expect(isLoading).toBe(false)
-    expect(error).not.toBeDefined()
+    const { result } = await fetchTokensAndSetupStore()
+    const visibleTokens = result.current.visibleTokens
     expect(visibleTokens).toHaveLength(
       mockWalletState.userVisibleTokensInfo.length
     )
   })
 
   it('it should delete tokens', async () => {
-    const store = createMockStore(
-      {},
-      {
-        userAssets: mockWalletState.userVisibleTokensInfo
-      }
-    )
-
-    const { result, waitForValueToChange, rerender } = renderHook(
-      () =>
-        useGetUserTokensRegistryQuery(undefined, {
-          selectFromResult: (res) => ({
-            isLoading: res.isLoading,
-            visibleTokens: selectAllVisibleUserAssetsFromQueryResult(res),
-            error: res.error
-          })
-        }),
-      renderHookOptionsWithMockStore(store)
-    )
-
-    await waitForValueToChange(() => result.current.isLoading)
-    const { visibleTokens, isLoading, error } = result.current
-
-    expect(isLoading).toBe(false)
-    expect(error).not.toBeDefined()
-    expect(visibleTokens).toHaveLength(
-      mockWalletState.userVisibleTokensInfo.length
-    )
+    const { result, store, rerender } = await fetchTokensAndSetupStore()
+    const visibleTokens = result.current.visibleTokens
 
     const { result: mutationHook } = renderHook(
       () => useRemoveUserTokenMutation(),
@@ -98,33 +83,8 @@ describe('token endpoints', () => {
   })
 
   it('it should add tokens', async () => {
-    const store = createMockStore(
-      {},
-      {
-        userAssets: mockWalletState.userVisibleTokensInfo
-      }
-    )
-
-    const { result, waitForValueToChange, rerender } = renderHook(
-      () =>
-        useGetUserTokensRegistryQuery(undefined, {
-          selectFromResult: (res) => ({
-            isLoading: res.isLoading,
-            visibleTokens: selectAllVisibleUserAssetsFromQueryResult(res),
-            error: res.error
-          })
-        }),
-      renderHookOptionsWithMockStore(store)
-    )
-
-    await waitForValueToChange(() => result.current.isLoading)
-    const { visibleTokens, isLoading, error } = result.current
-
-    expect(isLoading).toBe(false)
-    expect(error).not.toBeDefined()
-    expect(visibleTokens).toHaveLength(
-      mockWalletState.userVisibleTokensInfo.length
-    )
+    const { result, store, rerender } = await fetchTokensAndSetupStore()
+    const visibleTokens = result.current.visibleTokens
 
     const { result: mutationHook } = renderHook(
       () => useAddUserTokenMutation(),
