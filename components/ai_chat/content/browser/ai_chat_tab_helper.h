@@ -85,13 +85,15 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // ai_chat::ConversationDriver
   GURL GetPageURL() const override;
   void GetPageContent(GetPageContentCallback callback,
-                      std::string_view invalidation_token) const override;
+                      std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   bool is_same_document_navigation_ = false;
   int64_t pending_navigation_id_;
+  bool is_pdf_a11y_info_loaded_ = false;
+  GetPageContentCallback pending_get_page_content_callback_;
 
   std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
   base::OnceClosure on_pdf_a11y_info_loaded_cb_;

@@ -126,7 +126,7 @@ class ConversationDriver {
   // response of this function against the same page. See GetPageContentCallback
   // for explanation.
   virtual void GetPageContent(GetPageContentCallback callback,
-                              std::string_view invalidation_token) const = 0;
+                              std::string_view invalidation_token) = 0;
 
   virtual void OnFaviconImageDataChanged();
 

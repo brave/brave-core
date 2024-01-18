@@ -89,7 +89,11 @@ void AIChatTabHelper::SetOnPDFA11yInfoLoadedCallbackForTesting(
 
 void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   DVLOG(3) << "PDF Loaded";
-  // TODO(darkdh): https://github.com/brave/brave-browser/issues/35414
+  is_pdf_a11y_info_loaded_ = true;
+  if (pending_get_page_content_callback_) {
+    FetchPageContent(web_contents(), "",
+                     std::move(pending_get_page_content_callback_));
+  }
   pdf_load_observer_.reset();
   if (on_pdf_a11y_info_loaded_cb_) {
     std::move(on_pdf_a11y_info_loaded_cb_).Run();
@@ -154,6 +158,7 @@ void AIChatTabHelper::InnerWebContentsAttached(
     inner_web_contents->SetAccessibilityMode(ui::AXMode(ui::kAXModeBasic));
     pdf_load_observer_ =
         std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents, this);
+    is_pdf_a11y_info_loaded_ = false;
   }
 }
 
@@ -174,10 +179,18 @@ GURL AIChatTabHelper::GetPageURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
-void AIChatTabHelper::GetPageContent(
-    GetPageContentCallback callback,
-    std::string_view invalidation_token) const {
-  FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
+                                     std::string_view invalidation_token) {
+  if (web_contents()->GetContentsMimeType() == "application/pdf" &&
+      !is_pdf_a11y_info_loaded_) {
+    if (pending_get_page_content_callback_) {
+      std::move(pending_get_page_content_callback_).Run("", false, "");
+    }
+    // invalidation_token doesn't matter for PDF extraction.
+    pending_get_page_content_callback_ = std::move(callback);
+  } else {
+    FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+  }
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
