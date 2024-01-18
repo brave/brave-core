@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/components/brave_ads/browser/analytics/p3a/notification.h"
+#include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -15,15 +15,8 @@
 
 namespace brave_ads {
 
-namespace {
-constexpr base::TimeDelta kDebounceDelay = base::Seconds(6);
-}  // namespace
-
-class AdsNotificationP3ATest : public testing::Test {
+class NotificationAdP3ATest : public testing::Test {
  public:
-  AdsNotificationP3ATest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
-
   void SetUp() override {
     pref_service_.registry()->RegisterDoublePref(
         prefs::kNotificationAdLastNormalizedCoordinateX, 0.0);
@@ -43,32 +36,27 @@ class AdsNotificationP3ATest : public testing::Test {
     pref_service_.SetBoolean(prefs::kOptedInToNotificationAds, true);
   }
 
-  NotificationMetrics metrics_;
   base::HistogramTester histogram_tester_;
   TestingPrefServiceSimple pref_service_;
-  content::BrowserTaskEnvironment task_environment_;
 };
 
-TEST_F(AdsNotificationP3ATest, CustomNotificationsDisabled) {
-  metrics_.RecordNotificationPositionMetric(false, &pref_service_);
-  task_environment_.FastForwardBy(kDebounceDelay);
-  histogram_tester_.ExpectUniqueSample(kNotificationPositionHistogramName,
+TEST_F(NotificationAdP3ATest, CustomNotificationsDisabled) {
+  RecordNotificationAdPositionMetric(false, &pref_service_);
+  histogram_tester_.ExpectUniqueSample(kNotificationAdPositionHistogramName,
                                        INT_MAX - 1, 1);
 
-  metrics_.RecordNotificationPositionMetric(true, &pref_service_);
-  task_environment_.FastForwardBy(kDebounceDelay);
-  histogram_tester_.ExpectUniqueSample(kNotificationPositionHistogramName,
+  RecordNotificationAdPositionMetric(true, &pref_service_);
+  histogram_tester_.ExpectUniqueSample(kNotificationAdPositionHistogramName,
                                        INT_MAX - 1, 2);
 
   EnableAdNotifications();
-  metrics_.RecordNotificationPositionMetric(true, &pref_service_);
-  task_environment_.FastForwardBy(kDebounceDelay);
-  histogram_tester_.ExpectUniqueSample(kNotificationPositionHistogramName,
+  RecordNotificationAdPositionMetric(true, &pref_service_);
+  histogram_tester_.ExpectUniqueSample(kNotificationAdPositionHistogramName,
                                        INT_MAX - 1, 3);
-  histogram_tester_.ExpectTotalCount(kNotificationPositionHistogramName, 3);
+  histogram_tester_.ExpectTotalCount(kNotificationAdPositionHistogramName, 3);
 }
 
-TEST_F(AdsNotificationP3ATest, CustomNotificationsEnabled) {
+TEST_F(NotificationAdP3ATest, CustomNotificationsEnabled) {
   std::pair<std::pair<double, double>, int> cases[] = {
       {{0.15, 0.28}, 1},
       {{0.42, 0.1}, 2},
@@ -83,13 +71,12 @@ TEST_F(AdsNotificationP3ATest, CustomNotificationsEnabled) {
   for (auto [position, answer] : cases) {
     auto [x, y] = position;
     SetNotificationPosition(x, y);
-    metrics_.RecordNotificationPositionMetric(true, &pref_service_);
-    task_environment_.FastForwardBy(kDebounceDelay);
-    histogram_tester_.ExpectBucketCount(kNotificationPositionHistogramName,
+    RecordNotificationAdPositionMetric(true, &pref_service_);
+    histogram_tester_.ExpectBucketCount(kNotificationAdPositionHistogramName,
                                         answer, 1);
   }
 
-  histogram_tester_.ExpectTotalCount(kNotificationPositionHistogramName, 9);
+  histogram_tester_.ExpectTotalCount(kNotificationAdPositionHistogramName, 9);
 }
 
 }  // namespace brave_ads

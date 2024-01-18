@@ -23,7 +23,6 @@
 #include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/analytics/p3a/notification.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -196,7 +195,7 @@ class AdsServiceImpl : public AdsService,
                           UrlRequestCallback callback,
                           std::unique_ptr<std::string> response_body);
 
-  void OnNotificationPositionChanged();
+  void OnNotificationAdPositionChanged();
 
   // KeyedService:
   void Shutdown() override;
@@ -429,8 +428,6 @@ class AdsServiceImpl : public AdsService,
   base::CancelableTaskTracker history_service_task_tracker_;
 
   SimpleURLLoaderList url_loaders_;
-
-  NotificationMetrics notification_metrics_;
 
   const raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 

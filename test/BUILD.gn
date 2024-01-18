@@ -115,7 +115,7 @@ test("brave_unit_tests") {
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/profiler/thread_profile_configuration_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
-    "//brave/components/brave_ads/browser/analytics/p3a/notification_unittest.cc",
+    "//brave/components/brave_ads/browser/analytics/p3a/notification_ad_unittest.cc",
     "//brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_converting_util_unittest.cc",
     "//brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_handler_unittest.cc",
     "//brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_util_unittest.cc",
