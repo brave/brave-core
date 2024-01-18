@@ -40,7 +40,7 @@ export type MockBraveRewardsProxyInstance = InstanceType<
 
 let braveRewardsProxyInstance: MockBraveRewardsProxyInstance
 
-export const getMockedBraveRewardsProxy = () => {
+export const getBraveRewardsProxy = () => {
   if (!braveRewardsProxyInstance) {
     braveRewardsProxyInstance = new MockBraveRewardsProxy()
   }
@@ -48,8 +48,6 @@ export const getMockedBraveRewardsProxy = () => {
   return braveRewardsProxyInstance as unknown as BraveRewardsProxyInstance &
     MockBraveRewardsProxy
 }
-
-export const getBraveRewardsProxy = getMockedBraveRewardsProxy
 
 export function resetRewardsProxy(
   overrides?: BraveRewardsProxyOverrides | undefined
