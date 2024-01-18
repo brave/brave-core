@@ -54,7 +54,7 @@ class DiscoverNextUnusedZCashAddressTask
 
   void WorkOnTask();
   void OnGetIsKnownAddress(base::expected<bool, std::string> stats);
-  void OnGetLastBlock(base::expected<zcash::BlockID, std::string> result);
+  void OnGetLastBlock(base::expected<mojom::BlockIDPtr, std::string> result);
 
   base::WeakPtr<ZCashWalletService> zcash_wallet_service_;
   mojom::AccountIdPtr account_id_;
@@ -91,7 +91,7 @@ class CreateTransparentTransactionTask {
   bool PickInputs();
   bool PrepareOutputs();
 
-  void OnGetChainHeight(base::expected<zcash::BlockID, std::string> result);
+  void OnGetChainHeight(base::expected<mojom::BlockIDPtr, std::string> result);
   void OnGetUtxos(
       base::expected<ZCashWalletService::UtxoMap, std::string> utxo_map);
   void OnGetChangeAddress(

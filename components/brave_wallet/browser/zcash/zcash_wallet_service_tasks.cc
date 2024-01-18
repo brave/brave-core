@@ -128,14 +128,14 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
 }
 
 void DiscoverNextUnusedZCashAddressTask::OnGetLastBlock(
-    base::expected<zcash::BlockID, std::string> result) {
-  if (!result.has_value()) {
+    base::expected<mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
     error_ = result.error();
     WorkOnTask();
     return;
   }
 
-  block_end_ = result.value().height();
+  block_end_ = (*result)->height;
   WorkOnTask();
 }
 
@@ -237,14 +237,14 @@ void CreateTransparentTransactionTask::WorkOnTask() {
 }
 
 void CreateTransparentTransactionTask::OnGetChainHeight(
-    base::expected<zcash::BlockID, std::string> result) {
-  if (!result.has_value()) {
+    base::expected<mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
     SetError(std::move(result).error());
     WorkOnTask();
     return;
   }
 
-  chain_height_ = result.value().height();
+  chain_height_ = (*result)->height;
   WorkOnTask();
 }
 
@@ -281,8 +281,12 @@ bool CreateTransparentTransactionTask::PickInputs() {
   std::vector<ZCashTransaction::TxInput> all_inputs;
   for (const auto& item : utxo_map_) {
     for (const auto& utxo : item.second) {
+      if (!utxo) {
+        error_ = "Utxo missing";
+        return false;
+      }
       if (auto input =
-              ZCashTransaction::TxInput::FromRpcUtxo(item.first, utxo)) {
+              ZCashTransaction::TxInput::FromRpcUtxo(item.first, *utxo)) {
         all_inputs.emplace_back(std::move(*input));
       }
     }

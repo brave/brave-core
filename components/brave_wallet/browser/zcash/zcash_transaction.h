@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
 namespace brave_wallet {
 
@@ -51,7 +51,7 @@ class ZCashTransaction {
     static std::optional<TxInput> FromValue(const base::Value::Dict& value);
 
     static std::optional<TxInput> FromRpcUtxo(const std::string& address,
-                                              const zcash::ZCashUtxo& utxo);
+                                              const mojom::ZCashUtxo& utxo);
 
     std::string utxo_address;
     Outpoint utxo_outpoint;

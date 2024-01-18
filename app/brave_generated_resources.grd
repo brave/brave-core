@@ -898,6 +898,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_NO" desc="Ignore proposition">
         Cancel
       </message>
+      <!-- Brave Wallet -->
+      <message name="IDS_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The utility process running wallet utils">
+        Brave Wallet Utility Service
+      </message>
 
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">

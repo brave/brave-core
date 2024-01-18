@@ -135,6 +135,8 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/ipfs",
     "//brave/components/json/rs:rust_lib",
     "//brave/components/resources:strings_grit",
+    "//brave/components/services/brave_wallet/public/cpp/utils",
+    "//brave/components/services/brave_wallet/public/mojom",
     "//components/component_updater:test_support",
     "//components/permissions",
     "//components/prefs",
