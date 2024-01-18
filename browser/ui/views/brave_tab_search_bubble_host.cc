@@ -16,9 +16,10 @@ void BraveTabSearchBubbleHost::SetBubbleArrow(
 }
 
 bool BraveTabSearchBubbleHost::ShowTabSearchBubble(
-    bool triggered_by_keyboard_shortcut) {
-  bool result =
-      TabSearchBubbleHost::ShowTabSearchBubble(triggered_by_keyboard_shortcut);
+    bool triggered_by_keyboard_shortcut,
+    int tab_index) {
+  bool result = TabSearchBubbleHost::ShowTabSearchBubble(
+      triggered_by_keyboard_shortcut, tab_index);
   if (!arrow_ || !result) {
     return result;
   }
