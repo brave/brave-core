@@ -44,7 +44,14 @@ platform :ios do
       scheme: "Beta",
       export_method: "app-store",
       export_options: {
-        manageAppVersionAndBuildNumber: false
+        manageAppVersionAndBuildNumber: false,
+        provisioningProfiles: {
+          "com.brave.ios.browser.beta" => "Brave iOS Beta",
+          "com.brave.ios.browser.beta.ShareExtension" => "Brave iOS Beta Share Extension",
+          "com.brave.ios.browser.beta.BrowserIntents" => "Brave iOS Beta Intents Extension",
+          "com.brave.ios.browser.beta.BraveWidgetsExtension" => "Brave iOS Beta Widgets Extension",
+          "com.brave.ios.browser.beta.BraveWireGuard" => "Brave iOS Beta Wireguard Extension",
+        },
       }
     }
     pilotOverrides = {
@@ -80,11 +87,11 @@ platform :ios do
       export_options: {
         method: "app-store",
         provisioningProfiles: {
-          "com.brave.ios.browser" => "Brave iOS",
-          "com.brave.ios.browser.ShareExtension" => "Brave iOS Share Extension",
-          "com.brave.ios.browser.BrowserIntents" => "Brave iOS Intents Extension",
-          "com.brave.ios.browser.BraveWidgetsExtension" => "Brave iOS Widgets Extension",
-          "com.brave.ios.browser.BraveWireGuard" => "Brave iOS WireGuard Extension",
+          "com.brave.ios.browser" => "Brave iOS Release",
+          "com.brave.ios.browser.ShareExtension" => "Brave iOS Release Share Extension",
+          "com.brave.ios.browser.BrowserIntents" => "Brave iOS Release Intents Extension",
+          "com.brave.ios.browser.BraveWidgetsExtension" => "Brave iOS Release Widgets Extension",
+          "com.brave.ios.browser.BraveWireGuard" => "Brave iOS Release WireGuard Extension",
         },
         manageAppVersionAndBuildNumber: false
       },
