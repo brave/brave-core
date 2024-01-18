@@ -560,6 +560,9 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
 
     CHECK_EQ(children().size(), new_children.size());
     if (children().front() == new_children.front()) {
+      // In order to make sure that |spacer_| has flex behavior on start up.
+      layout_->SetFlexForView(
+          spacer_, 1 /* resize |spacer| to fill the rest of space */);
       return;
     }
 
