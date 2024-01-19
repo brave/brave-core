@@ -137,6 +137,7 @@ source_set("browser_tests") {
       "//extensions/common",
       "//services/device/public/cpp:device_features",
       "//testing/gtest",
+      "//ui/accessibility:ax_base",
     ]
 
     if (is_linux || is_win || is_mac) {
