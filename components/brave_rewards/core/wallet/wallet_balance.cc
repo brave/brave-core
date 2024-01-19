@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal::wallet {
 

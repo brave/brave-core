@@ -13,7 +13,9 @@
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
+#include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal {
 

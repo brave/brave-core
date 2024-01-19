@@ -8,17 +8,31 @@
 #include <vector>
 
 #include "base/task/thread_pool/thread_pool_instance.h"
+#include "brave/components/brave_rewards/core/api/api.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
+#include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/initialization_manager.h"
+#include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/promotion/promotion.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/recovery/recovery.h"
+#include "brave/components/brave_rewards/core/report/report.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
 #include "brave/components/brave_rewards/core/wallet_provider/solana/solana_wallet_provider.h"
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
+#include "brave/components/brave_rewards/core/zebpay/zebpay.h"
 
 namespace brave_rewards::internal {
 
@@ -29,20 +43,20 @@ RewardsEngineImpl::RewardsEngineImpl(
                std::make_unique<URLLoader>(*this),
                std::make_unique<LinkageChecker>(*this),
                std::make_unique<SolanaWalletProvider>(*this)),
-      promotion_(*this),
-      publisher_(*this),
-      media_(*this),
-      contribution_(*this),
-      wallet_(*this),
-      database_(*this),
-      report_(*this),
-      state_(*this),
-      api_(*this),
-      recovery_(*this),
-      bitflyer_(*this),
-      gemini_(*this),
-      uphold_(*this),
-      zebpay_(*this) {
+      promotion_(std::make_unique<promotion::Promotion>(*this)),
+      publisher_(std::make_unique<publisher::Publisher>(*this)),
+      media_(std::make_unique<Media>(*this)),
+      contribution_(std::make_unique<contribution::Contribution>(*this)),
+      wallet_(std::make_unique<wallet::Wallet>(*this)),
+      database_(std::make_unique<database::Database>(*this)),
+      report_(std::make_unique<report::Report>(*this)),
+      state_(std::make_unique<state::State>(*this)),
+      api_(std::make_unique<api::API>(*this)),
+      recovery_(std::make_unique<recovery::Recovery>(*this)),
+      bitflyer_(std::make_unique<bitflyer::Bitflyer>(*this)),
+      gemini_(std::make_unique<gemini::Gemini>(*this)),
+      uphold_(std::make_unique<uphold::Uphold>(*this)),
+      zebpay_(std::make_unique<zebpay::ZebPay>(*this)) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_client_for_logging(client_.get());
 }
@@ -397,21 +411,21 @@ void RewardsEngineImpl::GetRewardsInternalsInfo(
   WhenReady([this, callback = std::move(callback)]() mutable {
     auto info = mojom::RewardsInternalsInfo::New();
 
-    mojom::RewardsWalletPtr wallet = wallet_.GetWallet();
-    if (!wallet) {
+    mojom::RewardsWalletPtr rewards_wallet = wallet()->GetWallet();
+    if (!rewards_wallet) {
       LogError(FROM_HERE) << "Wallet is null";
       std::move(callback).Run(std::move(info));
       return;
     }
 
     // Retrieve the payment id.
-    info->payment_id = wallet->payment_id;
+    info->payment_id = rewards_wallet->payment_id;
 
     // Retrieve the boot stamp.
     info->boot_stamp = state()->GetCreationStamp();
 
     // Retrieve the key info seed and validate it.
-    if (Signer::FromRecoverySeed(wallet->recovery_seed)) {
+    if (Signer::FromRecoverySeed(rewards_wallet->recovery_seed)) {
       info->is_key_info_seed_valid = true;
     }
 
@@ -736,22 +750,22 @@ mojom::RewardsEngineClient* RewardsEngineImpl::client() {
 }
 
 database::Database* RewardsEngineImpl::database() {
-  return &database_;
+  return database_.get();
 }
 
 wallet_provider::WalletProvider* RewardsEngineImpl::GetExternalWalletProvider(
     const std::string& wallet_type) {
   if (wallet_type == constant::kWalletBitflyer) {
-    return &bitflyer_;
+    return bitflyer_.get();
   }
   if (wallet_type == constant::kWalletGemini) {
-    return &gemini_;
+    return gemini_.get();
   }
   if (wallet_type == constant::kWalletUphold) {
-    return &uphold_;
+    return uphold_.get();
   }
   if (wallet_type == constant::kWalletZebPay) {
-    return &zebpay_;
+    return zebpay_.get();
   }
   if (wallet_type == constant::kWalletSolana) {
     return &Get<SolanaWalletProvider>();
