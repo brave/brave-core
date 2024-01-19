@@ -99,6 +99,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       "font-src 'self' data: chrome-untrusted://resources;");
+
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 }
 
 AIChatUI::~AIChatUI() = default;
