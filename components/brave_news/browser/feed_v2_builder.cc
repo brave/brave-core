@@ -629,6 +629,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopTopicsBlock(
   }
 
   std::vector<mojom::ArticleElementsPtr> items;
+  const auto max_block_size =
+      static_cast<size_t>(features::kBraveNewsMaxBlockCards.Get());
   for (const auto& [topic, articles] : topics) {
     if (articles.empty()) {
       continue;
@@ -637,8 +639,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopTopicsBlock(
     auto item = FromTopicArticle(publishers, articles.at(0));
     items.push_back(mojom::ArticleElements::NewArticle(
         mojom::Article::New(std::move(item), false)));
-    if (items.size() >
-        static_cast<size_t>(features::kBraveNewsMaxBlockCards.Get())) {
+    if (items.size() >= max_block_size) {
       break;
     }
   }
@@ -1273,8 +1274,13 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
   // Step 3: Generate a top news block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.7z05nb4b269d
   // This block is a bit special - we take the top articles from the top few
-  // topics and display them in a cluster.
+  // topics and display them in a cluster. If there are no topics, we try and do
+  // the same thing, but with the Top News channel.
   auto top_news_block = GenerateTopTopicsBlock(publishers, topics);
+  if (top_news_block.empty()) {
+    top_news_block =
+        GenerateChannelBlock(locale, publishers, kTopNewsChannel, articles);
+  }
   DVLOG(1) << "Step 3: Top News Block";
   add_items(top_news_block);
 
