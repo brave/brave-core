@@ -204,7 +204,7 @@ BatchDLEQProof::VerifyAndUnblind(
                                *raw_signed_tokens.value(), public_key.raw());
 
   if (!unblinded_tokens_result->is_ok()) {
-    return base::unexpected("Failed to verify and unblined batch DLEQ proof");
+    return base::unexpected("Failed to verify and unblind batch DLEQ proof");
   }
   rust::Box<cbr_cxx::UnblindedTokens> raw_unblinded_tokens =
       unblinded_tokens_result->unwrap();

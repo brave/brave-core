@@ -115,7 +115,7 @@ TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
 
   EXPECT_FALSE(unblinded_encoded_tokens.has_value());
   EXPECT_EQ(unblinded_encoded_tokens.error(),
-            "Failed to verify and unblined batch DLEQ proof");
+            "Failed to verify and unblind batch DLEQ proof");
 }
 
 }  // namespace credential

@@ -269,7 +269,7 @@ impl Error {
 
 impl From<TokenError> for Error {
     fn from(error: TokenError) -> Self {
-        Error { msg: "fixme".to_string(), code: error.into() }
+        Error { msg: "fixme".to_string(), code: error }
     }
 }
 
@@ -415,7 +415,6 @@ impl SigningKey {
                 )?
                 .into())
             }()
-            .map_err(|e| e.into())
             .into(),
         )
     }
