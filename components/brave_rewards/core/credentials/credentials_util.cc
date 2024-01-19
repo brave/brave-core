@@ -8,8 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/base64.h"
-#include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
