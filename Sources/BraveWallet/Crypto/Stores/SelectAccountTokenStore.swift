@@ -324,7 +324,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
               return nil
             }
             var price: String?
-            if let tokenPrice = pricesForTokensCache[token.assetRatioId.lowercased()],
+            if let tokenPrice = pricesCache[token.assetRatioId.lowercased()],
                balance > 0 {
               price = currencyFormatter.string(from: NSNumber(value: (Double(tokenPrice) ?? 0) * balance))
             }
