@@ -173,6 +173,8 @@ export const SendScreen = React.memo((props: Props) => {
   const [domainPosition, setDomainPosition] = React.useState<number>(0)
   const [selectedNetworkFilter, setSelectedNetworkFilter] =
     React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
+  const [isWarningAcknowledged, setIsWarningAcknowledged] =
+    React.useState<boolean>(false)
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -789,7 +791,10 @@ export const SendScreen = React.memo((props: Props) => {
                   />
                 )}
                 {tokenFromParams?.coin === BraveWallet.CoinType.BTC && (
-                  <OrdinalsWarningMessage />
+                  <OrdinalsWarningMessage
+                    acknowledged={isWarningAcknowledged}
+                    onChange={setIsWarningAcknowledged}
+                  />
                 )}
               </Column>
               <Row
@@ -828,7 +833,9 @@ export const SendScreen = React.memo((props: Props) => {
                       Boolean(addressError) ||
                       sendAmount === '' ||
                       parseFloat(sendAmount) === 0 ||
-                      Boolean(sendAmountValidationError)
+                      Boolean(sendAmountValidationError) ||
+                      (tokenFromParams?.coin === BraveWallet.CoinType.BTC &&
+                        !isWarningAcknowledged)
                     }
                     hasError={reviewButtonHasError}
                   />

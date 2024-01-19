@@ -8,27 +8,58 @@ import * as React from 'react'
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 
+// Components
+import { Checkbox } from 'brave-ui/components'
+
 // Shared Styles
-import { Text } from '../../shared.styles'
+import { Column, Text } from '../../shared.styles'
 
 // Styles
-import { StyledRow, WarningIcon } from './ordinals-warning-message.style'
+import {
+  CheckboxWrapper,
+  StyledRow,
+  WarningIcon
+} from './ordinals-warning-message.style'
 
-export const OrdinalsWarningMessage = () => {
+interface Props {
+  acknowledged: boolean
+  onChange: (acknowledged: boolean) => void
+}
+
+export const OrdinalsWarningMessage = ({ acknowledged, onChange }: Props) => {
   return (
     <StyledRow
-      verticalAlign='center'
+      verticalAlign='flex-start'
       horizontalAlign='flex-start'
     >
       <WarningIcon name='warning-triangle-filled' />
-      <Text
-        textSize='12px'
-        textColor='warning'
-        textAlign='left'
-        isBold={false}
-      >
-        {getLocale('braveWalletOrdinalsWarningMessage')}
-      </Text>
+      <Column horizontalAlign='flex-start'>
+        <Text
+          textSize='12px'
+          textColor='warning'
+          textAlign='left'
+          isBold={false}
+        >
+          {getLocale('braveWalletOrdinalsWarningMessage')}
+        </Text>
+        <CheckboxWrapper>
+          <Checkbox
+            value={{ selected: acknowledged }}
+            onChange={(_, selected) => onChange(selected)}
+          >
+            <div data-key='selected'>
+              <Text
+                textSize='12px'
+                textColor='warning'
+                textAlign='left'
+                isBold={false}
+              >
+                {getLocale('braveWalletOrdinalsWarningLabel')}
+              </Text>
+            </div>
+          </Checkbox>
+        </CheckboxWrapper>
+      </Column>
     </StyledRow>
   )
 }
