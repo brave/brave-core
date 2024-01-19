@@ -211,7 +211,7 @@ class ConversationDriver {
   int64_t current_navigation_id_;
 
   mojom::APIError current_error_ = mojom::APIError::None;
-  mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Inactive;
+  mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
   std::unique_ptr<mojom::ConversationTurn> pending_conversation_entry_;
 

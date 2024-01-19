@@ -38,12 +38,19 @@ using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
 
+namespace ai_chat {
+
 namespace {
+
 static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
-}  // namespace
 
-namespace ai_chat {
+bool IsPremiumStatus(mojom::PremiumStatus status) {
+  return status == mojom::PremiumStatus::Active ||
+         status == mojom::PremiumStatus::ActiveDisconnected;
+}
+
+}  // namespace
 
 ConversationDriver::ConversationDriver(
     PrefService* profile_prefs,
@@ -87,7 +94,7 @@ ConversationDriver::ConversationDriver(
         [](ConversationDriver* instance, mojom::PremiumStatus status,
            mojom::PremiumInfoPtr) {
           instance->last_premium_status_ = status;
-          if (status == mojom::PremiumStatus::Inactive) {
+          if (!IsPremiumStatus(status)) {
             // Not premium
             return;
           }
@@ -842,9 +849,15 @@ void ConversationDriver::OnPremiumStatusReceived(
     mojom::PageHandler::GetPremiumStatusCallback parent_callback,
     mojom::PremiumStatus premium_status,
     mojom::PremiumInfoPtr premium_info) {
-  if (last_premium_status_ != premium_status &&
-      premium_status == mojom::PremiumStatus::Active) {
-    // Change model if we haven't already
+  // Maybe switch to premium model when user is newly premium and on a basic
+  // model
+  const bool should_switch_model =
+      // This isn't the first retrieval (that's handled in the constructor)
+      last_premium_status_ != mojom::PremiumStatus::Unknown &&
+      last_premium_status_ != premium_status &&
+      premium_status == mojom::PremiumStatus::Active &&
+      GetCurrentModel().access == mojom::ModelAccess::BASIC;
+  if (should_switch_model) {
     ChangeModel(features::kAIModelsPremiumDefaultKey.Get());
   }
   last_premium_status_ = premium_status;
@@ -913,7 +926,7 @@ void ConversationDriver::RateMessage(
     base::span<const mojom::ConversationTurn> history_slice =
         base::make_span(history).first(current_turn_id);
 
-    bool is_premium = last_premium_status_ != mojom::PremiumStatus::Inactive;
+    bool is_premium = IsPremiumStatus(last_premium_status_);
 
     feedback_api_->SendRating(is_liked, is_premium, history_slice,
                               GetCurrentModel().name, std::move(on_complete));
