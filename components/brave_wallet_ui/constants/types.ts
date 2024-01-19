@@ -1109,3 +1109,25 @@ export type RewardsExternalWallet = Pick<
 > & {
   status: WalletStatus
 }
+export const PaymentProviderTypeNames = [
+  'bank',
+  'card',
+  'exchange',
+  'mobile-wallet'
+] as const
+
+export type PaymentProviderType = (typeof PaymentProviderTypeNames)[number]
+
+export const PaymentMethodOptionNames = [
+  'SEPA',
+  'SEPA Instant',
+  'Binance P2P Trading',
+  'Apple Pay',
+  'Maestro',
+  'Visa',
+  'Mastercard',
+  'American Express',
+  'Discover'
+] as const
+
+export type PaymentMethodOptionNames = (typeof PaymentMethodOptionNames)[number]
