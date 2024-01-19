@@ -7,7 +7,7 @@ index 247c6d1987d7e1f489fc23c04bce9f1af4a3be37..e2c5cccb46fe308be85f61f8f21f9ea2
          // value should be updated before adding an observer to prevent an extra call of
          // updateContent().
 -        getPrefService()
-+        if (FeedFeatures.isFeedEnabled()) getPrefService()
++        if (FeedFeatures.isFeedEnabled(mProfile)) getPrefService()
                  .setBoolean(
                          Pref.ENABLE_SNIPPETS_BY_DSE,
                          !mIsNewTabSearchEngineUrlAndroidEnabled

@@ -132,7 +132,7 @@ public class BraveNewTabPage extends NewTabPage {
         LayoutInflater inflater = LayoutInflater.from(activity);
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
-        assert !FeedFeatures.isFeedEnabled();
+        assert !FeedFeatures.isFeedEnabled(profile);
         FeedSurfaceCoordinator feedSurfaceCoordinator =
                 new BraveFeedSurfaceCoordinator(
                         activity,
