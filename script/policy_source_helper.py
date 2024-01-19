@@ -162,6 +162,27 @@ def AddBravePolicies(template_file_contents):
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''VPN feature will be disabled.'''),
         },
+        {
+            'name': 'BraveAIChatEnabled',
+            'type': 'main',
+            'schema': {
+                'type': 'boolean'
+            },
+            'supported_on': ['chrome.*:121-'],
+            'future_on': ['android'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 7,
+            'caption': '''Enable Brave AI Chat feature.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''AI Chat feature will be enabled.'''),
+        },
     ]
 
     # Our new polices are added with highest id

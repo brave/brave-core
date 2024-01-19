@@ -13,6 +13,8 @@ static_library("common") {
     "features.h",
     "pref_names.cc",
     "pref_names.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   deps = [

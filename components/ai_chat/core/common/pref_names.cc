@@ -34,6 +34,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kBraveChatProductIdAndroid, "");
 #endif
   registry->RegisterBooleanPref(kBraveAIChatContextMenuEnabled, true);
+  registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
