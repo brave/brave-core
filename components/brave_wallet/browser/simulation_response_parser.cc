@@ -686,11 +686,13 @@ mojom::EVMSimulationResponsePtr ParseSimulationResponse(
           .expected_state_changes.GetDict();
 
   auto* account_state_changes_value =
-      expected_state_changes_value.FindList(user_account)
-          ?: expected_state_changes_value.FindList(
-                 base::ToLowerASCII(user_account));
+      expected_state_changes_value.FindList(user_account);
   if (!account_state_changes_value) {
-    return nullptr;
+    account_state_changes_value =
+        expected_state_changes_value.FindList(base::ToLowerASCII(user_account));
+    if (!account_state_changes_value) {
+      return nullptr;
+    }
   }
 
   for (const auto& state_change_value : *account_state_changes_value) {
@@ -1268,11 +1270,13 @@ mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
       simulation_response_value->aggregated.expected_state_changes.GetDict();
 
   auto* account_state_changes_value =
-      expected_state_changes_value.FindList(user_account)
-          ?: expected_state_changes_value.FindList(
-                 base::ToLowerASCII(user_account));
+      expected_state_changes_value.FindList(user_account);
   if (!account_state_changes_value) {
-    return nullptr;
+    account_state_changes_value =
+        expected_state_changes_value.FindList(base::ToLowerASCII(user_account));
+    if (!account_state_changes_value) {
+      return nullptr;
+    }
   }
 
   for (const auto& state_change_value : *account_state_changes_value) {
