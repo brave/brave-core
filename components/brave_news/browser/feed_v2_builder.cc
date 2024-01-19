@@ -317,6 +317,11 @@ ContentGroup SampleContentGroup(
   return PickRandom<ContentGroup>(eligible_content_groups);
 }
 
+// Picks the first article from the list - useful when the list has been sorted.
+int PickFirst(const ArticleInfos& articles) {
+  return articles.empty() ? -1 : 0;
+}
+
 // Picks an article with a probability article_weight/sum(article_weights).
 int PickRoulette(const ArticleInfos& articles,
                  GetWeighting get_weighting = base::BindRepeating(
@@ -1201,7 +1206,9 @@ void FeedV2Builder::GenerateFeed(
           std::move(build_feed), std::move(callback)));
 }
 
-mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items) {
+mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items, BlockGenerator generator=base::BindRepeating([](ArticleInfos& articles, double ratio) {
+  return GenerateBlock(articles, ratio);
+})) {
   DVLOG(1) << __FUNCTION__;
 
   auto suggested_publisher_ids = suggested_publisher_ids_;
