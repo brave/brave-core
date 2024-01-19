@@ -53,7 +53,7 @@ GURL ConversationDriverIOS::GetPageURL() const {
 
 void ConversationDriverIOS::GetPageContent(
     ConversationDriver::GetPageContentCallback callback,
-    std::string_view invalidation_token) const {
+    std::string_view invalidation_token) {
   [bridge_
       getPageContentWithCompletion:[callback =
                                         std::make_shared<decltype(callback)>(
