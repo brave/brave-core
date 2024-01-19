@@ -1205,7 +1205,8 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
     eligible_content_groups.push_back(std::make_pair(channel_id, true));
   }
   for (const auto& [publisher_id, publisher] : publishers) {
-    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED) {
+    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
+        publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
       eligible_content_groups.push_back(std::make_pair(publisher_id, false));
       DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
     }
