@@ -42,7 +42,7 @@ base::Value::Dict GetMetadata(const mojom::OriginInfoPtr& origin_info) {
 
 namespace evm {
 
-std::optional<std::string> EncodeScanTransactionParams(
+std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     const mojom::TransactionInfoPtr& tx_info) {
   if (!tx_info || !tx_info->from_address) {
     return std::nullopt;
@@ -101,11 +101,19 @@ std::optional<std::string> EncodeScanTransactionParams(
   }
 
   base::Value::Dict params;
-  params.Set("txObject", std::move(tx_object));
+
+  base::Value::List tx_objects;
+  tx_objects.Append(std::move(tx_object));
+  params.Set("txObjects", std::move(tx_objects));
   params.Set("metadata", GetMetadata(tx_info->origin_info));
   params.Set("userAccount", *tx_info->from_address);
 
-  return GetJSON(base::Value(std::move(params)));
+  if (auto* user_account = params.FindString("userAccount")) {
+    return std::make_pair(GetJSON(base::Value(std::move(params))),
+                          *user_account);
+  }
+
+  return std::nullopt;
 }
 
 }  // namespace evm
@@ -153,7 +161,7 @@ std::optional<std::string> GetBase64TransactionFromTxDataUnion(
 
 }  // namespace
 
-std::optional<std::string> EncodeScanTransactionParams(
+std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     const mojom::SolanaTransactionRequestUnionPtr& request) {
   if (!request) {
     return std::nullopt;
@@ -217,7 +225,12 @@ std::optional<std::string> EncodeScanTransactionParams(
     return std::nullopt;
   }
 
-  return GetJSON(base::Value(std::move(params)));
+  if (auto* user_account = params.FindString("userAccount")) {
+    return std::make_pair(GetJSON(base::Value(std::move(params))),
+                          *user_account);
+  }
+
+  return std::nullopt;
 }
 
 }  // namespace solana

@@ -69,9 +69,11 @@ class SimulationService : public KeyedService, public mojom::SimulationService {
 
  private:
   void OnScanEVMTransaction(ScanEVMTransactionCallback callback,
+                            const std::string& user_account,
                             APIRequestResult api_request_result);
 
   void OnScanSolanaTransaction(ScanSolanaTransactionCallback callback,
+                               const std::string& user_account,
                                APIRequestResult api_request_result);
 
   api_request_helper::APIRequestHelper api_request_helper_;
