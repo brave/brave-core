@@ -2615,7 +2615,14 @@ struct BlowfishSolanaAsset {
   int32 decimals;
   string image_url;
   BlowfishPrice? price;
-  BlowfishMetaplexTokenStandardKind? metaplex_token_standard;
+
+  // Blowfish API may return a null or missing value for this field if the token
+  // does not conform to the Metaplex Token Standard. In all such cases, the
+  // value of this field is set to kUnknown and should be ignored.
+  //
+  // The choice of using kUnknown is intentional, since Mojo does not allow
+  // enums to be optional.
+  BlowfishMetaplexTokenStandardKind metaplex_token_standard;
 };
 
 struct BlowfishSOLTransferData {

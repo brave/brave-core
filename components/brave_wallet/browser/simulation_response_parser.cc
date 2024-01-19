@@ -713,14 +713,14 @@ namespace solana {
 
 namespace {
 
-std::optional<mojom::BlowfishMetaplexTokenStandardKind>
-ParseMetaplexTokenStandard(const base::Value& value) {
-  if (!value.is_string()) {
-    return std::nullopt;
+mojom::BlowfishMetaplexTokenStandardKind ParseMetaplexTokenStandard(
+    const std::optional<base::Value>& value) {
+  if (!value || value->is_none() || !value->is_string()) {
+    return mojom::BlowfishMetaplexTokenStandardKind::kUnknown;
   }
 
   const auto& kind =
-      simulation_responses::ParseMetaplexTokenStandardKind(value.GetString());
+      simulation_responses::ParseMetaplexTokenStandardKind(value->GetString());
   switch (kind) {
     case simulation_responses::MetaplexTokenStandardKind::kFungible:
       return mojom::BlowfishMetaplexTokenStandardKind::kFungible;
@@ -800,10 +800,8 @@ mojom::BlowfishSolanaAssetPtr ParseAsset(
   asset->image_url = ParseOptionalNullableString(value.image_url).value_or("");
   asset->price = ParsePrice(value.price);
 
-  if (value.metaplex_token_standard.has_value()) {
-    asset->metaplex_token_standard =
-        ParseMetaplexTokenStandard(value.metaplex_token_standard.value());
-  }
+  asset->metaplex_token_standard =
+      ParseMetaplexTokenStandard(value.metaplex_token_standard);
 
   return asset;
 }
