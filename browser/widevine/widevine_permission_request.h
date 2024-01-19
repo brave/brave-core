@@ -36,7 +36,8 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
 
   // PermissionRequest overrides:
 #if BUILDFLAG(IS_ANDROID)
-  std::u16string GetDialogMessageText() const override;
+  PermissionRequest::AnnotatedMessageText GetDialogAnnotatedMessageText(
+      const GURL& embedding_origin) const override;
 #else
   std::u16string GetMessageTextFragment() const override;
 #endif

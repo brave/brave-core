@@ -41,12 +41,16 @@ WidevinePermissionRequest::WidevinePermissionRequest(
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
 #if BUILDFLAG(IS_ANDROID)
-std::u16string WidevinePermissionRequest::GetDialogMessageText() const {
-  return l10n_util::GetStringFUTF16(
-      GetWidevinePermissionRequestTextFrangmentResourceId(false),
-      url_formatter::FormatUrlForSecurityDisplay(
-          requesting_origin(),
-          url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC));
+permissions::PermissionRequest::AnnotatedMessageText
+WidevinePermissionRequest::GetDialogAnnotatedMessageText(
+    const GURL& embedding_origin) const {
+  return permissions::PermissionRequest::AnnotatedMessageText(
+      l10n_util::GetStringFUTF16(
+          GetWidevinePermissionRequestTextFrangmentResourceId(false),
+          url_formatter::FormatUrlForSecurityDisplay(
+              requesting_origin(),
+              url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC)),
+      {});
 }
 #else
 std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
