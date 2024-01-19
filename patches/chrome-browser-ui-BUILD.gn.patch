@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index b0146268b3384ed643c813c2e50f8c3e774b6496..0440a49f1ce538f6153dce878c9cd464eedd7e21 100644
+index b0146268b3384ed643c813c2e50f8c3e774b6496..d15bf970129ef51018fe61410c8fc4672d3a513d 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -726,6 +726,7 @@ static_library("ui") {
  
      "//chrome/browser/permissions",
    ]
-+  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ]
++  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ] if (is_mac) { deps += [ "//brave/browser/mac:keystone_glue" ] }
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -4567,10 +4568,13 @@ static_library("ui") {
+@@ -4623,10 +4624,13 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
