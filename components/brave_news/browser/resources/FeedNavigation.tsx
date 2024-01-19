@@ -33,7 +33,7 @@ const Container = styled(Card)`
   scrollbar-color: var(--bn-glass-10) var(--bn-glass-10);
 `
 
-const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, large?: boolean, bold?: boolean }>`
+const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, bold?: boolean }>`
   padding: ${spacing.m};
   padding-left: ${PAD_LEFT};
 
@@ -46,7 +46,7 @@ const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, large
   width: 100%;
 
   color: ${p => p.faint ? `var(--bn-glass-50)` : `var(--bn-glass-100)`};
-  font: ${p => font[p.large ? 'default' : 'small'][p.bold ? 'semibold' : 'regular']};
+  font: ${p => font.small[p.bold ? 'semibold' : 'regular']};
   cursor: pointer;
 
   &:hover {
@@ -72,7 +72,7 @@ const Section = styled.details`
     align-items: center;
     gap: ${spacing.m};
     list-style: none;
-    font: ${font.default.semibold};
+    font: ${font.small.semibold};
 
     cursor: pointer;
 
@@ -115,7 +115,7 @@ const PlaceholderMarker = <Icon />
 export function Item(props: { id: FeedView, name: string }) {
   const { feedView, setFeedView } = useBraveNews()
   const topLevel = ['all', 'following'].includes(props.id)
-  return <CustomButton large={topLevel} selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={topLevel}>
+  return <CustomButton selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={topLevel}>
     {props.name}
   </CustomButton>
 }
