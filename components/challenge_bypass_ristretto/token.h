@@ -13,28 +13,23 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
 #include "brave/components/challenge_bypass_ristretto/blinded_token.h"
-#include "brave/components/challenge_bypass_ristretto/value_or_result_box.h"
 #include "brave/third_party/rust/challenge_bypass_ristretto_cxx/src/lib.rs.h"
 
 namespace challenge_bypass_ristretto {
 
 class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) Token {
   using CxxTokenBox = rust::Box<cbr_cxx::Token>;
-  using CxxTokenResultBox = rust::Box<cbr_cxx::TokenResult>;
-  using CxxTokenValueOrResult =
-      ValueOrResultBox<cbr_cxx::Token, CxxTokenBox, CxxTokenResultBox>;
-  using CxxTokenRefData = base::RefCountedData<CxxTokenValueOrResult>;
+  using CxxTokenRefData = base::RefCountedData<CxxTokenBox>;
 
  public:
   explicit Token(CxxTokenBox raw);
-  explicit Token(CxxTokenResultBox raw);
   Token(const Token&);
   Token& operator=(const Token&);
   Token(Token&&) noexcept;
   Token& operator=(Token&&) noexcept;
   ~Token();
 
-  const cbr_cxx::Token& raw() const { return raw_->data.unwrap(); }
+  const cbr_cxx::Token& raw() const { return *raw_->data; }
 
   static Token Random();
   BlindedToken Blind();

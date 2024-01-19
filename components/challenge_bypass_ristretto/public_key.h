@@ -12,29 +12,23 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
-#include "brave/components/challenge_bypass_ristretto/value_or_result_box.h"
 #include "brave/third_party/rust/challenge_bypass_ristretto_cxx/src/lib.rs.h"
 
 namespace challenge_bypass_ristretto {
 
 class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) PublicKey {
   using CxxPublicKeyBox = rust::Box<cbr_cxx::PublicKey>;
-  using CxxPublicKeyResultBox = rust::Box<cbr_cxx::PublicKeyResult>;
-  using CxxPublicKeyValueOrResult = ValueOrResultBox<cbr_cxx::PublicKey,
-                                                     CxxPublicKeyBox,
-                                                     CxxPublicKeyResultBox>;
-  using CxxPublicKeyData = base::RefCountedData<CxxPublicKeyValueOrResult>;
+  using CxxPublicKeyData = base::RefCountedData<CxxPublicKeyBox>;
 
  public:
   explicit PublicKey(CxxPublicKeyBox raw);
-  explicit PublicKey(CxxPublicKeyResultBox raw);
   PublicKey(const PublicKey&);
   PublicKey& operator=(const PublicKey&);
   PublicKey(PublicKey&&) noexcept;
   PublicKey& operator=(PublicKey&&) noexcept;
   ~PublicKey();
 
-  const cbr_cxx::PublicKey& raw() const { return raw_->data.unwrap(); }
+  const cbr_cxx::PublicKey& raw() const { return *raw_->data; }
 
   static base::expected<PublicKey, std::string> DecodeBase64(
       const std::string& encoded);

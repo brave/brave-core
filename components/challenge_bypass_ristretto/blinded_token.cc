@@ -10,12 +10,7 @@
 namespace challenge_bypass_ristretto {
 
 BlindedToken::BlindedToken(CxxBlindedTokenBox raw)
-    : raw_(base::MakeRefCounted<CxxBlindedTokenData>(
-          CxxBlindedTokenValueOrResult(std::move(raw)))) {}
-
-BlindedToken::BlindedToken(CxxBlindedTokenResultBox raw)
-    : raw_(base::MakeRefCounted<CxxBlindedTokenData>(
-          CxxBlindedTokenValueOrResult(std::move(raw)))) {}
+    : raw_(base::MakeRefCounted<CxxBlindedTokenData>(std::move(raw))) {}
 
 BlindedToken::BlindedToken(const BlindedToken& other) = default;
 
@@ -36,7 +31,7 @@ base::expected<BlindedToken, std::string> BlindedToken::DecodeBase64(
     return base::unexpected("Failed to decode blinded token");
   }
 
-  return BlindedToken(std::move(blinded_token_result));
+  return BlindedToken(blinded_token_result->unwrap());
 }
 
 std::string BlindedToken::EncodeBase64() const {

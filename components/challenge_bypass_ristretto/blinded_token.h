@@ -12,31 +12,23 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
-#include "brave/components/challenge_bypass_ristretto/value_or_result_box.h"
 #include "brave/third_party/rust/challenge_bypass_ristretto_cxx/src/lib.rs.h"
 
 namespace challenge_bypass_ristretto {
 
 class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) BlindedToken {
   using CxxBlindedTokenBox = rust::Box<cbr_cxx::BlindedToken>;
-  using CxxBlindedTokenResultBox = rust::Box<cbr_cxx::BlindedTokenResult>;
-  using CxxBlindedTokenValueOrResult =
-      ValueOrResultBox<cbr_cxx::BlindedToken,
-                       CxxBlindedTokenBox,
-                       CxxBlindedTokenResultBox>;
-  using CxxBlindedTokenData =
-      base::RefCountedData<CxxBlindedTokenValueOrResult>;
+  using CxxBlindedTokenData = base::RefCountedData<CxxBlindedTokenBox>;
 
  public:
   explicit BlindedToken(CxxBlindedTokenBox raw);
-  explicit BlindedToken(CxxBlindedTokenResultBox raw);
   BlindedToken(const BlindedToken& other);
   BlindedToken& operator=(const BlindedToken& other);
   BlindedToken(BlindedToken&& other) noexcept;
   BlindedToken& operator=(BlindedToken&& other) noexcept;
   ~BlindedToken();
 
-  const cbr_cxx::BlindedToken& raw() const { return raw_->data.unwrap(); }
+  const cbr_cxx::BlindedToken& raw() const { return *raw_->data; }
 
   static base::expected<BlindedToken, std::string> DecodeBase64(
       const std::string& encoded);

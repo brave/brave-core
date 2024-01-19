@@ -24,14 +24,14 @@ SignedToken::~SignedToken() = default;
 
 base::expected<SignedToken, std::string> SignedToken::DecodeBase64(
     const std::string& encoded) {
-  CxxSignedTokenBox raw_signed_token_result(
+  rust::Box<cbr_cxx::SignedTokenResult> raw_signed_token_result(
       cbr_cxx::decode_base64_signed_token(encoded));
 
   if (!raw_signed_token_result->is_ok()) {
     return base::unexpected("Failed to decode signed token");
   }
 
-  return SignedToken(std::move(raw_signed_token_result));
+  return SignedToken(raw_signed_token_result->unwrap());
 }
 
 std::string SignedToken::EncodeBase64() const {

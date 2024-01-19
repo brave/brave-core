@@ -16,12 +16,7 @@
 namespace challenge_bypass_ristretto {
 
 SigningKey::SigningKey(CxxSigningKeyBox raw)
-    : raw_(base::MakeRefCounted<CxxSigningKeyRefData>(
-          CxxSigningKeyValueOrResult(std::move(raw)))) {}
-
-SigningKey::SigningKey(CxxSigningKeyResultBox raw)
-    : raw_(base::MakeRefCounted<CxxSigningKeyRefData>(
-          CxxSigningKeyValueOrResult(std::move(raw)))) {}
+    : raw_(base::MakeRefCounted<CxxSigningKeyRefData>(std::move(raw))) {}
 
 SigningKey::SigningKey(const SigningKey& other) = default;
 
@@ -48,7 +43,7 @@ base::expected<SignedToken, std::string> SigningKey::Sign(
     base::unexpected("Failed to sign blinded token");
   }
 
-  return SignedToken(std::move(raw_signed_key_result));
+  return SignedToken(raw_signed_key_result->unwrap());
 }
 
 UnblindedToken SigningKey::RederiveUnblindedToken(const TokenPreimage& t) {
@@ -61,14 +56,14 @@ PublicKey SigningKey::GetPublicKey() {
 
 base::expected<SigningKey, std::string> SigningKey::DecodeBase64(
     const std::string& encoded) {
-  CxxSigningKeyResultBox raw_signing_key_result(
+  rust::Box<cbr_cxx::SigningKeyResult> raw_signing_key_result(
       cbr_cxx::decode_base64_signing_key(encoded));
 
   if (!raw_signing_key_result->is_ok()) {
     return base::unexpected("Failed to decode signing key");
   }
 
-  return SigningKey(std::move(raw_signing_key_result));
+  return SigningKey(raw_signing_key_result->unwrap());
 }
 
 std::string SigningKey::EncodeBase64() const {

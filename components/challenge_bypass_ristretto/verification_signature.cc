@@ -13,12 +13,7 @@ namespace {}  // namespace
 
 VerificationSignature::VerificationSignature(CxxVerificationSignatureBox raw)
     : raw_(base::MakeRefCounted<CxxVerificationSignatureRefData>(
-          CxxVerificationSignatureValueOrResult(std::move(raw)))) {}
-
-VerificationSignature::VerificationSignature(
-    CxxVerificationSignatureResultBox raw)
-    : raw_(base::MakeRefCounted<CxxVerificationSignatureRefData>(
-          CxxVerificationSignatureValueOrResult(std::move(raw)))) {}
+          std::move(raw))) {}
 
 VerificationSignature::VerificationSignature(
     const VerificationSignature& other) = default;
@@ -37,14 +32,14 @@ VerificationSignature::~VerificationSignature() = default;
 // static
 base::expected<VerificationSignature, std::string>
 VerificationSignature::DecodeBase64(const std::string& encoded) {
-  CxxVerificationSignatureResultBox raw_signature_result(
+  rust::Box<cbr_cxx::VerificationSignatureResult> raw_signature_result(
       cbr_cxx::decode_base64_verification_signature(encoded));
 
   if (!raw_signature_result->is_ok()) {
     return base::unexpected("Failed to decode verification signature");
   }
 
-  return VerificationSignature(std::move(raw_signature_result));
+  return VerificationSignature(raw_signature_result->unwrap());
 }
 
 std::string VerificationSignature::EncodeBase64() const {

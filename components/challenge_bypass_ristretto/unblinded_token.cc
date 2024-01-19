@@ -13,12 +13,7 @@
 namespace challenge_bypass_ristretto {
 
 UnblindedToken::UnblindedToken(CxxUnblindedTokenBox raw)
-    : raw_(base::MakeRefCounted<CxxUnblindedTokenRefData>(
-          CxxUnblindedTokenValueOrResult(std::move(raw)))) {}
-
-UnblindedToken::UnblindedToken(CxxUnblindedTokenResultBox raw)
-    : raw_(base::MakeRefCounted<CxxUnblindedTokenRefData>(
-          CxxUnblindedTokenValueOrResult(std::move(raw)))) {}
+    : raw_(base::MakeRefCounted<CxxUnblindedTokenRefData>(std::move(raw))) {}
 
 UnblindedToken::UnblindedToken(const UnblindedToken& other) = default;
 
@@ -43,14 +38,14 @@ TokenPreimage UnblindedToken::Preimage() const {
 // static
 base::expected<UnblindedToken, std::string> UnblindedToken::DecodeBase64(
     const std::string& encoded) {
-  CxxUnblindedTokenResultBox raw_unblinded_token_result(
+  rust::Box<cbr_cxx::UnblindedTokenResult> raw_unblinded_token_result(
       cbr_cxx::decode_base64_unblinded_token(encoded));
 
   if (!raw_unblinded_token_result->is_ok()) {
     return base::unexpected("Failed to decode unblinded token");
   }
 
-  return UnblindedToken(std::move(raw_unblinded_token_result));
+  return UnblindedToken(raw_unblinded_token_result->unwrap());
 }
 
 std::string UnblindedToken::EncodeBase64() const {

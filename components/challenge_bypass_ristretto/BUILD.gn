@@ -24,7 +24,6 @@ component("challenge_bypass_ristretto") {
     "token_preimage.h",
     "unblinded_token.cc",
     "unblinded_token.h",
-    "value_or_result_box.h",
     "verification_key.cc",
     "verification_key.h",
     "verification_signature.cc",
