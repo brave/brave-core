@@ -34,6 +34,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
@@ -72,7 +73,10 @@
 #include "url/origin.h"
 
 using testing::_;
+using testing::Contains;
 using testing::ElementsAreArray;
+using testing::Eq;
+using testing::Not;
 
 MATCHER_P(MatchesCIDv1URL, ipfs_url, "") {
   return ipfs::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
@@ -1949,6 +1953,18 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
+  auto expected_token = mojom::BlockchainToken::New();
+  expected_token->coin = mojom::CoinType::ETH;
+  expected_token->chain_id = "0x111";
+  expected_token->name = "symbol_name";
+  expected_token->symbol = "symbol";
+  expected_token->decimals = 11;
+  expected_token->logo = "https://url1.com";
+  expected_token->visible = true;
+
+  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+              Not(Contains(Eq(std::ref(expected_token)))));
+
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
   bool callback_is_called = false;
   mojom::ProviderError expected = mojom::ProviderError::kSuccess;
@@ -1968,6 +1984,9 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
             callback_is_called = true;
           }));
   base::RunLoop().RunUntilIdle();
+
+  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+              Contains(Eq(std::ref(expected_token))));
 
   bool failed_callback_is_called = false;
   mojom::ProviderError expected_error =
@@ -1997,27 +2016,24 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   ASSERT_EQ(GetAllEthCustomChains(prefs()).size(), 1u);
   EXPECT_EQ(GetAllEthCustomChains(prefs())[0], chain.Clone());
 
-  const auto& assets_pref = prefs()->GetDict(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref.FindByDottedPath("ethereum.0x111");
-  ASSERT_TRUE(list->is_list());
-  const base::Value::List& asset_list = list->GetList();
-  ASSERT_EQ(asset_list.size(), 1u);
-
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("address"), "");
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("name"), "symbol_name");
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("symbol"), "symbol");
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc20"), false);
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].GetDict().FindInt("decimals"), 11);
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
-
   callback_is_called = false;
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
   ASSERT_FALSE(callback_is_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
+  auto expected_token = mojom::BlockchainToken::New();
+  expected_token->coin = mojom::CoinType::ETH;
+  expected_token->chain_id = "0x111";
+  expected_token->name = "symbol_name";
+  expected_token->symbol = "symbol";
+  expected_token->decimals = 11;
+  expected_token->logo = "https://url1.com";
+  expected_token->visible = true;
+
+  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+              Not(Contains(Eq(std::ref(expected_token)))));
+
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
 
   base::RunLoop loop;
@@ -2040,6 +2056,9 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
   loop.Run();
 
+  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+              Contains(Eq(std::ref(expected_token))));
+
   ASSERT_TRUE(
       brave_wallet::GetNetworkURL(prefs(), "0x111", mojom::CoinType::ETH)
           .is_valid());
@@ -2047,21 +2066,6 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   // Prefs should be updated.
   ASSERT_EQ(GetAllEthCustomChains(prefs()).size(), 1u);
   EXPECT_EQ(GetAllEthCustomChains(prefs())[0], chain.Clone());
-
-  const auto& assets_pref = prefs()->GetDict(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref.FindByDottedPath("ethereum.0x111");
-  ASSERT_TRUE(list->is_list());
-  const base::Value::List& asset_list = list->GetList();
-  ASSERT_EQ(asset_list.size(), 1u);
-
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("address"), "");
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("name"), "symbol_name");
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("symbol"), "symbol");
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc20"), false);
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].GetDict().FindInt("decimals"), 11);
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
 
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
 }

@@ -28,8 +28,7 @@ void TestValueToBlockchainTokenFailCases(const base::Value::Dict& value,
   for (const auto& key : keys) {
     auto invalid_value = value.Clone();
     invalid_value.Remove(key);
-    EXPECT_FALSE(
-        ValueToBlockchainToken(invalid_value, "0x1", mojom::CoinType::ETH))
+    EXPECT_FALSE(ValueToBlockchainToken(invalid_value))
         << "ValueToBlockchainToken should fail if " << key << " not exists";
   }
 }
@@ -296,6 +295,8 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
 
 TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   auto json_value = base::test::ParseJsonDict(R"({
+      "coin": 60,
+      "chain_id": "0x1",
       "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       "name": "Basic Attention Token",
       "symbol": "BAT",
@@ -316,8 +317,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "bat.png", true, false, false, false, false, "BAT", 18, true, "", "",
       "0x1", mojom::CoinType::ETH);
 
-  mojom::BlockchainTokenPtr token =
-      ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
+  mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
 
   // Test input value with required keys.
@@ -331,10 +331,12 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   optional_value.Remove("token_id");
   optional_value.Remove("coingecko_id");
   expected_token->logo = "";
-  token = ValueToBlockchainToken(optional_value, "0x1", mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(optional_value);
   EXPECT_EQ(token, expected_token);
 
   json_value = base::test::ParseJsonDict(R"({
+      "coin": 60,
+      "chain_id": "0x1",
       "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
       "name": "Crypto Kitties",
       "symbol": "CK",
@@ -353,11 +355,13 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "CryptoKitties-Kitty-13733.svg", false, true, false, true, true, "CK", 0,
       true, "", "", "0x1", mojom::CoinType::ETH);
 
-  token = ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
 
   // Test is_erc1155 is parsed
   json_value = base::test::ParseJsonDict(R"({
+      "coin": 60,
+      "chain_id": "0x1",
       "address": "0x28472a58A490c5e09A238847F66A68a47cC76f0f",
       "name": "ADIDAS",
       "symbol": "ADIDAS",
@@ -376,7 +380,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       false, false, true, true, false, "ADIDAS", 0, true, "", "", "0x1",
       mojom::CoinType::ETH);
 
-  token = ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
 }
 

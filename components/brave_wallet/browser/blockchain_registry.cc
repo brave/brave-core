@@ -458,7 +458,7 @@ void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
       continue;
     }
 
-    blockchain_sell_tokens.push_back(mojom::BlockchainToken::New(*token));
+    blockchain_sell_tokens.push_back(token->Clone());
   }
 
   std::move(callback).Run(std::move(blockchain_sell_tokens));

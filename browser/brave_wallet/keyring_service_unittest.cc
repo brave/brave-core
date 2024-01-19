@@ -87,13 +87,6 @@ struct ImportData {
 
 }  // namespace
 
-namespace mojom {
-void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os) {
-  *os << base::StringPrintf("[%s %d/%d]", address->address_string.c_str(),
-                            address->key_id->change, address->key_id->index);
-}
-}  // namespace mojom
-
 class TestKeyringServiceObserver : public mojom::KeyringServiceObserver {
  public:
   explicit TestKeyringServiceObserver(KeyringService& service) {

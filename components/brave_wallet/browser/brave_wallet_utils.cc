@@ -10,7 +10,6 @@
 #include <cstdlib>
 #include <optional>
 #include <sstream>
-#include <unordered_set>
 #include <utility>
 
 #include "base/check.h"
@@ -20,7 +19,6 @@
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -1707,19 +1705,11 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
     return;
   }
 
-  const std::string network_id =
-      GetNetworkId(prefs, mojom::CoinType::ETH, chain.chain_id);
-  DCHECK(!network_id.empty());  // Not possible for a custom network.
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::Value::List& asset_list =
-      update
-          ->SetByDottedPath(base::StrCat({GetPrefKeyForCoinType(chain.coin),
-                                          ".", network_id}),
-                            base::Value::List())
-          ->GetList();
+  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
 
   base::Value::Dict native_asset;
+  native_asset.Set("coin", static_cast<int>(chain.coin));
+  native_asset.Set("chain_id", chain.chain_id);
   native_asset.Set("address", "");
   native_asset.Set("name", chain.symbol_name);
   native_asset.Set("symbol", chain.symbol);
@@ -1731,7 +1721,7 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
   native_asset.Set("visible", true);
   native_asset.Set("logo", chain.icon_urls.empty() ? "" : chain.icon_urls[0]);
 
-  asset_list.Append(std::move(native_asset));
+  update->Append(std::move(native_asset));
 }
 
 void RemoveCustomNetwork(PrefService* prefs,
@@ -1867,7 +1857,7 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
     case mojom::CoinType::SOL:
       return kSolanaPrefKey;
   }
-  NOTREACHED();
+  NOTREACHED() << coin;
   return "";
 }
 
@@ -1883,7 +1873,7 @@ std::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key) {
   } else if (key == kZCashPrefKey) {
     return mojom::CoinType::ZEC;
   }
-  NOTREACHED();
+  NOTREACHED() << key;
   return std::nullopt;
 }
 

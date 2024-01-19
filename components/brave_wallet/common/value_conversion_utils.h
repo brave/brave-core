@@ -23,11 +23,12 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value);
 mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value);
 base::Value::List PermissionRequestResponseToValue(
     const url::Origin& origin,
-    const std::vector<std::string> accounts);
+    const std::vector<std::string>& accounts);
 
-mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value::Dict& value,
-                                                 const std::string& chain_id,
-                                                 mojom::CoinType coin);
+mojom::BlockchainTokenPtr ValueToBlockchainToken(
+    const base::Value::Dict& value);
+base::Value::Dict BlockchainTokenToValue(
+    const mojom::BlockchainTokenPtr& token);
 
 // Returns index of the first URL to use that:
 // 1. Has no variables in it like ${INFURA_API_KEY}
