@@ -42,7 +42,7 @@ class ConversationDriverIOS : public ConversationDriver,
   std::u16string GetPageTitle() const override;
   GURL GetPageURL() const override;
   void GetPageContent(ConversationDriver::GetPageContentCallback callback,
-                      std::string_view invalidation_token) const override;
+                      std::string_view invalidation_token) override;
 
   // Observer
   void OnHistoryUpdate() override;
