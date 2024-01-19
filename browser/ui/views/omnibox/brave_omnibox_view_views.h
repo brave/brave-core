@@ -36,12 +36,19 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   bool GetAcceleratorForCommandId(int command_id,
                                   ui::Accelerator* accelerator) const override;
 
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
   // ui::views::Textfield
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
   void ExecuteTextEditCommand(ui::TextEditCommand command) override;
 #endif
+  void ExecuteCommand(int command_id, int event_flags) override;
+
   // ui::views::TextfieldController:
   void UpdateContextMenu(ui::SimpleMenuModel* menu_contents) override;
+
+ private:
+  FRIEND_TEST_ALL_PREFIXES(BraveOmniboxViewViewsTest, PasteAndSearchTest);
+
+  std::optional<std::u16string> GetClipboardTextForPasteAndSearch();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_
