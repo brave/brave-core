@@ -114,7 +114,6 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     // area. Expand the badge rectangle accordingly.
     gfx::Rect image_rect(badge_rect);
     gfx::Outsets outsets;
-    outsets.set_top(3);
     outsets.set_left(2);
     outsets.set_right(1);
     image_rect.Outset(outsets);
