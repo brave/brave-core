@@ -115,11 +115,11 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     gfx::Rect image_rect(badge_rect);
     gfx::Outsets outsets;
     outsets.set_left(2);
-    outsets.set_right(1);
+    outsets.set_bottom(2);
     image_rect.Outset(outsets);
 
     gfx::RectF check_rect(image_rect);
-    check_rect.Inset(4);
+    check_rect.Inset(3);
     cc::PaintFlags check_flags;
     check_flags.setStyle(cc::PaintFlags::kFill_Style);
     check_flags.setColor(SK_ColorWHITE);
