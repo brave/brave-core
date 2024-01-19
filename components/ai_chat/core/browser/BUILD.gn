@@ -29,6 +29,8 @@ static_library("browser") {
     "engine/remote_completion_client.h",
     "models.cc",
     "models.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   if (is_android) {

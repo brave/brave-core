@@ -3,15 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_UTILS_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_UTILS_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 
 class PrefService;
 
 namespace ai_chat {
 
-bool IsDisabledByPolicy(PrefService* prefs);
+// Check both policy and feature flag to determine if AI Chat is enabled.
+bool IsAIChatEnabled(PrefService* prefs);
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_UTILS_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_

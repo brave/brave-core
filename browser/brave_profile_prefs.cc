@@ -530,9 +530,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled()) {
-    ai_chat::prefs::RegisterProfilePrefs(registry);
-  }
+  ai_chat::prefs::RegisterProfilePrefs(registry);
 #endif
 
   brave_search_conversion::RegisterPrefs(registry);
