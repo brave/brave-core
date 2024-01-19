@@ -153,6 +153,7 @@ void SimulationService::Bind(
 GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
                                               mojom::CoinType coin,
                                               const std::string& language) {
+  DCHECK(coin == mojom::CoinType::SOL || coin == mojom::CoinType::ETH);
   std::string spec = base::StringPrintf(
       "%s/%s/%s", kBlowfishBaseAPIURL,
       GetRelativeScanPath(chain_id, coin).c_str(), "transactions");
