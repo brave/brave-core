@@ -49,7 +49,7 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: false,
+    access: mojom.ModelAccess.BASIC,
     maxPageContentLength: 10000,
     longConversationWarningCharacterLimit: 9700
   },
@@ -60,7 +60,18 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: true,
+    access: mojom.ModelAccess.PREMIUM,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
+  },
+  {
+    key: '3',
+    name: 'model-three-freemium',
+    displayName: 'Model Three',
+    displayMaker: 'Company',
+    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+    category: mojom.ModelCategory.CHAT,
+    access: mojom.ModelAccess.BASIC_AND_PREMIUM,
     maxPageContentLength: 10000,
     longConversationWarningCharacterLimit: 9700
   }

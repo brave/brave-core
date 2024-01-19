@@ -59,15 +59,18 @@ ConversationDriver::ConversationDriver(raw_ptr<PrefService> pref_service,
       base::BindRepeating(&ConversationDriver::OnUserOptedIn,
                           weak_ptr_factory_.GetWeakPtr()));
 
-  // Engines and model names are selectable per conversation, not static.
-  // Start with default from pref value but only if user set. We can't rely on
-  // actual default pref value since we should vary if user is premium or not.
+  // Model choice names is selectable per conversation, not global.
+  // Start with default from pref value if. If user is premium and premium model
+  // is different to non-premium default, and user hasn't customized the model
+  // pref, then switch the user to the premium default.
   // TODO(petemill): When we have an event for premium status changed, and a
   // profile service for AIChat, then we can call
   // |pref_service_->SetDefaultPrefValue| when the user becomes premium. With
   // that, we'll be able to simply call GetString(prefs::kDefaultModelKey) and
-  // not vary on premium status.
-  if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey)) {
+  // not have to fetch premium status.
+  if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey) &&
+      features::kAIModelsPremiumDefaultKey.Get() !=
+          features::kAIModelsDefaultKey.Get()) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
         [](ConversationDriver* instance, mojom::PremiumStatus status) {
           instance->last_premium_status_ = status;
@@ -76,7 +79,7 @@ ConversationDriver::ConversationDriver(raw_ptr<PrefService> pref_service,
             return;
           }
           // Use default premium model for this instance
-          instance->ChangeModel(kModelsPremiumDefaultKey);
+          instance->ChangeModel(features::kAIModelsPremiumDefaultKey.Get());
           // Make sure default model reflects premium status
           const auto* current_default =
               instance->pref_service_
@@ -84,10 +87,10 @@ ConversationDriver::ConversationDriver(raw_ptr<PrefService> pref_service,
                   ->GetIfString();
 
           if (current_default &&
-              *current_default != kModelsPremiumDefaultKey) {
+              *current_default != features::kAIModelsPremiumDefaultKey.Get()) {
             instance->pref_service_->SetDefaultPrefValue(
                 prefs::kDefaultModelKey,
-                    base::Value(kModelsPremiumDefaultKey));
+                base::Value(features::kAIModelsPremiumDefaultKey.Get()));
           }
         },
         // Unretained is ok as credential manager is owned by this class,
@@ -118,16 +121,19 @@ ConversationDriver::~ConversationDriver() = default;
 void ConversationDriver::ChangeModel(const std::string& model_key) {
   DCHECK(!model_key.empty());
   // Check that the key exists
-  if (kAllModels.find(model_key) == kAllModels.end()) {
+  auto* new_model = GetModel(model_key);
+  if (!new_model) {
     NOTREACHED() << "No matching model found for key: " << model_key;
     return;
   }
-  model_key_ = model_key;
+  model_key_ = new_model->key;
   InitEngine();
 }
 
 const mojom::Model& ConversationDriver::GetCurrentModel() {
-  return kAllModels.find(model_key_)->second;
+  auto* model = GetModel(model_key_);
+  DCHECK(model);
+  return *model;
 }
 
 const std::vector<ConversationTurn>& ConversationDriver::GetConversationHistory() {
@@ -145,33 +151,32 @@ void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active
 
 void ConversationDriver::InitEngine() {
   DCHECK(!model_key_.empty());
-  auto model_match = kAllModels.find(model_key_);
+  auto* model = GetModel(model_key_);
   // Make sure we get a valid model, defaulting to static default or first.
-  if (model_match == kAllModels.end()) {
+  if (!model) {
     NOTREACHED() << "Model was not part of static model list";
     // Use default
-    model_match = kAllModels.find(kModelsDefaultKey);
-    const auto is_found = model_match != kAllModels.end();
-    DCHECK(is_found);
-    if (!is_found) {
-      model_match = kAllModels.begin();
+    model = GetModel(features::kAIModelsDefaultKey.Get());
+    DCHECK(model);
+    if (!model) {
+      // Use first if given bad default value
+      model = &GetAllModels().at(0);
     }
   }
 
-  auto model = model_match->second;
   // Model's key might not be the same as what we asked for (e.g. if the model
   // no longer exists).
-  model_key_ = model.key;
+  model_key_ = model->key;
 
   // Engine enum on model to decide which one
-  if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
+  if (model->engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
     VLOG(1) << "Started AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(
-        model, url_loader_factory_, credential_manager_.get());
+        *model, url_loader_factory_, credential_manager_.get());
   } else {
     VLOG(1) << "Started AI engine: claude";
     engine_ = std::make_unique<EngineConsumerClaudeRemote>(
-        model, url_loader_factory_, credential_manager_.get());
+        *model, url_loader_factory_, credential_manager_.get());
   }
 
   // Pending requests have been deleted along with the model engine
@@ -719,7 +724,7 @@ void ConversationDriver::OnPremiumStatusReceived(
   if (last_premium_status_ != premium_status &&
       premium_status == mojom::PremiumStatus::Active) {
     // Change model if we haven't already
-    ChangeModel(kModelsPremiumDefaultKey);
+    ChangeModel(features::kAIModelsPremiumDefaultKey.Get());
   }
   last_premium_status_ = premium_status;
   std::move(parent_callback).Run(premium_status);

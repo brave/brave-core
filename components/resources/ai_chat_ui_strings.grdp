@@ -51,17 +51,23 @@
   <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEFAULT" desc="AI Chat intro message for the default model">
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the default model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases.
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED" desc="AI Chat intro message for the expanded model">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 70B, a model created by Meta to handle more advanced tasks than 13B.
+    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 7B, a model created by Mistral AI to handle advanced tasks.
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model">
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks.
   </message>
   <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
     <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that a model is limited in functionality due to user's non-premium status">
+    Limited
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_PREMIUM" desc="Label indentifying that a model is not limited in functionality as the user is a premium subscriber">
+    Unlimited
   </message>
   <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
     Chat
@@ -106,8 +112,8 @@
   <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
     Dismiss
   </message>
-  <message name="IDS_CHAT_UI_SWITCH_TO_DEFAULT_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
-    Switch to the default model
+  <message name="IDS_CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
+    Switch to the free model
   </message>
   <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
     Unlock the full potential of Leo
@@ -202,7 +208,7 @@
   <message name="IDS_CHAT_UI_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting">
     This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.
   </message>
-  <message name="IDS_CHAT_UI_CHAT_DEFAULT_SUBTITLE" desc="A description for default chat model">
+  <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>
   <message name="IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE" desc="A description for llama-2-70b model">
