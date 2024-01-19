@@ -12,7 +12,6 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
-#include "brave/components/challenge_bypass_ristretto/value_or_result_box.h"
 #include "brave/third_party/rust/challenge_bypass_ristretto_cxx/src/lib.rs.h"
 
 namespace challenge_bypass_ristretto {
@@ -22,24 +21,17 @@ class VerificationKey;
 
 class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) UnblindedToken {
   using CxxUnblindedTokenBox = rust::Box<cbr_cxx::UnblindedToken>;
-  using CxxUnblindedTokenResultBox = rust::Box<cbr_cxx::UnblindedTokenResult>;
-  using CxxUnblindedTokenValueOrResult =
-      ValueOrResultBox<cbr_cxx::UnblindedToken,
-                       CxxUnblindedTokenBox,
-                       CxxUnblindedTokenResultBox>;
-  using CxxUnblindedTokenRefData =
-      base::RefCountedData<CxxUnblindedTokenValueOrResult>;
+  using CxxUnblindedTokenRefData = base::RefCountedData<CxxUnblindedTokenBox>;
 
  public:
   explicit UnblindedToken(CxxUnblindedTokenBox);
-  explicit UnblindedToken(CxxUnblindedTokenResultBox);
   UnblindedToken(const UnblindedToken&);
   UnblindedToken& operator=(const UnblindedToken&);
   UnblindedToken(UnblindedToken&&) noexcept;
   UnblindedToken& operator=(UnblindedToken&&) noexcept;
   ~UnblindedToken();
 
-  const cbr_cxx::UnblindedToken& raw() const { return raw_->data.unwrap(); }
+  const cbr_cxx::UnblindedToken& raw() const { return *raw_->data; }
 
   VerificationKey DeriveVerificationKey() const;
   TokenPreimage Preimage() const;

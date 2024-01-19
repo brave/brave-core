@@ -21,34 +21,49 @@ namespace challenge_bypass_ristretto {
 
 namespace {
 
-rust::Box<cbr_cxx::BlindedTokensResult> ConvertToBlindedTokens(
+std::optional<rust::Box<cbr_cxx::BlindedTokens>> ConvertToBlindedTokens(
     const std::vector<BlindedToken>& blinded_tokens) {
   std::vector<std::string> encoded_blinded_tokens;
   encoded_blinded_tokens.reserve(blinded_tokens.size());
   for (const auto& blinded_token : blinded_tokens) {
     encoded_blinded_tokens.push_back(blinded_token.EncodeBase64());
   }
-  return cbr_cxx::decode_base64_blinded_tokens(encoded_blinded_tokens);
+  rust::Box<cbr_cxx::BlindedTokensResult> blinded_tokens_result =
+      cbr_cxx::decode_base64_blinded_tokens(encoded_blinded_tokens);
+  if (!blinded_tokens_result->is_ok()) {
+    return std::nullopt;
+  }
+  return blinded_tokens_result->unwrap();
 }
 
-rust::Box<cbr_cxx::SignedTokensResult> ConvertToSignedTokens(
+std::optional<rust::Box<cbr_cxx::SignedTokens>> ConvertToSignedTokens(
     const std::vector<SignedToken>& signed_tokens) {
   std::vector<std::string> encoded_signed_tokens;
   encoded_signed_tokens.reserve(signed_tokens.size());
   for (const auto& signed_token : signed_tokens) {
     encoded_signed_tokens.push_back(signed_token.EncodeBase64());
   }
-  return cbr_cxx::decode_base64_signed_tokens(encoded_signed_tokens);
+  rust::Box<cbr_cxx::SignedTokensResult> signed_tokens_result =
+      cbr_cxx::decode_base64_signed_tokens(encoded_signed_tokens);
+  if (!signed_tokens_result->is_ok()) {
+    return std::nullopt;
+  }
+  return signed_tokens_result->unwrap();
 }
 
-rust::Box<cbr_cxx::TokensResult> ConvertToTokens(
+std::optional<rust::Box<cbr_cxx::Tokens>> ConvertToTokens(
     const std::vector<Token>& tokens) {
   std::vector<std::string> encoded_tokens;
   encoded_tokens.reserve(tokens.size());
   for (const auto& token : tokens) {
     encoded_tokens.push_back(token.EncodeBase64());
   }
-  return cbr_cxx::decode_base64_tokens(encoded_tokens);
+  rust::Box<cbr_cxx::TokensResult> tokens_result =
+      cbr_cxx::decode_base64_tokens(encoded_tokens);
+  if (!tokens_result->is_ok()) {
+    return std::nullopt;
+  }
+  return tokens_result->unwrap();
 }
 
 std::optional<std::vector<UnblindedToken>> ConvertFromRawUnblindedTokens(
@@ -63,14 +78,14 @@ std::optional<std::vector<UnblindedToken>> ConvertFromRawUnblindedTokens(
     if (!unblinded_token_result->is_ok()) {
       return std::nullopt;
     }
-    unblinded_tokens.emplace_back(std::move(unblinded_token_result));
+    unblinded_tokens.emplace_back(unblinded_token_result->unwrap());
   }
   return unblinded_tokens;
 }
 
 }  // namespace
 
-BatchDLEQProof::BatchDLEQProof(CxxBatchDLEQProofResultBox raw)
+BatchDLEQProof::BatchDLEQProof(CxxBatchDLEQProofBox raw)
     : raw_(base::MakeRefCounted<CxxBatchDLEQProofRefData>(std::move(raw))) {}
 
 BatchDLEQProof::BatchDLEQProof(const BatchDLEQProof& other) = default;
@@ -95,29 +110,29 @@ base::expected<BatchDLEQProof, std::string> BatchDLEQProof::Create(
         "Blinded tokens and signed tokens must have the same length");
   }
 
-  rust::Box<cbr_cxx::BlindedTokensResult> blinded_tokens_result =
+  std::optional<rust::Box<cbr_cxx::BlindedTokens>> raw_blinded_tokens =
       ConvertToBlindedTokens(blinded_tokens);
-  if (!blinded_tokens_result->is_ok()) {
+  if (!raw_blinded_tokens) {
     return base::unexpected(
         "Failed to retrieve blinded tokens for batch DLEQ proof");
   }
 
-  rust::Box<cbr_cxx::SignedTokensResult> signed_tokens_result =
+  std::optional<rust::Box<cbr_cxx::SignedTokens>> raw_signed_tokens =
       ConvertToSignedTokens(signed_tokens);
-  if (!signed_tokens_result->is_ok()) {
+  if (!raw_signed_tokens) {
     return base::unexpected(
         "Failed to retrieve signed tokens for batch DLEQ proof");
   }
 
-  CxxBatchDLEQProofResultBox batch_dleq_proof_result =
-      signing_key.raw().new_batch_dleq_proof(blinded_tokens_result->unwrap(),
-                                             signed_tokens_result->unwrap());
+  rust::Box<cbr_cxx::BatchDLEQProofResult> batch_dleq_proof_result =
+      signing_key.raw().new_batch_dleq_proof(*raw_blinded_tokens.value(),
+                                             *raw_signed_tokens.value());
 
   if (!batch_dleq_proof_result->is_ok()) {
     return base::unexpected("Failed to create new batch DLEQ proof");
   }
 
-  return BatchDLEQProof(std::move(batch_dleq_proof_result));
+  return BatchDLEQProof(batch_dleq_proof_result->unwrap());
 }
 
 base::expected<bool, std::string> BatchDLEQProof::Verify(
@@ -129,23 +144,23 @@ base::expected<bool, std::string> BatchDLEQProof::Verify(
         "Blinded tokens and signed tokens must have the same length");
   }
 
-  rust::Box<cbr_cxx::BlindedTokensResult> blinded_tokens_result =
+  std::optional<rust::Box<cbr_cxx::BlindedTokens>> raw_blinded_tokens =
       ConvertToBlindedTokens(blinded_tokens);
-  if (!blinded_tokens_result->is_ok()) {
+  if (!raw_blinded_tokens) {
     return base::unexpected(
         "Failed to retrieve blinded tokens for batch DLEQ proof");
   }
 
-  rust::Box<cbr_cxx::SignedTokensResult> signed_tokens_result =
+  std::optional<rust::Box<cbr_cxx::SignedTokens>> raw_signed_tokens =
       ConvertToSignedTokens(signed_tokens);
-  if (!signed_tokens_result->is_ok()) {
+  if (!raw_signed_tokens) {
     return base::unexpected(
         "Failed to retrieve signed tokens for batch DLEQ proof");
   }
 
   const cbr_cxx::Error error =
-      raw().verify(blinded_tokens_result->unwrap(),
-                   signed_tokens_result->unwrap(), public_key.raw());
+      raw().verify(*raw_blinded_tokens.value(), *raw_signed_tokens.value(),
+                   public_key.raw());
   if (!error.is_ok()) {
     return base::unexpected("Failed to verify batch DLEQ proof");
   }
@@ -164,36 +179,38 @@ BatchDLEQProof::VerifyAndUnblind(
         "Tokens, blinded tokens and signed tokens must have the same length");
   }
 
-  rust::Box<cbr_cxx::BlindedTokensResult> blinded_tokens_result =
+  std::optional<rust::Box<cbr_cxx::BlindedTokens>> raw_blinded_tokens =
       ConvertToBlindedTokens(blinded_tokens);
-  if (!blinded_tokens_result->is_ok()) {
+  if (!raw_blinded_tokens) {
     return base::unexpected(
         "Failed to retrieve blinded tokens for batch DLEQ proof");
   }
 
-  rust::Box<cbr_cxx::SignedTokensResult> signed_tokens_result =
+  std::optional<rust::Box<cbr_cxx::SignedTokens>> raw_signed_tokens =
       ConvertToSignedTokens(signed_tokens);
-  if (!signed_tokens_result->is_ok()) {
+  if (!raw_signed_tokens) {
     return base::unexpected(
         "Failed to retrieve signed tokens for batch DLEQ proof");
   }
 
-  rust::Box<cbr_cxx::TokensResult> tokens_result = ConvertToTokens(tokens);
-  if (!tokens_result->is_ok()) {
+  std::optional<rust::Box<cbr_cxx::Tokens>> raw_tokens =
+      ConvertToTokens(tokens);
+  if (!raw_tokens) {
     return base::unexpected("Failed to retrieve tokens for batch DLEQ proof");
   }
 
   rust::Box<cbr_cxx::UnblindedTokensResult> unblinded_tokens_result =
-      raw().verify_and_unblind(
-          tokens_result->unwrap(), blinded_tokens_result->unwrap(),
-          signed_tokens_result->unwrap(), public_key.raw());
+      raw().verify_and_unblind(*raw_tokens.value(), *raw_blinded_tokens.value(),
+                               *raw_signed_tokens.value(), public_key.raw());
 
   if (!unblinded_tokens_result->is_ok()) {
     return base::unexpected("Failed to verify and unblined batch DLEQ proof");
   }
+  rust::Box<cbr_cxx::UnblindedTokens> raw_unblinded_tokens =
+      unblinded_tokens_result->unwrap();
 
   std::optional<std::vector<UnblindedToken>> unblinded_tokens =
-      ConvertFromRawUnblindedTokens(unblinded_tokens_result->unwrap().as_vec());
+      ConvertFromRawUnblindedTokens(raw_unblinded_tokens->as_vec());
   if (!unblinded_tokens) {
     return base::unexpected<std::string>("Failed to decode unblinded token");
   }
@@ -203,14 +220,14 @@ BatchDLEQProof::VerifyAndUnblind(
 
 base::expected<BatchDLEQProof, std::string> BatchDLEQProof::DecodeBase64(
     const std::string& encoded) {
-  CxxBatchDLEQProofResultBox raw_proof_result(
+  rust::Box<cbr_cxx::BatchDLEQProofResult> raw_proof_result(
       cbr_cxx::decode_base64_batch_dleq_proof(encoded));
 
   if (!raw_proof_result->is_ok()) {
     return base::unexpected(raw_proof_result->error().msg.data());
   }
 
-  return BatchDLEQProof(std::move(raw_proof_result));
+  return BatchDLEQProof(raw_proof_result->unwrap());
 }
 
 std::string BatchDLEQProof::EncodeBase64() const {

@@ -17,7 +17,7 @@
 namespace challenge_bypass_ristretto {
 
 class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) SignedToken {
-  using CxxSignedTokenBox = rust::Box<cbr_cxx::SignedTokenResult>;
+  using CxxSignedTokenBox = rust::Box<cbr_cxx::SignedToken>;
   using CxxSignedTokenRefData = base::RefCountedData<CxxSignedTokenBox>;
 
  public:
@@ -28,7 +28,7 @@ class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) SignedToken {
   SignedToken& operator=(SignedToken&&) noexcept;
   ~SignedToken();
 
-  const cbr_cxx::SignedToken& raw() const { return raw_->data->unwrap(); }
+  const cbr_cxx::SignedToken& raw() const { return *raw_->data; }
 
   static base::expected<SignedToken, std::string> DecodeBase64(
       const std::string& encoded);

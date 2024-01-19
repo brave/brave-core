@@ -25,19 +25,18 @@ class Token;
 class UnblindedToken;
 
 class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) BatchDLEQProof {
-  using CxxBatchDLEQProofResultBox = rust::Box<cbr_cxx::BatchDLEQProofResult>;
-  using CxxBatchDLEQProofRefData =
-      base::RefCountedData<CxxBatchDLEQProofResultBox>;
+  using CxxBatchDLEQProofBox = rust::Box<cbr_cxx::BatchDLEQProof>;
+  using CxxBatchDLEQProofRefData = base::RefCountedData<CxxBatchDLEQProofBox>;
 
  public:
-  explicit BatchDLEQProof(CxxBatchDLEQProofResultBox raw);
+  explicit BatchDLEQProof(CxxBatchDLEQProofBox raw);
   BatchDLEQProof(const BatchDLEQProof&);
   BatchDLEQProof& operator=(const BatchDLEQProof&);
   BatchDLEQProof(BatchDLEQProof&&) noexcept;
   BatchDLEQProof& operator=(BatchDLEQProof&&) noexcept;
   ~BatchDLEQProof();
 
-  const cbr_cxx::BatchDLEQProof& raw() const { return raw_->data->unwrap(); }
+  const cbr_cxx::BatchDLEQProof& raw() const { return *raw_->data; }
 
   static base::expected<BatchDLEQProof, std::string> Create(
       const std::vector<BlindedToken>& blinded_tokens,

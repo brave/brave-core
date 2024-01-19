@@ -12,34 +12,24 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
-#include "brave/components/challenge_bypass_ristretto/value_or_result_box.h"
 #include "brave/third_party/rust/challenge_bypass_ristretto_cxx/src/lib.rs.h"
 
 namespace challenge_bypass_ristretto {
 
 class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) VerificationSignature {
   using CxxVerificationSignatureBox = rust::Box<cbr_cxx::VerificationSignature>;
-  using CxxVerificationSignatureResultBox =
-      rust::Box<cbr_cxx::VerificationSignatureResult>;
-  using CxxVerificationSignatureValueOrResult =
-      ValueOrResultBox<cbr_cxx::VerificationSignature,
-                       CxxVerificationSignatureBox,
-                       CxxVerificationSignatureResultBox>;
   using CxxVerificationSignatureRefData =
-      base::RefCountedData<CxxVerificationSignatureValueOrResult>;
+      base::RefCountedData<CxxVerificationSignatureBox>;
 
  public:
   explicit VerificationSignature(CxxVerificationSignatureBox raw);
-  explicit VerificationSignature(CxxVerificationSignatureResultBox raw);
   VerificationSignature(const VerificationSignature&);
   VerificationSignature& operator=(const VerificationSignature&);
   VerificationSignature(VerificationSignature&&) noexcept;
   VerificationSignature& operator=(VerificationSignature&&) noexcept;
   ~VerificationSignature();
 
-  const cbr_cxx::VerificationSignature& raw() const {
-    return raw_->data.unwrap();
-  }
+  const cbr_cxx::VerificationSignature& raw() const { return *raw_->data; }
 
   static base::expected<VerificationSignature, std::string> DecodeBase64(
       const std::string& encoded);

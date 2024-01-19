@@ -10,12 +10,7 @@
 namespace challenge_bypass_ristretto {
 
 TokenPreimage::TokenPreimage(CxxTokenPreimageBox raw)
-    : raw_(base::MakeRefCounted<CxxTokenPreimageRefData>(
-          CxxTokenPreimageValueOrResult(std::move(raw)))) {}
-
-TokenPreimage::TokenPreimage(CxxTokenPreimageResultBox raw)
-    : raw_(base::MakeRefCounted<CxxTokenPreimageRefData>(
-          CxxTokenPreimageValueOrResult(std::move(raw)))) {}
+    : raw_(base::MakeRefCounted<CxxTokenPreimageRefData>(std::move(raw))) {}
 
 TokenPreimage::TokenPreimage(const TokenPreimage&) = default;
 
@@ -30,14 +25,14 @@ TokenPreimage::~TokenPreimage() = default;
 // static
 base::expected<TokenPreimage, std::string> TokenPreimage::DecodeBase64(
     const std::string& encoded) {
-  CxxTokenPreimageResultBox raw_token_preimage_result(
+  rust::Box<cbr_cxx::TokenPreimageResult> raw_token_preimage_result(
       cbr_cxx::decode_base64_token_preimage(encoded));
 
   if (!raw_token_preimage_result->is_ok()) {
     return base::unexpected("Failed to decode token preimage");
   }
 
-  return TokenPreimage(std::move(raw_token_preimage_result));
+  return TokenPreimage(raw_token_preimage_result->unwrap());
 }
 
 std::string TokenPreimage::EncodeBase64() const {

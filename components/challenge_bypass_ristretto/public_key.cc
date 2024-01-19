@@ -10,12 +10,7 @@
 namespace challenge_bypass_ristretto {
 
 PublicKey::PublicKey(CxxPublicKeyBox raw)
-    : raw_(base::MakeRefCounted<CxxPublicKeyData>(
-          CxxPublicKeyValueOrResult(std::move(raw)))) {}
-
-PublicKey::PublicKey(CxxPublicKeyResultBox raw)
-    : raw_(base::MakeRefCounted<CxxPublicKeyData>(
-          CxxPublicKeyValueOrResult(std::move(raw)))) {}
+    : raw_(base::MakeRefCounted<CxxPublicKeyData>(std::move(raw))) {}
 
 PublicKey::PublicKey(const PublicKey& other) = default;
 
@@ -29,14 +24,14 @@ PublicKey::~PublicKey() = default;
 
 base::expected<PublicKey, std::string> PublicKey::DecodeBase64(
     const std::string& encoded) {
-  CxxPublicKeyResultBox raw_public_key_result(
+  rust::Box<cbr_cxx::PublicKeyResult> raw_public_key_result(
       cbr_cxx::decode_base64_public_key(encoded));
 
   if (!raw_public_key_result->is_ok()) {
     return base::unexpected("Failed to decode public key");
   }
 
-  return PublicKey(std::move(raw_public_key_result));
+  return PublicKey(raw_public_key_result->unwrap());
 }
 
 std::string PublicKey::EncodeBase64() const {
