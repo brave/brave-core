@@ -28,3 +28,9 @@ export const WarningIcon = styled(Icon)`
   --leo-icon-size: 20px;
   color: ${leo.color.systemfeedback.warningIcon};
 `
+
+export const CheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: -8px;
+`

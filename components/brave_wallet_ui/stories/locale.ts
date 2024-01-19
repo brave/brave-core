@@ -123,7 +123,8 @@ provideStrings({
   braveWalletSearchNFTs: 'Search NFT by name, id',
   braveWalletChooseAsset: 'Choose asset',
   braveWalletOrdinalsWarningMessage:
-    'At this time Brave Wallet does not support Bitcoin ordinals(NFTs). Sending Bitcoin to any address may result in sending those ordinals as well, even if you did not intend to.',
+    'Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.',
+  braveWalletOrdinalsWarningLabel: 'I understand',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:
