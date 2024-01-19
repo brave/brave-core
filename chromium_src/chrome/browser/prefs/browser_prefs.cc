@@ -34,6 +34,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -234,6 +235,11 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
 
   // Added 2023-11
   brave_ads::MigrateObsoleteProfilePrefs(profile_prefs);
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 2024-01
+  brave_tabs::MigrateBraveProfilePrefs(profile_prefs);
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

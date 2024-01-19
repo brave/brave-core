@@ -127,32 +127,6 @@ class ToggleButton : public ToolbarButton {
 BEGIN_METADATA(ToggleButton, ToolbarButton)
 END_METADATA
 
-// A custom scroll view to avoid crash on Mac
-// TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
-// https://github.com/brave/brave-browser/issues/29935
-class CustomScrollView : public views::ScrollView {
- public:
-  METADATA_HEADER(CustomScrollView);
-
-#if BUILDFLAG(IS_MAC)
-  CustomScrollView()
-      : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {}
-#else
-  CustomScrollView() : views::ScrollView() {}
-#endif
-  ~CustomScrollView() override = default;
-
-  // views::ScrollView:
-  void OnScrollEvent(ui::ScrollEvent* event) override {
-#if !BUILDFLAG(IS_MAC)
-    views::ScrollView::OnScrollEvent(event);
-#endif
-  }
-};
-
-BEGIN_METADATA(CustomScrollView, views::ScrollView)
-END_METADATA
-
 class VerticalTabSearchButton : public BraveTabSearchButton {
  public:
   METADATA_HEADER(VerticalTabSearchButton);
