@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index c1a712883d4b5af6d77d2174589f2f95625cb05e..6350ff5b8c964d5791dda151a8625d2443ae10d2 100644
+index c1a712883d4b5af6d77d2174589f2f95625cb05e..303993fca7e9b7af926ca4f5b8833b0102093029 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
 @@ -8286,6 +8286,8 @@ void RenderFrameHostImpl::CreateNewWindow(
@@ -11,3 +11,14 @@ index c1a712883d4b5af6d77d2174589f2f95625cb05e..6350ff5b8c964d5791dda151a8625d24
    if (IsCredentialless() || IsNestedWithinFencedFrame() ||
        CoopSuppressOpener(/*opener=*/this)) {
      params->opener_suppressed = true;
+@@ -10845,6 +10847,10 @@ void RenderFrameHostImpl::SetWebUI(NavigationRequest& request) {
+         GetProcess()->GetID(), scheme);
+   }
+ 
++  LOG(ERROR) << "********************************************";
++  LOG(ERROR) << request.GetURL().spec();
++  LOG(ERROR) << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
++
+   // Since this is new WebUI instance, this RenderFrameHostImpl should not
+   // have had any bindings. Verify that and grant the required bindings.
+   DCHECK_EQ(BINDINGS_POLICY_NONE, GetEnabledBindings());

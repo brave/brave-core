@@ -67,6 +67,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory)
       override;
 
+  void GetAdditionalWebUISchemes(
+      std::vector<std::string>* additional_schemes) override;
+
   bool AllowWorkerFingerprinting(
       const GURL& url,
       content::BrowserContext* browser_context) override;

@@ -787,6 +787,11 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
       out_factory);
 }
 
+void BraveContentBrowserClient::GetAdditionalWebUISchemes(
+    std::vector<std::string>* additional_schemes) {
+  additional_schemes->emplace_back(content::kBraveUIScheme);
+}
+
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     base::CommandLine* command_line,
     int child_process_id) {
