@@ -162,6 +162,7 @@ std::string BuildLlama2Prompt(
     const std::vector<ConversationTurn>& conversation_history,
     std::string page_content,
     const bool& is_video,
+    const bool& needs_general_seed,
     const std::string user_message) {
   // Always use a generic system message
   std::string system_message =
@@ -206,7 +207,9 @@ std::string BuildLlama2Prompt(
   if (conversation_history.empty() || conversation_history.size() <= 1) {
     return BuildLlama2FirstSequence(
         today_system_message, first_user_message, std::nullopt,
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERAL_SEED));
+        (needs_general_seed) ? std::optional(l10n_util::GetStringUTF8(
+                                   IDS_AI_CHAT_LLAMA2_GENERAL_SEED))
+                             : std::nullopt);
   }
 
   // Use the first two messages to build the first sequence,
@@ -227,7 +230,9 @@ std::string BuildLlama2Prompt(
   // Build the final subsequent exchange using the current turn.
   prompt += BuildLlama2SubsequentSequence(
       user_message, std::nullopt,
-      l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERAL_SEED));
+      (needs_general_seed) ? std::optional(l10n_util::GetStringUTF8(
+                                 IDS_AI_CHAT_LLAMA2_GENERAL_SEED))
+                           : std::nullopt);
 
   // Trimming recommended by Meta
   // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
@@ -248,6 +253,8 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
                                                   kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(
       model.name, stop_sequences, url_loader_factory, credential_manager);
+
+  needs_general_seed_ = base::StartsWith(model.name, "llama-2");
 
   max_page_content_length_ = model.max_page_content_length;
 }
@@ -332,8 +339,9 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     GenerationCompletedCallback completed_callback) {
   const std::string& truncated_page_content =
       page_content.substr(0, max_page_content_length_);
-  std::string prompt = BuildLlama2Prompt(
-      conversation_history, truncated_page_content, is_video, human_input);
+  std::string prompt =
+      BuildLlama2Prompt(conversation_history, truncated_page_content, is_video,
+                        needs_general_seed_, human_input);
   DCHECK(api_);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));
