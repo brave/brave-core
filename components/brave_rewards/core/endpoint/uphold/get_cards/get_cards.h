@@ -13,8 +13,9 @@
 
 // GET https://api.uphold.com/v0/me/cards?q=currency:BAT
 //
-// Success code:
+// Success codes:
 // HTTP_OK (200)
+// HTTP_PARTIAL_CONTENT (206)
 //
 // Error codes:
 // HTTP_UNAUTHORIZED (401)
