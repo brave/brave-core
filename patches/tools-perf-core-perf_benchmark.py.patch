@@ -1,5 +1,5 @@
 diff --git a/tools/perf/core/perf_benchmark.py b/tools/perf/core/perf_benchmark.py
-index 2da4191c86d584a578d821863ee482abb85c20d0..0512f8cdf20e6b39d078b24df027feaa10661cbf 100644
+index 2da4191c86d584a578d821863ee482abb85c20d0..709390317a56ca04707c9d9baefa4ea45f7cfd28 100644
 --- a/tools/perf/core/perf_benchmark.py
 +++ b/tools/perf/core/perf_benchmark.py
 @@ -211,3 +211,4 @@ class PerfBenchmark(benchmark.Benchmark):

@@ -1,5 +1,5 @@
 diff --git a/third_party/inspector_protocol/pdl.py b/third_party/inspector_protocol/pdl.py
-index 6b448c07443c7e440b5a951b63b4e7e706bdcd5c..7385d46d842b00b3a98e13faa0df49f7ed4a0e02 100644
+index 6b448c07443c7e440b5a951b63b4e7e706bdcd5c..9fadb5fdc3686d74c7ecc11257710dd0fafcffa8 100644
 --- a/third_party/inspector_protocol/pdl.py
 +++ b/third_party/inspector_protocol/pdl.py
 @@ -179,3 +179,4 @@ def loads(data, file_name, map_binary_to_string=False):

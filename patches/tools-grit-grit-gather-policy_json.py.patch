@@ -1,5 +1,5 @@
 diff --git a/tools/grit/grit/gather/policy_json.py b/tools/grit/grit/gather/policy_json.py
-index c708c0a037b01d6a6517ab6022a579fdb29c607f..3a01e545e55fa9096601c0e1d5899e1013ffdb44 100644
+index c708c0a037b01d6a6517ab6022a579fdb29c607f..de2ca976e0ca2e5ae0bc4b0f034bfd3449304f4a 100644
 --- a/tools/grit/grit/gather/policy_json.py
 +++ b/tools/grit/grit/gather/policy_json.py
 @@ -350,3 +350,4 @@ class PolicyJson(skeleton_gatherer.SkeletonGatherer):

@@ -1,5 +1,5 @@
 diff --git a/tools/typescript/ts_library.py b/tools/typescript/ts_library.py
-index 57b81cea98033fa1cec5083ad48ce646cb5ca6d3..5f939e4b1448286b9ed4b39aa8b510f7da014848 100644
+index bce222f243c30b9b5a19ed1de3461b492b577ba2..dd6819156ec91362749391aa340ed4d43ea97cfe 100644
 --- a/tools/typescript/ts_library.py
 +++ b/tools/typescript/ts_library.py
 @@ -279,5 +279,6 @@ def main(argv):

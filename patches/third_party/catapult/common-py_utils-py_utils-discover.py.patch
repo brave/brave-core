@@ -1,5 +1,5 @@
 diff --git a/common/py_utils/py_utils/discover.py b/common/py_utils/py_utils/discover.py
-index 7eac0c545a85345f972e1de15f2c2306ba43ff75..8126acc29ec161f39f0bbea66802be53868c0353 100644
+index 7eac0c545a85345f972e1de15f2c2306ba43ff75..f719c26d87559066a64eec1a7c261b5f423d80cb 100644
 --- a/common/py_utils/py_utils/discover.py
 +++ b/common/py_utils/py_utils/discover.py
 @@ -189,3 +189,4 @@ _COUNTER = [0]
