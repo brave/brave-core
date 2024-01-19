@@ -161,7 +161,7 @@ class ConversationDriver {
   int64_t current_navigation_id_;
   bool is_same_document_navigation_ = false;
   mojom::APIError current_error_ = mojom::APIError::None;
-  mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Inactive;
+  mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
   std::unique_ptr<mojom::ConversationTurn> pending_conversation_entry_;
   bool pending_message_needs_page_content_ = false;
