@@ -154,7 +154,8 @@ class PublishersControllerTest : public testing::Test {
         publishers_controller_(profile_.GetPrefs(),
                                &direct_feed_controller_,
                                &unsupported_publishers_migrator_,
-                               &api_request_helper_) {
+                               &api_request_helper_,
+                               nullptr) {
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
                                     true);

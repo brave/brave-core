@@ -37,6 +37,7 @@
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -81,7 +82,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveNewsDirectFeeds);
   registry->RegisterBooleanPref(prefs::kBraveNewsOpenArticlesInNewTab, true);
 
-  p3a::RegisterProfilePrefs(registry);
+  p3a::NewsMetrics::RegisterProfilePrefs(registry);
 }
 
 BraveNewsController::BraveNewsController(
@@ -98,6 +99,7 @@ BraveNewsController::BraveNewsController(
                                   url_loader_factory),
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
+      news_metrics_(prefs),
       direct_feed_controller_(prefs_, url_loader_factory),
       unsupported_publisher_migrator_(prefs_,
                                       &direct_feed_controller_,
@@ -105,8 +107,9 @@ BraveNewsController::BraveNewsController(
       publishers_controller_(prefs_,
                              &direct_feed_controller_,
                              &unsupported_publisher_migrator_,
-                             &api_request_helper_),
-      channels_controller_(prefs_, &publishers_controller_),
+                             &api_request_helper_,
+                             &news_metrics_),
+      channels_controller_(prefs_, &publishers_controller_, &news_metrics_),
       feed_controller_(&publishers_controller_,
                        &direct_feed_controller_,
                        &channels_controller_,
@@ -139,7 +142,7 @@ BraveNewsController::BraveNewsController(
 
   publishers_observation_.Observe(&publishers_controller_);
 
-  p3a::RecordAtInit(prefs_);
+  news_metrics_.RecordAtInit();
   // Monitor kBraveNewsSources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
   ConditionallyStartOrStopTimer();
@@ -379,8 +382,8 @@ void BraveNewsController::SubscribeToNewDirectFeed(
                     std::move(callback)),
                 true);
 
-            p3a::RecordDirectFeedsTotal(controller->prefs_);
-            p3a::RecordWeeklyAddedDirectFeedsCount(controller->prefs_, 1);
+            controller->news_metrics_.RecordDirectFeedsTotal();
+            controller->news_metrics_.RecordWeeklyAddedDirectFeedsCount(1);
           },
           feed_url, std::move(callback), base::Unretained(this)));
 }
@@ -391,8 +394,8 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
   // Mark feed as requiring update
   publishers_controller_.EnsurePublishersIsUpdating();
 
-  p3a::RecordDirectFeedsTotal(prefs_);
-  p3a::RecordWeeklyAddedDirectFeedsCount(prefs_, -1);
+  news_metrics_.RecordDirectFeedsTotal();
+  news_metrics_.RecordWeeklyAddedDirectFeedsCount(-1);
 
   for (const auto& receiver : publishers_listeners_) {
     auto event = mojom::PublishersEvent::New();
@@ -619,12 +622,7 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
 }
 
 void BraveNewsController::OnInteractionSessionStarted() {
-  p3a::RecordAtSessionStart(prefs_);
-}
-
-void BraveNewsController::OnSessionCardVisitsCountChanged(
-    uint16_t total_count) {
-  // TODO(djandries): Add new News card visit metrics
+  news_metrics_.RecordAtSessionStart();
 }
 
 void BraveNewsController::OnPromotedItemView(
@@ -649,10 +647,17 @@ void BraveNewsController::OnPromotedItemVisit(
   }
 }
 
-void BraveNewsController::OnSessionCardViewsCountChanged(uint16_t total_count,
-                                                         uint16_t count_delta) {
-  // TODO(djandries): Add new News card view metrics that use the total count
-  p3a::RecordTotalCardViews(prefs_, count_delta);
+void BraveNewsController::OnNewCardsViewed(uint16_t card_views) {
+  news_metrics_.RecordTotalActionCount(p3a::ActionType::kCardView, card_views);
+}
+
+void BraveNewsController::OnCardVisited(uint32_t depth) {
+  news_metrics_.RecordTotalActionCount(p3a::ActionType::kCardVisit, 1);
+  news_metrics_.RecordVisitCardDepth(depth);
+}
+
+void BraveNewsController::OnSidebarFilterUsage() {
+  news_metrics_.RecordTotalActionCount(p3a::ActionType::kSidebarFilterUsage, 1);
 }
 
 void BraveNewsController::OnDisplayAdVisit(
@@ -706,7 +711,7 @@ void BraveNewsController::OnDisplayAdView(
       brave_ads::mojom::InlineContentAdEventType::kViewed,
       /*intentional*/ base::DoNothing());
 
-  p3a::RecordWeeklyDisplayAdsViewedCount(prefs_, true);
+  news_metrics_.RecordWeeklyDisplayAdsViewedCount(true);
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {
@@ -737,7 +742,8 @@ void BraveNewsController::Prefetch() {
 void BraveNewsController::OnOptInChange() {
   p3a_enabled_report_timer_.Start(
       FROM_HERE, kP3AEnabledReportTimeDelay,
-      base::BindOnce(&p3a::RecordFeatureEnabledChange, prefs_));
+      base::BindOnce(&p3a::NewsMetrics::RecordFeatureEnabledChange,
+                     base::Unretained(&news_metrics_)));
   ConditionallyStartOrStopTimer();
 
   auto event = mojom::Configuration::New();

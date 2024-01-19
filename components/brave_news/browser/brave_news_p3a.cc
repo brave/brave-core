@@ -9,6 +9,7 @@
 
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -21,44 +22,20 @@ namespace p3a {
 
 namespace {
 
-bool IsNewsEnabled(PrefService* prefs) {
-  return prefs->GetBoolean(prefs::kBraveNewsOptedIn) &&
-         prefs->GetBoolean(prefs::kNewTabPageShowToday);
-}
+constexpr int kCardViewBuckets[] = {0, 1, 10, 20, 40, 80, 100};
+constexpr int kCardVisitBuckets[] = {2, 5, 10, 15, 20, 25};
+constexpr int kSidebarFilterUsageBuckets[] = {1, 4, 7, 10};
+constexpr int kCardVisitDepthBuckets[] = {3, 6, 10, 15, 20};
+constexpr int kSubscriptionCountBuckets[] = {1, 4, 7, 10};
+constexpr size_t kCardVisitDepthMetricThreshold = 5;
+constexpr base::TimeDelta kMonthlyUserTimeThreshold = base::Days(30);
+constexpr base::TimeDelta kReportInterval = base::Days(1);
 
-uint64_t AddToWeeklyStorageAndGetSum(PrefService* prefs,
-                                     const char* pref_name,
-                                     int change) {
-  WeeklyStorage storage(prefs, pref_name);
-  if (change > 0) {
-    storage.AddDelta(1);
-  } else if (change < 0) {
-    storage.SubDelta(1);
-  }
-  return storage.GetWeeklySum();
-}
-
-void RecordLastUsageTime(PrefService* prefs) {
-  p3a_utils::RecordFeatureLastUsageTimeMetric(
-      prefs, prefs::kBraveNewsLastSessionTime, kLastUsageTimeHistogramName);
-}
-
-void RecordNewUserReturning(PrefService* prefs) {
-  p3a_utils::RecordFeatureNewUserReturning(
-      prefs, prefs::kBraveNewsFirstSessionTime,
-      prefs::kBraveNewsLastSessionTime, prefs::kBraveNewsUsedSecondDay,
-      kNewUserReturningHistogramName);
-}
-
-void RecordWeeklySessionCount(PrefService* prefs, bool is_add) {
-  // Track how many times in the past week
-  // user has scrolled to Brave News.
-  constexpr int buckets[] = {0, 1, 3, 7, 12, 18, 25, 1000};
-  uint64_t total_session_count = AddToWeeklyStorageAndGetSum(
-      prefs, prefs::kBraveNewsWeeklySessionCount, is_add);
-  p3a_utils::RecordToHistogramBucket(kWeeklySessionCountHistogramName, buckets,
-                                     total_session_count);
-}
+constexpr ActionType kAllActionTypes[] = {ActionType::kCardView,
+                                          ActionType::kCardVisit,
+                                          ActionType::kSidebarFilterUsage};
+constexpr SubscribeType kAllSubscriptionTypes[] = {SubscribeType::kChannels,
+                                                   SubscribeType::kPublishers};
 
 void RecordGeneralUsage() {
   UMA_HISTOGRAM_BOOLEAN(kUsageMonthlyHistogramName, true);
@@ -67,89 +44,248 @@ void RecordGeneralUsage() {
 
 }  // namespace
 
-void RecordAtSessionStart(PrefService* prefs) {
-  p3a_utils::RecordFeatureUsage(prefs, prefs::kBraveNewsFirstSessionTime,
+NewsMetrics::NewsMetrics(PrefService* prefs) : prefs_(prefs) {}
+
+NewsMetrics::~NewsMetrics() = default;
+
+void NewsMetrics::RecordAtSessionStart() {
+  p3a_utils::RecordFeatureUsage(prefs_, prefs::kBraveNewsFirstSessionTime,
                                 prefs::kBraveNewsLastSessionTime);
 
-  RecordLastUsageTime(prefs);
-  RecordNewUserReturning(prefs);
+  RecordLastUsageTime();
+  RecordNewUserReturning();
   RecordGeneralUsage();
+  RecordDirectFeedsTotal();
 
-  RecordWeeklySessionCount(prefs, true);
+  for (const auto subscribe_type : kAllSubscriptionTypes) {
+    RecordTotalSubscribedCount(subscribe_type, {});
+  }
+
+  RecordWeeklySessionCount(true);
 }
 
-void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add) {
+void NewsMetrics::RecordWeeklyDisplayAdsViewedCount(bool is_add) {
   // Store current weekly total in p3a, ready to send on the next upload
   constexpr int buckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
   uint64_t total = AddToWeeklyStorageAndGetSum(
-      prefs, prefs::kBraveNewsWeeklyDisplayAdViewedCount, is_add);
+      prefs::kBraveNewsWeeklyDisplayAdViewedCount, is_add);
   p3a_utils::RecordToHistogramBucket(kWeeklyDisplayAdsViewedHistogramName,
                                      buckets, total);
 }
 
-void RecordDirectFeedsTotal(PrefService* prefs) {
+void NewsMetrics::RecordDirectFeedsTotal() {
+  if (!IsMonthlyActiveUser()) {
+    // Only report for active users in the past month.
+    return;
+  }
+
   constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
-  const auto& direct_feeds_dict = prefs->GetDict(prefs::kBraveNewsDirectFeeds);
+  const auto& direct_feeds_dict = prefs_->GetDict(prefs::kBraveNewsDirectFeeds);
   std::size_t feed_count = direct_feeds_dict.size();
   p3a_utils::RecordToHistogramBucket(kDirectFeedsTotalHistogramName, buckets,
                                      feed_count);
 }
 
-void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change) {
+void NewsMetrics::RecordWeeklyAddedDirectFeedsCount(int change) {
   constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
   uint64_t weekly_total = AddToWeeklyStorageAndGetSum(
-      prefs, prefs::kBraveNewsWeeklyAddedDirectFeedsCount, change);
+      prefs::kBraveNewsWeeklyAddedDirectFeedsCount, change);
 
   p3a_utils::RecordToHistogramBucket(kWeeklyAddedDirectFeedsHistogramName,
                                      buckets, weekly_total);
 }
 
-void RecordTotalCardViews(PrefService* prefs, uint64_t count_delta) {
-  WeeklyStorage total_storage(prefs, prefs::kBraveNewsTotalCardViews);
+void NewsMetrics::RecordTotalActionCount(ActionType action,
+                                         uint64_t count_delta) {
+  const char* pref_name;
+  switch (action) {
+    case ActionType::kCardView:
+      pref_name = prefs::kBraveNewsTotalCardViews;
+      break;
+    case ActionType::kCardVisit:
+      pref_name = prefs::kBraveNewsTotalCardVisits;
+      break;
+    case ActionType::kSidebarFilterUsage:
+      pref_name = prefs::kBraveNewsTotalSidebarFilterUsages;
+      break;
+    default:
+      NOTREACHED();
+      return;
+  }
+
+  WeeklyStorage total_storage(prefs_, pref_name);
 
   total_storage.AddDelta(count_delta);
 
   uint64_t total = total_storage.GetWeeklySum();
 
-  int buckets[] = {0, 1, 10, 20, 40, 80, 100};
-  VLOG(1) << "NewsP3A: total card views update: total = " << total
-          << " count delta = " << count_delta;
-  p3a_utils::RecordToHistogramBucket(kTotalCardViewsHistogramName, buckets,
-                                     total);
+  if (total == 0 && action != ActionType::kCardView) {
+    // Only report 0 for the card views metric.
+    return;
+  }
+
+  VLOG(1) << "NewsP3A: total actions update: total = " << total
+          << " count delta = " << count_delta
+          << " action enum = " << static_cast<int>(action);
+
+  switch (action) {
+    case ActionType::kCardView:
+      p3a_utils::RecordToHistogramBucket(kTotalCardViewsHistogramName,
+                                         kCardViewBuckets, total);
+      break;
+    case ActionType::kCardVisit:
+      p3a_utils::RecordToHistogramBucket(kTotalCardVisitsHistogramName,
+                                         kCardVisitBuckets, total);
+      break;
+    case ActionType::kSidebarFilterUsage:
+      p3a_utils::RecordToHistogramBucket(kSidebarFilterUsageHistogramName,
+                                         kSidebarFilterUsageBuckets, total);
+      break;
+    default:
+      NOTREACHED();
+  }
 }
 
-void RecordFeatureEnabledChange(PrefService* prefs) {
-  bool enabled = IsNewsEnabled(prefs);
-  bool was_ever_enabled = prefs->GetBoolean(prefs::kBraveNewsWasEverEnabled);
+void NewsMetrics::RecordVisitCardDepth(uint32_t new_visit_card_depth) {
+  WeeklyStorage total_visits_storage(prefs_, prefs::kBraveNewsTotalCardVisits);
+  auto total_visits = total_visits_storage.GetWeeklySum();
+
+  WeeklyStorage visit_depth_sum_storage(prefs_, prefs::kBraveNewsVisitDepthSum);
+
+  if (new_visit_card_depth > 0) {
+    visit_depth_sum_storage.AddDelta(new_visit_card_depth);
+  }
+
+  if (total_visits < kCardVisitDepthMetricThreshold) {
+    // Do not report if below defined threshold in the question.
+    return;
+  }
+
+  auto depth_sum = visit_depth_sum_storage.GetWeeklySum();
+
+  int average = static_cast<int>(static_cast<double>(depth_sum) / total_visits);
+
+  p3a_utils::RecordToHistogramBucket(kVisitDepthHistogramName,
+                                     kCardVisitDepthBuckets, average);
+}
+
+void NewsMetrics::RecordTotalSubscribedCount(SubscribeType subscribe_type,
+                                             std::optional<size_t> total) {
+  if (total) {
+    subscription_counts_[subscribe_type] = *total;
+  }
+
+  const char* histogram_name;
+  switch (subscribe_type) {
+    case SubscribeType::kChannels:
+      histogram_name = kChannelCountHistogramName;
+      break;
+    case SubscribeType::kPublishers:
+      histogram_name = kPublisherCountHistogramName;
+      break;
+    default:
+      NOTREACHED();
+      return;
+  }
+
+  if (!IsMonthlyActiveUser()) {
+    // Only report for active users in the past month.
+    return;
+  }
+
+  if (subscription_counts_.contains(subscribe_type)) {
+    p3a_utils::RecordToHistogramBucket(histogram_name,
+                                       kSubscriptionCountBuckets,
+                                       subscription_counts_[subscribe_type]);
+  }
+}
+
+void NewsMetrics::RecordFeatureEnabledChange() {
+  bool enabled = IsNewsEnabled();
+  bool was_ever_enabled = prefs_->GetBoolean(prefs::kBraveNewsWasEverEnabled);
   if (!enabled && !was_ever_enabled) {
     // If the user clicked "no thanks" on the NTP, then we don't want to record
     // this as an opt-out, since they were never opted in.
     return;
   }
-  prefs->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
+  prefs_->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
   UMA_HISTOGRAM_BOOLEAN(kIsEnabledHistogramName, enabled);
 }
 
-void RecordAtInit(PrefService* prefs) {
-  RecordLastUsageTime(prefs);
-  RecordNewUserReturning(prefs);
+void NewsMetrics::RecordAtInit() {
+  RecordLastUsageTime();
+  RecordNewUserReturning();
 
-  RecordDirectFeedsTotal(prefs);
-  RecordWeeklyAddedDirectFeedsCount(prefs, 0);
-  RecordWeeklySessionCount(prefs, false);
-  RecordWeeklyDisplayAdsViewedCount(prefs, false);
-  RecordTotalCardViews(prefs, 0);
+  RecordDirectFeedsTotal();
+  RecordWeeklyAddedDirectFeedsCount(0);
+  RecordWeeklySessionCount(false);
+  RecordWeeklyDisplayAdsViewedCount(false);
 
-  if (IsNewsEnabled(prefs)) {
-    prefs->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
+  for (const auto action : kAllActionTypes) {
+    RecordTotalActionCount(action, 0);
   }
+  RecordVisitCardDepth({});
+
+  if (IsNewsEnabled()) {
+    prefs_->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
+  }
+
+  report_timer_.Start(
+      FROM_HERE, base::Time::Now() + kReportInterval,
+      base::BindOnce(&NewsMetrics::RecordAtInit, base::Unretained(this)));
 }
 
-void RegisterProfilePrefs(PrefRegistrySimple* registry) {
+bool NewsMetrics::IsNewsEnabled() {
+  return prefs_->GetBoolean(prefs::kBraveNewsOptedIn) &&
+         prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+}
+
+bool NewsMetrics::IsMonthlyActiveUser() {
+  base::Time last_usage = prefs_->GetTime(prefs::kBraveNewsLastSessionTime);
+  return base::Time::Now() - last_usage < kMonthlyUserTimeThreshold;
+}
+
+uint64_t NewsMetrics::AddToWeeklyStorageAndGetSum(const char* pref_name,
+                                                  int change) {
+  WeeklyStorage storage(prefs_, pref_name);
+  if (change > 0) {
+    storage.AddDelta(1);
+  } else if (change < 0) {
+    storage.SubDelta(1);
+  }
+  return storage.GetWeeklySum();
+}
+
+void NewsMetrics::RecordLastUsageTime() {
+  p3a_utils::RecordFeatureLastUsageTimeMetric(
+      prefs_, prefs::kBraveNewsLastSessionTime, kLastUsageTimeHistogramName);
+}
+
+void NewsMetrics::RecordNewUserReturning() {
+  p3a_utils::RecordFeatureNewUserReturning(
+      prefs_, prefs::kBraveNewsFirstSessionTime,
+      prefs::kBraveNewsLastSessionTime, prefs::kBraveNewsUsedSecondDay,
+      kNewUserReturningHistogramName);
+}
+
+void NewsMetrics::RecordWeeklySessionCount(bool is_add) {
+  // Track how many times in the past week
+  // user has scrolled to Brave News.
+  constexpr int buckets[] = {0, 1, 3, 7, 12, 18, 25, 1000};
+  uint64_t total_session_count =
+      AddToWeeklyStorageAndGetSum(prefs::kBraveNewsWeeklySessionCount, is_add);
+  p3a_utils::RecordToHistogramBucket(kWeeklySessionCountHistogramName, buckets,
+                                     total_session_count);
+}
+
+void NewsMetrics::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveNewsWeeklySessionCount);
   registry->RegisterListPref(prefs::kBraveNewsWeeklyDisplayAdViewedCount);
   registry->RegisterListPref(prefs::kBraveNewsWeeklyAddedDirectFeedsCount);
   registry->RegisterListPref(prefs::kBraveNewsTotalCardViews);
+  registry->RegisterListPref(prefs::kBraveNewsTotalCardVisits);
+  registry->RegisterListPref(prefs::kBraveNewsVisitDepthSum);
+  registry->RegisterListPref(prefs::kBraveNewsTotalSidebarFilterUsages);
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, prefs::kBraveNewsFirstSessionTime,
       prefs::kBraveNewsLastSessionTime, prefs::kBraveNewsUsedSecondDay, nullptr,
@@ -157,20 +293,13 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBraveNewsWasEverEnabled, false);
 }
 
-void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
-  // added 05/2023
-  registry->RegisterListPref(prefs::kBraveNewsWeeklyCardViewsCount);
-  registry->RegisterListPref(prefs::kBraveNewsWeeklyCardVisitsCount);
-  registry->RegisterUint64Pref(prefs::kBraveNewsCurrSessionCardViews, 0);
-  registry->RegisterListPref(prefs::kBraveNewsDaysInMonthUsedCount);
+void NewsMetrics::RegisterProfilePrefsForMigration(
+    PrefRegistrySimple* registry) {
+  // Reserved for future deprecated P3A-related prefs
 }
 
-void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  // added 05/2023
-  prefs->ClearPref(prefs::kBraveNewsWeeklyCardViewsCount);
-  prefs->ClearPref(prefs::kBraveNewsWeeklyCardVisitsCount);
-  prefs->ClearPref(prefs::kBraveNewsCurrSessionCardViews);
-  prefs->ClearPref(prefs::kBraveNewsDaysInMonthUsedCount);
+void NewsMetrics::MigrateObsoleteProfilePrefs(PrefService* prefs) {
+  // Reserved for future deprecated P3A-related prefs
 }
 
 }  // namespace p3a

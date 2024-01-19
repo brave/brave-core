@@ -13,6 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
+#include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -52,8 +53,11 @@ void ChannelsController::SetChannelSubscribedPref(PrefService* prefs,
 
 ChannelsController::ChannelsController(
     PrefService* prefs,
-    PublishersController* publishers_controller)
-    : prefs_(prefs), publishers_controller_(publishers_controller) {
+    PublishersController* publishers_controller,
+    p3a::NewsMetrics* news_metrics)
+    : prefs_(prefs),
+      publishers_controller_(publishers_controller),
+      news_metrics_(news_metrics) {
   MigrateChannels(*prefs);
   scoped_observation_.Observe(publishers_controller_);
 }
@@ -123,11 +127,24 @@ std::vector<std::string> ChannelsController::GetChannelLocales(
 
 void ChannelsController::GetAllChannels(ChannelsCallback callback) {
   publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](ChannelsCallback callback, PrefService* prefs, Publishers publishers) {
+      [](ChannelsController* controller, ChannelsCallback callback,
+         PrefService* prefs, Publishers publishers) {
         auto result = GetChannelsFromPublishers(publishers, prefs);
+        // fix this. result is a map
+        controller->enabled_channel_count_ = 0;
+        for (const auto& it : result) {
+          if (!it.second->subscribed_locales.empty()) {
+            controller->enabled_channel_count_++;
+          }
+        }
+        if (controller->news_metrics_) {
+          controller->news_metrics_->RecordTotalSubscribedCount(
+              p3a::SubscribeType::kChannels,
+              controller->enabled_channel_count_);
+        }
         std::move(callback).Run(std::move(std::move(result)));
       },
-      std::move(callback), base::Unretained(prefs_)));
+      base::Unretained(this), std::move(callback), base::Unretained(prefs_)));
 }
 
 void ChannelsController::AddListener(
@@ -163,6 +180,16 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
     auto event = mojom::ChannelsEvent::New();
     event->addedOrUpdated[channel_id] = result->Clone();
     listener->Changed(std::move(event));
+  }
+
+  if (subscribed) {
+    enabled_channel_count_++;
+  } else if (enabled_channel_count_ > 0) {
+    enabled_channel_count_--;
+  }
+  if (news_metrics_) {
+    news_metrics_->RecordTotalSubscribedCount(p3a::SubscribeType::kChannels,
+                                              enabled_channel_count_);
   }
 
   return result;

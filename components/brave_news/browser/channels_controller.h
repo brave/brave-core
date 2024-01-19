@@ -21,6 +21,11 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace brave_news {
+
+namespace p3a {
+class NewsMetrics;
+}  // namespace p3a
+
 using Channels = base::flat_map<std::string, mojom::ChannelPtr>;
 using ChannelsCallback = base::OnceCallback<void(Channels)>;
 
@@ -30,7 +35,8 @@ inline constexpr char kTopNewsChannel[] = "Top News";
 class ChannelsController : public PublishersController::Observer {
  public:
   explicit ChannelsController(PrefService* prefs,
-                              PublishersController* publishers_controller);
+                              PublishersController* publishers_controller,
+                              p3a::NewsMetrics* news_metrics);
   ~ChannelsController() override;
   ChannelsController(const ChannelsController&) = delete;
   ChannelsController& operator=(const ChannelsController&) = delete;
@@ -65,8 +71,11 @@ class ChannelsController : public PublishersController::Observer {
                                        bool subscribed);
   raw_ptr<PrefService> prefs_;
   raw_ptr<PublishersController> publishers_controller_;
+  raw_ptr<p3a::NewsMetrics> news_metrics_;
 
   mojo::RemoteSet<mojom::ChannelsListener> listeners_;
+
+  size_t enabled_channel_count_ = 0;
 
   base::ScopedObservation<PublishersController, PublishersController::Observer>
       scoped_observation_{this};
