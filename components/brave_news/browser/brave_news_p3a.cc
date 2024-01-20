@@ -152,6 +152,8 @@ void NewsMetrics::RecordVisitCardDepth(uint32_t new_visit_card_depth) {
 
   WeeklyStorage visit_depth_sum_storage(prefs_, prefs::kBraveNewsVisitDepthSum);
 
+  VLOG(1) << "NewsP3A: card depth update: new_visit_card_depth = " << new_visit_card_depth;
+
   if (new_visit_card_depth > 0) {
     visit_depth_sum_storage.AddDelta(new_visit_card_depth);
   }
