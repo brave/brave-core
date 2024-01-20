@@ -34,11 +34,12 @@ inline constexpr char kLastUsageTimeHistogramName[] =
     "Brave.Today.LastUsageTime";
 inline constexpr char kNewUserReturningHistogramName[] =
     "Brave.Today.NewUserReturning";
-inline constexpr char kTotalCardVisitsHistogramName[] =
-    "Brave.Today.WeeklyTotalCardVisits";
+inline constexpr char kTotalCardClicksHistogramName[] =
+    "Brave.Today.WeeklyTotalCardClicks";
 inline constexpr char kSidebarFilterUsageHistogramName[] =
     "Brave.Today.SidebarFilterUsages";
-inline constexpr char kVisitDepthHistogramName[] = "Brave.Today.VisitDepth";
+inline constexpr char kClickCardDepthHistogramName[] =
+    "Brave.Today.ClickCardDepth";
 inline constexpr char kChannelCountHistogramName[] = "Brave.Today.ChannelCount";
 inline constexpr char kPublisherCountHistogramName[] =
     "Brave.Today.PublisherCount";

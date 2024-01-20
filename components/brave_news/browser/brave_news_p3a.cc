@@ -23,11 +23,11 @@ namespace p3a {
 namespace {
 
 constexpr int kCardViewBuckets[] = {0, 1, 10, 20, 40, 80, 100};
-constexpr int kCardVisitBuckets[] = {2, 5, 10, 15, 20, 25};
+constexpr int kCardClickBuckets[] = {2, 5, 10, 15, 20, 25};
 constexpr int kSidebarFilterUsageBuckets[] = {1, 4, 7, 10};
-constexpr int kCardVisitDepthBuckets[] = {3, 6, 10, 15, 20};
+constexpr int kClickCardDepthBuckets[] = {3, 6, 10, 15, 20};
 constexpr int kSubscriptionCountBuckets[] = {1, 4, 7, 10};
-constexpr size_t kCardVisitDepthMetricThreshold = 5;
+constexpr size_t kCardClickDepthMetricThreshold = 5;
 constexpr base::TimeDelta kMonthlyUserTimeThreshold = base::Days(30);
 constexpr base::TimeDelta kReportInterval = base::Days(1);
 
@@ -134,8 +134,8 @@ void NewsMetrics::RecordTotalActionCount(ActionType action,
                                          kCardViewBuckets, total);
       break;
     case ActionType::kCardVisit:
-      p3a_utils::RecordToHistogramBucket(kTotalCardVisitsHistogramName,
-                                         kCardVisitBuckets, total);
+      p3a_utils::RecordToHistogramBucket(kTotalCardClicksHistogramName,
+                                         kCardClickBuckets, total);
       break;
     case ActionType::kSidebarFilterUsage:
       p3a_utils::RecordToHistogramBucket(kSidebarFilterUsageHistogramName,
@@ -152,13 +152,14 @@ void NewsMetrics::RecordVisitCardDepth(uint32_t new_visit_card_depth) {
 
   WeeklyStorage visit_depth_sum_storage(prefs_, prefs::kBraveNewsVisitDepthSum);
 
-  VLOG(1) << "NewsP3A: card depth update: new_visit_card_depth = " << new_visit_card_depth;
+  VLOG(1) << "NewsP3A: card depth update: new_visit_card_depth = "
+          << new_visit_card_depth;
 
   if (new_visit_card_depth > 0) {
     visit_depth_sum_storage.AddDelta(new_visit_card_depth);
   }
 
-  if (total_visits < kCardVisitDepthMetricThreshold) {
+  if (total_visits < kCardClickDepthMetricThreshold) {
     // Do not report if below defined threshold in the question.
     return;
   }
@@ -167,8 +168,8 @@ void NewsMetrics::RecordVisitCardDepth(uint32_t new_visit_card_depth) {
 
   int average = static_cast<int>(static_cast<double>(depth_sum) / total_visits);
 
-  p3a_utils::RecordToHistogramBucket(kVisitDepthHistogramName,
-                                     kCardVisitDepthBuckets, average);
+  p3a_utils::RecordToHistogramBucket(kClickCardDepthHistogramName,
+                                     kClickCardDepthBuckets, average);
 }
 
 void NewsMetrics::RecordTotalSubscribedCount(SubscribeType subscribe_type,
