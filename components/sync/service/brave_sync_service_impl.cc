@@ -144,6 +144,13 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
     if (!seed.empty()) {
       GetBraveSyncAuthManager()->DeriveSigningKeys(seed);
       // Default enabled types: Bookmarks
+
+      // Related Chromium change: 33441a0f3f9a591693157f2fd16852ce072e6f9d
+      // We need to acquire setup handle before change selected types.
+      // See changes at |SyncServiceImpl::GetSyncAccountStateForPrefs| and
+      // |SyncUserSettingsImpl::SetSelectedTypes|
+      auto sync_blocker = GetSetupInProgressHandle();
+
       syncer::UserSelectableTypeSet selected_types;
       selected_types.Put(UserSelectableType::kBookmarks);
       GetUserSettings()->SetSelectedTypes(false, selected_types);
