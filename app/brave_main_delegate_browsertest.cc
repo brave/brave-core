@@ -70,6 +70,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
+#include "ui/accessibility/accessibility_features.h"
 #endif
 
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
@@ -212,6 +213,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kPrivacyGuidePreloadAndroid,
 #endif
       &features::kPrivacySandboxAdsAPIsOverride,
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kReadAnything,
+#endif
       &features::kResourceTimingForCancelledNavigationInFrame,
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
