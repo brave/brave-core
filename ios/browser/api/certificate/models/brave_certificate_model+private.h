@@ -15,25 +15,25 @@
 #include "brave/ios/browser/api/certificate/models/brave_certificate_rdns_sequence.h"
 #include "brave/ios/browser/api/certificate/models/brave_certificate_signature.h"
 
-namespace net {
+namespace bssl {
 class ParsedCertificate;
 
 namespace der {
 class BitString;
 class Input;
 }  // namespace der
-}  // namespace net
+}  // namespace bssl
 
 typedef NS_ENUM(NSUInteger, BraveFingerprintType);
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BraveCertificateSignature ()
-- (instancetype)initWithCertificate:(const net::ParsedCertificate*)certificate;
+- (instancetype)initWithCertificate:(const bssl::ParsedCertificate*)certificate;
 @end
 
 @interface BraveCertificatePublicKeyInfo ()
-- (instancetype)initWithCertificate:(const net::ParsedCertificate*)certificate
+- (instancetype)initWithCertificate:(const bssl::ParsedCertificate*)certificate
                             withKey:(SecKeyRef)key;
 @end
 
@@ -43,8 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface BraveCertificateRDNSequence ()
-- (instancetype)initWithBERName:(const net::der::Input&)berName
-                       uniqueId:(const net::der::BitString&)uniqueId;
+- (instancetype)initWithBERName:(const bssl::der::Input&)berName
+                       uniqueId:(const bssl::der::BitString&)uniqueId;
 @end
 
 NS_ASSUME_NONNULL_END

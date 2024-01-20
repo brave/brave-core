@@ -1,8 +1,8 @@
 diff --git a/components/policy/tools/template_writers/writer_configuration.py b/components/policy/tools/template_writers/writer_configuration.py
-index 02683fac018622069763cc4e9dd434dad59a5d73..ab5d00b4d4a03138c36fc3a888e2a9ab9941ee2f 100755
+index 8cb77158561d326b1640adef8ebf6031f7389d08..6bc460b0a44830afaffd1f7e26d744f1b9aed80d 100755
 --- a/components/policy/tools/template_writers/writer_configuration.py
 +++ b/components/policy/tools/template_writers/writer_configuration.py
-@@ -131,3 +131,4 @@ def GetConfigurationForBuild(defines):
+@@ -132,3 +132,4 @@ def GetConfigurationForBuild(defines):
      config['mac_bundle_id'] = defines['mac_bundle_id']
    config['android_webview_restriction_prefix'] = 'com.android.browser:'
    return config

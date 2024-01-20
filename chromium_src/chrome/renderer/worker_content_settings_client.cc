@@ -60,7 +60,7 @@ WorkerContentSettingsClient::GetEphemeralStorageOriginSync() {
 
   absl::optional<url::Origin> optional_ephemeral_storage_origin;
   content_settings_manager_->AllowEphemeralStorageAccess(
-      render_frame_id_, document_origin_, site_for_cookies_, top_frame_origin_,
+      frame_token_, document_origin_, site_for_cookies_, top_frame_origin_,
       &optional_ephemeral_storage_origin);
   // Don't cache the value intentionally as other WorkerContentSettingsClient
   // methods do.

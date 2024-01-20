@@ -1,5 +1,5 @@
 diff --git a/media/audio/pulse/pulse_util.cc b/media/audio/pulse/pulse_util.cc
-index 054ab8b305d9ebaa3af75138b8a6616ea3060e2b..922a2991fe0e8b2a998cf75abae8f31102126d0d 100644
+index 96ad835c95256ffc7d030a74e6433a435f553070..4b9bcf03f2b4a2a129adf1a52fa4dd39e3ff9aff 100644
 --- a/media/audio/pulse/pulse_util.cc
 +++ b/media/audio/pulse/pulse_util.cc
 @@ -38,7 +38,7 @@ namespace {

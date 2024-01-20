@@ -26,10 +26,7 @@
   <if expr="not is_chromeos">
     </if>
 
-  <if expr="not is_chromeos">
-    </if>
-
-    <if expr="not chromeos_ash">
+  <if expr="not chromeos_ash">
   </if>
   <if expr="chromeos_ash">
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION_V2" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
@@ -54,4 +51,7 @@
   </message>
   <if expr="not chromeos_ash">
     </if>
+  <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_INCOGNITO_SUBLABEL" desc="Sublabel for radio button to enable HTTPS-First Mode in Private">
+    When browsing in Private mode, Brave will warn you before loading a site using an insecure connection
+  </message>
   </grit-part>

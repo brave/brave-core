@@ -47,8 +47,7 @@
     }                                                                       \
     return MaybeCreateLoaderForResponse_ChromiumImpl(                       \
         modified_status, request, response_head, response_body, loader,     \
-        client_receiver, url_loader, skip_other_interceptors,               \
-        will_return_unsafe_redirect);                                       \
+        client_receiver, url_loader);                                       \
   }                                                                         \
   bool HttpsUpgradesInterceptor::MaybeCreateLoaderForResponse_ChromiumImpl( \
       __VA_ARGS__)

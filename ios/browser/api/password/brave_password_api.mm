@@ -7,18 +7,15 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
-
+#include "brave/ios/browser/api/password/brave_password_observer.h"
+#include "brave/ios/browser/api/password/password_store_listener_ios.h"
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_form_digest.h"
-#include "components/password_manager/core/browser/password_store_consumer.h"
-#include "components/password_manager/core/browser/password_store_interface.h"
-
+#include "components/password_manager/core/browser/password_store/password_store_consumer.h"
+#include "components/password_manager/core/browser/password_store/password_store_interface.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
-
-#include "brave/ios/browser/api/password/brave_password_observer.h"
-#include "brave/ios/browser/api/password/password_store_listener_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."

@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/toggle_button.h"
 
 namespace brave_vpn {
@@ -18,6 +19,7 @@ class Browser;
 
 class BraveVPNToggleButton : public views::ToggleButton,
                              public brave_vpn::BraveVPNServiceObserver {
+  METADATA_HEADER(BraveVPNToggleButton, views::ToggleButton)
  public:
   explicit BraveVPNToggleButton(Browser* browser);
   ~BraveVPNToggleButton() override;

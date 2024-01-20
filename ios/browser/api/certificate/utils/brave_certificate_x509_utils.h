@@ -11,50 +11,50 @@
 
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
-#include "net/cert/pki/signature_algorithm.h"
 #include "net/cert/signed_certificate_timestamp.h"
-#include "net/der/input.h"
-#include "net/der/parse_values.h"
 #include "third_party/boringssl/src/include/openssl/base.h"
+#include "third_party/boringssl/src/pki/input.h"
+#include "third_party/boringssl/src/pki/parse_values.h"
+#include "third_party/boringssl/src/pki/signature_algorithm.h"
 
 namespace certificate {
 namespace x509_utils {
-std::vector<net::der::Input> SupportedExtensionOIDs();
+std::vector<bssl::der::Input> SupportedExtensionOIDs();
 
 bool ExtractEmbeddedSCT(
     const CRYPTO_BUFFER* cert,
     std::vector<scoped_refptr<net::ct::SignedCertificateTimestamp>>* scts);
 
-bool ParseAlgorithmIdentifier(const net::der::Input& input,
-                              net::der::Input* algorithm_oid,
-                              net::der::Input* parameters);
+bool ParseAlgorithmIdentifier(const bssl::der::Input& input,
+                              bssl::der::Input* algorithm_oid,
+                              bssl::der::Input* parameters);
 
-bool ParseAlgorithmSequence(const net::der::Input& input,
-                            net::der::Input* algorithm_oid,
-                            net::der::Input* parameters);
+bool ParseAlgorithmSequence(const bssl::der::Input& input,
+                            bssl::der::Input* algorithm_oid,
+                            bssl::der::Input* parameters);
 
-bool ParseSubjectPublicKeyInfo(const net::der::Input& input,
-                               net::der::Input* algorithm_sequence,
-                               net::der::Input* spk);
+bool ParseSubjectPublicKeyInfo(const bssl::der::Input& input,
+                               bssl::der::Input* algorithm_sequence,
+                               bssl::der::Input* spk);
 
-bool ParseRSAPublicKeyInfo(const net::der::Input& input,
-                           net::der::Input* modulus,
-                           net::der::Input* public_exponent);
+bool ParseRSAPublicKeyInfo(const bssl::der::Input& input,
+                           bssl::der::Input* modulus,
+                           bssl::der::Input* public_exponent);
 
-bool IsNull(const net::der::Input& input);
+bool IsNull(const bssl::der::Input& input);
 
-bool OIDToNID(const net::der::Input& input, std::int32_t* out);
+bool OIDToNID(const bssl::der::Input& input, std::int32_t* out);
 
-std::string NIDToAbsoluteOID(const net::der::Input& input);
+std::string NIDToAbsoluteOID(const bssl::der::Input& input);
 
 std::string SignatureAlgorithmDigestToName(
-    const net::SignatureAlgorithm& signature_algorithm);
+    const bssl::SignatureAlgorithm& signature_algorithm);
 
 std::string SignatureAlgorithmIdToName(
-    const net::SignatureAlgorithm& signature_algorithm);
+    const bssl::SignatureAlgorithm& signature_algorithm);
 
 base::Time GeneralizedTimeToTime(
-    const net::der::GeneralizedTime& generalized_time);
+    const bssl::der::GeneralizedTime& generalized_time);
 }  // namespace x509_utils
 }  // namespace certificate
 

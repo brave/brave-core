@@ -17,7 +17,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.init.ActivityProfileProvider;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -120,5 +123,10 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         mProfileText.setText(getResources().getString(R.string.some_context_text));
         mInstallVpnButton.setText(getResources().getString(R.string.accept_connection_request));
         mContactSupportButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
     }
 }

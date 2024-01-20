@@ -34,7 +34,6 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.xsurface.feed.FeedLaunchReliabilityLogger.SurfaceType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -67,7 +66,6 @@ public class BraveNewTabPage extends NewTabPage {
             WindowAndroid windowAndroid,
             JankTracker jankTracker,
             Supplier<Toolbar> toolbarSupplier,
-            SettingsLauncher settingsLauncher,
             HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier) {
         super(
@@ -88,7 +86,6 @@ public class BraveNewTabPage extends NewTabPage {
                 windowAndroid,
                 jankTracker,
                 toolbarSupplier,
-                settingsLauncher,
                 homeSurfaceTracker,
                 tabContentManagerSupplier);
 
@@ -112,8 +109,9 @@ public class BraveNewTabPage extends NewTabPage {
             }
         }
         // Re-add to the new tab's profile
-        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(
-                Profile.fromWebContents(mTab.getWebContents()));
+        TemplateUrlService templateUrlService =
+                TemplateUrlServiceFactory.getForProfile(
+                        Profile.fromWebContents(mTab.getWebContents()));
         templateUrlService.addObserver(this);
     }
 

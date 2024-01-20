@@ -223,6 +223,20 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+  // Disable idle detection by default (we used to disable feature flag
+  // kIdleDetection, but it went away in cr121).
+  content_settings_info_.erase(ContentSettingsType::IDLE_DETECTION);
+  website_settings_registry_->UnRegister(ContentSettingsType::IDLE_DETECTION);
+  Register(ContentSettingsType::IDLE_DETECTION, "idle-detection",
+           CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
+           /*allowlisted_primary_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::ALL_PLATFORMS,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
+
   website_settings_registry_->UnRegister(ContentSettingsType::HTTP_ALLOWED);
   website_settings_registry_->Register(
       ContentSettingsType::HTTP_ALLOWED, "http-allowed", base::Value(),

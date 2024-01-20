@@ -39,7 +39,6 @@ import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
-import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -47,7 +46,8 @@ import org.chromium.ui.base.DeviceFormFactor;
 public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private static final String TAG = "RewardsBottomSheet";
 
-    private static final String BRAVE_TERMS_PAGE = "https://basicattentiontoken.org/user-terms-of-service/";
+    private static final String BRAVE_TERMS_PAGE =
+            "https://basicattentiontoken.org/user-terms-of-service/";
     private static final String BRAVE_REWARDS_LEARN_MORE = "https://brave.com/faq-rewards";
 
     private int ntpType;
@@ -203,9 +203,10 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if (chromeTabbedActivity != null && chromeTabbedActivity.getActivityTab() != null) {
             Tab currentTab = chromeTabbedActivity.getActivityTab();
-            SponsoredTab sponsoredTab = TabAttributes.from(currentTab).get(String.valueOf(((TabImpl)currentTab).getId()));
+            SponsoredTab sponsoredTab =
+                    TabAttributes.from(currentTab).get(String.valueOf(currentTab.getId()));
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            TabAttributes.from(currentTab).set(String.valueOf(((TabImpl)currentTab).getId()), sponsoredTab);
+            TabAttributes.from(currentTab).set(String.valueOf(currentTab.getId()), sponsoredTab);
             newTabPageListener.updateNTPImage();
         }
     }

@@ -5,6 +5,11 @@
 
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
 
+#include "ui/base/metadata/metadata_impl_macros.h"
+
 void BraveStarView::UpdateImpl() {
   SetVisible(false);
 }
+
+BEGIN_METADATA(BraveStarView)
+END_METADATA

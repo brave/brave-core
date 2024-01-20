@@ -9,13 +9,13 @@
 #include "base/containers/flat_map.h"
 #include "components/content_settings/common/content_settings_manager.mojom.h"
 
-#define OnContentBlocked                                      \
-  NotUsed() {}                                                \
-  void AllowEphemeralStorageAccess(                           \
-      int32_t render_frame_id, const url::Origin& origin,     \
-      const net::SiteForCookies& site_for_cookies,            \
-      const url::Origin& top_frame_origin,                    \
-      AllowEphemeralStorageAccessCallback callback) override; \
+#define OnContentBlocked                                                    \
+  NotUsed() {}                                                              \
+  void AllowEphemeralStorageAccess(                                         \
+      const blink::LocalFrameToken& frame_token, const url::Origin& origin, \
+      const net::SiteForCookies& site_for_cookies,                          \
+      const url::Origin& top_frame_origin,                                  \
+      AllowEphemeralStorageAccessCallback callback) override;               \
   void OnContentBlocked
 
 #include "src/components/content_settings/browser/content_settings_manager_impl.h"  // IWYU pragma: export

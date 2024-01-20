@@ -9,10 +9,12 @@
 #include <memory>
 
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveWindowFrameGraphic;
 
 class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView {
+  METADATA_HEADER(BraveOpaqueBrowserFrameView, OpaqueBrowserFrameView)
  public:
   BraveOpaqueBrowserFrameView(BrowserFrame* frame,
                               BrowserView* browser_view,

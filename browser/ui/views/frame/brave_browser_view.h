@@ -22,6 +22,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/accelerators/accelerator.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
@@ -56,6 +57,7 @@ class VerticalTabStripWidgetDelegateView;
 
 class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer {
+  METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
