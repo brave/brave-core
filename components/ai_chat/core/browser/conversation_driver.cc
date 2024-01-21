@@ -828,6 +828,5 @@ void ConversationDriver::OnPremiumStatusReceived(
   last_premium_status_ = premium_status;
   std::move(parent_callback).Run(premium_status);
 }
-}
 
 }  // namespace ai_chat
