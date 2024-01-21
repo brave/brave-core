@@ -45,6 +45,7 @@ enum ModelAccess {
 };
 
 enum PremiumStatus {
+  Unknown,
   Inactive,
   Active,
   ActiveDisconnected,
