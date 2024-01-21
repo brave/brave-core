@@ -149,10 +149,22 @@ const std::vector<ConversationTurn>& ConversationDriver::GetConversationHistory(
   return chat_history_;
 }
 
+std::vector<mojom::ConversationTurnPtr>
+ConversationDriver::GetVisibleConversationHistory() {
+  // Remove conversations that are meant to be hidden from the user
+  std::vector<ai_chat::mojom::ConversationTurnPtr> list;
+  for (const auto& turn : GetConversationHistory()) {
+    if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
+      list.push_back(turn.Clone());
+    }
+  }
   if (pending_conversation_entry_ && pending_conversation_entry_->visibility !=
                                          ConversationTurnVisibility::HIDDEN) {
     list.push_back(pending_conversation_entry_->Clone());
   }
+  return list;
+}
+
 void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;

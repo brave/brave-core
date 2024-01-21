@@ -64,6 +64,7 @@ class ConversationDriver {
   void ChangeModel(const std::string& model_key);
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurn>& GetConversationHistory();
+  std::vector<mojom::ConversationTurnPtr> GetVisibleConversationHistory();
   // Whether the UI for this conversation is open or not. Determines
   // whether content is retrieved and queries are sent for the conversation
   // when the page changes.

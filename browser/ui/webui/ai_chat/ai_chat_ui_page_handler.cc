@@ -144,21 +144,9 @@ void AIChatUIPageHandler::GetConversationHistory(
     std::move(callback).Run({});
     return;
   }
-  std::vector<ConversationTurn> history =
-      active_chat_tab_helper_->GetConversationHistory();
 
-  std::vector<ai_chat::mojom::ConversationTurnPtr> list;
-
-  // Remove conversations that are meant to be hidden from the user
-  auto new_end_it = std::remove_if(
-      history.begin(), history.end(), [](const ConversationTurn& turn) {
-        return turn.visibility == ConversationTurnVisibility::HIDDEN;
-      });
-
-  std::transform(history.begin(), new_end_it, std::back_inserter(list),
-                 [](const ConversationTurn& turn) { return turn.Clone(); });
-
-  std::move(callback).Run(std::move(list));
+  std::move(callback).Run(
+      active_chat_tab_helper_->GetVisibleConversationHistory());
 }
 
 void AIChatUIPageHandler::GetSuggestedQuestions(
