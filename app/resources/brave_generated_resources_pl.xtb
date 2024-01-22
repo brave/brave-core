@@ -41,9 +41,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">To prywatne okno z Torem.</translation>
 <translation id="1037341607922068025">Otwórz prywatne okno z Torem.</translation>
-<translation id="1725356094208762656">Otwórz w sieci Tor</translation>
-<translation id="3396347744975515056">Synchronizacja Brave została zaktualizowana i wymaga skonfigurowania</translation>
-<translation id="7473245612074035141">Rozpocznij konfigurację</translation>
 <translation id="496896260395129787">Konto synchronizacji Brave zostało usunięte z poziomu innego urządzenia. Jeśli wyłączenie synchronizacji było przypadkowe, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>utwórz konto ponownie</translation>
 <translation id="6965382102122355670">OK</translation>
@@ -190,6 +187,10 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7109885938715976444">Tylko tym razem</translation>
 <translation id="7473891865547856676">Nie, dziękuję</translation>
 <translation id="2722425322672922644">Jak to wpływa na moją prywatność</translation>
+<translation id="5551268135482191097">Podczas ładowania adresu URL IPFS wystąpił błąd. Chcesz przekierować do originalnego adresu URL?</translation>
+<translation id="4756627014339714615">Przekieruj</translation>
+<translation id="1338274252864046652">Czy chcesz zawsze inicjować węzeł IPFS przy uruchomieniu przeglądarki?</translation>
+<translation id="3435896845095436175">Włącz</translation>
 <translation id="4552520379838695057">Przepraszamy, nie znaleziono tej strony.</translation>
 <translation id="2609895996619941644">Czy chcesz sprawdzić, czy zapisana wersja strony jest dostępna w archiwum Wayback Machine?</translation>
 <translation id="8053093028263274061">Przepraszamy, nie znaleziono zapisanej wersji.</translation>
@@ -298,6 +299,10 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7544853251252956727">Odtwarzaj losowo</translation>
 <translation id="4330722796577425585">Przewiń</translation>
 <translation id="7481312909269577407">Dalej</translation>
+<translation id="2800828306627475693">Powtarzanie wył.</translation>
+<translation id="1748244367114657861">Powtarzaj jeden</translation>
+<translation id="6421906998825794164">Powtarzaj wszystkie</translation>
+<translation id="1727684853006449697">Odtwarzacz Brave</translation>
 <translation id="9156965752763025780">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave.</translation>
 <translation id="7179921470347911571">Uruchom ponownie teraz</translation>
 <translation id="4472575034687746823">Podstawowe</translation>
@@ -411,10 +416,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="413570371620795359">Otwórz panel z nagrodami i zacznij</translation>
 <translation id="1051600834033686945">Otwórz pełne ustawienia nagród Brave</translation>
 <translation id="6333347122924254968">Pokaż ikonę Nagród Brave w pasku adresu</translation>
-<translation id="7483857210736407752">Wyświetl przyciski napiwku na stronach</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Zablokuj sieci społecznościowe</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
@@ -583,7 +584,9 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6936835573742749135">Nie można poprosić o CAPTCHA. Spróbuj ponownie później.</translation>
 <translation id="2653659639078652383">Prześlij</translation>
 <translation id="1369311132025451972">Automatycznie przekierowuj strony .onion</translation>
-<translation id="1658670175365815312">Brave otworzy usługę pseudodomeny strony internetowej, jeśli jest dostępna, oraz wszystkie domeny .pseudodomena w oknie Tor.</translation>
+<translation id="6214393847480015759">W oknach Tor Brave automatycznie przełącza się na wersję .onion witryny, jeśli jest dostępna.</translation>
+<translation id="1294350054292274934">Obsługuj adresy .onion tylko w oknach Tor</translation>
+<translation id="1258903596167452221">Poza oknami Tor usługi Onion nie będą dostępne.</translation>
 <translation id="2896916411183256228">Do prawidłowego wyświetlania torrentów bezpośrednio w przeglądarce używane jest narzędzie WebTorrent. Wspierane są pliki typu torrent i linki magnetyczne.</translation>
 <translation id="5249433283143453448">Korzystaj z komponentu Widevine do zarządzania prawami cyfrowymi, oglądając chronione strumieniowane nagrania wideo i inne treści w przeglądarce.</translation>
 <translation id="1314131187310290315">Rozszerzenia Manifest V2</translation>
@@ -632,6 +635,7 @@ Uwaga: Demon IPFS może być uruchomiony w celu przypięcia, więc Twój lokalny
 <translation id="4226543734057230801">Sieci Ethereum</translation>
 <translation id="3504157706952484145">Sieci Filecoin</translation>
 <translation id="1561541094377237745">Sieci Solana</translation>
+<translation id="7141438739990875547">Sieci Bitcoin</translation>
 <translation id="3159419679550543837">Pokaż sieci testowe</translation>
 <translation id="3215569562674795548">Edytuj bądź dodaj nową sieć</translation>
 <translation id="4418993400653250511">Identyfikator łańcucha</translation>
@@ -671,6 +675,7 @@ Uwaga: Demon IPFS może być uruchomiony w celu przypięcia, więc Twój lokalny
 <translation id="8425213833346101688">Zmień</translation>
 <translation id="585868419599255817">Powrót do publicznej bramki IPFS</translation>
 <translation id="2618080188892567155">Automatycznie cofnij do publicznej bramy IPFS, jeśli Twój lokalny węzeł IPFS Brave nie będzie mógł zostać osiągnięty.</translation>
+<translation id="8956391206920485238">Zawsze inicjować węzeł IPFS przy uruchamianiu przeglądarki?</translation>
 <translation id="6789104345873307368">Automatycznie przekieruj żądania zasobów sieci IPFS do skonfigurowanej bramki.</translation>
 <translation id="4138306018048329894">Żądania zasobów protokołu IPFS, hostowanych na bramkach protokołu IPFS stron trzecich lub zasobów DNSLINK, będą przekierowywane przez wybraną bramkę lokalną lub zdalną.
 Uwaga: Jeśli wybrano węzeł lokalny, dostęp do zasobu będzie wymagany bezpośrednio z Twojego komputera, a zbuforowane dane mogą być przez pewien czas dostarczane do sieci protokołu IPFS.</translation>
@@ -722,6 +727,9 @@ historii czatu. Wyczyszczenie historii czatu oznacza usunięcie wszystkich
 poprzednich rozmów z Brave Leo. Tej czynności nie można cofnąć.</translation>
 <translation id="8157373421434119674">Dane i historia czatu</translation>
 <translation id="614530507403667291">Domyślny model dla nowych rozmów</translation>
+<translation id="349846214503465941">Włącz listę odtwarzania</translation>
+<translation id="7903608716704052878">Automatycznie dodawaj pliki, aby móc przeglądać je offline</translation>
+<translation id="4193768184502613558">Ta opcja pozwala automatycznie zapisać pliki multimedialne w pamięci podręcznej, aby móc z nich korzystać bez połaczenia z Internetem.</translation>
 <translation id="6624718837376802990">Awatar konturowe nagrody</translation>
 <translation id="6617313057407561765">Awatar konturowy Brave</translation>
 <translation id="6754445808455578019">Awatar konturowy ocean</translation>

@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">這是 Tor 的私人視窗</translation>
 <translation id="1037341607922068025">用 Tor 開啟私人視窗</translation>
-<translation id="1725356094208762656">在 Tor 中開啟</translation>
-<translation id="3396347744975515056">Brave 同步已升級並需要設定</translation>
-<translation id="7473245612074035141">開始設定</translation>
 <translation id="496896260395129787">此 Brave Sync 帳戶已從其他裝置刪除。如果您不是要停用 Sync，請<ph name="LINK_TEXT"/>。</translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新建立帳戶</translation>
 <translation id="6965382102122355670">確定</translation>
@@ -190,6 +187,10 @@
 <translation id="7109885938715976444">僅限此次</translation>
 <translation id="7473891865547856676">不用了，謝謝</translation>
 <translation id="2722425322672922644">瞭解這對我的隱私有何影響</translation>
+<translation id="5551268135482191097">載入 IPFS URL 時出現錯誤。要重新導向至原始 URL 嗎？</translation>
+<translation id="4756627014339714615">重新導向</translation>
+<translation id="1338274252864046652">要總是在瀏覽器啟動時啟動 IPFS 節點嗎？</translation>
+<translation id="3435896845095436175">啟用</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
 <translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
 <translation id="8053093028263274061">抱歉，無可用的已儲存版本。</translation>
@@ -299,6 +300,10 @@
 <translation id="7544853251252956727">隨機播放</translation>
 <translation id="4330722796577425585">倒帶</translation>
 <translation id="7481312909269577407">往前</translation>
+<translation id="2800828306627475693">重複關閉</translation>
+<translation id="1748244367114657861">重複一項</translation>
+<translation id="6421906998825794164">重複全部</translation>
+<translation id="1727684853006449697">Brave 播放器</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -412,10 +417,6 @@
 <translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
 <translation id="1051600834033686945">開啟完整 Brave 獎勵設定</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
-<translation id="7483857210736407752">在網站上顯示「小費」按鈕</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
@@ -585,7 +586,9 @@
 <translation id="6936835573742749135">無法申請 CAPTCHA，請稍後再試。</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="1369311132025451972">自動重新導向 .onion 網站</translation>
-<translation id="1658670175365815312">在可用情況下，Brave 將切換為網站的 .onion 版本，並在 Tor 視窗中自動開啟所有 .onion 網域。</translation>
+<translation id="6214393847480015759">在 Tor 視窗中，Brave 會自動切換到可用的 .onion 版本網站。</translation>
+<translation id="1294350054292274934">只在 Tor 視窗中解析 .onion 位址</translation>
+<translation id="1258903596167452221">Onion 服務在 Tor 視窗外將不可用。</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="5249433283143453448">使用 Widevine 數位版權管理 (DRM) 元件以在瀏覽器中檢視受保護的串流影片與其他內容。</translation>
 <translation id="1314131187310290315">Manifest V2 擴充功能</translation>
@@ -634,6 +637,7 @@
 <translation id="4226543734057230801">以太坊網路</translation>
 <translation id="3504157706952484145">Filecoin 網路</translation>
 <translation id="1561541094377237745">Solana 網路</translation>
+<translation id="7141438739990875547">比特幣網路</translation>
 <translation id="3159419679550543837">顯示測試網站</translation>
 <translation id="3215569562674795548">編輯或新增新網路</translation>
 <translation id="4418993400653250511">鏈結 ID</translation>
@@ -673,6 +677,7 @@
 <translation id="8425213833346101688">變更</translation>
 <translation id="585868419599255817">IPFS 公開閘道器汰退</translation>
 <translation id="2618080188892567155">如果無法連接 Brave 本機 IPFS 節點，自動回復公用 IPFS 閘道。</translation>
+<translation id="8956391206920485238">總是在瀏覽器啟動時啟動 IPFS 節點嗎？</translation>
 <translation id="6789104345873307368">自動將 IPFS 網路資源請求重新導向到設定的閘道器。</translation>
 <translation id="4138306018048329894">向第三方 IPFS 閘道或 DNSLINK 資源所代管的 IPFS 資源提出的請求，會透過您選取的本機或遠端閘道載入。
 注意：若已選取本機節點，資源請求會由電腦直接提出，並為 IPFS 網路提供快取資料一段時間。</translation>
@@ -724,6 +729,9 @@
 此操作無法撤銷。</translation>
 <translation id="8157373421434119674">資料和聊天歷史記錄</translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
+<translation id="349846214503465941">啟用播放清單</translation>
+<translation id="7903608716704052878">自動加入檔案以供離線檢視</translation>
+<translation id="4193768184502613558">此選項將自動快取媒體檔，以讓您在沒有網路連線的情況下播放媒體檔。</translation>
 <translation id="6624718837376802990">俐落獎勵化身</translation>
 <translation id="6617313057407561765">俐落 Brave 化身</translation>
 <translation id="6754445808455578019">俐落海洋化身</translation>
