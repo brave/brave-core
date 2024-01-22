@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
+public class OnboardingVerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
 
     private RecyclerView recoveryPhrasesRecyclerView;
@@ -53,8 +53,8 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     }
 
     @NonNull
-    public static VerifyRecoveryPhraseFragment newInstance(boolean isOnboarding) {
-        VerifyRecoveryPhraseFragment fragment = new VerifyRecoveryPhraseFragment();
+    public static OnboardingVerifyRecoveryPhraseFragment newInstance(boolean isOnboarding) {
+        OnboardingVerifyRecoveryPhraseFragment fragment = new OnboardingVerifyRecoveryPhraseFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(IS_ONBOARDING_ARG, isOnboarding);

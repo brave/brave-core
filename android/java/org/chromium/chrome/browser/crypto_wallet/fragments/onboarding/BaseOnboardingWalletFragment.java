@@ -8,9 +8,8 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFragment;
 
 /**
- * Base abstract class used by onboarding fragments holding
- * a reference to next page interface and containing two abstract methods
- * that define navigation behavior.
+ * Base abstract class used by onboarding fragments holding a reference to next page interface and
+ * containing two abstract methods that define navigation behavior.
  *
  * @see org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage
  */
@@ -27,6 +26,5 @@ public abstract class CryptoOnboardingFragment extends BaseWalletNextPageFragmen
             onNextPage.showCloseButton(canBeClosed());
             onNextPage.showBackButton(canNavigateBack());
         }
-
     }
 }

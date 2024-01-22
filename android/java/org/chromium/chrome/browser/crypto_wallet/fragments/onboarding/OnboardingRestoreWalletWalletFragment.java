@@ -36,7 +36,7 @@ import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
-public class RestoreWalletFragment extends CryptoOnboardingFragment {
+public class OnboardingRestoreWalletFragment extends CryptoOnboardingFragment {
     private static final String IS_ONBOARDING = "is_onboarding";
     private EditText mRecoveryPhraseText;
     private EditText mPasswordEdittext;
@@ -47,8 +47,8 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
     private boolean mIsOnboarding;
 
     @NonNull
-    public static RestoreWalletFragment newInstance(boolean isOnboarding) {
-        RestoreWalletFragment fragment = new RestoreWalletFragment();
+    public static OnboardingRestoreWalletFragment newInstance(boolean isOnboarding) {
+        OnboardingRestoreWalletFragment fragment = new OnboardingRestoreWalletFragment();
         Bundle args = new Bundle();
         args.putBoolean(IS_ONBOARDING, isOnboarding);
         fragment.setArguments(args);

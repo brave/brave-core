@@ -30,13 +30,13 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 /**
  * Initial onboarding fragment to setup Brave Wallet.
  */
-public class SetupWalletFragment extends CryptoOnboardingFragment {
+public class OnboardingInitWalletFragment extends CryptoOnboardingFragment {
     private static final String TAG = "SetupWalletFragment";
 
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
 
-    public SetupWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
+    public OnboardingInitWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
         mRestartSetupAction = restartSetupAction;
         mRestartRestoreAction = restartRestoreAction;
     }
