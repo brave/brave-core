@@ -13,6 +13,7 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/chrome_elf/nt_registry/nt_registry.h"
+#include "chrome/install_static/product_install_details.h"
 #include "chrome/installer/util/set_reg_value_work_item.h"
 #include "chrome/installer/util/work_item_list.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -26,7 +27,9 @@ class BraveSetupInstallWorkerTest : public testing::Test {
  public:
   BraveSetupInstallWorkerTest()
       : example_version_(base::Version("1.0.0.0")),
-        example_path_(FILE_PATH_LITERAL("elevation_service.exe")) {}
+        example_path_(FILE_PATH_LITERAL("elevation_service.exe")) {
+    install_static::InitializeProductDetailsForPrimaryModule();
+  }
 
  protected:
   base::Version example_version_;
