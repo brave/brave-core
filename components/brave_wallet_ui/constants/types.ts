@@ -188,7 +188,7 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
-  collapsedPortfolioAccountAddresses: string[]
+  collapsedPortfolioAccountIds: string[]
   collapsedPortfolioNetworkKeys: string[]
 }
 
@@ -220,7 +220,7 @@ export interface WalletState {
   removedNonFungibleTokens: BraveWallet.BlockchainToken[]
   deletedNonFungibleTokens: BraveWallet.BlockchainToken[]
   filteredOutPortfolioNetworkKeys: string[]
-  filteredOutPortfolioAccountAddresses: string[]
+  filteredOutPortfolioAccountIds: string[]
   hidePortfolioSmallBalances: boolean
   showNetworkLogoOnNfts: boolean
   isRefreshingNetworksAndTokens: boolean
