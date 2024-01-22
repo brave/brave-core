@@ -133,6 +133,21 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
+
+  bitcoin_test_rpc_server_->AddMempoolBalance(address_0, 1000, 10000000);
+  bitcoin_test_rpc_server_->AddTransactedAddress(address_6);
+
+  expected_balance->balances[address_0] = 0;
+  expected_balance->balances[address_6] = 0;
+  expected_balance->total_balance = expected_balance->balances[address_0] +
+                                    expected_balance->balances[address_6];
+  expected_balance->available_balance = 0;
+  expected_balance->pending_balance = 1000 - 10000000;  // negative
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(expected_balance), std::optional<std::string>()));
+  bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {
@@ -265,6 +280,38 @@ TEST_F(BitcoinWalletServiceUnitTest, GetUtxos) {
   bitcoin_wallet_service_->GetUtxos(account_id(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction_UpdatesChangeAddress) {
+  using CreateTransactionResult =
+      base::expected<BitcoinTransaction, std::string>;
+  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
+
+  BitcoinTransaction actual_tx;
+  EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
+                EXPECT_TRUE(arg.has_value());
+                actual_tx = arg.value();
+                return true;
+              })));
+
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      keyring_service_
+          ->GetBitcoinAddress(account_id(), mojom::BitcoinKeyId::New(1, 5))
+          ->address_string);
+
+  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
+                                             48000, false, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  auto change_address_6 =
+      keyring_service_
+          ->GetBitcoinAddress(account_id(), mojom::BitcoinKeyId::New(1, 6))
+          ->address_string;
+  EXPECT_EQ(change_address_6, actual_tx.ChangeOutput()->address);
+  EXPECT_EQ(change_address_6,
+            keyring_service_->GetBitcoinAccountInfo(account_id())
+                ->next_change_address->address_string);
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
