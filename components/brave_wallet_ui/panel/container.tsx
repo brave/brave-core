@@ -57,7 +57,7 @@ import {
   useSelectedAccountQuery
 } from '../common/slices/api.slice.extra'
 import {
-  usePendingTransactions //
+  useSelectedPendingTransaction //
 } from '../common/hooks/use-pending-transaction'
 import PageContainer from '../page/container'
 import {
@@ -103,6 +103,12 @@ function Container() {
   const signMessageErrorData = useUnsafePanelSelector(
     PanelSelectors.signMessageErrorData
   )
+  const signTransactionRequests = useUnsafePanelSelector(
+    PanelSelectors.signTransactionRequests
+  )
+  const signAllTransactionsRequests = useUnsafePanelSelector(
+    PanelSelectors.signAllTransactionsRequests
+  )
 
   // queries & mutations
   const { accounts } = useAccountsQuery()
@@ -121,11 +127,7 @@ function Container() {
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
-  // TODO(petemill): If initial data or UI takes a noticeable amount of time to
-  // arrive consider rendering a "loading" indicator when `hasInitialized ===
-  // false`, and also using `React.lazy` to put all the main UI in a separate JS
-  // bundle and display that loading indicator ASAP.
-  const { selectedPendingTransaction } = usePendingTransactions()
+  const selectedPendingTransaction = useSelectedPendingTransaction()
 
   if (!hasInitialized) {
     return null
@@ -152,12 +154,21 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'transactionStatus' && selectedTransactionId) {
+  if (selectedPanel === 'connectWithSite') {
+    const accountsToConnect = accounts.filter((account) =>
+      connectingAccounts.includes(account.address.toLowerCase())
+    )
     return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <TransactionStatus transactionId={selectedTransactionId} />
-        </StyledExtensionWrapper>
+      <PanelWrapper
+        width={390}
+        height={600}
+      >
+        <ConnectWithSiteWrapper>
+          <ConnectWithSite
+            originInfo={connectToSiteOrigin}
+            accountsToConnect={accountsToConnect}
+          />
+        </ConnectWithSiteWrapper>
       </PanelWrapper>
     )
   }
@@ -174,41 +185,6 @@ function Container() {
             account={selectedAccount}
             hardwareWalletCode={hardwareWalletCode}
           />
-        </StyledExtensionWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (
-    selectedPendingTransaction?.txType === BraveWallet.TransactionType.ETHSwap
-  ) {
-    return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <ConfirmSwapTransaction />
-        </LongWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (selectedPendingTransaction) {
-    return (
-      <PanelWrapper
-        width={390}
-        height={650}
-      >
-        <LongWrapper>
-          <ConfirmTransactionPanel />
-        </LongWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (addTokenRequests.length) {
-    return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <AddSuggestedTokenPanel />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )
@@ -250,37 +226,6 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'signData') {
-    return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <SignPanel
-            signMessageData={signMessageData}
-            // Pass a boolean here if the signing method is risky
-            showWarning={false}
-          />
-        </LongWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (
-    selectedPanel === 'signTransaction' ||
-    selectedPanel === 'signAllTransactions'
-  ) {
-    return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <SignTransactionPanel
-            signMode={
-              selectedPanel === 'signAllTransactions' ? 'signAllTxs' : 'signTx'
-            }
-          />
-        </LongWrapper>
-      </PanelWrapper>
-    )
-  }
-
   if (
     selectedPanel === 'provideEncryptionKey' &&
     getEncryptionPublicKeyRequest
@@ -304,21 +249,83 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'connectWithSite') {
-    const accountsToConnect = accounts.filter((account) =>
-      connectingAccounts.includes(account.address.toLowerCase())
+  if (selectedPanel === 'signData') {
+    return (
+      <PanelWrapper isLonger={true}>
+        <LongWrapper>
+          <SignPanel
+            signMessageData={signMessageData}
+            // Pass a boolean here if the signing method is risky
+            showWarning={false}
+          />
+        </LongWrapper>
+      </PanelWrapper>
     )
+  }
+
+  if (addTokenRequests.length) {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <AddSuggestedTokenPanel />
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'transactionStatus' && selectedTransactionId) {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <TransactionStatus transactionId={selectedTransactionId} />
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (
+    selectedPendingTransaction?.txType === BraveWallet.TransactionType.ETHSwap
+  ) {
+    return (
+      <PanelWrapper isLonger={true}>
+        <LongWrapper>
+          <ConfirmSwapTransaction />
+        </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPendingTransaction) {
     return (
       <PanelWrapper
         width={390}
-        height={600}
+        height={650}
       >
-        <ConnectWithSiteWrapper>
-          <ConnectWithSite
-            originInfo={connectToSiteOrigin}
-            accountsToConnect={accountsToConnect}
+        <LongWrapper>
+          <ConfirmTransactionPanel />
+        </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (
+    (signAllTransactionsRequests.length > 0 ||
+      signTransactionRequests.length > 0) &&
+    (selectedPanel === 'signTransaction' ||
+      selectedPanel === 'signAllTransactions')
+  ) {
+    return (
+      <PanelWrapper isLonger={true}>
+        <LongWrapper>
+          <SignTransactionPanel
+            signMode={
+              signAllTransactionsRequests.length ||
+              selectedPanel === 'signAllTransactions'
+                ? 'signAllTxs'
+                : 'signTx'
+            }
           />
-        </ConnectWithSiteWrapper>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
