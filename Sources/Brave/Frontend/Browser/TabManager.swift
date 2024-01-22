@@ -411,14 +411,6 @@ class TabManager: NSObject {
   @MainActor func addPopupForParentTab(_ parentTab: Tab, configuration: WKWebViewConfiguration) -> Tab {
     let popup = Tab(configuration: configuration, id: UUID(), type: parentTab.type, tabGeneratorAPI: tabGeneratorAPI)
     configureTab(popup, request: nil, afterTab: parentTab, flushToDisk: true, zombie: false, isPopup: true)
-
-    // Wait momentarily before selecting the new tab, otherwise the parent tab
-    // may be unable to set `window.location` on the popup immediately after
-    // calling `window.open("")`.
-    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-      self.selectTab(popup)
-    }
-
     return popup
   }
 

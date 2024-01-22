@@ -1016,6 +1016,16 @@ extension BrowserViewController: WKUIDelegate {
     newTab.url = URL(string: "about:blank")
     
     toolbarVisibilityViewModel.toolbarState = .expanded
+    
+    // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
+    // restore it as if it was a dead tab.
+    var observation: NSKeyValueObservation?
+    observation = newTab.webView?.observe(\.url, changeHandler: { [weak self] webView, _ in
+      _ = observation // Silence write but not read warning
+      observation = nil
+      guard let self = self, let tab = self.tabManager[webView] else { return }
+      self.tabManager.selectTab(tab)
+    })
 
     return newTab.webView
   }
