@@ -18,33 +18,35 @@ import {
 } from '../../../../common/slices/api.slice'
 
 // components
-import {
-  WalletPageLayout //
-} from '../../../../components/desktop/wallet-page-layout/index'
-import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button'
+import { WelcomeAction } from '../components/welcome-action/welcome-action'
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // styles
+import * as leo from '@brave/leo/tokens/css'
+import { Row, VerticalSpace } from '../../../../components/shared/style'
 import {
-  Row,
-  VerticalSpace,
-  WalletWelcomeGraphic
-} from '../../../../components/shared/style'
-import { OnboardingWrapper } from '../onboarding.style'
-import {
+  BraveIcon,
+  Content,
+  WelcomePageBackground,
+  WelcomePageWrapper,
   Title,
-  ButtonContainer,
-  LearnMoreLink,
-  BlockQuote,
-  BlockQuoteTextContainer,
-  VerticalRule,
-  SubDivider,
-  SubDividerText
+  Heading,
+  SubHeading,
+  ActionsContainer,
+  WatchOnlyWalletButton,
+  Footer
 } from './onboarding-welcome.style'
+
+const walletIcons = [
+  'brave-icon-release-color',
+  'phantom-color',
+  'metamask-color',
+  'coinbase-color',
+  'trezor-color',
+  'wallet-ledger'
+]
 
 export const OnboardingWelcome = () => {
   // routing
@@ -67,69 +69,53 @@ export const OnboardingWelcome = () => {
   }, [setupStillInProgress, report, dispatch])
 
   return (
-    <WalletPageLayout>
-      <OnboardingWrapper>
-        <WalletWelcomeGraphic />
+    <>
+      <WelcomePageBackground />
+      <WelcomePageWrapper>
+        <Content>
+          <Row
+            gap='10px'
+            justifyContent='flex-start'
+          >
+            <BraveIcon />
+            <Title>{getLocale('braveWalletTitle')}</Title>
+          </Row>
+          <VerticalSpace space={leo.spacing['5Xl']} />
+          <Heading>{getLocale('braveWalletWelcomeTitle')}</Heading>
+          <VerticalSpace space={leo.spacing.xl} />
+          <SubHeading></SubHeading>
+          <VerticalSpace space={leo.spacing['5Xl']} />
 
-        <Title maxWidth='467px'>{getLocale('braveWalletWelcomeTitle')}</Title>
+          <ActionsContainer>
+            <WelcomeAction
+              title={getLocale('braveWalletWelcomeNewWalletTitle')}
+              description={getLocale('braveWalletWelcomeNewWalletDescription')}
+              iconName='plus-add'
+              onSelect={() =>
+                history.push(WalletRoutes.OnboardingNewWalletTerms)
+              }
+            />
 
-        <BlockQuote>
-          <VerticalRule />
-          <BlockQuoteTextContainer>
-            <span>{getLocale('braveWalletPerksTokens')}</span>
-            <span>{getLocale('braveWalletMultiChain')}</span>
-            <span>{getLocale('braveWalletPerksBrowserNative')}</span>
-          </BlockQuoteTextContainer>
-        </BlockQuote>
-
-        <VerticalSpace space='34px' />
-
-        <ButtonContainer>
-          <NavButton
-            buttonType='primary'
-            text={getLocale('braveWalletWelcomeButton')}
-            onSubmit={() => history.push(WalletRoutes.OnboardingNewWalletTerms)}
-            maxHeight={'48px'}
-            minWidth={'267px'}
-          />
-
-          <NavButton
-            buttonType='secondary'
-            text={getLocale('braveWalletImportExistingWallet')}
-            onSubmit={() => history.push(WalletRoutes.OnboardingImportTerms)}
-            maxHeight={'48px'}
-            minWidth={'267px'}
-          />
-        </ButtonContainer>
-
-        <Row>
-          <SubDivider />
-          <SubDividerText>
-            {getLocale('braveWalletWelcomeDividerText')}
-          </SubDividerText>
-          <SubDivider />
-        </Row>
-
-        <NavButton
-          buttonType='primary'
-          text={getLocale('braveWalletConnectHardwareWallet')}
-          onSubmit={() =>
-            history.push(WalletRoutes.OnboardingHardwareWalletTerms)
-          }
-          maxHeight={'48px'}
-          minWidth={'267px'}
-        />
-
-        <VerticalSpace space='20px' />
-
-        <LearnMoreLink
-          href='https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
-          target='_blank'
-          rel='noreferrer'
-        >
-          {getLocale('braveWalletLearnMoreAboutBraveWallet')}
-        </LearnMoreLink>
-      </OnboardingWrapper>
-    </WalletPageLayout>
+            <WelcomeAction
+              title={getLocale('braveWalletWelcomeImportWalletTitle')}
+              description={getLocale(
+                'braveWalletWelcomeImportWalletDescription'
+              )}
+              iconName='import-arrow'
+              walletIcons={walletIcons}
+              onSelect={() =>
+                history.push(WalletRoutes.OnboardingHardwareWalletTerms)
+              }
+            />
+          </ActionsContainer>
+          <VerticalSpace space={leo.spacing['2Xl']} />
+          <WatchOnlyWalletButton>
+            {getLocale('braveWalletWelcomeWatchOnlyTitle')}
+          </WatchOnlyWalletButton>
+          <VerticalSpace space='72px' />
+          <Footer>{getLocale('braveWalletWelcomeCopyright')}</Footer>
+        </Content>
+      </WelcomePageWrapper>
+    </>
   )
 }

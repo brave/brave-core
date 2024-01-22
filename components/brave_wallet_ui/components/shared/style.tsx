@@ -148,6 +148,7 @@ export const Row = styled.div<
     marginBottom?: number | string
     // https://styled-components.com/docs/api#transient-props
     $wrap?: boolean
+    gap?: string | number
   }
 >`
   font-family: 'Poppins';
@@ -174,6 +175,7 @@ export const Row = styled.div<
   position: relative;
   ${makePaddingMixin(0)}
   box-sizing: border-box;
+  gap: ${(p) => p.gap ?? 'unset'};
 `
 
 export const Column = styled.div<

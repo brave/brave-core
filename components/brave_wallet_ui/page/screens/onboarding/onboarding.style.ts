@@ -15,6 +15,7 @@ export const OnboardingWrapper = styled(Column)`
   padding-right: 80px;
   display: flex;
   overflow-x: hidden;
+  position: relative;
 `
 
 export const NextButtonRow = styled.div`
