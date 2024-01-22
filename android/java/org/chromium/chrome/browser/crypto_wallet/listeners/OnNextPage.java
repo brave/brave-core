@@ -7,7 +7,8 @@ package org.chromium.chrome.browser.crypto_wallet.listeners;
 
 /**
  * Interface implemented by {@link org.chromium.chrome.browser.app.BraveActivity} in charge of
- * defining the navigation behavior for onboarding, biometric prompt, next page, and navigation icons.
+ * defining the navigation behavior for onboarding, biometric prompt, next page, and navigation
+ * icons.
  */
 public interface OnNextPage {
     void gotoNextPage();

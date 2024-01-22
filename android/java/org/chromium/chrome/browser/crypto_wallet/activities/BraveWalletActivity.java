@@ -70,7 +70,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     public enum WalletAction {
         // Initial onboarding action triggered to create a new Wallet or restore an existing one.
         ONBOARDING,
-        // Password creation action part of the onboarding flow, triggered when creating a new Wallet.
+        // Password creation action part of the onboarding flow, triggered when creating a new
+        // Wallet.
         PASSWORD_CREATION,
         // Unlock action type triggered when accessing the locked Wallet.
         UNLOCK,
@@ -298,8 +299,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     new OnboardingCreatingWalletFragment();
             mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
                     new NavigationItem(
-                            getResources()
-                                    .getString(R.string.your_wallet_is_restoring_page_title),
+                            getResources().getString(R.string.your_wallet_is_restoring_page_title),
                             onboardingCreatingWalletFragment),
                     mCryptoWalletOnboardingPagerAdapter.getCount());
         } else if (walletAction == WalletAction.PASSWORD_CREATION) {
