@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">啟用/停用 Brave Shields</translation>
 <translation id="6945863270524203017">獲取有關跟蹤器與廣告攔截的每週私隱更新。</translation>
 <translation id="4324735664183300693">開啟通知</translation>
-<translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="6395059271589866759">Brave 會從捐款金額中收取 5% 的手續費。</translation>
 <translation id="6661699662755460155">兌換</translation>
 <translation id="6790981891677399838">我剛剛透過 Brave 瀏覽器捐出 <ph name="AMOUNT"/> BAT！您也可以支持喜愛的創作者和網站，現在就查看相關資訊：https://brave.com/rewards</translation>
-<translation id="2278950434998763147">使用安全的 HTTPS 連線而非普通的 HTTP 開啟某些網站。</translation>
 <translation id="5510493033031835532">自動重新導向 AMP 頁面</translation>
 <translation id="5197219128592971597">務必前往原始 (非 AMP) 頁面的 URL，而非使用 Google 的 Accelerated Mobile Page 版本</translation>
 <translation id="920638232916443453">自動重新導向追蹤 URL</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">上次更新時間：<ph name="TIME"/></translation>
 <translation id="802154636333426148">下載失敗</translation>
 <translation id="7824440849056209910"><ph name="TIME"/>更新失敗</translation>
+<translation id="8580328754808744073">建立自訂過濾器</translation>
+<translation id="6532106788206463496">儲存變更</translation>
+<translation id="5132969826889386652">已成功儲存變更</translation>
+<translation id="4335929145384293789">在上方欄位中新增您建立的自訂篩選條件，每行一個條件。請確保使用 <ph name="ADBLOCK_FILTER_SYNTAX"/>。</translation>
+<translation id="5023212862780303376">Adblock 篩選條件語法</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> 價格 (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">以太坊域名服務</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">無內容</translation>
 <translation id="7172792761509429092">Brave News 沒有可顯示的內容。</translation>
 <translation id="1771307734839364850">選擇內容˙來源</translation>
-<translation id="5787084571334399599">防止瀏覽器存取指紋</translation>
+<translation id="6891769200437737956">防止網站以指紋識別我</translation>
 <translation id="7459000603787995422">退出時關閉分頁</translation>
 <translation id="4448697385961650078">封鎖追蹤器與廣告</translation>
 <translation id="2448893613530489637">避免追蹤程式 &amp; 廣告載入並於網頁中顯示</translation>
 <translation id="1025207378813960343">請確定網站的連線安全可靠。</translation>
+<translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="6686219838158572786">要求所有連線使用 HTTPS (嚴格)</translation>
 <translation id="4221284400051835823">盡可能升級至 HTTPS (預設)</translation>
 <translation id="4690906712010847708">不要將連線升級至 HTTPS (停用)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">在 Brave 瀏覽器當機或凍結時自動傳送診斷報告，協助改善 Brave 的產品穩定性。</translation>
 <translation id="7977176350719484850">預估節省\n時間</translation>
 <translation id="9008534313521214777">預估節省\n時間</translation>
-<translation id="1842747674580016420">在 Brave 播放影片</translation>
-<translation id="5368992950177874750">如啟用，影片將改為在 Brave 播放，而非在原先預設的應用程式</translation>
 <translation id="410351446219883937">自動播放</translation>
 <translation id="7445411102860286510">允許網站自動播放靜音的影片 (建議)</translation>
 <translation id="7837721118676387834">允許特定網站自動播放靜音的影片。</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">背景播放</translation>
 <translation id="6332924730165919598">如關閉所有分頁，Brave 也會隨之關閉</translation>
 <translation id="8308305244351876417">當您切換到 Brave 或其他應用程式中的另一個分頁或您的裝置螢幕關閉時，允許播放音訊。</translation>
+<translation id="49147335255967913">在 Brave 中開啟 YouTube 連結</translation>
 <translation id="4150201353443180367">顯示設定</translation>
 <translation id="4275663329226226506">媒體</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -376,13 +379,8 @@
 <translation id="4803910478683254032">匯入失敗</translation>
 <translation id="8325139248201792113">書籤匯入失敗，請再試一次。</translation>
 <translation id="2803313416453193357">開啟資料夾</translation>
-<translation id="3396347744975515056">Brave 同步已升級並需要設定</translation>
-<translation id="7473245612074035141">開始設定</translation>
 <translation id="8985635554450124959">無法設定同步</translation>
-<translation id="2514300153301737214">我們偵測到您已啟用 Brave Sync，但是系統同步已關閉，且不允許 Brave 同步。點擊以開啟設定</translation>
 <translation id="7173114856073700355">開啟設定</translation>
-<translation id="6965382102122355670">確定</translation>
-<translation id="4450893287417543264">不要再顯示</translation>
 <translation id="496896260395129787">此 Brave Sync 帳戶已從其他裝置刪除。如果您不是要停用 Sync，請<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新建立帳戶</translation>
 <translation id="4094590686212463338">無法加入此同步鏈。同步鏈已被刪除。</translation>
@@ -479,7 +477,7 @@
 <translation id="7854108565842971747">這些是新網站的 Shields 預設設定。變更此些設定不會影響您現時對每個網站的設定。</translation>
 <translation id="218587021686734263">透過語言設定防止指紋辨識攻擊</translation>
 <translation id="1706099589708266367">減少網站可以根據您瀏覽器的語言設定所掌握到的內容。</translation>
-<translation id="184568144098869637">防止瀏覽器識別您的裝置</translation>
+<translation id="4721088070859595932">防止網站識別您的裝置</translation>
 <translation id="7445306466605902444">封鎖指紋（嚴格，可能會破壞網站）</translation>
 <translation id="5582686930349810484">封鎖指紋（標準）</translation>
 <translation id="769702552748212954">允許所有指紋追蹤</translation>
@@ -623,8 +621,9 @@
 <translation id="1783600039044302171">使用密碼保護您的加密貨幣</translation>
 <translation id="3726490322412361740">輸入密碼</translation>
 <translation id="3038243139480464605">驗證密碼</translation>
-<translation id="3717685683157254329">密碼必須包含至少 7 個字元，並內含至少 1 個字母、1 個數字和 1 個特殊字元。</translation>
+<translation id="3043677904160378840">PIN 碼至少要有 8 個字元。</translation>
 <translation id="7396672979287122068">與完成驗證的密碼不符</translation>
+<translation id="7084181009966710506">正在建立錢包……</translation>
 <translation id="3188963375823360044">1 小時</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -777,7 +776,6 @@
 <translation id="1705662265912724430">確定要重設 VPN 設定嗎？</translation>
 <translation id="604124094241169006">自動</translation>
 <translation id="7475580600756356589">正在連線到您的伺服器。應該只需要一點時間……</translation>
-<translation id="1342728075788541348">正在斷開與您的伺服器連線。應該只需要一點時間……</translation>
 <translation id="669072536454692117">成功續訂</translation>
 <translation id="1187506504156101449">無法確認購買：</translation>
 <translation id="8420522105268941892">您已訂閱。嘗試復原訂閱。</translation>
@@ -810,7 +808,6 @@
 <translation id="8084782383392198011">帳號名稱不能為空。</translation>
 <translation id="5045550434625856497">密碼不正確</translation>
 <translation id="1367951781824006909">選擇檔案</translation>
-<translation id="8648684608605749476">在無痕模式中封鎖第三方 Cookie</translation>
 <translation id="5932938770824268122">私鑰</translation>
 <translation id="2472882733835903303">顯示私鑰</translation>
 <translation id="4391056902675005799">隱藏私鑰</translation>
@@ -961,9 +958,12 @@
 <translation id="6044189892950611565">Brave 瀏覽器的通知頻道</translation>
 <translation id="1173919438868967364">選取帳戶</translation>
 <translation id="8922793255489232731">找不到符合的時區：<ph name="VALUE"/></translation>
-<translation id="8901748741234750758">正在下載錢包資料檔案 \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">已連線至 <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">試用</translation>
+<translation id="6458565248779152483">停用 Brave VPN</translation>
+<translation id="9080536793704001825">暫停 15 分鐘</translation>
+<translation id="803706420145725977">暫停 1 小時</translation>
+<translation id="4394049700291259645">停用</translation>
 <translation id="7733890291091968191">顯示 Web3 通知</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave 不會追蹤您，或知道您如何使用我們的應用程式，因此不了解您如何設定 VPN。請分享您所遭遇問題的資訊，我們會努力盡快解決。 ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN 主機名稱\n <ph name="VALUE"/></translation>
@@ -993,6 +993,7 @@
 <translation id="8219806187375413057"><ph name="CLICK_START"/>瞭解如何減少 Rainbow Bridge 上的風險<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> 是一項獨立服務，可幫助您跨網路橋接資產，並在其他網路和 DApp 生態系統上使用您的加密貨幣。將資產橋接到其他網路存在一些風險。</translation>
 <translation id="8423380132356660250">開啟 <ph name="APP_NAME"/> 應用程式</translation>
+<translation id="4450893287417543264">不要再顯示</translation>
 <translation id="168154537623654021">正在更新 VPN 設定檔……</translation>
 <translation id="7457027586454688423">輸入您的 Brave 錢包密碼</translation>
 <translation id="4784306439879850873">請注意，Brave 無法驗證您簽名後會發生什麼。簽名可以授權別人進行帳戶的幾乎任何操作，包括（但不限於）將您的帳戶和加密資產的完全控制權交給提出請求的網站。因此只有在您確定要採取此操作並信任請求的網站時才簽名。</translation>

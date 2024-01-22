@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">Brave Shields 활성화/비활성화</translation>
 <translation id="6945863270524203017">트래커 및 광고 차단과 관련한 프라이버시 업데이트를 매주 받습니다.</translation>
 <translation id="4324735664183300693">알림 켜기</translation>
-<translation id="3570081523466826008">연결을 HTTPS로 업그레이드</translation>
 <translation id="6395059271589866759">Brave는 송금액의 5%를 처리 수수료로 차감합니다.</translation>
 <translation id="6661699662755460155">거래소</translation>
 <translation id="6790981891677399838">제가 방금 Brave 브라우저로 <ph name="AMOUNT"/> BAT를 후원했어요!  마음에 드는 제작자와 사이트를 후원하는 방법을 확인해보세요. https://brave.com/rewards</translation>
-<translation id="2278950434998763147">일부 웹사이트를 일반 HTTP 대신 보안 HTTPS를 사용하여 엽니다.</translation>
 <translation id="5510493033031835532">AMP 페이지 자동 리디렉션</translation>
 <translation id="5197219128592971597">항상 Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 방문하세요.</translation>
 <translation id="920638232916443453">추적 URL 자동 리디렉션</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">최근 업데이트 <ph name="TIME"/></translation>
 <translation id="802154636333426148">다운로드 실패</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> 업데이트 실패</translation>
+<translation id="8580328754808744073">맞춤 필터 만들기</translation>
+<translation id="6532106788206463496">변경사항 저장</translation>
+<translation id="5132969826889386652">변경사항 저장 성공</translation>
+<translation id="4335929145384293789">만드신 맞춤 필터를 위 필드 한 줄에 하나씩 추가하세요. 꼭 <ph name="ADBLOCK_FILTER_SYNTAX"/>을 사용하세요.</translation>
+<translation id="5023212862780303376">Adblock 필터 문법</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> 가격(<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">콘텐츠 없음</translation>
 <translation id="7172792761509429092">Brave News에 표시할 콘텐츠가 없습니다.</translation>
 <translation id="1771307734839364850">콘텐츠 소스 선택</translation>
-<translation id="5787084571334399599">브라우저의 지문 채취를 방지</translation>
+<translation id="6891769200437737956">웹사이트가 내 지문을 수집할 수 없게 차단</translation>
 <translation id="7459000603787995422">나갈 때 탭 닫기</translation>
 <translation id="4448697385961650078">트래커 &amp; 광고 차단</translation>
 <translation id="2448893613530489637">웹페이지를 로드하여 표시할 때 트래커 및 광고 차단</translation>
 <translation id="1025207378813960343">철저한 보안으로 웹사이트를 연결합니다.</translation>
+<translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="6686219838158572786">모든 연결에 HTTPS를 사용해야 함(엄격)</translation>
 <translation id="4221284400051835823">가능하면 HTTPS로 업그레이드(기본)</translation>
 <translation id="4690906712010847708">연결을 HTTPS로 업그레이드하지 않음(비활성)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">Brave 브라우저가 작동이 멎거나 프리징이 발생하면 진단 보고서를 자동 전송하여 Brave 제품 안정성 향상에 도움을 주세요.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
 <translation id="9008534313521214777">예상\n절약 시간</translation>
-<translation id="1842747674580016420">Brave에서 비디오 녹화 재생</translation>
-<translation id="5368992950177874750">사용 시 동영상이 대응하는 앱 대신 Brave에서 재생됩니다</translation>
 <translation id="410351446219883937">자동재생</translation>
 <translation id="7445411102860286510">사이트에서 음소거된 동영상을 자동재생하도록 허용(권장)</translation>
 <translation id="7837721118676387834">특정 사이트에서 음소거된 동영상이 자동재생되도록 허용합니다.</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">백그라운드 재생</translation>
 <translation id="6332924730165919598">모든 탭을 닫으면 Brave를 닫습니다</translation>
 <translation id="8308305244351876417">Brave 내 다른 탭 또는 다른 앱으로 전환하거나 디바이스 화면이 꺼져도 오디오가 재생됩니다.</translation>
+<translation id="49147335255967913">Brave에서 YouTube 링크 열기</translation>
 <translation id="4150201353443180367">디스플레이</translation>
 <translation id="4275663329226226506">미디어</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -376,13 +379,8 @@
 <translation id="4803910478683254032">가져오기 실패</translation>
 <translation id="8325139248201792113">북마크 가져오기 실패. 다시 시도하세요.</translation>
 <translation id="2803313416453193357">폴더 열기</translation>
-<translation id="3396347744975515056">Brave 동기화가 업그레이드되었고 설정이 필요합니다</translation>
-<translation id="7473245612074035141">설치 시작</translation>
 <translation id="8985635554450124959">동기화 설정할 수 없음</translation>
-<translation id="2514300153301737214">Brave Sync를 활성화하신 것을 확인했으나 시스템 동기화가 꺼져 있어 Brave의 동기화가 허용되지 않습니다. 눌러서 설정을 여세요</translation>
 <translation id="7173114856073700355">설정 열기</translation>
-<translation id="6965382102122355670">확인</translation>
-<translation id="4450893287417543264">다시 표시하지 않음</translation>
 <translation id="496896260395129787">다른 디바이스에서 이 Brave 동기화 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>계정을 새로 만드세요.</translation>
 <translation id="4094590686212463338">이 동기화 체인에 참여할 수 없습니다. 동기화 체인이 삭제되었습니다.</translation>
@@ -479,7 +477,7 @@
 <translation id="7854108565842971747">새 사이트에 적용되는 기본 Shields 설정이 있습니다. 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.</translation>
 <translation id="218587021686734263">언어 설정을 통한 핑거프린팅 방지</translation>
 <translation id="1706099589708266367">웹사이트가 브라우저의 언어 설정을 기반으로 이용자를 파악할 수 있는 범위를 줄입니다.</translation>
-<translation id="184568144098869637">브라우저가 귀하의 기기를 인식하지 못하도록 방지</translation>
+<translation id="4721088070859595932">웹사이트가 디바이스를 인식할 수 없게 차단</translation>
 <translation id="7445306466605902444">지문 차단됨 (엄격, 사이트가 작동하지 않을 수 있음)</translation>
 <translation id="5582686930349810484">지문 차단됨 (표준)</translation>
 <translation id="769702552748212954">모든 지문 인식 허용</translation>
@@ -623,8 +621,9 @@
 <translation id="1783600039044302171">비밀번호로 암호화폐 안전하게 보호</translation>
 <translation id="3726490322412361740">비밀번호 입력</translation>
 <translation id="3038243139480464605">검증 비밀번호</translation>
-<translation id="3717685683157254329">비밀번호는 7자 이상이어야 하며, 문자와 숫자, 특수문자를 각각 하나 이상 포함해야 합니다.</translation>
+<translation id="3043677904160378840">비밀번호는 8자 이상이어야 합니다.</translation>
 <translation id="7396672979287122068">검증 비밀번호가 일치하지 않음</translation>
+<translation id="7084181009966710506">월렛 생성 중...</translation>
 <translation id="3188963375823360044">1시간</translation>
 <translation id="8163269366661594721">1일</translation>
 <translation id="7640956400175663828">1주</translation>
@@ -777,7 +776,6 @@
 <translation id="1705662265912724430">VPN 구성을 초기화하시겠습니까?</translation>
 <translation id="604124094241169006">자동</translation>
 <translation id="7475580600756356589">서버에 연결 중. 잠시만 기다려주세요...</translation>
-<translation id="1342728075788541348">서버 연결 해제 중. 잠시만 기다려주세요...</translation>
 <translation id="669072536454692117">구독을 성공적으로 소비함</translation>
 <translation id="1187506504156101449">구매 확인 실패:</translation>
 <translation id="8420522105268941892">이미 구독 중인 구독자입니다. 구독을 복구해보세요.</translation>
@@ -810,7 +808,6 @@
 <translation id="8084782383392198011">계정 이름은 비워 둘 수 없습니다.</translation>
 <translation id="5045550434625856497">비밀번호가 잘못되었습니다.</translation>
 <translation id="1367951781824006909">파일 선택</translation>
-<translation id="8648684608605749476">시크릿 모드에서 타사 쿠키 차단</translation>
 <translation id="5932938770824268122">개인키</translation>
 <translation id="2472882733835903303">비공개 키 표시</translation>
 <translation id="4391056902675005799">비공개 키 숨기기</translation>
@@ -961,9 +958,12 @@
 <translation id="6044189892950611565">Brave 브라우저의 알림 채널</translation>
 <translation id="1173919438868967364">계정 선택</translation>
 <translation id="8922793255489232731">다음에 일치하는 시간대를 가져올 수 없음: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">월렛 데이터 파일 다운로드 중 \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>에 연결됨</translation>
 <translation id="1968852757206592413">평가판</translation>
+<translation id="6458565248779152483">Brave VPN 비활성화</translation>
+<translation id="9080536793704001825">15분간 일시중지</translation>
+<translation id="803706420145725977">1시간 동안 일시중지</translation>
+<translation id="4394049700291259645">사용 중지</translation>
 <translation id="7733890291091968191">Web3 알림 표시</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave는 귀하를 추적하지 않아 앱을 어떻게 사용하는지 파악할 수 없기 때문에 VPN을 어떻게 셋업하셨는지 전혀 알지 못합니다. 겪으신 문제에 대한 정보를 공유해주시면 최대한 신속하게 해결책을 알아내서 도움을 드리겠습니다. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN 호스트 이름\n <ph name="VALUE"/></translation>
@@ -993,6 +993,7 @@
 <translation id="8219806187375413057"><ph name="CLICK_START"/>Rainbow Bridge에서의 리스크 완화 자세히 알아보기 <ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/>는 자산을 여러 네트워크에 걸쳐 브리징하여 보유한 암호화폐를 다른 네트워크 및 DApp 생태계에서도 사용할 수 있게 해주는 독립적 서비스입니다. 자산을 다른 네트워크로 브리징하면 다소 위험이 따릅니다.</translation>
 <translation id="8423380132356660250"><ph name="APP_NAME"/> 앱 열기</translation>
+<translation id="4450893287417543264">다시 표시하지 않음</translation>
 <translation id="168154537623654021">VPN 프로필 업데이트 중...</translation>
 <translation id="7457027586454688423">Brave Wallet 비밀번호 입력</translation>
 <translation id="4784306439879850873">서명하면 어떤 일이 일어나든 Brave가 검증하지 않습니다. 서명은 요청하는 사이트에 귀하의 계정 내 거의 모든 동작에 대한 권한을 부여하며, 암호화폐 자산에 대한 전체적인 제어권도 포함하되 이에 국한되지 않습니다. 이 행동에 대한 책임을 스스로 지고 요청 사이트를 신뢰할 수 있는 경우에만 서명하세요.</translation>
