@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 /**
- * Fragment to setup Brave Wallet
+ * Initial onboarding fragment to setup Brave Wallet.
  */
 public class SetupWalletFragment extends CryptoOnboardingFragment {
     private static final String TAG = "SetupWalletFragment";
@@ -52,7 +52,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_setup_wallet, container, false);
     }
 
@@ -96,7 +96,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             intent.setAction(Intent.ACTION_VIEW);
             startActivity(intent);
-            getActivity().finish();
+            requireActivity().finish();
         }
     }
 }

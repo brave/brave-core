@@ -25,13 +25,13 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapte
 
     public void replaceWithNavigationItem(NavigationItem navigationItem, int index) {
         this.navigationItems =
-                new ArrayList<NavigationItem>(this.navigationItems.subList(0, index));
+                new ArrayList<>(this.navigationItems.subList(0, index));
         this.navigationItems.add(navigationItem);
     }
 
     public void replaceWithNavigationItems(List<NavigationItem> navigationItems, int index) {
         this.navigationItems =
-                new ArrayList<NavigationItem>(this.navigationItems.subList(0, index));
+                new ArrayList<>(this.navigationItems.subList(0, index));
         this.navigationItems.addAll(navigationItems);
     }
 

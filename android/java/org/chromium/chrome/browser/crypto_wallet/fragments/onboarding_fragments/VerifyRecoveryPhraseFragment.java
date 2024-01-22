@@ -72,6 +72,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         void onSelectedRecoveryPhrase(String phrase);
     }
 
+    @NonNull
     public static VerifyRecoveryPhraseFragment newInstance(boolean isOnboarding) {
         VerifyRecoveryPhraseFragment fragment = new VerifyRecoveryPhraseFragment();
 
@@ -84,8 +85,8 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING_ARG, false);
+           @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_verify_recovery_phrase, container, false);
     }
 
@@ -150,8 +151,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     private void phraseNotMatch() {
         resetRecoveryPhrasesViews();
-        assert getActivity() != null;
-        Toast.makeText(getActivity(), R.string.phrases_did_not_match, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), R.string.phrases_did_not_match, Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -168,7 +168,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         }
     }
 
-    private void setupRecoveryPhraseRecyclerView(View view) {
+    private void setupRecoveryPhraseRecyclerView(@NonNull View view) {
         recoveryPhrasesRecyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
         assert getActivity() != null;
         recoveryPhrasesRecyclerView.addItemDecoration(
@@ -182,7 +182,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         recoveryPhrasesRecyclerView.setAdapter(recoveryPhrasesAdapter);
     }
 
-    private void setupSelectedRecoveryPhraseRecyclerView(View view) {
+    private void setupSelectedRecoveryPhraseRecyclerView(@NonNull View view) {
         selectedPhraseRecyclerView = view.findViewById(R.id.recovery_phrase_selected_recyclerview);
         assert getActivity() != null;
         selectedPhraseRecyclerView.addItemDecoration(

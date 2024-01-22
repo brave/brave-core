@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -64,20 +63,17 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mCreateWalletClicked = false;
         View view = inflater.inflate(R.layout.fragment_secure_password, container, false);
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            @SuppressLint("ClickableViewAccessibility")
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Utils.hideKeyboard(getActivity());
-                }
-                return true;
+        view.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                Utils.hideKeyboard(requireActivity());
             }
+            return true;
         });
         return view;
     }
@@ -110,7 +106,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         });
     }
 
-    private void proceedWithAStrongPassword(String passwordInput, View view) {
+    private void proceedWithAStrongPassword(@NonNull String passwordInput, @NonNull View view) {
         EditText retypePasswordEdittext = view.findViewById(R.id.secure_crypto_retype_password);
         String retypePasswordInput = retypePasswordEdittext.getText().toString();
         if (!passwordInput.equals(retypePasswordInput)) {
@@ -169,12 +165,12 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
         }
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void showFingerprintDialog(
             @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
-        assert getActivity() != null;
-        Executor executor = ContextCompat.getMainExecutor(getActivity());
-        new BiometricPrompt.Builder(getActivity())
+        Executor executor = ContextCompat.getMainExecutor(requireActivity());
+        new BiometricPrompt.Builder(requireActivity())
                 .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
                 .setDescription(getResources().getString(R.string.enable_fingerprint_text))
                 .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
