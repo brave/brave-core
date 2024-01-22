@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapter {
@@ -24,12 +25,11 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapte
     }
 
     public void replaceWithNavigationItem(NavigationItem navigationItem, int index) {
-        this.navigationItems = new ArrayList<>(this.navigationItems.subList(0, index));
-        this.navigationItems.add(navigationItem);
+        replaceWithNavigationItems(Collections.singletonList(navigationItem), index);
     }
 
     public void replaceWithNavigationItems(List<NavigationItem> navigationItems, int index) {
-        this.navigationItems = new ArrayList<>(this.navigationItems.subList(0, index));
+        this.navigationItems = this.navigationItems.subList(0, index);
         this.navigationItems.addAll(navigationItems);
     }
 

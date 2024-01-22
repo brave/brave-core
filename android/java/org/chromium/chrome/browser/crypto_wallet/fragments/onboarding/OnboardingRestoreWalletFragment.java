@@ -37,28 +37,21 @@ import org.chromium.ui.widget.Toast;
 import java.util.concurrent.Executor;
 
 public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragment {
-    private static final String IS_ONBOARDING = "is_onboarding";
     private EditText mRecoveryPhraseText;
     private EditText mPasswordEdittext;
     private EditText mRetypePasswordEdittext;
     private CheckBox mShowRecoveryPhraseCheckbox;
     private CheckBox mRestoreLegacyWalletCheckbox;
     private boolean mIsLegacyWalletRestoreEnable;
-    private boolean mIsOnboarding;
 
     @NonNull
-    public static OnboardingRestoreWalletFragment newInstance(boolean isOnboarding) {
-        OnboardingRestoreWalletFragment fragment = new OnboardingRestoreWalletFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(IS_ONBOARDING, isOnboarding);
-        fragment.setArguments(args);
-        return fragment;
+    public static OnboardingRestoreWalletFragment newInstance() {
+        return new OnboardingRestoreWalletFragment();
     }
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING);
         return inflater.inflate(R.layout.fragment_restore_wallet, container, false);
     }
 
