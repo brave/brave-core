@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
@@ -40,25 +38,8 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     private boolean mIsOnboarding;
     private OnboardingViewModel mOnboardingViewModel;
 
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletP3A();
-        }
-
-        return null;
-    }
-
-    public static RecoveryPhraseFragment newInstance(boolean isOnboarding) {
+    @NonNull
+    public static RecoveryPhraseFragment newInstance(final boolean isOnboarding) {
         RecoveryPhraseFragment fragment = new RecoveryPhraseFragment();
 
         Bundle args = new Bundle();
@@ -70,8 +51,8 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING_ARG, false);
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_recovery_phrase, container, false);
     }
 
@@ -132,7 +113,17 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
         });
     }
 
-    private void setupRecoveryPhraseRecyclerView(View view) {
+    @Override
+    boolean canBeClosed() {
+        return true;
+    }
+
+    @Override
+    boolean canNavigateBack() {
+        return true;
+    }
+
+    private void setupRecoveryPhraseRecyclerView(@NonNull View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
         assert getActivity() != null;
         recyclerView.addItemDecoration(

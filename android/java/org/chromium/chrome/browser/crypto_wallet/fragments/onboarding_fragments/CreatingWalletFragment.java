@@ -10,14 +10,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.chrome.R;
 
-/** Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored */
+/**
+ * Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored
+ * */
 public class CreatingWalletFragment extends CryptoOnboardingFragment {
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_creating_wallet, container, false);
-        return view;
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_creating_wallet, container, false);
+    }
+
+
+    @Override
+    boolean canBeClosed() {
+        return false;
+    }
+
+    @Override
+    boolean canNavigateBack() {
+        return false;
     }
 }

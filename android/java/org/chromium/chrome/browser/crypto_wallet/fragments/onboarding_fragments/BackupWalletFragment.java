@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,8 +34,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -55,25 +53,8 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
     private boolean mBiometricExecuted;
     private OnboardingViewModel mOnboardingViewModel;
 
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletP3A();
-        }
-
-        return null;
-    }
-
-    public static BackupWalletFragment newInstance(boolean isOnboarding) {
+    @NonNull
+    public static BackupWalletFragment newInstance(final boolean isOnboarding) {
         BackupWalletFragment fragment = new BackupWalletFragment();
 
         Bundle args = new Bundle();
@@ -85,8 +66,8 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING_ARG, false);
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_backup_wallet, container, false);
     }
 
@@ -164,13 +145,21 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
         checkOnBiometric();
     }
 
+    @Override
+    boolean canBeClosed() {
+        return true;
+    }
+
+    @Override
+    boolean canNavigateBack() {
+        return false;
+    }
+
     private void checkOnBiometric() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
                 || !KeystoreHelper.shouldUseBiometricOnUnlock()
                 || !Utils.isBiometricAvailable(getContext())) {
             showPasswordRelatedControls(true);
-
-            return;
         }
     }
 
@@ -251,6 +240,7 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
         showFingerprintDialog(authenticationCallback);
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void showFingerprintDialog(
             @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {

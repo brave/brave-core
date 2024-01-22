@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
@@ -49,24 +47,6 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     private List<String> recoveryPhrases;
     private boolean mIsOnboarding;
     private OnboardingViewModel mOnboardingViewModel;
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletP3A();
-        }
-
-        return null;
-    }
 
     public interface OnRecoveryPhraseSelected {
         void onSelectedRecoveryPhrase(String phrase);
@@ -151,6 +131,16 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
                 });
             }
         });
+    }
+
+    @Override
+    boolean canBeClosed() {
+        return true;
+    }
+
+    @Override
+    boolean canNavigateBack() {
+        return true;
     }
 
     private void phraseNotMatch() {

@@ -85,6 +85,16 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
         });
     }
 
+    @Override
+    boolean canBeClosed() {
+        return false;
+    }
+
+    @Override
+    boolean canNavigateBack() {
+        return false;
+    }
+
     // We need to remove that check and restart once
     // https://github.com/brave/brave-browser/issues/27887
     // is done.

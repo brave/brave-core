@@ -183,25 +183,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             }
         });
 
-        mCryptoWalletOnboardingViewPager.addOnPageChangeListener(
-                new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(
-                            int position, float positionOffset, int positionOffsetPixels) {}
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        if (position == 0 || position == 2) {
-                            onboardingBackButton.setVisibility(View.GONE);
-                        } else {
-                            onboardingBackButton.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {}
-                });
-
         mModalDialogManager = new ModalDialogManager(
                 new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
 
@@ -339,10 +320,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
             mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
 
-            if (doNavigate) {
-                mCryptoWalletOnboardingViewPager.setCurrentItem(
-                        mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
-            }
+            mCryptoWalletOnboardingViewPager.setCurrentItem(
+                    mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
         }
     }
 
@@ -356,25 +335,21 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private void addBackupWalletSequence(
             List<NavigationItem> navigationItems, boolean isOnboarding) {
         BackupWalletFragment backupWalletFragment = BackupWalletFragment.newInstance(isOnboarding);
-        backupWalletFragment.setOnNextPageListener(this);
         navigationItems.add(new NavigationItem(
                 getResources().getString(R.string.backup_your_wallet), backupWalletFragment));
         RecoveryPhraseFragment recoveryPhraseFragment =
                 RecoveryPhraseFragment.newInstance(isOnboarding);
-        recoveryPhraseFragment.setOnNextPageListener(this);
         navigationItems.add(new NavigationItem(
                 getResources().getString(R.string.your_recovery_phrase), recoveryPhraseFragment));
         VerifyRecoveryPhraseFragment verifyRecoveryPhraseFragment =
                 VerifyRecoveryPhraseFragment.newInstance(isOnboarding);
-        verifyRecoveryPhraseFragment.setOnNextPageListener(this);
         navigationItems.add(
                 new NavigationItem(getResources().getString(R.string.verify_recovery_phrase),
                         verifyRecoveryPhraseFragment));
     }
 
-    private void addWalletCreatingPage(List<NavigationItem> navigationItems, boolean isOnboarding) {
+    private void addWalletCreatingPage(List<NavigationItem> navigationItems) {
         CreatingWalletFragment creatingWalletFragment = new CreatingWalletFragment();
-        creatingWalletFragment.setOnNextPageListener(this);
         navigationItems.add(
                 new NavigationItem(
                         getResources().getString(R.string.your_wallet_is_creating_page_title),

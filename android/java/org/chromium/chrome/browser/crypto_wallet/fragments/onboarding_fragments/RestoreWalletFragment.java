@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,7 +30,6 @@ import androidx.core.content.ContextCompat;
 
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
@@ -47,6 +46,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
     private boolean mIsLegacyWalletRestoreEnable;
     private boolean mIsOnboarding;
 
+    @NonNull
     public static RestoreWalletFragment newInstance(boolean isOnboarding) {
         RestoreWalletFragment fragment = new RestoreWalletFragment();
         Bundle args = new Bundle();
@@ -55,19 +55,10 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         return fragment;
     }
 
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING);
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING);
         return inflater.inflate(R.layout.fragment_restore_wallet, container, false);
     }
 
@@ -122,9 +113,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                 });
 
         mRestoreLegacyWalletCheckbox.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> {
-                    mIsLegacyWalletRestoreEnable = isChecked;
-                });
+                (buttonView, isChecked) -> mIsLegacyWalletRestoreEnable = isChecked);
 
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
         secureCryptoButton.setOnClickListener(
@@ -139,13 +128,22 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                                 if (!result) {
                                     mPasswordEdittext.setError(
                                             getResources().getString(R.string.password_text));
-
                                     return;
                                 }
 
                                 proceedWithAStrongPassword(passwordInput, mRecoveryPhraseText);
                             });
                 });
+    }
+
+    @Override
+    boolean canBeClosed() {
+        return true;
+    }
+
+    @Override
+    boolean canNavigateBack() {
+        return true;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -180,7 +178,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         showFingerprintDialog(authenticationCallback);
     }
 
-    private void proceedWithAStrongPassword(String passwordInput, EditText mRecoveryPhraseText) {
+    private void proceedWithAStrongPassword(@NonNull String passwordInput, EditText mRecoveryPhraseText) {
         String retypePasswordInput = mRetypePasswordEdittext.getText().toString();
 
         if (!passwordInput.equals(retypePasswordInput)) {
@@ -195,7 +193,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                     mIsLegacyWalletRestoreEnable,
                     result -> {
                         if (result) {
-                            Utils.hideKeyboard(getActivity());
+                            Utils.hideKeyboard(requireActivity());
                             keyringService.notifyWalletBackupComplete();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                                     && Utils.isBiometricAvailable(getContext())) {
@@ -214,7 +212,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                             cleanUp();
                         } else {
                             Toast.makeText(
-                                            getActivity(),
+                                            requireActivity(),
                                             R.string.account_recovery_failed,
                                             Toast.LENGTH_SHORT)
                                     .show();
@@ -234,6 +232,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         mRestoreLegacyWalletCheckbox.setChecked(false);
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void showFingerprintDialog(
             @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {

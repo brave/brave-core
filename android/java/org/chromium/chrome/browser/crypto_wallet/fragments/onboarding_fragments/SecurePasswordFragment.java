@@ -29,7 +29,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -39,24 +38,6 @@ import java.util.concurrent.Executor;
 public class SecurePasswordFragment extends CryptoOnboardingFragment {
     private boolean mCreateWalletClicked;
     private OnboardingViewModel mOnboardingViewModel;
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletP3A();
-        }
-
-        return null;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +85,16 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 proceedWithAStrongPassword(passwordInput, view);
             });
         });
+    }
+
+    @Override
+    boolean canBeClosed() {
+        return true;
+    }
+
+    @Override
+    boolean canNavigateBack() {
+        return true;
     }
 
     private void proceedWithAStrongPassword(@NonNull String passwordInput, @NonNull View view) {
