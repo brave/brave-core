@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -39,7 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
@@ -1398,17 +1399,9 @@ public class Utils {
             Log.d(tag, apiName + ": " + error + " - " + errorMessage);
         }
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    private static boolean canAuthenticate(BiometricManager biometricManager) {
-        assert biometricManager != null;
-
-        return biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
-                == BiometricManager.BIOMETRIC_SUCCESS;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public static boolean isBiometricAvailable(Context context) {
+    
+    @SuppressLint("MissingPermission")
+    public static boolean isBiometricAvailable(@Nullable Context context) {
         // Only Android versions 9 and above are supported.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
             return false;
@@ -1420,17 +1413,18 @@ public class Utils {
                 return false;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                return Utils.canAuthenticate(biometricManager);
+                return biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+                        == BiometricManager.BIOMETRIC_SUCCESS;
             }
 
+            //noinspection deprecation
             return biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS;
         } else {
             // For API level < Q, we will use FingerprintManagerCompat to check enrolled
             // fingerprints. Note that for API level lower than 23, FingerprintManagerCompat behaves
             // like no fingerprint hardware and no enrolled fingerprints.
             FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(context);
-            return fingerprintManager != null && fingerprintManager.isHardwareDetected()
-                    && fingerprintManager.hasEnrolledFingerprints();
+            return fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints();
         }
     }
 
