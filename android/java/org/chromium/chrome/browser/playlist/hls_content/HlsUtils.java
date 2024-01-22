@@ -5,13 +5,17 @@
 package org.chromium.chrome.browser.playlist.hls_content;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.media3.common.util.UriUtil;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
+import com.brave.playlist.playback_service.VideoPlaybackService;
 import com.brave.playlist.util.HLSParsingUtil;
 import com.brave.playlist.util.MediaUtils;
+import com.brave.playlist.util.PlaylistUtils;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.PathUtils;
 import org.chromium.chrome.browser.playlist.PlaylistStreamingObserverImpl;
@@ -49,8 +53,10 @@ public class HlsUtils {
         String mediaPath = getHlsMediaFilePath(playlistItem);
         String hlsManifestFilePath = getHlsManifestFilePath(playlistItem);
         final String manifestUrl = getHlsResolutionManifestUrl(context, playlistItem);
+        if (TextUtils.isEmpty(manifestUrl)) {
+            return;
+        }
         playlistService.requestStreamingQuery(playlistItem.id, manifestUrl, GET_METHOD);
-
         PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate
                 playlistStreamingObserverImplDelegate =
                         new PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate() {
@@ -92,6 +98,7 @@ public class HlsUtils {
                         };
         sPlaylistStreamingObserverImpl =
                 new PlaylistStreamingObserverImpl(playlistStreamingObserverImplDelegate);
+        playlistService.clearObserverForStreaming();
         playlistService.addObserverForStreaming(sPlaylistStreamingObserverImpl);
     }
 
@@ -161,6 +168,7 @@ public class HlsUtils {
                         };
         sPlaylistStreamingObserverImpl =
                 new PlaylistStreamingObserverImpl(playlistStreamingObserverImplDelegate);
+        playlistService.clearObserverForStreaming();
         playlistService.addObserverForStreaming(sPlaylistStreamingObserverImpl);
     }
 
@@ -218,5 +226,10 @@ public class HlsUtils {
         if (mediaFile.exists()) {
             mediaFile.delete();
         }
+    }
+
+    public static boolean isVideoPlaybackServiceRunning() {
+        return PlaylistUtils.isServiceRunning(
+                ContextUtils.getApplicationContext(), VideoPlaybackService.class);
     }
 }

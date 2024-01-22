@@ -119,6 +119,7 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
@@ -718,15 +719,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 });
     }
 
-    private void showAddedToPlaylistSnackBar() {
+    private void showAddedToPlaylistSnackBar(Playlist playlist) {
         SnackBarActionModel snackBarActionModel =
-                new SnackBarActionModel(getContext().getResources().getString(R.string.view_action),
+                new SnackBarActionModel(
+                        getContext().getResources().getString(R.string.view_action),
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 try {
-                                    BraveActivity.getBraveActivity().openPlaylistActivity(
-                                            getContext(), ConstantUtils.DEFAULT_PLAYLIST);
+                                    BraveActivity.getBraveActivity()
+                                            .openPlaylistActivity(getContext(), playlist.id);
                                 } catch (BraveActivity.BraveActivityNotFoundException e) {
                                     Log.e(TAG, "showAddedToPlaylistSnackBar onClick " + e);
                                 }
@@ -736,9 +738,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ViewGroup viewGroup =
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                             android.R.id.content);
-            PlaylistViewUtils.showSnackBarWithActions(viewGroup,
-                    String.format(getContext().getResources().getString(R.string.added_to_playlist),
-                            getContext().getResources().getString(R.string.playlist_play_later)),
+            String playlistName =
+                    (playlist.id.equals(ConstantUtils.DEFAULT_PLAYLIST))
+                            ? getContext().getResources().getString(R.string.playlist_play_later)
+                            : playlist.name;
+            PlaylistViewUtils.showSnackBarWithActions(
+                    viewGroup,
+                    String.format(
+                            getContext().getResources().getString(R.string.added_to_playlist),
+                            playlistName),
                     snackBarActionModel);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showAddedToPlaylistSnackBar " + e);
@@ -766,7 +774,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     getContext().getResources().getString(R.string.already_added_in_playlist),
                     snackBarActionModel);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showAddedToPlaylistSnackBar " + e);
+            Log.e(TAG, "showAlreadyAddedToPlaylistSnackBar " + e);
         }
     }
 

@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.playlist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -29,6 +30,7 @@ import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.Log;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -37,6 +39,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
+import org.chromium.chrome.browser.playlist.hls_content.HlsService;
 import org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
@@ -54,7 +57,7 @@ import java.util.List;
 public class PlaylistHostActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, PlaylistOptionsListener,
                    PlaylistServiceObserverImplDelegate {
-    private static final String TAG = "Playlist/PlaylistHostActivity";
+    private static final String TAG = "PlaylistHostActivity";
     private PlaylistService mPlaylistService;
     private PlaylistViewModel mPlaylistViewModel;
     private PlaylistServiceObserverImpl mPlaylistServiceObserver;
@@ -344,6 +347,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                         playlistItem.cached,
                                         false);
                         playlistItems.add(playlistItemModel);
+                        Log.e(TAG, "playlistItemModel : " + playlistItemModel.toString());
                     }
                     PlaylistModel playlistModel =
                             new PlaylistModel(playlist.id, playlist.name, playlistItems);
@@ -453,8 +457,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         playlistRepository.deleteHlsContentQueueModel(playlistItemId);
                     }
                     if (HlsServiceImpl.currentDownloadingPlaylistItemId.equals(playlistItemId)) {
-                        mPlaylistService.cancelQuery(playlistItemId);
                         HlsServiceImpl.currentDownloadingPlaylistItemId = "";
+                        mPlaylistService.clearObserverForStreaming();
+                        mPlaylistService.cancelQuery(playlistItemId);
+                        stopService(new Intent(PlaylistHostActivity.this, HlsService.class));
                         PlaylistUtils.checkAndStartHlsDownload(PlaylistHostActivity.this);
                     }
                 });
