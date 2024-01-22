@@ -277,16 +277,16 @@ export const SPLTokenApproval = ({
 }): JSX.Element => {
   // computed
   const isNft =
-    approval.metaplexTokenStandard ===
+    approval.asset.metaplexTokenStandard ===
       BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungible ||
-    approval.metaplexTokenStandard ===
+    approval.asset.metaplexTokenStandard ===
       BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungibleEdition
 
   // memos
   const afterAmount = React.useMemo(() => {
     return new Amount(approval.diff.digits.toString())
-      .divideByDecimals(approval.decimals)
-      .formatAsAsset(6, approval.symbol)
+      .divideByDecimals(approval.asset.decimals)
+      .formatAsAsset(6, approval.asset.symbol)
   }, [approval])
 
   // render
@@ -302,7 +302,7 @@ export const SPLTokenApproval = ({
         justifyContent='flex-start'
       >
         <StateChangeText>
-          <strong>{isNft ? approval.name : afterAmount}</strong>
+          <strong>{isNft ? approval.asset.name : afterAmount}</strong>
         </StateChangeText>
       </Row>
       <Row
