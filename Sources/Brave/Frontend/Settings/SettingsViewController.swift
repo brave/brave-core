@@ -864,7 +864,8 @@ class SettingsViewController: TableViewController {
         Row(
           text: "Brave Talk Logs",
           selection: { [unowned self] in
-            self.navigationController?.pushViewController(BraveTalkLogsViewController(), animated: true)
+            let controller = UIHostingController(rootView: BraveTalkLogsView())
+            self.navigationController?.pushViewController(controller, animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
           text: "Retention Preferences Debug Menu",
