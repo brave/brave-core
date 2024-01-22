@@ -21,6 +21,7 @@ platform :ios do
       output_types: "junit",
       output_files: "junit.xml",
       ensure_devices_found: true,
+      derived_data_path: "../../../out/DerivedData",
       skip_testing: [
         "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
         "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
@@ -142,7 +143,7 @@ platform :ios do
       sdk: "iphoneos",
       clean: true,
       output_directory: "build",
-      xcargs: "-allowProvisioningUpdates"
+      derived_data_path: "../../../out/DerivedData",
     }
   end
 
