@@ -34,6 +34,8 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews,
   void ShowInactive() override;
   void Close() override;
   void Hide() override;
+  int GetNonClientComponent(const gfx::Point& point) override;
+  void OnKeyEvent(ui::KeyEvent* event) override;
 
   // views::SliderListener:
   void SliderValueChanged(views::Slider* sender,
