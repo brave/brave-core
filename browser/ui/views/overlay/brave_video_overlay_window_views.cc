@@ -369,7 +369,6 @@ void BraveVideoOverlayWindowViews::Hide() {
 
 int BraveVideoOverlayWindowViews::GetNonClientComponent(
     const gfx::Point& point) {
-  int res = VideoOverlayWindowViews::GetNonClientComponent(point);
   if (seeker_ && seeker_->GetWidget() == this) {
     gfx::Point point_in_seeker(point);
     views::View::ConvertPointFromWidget(seeker_.get(), &point_in_seeker);
@@ -380,7 +379,7 @@ int BraveVideoOverlayWindowViews::GetNonClientComponent(
     }
   }
 
-  return res;
+  return VideoOverlayWindowViews::GetNonClientComponent(point);
 }
 
 void BraveVideoOverlayWindowViews::OnKeyEvent(ui::KeyEvent* event) {
