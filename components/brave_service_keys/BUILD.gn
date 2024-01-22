@@ -1,0 +1,51 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/buildflag_header.gni")
+import("//testing/test.gni")
+
+declare_args() {
+  # BRAVE_SERVICES_KEY_ID = TARGET_OS + '-' + CV_MAJOR + '-' + RELEASE_CHANNEL
+  # It is used (in combination with a secret seed) to generate service keys
+  # for each service, OS, chrominum version, release channel
+  # combination.
+  brave_services_key_id = ""
+}
+
+if (is_official_build) {
+  assert(brave_services_key_id != "")
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BRAVE_SERVICES_KEY_ID=\"$brave_services_key_id\"" ]
+}
+
+static_library("brave_service_keys") {
+  sources = [
+    "brave_service_key_utils.cc",
+    "brave_service_key_utils.h",
+  ]
+
+  deps = [
+    ":buildflags",
+    "//base",
+    "//crypto",
+    "//net",
+    "//url:url",
+  ]
+}
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_service_key_utils_unittest.cc" ]
+
+  deps = [
+    ":brave_service_keys",
+    ":buildflags",
+    "//base",
+    "//testing/gtest",
+  ]
+}
