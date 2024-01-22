@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_MISC_METRICS_EXTENSION_METRICS_SERVICE_H_
-#define BRAVE_BROWSER_MISC_METRICS_EXTENSION_METRICS_SERVICE_H_
+#ifndef BRAVE_BROWSER_MISC_METRICS_EXTENSION_METRICS_H_
+#define BRAVE_BROWSER_MISC_METRICS_EXTENSION_METRICS_H_
 
 #include <string>
 
@@ -32,17 +32,16 @@ inline constexpr char kAdblockExtensionsHistogramName[] =
 
 // Monitors installation/uninstallation of third-party extensions
 // and reports relevant metrics via P3A.
-class ExtensionMetricsService : public KeyedService,
-                                public extensions::ExtensionRegistryObserver {
+class ExtensionMetrics : public extensions::ExtensionRegistryObserver {
  public:
-  explicit ExtensionMetricsService(
+  explicit ExtensionMetrics(
       extensions::ExtensionRegistry* extension_registry);
-  ~ExtensionMetricsService() override;
+  ~ExtensionMetrics() override;
 
-  ExtensionMetricsService(const ExtensionMetricsService&) = delete;
-  ExtensionMetricsService& operator=(const ExtensionMetricsService&) = delete;
+  ExtensionMetrics(const ExtensionMetrics&) = delete;
+  ExtensionMetrics& operator=(const ExtensionMetrics&) = delete;
 
-  void Shutdown() override;
+  void Shutdown();
 
  private:
   // extensions::ExtensionRegistryObserver:
@@ -58,7 +57,7 @@ class ExtensionMetricsService : public KeyedService,
   base::flat_set<std::string> adblock_extensions_loaded_;
   raw_ptr<extensions::ExtensionRegistry> extension_registry_;
   base::ScopedObservation<extensions::ExtensionRegistry,
-                          ExtensionMetricsService>
+                          ExtensionMetrics>
       observation_;
 
   base::OneShotTimer report_debounce_timer_;
@@ -66,4 +65,4 @@ class ExtensionMetricsService : public KeyedService,
 
 }  // namespace misc_metrics
 
-#endif  // BRAVE_BROWSER_MISC_METRICS_EXTENSION_METRICS_SERVICE_H_
+#endif  // BRAVE_BROWSER_MISC_METRICS_EXTENSION_METRICS_H_

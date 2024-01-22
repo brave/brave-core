@@ -26,8 +26,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/browser/misc_metrics/extension_metrics_service_factory.h"
-#include "brave/browser/misc_metrics/page_metrics_service_factory.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
@@ -69,7 +68,6 @@
 #else
 #include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
 #include "brave/browser/brave_shields/filter_list_service_factory.h"
-#include "brave/browser/misc_metrics/misc_android_metrics_factory.h"
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
 
@@ -125,7 +123,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave::URLSanitizerServiceFactory::GetInstance();
   BraveRendererUpdaterFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
-  misc_metrics::PageMetricsServiceFactory::GetInstance();
+  misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionServiceFactory::GetInstance();
 #endif
@@ -211,7 +209,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
     SharedPinnedTabServiceFactory::GetInstance();
   }
-  misc_metrics::ExtensionMetricsServiceFactory::GetInstance();
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -220,10 +217,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderServiceFactory::GetInstance();
-#endif
-
-#if BUILDFLAG(IS_ANDROID)
-  misc_metrics::MiscAndroidMetricsFactory::GetInstance();
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

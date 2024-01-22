@@ -213,6 +213,7 @@ inline constexpr auto kCollectedSlowHistograms =
     "Brave.AIChat.UsageMonthly",
     "Brave.Accessibility.DisplayZoomEnabled",
     "Brave.Core.DocumentsDirectorySizeMB",
+    "Brave.Core.PrimaryLang",
     "Brave.Core.ProfileCount",
     "Brave.Core.UsageMonthly",
     "Brave.General.BottomBarLocation",
@@ -286,6 +287,13 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.Wallet.UsageMonthly",
     "Brave.Wallet.UsageWeekly",
     "Brave.WebTorrent.UsageWeekly"
+});
+
+// List of metrics that should only be via STAR/Constellation.
+// TODO(djandries): remove this once JSON deprecation is complete
+inline constexpr auto kConstellationOnlyHistograms =
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    "Brave.Core.PrimaryLang",
 });
 
 // clang-format on

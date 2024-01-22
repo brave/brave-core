@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/components/misc_metrics/page_metrics_service.h"
+#include "brave/components/misc_metrics/page_metrics.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/history/core/browser/history_service.h"
@@ -16,9 +16,9 @@
 
 namespace misc_metrics {
 
-class PageMetricsServiceUnitTest : public testing::Test {
+class PageMetricsUnitTest : public testing::Test {
  public:
-  PageMetricsServiceUnitTest()
+  PageMetricsUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
@@ -29,9 +29,9 @@ class PageMetricsServiceUnitTest : public testing::Test {
 
     history_service_ = HistoryServiceFactory::GetForProfile(
         profile_.get(), ServiceAccessType::EXPLICIT_ACCESS);
-    misc_metrics::PageMetricsService::RegisterPrefs(local_state_.registry());
+    misc_metrics::PageMetrics::RegisterPrefs(local_state_.registry());
     page_metrics_service_ =
-        std::make_unique<PageMetricsService>(&local_state_, history_service_);
+        std::make_unique<PageMetrics>(&local_state_, history_service_);
   }
 
  protected:
@@ -39,11 +39,11 @@ class PageMetricsServiceUnitTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
   std::unique_ptr<TestingProfile> profile_;
-  std::unique_ptr<PageMetricsService> page_metrics_service_;
+  std::unique_ptr<PageMetrics> page_metrics_service_;
   raw_ptr<history::HistoryService> history_service_;
 };
 
-TEST_F(PageMetricsServiceUnitTest, DomainsLoadedCount) {
+TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
   histogram_tester_.ExpectTotalCount(kDomainsLoadedHistogramName, 0);
 
   task_environment_.FastForwardBy(base::Seconds(30));
@@ -83,7 +83,7 @@ TEST_F(PageMetricsServiceUnitTest, DomainsLoadedCount) {
             init_zero_count);
 }
 
-TEST_F(PageMetricsServiceUnitTest, PagesLoadedCount) {
+TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
   task_environment_.FastForwardBy(base::Seconds(30));
 
   histogram_tester_.ExpectUniqueSample(kPagesLoadedHistogramName, 0, 1);
