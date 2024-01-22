@@ -97,7 +97,7 @@ void AIChatUIPageHandler::SetClientPage(
   // ex. A user may ask a question from the location bar
   if (active_chat_tab_helper_ &&
       active_chat_tab_helper_->HasPendingConversationEntry()) {
-    OnConversationEntryPending();
+    OnHistoryUpdate();
   }
 }
 
@@ -124,10 +124,12 @@ void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(
     const std::string& input) {
+  DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
+      << "Should not be able to submit more"
+      << "than a single human conversation turn at a time.";
   mojom::ConversationTurn turn = {CharacterType::HUMAN,
                                   ConversationTurnVisibility::VISIBLE, input};
-  active_chat_tab_helper_->MakeAPIRequestWithConversationHistoryUpdate(
-      std::move(turn));
+  active_chat_tab_helper_->SubmitHumanConversationEntry(std::move(turn));
 }
 
 void AIChatUIPageHandler::SubmitSummarizationRequest() {
@@ -142,21 +144,9 @@ void AIChatUIPageHandler::GetConversationHistory(
     std::move(callback).Run({});
     return;
   }
-  std::vector<ConversationTurn> history =
-      active_chat_tab_helper_->GetConversationHistory();
 
-  std::vector<ai_chat::mojom::ConversationTurnPtr> list;
-
-  // Remove conversations that are meant to be hidden from the user
-  auto new_end_it = std::remove_if(
-      history.begin(), history.end(), [](const ConversationTurn& turn) {
-        return turn.visibility == ConversationTurnVisibility::HIDDEN;
-      });
-
-  std::transform(history.begin(), new_end_it, std::back_inserter(list),
-                 [](const ConversationTurn& turn) { return turn.Clone(); });
-
-  std::move(callback).Run(std::move(list));
+  std::move(callback).Run(
+      active_chat_tab_helper_->GetVisibleConversationHistory());
 }
 
 void AIChatUIPageHandler::GetSuggestedQuestions(
@@ -409,12 +399,6 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
 void AIChatUIPageHandler::OnPageHasContent(mojom::SiteInfoPtr site_info) {
   if (page_.is_bound()) {
     page_->OnSiteInfoChanged(std::move(site_info));
-  }
-}
-
-void AIChatUIPageHandler::OnConversationEntryPending() {
-  if (page_.is_bound()) {
-    page_->OnConversationEntryPending();
   }
 }
 
