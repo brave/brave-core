@@ -121,7 +121,7 @@ extension Strings {
       comment: "The empty state displayed when the user has no accounts associated with a transaction or asset"
     )
     public static let noAccountDescription = NSLocalizedString(
-      "wallet.noAccounts",
+      "wallet.noAccountDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Accounts with a balance will appear here.",
