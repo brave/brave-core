@@ -51,11 +51,12 @@ bool IsPremiumStatus(mojom::PremiumStatus status) {
 
 }  // namespace
 
-ConversationDriver::ConversationDriver(raw_ptr<PrefService> pref_service,
-       raw_ptr<AIChatMetrics> ai_chat_metrics,
-       std::unique_ptr<AIChatCredentialManager> credential_manager,
-       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) :
-      pref_service_(pref_service),
+ConversationDriver::ConversationDriver(
+    raw_ptr<PrefService> pref_service,
+    raw_ptr<AIChatMetrics> ai_chat_metrics,
+    std::unique_ptr<AIChatCredentialManager> credential_manager,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : pref_service_(pref_service),
       ai_chat_metrics_(ai_chat_metrics),
       credential_manager_(std::move(credential_manager)),
       url_loader_factory_(url_loader_factory),
