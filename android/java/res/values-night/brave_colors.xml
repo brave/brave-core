@@ -40,6 +40,7 @@
     <color name="scan_qr_code_bg_color">#1E2029</color>
     
     <!-- Day/Night brave wallet colors -->
+    <color name="brave_wallet_onboarding_item_background_color">#A1ABBA</color>
     <color name="brave_wallet_day_night_toolbar_icon_color">@android:color/white</color>
     <color name="brave_wallet_day_night_icon_color">#F0F2FF</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#272733</color>

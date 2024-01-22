@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -73,6 +74,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private View mCryptoOnboardingLayout;
     private ImageView mPendingTxNotification;
     private ImageView mBuySendSwapButton;
+    private ImageView mOnboardingCloseButton;
+    private ImageView mOnboardingBackButton;
     private ViewPager mCryptoWalletOnboardingViewPager;
     private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
@@ -169,10 +172,12 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mCryptoWalletOnboardingViewPager.setOffscreenPageLimit(
                 mCryptoWalletOnboardingPagerAdapter.getCount() - 1);
 
-        ImageView onboardingBackButton = findViewById(R.id.onboarding_back_button);
-        onboardingBackButton.setVisibility(View.GONE);
-        onboardingBackButton.setOnClickListener(v -> {
-            if (mCryptoWalletOnboardingViewPager != null) {
+        mOnboardingCloseButton = findViewById(R.id.onboarding_close_button);
+        mOnboardingCloseButton.setOnClickListener(v -> finish());
+
+        mOnboardingBackButton = findViewById(R.id.onboarding_back_button);
+        mOnboardingBackButton.setOnClickListener(v -> {
+            if (mCryptoWalletOnboardingViewPager != null && mCryptoWalletOnboardingViewPager.getCurrentItem() > 0) {
                 mCryptoWalletOnboardingViewPager.setCurrentItem(
                         mCryptoWalletOnboardingViewPager.getCurrentItem() - 1);
             }
