@@ -22,4 +22,8 @@ BASE_FEATURE(kOmniboxTabSwitchByDefault,
              "OmniboxTabSwitchByDefault",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kOmniboxMoreHistoryResults,
+             "OmniboxMoreHistoryResults",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace omnibox

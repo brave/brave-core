@@ -13,6 +13,7 @@
 namespace omnibox {
 
 BASE_DECLARE_FEATURE(kOmniboxTabSwitchByDefault);
+BASE_DECLARE_FEATURE(kOmniboxMoreHistoryResults);
 
 }
 

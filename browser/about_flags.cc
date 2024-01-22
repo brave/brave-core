@@ -416,15 +416,24 @@
 #define BRAVE_AI_CHAT_HISTORY
 #endif
 
-#define BRAVE_OMNIBOX_FEATURES                                              \
-  EXPAND_FEATURE_ENTRIES({                                                  \
-      "brave-omnibox-tab-switch-by-default",                                \
-      "Brave Tab Switch by Default",                                        \
-      "Prefer switching to already open tabs, rather than navigating in a " \
-      "new tab",                                                            \
-      kOsWin | kOsLinux | kOsMac,                                           \
-      FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),              \
-  })
+#define BRAVE_OMNIBOX_FEATURES                                                \
+  EXPAND_FEATURE_ENTRIES(                                                     \
+      {                                                                       \
+          "brave-omnibox-tab-switch-by-default",                              \
+          "Brave Tab Switch by Default",                                      \
+          "Prefer switching to already open tabs, rather than navigating in " \
+          "a "                                                                \
+          "new tab",                                                          \
+          kOsWin | kOsLinux | kOsMac,                                         \
+          FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),            \
+      },                                                                      \
+      {                                                                       \
+          "brave-omnibox-more-history-results",                               \
+          "Brave More History",                                               \
+          "Include more history in the omnibox search results",               \
+          kOsWin | kOsLinux | kOsMac | kOsAndroid,                            \
+          FEATURE_VALUE_TYPE(omnibox::kOmniboxMoreHistoryResults),            \
+      })
 
 #define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
   IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
