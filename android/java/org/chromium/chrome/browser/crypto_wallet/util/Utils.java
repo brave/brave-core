@@ -119,11 +119,6 @@ import java.util.stream.Collectors;
 public class Utils {
     private static final String TAG = "Utils";
 
-    public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
-    public static int ONBOARDING_ACTION = 2;
-    public static int UNLOCK_WALLET_ACTION = 3;
-    public static int RESTORE_WALLET_ACTION = 4;
-
     public static int ACCOUNT_ITEM = 1;
     public static int ASSET_ITEM = 2;
     public static int TRANSACTION_ITEM = 3;
