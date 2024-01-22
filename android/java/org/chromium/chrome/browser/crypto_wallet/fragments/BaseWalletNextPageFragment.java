@@ -18,49 +18,48 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 
 /**
- * Base Brave Wallet fragment that performs a cast on the host activity
- * to extract {@link OnNextPage} interface used for basic navigation actions.
+ * Base Brave Wallet fragment that performs a cast on the host activity to extract {@link
+ * OnNextPage} interface used for basic navigation actions.
  */
 public abstract class BaseWalletNextPageFragment extends Fragment {
 
-   // Might be {@code null} when detached from the screen.
-   @Nullable
-   protected OnNextPage onNextPage;
+    // Might be {@code null} when detached from the screen.
+    @Nullable protected OnNextPage onNextPage;
 
-   @Override
-   public void onAttach(@NonNull Context context) {
-      super.onAttach(context);
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
 
-      try {
-         onNextPage = (OnNextPage) context;
-      } catch (ClassCastException e) {
-         throw new ClassCastException("Host activity must implement OnNextPage interface.");
-      }
-   }
+        try {
+            onNextPage = (OnNextPage) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Host activity must implement OnNextPage interface.");
+        }
+    }
 
-   @Override
-   public void onDetach() {
-      onNextPage = null;
-      super.onDetach();
-   }
+    @Override
+    public void onDetach() {
+        onNextPage = null;
+        super.onDetach();
+    }
 
-   @Nullable
-   protected KeyringService getKeyringService() {
-      Activity activity = requireActivity();
-      if (activity instanceof BraveWalletActivity) {
-         return ((BraveWalletActivity) activity).getKeyringService();
-      }
+    @Nullable
+    protected KeyringService getKeyringService() {
+        Activity activity = requireActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringService();
+        }
 
-      return null;
-   }
+        return null;
+    }
 
-   @Nullable
-   protected BraveWalletP3a getBraveWalletP3A() {
-      Activity activity = getActivity();
-      if (activity instanceof BraveWalletActivity) {
-         return ((BraveWalletActivity) activity).getBraveWalletP3A();
-      }
+    @Nullable
+    protected BraveWalletP3a getBraveWalletP3A() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getBraveWalletP3A();
+        }
 
-      return null;
-   }
+        return null;
+    }
 }

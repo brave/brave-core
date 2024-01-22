@@ -40,7 +40,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.concurrent.Executor;
 
-public class BackupWalletFragment extends CryptoOnboardingFragment {
+public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment {
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
 
     private boolean mIsOnboarding;
@@ -54,8 +54,8 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
     private OnboardingViewModel mOnboardingViewModel;
 
     @NonNull
-    public static BackupWalletFragment newInstance(final boolean isOnboarding) {
-        BackupWalletFragment fragment = new BackupWalletFragment();
+    public static OnboardingBackupWalletFragment newInstance(final boolean isOnboarding) {
+        OnboardingBackupWalletFragment fragment = new OnboardingBackupWalletFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(IS_ONBOARDING_ARG, isOnboarding);

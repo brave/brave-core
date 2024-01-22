@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OnboardingVerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
+public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWalletFragment {
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
 
     private RecyclerView recoveryPhrasesRecyclerView;

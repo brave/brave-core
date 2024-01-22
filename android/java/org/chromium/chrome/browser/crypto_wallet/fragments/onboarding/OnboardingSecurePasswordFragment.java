@@ -35,7 +35,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.concurrent.Executor;
 
-public class OnboardingSecurePasswordFragment extends CryptoOnboardingFragment {
+public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragment {
     private boolean mCreateWalletClicked;
     private OnboardingViewModel mOnboardingViewModel;
 

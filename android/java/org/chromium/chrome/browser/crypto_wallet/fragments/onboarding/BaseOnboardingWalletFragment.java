@@ -13,7 +13,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFra
  *
  * @see org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage
  */
-public abstract class CryptoOnboardingFragment extends BaseWalletNextPageFragment {
+public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFragment {
 
     abstract boolean canBeClosed();
 

@@ -1394,7 +1394,7 @@ public class Utils {
             Log.d(tag, apiName + ": " + error + " - " + errorMessage);
         }
     }
-    
+
     @SuppressLint("MissingPermission")
     public static boolean isBiometricAvailable(@Nullable Context context) {
         // Only Android versions 9 and above are supported.
@@ -1408,7 +1408,8 @@ public class Utils {
                 return false;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                return biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+                return biometricManager.canAuthenticate(
+                                BiometricManager.Authenticators.BIOMETRIC_WEAK)
                         == BiometricManager.BIOMETRIC_SUCCESS;
             }
 
@@ -1419,7 +1420,8 @@ public class Utils {
             // fingerprints. Note that for API level lower than 23, FingerprintManagerCompat behaves
             // like no fingerprint hardware and no enrolled fingerprints.
             FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(context);
-            return fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints();
+            return fingerprintManager.isHardwareDetected()
+                    && fingerprintManager.hasEnrolledFingerprints();
         }
     }
 

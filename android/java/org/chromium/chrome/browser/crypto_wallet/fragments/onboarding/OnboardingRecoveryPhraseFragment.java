@@ -31,7 +31,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.List;
 
-public class OnboardingRecoveryPhraseFragment extends CryptoOnboardingFragment {
+public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragment {
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
 
     private List<String> recoveryPhrases;

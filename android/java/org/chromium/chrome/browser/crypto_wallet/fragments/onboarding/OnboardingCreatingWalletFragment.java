@@ -14,16 +14,13 @@ import androidx.annotation.NonNull;
 
 import org.chromium.chrome.R;
 
-/**
- * Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored
- * */
-public class CreatingWalletFragment extends CryptoOnboardingFragment {
+/** Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored */
+public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_creating_wallet, container, false);
     }
-
 
     @Override
     boolean canBeClosed() {

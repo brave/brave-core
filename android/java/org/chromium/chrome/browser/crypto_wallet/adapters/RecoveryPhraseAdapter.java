@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.VerifyRecoveryPhraseFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,8 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
     List<String> recoveryPhraseList = new ArrayList<>();
     List<String> selectedRecoveryPhraseList = new ArrayList<>();
     List<Integer> selectedPositions = new ArrayList<>();
-    private VerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected onRecoveryPhraseSelected;
+    private OnboardingVerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected
+            onRecoveryPhraseSelected;
     private boolean isSelectedRecoveryPhrase;
 
     @NonNull
@@ -93,7 +94,8 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
     }
 
     public void setOnRecoveryPhraseSelectedListener(
-            VerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected onRecoveryPhraseSelected) {
+            OnboardingVerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected
+                    onRecoveryPhraseSelected) {
         this.onRecoveryPhraseSelected = onRecoveryPhraseSelected;
     }
 
