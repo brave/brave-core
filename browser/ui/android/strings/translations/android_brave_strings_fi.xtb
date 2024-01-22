@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">Ota Brave Shields käyttöön tai poista se käytöstä</translation>
 <translation id="6945863270524203017">Hanki viikoittaisia tietosuojapäivityksiä seurantavälineiden ja mainosten estämiseen liittyen.</translation>
 <translation id="4324735664183300693">Ota ilmoitukset käyttöön</translation>
-<translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="6395059271589866759">Brave veloittaa 5 % lähetetystä summasta käsittelykuluina.</translation>
 <translation id="6661699662755460155">vaihtokurssi</translation>
 <translation id="6790981891677399838">Lahjoitin juuri <ph name="AMOUNT"/> BATia Brave-selaimen avulla! Katso, miten voit tukea suosikkiluojiasi ja sivustoja myös: https://brave.com/rewards</translation>
-<translation id="2278950434998763147">Avaa joitakin sivustoja käyttämällä suojattua HTTPS-yhteyttä pelkän HTTP:n sijaan.</translation>
 <translation id="5510493033031835532">AMP-sivujen automaattinen uudelleenohjaus</translation>
 <translation id="5197219128592971597">Käy aina sivun alkuperäisessä URL-osoitteessa (ei-AMP) Googlen Accelerated Mobile Pages -tekniikkaa käyttävän version sijaan</translation>
 <translation id="920638232916443453">Automaattisesti uudelleenohjaa seuranta-URL-osoitteet</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">Viimeksi päivitetty <ph name="TIME"/></translation>
 <translation id="802154636333426148">Lataus epäonnistui.</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> Päivitys epäonnistui</translation>
+<translation id="8580328754808744073">Luo mukautettuja suodattimia</translation>
+<translation id="6532106788206463496">Tallenna muutokset</translation>
+<translation id="5132969826889386652">Muutosten tallentaminen onnistui</translation>
+<translation id="4335929145384293789">Lisää luomasi mukautetut suodattimet yllä olevaan kenttään, yksi kullekin riville. Muista käyttää seuraavaa: <ph name="ADBLOCK_FILTER_SYNTAX"/></translation>
+<translation id="5023212862780303376">Mainosten estosuodattimen syntaksi</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> Hinta (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum-nimipalvelu</translation>
 <translation id="531747189990625622">Solana-nimipalvelu</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">Ei sisältöä</translation>
 <translation id="7172792761509429092">Brave-uutisilla ei ole sisältöä näytettäväksi.</translation>
 <translation id="1771307734839364850">Valitse sisältölähteet</translation>
-<translation id="5787084571334399599">Estää selaimen sormenjälkitunnistamisen</translation>
+<translation id="6891769200437737956">Estää verkkosivustolta sormenjälkitunnistuksen</translation>
 <translation id="7459000603787995422">Sulje välilehdet poistuttaessa</translation>
 <translation id="4448697385961650078">Estä seuraimet &amp; mainokset</translation>
 <translation id="2448893613530489637">Estää seuraajia ja mainoksia lataamasta ja näkymästä verkkosivuilla</translation>
 <translation id="1025207378813960343">Varmista, että yhteydet verkkosivustoihin on suojattu.</translation>
+<translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="6686219838158572786">Edellytä, että kaikki yhteydet käyttävät HTTPS:ää (ehdoton)</translation>
 <translation id="4221284400051835823">Päivitä HTTPS:ään aina, kun mahdollista (oletus)</translation>
 <translation id="4690906712010847708">Älä päivitä yhteyksiä HTTPS:ään (pois käytöstä)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">Auta parantamaan Braven tuotteen stabiilisuutta lähettämällä diagnostiikkaraportit automaattisesti, kun Brave-selain kaatuu tai jäätyy.</translation>
 <translation id="7977176350719484850">Tallennettuja\ntietoja keskimäärin</translation>
 <translation id="9008534313521214777">Arvioitu säästetty aika</translation>
-<translation id="1842747674580016420">Videoiden toisto Bravessa</translation>
-<translation id="5368992950177874750">Jos tämä asetus otetaan käyttöön, videot toistetaan Bravessa oletussovelluksen sijaan</translation>
 <translation id="410351446219883937">Automaattinen toisto</translation>
 <translation id="7445411102860286510">Salli sivustoille mykistettyjen videoiden automaattinen toisto (suositus)</translation>
 <translation id="7837721118676387834">Sallii tietylle sivustolle mykistettyjen videoiden automaattisen toiston.</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">Taustatoisto</translation>
 <translation id="6332924730165919598">Kun kaikki välilehdet suljetaan, myös Brave sulkeutuu</translation>
 <translation id="8308305244351876417">Sallii äänen toistaa, kun vaihdat toiseen välilehteen Bravessa tai toiseen sovellukseen tai laitteen näyttö ei ole päällä.</translation>
+<translation id="49147335255967913">Avaa YouTube-linkit Bravessa</translation>
 <translation id="4150201353443180367">Näyttö</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -376,13 +379,8 @@
 <translation id="4803910478683254032">Tuonti epäonnistui</translation>
 <translation id="8325139248201792113">Kirjanmerkin tuonti epäonnistui. Yritä uudestaan.</translation>
 <translation id="2803313416453193357">Avaa kansio</translation>
-<translation id="3396347744975515056">Brave Sync on päivitetty ja vaatii määrityksen</translation>
-<translation id="7473245612074035141">Aloita määrittäminen</translation>
 <translation id="8985635554450124959">Synkronoinnin valmisteleminen epäonnistui</translation>
-<translation id="2514300153301737214">Havaitsimme, että Brave Sync on käytössäsi. Järjestelmän synkronointi on kuitenkin pois päältä, eikä salli Braven synkronointia. Paina avataksesi asetukset</translation>
 <translation id="7173114856073700355">Avaa asetukset</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="4450893287417543264">Älä näytä uudelleen</translation>
 <translation id="496896260395129787">Tämä Brave-synkronointitili poistettiin toisesta laitteesta. Jos et halunnut poistaa synkronointia käytöstä, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>luo tili uudelleen</translation>
 <translation id="4094590686212463338">Ei voi liittyä tähän synkronointiketjuun. Synkronointiketju poistettiin.</translation>
@@ -479,7 +477,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="7854108565842971747">Nämä ovat oletusarvoiset suojausasetukset uusille sivustoille. Näiden muuttaminen ei vaikuta voimassa oleviin sivukohtaisiin asetuksiin.</translation>
 <translation id="218587021686734263">Estä sormenjälkien otto kieliasetusten avulla</translation>
 <translation id="1706099589708266367">Vähentää sitä, kuinka paljon verkkosivustot voivat oppia sinusta selaimesi kieliasetusten perusteella.</translation>
-<translation id="184568144098869637">Estää selainta tunnistamasta laitettasi</translation>
+<translation id="4721088070859595932">Estää verkkosivustoja tunnistamasta laitettasi</translation>
 <translation id="7445306466605902444">Sormenjälkitunnistus estetty (ankara, voi rikkoa sivustoja)</translation>
 <translation id="5582686930349810484">Sormenjälkitunnistus estetty (standardi)</translation>
 <translation id="769702552748212954">Salli kaikki sormenjälkitunnistaminen</translation>
@@ -623,8 +621,9 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1783600039044302171">Suojaa kryptosi salasanalla</translation>
 <translation id="3726490322412361740">Anna salasana</translation>
 <translation id="3038243139480464605">Vahvista salasana</translation>
-<translation id="3717685683157254329">Salasanassa on oltava vähintään 7 merkkiä. Sen on sisällettävä vähintään yksi merkki, yksi numero ja yksi erikoismerkki.</translation>
+<translation id="3043677904160378840">Salasanoissa on oltava vähintään 8 merkkiä.</translation>
 <translation id="7396672979287122068">Vahvistettu salasana ei täsmää</translation>
+<translation id="7084181009966710506">Luodaan lompakkoa...</translation>
 <translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1PÄIVÄ</translation>
 <translation id="7640956400175663828">1VIIKKO</translation>
@@ -777,7 +776,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1705662265912724430">Haluatko varmasti nollata VPN-määritykset?</translation>
 <translation id="604124094241169006">Automaattinen</translation>
 <translation id="7475580600756356589">Yhdistetään palvelimeen. Tämän pitäisi kestää vain hetki...</translation>
-<translation id="1342728075788541348">Katkaistaan yhteyttä palvelimeen. Tämän pitäisi kestää vain hetki...</translation>
 <translation id="669072536454692117">Tilaus käytetty</translation>
 <translation id="1187506504156101449">Ostoksen hyväksyminen epäonnistui:</translation>
 <translation id="8420522105268941892">Olet jo tehnyt tilauksen. Yritä palauttaa tilaus.</translation>
@@ -810,7 +808,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="8084782383392198011">Tilin nimi ei voi olla tyhjä.</translation>
 <translation id="5045550434625856497">Väärä salasana</translation>
 <translation id="1367951781824006909">Valitse tiedosto</translation>
-<translation id="8648684608605749476">Kolmannen osapuolen evästeiden estäminen incognito-tilassa</translation>
 <translation id="5932938770824268122">Yksityinen avain</translation>
 <translation id="2472882733835903303">Näytä yksityinen avain</translation>
 <translation id="4391056902675005799">Piilota yksityinen avain</translation>
@@ -961,9 +958,12 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6044189892950611565">Brave-selaimen ilmoituskanava</translation>
 <translation id="1173919438868967364">Valitse tili</translation>
 <translation id="8922793255489232731">Vastaavaa aikavyöhykettä ei löytynyt kohteelle: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Ladataan lompakon datatiedostoa \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Yhteys muodostettu kohteeseen <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Kokeilujakso</translation>
+<translation id="6458565248779152483">Poista Brave-VPN käytöstä</translation>
+<translation id="9080536793704001825">15 minuutin tauko</translation>
+<translation id="803706420145725977">1 tunnin tauko</translation>
+<translation id="4394049700291259645">Poista käytöstä</translation>
 <translation id="7733890291091968191">Näytä Web3-ilmoitukset</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-isäntänimi\n <ph name="VALUE"/></translation>
@@ -993,6 +993,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="8219806187375413057"><ph name="CLICK_START"/>Lue riskien pienentämisestä Rainbow Bridge -sovelluksessa<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> on riippumaton palvelu, joka auttaa sinua yhdistämään varoja eri verkoissa ja käyttämään kryptovaluuttaa muissa verkoissa ja DApp-ekosysteemeissä. Varojen yhdistämisessä muihin verkkoihin on riskejä.</translation>
 <translation id="8423380132356660250">Avaa <ph name="APP_NAME"/> -sovellus</translation>
+<translation id="4450893287417543264">Älä näytä uudelleen</translation>
 <translation id="168154537623654021">Päivitetään VPN-profiilia...</translation>
 <translation id="7457027586454688423">Anna Brave-lompakkosi salasanasi</translation>
 <translation id="4784306439879850873">Huomaa, että Brave ei voi tarkistaa, mitä tapahtuu, jos allekirjoitat. Allekirjoitus voi valtuuttaa melkein minkä tahansa toiminnon tililläsi tai puolestasi, mukaan lukien (mutta ei rajoittuen) tilin ja kryptovarojen täydellisen hallinnan antaminen pyynnön esittäneelle sivustolle. Allekirjoita vain, jos olet varma, että haluat suorittaa tämän toiminnon ja että pystyt luottamaan pyytävään sivustoon.</translation>

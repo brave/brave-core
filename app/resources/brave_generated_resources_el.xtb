@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Αυτό είναι ένα ιδιωτικό παράθυρο με το Tor</translation>
 <translation id="1037341607922068025">Ανοίξτε Ιδιωτικό παράθυρο με το Tor</translation>
-<translation id="1725356094208762656">Άνοιγμα σε Tor</translation>
-<translation id="3396347744975515056">Ο συγχρονισμός Brave έχει αναβαθμιστεί και απαιτεί ρύθμιση</translation>
-<translation id="7473245612074035141">Έναρξη ρύθμισης</translation>
 <translation id="496896260395129787">Αυτός ο λογαριασμός Συγχρονισμού Brave έχει διαγραφεί από μια άλλη συσκευή. Αν δεν θέλατε να απενεργοποιήσετε τον Συγχρονισμό, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>δημιουργήστε εκ νέου τον λογαριασμό</translation>
 <translation id="6965382102122355670">OK</translation>
@@ -190,6 +187,10 @@
 <translation id="7109885938715976444">Μόνο για αυτήν τη φορά</translation>
 <translation id="7473891865547856676">Όχι, ευχαριστώ</translation>
 <translation id="2722425322672922644">Μάθετε πώς επηρεάζεται το απόρρητό σας</translation>
+<translation id="5551268135482191097">Παρουσιάστηκε κάποιο σφάλμα κατά τη φόρτωση του URL IPFS. Θέλετε να ανακατευθυνθείτε στο αρχικό URL;</translation>
+<translation id="4756627014339714615">Ανακατεύθυνση</translation>
+<translation id="1338274252864046652">Θέλετε να δημιουργείτε πάντα έναν κόμβο IPFS κατά την εκκίνηση του προγράμματος περιήγησης;</translation>
+<translation id="3435896845095436175">Ενεργοποίηση</translation>
 <translation id="4552520379838695057">Λυπούμαστε, αυτή η σελίδα λείπει.</translation>
 <translation id="2609895996619941644">Θέλετε να ελέγξετε αν υπάρχει μια αποθηκευμένη έκδοση στο Wayback Machine;</translation>
 <translation id="8053093028263274061">Λυπούμαστε, δεν υπάρχει καμιά διαθέσιμη αποθηκευμένη έκδοση.</translation>
@@ -299,6 +300,10 @@
 <translation id="7544853251252956727">Τυχαία αναπαραγωγή</translation>
 <translation id="4330722796577425585">Επαναφορά</translation>
 <translation id="7481312909269577407">Προώθηση</translation>
+<translation id="2800828306627475693">Επανάληψη απενεργοποιημένη</translation>
+<translation id="1748244367114657861">Επανάληψη ενός</translation>
+<translation id="6421906998825794164">Επανάληψη όλων</translation>
+<translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Οι αλλαγές που πραγματοποιήσατε θα ισχύσουν την επόμενη φορά που θα εκκινήσετε το Brave.</translation>
 <translation id="7179921470347911571">Επανεκκίνηση τώρα</translation>
 <translation id="4472575034687746823">Έναρξη</translation>
@@ -412,10 +417,6 @@
 <translation id="413570371620795359">Ανοίξτε το πλαίσιο Ανταμοιβών για να το ενεργοποιήσετε και να ξεκινήσετε</translation>
 <translation id="1051600834033686945">Ανοίξτε όλες τις ρυθμίσεις των Ανταμοιβών Brave</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
-<translation id="7483857210736407752">Εμφάνιση κουμπιού "Συμβουλή" σε ιστοτόπους.</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Αποκλεισμός μέσων κοινωνικής δικτύωσης</translation>
 <translation id="863171915776379000">Να επιτρέπονται οι συνδέσεις στο Facebook και οι ενσωματωμένες αναρτήσεις</translation>
 <translation id="5165042248369837294">Να επιτρέπονται ενσωματωμένα tweet από το Twitter</translation>
@@ -584,7 +585,9 @@
 <translation id="6936835573742749135">Δεν είναι δυνατή η αίτηση CAPTCHA. Προσπαθήστε ξανά αργότερα.</translation>
 <translation id="2653659639078652383">Υποβολή</translation>
 <translation id="1369311132025451972">Αυτόματη ανακατεύθυνση ιστότοπων .onion</translation>
-<translation id="1658670175365815312">Το Brave θα μεταβαίνει στην έκδοση .onion ενός ιστοτόπου όταν είναι διαθέσιμος και θα ανοίγει αυτόματα όλους τους τομείς .onion σε ένα παράθυρο Tor.</translation>
+<translation id="6214393847480015759">Στα παράθυρα Tor, ο Brave θα κάνει αυτόματα εναλλαγή στην έκδοση .onion μιας ιστοσελίδας, εάν είναι διαθέσιμη.</translation>
+<translation id="1294350054292274934">Επίλυση μόνο διευθύνσεων .onion σε παράθυρα Tor.</translation>
+<translation id="1258903596167452221">Οι υπηρεσίες onion δεν θα είναι διαθέσιμες εκτός παραθύρων Tor.</translation>
 <translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και συνδέσμους magnet.</translation>
 <translation id="5249433283143453448">Χρησιμοποιήστε το στοιχείο διαχείρισης ψηφιακών δικαιωμάτων (DRM) Widevine για να προβάλετε προστατευμένο βίντεο streaming και άλλο περιεχόμενο στο πρόγραμμα περιήγησης.</translation>
 <translation id="1314131187310290315">Επεκτάσεις Manifest V2</translation>
@@ -633,6 +636,7 @@
 <translation id="4226543734057230801">Δίκτυα Ethereum</translation>
 <translation id="3504157706952484145">Δίκτυα Filecoin</translation>
 <translation id="1561541094377237745">Δίκτυα Solana</translation>
+<translation id="7141438739990875547">Δίκτυα Bitcoin</translation>
 <translation id="3159419679550543837">Εμφάνιση δοκιμαστικών δικτύων</translation>
 <translation id="3215569562674795548">Επεξεργασία ή προσθήκη νέου δικτύου</translation>
 <translation id="4418993400653250511">Το αναγνωριστικό της αλυσίδας</translation>
@@ -672,6 +676,7 @@
 <translation id="8425213833346101688">Αλλαγή</translation>
 <translation id="585868419599255817">Μετάπτωση σε δημόσια πύλη IPFS</translation>
 <translation id="2618080188892567155">Αυτόματη μετάπτωση στη δημόσια πύλη IPFS εάν δεν είναι δυνατή η σύνδεση με τον τοπικό κόμβο IPFS του Brave.</translation>
+<translation id="8956391206920485238">Δημιουργία κόμβου IPFS πάντα κατά την εκκίνηση του προγράμματος περιήγησης;</translation>
 <translation id="6789104345873307368">Να γίνεται αυτόματη ανακατεύθυνση των αιτημάτων σε πόρους δικτύου IPFS προς την πύλη που έχει διαμορφωθεί.</translation>
 <translation id="4138306018048329894">Τα αιτήματα σε πόρους IPFS, που φιλοξενούνται σε πύλες IPFS τρίτων ή πόρους DNSLINK, θα δρομολογούνται μέσω επιλεγμένης τοπικής ή απομακρυσμένης πύλης.
   Σημείωση: Εάν έχει επιλεγεί τοπικός κόμβος, θα ζητηθεί πόρος απευθείας από τον υπολογιστή σας και τα δεδομένα κρυφής μνήμης ενδέχεται να παρέχονται στο δίκτυο IPFS για κάποιο χρονικό διάστημα.</translation>
@@ -723,6 +728,9 @@ Leo στο μέλλον και θα εκκαθαρίσει επίσης το ι�
 Leo. Αυτή η ενέργεια δε μπορεί να αναιρεθεί.</translation>
 <translation id="8157373421434119674">Ιστορικό δεδομένων και συνομιλίας</translation>
 <translation id="614530507403667291">Προεπιλεγμένο μοντέλο για νέες συζητήσεις</translation>
+<translation id="349846214503465941">Ενεργοποίηση λίστας αναπαραγωγής</translation>
+<translation id="7903608716704052878">Αυτόματη προσθήκη αρχείων για προβολή εκτός σύνδεσης</translation>
+<translation id="4193768184502613558">Αυτή η επιλογή θα αποθηκεύει αυτόματα τις προσωρινές μνήμες των αρχείων, ώστε να μπορείτε να κάνετε αναπαραγωγή τους χωρίς σύνδεση στο διαδίκτυο.</translation>
 <translation id="6624718837376802990">Avatar Edgy Ανταμοιβές</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ωκεανός</translation>

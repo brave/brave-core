@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">เปิด/ปิดใช้งาน Brave Shields</translation>
 <translation id="6945863270524203017">รับการอัปเดตความเป็นส่วนตัวรายสัปดาห์เกี่ยวกับตัวติดตามและการบล็อกโฆษณา</translation>
 <translation id="4324735664183300693">เปิดการแจ้งเตือน</translation>
-<translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
 <translation id="6395059271589866759">Brave จะเรียกเก็บเงิน 5% ของเงินที่ส่งเป็นค่าธรรมเนียมในการประมวลผล</translation>
 <translation id="6661699662755460155">แลกเปลี่ยน</translation>
 <translation id="6790981891677399838">ฉันเพิ่งจะสนับสนุน <ph name="AMOUNT"/> BAT โดยใช้เบราว์เซอร์ Brave ดูว่าคุณจะสนับสนุนผู้สร้างและเว็บไซต์โปรดของคุณด้วยได้อย่างไร: https://brave.com/rewards</translation>
-<translation id="2278950434998763147">เปิดบางเว็บไซต์โดยใช้การเชื่อมต่อ HTTPS ที่ปลอดภัยแทน HTTP ธรรมดา</translation>
 <translation id="5510493033031835532">เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ</translation>
 <translation id="5197219128592971597">ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google</translation>
 <translation id="920638232916443453">เปลี่ยนเส้นทาง URL ติดตามอัตโนมัติ</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">อัปเดตล่าสุด <ph name="TIME"/></translation>
 <translation id="802154636333426148">การดาวน์โหลดล้มเหลว</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> การอัปเดตล้มเหลว</translation>
+<translation id="8580328754808744073">สร้างตัวกรองแบบกำหนดเอง</translation>
+<translation id="6532106788206463496">บันทึกการเปลี่ยนแปลง</translation>
+<translation id="5132969826889386652">บันทึกความเปลี่ยนแปลงสำเร็จแล้ว</translation>
+<translation id="4335929145384293789">เพิ่มตัวกรองแบบกำหนดเองที่คุณสร้าง บรรทัดละหนึ่งรายการ ในช่องด้านบน และตรวจสอบให้มั่นใจว่าได้ใช้ <ph name="ADBLOCK_FILTER_SYNTAX"/></translation>
+<translation id="5023212862780303376">รูปแบบ syntax สำหรับตัวกรอง Adblock</translation>
 <translation id="3872060236937011862">ราคา <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">ไม่มีเนื้อหา</translation>
 <translation id="7172792761509429092">Brave News ไม่มีเนื้อหาให้แสดง</translation>
 <translation id="1771307734839364850">เลือกแหล่งที่มาเนื้อหา</translation>
-<translation id="5787084571334399599">ป้องกันเบราว์เซอร์ไม่ให้สร้างลายนิ้วมือ</translation>
+<translation id="6891769200437737956">ป้องกันเว็บไซต์ไม่ให้สร้างลายนิ้วมือของฉัน</translation>
 <translation id="7459000603787995422">ปิดแท็บเมื่อออกจากโปรแกรม</translation>
 <translation id="4448697385961650078">บล็อกโฆษณา &amp; แอปติดตาม</translation>
 <translation id="2448893613530489637">ป้องกันตัวติดตาม &amp; Ads จากการโหลดและการแสดงในหน้าเว็บ</translation>
 <translation id="1025207378813960343">ตรวจสอบให้แน่ใจว่าการเชื่อมต่อกับเว็บไซต์นั้นปลอดภัย</translation>
+<translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
 <translation id="6686219838158572786">จำเป็นต้องใช้ทุกการเชื่อมต่อเพื่อใช้ HTTPS (เข้มงวด)</translation>
 <translation id="4221284400051835823">อัปเกรดเป็น HTTPS เมื่อเป็นไปได้ (ค่าเริ่มต้น)</translation>
 <translation id="4690906712010847708">ไม่ต้องอัปเกรดการเชื่อมต่อเป็น HTTPS (ปิดใช้งาน)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">ช่วยปรับปรุงความเสถียรของผลิตภัณฑ์ Brave โดยส่งรายงานการวินิจฉัยโดยอัตโนมัติเมื่อเบราว์เซอร์ Brave ขัดข้องหรือค้าง</translation>
 <translation id="7977176350719484850">ข้อมูลที่บันทึกไว้โดยประมาณ</translation>
 <translation id="9008534313521214777">ประหยัดเวลาโดยประมาณ</translation>
-<translation id="1842747674580016420">การเล่นวิดีโอใน Brave</translation>
-<translation id="5368992950177874750">หากเปิดใช้งาน วิดีโอจะเล่นใน Brave แทนแอปที่เกี่ยวข้อง</translation>
 <translation id="410351446219883937">เล่นอัตโนมัติ</translation>
 <translation id="7445411102860286510">อนุญาตให้เว็บไซต์เล่นวิดีโอที่ปิดเสียงโดยอัตโนมัติ (แนะนำ)</translation>
 <translation id="7837721118676387834">อนุญาตให้เล่นวิดีโอที่ปิดเสียงโดยอัตโนมัติสำหรับบางเว็บไซต์</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">เล่นในพื้นหลัง</translation>
 <translation id="6332924730165919598">การปิดแท็บทั้งหมดจะเป็นการปิด Brave</translation>
 <translation id="8308305244351876417">อนุญาตให้เปิดเสียงเมื่อคุณเปลี่ยนเป็นแท็บอื่นใน Brave หรือเปลี่ยนเป็นแอปอื่น หรือเมื่อปิดหน้าจออุปกรณ์</translation>
+<translation id="49147335255967913">เปิดลิงก์ YouTube ใน Brave</translation>
 <translation id="4150201353443180367">การแสดงผล</translation>
 <translation id="4275663329226226506">สื่อ</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -376,13 +379,8 @@
 <translation id="4803910478683254032">นำเข้าไม่สำเร็จ</translation>
 <translation id="8325139248201792113">นำเข้าบุ๊กมาร์กไม่สำเร็จ โปรดลองอีกครั้ง</translation>
 <translation id="2803313416453193357">เปิดโฟลเดอร์</translation>
-<translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
-<translation id="7473245612074035141">เริ่มติดตั้ง</translation>
 <translation id="8985635554450124959">ไม่สามารถตั้งค่าการซิงค์</translation>
-<translation id="2514300153301737214">เราตรวจพบว่าคุณเปิดใช้งาน Brave Sync อย่างไรก็ตาม การซิงค์ระบบของคุณปิดอยู่และจะไม่อนุญาตให้ Brave ซิงค์ กดเพื่อเปิดการตั้งค่า</translation>
 <translation id="7173114856073700355">เปิดการตั้งค่า</translation>
-<translation id="6965382102122355670">ตกลง</translation>
-<translation id="4450893287417543264">ไม่ต้องแสดงอีก</translation>
 <translation id="496896260395129787">บัญชี Brave Sync นี้ถูกลบจากอุปกรณ์อื่น ถ้าคุณไม่ตั้งใจที่จะปิดการซิงค์ ให้ <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>สร้างบัญชีใหม่อีกครั้ง</translation>
 <translation id="4094590686212463338">ไม่สามารถเข้าร่วมกลุ่มการซิงค์ได้เนื่องจากกลุ่มการซิงค์ถูกลบไปแล้ว</translation>
@@ -479,7 +477,7 @@
 <translation id="7854108565842971747">นี่คือการตั้งค่า Shields เริ่มต้นสำหรับเว็บไซต์ใหม่ โดยการเปลี่ยนแปลงเหล่านี้จะไม่ส่งผลต่อการตั้งค่าที่มีอยู่ของแต่ละเว็บไซต์</translation>
 <translation id="218587021686734263">ป้องกันลายนิ้วมือผ่านการตั้งค่าภาษา</translation>
 <translation id="1706099589708266367">ลดจำนวนเว็บไซต์ที่สามารถเรียนรู้เกี่ยวกับคุณตามภาษาของเบราว์เซอร์ที่คุณตั้งค่าไว้</translation>
-<translation id="184568144098869637">ป้องกันเบราว์เซอร์จากการจำอุปกรณ์ของคุณ</translation>
+<translation id="4721088070859595932">ป้องกันเว็บไซต์ไม่ให้จำอุปกรณ์ของคุณ</translation>
 <translation id="7445306466605902444">บล็อก Fingerprinting แล้ว (เข้มงวด อาจทำหน้าเว็บเสียหาย)</translation>
 <translation id="5582686930349810484">บล็อก Fingerprinting แล้ว (ธรรมดา)</translation>
 <translation id="769702552748212954">อนุญาตการสร้างลายนิ้วมือทั้งหมด</translation>
@@ -623,8 +621,9 @@
 <translation id="1783600039044302171">รักษาความปลอดภัยคริปโตของคุณด้วยรหัสผ่าน</translation>
 <translation id="3726490322412361740">ป้อนรหัสผ่าน</translation>
 <translation id="3038243139480464605">ยืนยันรหัสผ่าน</translation>
-<translation id="3717685683157254329">รหัสผ่านต้องมีอักขระอย่างน้อย 7  ตัว และประกอบด้วยตัวอักษร 1  ตัว ตัวเลข 1 ตัว และอักขระพิเศษ 1 ตัว</translation>
+<translation id="3043677904160378840">รหัสผ่านต้องมีอักขระอย่างน้อย 8 ตัว</translation>
 <translation id="7396672979287122068">รหัสผ่านที่ยืนยันไม่ตรงกัน</translation>
+<translation id="7084181009966710506">กำลังสร้างกระเป๋าเงิน...</translation>
 <translation id="3188963375823360044">1 ชม.</translation>
 <translation id="8163269366661594721">1 วัน</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -777,7 +776,6 @@
 <translation id="1705662265912724430">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตการกำหนดค่า VPN</translation>
 <translation id="604124094241169006">อัตโนมัติ</translation>
 <translation id="7475580600756356589">กำลังเชื่อมต่อกับเซิร์ฟเวอร์ของคุณ น่าจะใช้เวลาเพียงสักครู่...</translation>
-<translation id="1342728075788541348">กำลังตัดการเชื่อมต่อจากเซิร์ฟเวอร์ของคุณ น่าจะใช้เวลาเพียงสักครู่...</translation>
 <translation id="669072536454692117">สมัครสมาชิกสำเร็จแล้ว</translation>
 <translation id="1187506504156101449">ไม่สามารถรับทราบการซื้อ :</translation>
 <translation id="8420522105268941892">คุณได้สมัครสมาชิกไว้แล้ว ลองกู้คืนการสมัครสมาชิก</translation>
@@ -810,7 +808,6 @@
 <translation id="8084782383392198011">ชื่อบัญชีต้องไม่เว้นว่าง</translation>
 <translation id="5045550434625856497">รหัสผ่านไม่ถูกต้อง</translation>
 <translation id="1367951781824006909">เลือกไฟล์</translation>
-<translation id="8648684608605749476">บล็อกคุกกี้ของบุคคลที่สามในโหมดไม่ระบุตัวตน</translation>
 <translation id="5932938770824268122">คีย์ส่วนตัว</translation>
 <translation id="2472882733835903303">แสดงคีย์ส่วนตัว</translation>
 <translation id="4391056902675005799">ซ่อนคีย์ส่วนตัว</translation>
@@ -961,9 +958,12 @@
 <translation id="6044189892950611565">ช่องทางการแจ้งเตือนสำหรับเบราว์เซอร์ Brave</translation>
 <translation id="1173919438868967364">เลือกบัญชี</translation>
 <translation id="8922793255489232731">ไม่พบเขตเวลาที่ตรงกันสำหรับ: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">กำลังดาวน์โหลดไฟล์ข้อมูล Wallet  \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">เชื่อมต่อกับ <ph name="VALUE"/> แล้ว</translation>
 <translation id="1968852757206592413">ทดลองใช้งาน</translation>
+<translation id="6458565248779152483">ปิดใช้งาน Brave VPN</translation>
+<translation id="9080536793704001825">หยุดชั่วคราวเป็นเวลา 15 นาที</translation>
+<translation id="803706420145725977">หยุดชั่วคราวเป็นเวลา 1 ชั่วโมง</translation>
+<translation id="4394049700291259645">ปิดการใช้งาน</translation>
 <translation id="7733890291091968191">แสดงการแจ้งเตือนของ Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave จะไม่ติดตามคุณและไม่รับรู้ว่าคุณใช้แอปของเราอย่างไร เราจึงไม่ทราบว่าคุณตั้งค่า VPN อย่างไร โปรดแชร์ข้อมูลเกี่ยวกับปัญหาที่คุณพบและเราจะเร่งแก้ไขโดยเร็วที่สุด ####\n\n</translation>
 <translation id="3367162038532116157">\n\nชื่อโฮสต์ VPN\n <ph name="VALUE"/></translation>
@@ -993,6 +993,7 @@
 <translation id="8219806187375413057"><ph name="CLICK_START"/>เรียนรู้วิธีลดความเสี่ยงบน Rainbow Bridge<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> เป็นบริการอิสระที่ช่วยให้คุณเชื่อมต่อทรัพย์สินของคุณข้ามเครือข่ายได้ และใช้คริปโตของคุณในเครือข่ายอื่นหรือในระบบนิเวศน์ DApp ทั้งนี้การเชื่อมต่อทรัพย์สินไปยังเครือข่ายอื่นมีความเสี่ยง</translation>
 <translation id="8423380132356660250">เปิดแอป <ph name="APP_NAME"/></translation>
+<translation id="4450893287417543264">ไม่ต้องแสดงอีก</translation>
 <translation id="168154537623654021">กำลังอัปเดตโปรไฟล์ VPN ...</translation>
 <translation id="7457027586454688423">ใส่รหัสผ่าน Brave Wallet ของคุณ</translation>
 <translation id="4784306439879850873">โปรดทราบว่า Brave ไม่สามารถตรวจสอบได้ว่าจะเกิดอะไรขึ้นหากคุณลงชื่อ ลายเซ็นสามารถอนุญาตการดำเนินการเกือบทั้งหมดในบัญชีของคุณหรือในนามของคุณ ซึ่งรวมถึง (แต่ไม่จำกัดเพียง) ให้การควบคุมบัญชีและทรัพย์สินเข้ารหัสของคุณทั้งหมดแก่ไซต์ที่ส่งคำขอ ลงชื่อเฉพาะเมื่อคุณแน่ใจว่าต้องการดำเนินการนี้ และเชื่อถือไซต์ที่ร้องขอ</translation>
