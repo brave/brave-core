@@ -292,7 +292,7 @@ ContentGroup SampleContentGroup(
 }
 
 // Picks the first article from the list - useful when the list has been sorted.
-int PickFirst(const ArticleInfos& articles) {
+int PickFirstIndex(const ArticleInfos& articles) {
   return articles.empty() ? -1 : 0;
 }
 
@@ -919,9 +919,9 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
                      b->get_article()->data->publish_time;
             });
 
-            return builder->GenerateBasicFeed(items,
-                                              base::BindRepeating(&PickFirst),
-                                              base::BindRepeating(&PickFirst));
+            return builder->GenerateBasicFeed(
+                items, base::BindRepeating(&PickFirstIndex),
+                base::BindRepeating(&PickFirstIndex));
           },
           base::Unretained(this), publisher_id),
       std::move(callback));
