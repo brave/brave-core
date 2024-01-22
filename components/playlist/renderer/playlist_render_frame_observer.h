@@ -33,9 +33,6 @@ class PlaylistRenderFrameObserver
   void InstallMediaDetector();
 
   // RenderFrameObserver:
-  void DidStartNavigation(
-      const GURL& url,
-      absl::optional<blink::WebNavigationType> navigation_type) override;
   void OnDestruct() override;
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
@@ -44,8 +41,6 @@ class PlaylistRenderFrameObserver
   const int32_t isolated_world_id_ = 0;
 
   std::unique_ptr<PlaylistJSHandler> javascript_handler_;
-
-  GURL url_;
 };
 
 }  // namespace playlist

@@ -18,6 +18,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace playlist {
@@ -25,7 +26,7 @@ namespace playlist {
 // static
 void PlaylistTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents,
-     playlist::PlaylistService* service) {
+    playlist::PlaylistService* service) {
   if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     return;
   }
@@ -169,6 +170,16 @@ void PlaylistTabHelper::RefetchMediaURL(base::OnceClosure detected_callback) {
   FindMediaFromCurrentContents();
 }
 
+void PlaylistTabHelper::RequestAsyncExecuteScript(
+    int32_t world_id,
+    const std::u16string& script,
+    base::OnceCallback<void(base::Value)> cb) {
+  GetRemote(web_contents()->GetPrimaryMainFrame())
+      ->RequestAsyncExecuteScript(
+          world_id, script, blink::mojom::UserActivationOption::kActivate,
+          blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+}
+
 void PlaylistTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
@@ -184,6 +195,18 @@ void PlaylistTabHelper::DidFinishNavigation(
   ResetData();
 
   UpdateSavedItemFromCurrentContents();
+
+  if (navigation_handle->IsSameDocument() ||
+      navigation_handle->IsServedFromBackForwardCache()) {
+    FindMediaFromCurrentContents();
+  }  // else DOMContentLoaded() will trigger FindMediaFromCurrentContents()
+}
+
+void PlaylistTabHelper::DOMContentLoaded(
+    content::RenderFrameHost* render_frame_host) {
+  DVLOG(2) << __FUNCTION__;
+
+  FindMediaFromCurrentContents();
 }
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
@@ -342,7 +365,7 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
       return;
     }
 
-    if (found_items_.size() && 
+    if (found_items_.size() &&
         !service_->ShouldRefetchMediaSourceToCache(found_items_)) {
       // We don't want to override |found_items_| with |items_| as it results it
       // refetching.
@@ -436,6 +459,15 @@ void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
     Observe(nullptr);
     ResetData();
   }
+}
+
+mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
+PlaylistTabHelper::GetRemote(content::RenderFrameHost* rfh) {
+  if (!script_injector_remote_.is_bound()) {
+    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
+        &script_injector_remote_);
+  }
+  return script_injector_remote_;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);

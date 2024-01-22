@@ -24,9 +24,7 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(render_frame),
       isolated_world_id_(isolated_world_id),
-      javascript_handler_(
-          std::make_unique<PlaylistJSHandler>(render_frame,
-                                              isolated_world_id)) {}
+      javascript_handler_(std::make_unique<PlaylistJSHandler>(render_frame)) {}
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
@@ -37,27 +35,6 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   }
 
   if (blink_preferences.should_detect_media_files) {
-    auto iter = base::ranges::find_if(
-        blink_preferences.url_and_media_detection_scripts,
-        [current_site = net::SchemefulSite(url_)](const auto& site_and_script) {
-          return net::SchemefulSite::Deserialize(site_and_script.first) ==
-                 current_site;
-        });
-
-    if (iter == blink_preferences.url_and_media_detection_scripts.end()) {
-      iter = blink_preferences.url_and_media_detection_scripts.find(
-          net::SchemefulSite().Serialize());
-      CHECK(iter != blink_preferences.url_and_media_detection_scripts.end())
-          << "Default script must exist";
-    }
-
-    javascript_handler_->SetDetectorScript(
-        blink::WebString::FromUTF8(iter->second));
-
-    if (blink_preferences.allow_to_run_script_on_main_world) {
-      javascript_handler_->allow_to_run_script_on_main_world();
-    }
-
     InstallMediaDetector();
   }
 }
@@ -81,8 +58,9 @@ void PlaylistRenderFrameObserver::HideMediaSourceAPI() {
     )-";
 
   blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
-  if (web_frame->IsProvisional())
+  if (web_frame->IsProvisional()) {
     return;
+  }
 
   web_frame->ExecuteScript(blink::WebScriptSource(
       blink::WebString::FromUTF16(kScriptToHideMediaSourceAPI)));
@@ -145,12 +123,6 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       blink::WebScriptSource(
           blink::WebString::FromUTF16(kScriptToDetectVideoAndAudio)),
       blink::BackForwardCacheAware::kAllow);
-}
-
-void PlaylistRenderFrameObserver::DidStartNavigation(
-    const GURL& url,
-    absl::optional<blink::WebNavigationType> navigation_type) {
-  url_ = url;
 }
 
 void PlaylistRenderFrameObserver::OnDestruct() {

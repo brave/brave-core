@@ -50,6 +50,7 @@ static_library("browser") {
     "//brave/components/p3a_utils",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
+    "//brave/components/script_injector/common/mojom",
     "//components/component_updater",
     "//components/download/public/common:public",
     "//components/keyed_service/core",

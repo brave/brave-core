@@ -13,16 +13,14 @@
 namespace playlist {
 
 class PlaylistService;
-class PlaylistMediaHandler: public mojom::PlaylistMediaHandler{
+class PlaylistMediaHandler : public mojom::PlaylistMediaHandler {
  public:
-  PlaylistMediaHandler(
-      content::GlobalRenderFrameHostId frame_id,
-      const base::WeakPtr<PlaylistService>& service);
+  PlaylistMediaHandler(content::GlobalRenderFrameHostId frame_id,
+                       const base::WeakPtr<PlaylistService>& service);
   ~PlaylistMediaHandler() override;
 
   // mojom::PlaylistMediaHandler:
-  void OnMediaUpdatedFromRenderFrame(const GURL& page_url,
-                                     base::Value value) override;
+  void OnMediaUpdatedFromRenderFrame() override;
 
  private:
   content::GlobalRenderFrameHostId frame_id_;

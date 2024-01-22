@@ -5,19 +5,13 @@
 
 #include "brave/components/playlist/renderer/playlist_js_handler.h"
 
-#include <utility>
-#include <vector>
-
 #include "base/functional/callback.h"
-#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/converter.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
-#include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
 
 namespace {
 
@@ -40,9 +34,8 @@ void BindFunctionToObject(v8::Isolate* isolate,
 
 namespace playlist {
 
-PlaylistJSHandler::PlaylistJSHandler(content::RenderFrame* render_frame,
-                                     const int32_t isolated_world_id)
-    : render_frame_(render_frame), isolated_world_id_(isolated_world_id) {
+PlaylistJSHandler::PlaylistJSHandler(content::RenderFrame* render_frame)
+    : render_frame_(render_frame) {
   EnsureConnectedToMediaHandler();
 }
 
@@ -56,10 +49,6 @@ void PlaylistJSHandler::AddWorkerObjectToFrame(v8::Local<v8::Context> context) {
   }
 
   CreateWorkerObject(isolate, context);
-}
-
-void PlaylistJSHandler::SetDetectorScript(const blink::WebString& script) {
-  script_ = script;
 }
 
 bool PlaylistJSHandler::EnsureConnectedToMediaHandler() {
@@ -106,41 +95,18 @@ void PlaylistJSHandler::BindFunctionsToWorkerObject(
                                            weak_ptr_factory_.GetWeakPtr()));
 }
 
-void PlaylistJSHandler::OnMediaUpdated(const std::string& src) {
-  if (!GURL(src).SchemeIsHTTPOrHTTPS()) {
+void PlaylistJSHandler::OnMediaUpdated(const std::string& page_url) {
+  if (!GURL(page_url).SchemeIsHTTPOrHTTPS()) {
     return;
   }
 
-  DVLOG(2) << __FUNCTION__ << " " << src;
+  DVLOG(2) << __FUNCTION__ << " " << page_url;
 
   if (!EnsureConnectedToMediaHandler()) {
     return;
   }
 
-  auto* web_frame = render_frame_->GetWebFrame();
-  std::vector sources = {blink::WebScriptSource(script_)};
-  web_frame->RequestExecuteScript(
-      allow_to_run_script_on_main_world_ ? 0 : isolated_world_id_, sources,
-      blink::mojom::UserActivationOption::kActivate,
-      blink::mojom::EvaluationTiming::kAsynchronous,
-      blink::mojom::LoadEventBlockingOption::kBlock,
-      base::BindOnce(&PlaylistJSHandler::OnFindMedia,
-                     weak_ptr_factory_.GetWeakPtr(), GURL(src)),
-      blink::BackForwardCacheAware::kAllow,
-      blink::mojom::WantResultOption::kWantResult,
-      blink::mojom::PromiseResultOption::kAwait);
-}
-
-void PlaylistJSHandler::OnFindMedia(GURL requested_url,
-                                    absl::optional<base::Value> value,
-                                    base::TimeTicks time_ticks) {
-  if (!value) {
-    LOG(ERROR) << *value;
-    return;
-  }
-
-  media_handler_->OnMediaUpdatedFromRenderFrame(requested_url,
-                                                std::move(*value));
+  media_handler_->OnMediaUpdatedFromRenderFrame();
 }
 
 }  // namespace playlist
