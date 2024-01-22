@@ -25,9 +25,14 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     int32_t isolated_world_id)
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(render_frame),
+<<<<<<< HEAD
       isolated_world_id_(isolated_world_id) {
   EnsureConnectedToMediaHandler();
 }
+=======
+      isolated_world_id_(isolated_world_id),
+      javascript_handler_(std::make_unique<PlaylistJSHandler>(render_frame)) {}
+>>>>>>> a45d9f3528 (Request media detection script from browser side)
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
@@ -63,27 +68,6 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   }
 
   if (blink_preferences.should_detect_media_files) {
-    auto iter = base::ranges::find_if(
-        blink_preferences.url_and_media_detection_scripts,
-        [current_site = net::SchemefulSite(url_)](const auto& site_and_script) {
-          return net::SchemefulSite::Deserialize(site_and_script.first) ==
-                 current_site;
-        });
-
-    if (iter == blink_preferences.url_and_media_detection_scripts.end()) {
-      iter = blink_preferences.url_and_media_detection_scripts.find(
-          net::SchemefulSite().Serialize());
-      CHECK(iter != blink_preferences.url_and_media_detection_scripts.end())
-          << "Default script must exist";
-    }
-
-    javascript_handler_->SetDetectorScript(
-        blink::WebString::FromUTF8(iter->second));
-
-    if (blink_preferences.allow_to_run_script_on_main_world) {
-      javascript_handler_->allow_to_run_script_on_main_world();
-    }
-
     InstallMediaDetector();
   }
 }

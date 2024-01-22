@@ -40,6 +40,8 @@ class PlaylistService;
 class PlaylistDownloadRequestManager {
  public:
   static void SetRunScriptOnMainWorldForTest();
+  static void SetPlaylistJavaScriptWorldId(const int32_t id);
+
   struct Request {
     using Callback =
         base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)>;
@@ -91,10 +93,9 @@ class PlaylistDownloadRequestManager {
     return media_detector_component_manager_;
   }
 
-  std::vector<mojom::PlaylistItemPtr> ProcessFoundMedia(
+  void GetMedia(
       content::WebContents* contents,
-      const GURL& url,
-      base::Value value);
+      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb);
 
   bool CanCacheMedia(const mojom::PlaylistItemPtr& item) const;
   bool ShouldRefetchMediaSourceToCache(
@@ -108,6 +109,16 @@ class PlaylistDownloadRequestManager {
 
   bool ReadyToRunMediaDetectorScript() const;
   void CreateWebContents(bool should_force_fake_ua);
+  void OnGetMedia(
+      base::WeakPtr<content::WebContents> contents,
+      GURL url,
+      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
+      base::Value value);
+  void ProcessFoundMedia(
+      content::WebContents* contents,
+      GURL url,
+      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
+      base::Value value);
 
   // Pop a task from queue and detect media from the page if any.
   void FetchPendingRequest();
@@ -133,8 +144,6 @@ class PlaylistDownloadRequestManager {
   raw_ptr<content::BrowserContext> context_;
 
   raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
-
-  static bool s_run_script_on_main_world;
 
   base::WeakPtrFactory<PlaylistDownloadRequestManager> weak_factory_{this};
 };

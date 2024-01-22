@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "net/base/schemeful_site.h"
+
 namespace base {
 class FilePath;
 }  // namespace base
@@ -47,8 +48,6 @@ class MediaDetectorComponentManager {
   // Returns a script to get media from page. If the script isn't fetched
   // from component yet, will return a local script.
   std::string GetMediaDetectorScript(const GURL& url);
-  std::string GetMediaDetectorScript(const net::SchemefulSite& site);
-  base::flat_map<net::SchemefulSite, std::string> GetAllMediaDetectorScripts();
 
   void SetUseLocalScript();
 
