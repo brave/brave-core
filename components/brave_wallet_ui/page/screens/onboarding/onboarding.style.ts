@@ -4,7 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import Button from '@brave/leo/react/button'
 
+// styles
 import { Column } from '../../../components/shared/style'
 
 // Layout
@@ -135,3 +137,6 @@ export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{
   gap: 14px;
 `
 
+export const ContinueButton = styled(Button)`
+  --leo-button-radius: 12px;
+`

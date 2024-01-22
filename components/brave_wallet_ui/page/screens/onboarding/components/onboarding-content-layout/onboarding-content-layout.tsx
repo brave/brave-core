@@ -43,8 +43,8 @@ export const OnboardingContentLayout = ({
   return (
     <StyledWrapper>
       <StaticBackground />
-
       <BackgroundGradientBottomLayer />
+
       <TitleSection>
         <Row
           gap='10px'

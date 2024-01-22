@@ -55,7 +55,8 @@ export const SearchInput = styled.input<{
     font-style: normal;
     font-size: ${(p) => (p.isV2 ? '14px' : '12px')};
     letter-spacing: 0.01em;
-    color: ${leo.color.text.secondary};
+    color: ${(p) =>
+      p.isV2 ? leo.color.text.tertiary : leo.color.text.secondary};
   }
   :focus {
     outline: none;

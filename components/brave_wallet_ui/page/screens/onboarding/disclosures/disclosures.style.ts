@@ -5,7 +5,6 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import Button from '@brave/leo/react/button'
 import { LinkText } from '../../../../components/shared/style'
 
 export const CheckboxText = styled.div`
@@ -22,7 +21,7 @@ export const CheckboxText = styled.div`
     text-align: left;
     vertical-align: top;
 
-    font-family: 'Poppins';
+    font-family: 'Inter', 'Poppins';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -37,6 +36,3 @@ export const TermsLink = styled(LinkText)`
   font-weight: 400;
 `
 
-export const ContinueButton = styled(Button)`
-  --leo-button-radius: 12px;
-`

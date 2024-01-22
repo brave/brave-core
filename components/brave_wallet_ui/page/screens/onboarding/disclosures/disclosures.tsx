@@ -21,8 +21,8 @@ import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
 
 // styles
 import { VerticalSpace } from '../../../../components/shared/style'
-import { NextButtonRow } from '../onboarding.style'
-import { CheckboxText, TermsLink, ContinueButton } from './disclosures.style'
+import { NextButtonRow, ContinueButton } from '../onboarding.style'
+import { CheckboxText, TermsLink } from './disclosures.style'
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 
 const TermsOfUseText: React.FC<{}> = () => {

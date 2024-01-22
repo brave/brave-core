@@ -13,6 +13,10 @@ export const StyledWrapper = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
+
+  @media (min-width: 768px) {
+    overflow: hidden;
+  }
 `
 
 export const ContentWrapper = styled.div`
