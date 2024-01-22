@@ -26,6 +26,7 @@
 <translation id="4394049700291259645">अक्षम करा</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="7473891865547856676">नाही, नको</translation>
+<translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="4474155171896946103">सर्व टॅब बुकमार्क करा...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{टॅब म्यूट करा}one{टॅब म्यूट करा}other{टॅब म्यूट करा}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{टॅब अनम्यूट करा}one{टॅब अनम्यूट करा}other{टॅब अनम्यूट करा}}</translation>
@@ -69,7 +70,6 @@
 <translation id="7791543448312431591">जोडा</translation>
 <translation id="6745592621698551453">आता अपडेट करा</translation>
 <translation id="802154636333426148">डाउनलोड अयशस्वी झाले</translation>
-<translation id="2635094637295383009">Twitter</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
 <translation id="5165042248369837294">ट्विटरला एम्बेड केलेल्या ट्विटस परवानगी द्या</translation>
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>

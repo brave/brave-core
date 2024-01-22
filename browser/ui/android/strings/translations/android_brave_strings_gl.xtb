@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">Activar/Desactivar os escudos de Brave</translation>
 <translation id="6945863270524203017">Recibe actualizacións semanais de privacidade sobre rastrexadores e bloqueo de anuncios.</translation>
 <translation id="4324735664183300693">Activar notificacións</translation>
-<translation id="3570081523466826008">Actualización de conexións a HTTPS</translation>
 <translation id="6395059271589866759">Brave percibe o 5% da cantidade enviada en concepto de taxa de tramitación.</translation>
 <translation id="6661699662755460155">intercambio</translation>
 <translation id="6790981891677399838">Acabo de contribuír con <ph name="AMOUNT"/> BAT mediante o navegador de Brave. Obtén información tamén sobre como apoiar os teus creadores e sitios favoritos: https://brave.com/rewards</translation>
-<translation id="2278950434998763147">Abre algúns sitios que utilizan unha conexión HTTPS segura en lugar de HTTP simple.</translation>
 <translation id="5510493033031835532">Redireccionar automaticamente as páxinas de AMP</translation>
 <translation id="5197219128592971597">Visite sempre URL de páxinas orixinais (que non sexan de AMP) en lugar de versións de páxinas para móbiles aceleradas de Google</translation>
 <translation id="920638232916443453">Redireccionar automaticamente as URL de seguimento</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">Última actualización: <ph name="TIME"/></translation>
 <translation id="802154636333426148">Produciuse un erro na descarga</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> Actualización incorrecta</translation>
+<translation id="8580328754808744073">Crear filtros personalizados</translation>
+<translation id="6532106788206463496">Gardar cambios</translation>
+<translation id="5132969826889386652">Os cambios gardáronse correctamente</translation>
+<translation id="4335929145384293789">Engade os filtros personalizados que creaches, un por liña, no campo anterior. Asegúrese de usar <ph name="ADBLOCK_FILTER_SYNTAX"/>.</translation>
+<translation id="5023212862780303376">Sintaxe de filtro de Adblock</translation>
 <translation id="3872060236937011862">Prezo en <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Servizo de nomes de Solana</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">Non hai contido</translation>
 <translation id="7172792761509429092">Noticias de Brave non ten ningún contido que amosar.</translation>
 <translation id="1771307734839364850">Escolle fontes de contido</translation>
-<translation id="5787084571334399599">Protexa o navegador a través das pegadas dixitais</translation>
+<translation id="6891769200437737956">Evita que os sitios web me tomen pegadas dixitais</translation>
 <translation id="7459000603787995422">Pechar lapelas ao saír</translation>
 <translation id="4448697385961650078">Bloquear os rastreadores e os anuncios</translation>
 <translation id="2448893613530489637">Evita que os rastreadores e os anuncios se carguen e se amosen en páxinas web</translation>
 <translation id="1025207378813960343">Asegúrate de que as conexións aos sitios web sexan seguras.</translation>
+<translation id="3570081523466826008">Actualización de conexións a HTTPS</translation>
 <translation id="6686219838158572786">Requirir que todas as conexións usen HTTPS (estricto)</translation>
 <translation id="4221284400051835823">Actualizar a HTTPS sempre que sexa posible (predeterminado)</translation>
 <translation id="4690906712010847708">Non actualizar as conexións a HTTPS (desactivado)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">Envía informes de diagnóstico automaticamente cando falle ou se bloquee o navegador de Brave para que poidamos mellorar a estabilidade dos produtos de Brave.</translation>
 <translation id="7977176350719484850">Est. de datos\naforrados</translation>
 <translation id="9008534313521214777">Est. de tempo\naforrado</translation>
-<translation id="1842747674580016420">Reprodutor de vídeo en Brave</translation>
-<translation id="5368992950177874750">Se está activado, os vídeos reproduciranse en Brave no canto do aplicativo correspondente</translation>
 <translation id="410351446219883937">Reprodución automática</translation>
 <translation id="7445411102860286510">Permitir aos sitios reproducir automaticamente vídeos silenciados (recomendado)</translation>
 <translation id="7837721118676387834">Permite a reprodución automática de vídeos silenciados dun sitio específico.</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">Reprodución en segundo plano</translation>
 <translation id="6332924730165919598">Cando se peche Brave, péchanse todas as lapelas</translation>
 <translation id="8308305244351876417">Permite que o audio se reproduza cando cambias de separador en Brave, cando cambias de aplicación ou cando a pantalla do dispositivo está apagada.</translation>
+<translation id="49147335255967913">Abrir ligazóns de YouTube en Brave</translation>
 <translation id="4150201353443180367">Pantalla</translation>
 <translation id="4275663329226226506">Multimedia</translation>
 <translation id="5950428831347558278">DRM de Widevine</translation>
@@ -376,13 +379,8 @@
 <translation id="4803910478683254032">Erro na importación</translation>
 <translation id="8325139248201792113">Erro ao importar os marcadores. Téntao de novo.</translation>
 <translation id="2803313416453193357">Abrir cartafol</translation>
-<translation id="3396347744975515056">A sincronización de Brave foi actualizado e require configuración</translation>
-<translation id="7473245612074035141">Comece a configurar</translation>
 <translation id="8985635554450124959">Non se puido establecer a sincronización</translation>
-<translation id="2514300153301737214">Detectamos que activaches a sincronización de Brave; porén, a sincronización do sistema está desactivada e non permite que Brave se sincronice. Preme aquí para abrir a configuración.</translation>
 <translation id="7173114856073700355">Abrir Configuración</translation>
-<translation id="6965382102122355670">Aceptar</translation>
-<translation id="4450893287417543264">Non mostrar outra vez</translation>
 <translation id="496896260395129787">Esta conta de Sincronización de Brave eliminouse doutro dispositivo. Se non querías desactivar Sincronización, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>volve crear a conta.</translation>
 <translation id="4094590686212463338">Non foi posible unirse a esta cadea de sincronización. Eliminouse a cadea de sincronización.</translation>
@@ -479,7 +477,7 @@ Seguro que queres facelo?</translation>
 <translation id="7854108565842971747">Esta é a configuración predeterminada de Escudos para novos sitios. Cambiala non afectará á configuración existente de cada sitio.</translation>
 <translation id="218587021686734263">Evita o uso das pegadas dixitais mediante a configuración do idioma</translation>
 <translation id="1706099589708266367">Reduce a cantidade de datos persoais sobre ti que poden obter os sitios web segundo a configuración do idioma do teu navegador.</translation>
-<translation id="184568144098869637">Evita que o navegador recoñeza o teu dispositivo</translation>
+<translation id="4721088070859595932">Evita que os sitios web recoñezan o teu dispositivo</translation>
 <translation id="7445306466605902444">Pegada dixital bloqueada (estrita, pode que algúns sitios non funcionen)</translation>
 <translation id="5582686930349810484">Pegada dixital bloqueada (estándar)</translation>
 <translation id="769702552748212954">Permitir todas as pegadas dixitais</translation>
@@ -623,8 +621,9 @@ Seguro que queres facelo?</translation>
 <translation id="1783600039044302171">Protexe as túas criptomoedas cun contrasinal</translation>
 <translation id="3726490322412361740">Introduce o contrasinal</translation>
 <translation id="3038243139480464605">Verificar contrasinal</translation>
-<translation id="3717685683157254329">Os contrasinais deben ter 7 caracteres como mínimo, dos cales polo menos un debe ser un número e outro, un carácter especial.</translation>
+<translation id="3043677904160378840">O contrasinal debe ter polo menos 8 caracteres</translation>
 <translation id="7396672979287122068">O contrasinal de verificación non coincide.</translation>
+<translation id="7084181009966710506">Creando unha carteira...</translation>
 <translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -777,7 +776,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="1705662265912724430">Seguro que queres restablecer a configuración da VPN?</translation>
 <translation id="604124094241169006">Automático</translation>
 <translation id="7475580600756356589">Conectando co servidor. Só debería tardar un intre...</translation>
-<translation id="1342728075788541348">Desconectando do teu servidor. Só debería tardar un intre...</translation>
 <translation id="669072536454692117">Subscrición consumida correctamente</translation>
 <translation id="1187506504156101449">Non se puido recoñecer a compra:</translation>
 <translation id="8420522105268941892">Xa te subscribiches á subscrición. Tenta restablecela.</translation>
@@ -810,7 +808,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="8084782383392198011">O nome da conta non pode quedar baleiro.</translation>
 <translation id="5045550434625856497">Contrasinal incorrecto</translation>
 <translation id="1367951781824006909">Escolle un ficheiro</translation>
-<translation id="8648684608605749476">Bloquear cookies de terceiros no modo de incógnito</translation>
 <translation id="5932938770824268122">Clave privada</translation>
 <translation id="2472882733835903303">Amosar clave privada</translation>
 <translation id="4391056902675005799">Ocultar clave privada</translation>
@@ -961,9 +958,12 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6044189892950611565">Canle de notificación para o navegador Brave</translation>
 <translation id="1173919438868967364">Seleccionar conta</translation>
 <translation id="8922793255489232731">No se atopou o fuso horario correspondente a: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Descargando o ficheiro de datos da carteira \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Conexión establecida con <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Proba</translation>
+<translation id="6458565248779152483">Desactivar VPN de Brave</translation>
+<translation id="9080536793704001825">Pausar durante 15 minutos</translation>
+<translation id="803706420145725977">Pausar durante 1 hora</translation>
+<translation id="4394049700291259645">Desactivar</translation>
 <translation id="7733890291091968191">Mostrar notificacións de Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave non rastrexa a túa actividade nin sabe como usar a nosa aplicación, polo que descoñecemos como configuraches a túa VPN. Danos información sobre o problema e faremos todo o que poidamos para resolvelo canto antes. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNome do servidor da VPN\n <ph name="VALUE"/></translation>
@@ -993,6 +993,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="8219806187375413057"><ph name="CLICK_START"/>Máis información sobre como reducirt o risco en Rainbow Bridge<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> é un servizo independente que che axuda a establecer pontes entre activos noutra redes e utilizar a túa criptografía noutras redes e ecosistemas de DApp. Porén, as pontes entre activos e redes implican algúns riscos.</translation>
 <translation id="8423380132356660250">Abrir a aplicación <ph name="APP_NAME"/></translation>
+<translation id="4450893287417543264">Non mostrar de novo</translation>
 <translation id="168154537623654021">Actualizando o perfil da VPN…</translation>
 <translation id="7457027586454688423">Introduce o teu contrasinal de Carteira de Brave</translation>
 <translation id="4784306439879850873">Ten en conta que Brave non pode verificar que ocorrerá se asinas. Unha sinatura pode autorizar case calquera operación na túa conta ou no teu nome, incluído, pero sen limitarse a, outorgar control total da túa conta e dos activos en criptomoedas ao sitio que está a realizar a solicitude. Asina unicamente se estás seguro de levar a cabo esta acción e confías no sitio que cha solicita.</translation>

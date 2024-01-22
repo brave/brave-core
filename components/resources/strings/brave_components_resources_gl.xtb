@@ -226,8 +226,6 @@
 <translation id="4045581694057451126">8 segundos</translation>
 <translation id="8610523985422563960">1 minuto</translation>
 <translation id="2807328214759298515">Ata</translation>
-<translation id="7483857210736407752">Amosar botóns para dar propinas nos sitios</translation>
-<translation id="8404935570206006581">ConselloConBrave</translation>
 <translation id="3082557070674409251">Premido</translation>
 <translation id="7119308337584989771">Destituído</translation>
 <translation id="6805660603861526473">Visto</translation>
@@ -485,9 +483,9 @@
 <translation id="4047002754575891955">Continuar coa busca fóra da cadea</translation>
 <translation id="531747189990625622">Servizo de nomes de Solana</translation>
 <translation id="1090584614351290462">Activar a compatibilidade do servizo de nomes Ethereum (ENS) en Brave?</translation>
-<translation id="3664848774480475984">Brave usará Syndica para resolver nomes de dominio .sol. Ademais, oculta o teu enderezo IP. Se activas esta opción, Syndica verá que alguén tenta visitar os dominios .sol, pero nada máis. Consulta as <ph name="BEGIN_SYNDICA_TOU_LINK"/>condicións de uso<ph name="END_SYNDICA_TOU_LINK"/> e a <ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>política de privacidade<ph name="END_SYNDICA_PRIVACY_LINK"/> de Syndica.</translation>
+<translation id="1026480261052976838">Brave utilizará un terceiro para resolver os nomes de dominio .sol. Brave oculta o teu enderezo IP. Se o activas, o terceiro verá que alguén está tentando visitar estes dominios .sol pero nada máis. Para obter máis información sobre os terceiros que usamos e as súas políticas de privacidade, consulta nosa <ph name="BEGIN_SNS_WIKI_LINK"/>páxina de axuda<ph name="END_SNS_WIKI_LINK"/>.</translation>
 <translation id="7378412287463452336">Continuar usando servidor de Infura</translation>
-<translation id="2824725477135051831">Continuar usando o servidor de Syndica</translation>
+<translation id="4388873516324656141">Continuar usando un servidor SNS</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="59174027418879706">Activado</translation>
 <translation id="2468755552460246661">Dominio bloqueado</translation>
@@ -653,11 +651,11 @@
 <translation id="39734939514946950">A túa cantidade de recompensas</translation>
 <translation id="717952606991220586">Vaites, algo está mal. Por favor, inténtao de novo máis tarde.</translation>
 <translation id="7210234701206674260">Brave Rewards ten un problema. Por favor inténtao de novo máis tarde.</translation>
-<translation id="579702532610384533">Conectar de novo</translation>
 <translation id="3358400027937159351">Contribuíches con <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Pechaches sesión</translation>
-<translation id="5142174225142816130">Isto pode pasar co obxecto de manter a túa conta segura. Preme o botón de abaixo para conectar de novo.</translation>
+<translation id="3035648636451344428">Isto sucede cando en vez para protexer a túa conta de <ph name="PROVIDER"/>. Mentres teñas pechada sesión, seguirás recibindo pagos, pero non poderás ver o teu saldo nin enviar contribucións desde a túa conta de<ph name="PROVIDER"/>.</translation>
 <translation id="1677961202754619328">Segundo Uphold, a túa conta de Uphold ten algunhas limitacións neste intre. Inicia sesión en Uphold e comproba se tes algún aviso ou requisito de conta pendente. Despois, téntao de novo.</translation>
+<translation id="9029009481113741943">Iniciar sesión de novo</translation>
 <translation id="2429828319207652823">Produciuse un problema ao procesar a túa contribución.</translation>
 <translation id="6390041270339783491">Erro na contribución mensual</translation>
 <translation id="7047578174221019462">Procesáronse as túas contribucións mensuais.</translation>
@@ -755,27 +753,11 @@
 <translation id="5486744676117070166">Non se puido obter o seguinte valor nonce</translation>
 <translation id="6180576227145734714">Cando se especifique, o valor "to" dos datos da transacción debe ser un enderezo válido</translation>
 <translation id="6688162556547723415">O usuario non autorizou o método ou conta solicitados.</translation>
-<translation id="4958950550253325418">Aplicacións de finanzas descentralizadas</translation>
-<translation id="735961408871282410">Mercados NFT</translation>
-<translation id="7740287852186792672">Resultados da busca</translation>
-<translation id="5140238928332244937">Explorar máis finanzas descentralizadas</translation>
-<translation id="6825869531314999449">Explorar máis NFT</translation>
-<translation id="2744185997184360326">Compound</translation>
-<translation id="7587986159645261196">Desbloquea un mundo de aplicacións financeiras de código aberto.</translation>
-<translation id="1614407808582616698">MakerDAO</translation>
-<translation id="8723680648033138705">Fabricante: moeda estable, préstamos e regulación...</translation>
-<translation id="1209155679734532646">Aave</translation>
-<translation id="348141691274391859">Protocolo para gañar en depósitos e tomar activos prestados.</translation>
-<translation id="5074570831310922792">OpenSea</translation>
-<translation id="8246868867733222286">O mercado de NFT máis grande. Compra, vende e descubre artigos dixitais escasos</translation>
-<translation id="8375074247703832257">Rarible</translation>
-<translation id="7826627294887983832">Crear e vender obras de arte dixitais</translation>
 <translation id="1383876407941801731">Buscar</translation>
 <translation id="8767749833522980474">Cripto</translation>
 <translation id="944736176598169208">Recompensas</translation>
 <translation id="6122742277607781713">Cartafol</translation>
 <translation id="7020503656406658141">Prezos</translation>
-<translation id="2805756323405976993">Aplicacións</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Contas</translation>
 <translation id="3567988240819868195">Mercado</translation>
@@ -817,13 +799,11 @@
 <translation id="8530071505111489657">Non hai tokens dispoñibles</translation>
 <translation id="615791330696335475">Buscar token por nome</translation>
 <translation id="5009335307032488349">Buscar NFT por nome ou ID</translation>
-<translation id="6295954645230084874"><ph name="NETWORK"/> non admite compras</translation>
 <translation id="9209024278910716955">Non se admiten compras na rede seleccionada</translation>
 <translation id="4982630604810554641">Buscando dominio...</translation>
 <translation id="5467044307473123584">Brave admite o uso de pasarelas fóra da cadea para resolver dominios .eth.</translation>
 <translation id="4896417414446851895">Parece que introduciches un enderezo ENS. Precisaremos usar un solucionador de terceiros para resolver esta solicitude. É posible que este poida ver o teu enderezo IP e o teu dominio.</translation>
 <translation id="8646078615727397565">Usar dominio ENS</translation>
-<translation id="4171338820961522154"><ph name="NETWORK"/> non admite permuta financeiras</translation>
 <translation id="1191686659164947414">A transacción pode adiantarse</translation>
 <translation id="632241521608275119">Tolerancia ao desprazamento</translation>
 <translation id="4500473291496079954">Caduca dentro de</translation>
@@ -954,7 +934,7 @@
 <translation id="3842236145820483340">ID de CoinGecko</translation>
 <translation id="7642841516562576649">URL da icona</translation>
 <translation id="2144247757675997850">Engadir activo</translation>
-<translation id="2708402071160162126">ADVERTENCIA: Non compartas nunca a túa frase de recuperación. Se algunha persoa dispón da frase, poderá facerse cos teus activos para sempre.</translation>
+<translation id="453788800165937690">ADVERTENCIA: Nunca compartas a túa clave privada. Calquera persoa con ela pode apropiarse dos teus activos para sempre.</translation>
 <translation id="2416098547200943834">NOTA: A clave privada proporciónase coma un ficheiro JSON con codificación hexadecimal que contén información da clave privada e do protocolo. <ph name="LINK_START"/>Máis información<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NOTA: A clave privada debe proporcionarse coma un ficheiro JSON con codificación hexadecimal que contén información da clave privada e do protocolo. <ph name="LINK_START"/>Máis información<ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">Exportar</translation>
@@ -1037,7 +1017,6 @@
 <translation id="1426320910664514906">Límite de gas</translation>
 <translation id="1229774280326250926">Gas premium</translation>
 <translation id="148169246131967347">Tope do gas</translation>
-<translation id="523862956770478816">Permisos do sitio</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> contas conectadas</translation>
 <translation id="4804818685124855865">Desconectar</translation>
 <translation id="4305817255990598646">Cambiar</translation>
@@ -1049,8 +1028,6 @@
 <translation id="8497650996740651467">Contas dispoñibles</translation>
 <translation id="5677928146339483299">Bloqueada</translation>
 <translation id="3890989020011724401">Nova conta</translation>
-<translation id="7257603403519636638">Ver activos da conta</translation>
-<translation id="2092132085082887098">Activos da conta</translation>
 <translation id="4612979983851181941">Utiliza este panel para acceder de forma segura á Web 3 e a todos os teus criptoactivos.</translation>
 <translation id="4460220693591349571">TIPO DE FUNCIÓN</translation>
 <translation id="838933475572692615">DATOS HEXADECIMAIS</translation>
@@ -1100,8 +1077,6 @@
 <translation id="8214232307424031138">Rexistrado</translation>
 <translation id="5916664084637901428">Si</translation>
 <translation id="9065572743819293042">Transaccións recentes</translation>
-<translation id="4235538284468006757">Detalles da transacción</translation>
-<translation id="7488671812634887146">Acelerar</translation>
 <translation id="1702356231547761669">Hash da transacción</translation>
 <translation id="8941851657764077659">Tarifa prioritaria máxima</translation>
 <translation id="8047527352810290817">Editar gas</translation>
@@ -1384,6 +1359,7 @@
 <translation id="8918368616587206671">Seguro!</translation>
 <translation id="574392208103952083">Normal</translation>
 <translation id="8297006494302853456">Débil</translation>
+<translation id="7084181009966710506">Creando a carteira...</translation>
 <translation id="6782556046178425980">Antes de facer unha copia de seguranza da carteira</translation>
 <translation id="7119749028647909394">A frase de recuperación de 12-24 palabras é unha clave privada que podes usar para recuperar o acceso á túa carteira no caso de que perdas algún dispositivo conectado. Gárdaa nun lugar seguro e na orde exacta coa que aparece a continuación.</translation>
 <translation id="3259018319025894691">Brave non ten acceso á túa frase de recuperación secreta. Protéxea e non a compartas nunca con ninguén.</translation>
@@ -1447,7 +1423,6 @@
 <translation id="6885009592653876601">Compra, envía e intercambia máis de 200 criptoactivos</translation>
 <translation id="8716223552348254401">Con navegador nativo e sen extensións perigosas</translation>
 <translation id="4559901986238865734">Compatible con NTF e multicadea</translation>
-<translation id="8280970992918660431">É necesario desbloqueala para crear unha conta</translation>
 <translation id="296101411136980896">Preme para cambiar</translation>
 <translation id="753655478253155745">duodécima</translation>
 <translation id="2679592211386970368">décimo terceira</translation>
@@ -1530,8 +1505,6 @@
 <translation id="2379187373676242615"><ph name="VALUE"/> % máis barato que CoinGecko</translation>
 <translation id="5351867352310722022">Dentro do <ph name="VALUE"/> % de CoinGecko</translation>
 <translation id="7695501918490163821">Un <ph name="VALUE"/> % máis caro que CoinGecko</translation>
-<translation id="6065708195277841442">Conectar carteira</translation>
-<translation id="4029551149873989025">Cambiar rede</translation>
 <translation id="7561262633951061138">O mellor</translation>
 <translation id="8060029310790625334">Centro de Axuda</translation>
 <translation id="3143110700666266545">Esta aplicación usa as seguintes API de terceiros:</translation>
@@ -1639,9 +1612,9 @@
 <translation id="7436846601026966360">Algunhas fontes que che poden gustar. As suxestións son anónimas e adaptadas tan só ao teu dispositivo.</translation>
 <translation id="7950715913905993008">Vaites…</translation>
 <translation id="7158100730468448581">Noticias de Brave non puido recuperar o contido.</translation>
-<translation id="254100925533869330">Non hai contido</translation>
-<translation id="7172792761509429092">Noticias de Brave non ten ningún contido que amosar.</translation>
-<translation id="1771307734839364850">Escolle fontes de contido</translation>
+<translation id="2665462122884195298">Tes o feed baleiro</translation>
+<translation id="8461269982440806387">Sigue os editores e as canles para velos no teu feed.</translation>
+<translation id="1685574186123115251">Engade fontes de contido</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="6261915643960475695">Negocios</translation>
 <translation id="8265589281845759879">Coches</translation>
@@ -1669,16 +1642,27 @@
 <translation id="1297570508541015874">Noticias de Estados Unidos</translation>
 <translation id="1459693405370120464">Tempo</translation>
 <translation id="8366057325711477500">Noticias internacionais</translation>
-<translation id="7625025537587898155">Engadir novo perfil</translation>
+<translation id="6709133671862442373">Noticias</translation>
+<translation id="3553513561058684206">Para ti</translation>
+<translation id="2217013723701900638">Editores</translation>
+<translation id="7751260505918304024">Mostrar todo</translation>
+<translation id="5138227688689900538">Mostrar menos</translation>
+<translation id="1041218419402648959">Ocultar contido de  <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3992393738853907417">Quizais che guste tamén</translation>
+<translation id="7801706796402209986">Este feed está baleiro</translation>
+<translation id="5385187102307010596">Parece que non hai artigos neste feed neste momento. Tenta volver máis tarde ou actualizar o feed.</translation>
+<translation id="667570357480376913">Parece que estás sen conexión</translation>
+<translation id="7587168765698889017">Comproba a túa conexión a Internet e actualiza</translation>
+<translation id="1164949492823956426">Abrir artigos en</translation>
+<translation id="5233638681132016545">Nova pestana</translation>
+<translation id="7948579849190819732">Pestana actual</translation>
+<translation id="7056969230130642253">Xa remataches</translation>
+<translation id="7292242212818928219">Hai novo contido dispoñible. Queres volvelo cargar?</translation>
 <translation id="7481312909269577407">Adiante</translation>
 <translation id="302781076327338683">Volver cargar omitindo a caché</translation>
 <translation id="7211681214230730336">Volver cargar borrando a caché</translation>
-<translation id="4471385409549756595">Nova ventá do modo de incógnito</translation>
 <translation id="1779766957982586368">Pechar ventá</translation>
-<translation id="5233638681132016545">Nova pestana</translation>
 <translation id="5210365745912300556">Pechar pestana</translation>
-<translation id="7998918019931843664">Abre de novo a pestana pechada</translation>
-<translation id="537986674347911358">Mostrar como separador</translation>
 <translation id="2291643155573394834">Seguinte separador</translation>
 <translation id="7748528009589593815">Separador anterior</translation>
 <translation id="3738690686686515962">Seleccionar separador 0</translation>
@@ -1694,33 +1678,14 @@
 <translation id="1137110118182796989">Colocar despois do seguinte separador</translation>
 <translation id="229140155637338506">Colocar antes do separador anterior</translation>
 <translation id="4841735924729216702">Menú da ventá</translation>
-<translation id="1729431344896193035">Activar/desactivar pantalla completa</translation>
 <translation id="3649256019230929621">Minimizar ventá</translation>
 <translation id="906458777597946297">Maximizar ventá</translation>
 <translation id="2082612610620888017">Mostrar todas as ventás</translation>
-<translation id="9148058034647219655">Saír</translation>
-<translation id="3770620323585347665">Nomear ventá</translation>
-<translation id="2154710561487035718">Copiar o URL</translation>
-<translation id="2722817840640790566">Abrir perfil de convidado</translation>
-<translation id="8445059357334030806">Abrir en Brave</translation>
 <translation id="1111843722790053332">Abrir na ventá PWA</translation>
 <translation id="907981618023904259">Configuración da aplicación web</translation>
 <translation id="4138336125382947023">Información da aplicación web</translation>
-<translation id="2743255659506168928">Engadir separador a marcadores</translation>
-<translation id="5078638979202084724">Engadir todos os separadores a marcadores</translation>
 <translation id="2151038323652296625">Enviar o URL da páxina por correo electrónico</translation>
 <translation id="2456347058080729750">Impresión básica</translation>
-<translation id="8715548065732069095">Gardar páxina como</translation>
-<translation id="7724603315864178912">Cortar</translation>
-<translation id="3943857333388298514">Pegar</translation>
-<translation id="5546865291508181392">Buscar</translation>
-<translation id="8151185429379586178">Ferramentas de desenvolvemento</translation>
-<translation id="6005726134413483363">Consola de JavaScript</translation>
-<translation id="634208815998129842">Xestor de tarefas</translation>
-<translation id="7027293873729370359">Inspeccionar dispositivos</translation>
-<translation id="8981254605840444865">Mostrar configuración</translation>
-<translation id="3105917916468784889">Facer captura de pantalla</translation>
-<translation id="1536390784834419204">Traducir páxina</translation>
 <translation id="5973664933364241128">Encamiñar ficheiro multimedia</translation>
 <translation id="1568067597247500137">Silenciar sitio</translation>
 <translation id="6674128381307353306">Silenciar todos os separadores</translation>
@@ -1755,7 +1720,6 @@
 <translation id="4882473678324857464">Enfocar marcadores</translation>
 <translation id="5002047168347153398">Enfocar a ventá emerxente de accesibilidade que está inactiva</translation>
 <translation id="8215784091821791027">Enfocar panel de contidos web</translation>
-<translation id="4952628481830269193">Mostrar barra de marcadores</translation>
 <translation id="8652827551752428289">Mostrar historial</translation>
 <translation id="5030659775136592441">Mostrar xestor de marcadores</translation>
 <translation id="6919203766034706175">Importar configuración</translation>
@@ -1771,15 +1735,12 @@
 <translation id="5835081019037947840">Activar/desactivar eventos de Apple en JavaScript</translation>
 <translation id="5825969867518399495">Instalar PWA</translation>
 <translation id="7888244262238732644">Mostrar páxina de xestión</translation>
-<translation id="1728549374069268714">Pegar e ir</translation>
 <translation id="8114712275882140856">Mostrar os URL completos</translation>
 <translation id="7294510764127771956">Exploración con cursor: Activar/desactivar</translation>
 <translation id="4186334830839439230">Mostrar configuración de rendemento</translation>
 <translation id="1094277301241124207">Mostrar o panel lateral de marcadores</translation>
-<translation id="3277827709560246894">Barra de marcadores: Abrilos todos</translation>
 <translation id="8283515796576236471">Barra de marcadores: Abrilos todos nunha nova ventá</translation>
 <translation id="5271773791943587595">Barra de marcadores: Abrilos todos nunha ventá de incógnito</translation>
-<translation id="3945518311492169884">Barra de marcadores: Abrir no modo de incógnito</translation>
 <translation id="2748975346534113286">Barra de marcadores: Abrilos todos nun novo grupo de separadores</translation>
 <translation id="5829341068610264408">Barra de marcadores: Cambiar o nome do cartafol</translation>
 <translation id="5118326702207363004">Barra de marcadores: Editar</translation>
@@ -1788,9 +1749,7 @@
 <translation id="7629040247832187331">Barra de marcadores: Refacer</translation>
 <translation id="6950544855362391649">Barra de marcadores: Engadir un novo marcador</translation>
 <translation id="6528836090624940616">Barra de marcadores: Novo cartafol</translation>
-<translation id="5469954281417596308">Xestor de marcadores</translation>
 <translation id="7582036714669095991">Barra de marcadores: Mostrar sempre</translation>
-<translation id="2530696803812164674">Barra de marcadores: Mostrar atallo de aplicacións</translation>
 <translation id="8446467844676974241">Barra de marcadores: Mostrar os marcadores xestionados</translation>
 <translation id="7371391600340880977">Barra de marcadores: Engadir á barra de marcadores</translation>
 <translation id="8881741588924189283">Barra de marcadores: Eliminar da barra de marcadores</translation>
@@ -1881,23 +1840,19 @@
 <translation id="3055739528128372229">Non se garante a precisión das respostas e estas poden incluír información incorrecta, enganosa ou falsa. Non envíe información confidencial ou privada e teña coidado coas respostas relacionadas coa saúde, as finanzas, a seguridade persoal ou similares.</translation>
 <translation id="7297681068636289435">Leo non recompila identificadores, como o enderezo IP, que poidan estar ligados a vostede. O modelo de IA e os fornecedores de modelos de terceiros non reteñen datos persoais.</translation>
 <translation id="7839853125981164613">Introduce un aviso aquí</translation>
-<translation id="1171287413830401223">Quere activar as preguntas suxeridas?</translation>
+<translation id="334325425115922031">Seguimentos suxeridos</translation>
+<translation id="4524675003624341892">Suxerir preguntas…</translation>
 <translation id="4567071417854988869">Resumir este vídeo</translation>
 <translation id="7921782882718083488">Resumir esta páxina</translation>
-<translation id="5431287032059464898">Leo pode suxerir automaticamente preguntas en función do contido do sitio. Para iso, o contido das páxina polas que navegue enviarase a Leo para xerar estas suxestións mentres Leo estea aberto. Pode desactivalo máis tarde en Configuración.</translation>
-<translation id="3435896845095436175">Activar</translation>
-<translation id="7473891865547856676">Non, grazas</translation>
 <translation id="7932221068776853847">Desconéctate para deixar de enviar o contido desta páxina a Leo e inicia unha nova conversa</translation>
 <translation id="1167803637855350748">Produciuse un problema de rede ao conectarse a Leo. Comproba a conexión e téntao de novo.</translation>
 <translation id="5095201428204952524">Leo está moi ocupado neste momento. Inténtao de novo dentro duns minutos.</translation>
 <translation id="7144878232160441200">Reintentar</translation>
-<translation id="2505565639170795978">Ola, son Leo! Son un asistente de IA totalmente aloxado por Brave. Dispoño de tecnoloxía de Llama 13B, un modelo creado por Meta para ofrecer un bo rendemento aplicable a moitos casos de uso.</translation>
-<translation id="7202619923031933110">Ola, son Leo! Son un asistente de IA totalmente aloxado por Brave. Dispoño de tecnoloxía de Llama 70B, un modelo creado por Meta para manexar tarefas máis avanzadas que 13B.</translation>
+<translation id="7202619923031933110">Ola, son Leo! Son un asistente de IA totalmente aloxado por Brave. Conto con tecnoloxía de Mixtral 7B, un modelo creado por Mistral AI para xestionar tarefas avanzadas.</translation>
 <translation id="2489317965865266353">Ola, son Leo! Teño proxy de Brave e dispoño de tecnoloxía de Claude Instant, un modelo creado por Anthropic para realizar tarefas de conversación e de procesamento de texto.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> de <ph name="COMPANY_NAME"/></translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="2961040541145689181">Novo chat</translation>
-<translation id="97095589689466044">Preguntas suxeridas</translation>
 <translation id="7557539689487606886">Subscribirse á versión Premium</translation>
 <translation id="1691256669639196606">Xestionar subscrición</translation>
 <translation id="3037594989275592390">Modelos de idioma</translation>
@@ -1907,7 +1862,6 @@
 <translation id="1239767708151339890">Acceso a LLM líderes no sector</translation>
 <translation id="8021579987620496265">Límites de velocidade máis altos</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/>USD $ /mes</translation>
-<translation id="9221988663340523352">Cambiar ao modelo predeterminado</translation>
 <translation id="377376641316998425">Desbloquear todo o potencial de Leo</translation>
 <translation id="8363148882096737034">Anthropic Claude + máis novidades proximamente</translation>
 <translation id="886527905046308697">Acceso prioritario e límites de resposta aumentados</translation>
@@ -1919,7 +1873,7 @@
 <translation id="3521125531016408657">Gústame a resposta</translation>
 <translation id="8202517001427388906">Non me gusta a resposta</translation>
 <translation id="1379399209929302811">Enviar comentarios sobre a IA de Brave</translation>
-<translation id="2415950536410763575">Seleccione o tema dos seus comentarios</translation>
+<translation id="8442999546461118871">Selecciona o tema dos comentarios</translation>
 <translation id="9018766373792005944">¿De que tratan os seus comentarios?</translation>
 <translation id="7355096922131918313">Forneza comentarios aquí</translation>
 <translation id="3027575440738035995">Leo Premium fornece acceso a un conxunto ampliado de modelos de idioma para obter respostas con aínda máis matices. <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
@@ -1934,10 +1888,19 @@
 <translation id="7494736170250048402">Enviar mensaxe a Leo</translation>
 <translation id="4110772752544684964">A páxina é demasiado longa para Leo. É posible que falte contexto na conversa.</translation>
 <translation id="4370698775470316661">Esta conversa é demasiado longa e non pode continuar. Pode haber outros modelos dispoñibles cos que Leo é capaz de manter a precisión en conversas máis longas.</translation>
-<translation id="6291843235651817590">Chat xeral</translation>
 <translation id="8193130769524604031">Tarefas de chat avanzadas</translation>
 <translation id="3185367320601718531">Xeración de conversas e texto</translation>
 <translation id="3965507912994218570">Configuración de Leo</translation>
+<translation id="1037324977127422019">Ola, son Leo!</translation>
+<translation id="8930348081963284873">Un asistente intelixente dotado de intelixencia artificial, integrado directamente en Brave.</translation>
+<translation id="3528849152231418380">Necesitas axuda cun sitio web?</translation>
+<translation id="1558192229187362674">Podo axudarche a resumir artigos, ampliar o contido dun sitio e moito máis.</translation>
+<translation id="861953757568623294">Podo axudarche a resumir artigos, ampliar o contido dun sitio e moito máis. Non sabes por onde comezar? Proba isto:</translation>
+<translation id="5642775487085641191">Tan só queres chatear?</translation>
+<translation id="8857222718794549840">Preguntame algo! Podemos falar de calquera tema que queiras. Sempre estou aprendendo e mellorando para ofrecer mellores respostas.</translation>
+<translation id="989329677470075843">Acordo de privacidade</translation>
+<translation id="1173570303649278801">Usar o contexto da páxina para responder</translation>
+<translation id="8599503173207256429">Actívao para preguntar sobre esta páxina. O seu contido enviarase a Brave Leo xunto coas túas mensaxes.</translation>
 <translation id="6303294677342628402">Escudos</translation>
 <translation id="8458987127502506209">Activar Escudos de Brave</translation>
 <translation id="7509914170164691086">Os escudos están activos <ph name="LINK_BEFORE"/>para<ph name="LINK_AFTER"/></translation>
