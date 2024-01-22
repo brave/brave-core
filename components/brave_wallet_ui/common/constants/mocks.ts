@@ -6,17 +6,6 @@
 // types
 import {
   BraveWallet,
-  SafeBlowfishEvmResponse,
-  SafeBlowfishSolanaResponse,
-  SafeBlowfishWarning,
-  SafeERC1155TransferEvent,
-  SafeERC20ApprovalEvent,
-  SafeERC20TransferEvent,
-  SafeERC721ApprovalEvent,
-  SafeERC721ApprovalForAllEvent,
-  SafeERC721TransferEvent,
-  SafeNativeTransferEvent,
-  SafeSolanaStakeChangeEvent,
   SerializableTransactionInfo,
   SpotPriceRegistry
 } from '../../constants/types'
@@ -44,6 +33,7 @@ import {
   mockEthToken,
   mockMoonCatNFT,
   mockSplBasicAttentionTokenId,
+  mockSplBat,
   mockSplNft,
   mockSplNftId,
   mockSplUSDCoinId,
@@ -830,7 +820,7 @@ const goerliLinkTransferData: BraveWallet.BlowfishERC20TransferData = {
   asset: BlowfishEVMAssets.goerliLink
 }
 
-const mockedSimulationWarnings: SafeBlowfishWarning[] = [
+const mockedSimulationWarnings: BraveWallet.BlowfishWarning[] = [
   {
     kind: BraveWallet.BlowfishWarningKind.kApprovalToEOA,
     message: 'APPROVAL_TO_E_O_A',
@@ -838,12 +828,24 @@ const mockedSimulationWarnings: SafeBlowfishWarning[] = [
   }
 ]
 
+const emptyEvmRawInfo: BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion = {
+  erc20TransferData: undefined,
+  erc1155ApprovalForAllData: undefined,
+  erc1155TransferData: undefined,
+  erc20ApprovalData: undefined,
+  erc721ApprovalData: undefined,
+  erc721ApprovalForAllData: undefined,
+  erc721TransferData: undefined,
+  nativeAssetTransferData: undefined
+}
+
 // EVM Events
-export const mockedReceiveDaiEvent: SafeERC20TransferEvent = {
+export const mockedReceiveDaiEvent: BraveWallet.BlowfishEVMStateChange = {
   humanReadableDiff: 'Receive 1530.81307 DAI',
   rawInfo: {
     kind: BraveWallet.BlowfishEVMRawInfoKind.kErc20Transfer,
     data: {
+      ...emptyEvmRawInfo,
       erc20TransferData: {
         amount: {
           after: '557039306766411381864245',
@@ -859,11 +861,12 @@ export const mockedReceiveDaiEvent: SafeERC20TransferEvent = {
   }
 }
 
-export const mockSendEthEvent: SafeNativeTransferEvent = {
+export const mockSendEthEvent: BraveWallet.BlowfishEVMStateChange = {
   humanReadableDiff: 'Send 1 ETH',
   rawInfo: {
     kind: BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer,
     data: {
+      ...emptyEvmRawInfo,
       nativeAssetTransferData: {
         amount: {
           after: '1182957389356504134754',
@@ -879,11 +882,12 @@ export const mockSendEthEvent: SafeNativeTransferEvent = {
   }
 }
 
-export const mockApproveUsdtEvent: SafeERC20ApprovalEvent = {
+export const mockApproveUsdtEvent: BraveWallet.BlowfishEVMStateChange = {
   humanReadableDiff: 'Approve to transfer up to 1000 USDT',
   rawInfo: {
     kind: BraveWallet.BlowfishEVMRawInfoKind.kErc20Approval,
     data: {
+      ...emptyEvmRawInfo,
       erc20ApprovalData: {
         amount: {
           after: '1000000000',
@@ -903,10 +907,11 @@ export const mockApproveUsdtEvent: SafeERC20ApprovalEvent = {
   }
 }
 
-export const mockReceiveNftEvent: SafeERC721TransferEvent = {
+export const mockReceiveNftEvent: BraveWallet.BlowfishEVMStateChange = {
   humanReadableDiff: 'Receive PudgyPenguins #7238',
   rawInfo: {
     data: {
+      ...emptyEvmRawInfo,
       erc721TransferData: {
         amount: {
           after: '1',
@@ -928,11 +933,13 @@ export const mockReceiveNftEvent: SafeERC721TransferEvent = {
   }
 }
 
-export const mockApproveBoredApeNftTransferEvent: SafeERC721ApprovalEvent = {
+export const mockApproveBoredApeNftTransferEvent: //
+BraveWallet.BlowfishEVMStateChange = {
   humanReadableDiff: 'Approve to transfer BoredApeYachtClub',
   rawInfo: {
     kind: BraveWallet.BlowfishEVMRawInfoKind.kErc721Approval,
     data: {
+      ...emptyEvmRawInfo,
       erc721ApprovalData: {
         amount: {
           after: '1',
@@ -957,11 +964,13 @@ export const mockApproveBoredApeNftTransferEvent: SafeERC721ApprovalEvent = {
   }
 }
 
-export const mockApproveAllBoredApeNFTsEvent: SafeERC721ApprovalForAllEvent = {
+export const mockApproveAllBoredApeNFTsEvent: //
+BraveWallet.BlowfishEVMStateChange = {
   humanReadableDiff: 'Approve to transfer all your BoredApeYachtClub',
   rawInfo: {
     kind: BraveWallet.BlowfishEVMRawInfoKind.kErc721ApprovalForAll,
     data: {
+      ...emptyEvmRawInfo,
       erc721ApprovalForAllData: {
         amount: {
           after: '1157920892373161954235709850086879078532699846656405640394',
@@ -989,141 +998,145 @@ export const mockApproveAllBoredApeNFTsEvent: SafeERC721ApprovalForAllEvent = {
  * - Send 1 NFT
  * - Send 1 ETH
  */
-export const mockEvmSimulatedResponse: SafeBlowfishEvmResponse = {
+export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kNone,
   warnings: mockedSimulationWarnings,
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [
-      {
-        humanReadableDiff: 'Receive 14.4539 LINK',
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kErc20Transfer,
-          data: {
-            erc20TransferData: goerliLinkTransferData
-          }
+  error: undefined,
+  expectedStateChanges: [
+    {
+      humanReadableDiff: 'Receive 14.4539 LINK',
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kErc20Transfer,
+        data: {
+          ...emptyEvmRawInfo,
+          erc20TransferData: goerliLinkTransferData
         }
-      },
-      {
-        humanReadableDiff: 'Approve 10 LINK',
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kErc20Approval,
-          data: {
-            erc20ApprovalData: {
-              amount: {
-                after: '10000000000000000000',
-                before: '1'
-              },
-              asset: BlowfishEVMAssets.goerliLink,
-              owner: {
-                address: mockAccount.address,
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              },
-              spender: {
-                address: mockAccount.address,
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              }
-            }
-          }
-        }
-      },
-      {
-        humanReadableDiff: `Send ${
-          BlowfishEVMAssets.pudgyPenguins.name //
-        } #${BlowfishEVMAssets.pudgyPenguins.tokenId}`,
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kErc721Transfer,
-          data: {
-            erc721TransferData: {
-              amount: {
-                after: '0',
-                before: '1'
-              },
-              counterparty: {
-                address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              },
-              metadata: {
-                rawImageUrl: mockNFTMetadata[0].imageURL || ''
-              },
-              asset: BlowfishEVMAssets.pudgyPenguins
-            }
-          }
-        }
-      },
-      {
-        humanReadableDiff: `Send ${
-          BlowfishEVMAssets.bayc.symbol //
-        } #${BlowfishEVMAssets.bayc.tokenId}`,
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kErc1155Transfer,
-          data: {
-            erc1155TransferData: {
-              amount: {
-                after: '0',
-                before: '1'
-              },
-              counterparty: {
-                address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              },
-              metadata: {
-                rawImageUrl: mockNFTMetadata[0].imageURL || ''
-              },
-              asset: BlowfishEVMAssets.bayc
-            }
-          }
-        }
-      },
-      {
-        humanReadableDiff: 'Send 1 ETH',
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer,
-          data: {
-            nativeAssetTransferData: {
-              amount: {
-                after: '0',
-                before: '1000000000000000000'
-              },
-              asset: BlowfishEVMAssets.mainnetETH,
-              counterparty: {
-                address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              }
-            }
-          }
-        }
-      },
-      {
-        humanReadableDiff: `Approve ${
-          BlowfishEVMAssets.moonCat.name //
-        } #${BlowfishEVMAssets.moonCat.tokenId}`,
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kErc721Approval,
-          data: {
-            erc721ApprovalData: {
-              amount: {
-                after: '0',
-                before: '1'
-              },
-              metadata: {
-                rawImageUrl: mockMoonCatNFT.logo
-              },
-              owner: {
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount,
-                address: mockAccount.address
-              },
-              spender: {
-                address: mockAccount.address,
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              },
-              asset: BlowfishEVMAssets.moonCat
+      }
+    },
+    {
+      humanReadableDiff: 'Approve 10 LINK',
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kErc20Approval,
+        data: {
+          ...emptyEvmRawInfo,
+          erc20ApprovalData: {
+            amount: {
+              after: '10000000000000000000',
+              before: '1'
+            },
+            asset: BlowfishEVMAssets.goerliLink,
+            owner: {
+              address: mockAccount.address,
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            },
+            spender: {
+              address: mockAccount.address,
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
             }
           }
         }
       }
-    ]
-  }
+    },
+    {
+      humanReadableDiff: `Send ${
+        BlowfishEVMAssets.pudgyPenguins.name //
+      } #${BlowfishEVMAssets.pudgyPenguins.tokenId}`,
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kErc721Transfer,
+        data: {
+          ...emptyEvmRawInfo,
+          erc721TransferData: {
+            amount: {
+              after: '0',
+              before: '1'
+            },
+            counterparty: {
+              address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            },
+            metadata: {
+              rawImageUrl: mockNFTMetadata[0].imageURL || ''
+            },
+            asset: BlowfishEVMAssets.pudgyPenguins
+          }
+        }
+      }
+    },
+    {
+      humanReadableDiff: `Send ${
+        BlowfishEVMAssets.bayc.symbol //
+      } #${BlowfishEVMAssets.bayc.tokenId}`,
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kErc1155Transfer,
+        data: {
+          ...emptyEvmRawInfo,
+          erc1155TransferData: {
+            amount: {
+              after: '0',
+              before: '1'
+            },
+            counterparty: {
+              address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            },
+            metadata: {
+              rawImageUrl: mockNFTMetadata[0].imageURL || ''
+            },
+            asset: BlowfishEVMAssets.bayc
+          }
+        }
+      }
+    },
+    {
+      humanReadableDiff: 'Send 1 ETH',
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer,
+        data: {
+          ...emptyEvmRawInfo,
+          nativeAssetTransferData: {
+            amount: {
+              after: '0',
+              before: '1000000000000000000'
+            },
+            asset: BlowfishEVMAssets.mainnetETH,
+            counterparty: {
+              address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            }
+          }
+        }
+      }
+    },
+    {
+      humanReadableDiff: `Approve ${
+        BlowfishEVMAssets.moonCat.name //
+      } #${BlowfishEVMAssets.moonCat.tokenId}`,
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kErc721Approval,
+        data: {
+          ...emptyEvmRawInfo,
+          erc721ApprovalData: {
+            amount: {
+              after: '0',
+              before: '1'
+            },
+            metadata: {
+              rawImageUrl: mockMoonCatNFT.logo
+            },
+            owner: {
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount,
+              address: mockAccount.address
+            },
+            spender: {
+              address: mockAccount.address,
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            },
+            asset: BlowfishEVMAssets.moonCat
+          }
+        }
+      }
+    }
+  ]
 }
 
 /**
@@ -1131,81 +1144,75 @@ export const mockEvmSimulatedResponse: SafeBlowfishEvmResponse = {
  * - Send 1 ETH
  * - Receive 1530.81307 DAI
  */
-export const mockSimulatedSwapETHForDAI: SafeBlowfishEvmResponse = {
+export const mockSimulatedSwapETHForDAI: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kNone,
   warnings: [],
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [mockedReceiveDaiEvent, mockSendEthEvent]
-  }
+  error: undefined,
+  expectedStateChanges: [mockedReceiveDaiEvent, mockSendEthEvent]
 }
 
 /**
  * ERC20 Approval
  * - Approve to transfer up to 1000 USDT
  */
-export const mockEvmSimulatedERC20Approval: SafeBlowfishEvmResponse = {
-  action: BraveWallet.BlowfishSuggestedAction.kNone,
-  warnings: [],
-  simulationResults: {
+export const mockEvmSimulatedERC20Approval: BraveWallet.EVMSimulationResponse =
+  {
+    action: BraveWallet.BlowfishSuggestedAction.kNone,
+    warnings: [],
     error: undefined,
     expectedStateChanges: [mockApproveUsdtEvent]
   }
-}
 
 /**
  * Buy An ERC721 NFT With ETH (Simulated)
  * - Receive PudgyPenguins #7238
  * - Send 3.181 ETH
  */
-export const mockSimulatedBuyNFTWithETH: SafeBlowfishEvmResponse = {
+export const mockSimulatedBuyNFTWithETH: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kNone,
   warnings: [],
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [
-      mockReceiveNftEvent,
-      {
-        humanReadableDiff: 'Send 3.181 ETH',
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer,
-          data: {
-            nativeAssetTransferData: {
-              amount: {
-                after: '998426264937289938488',
-                before: '1001607264937289938488'
-              },
-              counterparty: {
-                address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              },
-              asset: BlowfishEVMAssets.mainnetETH
-            }
+  error: undefined,
+  expectedStateChanges: [
+    mockReceiveNftEvent,
+    {
+      humanReadableDiff: 'Send 3.181 ETH',
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer,
+        data: {
+          ...emptyEvmRawInfo,
+          nativeAssetTransferData: {
+            amount: {
+              after: '998426264937289938488',
+              before: '1001607264937289938488'
+            },
+            counterparty: {
+              address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            },
+            asset: BlowfishEVMAssets.mainnetETH
           }
         }
       }
-    ]
-  }
+    }
+  ]
 }
 
 /**
  * ERC721 Approve (Simulated)
  * Approve to transfer BoredApeYachtClub
  */
-export const mockSimulatedERC721Approve: SafeBlowfishEvmResponse = {
+export const mockSimulatedERC721Approve: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kNone,
   warnings: [],
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [mockApproveBoredApeNftTransferEvent]
-  }
+  error: undefined,
+  expectedStateChanges: [mockApproveBoredApeNftTransferEvent]
 }
 
 /**
  * Simulated ERC721 Approve For All
  * - Approve to transfer all your BoredApeYachtClub
  */
-export const mockERC721ApproveForAllSim: SafeBlowfishEvmResponse = {
+export const mockERC721ApproveForAllSim: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kWarn,
   warnings: [
     {
@@ -1216,17 +1223,17 @@ export const mockERC721ApproveForAllSim: SafeBlowfishEvmResponse = {
       severity: BraveWallet.BlowfishWarningSeverity.kWarning
     }
   ],
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [mockApproveAllBoredApeNFTsEvent]
-  }
+  error: undefined,
+  expectedStateChanges: [mockApproveAllBoredApeNFTsEvent]
 }
 
-export const mockReceiveMultiStandardTokenEvent: SafeERC1155TransferEvent = {
+export const mockReceiveMultiStandardTokenEvent: //
+BraveWallet.BlowfishEVMStateChange = {
   humanReadableDiff: 'Receive Corgi',
   rawInfo: {
     kind: BraveWallet.BlowfishEVMRawInfoKind.kErc1155Transfer,
     data: {
+      ...emptyEvmRawInfo,
       erc1155TransferData: {
         amount: {
           'after': '1',
@@ -1241,7 +1248,7 @@ export const mockReceiveMultiStandardTokenEvent: SafeERC1155TransferEvent = {
             'https://cdn.simplehash.com/' +
             'assets/4bedd702e7ea8c4a9d04d83302138fa5b63d0cca0f06df9b87bdb09cff253b88.png'
         },
-        asset: BlowfishEVMAssets.corgi,
+        asset: BlowfishEVMAssets.corgi
       }
     }
   }
@@ -1252,41 +1259,40 @@ export const mockReceiveMultiStandardTokenEvent: SafeERC1155TransferEvent = {
  * - Send 0.033 ETH
  * - Receive Corgi
  */
-export const mockSimulatedBuyERC1155Token: SafeBlowfishEvmResponse = {
+export const mockSimulatedBuyERC1155Token: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kNone,
   warnings: [],
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [
-      {
-        humanReadableDiff: 'Send 0.033 ETH',
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer,
-          data: {
-            nativeAssetTransferData: {
-              amount: {
-                after: '71057321770366572',
-                before: '104057321770366572'
-              },
-              counterparty: {
-                address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              },
-              asset: BlowfishEVMAssets.mainnetETH
-            }
+  error: undefined,
+  expectedStateChanges: [
+    {
+      humanReadableDiff: 'Send 0.033 ETH',
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer,
+        data: {
+          ...emptyEvmRawInfo,
+          nativeAssetTransferData: {
+            amount: {
+              after: '71057321770366572',
+              before: '104057321770366572'
+            },
+            counterparty: {
+              address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            },
+            asset: BlowfishEVMAssets.mainnetETH
           }
         }
-      },
-      mockReceiveMultiStandardTokenEvent
-    ]
-  }
+      }
+    },
+    mockReceiveMultiStandardTokenEvent
+  ]
 }
 
 /**
  * ERC1155 Approve For All (Simulated)
  * - Approve to transfer all your Sandbox's ASSETs
  */
-export const mockEvmERC1155ApproveForAll: SafeBlowfishEvmResponse = {
+export const mockEvmERC1155ApproveForAll: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kNone,
   warnings: [
     {
@@ -1297,35 +1303,34 @@ export const mockEvmERC1155ApproveForAll: SafeBlowfishEvmResponse = {
       severity: BraveWallet.BlowfishWarningSeverity.kWarning
     }
   ],
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [
-      {
-        humanReadableDiff: `Approve to transfer all your Corgi's ASSETs`,
-        rawInfo: {
-          kind: BraveWallet.BlowfishEVMRawInfoKind.kErc1155ApprovalForAll,
-          data: {
-            erc1155ApprovalForAllData: {
-              amount: {
-                after:
-                  '1157920892373161954235709850086879078532699846656405640394',
-                before: '0'
-              },
-              owner: {
-                address: '0xed2ab4948ba6a909a7751dec4f34f303eb8c7236',
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              },
-              spender: {
-                address: '0x00000000006c3852cbef3e08e8df289169ede581',
-                kind: BraveWallet.BlowfishEVMAddressKind.kAccount
-              },
-              asset: BlowfishEVMAssets.corgi
-            }
+  error: undefined,
+  expectedStateChanges: [
+    {
+      humanReadableDiff: `Approve to transfer all your Corgi's ASSETs`,
+      rawInfo: {
+        kind: BraveWallet.BlowfishEVMRawInfoKind.kErc1155ApprovalForAll,
+        data: {
+          ...emptyEvmRawInfo,
+          erc1155ApprovalForAllData: {
+            amount: {
+              after:
+                '1157920892373161954235709850086879078532699846656405640394',
+              before: '0'
+            },
+            owner: {
+              address: '0xed2ab4948ba6a909a7751dec4f34f303eb8c7236',
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            },
+            spender: {
+              address: '0x00000000006c3852cbef3e08e8df289169ede581',
+              kind: BraveWallet.BlowfishEVMAddressKind.kAccount
+            },
+            asset: BlowfishEVMAssets.corgi
           }
         }
       }
-    ]
-  }
+    }
+  ]
 }
 
 //
@@ -1337,39 +1342,75 @@ const BlowfishSolanaAssets = {
     symbol: 'SOL',
     mint: '',
     decimals: 9,
-    imageUrl: 'https://d1ts37qlq4uz4s.cloudfront.net/solana__solana%3A%3Asolana__solana%3A%3Asolana%3A%3Amainnet__So11111111111111111111111111111111111111112.png',
+    imageUrl:
+      'https://d1ts37qlq4uz4s.cloudfront.net/solana__solana%3A%3Asolana__solana%3A%3Asolana%3A%3Amainnet__So11111111111111111111111111111111111111112.png',
     price: {
       source: BraveWallet.BlowfishAssetPriceSource.kCoingecko,
       lastUpdatedAt: new Date().toUTCString(),
       dollarValuePerToken: '98.54'
     }
   } as BraveWallet.BlowfishSolanaAsset,
+  bat: {
+    decimals: mockSplBat.decimals,
+    metaplexTokenStandard:
+      BraveWallet.BlowfishMetaplexTokenStandardKind.kFungible,
+    mint: mockSplBat.contractAddress,
+    name: mockSplBat.name,
+    supply: BigInt(1000000000000),
+    symbol: mockSplBat.symbol,
+    imageUrl: mockSplBat.logo,
+    price: {
+      source: BraveWallet.BlowfishAssetPriceSource.kCoingecko,
+      lastUpdatedAt: new Date().toUTCString(),
+      dollarValuePerToken: '0.54'
+    }
+  } as BraveWallet.BlowfishSolanaAsset,
+  degenNft: {
+    price: mockBlowfishAssetPrice,
+    decimals: mockSplNft.decimals,
+    diff: {
+      digits: BigInt(1),
+      sign: BraveWallet.BlowfishDiffSign.kMinus
+    },
+    imageUrl: mockSplNft.logo,
+    metaplexTokenStandard:
+      BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungible,
+    mint: mockSplNft.tokenId,
+    name: mockSplNft.name,
+    supply: BigInt(1),
+    symbol: mockSplNft.symbol
+  } as BraveWallet.BlowfishSolanaAsset
 }
 
-export const mockReceiveSolSimulation: SafeBlowfishSolanaResponse = {
+const emptySvmRawInfo: BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion = {
+  solStakeAuthorityChangeData: undefined,
+  solTransferData: undefined,
+  splApprovalData: undefined,
+  splTransferData: undefined
+}
+
+export const mockReceiveSolSimulation: BraveWallet.SolanaSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kBlock,
-  simulationResults: {
-    error: undefined,
-    // isRecentBlockhashExpired: false,
-    expectedStateChanges: [
-      {
-        humanReadableDiff: 'Receive 0.05657 SOL',
-        suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
-        rawInfo: {
-          kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer,
-          data: {
-            solTransferData: {
-              asset: BlowfishSolanaAssets.mainnetSol,
-              diff: {
-                digits: BigInt(500000),
-                sign: BraveWallet.BlowfishDiffSign.kPlus
-              }
+  error: undefined,
+  expectedStateChanges: [
+    {
+      humanReadableDiff: 'Receive 0.05657 SOL',
+      suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
+      rawInfo: {
+        kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer,
+        data: {
+          ...emptySvmRawInfo,
+          solTransferData: {
+            asset: BlowfishSolanaAssets.mainnetSol,
+            diff: {
+              digits: BigInt(500000),
+              sign: BraveWallet.BlowfishDiffSign.kPlus
             }
           }
         }
       }
-    ]
-  },
+    }
+  ],
   warnings: [
     {
       kind: BraveWallet.BlowfishWarningKind.kApprovalToEOA,
@@ -1379,35 +1420,81 @@ export const mockReceiveSolSimulation: SafeBlowfishSolanaResponse = {
   ]
 }
 
-export const mockSolStakingChangeEvent: SafeSolanaStakeChangeEvent = {
-  humanReadableDiff: 'Re-stake 0.05657 SOL',
-  suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
+export const mockNoChangeSolSimulation: BraveWallet.SolanaSimulationResponse = {
+  action: BraveWallet.BlowfishSuggestedAction.kBlock,
+  error: undefined,
+  expectedStateChanges: [],
+  warnings: []
+}
+
+export const mockSolStakingChangeEvent: BraveWallet.BlowfishSolanaStateChange =
+  {
+    humanReadableDiff: 'Re-stake 0.05657 SOL',
+    suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
+    rawInfo: {
+      kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolStakeAuthorityChange,
+      data: {
+        ...emptySvmRawInfo,
+        solStakeAuthorityChangeData: {
+          currentAuthorities: {
+            staker: mockSolanaAccount.address,
+            withdrawer: mockSolanaAccount.address
+          },
+          futureAuthorities: {
+            staker: mockSplNft.contractAddress,
+            withdrawer: mockSplNft.contractAddress
+          },
+          asset: BlowfishSolanaAssets.mainnetSol,
+          solStaked: BigInt(5657),
+          stakeAccount: mockSolanaAccountInfo.address
+        }
+      }
+    }
+  }
+
+export const mockSendSplTokenEvent: BraveWallet.BlowfishSolanaStateChange = {
+  humanReadableDiff: 'Send SPL BAT',
+  suggestedColor: BraveWallet.BlowfishSuggestedColor.kDebit,
   rawInfo: {
-    kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolStakeAuthorityChange,
+    kind: BraveWallet.BlowfishSolanaRawInfoKind.kSplTransfer,
     data: {
-      solStakeAuthorityChangeData: {
-        currentAuthorities: {
-          staker: mockSolanaAccount.address,
-          withdrawer: mockSolanaAccount.address
+      ...emptySvmRawInfo,
+      splTransferData: {
+        asset: BlowfishSolanaAssets.bat,
+        diff: {
+          digits: BigInt(1000000),
+          sign: BraveWallet.BlowfishDiffSign.kMinus
         },
-        futureAuthorities: {
-          staker: mockSplNft.contractAddress,
-          withdrawer: mockSplNft.contractAddress
-        },
-        asset: BlowfishSolanaAssets.mainnetSol,
-        solStaked: BigInt(5657),
-        stakeAccount: mockSolanaAccountInfo.address
+        counterparty: 'sConterpartyAddress'
       }
     }
   }
 }
 
-export const mockSolStakingChangeSimulation: SafeBlowfishSolanaResponse = {
+export const mockSendSolNftEvent: BraveWallet.BlowfishSolanaStateChange = {
+  humanReadableDiff: 'Send Brave NFT',
+  suggestedColor: BraveWallet.BlowfishSuggestedColor.kDebit,
+  rawInfo: {
+    kind: BraveWallet.BlowfishSolanaRawInfoKind.kSplTransfer,
+    data: {
+      ...emptySvmRawInfo,
+      splTransferData: {
+        asset: BlowfishSolanaAssets.degenNft,
+        counterparty: 'sCounterpartyAddress',
+        diff: {
+          digits: BigInt(1),
+          sign: BraveWallet.BlowfishDiffSign.kMinus
+        }
+      }
+    }
+  }
+}
+
+export const mockSolStakingChangeSimulation: //
+BraveWallet.SolanaSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kBlock,
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [mockSolStakingChangeEvent]
-  },
+  error: undefined,
+  expectedStateChanges: [mockSolStakingChangeEvent],
   warnings: []
 }
 
