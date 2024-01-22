@@ -373,10 +373,10 @@
       </else>
     </if>
     <message name="IDS_PDF_OCR_IN_PROGRESS" is_accessibility_with_no_ui="true" desc="Notification to inform the user that OCR is in progress.">
-      This PDF is inaccessible. Extracting text, powered by Brave AI
+      This PDF is inaccessible. Extracting text, powered by Google AI
     </message>
     <message name="IDS_PDF_OCR_COMPLETED" is_accessibility_with_no_ui="true" desc="Notification to inform the user that OCR is completed.">
-      This PDF is inaccessible. Text extracted, powered by Brave AI
+      This PDF is inaccessible. Text extracted, powered by Google AI
     </message>
     <message name="IDS_PDF_OCR_NO_RESULT" is_accessibility_with_no_ui="true" desc="Notification to inform the user that no text was converted by OCR from images.">
       This PDF is inaccessible. No text extracted

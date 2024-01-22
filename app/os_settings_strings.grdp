@@ -635,7 +635,7 @@
     Orca
   </message>
   <message name="IDS_OS_SETTINGS_SUGGESTIONS_ORCA_DESCRIPTION" desc="The description for orca" translateable="false">
-    Create a draft or refine existing work, powered by Brave AI.
+    Create a draft or refine existing work, powered by Google AI.
   </message>
   <message name="IDS_SETTINGS_SUGGESTIONS_EMOJI_SUGGESTION_TITLE" desc="The label for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
     Emoji suggestions
