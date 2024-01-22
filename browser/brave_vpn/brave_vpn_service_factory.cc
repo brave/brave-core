@@ -111,6 +111,7 @@ BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
 void BraveVpnServiceFactory::BindForContext(
     content::BrowserContext* context,
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  CHECK(GetInstance());
   auto* service = static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
   if (service) {

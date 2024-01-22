@@ -28,6 +28,10 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
 namespace skus {
 
 gin::WrapperInfo SkusJSHandler::kWrapperInfo = {gin::kEmbedderNativeGin};
@@ -44,7 +48,7 @@ bool SkusJSHandler::EnsureConnected() {
   }
   bool result = skus_service_.is_bound();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (!vpn_service_.is_bound()) {
+  if (brave_vpn::IsBraveVPNFeatureEnabled() && !vpn_service_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         vpn_service_.BindNewPipeAndPassReceiver());
   }
