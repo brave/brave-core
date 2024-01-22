@@ -105,8 +105,9 @@ void MediaDetectorComponentManager::MaybeInitScripts() {
 }
 
 void MediaDetectorComponentManager::RegisterIfNeeded() {
-  if (register_requested_)
+  if (register_requested_) {
     return;
+  }
 
   register_requested_ = true;
   RegisterMediaDetectorComponent(
@@ -151,8 +152,9 @@ void MediaDetectorComponentManager::OnGetScripts(
     }
   }
 
-  for (auto& observer : observer_list_)
+  for (auto& observer : observer_list_) {
     observer.OnScriptReady(base_script_);
+  }
 }
 
 void MediaDetectorComponentManager::SetUseLocalScript() {
@@ -172,13 +174,9 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
 
 std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     const GURL& url) {
-  return GetMediaDetectorScript(net::SchemefulSite(url));
-}
-
-std::string MediaDetectorComponentManager::GetMediaDetectorScript(
-    const net::SchemefulSite& site) {
   MaybeInitScripts();
 
+  net::SchemefulSite site(url);
   std::string detector_script = base_script_;
   DCHECK(!detector_script.empty());
 
@@ -206,18 +204,6 @@ std::string MediaDetectorComponentManager::GetMediaDetectorScript(
   }
 
   return detector_script;
-}
-
-base::flat_map<net::SchemefulSite, std::string>
-MediaDetectorComponentManager::GetAllMediaDetectorScripts() {
-  MaybeInitScripts();
-
-  base::flat_map<net::SchemefulSite, std::string> scripts;
-  scripts.insert({net::SchemefulSite(), base_script_});
-  for (const auto& [site, _] : site_specific_detectors_) {
-    scripts.insert({site, GetMediaDetectorScript(site)});
-  }
-  return scripts;
 }
 
 void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {

@@ -28,8 +28,6 @@ struct BLINK_COMMON_EXPORT WebPreferences : public WebPreferences_ChromiumImpl {
   bool force_cosmetic_filtering = false;
   bool hide_media_src_api = false;
   bool should_detect_media_files = false;
-  std::map<std::string, std::string> url_and_media_detection_scripts;
-  bool allow_to_run_script_on_main_world = false;
 };
 
 }  // namespace web_pref

@@ -25,22 +25,6 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
   out->force_cosmetic_filtering = data.force_cosmetic_filtering();
   out->hide_media_src_api = data.hide_media_src_api();
   out->should_detect_media_files = data.should_detect_media_files();
-  out->allow_to_run_script_on_main_world =
-      data.allow_to_run_script_on_main_world();
-
-  mojo::MapDataView<mojo::StringDataView, mojo::StringDataView> data_view;
-  data.GetUrlAndMediaDetectionScriptsDataView(&data_view);
-
-  for (size_t i = 0; i < data_view.size(); ++i) {
-    std::string key;
-    std::string value;
-    if (!data_view.keys().Read(i, &key) ||
-        !data_view.values().Read(i, &value)) {
-      continue;
-    }
-    out->url_and_media_detection_scripts.insert({key, value});
-  }
-
   return true;
 }
 
