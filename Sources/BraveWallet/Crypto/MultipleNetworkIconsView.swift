@@ -20,7 +20,7 @@ struct MultipleNetworkIconsView: View {
       maxIconSize: maxIconSize,
       iconDotSize: iconDotSize,
       iconView: { network in
-        NetworkIcon(network: network, length: iconSize)
+        NetworkIcon(network: network)
       }
     )
   }

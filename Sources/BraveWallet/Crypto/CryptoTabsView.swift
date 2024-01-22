@@ -9,36 +9,38 @@ import SwiftUI
 import BraveUI
 import Strings
 
-struct CryptoTabsView<DismissContent: ToolbarContent>: View {
-  private enum Tab: Equatable, Hashable, CaseIterable {
-    case portfolio
-    case activity
-    case accounts
-    case market
-    
-    @ViewBuilder var tabLabel: some View {
-      switch self {
-      case .portfolio:
-        Label(Strings.Wallet.portfolioPageTitle, braveSystemImage: "leo.coins")
-      case .activity:
-        Label(Strings.Wallet.activityPageTitle, braveSystemImage: "leo.activity")
-      case .accounts:
-        Label(Strings.Wallet.accountsPageTitle, braveSystemImage: "leo.user.accounts")
-      case .market:
-        Label(Strings.Wallet.marketPageTitle, braveSystemImage: "leo.discover")
-      }
+enum CryptoTab: Equatable, Hashable, CaseIterable {
+  case portfolio
+  case activity
+  case accounts
+  case market
+  
+  @ViewBuilder var tabLabel: some View {
+    switch self {
+    case .portfolio:
+      Label(Strings.Wallet.portfolioPageTitle, braveSystemImage: "leo.coins")
+    case .activity:
+      Label(Strings.Wallet.activityPageTitle, braveSystemImage: "leo.activity")
+    case .accounts:
+      Label(Strings.Wallet.accountsPageTitle, braveSystemImage: "leo.user.accounts")
+    case .market:
+      Label(Strings.Wallet.marketPageTitle, braveSystemImage: "leo.discover")
     }
   }
-  
+}
+
+struct CryptoTabsView<DismissContent: ToolbarContent>: View {
   @ObservedObject var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
   var toolbarDismissContent: DismissContent
 
   @State private var isShowingMainMenu: Bool = false
-  @State private var isTabShowingSettings: [Tab: Bool] = Tab.allCases.reduce(into: [Tab: Bool]()) { $0[$1] = false }
+  @State private var isTabShowingSettings: [CryptoTab: Bool] = CryptoTab.allCases.reduce(into: [CryptoTab: Bool]()) { $0[$1] = false }
   @State private var isShowingSearch: Bool = false
+  @State private var isShowingBackup: Bool = false
+  @State private var isShowingAddAccount: Bool = false
   @State private var fetchedPendingRequestsThisSession: Bool = false
-  @State private var selectedTab: Tab = .portfolio
+  @State private var selectedTab: CryptoTab = .portfolio
   
   private var isConfirmationButtonVisible: Bool {
     if case .transactions(let txs) = cryptoStore.pendingRequest {
@@ -64,9 +66,9 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       }
       .navigationViewStyle(.stack)
       .tabItem {
-        Tab.portfolio.tabLabel
+        CryptoTab.portfolio.tabLabel
       }
-      .tag(Tab.portfolio)
+      .tag(CryptoTab.portfolio)
       
       NavigationView {
         TransactionsActivityView(
@@ -81,12 +83,13 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       }
       .navigationViewStyle(.stack)
       .tabItem {
-        Tab.activity.tabLabel
+        CryptoTab.activity.tabLabel
       }
-      .tag(Tab.activity)
+      .tag(CryptoTab.activity)
       
       NavigationView {
         AccountsView(
+          store: cryptoStore.accountsStore,
           cryptoStore: cryptoStore,
           keyringStore: keyringStore
         )
@@ -98,9 +101,9 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       }
       .navigationViewStyle(.stack)
       .tabItem {
-        Tab.accounts.tabLabel
+        CryptoTab.accounts.tabLabel
       }
-      .tag(Tab.accounts)
+      .tag(CryptoTab.accounts)
       
       NavigationView {
         MarketView(
@@ -115,9 +118,9 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       }
       .navigationViewStyle(.stack)
       .tabItem {
-        Tab.market.tabLabel
+        CryptoTab.market.tabLabel
       }
-      .tag(Tab.market)
+      .tag(CryptoTab.market)
     }
     .introspectTabBarController(customize: { tabBarController in
       let appearance = UITabBarAppearance()
@@ -169,25 +172,71 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
     )
     .sheet(isPresented: $isShowingMainMenu) {
       MainMenuView(
-        isFromPortfolio: selectedTab == .portfolio,
+        selectedTab: selectedTab,
         isShowingSettings: Binding(get: {
           self.isTabShowingSettings[selectedTab, default: false]
         }, set: { isActive, _ in
           self.isTabShowingSettings[selectedTab] = isActive
         }),
+        isShowingBackup: $isShowingBackup,
+        isShowingAddAccount: $isShowingAddAccount,
         keyringStore: keyringStore
+      )
+      .background(
+        Color.clear
+          .sheet(isPresented: Binding(get: {
+            isShowingBackup
+          }, set: { newValue in
+            if !newValue {
+              // dismiss menu if we're dismissing backup from menu
+              isShowingMainMenu = false
+            }
+            isShowingBackup = newValue
+          })) {
+            NavigationView {
+              BackupWalletView(
+                password: nil,
+                keyringStore: keyringStore
+              )
+            }
+            .navigationViewStyle(.stack)
+            .environment(\.modalPresentationMode, $isShowingBackup)
+            .accentColor(Color(.braveBlurpleTint))
+          }
+      )
+      .background(
+        Color.clear
+          .sheet(isPresented: Binding(get: {
+            isShowingAddAccount
+          }, set: { newValue in
+            if !newValue {
+              // dismiss menu if we're dismissing add account from menu
+              isShowingMainMenu = false
+            }
+            isShowingAddAccount = newValue
+          })) {
+            NavigationView {
+              AddAccountView(
+                keyringStore: keyringStore,
+                networkStore: cryptoStore.networkStore
+              )
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+          }
       )
     }
   }
   
   @ToolbarContentBuilder private var sharedToolbarItems: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: {
-        cryptoStore.isPresentingAssetSearch = true
-      }) {
-        Label(Strings.Wallet.searchTitle, systemImage: "magnifyingglass")
-          .labelStyle(.iconOnly)
-          .foregroundColor(Color(.braveBlurpleTint))
+      if selectedTab == .portfolio {
+        Button(action: {
+          cryptoStore.isPresentingAssetSearch = true
+        }) {
+          Label(Strings.Wallet.searchTitle, systemImage: "magnifyingglass")
+            .labelStyle(.iconOnly)
+            .foregroundColor(Color(.braveBlurpleTint))
+        }
       }
       Button(action: { self.isShowingMainMenu = true }) {
         Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, braveSystemImage: "leo.more.horizontal")
@@ -199,7 +248,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
     toolbarDismissContent
   }
   
-  private func settingsNavigationLink(for tab: Tab) -> some View {
+  private func settingsNavigationLink(for tab: CryptoTab) -> some View {
     NavigationLink(
       destination: Web3SettingsView(
         settingsStore: cryptoStore.settingsStore,

@@ -161,7 +161,7 @@ private struct NetworkRowView: View {
 
   var body: some View {
     HStack {
-      NetworkIcon(network: network)
+      NetworkIconView(network: network)
       VStack(alignment: .leading, spacing: 0) {
         Text(network.chainName)
           .font(.body)

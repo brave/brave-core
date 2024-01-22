@@ -9,8 +9,10 @@ import Preferences
 
 struct MainMenuView: View {
   
-  let isFromPortfolio: Bool
+  let selectedTab: CryptoTab
   @Binding var isShowingSettings: Bool
+  @Binding var isShowingBackup: Bool
+  @Binding var isShowingAddAccount: Bool
   let keyringStore: KeyringStore
   
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
@@ -38,6 +40,16 @@ struct MainMenuView: View {
         .frame(height: rowHeight)
         
         Button(action: {
+          isShowingBackup = true
+        }) {
+          MenuRowView(
+            iconBraveSystemName: "leo.safe",
+            title: "Back Up Now"
+          )
+        }
+        .frame(height: rowHeight)
+        
+        Button(action: {
           isShowingSettings = true
           presentationMode.dismiss()
         }) {
@@ -48,9 +60,12 @@ struct MainMenuView: View {
         }
         .frame(height: rowHeight)
         
-        if isFromPortfolio {
+        if selectedTab == .portfolio {
           Divider()
           portfolioSettings
+        } else if selectedTab == .accounts {
+          Divider()
+          accountsMenuItems
         }
         
         Divider()
@@ -124,6 +139,18 @@ struct MainMenuView: View {
     )
     .frame(height: rowHeight)
   }
+  
+  @ViewBuilder private var accountsMenuItems: some View {
+    Button(action: {
+      self.isShowingAddAccount = true
+    }) {
+      MenuRowView(
+        iconBraveSystemName: "leo.plus.add",
+        title: Strings.Wallet.addAccountTitle
+      )
+    }
+    .frame(height: rowHeight)
+  }
 }
 
 #if DEBUG
@@ -132,8 +159,10 @@ struct MainMenuView_Previews: PreviewProvider {
     Color.white
       .sheet(isPresented: .constant(true), content: {
         MainMenuView(
-          isFromPortfolio: true,
+          selectedTab: .portfolio,
           isShowingSettings: .constant(false),
+          isShowingBackup: .constant(false),
+          isShowingAddAccount: .constant(false),
           keyringStore: .previewStoreWithWalletCreated
         )
       })

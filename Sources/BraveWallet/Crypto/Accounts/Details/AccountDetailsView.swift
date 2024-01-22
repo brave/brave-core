@@ -101,7 +101,6 @@ struct AccountDetailsView: View {
       }
       .listStyle(InsetGroupedListStyle())
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-      .navigationTitle(Strings.Wallet.accountDetailsTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {

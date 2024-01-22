@@ -66,6 +66,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   public let portfolioStore: PortfolioStore
   let nftStore: NFTStore
   let transactionsActivityStore: TransactionsActivityStore
+  let accountsStore: AccountsStore
   let marketStore: MarketStore
   
   @Published var buySendSwapDestination: BuySendSwapDestination? {
@@ -192,6 +193,13 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       txService: txService,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
+      userAssetManager: userAssetManager
+    )
+    self.accountsStore = .init(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      assetRatioService: assetRatioService,
       userAssetManager: userAssetManager
     )
     self.marketStore = .init(

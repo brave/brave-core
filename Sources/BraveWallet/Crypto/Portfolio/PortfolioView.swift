@@ -99,7 +99,7 @@ struct PortfolioAssetGroupHeaderView: View {
     VStack(spacing: 0) {
       HStack {
         if case let .network(networkInfo) = group.groupType {
-          NetworkIcon(network: networkInfo, length: 32)
+          NetworkIconView(network: networkInfo, length: 32)
         } else if case let .account(accountInfo) = group.groupType {
           Blockie(address: accountInfo.address)
             .frame(width: 32, height: 32)

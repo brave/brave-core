@@ -9,9 +9,7 @@ import BraveUI
 
 struct NetworkIcon: View {
   
-  var network: BraveWallet.NetworkInfo
-
-  @ScaledMetric var length: CGFloat = 30
+  let network: BraveWallet.NetworkInfo
   
   var body: some View {
     Group {
@@ -36,14 +34,17 @@ struct NetworkIcon: View {
       }
     }
     .aspectRatio(1, contentMode: .fit)
-    .frame(width: length, height: length)
   }
   
+  @State private var monogramSize: CGSize = .zero
   private var networkIconMonogram: some View {
     Blockie(address: network.chainName, shape: .circle)
+      .readSize(onChange: { newSize in
+        monogramSize = newSize
+      })
       .overlay(
         Text(network.chainName.first?.uppercased() ?? "")
-          .font(.system(size: length / 2, weight: .bold, design: .rounded))
+          .font(.system(size: max(monogramSize.width, monogramSize.height) / 2, weight: .bold, design: .rounded))
           .foregroundColor(.white)
           .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
       )
@@ -56,5 +57,20 @@ struct NetworkIcon: View {
       return (imageName, isGrayscale)
     }
     return nil
+  }
+}
+
+struct NetworkIconView: View {
+  
+  let network: BraveWallet.NetworkInfo
+  @ScaledMetric var length: CGFloat = 30
+  var maxLength: CGFloat?
+  
+  var body: some View {
+    NetworkIcon(network: network)
+      .frame(
+        width: min(length, maxLength ?? length),
+        height: min(length, maxLength ?? length)
+      )
   }
 }

@@ -42,35 +42,51 @@ struct MultipleCircleIconView<IconView: View, Model>: View {
     HStack(spacing: -(min(iconSize, maxIconSize) / 2)) {
       let numberOfIcons = min(maxIcons, models.count)
       ForEach(0..<numberOfIcons, id: \.self) { index in
-        iconView(models[index])
-          .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
-          .clipShape(ContainerRelativeShape())
-          .overlay(ContainerRelativeShape().stroke(Color(.secondaryBraveGroupedBackground), lineWidth: 1))
-          .containerShape(ContainerShape(shape: shape))
-          .zIndex(Double(numberOfIcons - index))
+        buildShapeBorder {
+          iconView(models[index])
+            .frame(width: min(iconSize, maxIconSize) - 2, height: min(iconSize, maxIconSize) - 2)
+            .clipShape(ContainerRelativeShape())
+        }
+        .zIndex(Double(numberOfIcons - index))
       }
       if models.count > maxIcons {
-        Group {
-          if shape == .circle {
-            Circle()
-          } else {
-            RoundedRectangle(cornerRadius: 4)
+        buildShapeBorder {
+          Group {
+            if shape == .circle {
+              Circle()
+            } else {
+              RoundedRectangle(cornerRadius: 4)
+            }
           }
+          .foregroundColor(Color(.braveBlurpleTint))
+          .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
+          .overlay(
+            HStack(spacing: 1) {
+              ContainerRelativeShape()
+                .frame(width: iconDotSize, height: iconDotSize)
+              ContainerRelativeShape()
+                .frame(width: iconDotSize, height: iconDotSize)
+              ContainerRelativeShape()
+                .frame(width: iconDotSize, height: iconDotSize)
+            }
+              .foregroundColor(.white)
+              .containerShape(ContainerShape(shape: shape))
+          )
         }
-        .foregroundColor(Color(.braveBlurpleTint))
-        .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
-        .overlay(
-          HStack(spacing: 1) {
-            ContainerRelativeShape()
-              .frame(width: iconDotSize, height: iconDotSize)
-            ContainerRelativeShape()
-              .frame(width: iconDotSize, height: iconDotSize)
-            ContainerRelativeShape()
-              .frame(width: iconDotSize, height: iconDotSize)
-          }
-            .foregroundColor(.white)
-        )
       }
     }
+  }
+  
+  /// Creates the ContainerRelativeShape with `content` overlayed, inset to show a border.
+  private func buildShapeBorder(content: () -> some View) -> some View {
+    Color(.secondaryBraveGroupedBackground)
+      .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
+      .clipShape(ContainerRelativeShape())
+      .overlay {
+        content()
+          .frame(width: min(iconSize, maxIconSize) - 2, height: min(iconSize, maxIconSize) - 2)
+          .clipShape(ContainerRelativeShape())
+      }
+      .containerShape(ContainerShape(shape: shape))
   }
 }

@@ -152,7 +152,7 @@ struct SaferSignTransactionContainerView: View {
         Text(gasFee?.fiat ?? "")
           .foregroundColor(Color(.braveLabel))
         Button(action: editGasFeeTapped) {
-          Text(Strings.Wallet.editGasFeeButtonTitle)
+          Text(Strings.Wallet.editButtonTitle)
             .fontWeight(.semibold)
             .foregroundColor(Color(.braveBlurpleTint))
         }

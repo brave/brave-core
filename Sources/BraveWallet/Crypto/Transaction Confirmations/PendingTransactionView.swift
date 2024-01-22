@@ -165,7 +165,7 @@ struct PendingTransactionView: View {
   }
   
   @ViewBuilder private var editGasFeeButton: some View {
-    let titleView = Text(Strings.Wallet.editGasFeeButtonTitle)
+    let titleView = Text(Strings.Wallet.editButtonTitle)
       .fontWeight(.semibold)
       .foregroundColor(Color(.braveBlurpleTint))
     Group {

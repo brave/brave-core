@@ -8,37 +8,11 @@ import BraveCore
 import BraveUI
 import DesignSystem
 
-/// Displays an asset's icon from the token registry
-///
-/// By default, creating an `AssetIconView` will result in a dynamically sized icon based
-/// on the users size category. If you for some reason need to obtain a fixed size asset icon,
-/// wrap this view in another frame of your desired size, for example:
-///
-///     AssetIconView(token: .eth)
-///       .frame(width: 20, height: 20)
-///
-struct AssetIconView: View {
-  var token: BraveWallet.BlockchainToken
-  var network: BraveWallet.NetworkInfo
-  /// If we should show the network logo on non-native assets
-  var shouldShowNetworkIcon: Bool = false
-  @ScaledMetric var length: CGFloat = 40
-  var maxLength: CGFloat?
-  @ScaledMetric var networkSymbolLength: CGFloat = 15
-  var maxNetworkSymbolLength: CGFloat?
-
-  private var fallbackMonogram: some View {
-    BlockieMaterial(address: token.contractAddress)
-      .blur(radius: 8, opaque: true)
-      .clipShape(Circle())
-      .overlay(
-        Text(token.symbol.first?.uppercased() ?? "")
-          .font(.system(size: length / 2, weight: .bold, design: .rounded))
-          .foregroundColor(.white)
-          .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
-      )
-  }
-
+/// Displays an asset's icon from the token registry or logo.
+struct AssetIcon: View {
+  let token: BraveWallet.BlockchainToken
+  let network: BraveWallet.NetworkInfo?
+  
   var body: some View {
     Group {
       if let uiImage = token.localImage(network: network) {
@@ -59,13 +33,49 @@ struct AssetIconView: View {
         fallbackMonogram
       }
     }
-    .frame(width: min(length, maxLength ?? length), height: min(length, maxLength ?? length))
-    .overlay(tokenLogo, alignment: .bottomTrailing)
-    .accessibilityHidden(true)
   }
   
-  @ViewBuilder private var tokenLogo: some View {
-    if shouldShowNetworkIcon,  // explicitly show/not show network logo
+  @State private var monogramSize: CGSize = .zero
+  private var fallbackMonogram: some View {
+    BlockieMaterial(address: token.contractAddress)
+      .blur(radius: 8, opaque: true)
+      .clipShape(Circle())
+      .readSize(onChange: { newSize in
+        monogramSize = newSize
+      })
+      .overlay(
+        Text(token.symbol.first?.uppercased() ?? "")
+          .font(.system(size: max(monogramSize.width, monogramSize.height) / 2, weight: .bold, design: .rounded))
+          .foregroundColor(.white)
+          .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
+      )
+  }
+}
+
+/// Displays an asset's icon from the token registry or logo.
+///
+/// By default, creating an `AssetIconView` will result in a dynamically sized icon based
+/// on the users size category.
+struct AssetIconView: View {
+  var token: BraveWallet.BlockchainToken
+  var network: BraveWallet.NetworkInfo?
+  /// If we should show the network logo on non-native assets. NetworkInfo is required.
+  var shouldShowNetworkIcon: Bool = false
+  @ScaledMetric var length: CGFloat = 40
+  var maxLength: CGFloat?
+  @ScaledMetric var networkSymbolLength: CGFloat = 15
+  var maxNetworkSymbolLength: CGFloat?
+
+  var body: some View {
+    AssetIcon(token: token, network: network)
+      .frame(width: min(length, maxLength ?? length), height: min(length, maxLength ?? length))
+      .overlay(tokenNetworkLogo, alignment: .bottomTrailing)
+      .accessibilityHidden(true)
+  }
+  
+  @ViewBuilder private var tokenNetworkLogo: some View {
+    if let network,
+       shouldShowNetworkIcon, // explicitly show/not show network logo
        (!network.isNativeAsset(token) || network.nativeTokenLogoName != network.networkLogoName), // non-native asset OR if the network is not the official Ethereum network, but uses ETH as gas
        let image = network.networkLogoImage {
       Image(uiImage: image)

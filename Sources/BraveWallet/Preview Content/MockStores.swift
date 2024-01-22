@@ -255,6 +255,18 @@ extension TransactionsActivityStore {
   )
 }
 
+extension AccountsStore {
+  static var previewStore: AccountsStore {
+    .init(
+      keyringService: MockKeyringService(),
+      rpcService: MockJsonRpcService(),
+      walletService: MockBraveWalletService(),
+      assetRatioService: MockAssetRatioService(),
+      userAssetManager: TestableWalletUserAssetManager()
+    )
+  }
+}
+
 extension BraveWallet.TestSolanaTxManagerProxy {
   static var previewProxy: BraveWallet.TestSolanaTxManagerProxy {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()

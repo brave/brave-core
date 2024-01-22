@@ -141,6 +141,24 @@ extension BraveWallet.AccountId {
   }
 }
 
+extension BraveWallet.AccountInfo {
+  /// String to display what this account supports, ex. `"Ethereum + EVM Chains"`.
+  var accountSupportDisplayString: String {
+    switch coin {
+    case .eth:
+      return Strings.Wallet.ethAccountDescription
+    case .sol:
+      return Strings.Wallet.solAccountDescription
+    case .fil:
+      return Strings.Wallet.filAccountDescription
+    case .btc, .zec:
+      return ""
+    @unknown default:
+      return ""
+    }
+  }
+}
+
 extension BraveWallet.CoinType {
   public var keyringIds: [BraveWallet.KeyringId] {
     switch self {
@@ -374,8 +392,9 @@ extension BraveWallet.BlockchainToken {
   }
   
   /// Returns the local image asset for the `BlockchainToken`.
-  func localImage(network: BraveWallet.NetworkInfo) -> UIImage? {
-    if network.isNativeAsset(self), let uiImage = network.nativeTokenLogoImage {
+  func localImage(network: BraveWallet.NetworkInfo?) -> UIImage? {
+    if let network,
+       network.isNativeAsset(self), let uiImage = network.nativeTokenLogoImage {
       return uiImage
     }
     

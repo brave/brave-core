@@ -400,18 +400,11 @@ extension Strings {
       value: "Import…",
       comment: "A button title that when tapped will display a file import dialog"
     )
-    public static let primaryCryptoAccountsTitle = NSLocalizedString(
-      "wallet.primaryCryptoAccountsTitle",
+    public static let importedCryptoAccountsTitle = NSLocalizedString(
+      "wallet.importedCryptoAccountsTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Primary Crypto Accounts",
-      comment: "A title above a list of crypto accounts that are not imported"
-    )
-    public static let secondaryCryptoAccountsTitle = NSLocalizedString(
-      "wallet.secondaryCryptoAccountsTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Secondary Accounts",
+      value: "Imported Accounts",
       comment: "A title above a list of crypto accounts that are imported"
     )
     public static let secondaryCryptoAccountsSubtitle = NSLocalizedString(
@@ -427,6 +420,34 @@ extension Strings {
       bundle: .module,
       value: "No secondary accounts.",
       comment: "The empty state shown when you have no imported accounts"
+    )
+    public static let ethAccountDescription = NSLocalizedString(
+      "wallet.ethAccountDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Ethereum + EVM Chains",
+      comment: "A description of an Ethereum account, displayed in Accounts tab."
+    )
+    public static let solAccountDescription = NSLocalizedString(
+      "wallet.solAccountDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Solana + SVM Chains",
+      comment: "A description of an Solana account, displayed in Accounts tab."
+    )
+    public static let filAccountDescription = NSLocalizedString(
+      "wallet.filAccountDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Filecoin",
+      comment: "A description of an Filecoin account, displayed in Accounts tab."
+    )
+    public static let exportButtonTitle = NSLocalizedString(
+      "wallet.exportButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Export",
+      comment: "A button title displayed in a menu to export an account's private key."
     )
     public static let incorrectPasswordErrorMessage = NSLocalizedString(
       "wallet.incorrectPasswordErrorMessage",
@@ -1381,12 +1402,12 @@ extension Strings {
       value: "Transaction Fee",
       comment: "A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction"
     )
-    public static let editGasFeeButtonTitle = NSLocalizedString(
-      "wallet.editGasFeeButtonTitle",
+    public static let editButtonTitle = NSLocalizedString(
+      "wallet.editButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Edit",
-      comment: "A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority"
+      comment: "A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc."
     )
     public static let total = NSLocalizedString(
       "wallet.total",
