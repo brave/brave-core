@@ -82,7 +82,7 @@ pipeline {
                                                 credentials('brave-builds-github-token-for-pr-builder')
                                                 github('brave/devops', 'https')
                                             }
-                                            branch('${params.DEVOPS_BRANCH}')
+                                            branch('mplesa-jenkins-ios-brave-core-migration')
                                         }
                                     }
                                     scriptPath("jenkins/jobs/browser/pr-brave-browser-${PLATFORM}.Jenkinsfile")
@@ -93,6 +93,7 @@ pipeline {
 
                     params = [
                         string(name: 'CHANNEL', value: params.CHANNEL),
+                        // could pass Debug for migrated iOS
                         string(name: 'BUILD_TYPE', value: PLATFORM == 'android' ? 'Release' : params.BUILD_TYPE),
                         booleanParam(name: 'WIPE_WORKSPACE', value: params.WIPE_WORKSPACE),
                         booleanParam(name: 'USE_RBE', value: params.USE_RBE),
