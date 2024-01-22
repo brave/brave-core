@@ -422,35 +422,37 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     @Override
-    public void showBiometricPrompt(boolean show) {
-        mShowBiometricPrompt = show;
+    public void enableBiometricPrompt() {
+        mShowBiometricPrompt = true;
     }
 
     @Override
-    public void gotoNextPage(boolean finishOnboarding) {
-        if (finishOnboarding) {
-            if (mIsFromDapps) {
-                finish();
-                try {
-                    BraveActivity activity = BraveActivity.getBraveActivity();
-                    activity.showWalletPanel(true);
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "gotoNextPage", e);
-                }
-                return;
-            }
-            showMainLayout();
-        } else {
-            if (mCryptoWalletOnboardingViewPager != null) {
-                mCryptoWalletOnboardingViewPager.setCurrentItem(
-                        mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
-            }
+    public void gotoNextPage() {
+        if (mCryptoWalletOnboardingViewPager != null &&
+                mCryptoWalletOnboardingViewPager.getAdapter() != null &&
+                mCryptoWalletOnboardingViewPager.getCurrentItem() < mCryptoWalletOnboardingViewPager.getAdapter().getCount() - 1) {
+            mCryptoWalletOnboardingViewPager.setCurrentItem(
+                    mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
         }
     }
 
     @Override
-    public void gotoOnboardingPage() {
-        replaceNavigationFragments(ONBOARDING_ACTION, true, true);
+    public void onboardingCompleted() {
+        if (mIsFromDapps) {
+            finish();
+            try {
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                activity.showWalletPanel(true);
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "gotoNextPage", e);
+            }
+        } else {
+            showMainLayout();
+        }
+    }
+
+    @Override
+    public void gotoCreationPage() {
         mBraveWalletP3A.reportOnboardingAction(OnboardingAction.LEGAL_AND_PASSWORD);
     }
 
@@ -459,6 +461,26 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         replaceNavigationFragments(RESTORE_WALLET_ACTION, true, isOnboarding);
         if (isOnboarding) {
             mBraveWalletP3A.reportOnboardingAction(OnboardingAction.START_RESTORE);
+        }
+    }
+
+    @Override
+    public void showCloseButton(boolean show) {
+        if (show) {
+            mOnboardingCloseButton.setVisibility(View.VISIBLE);
+        } else {
+            mOnboardingCloseButton.setVisibility(View.GONE);
+
+        }
+    }
+
+    @Override
+    public void showBackButton(boolean show) {
+        if (show) {
+            mOnboardingBackButton.setVisibility(View.VISIBLE);
+        } else {
+            mOnboardingBackButton.setVisibility(View.GONE);
+
         }
     }
 

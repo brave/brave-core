@@ -6,9 +6,12 @@
 package org.chromium.chrome.browser.crypto_wallet.listeners;
 
 public interface OnNextPage {
-    void gotoNextPage(boolean finishOnboarding);
-    void gotoOnboardingPage();
-    void gotoRestorePage(boolean isOnboarding);
+    void gotoNextPage();
+    void onboardingCompleted();
+    void gotoCreationPage();
+    void gotoRestorePage(final boolean isOnboarding);
     boolean showBiometricPrompt();
-    void showBiometricPrompt(boolean show);
+    void enableBiometricPrompt();
+    void showCloseButton(final boolean show);
+    void showBackButton(final boolean show);
 }

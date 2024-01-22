@@ -159,7 +159,9 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 // Go to the next page after wallet creation is done
                 Utils.setCryptoOnboarding(false);
                 mOnboardingViewModel.setPassword(passwordInput);
-                onNextPage.gotoNextPage(false);
+                if (onNextPage != null) {
+                    onNextPage.gotoNextPage();
+                }
             });
             showCreatingWalletPage();
         }
@@ -182,6 +184,8 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
     }
 
     private void showCreatingWalletPage() {
-        onNextPage.gotoNextPage(false);
+        if (onNextPage != null) {
+            onNextPage.gotoNextPage();
+        }
     }
 }

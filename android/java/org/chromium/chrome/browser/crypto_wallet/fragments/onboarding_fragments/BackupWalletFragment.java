@@ -106,8 +106,12 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
         mBackupWalletButton.setOnClickListener(v -> {
             BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
             if (mIsOnboarding) {
-                onNextPage.gotoNextPage(false);
-                braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                if (onNextPage != null) {
+                    onNextPage.gotoNextPage();
+                }
+                if (braveWalletP3A != null) {
+                    braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                }
                 return;
             }
             KeyringService keyringService = getKeyringService();
@@ -118,7 +122,9 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
                 keyringService.getMnemonicForDefaultKeyring(passwordToUse, result -> {
                     if (!result.isEmpty()) {
                         mOnboardingViewModel.setPassword(passwordToUse);
-                        onNextPage.gotoNextPage(false);
+                        if (onNextPage != null) {
+                            onNextPage.gotoNextPage();
+                        }
                     } else {
                         showPasswordRelatedControls(true);
                         mBackupWalletPassword.setError(
@@ -144,7 +150,9 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
             if (braveWalletP3A != null && mIsOnboarding) {
                 braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
             }
-            onNextPage.gotoNextPage(true);
+            if (onNextPage != null) {
+                onNextPage.onboardingCompleted();
+            }
         });
         mBiometricBackupWalletImage.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P

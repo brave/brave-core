@@ -153,7 +153,9 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
                     private void onNextPage() {
-                        onNextPage.gotoNextPage(true);
+                        if (onNextPage != null) {
+                            onNextPage.onboardingCompleted();
+                        }
                     }
 
                     @Override
@@ -200,8 +202,8 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                                 // Clear previously set bio-metric credentials
                                 KeystoreHelper.resetBiometric();
                                 enableBiometricLogin(retypePasswordInput);
-                            } else {
-                                onNextPage.gotoNextPage(true);
+                            } else if (onNextPage != null) {
+                                onNextPage.onboardingCompleted();
                             }
                             Utils.setCryptoOnboarding(false);
                             Utils.clearClipboard(
@@ -218,7 +220,9 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                                     .show();
                         }
                     });
-            onNextPage.gotoNextPage(false);
+            if (onNextPage != null) {
+                onNextPage.gotoNextPage();
+            }
         }
     }
 
