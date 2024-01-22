@@ -5,14 +5,11 @@
 
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
 
-#include <stddef.h>
-
 #include <algorithm>
 #include <iterator>
 #include <numeric>
 #include <optional>
 #include <string>
-#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -46,28 +43,6 @@
 namespace brave_news {
 
 namespace {
-
-// An ArticleWeight has a few different components
-struct ArticleWeight {
-  // The pop_recency of the article. This is used for discover cards, where we
-  // don't consider the subscription status or visit_weighting.
-  double pop_recency = 0;
-
-  // The complete weighting of the article, combining the pop_score,
-  // visit_weighting & subscribed_weighting.
-  double weighting = 0;
-
-  // Whether the source which this article comes from has been visited. This
-  // only considers Publishers, not Channels.
-  bool visited = false;
-
-  // Whether any sources/channels that could cause this article to be shown are
-  // subscribed. At this point, disabled sources have already been filtered out.
-  bool subscribed = false;
-};
-
-using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
-using ArticleInfos = std::vector<ArticleInfo>;
 
 /* publisher_or_channel_id, is_channel */
 using ContentGroup = std::pair<std::string, bool>;
@@ -316,15 +291,14 @@ ContentGroup SampleContentGroup(
   return PickRandom<ContentGroup>(eligible_content_groups);
 }
 
+// Picks the first article from the list - useful when the list has been sorted.
+int PickFirstIndex(const ArticleInfos& articles) {
+  return articles.empty() ? -1 : 0;
+}
+
 // Picks an article with a probability article_weight/sum(article_weights).
-mojom::FeedItemMetadataPtr PickRouletteAndRemove(
-    ArticleInfos& articles,
-    GetWeighting get_weighting =
-        base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
-                               const ArticleWeight& weight) {
-          return weight.subscribed ? weight.weighting : 0;
-        }),
-    bool use_softmax = false) {
+int PickRouletteWithWeighting(const ArticleInfos& articles,
+                              GetWeighting get_weighting) {
   std::vector<double> weights;
   base::ranges::transform(articles, std::back_inserter(weights),
                           [&get_weighting](const auto& article_info) {
@@ -336,7 +310,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
   const auto total_weight =
       std::accumulate(weights.begin(), weights.end(), 0.0);
   if (total_weight == 0) {
-    return nullptr;
+    return -1;
   }
 
   double picked_value = base::RandDouble() * total_weight;
@@ -350,8 +324,27 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     }
   }
 
-  auto [article, weight] = std::move(articles[i]);
-  articles.erase(articles.begin() + i);
+  return i;
+}
+
+int PickRoulette(const ArticleInfos& articles) {
+  return PickRouletteWithWeighting(
+      articles,
+      base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
+                             const ArticleWeight& weight) {
+        return weight.subscribed ? weight.weighting : 0;
+      }));
+}
+
+mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
+                                         PickArticles picker) {
+  auto index = picker.Run(articles);
+  if (index == -1) {
+    return nullptr;
+  }
+
+  auto [article, weight] = std::move(articles[index]);
+  articles.erase(articles.begin() + index);
 
   return std::move(article);
 }
@@ -362,43 +355,34 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 // 2. **AND** The user hasn't visited.
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
-  return PickRouletteAndRemove(
-      articles,
-      base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
-                             const ArticleWeight& weight) {
-        if (weight.subscribed) {
-          return 0.0;
-        }
-        return weight.pop_recency;
-      }));
+  PickArticles pick = base::BindRepeating([](const ArticleInfos& articles) {
+    return PickRouletteWithWeighting(
+        articles,
+        base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
+                               const ArticleWeight& weight) {
+          if (weight.subscribed) {
+            return 0.0;
+          }
+          return weight.pop_recency;
+        }));
+  });
+  return PickAndRemove(articles, pick);
 }
 
 // Generates a standard block:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
-std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
-    ArticleInfos& articles,
-    // Ratio of inline articles to discovery articles.
-    // discover ratio % of the time, we should do a discover card here instead
-    // of a roulette card.
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    double inline_discovery_ratio =
-        features::kBraveNewsInlineDiscoveryRatio.Get()) {
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
+                                                PickArticles hero_picker,
+                                                PickArticles article_picker,
+                                                double inline_discovery_ratio) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
     return result;
   }
 
-  auto hero_article = PickRouletteAndRemove(
-      articles,
-      base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
-                             const ArticleWeight& weight) {
-        auto image_url = metadata->image->is_padded_image_url()
-                             ? metadata->image->get_padded_image_url()
-                             : metadata->image->get_image_url();
-        return image_url.is_valid() && weight.subscribed ? weight.weighting : 0;
-      }));
+  auto hero_article = PickAndRemove(articles, hero_picker);
 
   // We might not be able to generate a hero card, if none of the articles in
   // this feed have an image.
@@ -417,7 +401,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
     if (is_discover) {
       generated = PickDiscoveryArticleAndRemove(articles);
     } else {
-      generated = PickRouletteAndRemove(articles);
+      generated = PickAndRemove(articles, article_picker);
     }
 
     if (!generated) {
@@ -430,6 +414,32 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
   }
 
   return result;
+}
+
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
+    ArticleInfos& articles,
+    // Ratio of inline articles to discovery articles.
+    // discover ratio % of the time, we should do a discover card here instead
+    // of a roulette card.
+    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
+    double inline_discovery_ratio =
+        features::kBraveNewsInlineDiscoveryRatio.Get()) {
+  PickArticles pick_hero = base::BindRepeating([](const ArticleInfos& infos) {
+    return PickRouletteWithWeighting(
+        infos,
+        base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
+                               const ArticleWeight& weight) {
+          auto image_url = metadata->image->is_padded_image_url()
+                               ? metadata->image->get_padded_image_url()
+                               : metadata->image->get_image_url();
+          return image_url.is_valid() && weight.subscribed ? weight.weighting
+                                                           : 0;
+        }));
+  });
+
+  return GenerateBlock(articles, std::move(pick_hero),
+                       base::BindRepeating(&PickRoulette),
+                       inline_discovery_ratio);
 }
 
 // Generates a block from sampled content groups:
@@ -462,71 +472,66 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
   // Generates a GetWeighting function tied to a specific content group. Each
   // invocation of |get_weighting| will generate a new |GetWeighting| tied to a
   // (freshly sampled) content_group.
-  auto get_weighting = [&eligible_content_groups, &publisher_id_to_channels,
-                        &locale](bool is_hero = false) {
-    return base::BindRepeating(
-        [](const bool is_hero, const ContentGroup& content_group,
-           const base::flat_map<std::string, std::vector<std::string>>&
-               publisher_id_to_channels,
-           const std::string& locale,
-           const mojom::FeedItemMetadataPtr& metadata,
-           const ArticleWeight& weight) {
-          if (is_hero) {
-            auto image_url = metadata->image->is_padded_image_url()
-                                 ? metadata->image->get_padded_image_url()
-                                 : metadata->image->get_image_url();
-            if (!image_url.is_valid()) {
-              return 0.0;
-            }
-          }
+  auto get_weighting = base::BindRepeating(
+      [](const std::string& locale,
+         std::vector<ContentGroup> eligible_content_groups,
+         base::flat_map<std::string, std::vector<std::string>>
+             publisher_id_to_channels,
+         bool is_hero) {
+        return base::BindRepeating(
+            [](const bool is_hero, const ContentGroup& content_group,
+               const base::flat_map<std::string, std::vector<std::string>>&
+                   publisher_id_to_channels,
+               const std::string& locale,
+               const mojom::FeedItemMetadataPtr& metadata,
+               const ArticleWeight& weight) {
+              if (is_hero) {
+                auto image_url = metadata->image->is_padded_image_url()
+                                     ? metadata->image->get_padded_image_url()
+                                     : metadata->image->get_image_url();
+                if (!image_url.is_valid()) {
+                  return 0.0;
+                }
+              }
 
-          if (/*is_channel*/ content_group.second &&
-              content_group.first != kAllContentGroup) {
-            auto channels =
-                publisher_id_to_channels.find(metadata->publisher_id);
-            if (base::Contains(channels->second, content_group.first)) {
+              if (/*is_channel*/ content_group.second &&
+                  content_group.first != kAllContentGroup) {
+                auto channels =
+                    publisher_id_to_channels.find(metadata->publisher_id);
+                if (base::Contains(channels->second, content_group.first)) {
+                  return weight.weighting;
+                }
+
+                return 0.0;
+              } else if (/*is_channel*/ !content_group.second) {
+                return metadata->publisher_id == content_group.first
+                           ? weight.weighting
+                           : 0.0;
+              }
+
               return weight.weighting;
-            }
+            },
+            is_hero, SampleContentGroup(eligible_content_groups),
+            publisher_id_to_channels, locale);
+      },
+      locale, std::move(eligible_content_groups),
+      std::move(publisher_id_to_channels));
 
-            return 0.0;
-          } else if (/*is_channel*/ !content_group.second) {
-            return metadata->publisher_id == content_group.first
-                       ? weight.weighting
-                       : 0.0;
-          }
+  PickArticles pick_hero = base::BindRepeating(
+      [](GetWeighting weighting, const ArticleInfos& articles) {
+        return PickRouletteWithWeighting(articles, std::move(weighting));
+      },
+      get_weighting.Run(true));
 
-          return weight.weighting;
-        },
-        is_hero, SampleContentGroup(eligible_content_groups),
-        publisher_id_to_channels, locale);
-  };
+  PickArticles pick_article = base::BindRepeating(
+      [](base::RepeatingCallback<GetWeighting(bool)> gen_weighting,
+         const ArticleInfos& articles) {
+        return PickRouletteWithWeighting(articles, gen_weighting.Run(false));
+      },
+      std::move(get_weighting));
 
-  auto hero_article =
-      PickRouletteAndRemove(articles, get_weighting(/*is_hero*/ true));
-
-  // This may fail if the the content group has no images.
-  if (hero_article) {
-    result.push_back(mojom::FeedItemV2::NewHero(
-        mojom::HeroArticle::New(std::move(hero_article))));
-  }
-
-  const int block_min_inline = features::kBraveNewsMinBlockCards.Get();
-  const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
-  auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
-  for (auto i = 0; i < follow_count; ++i) {
-    bool is_discover = base::RandDouble() < inline_discovery_ratio;
-    auto generated = is_discover
-                         ? PickDiscoveryArticleAndRemove(articles)
-                         : PickRouletteAndRemove(articles, get_weighting());
-    if (!generated) {
-      DVLOG(1) << "Failed to generate article";
-      continue;
-    }
-    result.push_back(mojom::FeedItemV2::NewArticle(
-        mojom::Article::New(std::move(generated), is_discover)));
-  }
-
-  return result;
+  return GenerateBlock(articles, pick_hero, pick_article,
+                       inline_discovery_ratio);
 }
 
 // Generates a Channel Block
@@ -832,7 +837,9 @@ void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
       base::BindOnce(
           [](FeedV2Builder* builder) {
-            return builder->GenerateBasicFeed(builder->raw_feed_items_);
+            return builder->GenerateBasicFeed(
+                builder->raw_feed_items_, base::BindRepeating(&PickRoulette),
+                base::BindRepeating(&PickRoulette));
           },
           base::Unretained(this)),
       std::move(callback));
@@ -877,7 +884,9 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
               feed_items.push_back(item->Clone());
             }
 
-            return builder->GenerateBasicFeed(feed_items);
+            return builder->GenerateBasicFeed(
+                feed_items, base::BindRepeating(&PickRoulette),
+                base::BindRepeating(&PickRoulette));
           },
           base::Unretained(this), channel),
       std::move(callback));
@@ -904,7 +913,15 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
               items.push_back(item->Clone());
             }
 
-            return builder->GenerateBasicFeed(items);
+            // Sort by publish time.
+            base::ranges::sort(items, [](const auto& a, const auto& b) {
+              return a->get_article()->data->publish_time >
+                     b->get_article()->data->publish_time;
+            });
+
+            return builder->GenerateBasicFeed(
+                items, base::BindRepeating(&PickFirstIndex),
+                base::BindRepeating(&PickFirstIndex));
           },
           base::Unretained(this), publisher_id),
       std::move(callback));
@@ -1169,7 +1186,9 @@ void FeedV2Builder::GenerateFeed(
           std::move(build_feed), std::move(callback)));
 }
 
-mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items) {
+mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items,
+                                                  PickArticles pick_hero,
+                                                  PickArticles pick_article) {
   DVLOG(1) << __FUNCTION__;
 
   auto suggested_publisher_ids = suggested_publisher_ids_;
@@ -1182,7 +1201,8 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedItems& feed_items) {
   constexpr size_t kIterationsPerAd = 2;
   size_t blocks = 0;
   while (!articles.empty()) {
-    auto items = GenerateBlock(articles, /*inline_discovery_ratio=*/0);
+    auto items = GenerateBlock(articles, pick_hero, pick_article,
+                               /*inline_discovery_ratio=*/0);
     if (items.empty()) {
       break;
     }
