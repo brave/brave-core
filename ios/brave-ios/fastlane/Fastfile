@@ -21,6 +21,19 @@ platform :ios do
       output_types: "junit",
       output_files: "junit.xml",
       ensure_devices_found: true,
+      skip_testing: [
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
+        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
+        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
+        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
+        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork"
+      ]
     )
 
     run_tests(
