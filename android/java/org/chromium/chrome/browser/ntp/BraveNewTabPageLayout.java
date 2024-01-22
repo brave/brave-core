@@ -445,42 +445,38 @@ public class BraveNewTabPageLayout
                                 linearLayoutManager.findFirstVisibleItemPosition();
 
                         int newsFeedPosition = firstNewsFeedPosition();
-
+                        int tabId = -1;
+                        try {
+                            Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                            tabId = tab != null ? tab.getId() : -1;
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "onScrollStateChanged " + e);
+                        }
                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            try {
-                                if (BraveActivity.getBraveActivity().getActivityTab() != null
-                                        && mRecyclerView.getChildCount() > 0) {
-                                    View firstChild = mRecyclerView.getChildAt(0);
-                                    if (firstChild != null) {
-                                        int firstVisiblePosition =
-                                                mRecyclerView.getChildAdapterPosition(firstChild);
-                                        int verticalOffset = firstChild.getTop();
+                            if (tabId != -1 && mRecyclerView.getChildCount() > 0) {
+                                View firstChild = mRecyclerView.getChildAt(0);
+                                if (firstChild != null) {
+                                    int firstVisiblePosition =
+                                            mRecyclerView.getChildAdapterPosition(firstChild);
+                                    int verticalOffset = firstChild.getTop();
 
-                                        ContextUtils.getAppSharedPreferences()
-                                                .edit()
-                                                .putInt(
-                                                        BravePreferenceKeys
-                                                                        .BRAVE_RECYCLERVIEW_OFFSET_POSITION
-                                                                + BraveActivity.getBraveActivity()
-                                                                        .getActivityTab()
-                                                                        .getId(),
-                                                        verticalOffset)
-                                                .apply();
+                                    ContextUtils.getAppSharedPreferences()
+                                            .edit()
+                                            .putInt(
+                                                    BravePreferenceKeys
+                                                                    .BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                            + tabId,
+                                                    verticalOffset)
+                                            .apply();
 
-                                        ContextUtils.getAppSharedPreferences()
-                                                .edit()
-                                                .putInt(
-                                                        BravePreferenceKeys
-                                                                        .BRAVE_RECYCLERVIEW_POSITION
-                                                                + BraveActivity.getBraveActivity()
-                                                                        .getActivityTab()
-                                                                        .getId(),
-                                                        firstVisiblePosition)
-                                                .apply();
-                                    }
+                                    ContextUtils.getAppSharedPreferences()
+                                            .edit()
+                                            .putInt(
+                                                    BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION
+                                                            + tabId,
+                                                    firstVisiblePosition)
+                                            .apply();
                                 }
-                            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                Log.e(TAG, "onScrollStateChanged " + e);
                             }
                         }
                         if (mIsDisplayNewsFeed
@@ -661,6 +657,7 @@ public class BraveNewTabPageLayout
                                                     // if viewed for more than 100 ms and is more
                                                     // than 50%
                                                     // visible send the event
+                                                    final int tabIdForLambda = tabId;
                                                     Timer timer = new Timer();
                                                     timer.schedule(
                                                             new TimerTask() {
@@ -684,7 +681,8 @@ public class BraveNewTabPageLayout
                                                                                                 mUuid,
                                                                                                 mCreativeInstanceId);
 
-                                                                                insertAd();
+                                                                                insertAd(
+                                                                                        tabIdForLambda);
                                                                             }
                                                                         }
                                                                     }.start();
@@ -701,16 +699,11 @@ public class BraveNewTabPageLayout
                         }
                     }
 
-                    private void insertAd() {
+                    private void insertAd(int tabId) {
                         DisplayAd currentDisplayAd =
                                 BraveNewsUtils.getFromDisplayAdsMap(mItemPosition);
-                        try {
-                            mDatabaseHelper.insertAd(
-                                    currentDisplayAd,
-                                    mItemPosition,
-                                    BraveActivity.getBraveActivity().getActivityTab().getId());
-                        } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "insertAd " + e);
+                        if (tabId != -1) {
+                            mDatabaseHelper.insertAd(currentDisplayAd, mItemPosition, tabId);
                         }
                     }
 
