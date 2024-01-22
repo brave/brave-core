@@ -4,6 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import Button from '@brave/leo/react/button'
+import { LinkText } from '../../../../components/shared/style'
 
 export const CheckboxText = styled.div`
   display: flex;
@@ -13,7 +16,7 @@ export const CheckboxText = styled.div`
   padding: 0;
 
   & > p {
-    margin-top: 6px;
+    margin-top: 4px;
     padding-top: 0px;
     padding-left: 14px;
     text-align: left;
@@ -22,10 +25,18 @@ export const CheckboxText = styled.div`
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 26px;
     letter-spacing: 0.01em;
 
-    color: ${(p) => p.theme.color.text01};
+    color: ${leo.color.text.primary};
   }
+`
+
+export const TermsLink = styled(LinkText)`
+  font-weight: 400;
+`
+
+export const ContinueButton = styled(Button)`
+  --leo-button-radius: 12px;
 `

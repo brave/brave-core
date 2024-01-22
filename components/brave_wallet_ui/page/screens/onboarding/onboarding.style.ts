@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+
 import { Column } from '../../../components/shared/style'
 
 // Layout
@@ -133,3 +134,4 @@ export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{
   height: 40px;
   gap: 14px;
 `
+

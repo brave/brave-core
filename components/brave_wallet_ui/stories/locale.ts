@@ -176,8 +176,8 @@ provideStrings({
     'of their respective companies. All rights reserved.',
 
   // Onboarding - Disclosures
-  braveWalletDisclosuresTitle: 'Legal stuff',
-  braveWalletDisclosuresDescription: 'Please acknowledge the following:',
+  braveWalletDisclosuresTitle: 'Before we begin',
+  braveWalletDisclosuresDescription: 'We require that you acknowledge the items below',
   braveWalletSelfCustodyDisclosureCheckboxText:
     'I understand this is a self-custody wallet, ' +
     'and that I alone am responsible for any associated funds, ' +

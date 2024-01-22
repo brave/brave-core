@@ -14,7 +14,7 @@ export const StyledWrapper = styled('div')`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background01};
+  z-index: 2;
   overflow-y: auto;
 `
 
@@ -26,4 +26,6 @@ export const StyledContent = styled('div')<{ isTabView?: boolean }>`
   justify-content: flex-start;
   padding-top: ${(p) => (p.isTabView ? 0 : 32)}px;
   padding-bottom: 0px;
+
+  @
 `

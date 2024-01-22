@@ -18,30 +18,19 @@ import { WalletPageActions } from '../../../actions'
 
 // components
 import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
-import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import {
-  OnboardingStepsNavigation //
-} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // styles
-import { LinkText, VerticalSpace } from '../../../../components/shared/style'
-import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper,
-  TitleAndDescriptionContainer
-} from '../onboarding.style'
-import { CheckboxText } from './disclosures.style'
+import { VerticalSpace } from '../../../../components/shared/style'
+import { NextButtonRow } from '../onboarding.style'
+import { CheckboxText, TermsLink, ContinueButton } from './disclosures.style'
+import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 
 const TermsOfUseText: React.FC<{}> = () => {
   const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')
   return (
     <p key={text.duringTag}>
       {text.beforeTag}
-      <LinkText
+      <TermsLink
         href='https://brave.com/terms-of-use/'
         target='_blank'
         rel='noopener noreferrer'
@@ -51,7 +40,7 @@ const TermsOfUseText: React.FC<{}> = () => {
         }
       >
         {text.duringTag}
-      </LinkText>
+      </TermsLink>
       {text.afterTag}
     </p>
   )
@@ -78,66 +67,54 @@ export const OnboardingDisclosures = () => {
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          <OnboardingStepsNavigation preventSkipAhead />
+    <OnboardingContentLayout
+      title={getLocale('braveWalletDisclosuresTitle')}
+      subTitle={getLocale('braveWalletDisclosuresDescription')}
+    >
+      <VerticalSpace space='55px' />
+      <Checkbox
+        isChecked={isResponsibilityCheckboxChecked}
+        onChange={setIsResponsibilityCheckboxChecked}
+        alignItems='flex-start'
+      >
+        <CheckboxText>
+          <p>{getLocale('braveWalletSelfCustodyDisclosureCheckboxText')}</p>
+        </CheckboxText>
+      </Checkbox>
 
-          <TitleAndDescriptionContainer style={{ marginLeft: 18 }}>
-            <Title>{getLocale('braveWalletDisclosuresTitle')}</Title>
-            <Description>
-              {getLocale('braveWalletDisclosuresDescription')}
-            </Description>
-          </TitleAndDescriptionContainer>
+      <Checkbox
+        isChecked={isTermsCheckboxChecked}
+        onChange={setIsTermsCheckboxChecked}
+        alignItems='flex-start'
+      >
+        <CheckboxText>
+          <TermsOfUseText />
+        </CheckboxText>
+      </Checkbox>
 
-          <div>
-            <Checkbox
-              isChecked={isResponsibilityCheckboxChecked}
-              onChange={setIsResponsibilityCheckboxChecked}
-              alignItems='flex-start'
-            >
-              <CheckboxText>
-                <p>
-                  {getLocale('braveWalletSelfCustodyDisclosureCheckboxText')}
-                </p>
-              </CheckboxText>
-            </Checkbox>
+      <VerticalSpace space='44px' />
 
-            <Checkbox
-              isChecked={isTermsCheckboxChecked}
-              onChange={setIsTermsCheckboxChecked}
-              alignItems='flex-start'
-            >
-              <CheckboxText>
-                <TermsOfUseText />
-              </CheckboxText>
-            </Checkbox>
-
-            <VerticalSpace space='44px' />
-          </div>
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonContinue')}
-              onSubmit={() => {
-                dispatch(WalletPageActions.agreeToWalletTerms())
-                history.push(
-                  onboardingType === 'hardware'
-                    ? WalletRoutes.OnboardingHardwareWalletNetworkSelection
-                    : onboardingType === 'import'
-                    ? WalletRoutes.OnboardingImportNetworkSelection
-                    : WalletRoutes.OnboardingNewWalletNetworkSelection
-                )
-              }}
-              disabled={
-                !(isResponsibilityCheckboxChecked && isTermsCheckboxChecked)
-              }
-            />
-          </NextButtonRow>
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+      <NextButtonRow>
+        <ContinueButton
+          onClick={() => {
+            dispatch(WalletPageActions.agreeToWalletTerms())
+            history.push(
+              onboardingType === 'hardware'
+                ? WalletRoutes.OnboardingHardwareWalletNetworkSelection
+                : onboardingType === 'import'
+                ? WalletRoutes.OnboardingImportNetworkSelection
+                : WalletRoutes.OnboardingNewWalletNetworkSelection
+            )
+          }}
+          isDisabled={
+            !(isResponsibilityCheckboxChecked && isTermsCheckboxChecked)
+          }
+        >
+          {getLocale('braveWalletButtonContinue')}
+        </ContinueButton>
+      </NextButtonRow>
+      <VerticalSpace space='36px' />
+    </OnboardingContentLayout>
   )
 }
 
