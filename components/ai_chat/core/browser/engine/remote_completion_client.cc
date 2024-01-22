@@ -102,7 +102,8 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
   DCHECK(!path.starts_with("/"));
 
   auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
-  auto hostname = brave_domains::GetServicesDomain(prefix);
+  auto hostname = brave_domains::GetServicesDomain(
+      prefix, brave_domains::kBraveServicesSwitchValueDev);
 
   GURL url{base::StrCat(
       {url::kHttpsScheme, url::kStandardSchemeSeparator, hostname, "/", path})};

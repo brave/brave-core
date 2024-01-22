@@ -18,10 +18,7 @@ namespace brave_domains {
 
 namespace {
 
-const char kBraveServicesEnvironmentSwitch[] = "brave-services-env";
-const char kBraveServicesSwitchValueStaging[] = "staging";
-const char kBraveServicesSwitchValueDev[] = "dev";
-const char kBraveServicesSwitchValueProduction[] = "prod";
+constexpr char kBraveServicesEnvironmentSwitch[] = "brave-services-env";
 
 std::string GetServicesDomainForSwitchValue(std::string env_from_switch) {
   if (env_from_switch == kBraveServicesSwitchValueStaging) {
@@ -62,39 +59,42 @@ void MaybeWarnSwitchValue(std::string key, std::string value) {
 }  // namespace
 
 std::string GetServicesDomain(
-    std::string prefix /* = "" */,
+    std::string prefix,
+    std::string env_value_default,
     base::CommandLine*
-        command_line /* = base::CommandLine::ForCurrentProcess()*/) {
+        command_line /* = base::CommandLine::ForCurrentProcess() */) {
   std::string env_key;
-  std::string env_from_switch;
+  std::string env_value;
 
   // Dynamic key allows overriding environment for just a subdomain prefix
   if (!prefix.empty()) {
     env_key = base::StrCat({"env-", prefix});
-    env_from_switch = command_line->GetSwitchValueASCII(env_key);
-    MaybeWarnSwitchValue(env_key, env_from_switch);
+    env_value = command_line->GetSwitchValueASCII(env_key);
+    MaybeWarnSwitchValue(env_key, env_value);
+  }
+
+  if (env_value.empty()) {
+    env_value = env_value_default;
   }
 
   // When not overriden or invalid, use global default or override
-  if (env_key.empty() || env_from_switch.empty() ||
-      !IsValidSwitchValue(env_from_switch)) {
-    env_from_switch =
+  if (env_key.empty() || env_value.empty() || !IsValidSwitchValue(env_value)) {
+    env_value =
         command_line->GetSwitchValueASCII(kBraveServicesEnvironmentSwitch);
-    MaybeWarnSwitchValue(kBraveServicesEnvironmentSwitch, env_from_switch);
+    MaybeWarnSwitchValue(kBraveServicesEnvironmentSwitch, env_value);
     // Handle global default is not overriden or is invalid
-    if (!env_from_switch.empty() && !IsValidSwitchValue(env_from_switch)) {
-      env_from_switch.clear();
+    if (!env_value.empty() && !IsValidSwitchValue(env_value)) {
+      env_value.clear();
     }
   }
 
   // Build hostname
-
   if (prefix.empty()) {
-    return GetServicesDomainForSwitchValue(env_from_switch);
+    return GetServicesDomainForSwitchValue(env_value);
   }
 
   return base::StrCat(
-      {prefix, ".", GetServicesDomainForSwitchValue(env_from_switch)});
+      {prefix, ".", GetServicesDomainForSwitchValue(env_value)});
 }
 
 }  // namespace brave_domains

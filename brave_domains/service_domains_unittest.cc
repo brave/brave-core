@@ -42,21 +42,21 @@ TEST(BraveServiceDomains, TestValuesPresent) {
 TEST(BraveServiceDomains, ProductionWhenEmpty) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
 
-  EXPECT_EQ(GetServicesDomain("", &cl), kProductionValue);
+  EXPECT_EQ(GetServicesDomain("", "", &cl), kProductionValue);
 }
 
 TEST(BraveServiceDomains, GlobalStaging) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
   cl.AppendSwitchASCII("brave-services-env", "staging");
 
-  EXPECT_EQ(GetServicesDomain("", &cl), kStagingValue);
+  EXPECT_EQ(GetServicesDomain("", "", &cl), kStagingValue);
 }
 
 TEST(BraveServiceDomains, GlobalDev) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
   cl.AppendSwitchASCII("brave-services-env", "dev");
 
-  EXPECT_EQ(GetServicesDomain("", &cl), kDevValue);
+  EXPECT_EQ(GetServicesDomain("", "", &cl), kDevValue);
 }
 
 TEST(BraveServiceDomains, PrefixOverride) {
@@ -66,20 +66,48 @@ TEST(BraveServiceDomains, PrefixOverride) {
   cl.AppendSwitchASCII("brave-services-env", "dev");
   cl.AppendSwitchASCII("env-my.sub.domain", "prod");
 
-  auto prefixed_domain = GetServicesDomain(prefix, &cl);
+  auto prefixed_domain = GetServicesDomain(prefix, "", &cl);
 
   // Prefixed domain should be production override
   EXPECT_TRUE(base::EndsWith(prefixed_domain, kProductionValue));
   EXPECT_TRUE(base::StartsWith(prefixed_domain, prefix));
 
   // All other domain retrievals should be dev
-  EXPECT_EQ(GetServicesDomain("", &cl), kDevValue);
+  EXPECT_EQ(GetServicesDomain("", "", &cl), kDevValue);
 
   std::string other_prefix = "another_prefix";
-  auto other_prefixed_domain = GetServicesDomain(other_prefix, &cl);
+  auto other_prefixed_domain = GetServicesDomain(other_prefix, "", &cl);
 
   EXPECT_TRUE(base::EndsWith(other_prefixed_domain, kDevValue));
   EXPECT_TRUE(base::StartsWith(other_prefixed_domain, other_prefix));
+}
+
+TEST(BraveServiceDomains, DefaultEnvValue) {
+  std::string prefix = "test_prefix";
+
+  base::CommandLine cl(base::CommandLine::NO_PROGRAM);
+
+  // When no env is present from the command line switch, the default is used.
+  auto result = GetServicesDomain(prefix, "dev", &cl);
+  EXPECT_EQ(result, base::StrCat({prefix, ".", kDevValue}));
+
+  // When an invalid env is passed as a default present the production value is
+  // used.
+  result = GetServicesDomain(prefix, "invalid", &cl);
+  EXPECT_EQ(result, base::StrCat({prefix, ".", kProductionValue}));
+
+  // When an env is present from the command line switch, the default is
+  // ignored.
+  cl.AppendSwitchASCII("env-test_prefix", "dev");
+  result = GetServicesDomain(prefix, "staging", &cl);
+  EXPECT_EQ(result, base::StrCat({prefix, ".", kDevValue}));
+
+  // When an global env is present from the command line switch, the default is
+  // used.
+  base::CommandLine cl2(base::CommandLine::NO_PROGRAM);
+  cl2.AppendSwitchASCII("brave-services-env", "dev");
+  result = GetServicesDomain(prefix, "staging", &cl2);
+  EXPECT_EQ(result, base::StrCat({prefix, ".", kStagingValue}));
 }
 
 }  // namespace brave_domains

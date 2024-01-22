@@ -9,7 +9,12 @@
 #include <string>
 
 #include "base/command_line.h"
+
 namespace brave_domains {
+
+constexpr char kBraveServicesSwitchValueDev[] = "dev";
+constexpr char kBraveServicesSwitchValueStaging[] = "staging";
+constexpr char kBraveServicesSwitchValueProduction[] = "prod";
 
 // Gets production services domain, or returns staging or dev
 // domain if relevant cli parameter is present.
@@ -24,7 +29,8 @@ namespace brave_domains {
 //
 // Prefix overridde(s) take precedence over global override.
 std::string GetServicesDomain(
-    std::string prefix = "",
+    std::string prefix,
+    std::string env_value_default = "",
     base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
 
 }  // namespace brave_domains
