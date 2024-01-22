@@ -25,8 +25,9 @@ if (enable_brave_vpn) {
       "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h",
       "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.cc",
       "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h",
+      "//brave/browser/brave_vpn/win/vpn_utils_win.cc",
+      "//brave/browser/brave_vpn/win/vpn_utils_win.h",
     ]
-
     brave_browser_brave_vpn_deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser:browser_process",
@@ -34,6 +35,8 @@ if (enable_brave_vpn) {
       "//brave/components/brave_vpn/common/win",
       "//brave/components/brave_vpn/common/wireguard/win",
       "//chrome/common:constants",
+      "//chrome/elevation_service:public_headers",
+      "//chrome/install_static:install_static_util",
       "//components/prefs",
       "//net",
       "//third_party/abseil-cpp:absl",

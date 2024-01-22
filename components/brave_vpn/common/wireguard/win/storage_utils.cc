@@ -153,7 +153,7 @@ bool ShouldFallbackToIKEv2() {
   DWORD launch = 0;
   storage->ReadValueDW(kBraveVpnWireguardCounterOfTunnelUsage, &launch);
   return launch >= kBraveVpnWireguardMaxFailedAttempts ||
-         !wireguard::IsWireguardServiceRegistered();
+         !wireguard::IsWireguardServiceInstalled();
 }
 
 // Increments number of usages for the wireguard tunnel service.

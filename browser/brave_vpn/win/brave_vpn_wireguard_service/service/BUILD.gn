@@ -11,8 +11,6 @@ source_set("service") {
   sources = [
     "brave_wireguard_manager.cc",
     "brave_wireguard_manager.h",
-    "install_utils.cc",
-    "install_utils.h",
     "wireguard_service_runner.cc",
     "wireguard_service_runner.h",
     "wireguard_tunnel_service.cc",
@@ -26,5 +24,5 @@ source_set("service") {
     "//brave/components/brave_vpn/common/wireguard/win",
     "//chrome/installer/util:with_no_strings",
   ]
-  libs = [ "Shell32.lib" ]
+  libs = [ "runtimeobject.lib" ]
 }

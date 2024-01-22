@@ -24,7 +24,8 @@ class BraveVPNWireguardConnectionAPI
  public:
   BraveVPNWireguardConnectionAPI(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_prefs);
+      PrefService* local_prefs,
+      base::RepeatingCallback<bool()> service_installer);
 
   BraveVPNWireguardConnectionAPI(const BraveVPNWireguardConnectionAPI&) =
       delete;

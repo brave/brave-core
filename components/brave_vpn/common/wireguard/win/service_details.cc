@@ -108,6 +108,7 @@ std::wstring GetBraveVpnWireguardTunnelServiceName() {
   return kBraveWireguardTunnelServiceName;
 }
 
+// only used by `chromium_src/chrome/installer/setup/install_worker.cc`
 base::FilePath GetBraveVPNWireguardServiceInstallationPath(
     const base::FilePath& target_path,
     const base::Version& version) {
@@ -117,12 +118,9 @@ base::FilePath GetBraveVPNWireguardServiceInstallationPath(
 }
 
 base::FilePath GetBraveVPNWireguardServiceExecutablePath() {
-  base::FilePath exe_dir;
-  base::PathService::Get(base::DIR_EXE, &exe_dir);
-  return version_info::IsOfficialBuild()
-             ? brave_vpn::GetBraveVPNWireguardServiceInstallationPath(
-                   exe_dir, version_info::GetVersion())
-             : exe_dir.Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
+  base::FilePath asset_dir = base::PathService::CheckedGet(base::DIR_ASSETS);
+  return asset_dir.Append(brave_vpn::kBraveVpnWireguardServiceSubFolder)
+      .Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
 }
 
 }  // namespace brave_vpn

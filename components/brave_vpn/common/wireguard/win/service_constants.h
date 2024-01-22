@@ -15,13 +15,6 @@ inline constexpr wchar_t kBraveVpnWireguardServiceExecutable[] =
 inline constexpr wchar_t kBraveVpnWireguardCounterOfTunnelUsage[] =
     L"tunnel_launches_counter";
 
-// Register and configure windows service.
-inline constexpr char kBraveVpnWireguardServiceInstallSwitchName[] = "install";
-
-// Remove config and all stuff related to service.
-inline constexpr char kBraveVpnWireguardServiceUnnstallSwitchName[] =
-    "uninstall";
-
 // Load wireguard binaries and connect to vpn using passed config.
 inline constexpr char kBraveVpnWireguardServiceConnectSwitchName[] = "connect";
 
