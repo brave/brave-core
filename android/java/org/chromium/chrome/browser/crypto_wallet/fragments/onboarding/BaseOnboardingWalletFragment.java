@@ -16,7 +16,9 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFra
 public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFragment {
 
     /** Returns {@code true} if the fragment can be closed. */
-    abstract boolean canBeClosed();
+    protected boolean canBeClosed() {
+        return true;
+    }
 
     /** Returns {@code true} if the fragment allows backward navigation. */
     protected boolean canNavigateBack() {

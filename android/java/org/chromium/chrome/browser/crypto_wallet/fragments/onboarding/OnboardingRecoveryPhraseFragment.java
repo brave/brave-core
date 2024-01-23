@@ -60,7 +60,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                                       .get(OnboardingViewModel.class);
+                .get(OnboardingViewModel.class);
         mOnboardingViewModel.getPassword().observe(getViewLifecycleOwner(), password -> {
             if (password == null) {
                 return;
@@ -111,11 +111,6 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                 mOnNextPage.onboardingCompleted();
             }
         });
-    }
-
-    @Override
-    boolean canBeClosed() {
-        return true;
     }
 
     private void setupRecoveryPhraseRecyclerView(@NonNull View view) {

@@ -87,11 +87,6 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
         });
     }
 
-    @Override
-    boolean canBeClosed() {
-        return true;
-    }
-
     private void proceedWithStrongPassword(@NonNull final String password, @NonNull final View view) {
         EditText retypePasswordEdittext = view.findViewById(R.id.secure_crypto_retype_password);
         String retypePasswordInput = retypePasswordEdittext.getText().toString();

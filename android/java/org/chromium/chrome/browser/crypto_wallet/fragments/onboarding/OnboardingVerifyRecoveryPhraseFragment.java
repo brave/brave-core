@@ -133,11 +133,6 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         });
     }
 
-    @Override
-    boolean canBeClosed() {
-        return true;
-    }
-
     private void phraseNotMatch() {
         resetRecoveryPhrasesViews();
         Toast.makeText(requireActivity(), R.string.phrases_did_not_match, Toast.LENGTH_SHORT).show();

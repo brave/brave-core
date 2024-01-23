@@ -129,11 +129,6 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                 });
     }
 
-    @Override
-    boolean canBeClosed() {
-        return true;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void enableBiometricLogin(String passwordInput) {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =

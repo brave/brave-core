@@ -23,7 +23,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     }
 
     @Override
-    boolean canBeClosed() {
+    protected boolean canBeClosed() {
         return false;
     }
 

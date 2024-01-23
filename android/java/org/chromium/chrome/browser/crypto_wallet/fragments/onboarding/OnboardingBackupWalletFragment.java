@@ -146,11 +146,6 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
     }
 
     @Override
-    boolean canBeClosed() {
-        return true;
-    }
-
-    @Override
     protected boolean canNavigateBack() {
         return false;
     }
