@@ -172,6 +172,19 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
         ->MakeRemote();
   }
 
+  void SetSkusState(const std::string& skusStateValue) {
+    base::Value::Dict state;
+    // Unofficial builds will use the unofficial default for
+    // Leo SKUs, which is staging. Official builds will use
+    // production by default.
+#if defined(OFFICIAL_BUILD)
+    state.Set("skus:production", skusStateValue);
+#else
+    state.Set("skus:staging", skusStateValue);
+#endif
+    prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
+  }
+
   void TestGetPremiumStatus(mojom::PremiumStatus expected_status,
                             mojom::PremiumInfoPtr expected_info) {
     base::RunLoop run_loop;
@@ -286,10 +299,8 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActive) {
   exploded.millisecond = 0;  // Trim off milliseconds because they are not
                              // included in the skusState.
   ASSERT_TRUE(base::Time::FromUTCExploded(exploded, &start_time));
-  base::Value::Dict state;
   std::string skusStateValue = formatSkusStateValue(start_time);
-  state.Set("skus:staging", skusStateValue);
-  prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
+  SetSkusState(skusStateValue);
   base::Time expected_next_active_at = start_time + base::Days(2);
   expected_premium_info = mojom::PremiumInfo::New(3, expected_next_active_at);
   TestGetPremiumStatus(mojom::PremiumStatus::Active,
@@ -306,8 +317,7 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActive) {
   // Set the SKUs state to be on the final batch. There will be remaining valid
   // credentials, but next_active_at will be null.
   skusStateValue = formatSkusStateValue(start_time, -2);
-  state.Set("skus:staging", skusStateValue);
-  prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
+  SetSkusState(skusStateValue);
   expected_premium_info = mojom::PremiumInfo::New(2, std::nullopt);
   TestGetPremiumStatus(mojom::PremiumStatus::Active,
                        std::move(expected_premium_info));
@@ -315,8 +325,7 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActive) {
   // ActiveDisconnected
   start_time += base::Days(30);
   skusStateValue = formatSkusStateValue(start_time);
-  state.Set("skus:staging", skusStateValue);
-  prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
+  SetSkusState(skusStateValue);
   expected_premium_info = mojom::PremiumInfo::New(0, std::nullopt);
   TestGetPremiumStatus(mojom::PremiumStatus::ActiveDisconnected,
                        std::move(expected_premium_info));
@@ -333,11 +342,9 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActive) {
 TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActiveDisconnected) {
   // Would other wise be ActiveDisconnected state based on the SKUs state,
   // however, since there's a credential in the cache, it's Active.
-  base::Value::Dict state;
   const std::string skusStateValue =
       formatSkusStateValue(base::Time::Now() + base::Days(30));
-  state.Set("skus:staging", skusStateValue);
-  prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
+  SetSkusState(skusStateValue);
   mojom::PremiumInfoPtr expected_premium_info =
       mojom::PremiumInfo::New(0, std::nullopt);
   TestGetPremiumStatus(mojom::PremiumStatus::ActiveDisconnected,

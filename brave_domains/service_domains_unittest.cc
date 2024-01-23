@@ -92,9 +92,14 @@ TEST(BraveServiceDomains, DefaultEnvValue) {
   auto result = GetServicesDomain(prefix, "", &cl);
   EXPECT_EQ(result, base::StrCat({prefix, ".", kProductionValue}));
 
-  // When no env is present from the command line switch, the default is used.
+  // When no env is present from the command line switch, the default is used
+  // (unless it's an official build, in which case it's ignored).
   result = GetServicesDomain(prefix, "dev", &cl);
+#if defined(OFFICIAL_BUILD)
+  EXPECT_EQ(result, base::StrCat({prefix, ".", kProductionValue}));
+#else
   EXPECT_EQ(result, base::StrCat({prefix, ".", kDevValue}));
+#endif
 
   // When an invalid env is passed as a default present the production value is
   // used.
