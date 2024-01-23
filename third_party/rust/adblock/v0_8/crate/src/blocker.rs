@@ -800,6 +800,7 @@ impl NetworkFilterList {
             };
 
             optimized.append(&mut unoptimizable);
+            optimized.shrink_to_fit();
             optimized_map.insert(key, optimized);
         }
 
