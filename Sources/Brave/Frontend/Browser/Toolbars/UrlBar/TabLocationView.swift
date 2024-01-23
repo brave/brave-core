@@ -79,7 +79,10 @@ class TabLocationView: UIView {
     var title = AttributedString(Strings.tabToolbarNotSecureTitle)
     title.font = .preferredFont(forTextStyle: .subheadline, compatibleWith: clampedTraitCollection)
     
-    let isTitleVisible = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory && bounds.width > 200
+    // Hide the title with mixed content due to a WebKit bug (https://bugs.webkit.org/show_bug.cgi?id=258711)
+    // which fails to update `hasOnlySecureContent` even when promoting all http content.
+    let isTitleVisible = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory &&
+        bounds.width > 200 && secureContentState != .mixedContent
     
     switch secureContentState {
     case .localhost, .secure:

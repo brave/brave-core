@@ -1,0 +1,12 @@
+[
+  {
+    "trigger": {
+      "url-filter": "http://.*",
+      "if-top-url": ["https://.*"],
+      "resource-type": ["image", "media"]
+    },
+    "action": {
+      "type": "make-https"
+    }
+  }
+]

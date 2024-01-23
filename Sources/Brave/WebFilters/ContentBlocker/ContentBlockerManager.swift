@@ -51,6 +51,7 @@ actor ContentBlockerManager {
     case blockAds
     case blockCookies
     case blockTrackers
+    case upgradeMixedContent
     
     func mode(isAggressiveMode: Bool) -> BlockingMode {
       switch self {
@@ -60,7 +61,7 @@ actor ContentBlockerManager {
         } else {
           return .standard
         }
-      case .blockCookies, .blockTrackers:
+      case .blockCookies, .blockTrackers, .upgradeMixedContent:
         return .general
       }
     }
@@ -70,6 +71,7 @@ actor ContentBlockerManager {
       case .blockAds: return "block-ads"
       case .blockCookies: return "block-cookies"
       case .blockTrackers: return "block-trackers"
+      case .upgradeMixedContent: return "mixed-content-upgrade"
       }
     }
   }
@@ -355,6 +357,9 @@ actor ContentBlockerManager {
     if Preferences.Privacy.blockAllCookies.value {
       results.insert(.blockCookies)
     }
+    
+    // Always upgrade mixed content
+    results.insert(.upgradeMixedContent)
     
     return results
   }
