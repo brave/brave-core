@@ -50,11 +50,11 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chrono/v0_4:lib",
     "//brave/third_party/rust/mime/v0_3:lib",
     "//brave/third_party/rust/quick_xml/v0_27:lib",
-    "//brave/third_party/rust/regex/v1:lib",
     "//brave/third_party/rust/siphasher/v0_3:lib",
     "//brave/third_party/rust/url/v2:lib",
     "//brave/third_party/rust/uuid/v1:lib",
     "//third_party/rust/lazy_static/v1:lib",
+    "//third_party/rust/regex/v1:lib",
     "//third_party/rust/serde/v1:lib",
     "//third_party/rust/serde_json/v1:lib",
   ]
