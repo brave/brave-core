@@ -91,7 +91,7 @@ constexpr char kSkusStateValueTemplate[] = R"({
           "currency": "USD",
           "description": "brave-leo-premium",
           "id": "b7114ccc-b3a5-4951-9a5d-8b7a28731111",
-          "location": "leo.bravesoftware.com",
+          "location": "$6",
           "order_id": "e24787ab-7bc3-46b9-bc05-65befb361111",
           "price": 15,
           "quantity": 1,
@@ -101,7 +101,7 @@ constexpr char kSkusStateValueTemplate[] = R"({
         }
       ],
       "last_paid_at": "$1",
-      "location": "leo.bravesoftware.com",
+      "location": "$6",
       "merchant_id": "brave.com",
       "metadata": {
         "num_intervals": 3,
@@ -133,6 +133,13 @@ std::string formatSkusStateValue(const base::Time start_time,
     replacements.push_back(formatted_time);
   }
 
+#if defined(OFFICIAL_BUILD)
+  const std::string skus_domain = "leo.brave.com";
+#else
+  const std::string skus_domain = "leo.bravesoftware.com";
+#endif
+
+  replacements.push_back(skus_domain);
   const std::string result = base::ReplaceStringPlaceholders(
       kSkusStateValueTemplate, replacements, nullptr);
   return result;
