@@ -46,6 +46,7 @@ def main():
     UpdateSymlink(config, target_arch, target_environment)
     BuildCore(config, target_arch, target_environment)
     CleanupChromiumAssets(output_dir)
+    FixMaterialComponentsVersionString(output_dir)
     GenerateXCFrameworks(config, target_arch, target_environment)
     GenerateXcodeConfig(output_dir)
     CallNpm(['npm', 'run', 'ios_pack_js'])
@@ -96,6 +97,19 @@ def CleanupChromiumAssets(output_dir):
     # TODO(@brave/ios): Get this removed in the brave-core builds if possible
     framework_dir = os.path.join(output_dir, "BraveCore.framework")
     os.remove(os.path.join(framework_dir, "Assets.car"))
+
+
+def FixMaterialComponentsVersionString(output_dir):
+    """Adds a CFBundleShortVersionString to the outputted MaterialComponents
+    framework so that it's valid to upload"""
+    # TODO(@brave/ios): Fix this with a patch or chromium_src override somehow
+    framework_dir = os.path.join(output_dir, "MaterialComponents.framework")
+    cmd_args = [
+        '/usr/libexec/PlistBuddy', '-c',
+        'Add :CFBundleShortVersionString string 1.0',
+        os.path.join(framework_dir, 'Info.plist')
+    ]
+    subprocess.call(cmd_args, cwd=brave_root_dir)
 
 
 def GenerateXCFrameworks(config, target_arch, target_environment):
