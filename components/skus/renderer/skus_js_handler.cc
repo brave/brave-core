@@ -316,7 +316,9 @@ void SkusJSHandler::OnCredentialSummary(
     return;
   }
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_service_->LoadPurchasedState(domain);
+  if (vpn_service_.is_bound()) {
+    vpn_service_->LoadPurchasedState(domain);
+  }
 #endif
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(*result_dict, context);
