@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 
+#include <map>
 #include <memory>
 #include <optional>
 #include <utility>
