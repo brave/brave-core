@@ -114,7 +114,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                 showPasswordRelatedControls();
             } else {
                 createBiometricPrompt();
-                
+
             }
         } else if (mOnNextPage != null) {
             mOnNextPage.enableBiometricPrompt();
@@ -191,7 +191,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                 .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
                         (dialog, which)
                                 -> authenticationCallback.onAuthenticationError(
-                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
+                                BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
