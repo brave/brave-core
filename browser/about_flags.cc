@@ -43,6 +43,7 @@
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
+#include "components/history//core/browser/features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
@@ -428,11 +429,11 @@
           FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),            \
       },                                                                      \
       {                                                                       \
-          "brave-omnibox-more-history-results",                               \
+          "brave-history-more-search-results",                                \
           "Brave More History",                                               \
           "Include more history in the omnibox search results",               \
           kOsWin | kOsLinux | kOsMac | kOsAndroid,                            \
-          FEATURE_VALUE_TYPE(omnibox::kOmniboxMoreHistoryResults),            \
+          FEATURE_VALUE_TYPE(history::kHistoryMoreSearchResults),             \
       })
 
 #define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
