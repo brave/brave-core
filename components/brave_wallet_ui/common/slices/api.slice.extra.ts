@@ -296,3 +296,32 @@ export const useReceiveAddressQuery = (
 
   return receiveAddress
 }
+
+export const useGetIsRegistryTokenQuery = (
+  arg:
+    | {
+        chainId: string
+        address: string
+      }
+    | typeof skipToken
+) => {
+  return useGetTokensRegistryQuery(undefined, {
+    selectFromResult: (res) => {
+      if (arg === skipToken) {
+        return {
+          isLoading: res.isLoading
+        }
+      }
+
+      const assetId = res.data?.idsByChainId[arg.chainId].find((id) =>
+        id.toString().includes(arg?.address)
+      )
+      const asset = assetId ? res.data?.entities[assetId] : undefined
+
+      return {
+        isLoading: res.isLoading,
+        isVerified: res.isLoading ? undefined : Boolean(asset)
+      }
+    }
+  })
+}
