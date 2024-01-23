@@ -11,12 +11,7 @@ import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
-import {
-  BraveWallet,
-  SafeBlowfishEvmResponse,
-  SafeBlowfishSolanaResponse,
-  TxSimulationOptInStatus
-} from '../../../constants/types'
+import { BraveWallet, TxSimulationOptInStatus } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -48,7 +43,9 @@ import {
   mockBasicAttentionToken,
   mockErc20TokensList,
   mockErc721Token,
-  mockSplNft
+  mockSplBat,
+  mockSplNft,
+  mockSplUSDC
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockFilSendTransaction,
@@ -99,14 +96,8 @@ export interface WalletApiDataOverrides {
   nativeBalanceRegistry?: NativeAssetBalanceRegistry
   tokenBalanceRegistry?: TokenBalanceRegistry
   simulationOptInStatus?: TxSimulationOptInStatus
-  evmSimulationResponse?:
-    | BraveWallet.EVMSimulationResponse
-    | SafeBlowfishEvmResponse
-    | null
-  svmSimulationResponse?:
-    | BraveWallet.SolanaSimulationResponse
-    | SafeBlowfishSolanaResponse
-    | null
+  evmSimulationResponse?: BraveWallet.EVMSimulationResponse | null
+  svmSimulationResponse?: BraveWallet.SolanaSimulationResponse | null
 }
 
 export class MockedWalletApiProxy {
@@ -140,20 +131,16 @@ export class MockedWalletApiProxy {
   blockchainTokens: BraveWallet.BlockchainToken[] = [
     ...mockErc20TokensList,
     mockErc721Token,
-    mockSplNft
+    mockSplNft,
+    mockSplBat,
+    mockSplUSDC
   ]
 
   userAssets: BraveWallet.BlockchainToken[] = mockAccountAssetOptions
 
-  evmSimulationResponse:
-    | BraveWallet.EVMSimulationResponse
-    | SafeBlowfishEvmResponse
-    | null = null
+  evmSimulationResponse: BraveWallet.EVMSimulationResponse | null = null
 
-  svmSimulationResponse:
-    | BraveWallet.SolanaSimulationResponse
-    | SafeBlowfishSolanaResponse
-    | null = null
+  svmSimulationResponse: BraveWallet.SolanaSimulationResponse | null = null
 
   txSimulationOptInStatus: TxSimulationOptInStatus = 'allowed'
 

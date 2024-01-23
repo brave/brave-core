@@ -303,12 +303,16 @@ export const mockSplNft: BraveWallet.BlockchainToken = {
 
 export const mockSplBat = {
   ...mockBasicAttentionToken,
+  coin: BraveWallet.CoinType.SOL,
+  isErc20: false,
   contractAddress: 'splBat498tu349u498j',
   chainId: BraveWallet.SOLANA_MAINNET
 }
 
-const mockSplUSDC = {
+export const mockSplUSDC = {
   ...mockUSDCoin,
+  coin: BraveWallet.CoinType.SOL,
+  isErc20: false,
   contractAddress: 'splusd09856080378450y75',
   chainId: BraveWallet.SOLANA_MAINNET
 }
