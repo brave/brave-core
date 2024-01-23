@@ -28,7 +28,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     }
 
     @Override
-    boolean canNavigateBack() {
+    protected boolean canNavigateBack() {
         return false;
     }
 }

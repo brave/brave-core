@@ -118,11 +118,6 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
         return true;
     }
 
-    @Override
-    boolean canNavigateBack() {
-        return true;
-    }
-
     private void setupRecoveryPhraseRecyclerView(@NonNull View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
         assert getActivity() != null;

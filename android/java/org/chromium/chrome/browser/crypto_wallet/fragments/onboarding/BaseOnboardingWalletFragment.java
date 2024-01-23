@@ -19,7 +19,9 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
     abstract boolean canBeClosed();
 
     /** Returns {@code true} if the fragment allows backward navigation. */
-    abstract boolean canNavigateBack();
+    protected boolean canNavigateBack() {
+        return true;
+    }
 
     @Override
     public void onResume() {

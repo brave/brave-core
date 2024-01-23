@@ -72,11 +72,11 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
     }
 
     public void setSelectedRecoveryPhrase(final boolean selectedRecoveryPhrase) {
-        this.mSelectedRecoveryPhrase = selectedRecoveryPhrase;
+        mSelectedRecoveryPhrase = selectedRecoveryPhrase;
     }
 
     public void addPhraseAtPosition(int position, String phrase) {
-        this.mRecoveryPhraseList.set(position, phrase);
+        mRecoveryPhraseList.set(position, phrase);
     }
 
     public void removeSelectedPhrase(String phrase) {
@@ -91,7 +91,7 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
     }
 
     public void setRecoveryPhraseList(List<String> recoveryPhraseList) {
-        this.mRecoveryPhraseList = recoveryPhraseList;
+        mRecoveryPhraseList = recoveryPhraseList;
     }
 
     public void setOnRecoveryPhraseSelectedListener(

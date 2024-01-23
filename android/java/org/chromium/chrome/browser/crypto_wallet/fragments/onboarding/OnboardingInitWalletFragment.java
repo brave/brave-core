@@ -91,7 +91,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     }
 
     @Override
-    boolean canNavigateBack() {
+    protected boolean canNavigateBack() {
         return false;
     }
 

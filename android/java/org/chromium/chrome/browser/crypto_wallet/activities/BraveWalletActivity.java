@@ -462,21 +462,13 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     @Override
-    public void showCloseButton(boolean show) {
-        if (show) {
-            mOnboardingCloseButton.setVisibility(View.VISIBLE);
-        } else {
-            mOnboardingCloseButton.setVisibility(View.GONE);
-        }
+    public void showCloseButton(final boolean show) {
+        mOnboardingCloseButton.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override
-    public void showBackButton(boolean show) {
-        if (show) {
-            mOnboardingBackButton.setVisibility(View.VISIBLE);
-        } else {
-            mOnboardingBackButton.setVisibility(View.GONE);
-        }
+    public void showBackButton(final boolean show) {
+        mOnboardingBackButton.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override
