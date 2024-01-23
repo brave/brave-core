@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/country_codes/country_codes.h"
+#include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
@@ -44,12 +45,14 @@ std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
 
 class BraveTemplateURLServiceUtilTest : public testing::Test {
  public:
+  BraveTemplateURLServiceUtilTest() : search_engine_choice_service_(prefs_) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
   }
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  search_engines::SearchEngineChoiceService search_engine_choice_service_;
 };
 
 void TestDefaultOrder(const TemplateURL::OwnedTemplateURLVector& template_urls,
@@ -110,8 +113,8 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
 
   prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
   GetSearchProvidersUsingKeywordResult(
-      result, nullptr, &prefs_, &template_urls, default_turl.get(),
-      SearchTermsData(), &new_resource_keyword_version,
+      result, nullptr, &prefs_, &search_engine_choice_service_, &template_urls,
+      default_turl.get(), SearchTermsData(), &new_resource_keyword_version,
       &new_resource_starter_pack_version, nullptr);
 
   // Verify count and order.
@@ -140,8 +143,8 @@ TEST_F(BraveTemplateURLServiceUtilTest,
   // Check Germany.
   prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
   GetSearchProvidersUsingKeywordResult(
-      result, nullptr, &prefs_, &template_urls, default_turl.get(),
-      SearchTermsData(), &new_resource_keyword_version,
+      result, nullptr, &prefs_, &search_engine_choice_service_, &template_urls,
+      default_turl.get(), SearchTermsData(), &new_resource_keyword_version,
       &new_resource_starter_pack_version, nullptr);
 
   // Verify count and order.

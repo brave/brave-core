@@ -26,6 +26,7 @@ namespace TemplateURLPrepopulateData {
 // default value of the last two arguents.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines_Unused(
     PrefService* prefs,
+    search_engines::SearchEngineChoiceService* search_engine_choice_service,
     size_t* default_search_provider_index,
     bool include_current_default = false,
     TemplateURLService* template_url_service = nullptr);
@@ -605,6 +606,7 @@ int GetDataVersion(PrefService* prefs) {
 // get search engines defined by Brave.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
     PrefService* prefs,
+    search_engines::SearchEngineChoiceService* search_engine_choice_service,
     size_t* default_search_provider_index,
     bool include_current_default,
     TemplateURLService* template_url_service) {
@@ -623,7 +625,9 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   }
 
   return GetBravePrepopulatedEnginesForCountryID(
-      country_codes::GetCountryIDFromPrefs(prefs),
+      search_engine_choice_service
+          ? search_engine_choice_service->GetCountryId()
+          : country_codes::GetCountryIDFromPrefs(prefs),
       default_search_provider_index, version);
 }
 
@@ -649,11 +653,13 @@ std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
 // components\search_engines\template_url_prepopulate_data.cc because they
 // need to call our versions of redefined Chromium's functions.
 
-std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(PrefService* prefs,
-                                                       int prepopulated_id) {
+std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(
+    PrefService* prefs,
+    search_engines::SearchEngineChoiceService* search_engine_choice_service,
+    int prepopulated_id) {
   size_t default_index;
-  auto engines =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(prefs, &default_index);
+  auto engines = TemplateURLPrepopulateData::GetPrepopulatedEngines(
+      prefs, search_engine_choice_service, &default_index);
   for (auto& engine : engines) {
     if (engine->prepopulate_id == prepopulated_id)
       return std::move(engine);
@@ -662,12 +668,14 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(PrefService* prefs,
 }
 
 std::unique_ptr<TemplateURLData> GetPrepopulatedDefaultSearch(
-    PrefService* prefs) {
+    PrefService* prefs,
+    search_engines::SearchEngineChoiceService* search_engine_choice_service) {
   size_t default_search_index;
   // This could be more efficient.  We are loading all the URLs to only keep
   // the first one.
   std::vector<std::unique_ptr<TemplateURLData>> loaded_urls =
-      GetPrepopulatedEngines(prefs, &default_search_index);
+      GetPrepopulatedEngines(prefs, search_engine_choice_service,
+                             &default_search_index);
 
   return (default_search_index < loaded_urls.size())
              ? std::move(loaded_urls[default_search_index])

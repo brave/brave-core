@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/google/core/common/google_switches.h"
+#include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
@@ -54,6 +55,8 @@ std::vector<const PrepopulatedEngine*> GetAllPrepopulatedEngines() {
 
 class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  public:
+  BraveTemplateURLPrepopulateDataTest()
+      : search_engine_choice_service_(prefs_) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
     // Real registration happens in `brave/browser/brave_profile_prefs.cc`
@@ -70,13 +73,14 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
                       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
     size_t default_index;
     std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-        TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                           &default_index);
+        TemplateURLPrepopulateData::GetPrepopulatedEngines(
+            &prefs_, &search_engine_choice_service_, &default_index);
     EXPECT_EQ(prepopulate_id, t_urls[default_index]->prepopulate_id);
   }
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  search_engines::SearchEngineChoiceService search_engine_choice_service_;
 };
 
 // Verifies that the set of all prepopulate data doesn't contain entries with
@@ -113,8 +117,8 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
 
   for (int country_id : kCountryIds) {
     prefs_.SetInteger(kCountryIDAtInstall, country_id);
-    std::vector<std::unique_ptr<TemplateURLData>> urls =
-        GetPrepopulatedEngines(&prefs_, nullptr);
+    std::vector<std::unique_ptr<TemplateURLData>> urls = GetPrepopulatedEngines(
+        &prefs_, &search_engine_choice_service_, nullptr);
     std::set<int> unique_ids;
     for (auto& url : urls) {
       ASSERT_TRUE(unique_ids.find(url->prepopulate_id) == unique_ids.end());
@@ -127,8 +131,8 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
 TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
   size_t default_index;
   std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                         &default_index);
+      TemplateURLPrepopulateData::GetPrepopulatedEngines(
+          &prefs_, &search_engine_choice_service_, &default_index);
 
   // Ensure all the URLs have the required fields populated.
   ASSERT_FALSE(t_urls.empty());
