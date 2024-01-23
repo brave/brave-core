@@ -276,7 +276,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         }
 
         if (mCryptoWalletOnboardingPagerAdapter != null) {
-            mCryptoWalletOnboardingPagerAdapter.setmNavigationItems(navigationItems);
+            mCryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
             mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
         }
         addRemoveSecureFlag(true);
@@ -389,7 +389,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
         if (mCryptoWalletOnboardingPagerAdapter != null
                 && mCryptoWalletOnboardingViewPager != null) {
-            mCryptoWalletOnboardingPagerAdapter.setmNavigationItems(navigationItems);
+            mCryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
             mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
             mCryptoWalletOnboardingViewPager.setCurrentItem(0);
         }

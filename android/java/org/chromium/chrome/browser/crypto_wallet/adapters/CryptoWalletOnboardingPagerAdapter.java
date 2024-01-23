@@ -20,7 +20,7 @@ import java.util.List;
 public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapter {
     private List<NavigationItem> mNavigationItems = new ArrayList<>();
 
-    public void setmNavigationItems(List<NavigationItem> mNavigationItems) {
+    public void setNavigationItems(List<NavigationItem> mNavigationItems) {
         this.mNavigationItems = mNavigationItems;
     }
 
