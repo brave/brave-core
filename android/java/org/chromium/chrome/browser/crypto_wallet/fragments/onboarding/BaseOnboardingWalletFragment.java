@@ -24,11 +24,11 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
     @Override
     public void onResume() {
         super.onResume();
-        if (onNextPage != null) {
+        if (mOnNextPage != null) {
             // Show or hide close icon depending on the fragment configuration.
-            onNextPage.showCloseButton(canBeClosed());
+            mOnNextPage.showCloseButton(canBeClosed());
             // Show or hide back icon depending on the fragment configuration.
-            onNextPage.showBackButton(canNavigateBack());
+            mOnNextPage.showBackButton(canNavigateBack());
         }
     }
 }

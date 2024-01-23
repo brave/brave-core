@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +30,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
@@ -52,7 +52,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_unlock_wallet, container, false);
     }
 
@@ -81,9 +81,9 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                                         Utils.clearClipboard(
                                                 mUnlockWalletPassword.getText().toString(), 0);
                                         mUnlockWalletPassword.setText(null);
-                                        if (onNextPage != null) {
+                                        if (mOnNextPage != null) {
                                             Utils.hideKeyboard(requireActivity());
-                                            onNextPage.onboardingCompleted();
+                                            mOnNextPage.onboardingCompleted();
                                         }
                                     } else {
                                         mUnlockWalletPassword.setError(
@@ -94,8 +94,8 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                 });
 
         mUnlockWalletRestoreButton.setOnClickListener(v -> {
-            if (onNextPage != null) {
-                onNextPage.gotoRestorePage(false);
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoRestorePage(false);
                 mUnlockWalletPassword.getText().clear();
             }
         });
@@ -107,7 +107,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
             }
         });
 
-        if (onNextPage != null && onNextPage.showBiometricPrompt()) {
+        if (mOnNextPage != null && mOnNextPage.showBiometricPrompt()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
                     || !KeystoreHelper.shouldUseBiometricOnUnlock()
                     || !Utils.isBiometricAvailable(getContext())) {
@@ -116,8 +116,8 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                 createBiometricPrompt();
                 
             }
-        } else if (onNextPage != null) {
-            onNextPage.enableBiometricPrompt();
+        } else if (mOnNextPage != null) {
+            mOnNextPage.enableBiometricPrompt();
             showPasswordRelatedControls();
         }
     }
@@ -125,9 +125,9 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (onNextPage != null) {
-            onNextPage.showCloseButton(false);
-            onNextPage.showBackButton(false);
+        if (mOnNextPage != null) {
+            mOnNextPage.showCloseButton(false);
+            mOnNextPage.showBackButton(false);
         }
 
     }
@@ -152,8 +152,8 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                             assert keyringService != null;
                             keyringService.unlock(unlockWalletPassword, unlockResult -> {
                                 if (unlockResult) {
-                                    if (onNextPage != null) {
-                                        onNextPage.onboardingCompleted();
+                                    if (mOnNextPage != null) {
+                                        mOnNextPage.onboardingCompleted();
                                     }
                                 } else {
                                     showPasswordRelatedControls();

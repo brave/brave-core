@@ -124,7 +124,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                                     return;
                                 }
 
-                                proceedWithAStrongPassword(passwordInput, mRecoveryPhraseText);
+                                proceedWithStrongPassword(passwordInput, mRecoveryPhraseText);
                             });
                 });
     }
@@ -144,8 +144,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
                     private void onNextPage() {
-                        if (onNextPage != null) {
-                            onNextPage.onboardingCompleted();
+                        if (mOnNextPage != null) {
+                            mOnNextPage.onboardingCompleted();
                         }
                     }
 
@@ -171,18 +171,18 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         showFingerprintDialog(authenticationCallback);
     }
 
-    private void proceedWithAStrongPassword(@NonNull String passwordInput, EditText mRecoveryPhraseText) {
+    private void proceedWithStrongPassword(@NonNull String password, EditText recoveryPhrase) {
         String retypePasswordInput = mRetypePasswordEdittext.getText().toString();
 
-        if (!passwordInput.equals(retypePasswordInput)) {
+        if (!password.equals(retypePasswordInput)) {
             mRetypePasswordEdittext.setError(
                     getResources().getString(R.string.retype_password_error));
         } else {
             KeyringService keyringService = getKeyringService();
             assert keyringService != null;
             keyringService.restoreWallet(
-                    mRecoveryPhraseText.getText().toString().trim(),
-                    passwordInput,
+                    recoveryPhrase.getText().toString().trim(),
+                    password,
                     mIsLegacyWalletRestoreEnable,
                     result -> {
                         if (result) {
@@ -193,13 +193,13 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                                 // Clear previously set bio-metric credentials
                                 KeystoreHelper.resetBiometric();
                                 enableBiometricLogin(retypePasswordInput);
-                            } else if (onNextPage != null) {
-                                onNextPage.onboardingCompleted();
+                            } else if (mOnNextPage != null) {
+                                mOnNextPage.onboardingCompleted();
                             }
                             Utils.setCryptoOnboarding(false);
                             Utils.clearClipboard(
-                                    mRecoveryPhraseText.getText().toString().trim(), 0);
-                            Utils.clearClipboard(passwordInput, 0);
+                                    recoveryPhrase.getText().toString().trim(), 0);
+                            Utils.clearClipboard(password, 0);
                             Utils.clearClipboard(retypePasswordInput, 0);
 
                             cleanUp();
@@ -211,8 +211,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                                     .show();
                         }
                     });
-            if (onNextPage != null) {
-                onNextPage.gotoNextPage();
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoNextPage();
             }
         }
     }

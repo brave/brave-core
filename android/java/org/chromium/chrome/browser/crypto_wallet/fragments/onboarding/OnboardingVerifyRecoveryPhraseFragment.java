@@ -92,8 +92,8 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                                 braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE);
                             }
                             keyringService.notifyWalletBackupComplete();
-                            if (onNextPage != null) {
-                                onNextPage.onboardingCompleted();
+                            if (mOnNextPage != null) {
+                                mOnNextPage.onboardingCompleted();
                             }
                         } else {
                             phraseNotMatch();
@@ -112,8 +112,8 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
             if (braveWalletP3A != null && mIsOnboarding) {
                 braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
             }
-            if (onNextPage != null) {
-                onNextPage.onboardingCompleted();
+            if (mOnNextPage != null) {
+                mOnNextPage.onboardingCompleted();
             }
         });
 

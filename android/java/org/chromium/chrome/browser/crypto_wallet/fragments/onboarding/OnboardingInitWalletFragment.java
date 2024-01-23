@@ -62,16 +62,16 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
         Button setupCryptoButton = view.findViewById(R.id.btn_setup_crypto);
         setupCryptoButton.setOnClickListener(v -> {
             checkOnBraveActivity(true, false);
-            if (onNextPage != null) {
-                onNextPage.gotoCreationPage();
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoCreationPage();
             }
         });
 
         TextView restoreButton = view.findViewById(R.id.btn_restore);
         restoreButton.setOnClickListener(v -> {
             checkOnBraveActivity(false, true);
-            if (onNextPage != null) {
-                onNextPage.gotoRestorePage(true);
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoRestorePage(true);
             }
         });
         PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {

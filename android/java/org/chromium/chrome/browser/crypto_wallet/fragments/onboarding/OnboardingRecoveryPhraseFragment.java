@@ -87,8 +87,8 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
             if (braveWalletP3A != null && mIsOnboarding) {
                 braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
             }
-            if (onNextPage != null) {
-                onNextPage.gotoNextPage();
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoNextPage();
             }
         });
         CheckBox recoveryPhraseCheckbox = view.findViewById(R.id.recovery_phrase_checkbox);
@@ -107,8 +107,8 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
             if (braveWalletP3A != null && mIsOnboarding) {
                 braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
             }
-            if (onNextPage != null) {
-                onNextPage.onboardingCompleted();
+            if (mOnNextPage != null) {
+                mOnNextPage.onboardingCompleted();
             }
         });
     }

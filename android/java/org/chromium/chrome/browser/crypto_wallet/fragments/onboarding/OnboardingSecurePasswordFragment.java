@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +31,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
@@ -150,8 +150,8 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
                 // Go to the next page after wallet creation is done
                 Utils.setCryptoOnboarding(false);
                 mOnboardingViewModel.setPassword(passwordInput);
-                if (onNextPage != null) {
-                    onNextPage.gotoNextPage();
+                if (mOnNextPage != null) {
+                    mOnNextPage.gotoNextPage();
                 }
             });
             showCreatingWalletPage();
@@ -175,8 +175,8 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     }
 
     private void showCreatingWalletPage() {
-        if (onNextPage != null) {
-            onNextPage.gotoNextPage();
+        if (mOnNextPage != null) {
+            mOnNextPage.gotoNextPage();
         }
     }
 }

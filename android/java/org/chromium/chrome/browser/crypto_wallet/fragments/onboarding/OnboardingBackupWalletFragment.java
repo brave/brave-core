@@ -21,7 +21,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +36,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
@@ -87,8 +87,8 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
         mBackupWalletButton.setOnClickListener(v -> {
             BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
             if (mIsOnboarding) {
-                if (onNextPage != null) {
-                    onNextPage.gotoNextPage();
+                if (mOnNextPage != null) {
+                    mOnNextPage.gotoNextPage();
                 }
                 if (braveWalletP3A != null) {
                     braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
@@ -103,8 +103,8 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                 keyringService.getMnemonicForDefaultKeyring(passwordToUse, result -> {
                     if (!result.isEmpty()) {
                         mOnboardingViewModel.setPassword(passwordToUse);
-                        if (onNextPage != null) {
-                            onNextPage.gotoNextPage();
+                        if (mOnNextPage != null) {
+                            mOnNextPage.gotoNextPage();
                         }
                     } else {
                         showPasswordRelatedControls(true);
@@ -131,8 +131,8 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
             if (braveWalletP3A != null && mIsOnboarding) {
                 braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
             }
-            if (onNextPage != null) {
-                onNextPage.onboardingCompleted();
+            if (mOnNextPage != null) {
+                mOnNextPage.onboardingCompleted();
             }
         });
         mBiometricBackupWalletImage.setOnClickListener(v -> {

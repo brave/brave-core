@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAdapter.ViewHolder> {
-    List<String> recoveryPhraseList = new ArrayList<>();
-    List<String> selectedRecoveryPhraseList = new ArrayList<>();
-    List<Integer> selectedPositions = new ArrayList<>();
+    private List<String> mRecoveryPhraseList = new ArrayList<>();
+    private final List<String> mSelectedRecoveryPhraseList = new ArrayList<>();
+    private final List<Integer> mSelectedPositions = new ArrayList<>();
     private OnboardingVerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected
-            onRecoveryPhraseSelected;
-    private boolean isSelectedRecoveryPhrase;
+            mOnRecoveryPhraseSelected;
+    private boolean mSelectedRecoveryPhrase;
 
     @NonNull
     @Override
@@ -37,24 +37,25 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final String recoveryPhrase = recoveryPhraseList.get(position);
+        final String recoveryPhrase = mRecoveryPhraseList.get(position);
         holder.recoveryPhraseText.setText(
                 String.format(holder.recoveryPhraseText.getContext().getResources().getString(
                                       R.string.recovery_phrase_item_text),
                         (position + 1), recoveryPhrase));
-        if (onRecoveryPhraseSelected != null) {
-            holder.itemView.setOnClickListener(v -> {
-                if (isSelectedRecoveryPhrase) {
-                    recoveryPhraseList.remove(recoveryPhrase);
-                } else {
-                    selectedRecoveryPhraseList.add(recoveryPhrase);
-                    selectedPositions.add(position);
-                }
-                onRecoveryPhraseSelected.onSelectedRecoveryPhrase(recoveryPhrase);
-            });
-            if (!isSelectedRecoveryPhrase) {
-                if (selectedRecoveryPhraseList.contains(recoveryPhrase)
-                        && selectedPositions.contains(position)) {
+        if (mOnRecoveryPhraseSelected != null) {
+            holder.itemView.setOnClickListener(
+                    v -> {
+                        if (mSelectedRecoveryPhrase) {
+                            mRecoveryPhraseList.remove(recoveryPhrase);
+                        } else {
+                            mSelectedRecoveryPhraseList.add(recoveryPhrase);
+                            mSelectedPositions.add(position);
+                        }
+                        mOnRecoveryPhraseSelected.onSelectedRecoveryPhrase(recoveryPhrase);
+                    });
+            if (!mSelectedRecoveryPhrase) {
+                if (mSelectedRecoveryPhraseList.contains(recoveryPhrase)
+                        && mSelectedPositions.contains(position)) {
                     holder.recoveryPhraseText.setEnabled(false);
                     holder.recoveryPhraseText.setAlpha(0.5f);
                     holder.recoveryPhraseText.setText("");
@@ -70,46 +71,46 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
         }
     }
 
-    public void setSelectedRecoveryPhrase(boolean isSelectedRecoveryPhrase) {
-        this.isSelectedRecoveryPhrase = isSelectedRecoveryPhrase;
+    public void setSelectedRecoveryPhrase(final boolean selectedRecoveryPhrase) {
+        this.mSelectedRecoveryPhrase = selectedRecoveryPhrase;
     }
 
     public void addPhraseAtPosition(int position, String phrase) {
-        this.recoveryPhraseList.set(position, phrase);
+        this.mRecoveryPhraseList.set(position, phrase);
     }
 
     public void removeSelectedPhrase(String phrase) {
-        this.selectedRecoveryPhraseList.remove(phrase);
+        this.mSelectedRecoveryPhraseList.remove(phrase);
         // We have to iterate as words sometimes can be duplicated in the recovery phrase
-        for (int i = 0; i < recoveryPhraseList.size(); i++) {
-            if (recoveryPhraseList.get(i).contains(phrase) && selectedPositions.contains(i)) {
-                selectedPositions.remove((Integer) i);
+        for (int i = 0; i < mRecoveryPhraseList.size(); i++) {
+            if (mRecoveryPhraseList.get(i).contains(phrase) && mSelectedPositions.contains(i)) {
+                mSelectedPositions.remove((Integer) i);
                 break;
             }
         }
     }
 
     public void setRecoveryPhraseList(List<String> recoveryPhraseList) {
-        this.recoveryPhraseList = recoveryPhraseList;
+        this.mRecoveryPhraseList = recoveryPhraseList;
     }
 
     public void setOnRecoveryPhraseSelectedListener(
             OnboardingVerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected
                     onRecoveryPhraseSelected) {
-        this.onRecoveryPhraseSelected = onRecoveryPhraseSelected;
+        this.mOnRecoveryPhraseSelected = onRecoveryPhraseSelected;
     }
 
     public List<String> getSelectedRecoveryPhraseList() {
-        return selectedRecoveryPhraseList;
+        return mSelectedRecoveryPhraseList;
     }
 
     public List<String> getRecoveryPhraseList() {
-        return recoveryPhraseList;
+        return mRecoveryPhraseList;
     }
 
     @Override
     public int getItemCount() {
-        return recoveryPhraseList.size();
+        return mRecoveryPhraseList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

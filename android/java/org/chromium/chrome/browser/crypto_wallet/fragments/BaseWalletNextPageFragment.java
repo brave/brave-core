@@ -24,14 +24,14 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 public abstract class BaseWalletNextPageFragment extends Fragment {
 
     // Might be {@code null} when detached from the screen.
-    @Nullable protected OnNextPage onNextPage;
+    @Nullable protected OnNextPage mOnNextPage;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
-            onNextPage = (OnNextPage) context;
+            mOnNextPage = (OnNextPage) context;
         } catch (ClassCastException e) {
             throw new ClassCastException("Host activity must implement OnNextPage interface.");
         }
@@ -39,7 +39,7 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        onNextPage = null;
+        mOnNextPage = null;
         super.onDetach();
     }
 
