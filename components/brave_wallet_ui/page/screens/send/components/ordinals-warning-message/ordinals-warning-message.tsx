@@ -9,7 +9,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
-import { Checkbox } from 'brave-ui/components'
+import Checkbox from '@brave/leo/react/checkbox'
 
 // Shared Styles
 import { Column, Text } from '../../shared.styles'
@@ -32,7 +32,7 @@ export const OrdinalsWarningMessage = ({ acknowledged, onChange }: Props) => {
       verticalAlign='flex-start'
       horizontalAlign='flex-start'
     >
-      <WarningIcon name='warning-triangle-filled' />
+      <WarningIcon />
       <Column horizontalAlign='flex-start'>
         <Text
           textSize='12px'
@@ -44,19 +44,17 @@ export const OrdinalsWarningMessage = ({ acknowledged, onChange }: Props) => {
         </Text>
         <CheckboxWrapper>
           <Checkbox
-            value={{ selected: acknowledged }}
-            onChange={(_, selected) => onChange(selected)}
+            checked={acknowledged}
+            onChange={() => onChange(!acknowledged)}
           >
-            <div data-key='selected'>
-              <Text
-                textSize='12px'
-                textColor='warning'
-                textAlign='left'
-                isBold={false}
-              >
-                {getLocale('braveWalletOrdinalsWarningLabel')}
-              </Text>
-            </div>
+            <Text
+              textSize='12px'
+              textColor='warning'
+              textAlign='left'
+              isBold={false}
+            >
+              {getLocale('braveWalletUserUnderstandsLabel')}
+            </Text>
           </Checkbox>
         </CheckboxWrapper>
       </Column>

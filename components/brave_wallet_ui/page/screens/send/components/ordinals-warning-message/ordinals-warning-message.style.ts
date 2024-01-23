@@ -24,7 +24,9 @@ export const StyledRow = styled(Row)`
   margin-bottom: ${leo.spacing.xl};
 `
 
-export const WarningIcon = styled(Icon)`
+export const WarningIcon = styled(Icon).attrs({
+  name: 'warning-triangle-filled'
+})`
   --leo-icon-size: 20px;
   color: ${leo.color.systemfeedback.warningIcon};
 `
