@@ -48,11 +48,13 @@ bool SkusJSHandler::EnsureConnected() {
   }
   bool result = skus_service_.is_bound();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsBraveVPNFeatureEnabled() && !vpn_service_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
-        vpn_service_.BindNewPipeAndPassReceiver());
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
+    if (!vpn_service_.is_bound()) {
+      render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+          vpn_service_.BindNewPipeAndPassReceiver());
+    }
+    result = result && vpn_service_.is_bound();
   }
-  result = result && vpn_service_.is_bound();
 #endif
 
   return result;
