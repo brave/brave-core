@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 56d34d12c48cb90316cc3411dac23b2bae921a67..98f45e15ab2317c92405526de5eb1f1175d949cd 100755
+index 01e75f7d3b5e0ffcf016315ecd2a4cebaadff7c5..dff126854b81f95c82c5e0233c32fc353ec137cc 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -756,6 +756,7 @@ def _ParseOptions():

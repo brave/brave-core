@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
-index efca3144ae0fc19c5cf1e46656d390fa8125cb83..0aff4f5ce0de1f54eeb9260183b3dc744683bc44 100644
+index 1dd51518a82e5f2d1d4e37e9e2f523cff91f4790..2926e0c3924db078d3807510fc61a7fb6e58cdd8 100644
 --- a/components/content_settings/core/browser/content_settings_registry.cc
 +++ b/components/content_settings/core/browser/content_settings_registry.cc
-@@ -685,6 +685,7 @@ void ContentSettingsRegistry::Init() {
+@@ -711,6 +711,7 @@ void ContentSettingsRegistry::Init() {
             WebsiteSettingsRegistry::PLATFORM_CHROMEOS,
             ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
             ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);

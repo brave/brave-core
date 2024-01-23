@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 8db1832a3d0ae966e02cc350808781c786d762b6..02c5f0c1523096aa51691e1bb8af5e3ba9093c69 100644
+index 8ddbc8c01ebe8d3a0522d565cce1dfcddbaecedf..d97b17ff1307088d91dee1d2f5be8a5658f282fa 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -80,7 +80,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -86,7 +86,7 @@ export class SettingsPersonalizationOptionsElement extends
  
        syncStatus: Object,
  
@@ -11,7 +11,7 @@ index 8db1832a3d0ae966e02cc350808781c786d762b6..02c5f0c1523096aa51691e1bb8af5e3b
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -123,7 +123,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -129,7 +129,7 @@ export class SettingsPersonalizationOptionsElement extends
    focusConfig: FocusConfig;
    syncStatus: SyncStatus;
  
@@ -20,7 +20,7 @@ index 8db1832a3d0ae966e02cc350808781c786d762b6..02c5f0c1523096aa51691e1bb8af5e3b
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>;
    private showRestart_: boolean;
    // </if>
-@@ -173,7 +173,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -179,16 +179,18 @@ export class SettingsPersonalizationOptionsElement extends
    override ready() {
      super.ready();
  
@@ -29,7 +29,18 @@ index 8db1832a3d0ae966e02cc350808781c786d762b6..02c5f0c1523096aa51691e1bb8af5e3b
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -207,7 +207,7 @@ export class SettingsPersonalizationOptionsElement extends
+     this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
+     // </if>
+ 
++    // <if expr="_google_chrome">
+     this.registerHelpBubble(
+         ANONYMIZED_URL_COLLECTION_ID,
+         this.$.urlCollectionToggle.getBubbleAnchor(), {anchorPaddingTop: 10});
++    // </if>
+   }
+ 
+   // <if expr="chromeos_ash">
+@@ -217,7 +219,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  

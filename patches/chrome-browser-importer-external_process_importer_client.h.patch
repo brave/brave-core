@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.h b/chrome/browser/importer/external_process_importer_client.h
-index dab4b99239c54925a46c701a298fa16fa81a3799..5b186dc2c30c04e3749cfa6ed32fa798129bc454 100644
+index 6d38b92400bbf4e1e4475959247ff74b0a9d83df..67739b6d04ef2206f36c126c738802b7449294cb 100644
 --- a/chrome/browser/importer/external_process_importer_client.h
 +++ b/chrome/browser/importer/external_process_importer_client.h
 @@ -84,6 +84,7 @@ class ExternalProcessImporterClient

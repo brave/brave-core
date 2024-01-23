@@ -1,8 +1,8 @@
-diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 97015187c0251c20eff8361e33f9e05e89a0246f..2a1de61762efecc877dd12a19eae443534df7afb 100644
---- a/components/content_settings/core/common/content_settings_types.h
-+++ b/components/content_settings/core/common/content_settings_types.h
-@@ -384,6 +384,24 @@ enum class ContentSettingsType : int32_t {
+diff --git a/components/content_settings/core/common/content_settings_types.mojom b/components/content_settings/core/common/content_settings_types.mojom
+index e10315f57a5bb04daabce937baaceea56744b046..b253380f64c2f7b4f8d98286970c2328e8e64381 100644
+--- a/components/content_settings/core/common/content_settings_types.mojom
++++ b/components/content_settings/core/common/content_settings_types.mojom
+@@ -387,6 +387,22 @@ enum ContentSettingsType {
    // Content settings for access to printers for the Web Printing API.
    WEB_PRINTING,
  

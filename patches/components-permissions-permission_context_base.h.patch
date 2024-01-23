@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
-index 1af620c7aedc52e5af64b095a66cb49a0c16e8dd..912f2b96e588c999c944a35677d2d7cffe83eea8 100644
+index b667b6dde4357759058d5d11def78dbc081b1baa..cb2fee47c2f6cdbc827b429c51448b9bd5cb922f 100644
 --- a/components/permissions/permission_context_base.h
 +++ b/components/permissions/permission_context_base.h
 @@ -140,6 +140,7 @@ class PermissionContextBase : public content_settings::Observer {
