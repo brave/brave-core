@@ -29,8 +29,8 @@ export const removedNonFungibleTokens = ({ wallet }: State) =>
   wallet.removedNonFungibleTokens
 export const filteredOutPortfolioNetworkKeys = ({ wallet }: State) =>
   wallet.filteredOutPortfolioNetworkKeys
-export const filteredOutPortfolioAccountAddresses = ({ wallet }: State) =>
-  wallet.filteredOutPortfolioAccountAddresses
+export const filteredOutPortfolioAccountIds = ({ wallet }: State) =>
+  wallet.filteredOutPortfolioAccountIds
 export const hidePortfolioSmallBalances = ({ wallet }: State) =>
   wallet.hidePortfolioSmallBalances
 export const showNetworkLogoOnNfts = ({ wallet }: State) =>
