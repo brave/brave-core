@@ -155,7 +155,6 @@ function Main() {
             <div className={styles.promptContainer}>
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
-                verbose={true}
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
@@ -173,7 +172,6 @@ function Main() {
             <div className={styles.promptContainer}>
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
-                verbose={true}
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'

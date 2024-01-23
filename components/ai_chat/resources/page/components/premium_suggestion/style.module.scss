@@ -5,12 +5,14 @@
 
 .actionsBox {
   display: inline-flex;
+  flex-direction: column;
   gap: 10px;
+  width: 100%;
 }
 
 .boxPremium {
   width: 100%;
-  background: linear-gradient(91.61deg, rgba(248, 190, 218, 0.1) 18.42%, rgba(173, 153, 255, 0.1) 85.72%);
+  background: var(--leo-color-private-window-10);
   border-radius: 16px;
   padding: 16px;
   max-width: 600px;
@@ -39,17 +41,19 @@
   display: flex;
   flex-direction: column;
   padding: 0;
-  border: 1px solid var(--leo-color-divider-subtle);
+  border: 1px solid var(--leo-color-primary-20);
   border-radius: 8px;
   overflow: hidden;
 
   li {
+    font: var(--leo-font-default-semibold);
     list-style-type: none;
-    padding: 10px 12px;
+    padding: var(--leo-spacing-l);
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid var(--leo-color-divider-subtle);
+    border-bottom: 1px solid var(--leo-color-primary-20);
+
 
     &:last-child {
       border: 0;
@@ -58,31 +62,62 @@
     p {
       margin: 0;
       font: var(--leo-font-small-regular);
-      color: var(--leo-color-blue-40);
+      color: var(--leo-color-text-secondary);
     }
-  }
-
-  .priceList {
-    background-color: var(--leo-color-container-background);
-    color: var(--leo-color-text-primary);
-    padding: 20px 16px;
-    justify-content: space-between;
-    font: var(--leo-font-default-semibold);
-
-    data {
-      font: var(--leo-font-heading-h3);
-      color: var(--leo-color-text-primary);
-      margin: 0 5px;
-    }
-  }
-
-  leo-icon {
-    color: var(--leo-color-blue-30);
   }
 }
 
+.priceList {
+  display: flex;
+  flex-direction: column;
+}
+
 .price {
-  color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-primary-50);
   display: inline-flex;
   align-items: center;
+
+  data {
+    font: var(--leo-font-heading-h2);
+    color: var(--leo-color-text-primary);
+    margin: 0 5px;
+  }
+}
+
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--leo-radius-m);
+  background: var(--leo-color-private-window-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  leo-icon {
+    color: var(--leo-color-private-window-60);
+  }
+}
+
+.priceButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid var(--leo-color-divider-interactive);
+  border-radius: 12px;
+  padding: var(--leo-spacing-xl);
+  background: var(--leo-color-container-background);
+}
+
+.priceButtonLabel {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+}
+
+.subscriptionPolicy {
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  text-align: center;
 }

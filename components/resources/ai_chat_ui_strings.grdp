@@ -84,21 +84,26 @@
   <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
     Language models
   </message>
-  <message name="IDS_CHAT_UI_PREMIUM_BUTTON_LABEL" desc="A button label to subscribe for premium model">
-     Go Premium
+  <message name="IDS_CHAT_UI_UPGRADE_BUTTON_LABEL" desc="A button label to upgrade to premium model">
+     Upgrade now
   </message>
    <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_TITLE" desc="An error message when the user has reached API limit">
      Response rate limit reached
   </message>
   <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC" desc="A description to unlock premium features">
-     Unlock a higher response rate by subscribing to Premium, or try again
-        later
+     Unlock a higher response rate by subscribing to Premium, or try again later
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature">
-     Access to industry-leading LLMs
+    Explore different models
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2" desc="A premium feature">
-     Higher rate limits
+    Unlock your creativity
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_3" desc="A premium feature">
+    Stay on topic
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_4" desc="A premium feature">
+    Chat for longer
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products">
      Leo Premium
@@ -116,10 +121,16 @@
     Unlock the full potential of Leo
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
-    Anthropic Claude + more coming soon
+    Priority access to Claude, Llama-2-70b + more coming soon
   </message>
-  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature that allows priority access">
-    Priority access and increased response limits
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature to various AI models">
+    Access models better suited for creative tasks and content generation.
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_3_DESC" desc="A premium feature to stay scoped within a topic">
+    Get more accurate answers for more nuanced conversations.
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_4_DESC" desc="A premium feature that allows higher rate limits">
+    Get higher rate limits for longer conversations.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_DESCRIPTION" desc="Warning message when AI Chat Premium authentication is expired">
     Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.
@@ -246,5 +257,8 @@
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
     Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.
+  </message>
+  <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices">
+    All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>
 </grit-part>
