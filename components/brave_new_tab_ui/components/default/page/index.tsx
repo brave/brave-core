@@ -7,6 +7,7 @@ import * as React from 'react'
 import styled, { createGlobalStyle, css } from 'styled-components'
 import { requestAnimationFrameThrottle } from '../../../../common/throttle'
 import { defaultState } from '../../../storage/new_tab_storage'
+import { spacing } from '@brave/leo/tokens/css'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
@@ -278,6 +279,10 @@ export const GridItemNavigationBraveNews = styled('div') <{}>`
   [data-show-news-prompt] & {
     bottom: 120px;
   }
+
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.l};
 `
 
 export const Footer = styled('footer') <{}>`

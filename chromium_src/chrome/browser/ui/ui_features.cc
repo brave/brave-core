@@ -18,4 +18,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
+BASE_FEATURE(kBraveNtpSearchWidget,
+             "BraveNtpSearchWidget",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features

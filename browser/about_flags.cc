@@ -500,6 +500,9 @@
           FEATURE_VALUE_TYPE(                                                  \
               ntp_background_images::features::kBraveNTPBrandedWallpaperDemo), \
       },                                                                       \
+      {"brave-ntp-search-widget", "Brave Search Widget on the NTP",            \
+       "Enables searching directly from the New Tab Page", kOsDesktop,         \
+       FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget)},                   \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
           "Enable CNAME uncloaking",                                           \

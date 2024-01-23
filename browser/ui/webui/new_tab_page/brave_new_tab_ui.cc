@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
@@ -23,13 +24,16 @@
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/omnibox/browser/omnibox.mojom.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
 using ntp_background_images::NTPCustomImagesSource;
 
@@ -78,6 +82,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       "featureFlagBraveNewsFeedV2Enabled",
       base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeedUpdate));
 
+  source->AddBoolean(
+      "featureFlagSearchWidget",
+      base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
   web_ui->AddMessageHandler(base::WrapUnique(
       BraveNewTabMessageHandler::Create(source, profile, was_restored)));
   web_ui->AddMessageHandler(
@@ -114,6 +122,16 @@ void BraveNewTabUI::BindInterface(
   }
 
   page_factory_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveNewTabUI::BindInterface(
+    mojo::PendingReceiver<omnibox::mojom::PageHandler> pending_page_handler) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  DCHECK(profile);
+
+  realbox_handler_ = std::make_unique<RealboxHandler>(
+      std::move(pending_page_handler), profile, web_ui()->GetWebContents(),
+      nullptr, nullptr);
 }
 
 void BraveNewTabUI::CreatePageHandler(

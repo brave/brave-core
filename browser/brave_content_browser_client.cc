@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -90,11 +91,14 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
+#include "chrome/browser/ui/webui/omnibox_popup/omnibox_popup_ui.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/embedder_support/switches.h"
+#include "components/omnibox/browser/omnibox.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/user_prefs/user_prefs.h"
@@ -114,6 +118,7 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/binder_map.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -518,6 +523,36 @@ void MaybeBindSkusSdkImpl(
   skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
 }
 
+template <typename Interface, typename... WebUIControllerSubclasses>
+void OverrideWebUIControllerInterfaceBinder(
+    mojo::BinderMapWithContext<RenderFrameHost*>* map) {
+  DCHECK(map->Contains<Interface>())
+      << "A binder for " << Interface::Name_
+      << " has not been registered. You can just use "
+         "|content::RegisterWebUIControllerInterfaceBinder|";
+  map->Add<Interface>(
+      base::BindRepeating([](content::RenderFrameHost* host,
+                             mojo::PendingReceiver<Interface> receiver) {
+        // This is expected to be called only for outermost main frames.
+        if (host->GetParentOrOuterDocument()) {
+          content::internal::ReceivedInvalidWebUIControllerMessage(host);
+          return;
+        }
+
+        const int size = sizeof...(WebUIControllerSubclasses);
+        bool is_bound = content::internal::BinderHelper<
+            Interface, size - 1, std::tuple<WebUIControllerSubclasses...>>::
+            BindInterface(host, std::move(receiver));
+
+        // This is expected to be called only for the right WebUI pages matching
+        // the same WebUI associated to the RenderFrameHost.
+        if (!is_bound) {
+          content::internal::ReceivedInvalidWebUIControllerMessage(host);
+          return;
+        }
+      }));
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient() = default;
@@ -837,6 +872,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+  OverrideWebUIControllerInterfaceBinder<
+      omnibox::mojom::PageHandler, BraveNewTabUI, NewTabPageUI, OmniboxPopupUI>(
+      map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
