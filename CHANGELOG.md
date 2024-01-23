@@ -1,5 +1,13 @@
 # Changelog
 
+ ## [1.60.1](https://github.com/brave/brave-ios/releases/tag/v1.60.1)
+
+- Disabled Screen Time support temporarily to mitigate performance issues. ([#8566](https://github.com/brave/brave-ios/issues/8566))
+- Fixed endless page reload for "News" tab on https://search.brave.com. ([#8561](https://github.com/brave/brave-ios/issues/8561))
+- Fixed UI being unresponsive on certain websites when enabling Page Zoom from the menu. ([#8547](https://github.com/brave/brave-ios/issues/8547))
+
+## [1.60](https://github.com/brave/brave-ios/releases/tag/v1.60)
+
 ### Web3
 
 - Added new design for NFT Spam management in Brave Wallet. ([#8205](https://github.com/brave/brave-ios/issues/8205))
