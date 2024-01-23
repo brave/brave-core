@@ -79,7 +79,6 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   // This is for cleaning up malformed items during development. Once we
   // release Playlist feature officially, we should migrate items
   // instead of deleting them.
-  CleanUpMalformedPlaylistItems();
   MigratePlaylistValues();
 
   CleanUpOrphanedPlaylistItemDirs();
@@ -1240,22 +1239,8 @@ void PlaylistService::OnGetOrphanedPaths(
   }
 }
 
-void PlaylistService::CleanUpMalformedPlaylistItems() {
-  if (base::ranges::none_of(prefs_->GetDict(kPlaylistItemsPref),
-                            /* has_malformed_data = */ [](const auto& pair) {
-                              auto* dict = pair.second.GetIfDict();
-                              DCHECK(dict);
-                              return IsItemValueMalformed(*dict);
-                            })) {
-    return;
-  }
-
-  for (const auto* pref_key : {kPlaylistsPref, kPlaylistItemsPref}) {
-    prefs_->ClearPref(pref_key);
-  }
-}
-
 void PlaylistService::MigratePlaylistValues() {
+  // Migration code here should be gone after a few versions
   base::Value::List order = prefs_->GetList(kPlaylistOrderPref).Clone();
   MigratePlaylistOrder(prefs_->GetDict(kPlaylistsPref), order);
   prefs_->SetList(kPlaylistOrderPref, std::move(order));
