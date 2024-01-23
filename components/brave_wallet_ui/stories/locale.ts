@@ -964,7 +964,7 @@ provideStrings({
   braveWalletBTCMainnetAccountDescription: 'Bitcoin Mainnet',
   braveWalletBTCTestnetAccountDescription: 'Bitcoin Testnet',
   braveWalletZECAccountDescription: 'Zcash Mainnet',
-  braveWalletZECTestnetAccountDescription : 'Zcash Testnet',
+  braveWalletZECTestnetAccountDescription: 'Zcash Testnet',
   braveWalletShowNetworkLogoOnNftsTitle: 'Network Logo',
   braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
   braveWalletShowSpamNftsTitle: 'Spam NFTs',
@@ -1245,5 +1245,15 @@ provideStrings({
     'Brave works with a partner to provide this service. ' +
     'By enabling, you agree to share unsigned transactions ' +
     'and their DApp URLs with our partner.',
-  braveWalletChangeAnytimeInSettings: 'Change anytime in $1Settings$2.'
+  braveWalletChangeAnytimeInSettings: 'Change anytime in $1Settings$2.',
+
+  // Balance Details Modal
+  braveWalletAvailable: 'Available',
+  braveWalletAvailableBalanceDescription: 'Funds available for you to use.',
+  braveWalletPending: 'Pending',
+  braveWalletPendingBalanceDescription:
+    'A pending change in your wallet balance.',
+  braveWalletTotalBalanceDescription:
+    'Your available funds plus any not-yet-confirmed transactions.',
+  braveWalletUnavailableBalances: 'Some balances may be unavailable'
 })

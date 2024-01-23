@@ -442,6 +442,7 @@ export const Account = () => {
                   ? '0'
                   : ''
               }
+              isAccountDetails={true}
             />
           ))}
           {showAssetDiscoverySkeleton && <PortfolioAssetItemLoadingSkeleton />}
