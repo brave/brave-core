@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_CONSTANTS_H_
 #define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_CONSTANTS_H_
 
-#include <guiddef.h>
-
 namespace brave_vpn {
 
 inline constexpr char kBraveVpnHelperCrashMe[] = "crash-me";

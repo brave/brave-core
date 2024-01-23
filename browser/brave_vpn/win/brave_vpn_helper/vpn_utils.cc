@@ -38,7 +38,7 @@ std::wstring GetBraveVpnServiceFilterName() {
       return L"Brave VPN Beta Service DNS Filter";
     case version_info::Channel::STABLE:
       return L"Brave VPN Service DNS Filter";
-    default:
+    case version_info::Channel::UNKNOWN:
       return L"Brave VPN Development Service DNS Filter";
   }
 
@@ -71,7 +71,7 @@ GUID GetVpnDnsSublayerGUID() {
               0xcad3,
               0x474e,
               {0x8d, 0x2c, 0x05, 0x44, 0x13, 0xfd, 0x45, 0x09}};
-    default:
+    case version_info::Channel::UNKNOWN:
       // 9c14e1f7-692f-495b-95e8-008113d3c0d6
       return {0x9c14e1f7,
               0x692f,

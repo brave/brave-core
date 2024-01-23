@@ -91,7 +91,7 @@ const CLSID& GetBraveVpnWireguardServiceClsid(version_info::Channel channel) {
       return kBraveBetaWireguardServiceCLSID;
     case Channel::STABLE:
       return kBraveWireguardServiceCLSID;
-    default:
+    case Channel::UNKNOWN:
       return kBraveDevelopmentWireguardServiceCLSID;
   }
 
@@ -113,7 +113,7 @@ std::wstring GetBraveVpnWireguardServiceDisplayName(
       return L"Brave Beta Vpn Wireguard Service";
     case Channel::STABLE:
       return L"Brave Vpn Wireguard Service";
-    default:
+    case Channel::UNKNOWN:
       return L"Brave Development Vpn Wireguard Service";
   }
 
@@ -137,7 +137,7 @@ std::wstring GetBraveVpnWireguardTunnelServiceName(
       return kBraveBetaWireguardTunnelServiceName;
     case Channel::STABLE:
       return kBraveWireguardTunnelServiceName;
-    default:
+    case Channel::UNKNOWN:
       return kBraveDevelopmentWireguardTunnelServiceName;
   }
 

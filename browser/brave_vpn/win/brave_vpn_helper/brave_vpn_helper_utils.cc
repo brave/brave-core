@@ -104,7 +104,7 @@ std::wstring GetBraveVpnHelperRegistryStoragePath() {
       return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceBeta";
     case version_info::Channel::STABLE:
       return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperService";
-    default:
+    case version_info::Channel::UNKNOWN:
       return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceDevelopment";
   }
 
@@ -122,7 +122,7 @@ std::wstring GetBraveVpnOneTimeServiceCleanupStoragePath() {
       return L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupBeta";
     case version_info::Channel::STABLE:
       return L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanup";
-    default:
+    case version_info::Channel::UNKNOWN:
       return L"Software\\BraveSoftware\\Brave\\Vpn\\OneTimeServiceCleanupDevelo"
              L"pment";
   }
