@@ -126,8 +126,8 @@ export const PortfolioOverview = () => {
   const filteredOutPortfolioNetworkKeys = useUnsafeWalletSelector(
     WalletSelectors.filteredOutPortfolioNetworkKeys
   )
-  const filteredOutPortfolioAccountAddresses = useUnsafeWalletSelector(
-    WalletSelectors.filteredOutPortfolioAccountAddresses
+  const filteredOutPortfolioAccountIds = useUnsafeWalletSelector(
+    WalletSelectors.filteredOutPortfolioAccountIds
   )
   const hidePortfolioSmallBalances = useSafeWalletSelector(
     WalletSelectors.hidePortfolioSmallBalances
@@ -177,9 +177,9 @@ export const PortfolioOverview = () => {
   const usersFilteredAccounts = React.useMemo(() => {
     return accounts.filter(
       (account) =>
-        !filteredOutPortfolioAccountAddresses.includes(account.address)
+        !filteredOutPortfolioAccountIds.includes(account.accountId.uniqueKey)
     )
-  }, [accounts, filteredOutPortfolioAccountAddresses])
+  }, [accounts, filteredOutPortfolioAccountIds])
 
   const accountsListWithRewards = React.useMemo(() => {
     return displayRewardAccount

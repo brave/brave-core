@@ -97,8 +97,8 @@ const defaultState: WalletState = {
     'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
     makeInitialFilteredOutNetworkKeys()
   ),
-  filteredOutPortfolioAccountAddresses: parseJSONFromLocalStorage(
-    'FILTERED_OUT_PORTFOLIO_ACCOUNT_ADDRESSES',
+  filteredOutPortfolioAccountIds: parseJSONFromLocalStorage(
+    'FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS',
     []
   ),
   hidePortfolioSmallBalances:
@@ -272,11 +272,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.filteredOutPortfolioNetworkKeys = payload
       },
 
-      setFilteredOutPortfolioAccountAddresses(
+      setFilteredOutPortfolioAccountIds(
         state: WalletState,
         { payload }: PayloadAction<string[]>
       ) {
-        state.filteredOutPortfolioAccountAddresses = payload
+        state.filteredOutPortfolioAccountIds = payload
       },
 
       setHidePortfolioSmallBalances(

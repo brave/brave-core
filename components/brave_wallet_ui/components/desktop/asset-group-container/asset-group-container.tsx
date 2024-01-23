@@ -92,7 +92,7 @@ export const AssetGroupContainer = (props: Props) => {
     WalletSelectors.hidePortfolioBalances
   )
   const collapsedAccounts = useUnsafeUISelector(
-    UISelectors.collapsedPortfolioAccountAddresses
+    UISelectors.collapsedPortfolioAccountIds
   )
   const collapsedNetworks = useUnsafeUISelector(
     UISelectors.collapsedPortfolioNetworkKeys
@@ -112,7 +112,7 @@ export const AssetGroupContainer = (props: Props) => {
       )
     }
     if (account) {
-      return collapsedAccounts.includes(account.address)
+      return collapsedAccounts.includes(account.accountId.uniqueKey)
     }
     return false
   }, [network, account, collapsedAccounts, collapsedNetworks])
@@ -122,20 +122,18 @@ export const AssetGroupContainer = (props: Props) => {
       // Construct new list
       const newCollapsedAccounts = isCollapsed
         ? collapsedAccounts.filter(
-            (addressKey) => addressKey !== account.address
+            (addressKey) => addressKey !== account.accountId.uniqueKey
           )
-        : [...collapsedAccounts, account.address]
+        : [...collapsedAccounts, account.accountId.uniqueKey]
 
-      // Update Collapsed Account Addresses in Local Storage
+      // Update Collapsed Account Ids in Local Storage
       window.localStorage.setItem(
-        LOCAL_STORAGE_KEYS.COLLAPSED_PORTFOLIO_ACCOUNT_ADDRESSES,
+        LOCAL_STORAGE_KEYS.COLLAPSED_PORTFOLIO_ACCOUNT_IDS,
         JSON.stringify(newCollapsedAccounts)
       )
 
-      // Update Collapsed Account Addresses in Redux
-      dispatch(
-        UIActions.setCollapsedPortfolioAccountAddresses(newCollapsedAccounts)
-      )
+      // Update Collapsed Account Ids in Redux
+      dispatch(UIActions.setCollapsedPortfolioAccountIds(newCollapsedAccounts))
     }
 
     if (network) {
