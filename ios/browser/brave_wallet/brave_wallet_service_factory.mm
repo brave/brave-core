@@ -69,7 +69,8 @@ BraveWalletServiceFactory::BuildServiceInstanceFor(
       TxServiceFactory::GetServiceForState(browser_state),
       nullptr,  // TODO(apaymyshev): support bitcoin for ios.
       ZCashWalletServiceFactory::GetServiceForState(browser_state),
-      browser_state->GetPrefs(), GetApplicationContext()->GetLocalState()));
+      browser_state->GetPrefs(), GetApplicationContext()->GetLocalState(),
+      browser_state->IsOffTheRecord()));
   return service;
 }
 

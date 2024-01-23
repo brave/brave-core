@@ -233,6 +233,10 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   onNftDiscoveryEnabledChange_() {
     this.browserProxy_.setNftDiscoveryEnabled(this.$.enableNftDiscovery.checked)
   }
+
+  onPrivateWindowsEnabledChange_() {
+    this.browserProxy_.setPrivateWindowsEnabled(this.$.enableNftDiscovery.checked)
+  }
 }
 
 customElements.define(

@@ -104,4 +104,7 @@ inline constexpr char kBraveWalletUserAssetsDeprecated[] =
 inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
     "brave.wallet.transactions_db_format_migrated";
 
+inline constexpr char kBraveWalletPrivateWindowsEnabled[] =
+    "brave.wallet.private_windows_enabled";
+
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

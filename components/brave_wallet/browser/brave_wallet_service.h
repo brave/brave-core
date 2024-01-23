@@ -78,7 +78,8 @@ class BraveWalletService : public KeyedService,
       BitcoinWalletService* bitcoin_wallet_service,
       ZCashWalletService* zcash_wallet_service,
       PrefService* profile_prefs,
-      PrefService* local_state);
+      PrefService* local_state,
+      bool is_private_window_);
 
   ~BraveWalletService() override;
 
@@ -217,6 +218,11 @@ class BraveWalletService : public KeyedService,
 
   void SetNftDiscoveryEnabled(bool enabled) override;
 
+  void GetPrivateWindowsEnabled(
+      GetPrivateWindowsEnabledCallback callback) override;
+
+  void SetPrivateWindowsEnabled(bool enabled) override;
+
   void GetBalanceScannerSupportedChains(
       GetBalanceScannerSupportedChainsCallback callback) override;
 
@@ -236,6 +242,8 @@ class BraveWalletService : public KeyedService,
 
   void GetAnkrSupportedChainIds(
       GetAnkrSupportedChainIdsCallback callback) override;
+
+  void IsPrivateWindow(IsPrivateWindowCallback callback) override;
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
@@ -354,6 +362,7 @@ class BraveWalletService : public KeyedService,
   int sign_message_id_ = 0;
   int sign_transaction_id_ = 0;
   int sign_all_transactions_id_ = 0;
+  bool is_private_window_;
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;

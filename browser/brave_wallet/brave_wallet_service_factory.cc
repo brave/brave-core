@@ -15,6 +15,7 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -83,6 +84,7 @@ KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+
   return new BraveWalletService(
       shared_url_loader_factory, BraveWalletServiceDelegate::Create(context),
       KeyringServiceFactory::GetServiceForContext(context),
@@ -90,12 +92,13 @@ KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
       TxServiceFactory::GetServiceForContext(context),
       BitcoinWalletServiceFactory::GetServiceForContext(context),
       ZCashWalletServiceFactory::GetServiceForContext(context),
-      user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state(),
+      Profile::FromBrowserContext(context)->IsIncognitoProfile());
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return context;
 }
 
 }  // namespace brave_wallet

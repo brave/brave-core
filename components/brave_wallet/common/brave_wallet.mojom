@@ -2039,6 +2039,10 @@ interface BraveWalletService {
   // Calling this setter should be approved by privacy review.
   SetNftDiscoveryEnabled(bool enabled);
 
+  GetPrivateWindowsEnabled() => (bool enabled);
+
+  SetPrivateWindowsEnabled(bool enabled);
+
   // Returns a list of chain_ids for which GetERC20TokenBalances
   // is supported
   GetBalanceScannerSupportedChains() => (array<string> chain_ids);
@@ -2066,6 +2070,8 @@ interface BraveWalletService {
     => (string? address, string? error_message);
 
   GetAnkrSupportedChainIds() => (array<string> chain_ids);
+
+  IsPrivateWindow() => (bool is_private_window);
 };
 
 // For reporting wallet related P3A metrics.

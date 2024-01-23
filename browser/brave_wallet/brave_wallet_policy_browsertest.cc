@@ -10,6 +10,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -83,6 +84,13 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
     EXPECT_FALSE(prefs()->GetBoolean(brave_wallet::prefs::kDisabledByPolicy));
     EXPECT_TRUE(brave_wallet::IsAllowed(prefs()));
     EXPECT_TRUE(brave_wallet::IsAllowedForContext(profile()));
+    auto* incognito_profile =
+        CreateIncognitoBrowser(browser()->profile())->profile();
+    // By default the wallet should not be allowed for private window context.
+    EXPECT_FALSE(brave_wallet::IsAllowedForContext(incognito_profile));
+    // Setting pref should allow it.
+    prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
+    EXPECT_TRUE(brave_wallet::IsAllowedForContext(incognito_profile));
   }
 }
 

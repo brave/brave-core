@@ -3494,6 +3494,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC" desc="The description for enabling NFT discovery">
       Automatically add NFTs you own to the Wallet using third party APIs. <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>Learn more.<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph>
     </message>
+    <message name="IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_LABEL" desc="The label for enabling private window support">
+      Enable Brave Wallet in Private Windows.
+    </message>
+    <message name="IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_DESC" desc="The description for enabling private window support">
+      Warning: Reusing a wallet address in a private window session can enable a site to link a private window session to a non-private window session.
+    </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_ACCOUNT" desc="Label for Solana Address Lookup Table Account section">
       Address Lookup Table Account:
     </message>

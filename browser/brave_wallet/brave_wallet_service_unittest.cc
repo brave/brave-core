@@ -343,7 +343,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
         json_rpc_service_, tx_service_, bitcoin_wallet_service_.get(), nullptr,
-        GetPrefs(), local_state_->Get());
+        GetPrefs(), local_state_->Get(), false /* is_private_window_ */);
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 
@@ -2419,6 +2419,21 @@ TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
+}
+
+TEST_F(BraveWalletServiceUnitTest, SetPrivateWindowsEnabled) {
+  // Default should be off
+  EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletPrivateWindowsEnabled));
+
+  // Setting private enabled should update the pref.
+  service_->SetPrivateWindowsEnabled(true);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletPrivateWindowsEnabled));
+
+  // Unsetting NFT discovery enabled should update the pref.
+  service_->SetPrivateWindowsEnabled(false);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletPrivateWindowsEnabled));
 }
 
 TEST_F(BraveWalletServiceUnitTest, RecordGeneralUsageMetrics) {
