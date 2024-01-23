@@ -8,7 +8,9 @@ default_platform :ios
 
 platform :ios do
   before_all do |lane, options|
-    sh("pushd .. && ./scripts/bootstrap.sh --ci && popd")
+    unless lane == :upload
+      sh("pushd .. && ./scripts/bootstrap.sh --ci && popd")
+    end
   end
 
   desc "Run Unit Tests"
@@ -69,10 +71,7 @@ platform :ios do
         },
       }
     }
-    pilotOverrides = {
-      groups: ["Public Beta"]
-    }
-    testflight_build({gymOverrides: gymOverrides, pilotOverrides: pilotOverrides, skip_upload: options[:skip_upload]})
+    testflight_build({gymOverrides: gymOverrides})
   end
 
   desc "Creates a Brave Nightly build for TestFlight."
@@ -91,7 +90,7 @@ platform :ios do
         },
       }
     }
-    testflight_build({gymOverrides: gymOverrides, pilotOverrides: {}, skip_upload: options[:skip_upload]})
+    testflight_build({gymOverrides: gymOverrides})
   end
 
   desc "Create an archive to be uploaded to the App Store"
@@ -111,7 +110,29 @@ platform :ios do
         manageAppVersionAndBuildNumber: false
       },
     }
-    testflight_build({gymOverrides: gymOverrides, pilotOverrides: {}, skip_upload: options[:skip_upload]})
+    testflight_build({gymOverrides: gymOverrides})
+  end
+
+  desc "Uploads a build to TestFlight"
+  lane :upload do |options|
+    api_key = app_store_connect_api_key()
+    pilotParams = {
+      api_key: api_key,
+      changelog: "Bug fixes & improvements",
+      distribute_external: true,
+      skip_waiting_for_build_processing: false,
+      ipa: "build/Client.ipa"
+    }
+    case options[:channel].downcase
+    when "nightly", "release"
+      pilotParams[:groups] = ["Brave Internal"]
+    when "beta"
+      pilotParams[:groups] = ["Public Beta"]
+    else
+      pilotParams[:skip_waiting_for_build_processing] = true
+      pilotParams[:distribute_external] = false
+    end
+    pilot(pilotParams)
   end
 
   desc "All Testflight releases use this as the foundation. Pass in `gym` override params."
@@ -122,17 +143,6 @@ platform :ios do
     )
     defaultParams = gym_params()
     gym(defaultParams.merge!(options[:gymOverrides]))
-    unless options[:skip_upload]
-      api_key = app_store_connect_api_key()
-      pilotParams = {
-        api_key: api_key,
-        changelog: "Bug fixes & improvements",
-        distribute_external: true,
-        skip_waiting_for_build_processing: false,
-        groups: ["Brave Internal"],
-      }
-      pilot(pilotParams.merge!(options[:pilotOverrides]))
-    end
   end
 
   # Private helper methods ---------------------------------------
