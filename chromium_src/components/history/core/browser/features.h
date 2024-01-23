@@ -14,6 +14,6 @@ namespace history {
 
 BASE_DECLARE_FEATURE(kHistoryMoreSearchResults);
 
-}
+}  // namespace history
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_FEATURES_H_
