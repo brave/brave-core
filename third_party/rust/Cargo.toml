@@ -225,7 +225,7 @@ path = "ahash/v0_7/crate"
 package = "ahash"
 
 [patch.crates-io.aho-corasick_v0_7]
-path = "aho_corasick/v0_7/crate"
+path = "../../../third_party/rust/aho_corasick/v0_7/crate"
 package = "aho-corasick"
 
 [patch.crates-io.android_system_properties_v0_1]
@@ -981,11 +981,11 @@ path = "read_fonts/v0_5/crate"
 package = "read-fonts"
 
 [patch.crates-io.regex-syntax_v0_6]
-path = "regex_syntax/v0_6/crate"
+path = "../../../third_party/rust/regex_syntax/v0_6/crate"
 package = "regex-syntax"
 
 [patch.crates-io.regex_v1]
-path = "regex/v1/crate"
+path = "../../../third_party/rust/regex/v1/crate"
 package = "regex"
 
 [patch.crates-io.remove_dir_all_v0_5]

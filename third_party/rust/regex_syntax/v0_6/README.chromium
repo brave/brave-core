@@ -1,9 +1,0 @@
-Name: regex-syntax
-URL: https://crates.io/crates/regex-syntax
-Description: A regular expression parser.
-Version: 0.6.29
-Security Critical: no
-Shipped: no
-License: Apache 2.0
-License File: //third_party/rust/chromium_crates_io/vendor/regex-syntax-0.6.29/LICENSE-APACHE
-Revision: 72d482f911c4057f9a31f7f434dfe27c929a8913
