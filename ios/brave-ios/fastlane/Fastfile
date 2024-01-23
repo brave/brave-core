@@ -45,6 +45,7 @@ platform :ios do
       ensure_devices_found: true,
       output_types: "junit",
       output_files: "junit-ipad.xml",
+      derived_data_path: "../../../out/DerivedData",
       skip_testing: [
         "ClientTests/UserAgentTests"
       ],
