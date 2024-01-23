@@ -33,6 +33,7 @@ const Container = styled.div`
 `
 
 const StyledButton = styled(Button)`
+  color: var(--leo-color-icon-default);
   --leo-button-padding: ${spacing.s};
   align-items: center;
   display: flex;
