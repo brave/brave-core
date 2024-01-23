@@ -91,7 +91,7 @@ constexpr char kSkusStateValueTemplate[] = R"({
           "currency": "USD",
           "description": "brave-leo-premium",
           "id": "b7114ccc-b3a5-4951-9a5d-8b7a28731111",
-          "location": "leo.brave.com",
+          "location": "leo.bravesoftware.com",
           "order_id": "e24787ab-7bc3-46b9-bc05-65befb361111",
           "price": 15,
           "quantity": 1,
@@ -101,7 +101,7 @@ constexpr char kSkusStateValueTemplate[] = R"({
         }
       ],
       "last_paid_at": "$1",
-      "location": "leo.brave.com",
+      "location": "leo.bravesoftware.com",
       "merchant_id": "brave.com",
       "metadata": {
         "num_intervals": 3,
@@ -288,7 +288,7 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActive) {
   ASSERT_TRUE(base::Time::FromUTCExploded(exploded, &start_time));
   base::Value::Dict state;
   std::string skusStateValue = formatSkusStateValue(start_time);
-  state.Set("skus:production", skusStateValue);
+  state.Set("skus:staging", skusStateValue);
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
   base::Time expected_next_active_at = start_time + base::Days(2);
   expected_premium_info = mojom::PremiumInfo::New(3, expected_next_active_at);
@@ -306,7 +306,7 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActive) {
   // Set the SKUs state to be on the final batch. There will be remaining valid
   // credentials, but next_active_at will be null.
   skusStateValue = formatSkusStateValue(start_time, -2);
-  state.Set("skus:production", skusStateValue);
+  state.Set("skus:staging", skusStateValue);
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
   expected_premium_info = mojom::PremiumInfo::New(2, std::nullopt);
   TestGetPremiumStatus(mojom::PremiumStatus::Active,
@@ -315,7 +315,7 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActive) {
   // ActiveDisconnected
   start_time += base::Days(30);
   skusStateValue = formatSkusStateValue(start_time);
-  state.Set("skus:production", skusStateValue);
+  state.Set("skus:staging", skusStateValue);
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
   expected_premium_info = mojom::PremiumInfo::New(0, std::nullopt);
   TestGetPremiumStatus(mojom::PremiumStatus::ActiveDisconnected,
@@ -336,7 +336,7 @@ TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusActiveDisconnected) {
   base::Value::Dict state;
   const std::string skusStateValue =
       formatSkusStateValue(base::Time::Now() + base::Days(30));
-  state.Set("skus:production", skusStateValue);
+  state.Set("skus:staging", skusStateValue);
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
   mojom::PremiumInfoPtr expected_premium_info =
       mojom::PremiumInfo::New(0, std::nullopt);

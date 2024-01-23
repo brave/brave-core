@@ -27,10 +27,14 @@ constexpr char kBraveServicesSwitchValueProduction[] = "prod";
 // All domains can be overridden globally via
 // CLI param syntax is brave-services-env={dev,staging,prod}.
 //
-// Prefix overridde(s) take precedence over global override.
+// Precedence is:
+// 1. Prefix specific CLI overrides
+// 2. Global CLI overrides overrides
+// 3. Default env override parameter
+// 4. Default env (production)
 std::string GetServicesDomain(
     std::string prefix,
-    std::string env_value_default = "",
+    std::string env_value_default_override = "",
     base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
 
 }  // namespace brave_domains

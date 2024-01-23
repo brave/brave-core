@@ -87,8 +87,13 @@ TEST(BraveServiceDomains, DefaultEnvValue) {
 
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
 
+  // When no default is given and no switch is supplied,
+  // prod is used.
+  auto result = GetServicesDomain(prefix, "", &cl);
+  EXPECT_EQ(result, base::StrCat({prefix, ".", kProductionValue}));
+
   // When no env is present from the command line switch, the default is used.
-  auto result = GetServicesDomain(prefix, "dev", &cl);
+  result = GetServicesDomain(prefix, "dev", &cl);
   EXPECT_EQ(result, base::StrCat({prefix, ".", kDevValue}));
 
   // When an invalid env is passed as a default present the production value is
@@ -103,11 +108,11 @@ TEST(BraveServiceDomains, DefaultEnvValue) {
   EXPECT_EQ(result, base::StrCat({prefix, ".", kDevValue}));
 
   // When an global env is present from the command line switch, the default is
-  // used.
+  // ignored.
   base::CommandLine cl2(base::CommandLine::NO_PROGRAM);
   cl2.AppendSwitchASCII("brave-services-env", "dev");
   result = GetServicesDomain(prefix, "staging", &cl2);
-  EXPECT_EQ(result, base::StrCat({prefix, ".", kStagingValue}));
+  EXPECT_EQ(result, base::StrCat({prefix, ".", kDevValue}));
 }
 
 }  // namespace brave_domains

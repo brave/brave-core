@@ -60,31 +60,37 @@ void MaybeWarnSwitchValue(std::string key, std::string value) {
 
 std::string GetServicesDomain(
     std::string prefix,
-    std::string env_value_default,
+    std::string env_value_default_override,
     base::CommandLine*
         command_line /* = base::CommandLine::ForCurrentProcess() */) {
   std::string env_key;
-  std::string env_value;
+  // Default to production
+  std::string env_value = kBraveServicesSwitchValueProduction;
 
-  // Dynamic key allows overriding environment for just a subdomain prefix
+  // If a default parameter was supplied, use that instead, but only
+  // for unofficial builds.
+#if !defined(OFFICIAL_BUILD)
+  env_value = env_value_default_override;
+  if (!env_value_default_override.empty()) {
+    env_value = env_value_default_override;
+  }
+#endif
+
+  // If a global value was supplied via CLI, use that instead.
+  std::string env_from_switch =
+      command_line->GetSwitchValueASCII(kBraveServicesEnvironmentSwitch);
+  MaybeWarnSwitchValue(kBraveServicesEnvironmentSwitch, env_from_switch);
+  if (IsValidSwitchValue(env_from_switch)) {
+    env_value = env_from_switch;
+  }
+
+  // If a value was supplied for this specific prefix via CLI, use that instead.
   if (!prefix.empty()) {
     env_key = base::StrCat({"env-", prefix});
-    env_value = command_line->GetSwitchValueASCII(env_key);
-    MaybeWarnSwitchValue(env_key, env_value);
-  }
-
-  if (env_value.empty()) {
-    env_value = env_value_default;
-  }
-
-  // When not overriden or invalid, use global default or override
-  if (env_key.empty() || env_value.empty() || !IsValidSwitchValue(env_value)) {
-    env_value =
-        command_line->GetSwitchValueASCII(kBraveServicesEnvironmentSwitch);
-    MaybeWarnSwitchValue(kBraveServicesEnvironmentSwitch, env_value);
-    // Handle global default is not overriden or is invalid
-    if (!env_value.empty() && !IsValidSwitchValue(env_value)) {
-      env_value.clear();
+    env_from_switch = command_line->GetSwitchValueASCII(env_key);
+    MaybeWarnSwitchValue(env_key, env_from_switch);
+    if (IsValidSwitchValue(env_from_switch)) {
+      env_value = env_from_switch;
     }
   }
 
