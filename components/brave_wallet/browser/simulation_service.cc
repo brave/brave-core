@@ -9,6 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/simulation_request_helper.h"
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -132,9 +133,13 @@ const base::flat_map<std::string, std::string> GetHeaders() {
 }  // namespace
 
 SimulationService::SimulationService(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    JsonRpcService* json_rpc_service)
+    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      json_rpc_service_(json_rpc_service),
+      weak_ptr_factory_(this) {
+  DCHECK(json_rpc_service_);
+}
 
 SimulationService::~SimulationService() = default;
 
@@ -219,7 +224,46 @@ void SimulationService::ScanSolanaTransaction(
     return;
   }
 
-  const auto& params = solana::EncodeScanTransactionParams(request);
+  auto has_empty_recent_blockhash =
+      solana::HasEmptyRecentBlockhash(request->Clone());
+  if (!has_empty_recent_blockhash) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  if (*has_empty_recent_blockhash) {
+    json_rpc_service_->GetSolanaLatestBlockhash(
+        chain_id,
+        base::BindOnce(&SimulationService::OnGetLatestSolanaBlockhash,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(request),
+                       chain_id, language, std::move(callback)));
+  } else {
+    SimulationService::OnGetLatestSolanaBlockhash(
+        std::move(request), chain_id, language, std::move(callback), "", 0,
+        mojom::SolanaProviderError::kSuccess, "");
+  }
+}
+
+void SimulationService::OnGetLatestSolanaBlockhash(
+    mojom::SolanaTransactionRequestUnionPtr request,
+    const std::string& chain_id,
+    const std::string& language,
+    ScanSolanaTransactionCallback callback,
+    const std::string& latest_blockhash,
+    uint64_t last_valid_block_height,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  DCHECK(request);
+
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  const auto& params =
+      solana::EncodeScanTransactionParams(request, latest_blockhash);
   if (!params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));

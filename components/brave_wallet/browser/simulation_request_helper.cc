@@ -123,13 +123,18 @@ namespace solana {
 namespace {
 
 std::optional<std::string> GetBase64TransactionFromTxDataUnion(
-    mojom::TxDataUnionPtr tx_data_union) {
+    mojom::TxDataUnionPtr tx_data_union,
+    const std::string& recent_blockhash) {
   if (!tx_data_union->is_solana_tx_data()) {
     return std::nullopt;
   }
 
   auto tx = SolanaTransaction::FromSolanaTxData(
       std::move(tx_data_union->get_solana_tx_data()));
+
+  if (!recent_blockhash.empty()) {
+    tx->message()->set_recent_blockhash(recent_blockhash);
+  }
 
   auto message_signers_pair = tx->GetSerializedMessage();
   if (!message_signers_pair) {
@@ -161,8 +166,53 @@ std::optional<std::string> GetBase64TransactionFromTxDataUnion(
 
 }  // namespace
 
-std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
+std::optional<bool> HasEmptyRecentBlockhash(
     const mojom::SolanaTransactionRequestUnionPtr& request) {
+  if (!request) {
+    return std::nullopt;
+  }
+
+  if (request->is_sign_transaction_request()) {
+    const auto& sign_transaction_request =
+        request->get_sign_transaction_request();
+
+    if (!sign_transaction_request->tx_data->is_solana_tx_data()) {
+      return std::nullopt;
+    }
+
+    return sign_transaction_request->tx_data->get_solana_tx_data()
+        ->recent_blockhash.empty();
+  } else if (request->is_sign_all_transactions_request()) {
+    const auto& sign_all_transactions_request =
+        request->get_sign_all_transactions_request();
+
+    for (auto& tx_data : sign_all_transactions_request->tx_datas) {
+      if (!tx_data->is_solana_tx_data()) {
+        return std::nullopt;
+      }
+
+      if (tx_data->get_solana_tx_data()->recent_blockhash.empty()) {
+        return true;
+      }
+    }
+
+    return false;
+  } else if (request->is_transaction_info()) {
+    const auto& tx_info = request->get_transaction_info();
+    if (!tx_info->tx_data_union->is_solana_tx_data()) {
+      return std::nullopt;
+    }
+
+    return tx_info->tx_data_union->get_solana_tx_data()
+        ->recent_blockhash.empty();
+  }
+
+  return std::nullopt;
+}
+
+std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
+    const mojom::SolanaTransactionRequestUnionPtr& request,
+    const std::string& recent_blockhash) {
   if (!request) {
     return std::nullopt;
   }
@@ -174,7 +224,7 @@ std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
         request->get_sign_transaction_request();
 
     auto serialized_tx = GetBase64TransactionFromTxDataUnion(
-        std::move(sign_transaction_request->tx_data));
+        std::move(sign_transaction_request->tx_data), recent_blockhash);
     if (!serialized_tx) {
       return std::nullopt;
     }
@@ -190,8 +240,8 @@ std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
 
     base::Value::List transactions;
     for (auto& tx_data : sign_all_transactions_request->tx_datas) {
-      auto serialized_tx =
-          GetBase64TransactionFromTxDataUnion(std::move(tx_data));
+      auto serialized_tx = GetBase64TransactionFromTxDataUnion(
+          std::move(tx_data), recent_blockhash);
       if (!serialized_tx) {
         return std::nullopt;
       }
@@ -209,8 +259,8 @@ std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     if (!tx_info->from_address) {
       return std::nullopt;
     }
-    auto serialized_tx =
-        GetBase64TransactionFromTxDataUnion(std::move(tx_info->tx_data_union));
+    auto serialized_tx = GetBase64TransactionFromTxDataUnion(
+        std::move(tx_info->tx_data_union), recent_blockhash);
     if (!serialized_tx) {
       return std::nullopt;
     }

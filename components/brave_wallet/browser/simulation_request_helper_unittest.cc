@@ -373,7 +373,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(request, "");
 
   std::string expected_params(R"(
     {
@@ -398,7 +398,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanSolanaTransactionParams("https://example.com");
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(request, "");
 
   std::string expected_params(R"(
     {
@@ -426,7 +426,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
           std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(request, "");
 
   std::string expected_params(R"(
     {
@@ -454,7 +454,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
           std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(request, "");
 
   std::string expected_params(R"(
     {
@@ -482,7 +482,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
           std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(request, "");
 
   std::string expected_params(R"(
     {
@@ -510,7 +510,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
           std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(request, "");
 
   std::string expected_params(R"(
     {
@@ -535,7 +535,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanEVMTransactionParams(false, true, std::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(request, "");
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(params);
@@ -543,7 +543,81 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaNullParams) {
-  EXPECT_EQ(solana::EncodeScanTransactionParams(nullptr), std::nullopt);
+  EXPECT_EQ(solana::EncodeScanTransactionParams(nullptr, ""), std::nullopt);
+}
+
+TEST(SimulationRequestHelperUnitTest, HasEmptyRecentBlockhashSolana) {
+  {
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
+        tx_info->Clone());
+    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
+    ASSERT_TRUE(has_empty_recent_blockhash);
+    EXPECT_EQ(*has_empty_recent_blockhash, false);
+  }
+
+  {
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
+    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
+        std::move(tx_info));
+    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
+    ASSERT_TRUE(has_empty_recent_blockhash);
+    EXPECT_EQ(*has_empty_recent_blockhash, true);
+  }
+
+  {
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
+    auto request =
+        mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
+            std::move(parsed));
+    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
+    ASSERT_TRUE(has_empty_recent_blockhash);
+    EXPECT_EQ(*has_empty_recent_blockhash, false);
+  }
+
+  {
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
+    auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
+    auto request =
+        mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
+            std::move(parsed));
+    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
+    ASSERT_TRUE(has_empty_recent_blockhash);
+    EXPECT_EQ(*has_empty_recent_blockhash, true);
+  }
+
+  {
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    auto parsed_all = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
+    auto request =
+        mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
+            std::move(parsed_all));
+    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
+    ASSERT_TRUE(has_empty_recent_blockhash);
+    EXPECT_EQ(*has_empty_recent_blockhash, false);
+  }
+
+  {
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
+    auto parsed_all = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
+    auto request =
+        mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
+            std::move(parsed_all));
+    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
+    ASSERT_TRUE(has_empty_recent_blockhash);
+    EXPECT_EQ(*has_empty_recent_blockhash, true);
+  }
+
+  {
+    auto tx_info = GetCannedScanEVMTransactionParams(false, true, std::nullopt);
+    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
+        std::move(tx_info));
+    EXPECT_FALSE(solana::HasEmptyRecentBlockhash(request));
+  }
 }
 
 }  // namespace brave_wallet
