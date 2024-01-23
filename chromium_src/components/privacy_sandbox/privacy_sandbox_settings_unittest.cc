@@ -23,6 +23,74 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
+namespace {
+
+// Sets up preferences and content settings based on provided parameters.
+void SetupTestState(
+    sync_preferences::TestingPrefServiceSyncable* testing_pref_service,
+    HostContentSettingsMap* map,
+    bool block_third_party_cookies,
+    ContentSetting default_cookie_setting,
+    const std::vector<privacy_sandbox_test_util::CookieContentSettingException>&
+        user_cookie_exceptions,
+    ContentSetting managed_cookie_setting,
+    const std::vector<privacy_sandbox_test_util::CookieContentSettingException>&
+        managed_cookie_exceptions) {
+  // Setup block-third-party-cookies settings.
+  testing_pref_service->SetUserPref(
+      prefs::kCookieControlsMode,
+      base::Value(static_cast<int>(
+          block_third_party_cookies
+              ? content_settings::CookieControlsMode::kBlockThirdParty
+              : content_settings::CookieControlsMode::kOff)));
+
+  // Setup cookie content settings.
+  auto user_provider = std::make_unique<content_settings::MockProvider>();
+  auto managed_provider = std::make_unique<content_settings::MockProvider>();
+
+  if (default_cookie_setting != privacy_sandbox_test_util::kNoSetting) {
+    user_provider->SetWebsiteSetting(
+        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::COOKIES, base::Value(default_cookie_setting),
+        /*constraints=*/{},
+        content_settings::PartitionKey::GetDefaultForTesting());
+  }
+
+  for (const auto& exception : user_cookie_exceptions) {
+    user_provider->SetWebsiteSetting(
+        ContentSettingsPattern::FromString(exception.primary_pattern),
+        ContentSettingsPattern::FromString(exception.secondary_pattern),
+        ContentSettingsType::COOKIES, base::Value(exception.content_setting),
+        /*constraints=*/{},
+        content_settings::PartitionKey::GetDefaultForTesting());
+  }
+
+  if (managed_cookie_setting != privacy_sandbox_test_util::kNoSetting) {
+    managed_provider->SetWebsiteSetting(
+        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::COOKIES, base::Value(managed_cookie_setting),
+        /*constraints=*/{},
+        content_settings::PartitionKey::GetDefaultForTesting());
+  }
+
+  for (const auto& exception : managed_cookie_exceptions) {
+    managed_provider->SetWebsiteSetting(
+        ContentSettingsPattern::FromString(exception.primary_pattern),
+        ContentSettingsPattern::FromString(exception.secondary_pattern),
+        ContentSettingsType::COOKIES, base::Value(exception.content_setting),
+        /*constraints=*/{},
+        content_settings::PartitionKey::GetDefaultForTesting());
+  }
+
+  content_settings::TestUtils::OverrideProvider(
+      map, std::move(user_provider), HostContentSettingsMap::DEFAULT_PROVIDER);
+  content_settings::TestUtils::OverrideProvider(
+      map, std::move(managed_provider),
+      HostContentSettingsMap::POLICY_PROVIDER);
+}
+
+}  // namespace
+
 namespace privacy_sandbox {
 
 class MockPrivacySandboxDelegate : public PrivacySandboxSettings::Delegate {
@@ -121,7 +189,7 @@ class PrivacySandboxSettingsTest : public testing::Test {
 TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
   // Even if we try to enable the Privacy Sandbox, it should remain disabled, so
   // the sandbox preference should never override the default cookie content.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
@@ -146,7 +214,7 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
       content::InterestGroupApiOperation::kJoin));
 
   // An allow exception should not override the preference value.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -181,7 +249,7 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
 TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   // Even if we try to enable the Privacy Sandbox, it should remain disabled, so
   // targeted cookie block exceptions should never apply.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -214,7 +282,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   // setting exists. What the managed default setting actually is should *not*
   // affect whether APIs are enabled. The cookie managed state is reflected in
   // the privacy sandbox preferences directly.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -245,7 +313,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       content::InterestGroupApiOperation::kJoin));
 
   // Managed content setting exceptions.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -289,7 +357,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       content::InterestGroupApiOperation::kJoin));
 
   // A less specific block exception.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -316,7 +384,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       content::InterestGroupApiOperation::kJoin));
 
   // Exceptions which specify a top frame origin.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
@@ -346,7 +414,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       content::InterestGroupApiOperation::kJoin));
 
   // Exceptions which specify a wildcard top frame origin.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -378,7 +446,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
 
 TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   // FLEDGE should be disabled if 3P cookies are blocked.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/true,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -392,7 +460,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
       content::InterestGroupApiOperation::kJoin));
 
   // FLEDGE should be disabled if all cookies are blocked.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
@@ -407,7 +475,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
 
   // FLEDGE should be disabled if the privacy sandbox is disabled, regardless
   // of other cookie settings.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -426,7 +494,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
 
   // The managed cookie content setting should not override a disabled privacy
   // sandbox setting.
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -441,7 +509,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
 }
 
 TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/true,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
@@ -459,7 +527,7 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
       prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
@@ -472,7 +540,7 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
       prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
@@ -485,7 +553,7 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
       prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
-  privacy_sandbox_test_util::SetupTestState(
+  SetupTestState(
       prefs(), host_content_settings_map(),
       /*block_third_party_cookies=*/false,
       /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
