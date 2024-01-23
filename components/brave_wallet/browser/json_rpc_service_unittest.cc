@@ -3657,11 +3657,11 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidDomain) {
   }
 }
 
-TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
+TEST_F(JsonRpcServiceUnitTest, IsValidEnsDomain) {
   std::vector<std::string> valid_domains = {"brave.eth", "test.brave.eth",
                                             "brave-test.test-dev.eth"};
   for (const auto& domain : valid_domains) {
-    EXPECT_TRUE(JsonRpcService::IsValidDomain(domain))
+    EXPECT_TRUE(JsonRpcService::IsValidEnsDomain(domain))
         << domain << " should be valid";
   }
 
@@ -3669,7 +3669,42 @@ TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
       "",      ".eth",    "-brave.eth",      "brave-.eth",     "brave.e-th",
       "b.eth", "brave.e", "-brave.test.eth", "brave-.test.eth"};
   for (const auto& domain : invalid_domains) {
-    EXPECT_FALSE(JsonRpcService::IsValidDomain(domain))
+    EXPECT_FALSE(JsonRpcService::IsValidEnsDomain(domain))
+        << domain << " should be invalid";
+  }
+}
+
+TEST_F(JsonRpcServiceUnitTest, IsValidSnsDomain) {
+  std::vector<std::string> valid_domains = {
+      "brave.sol",                //
+      "test.brave.sol",           //
+      "brave-test.test-dev.sol",  //
+      "b.sol",                    //
+      "w.sol",                    //
+      "-.sol",                    //
+      "-brave.sol",               //
+      "brave-.sol",               //
+      "---.sol",                  //
+      "-.-.sol",                  //
+      "-brave.test.sol",          //
+      "brave-.test.sol"           //
+  };
+  for (const auto& domain : valid_domains) {
+    EXPECT_TRUE(JsonRpcService::IsValidSnsDomain(domain))
+        << domain << " should be valid";
+  }
+
+  std::vector<std::string> invalid_domains = {
+      "",            //
+      "b.eth",       //
+      ".sol",        //
+      "brave.s-ol",  //
+      "B.sol",       //
+      "brave.s",     //
+      "b.Sol"        //
+  };
+  for (const auto& domain : invalid_domains) {
+    EXPECT_FALSE(JsonRpcService::IsValidSnsDomain(domain))
         << domain << " should be invalid";
   }
 }
