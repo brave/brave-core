@@ -129,7 +129,6 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
           hideNav={isAndroid}
           hideHeader={isAndroid}
           wrapContentInBox={true}
-          cardWidth={456}
           cardHeader={
             <PageTitleHeader
               title={getLocale('braveWalletDepositCryptoButton')}
@@ -147,7 +146,6 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
           hideNav={isAndroid}
           hideHeader={isAndroid}
           wrapContentInBox={true}
-          cardWidth={456}
           cardHeader={
             <PageTitleHeader
               title={getLocale('braveWalletDepositCryptoButton')}
