@@ -82,7 +82,7 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
 
                     return;
                 }
-                proceedWithAStrongPassword(passwordInput, view);
+                proceedWithStrongPassword(passwordInput, view);
             });
         });
     }
@@ -97,10 +97,10 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
         return true;
     }
 
-    private void proceedWithAStrongPassword(@NonNull String passwordInput, @NonNull View view) {
+    private void proceedWithStrongPassword(@NonNull final String password, @NonNull final View view) {
         EditText retypePasswordEdittext = view.findViewById(R.id.secure_crypto_retype_password);
         String retypePasswordInput = retypePasswordEdittext.getText().toString();
-        if (!passwordInput.equals(retypePasswordInput)) {
+        if (!password.equals(retypePasswordInput)) {
             retypePasswordEdittext.setError(
                     getResources().getString(R.string.retype_password_error));
             mCreateWalletClicked = false;
@@ -111,14 +111,14 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
                         new BiometricPrompt.AuthenticationCallback() {
                             private void onNextPage() {
                                 // Go to next Page
-                                goToTheNextPage(passwordInput);
+                                goToTheNextPage(password);
                             }
 
                             @Override
                             public void onAuthenticationSucceeded(
                                     BiometricPrompt.AuthenticationResult result) {
                                 super.onAuthenticationSucceeded(result);
-                                KeystoreHelper.useBiometricOnUnlock(passwordInput);
+                                KeystoreHelper.useBiometricOnUnlock(password);
                                 onNextPage();
                             }
 
@@ -134,7 +134,7 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
                         };
                 showFingerprintDialog(authenticationCallback);
             } else {
-                goToTheNextPage(passwordInput);
+                goToTheNextPage(password);
             }
         }
     }
