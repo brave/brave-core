@@ -68,8 +68,11 @@ using decentralized_dns::ResolveMethodTypes;
 // The domain name should not start or end with hyphen (-).
 // The domain name can be a subdomain.
 // TLD & TLD-1 must be at least two characters.
-constexpr char kDomainPattern[] =
+constexpr char kEnsDomainPattern[] =
     "(?:[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9]\\.)+[A-Za-z]{2,}$";
+
+// Dot separated alpha-numeric-hyphen strings ending with sol
+constexpr char kSnsDomainPattern[] = R"(^(?:[a-z0-9-]+\.)+sol$)";
 
 // Non empty group of symbols of a-z | 0-9 | hyphen(-).
 // Then a dot.
@@ -1524,7 +1527,7 @@ void JsonRpcService::SetSnsResolveMethod(mojom::ResolveMethod method) {
 
 void JsonRpcService::EnsGetEthAddr(const std::string& domain,
                                    EnsGetEthAddrCallback callback) {
-  if (!IsValidDomain(domain)) {
+  if (!IsValidEnsDomain(domain)) {
     std::move(callback).Run(
         "", false, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1595,7 +1598,7 @@ void JsonRpcService::OnEnsGetEthAddrTaskDone(
 
 void JsonRpcService::SnsGetSolAddr(const std::string& domain,
                                    SnsGetSolAddrCallback callback) {
-  if (!IsValidDomain(domain)) {
+  if (!IsValidSnsDomain(domain)) {
     std::move(callback).Run(
         "", mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1648,7 +1651,7 @@ void JsonRpcService::OnSnsGetSolAddrTaskDone(
 
 void JsonRpcService::SnsResolveHost(const std::string& domain,
                                     SnsResolveHostCallback callback) {
-  if (!IsValidDomain(domain)) {
+  if (!IsValidSnsDomain(domain)) {
     std::move(callback).Run(
         absl::nullopt, mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -2075,8 +2078,14 @@ void JsonRpcService::OnGetBlockByNumber(GetBlockByNumberCallback callback,
 }
 
 /*static*/
-bool JsonRpcService::IsValidDomain(const std::string& domain) {
-  static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);
+bool JsonRpcService::IsValidEnsDomain(const std::string& domain) {
+  static const base::NoDestructor<re2::RE2> kDomainRegex(kEnsDomainPattern);
+  return re2::RE2::FullMatch(domain, *kDomainRegex);
+}
+
+/*static*/
+bool JsonRpcService::IsValidSnsDomain(const std::string& domain) {
+  static const base::NoDestructor<re2::RE2> kDomainRegex(kSnsDomainPattern);
   return re2::RE2::FullMatch(domain, *kDomainRegex);
 }
 

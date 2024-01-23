@@ -617,12 +617,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                              AddChainCallback callback,
                              APIRequestResult api_request_result);
 
-  FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidDomain);
+  FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidEnsDomain);
+  FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidSnsDomain);
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidUnstoppableDomain);
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, Reset);
   friend class JsonRpcServiceUnitTest;
 
-  static bool IsValidDomain(const std::string& domain);
+  static bool IsValidEnsDomain(const std::string& domain);
+  static bool IsValidSnsDomain(const std::string& domain);
   static bool IsValidUnstoppableDomain(const std::string& domain);
 
   void OnGetERC721OwnerOf(GetERC721OwnerOfCallback callback,
