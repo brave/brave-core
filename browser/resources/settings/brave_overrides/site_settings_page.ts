@@ -20,6 +20,7 @@ const PERMISSIONS_BASIC_REMOVE_IDS = [
 ]
 const CONTENT_ADVANCED_REMOVE_IDS = [
   ContentSettingsTypes.ADS,
+  ContentSettingsTypes.PERFORMANCE,
 ]
 
 RegisterPolymerTemplateModifications({
