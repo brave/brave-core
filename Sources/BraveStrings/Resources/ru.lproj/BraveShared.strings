@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Синхронизировать";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "Плейлист";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрыть меню «Щиты»";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Удалить все данные Щита?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Скрыть";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Скрыть статистику конфиденциальности";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Скрыть виджет со статистикой конфиденциальности. Вы всегда сможете его вернуть в разделе настроек «Страница новой вкладки».";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "За неделю";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Добавить свою поисковую систему";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "При включении этой настройки в поиске будут содержаться результаты из истории браузера и закладок.";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Показывать подсказки браузера";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Поиск";

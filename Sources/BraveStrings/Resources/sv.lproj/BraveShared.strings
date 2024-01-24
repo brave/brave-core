@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Synkronisera nu";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "Spellista";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Stäng sköldmenyn";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Rensa alla Shields-data?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Dölj";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Dölj integritetsstatistik";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Tryck på Dölj för att ta bort integritetsstatistik-widgeten. Du kan alltid aktivera den igen i inställningarna på sidan Ny flik.";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Förra veckan";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Lägg till anpassad sökmotor";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Aktivera det här för att inkludera resultat från din Historik och Bokmärken när du söker";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Visa webbläsarförslag";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Sök";

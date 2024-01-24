@@ -46,6 +46,12 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Перейдите в Brave Проигрыватель";
 
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Включить JavaScript API Global Privacy Control.";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Включить Global Privacy Control";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Блокировка трекеров и рекламы";
 

@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Sinkronisasikan Sekarang";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "Daftar Putar";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tutup Menu Perisai";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Hapus semua data Perisai";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Sembunyikan";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Sembunyikan Statistik Privasi";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Ketuk Sembunyikan untuk menghapus widget Statistik Privasi. Anda dapat selalu mengaktifkan ulang pada bagian Pengaturan, di Halaman Tab Baru";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Minggu lalu";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Tambahkan Mesin Pencari Ubahsuaian";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Aktifkan ini untuk menyertakan hasil dari Riwayat dan Markah Anda ketika melakukan pencarian";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Tampilkan Saran Peramban";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Cari";

@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "지금 동기화";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "재생목록";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shields 메뉴 닫기";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "모든 Shields 데이터를 지우시겠습니까?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "숨기기";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "프라이버시 통계 숨기기";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "프라이버시 통계 위젯을 제거하려면 숨기기를 탭하세요. 새 탭 페이지에서 설정으로 이동하면 언제든 재활성화할 수 있습니다.";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "지난주";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "맞춤 검색 엔진 추가";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "검색 시 기록 및 북마크로부터의 결과를 포함하려면 이 옵션을 켜세요.";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "브라우저 추천 항목 표시";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "검색";

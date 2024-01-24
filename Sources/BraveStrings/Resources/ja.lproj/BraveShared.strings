@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "同期を開始する";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "Playlist";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shieldメニューを閉じる";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Shieldsのすべてのデータをクリアしますか？";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "隠す";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "プライバシー統計を非表示";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "非表示をタップして、プライバシー統計ウィジェットを削除します。設定の「新しいタブページ」からいつでもこの設定を有効に戻すことができます。";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "先週";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "カスタム検索エンジンを追加する";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "検索時に履歴とブックマークからの結果を含めるには、この設定をオンにしてください";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "ブラウザのサジェスチョンを表示";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "検索";

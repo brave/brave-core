@@ -358,6 +358,9 @@
 /* The title of the create wallet screen */
 "wallet.createWalletTitle" = "建立密碼";
 
+/* The title of the creating wallet screen, shown after user enters their password while the wallet is being set up. */
+"wallet.creatingWallet" = "正在建立錢包……";
+
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave 錢包";
 
@@ -549,9 +552,6 @@
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "編輯網路";
-
-/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
-"wallet.editGasFeeButtonTitle" = "編輯";
 
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "編輯燃料設定";
@@ -769,6 +769,9 @@
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "帮助中心";
 
+/* A button title which when pressed hides the details screen. */
+"wallet.hideDetailsButtonTitle" = "隱藏詳細資料";
+
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "隱藏私密金鑰";
 
@@ -915,6 +918,9 @@
 
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Brave 錢包";
+
+/* A button title for user to open more option in asset details screen other than buy/send/swap. */
+"wallet.more" = "更多";
 
 /* The title displayed on the view to filter by a network / all networks. */
 "wallet.networkFilterTitle" = "選擇網路";
@@ -1066,6 +1072,9 @@
 /* The title of context button for user to unspam a NFT. */
 "wallet.nftUnspam" = "標示為非垃圾項目";
 
+/* The empty state description displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccountDescription" = "有餘額的帳戶將顯示於此。";
+
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "沒有帳戶";
 
@@ -1131,9 +1140,6 @@
 
 /* The title of the portfolio page in the Crypto tab */
 "wallet.portfolioPageTitle" = "投資組合";
-
-/* A title above a list of crypto accounts that are not imported */
-"wallet.primaryCryptoAccountsTitle" = "主要加密帳戶";
 
 /* The message displayed when the user takes a screenshot of their private key */
 "wallet.privateKeyScreenshotDetectedMessage" = "警告：有心人士可能會將私密金鑰的螢幕擷取畫面備份至雲端檔案服務，而任何取得照片存取權限的應用程式都能加以讀取。Brave 建議您不要儲存該螢幕擷取畫面，並且儘快刪除。";
@@ -1254,9 +1260,6 @@
 
 /* A subtitle above a list of crypto accounts that are imported */
 "wallet.secondaryCryptoAccountsSubtitle" = "以個別種子詞句匯入您的外部錢包帳戶。";
-
-/* A title above a list of crypto accounts that are imported */
-"wallet.secondaryCryptoAccountsTitle" = "次要帳戶";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
 "wallet.securityRiskDetectedTitle" = "偵測到安全性風險";
@@ -1782,6 +1785,9 @@
 
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "總計";
+
+/* A title label that will display total balance of all none-zero balance accounts */
+"wallet.totalBalance" = "餘額總計";
 
 /* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
 "wallet.transactionApprovalTitle" = "已核准";

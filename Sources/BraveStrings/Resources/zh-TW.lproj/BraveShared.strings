@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "立即同步";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "播放清單";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "關閉 Shields 選單";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "要清除所有防護資料？";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "隱藏";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "隱藏隱私統計資料";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "點擊隱藏以刪除隱私統計資料小工具。您可以隨時在「設定」中的「新分頁」中重新啟用此選項";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "上週";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "新增自訂搜尋引擎";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "開啟此選項以在搜尋時包含您的歷史記錄和書籤結果";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "顯示瀏覽器建議";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "搜尋";

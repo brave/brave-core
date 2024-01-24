@@ -358,6 +358,9 @@
 /* The title of the create wallet screen */
 "wallet.createWalletTitle" = "Buat Kata Sandi";
 
+/* The title of the creating wallet screen, shown after user enters their password while the wallet is being set up. */
+"wallet.creatingWallet" = "Membuat Dompet...";
+
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Dompet Brave";
 
@@ -549,9 +552,6 @@
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Sunting Jaringan";
-
-/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
-"wallet.editGasFeeButtonTitle" = "Edit";
 
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "Edit Bensin";
@@ -769,6 +769,9 @@
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "Pusat Bantuan";
 
+/* A button title which when pressed hides the details screen. */
+"wallet.hideDetailsButtonTitle" = "Sembunyikan Detail";
+
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "Sembunyikan Kunci Pribadi";
 
@@ -915,6 +918,9 @@
 
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Dompet Brave";
+
+/* A button title for user to open more option in asset details screen other than buy/send/swap. */
+"wallet.more" = "Lainnya";
 
 /* The title displayed on the view to filter by a network / all networks. */
 "wallet.networkFilterTitle" = "Pilih Jaringan";
@@ -1066,6 +1072,9 @@
 /* The title of context button for user to unspam a NFT. */
 "wallet.nftUnspam" = "Tandai sebagai Bukan Sampah";
 
+/* The empty state description displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccountDescription" = "Akun dengan saldo akan muncul di sini.";
+
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "Tidak Ada Akun";
 
@@ -1131,9 +1140,6 @@
 
 /* The title of the portfolio page in the Crypto tab */
 "wallet.portfolioPageTitle" = "Portofolio";
-
-/* A title above a list of crypto accounts that are not imported */
-"wallet.primaryCryptoAccountsTitle" = "Akun Kripto Utama";
 
 /* The message displayed when the user takes a screenshot of their private key */
 "wallet.privateKeyScreenshotDetectedMessage" = "Peringatan: Tangkapan layar kunci privat Anda dapat dicadangkan ke layanan awan, dan dapat dibaca menggunakan aplikasi apa pun yang memiliki akses foto. Brave merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
@@ -1254,9 +1260,6 @@
 
 /* A subtitle above a list of crypto accounts that are imported */
 "wallet.secondaryCryptoAccountsSubtitle" = "Impor akun dompet eksternal Anda dengan frasa benih yang terpisah.";
-
-/* A title above a list of crypto accounts that are imported */
-"wallet.secondaryCryptoAccountsTitle" = "Akun Sekunder";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
 "wallet.securityRiskDetectedTitle" = "Risiko Keamanan Terdeteksi";
@@ -1782,6 +1785,9 @@
 
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "Total";
+
+/* A title label that will display total balance of all none-zero balance accounts */
+"wallet.totalBalance" = "Total Saldo";
 
 /* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
 "wallet.transactionApprovalTitle" = "Disetujui";

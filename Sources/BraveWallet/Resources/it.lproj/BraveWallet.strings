@@ -358,6 +358,9 @@
 /* The title of the create wallet screen */
 "wallet.createWalletTitle" = "Crea una password";
 
+/* The title of the creating wallet screen, shown after user enters their password while the wallet is being set up. */
+"wallet.creatingWallet" = "Creazione del portafoglio in corso...";
+
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Portafoglio Brave";
 
@@ -549,9 +552,6 @@
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Modifica rete";
-
-/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
-"wallet.editGasFeeButtonTitle" = "Modifica";
 
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "Modifica gas";
@@ -769,6 +769,9 @@
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "Centro assistenza";
 
+/* A button title which when pressed hides the details screen. */
+"wallet.hideDetailsButtonTitle" = "Nascondi dettagli";
+
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "Nascondi chiave privata";
 
@@ -915,6 +918,9 @@
 
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Portafoglio Brave";
+
+/* A button title for user to open more option in asset details screen other than buy/send/swap. */
+"wallet.more" = "Altro";
 
 /* The title displayed on the view to filter by a network / all networks. */
 "wallet.networkFilterTitle" = "Seleziona le reti";
@@ -1066,6 +1072,9 @@
 /* The title of context button for user to unspam a NFT. */
 "wallet.nftUnspam" = "Segnala come non spam";
 
+/* The empty state description displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccountDescription" = "Gli account con un saldo appariranno qui.";
+
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "Nessun account";
 
@@ -1131,9 +1140,6 @@
 
 /* The title of the portfolio page in the Crypto tab */
 "wallet.portfolioPageTitle" = "Portafoglio";
-
-/* A title above a list of crypto accounts that are not imported */
-"wallet.primaryCryptoAccountsTitle" = "Account primari di criptovalute";
 
 /* The message displayed when the user takes a screenshot of their private key */
 "wallet.privateKeyScreenshotDetectedMessage" = "Attenzione: è possibile acquisire una schermata della chiave privata, eseguire il back up su un servizio di file cloud e visualizzarla da qualsiasi applicazione con accesso alle foto. Brave consiglia di non salvare questa schermata e di eliminarla il più presto possibile.";
@@ -1254,9 +1260,6 @@
 
 /* A subtitle above a list of crypto accounts that are imported */
 "wallet.secondaryCryptoAccountsSubtitle" = "Importa l’account del portafoglio esterno con una frase seme separata.";
-
-/* A title above a list of crypto accounts that are imported */
-"wallet.secondaryCryptoAccountsTitle" = "Account secondari";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
 "wallet.securityRiskDetectedTitle" = "Rischio di sicurezza rilevato";
@@ -1782,6 +1785,9 @@
 
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "Totale";
+
+/* A title label that will display total balance of all none-zero balance accounts */
+"wallet.totalBalance" = "Saldo totale";
 
 /* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
 "wallet.transactionApprovalTitle" = "Approvati";

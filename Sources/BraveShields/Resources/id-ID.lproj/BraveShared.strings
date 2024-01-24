@@ -46,6 +46,12 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Tonton Di Pemutar Brave Sebagai Gantinya";
 
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Mengaktifkan JS API Kontrol Privasi Global";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Mengaktifkan Kontrol Privasi Global";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Pemblokiran Pelacak & Iklan";
 

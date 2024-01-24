@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Synkroniser nå";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "Spilleliste";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Lukk Skjold-menyen";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Vil du fjerne alle data om skjold?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Skjul";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Skjul personvernstatistikken";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Trykk på Skjul for å skjule Personvernstatistikk-widgeten. Du kan alltid slå den på igjen under Ny faneside i Innstillinger";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Siste uke";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Legg til tilpasset søkemotor";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Slå på dette for å inkludere resultater fra loggen og bokmerkene i søk";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Vis nettleserforslag";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Søk";

@@ -46,6 +46,12 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "改为在 Brave Player 中观看";
 
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "启用全球隐私控制 JS API";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "启用全局隐私控制";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "跟踪器和广告屏蔽";
 

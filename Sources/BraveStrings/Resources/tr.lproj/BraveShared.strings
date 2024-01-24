@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Şimdi Senkronize Et";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "Oynatma listesi";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Kalkanlar Menüsünü Kapat";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Tüm Kalkanlar verileri temizlensin mi?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Gizle";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Gizlilik İstatistiklerini Gizle";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Gizlilik İstatistikleri öğesini kaldırmak için Gizle seçeneğine dokunun. Bunu Ayarlar bölümünde, Yeni Sekme Sayfası kısmı altında istediğiniz zaman yeniden etkinleştirebilirsiniz";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Geçen hafta";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Özel Arama Motoru Ekle";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Ararken Geçmişinizden ve Yer İşaretlerinizden sonuçları da dahil etmek için bu ayarı açın";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Tarayıcı Önerilerini Göster";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Ara";

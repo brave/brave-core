@@ -1885,9 +1885,6 @@
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "Synchronizuj teraz";
 
-/* Playlist menu item */
-"PlaylistMenuItem" = "Lista odtwarzania";
-
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Zamknij menu Shields";
 
@@ -1941,6 +1938,15 @@
 
 /* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
 "privacyHub.clearAllDataPrompt" = "Wyczyścić wszystkie dane Shields?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Ukryj";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Ukryj statystyki prywatności";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Wybierz Ukryj, aby usunąć widżet Statystyki prywatności. Zawsze możesz go ponownie włączyć w Ustawieniach, w sekcji Strona nowej karty";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "W zeszłym tygodniu";
@@ -2583,6 +2589,12 @@
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Dodaj niestandardową wyszukiwarkę";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Włącz tę opcję, aby podczas wyszukiwania uwzględniać wyniki z historii i zakładek.";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Pokaż sugestie przeglądarki";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Szukaj";
