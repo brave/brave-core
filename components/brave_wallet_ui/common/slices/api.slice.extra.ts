@@ -149,28 +149,25 @@ export const useGetCombinedTokensRegistryQuery = (
 }
 
 export const useGetCombinedTokensListQuery = (
-  arg?: undefined,
-  opts?: { skip?: boolean }
+  arg?: undefined | typeof skipToken
 ) => {
   const { isLoadingUserTokens, userTokens } = useGetUserTokensRegistryQuery(
-    undefined,
+    arg || undefined,
     {
       selectFromResult: (res) => ({
         isLoadingUserTokens: res.isLoading,
         userTokens: selectAllUserAssetsFromQueryResult(res)
-      }),
-      skip: opts?.skip
+      })
     }
   )
 
   const { isLoadingKnownTokens, knownTokens } = useGetTokensRegistryQuery(
-    undefined,
+    arg || undefined,
     {
       selectFromResult: (res) => ({
         isLoadingKnownTokens: res.isLoading,
         knownTokens: selectAllBlockchainTokensFromQueryResult(res)
-      }),
-      skip: opts?.skip
+      })
     }
   )
 
