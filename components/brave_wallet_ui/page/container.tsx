@@ -161,7 +161,6 @@ export const Container = () => {
       >
         <WalletPageWrapper
           wrapContentInBox={true}
-          cardWidth={680}
           hideNav={true}
           hideHeaderMenu={true}
           noBorderRadius={true}

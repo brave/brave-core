@@ -45,7 +45,6 @@ import { loadTimeData } from '../../../../common/loadTimeData'
 
 export interface Props {
   wrapContentInBox?: boolean
-  cardWidth?: number
   noPadding?: boolean
   noCardPadding?: boolean
   hideBackground?: boolean
@@ -63,7 +62,6 @@ export interface Props {
 export const WalletPageWrapper = (props: Props) => {
   const {
     children,
-    cardWidth,
     noPadding,
     noCardPadding,
     wrapContentInBox,
@@ -176,17 +174,13 @@ export const WalletPageWrapper = (props: Props) => {
             hideNav={hideNav}
           >
             {cardHeader && !isPanel && (
-              <CardHeaderWrapper
-                maxWidth={cardWidth}
-                isPanel={isPanel}
-              >
+              <CardHeaderWrapper isPanel={isPanel}>
                 <CardHeaderShadow headerHeight={headerHeight} />
               </CardHeaderWrapper>
             )}
 
             <ContainerCard
               noPadding={noCardPadding}
-              maxWidth={cardWidth}
               hideCardHeader={!cardHeader}
               noMinCardHeight={noMinCardHeight}
               noBorderRadius={noBorderRadius}
@@ -198,7 +192,6 @@ export const WalletPageWrapper = (props: Props) => {
             {cardHeader && (
               <CardHeaderWrapper
                 ref={headerRef}
-                maxWidth={cardWidth}
                 isPanel={isPanel}
               >
                 <CardHeader
