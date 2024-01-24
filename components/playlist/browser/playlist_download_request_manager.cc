@@ -377,8 +377,9 @@ bool PlaylistDownloadRequestManager::CanCacheMedia(
   return false;
 }
 
-bool PlaylistDownloadRequestManager::ShouldRefetchMediaSourceToCache(
-    const mojom::PlaylistItemPtr& item) const {
+bool PlaylistDownloadRequestManager::
+    ShouldExtractMediaFromBackgroundWebContents(
+        const mojom::PlaylistItemPtr& item) const {
   GURL media_url(item->media_source);
   if (media_url.SchemeIs(url::kHttpsScheme)) {
     return false;

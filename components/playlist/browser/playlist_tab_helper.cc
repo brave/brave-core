@@ -156,17 +156,18 @@ std::u16string PlaylistTabHelper::GetSavedFolderName() {
   return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
 }
 
-bool PlaylistTabHelper::ShouldRefetch() const {
-  return service_->ShouldRefetchMediaSourceToCache(found_items());
+bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
+  return service_->ShouldExtractMediaFromBackgroundWebContents(found_items());
 }
 
-bool PlaylistTabHelper::IsRefetching() const {
-  return media_detected_after_refetching_callback_.size();
+bool PlaylistTabHelper::IsExtractingMediaFromBackgroundWebContents() const {
+  return media_extracted_from_background_web_contents_callbacks_.size();
 }
 
-void PlaylistTabHelper::RefetchMediaURL(base::OnceClosure detected_callback) {
-  media_detected_after_refetching_callback_.push_back(
-      std::move(detected_callback));
+void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
+    base::OnceClosure extracted_callback) {
+  media_extracted_from_background_web_contents_callbacks_.push_back(
+      std::move(extracted_callback));
   FindMediaFromCurrentContents();
 }
 
@@ -287,7 +288,7 @@ void PlaylistTabHelper::ResetData() {
   saved_items_.clear();
   found_items_.clear();
   sent_find_media_request_ = false;
-  media_detected_after_refetching_callback_.clear();
+  media_extracted_from_background_web_contents_callbacks_.clear();
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
@@ -358,15 +359,16 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     return;
   }
 
-  if (!items.empty() && service_->ShouldRefetchMediaSourceToCache(items)) {
-    if (IsRefetching()) {
+  if (!items.empty() &&
+      service_->ShouldExtractMediaFromBackgroundWebContents(items)) {
+    if (IsExtractingMediaFromBackgroundWebContents()) {
       // We don't have to update found items with |items| as they're going to
       // be replaced.
       return;
     }
 
     if (found_items_.size() &&
-        !service_->ShouldRefetchMediaSourceToCache(found_items_)) {
+        !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
       // We don't want to override |found_items_| with |items_| as it results it
       // refetching.
       return;
@@ -376,7 +378,7 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
 
   base::flat_map<std::string, mojom::PlaylistItemPtr*> already_found_items;
-  if (IsRefetching()) {
+  if (IsExtractingMediaFromBackgroundWebContents()) {
     found_items_.clear();
   } else {
     for (auto& item : found_items_) {
@@ -399,7 +401,8 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     observer.OnFoundItemsChanged(found_items_);
   }
 
-  auto callbacks = std::move(media_detected_after_refetching_callback_);
+  auto callbacks =
+      std::move(media_extracted_from_background_web_contents_callbacks_);
   for (auto& callback : callbacks) {
     std::move(callback).Run();
   }

@@ -228,11 +228,9 @@ class PlaylistService : public KeyedService,
   void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
 
-  // Returns true when we should try getting media from a background web
-  // contents, which means it could have impact on performance/memory.
-  bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
-
-  bool ShouldRefetchMediaSourceToCache(
+  // Returns true when any of items contains blob: scheme, which we can't cache
+  // media directly from.
+  bool ShouldExtractMediaFromBackgroundWebContents(
       const std::vector<mojom::PlaylistItemPtr>& items);
 
   bool playlist_enabled() const { return *enabled_pref_; }
@@ -278,9 +276,12 @@ class PlaylistService : public KeyedService,
                               std::vector<mojom::PlaylistItemPtr> items);
 
   // Returns true when we should try getting media from a background web
-  // contents that is different from the given |contents|.
+  // contents that is different from the given |contents|. which means it could
+  // have impact on performance/memory.
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
+  bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
+
   bool ShouldUseFakeUA(const GURL& url) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
