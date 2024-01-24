@@ -134,7 +134,7 @@ base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
     fetch_time = now;
   }
 
-  fetch_time += base::Seconds(kPublisherListRefreshInterval);
+  fetch_time += base::Seconds(kRefreshInterval);
   return fetch_time < now ? base::Seconds(0) : fetch_time - now;
 }
 

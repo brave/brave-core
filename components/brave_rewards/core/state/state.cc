@@ -250,7 +250,7 @@ void State::SetReconcileStamp(const int reconcile_interval) {
   engine_->client()->ReconcileStampReset();
 }
 void State::ResetReconcileStamp() {
-  SetReconcileStamp(reconcile_interval);
+  SetReconcileStamp(engine_->options().reconcile_interval);
 }
 
 uint64_t State::GetCreationStamp() {

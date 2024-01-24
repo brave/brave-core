@@ -26,21 +26,6 @@
 
 namespace brave_rewards::internal {
 
-inline mojom::Environment _environment = mojom::Environment::kProduction;
-inline bool is_debug = false;
-inline bool is_testing = false;
-inline int state_migration_target_version_for_testing = -1;
-inline int reconcile_interval = 0;  // minutes
-inline int retry_interval = 0;      // seconds
-
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-inline constexpr uint64_t kPublisherListRefreshInterval =
-    7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
-#else
-inline constexpr uint64_t kPublisherListRefreshInterval =
-    3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
-#endif
-
 class EnvironmentConfig;
 class InitializationManager;
 class URLLoader;
@@ -107,8 +92,9 @@ class WalletProvider;
 
 class RewardsEngineImpl : public mojom::RewardsEngine {
  public:
-  explicit RewardsEngineImpl(
-      mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote);
+  RewardsEngineImpl(
+      mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
+      const mojom::RewardsEngineOptions& options);
 
   ~RewardsEngineImpl() override;
 
@@ -420,6 +406,10 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   // This method is virtualised for test-only purposes.
   virtual database::Database* database();
 
+  const mojom::RewardsEngineOptions& options() const { return options_; }
+
+  mojom::RewardsEngineOptions& GetOptionsForTesting() { return options_; }
+
  private:
   bool IsReady() const;
 
@@ -431,6 +421,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   void WhenReady(T callback);
 
   mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
+  mojom::RewardsEngineOptions options_;
 
   std::tuple<std::unique_ptr<EnvironmentConfig>,
              std::unique_ptr<InitializationManager>,

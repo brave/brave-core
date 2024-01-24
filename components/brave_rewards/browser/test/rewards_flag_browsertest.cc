@@ -133,54 +133,6 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
-  {
-    auto options =
-        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_FALSE(options->is_debug);
-  }
-
-  {
-    base::test::ScopedCommandLine scoped_command_line;
-    base::CommandLine* command_line =
-        scoped_command_line.GetProcessCommandLine();
-    command_line->AppendSwitchASCII("rewards", "debug=true");
-    auto options =
-        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_TRUE(options->is_debug);
-  }
-
-  {
-    base::test::ScopedCommandLine scoped_command_line;
-    base::CommandLine* command_line =
-        scoped_command_line.GetProcessCommandLine();
-    command_line->AppendSwitchASCII("rewards", "debug=1");
-    auto options =
-        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_TRUE(options->is_debug);
-  }
-
-  {
-    base::test::ScopedCommandLine scoped_command_line;
-    base::CommandLine* command_line =
-        scoped_command_line.GetProcessCommandLine();
-    command_line->AppendSwitchASCII("rewards", "debug=false");
-    auto options =
-        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_FALSE(options->is_debug);
-  }
-
-  {
-    base::test::ScopedCommandLine scoped_command_line;
-    base::CommandLine* command_line =
-        scoped_command_line.GetProcessCommandLine();
-    command_line->AppendSwitchASCII("rewards", "debug=foobar");
-    auto options =
-        rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
-    EXPECT_FALSE(options->is_debug);
-  }
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   {
     auto options =
@@ -301,7 +253,6 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   auto options =
       rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
   EXPECT_EQ(options->environment, mojom::Environment::kStaging);
-  EXPECT_TRUE(options->is_debug);
   EXPECT_EQ(options->reconcile_interval, 10);
   EXPECT_EQ(options->retry_interval, 1);
 }
@@ -314,7 +265,6 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   auto options =
       rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
   EXPECT_EQ(options->environment, mojom::Environment::kProduction);
-  EXPECT_FALSE(options->is_debug);
   EXPECT_EQ(options->reconcile_interval, 0);
   EXPECT_EQ(options->retry_interval, 0);
 }

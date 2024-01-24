@@ -93,7 +93,7 @@ TEST_P(ConnectExternalWalletTest, Paths) {
 
   ConnectTestWallet connect_wallet(mock_engine_impl_, post_connect_result);
 
-  is_testing = true;
+  mock_engine_impl_.GetOptionsForTesting().is_testing = true;
   EXPECT_EQ(connect_wallet.GenerateLoginURL(), "https://test.com?123456789");
 
   connect_wallet.SetOAuthStateForTesting(

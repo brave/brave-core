@@ -133,7 +133,7 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
 
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
     engine_->state()->ResetReconcileStamp();
-    if (!is_testing) {
+    if (!engine_->options().is_testing) {
       engine_->state()->SetEmptyBalanceChecked(true);
       engine_->state()->SetPromotionCorruptedMigrated(true);
     }

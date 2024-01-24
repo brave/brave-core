@@ -73,7 +73,7 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
           base::BindOnce(&StateMigrationV10::OnGetWallet,
                          base::Unretained(this), std::move(callback));
 
-      if (is_testing) {
+      if (engine_->options().is_testing) {
         return std::move(wallet_info_endpoint_callback)
             .Run(
                 base::unexpected(mojom::GetWalletError::kUnexpectedStatusCode));

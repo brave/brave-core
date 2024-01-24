@@ -56,8 +56,10 @@ void StateMigration::Migrate(ResultCallback callback) {
     current_version = 0;
   }
 
-  if (is_testing &&
-      current_version == state_migration_target_version_for_testing) {
+  auto& options = engine_->options();
+
+  if (options.is_testing &&
+      current_version == options.state_migration_target_version_for_testing) {
     return std::move(callback).Run(mojom::Result::OK);
   }
 

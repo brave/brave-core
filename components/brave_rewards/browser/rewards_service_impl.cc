@@ -2094,10 +2094,6 @@ mojom::RewardsEngineOptionsPtr RewardsServiceImpl::HandleFlags(
     options->environment = GetDefaultServerEnvironment();
   }
 
-  if (flags.debug) {
-    options->is_debug = true;
-  }
-
   if (flags.reconcile_interval) {
     options->reconcile_interval = *flags.reconcile_interval;
   }

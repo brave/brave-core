@@ -17,7 +17,8 @@ AddMockRewardsClient::~AddMockRewardsClient() = default;
 
 MockRewardsEngineImpl::MockRewardsEngineImpl()
     : RewardsEngineImpl(
-          mock_client_receiver_.BindNewEndpointAndPassDedicatedRemote()) {
+          mock_client_receiver_.BindNewEndpointAndPassDedicatedRemote(),
+          mojom::RewardsEngineOptions()) {
   ON_CALL(*this, database()).WillByDefault(Return(&mock_database_));
 }
 

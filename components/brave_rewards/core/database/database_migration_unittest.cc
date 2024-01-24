@@ -31,11 +31,13 @@ using database::DatabaseMigration;
 
 class RewardsDatabaseMigrationTest : public RewardsEngineTest {
  public:
-  RewardsDatabaseMigrationTest() { is_testing = true; }
+  RewardsDatabaseMigrationTest() {
+    engine().GetOptionsForTesting().is_testing = true;
+  }
 
   ~RewardsDatabaseMigrationTest() override {
     DatabaseMigration::SetTargetVersionForTesting(0);
-    is_testing = false;
+    engine().GetOptionsForTesting().is_testing = false;
   }
 
  protected:
