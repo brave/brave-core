@@ -121,16 +121,11 @@ platform :ios do
       changelog: "Bug fixes & improvements",
       distribute_external: true,
       skip_waiting_for_build_processing: false,
-      ipa: "build/Client.ipa"
+      ipa: "build/Client.ipa",
+      groups: ["Brave Internal"]
     }
-    case options[:channel].downcase
-    when "nightly", "release"
-      pilotParams[:groups] = ["Brave Internal"]
-    when "beta"
-      pilotParams[:groups] = ["Public Beta"]
-    else
-      pilotParams[:skip_waiting_for_build_processing] = true
-      pilotParams[:distribute_external] = false
+    if options[:public] && options[:channel].downcase == "beta"
+      pilotParams[:groups] << "Public Beta"
     end
     pilot(pilotParams)
   end
