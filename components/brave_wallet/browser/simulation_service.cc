@@ -261,8 +261,11 @@ void SimulationService::OnGetLatestSolanaBlockhash(
     return;
   }
 
-  const auto& params =
-      solana::EncodeScanTransactionParams(request, latest_blockhash);
+  if (!latest_blockhash.empty()) {
+    solana::PopulateRecentBlockhash(*request, latest_blockhash);
+  }
+
+  const auto& params = solana::EncodeScanTransactionParams(request);
   if (!params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));

@@ -373,7 +373,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request, "");
+  auto params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -398,7 +398,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanSolanaTransactionParams("https://example.com");
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request, "");
+  auto params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -426,7 +426,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
           std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request, "");
+  auto params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -454,7 +454,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
           std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request, "");
+  auto params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -482,7 +482,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
           std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request, "");
+  auto params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -510,7 +510,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto request =
       mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
           std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request, "");
+  auto params = solana::EncodeScanTransactionParams(request);
 
   std::string expected_params(R"(
     {
@@ -535,7 +535,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanEVMTransactionParams(false, true, std::nullopt);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request, "");
+  auto params = solana::EncodeScanTransactionParams(request);
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(params);
@@ -543,7 +543,7 @@ TEST(SimulationRequestHelperUnitTest,
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaNullParams) {
-  EXPECT_EQ(solana::EncodeScanTransactionParams(nullptr, ""), std::nullopt);
+  EXPECT_EQ(solana::EncodeScanTransactionParams(nullptr), std::nullopt);
 }
 
 TEST(SimulationRequestHelperUnitTest, HasEmptyRecentBlockhashSolana) {
@@ -617,6 +617,102 @@ TEST(SimulationRequestHelperUnitTest, HasEmptyRecentBlockhashSolana) {
     auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
         std::move(tx_info));
     EXPECT_FALSE(solana::HasEmptyRecentBlockhash(request));
+  }
+}
+
+TEST(SimulationRequestHelperUnitTest, PopulateRecentBlockhashSolana) {
+  {
+    // Recent blockhash is populated if the value in SolanaTxData is empty.
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
+    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
+        std::move(tx_info));
+    solana::PopulateRecentBlockhash(
+        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(request->get_transaction_info()
+                  ->tx_data_union->get_solana_tx_data()
+                  ->recent_blockhash,
+              "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+  }
+
+  {
+    // Recent blockhash is NOT populated if the value in SolanaTxData is not
+    // empty.
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
+        std::move(tx_info));
+    solana::PopulateRecentBlockhash(
+        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(request->get_transaction_info()
+                  ->tx_data_union->get_solana_tx_data()
+                  ->recent_blockhash,
+              "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6");
+  }
+
+  {
+    // Recent blockhash is populated if the value in SolanaTxData is empty.
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
+    auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
+    auto request =
+        mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
+            std::move(parsed));
+    solana::PopulateRecentBlockhash(
+        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(request->get_sign_transaction_request()
+                  ->tx_data->get_solana_tx_data()
+                  ->recent_blockhash,
+              "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+  }
+
+  {
+    // Recent blockhash is NOT populated if the value in SolanaTxData is not
+    // empty.
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
+    auto request =
+        mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
+            std::move(parsed));
+    solana::PopulateRecentBlockhash(
+        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(request->get_sign_transaction_request()
+                  ->tx_data->get_solana_tx_data()
+                  ->recent_blockhash,
+              "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6");
+  }
+
+  {
+    // Recent blockhash is populated if the value in SolanaTxData is empty.
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
+    auto parsed_all = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
+    auto request =
+        mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
+            std::move(parsed_all));
+    solana::PopulateRecentBlockhash(
+        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(request->get_sign_all_transactions_request()
+                  ->tx_datas[0]
+                  ->get_solana_tx_data()
+                  ->recent_blockhash,
+              "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+  }
+
+  {
+    // Recent blockhash is NOT populated if the value in SolanaTxData is not
+    // empty.
+    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
+    auto parsed_all = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
+    auto request =
+        mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
+            std::move(parsed_all));
+    solana::PopulateRecentBlockhash(
+        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(request->get_sign_all_transactions_request()
+                  ->tx_datas[0]
+                  ->get_solana_tx_data()
+                  ->recent_blockhash,
+              "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6");
   }
 }
 
