@@ -87,7 +87,7 @@ WDKeywordsResult InitKeywordResult(
     sync_preferences::TestingPrefServiceSyncable* prefs,
     const std::vector<TemplateURLData>& local_turls) {
   WDKeywordsResult kwResult;
-  kwResult.builtin_keyword_version =
+  kwResult.metadata.builtin_keyword_data_version =
       TemplateURLPrepopulateData::GetDataVersion(prefs);
   kwResult.default_search_provider_id = 2;
   kwResult.keywords = local_turls;
