@@ -605,7 +605,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
 
     GetPref(content_type)
         ->SetWebsiteSetting(primary_pattern, secondary_pattern,
-                            std::move(in_value), metadata);
+                            std::move(in_value), metadata, partition_key);
     return true;
   }
 
