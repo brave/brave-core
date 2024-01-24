@@ -410,16 +410,18 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   EXPECT_TRUE(playlist_action_icon_view->GetVisible());
   EXPECT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
                   .SchemeIsBlob());
-  EXPECT_TRUE(playlist_service->ShouldRefetchMediaSourceToCache(
+  EXPECT_TRUE(playlist_service->ShouldExtractMediaFromBackgroundWebContents(
       playlist_tab_helper->found_items()));
 
   playlist_action_icon_view->ShowPlaylistBubble();
   EXPECT_TRUE(PlaylistActionBubbleView::GetBubble());
-  EXPECT_TRUE(playlist_tab_helper->IsRefetching());
+  EXPECT_TRUE(
+      playlist_tab_helper->IsExtractingMediaFromBackgroundWebContents());
   EXPECT_TRUE(GetDownloadRequestManager()->background_contents());
 
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !playlist_tab_helper->IsRefetching(); }));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !playlist_tab_helper->IsExtractingMediaFromBackgroundWebContents();
+  }));
   EXPECT_TRUE(playlist_tab_helper->found_items().size());
   EXPECT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
                   .SchemeIsHTTPOrHTTPS());

@@ -452,16 +452,13 @@ void PlaylistService::FindMediaFilesFromContents(
   auto* tab_helper = PlaylistTabHelper::FromWebContents(contents);
   CHECK(tab_helper);
 
-  for (const auto& item : tab_helper->found_items()) {
-    if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
-            item)) {
-      PlaylistDownloadRequestManager::Request request;
-      request.url = current_url;
-      request.should_force_fake_ua = ShouldUseFakeUA(current_url);
-      request.callback = base::BindOnce(std::move(callback), current_url);
-      download_request_manager_->GetMediaFilesFromPage(std::move(request));
-      return;
-    }
+  if (ShouldExtractMediaFromBackgroundWebContents(tab_helper->found_items())) {
+    PlaylistDownloadRequestManager::Request request;
+    request.url = current_url;
+    request.should_force_fake_ua = ShouldUseFakeUA(current_url);
+    request.callback = base::BindOnce(std::move(callback), current_url);
+    download_request_manager_->GetMediaFilesFromPage(std::move(request));
+    return;
   }
 
   std::vector<mojom::PlaylistItemPtr> items;
@@ -553,14 +550,10 @@ bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
 
 bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
     const std::vector<mojom::PlaylistItemPtr>& items) {
-  for (const auto& item : items) {
-    if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
-            item)) {
-      return true;
-    }
-  }
-
-  return false;
+  return base::ranges::any_of(items, [&](const auto& item) {
+    return download_request_manager_
+        ->ShouldExtractMediaFromBackgroundWebContents(item);
+  });
 }
 
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
@@ -598,8 +591,8 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
   for (const auto& item : items) {
     if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
             item)) {
-      // TODO(sko) Maybe we dont' want this happen. But for now, Android could
-      // reach here. Also we're assuming that
+      // TODO(sko) Maybe we don't want this to happen. But for now, Android
+      // could reach here. Also we're assuming that
       // * all |items| will be matched to what we'll get from refetching.
       // * all |items| are from the same source page.
       PlaylistDownloadRequestManager::Request request;
