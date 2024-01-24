@@ -37,9 +37,10 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return 24;
     }
     case LOCATION_BAR_HEIGHT:
+      // Consider adjust below element padding also when this height is changed.
       return 32;
     case LOCATION_BAR_ELEMENT_PADDING:
-      return 4;
+      return 2;
     default:
       break;
   }

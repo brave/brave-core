@@ -68,8 +68,8 @@ class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
     auto* layout_provider = ChromeLayoutProvider::Get();
     DCHECK(layout_provider);
 
-    int radius = layout_provider->GetCornerRadiusMetric(
-        views::Emphasis::kMaximum, rect.size());
+    int radius = layout_provider->GetCornerRadiusMetric(views::Emphasis::kHigh,
+                                                        rect.size());
 
     SkPath path;
     path.addRoundRect(gfx::RectToSkRect(rect), radius, radius);
