@@ -23,13 +23,18 @@ using testing::WithParamInterface;
 
 namespace brave_rewards::internal::wallet {
 
-mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
+mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngineImpl& engine,
+                                                   std::string wallet_string,
                                                    std::string wallet_type);
 
-class WalletUtilTest : public Test {};
+class WalletUtilTest : public Test {
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  MockRewardsEngineImpl mock_engine_impl_;
+};
 
 TEST_F(WalletUtilTest, InvalidJSON) {
-  EXPECT_FALSE(ExternalWalletPtrFromJSON("", "uphold"));
+  EXPECT_FALSE(ExternalWalletPtrFromJSON(mock_engine_impl_, "", "uphold"));
 }
 
 TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
@@ -42,7 +47,8 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
       "  \"fees\": {\"brave\": 5.00}"
       "}\n";
 
-  mojom::ExternalWalletPtr wallet = ExternalWalletPtrFromJSON(data, "uphold");
+  mojom::ExternalWalletPtr wallet =
+      ExternalWalletPtrFromJSON(mock_engine_impl_, data, "uphold");
   EXPECT_EQ(wallet->token, "sI5rKiy6ijzbbJgE2MMFzAbTc6udYYXEi3wzS9iknP6n");
   EXPECT_EQ(wallet->address, "6a752063-8958-44d5-b5db-71543f18567d");
   EXPECT_EQ(wallet->status, mojom::WalletStatus::kConnected);

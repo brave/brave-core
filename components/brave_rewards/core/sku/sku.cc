@@ -37,7 +37,7 @@ void SKU::OrderCreated(const mojom::Result result,
                        const std::string& contribution_id,
                        SKUOrderCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order was not successful");
+    engine_->LogError(FROM_HERE) << "Order was not successful";
     callback(result, "");
     return;
   }
@@ -54,7 +54,7 @@ void SKU::ContributionIdSaved(const mojom::Result result,
                               const std::string& wallet_type,
                               SKUOrderCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution id not saved");
+    engine_->LogError(FROM_HERE) << "Contribution id not saved";
     callback(result, "");
     return;
   }
@@ -69,7 +69,7 @@ void SKU::CreateTransaction(mojom::SKUOrderPtr order,
                             const std::string& wallet_type,
                             SKUOrderCallback callback) {
   if (!order) {
-    BLOG(0, "Order not found");
+    engine_->LogError(FROM_HERE) << "Order not found";
     callback(mojom::Result::FAILED, "");
     return;
   }
@@ -95,7 +95,7 @@ void SKU::Retry(const std::string& order_id,
                 const std::string& wallet_type,
                 SKUOrderCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
+    engine_->LogError(FROM_HERE) << "Order id is empty";
     callback(mojom::Result::FAILED, "");
     return;
   }
@@ -109,7 +109,7 @@ void SKU::OnOrder(mojom::SKUOrderPtr order,
                   const std::string& wallet_type,
                   SKUOrderCallback callback) {
   if (!order) {
-    BLOG(0, "Order is null");
+    engine_->LogError(FROM_HERE) << "Order is null";
     callback(mojom::Result::FAILED, "");
     return;
   }

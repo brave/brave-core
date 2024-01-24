@@ -115,7 +115,7 @@ void CredentialsPromotion::OnBlind(ResultCallback callback,
                                    const CredentialsTrigger& trigger,
                                    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Blinding failed");
+    engine_->LogError(FROM_HERE) << "Blinding failed";
     std::move(callback).Run(result);
     return;
   }
@@ -136,7 +136,7 @@ void CredentialsPromotion::Claim(ResultCallback callback,
                                  const CredentialsTrigger& trigger,
                                  mojom::CredsBatchPtr creds) {
   if (!creds) {
-    BLOG(0, "Creds not found");
+    engine_->LogError(FROM_HERE) << "Creds not found";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -144,7 +144,8 @@ void CredentialsPromotion::Claim(ResultCallback callback,
   auto blinded_creds = ParseStringToBaseList(creds->blinded_creds);
 
   if (!blinded_creds || blinded_creds->empty()) {
-    BLOG(0, "Blinded creds are corrupted, we will try to blind again");
+    engine_->LogError(FROM_HERE)
+        << "Blinded creds are corrupted, we will try to blind again";
     auto save_callback =
         base::BindOnce(&CredentialsPromotion::RetryPreviousStepSaved,
                        base::Unretained(this), std::move(callback));
@@ -191,7 +192,7 @@ void CredentialsPromotion::ClaimedSaved(ResultCallback callback,
                                         const CredentialsTrigger& trigger,
                                         mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Claim id was not saved");
+    engine_->LogError(FROM_HERE) << "Claim id was not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -211,7 +212,7 @@ void CredentialsPromotion::ClaimStatusSaved(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Claim status not saved");
+    engine_->LogError(FROM_HERE) << "Claim status not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -231,7 +232,7 @@ void CredentialsPromotion::ClaimStatusSaved(ResultCallback callback,
 void CredentialsPromotion::RetryPreviousStepSaved(ResultCallback callback,
                                                   mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Previous step not saved");
+    engine_->LogError(FROM_HERE) << "Previous step not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -243,13 +244,14 @@ void CredentialsPromotion::FetchSignedCreds(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::PromotionPtr promotion) {
   if (!promotion) {
-    BLOG(0, "Corrupted data");
+    engine_->LogError(FROM_HERE) << "Corrupted data";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   if (promotion->claim_id.empty()) {
-    BLOG(0, "Claim id is empty, we will try claim step again");
+    engine_->LogError(FROM_HERE)
+        << "Claim id is empty, we will try claim step again";
 
     auto save_callback =
         base::BindOnce(&CredentialsPromotion::RetryPreviousStepSaved,
@@ -285,7 +287,7 @@ void CredentialsPromotion::OnFetchSignedCreds(ResultCallback callback,
   }
 
   if (result != mojom::Result::OK || !batch) {
-    BLOG(0, "Problem parsing response");
+    engine_->LogError(FROM_HERE) << "Problem parsing response";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -308,7 +310,7 @@ void CredentialsPromotion::SignedCredsSaved(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Signed creds were not saved");
+    engine_->LogError(FROM_HERE) << "Signed creds were not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -329,7 +331,7 @@ void CredentialsPromotion::Unblind(ResultCallback callback,
                                    const CredentialsTrigger& trigger,
                                    mojom::CredsBatchPtr creds) {
   if (!creds) {
-    BLOG(0, "Corrupted data");
+    engine_->LogError(FROM_HERE) << "Corrupted data";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -351,7 +353,7 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
                                            const mojom::CredsBatch& creds,
                                            mojom::PromotionPtr promotion) {
   if (!promotion) {
-    BLOG(0, "Corrupted data");
+    engine_->LogError(FROM_HERE) << "Corrupted data";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -359,7 +361,7 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
   auto promotion_keys = ParseStringToBaseList(promotion->public_keys);
 
   if (!promotion_keys || promotion_keys->empty()) {
-    BLOG(0, "Public key is missing");
+    engine_->LogError(FROM_HERE) << "Public key is missing";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -372,7 +374,7 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
   }
 
   if (!valid) {
-    BLOG(0, "Public key is not valid");
+    engine_->LogError(FROM_HERE) << "Public key is not valid";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -383,7 +385,8 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
   } else {
     auto result = UnBlindCreds(creds);
     if (!result.has_value()) {
-      BLOG(0, "UnBlindTokens: " << result.error());
+      engine_->LogError(FROM_HERE) << "UnBlindTokens error";
+      engine_->Log(FROM_HERE) << result.error();
       std::move(callback).Run(mojom::Result::FAILED);
       return;
     }
@@ -411,7 +414,7 @@ void CredentialsPromotion::Completed(ResultCallback callback,
                                      const CredentialsTrigger& trigger,
                                      mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Unblinded token save failed");
+    engine_->LogError(FROM_HERE) << "Unblinded token save failed";
     std::move(callback).Run(result);
     return;
   }
@@ -426,7 +429,7 @@ void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
   DCHECK(redeem.type != mojom::RewardsType::TRANSFER);
 
   if (redeem.token_list.empty()) {
-    BLOG(0, "Token list empty");
+    engine_->LogError(FROM_HERE) << "Token list empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -440,7 +443,7 @@ void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
                                 token_id_list, redeem, callback);
 
   if (redeem.publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    engine_->LogError(FROM_HERE) << "Publisher key is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -454,7 +457,7 @@ void CredentialsPromotion::OnRedeemTokens(
     const CredentialsRedeem& redeem,
     LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to parse redeem tokens response");
+    engine_->LogError(FROM_HERE) << "Failed to parse redeem tokens response";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -473,7 +476,7 @@ void CredentialsPromotion::DrainTokens(const CredentialsRedeem& redeem,
   DCHECK(redeem.type == mojom::RewardsType::TRANSFER);
 
   if (redeem.token_list.empty()) {
-    BLOG(0, "Token list empty");
+    engine_->LogError(FROM_HERE) << "Token list empty";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -498,7 +501,7 @@ void CredentialsPromotion::OnDrainTokens(
     mojom::Result result,
     std::string drain_id) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to parse drain tokens response");
+    engine_->LogError(FROM_HERE) << "Failed to parse drain tokens response";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -514,7 +517,6 @@ void CredentialsPromotion::OnDrainTokens(
       [](PostSuggestionsClaimCallback callback, std::string drain_id,
          mojom::Result result) {
         if (result != mojom::Result::OK) {
-          BLOG(0, "Failed to mark tokens as spent");
           std::move(callback).Run(mojom::Result::FAILED, "");
         } else {
           std::move(callback).Run(mojom::Result::OK, std::move(drain_id));

@@ -64,7 +64,7 @@ void ConnectBitFlyerWallet::Authorize(ConnectExternalWalletCallback callback) {
 
   const auto rewards_wallet = engine_->wallet()->GetWallet();
   if (!rewards_wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -90,22 +90,22 @@ void ConnectBitFlyerWallet::OnAuthorize(ConnectExternalWalletCallback callback,
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Couldn't get token");
+    engine_->LogError(FROM_HERE) << "Couldn't get token";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (token.empty()) {
-    BLOG(0, "Token is empty");
+    engine_->LogError(FROM_HERE) << "Token is empty";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (address.empty()) {
-    BLOG(0, "Address is empty");
+    engine_->LogError(FROM_HERE) << "Address is empty";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (linking_info.empty()) {
-    BLOG(0, "Linking info is empty");
+    engine_->LogError(FROM_HERE) << "Linking info is empty";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 

@@ -31,22 +31,22 @@ std::string GetCaptcha::GetUrl(const std::string& captcha_id) {
 
 mojom::Result GetCaptcha::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid captcha id");
+    engine_->LogError(FROM_HERE) << "Invalid captcha id";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
-    BLOG(0, "Unrecognized captcha id");
+    engine_->LogError(FROM_HERE) << "Unrecognized captcha id";
     return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Failed to generate the captcha image");
+    engine_->LogError(FROM_HERE) << "Failed to generate the captcha image";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 

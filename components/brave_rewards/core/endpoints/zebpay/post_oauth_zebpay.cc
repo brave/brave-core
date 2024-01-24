@@ -23,30 +23,31 @@ using Result = PostOAuthZebPay::Result;
 namespace {
 
 base::expected<std::pair<std::string, std::string>, Error>
-GetAccessTokenAndLinkingInfo(const std::string& body) {
+GetAccessTokenAndLinkingInfo(RewardsEngineImpl& engine,
+                             const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* access_token = value->GetDict().FindString("access_token");
   if (!access_token || access_token->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* linking_info = value->GetDict().FindString("linking_info");
   if (!linking_info || linking_info->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   return std::pair{std::move(*access_token), std::move(*linking_info)};
 }
 
-Result ParseBody(const std::string& body) {
-  auto access_token_linking_info = GetAccessTokenAndLinkingInfo(body);
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
+  auto access_token_linking_info = GetAccessTokenAndLinkingInfo(engine, body);
   if (!access_token_linking_info.has_value()) {
     return base::unexpected(access_token_linking_info.error());
   }
@@ -61,7 +62,7 @@ Result ParseBody(const std::string& body) {
   }
 
   if (dots.size() != 2) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -69,19 +70,19 @@ Result ParseBody(const std::string& body) {
   if (!base::Base64Decode(
           linking_info.substr(dots[0] + 1, dots[1] - dots[0] - 1), &payload,
           base::Base64DecodePolicy::kForgiving)) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto value = base::JSONReader::Read(payload);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* deposit_id = value->GetDict().FindString("depositId");
   if (!deposit_id || deposit_id->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -92,12 +93,14 @@ Result ParseBody(const std::string& body) {
 }  // namespace
 
 // static
-Result PostOAuthZebPay::ProcessResponse(const mojom::UrlResponse& response) {
+Result PostOAuthZebPay::ProcessResponse(RewardsEngineImpl& engine,
+                                        const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
@@ -127,7 +130,7 @@ std::optional<std::vector<std::string>> PostOAuthZebPay::Headers(
 
 std::optional<std::string> PostOAuthZebPay::Content() const {
   if (code_.empty()) {
-    BLOG(0, "code_ is empty!");
+    engine_->LogError(FROM_HERE) << "code_ is empty";
     return std::nullopt;
   }
 

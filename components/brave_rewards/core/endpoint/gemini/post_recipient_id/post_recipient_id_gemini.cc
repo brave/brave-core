@@ -36,20 +36,20 @@ mojom::Result PostRecipientId::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* result = dict.FindString("result");
   if (!result || *result != "OK") {
-    BLOG(0, "Failed creating recipient_id");
+    engine_->LogError(FROM_HERE) << "Failed creating recipient_id";
     return mojom::Result::FAILED;
   }
 
   const auto* id = dict.FindString("recipient_id");
   if (!id) {
-    BLOG(0, "Response missing a recipient_id");
+    engine_->LogError(FROM_HERE) << "Response missing a recipient_id";
     return mojom::Result::FAILED;
   }
 

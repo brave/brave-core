@@ -38,22 +38,22 @@ mojom::Result GetCredentials::CheckStatusCode(const int status_code) {
   }
 
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::RETRY;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
-    BLOG(0, "Unrecognized claim id");
+    engine_->LogError(FROM_HERE) << "Unrecognized claim id";
     return mojom::Result::RETRY;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
+    engine_->LogError(FROM_HERE) << "Internal server error";
     return mojom::Result::RETRY;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::RETRY;
   }
 
@@ -65,26 +65,26 @@ mojom::Result GetCredentials::ParseBody(const std::string& body,
   DCHECK(batch);
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::RETRY;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   auto* batch_proof = dict.FindString("batchProof");
   if (!batch_proof) {
-    BLOG(0, "Missing batch proof");
+    engine_->LogError(FROM_HERE) << "Missing batch proof";
     return mojom::Result::RETRY;
   }
 
   auto* signed_creds = dict.FindList("signedCreds");
   if (!signed_creds) {
-    BLOG(0, "Missing signed creds");
+    engine_->LogError(FROM_HERE) << "Missing signed creds";
     return mojom::Result::RETRY;
   }
 
   auto* public_key = dict.FindString("publicKey");
   if (!public_key) {
-    BLOG(0, "Missing public key");
+    engine_->LogError(FROM_HERE) << "Missing public key";
     return mojom::Result::RETRY;
   }
 

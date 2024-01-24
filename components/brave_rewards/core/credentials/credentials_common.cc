@@ -28,7 +28,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
   const auto creds = GenerateCreds(trigger.size);
 
   if (creds.empty()) {
-    BLOG(0, "Creds are empty");
+    engine_->LogError(FROM_HERE) << "Creds are empty";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -37,7 +37,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
   const auto blinded_creds = GenerateBlindCreds(creds);
 
   if (blinded_creds.empty()) {
-    BLOG(0, "Blinded creds are empty");
+    engine_->LogError(FROM_HERE) << "Blinded creds are empty";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -67,7 +67,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
 void CredentialsCommon::BlindedCredsSaved(ResultCallback callback,
                                           mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Creds batch save failed");
+    engine_->LogError(FROM_HERE) << "Creds batch save failed";
     std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
@@ -109,7 +109,7 @@ void CredentialsCommon::OnSaveUnblindedCreds(ResultCallback callback,
                                              const CredentialsTrigger& trigger,
                                              mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Token list not saved");
+    engine_->LogError(FROM_HERE) << "Token list not saved";
     std::move(callback).Run(mojom::Result::RETRY);
     return;
   }

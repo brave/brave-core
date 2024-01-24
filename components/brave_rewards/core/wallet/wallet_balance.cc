@@ -74,7 +74,8 @@ void WalletBalance::OnFetchExternalWalletBalance(const std::string& wallet_type,
     balance_ptr->wallets.emplace(wallet_type, balance);
     std::move(callback).Run(std::move(balance_ptr));
   } else {
-    BLOG(0, "Failed to fetch balance for " << wallet_type << " wallet!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to fetch balance for " << wallet_type << " wallet";
     std::move(callback).Run(nullptr);
   }
 }

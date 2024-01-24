@@ -28,7 +28,7 @@ PostBatLoss::~PostBatLoss() = default;
 std::string PostBatLoss::GetUrl(const int32_t version) {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
+    engine_->LogError(FROM_HERE) << "Wallet is null";
     return "";
   }
 
@@ -45,12 +45,12 @@ std::string PostBatLoss::GeneratePayload(const double amount) {
 
 mojom::Result PostBatLoss::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
+    engine_->LogError(FROM_HERE) << "Internal server error";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -76,7 +76,7 @@ void PostBatLoss::Request(const double amount,
 
   auto signer = RequestSigner::FromRewardsWallet(*wallet);
   if (!signer || !signer->SignRequest(*request)) {
-    BLOG(0, "Unable to sign request");
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
     callback(mojom::Result::FAILED);
     return;
   }

@@ -350,7 +350,7 @@ void GitHub::SavePublisherInfo(const uint64_t duration,
 
   if (publisher_key.empty()) {
     callback(mojom::Result::FAILED, nullptr);
-    BLOG(0, "Publisher key is missing");
+    engine_->LogError(FROM_HERE) << "Publisher key is missing";
     return;
   }
 

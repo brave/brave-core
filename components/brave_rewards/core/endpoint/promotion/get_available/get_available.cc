@@ -43,22 +43,23 @@ std::string GetAvailable::GetUrl(const std::string& platform) {
 
 mojom::Result GetAvailable::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid paymentId or platform in request");
+    engine_->LogError(FROM_HERE) << "Invalid paymentId or platform in request";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
-    BLOG(0, "Unrecognized paymentId/promotion combination");
+    engine_->LogError(FROM_HERE)
+        << "Unrecognized paymentId/promotion combination";
     return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
+    engine_->LogError(FROM_HERE) << "Internal server error";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -73,7 +74,7 @@ mojom::Result GetAvailable::ParseBody(
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 

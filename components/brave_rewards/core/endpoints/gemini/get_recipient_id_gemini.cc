@@ -21,17 +21,17 @@ using Result = GetRecipientIDGemini::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   for (auto& item : value->GetList()) {
     auto* pair = item.GetIfDict();
     if (!pair) {
-      BLOG(0, "Failed to parse body!");
+      engine.LogError(FROM_HERE) << "Failed to parse body";
       return base::unexpected(Error::kFailedToParseBody);
     }
 
@@ -39,7 +39,7 @@ Result ParseBody(const std::string& body) {
     auto* recipient_id = pair->FindString("recipient_id");
 
     if (!label || !recipient_id) {
-      BLOG(0, "Failed to parse body!");
+      engine.LogError(FROM_HERE) << "Failed to parse body";
       return base::unexpected(Error::kFailedToParseBody);
     }
 
@@ -55,12 +55,14 @@ Result ParseBody(const std::string& body) {
 
 // static
 Result GetRecipientIDGemini::ProcessResponse(
+    RewardsEngineImpl& engine,
     const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }

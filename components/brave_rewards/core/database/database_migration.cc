@@ -148,7 +148,7 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
       GenerateCommand(transaction.get(), mappings[i]);
     }
 
-    BLOG(1, "DB: Migrated to version " << i);
+    engine_->Log(FROM_HERE) << "DB: Migrated to version " << i;
     migrated_version = i;
   }
 

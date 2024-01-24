@@ -32,13 +32,13 @@ DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
                                                LegacyResultCallback callback) {
   if (!info) {
-    BLOG(0, "Queue is null");
+    engine_->LogError(FROM_HERE) << "Queue is null";
     callback(mojom::Result::FAILED);
     return;
   }
 
   if (info->id.empty()) {
-    BLOG(0, "Queue id is empty");
+    engine_->LogError(FROM_HERE) << "Queue id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -77,7 +77,7 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
 
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
+    engine_->LogError(FROM_HERE) << "Response is not ok";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -118,7 +118,7 @@ void DatabaseContributionQueue::OnGetFirstRecord(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback(nullptr);
     return;
   }
@@ -151,7 +151,7 @@ void DatabaseContributionQueue::OnGetPublishers(
     std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
     GetFirstContributionQueueCallback callback) {
   if (!shared_queue) {
-    BLOG(0, "Queue is null");
+    engine_->LogError(FROM_HERE) << "Queue is null";
     callback(nullptr);
     return;
   }
@@ -164,7 +164,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
     const std::string& id,
     LegacyResultCallback callback) {
   if (id.empty()) {
-    BLOG(1, "Id is empty");
+    engine_->Log(FROM_HERE) << "Id is empty";
     callback(mojom::Result::FAILED);
     return;
   }

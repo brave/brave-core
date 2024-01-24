@@ -72,7 +72,8 @@ struct ResultFor<GetParameters> {
 class GetParameters final : public RequestBuilder,
                             public ResponseHandler<GetParameters> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
   explicit GetParameters(RewardsEngineImpl& engine);
   ~GetParameters() override;

@@ -36,12 +36,13 @@ mojom::Result GetCard::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED ||
       status_code == net::HTTP_NOT_FOUND ||
       status_code == net::HTTP_FORBIDDEN) {
-    BLOG(0, "Unauthorized access HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE)
+        << "Unauthorized access HTTP status: " << status_code;
     return mojom::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -53,14 +54,14 @@ mojom::Result GetCard::ParseBody(const std::string& body, double* available) {
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* available_str = dict.FindString("available");
   if (!available_str) {
-    BLOG(0, "Missing available");
+    engine_->LogError(FROM_HERE) << "Missing available";
     return mojom::Result::FAILED;
   }
 

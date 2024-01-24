@@ -25,7 +25,7 @@ void DatabaseExternalTransactions::Insert(
     mojom::ExternalTransactionPtr external_transaction,
     ResultCallback callback) {
   if (!external_transaction) {
-    BLOG(0, "external_transaction is null!");
+    engine_->LogError(FROM_HERE) << "External_transaction is null";
     return std::move(callback).Run(mojom::Result::FAILED);
   }
 
@@ -95,7 +95,7 @@ void DatabaseExternalTransactions::OnGetTransaction(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Failed to get external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
@@ -108,7 +108,7 @@ void DatabaseExternalTransactions::OnGetTransaction(
 
   DCHECK_EQ(records.size(), 1ull);
   if (records.size() != 1) {
-    BLOG(0, "Failed to get external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
@@ -120,13 +120,13 @@ void DatabaseExternalTransactions::OnGetTransaction(
 
   if (transaction_id.empty() || contribution_id.empty() ||
       destination.empty() || amount.empty()) {
-    BLOG(0, "Failed to get external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
 
   if (double value = 0.0; !base::StringToDouble(amount, &value)) {
-    BLOG(0, "Failed to get external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }

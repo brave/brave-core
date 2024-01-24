@@ -20,16 +20,16 @@ using Result = PostOAuthUphold::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* access_token = value->GetDict().FindString("access_token");
   if (!access_token || access_token->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -39,12 +39,14 @@ Result ParseBody(const std::string& body) {
 }  // namespace
 
 // static
-Result PostOAuthUphold::ProcessResponse(const mojom::UrlResponse& response) {
+Result PostOAuthUphold::ProcessResponse(RewardsEngineImpl& engine,
+                                        const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
@@ -76,7 +78,7 @@ std::optional<std::vector<std::string>> PostOAuthUphold::Headers(
 
 std::optional<std::string> PostOAuthUphold::Content() const {
   if (code_.empty()) {
-    BLOG(0, "code_ is empty!");
+    engine_->LogError(FROM_HERE) << "code_ is empty";
     return std::nullopt;
   }
 

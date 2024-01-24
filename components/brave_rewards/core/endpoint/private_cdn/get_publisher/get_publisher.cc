@@ -166,7 +166,7 @@ mojom::Result GetPublisher::CheckStatusCode(const int status_code) {
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -179,27 +179,28 @@ mojom::Result GetPublisher::ParseBody(const std::string& body,
   DCHECK(info);
 
   if (body.empty()) {
-    BLOG(0, "Publisher data empty");
+    engine_->LogError(FROM_HERE) << "Publisher data empty";
     return mojom::Result::FAILED;
   }
 
   std::string_view body_payload(body.data(), body.size());
   if (!brave::PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload)) {
-    BLOG(0, "Publisher data response has invalid padding");
+    engine_->LogError(FROM_HERE)
+        << "Publisher data response has invalid padding";
     return mojom::Result::FAILED;
   }
 
   std::string message_string;
   if (!DecompressMessage(body_payload, &message_string)) {
-    BLOG(1,
-         "Error decompressing publisher data response. "
-         "Attempting to parse as uncompressed message.");
+    engine_->Log(FROM_HERE) << "Error decompressing publisher data response. "
+                               "Attempting to parse as uncompressed message.";
     message_string.assign(body_payload.data(), body_payload.size());
   }
 
   publishers_pb::ChannelResponseList message;
   if (!message.ParseFromString(message_string)) {
-    BLOG(0, "Error parsing publisher data protobuf message");
+    engine_->LogError(FROM_HERE)
+        << "Error parsing publisher data protobuf message";
     return mojom::Result::FAILED;
   }
 

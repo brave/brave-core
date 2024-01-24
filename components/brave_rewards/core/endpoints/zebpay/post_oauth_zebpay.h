@@ -53,7 +53,8 @@ struct ResultFor<PostOAuthZebPay> {
 class PostOAuthZebPay final : public RequestBuilder,
                               public ResponseHandler<PostOAuthZebPay> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
   PostOAuthZebPay(RewardsEngineImpl& engine, const std::string& code);
   ~PostOAuthZebPay() override;

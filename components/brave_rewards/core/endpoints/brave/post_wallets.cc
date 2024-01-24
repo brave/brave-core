@@ -23,16 +23,16 @@ using Result = PostWallets::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   const auto* payment_id = value->GetDict().FindString("paymentId");
   if (!payment_id || payment_id->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -42,27 +42,29 @@ Result ParseBody(const std::string& body) {
 }  // namespace
 
 // static
-Result PostWallets::ProcessResponse(const mojom::UrlResponse& response) {
+Result PostWallets::ProcessResponse(RewardsEngineImpl& engine,
+                                    const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_CREATED:  // HTTP 201
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     case net::HTTP_BAD_REQUEST:  // HTTP 400
-      BLOG(0, "Invalid request!");
+      engine.LogError(FROM_HERE) << "Invalid request";
       return base::unexpected(Error::kInvalidRequest);
     case net::HTTP_UNAUTHORIZED:  // HTTP 401
-      BLOG(0, "Invalid public key!");
+      engine.LogError(FROM_HERE) << "Invalid public key";
       return base::unexpected(Error::kInvalidPublicKey);
     case net::HTTP_FORBIDDEN:  // HTTP 403
-      BLOG(0, "Wallet generation disabled!");
+      engine.LogError(FROM_HERE) << "Wallet generation disabled";
       return base::unexpected(Error::kWalletGenerationDisabled);
     case net::HTTP_CONFLICT:  // HTTP 409
-      BLOG(0, "Wallet already exists!");
+      engine.LogError(FROM_HERE) << "Wallet already exists";
       return base::unexpected(Error::kWalletAlreadyExists);
     case net::HTTP_INTERNAL_SERVER_ERROR:  // HTTP 500
-      BLOG(0, "Unexpected error!");
+      engine.LogError(FROM_HERE) << "Unexpected error";
       return base::unexpected(Error::kUnexpectedError);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
@@ -88,13 +90,13 @@ std::optional<std::vector<std::string>> PostWallets::Headers(
     const std::string& content) const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::nullopt;
   }
 
   auto request_signer = RequestSigner::FromRewardsWallet(*wallet);
   if (!request_signer) {
-    BLOG(0, "Unable to sign request");
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
     return std::nullopt;
   }
 
@@ -107,12 +109,12 @@ std::optional<std::vector<std::string>> PostWallets::Headers(
 
 std::optional<std::string> PostWallets::Content() const {
   if (!geo_country_) {
-    BLOG(1, "geo_country_ is null - creating old wallet.");
+    engine_->Log(FROM_HERE) << "geo_country_ is null - creating old wallet.";
     return "";
   }
 
   if (geo_country_->empty()) {
-    BLOG(0, "geo_country_ is empty!");
+    engine_->LogError(FROM_HERE) << "geo_country_ is empty";
     return std::nullopt;
   }
 
@@ -121,7 +123,7 @@ std::optional<std::string> PostWallets::Content() const {
 
   std::string json;
   if (!base::JSONWriter::Write(content, &json)) {
-    BLOG(0, "Failed to write content to JSON!");
+    engine_->LogError(FROM_HERE) << "Failed to write content to JSON";
     return std::nullopt;
   }
 

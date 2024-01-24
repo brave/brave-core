@@ -46,7 +46,8 @@ struct ResultFor<PostWallets> {
 class PostWallets final : public RequestBuilder,
                           public ResponseHandler<PostWallets> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
   PostWallets(RewardsEngineImpl& engine,
               std::optional<std::string>&& geo_country);

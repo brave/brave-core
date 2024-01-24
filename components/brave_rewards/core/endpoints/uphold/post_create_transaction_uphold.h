@@ -116,7 +116,8 @@ class PostCreateTransactionUphold final
  public:
   using PostCreateTransaction::PostCreateTransaction;
 
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
  private:
   std::optional<std::string> Url() const override;

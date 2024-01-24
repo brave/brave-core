@@ -51,7 +51,8 @@ class GetRecipientIDGemini final
     : public RequestBuilder,
       public ResponseHandler<GetRecipientIDGemini> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
   GetRecipientIDGemini(RewardsEngineImpl& engine, std::string&& token);
   ~GetRecipientIDGemini() override;

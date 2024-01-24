@@ -34,7 +34,7 @@ void StateMigrationV1::Migrate(LegacyResultCallback callback) {
 void StateMigrationV1::OnLoadState(mojom::Result result,
                                    LegacyResultCallback callback) {
   if (result == mojom::Result::NO_PUBLISHER_STATE) {
-    BLOG(1, "No publisher state");
+    engine_->Log(FROM_HERE) << "No publisher state";
     engine_->publisher()->CalcScoreConsts(
         engine_->GetState<int>(kMinVisitTime));
 
@@ -46,7 +46,8 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
     engine_->publisher()->CalcScoreConsts(
         engine_->GetState<int>(kMinVisitTime));
 
-    BLOG(0, "Failed to load publisher state file, setting default values");
+    engine_->LogError(FROM_HERE)
+        << "Failed to load publisher state file, setting default values";
     callback(mojom::Result::OK);
     return;
   }
@@ -75,7 +76,7 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
 void StateMigrationV1::BalanceReportsSaved(mojom::Result result,
                                            LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Balance report save failed");
+    engine_->LogError(FROM_HERE) << "Balance report save failed";
     callback(result);
     return;
   }

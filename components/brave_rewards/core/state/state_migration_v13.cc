@@ -22,7 +22,8 @@ StateMigrationV13::~StateMigrationV13() = default;
 bool StateMigrationV13::MigrateExternalWallet(const std::string& wallet_type) {
   if (!wallet::GetWalletIf(*engine_, wallet_type,
                            {mojom::WalletStatus::kConnected})) {
-    BLOG(1, "User doesn't have a connected " << wallet_type << " wallet.");
+    engine_->Log(FROM_HERE)
+        << "User doesn't have a connected " << wallet_type << " wallet.";
   } else {
     engine_->client()->ExternalWalletConnected();
   }
