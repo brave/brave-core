@@ -63,15 +63,13 @@ std::string GetServicesDomain(
     std::string env_value_default_override,
     base::CommandLine*
         command_line /* = base::CommandLine::ForCurrentProcess() */) {
-  std::string env_key;
   // Default to production
   std::string env_value = kBraveServicesSwitchValueProduction;
 
   // If a default parameter was supplied, use that instead, but only
   // for unofficial builds.
 #if !defined(OFFICIAL_BUILD)
-  env_value = env_value_default_override;
-  if (!env_value_default_override.empty()) {
+  if (IsValidSwitchValue(env_value_default_override)) {
     env_value = env_value_default_override;
   }
 #endif
@@ -86,7 +84,7 @@ std::string GetServicesDomain(
 
   // If a value was supplied for this specific prefix via CLI, use that instead.
   if (!prefix.empty()) {
-    env_key = base::StrCat({"env-", prefix});
+    std::string env_key = base::StrCat({"env-", prefix});
     env_from_switch = command_line->GetSwitchValueASCII(env_key);
     MaybeWarnSwitchValue(env_key, env_from_switch);
     if (IsValidSwitchValue(env_from_switch)) {
