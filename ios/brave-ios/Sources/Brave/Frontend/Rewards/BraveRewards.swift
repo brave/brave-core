@@ -100,7 +100,7 @@ public class BraveRewards: NSObject {
   private var braveNewsObservation: AnyCancellable?
 
   private var shouldShutdownAds: Bool {
-    ads.isServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
+    ads.isServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value && !BraveAds.shouldAlwaysRunService()
   }
 
   /// Propose that the ads service should be shutdown based on whether or not that all features

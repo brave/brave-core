@@ -348,7 +348,7 @@ public class BrowserViewController: UIViewController {
     }
 
     rewards.ads.captchaHandler = self
-    let shouldStartAds = rewards.ads.isEnabled || Preferences.BraveNews.isEnabled.value
+    let shouldStartAds = rewards.ads.isEnabled || Preferences.BraveNews.isEnabled.value || BraveAds.shouldAlwaysRunService()
     if shouldStartAds {
       // Only start rewards service automatically if ads is enabled
       if rewards.isEnabled {
