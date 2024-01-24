@@ -37,7 +37,7 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return 24;
     }
     case LOCATION_BAR_HEIGHT:
-      return touch ? 36 : 34;
+      return 32;
     case LOCATION_BAR_ELEMENT_PADDING:
       return 4;
     default:
