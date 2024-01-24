@@ -10,13 +10,13 @@
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 
 // |icon_left| - Padding between left border of location bar and first
-//               decoration. Use fixed 4px always.
+//               decoration. Use element padding.
 // |text_left| - Padding between omnibox view and last leading decoration.
 //               If last decoration has label, it has sufficient padding inside.
 //               If custom padding is provided(text_left is not null), respect
 //               it. Otherwise, set our design value - 5px.
 #define BRAVE_LAYOUT_LEADING_DECORATIONS                           \
-  icon_left = 4;                                                   \
+  icon_left = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);     \
   if (text_left == 0 && !location_icon_view_->ShouldShowLabel()) { \
     text_left = 5;                                                 \
   }

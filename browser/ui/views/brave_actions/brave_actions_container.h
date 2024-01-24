@@ -61,6 +61,7 @@ class BraveActionsContainer : public views::View {
   void AddActionViewForShields();
 
   void UpdateVisibility();
+  gfx::Size GetActionSize() const;
 
   // Brave Rewards preferences change observers callback.
   void OnBraveRewardsPreferencesChanged();
