@@ -58,7 +58,7 @@ const StyledEditActionContainer = styled.div`
   border-bottom: 1px solid ${color.divider.subtle};
 `
 
-const StyledEditButton = styled(LeoButton)<{ isDisabled?: boolean }>`
+const StyledEditButton = styled(LeoButton)`
   width: fit-content;
   flex-grow: 0;
   color: var(--leo-color-text-primary);
