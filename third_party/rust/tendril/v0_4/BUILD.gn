@@ -43,6 +43,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/utf_8/v0_7:lib",
   ]
   aliased_deps = {
-    utf8 = "//brave/third_party/rust/utf_8/v0_7:lib__rlib"
+    utf8 = "//brave/third_party/rust/utf_8/v0_7:lib"
   }
 }

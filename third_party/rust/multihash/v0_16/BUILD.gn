@@ -44,9 +44,9 @@ cargo_crate("lib") {
     "//third_party/rust/serde/v1:lib",
   ]
   aliased_deps = {
-    ripemd_rs = "//brave/third_party/rust/ripemd/v0_1:lib__rlib"
-    sha_2 = "//brave/third_party/rust/sha2/v0_10:lib__rlib"
-    sha_3 = "//brave/third_party/rust/sha3/v0_10:lib__rlib"
+    ripemd_rs = "//brave/third_party/rust/ripemd/v0_1:lib"
+    sha_2 = "//brave/third_party/rust/sha2/v0_10:lib"
+    sha_3 = "//brave/third_party/rust/sha3/v0_10:lib"
   }
   features = [
     "alloc",
