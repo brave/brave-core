@@ -83,10 +83,7 @@
     ],
 
     // Checks to be fixed.
-    "CheckUnwantedDependencies": [
-      ".*\\.java",
-      "third_party/ios_deps/",
-    ],
+    "CheckUnwantedDependencies": [".*\\.java"],
     "CheckSpamLogging": [
       "browser/browsing_data/brave_clear_browsing_data\\.cc",
       "chromium_src/chrome/browser/ui/startup/startup_browser_creator\\.cc",

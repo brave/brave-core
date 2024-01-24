@@ -7,7 +7,7 @@
 # into the environment.
 
 # $ACTION is empty for Xcode builds unfortunately
-# $RUN_CLANG_STATIC_ANALYZER is NO for builds, YES for cleans 
+# $RUN_CLANG_STATIC_ANALYZER is NO for builds, YES for cleans
 if [[ $RUN_CLANG_STATIC_ANALYZER = "NO" ]]; then
   # Do not inject Xcode build configs into the GN build
   env -i PATH="$PATH" python3 \
