@@ -12,9 +12,9 @@
 
 namespace brave_domains {
 
-constexpr char kBraveServicesSwitchValueDev[] = "dev";
-constexpr char kBraveServicesSwitchValueStaging[] = "staging";
-constexpr char kBraveServicesSwitchValueProduction[] = "prod";
+inline constexpr char kBraveServicesSwitchValueDev[] = "dev";
+inline constexpr char kBraveServicesSwitchValueStaging[] = "staging";
+inline constexpr char kBraveServicesSwitchValueProduction[] = "prod";
 
 // Gets production services domain, or returns staging or dev
 // domain if relevant cli parameter is present.
