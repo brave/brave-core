@@ -98,7 +98,7 @@ class PlaylistDownloadRequestManager {
       base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb);
 
   bool CanCacheMedia(const mojom::PlaylistItemPtr& item) const;
-  bool ShouldRefetchMediaSourceToCache(
+  bool ShouldExtractMediaFromBackgroundWebContents(
       const mojom::PlaylistItemPtr& item) const;
 
  private:
