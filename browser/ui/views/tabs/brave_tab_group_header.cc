@@ -106,11 +106,16 @@ void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
 SkColor BraveTabGroupHeader::GetGroupColor() const {
   auto group_id = group().value();
 
-  if (!tab_slot_controller_->GetBrowser()
-           ->tab_strip_model()
-           ->group_model()
-           ->ContainsTabGroup(group_id)) {
-    // Can happen in tear-down.
+  auto model_contains_group = [&]() {
+    if (auto* browser = tab_slot_controller_->GetBrowser()) {
+      return browser->tab_strip_model()->group_model()->ContainsTabGroup(
+          group_id);
+    }
+    return false;
+  };
+
+  if (!model_contains_group()) {
+    // Can happen in unit tests or in tear-down.
     return gfx::kPlaceholderColor;
   }
 
