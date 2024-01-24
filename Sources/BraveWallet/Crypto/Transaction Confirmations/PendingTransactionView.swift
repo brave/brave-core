@@ -440,7 +440,7 @@ struct PendingTransactionView: View {
         // Current network, transaction buttons
         HStack(alignment: .top) {
           if confirmationStore.activeParsedTransaction.transaction.txType != .ethSwap {
-            Text(confirmationStore.network?.chainName ?? "") // network shown below each token for swap
+            Text(confirmationStore.activeParsedTransaction.network.chainName) // network shown below each token for swap
           }
           Spacer()
           VStack(alignment: .trailing) {

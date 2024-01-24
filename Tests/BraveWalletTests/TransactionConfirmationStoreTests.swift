@@ -314,8 +314,8 @@ import Preferences
     await fulfillment(of: [prepareExpectation], timeout: 1)
   }
   
-  /// Test `network` property is updated for the `activeTransaction`, regardess of the current selected network for that coin type.
-  func testPrepareTransactionNotOnSelectedNetwork() async {
+  /// Test that `nextTransaction` will update `activeTransactionId` property in order of transaction created time.
+  func testNextTransaction() async {
     let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
     let sendCopy = BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
     sendCopy.chainId = BraveWallet.GoerliChainId
@@ -342,20 +342,6 @@ import Preferences
       allTokens: allTokens,
       transactions: pendingTransactions
     )
-    let networkExpectation = expectation(description: "network-expectation")
-    store.$network
-      .dropFirst(8) // `network` is assigned multiple times during setup
-      .collect(6) // collect all updates (1 extra for final tx network)
-      .sink { networks in
-        defer { networkExpectation.fulfill() }
-        XCTAssertEqual(networks.count, 6)
-        XCTAssertEqual(networks[safe: 0], BraveWallet.NetworkInfo.mockFilecoinMainnet)
-        XCTAssertEqual(networks[safe: 1], BraveWallet.NetworkInfo.mockSolanaTestnet)
-        XCTAssertEqual(networks[safe: 2], BraveWallet.NetworkInfo.mockSolana)
-        XCTAssertEqual(networks[safe: 3], BraveWallet.NetworkInfo.mockMainnet)
-        XCTAssertEqual(networks[safe: 4], BraveWallet.NetworkInfo.mockGoerli)
-      }
-      .store(in: &cancellables)
     let activeTransactionIdExpectation = expectation(description: "activeTransactionId-expectation")
     store.$activeTransactionId
       .dropFirst()
@@ -376,7 +362,7 @@ import Preferences
     store.nextTransaction() // `solanaSendCopy` on Solana Mainnet
     store.nextTransaction() // `solanaSPLSendCopy` on Solana Testnet
     store.nextTransaction() // `filecoinSendCopy` on filecoin mainnet
-    await fulfillment(of: [networkExpectation, activeTransactionIdExpectation], timeout: 1)
+    await fulfillment(of: [activeTransactionIdExpectation], timeout: 1)
   }
   
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to make ERC20 approve data with `BraveWalletEthTxManagerProxy`
