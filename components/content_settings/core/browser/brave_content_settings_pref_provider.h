@@ -15,7 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/thread_annotations.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
-#include "components/content_settings/core/browser/content_settings_origin_identifier_value_map.h"
+#include "components/content_settings/core/browser/content_settings_origin_value_map.h"
 #include "components/content_settings/core/browser/content_settings_pref_provider.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -104,7 +104,7 @@ class BravePrefProvider : public PrefProvider,
                                ContentSettingsType content_type) override;
   void OnCookiePrefsChanged(const std::string& pref);
 
-  std::map<bool /* is_incognito */, OriginIdentifierValueMap> cookie_rules_;
+  std::map<bool /* is_incognito */, OriginValueMap> cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
