@@ -35,4 +35,8 @@ BASE_FEATURE(kBraveWebViewRoundedCorners,
              "brave-web-view-rounded-corners",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveZeroDayFlagAndroid,
+             "brave-zero-day-flag-android",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features

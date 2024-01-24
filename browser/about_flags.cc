@@ -935,6 +935,13 @@
           "corners, padding, and a drop shadow",                               \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
+      },                                                                       \
+      {                                                                        \
+          "brave-zero-day-flag-android",                                       \
+          "ZeroDayFlag flag for product test",                                 \
+          "This flag will be set through griffin to perform product testing",  \
+          kOsAndroid,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveZeroDayFlagAndroid),              \
       })                                                                       \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
