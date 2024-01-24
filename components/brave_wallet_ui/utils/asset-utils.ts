@@ -115,38 +115,51 @@ export const addChainIdToToken = (
   }
 }
 
+/**
+ * This does not check contract addresses.
+ * Make sure that the asset is native FIRST
+ */
+export const isKnownMainnetGasToken = ({
+  chainId,
+  symbol
+}: Pick<BraveWallet.BlockchainToken, 'chainId' | 'symbol'>) => {
+  const lowercaseSymbol = symbol.toLowerCase()
+  if (lowercaseSymbol === 'eth') {
+    return (
+      chainId === BraveWallet.MAINNET_CHAIN_ID ||
+      chainId === BraveWallet.BASE_MAINNET_CHAIN_ID ||
+      chainId === BraveWallet.ARBITRUM_NOVA_CHAIN_ID ||
+      chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID ||
+      chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID
+    )
+  }
+  return (
+    (lowercaseSymbol === 'matic' &&
+      chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) ||
+    (lowercaseSymbol === 'ftm' &&
+      chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID) ||
+    (lowercaseSymbol === 'celo' &&
+      chainId === BraveWallet.CELO_MAINNET_CHAIN_ID) ||
+    (lowercaseSymbol === 'bnb' &&
+      chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID) ||
+    (lowercaseSymbol === 'sol' && chainId === BraveWallet.SOLANA_MAINNET) ||
+    (lowercaseSymbol === 'fil' && chainId === BraveWallet.FILECOIN_MAINNET) ||
+    (lowercaseSymbol === 'avax' &&
+      chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) ||
+    (lowercaseSymbol === 'avaxc' &&
+      chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) ||
+    (lowercaseSymbol === 'neon' &&
+      chainId === BraveWallet.NEON_EVM_MAINNET_CHAIN_ID)
+  )
+}
+
 export const getNativeTokensFromList = (
   tokenList: BraveWallet.BlockchainToken[]
 ) => {
   // separate Native (gas) assets from other tokens
   const { nativeAssets, tokens } = tokenList.reduce(
     (acc, t) => {
-      if (
-        (t.symbol.toLowerCase() === 'eth' &&
-          t.chainId === BraveWallet.MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'eth' &&
-          t.chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'eth' &&
-          t.chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'matic' &&
-          t.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'ftm' &&
-          t.chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'celo' &&
-          t.chainId === BraveWallet.CELO_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'bnb' &&
-          t.chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'sol' &&
-          t.chainId === BraveWallet.SOLANA_MAINNET) ||
-        (t.symbol.toLowerCase() === 'fil' &&
-          t.chainId === BraveWallet.FILECOIN_MAINNET) ||
-        (t.symbol.toLowerCase() === 'avax' &&
-          t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'avaxc' &&
-          t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'neon' &&
-          t.chainId === BraveWallet.NEON_EVM_MAINNET_CHAIN_ID)
-      ) {
+      if (isKnownMainnetGasToken(t)) {
         acc.nativeAssets.push(t)
         return acc
       }
