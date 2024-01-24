@@ -19,14 +19,13 @@ void GetSearchProvidersUsingKeywordResult(
     TemplateURLService::OwnedTemplateURLVector* template_urls,
     TemplateURL* default_search_provider,
     const SearchTermsData& search_terms_data,
-    int* new_resource_keyword_version,
-    int* new_resource_starter_pack_version,
+    WDKeywordsResult::Metadata& out_updated_keywords_metadata,
     std::set<std::string>* removed_keyword_guids) {
   // Call the original implementation to get template_urls.
   GetSearchProvidersUsingKeywordResult_ChromiumImpl(
       result, service, prefs, search_engine_choice_service, template_urls,
-      default_search_provider, search_terms_data, new_resource_keyword_version,
-      new_resource_starter_pack_version, removed_keyword_guids);
+      default_search_provider, search_terms_data, out_updated_keywords_metadata,
+      removed_keyword_guids);
   // Resort template_urls in the orider of prepopulated search engines.
   if (template_urls && !template_urls->empty()) {
     std::vector<std::unique_ptr<TemplateURLData>> prepopulated_urls =

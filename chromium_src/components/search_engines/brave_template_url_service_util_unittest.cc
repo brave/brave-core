@@ -108,14 +108,13 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
                                     InitKeywordResult(&prefs_, local_turls));
 
   TemplateURL::OwnedTemplateURLVector template_urls;
-  int new_resource_keyword_version = 0;
-  int new_resource_starter_pack_version = 0;
+  WDKeywordsResult::Metadata updated_keywords_metadata;
 
   prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
   GetSearchProvidersUsingKeywordResult(
       result, nullptr, &prefs_, &search_engine_choice_service_, &template_urls,
-      default_turl.get(), SearchTermsData(), &new_resource_keyword_version,
-      &new_resource_starter_pack_version, nullptr);
+      default_turl.get(), SearchTermsData(), updated_keywords_metadata,
+      nullptr);
 
   // Verify count and order.
   TestDefaultOrder(template_urls,
@@ -137,15 +136,14 @@ TEST_F(BraveTemplateURLServiceUtilTest,
   WDResult<WDKeywordsResult> result(KEYWORDS_RESULT,
                                     InitKeywordResult(&prefs_, local_turls));
   TemplateURL::OwnedTemplateURLVector template_urls;
-  int new_resource_keyword_version = 0;
-  int new_resource_starter_pack_version = 0;
+  WDKeywordsResult::Metadata updated_keywords_metadata;
 
   // Check Germany.
   prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
   GetSearchProvidersUsingKeywordResult(
       result, nullptr, &prefs_, &search_engine_choice_service_, &template_urls,
-      default_turl.get(), SearchTermsData(), &new_resource_keyword_version,
-      &new_resource_starter_pack_version, nullptr);
+      default_turl.get(), SearchTermsData(), updated_keywords_metadata,
+      nullptr);
 
   // Verify count and order.
   TestDefaultOrder(template_urls, {":d", ":q", ":g", ":b", ":sp", ":ya",
