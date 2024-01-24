@@ -135,7 +135,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const switchToBasicModel = () => {
     // Select the first non-premium model
-    const nonPremium = allModels.find(m => [mojom.ModelAccess.BASIC, mojom.ModelAccess.BASIC_AND_PREMIUM].includes(m.access))
+    const nonPremium = allModels.find(m => m.access === mojom.ModelAccess.BASIC)
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')
       return
