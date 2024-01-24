@@ -843,7 +843,7 @@ void BravePrefProvider::NotifyChanges(
     bool incognito) {
   for (const auto& rule : rules) {
     Notify(rule->primary_pattern, rule->secondary_pattern,
-           ContentSettingsType::COOKIES);
+           ContentSettingsType::COOKIES, /*partition_key=*/nullptr);
   }
 }
 
