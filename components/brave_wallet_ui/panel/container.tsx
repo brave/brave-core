@@ -16,9 +16,6 @@ import {
   AllowAddChangeNetworkPanel //
 } from '../components/extension/allow-add-change-network-panel/index'
 import {
-  ConfirmTransactionPanel //
-} from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
-import {
   ConnectHardwareWalletPanel //
 } from '../components/extension/connect-hardware-wallet-panel/index'
 import {
@@ -38,8 +35,6 @@ import { PanelWrapper, WelcomePanelWrapper } from './style'
 
 import { BraveWallet } from '../constants/types'
 
-import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
-import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
   useSafePanelSelector,
@@ -63,6 +58,12 @@ import PageContainer from '../page/container'
 import {
   SignInWithEthereumError //
 } from '../components/extension/sign-panel/sign_in_with_ethereum_error'
+import {
+  PendingTransactionPanel //
+} from '../components/extension/pending_transaction_panel/pending_transaction_panel'
+import {
+  PendingSignatureRequestsPanel //
+} from '../components/extension/pending_signature_requests_panel/pending_signature_requests_panel'
 
 // Allow BigInts to be stringified
 ;(BigInt.prototype as any).toJSON = function () {
@@ -283,26 +284,18 @@ function Container() {
     )
   }
 
-  if (
-    selectedPendingTransaction?.txType === BraveWallet.TransactionType.ETHSwap
-  ) {
-    return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <ConfirmSwapTransaction />
-        </LongWrapper>
-      </PanelWrapper>
-    )
-  }
-
   if (selectedPendingTransaction) {
+    const isSwap =
+      selectedPendingTransaction?.txType === BraveWallet.TransactionType.ETHSwap
     return (
       <PanelWrapper
-        width={390}
-        height={650}
+        width={isSwap ? undefined : 390}
+        height={isSwap ? 540 : 650}
       >
         <LongWrapper>
-          <ConfirmTransactionPanel />
+          <PendingTransactionPanel
+            selectedPendingTransaction={selectedPendingTransaction}
+          />
         </LongWrapper>
       </PanelWrapper>
     )
@@ -317,7 +310,7 @@ function Container() {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <SignTransactionPanel
+          <PendingSignatureRequestsPanel
             signMode={
               signAllTransactionsRequests.length ||
               selectedPanel === 'signAllTransactions'
