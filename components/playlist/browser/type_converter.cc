@@ -79,9 +79,21 @@ void MigratePlaylistOrder(const base::Value::Dict& playlists,
     missing_ids.insert(id);
   }
 
+  base::flat_set<std::string> removed_ids;
   for (const auto& existing_id_value : order) {
-    missing_ids.erase(existing_id_value.GetString());
+    auto existing_id = existing_id_value.GetString();
+    if (base::Contains(missing_ids, existing_id)) {
+      missing_ids.erase(existing_id);
+    } else {
+      removed_ids.insert(existing_id);
+    }
   }
+
+  // Added 2024.01.
+  // Data resetting had left dangled data in the order list and it caused crash
+  order.EraseIf([&](const auto& id_value) {
+    return base::Contains(removed_ids, id_value.GetString());
+  });
 
   for (const auto& id : missing_ids) {
     order.Append(id);

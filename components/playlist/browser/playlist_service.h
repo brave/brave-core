@@ -286,7 +286,6 @@ class PlaylistService : public KeyedService,
                          bool update_media_src_and_retry_on_fail,
                          DownloadMediaFileCallback callback);
 
-  void CleanUpMalformedPlaylistItems();
   void MigratePlaylistValues();
 
   // Delete orphaned playlist item directories that are not included in prefs.
