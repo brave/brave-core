@@ -64,9 +64,10 @@ class PlaylistTabHelper
   std::u16string GetSavedFolderName();
 
   // |found_items| contains items with blob: url pointing at MediaSource Object.
-  bool ShouldRefetch() const;
-  bool IsRefetching() const;
-  void RefetchMediaURL(base::OnceClosure detected_callback);
+  bool ShouldExtractMediaFromBackgroundWebContents() const;
+  bool IsExtractingMediaFromBackgroundWebContents() const;
+  void ExtractMediaFromBackgroundWebContents(
+      base::OnceClosure extracted_callback);
 
   void RequestAsyncExecuteScript(int32_t world_id,
                                  const std::u16string& script,
@@ -128,7 +129,8 @@ class PlaylistTabHelper
 
   bool is_adding_items_ = false;
 
-  std::vector<base::OnceClosure> media_detected_after_refetching_callback_;
+  std::vector<base::OnceClosure>
+      media_extracted_from_background_web_contents_callbacks_;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;

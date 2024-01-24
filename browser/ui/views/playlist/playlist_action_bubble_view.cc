@@ -437,9 +437,9 @@ AddBubble::AddBubble(Browser* browser,
   SetButtonLabel(ui::DialogButton::DIALOG_BUTTON_OK,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
 
-  if (playlist_tab_helper_->ShouldRefetch()) {
+  if (playlist_tab_helper_->ShouldExtractMediaFromBackgroundWebContents()) {
     scroll_view_->SetContents(std::make_unique<views::View>());
-    playlist_tab_helper_->RefetchMediaURL(base::BindOnce(
+    playlist_tab_helper_->ExtractMediaFromBackgroundWebContents(base::BindOnce(
         &AddBubble::InitListView, weak_ptr_factory_.GetWeakPtr()));
     scroll_view_->SetPreferredSize(
         gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));

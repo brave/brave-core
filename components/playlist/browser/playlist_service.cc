@@ -453,7 +453,8 @@ void PlaylistService::FindMediaFilesFromContents(
   CHECK(tab_helper);
 
   for (const auto& item : tab_helper->found_items()) {
-    if (download_request_manager_->ShouldRefetchMediaSourceToCache(item)) {
+    if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
+            item)) {
       PlaylistDownloadRequestManager::Request request;
       request.url = current_url;
       request.should_force_fake_ua = ShouldUseFakeUA(current_url);
@@ -550,10 +551,11 @@ bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
              ->ShouldHideMediaSrcAPI(url);
 }
 
-bool PlaylistService::ShouldRefetchMediaSourceToCache(
+bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
     const std::vector<mojom::PlaylistItemPtr>& items) {
   for (const auto& item : items) {
-    if (download_request_manager_->ShouldRefetchMediaSourceToCache(item)) {
+    if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
+            item)) {
       return true;
     }
   }
@@ -594,7 +596,8 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                                     bool can_cache,
                                     AddMediaFilesCallback callback) {
   for (const auto& item : items) {
-    if (download_request_manager_->ShouldRefetchMediaSourceToCache(item)) {
+    if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
+            item)) {
       // TODO(sko) Maybe we dont' want this happen. But for now, Android could
       // reach here. Also we're assuming that
       // * all |items| will be matched to what we'll get from refetching.
