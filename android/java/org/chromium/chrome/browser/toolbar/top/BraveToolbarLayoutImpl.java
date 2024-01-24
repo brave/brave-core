@@ -699,6 +699,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 });
     }
 
+    public void addMediaToPlaylist() {
+        Tab currentTab = getToolbarDataProvider().getTab();
+        if (mPlaylistService == null || currentTab == null) {
+            return;
+        }
+        mPlaylistService.addMediaFilesFromActiveTabToPlaylist(ConstantUtils.DEFAULT_PLAYLIST, true);
+    }
+
     private void showAddedToPlaylistSnackBar() {
         SnackBarActionModel snackBarActionModel =
                 new SnackBarActionModel(getContext().getResources().getString(R.string.view_action),
