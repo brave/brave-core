@@ -35,7 +35,7 @@
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/strings/grit/components_strings.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
-#include "ios/chrome/browser/favicon/favicon_service_factory.h"
+#include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ui/base/l10n/l10n_util.h"

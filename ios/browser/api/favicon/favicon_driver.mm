@@ -13,7 +13,7 @@
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "ios/chrome/browser/favicon/favicon_service_factory.h"
+#include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
