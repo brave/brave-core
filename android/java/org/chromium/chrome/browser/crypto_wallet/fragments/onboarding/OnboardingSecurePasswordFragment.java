@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
+package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,54 +28,33 @@ import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
-public class SecurePasswordFragment extends CryptoOnboardingFragment {
+public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragment {
     private boolean mCreateWalletClicked;
     private OnboardingViewModel mOnboardingViewModel;
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletP3A();
-        }
-
-        return null;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mCreateWalletClicked = false;
         View view = inflater.inflate(R.layout.fragment_secure_password, container, false);
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            @SuppressLint("ClickableViewAccessibility")
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Utils.hideKeyboard(getActivity());
-                }
-                return true;
+        view.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                Utils.hideKeyboard(requireActivity());
             }
+            return true;
         });
         return view;
     }
@@ -105,15 +82,15 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
 
                     return;
                 }
-                proceedWithAStrongPassword(passwordInput, view);
+                proceedWithStrongPassword(passwordInput, view);
             });
         });
     }
 
-    private void proceedWithAStrongPassword(String passwordInput, View view) {
+    private void proceedWithStrongPassword(@NonNull final String password, @NonNull final View view) {
         EditText retypePasswordEdittext = view.findViewById(R.id.secure_crypto_retype_password);
         String retypePasswordInput = retypePasswordEdittext.getText().toString();
-        if (!passwordInput.equals(retypePasswordInput)) {
+        if (!password.equals(retypePasswordInput)) {
             retypePasswordEdittext.setError(
                     getResources().getString(R.string.retype_password_error));
             mCreateWalletClicked = false;
@@ -124,14 +101,14 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                         new BiometricPrompt.AuthenticationCallback() {
                             private void onNextPage() {
                                 // Go to next Page
-                                goToTheNextPage(passwordInput);
+                                goToTheNextPage(password);
                             }
 
                             @Override
                             public void onAuthenticationSucceeded(
                                     BiometricPrompt.AuthenticationResult result) {
                                 super.onAuthenticationSucceeded(result);
-                                KeystoreHelper.useBiometricOnUnlock(passwordInput);
+                                KeystoreHelper.useBiometricOnUnlock(password);
                                 onNextPage();
                             }
 
@@ -147,7 +124,7 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                         };
                 showFingerprintDialog(authenticationCallback);
             } else {
-                goToTheNextPage(passwordInput);
+                goToTheNextPage(password);
             }
         }
     }
@@ -163,18 +140,20 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 // Go to the next page after wallet creation is done
                 Utils.setCryptoOnboarding(false);
                 mOnboardingViewModel.setPassword(passwordInput);
-                onNextPage.gotoNextPage(false);
+                if (mOnNextPage != null) {
+                    mOnNextPage.gotoNextPage();
+                }
             });
             showCreatingWalletPage();
         }
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void showFingerprintDialog(
             @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
-        assert getActivity() != null;
-        Executor executor = ContextCompat.getMainExecutor(getActivity());
-        new BiometricPrompt.Builder(getActivity())
+        Executor executor = ContextCompat.getMainExecutor(requireActivity());
+        new BiometricPrompt.Builder(requireActivity())
                 .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
                 .setDescription(getResources().getString(R.string.enable_fingerprint_text))
                 .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
@@ -186,6 +165,8 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
     }
 
     private void showCreatingWalletPage() {
-        onNextPage.gotoNextPage(false);
+        if (mOnNextPage != null) {
+            mOnNextPage.gotoNextPage();
+        }
     }
 }

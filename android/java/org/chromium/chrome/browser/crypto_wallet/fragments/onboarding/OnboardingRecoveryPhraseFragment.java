@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
+package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
@@ -33,33 +31,16 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.List;
 
-public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
+public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragment {
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
 
     private List<String> recoveryPhrases;
     private boolean mIsOnboarding;
     private OnboardingViewModel mOnboardingViewModel;
 
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletP3A();
-        }
-
-        return null;
-    }
-
-    public static RecoveryPhraseFragment newInstance(boolean isOnboarding) {
-        RecoveryPhraseFragment fragment = new RecoveryPhraseFragment();
+    @NonNull
+    public static OnboardingRecoveryPhraseFragment newInstance(final boolean isOnboarding) {
+        OnboardingRecoveryPhraseFragment fragment = new OnboardingRecoveryPhraseFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(IS_ONBOARDING_ARG, isOnboarding);
@@ -70,8 +51,8 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING_ARG, false);
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_recovery_phrase, container, false);
     }
 
@@ -79,7 +60,7 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                                       .get(OnboardingViewModel.class);
+                .get(OnboardingViewModel.class);
         mOnboardingViewModel.getPassword().observe(getViewLifecycleOwner(), password -> {
             if (password == null) {
                 return;
@@ -106,7 +87,9 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
             if (braveWalletP3A != null && mIsOnboarding) {
                 braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
             }
-            onNextPage.gotoNextPage(false);
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoNextPage();
+            }
         });
         CheckBox recoveryPhraseCheckbox = view.findViewById(R.id.recovery_phrase_checkbox);
         recoveryPhraseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -124,11 +107,13 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
             if (braveWalletP3A != null && mIsOnboarding) {
                 braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
             }
-            onNextPage.gotoNextPage(true);
+            if (mOnNextPage != null) {
+                mOnNextPage.onboardingCompleted();
+            }
         });
     }
 
-    private void setupRecoveryPhraseRecyclerView(View view) {
+    private void setupRecoveryPhraseRecyclerView(@NonNull View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
         assert getActivity() != null;
         recyclerView.addItemDecoration(

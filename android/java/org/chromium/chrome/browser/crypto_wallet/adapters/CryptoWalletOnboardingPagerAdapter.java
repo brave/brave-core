@@ -14,25 +14,23 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapter {
-    private List<NavigationItem> navigationItems = new ArrayList<>();
+    private List<NavigationItem> mNavigationItems = new ArrayList<>();
 
-    public void setNavigationItems(List<NavigationItem> navigationItems) {
-        this.navigationItems = navigationItems;
+    public void setNavigationItems(List<NavigationItem> mNavigationItems) {
+        this.mNavigationItems = mNavigationItems;
     }
 
     public void replaceWithNavigationItem(NavigationItem navigationItem, int index) {
-        this.navigationItems =
-                new ArrayList<NavigationItem>(this.navigationItems.subList(0, index));
-        this.navigationItems.add(navigationItem);
+        replaceWithNavigationItems(Collections.singletonList(navigationItem), index);
     }
 
     public void replaceWithNavigationItems(List<NavigationItem> navigationItems, int index) {
-        this.navigationItems =
-                new ArrayList<NavigationItem>(this.navigationItems.subList(0, index));
-        this.navigationItems.addAll(navigationItems);
+        this.mNavigationItems = this.mNavigationItems.subList(0, index);
+        this.mNavigationItems.addAll(navigationItems);
     }
 
     public CryptoWalletOnboardingPagerAdapter(FragmentManager fm) {
@@ -47,17 +45,17 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapte
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return navigationItems.get(position).getFragment();
+        return mNavigationItems.get(position).getFragment();
     }
 
     @Override
     public int getCount() {
-        return navigationItems.size();
+        return mNavigationItems.size();
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return navigationItems.get(position).getTitle();
+        return mNavigationItems.get(position).getTitle();
     }
 }

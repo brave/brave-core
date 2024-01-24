@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
+package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,27 +28,18 @@ import androidx.fragment.app.FragmentActivity;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
-public class UnlockWalletFragment extends CryptoOnboardingFragment {
+public class UnlockWalletFragment extends BaseWalletNextPageFragment {
     private EditText mUnlockWalletPassword;
     private Button mUnlockButton;
     private TextView mUnlockWalletRestoreButton;
     private TextView mUnlockWalletTitle;
     private ImageView mBiometricUnlockWalletImage;
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +52,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_unlock_wallet, container, false);
     }
 
@@ -91,9 +81,9 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                                         Utils.clearClipboard(
                                                 mUnlockWalletPassword.getText().toString(), 0);
                                         mUnlockWalletPassword.setText(null);
-                                        if (onNextPage != null) {
+                                        if (mOnNextPage != null) {
                                             Utils.hideKeyboard(requireActivity());
-                                            onNextPage.gotoNextPage(true);
+                                            mOnNextPage.onboardingCompleted();
                                         }
                                     } else {
                                         mUnlockWalletPassword.setError(
@@ -104,8 +94,8 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                 });
 
         mUnlockWalletRestoreButton.setOnClickListener(v -> {
-            if (onNextPage != null) {
-                onNextPage.gotoRestorePage(false);
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoRestorePage(false);
                 mUnlockWalletPassword.getText().clear();
             }
         });
@@ -117,24 +107,29 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
             }
         });
 
-        if (onNextPage != null && onNextPage.showBiometricPrompt()) {
-            checkOnBiometric();
-        } else if (onNextPage != null) {
-            onNextPage.showBiometricPrompt(true);
+        if (mOnNextPage != null && mOnNextPage.showBiometricPrompt()) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+                    || !KeystoreHelper.shouldUseBiometricOnUnlock()
+                    || !Utils.isBiometricAvailable(getContext())) {
+                showPasswordRelatedControls();
+            } else {
+                createBiometricPrompt();
+
+            }
+        } else if (mOnNextPage != null) {
+            mOnNextPage.enableBiometricPrompt();
             showPasswordRelatedControls();
         }
     }
 
-    private void checkOnBiometric() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
-                || !KeystoreHelper.shouldUseBiometricOnUnlock()
-                || !Utils.isBiometricAvailable(getContext())) {
-            showPasswordRelatedControls();
-
-            return;
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mOnNextPage != null) {
+            mOnNextPage.showCloseButton(false);
+            mOnNextPage.showBackButton(false);
         }
 
-        createBiometricPrompt();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -157,8 +152,8 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                             assert keyringService != null;
                             keyringService.unlock(unlockWalletPassword, unlockResult -> {
                                 if (unlockResult) {
-                                    if (onNextPage != null) {
-                                        onNextPage.gotoNextPage(true);
+                                    if (mOnNextPage != null) {
+                                        mOnNextPage.onboardingCompleted();
                                     }
                                 } else {
                                     showPasswordRelatedControls();
@@ -168,8 +163,6 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                             });
                         } catch (Exception exc) {
                             showPasswordRelatedControls();
-
-                            return;
                         }
                     }
 
@@ -178,7 +171,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                         super.onAuthenticationError(errorCode, errString);
 
                         if (!TextUtils.isEmpty(errString)) {
-                            Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireActivity(), errString, Toast.LENGTH_SHORT).show();
                         }
                         // Even though we have an error, we still let to proceed
                         showPasswordRelatedControls();
@@ -187,18 +180,18 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         showFingerprintDialog(authenticationCallback);
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void showFingerprintDialog(
             @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
-        assert getActivity() != null;
-        Executor executor = ContextCompat.getMainExecutor(getActivity());
-        new BiometricPrompt.Builder(getActivity())
+        Executor executor = ContextCompat.getMainExecutor(requireActivity());
+        new BiometricPrompt.Builder(requireActivity())
                 .setTitle(getResources().getString(R.string.fingerprint_unlock))
                 .setDescription(getResources().getString(R.string.use_fingerprint_text))
                 .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
                         (dialog, which)
                                 -> authenticationCallback.onAuthenticationError(
-                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
+                                BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }

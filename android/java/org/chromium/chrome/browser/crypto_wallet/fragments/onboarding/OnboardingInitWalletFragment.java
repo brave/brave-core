@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
+package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.content.Intent;
 import android.os.Build;
@@ -28,15 +28,15 @@ import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 /**
- * Fragment to setup Brave Wallet
+ * Initial onboarding fragment to setup Brave Wallet.
  */
-public class SetupWalletFragment extends CryptoOnboardingFragment {
+public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     private static final String TAG = "SetupWalletFragment";
 
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
 
-    public SetupWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
+    public OnboardingInitWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
         mRestartSetupAction = restartSetupAction;
         mRestartRestoreAction = restartRestoreAction;
     }
@@ -52,7 +52,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_setup_wallet, container, false);
     }
 
@@ -62,13 +62,17 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
         Button setupCryptoButton = view.findViewById(R.id.btn_setup_crypto);
         setupCryptoButton.setOnClickListener(v -> {
             checkOnBraveActivity(true, false);
-            onNextPage.gotoOnboardingPage();
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoCreationPage();
+            }
         });
 
         TextView restoreButton = view.findViewById(R.id.btn_restore);
         restoreButton.setOnClickListener(v -> {
             checkOnBraveActivity(false, true);
-            onNextPage.gotoRestorePage(true);
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoRestorePage(true);
+            }
         });
         PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
             if (mRestartSetupAction) {
@@ -79,6 +83,16 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
             mRestartSetupAction = false;
             mRestartRestoreAction = false;
         });
+    }
+
+    @Override
+    protected boolean canBeClosed() {
+        return false;
+    }
+
+    @Override
+    protected boolean canNavigateBack() {
+        return false;
     }
 
     // We need to remove that check and restart once
@@ -96,7 +110,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             intent.setAction(Intent.ACTION_VIEW);
             startActivity(intent);
-            getActivity().finish();
+            requireActivity().finish();
         }
     }
 }

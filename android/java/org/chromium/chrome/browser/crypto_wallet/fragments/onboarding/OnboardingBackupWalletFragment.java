@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
+package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +21,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,15 +33,14 @@ import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
-public class BackupWalletFragment extends CryptoOnboardingFragment {
+public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment {
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
 
     private boolean mIsOnboarding;
@@ -55,26 +53,9 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
     private boolean mBiometricExecuted;
     private OnboardingViewModel mOnboardingViewModel;
 
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletP3A();
-        }
-
-        return null;
-    }
-
-    public static BackupWalletFragment newInstance(boolean isOnboarding) {
-        BackupWalletFragment fragment = new BackupWalletFragment();
+    @NonNull
+    public static OnboardingBackupWalletFragment newInstance(final boolean isOnboarding) {
+        OnboardingBackupWalletFragment fragment = new OnboardingBackupWalletFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(IS_ONBOARDING_ARG, isOnboarding);
@@ -85,8 +66,8 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING_ARG, false);
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_backup_wallet, container, false);
     }
 
@@ -106,8 +87,12 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
         mBackupWalletButton.setOnClickListener(v -> {
             BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
             if (mIsOnboarding) {
-                onNextPage.gotoNextPage(false);
-                braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                if (mOnNextPage != null) {
+                    mOnNextPage.gotoNextPage();
+                }
+                if (braveWalletP3A != null) {
+                    braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                }
                 return;
             }
             KeyringService keyringService = getKeyringService();
@@ -118,7 +103,9 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
                 keyringService.getMnemonicForDefaultKeyring(passwordToUse, result -> {
                     if (!result.isEmpty()) {
                         mOnboardingViewModel.setPassword(passwordToUse);
-                        onNextPage.gotoNextPage(false);
+                        if (mOnNextPage != null) {
+                            mOnNextPage.gotoNextPage();
+                        }
                     } else {
                         showPasswordRelatedControls(true);
                         mBackupWalletPassword.setError(
@@ -144,7 +131,9 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
             if (braveWalletP3A != null && mIsOnboarding) {
                 braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
             }
-            onNextPage.gotoNextPage(true);
+            if (mOnNextPage != null) {
+                mOnNextPage.onboardingCompleted();
+            }
         });
         mBiometricBackupWalletImage.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
@@ -156,13 +145,16 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
         checkOnBiometric();
     }
 
+    @Override
+    protected boolean canNavigateBack() {
+        return false;
+    }
+
     private void checkOnBiometric() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
                 || !KeystoreHelper.shouldUseBiometricOnUnlock()
                 || !Utils.isBiometricAvailable(getContext())) {
             showPasswordRelatedControls(true);
-
-            return;
         }
     }
 
@@ -243,6 +235,7 @@ public class BackupWalletFragment extends CryptoOnboardingFragment {
         showFingerprintDialog(authenticationCallback);
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void showFingerprintDialog(
             @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {

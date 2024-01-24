@@ -26,6 +26,7 @@
     <color name="default_text_color_on_accent1_dark">@color/baseline_neutral_0</color>
 
     <!-- Day/Night brave wallet colors -->
+    <color name="brave_wallet_onboarding_item_background_color">#687485</color>
     <color name="brave_wallet_day_night_toolbar_icon_color">#495057</color>
     <color name="brave_wallet_day_night_icon_color">#212529</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#E1E3E4</color>

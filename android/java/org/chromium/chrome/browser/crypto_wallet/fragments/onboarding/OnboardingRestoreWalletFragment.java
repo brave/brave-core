@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
+package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,44 +30,28 @@ import androidx.core.content.ContextCompat;
 
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
-public class RestoreWalletFragment extends CryptoOnboardingFragment {
-    private static final String IS_ONBOARDING = "is_onboarding";
+public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragment {
     private EditText mRecoveryPhraseText;
     private EditText mPasswordEdittext;
     private EditText mRetypePasswordEdittext;
     private CheckBox mShowRecoveryPhraseCheckbox;
     private CheckBox mRestoreLegacyWalletCheckbox;
     private boolean mIsLegacyWalletRestoreEnable;
-    private boolean mIsOnboarding;
 
-    public static RestoreWalletFragment newInstance(boolean isOnboarding) {
-        RestoreWalletFragment fragment = new RestoreWalletFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(IS_ONBOARDING, isOnboarding);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
+    @NonNull
+    public static OnboardingRestoreWalletFragment newInstance() {
+        return new OnboardingRestoreWalletFragment();
     }
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING);
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_restore_wallet, container, false);
     }
 
@@ -122,9 +106,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                 });
 
         mRestoreLegacyWalletCheckbox.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> {
-                    mIsLegacyWalletRestoreEnable = isChecked;
-                });
+                (buttonView, isChecked) -> mIsLegacyWalletRestoreEnable = isChecked);
 
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
         secureCryptoButton.setOnClickListener(
@@ -139,11 +121,10 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                                 if (!result) {
                                     mPasswordEdittext.setError(
                                             getResources().getString(R.string.password_text));
-
                                     return;
                                 }
 
-                                proceedWithAStrongPassword(passwordInput, mRecoveryPhraseText);
+                                proceedWithStrongPassword(passwordInput, mRecoveryPhraseText);
                             });
                 });
     }
@@ -153,7 +134,9 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
                     private void onNextPage() {
-                        onNextPage.gotoNextPage(true);
+                        if (mOnNextPage != null) {
+                            mOnNextPage.onboardingCompleted();
+                        }
                     }
 
                     @Override
@@ -178,47 +161,49 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         showFingerprintDialog(authenticationCallback);
     }
 
-    private void proceedWithAStrongPassword(String passwordInput, EditText mRecoveryPhraseText) {
+    private void proceedWithStrongPassword(@NonNull String password, EditText recoveryPhrase) {
         String retypePasswordInput = mRetypePasswordEdittext.getText().toString();
 
-        if (!passwordInput.equals(retypePasswordInput)) {
+        if (!password.equals(retypePasswordInput)) {
             mRetypePasswordEdittext.setError(
                     getResources().getString(R.string.retype_password_error));
         } else {
             KeyringService keyringService = getKeyringService();
             assert keyringService != null;
             keyringService.restoreWallet(
-                    mRecoveryPhraseText.getText().toString().trim(),
-                    passwordInput,
+                    recoveryPhrase.getText().toString().trim(),
+                    password,
                     mIsLegacyWalletRestoreEnable,
                     result -> {
                         if (result) {
-                            Utils.hideKeyboard(getActivity());
+                            Utils.hideKeyboard(requireActivity());
                             keyringService.notifyWalletBackupComplete();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                                     && Utils.isBiometricAvailable(getContext())) {
                                 // Clear previously set bio-metric credentials
                                 KeystoreHelper.resetBiometric();
                                 enableBiometricLogin(retypePasswordInput);
-                            } else {
-                                onNextPage.gotoNextPage(true);
+                            } else if (mOnNextPage != null) {
+                                mOnNextPage.onboardingCompleted();
                             }
                             Utils.setCryptoOnboarding(false);
                             Utils.clearClipboard(
-                                    mRecoveryPhraseText.getText().toString().trim(), 0);
-                            Utils.clearClipboard(passwordInput, 0);
+                                    recoveryPhrase.getText().toString().trim(), 0);
+                            Utils.clearClipboard(password, 0);
                             Utils.clearClipboard(retypePasswordInput, 0);
 
                             cleanUp();
                         } else {
                             Toast.makeText(
-                                            getActivity(),
+                                            requireActivity(),
                                             R.string.account_recovery_failed,
                                             Toast.LENGTH_SHORT)
                                     .show();
                         }
                     });
-            onNextPage.gotoNextPage(false);
+            if (mOnNextPage != null) {
+                mOnNextPage.gotoNextPage();
+            }
         }
     }
 
@@ -230,6 +215,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         mRestoreLegacyWalletCheckbox.setChecked(false);
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void showFingerprintDialog(
             @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
