@@ -90,7 +90,7 @@ class SimulationService : public KeyedService, public mojom::SimulationService {
                                APIRequestResult api_request_result);
 
   api_request_helper::APIRequestHelper api_request_helper_;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   mojo::ReceiverSet<mojom::SimulationService> receivers_;
   base::WeakPtrFactory<SimulationService> weak_ptr_factory_{this};
 };

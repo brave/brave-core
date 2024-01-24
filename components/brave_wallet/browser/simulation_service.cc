@@ -136,8 +136,7 @@ SimulationService::SimulationService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     JsonRpcService* json_rpc_service)
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      json_rpc_service_(json_rpc_service),
-      weak_ptr_factory_(this) {
+      json_rpc_service_(json_rpc_service) {
   DCHECK(json_rpc_service_);
 }
 
