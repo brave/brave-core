@@ -61,6 +61,7 @@ const StyledEditActionContainer = styled.div`
 const StyledEditButton = styled(LeoButton)`
   width: fit-content;
   flex-grow: 0;
+  color: var(--leo-color-text-primary);
   --leo-button-padding: 10px 12px;
 
   &:last-child {
