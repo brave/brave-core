@@ -30,7 +30,7 @@ mojom::Result GetCards::CheckStatusCode(int status_code) const {
     return mojom::Result::EXPIRED_TOKEN;
   }
 
-  if (status_code != net::HTTP_OK) {
+  if (status_code != net::HTTP_OK && status_code != net::HTTP_PARTIAL_CONTENT) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
     return mojom::Result::FAILED;
   }
