@@ -61,6 +61,7 @@
     "third_party/rust/",
     "tools/crates/",
     "win_build_output/",
+    "third_party/ios_deps/",
   ],
 
   // Regex to match function names in the current presubmit stack trace. Matched
@@ -76,7 +77,6 @@
     "CheckParseErrors": [
       ".*tsconfig\\.json",
       "components/brave_ads/core/test/data/invalid\\.json",
-      "third_party/ios_deps/",
     ],
     "CheckNoBannedFunctions": [
       // Use `ban_rule_excluded_paths` instead.
@@ -95,7 +95,6 @@
       "components/permissions/permission_lifetime_utils\\.cc",
       "components/tor/tor_launcher_factory\\.cc",
       "components/webcompat_reporter/browser/webcompat_report_uploader\\.cc",
-      "ios/browser/api/brave_rewards/legacy_database/legacy_ledger_database\\.mm",
       "ios/browser/api/brave_rewards/promotion_solution\\.mm",
     ],
     "CheckUniquePtrOnUpload": [
@@ -158,8 +157,6 @@
       "test/data/speedreader/",
     ],
     "CheckNoJsInIos": ["ios/brave-ios/"],
-    "CheckForLongPathnames": ["third_party/ios_deps/"],
-    "CheckFilePermissions": ["third_party/ios_deps/"],
   },
 
   // Additional excludes to _BANRULE_* lists in //PRESUBMIT.py.
