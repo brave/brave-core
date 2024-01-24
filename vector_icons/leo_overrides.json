@@ -11,7 +11,7 @@
   "//chrome/app/vector_icons/zoom_plus.icon": "leo_search_zoom_in",
   "//components/omnibox/browser/vector_icons/bookmark.icon": "leo_browser_bookmark_normal",
   "//components/omnibox/browser/vector_icons/find_in_page.icon": "leo_window_search",
-  "//components/omnibox/browser/vector_icons/http.icon": "leo_warning_circle_filled",
+  "//components/omnibox/browser/vector_icons/http.icon": "leo_info_filled",
   "//components/omnibox/browser/vector_icons/install_desktop.icon": "leo_pwa_install",
   "//components/omnibox/browser/vector_icons/share_mac.icon": "leo_share_macos",
   "//components/omnibox/browser/vector_icons/share_win.icon": "leo_share_windows",
