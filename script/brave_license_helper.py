@@ -178,21 +178,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/ronaldoussoren/macholib",
             "License": "MIT",
         },
-        os.path.join('brave', 'third_party', 'ios_deps', 'JitsiMeet'): {
-            "Name": "JitsiMeet",
-            "URL": "https://github.com/jitsi/jitsi-meet",
-            "License": "Apache-2.0",
-        },
-        os.path.join('brave', 'third_party', 'ios_deps', 'GRDWireGuardKit'): {
-            "Name": "GuardianWireGuard",
-            "URL": "https://github.com/GuardianFirewall/GuardianWireGuard",
-            "License": "MIT",
-        },
-        os.path.join('brave', 'third_party', 'ios_deps', 'Static'): {
-            "Name": "Static",
-            "URL": "https://github.com/venmo/Static",
-            "License": "MIT",
-        },
     })
 
     # Don't recurse into these directories looking for third-party code.
@@ -224,6 +209,14 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         for dirpath in dirs:
             dirname = os.path.basename(dirpath)
             additional_list += [os.path.join(android_libs, dirname)]
+
+    # Add all iOS libraries since they're not directly contained
+    # within a third_party directory. iOS deps will never be nested
+    ios_deps = os.path.join('brave', 'third_party', 'ios_deps')
+    for dirname in os.listdir(os.path.join(root, ios_deps)):
+        if not os.path.isdir(os.path.join(root, ios_deps, dirname)):
+            continue
+        additional_list += [os.path.join(ios_deps, dirname)]
 
     additional_paths = tuple(additional_list)
 
