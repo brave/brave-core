@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.mojom b/components/content_settings/core/common/content_settings_types.mojom
-index e10315f57a5bb04daabce937baaceea56744b046..b253380f64c2f7b4f8d98286970c2328e8e64381 100644
+index 2ad4f097e6b82df2623ce33aeb8db9af22cd7a76..d1f8e968590d2f701017514e72dacaf4514ee0e5 100644
 --- a/components/content_settings/core/common/content_settings_types.mojom
 +++ b/components/content_settings/core/common/content_settings_types.mojom
-@@ -387,6 +387,22 @@ enum ContentSettingsType {
-   // Content settings for access to printers for the Web Printing API.
-   WEB_PRINTING,
+@@ -395,6 +395,22 @@ enum ContentSettingsType {
+   // user for the installation of sub apps.
+   SUB_APP_INSTALLATION_PROMPTS,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,

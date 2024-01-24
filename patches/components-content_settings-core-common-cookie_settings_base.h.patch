@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
-index fa3c729eae01c6c454ebf69bd25394d76232cadf..1753418a42b7707218257a46026fb4b1d23c7832 100644
+index 5853dc993d3e7c77465489bd8effb692ca0392d4..252aff36c2c368e0b96ae46b8bdcf05dfc1f80b7 100644
 --- a/components/content_settings/core/common/cookie_settings_base.h
 +++ b/components/content_settings/core/common/cookie_settings_base.h
 @@ -74,7 +74,7 @@ class CookieSettingsBase {
@@ -9,5 +9,5 @@ index fa3c729eae01c6c454ebf69bd25394d76232cadf..1753418a42b7707218257a46026fb4b1
 -  virtual ~CookieSettingsBase() = default;
 +  virtual ~CookieSettingsBase();
  
-   // An enum that represents the scope of cookies to which the user's
-   // third-party-cookie-blocking setting applies, in a given context.
+   // Enum for measuring the mechanism for re-enabling third-party cookies when
+   // applying 3PCD experiment. These values are persisted to logs. Entries
