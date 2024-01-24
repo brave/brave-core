@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index d0a5dbc45467019aba2d185187ebb16879775dc4..87ba950a723348042267d36d3db17f1f62b85f1d 100644
+index 8ca07395c1da2851547a95c9f19dac66e87158e4..227ef2e1c710dc1c5993d0c45ffaf3926b3ae388 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -2299,6 +2299,7 @@ class CONTENT_EXPORT ContentBrowserClient {
-   virtual ui::AXMode GetAXModeForBrowserContext(
-       BrowserContext* browser_context);
+@@ -2307,6 +2307,7 @@ class CONTENT_EXPORT ContentBrowserClient {
+                                            BrowserContext* context,
+                                            RenderFrameHost* render_frame_host);
  
 +  BRAVE_CONTENT_BROWSER_CLIENT_H
  #if BUILDFLAG(IS_ANDROID)
