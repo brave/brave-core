@@ -45,6 +45,7 @@ inline constexpr char kSimpleHashBraveProxyUrl[] =
     "https://simplehash.wallet.brave.com";
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletFoundRisks", IDS_BRAVE_WALLET_FOUND_RISKS},
     {"braveWalletTestNetworkAccount", IDS_BRAVE_WALLET_TEST_NETWORK_ACCOUNT},
     {"braveWalletPopular", IDS_BRAVE_WALLET_POPULAR},
     {"braveWalletFeatured", IDS_BRAVE_WALLET_FEATURED},
