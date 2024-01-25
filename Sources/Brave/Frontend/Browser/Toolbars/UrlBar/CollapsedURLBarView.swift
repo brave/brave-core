@@ -65,7 +65,8 @@ class CollapsedURLBarView: UIView {
     var title = AttributedString(Strings.tabToolbarNotSecureTitle)
     title.font = .preferredFont(forTextStyle: .caption1, compatibleWith: clampedTraitCollection)
     
-    let isTitleVisible = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    let isTitleVisible = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory &&
+        secureContentState != .mixedContent
     
     switch secureContentState {
     case .localhost, .secure:
