@@ -13,7 +13,7 @@ import { NavOption } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
-import { ButtonsContainer, Button } from './segmented-control.style'
+import { ButtonsContainer, Button } from './segmented_control.style'
 
 interface Props {
   navOptions: NavOption[]
