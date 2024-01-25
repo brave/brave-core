@@ -12,7 +12,7 @@ Unlike brave-core, the code inside this folder does not build using GN and `npm 
 Debug & channel named schemes have pre-actions to build the rest of brave-core along with it
 
 ### Swift style
-* Swift code should generally follow the conventions listed at https://github.com/raywenderlich/swift-style-guide.g
+* Swift code should generally follow the conventions listed at https://github.com/raywenderlich/swift-style-guide
 
 ### Whitespace
 * New code should not contain any trailing whitespace.

@@ -45,9 +45,9 @@ def main():
 
     UpdateSymlink(config, target_arch, target_environment)
     BuildCore(config, target_arch, target_environment)
+    GenerateXCFrameworks(config, target_arch, target_environment)
     CleanupChromiumAssets(output_dir)
     FixMaterialComponentsVersionString(output_dir)
-    GenerateXCFrameworks(config, target_arch, target_environment)
     GenerateXcodeConfig(output_dir)
     CallNpm(['npm', 'run', 'ios_pack_js'])
 
@@ -91,25 +91,39 @@ def BuildCore(config, target_arch, target_environment):
     CallNpm(cmd_args)
 
 
+def _FrameworksForXCFramework(xcframework_dir):
+    """Returns a list of framework directories inside of a xcframework"""
+    framework_dirs = []
+    for root, dirs, _ in os.walk(xcframework_dir):
+        for folder in dirs:
+            if folder.endswith('.framework'):
+                framework_dirs += [
+                    os.path.join(xcframework_dir, os.path.join(root, folder))
+                ]
+    return framework_dirs
+
+
 def CleanupChromiumAssets(output_dir):
-    """Delete Chromium Assets from BraveCore.framework since they aren't
+    """Delete Chromium Assets from BraveCore.xcframework since they aren't
     used."""
     # TODO(@brave/ios): Get this removed in the brave-core builds if possible
-    framework_dir = os.path.join(output_dir, "BraveCore.framework")
-    os.remove(os.path.join(framework_dir, "Assets.car"))
+    xcframework_dir = os.path.join(output_dir, "BraveCore.xcframework")
+    for framework_dir in _FrameworksForXCFramework(xcframework_dir):
+        os.remove(os.path.join(framework_dir, "Assets.car"))
 
 
 def FixMaterialComponentsVersionString(output_dir):
     """Adds a CFBundleShortVersionString to the outputted MaterialComponents
-    framework so that it's valid to upload"""
+    xcframework so that it's valid to upload"""
     # TODO(@brave/ios): Fix this with a patch or chromium_src override somehow
-    framework_dir = os.path.join(output_dir, "MaterialComponents.framework")
-    cmd_args = [
-        '/usr/libexec/PlistBuddy', '-c',
-        'Add :CFBundleShortVersionString string 1.0',
-        os.path.join(framework_dir, 'Info.plist')
-    ]
-    subprocess.call(cmd_args, cwd=brave_root_dir)
+    xcframework_dir = os.path.join(output_dir, "MaterialComponents.xcframework")
+    for framework_dir in _FrameworksForXCFramework(xcframework_dir):
+        cmd_args = [
+            '/usr/libexec/PlistBuddy', '-c',
+            'Add :CFBundleShortVersionString string 1.0',
+            os.path.join(framework_dir, 'Info.plist')
+        ]
+        subprocess.call(cmd_args, cwd=brave_root_dir)
 
 
 def GenerateXCFrameworks(config, target_arch, target_environment):
