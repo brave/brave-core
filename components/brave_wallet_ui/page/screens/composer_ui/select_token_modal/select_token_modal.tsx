@@ -168,9 +168,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       })
     })
 
-    const { data: fullTokenList } = useGetCombinedTokensListQuery(undefined, {
-      skip: !showFullFlatTokenList
-    })
+    const { data: fullTokenList } = useGetCombinedTokensListQuery(
+      showFullFlatTokenList ? undefined : skipToken
+    )
 
     const networks = modalType === 'swap' ? swapNetworks : visibleNetworks
 
