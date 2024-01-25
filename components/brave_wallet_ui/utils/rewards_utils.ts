@@ -15,8 +15,7 @@ import {
 import { getLocale } from '../../common/locale'
 
 // Types
-import { externalWalletProviders } from '../common/async/brave_rewards_api_proxy'
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, externalWalletProviders } from '../constants/types'
 import { ExternalWalletProvider } from '../../brave_rewards/resources/shared/lib/external_wallet'
 import { BatRewardsContractAddress } from '../common/constants/registry'
 

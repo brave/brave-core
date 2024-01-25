@@ -19,7 +19,6 @@ import pageReducer from './reducers/page_reducer'
 import uiReducer from '../common/slices/ui.slice'
 
 // utils
-import { setApiProxyFetcher } from '../common/async/base-query-cache'
 import {
   makeBraveWalletAutoPinServiceObserver,
   makeBraveWalletPinServiceObserver,
@@ -59,8 +58,6 @@ proxy.addBraveWalletPinServiceObserver(makeBraveWalletPinServiceObserver(store))
 proxy.addBraveWalletAutoPinServiceObserver(
   makeBraveWalletAutoPinServiceObserver(store)
 )
-
-setApiProxyFetcher(getWalletPageApiProxy)
 
 export const walletPageApiProxy = proxy
 

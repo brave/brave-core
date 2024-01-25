@@ -8,9 +8,9 @@ import { EntityId } from '@reduxjs/toolkit'
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
-import { WalletStatus } from '../common/async/brave_rewards_api_proxy'
 import {
-  ExternalWalletProvider //
+  ExternalWallet,
+  ExternalWalletProvider
 } from '../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
@@ -1073,4 +1073,26 @@ export type BitcoinBalances = {
   availableBalance: string
   pendingBalance: string
   totalBalance: string
+}
+
+export const WalletStatus = {
+  kNotConnected: 0,
+  kConnected: 2,
+  kLoggedOut: 4
+} as const
+
+export const externalWalletProviders = [
+  'uphold',
+  'bitflyer',
+  'gemini',
+  'zebpay'
+]
+
+export type WalletStatus = (typeof WalletStatus)[keyof typeof WalletStatus]
+
+export type RewardsExternalWallet = Pick<
+  ExternalWallet,
+  'links' | 'provider' | 'username'
+> & {
+  status: WalletStatus
 }

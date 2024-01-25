@@ -51,9 +51,9 @@ import {
   BraveWallet,
   AccountButtonOptionsObjectType,
   AccountModalTypes,
-  SpotPriceRegistry
+  SpotPriceRegistry,
+  WalletStatus
 } from '../../../constants/types'
-import { WalletStatus } from '../../../common/async/brave_rewards_api_proxy'
 
 // options
 import { AccountButtonOptions } from '../../../options/account-list-button-options'

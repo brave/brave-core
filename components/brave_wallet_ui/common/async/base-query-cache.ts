@@ -19,7 +19,8 @@ import {
   SupportedOnRampNetworks,
   SupportedOffRampNetworks,
   ERC721Metadata,
-  BraveRewardsInfo
+  BraveRewardsInfo,
+  WalletStatus
 } from '../../constants/types'
 
 // entities
@@ -51,8 +52,6 @@ import { makeNetworkAsset } from '../../options/asset-options'
 import { isIpfs } from '../../utils/string-utils'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
 import {
-  BraveRewardsProxy,
-  WalletStatus,
   getBraveRewardsProxy
 } from './brave_rewards_api_proxy'
 import {
@@ -62,40 +61,9 @@ import {
   getRewardsProviderName
 } from '../../utils/rewards_utils'
 
-/**
- * A function to return the ref to either the main api proxy, or a mocked proxy
- * @returns function that returns an ApiProxy instance
- */
-export let apiProxyFetcher = () =>
-  getAPIProxy() as WalletApiProxy &
-    Partial<WalletPanelApiProxy> &
-    Partial<WalletPageApiProxy>
-
-/**
- * Assigns a function to use for fetching the walletApiProxy
- * (useful for injecting spies during testing)
- * @param fetcher A function to return the ref to either the main api proxy,
- *  or a mocked proxy
- */
-export const setApiProxyFetcher = (fetcher: () => WalletApiProxy) => {
-  apiProxyFetcher = fetcher
-}
-
-/**
- * A function to return the ref to either the main api proxy, or a mocked proxy
- * @returns function that returns an ApiProxy instance
- */
-export let rewardsProxyFetcher = getBraveRewardsProxy
-
-/**
- * Assigns a function to use for fetching a BraveRewardsProxy
- * (useful for injecting spies during testing)
- * @param fetcher A function to return the ref to either the main api proxy,
- *  or a mocked proxy
- */
-export const setRewardsProxyFetcher = (fetcher: () => BraveRewardsProxy) => {
-  rewardsProxyFetcher = fetcher
-}
+type IsomorphicApiProxy = WalletApiProxy &
+  Partial<WalletPanelApiProxy> &
+  Partial<WalletPageApiProxy>
 
 /**
  * A place to store & manage dependency data for other queries
@@ -114,8 +82,7 @@ export class BaseQueryCache {
 
   getWalletInfo = async () => {
     if (!this.walletInfo) {
-      const { walletInfo } =
-        await apiProxyFetcher().walletHandler.getWalletInfo()
+      const { walletInfo } = await getAPIProxy().walletHandler.getWalletInfo()
       this.walletInfo = walletInfo
     }
     return this.walletInfo
@@ -124,7 +91,7 @@ export class BaseQueryCache {
   getAllAccounts = async () => {
     if (!this._allAccountsInfo) {
       const { allAccounts } =
-        await apiProxyFetcher().keyringService.getAllAccounts()
+        await getAPIProxy().keyringService.getAllAccounts()
       this._allAccountsInfo = allAccounts
     }
     return this._allAccountsInfo
@@ -158,7 +125,7 @@ export class BaseQueryCache {
 
   getNetworksRegistry = async () => {
     if (!this._networksRegistry) {
-      const { jsonRpcService } = apiProxyFetcher()
+      const { jsonRpcService } = getAPIProxy()
 
       // network type flags
       const { isBitcoinEnabled, isZCashEnabled } = await this.getWalletInfo()
@@ -310,7 +277,7 @@ export class BaseQueryCache {
       if (isIpfs(trimmedURL)) {
         this._extractedIPFSUrlRegistry[trimmedURL] = trimmedURL
       } else {
-        const api = apiProxyFetcher()
+        const api = getAPIProxy()
         const { ipfsUrl } =
           await api.braveWalletIpfsService.extractIPFSUrlFromGatewayLikeUrl(
             trimmedURL
@@ -327,7 +294,7 @@ export class BaseQueryCache {
     const trimmedURL = urlArg.trim()
 
     if (!this._nftImageIpfsGateWayUrlRegistry[trimmedURL]) {
-      const { braveWalletIpfsService } = apiProxyFetcher()
+      const { braveWalletIpfsService } = getAPIProxy()
 
       const testUrl = isIpfs(trimmedURL)
         ? trimmedURL
@@ -346,7 +313,7 @@ export class BaseQueryCache {
   getEnabledCoinTypes = async () => {
     if (!this._enabledCoinTypes || !this._enabledCoinTypes.length) {
       // network type flags
-      this._enabledCoinTypes = await getEnabledCoinTypes(apiProxyFetcher())
+      this._enabledCoinTypes = await getEnabledCoinTypes(getAPIProxy())
     }
 
     return this._enabledCoinTypes
@@ -360,7 +327,7 @@ export class BaseQueryCache {
     const tokenId = blockchainTokenEntityAdaptor.selectId(tokenArg)
 
     if (!this._erc721MetadataRegistry[tokenId]) {
-      const { jsonRpcService } = apiProxyFetcher()
+      const { jsonRpcService } = getAPIProxy()
 
       const result = await jsonRpcService.getERC721Metadata(
         tokenArg.contractAddress,
@@ -383,17 +350,17 @@ export class BaseQueryCache {
   // Brave Rewards
   getBraveRewardsInfo = async () => {
     if (!this.rewardsInfo) {
-      const isRewardsEnabled = await rewardsProxyFetcher().getRewardsEnabled()
+      const isRewardsEnabled = await getBraveRewardsProxy().getRewardsEnabled()
 
       if (!isRewardsEnabled) {
         this.rewardsInfo = emptyRewardsInfo
         return this.rewardsInfo
       }
 
-      const balance = await rewardsProxyFetcher().fetchBalance()
+      const balance = await getBraveRewardsProxy().fetchBalance()
 
       const { provider, status, links } =
-        (await rewardsProxyFetcher().getExternalWallet()) || {}
+        (await getBraveRewardsProxy().getExternalWallet()) || {}
 
       this.rewardsInfo = {
         isRewardsEnabled: true,
@@ -418,7 +385,7 @@ export const baseQueryFunction = () => {
   if (!cache) {
     cache = new BaseQueryCache()
   }
-  return { data: apiProxyFetcher(), cache: cache }
+  return { data: getAPIProxy() as IsomorphicApiProxy, cache }
 }
 
 export const resetCache = () => {
@@ -432,7 +399,7 @@ async function fetchAssetsForNetwork(
   listType: AssetsListType,
   network: BraveWallet.NetworkInfo
 ) {
-  const { blockchainRegistry, braveWalletService } = apiProxyFetcher()
+  const { blockchainRegistry, braveWalletService } = getAPIProxy()
   // Get a list of user tokens for each coinType and network.
   const { tokens } =
     listType === 'known'

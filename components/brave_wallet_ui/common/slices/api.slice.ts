@@ -19,7 +19,6 @@ import {
 } from './entities/network.entity'
 
 // api
-import { apiProxyFetcher } from '../async/base-query-cache'
 import { createWalletApiBase } from './api-base.slice'
 import { transactionSimulationEndpoints } from './endpoints/tx-simulation.endpoints'
 import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
@@ -93,14 +92,14 @@ export function createWalletApi() {
         endpoints: ({ mutation, query }) => ({
           openPanelUI: mutation<boolean, void>({
             queryFn(arg, api, extraOptions, baseQuery) {
-              const { panelHandler } = apiProxyFetcher()
+              const { panelHandler } = baseQuery(undefined).data
               panelHandler?.showUI()
               return { data: true }
             }
           }),
           closePanelUI: mutation<boolean, void>({
             queryFn(arg, api, extraOptions, baseQuery) {
-              const { panelHandler } = apiProxyFetcher()
+              const { panelHandler } = baseQuery(undefined).data
               panelHandler?.closeUI()
               return { data: true }
             }
