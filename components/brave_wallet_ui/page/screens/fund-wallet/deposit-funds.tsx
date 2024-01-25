@@ -11,7 +11,11 @@ import type { VariableSizeList as List } from 'react-window'
 // utils
 import { getLocale } from '../../../../common/locale'
 import { makeNetworkAsset } from '../../../options/asset-options'
-import { getBatTokensFromList, getAssetIdKey } from '../../../utils/asset-utils'
+import {
+  getAssetIdKey,
+  sortNativeAndAndBatAssetsToTop,
+  tokenNameToNftCollectionName
+} from '../../../utils/asset-utils'
 import {
   makeDepositFundsAccountRoute,
   makeDepositFundsRoute
@@ -206,56 +210,70 @@ function AssetSelection() {
   const isNextStepEnabled = !!selectedAsset
 
   // memos
-  const { mainnetNetworkAssetsList, testnetAssetsList } = React.useMemo(() => {
-    const mainnetNetworkAssetsList = []
-    const testnetAssetsList = []
+  const {
+    mainnetNetworkAssetsList,
+    testnetAssetsList,
+    mainnetNetworkAssetsListIds,
+    testnetAssetsListIds
+  } = React.useMemo(() => {
+    const mainnets = []
+    const testnets = []
+
+    // categorize networks
     for (const net of visibleNetworks) {
       if (SupportedTestNetworks.includes(net.chainId)) {
-        testnetAssetsList.push(net)
+        testnets.push(net)
       } else {
-        mainnetNetworkAssetsList.push(net)
+        mainnets.push(net)
       }
     }
+
+    // make assets
+    const mainnetNetworkAssetsList = mainnets.map(makeNetworkAsset)
+    const testnetAssetsList = testnets.map(makeNetworkAsset)
+
+    // get asset ids
+    const mainnetNetworkAssetsListIds =
+      mainnetNetworkAssetsList.map(getAssetIdKey)
+    const testnetAssetsListIds = testnetAssetsList.map(getAssetIdKey)
+
     return {
-      mainnetNetworkAssetsList: mainnetNetworkAssetsList.map(makeNetworkAsset),
-      testnetAssetsList: testnetAssetsList.map(makeNetworkAsset)
+      mainnetNetworkAssetsList,
+      testnetAssetsList,
+      mainnetNetworkAssetsListIds,
+      testnetAssetsListIds
     }
   }, [visibleNetworks])
 
   // Combine all NFTs from each collection
   // into a single "asset" for depositing purposes.
-  const nftCollectionAssets: BraveWallet.BlockchainToken[] =
-    React.useMemo(() => {
-      const nftContractTokens: BraveWallet.BlockchainToken[] = []
-      for (const token of combinedTokensList) {
-        if (
-          token.isNft &&
-          !nftContractTokens.find(
-            (t) =>
-              t.contractAddress === token.contractAddress &&
-              t.name === token.name &&
-              t.symbol === token.symbol
-          )
-        ) {
-          nftContractTokens.push({
-            ...token,
-            tokenId: '' // remove token ID
-          })
+  const { nftCollectionAssets, nftCollectionAssetsIds } = React.useMemo(() => {
+    const nftCollectionAssets: BraveWallet.BlockchainToken[] = []
+    const nftCollectionAssetsIds: string[] = []
+    for (const token of combinedTokensList) {
+      if (
+        token.isNft &&
+        !nftCollectionAssets.find(
+          (t) =>
+            t.contractAddress === token.contractAddress &&
+            t.symbol === token.symbol
+        )
+      ) {
+        const collectionToken = {
+          ...token,
+          tokenId: '',
+          // Remove the token id from the token name
+          name: tokenNameToNftCollectionName(token)
         }
+        nftCollectionAssets.push(collectionToken)
+        nftCollectionAssetsIds.push(getAssetIdKey(collectionToken))
       }
-      return nftContractTokens
-    }, [combinedTokensList])
+    }
+    return { nftCollectionAssets, nftCollectionAssetsIds }
+  }, [combinedTokensList])
 
   // removes pre-categorized assets from combined list
   const tokensList = React.useMemo(() => {
-    const mainnetNetworkAssetsListIds = mainnetNetworkAssetsList.map((t) =>
-      getAssetIdKey(t)
-    )
-    const testnetAssetsListIds = testnetAssetsList.map((t) => getAssetIdKey(t))
-    const nftCollectionAssetsIds = nftCollectionAssets.map((t) =>
-      getAssetIdKey(t)
-    )
-
     return combinedTokensList.filter((t) => {
       const id = getAssetIdKey(t)
       return (
@@ -266,22 +284,22 @@ function AssetSelection() {
     })
   }, [
     combinedTokensList,
-    nftCollectionAssets,
-    mainnetNetworkAssetsList,
-    testnetAssetsList
+    mainnetNetworkAssetsListIds,
+    testnetAssetsListIds,
+    nftCollectionAssetsIds
   ])
 
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher
     // in the list
-    const { bat, nonBat } = getBatTokensFromList(tokensList)
-    return [
-      ...mainnetNetworkAssetsList,
-      ...bat,
-      ...nonBat.filter((token) => token.contractAddress && !token.tokenId),
-      ...testnetAssetsList,
-      ...nftCollectionAssets
-    ]
+    const sortedFungibleAssets = sortNativeAndAndBatAssetsToTop(
+      tokensList
+    ).filter((token) => token.contractAddress && !token.tokenId)
+    return mainnetNetworkAssetsList.concat(
+      sortedFungibleAssets,
+      testnetAssetsList,
+      nftCollectionAssets
+    )
   }, [
     mainnetNetworkAssetsList,
     tokensList,
