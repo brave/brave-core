@@ -161,6 +161,83 @@ std::optional<std::string> GetBase64TransactionFromTxDataUnion(
 
 }  // namespace
 
+std::optional<bool> HasEmptyRecentBlockhash(
+    const mojom::SolanaTransactionRequestUnionPtr& request) {
+  if (!request) {
+    return std::nullopt;
+  }
+
+  if (request->is_sign_transaction_request()) {
+    const auto& sign_transaction_request =
+        request->get_sign_transaction_request();
+
+    if (!sign_transaction_request->tx_data->is_solana_tx_data()) {
+      return std::nullopt;
+    }
+
+    return sign_transaction_request->tx_data->get_solana_tx_data()
+        ->recent_blockhash.empty();
+  } else if (request->is_sign_all_transactions_request()) {
+    const auto& sign_all_transactions_request =
+        request->get_sign_all_transactions_request();
+
+    for (auto& tx_data : sign_all_transactions_request->tx_datas) {
+      if (!tx_data->is_solana_tx_data()) {
+        return std::nullopt;
+      }
+
+      if (tx_data->get_solana_tx_data()->recent_blockhash.empty()) {
+        return true;
+      }
+    }
+
+    return false;
+  } else if (request->is_transaction_info()) {
+    const auto& tx_info = request->get_transaction_info();
+    if (!tx_info->tx_data_union->is_solana_tx_data()) {
+      return std::nullopt;
+    }
+
+    return tx_info->tx_data_union->get_solana_tx_data()
+        ->recent_blockhash.empty();
+  }
+
+  return std::nullopt;
+}
+
+void PopulateRecentBlockhash(mojom::SolanaTransactionRequestUnion& request,
+                             const std::string& recent_blockhash) {
+  if (request.is_sign_transaction_request()) {
+    auto& sign_transaction_request = request.get_sign_transaction_request();
+    if (!sign_transaction_request->tx_data->is_solana_tx_data()) {
+      return;
+    }
+
+    if (sign_transaction_request->tx_data->get_solana_tx_data()
+            ->recent_blockhash.empty()) {
+      sign_transaction_request->tx_data->get_solana_tx_data()
+          ->recent_blockhash = recent_blockhash;
+    }
+  } else if (request.is_sign_all_transactions_request()) {
+    auto& sign_all_transactions_request =
+        request.get_sign_all_transactions_request();
+    for (auto& tx_data : sign_all_transactions_request->tx_datas) {
+      if (tx_data->is_solana_tx_data() &&
+          tx_data->get_solana_tx_data()->recent_blockhash.empty()) {
+        tx_data->get_solana_tx_data()->recent_blockhash = recent_blockhash;
+      }
+    }
+  } else if (request.is_transaction_info()) {
+    auto& tx_info = request.get_transaction_info();
+
+    if (tx_info->tx_data_union->get_solana_tx_data()
+            ->recent_blockhash.empty()) {
+      tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash =
+          recent_blockhash;
+    }
+  }
+}
+
 std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     const mojom::SolanaTransactionRequestUnionPtr& request) {
   if (!request) {

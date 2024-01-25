@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 
+#include <map>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -17,9 +18,11 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
@@ -47,8 +50,10 @@ class SimulationServiceUnitTest : public testing::Test {
                 &url_loader_factory_)) {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
-    simulation_service_ =
-        std::make_unique<SimulationService>(shared_url_loader_factory_);
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, GetPrefs());
+    simulation_service_ = std::make_unique<SimulationService>(
+        shared_url_loader_factory_, json_rpc_service_.get());
   }
 
   ~SimulationServiceUnitTest() override = default;
@@ -57,11 +62,31 @@ class SimulationServiceUnitTest : public testing::Test {
     return shared_url_loader_factory_;
   }
 
+  PrefService* GetPrefs() { return &prefs_; }
+
+  GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
+    return brave_wallet::GetNetworkURL(GetPrefs(), chain_id, coin);
+  }
+
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, content](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
+        }));
+  }
+
+  void SetInterceptors(std::map<GURL, std::string> responses) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, responses](const network::ResourceRequest& request) {
+          // If the request url is in responses, add that response
+          auto it = responses.find(request.url);
+          if (it != responses.end()) {
+            // Get the response string
+            std::string response = it->second;
+            url_loader_factory_.ClearResponses();
+            url_loader_factory_.AddResponse(request.url.spec(), response);
+          }
         }));
   }
 
@@ -163,6 +188,7 @@ class SimulationServiceUnitTest : public testing::Test {
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<SimulationService> simulation_service_;
 
  private:
@@ -533,6 +559,127 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
         run_loop.Quit();
       }));
   run_loop.Run();
+}
+
+TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyLatestBlockhash) {
+  std::map<GURL, std::string> responses;
+  responses[GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL)] = R"(
+    {
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":{
+        "context":{
+          "slot":1069
+        },
+        "value":{
+          "blockhash":"FHutN2vCDobUtYbK67KgW2ZriapANe66NcjYuwjac5MW",
+          "lastValidBlockHeight":18446744073709551615
+        }
+      }
+    }
+  )";
+
+  responses[GURL(
+      "https://blowfish.wallet.brave.com/solana/v0/mainnet/scan/"
+      "transactions?language=en-US")] = R"(
+    {
+      "aggregated": {
+        "action": "NONE",
+        "warnings": [],
+        "expectedStateChanges": {
+          "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8": [
+            {
+              "humanReadableDiff": "Send 2 USDT",
+              "suggestedColor": "DEBIT",
+              "rawInfo": {
+                "kind": "SPL_TRANSFER",
+                "data": {
+                  "asset": {
+                    "symbol": "USDT",
+                    "name": "USDT",
+                    "mint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+                    "decimals": "6",
+                    "supply": "1000000000",
+                    "metaplexTokenStandard": "unknown",
+                    "price": {
+                      "source": "Coingecko",
+                      "updatedAt": "1679331222",
+                      "dollarValuePerToken": "0.99"
+                    },
+                    "imageUrl": "https://usdt.png"
+                  },
+                  "diff": {
+                    "sign": "MINUS",
+                    "digits": "2000000"
+                  },
+                  "counterparty": "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X"
+                }
+              }
+            }
+          ]
+        },
+        "error": null
+      }
+    }
+  )";
+
+  SetInterceptors(responses);
+
+  base::RunLoop run_loop;
+  auto tx_info =
+      GetCannedScanSolanaTransactionParams(std::nullopt, mojom::kSolanaMainnet);
+
+  // Force the latest blockhash in the transaction to be empty. This should
+  // trigger fetching of the latest blockhash from the network.
+  tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
+  auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
+      std::move(tx_info));
+
+  simulation_service_->ScanSolanaTransaction(
+      request->Clone(), "en-US",
+      base::BindLambdaForTesting(
+          [&](mojom::SolanaSimulationResponsePtr response,
+              const std::string& error_response,
+              const std::string& error_string) {
+            EXPECT_TRUE(response);
+            EXPECT_EQ(error_response, "");
+            EXPECT_EQ(error_string, "");
+            run_loop.Quit();
+          }));
+  run_loop.Run();
+
+  // KO: Simulation should fail if the latest blockhash is empty both in the
+  // transaction and in the RPC response.
+  responses[GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL)] = R"(
+    {
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":{
+        "context":{
+          "slot":1069
+        },
+        "value":{
+          "blockhash":"",
+          "lastValidBlockHeight":18446744073709551615
+        }
+      }
+    }
+  )";
+  SetInterceptors(responses);
+  base::RunLoop run_loop_2;
+  simulation_service_->ScanSolanaTransaction(
+      std::move(request), "en-US",
+      base::BindLambdaForTesting(
+          [&](mojom::SolanaSimulationResponsePtr response,
+              const std::string& error_response,
+              const std::string& error_string) {
+            EXPECT_FALSE(response);
+            EXPECT_EQ(error_response, "");
+            EXPECT_EQ(error_string,
+                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+            run_loop_2.Quit();
+          }));
+  run_loop_2.Run();
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionUnsupportedNetwork) {

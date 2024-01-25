@@ -26,6 +26,12 @@ namespace solana {
 std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     const mojom::SolanaTransactionRequestUnionPtr& request);
 
+void PopulateRecentBlockhash(mojom::SolanaTransactionRequestUnion& request,
+                             const std::string& recent_blockhash);
+
+std::optional<bool> HasEmptyRecentBlockhash(
+    const mojom::SolanaTransactionRequestUnionPtr& request);
+
 }  // namespace solana
 
 }  // namespace brave_wallet
