@@ -95,6 +95,7 @@ class Tab: NSObject {
 
   var secureContentState: TabSecureContentState = .unknown
   var sslPinningError: Error?
+  var sslPinningTrust: SecTrust?
 
   private let _syncTab: BraveSyncTab?
   private let _faviconDriver: FaviconDriver?

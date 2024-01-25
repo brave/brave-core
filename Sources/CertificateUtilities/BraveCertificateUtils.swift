@@ -190,6 +190,8 @@ public enum BraveCertificateUtilError: LocalizedError {
 }
 
 public extension BraveCertificateUtils {
+  private static let evaluationQueue = DispatchQueue(label: "com.brave.cert-utils-evaluation-queue", qos: .userInitiated)
+  
   static func createServerTrust(_ certificates: [SecCertificate], for host: String?) throws -> SecTrust {
     if certificates.isEmpty {
       throw BraveCertificateUtilError.noCertificatesProvided
@@ -211,24 +213,18 @@ public extension BraveCertificateUtils {
   }
   
   static func evaluateTrust(_ trust: SecTrust, for host: String?) async throws {
-    let policies = [
-      SecPolicyCreateSSL(true, host as CFString?),
-    ]
-
-    SecTrustSetPolicies(trust, policies as CFTypeRef)
     try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-      let queue = DispatchQueue.global()
-      queue.async {
-        let result = SecTrustEvaluateAsyncWithError(trust, queue) { _, isTrusted, error in
-          if let error = error {
-            continuation.resume(throwing: error as Error)
+      BraveCertificateUtils.evaluationQueue.async {
+        SecTrustEvaluateAsyncWithError(trust, BraveCertificateUtils.evaluationQueue) { _, isTrusted, error in
+          if !isTrusted {
+            if let error = error {
+              continuation.resume(throwing: error as Error)
+            } else {
+              continuation.resume(throwing: BraveCertificateUtilError.trustEvaluationFailed)
+            }
           } else {
             continuation.resume()
           }
-        }
-        
-        if result != errSecSuccess {
-          continuation.resume(throwing: BraveCertificateUtilError.trustEvaluationFailed)
         }
       }
     }

@@ -105,15 +105,20 @@ class ErrorPageHelper {
       // 'timestamp' is used for the js reload logic
       URLQueryItem(name: "timestamp", value: "\(Int(Date().timeIntervalSince1970 * 1000))"),
     ]
+    
+    // The error came from WebKit's internal validation and the cert is untrusted
+    if error.userInfo["NSErrorPeerUntrustedByApple"] as? Bool == true {
+      queryItems.append(URLQueryItem(name: "peeruntrusted", value: "true"))
+    }
 
     // If this is an invalid certificate, show a certificate error allowing the
     // user to go back or continue. The certificate itself is encoded and added as
     // a query parameter to the error page URL; we then read the certificate from
     // the URL if the user wants to continue.
     if CertificateErrorPageHandler.isValidCertificateError(error: error),
-      let certChain = error.userInfo["NSErrorPeerCertificateChainKey"] as? [SecCertificate],
-      let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError,
-      let certErrorCode = underlyingError.userInfo["_kCFStreamErrorCodeKey"] as? Int {
+       let certChain = error.userInfo["NSErrorPeerCertificateChainKey"] as? [SecCertificate],
+       let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError,
+       let certErrorCode = underlyingError.userInfo["_kCFStreamErrorCodeKey"] as? Int {
       let encodedCerts = ErrorPageHelper.encodeCertChain(certChain)
       queryItems.append(URLQueryItem(name: "badcerts", value: encodedCerts))
 

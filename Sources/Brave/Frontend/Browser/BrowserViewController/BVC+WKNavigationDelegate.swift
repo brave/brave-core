@@ -70,6 +70,8 @@ extension BrowserViewController: WKNavigationDelegate {
       if let url = webView.url {
         if !InternalURL.isValid(url: url) {
           // reset secure content state to unknown until page can be evaluated
+          selectedTab.sslPinningError = nil
+          selectedTab.sslPinningTrust = nil
           selectedTab.secureContentState = .unknown
           updateToolbarSecureContentState(.unknown)
         }
@@ -612,6 +614,15 @@ extension BrowserViewController: WKNavigationDelegate {
         // Cert is valid and should not be pinned
         // Let the system handle it and we'll show an error if the system cannot validate it
         if result == Int32.min {
+          // Cert is POTENTIALLY invalid and cannot be pinned
+          
+          await MainActor.run {
+            // Handle the potential error later in `didFailProvisionalNavigation`
+            self.tab(for: webView)?.sslPinningTrust = serverTrust
+          }
+          
+          // Let WebKit handle the request and validate the cert
+          // This is the same as calling `BraveCertificateUtils.evaluateTrust`
           return (.performDefaultHandling, nil)
         }
         
@@ -718,7 +729,6 @@ extension BrowserViewController: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     if let tab = tabManager[webView] {
-      
       // Deciding whether to inject app's IAP receipt for Brave SKUs or not
       if let url = tab.url,
           let braveSkusHelper = BraveSkusWebHelper(for: url),
@@ -785,13 +795,26 @@ extension BrowserViewController: WKNavigationDelegate {
   
   /// Invoked when an error occurs while starting to load data for the main frame.
   public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+    guard let tab = tab(for: webView) else { return }
+    
+    // WebKit does not update certs on cancellation of a frame load
+    // So manually trigger the notification with the current cert
+    // Also, when Chromium cert validation passes, BUT Apple cert validation fails, the request is cancelled automatically by WebKit
+    // In such a case, the webView.serverTrust is `nil`. The only time we have a valid trust is when we received the challenge
+    // so we need to update the URL-Bar to show that serverTrust when WebKit's is nil.
+    let serverTrust = webView.serverTrust ?? tab.sslPinningTrust
+    observeValue(forKeyPath: KVOConstants.serverTrust.keyPath,
+                 of: webView,
+                 change: [.newKey: serverTrust as Any, .kindKey: 1],
+                 context: nil)
+    
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
     // to open an external application and hand it over to UIApplication.openURL(). The result
     // will be that we switch to the external app, for example the app store, while keeping the
     // original web page in the tab instead of replacing it with an error page.
     var error = error as NSError
     if error.domain == "WebKitErrorDomain" && error.code == 102 {
-      if let tab = tabManager[webView], tab === tabManager.selectedTab {
+      if tab === tabManager.selectedTab {
         updateToolbarCurrentURL(tab.url?.displayURL)
         updateWebViewPageZoom(tab: tab)
       }
@@ -802,12 +825,12 @@ extension BrowserViewController: WKNavigationDelegate {
       return
     }
     
-    if let tab = tabManager[webView], let sslPinningError = tab.sslPinningError {
+    if let sslPinningError = tab.sslPinningError {
       error = sslPinningError as NSError
     }
 
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
-      if let tab = tabManager[webView], tab === tabManager.selectedTab {
+      if tab === tabManager.selectedTab {
         updateToolbarCurrentURL(tab.url?.displayURL)
         updateWebViewPageZoom(tab: tab)
       }
@@ -815,6 +838,16 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+      
+      // The certificate came from the WebKit SSL Handshake validation and the cert is untrusted
+      if let serverTrust = serverTrust, error.userInfo["NSErrorPeerCertificateChainKey"] == nil {
+        // Build a cert chain error to display in the cert viewer in such cases, as we aren't given one by WebKit
+        var userInfo = error.userInfo
+        userInfo["NSErrorPeerCertificateChainKey"] = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
+        userInfo["NSErrorPeerUntrustedByApple"] = true
+        error = NSError(domain: error.domain, code: error.code, userInfo: userInfo)
+      }
+      
       ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
       // Submitting same errornous URL using toolbar will cause progress bar get stuck
       // Reseting the progress bar in case there is an error is necessary
@@ -825,7 +858,7 @@ extension BrowserViewController: WKNavigationDelegate {
       // We rely on loading that page to get the restore callback to reset the restoring
       // flag, so if we fail to load that page, reset it here.
       if InternalURL(url)?.aboutComponent == "sessionrestore" {
-        tabManager.allTabs.filter { $0.webView == webView }.first?.restoring = false
+        tab.restoring = false
       }
     }
   }

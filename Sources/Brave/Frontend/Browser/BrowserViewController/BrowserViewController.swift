@@ -3286,7 +3286,7 @@ extension BrowserViewController: IAPObserverDelegate {
 extension BrowserViewController {
   
   func displayPageCertificateInfo() {
-    guard let webView = tabManager.selectedTab?.webView else {
+    guard let tab = tabManager.selectedTab, let webView = tab.webView else {
       Logger.module.error("Invalid WebView")
       return
     }
