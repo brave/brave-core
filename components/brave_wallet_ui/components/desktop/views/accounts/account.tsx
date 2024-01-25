@@ -69,7 +69,7 @@ import {
 } from '../../card-headers/account-details-header'
 import {
   SegmentedControl //
-} from '../../../shared/segmented-control/segmented-control'
+} from '../../../shared/segmented_control/segmented_control'
 import {
   NFTGridViewItem //
 } from '../portfolio/components/nft-grid-view/nft-grid-view-item'

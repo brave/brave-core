@@ -21,11 +21,10 @@ export const ButtonsContainer = styled.div<{
   overflow: hidden;
   padding: 4px;
   width: ${(p) => (p.width !== undefined ? `${p.width}px` : '100%')};
-  height: 48px;
   background-color: ${leo.color.container.highlight};
-  border-radius: 100px;
+  border-radius: 16px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    height: 40px;
+    border-radius: 12px;
   }
 `
 
@@ -35,18 +34,18 @@ export const Button = styled(StyledButton)<{
   --selected-background-color: ${leo.color.container.background};
   background-color: ${(p) =>
     p.isSelected ? 'var(--selected-background-color)' : 'none'};
-  border-radius: 100px;
+  border-radius: 12px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 20px;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.4px;
   width: 100%;
   padding: 10px;
   color: ${(p) =>
     p.isSelected ? leo.color.text.primary : leo.color.text.secondary};
+  box-shadow: ${(p) => (p.isSelected ? leo.effect.elevation['01'] : 'none')};
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 8px;
-    font-size: 12px;
-    line-height: 16px;
+    border-radius: 8px;
+    padding: 5px;
   }
 `

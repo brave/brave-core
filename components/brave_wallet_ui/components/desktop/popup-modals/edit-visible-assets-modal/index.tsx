@@ -31,7 +31,7 @@ import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
 import { AddAsset } from '../../add-asset/add-asset'
 import {
   SegmentedControl //
-} from '../../../shared/segmented-control/segmented-control'
+} from '../../../shared/segmented_control/segmented_control'
 import { SearchBar } from '../../../shared/search-bar'
 import { NetworkFilterSelector } from '../../network-filter-selector'
 

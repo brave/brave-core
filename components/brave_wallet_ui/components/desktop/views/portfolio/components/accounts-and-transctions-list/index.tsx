@@ -45,7 +45,7 @@ import {
 import { PortfolioAccountItem } from '../../../../portfolio-account-item/index'
 import {
   SegmentedControl //
-} from '../../../../../shared/segmented-control/segmented-control'
+} from '../../../../../shared/segmented_control/segmented_control'
 import {
   SellAssetModal //
 } from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
