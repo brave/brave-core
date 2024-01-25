@@ -96,6 +96,7 @@ export const ButtonRow = styled.div`
   width: 100%;
   margin-bottom: 14px;
   margin-top: 12px;
+  gap: 16px;
 `
 
 export const FavIcon = styled.img`
