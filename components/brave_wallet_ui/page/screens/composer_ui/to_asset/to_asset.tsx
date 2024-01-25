@@ -10,6 +10,9 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { getLocale } from '../../../../../common/locale'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
+import {
+  getDominantColorFromImageURL //
+} from '../../../../utils/style.utils'
 import Amount from '../../../../utils/amount'
 
 // Queries
@@ -109,9 +112,16 @@ export const ToAsset = (props: Props) => {
     selectedSendOption
   ])
 
+  const tokenColor = React.useMemo(() => {
+    return getDominantColorFromImageURL(token?.logo ?? '')
+  }, [token?.logo])
+
   // render
   return (
-    <ToSectionWrapper fullWidth={true}>
+    <ToSectionWrapper
+      tokenColor={tokenColor}
+      fullWidth={true}
+    >
       <Column
         fullWidth={true}
         justifyContent='space-between'

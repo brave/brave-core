@@ -57,6 +57,9 @@ import { makeSendRoute } from '../../../../utils/routes-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult //
 } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  getDominantColorFromImageURL //
+} from '../../../../utils/style.utils'
 
 // Hooks
 import {
@@ -446,6 +449,10 @@ export const SendScreen = React.memo((props: Props) => {
       ]
     )
 
+  const tokenColor = React.useMemo(() => {
+    return getDominantColorFromImageURL(tokenFromParams?.logo ?? '')
+  }, [tokenFromParams?.logo])
+
   // Methods
   const selectSendAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken, account?: BraveWallet.AccountInfo) => {
@@ -726,6 +733,7 @@ export const SendScreen = React.memo((props: Props) => {
           <ToSectionWrapper
             fullWidth={true}
             justifyContent='flex-start'
+            tokenColor={tokenColor}
           >
             <Column
               fullWidth={true}
