@@ -1,8 +1,17 @@
 diff --git a/tracing/tracing/metrics/system_health/loading_metric.html b/tracing/tracing/metrics/system_health/loading_metric.html
-index f20338b5b9f7b99b4404717cf661144ca0b3480f..456074bb88700162a8d753334764d7fea38c3153 100644
+index f20338b5b9f7b99b4404717cf661144ca0b3480f..c79a78cf326860b6b1eb1e80a1efc3d7cd33efaa 100644
 --- a/tracing/tracing/metrics/system_health/loading_metric.html
 +++ b/tracing/tracing/metrics/system_health/loading_metric.html
-@@ -751,6 +751,7 @@ tr.exportTo('tr.metrics.sh', function() {
+@@ -230,6 +230,8 @@ tr.exportTo('tr.metrics.sh', function() {
+   function collectTimeToEvent(rendererHelper, timeToXEntries) {
+     const samples = [];
+     for (const { targetEvent, navigationStartEvent, url } of timeToXEntries) {
++      if (url.startsWith('chrome-extension://')) continue;  // Ignore extension background pages
++
+       const navStartToEventRange = tr.b.math.Range.fromExplicitRange(
+           navigationStartEvent.start, targetEvent.start);
+       const networkEvents = EventFinderUtils.getNetworkEventsInRange(
+@@ -751,6 +753,7 @@ tr.exportTo('tr.metrics.sh', function() {
      for (const pid in chromeHelper.rendererHelpers) {
        const rendererHelper = chromeHelper.rendererHelpers[pid];
        if (rendererHelper.isChromeTracingUI) continue;
