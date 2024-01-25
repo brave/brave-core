@@ -121,6 +121,7 @@ void AIChatFeedbackAPI::SendFeedback(
     const std::string& category,
     const std::string& feedback,
     const std::string& rating_id,
+    const std::optional<GURL> page_url,
     api_request_helper::APIRequestHelper::ResultCallback on_complete_callback) {
   base::Value::Dict dict;
 
@@ -131,6 +132,10 @@ void AIChatFeedbackAPI::SendFeedback(
   dict.Set("locale",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                          brave_l10n::GetDefaultISOCountryCodeString()}));
+
+  if (page_url.has_value() && page_url->SchemeIsHTTPOrHTTPS()) {
+    dict.Set("domain", page_url->host());
+  }
 
   GURL api_url = GetEndpointBaseUrl().Resolve(kFeedbackFormPath);
 

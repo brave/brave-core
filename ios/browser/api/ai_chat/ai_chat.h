@@ -61,6 +61,7 @@ OBJC_EXPORT
 - (void)sendFeedback:(NSString*)category
             feedback:(NSString*)feedback
             ratingId:(NSString*)ratingId
+            sendPageUrl:(bool)sendPageUrl,
           completion:(void (^_Nullable)(bool))completion;
 
 - (void)dismissPremiumPrompt;

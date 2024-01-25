@@ -75,6 +75,8 @@ struct SiteInfo {
   bool is_content_truncated;
   // Indicates if the URL scheme is of a type that allows for content association.
   bool is_content_association_possible;
+  // Current tab's hostname
+  string? hostname;
 };
 
 enum ActionType {
@@ -170,9 +172,7 @@ interface PageHandler {
   // message. |turn_id| is the index of the message in the
   // current conversation.
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
-  SendFeedback(string category,
-      string feedback,
-          string rating_id) => (bool is_success);
+  SendFeedback(string category, string feedback, string rating_id, bool send_page_url) => (bool is_success);
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
 };
 

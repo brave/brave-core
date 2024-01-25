@@ -106,7 +106,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"privacyTitle", IDS_CHAT_UI_PRIVACY_TITLE},
       {"contextToggleLabel", IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL},
       {"contextToggleTooltipInfo", IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO},
-      {"subscriptionPolicyInfo", IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO}};
+      {"subscriptionPolicyInfo", IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO},
+      {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL}};
 
   return kLocalizedStrings;
 }
