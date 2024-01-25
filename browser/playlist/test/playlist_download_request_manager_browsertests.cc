@@ -477,6 +477,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
     run_loop.Quit();
   });
 
-  playlist_service->FindMediaFilesFromActiveTab(callback.Get());
+  playlist_service->FindMediaFilesFromContents(
+      chrome_test_utils::GetActiveWebContents(this), callback.Get());
   run_loop.Run();
 }
