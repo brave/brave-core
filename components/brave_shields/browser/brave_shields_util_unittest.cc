@@ -481,6 +481,20 @@ TEST_F(BraveShieldsUtilTest, SetCookieControlType_Default) {
                                    ContentSettingsType::COOKIES);
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
+  // Ensure BLOCK with kCookieControlsMode == kOff still blocks all cookies.
+  profile()->GetPrefs()->SetInteger(
+      ::prefs::kCookieControlsMode,
+      static_cast<int>(content_settings::CookieControlsMode::kOff));
+  EXPECT_FALSE(cookies->ShouldBlockThirdPartyCookies());
+  // setting should apply to all urls
+  setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
+                                   ContentSettingsType::COOKIES);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
+  setting = map->GetContentSetting(GURL("http://brave.com"),
+                                   GURL("https://firstParty"),
+                                   ContentSettingsType::COOKIES);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
+
   /* BLOCK_THIRD_PARTY */
   brave_shields::SetCookieControlType(map, profile()->GetPrefs(),
                                       ControlType::BLOCK_THIRD_PARTY, GURL());
