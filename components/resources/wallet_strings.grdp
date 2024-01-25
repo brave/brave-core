@@ -1029,4 +1029,7 @@
   <message name="IDS_BRAVE_WALLET_UNAVAILABLE_BALANCES" desc="Some balances may be unavailable info bar">Some balances may be unavailable</message>
   <message name="IDS_BRAVE_WALLET_FOUND_RISKS" desc="Notice that a number of risks were found">We found <ph name="VALUE">$1<ex>2</ex></ph> risks.</message>
   <message name="IDS_BRAVE_WALLET_CONTRACT" desc="Labels the following text as a smart-contract address">Contract</message>
+  <message name="IDS_BRAVE_WALLET_RISK_OF_LOSS_ACTION" desc="Warning that the pending action may result in loss of funds">Unsafe action with risk of loss</message>
+  <message name="IDS_BRAVE_WALLET_UNTRUSTED_REQUEST_WARNING" desc="Warning that the pending request may be malicious">This request appears malicious, and may leave you vulnerable to theft. Do not continue unless you trust the app.</message>
+  <message name="IDS_BRAVE_WALLET_PROCEED_BUTTON" desc="Proceed action button text">Proceed</message>
 </grit-part>
