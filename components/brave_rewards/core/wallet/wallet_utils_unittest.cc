@@ -107,7 +107,6 @@ TEST_P(TransitionWalletCreate, Paths) {
   task_environment_.RunUntilIdle();
 }
 
-// clang-format off
 INSTANTIATE_TEST_SUITE_P(
   WalletUtilTest,
   TransitionWalletCreate,
@@ -141,13 +140,12 @@ INSTANTIATE_TEST_SUITE_P(
     return std::get<0>(info.param);
   }
 );
-// clang-format on
 
 using TransitionWalletTransitionParamType =
-    std::tuple<std::string,                                // test name suffix
-               std::shared_ptr<mojom::ExternalWalletPtr>,  // from wallet
-               mojom::WalletStatus,                        // "to" WalletStatus
-               bool                                        // expected outcome
+    std::tuple<std::string,  // test name suffix
+               base::RepeatingCallback<mojom::ExternalWalletPtr()>,
+               mojom::WalletStatus,  // "to" WalletStatus
+               bool                  // expected outcome
                >;
 
 class TransitionWalletTransition
@@ -159,7 +157,7 @@ class TransitionWalletTransition
 };
 
 TEST_P(TransitionWalletTransition, Paths) {
-  const auto& [ignore, from_wallet, to, expected] = GetParam();
+  const auto& [ignore, make_from_wallet, to, expected] = GetParam();
 
   ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
@@ -167,7 +165,7 @@ TEST_P(TransitionWalletTransition, Paths) {
       });
 
   const auto to_wallet =
-      TransitionWallet(mock_engine_impl_, std::move(*from_wallet), to);
+      TransitionWallet(mock_engine_impl_, make_from_wallet.Run(), to);
   EXPECT_EQ(static_cast<bool>(to_wallet), expected);
 
   if (to_wallet) {
@@ -192,160 +190,117 @@ TEST_P(TransitionWalletTransition, Paths) {
   task_environment_.RunUntilIdle();
 }
 
-// clang-format off
 INSTANTIATE_TEST_SUITE_P(
-  WalletUtilTest,
-  TransitionWalletTransition,
-  Values(
-    TransitionWalletTransitionParamType{
-      "kNotConnected__kNotConnected",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->status = mojom::WalletStatus::kNotConnected;
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kNotConnected,
-      false
-    },
-    TransitionWalletTransitionParamType{
-      "kNotConnected__kLoggedOut",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->status = mojom::WalletStatus::kNotConnected;
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kLoggedOut,
-      false
-    },
-    TransitionWalletTransitionParamType{
-      "kNotConnected__kConnected_no_token",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->status = mojom::WalletStatus::kNotConnected;
-        wallet->address = "address";
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kConnected,
-      false
-    },
-    TransitionWalletTransitionParamType{
-      "kNotConnected__kConnected_no_address",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->status = mojom::WalletStatus::kNotConnected;
-        wallet->token = "token";
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kConnected,
-      false
-    },
-    TransitionWalletTransitionParamType{
-      "kNotConnected__kConnected",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->type = constant::kWalletUphold;
-        wallet->status = mojom::WalletStatus::kNotConnected;
-        wallet->address = "address";
-        wallet->token = "token";
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kConnected,
-      true
-    },
-    TransitionWalletTransitionParamType{
-      "kLoggedOut__kNotConnected",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->type = constant::kWalletUphold;
-        wallet->status = mojom::WalletStatus::kLoggedOut;
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kNotConnected,
-      true
-    },
-    TransitionWalletTransitionParamType{
-      "kLoggedOut__kLoggedOut",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->status = mojom::WalletStatus::kLoggedOut;
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kLoggedOut,
-      false
-    },
-    TransitionWalletTransitionParamType{
-      "kLoggedOut__kConnected_no_token",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->status = mojom::WalletStatus::kLoggedOut;
-        wallet->address = "address";
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kConnected,
-      false
-    },
-    TransitionWalletTransitionParamType{
-      "kLoggedOut__kConnected_no_address",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->status = mojom::WalletStatus::kLoggedOut;
-        wallet->token = "token";
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kConnected,
-      false
-    },
-    TransitionWalletTransitionParamType{
-      "kLoggedOut__kConnected",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->type = constant::kWalletUphold;
-        wallet->status = mojom::WalletStatus::kLoggedOut;
-        wallet->address = "address";
-        wallet->token = "token";
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kConnected,
-      true
-    },
-    TransitionWalletTransitionParamType{
-      "kConnected__kNotConnected",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->type = constant::kWalletUphold;
-        wallet->status = mojom::WalletStatus::kConnected;
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kNotConnected,
-      true
-    },
-    TransitionWalletTransitionParamType{
-      "kConnected__kLoggedOut",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->type = constant::kWalletUphold;
-        wallet->status = mojom::WalletStatus::kConnected;
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kLoggedOut,
-      true
-    },
-    TransitionWalletTransitionParamType{
-      "kConnected__kConnected",
-      []{
-        auto wallet = mojom::ExternalWallet::New();
-        wallet->status = mojom::WalletStatus::kConnected;
-        return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
-      }(),
-      mojom::WalletStatus::kConnected,
-      false
-    }
-  ),
-  [](const auto& info) {
-    return (std::get<3>(info.param) ? "" : "in") +
-           std::string("valid_transition_") + std::get<0>(info.param);
-  }
-);
-// clang-format on
+    WalletUtilTest,
+    TransitionWalletTransition,
+    Values(
+        TransitionWalletTransitionParamType{
+            "kNotConnected__kNotConnected", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->status = mojom::WalletStatus::kNotConnected;
+              return wallet;
+            }),
+            mojom::WalletStatus::kNotConnected, false},
+        TransitionWalletTransitionParamType{
+            "kNotConnected__kLoggedOut", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->status = mojom::WalletStatus::kNotConnected;
+              return wallet;
+            }),
+            mojom::WalletStatus::kLoggedOut, false},
+        TransitionWalletTransitionParamType{
+            "kNotConnected__kConnected_no_token", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->status = mojom::WalletStatus::kNotConnected;
+              wallet->address = "address";
+              return wallet;
+            }),
+            mojom::WalletStatus::kConnected, false},
+        TransitionWalletTransitionParamType{
+            "kNotConnected__kConnected_no_address", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->status = mojom::WalletStatus::kNotConnected;
+              wallet->token = "token";
+              return wallet;
+            }),
+            mojom::WalletStatus::kConnected, false},
+        TransitionWalletTransitionParamType{
+            "kNotConnected__kConnected", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->type = constant::kWalletUphold;
+              wallet->status = mojom::WalletStatus::kNotConnected;
+              wallet->address = "address";
+              wallet->token = "token";
+              return wallet;
+            }),
+            mojom::WalletStatus::kConnected, true},
+        TransitionWalletTransitionParamType{
+            "kLoggedOut__kNotConnected", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->type = constant::kWalletUphold;
+              wallet->status = mojom::WalletStatus::kLoggedOut;
+              return wallet;
+            }),
+            mojom::WalletStatus::kNotConnected, true},
+        TransitionWalletTransitionParamType{
+            "kLoggedOut__kLoggedOut", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->status = mojom::WalletStatus::kLoggedOut;
+              return wallet;
+            }),
+            mojom::WalletStatus::kLoggedOut, false},
+        TransitionWalletTransitionParamType{
+            "kLoggedOut__kConnected_no_token", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->status = mojom::WalletStatus::kLoggedOut;
+              wallet->address = "address";
+              return wallet;
+            }),
+            mojom::WalletStatus::kConnected, false},
+        TransitionWalletTransitionParamType{
+            "kLoggedOut__kConnected_no_address", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->status = mojom::WalletStatus::kLoggedOut;
+              wallet->token = "token";
+              return wallet;
+            }),
+            mojom::WalletStatus::kConnected, false},
+        TransitionWalletTransitionParamType{
+            "kLoggedOut__kConnected", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->type = constant::kWalletUphold;
+              wallet->status = mojom::WalletStatus::kLoggedOut;
+              wallet->address = "address";
+              wallet->token = "token";
+              return wallet;
+            }),
+            mojom::WalletStatus::kConnected, true},
+        TransitionWalletTransitionParamType{
+            "kConnected__kNotConnected", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->type = constant::kWalletUphold;
+              wallet->status = mojom::WalletStatus::kConnected;
+              return wallet;
+            }),
+            mojom::WalletStatus::kNotConnected, true},
+        TransitionWalletTransitionParamType{
+            "kConnected__kLoggedOut", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->type = constant::kWalletUphold;
+              wallet->status = mojom::WalletStatus::kConnected;
+              return wallet;
+            }),
+            mojom::WalletStatus::kLoggedOut, true},
+        TransitionWalletTransitionParamType{
+            "kConnected__kConnected", base::BindRepeating([] {
+              auto wallet = mojom::ExternalWallet::New();
+              wallet->status = mojom::WalletStatus::kConnected;
+              return wallet;
+            }),
+            mojom::WalletStatus::kConnected, false}),
+    [](const auto& info) {
+      return (std::get<3>(info.param) ? "" : "in") +
+             std::string("valid_transition_") + std::get<0>(info.param);
+    });
 
 }  // namespace brave_rewards::internal::wallet

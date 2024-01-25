@@ -11,25 +11,22 @@
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
 namespace brave_rewards::internal {
 
 LegacyBatState::LegacyBatState(RewardsEngineImpl& engine) : engine_(engine) {}
 
 LegacyBatState::~LegacyBatState() = default;
 
-void LegacyBatState::Load(LegacyResultCallback callback) {
+void LegacyBatState::Load(ResultCallback callback) {
   engine_->client()->LoadLegacyState(base::BindOnce(
       &LegacyBatState::OnLoad, base::Unretained(this), std::move(callback)));
 }
 
-void LegacyBatState::OnLoad(LegacyResultCallback callback,
+void LegacyBatState::OnLoad(ResultCallback callback,
                             mojom::Result result,
                             const std::string& data) {
   if (result != mojom::Result::OK) {
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
@@ -37,7 +34,7 @@ void LegacyBatState::OnLoad(LegacyResultCallback callback,
   if (!state.FromJson(data)) {
     engine_->LogError(FROM_HERE) << "Failed to load client state";
     engine_->Log(FROM_HERE) << "Client state contents: " << data;
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -53,7 +50,7 @@ void LegacyBatState::OnLoad(LegacyResultCallback callback,
     state_.boot_timestamp = state_.boot_timestamp / 1000;
   }
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {

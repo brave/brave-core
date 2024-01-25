@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
@@ -17,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=GetPrefixListTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -41,9 +41,9 @@ TEST_F(GetPrefixListTest, ServerOK) {
         std::move(callback).Run(std::move(response));
       });
 
-  MockFunction<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::OK, "blob")).Times(1);
-  list_.Request(callback.AsStdFunction());
+  base::MockCallback<GetPrefixListCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::OK, "blob")).Times(1);
+  list_.Request(callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -59,9 +59,9 @@ TEST_F(GetPrefixListTest, ServerErrorRandom) {
         std::move(callback).Run(std::move(response));
       });
 
-  MockFunction<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED, "")).Times(1);
-  list_.Request(callback.AsStdFunction());
+  base::MockCallback<GetPrefixListCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
+  list_.Request(callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -77,9 +77,9 @@ TEST_F(GetPrefixListTest, ServerBodyEmpty) {
         std::move(callback).Run(std::move(response));
       });
 
-  MockFunction<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED, "")).Times(1);
-  list_.Request(callback.AsStdFunction());
+  base::MockCallback<GetPrefixListCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
+  list_.Request(callback.Get());
 
   task_environment_.RunUntilIdle();
 }

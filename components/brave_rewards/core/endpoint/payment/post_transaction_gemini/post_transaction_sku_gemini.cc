@@ -96,7 +96,7 @@ void PostTransactionGemini::OnRequest(PostTransactionGeminiCallback callback,
         << "Error creating gemini transaction on the payment server";
   }
 
-  callback(CheckStatusCode(response->status_code));
+  std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
 }  // namespace payment

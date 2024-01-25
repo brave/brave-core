@@ -36,7 +36,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostClobberedClaimsCallback =
-    std::function<void(const mojom::Result result)>;
+    base::OnceCallback<void(const mojom::Result result)>;
 
 class PostClobberedClaims {
  public:

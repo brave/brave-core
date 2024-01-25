@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
@@ -50,7 +51,7 @@ class Promotion {
   void OnFetch(FetchPromotionsCallback callback,
                mojom::Result result,
                std::vector<mojom::PromotionPtr> list,
-               const std::vector<std::string>& corrupted_promotions);
+               std::vector<std::string> corrupted_promotions);
 
   void OnGetAllPromotions(
       FetchPromotionsCallback callback,
@@ -61,9 +62,8 @@ class Promotion {
       FetchPromotionsCallback callback,
       base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
-  void LegacyClaimedSaved(
-      const mojom::Result result,
-      std::shared_ptr<mojom::PromotionPtr> shared_promotion);
+  void LegacyClaimedSaved(mojom::PromotionPtr shared_promotion,
+                          mojom::Result result);
 
   void OnClaimPromotion(ClaimPromotionCallback callback,
                         const std::string& payload,
@@ -105,22 +105,22 @@ class Promotion {
   void Retry(base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void CheckForCorrupted(
-      const base::flat_map<std::string, mojom::PromotionPtr>& promotions);
+      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
-  void CorruptedPromotionFixed(const mojom::Result result);
+  void CorruptedPromotionFixed(mojom::Result result);
 
   void CheckForCorruptedCreds(std::vector<mojom::CredsBatchPtr> list);
 
-  void CorruptedPromotions(std::vector<mojom::PromotionPtr> promotions,
-                           const std::vector<std::string>& ids);
+  void CorruptedPromotions(std::vector<std::string> ids,
+                           std::vector<mojom::PromotionPtr> promotions);
 
-  void OnCheckForCorrupted(const mojom::Result result,
-                           const std::vector<std::string>& promotion_id_list);
+  void OnCheckForCorrupted(std::vector<std::string> promotion_id_list,
+                           mojom::Result result);
 
-  void ErrorStatusSaved(const mojom::Result result,
-                        const std::vector<std::string>& promotion_id_list);
+  void ErrorStatusSaved(std::vector<std::string> promotion_id_list,
+                        mojom::Result result);
 
-  void ErrorCredsStatusSaved(const mojom::Result result);
+  void ErrorCredsStatusSaved(mojom::Result result);
 
   void OnRetryTimerElapsed();
 
@@ -133,6 +133,7 @@ class Promotion {
   endpoint::PromotionServer promotion_server_;
   base::OneShotTimer last_check_timer_;
   base::OneShotTimer retry_timer_;
+  base::WeakPtrFactory<Promotion> weak_factory_{this};
 };
 
 }  // namespace promotion

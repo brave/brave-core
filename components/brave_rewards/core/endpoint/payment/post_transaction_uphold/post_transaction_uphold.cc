@@ -87,7 +87,7 @@ void PostTransactionUphold::Request(const mojom::SKUTransaction& transaction,
 void PostTransactionUphold::OnRequest(PostTransactionUpholdCallback callback,
                                       mojom::UrlResponsePtr response) {
   DCHECK(response);
-  callback(CheckStatusCode(response->status_code));
+  std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
 }  // namespace payment

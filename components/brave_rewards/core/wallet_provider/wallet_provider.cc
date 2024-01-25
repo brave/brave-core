@@ -35,16 +35,16 @@ void WalletProvider::Initialize() {
 void WalletProvider::StartContribution(const std::string& contribution_id,
                                        mojom::ServerPublisherInfoPtr info,
                                        double amount,
-                                       LegacyResultCallback callback) {
+                                       ResultCallback callback) {
   if (!transfer_) {
     engine_->LogError(FROM_HERE)
         << WalletType() << " does not support contributions";
-    return callback(mojom::Result::FAILED);
+    return std::move(callback).Run(mojom::Result::FAILED);
   }
 
   if (!info) {
     engine_->LogError(FROM_HERE) << "Publisher info is null";
-    return callback(mojom::Result::FAILED);
+    return std::move(callback).Run(mojom::Result::FAILED);
   }
 
   const double fee = amount * 0.05;
@@ -55,7 +55,7 @@ void WalletProvider::StartContribution(const std::string& contribution_id,
                                 contribution_id, fee, info->publisher_key));
 }
 
-void WalletProvider::ContributionCompleted(LegacyResultCallback callback,
+void WalletProvider::ContributionCompleted(ResultCallback callback,
                                            const std::string& contribution_id,
                                            double fee,
                                            const std::string& publisher_key,
@@ -65,11 +65,11 @@ void WalletProvider::ContributionCompleted(LegacyResultCallback callback,
 
     if (!publisher_key.empty()) {
       return engine_->database()->UpdateContributionInfoContributedAmount(
-          contribution_id, publisher_key, callback);
+          contribution_id, publisher_key, std::move(callback));
     }
   }
 
-  callback(result);
+  std::move(callback).Run(result);
 }
 
 void WalletProvider::OnFetchBalance(
@@ -103,17 +103,14 @@ void WalletProvider::OnFetchBalance(
 void WalletProvider::TransferFunds(double amount,
                                    const std::string& address,
                                    const std::string& contribution_id,
-                                   LegacyResultCallback callback) {
+                                   ResultCallback callback) {
   if (!transfer_) {
     engine_->LogError(FROM_HERE)
         << WalletType() << " does not support contributions";
-    return callback(mojom::Result::FAILED);
+    return std::move(callback).Run(mojom::Result::FAILED);
   }
 
-  transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](LegacyResultCallback callback,
-                                   mojom::Result result) { callback(result); },
-                                std::move(callback)));
+  transfer_->Run(contribution_id, address, amount, std::move(callback));
 }
 
 void WalletProvider::BeginLogin(BeginExternalWalletLoginCallback callback) {

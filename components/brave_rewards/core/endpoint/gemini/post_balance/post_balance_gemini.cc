@@ -16,8 +16,6 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace endpoint {
 namespace gemini {

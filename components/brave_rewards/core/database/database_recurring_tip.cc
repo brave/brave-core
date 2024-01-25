@@ -41,10 +41,10 @@ DatabaseRecurringTip::DatabaseRecurringTip(RewardsEngineImpl& engine)
 DatabaseRecurringTip::~DatabaseRecurringTip() = default;
 
 void DatabaseRecurringTip::InsertOrUpdate(mojom::RecurringTipPtr info,
-                                          LegacyResultCallback callback) {
+                                          ResultCallback callback) {
   if (!info || info->publisher_key.empty()) {
     engine_->Log(FROM_HERE) << "Publisher key is empty";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -234,7 +234,7 @@ void DatabaseRecurringTip::OnGetAllRecords(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -263,14 +263,14 @@ void DatabaseRecurringTip::OnGetAllRecords(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
-                                        LegacyResultCallback callback) {
+                                        ResultCallback callback) {
   if (publisher_key.empty()) {
     engine_->Log(FROM_HERE) << "Publisher key is empty";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 

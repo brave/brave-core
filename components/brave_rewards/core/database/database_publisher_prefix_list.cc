@@ -86,32 +86,33 @@ void DatabasePublisherPrefixList::OnSearch(
       response->result->get_records().empty()) {
     engine_->LogError(FROM_HERE)
         << "Unexpected database result while searching publisher prefix list";
-    callback(false);
+    std::move(callback).Run(false);
     return;
   }
 
-  callback(GetBoolColumn(response->result->get_records()[0].get(), 0));
+  std::move(callback).Run(
+      GetBoolColumn(response->result->get_records()[0].get(), 0));
 }
 
 void DatabasePublisherPrefixList::Reset(publisher::PrefixListReader reader,
-                                        LegacyResultCallback callback) {
+                                        ResultCallback callback) {
   if (reader_) {
     engine_->Log(FROM_HERE) << "Publisher prefix list batch insert in progress";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
   if (reader.empty()) {
     engine_->LogError(FROM_HERE)
         << "Cannot reset with an empty publisher prefix list";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
   reader_ = std::move(reader);
-  InsertNext(reader_->begin(), callback);
+  InsertNext(reader_->begin(), std::move(callback));
 }
 
 void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
-                                             LegacyResultCallback callback) {
+                                             ResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
   auto transaction = mojom::DBTransaction::New();
@@ -145,23 +146,23 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
 }
 
 void DatabasePublisherPrefixList::OnInsertNext(
-    LegacyResultCallback callback,
+    ResultCallback callback,
     publisher::PrefixIterator iter,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     reader_ = std::nullopt;
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   if (iter == reader_->end()) {
     reader_ = std::nullopt;
-    callback(mojom::Result::OK);
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
 
-  InsertNext(iter, callback);
+  InsertNext(iter, std::move(callback));
 }
 
 }  // namespace database

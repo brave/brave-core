@@ -129,9 +129,9 @@ DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
 void DatabaseActivityInfo::NormalizeList(
     std::vector<mojom::PublisherInfoPtr> list,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (list.empty()) {
-    callback(mojom::Result::OK);
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
   std::string main_query;
@@ -142,7 +142,7 @@ void DatabaseActivityInfo::NormalizeList(
   }
 
   if (main_query.empty()) {
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -161,24 +161,24 @@ void DatabaseActivityInfo::NormalizeList(
 }
 
 void DatabaseActivityInfo::OnNormalizeList(
-    LegacyResultCallback callback,
+    ResultCallback callback,
     std::vector<mojom::PublisherInfoPtr> list,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   engine_->client()->PublisherListNormalized(std::move(list));
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 void DatabaseActivityInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
-                                          LegacyResultCallback callback) {
+                                          ResultCallback callback) {
   if (!info) {
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -215,7 +215,7 @@ void DatabaseActivityInfo::GetRecordsList(
     mojom::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) {
   if (!filter) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -270,7 +270,7 @@ void DatabaseActivityInfo::OnGetRecordsList(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -299,13 +299,13 @@ void DatabaseActivityInfo::OnGetRecordsList(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
-                                        LegacyResultCallback callback) {
+                                        ResultCallback callback) {
   if (publisher_key.empty()) {
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 

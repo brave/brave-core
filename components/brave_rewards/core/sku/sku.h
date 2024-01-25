@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
@@ -33,27 +34,28 @@ class SKU {
              SKUOrderCallback callback);
 
  private:
-  void OrderCreated(const mojom::Result result,
-                    const std::string& order_id,
-                    const std::string& wallet_type,
+  void OrderCreated(const std::string& wallet_type,
                     const std::string& contribution_id,
-                    SKUOrderCallback callback);
+                    SKUOrderCallback callback,
+                    mojom::Result result,
+                    const std::string& order_id);
 
-  void ContributionIdSaved(const mojom::Result result,
-                           const std::string& order_id,
+  void ContributionIdSaved(const std::string& order_id,
                            const std::string& wallet_type,
-                           SKUOrderCallback callback);
+                           SKUOrderCallback callback,
+                           mojom::Result result);
 
-  void CreateTransaction(mojom::SKUOrderPtr order,
-                         const std::string& wallet_type,
-                         SKUOrderCallback callback);
+  void CreateTransaction(const std::string& wallet_type,
+                         SKUOrderCallback callback,
+                         mojom::SKUOrderPtr order);
 
-  void OnOrder(mojom::SKUOrderPtr order,
-               const std::string& wallet_type,
-               SKUOrderCallback callback);
+  void OnOrder(const std::string& wallet_type,
+               SKUOrderCallback callback,
+               mojom::SKUOrderPtr order);
 
   const raw_ref<RewardsEngineImpl> engine_;
   SKUCommon common_;
+  base::WeakPtrFactory<SKU> weak_factory_{this};
 };
 
 }  // namespace sku

@@ -190,13 +190,13 @@ void PostOrder::OnRequest(std::vector<mojom::SKUOrderItem> items,
   mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::OK) {
-    callback(result, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
   auto order = mojom::SKUOrder::New();
   result = ParseBody(response->body, items, order.get());
-  callback(result, std::move(order));
+  std::move(callback).Run(result, std::move(order));
 }
 
 }  // namespace payment

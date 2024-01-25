@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
@@ -14,7 +15,6 @@
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace {
 const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
@@ -44,7 +44,7 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
         token->expires_at = 1574133178;
         tokens.push_back(std::move(token));
 
-        callback(std::move(tokens));
+        std::move(callback).Run(std::move(tokens));
       });
 
   EXPECT_CALL(*mock_engine_impl_.mock_database(),
@@ -58,13 +58,13 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
         info->step = mojom::ContributionStep::STEP_NO;
         info->retry_count = 0;
 
-        callback(std::move(info));
+        std::move(callback).Run(std::move(info));
       });
 
-  MockFunction<LegacyResultCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::NOT_ENOUGH_FUNDS)).Times(1);
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::NOT_ENOUGH_FUNDS)).Times(1);
   unblinded_.Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
-                   callback.AsStdFunction());
+                   callback.Get());
 
   task_environment_.RunUntilIdle();
 }

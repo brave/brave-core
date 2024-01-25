@@ -11,6 +11,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
@@ -20,8 +21,6 @@ namespace brave_rewards::internal {
 class RewardsEngineImpl;
 
 namespace publisher {
-
-using PublisherPrefixListUpdatedCallback = std::function<void()>;
 
 // Automatically updates the publisher prefix list store on regular
 // intervals.
@@ -34,6 +33,8 @@ class PublisherPrefixListUpdater {
       delete;
 
   ~PublisherPrefixListUpdater();
+
+  using PublisherPrefixListUpdatedCallback = base::RepeatingCallback<void()>;
 
   // Starts the auto updater
   void StartAutoUpdate(PublisherPrefixListUpdatedCallback callback);
@@ -53,8 +54,8 @@ class PublisherPrefixListUpdater {
                        base::TimeDelta delay);
 
   void OnFetchTimerElapsed();
-  void OnFetchCompleted(const mojom::Result result, const std::string& body);
-  void OnPrefixListInserted(const mojom::Result result);
+  void OnFetchCompleted(mojom::Result result, const std::string& body);
+  void OnPrefixListInserted(mojom::Result result);
 
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
@@ -65,6 +66,7 @@ class PublisherPrefixListUpdater {
   int retry_count_ = 0;
   PublisherPrefixListUpdatedCallback on_updated_callback_;
   endpoint::RewardsServer rewards_server_;
+  base::WeakPtrFactory<PublisherPrefixListUpdater> weak_factory_{this};
 };
 
 }  // namespace publisher

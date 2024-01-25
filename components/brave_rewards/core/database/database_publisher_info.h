@@ -18,8 +18,7 @@ class DatabasePublisherInfo : public DatabaseTable {
   explicit DatabasePublisherInfo(RewardsEngineImpl& engine);
   ~DatabasePublisherInfo() override;
 
-  void InsertOrUpdate(mojom::PublisherInfoPtr info,
-                      LegacyResultCallback callback);
+  void InsertOrUpdate(mojom::PublisherInfoPtr info, ResultCallback callback);
 
   void GetRecord(const std::string& publisher_key,
                  GetPublisherInfoCallback callback);

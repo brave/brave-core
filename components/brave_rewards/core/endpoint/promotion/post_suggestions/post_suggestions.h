@@ -42,7 +42,8 @@ class RewardsEngineImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostSuggestionsCallback = std::function<void(const mojom::Result result)>;
+using PostSuggestionsCallback =
+    base::OnceCallback<void(const mojom::Result result)>;
 
 class PostSuggestions {
  public:

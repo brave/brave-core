@@ -53,10 +53,10 @@ DatabaseBalanceReport::DatabaseBalanceReport(RewardsEngineImpl& engine)
 DatabaseBalanceReport::~DatabaseBalanceReport() = default;
 
 void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
-                                           LegacyResultCallback callback) {
+                                           ResultCallback callback) {
   if (!info || info->id.empty()) {
     engine_->Log(FROM_HERE) << "Id is empty";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -89,10 +89,10 @@ void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
 
 void DatabaseBalanceReport::InsertOrUpdateList(
     std::vector<mojom::BalanceReportInfoPtr> list,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (list.empty()) {
     engine_->Log(FROM_HERE) << "List is empty";
-    callback(mojom::Result::OK);
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
 
@@ -129,11 +129,11 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
                                       int year,
                                       mojom::ReportType type,
                                       double amount,
-                                      LegacyResultCallback callback) {
+                                      ResultCallback callback) {
   if (month == mojom::ActivityMonth::ANY || year == 0) {
     engine_->Log(FROM_HERE)
         << "Record size is not correct " << month << "/" << year;
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
   auto transaction = mojom::DBTransaction::New();
@@ -284,7 +284,7 @@ void DatabaseBalanceReport::OnGetAllRecords(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -303,10 +303,10 @@ void DatabaseBalanceReport::OnGetAllRecords(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
-void DatabaseBalanceReport::DeleteAllRecords(LegacyResultCallback callback) {
+void DatabaseBalanceReport::DeleteAllRecords(ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);

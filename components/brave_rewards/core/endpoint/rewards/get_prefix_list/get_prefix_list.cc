@@ -54,11 +54,11 @@ void GetPrefixList::OnRequest(GetPrefixListCallback callback,
       response->body.empty()) {
     engine_->LogError(FROM_HERE)
         << "Invalid server response for publisher prefix list";
-    callback(mojom::Result::FAILED, "");
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  callback(mojom::Result::OK, response->body);
+  std::move(callback).Run(mojom::Result::OK, response->body);
 }
 
 }  // namespace rewards

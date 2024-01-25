@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/big_endian.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
@@ -17,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace database {
@@ -81,9 +81,9 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<LegacyResultCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  database_prefix_list_.Reset(CreateReader(100'001), callback.AsStdFunction());
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  database_prefix_list_.Reset(CreateReader(100'001), callback.Get());
 
   task_environment_.RunUntilIdle();
 }

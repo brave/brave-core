@@ -29,11 +29,11 @@ DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
 void DatabaseMediaPublisherInfo::InsertOrUpdate(
     const std::string& media_key,
     const std::string& publisher_key,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
     engine_->Log(FROM_HERE)
         << "Data is empty " << media_key << "/" << publisher_key;
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -61,7 +61,7 @@ void DatabaseMediaPublisherInfo::GetRecord(const std::string& media_key,
                                            PublisherInfoCallback callback) {
   if (media_key.empty()) {
     engine_->Log(FROM_HERE) << "Media key is empty";
-    return callback(mojom::Result::FAILED, {});
+    return std::move(callback).Run(mojom::Result::FAILED, {});
   }
 
   auto transaction = mojom::DBTransaction::New();
@@ -105,14 +105,14 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->Log(FROM_HERE) << "Response is wrong";
-    callback(mojom::Result::FAILED, {});
+    std::move(callback).Run(mojom::Result::FAILED, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     engine_->Log(FROM_HERE) << "Record size is not correct: "
                             << response->result->get_records().size();
-    callback(mojom::Result::NOT_FOUND, {});
+    std::move(callback).Run(mojom::Result::NOT_FOUND, {});
     return;
   }
 
@@ -129,7 +129,7 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   info->excluded =
       static_cast<mojom::PublisherExclude>(GetIntColumn(record, 7));
 
-  callback(mojom::Result::OK, std::move(info));
+  std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
 
 }  // namespace database

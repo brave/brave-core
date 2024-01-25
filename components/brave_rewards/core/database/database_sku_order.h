@@ -10,24 +10,25 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/database/database_sku_order_items.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
 namespace brave_rewards::internal {
 namespace database {
 
-using GetSKUOrderCallback = std::function<void(mojom::SKUOrderPtr)>;
+using GetSKUOrderCallback = base::OnceCallback<void(mojom::SKUOrderPtr)>;
 
 class DatabaseSKUOrder : public DatabaseTable {
  public:
   explicit DatabaseSKUOrder(RewardsEngineImpl& engine);
   ~DatabaseSKUOrder() override;
 
-  void InsertOrUpdate(mojom::SKUOrderPtr info, LegacyResultCallback callback);
+  void InsertOrUpdate(mojom::SKUOrderPtr info, ResultCallback callback);
 
   void UpdateStatus(const std::string& order_id,
                     mojom::SKUOrderStatus status,
-                    LegacyResultCallback callback);
+                    ResultCallback callback);
 
   void GetRecord(const std::string& order_id, GetSKUOrderCallback callback);
 
@@ -36,17 +37,18 @@ class DatabaseSKUOrder : public DatabaseTable {
 
   void SaveContributionIdForSKUOrder(const std::string& order_id,
                                      const std::string& contribution_id,
-                                     LegacyResultCallback callback);
+                                     ResultCallback callback);
 
  private:
   void OnGetRecord(GetSKUOrderCallback callback,
                    mojom::DBCommandResponsePtr response);
 
-  void OnGetRecordItems(std::vector<mojom::SKUOrderItemPtr> list,
-                        std::shared_ptr<mojom::SKUOrderPtr> shared_order,
-                        GetSKUOrderCallback callback);
+  void OnGetRecordItems(mojom::SKUOrderPtr order,
+                        GetSKUOrderCallback callback,
+                        std::vector<mojom::SKUOrderItemPtr> list);
 
   DatabaseSKUOrderItems items_;
+  base::WeakPtrFactory<DatabaseSKUOrder> weak_factory_{this};
 };
 
 }  // namespace database

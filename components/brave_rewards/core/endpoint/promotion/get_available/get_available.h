@@ -50,10 +50,10 @@ class RewardsEngineImpl;
 namespace endpoint {
 namespace promotion {
 
-using GetAvailableCallback = base::OnceCallback<void(
-    mojom::Result result,
-    std::vector<mojom::PromotionPtr> list,
-    const std::vector<std::string>& corrupted_promotions)>;
+using GetAvailableCallback =
+    base::OnceCallback<void(mojom::Result result,
+                            std::vector<mojom::PromotionPtr> list,
+                            std::vector<std::string> corrupted_promotions)>;
 
 class GetAvailable {
  public:

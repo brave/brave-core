@@ -11,8 +11,6 @@
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v1.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace state {
 
@@ -21,24 +19,23 @@ StateMigrationV1::StateMigrationV1(RewardsEngineImpl& engine)
 
 StateMigrationV1::~StateMigrationV1() = default;
 
-void StateMigrationV1::Migrate(LegacyResultCallback callback) {
+void StateMigrationV1::Migrate(ResultCallback callback) {
   legacy_publisher_ =
       std::make_unique<publisher::LegacyPublisherState>(*engine_);
 
-  auto load_callback =
-      std::bind(&StateMigrationV1::OnLoadState, this, _1, callback);
-
-  legacy_publisher_->Load(load_callback);
+  legacy_publisher_->Load(base::BindOnce(&StateMigrationV1::OnLoadState,
+                                         weak_factory_.GetWeakPtr(),
+                                         std::move(callback)));
 }
 
-void StateMigrationV1::OnLoadState(mojom::Result result,
-                                   LegacyResultCallback callback) {
+void StateMigrationV1::OnLoadState(ResultCallback callback,
+                                   mojom::Result result) {
   if (result == mojom::Result::NO_PUBLISHER_STATE) {
     engine_->Log(FROM_HERE) << "No publisher state";
     engine_->publisher()->CalcScoreConsts(
         engine_->GetState<int>(kMinVisitTime));
 
-    callback(mojom::Result::OK);
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
 
@@ -48,7 +45,7 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
 
     engine_->LogError(FROM_HERE)
         << "Failed to load publisher state file, setting default values";
-    callback(mojom::Result::OK);
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
 
@@ -65,22 +62,21 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
   std::vector<mojom::BalanceReportInfoPtr> reports;
   legacy_publisher_->GetAllBalanceReports(&reports);
   if (!reports.empty()) {
-    auto save_callback =
-        std::bind(&StateMigrationV1::BalanceReportsSaved, this, _1, callback);
-
-    engine_->database()->SaveBalanceReportInfoList(std::move(reports),
-                                                   save_callback);
+    engine_->database()->SaveBalanceReportInfoList(
+        std::move(reports),
+        base::BindOnce(&StateMigrationV1::BalanceReportsSaved,
+                       weak_factory_.GetWeakPtr(), std::move(callback)));
   }
 }
 
-void StateMigrationV1::BalanceReportsSaved(mojom::Result result,
-                                           LegacyResultCallback callback) {
+void StateMigrationV1::BalanceReportsSaved(ResultCallback callback,
+                                           mojom::Result result) {
   if (result != mojom::Result::OK) {
     engine_->LogError(FROM_HERE) << "Balance report save failed";
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace state

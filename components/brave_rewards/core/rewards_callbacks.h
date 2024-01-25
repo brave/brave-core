@@ -54,66 +54,65 @@ using ResultCallback = base::OnceCallback<void(mojom::Result)>;
 using RunDBTransactionCallback =
     base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
 
-// Legacy callbacks:
-
 using ContributionInfoListCallback =
-    std::function<void(std::vector<mojom::ContributionInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionInfoPtr>)>;
 
 using GetActivityInfoListCallback =
-    std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
 
 using GetAllMonthlyReportIdsCallback =
-    std::function<void(const std::vector<std::string>&)>;
+    mojom::RewardsEngine::GetAllMonthlyReportIdsCallback;
 
 using GetAllPromotionsCallback =
-    std::function<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
+    base::OnceCallback<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
 
-using GetBalanceReportListCallback = std::function<void(
+using GetBalanceReportListCallback = base::OnceCallback<void(
     std::vector<mojom::BalanceReportInfoPtr>)>;  // TODO(sszaloki): unused?
 
 using GetContributionReportCallback =
-    std::function<void(std::vector<mojom::ContributionReportInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionReportInfoPtr>)>;
 
 using GetEventLogsCallback =
-    std::function<void(std::vector<mojom::EventLogPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::EventLogPtr>)>;
 
 using GetExcludedListCallback =
-    std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
 
 using GetMonthlyReportCallback =
-    std::function<void(mojom::Result, mojom::MonthlyReportInfoPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::MonthlyReportInfoPtr)>;
 
 using GetOneTimeTipsCallback =
-    std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
 
 using GetPublisherBannerCallback =
-    std::function<void(mojom::PublisherBannerPtr)>;
+    base::OnceCallback<void(mojom::PublisherBannerPtr)>;
 
 using GetPublisherInfoCallback =
-    std::function<void(mojom::Result, mojom::PublisherInfoPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::PublisherInfoPtr)>;
 
 using GetPublisherPanelInfoCallback =
-    std::function<void(mojom::Result, mojom::PublisherInfoPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::PublisherInfoPtr)>;
 
 using GetRecurringTipsCallback =
-    std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
 
 using GetTransactionReportCallback =
-    std::function<void(std::vector<mojom::TransactionReportInfoPtr>)>;
-
-using LegacyLoadURLCallback = std::function<void(mojom::UrlResponsePtr)>;
-
-using LegacyResultCallback = std::function<void(mojom::Result)>;
+    base::OnceCallback<void(std::vector<mojom::TransactionReportInfoPtr>)>;
 
 using PublisherInfoCallback =
-    std::function<void(mojom::Result, mojom::PublisherInfoPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::PublisherInfoPtr)>;
 
-using RefreshPublisherCallback = std::function<void(mojom::PublisherStatus)>;
+using GetServerPublisherInfoCallback =
+    base::OnceCallback<void(mojom::ServerPublisherInfoPtr)>;
 
-using SKUOrderCallback = std::function<void(mojom::Result, const std::string&)>;
+using RefreshPublisherCallback =
+    base::OnceCallback<void(mojom::PublisherStatus)>;
+
+using SKUOrderCallback =
+    base::OnceCallback<void(mojom::Result, const std::string&)>;
 
 using UnverifiedPublishersCallback =
-    std::function<void(std::vector<std::string>&&)>;
+    base::OnceCallback<void(std::vector<std::string>&&)>;
 
 }  // namespace brave_rewards::internal
 

@@ -26,7 +26,8 @@ namespace endpoint {
 namespace rewards {
 
 using GetPrefixListCallback =
-    std::function<void(const mojom::Result result, const std::string& body)>;
+    base::OnceCallback<void(const mojom::Result result,
+                            const std::string& body)>;
 
 class GetPrefixList {
  public:

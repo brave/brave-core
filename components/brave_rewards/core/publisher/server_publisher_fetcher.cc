@@ -19,10 +19,6 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave_base/random.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
 namespace brave_rewards::internal::publisher {
 
 namespace {
@@ -43,11 +39,10 @@ ServerPublisherFetcher::ServerPublisherFetcher(RewardsEngineImpl& engine)
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
-void ServerPublisherFetcher::Fetch(
-    const std::string& publisher_key,
-    database::GetServerPublisherInfoCallback callback) {
+void ServerPublisherFetcher::Fetch(const std::string& publisher_key,
+                                   FetchCallback callback) {
   FetchCallbackVector& callbacks = callback_map_[publisher_key];
-  callbacks.push_back(callback);
+  callbacks.push_back(std::move(callback));
   if (callbacks.size() > 1) {
     engine_->Log(FROM_HERE) << "Fetch already in progress";
     return;
@@ -56,36 +51,35 @@ void ServerPublisherFetcher::Fetch(
   const std::string hex_prefix =
       GetHashPrefixInHex(publisher_key, kQueryPrefixBytes);
 
-  auto url_callback = std::bind(&ServerPublisherFetcher::OnFetchCompleted, this,
-                                _1, _2, publisher_key);
-
-  private_cdn_server_.get_publisher().Request(publisher_key, hex_prefix,
-                                              url_callback);
+  private_cdn_server_.get_publisher().Request(
+      publisher_key, hex_prefix,
+      base::BindOnce(&ServerPublisherFetcher::OnFetchCompleted,
+                     weak_factory_.GetWeakPtr(), publisher_key));
 }
 
 void ServerPublisherFetcher::OnFetchCompleted(
-    const mojom::Result result,
-    mojom::ServerPublisherInfoPtr info,
-    const std::string& publisher_key) {
+    const std::string& publisher_key,
+    mojom::Result result,
+    mojom::ServerPublisherInfoPtr info) {
   if (result != mojom::Result::OK) {
     RunCallbacks(publisher_key, nullptr);
     return;
   }
 
-  // Create a shared pointer to a mojo struct so that it can be copied
-  // into a callback.
-  auto shared_info =
-      std::make_shared<mojom::ServerPublisherInfoPtr>(std::move(info));
-
   // Store the result for subsequent lookups.
   engine_->database()->InsertServerPublisherInfo(
-      **shared_info, [this, publisher_key, shared_info](mojom::Result result) {
-        if (result != mojom::Result::OK) {
-          engine_->LogError(FROM_HERE)
-              << "Error saving server publisher info record";
-        }
-        RunCallbacks(publisher_key, std::move(*shared_info));
-      });
+      *info,
+      base::BindOnce(&ServerPublisherFetcher::OnRecordSaved,
+                     weak_factory_.GetWeakPtr(), publisher_key, info->Clone()));
+}
+
+void ServerPublisherFetcher::OnRecordSaved(const std::string& publisher_key,
+                                           mojom::ServerPublisherInfoPtr info,
+                                           mojom::Result result) {
+  if (result != mojom::Result::OK) {
+    engine_->LogError(FROM_HERE) << "Error saving server publisher info record";
+  }
+  RunCallbacks(publisher_key, std::move(info));
 }
 
 bool ServerPublisherFetcher::IsExpired(
@@ -115,11 +109,11 @@ void ServerPublisherFetcher::PurgeExpiredRecords() {
   engine_->Log(FROM_HERE) << "Purging expired server publisher info records";
   int64_t max_age = GetCacheExpiryInSeconds() * 2;
   engine_->database()->DeleteExpiredServerPublisherInfo(max_age,
-                                                        [](auto result) {});
+                                                        base::DoNothing());
 }
 
-FetchCallbackVector ServerPublisherFetcher::GetCallbacks(
-    const std::string& publisher_key) {
+ServerPublisherFetcher::FetchCallbackVector
+ServerPublisherFetcher::GetCallbacks(const std::string& publisher_key) {
   FetchCallbackVector callbacks;
   auto iter = callback_map_.find(publisher_key);
   if (iter != callback_map_.end()) {
@@ -135,7 +129,7 @@ void ServerPublisherFetcher::RunCallbacks(
   FetchCallbackVector callbacks = GetCallbacks(publisher_key);
   DCHECK(!callbacks.empty());
   for (auto& callback : callbacks) {
-    callback(server_info ? server_info.Clone() : nullptr);
+    std::move(callback).Run(server_info ? server_info.Clone() : nullptr);
   }
   engine_->client()->OnPublisherUpdated(publisher_key);
 }

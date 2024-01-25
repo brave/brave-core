@@ -21,7 +21,7 @@ StateMigrationV6::StateMigrationV6(RewardsEngineImpl& engine)
 
 StateMigrationV6::~StateMigrationV6() = default;
 
-void StateMigrationV6::Migrate(LegacyResultCallback callback) {
+void StateMigrationV6::Migrate(ResultCallback callback) {
   auto uphold_wallet = engine_->GetLegacyWallet();
   engine_->SetState(kWalletUphold, uphold_wallet);
   engine_->client()->ClearState("external_wallets");
@@ -34,7 +34,7 @@ void StateMigrationV6::Migrate(LegacyResultCallback callback) {
   base::JSONWriter::Write(brave, &brave_json);
   engine_->SetState(kWalletBrave, std::move(brave_json));
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace state

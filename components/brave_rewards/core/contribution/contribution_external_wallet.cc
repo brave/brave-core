@@ -16,11 +16,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 ContributionExternalWallet::ContributionExternalWallet(
     RewardsEngineImpl& engine)
@@ -29,24 +25,25 @@ ContributionExternalWallet::ContributionExternalWallet(
 ContributionExternalWallet::~ContributionExternalWallet() = default;
 
 void ContributionExternalWallet::Process(const std::string& contribution_id,
-                                         LegacyResultCallback callback) {
+                                         ResultCallback callback) {
   if (contribution_id.empty()) {
     engine_->LogError(FROM_HERE) << "Contribution id is empty";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  auto get_callback = std::bind(&ContributionExternalWallet::ContributionInfo,
-                                this, _1, callback);
-  engine_->database()->GetContributionInfo(contribution_id, get_callback);
+  engine_->database()->GetContributionInfo(
+      contribution_id,
+      base::BindOnce(&ContributionExternalWallet::ContributionInfo,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ContributionExternalWallet::ContributionInfo(
-    mojom::ContributionInfoPtr contribution,
-    LegacyResultCallback callback) {
+    ResultCallback callback,
+    mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
     engine_->LogError(FROM_HERE) << "Contribution is null";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -70,12 +67,13 @@ void ContributionExternalWallet::ContributionInfo(
 
   if (!wallet) {
     engine_->LogError(FROM_HERE) << "Unexpected wallet status";
-    return callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
+    return;
   }
 
   if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-    engine_->contribution()->SKUAutoContribution(contribution->contribution_id,
-                                                 wallet->type, callback);
+    engine_->contribution()->SKUAutoContribution(
+        contribution->contribution_id, wallet->type, std::move(callback));
     return;
   }
 
@@ -86,32 +84,31 @@ void ContributionExternalWallet::ContributionInfo(
       continue;
     }
 
-    auto get_callback =
-        std::bind(&ContributionExternalWallet::OnServerPublisherInfo, this, _1,
-                  contribution->contribution_id, publisher->total_amount,
-                  contribution->type, contribution->processor, single_publisher,
-                  callback);
-
-    engine_->publisher()->GetServerPublisherInfo(publisher->publisher_key,
-                                                 get_callback);
+    engine_->publisher()->GetServerPublisherInfo(
+        publisher->publisher_key,
+        base::BindOnce(&ContributionExternalWallet::OnServerPublisherInfo,
+                       weak_factory_.GetWeakPtr(),
+                       contribution->contribution_id, publisher->total_amount,
+                       contribution->type, contribution->processor,
+                       single_publisher, std::move(callback)));
     return;
   }
 
   // we processed all publishers
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 void ContributionExternalWallet::OnServerPublisherInfo(
-    mojom::ServerPublisherInfoPtr info,
     const std::string& contribution_id,
     double amount,
     mojom::RewardsType type,
     mojom::ContributionProcessor processor,
     bool single_publisher,
-    LegacyResultCallback callback) {
+    ResultCallback callback,
+    mojom::ServerPublisherInfoPtr info) {
   if (!info) {
     engine_->LogError(FROM_HERE) << "Publisher not found";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -137,25 +134,26 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     // We can then infer that no other external wallet will be able to service
     // this contribution item, and we can safely error out.
     engine_->Log(FROM_HERE) << "Publisher not verified";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  auto start_callback = std::bind(&ContributionExternalWallet::Completed, this,
-                                  _1, single_publisher, callback);
+  auto start_callback = base::BindOnce(&ContributionExternalWallet::Completed,
+                                       weak_factory_.GetWeakPtr(),
+                                       single_publisher, std::move(callback));
 
   switch (processor) {
     case mojom::ContributionProcessor::UPHOLD:
       engine_->uphold()->StartContribution(contribution_id, std::move(info),
-                                           amount, start_callback);
+                                           amount, std::move(start_callback));
       break;
     case mojom::ContributionProcessor::BITFLYER:
       engine_->bitflyer()->StartContribution(contribution_id, std::move(info),
-                                             amount, start_callback);
+                                             amount, std::move(start_callback));
       break;
     case mojom::ContributionProcessor::GEMINI:
       engine_->gemini()->StartContribution(contribution_id, std::move(info),
-                                           amount, start_callback);
+                                           amount, std::move(start_callback));
       break;
     default:
       NOTREACHED();
@@ -164,21 +162,20 @@ void ContributionExternalWallet::OnServerPublisherInfo(
   }
 }
 
-void ContributionExternalWallet::Completed(mojom::Result result,
-                                           bool single_publisher,
-                                           LegacyResultCallback callback) {
+void ContributionExternalWallet::Completed(bool single_publisher,
+                                           ResultCallback callback,
+                                           mojom::Result result) {
   if (single_publisher) {
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
-  callback(mojom::Result::RETRY);
+  std::move(callback).Run(mojom::Result::RETRY);
 }
 
 void ContributionExternalWallet::Retry(mojom::ContributionInfoPtr contribution,
-                                       LegacyResultCallback callback) {
-  Process(contribution->contribution_id, callback);
+                                       ResultCallback callback) {
+  Process(contribution->contribution_id, std::move(callback));
 }
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution

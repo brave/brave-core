@@ -61,7 +61,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
     ContributionPublisherListCallback callback) {
   if (contribution_ids.empty()) {
     engine_->Log(FROM_HERE) << "Contribution ids is empty";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -96,7 +96,7 @@ void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -113,7 +113,7 @@ void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
@@ -121,7 +121,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
     ContributionPublisherPairListCallback callback) {
   if (contribution_ids.empty()) {
     engine_->Log(FROM_HERE) << "Contribution ids is empty";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -166,7 +166,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -189,17 +189,17 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
                            std::move(publisher));
   }
 
-  callback(std::move(pair_list));
+  std::move(callback).Run(std::move(pair_list));
 }
 
 void DatabaseContributionInfoPublishers::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (contribution_id.empty() || publisher_key.empty()) {
     engine_->Log(FROM_HERE)
         << "Data is empty " << contribution_id << "/" << publisher_key;
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 

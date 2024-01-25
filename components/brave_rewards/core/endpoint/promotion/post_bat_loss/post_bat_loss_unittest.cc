@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
@@ -18,7 +19,6 @@
 // npm run test -- brave_unit_tests --filter=PostBatLossTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -54,9 +54,9 @@ TEST_F(PostBatLossTest, ServerOK) {
         std::move(callback).Run(std::move(response));
       });
 
-  MockFunction<PostBatLossCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::OK)).Times(1);
-  loss_.Request(30.0, 1, callback.AsStdFunction());
+  base::MockCallback<PostBatLossCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::OK)).Times(1);
+  loss_.Request(30.0, 1, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -72,9 +72,9 @@ TEST_F(PostBatLossTest, ServerError500) {
         std::move(callback).Run(std::move(response));
       });
 
-  MockFunction<PostBatLossCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  loss_.Request(30.0, 1, callback.AsStdFunction());
+  base::MockCallback<PostBatLossCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  loss_.Request(30.0, 1, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -90,9 +90,9 @@ TEST_F(PostBatLossTest, ServerErrorRandom) {
         std::move(callback).Run(std::move(response));
       });
 
-  MockFunction<PostBatLossCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  loss_.Request(30.0, 1, callback.AsStdFunction());
+  base::MockCallback<PostBatLossCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  loss_.Request(30.0, 1, callback.Get());
 
   task_environment_.RunUntilIdle();
 }

@@ -19,7 +19,7 @@ class StateMigrationV8 {
   explicit StateMigrationV8(RewardsEngineImpl& engine);
   ~StateMigrationV8();
 
-  void Migrate(LegacyResultCallback callback);
+  void Migrate(ResultCallback callback);
 
  private:
   const raw_ref<RewardsEngineImpl> engine_;

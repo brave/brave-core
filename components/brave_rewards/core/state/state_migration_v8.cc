@@ -5,6 +5,7 @@
 #include "brave/components/brave_rewards/core/state/state_migration_v8.h"
 
 #include <string>
+#include <utility>
 
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
@@ -17,14 +18,14 @@ StateMigrationV8::StateMigrationV8(RewardsEngineImpl& engine)
 
 StateMigrationV8::~StateMigrationV8() = default;
 
-void StateMigrationV8::Migrate(LegacyResultCallback callback) {
+void StateMigrationV8::Migrate(ResultCallback callback) {
   const bool enabled = engine_->GetState<bool>("enabled");
 
   if (!enabled) {
     engine_->SetState(kAutoContributeEnabled, false);
   }
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace state

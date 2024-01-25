@@ -234,23 +234,23 @@ void GetPublisher::OnRequest(const std::string& publisher_key,
   auto info = mojom::ServerPublisherInfo::New();
   if (result == mojom::Result::NOT_FOUND) {
     GetServerInfoForEmptyResponse(publisher_key, info.get());
-    callback(mojom::Result::OK, std::move(info));
+    std::move(callback).Run(mojom::Result::OK, std::move(info));
     return;
   }
 
   if (result != mojom::Result::OK) {
-    callback(mojom::Result::FAILED, nullptr);
+    std::move(callback).Run(mojom::Result::FAILED, nullptr);
     return;
   }
 
   result = ParseBody(response->body, publisher_key, info.get());
 
   if (result != mojom::Result::OK) {
-    callback(result, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
-  callback(mojom::Result::OK, std::move(info));
+  std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
 
 }  // namespace private_cdn

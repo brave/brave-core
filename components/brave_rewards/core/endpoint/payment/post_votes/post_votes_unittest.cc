@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_votes/post_votes.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
@@ -17,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PostVotesTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -56,9 +56,9 @@ TEST_F(PostVotesTest, ServerOK) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  MockFunction<PostVotesCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::OK)).Times(1);
-  votes_.Request(redeem, callback.AsStdFunction());
+  base::MockCallback<PostVotesCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::OK)).Times(1);
+  votes_.Request(redeem, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -89,9 +89,9 @@ TEST_F(PostVotesTest, ServerError400) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  MockFunction<PostVotesCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::RETRY_SHORT)).Times(1);
-  votes_.Request(redeem, callback.AsStdFunction());
+  base::MockCallback<PostVotesCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::RETRY_SHORT)).Times(1);
+  votes_.Request(redeem, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -122,9 +122,9 @@ TEST_F(PostVotesTest, ServerError500) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  MockFunction<PostVotesCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::RETRY_SHORT)).Times(1);
-  votes_.Request(redeem, callback.AsStdFunction());
+  base::MockCallback<PostVotesCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::RETRY_SHORT)).Times(1);
+  votes_.Request(redeem, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -155,9 +155,9 @@ TEST_F(PostVotesTest, ServerErrorRandom) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  MockFunction<PostVotesCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  votes_.Request(redeem, callback.AsStdFunction());
+  base::MockCallback<PostVotesCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  votes_.Request(redeem, callback.Get());
 
   task_environment_.RunUntilIdle();
 }

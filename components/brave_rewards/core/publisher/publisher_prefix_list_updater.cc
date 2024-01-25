@@ -14,10 +14,6 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
 namespace {
 
 constexpr int64_t kRetryAfterFailureDelay = 150;
@@ -36,7 +32,7 @@ PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
 void PublisherPrefixListUpdater::StartAutoUpdate(
     PublisherPrefixListUpdatedCallback callback) {
-  on_updated_callback_ = callback;
+  on_updated_callback_ = std::move(callback);
   auto_update_ = true;
   if (!timer_.IsRunning()) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
@@ -61,12 +57,12 @@ void PublisherPrefixListUpdater::StartFetchTimer(
 
 void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
   engine_->Log(FROM_HERE) << "Fetching publisher prefix list";
-  auto url_callback =
-      std::bind(&PublisherPrefixListUpdater::OnFetchCompleted, this, _1, _2);
-  rewards_server_.get_prefix_list().Request(url_callback);
+  rewards_server_.get_prefix_list().Request(
+      base::BindOnce(&PublisherPrefixListUpdater::OnFetchCompleted,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
+void PublisherPrefixListUpdater::OnFetchCompleted(mojom::Result result,
                                                   const std::string& body) {
   if (result != mojom::Result::OK) {
     engine_->LogError(FROM_HERE)
@@ -99,11 +95,11 @@ void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
   engine_->Log(FROM_HERE) << "Resetting publisher prefix list table";
   engine_->database()->ResetPublisherPrefixList(
       std::move(reader),
-      std::bind(&PublisherPrefixListUpdater::OnPrefixListInserted, this, _1));
+      base::BindOnce(&PublisherPrefixListUpdater::OnPrefixListInserted,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void PublisherPrefixListUpdater::OnPrefixListInserted(
-    const mojom::Result result) {
+void PublisherPrefixListUpdater::OnPrefixListInserted(mojom::Result result) {
   // At this point we have received a valid response from the server
   // and we've attempted to insert it into the database. Store the last
   // successful fetch time for calculation of next refresh interval.
@@ -122,7 +118,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
   }
 
   if (on_updated_callback_) {
-    on_updated_callback_();
+    on_updated_callback_.Run();
   }
 }
 

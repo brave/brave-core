@@ -30,10 +30,10 @@ DatabasePublisherInfo::DatabasePublisherInfo(RewardsEngineImpl& engine)
 DatabasePublisherInfo::~DatabasePublisherInfo() = default;
 
 void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
-                                           LegacyResultCallback callback) {
+                                           ResultCallback callback) {
   if (!info || info->id.empty()) {
     engine_->Log(FROM_HERE) << "Info is empty";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -89,7 +89,7 @@ void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
                                       GetPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
     engine_->Log(FROM_HERE) << "Publisher key is empty";
-    callback(mojom::Result::FAILED, {});
+    std::move(callback).Run(mojom::Result::FAILED, {});
     return;
   }
 
@@ -132,12 +132,12 @@ void DatabasePublisherInfo::OnGetRecord(GetPublisherInfoCallback callback,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback(mojom::Result::FAILED, {});
+    std::move(callback).Run(mojom::Result::FAILED, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
-    callback(mojom::Result::NOT_FOUND, {});
+    std::move(callback).Run(mojom::Result::NOT_FOUND, {});
     return;
   }
 
@@ -154,7 +154,7 @@ void DatabasePublisherInfo::OnGetRecord(GetPublisherInfoCallback callback,
   info->excluded =
       static_cast<mojom::PublisherExclude>(GetIntColumn(record, 7));
 
-  callback(mojom::Result::OK, std::move(info));
+  std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
 
 void DatabasePublisherInfo::GetPanelRecord(
@@ -162,7 +162,7 @@ void DatabasePublisherInfo::GetPanelRecord(
     GetPublisherPanelInfoCallback callback) {
   if (!filter || filter->id.empty()) {
     engine_->Log(FROM_HERE) << "Filter is empty";
-    callback(mojom::Result::FAILED, {});
+    std::move(callback).Run(mojom::Result::FAILED, {});
     return;
   }
 
@@ -212,12 +212,12 @@ void DatabasePublisherInfo::OnGetPanelRecord(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback(mojom::Result::FAILED, {});
+    std::move(callback).Run(mojom::Result::FAILED, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
-    callback(mojom::Result::NOT_FOUND, {});
+    std::move(callback).Run(mojom::Result::NOT_FOUND, {});
     return;
   }
 
@@ -234,7 +234,7 @@ void DatabasePublisherInfo::OnGetPanelRecord(
       static_cast<mojom::PublisherExclude>(GetIntColumn(record, 6));
   info->percent = GetIntColumn(record, 7);
 
-  callback(mojom::Result::OK, std::move(info));
+  std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
 
 void DatabasePublisherInfo::RestorePublishers(ResultCallback callback) {
@@ -307,7 +307,7 @@ void DatabasePublisherInfo::OnGetExcludedList(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -327,7 +327,7 @@ void DatabasePublisherInfo::OnGetExcludedList(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database

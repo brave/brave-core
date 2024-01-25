@@ -5,6 +5,7 @@
 #include "brave/components/brave_rewards/core/state/state_migration_v7.h"
 
 #include <string>
+#include <utility>
 
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
@@ -18,22 +19,22 @@ StateMigrationV7::StateMigrationV7(RewardsEngineImpl& engine)
 
 StateMigrationV7::~StateMigrationV7() = default;
 
-void StateMigrationV7::Migrate(LegacyResultCallback callback) {
+void StateMigrationV7::Migrate(ResultCallback callback) {
   const std::string brave = engine_->GetState<std::string>(kWalletBrave);
 
   if (!engine_->state()->SetEncryptedString(kWalletBrave, brave)) {
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   const std::string uphold = engine_->GetState<std::string>(kWalletUphold);
 
   if (!engine_->state()->SetEncryptedString(kWalletUphold, uphold)) {
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace state

@@ -12,6 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
@@ -30,9 +31,8 @@ class Publisher {
 
   bool ShouldFetchServerPublisherInfo(mojom::ServerPublisherInfo* server_info);
 
-  void FetchServerPublisherInfo(
-      const std::string& publisher_key,
-      database::GetServerPublisherInfoCallback callback);
+  void FetchServerPublisherInfo(const std::string& publisher_key,
+                                ServerPublisherFetcher::FetchCallback callback);
 
   void RefreshPublisher(const std::string& publisher_key,
                         RefreshPublisherCallback callback);
@@ -44,7 +44,7 @@ class Publisher {
                  const uint64_t duration,
                  const bool first_visit,
                  uint64_t window_id,
-                 const PublisherInfoCallback callback);
+                 PublisherInfoCallback callback);
 
   void SetPublisherExclude(const std::string& publisher_id,
                            const mojom::PublisherExclude& exclude,
@@ -80,14 +80,12 @@ class Publisher {
 
   void CalcScoreConsts(const int min_duration_seconds);
 
-  void GetServerPublisherInfo(
-      const std::string& publisher_key,
-      database::GetServerPublisherInfoCallback callback);
+  void GetServerPublisherInfo(const std::string& publisher_key,
+                              GetServerPublisherInfoCallback callback);
 
-  void GetServerPublisherInfo(
-      const std::string& publisher_key,
-      bool use_prefix_list,
-      database::GetServerPublisherInfoCallback callback);
+  void GetServerPublisherInfo(const std::string& publisher_key,
+                              bool use_prefix_list,
+                              GetServerPublisherInfoCallback callback);
 
   void UpdateMediaDuration(const uint64_t window_id,
                            const std::string& publisher_key,
@@ -99,30 +97,41 @@ class Publisher {
 
   void SavePublisherInfo(uint64_t window_id,
                          mojom::PublisherInfoPtr publisher_info,
-                         LegacyResultCallback callback);
+                         ResultCallback callback);
 
   static std::string GetShareURL(
       const base::flat_map<std::string, std::string>& args);
 
  private:
-  void OnGetPublisherInfoForUpdateMediaDuration(mojom::Result result,
-                                                mojom::PublisherInfoPtr info,
-                                                const uint64_t window_id,
-                                                const uint64_t duration,
-                                                const bool first_visit);
+  void OnPrefixListUpdated();
 
-  void OnGetPanelPublisherInfo(const mojom::Result result,
-                               mojom::PublisherInfoPtr info,
-                               GetPublisherPanelInfoCallback callback);
+  void OnSearchPrefixListForSaveVisit(const std::string& publisher_key,
+                                      GetServerPublisherInfoCallback callback,
+                                      bool publisher_exists);
+
+  void OnSearchPrefixListForGetServerPublisherInfo(
+      const std::string& publisher_key,
+      GetServerPublisherInfoCallback callback,
+      bool publisher_exists);
+
+  void OnGetPublisherInfoForUpdateMediaDuration(const uint64_t window_id,
+                                                const uint64_t duration,
+                                                const bool first_visit,
+                                                mojom::Result result,
+                                                mojom::PublisherInfoPtr info);
+
+  void OnGetPanelPublisherInfo(GetPublisherPanelInfoCallback callback,
+                               const mojom::Result result,
+                               mojom::PublisherInfoPtr info);
 
   void onPublisherActivitySave(uint64_t windowId,
                                const mojom::VisitData& visit_data,
                                mojom::Result result,
                                mojom::PublisherInfoPtr info);
 
-  void OnGetActivityInfo(std::vector<mojom::PublisherInfoPtr> list,
-                         PublisherInfoCallback callback,
-                         const std::string& publisher_key);
+  void OnGetActivityInfo(PublisherInfoCallback callback,
+                         const std::string& publisher_key,
+                         std::vector<mojom::PublisherInfoPtr> list);
 
   void SaveVisitInternal(const mojom::PublisherStatus,
                          const std::string& publisher_key,
@@ -130,27 +139,27 @@ class Publisher {
                          const uint64_t duration,
                          const bool first_visit,
                          uint64_t window_id,
-                         const PublisherInfoCallback callback,
+                         PublisherInfoCallback callback,
                          mojom::Result result,
                          mojom::PublisherInfoPtr publisher_info);
 
-  void OnSaveVisitServerPublisher(mojom::ServerPublisherInfoPtr server_info,
-                                  const std::string& publisher_key,
+  void OnSaveVisitServerPublisher(const std::string& publisher_key,
                                   const mojom::VisitData& visit_data,
                                   const uint64_t duration,
                                   const bool first_visit,
                                   uint64_t window_id,
-                                  const PublisherInfoCallback callback);
+                                  PublisherInfoCallback callback,
+                                  mojom::ServerPublisherInfoPtr server_info);
 
   void onFetchFavIcon(const std::string& publisher_key,
                       uint64_t window_id,
                       bool success,
                       const std::string& favicon_url);
 
-  void onFetchFavIconDBResponse(mojom::Result result,
-                                mojom::PublisherInfoPtr info,
-                                const std::string& favicon_url,
-                                uint64_t window_id);
+  void onFetchFavIconDBResponse(const std::string& favicon_url,
+                                uint64_t window_id,
+                                mojom::Result result,
+                                mojom::PublisherInfoPtr info);
 
   void OnSetPublisherExclude(ResultCallback callback,
                              mojom::PublisherExclude exclude,
@@ -168,14 +177,14 @@ class Publisher {
 
   void OnSaveVisitInternal(mojom::Result result, mojom::PublisherInfoPtr info);
 
-  void OnPanelPublisherInfo(mojom::Result result,
-                            mojom::PublisherInfoPtr publisher_info,
-                            uint64_t windowId,
-                            const mojom::VisitData& visit_data);
+  void OnPanelPublisherInfo(uint64_t windowId,
+                            const mojom::VisitData& visit_data,
+                            mojom::Result result,
+                            mojom::PublisherInfoPtr publisher_info);
 
-  void OnGetPublisherBanner(mojom::ServerPublisherInfoPtr info,
-                            const std::string& publisher_key,
-                            GetPublisherBannerCallback callback);
+  void OnGetPublisherBanner(const std::string& publisher_key,
+                            GetPublisherBannerCallback callback,
+                            mojom::ServerPublisherInfoPtr info);
 
   void OnGetPublisherBannerPublisher(GetPublisherBannerCallback callback,
                                      const mojom::PublisherBanner& banner,
@@ -183,23 +192,27 @@ class Publisher {
                                      mojom::PublisherInfoPtr publisher_info);
 
   void OnGetPublisherBannerForSavePublisherInfo(
-      mojom::PublisherBannerPtr banner,
       uint64_t window_id,
       const std::string& publisher_key,
       const mojom::VisitData& visit_data,
-      LegacyResultCallback callback);
+      ResultCallback callback,
+      mojom::PublisherBannerPtr banner);
+
+  void OnSaveVisitForSavePublisherInfo(ResultCallback callback,
+                                       mojom::Result result,
+                                       mojom::PublisherInfoPtr publisher_info);
 
   mojom::PublisherStatus ParsePublisherStatus(const std::string& status);
 
-  void OnServerPublisherInfoLoaded(
-      mojom::ServerPublisherInfoPtr server_info,
-      const std::string& publisher_key,
-      bool use_prefix_list,
-      database::GetServerPublisherInfoCallback callback);
+  void OnServerPublisherInfoLoaded(const std::string& publisher_key,
+                                   bool use_prefix_list,
+                                   GetServerPublisherInfoCallback callback,
+                                   mojom::ServerPublisherInfoPtr server_info);
 
   const raw_ref<RewardsEngineImpl> engine_;
   PublisherPrefixListUpdater prefix_list_updater_;
   ServerPublisherFetcher server_publisher_fetcher_;
+  base::WeakPtrFactory<Publisher> weak_factory_{this};
 
   // For testing purposes
   friend class PublisherTest;

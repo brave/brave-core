@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_transaction_gemini/post_transaction_sku_gemini.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
@@ -17,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PostTransactionGeminiTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -45,9 +45,9 @@ TEST_F(PostTransactionGeminiTest, ServerOK) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::OK)).Times(1);
-  order_.Request(transaction, callback.AsStdFunction());
+  base::MockCallback<PostTransactionGeminiCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::OK)).Times(1);
+  order_.Request(transaction, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -67,9 +67,9 @@ TEST_F(PostTransactionGeminiTest, ServerError400) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  order_.Request(transaction, callback.AsStdFunction());
+  base::MockCallback<PostTransactionGeminiCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  order_.Request(transaction, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -89,9 +89,9 @@ TEST_F(PostTransactionGeminiTest, ServerError404) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::NOT_FOUND)).Times(1);
-  order_.Request(transaction, callback.AsStdFunction());
+  base::MockCallback<PostTransactionGeminiCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::NOT_FOUND)).Times(1);
+  order_.Request(transaction, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -111,9 +111,9 @@ TEST_F(PostTransactionGeminiTest, ServerError409) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  order_.Request(transaction, callback.AsStdFunction());
+  base::MockCallback<PostTransactionGeminiCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  order_.Request(transaction, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -133,9 +133,9 @@ TEST_F(PostTransactionGeminiTest, ServerError500) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  order_.Request(transaction, callback.AsStdFunction());
+  base::MockCallback<PostTransactionGeminiCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  order_.Request(transaction, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -155,9 +155,9 @@ TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  MockFunction<PostTransactionGeminiCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  order_.Request(transaction, callback.AsStdFunction());
+  base::MockCallback<PostTransactionGeminiCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  order_.Request(transaction, callback.Get());
 
   task_environment_.RunUntilIdle();
 }

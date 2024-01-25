@@ -12,6 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
@@ -102,19 +103,16 @@ class YouTube {
                          const std::string& fav_icon,
                          const std::string& channel_id);
 
-  void FetchDataFromUrl(const std::string& url, LegacyLoadURLCallback callback);
-
-  void OnUrlFetched(LegacyLoadURLCallback callback,
-                    mojom::UrlResponsePtr repsonse);
+  void FetchDataFromUrl(const std::string& url, LoadURLCallback callback);
 
   void WatchPath(uint64_t window_id, const mojom::VisitData& visit_data);
 
-  void OnMediaPublisherActivity(mojom::Result result,
-                                mojom::PublisherInfoPtr info,
-                                uint64_t window_id,
+  void OnMediaPublisherActivity(uint64_t window_id,
                                 const mojom::VisitData& visit_data,
                                 const std::string& media_key,
-                                const std::string& media_id);
+                                const std::string& media_id,
+                                mojom::Result result,
+                                mojom::PublisherInfoPtr info);
 
   void GetPublisherPanleInfo(uint64_t window_id,
                              const mojom::VisitData& visit_data,
@@ -149,6 +147,7 @@ class YouTube {
                           mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
+  base::WeakPtrFactory<YouTube> weak_factory_{this};
 
   // For testing purposes
   friend class MediaYouTubeTest;

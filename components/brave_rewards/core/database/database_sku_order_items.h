@@ -16,7 +16,7 @@ namespace brave_rewards::internal {
 namespace database {
 
 using GetSKUOrderItemsCallback =
-    std::function<void(std::vector<mojom::SKUOrderItemPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::SKUOrderItemPtr>)>;
 
 class DatabaseSKUOrderItems : public DatabaseTable {
  public:

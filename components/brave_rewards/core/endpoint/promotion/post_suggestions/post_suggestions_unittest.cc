@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
@@ -17,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PostSuggestionsTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -56,9 +56,9 @@ TEST_F(PostSuggestionsTest, ServerOK) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  MockFunction<PostSuggestionsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::OK)).Times(1);
-  suggestions_.Request(redeem, callback.AsStdFunction());
+  base::MockCallback<PostSuggestionsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::OK)).Times(1);
+  suggestions_.Request(redeem, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -89,9 +89,9 @@ TEST_F(PostSuggestionsTest, ServerError400) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  MockFunction<PostSuggestionsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  suggestions_.Request(redeem, callback.AsStdFunction());
+  base::MockCallback<PostSuggestionsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  suggestions_.Request(redeem, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -122,9 +122,9 @@ TEST_F(PostSuggestionsTest, ServerError500) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  MockFunction<PostSuggestionsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  suggestions_.Request(redeem, callback.AsStdFunction());
+  base::MockCallback<PostSuggestionsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  suggestions_.Request(redeem, callback.Get());
 
   task_environment_.RunUntilIdle();
 }

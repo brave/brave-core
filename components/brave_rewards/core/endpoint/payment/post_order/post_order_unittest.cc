@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_order/post_order.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
@@ -18,7 +19,6 @@
 
 using ::testing::_;
 using ::testing::IsFalse;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -73,8 +73,8 @@ TEST_F(PostOrderTest, ServerOK) {
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  MockFunction<PostOrderCallback> callback;
-  EXPECT_CALL(callback, Call)
+  base::MockCallback<PostOrderCallback> callback;
+  EXPECT_CALL(callback, Run)
       .Times(1)
       .WillOnce([](mojom::Result result, mojom::SKUOrderPtr order) {
         auto expected_order_item = mojom::SKUOrderItem::New();
@@ -96,7 +96,7 @@ TEST_F(PostOrderTest, ServerOK) {
         EXPECT_EQ(result, mojom::Result::OK);
         EXPECT_TRUE(expected_order.Equals(*order));
       });
-  order_.Request(items, callback.AsStdFunction());
+  order_.Request(items, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -119,9 +119,9 @@ TEST_F(PostOrderTest, ServerError400) {
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  MockFunction<PostOrderCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::RETRY_SHORT, IsFalse())).Times(1);
-  order_.Request(items, callback.AsStdFunction());
+  base::MockCallback<PostOrderCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::RETRY_SHORT, IsFalse())).Times(1);
+  order_.Request(items, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -144,9 +144,9 @@ TEST_F(PostOrderTest, ServerError500) {
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  MockFunction<PostOrderCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::RETRY_SHORT, IsFalse())).Times(1);
-  order_.Request(items, callback.AsStdFunction());
+  base::MockCallback<PostOrderCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::RETRY_SHORT, IsFalse())).Times(1);
+  order_.Request(items, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -169,9 +169,9 @@ TEST_F(PostOrderTest, ServerErrorRandom) {
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  MockFunction<PostOrderCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED, IsFalse())).Times(1);
-  order_.Request(items, callback.AsStdFunction());
+  base::MockCallback<PostOrderCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED, IsFalse())).Times(1);
+  order_.Request(items, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
