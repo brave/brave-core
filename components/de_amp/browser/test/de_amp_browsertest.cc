@@ -279,8 +279,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
       base::BindRepeating(HandleRequest, kTestCanonicalPage, amp_body_large));
   ASSERT_TRUE(https_server_->Start());
   const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
-  const GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
-  NavigateToURLAndWaitForRedirects(original_url, landing_url);
+  NavigateToURLAndWaitForRedirects(original_url, original_url);
 }
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkOutsideMax) {

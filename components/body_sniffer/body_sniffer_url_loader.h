@@ -23,6 +23,7 @@
 #include "services/network/public/mojom/early_hints.mojom-forward.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "url/gurl.h"
 
 namespace net {
@@ -32,19 +33,59 @@ struct RedirectInfo;
 
 namespace network {
 struct URLLoaderCompletionStatus;
+struct ResourceRequest;
 }  // namespace network
 
 namespace body_sniffer {
 
+class BodyHandler {
+ public:
+  enum class Action {
+    kNone,
+    kContinue,
+    kComplete,
+    kCancel,
+    kAbort,
+  };
+
+  virtual ~BodyHandler() = default;
+
+  virtual bool OnRequest(network::ResourceRequest* request) = 0;
+  virtual bool ShouldProcess(
+      const GURL& response_url,
+      network::mojom::URLResponseHead* response_head) = 0;
+  virtual void OnComplete() = 0;
+  virtual Action OnBodyUpdated(const std::string& body, bool is_complete) = 0;
+
+  virtual bool IsTransformer() const = 0;
+  virtual void Transform(std::string body,
+                         base::OnceCallback<void(std::string)> on_complete) = 0;
+  virtual void UpdateResponseHead(
+      network::mojom::URLResponseHead* response_head) = 0;
+};
+
+class BodyProducer {
+ public:
+  virtual ~BodyProducer() = default;
+
+  virtual void UpdateResponseHead(
+      network::mojom::URLResponseHead* response_head) = 0;
+  virtual std::string TakeContent() = 0;
+  virtual void OnComplete() = 0;
+};
+
 class BodySnifferThrottle;
+
+using BodyHandlersPtr = std::vector<std::unique_ptr<BodyHandler>>;
+using BodyProducerPtr = std::unique_ptr<BodyProducer>;
+using Handler = absl::variant<BodyProducerPtr, BodyHandlersPtr>;
 
 class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
                              public network::mojom::URLLoader {
  public:
-  ~BodySnifferURLLoader() override;
-
   BodySnifferURLLoader(const BodySnifferURLLoader&) = delete;
   BodySnifferURLLoader& operator=(const BodySnifferURLLoader&) = delete;
+  ~BodySnifferURLLoader() override;
 
   // Start waiting for the body.
   void Start(
@@ -53,17 +94,23 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
           source_url_client_receiver,
       mojo::ScopedDataPipeConsumerHandle body);
 
-  mojo::ScopedDataPipeConsumerHandle* GetNextConsumerHandle() {
-    return &next_body_consumer_handle_;
-  }
+  // mojo::PendingRemote<network::mojom::URLLoader> controls the lifetime of the
+  // loader.
+  static std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
+                    mojo::PendingReceiver<network::mojom::URLLoaderClient>,
+                    BodySnifferURLLoader*>
+  CreateLoader(base::WeakPtr<BodySnifferThrottle> throttle,
+               network::mojom::URLResponseHeadPtr response_head,
+               Handler handler,
+               scoped_refptr<base::SequencedTaskRunner> task_runner);
 
- protected:
-  BodySnifferURLLoader(
-      base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
-      const GURL& response_url,
-      mojo::PendingRemote<network::mojom::URLLoaderClient>
-          destination_url_loader_client,
-      scoped_refptr<base::SequencedTaskRunner> task_runner);
+ private:
+  BodySnifferURLLoader(base::WeakPtr<BodySnifferThrottle> throttle,
+                       network::mojom::URLResponseHeadPtr response_head,
+                       Handler handler,
+                       mojo::PendingRemote<network::mojom::URLLoaderClient>
+                           destination_url_loader_client,
+                       scoped_refptr<base::SequencedTaskRunner> task_runner);
 
   // network::mojom::URLLoaderClient implementation (called from the source of
   // the response):
@@ -93,45 +140,43 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
   void PauseReadingBodyFromNet() override;
   void ResumeReadingBodyFromNet() override;
 
-  bool CheckBufferedBody(uint32_t readBufferSize);
-
-  virtual void OnBodyReadable(MojoResult) = 0;
-  virtual void OnBodyWritable(MojoResult) = 0;
-
-  virtual void CompleteLoading(std::string body);
+  void OnBodyReadable(MojoResult);
+  void OnBodyWritable(MojoResult);
+  void CompleteSniffing(bool remove_first, std::string body);
   void CompleteSending();
-  virtual void OnCompleteSending();
-  void SendBufferedBodyToClient();
-
+  void SendReceivedBodyToClient();
+  void ForwardBodyToClient();
+  void Cancel();
   void Abort();
 
   base::WeakPtr<BodySnifferThrottle> throttle_;
-  const GURL response_url_;
 
   mojo::Receiver<network::mojom::URLLoaderClient> source_url_client_receiver_{
       this};
   mojo::Remote<network::mojom::URLLoader> source_url_loader_;
   mojo::Remote<network::mojom::URLLoaderClient> destination_url_loader_client_;
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  // Capture the response head to defer to send it to the destination.
+  network::mojom::URLResponseHeadPtr response_head_;
 
-  enum class State { kWaitForBody, kLoading, kSending, kCompleted, kAborted };
+  Handler handler_;
+  BodyHandlersPtr complete_handlers_;
+
+  enum class State { kWaitForBody, kSniffing, kSending, kCompleted, kAborted };
   State state_ = State::kWaitForBody;
 
+  // Set if OnComplete() is called during sniffing.
   std::optional<network::URLLoaderCompletionStatus> complete_status_;
 
   std::string buffered_body_;
   size_t bytes_remaining_in_buffer_;
-  size_t read_bytes_ = 0;
+
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
   mojo::ScopedDataPipeConsumerHandle body_consumer_handle_;
   mojo::ScopedDataPipeProducerHandle body_producer_handle_;
   mojo::SimpleWatcher body_consumer_watcher_;
   mojo::SimpleWatcher body_producer_watcher_;
-  mojo::ScopedDataPipeConsumerHandle next_body_consumer_handle_;
-
- private:
-  void CancelAndResetHandles();
 
   base::WeakPtrFactory<BodySnifferURLLoader> weak_factory_{this};
 };

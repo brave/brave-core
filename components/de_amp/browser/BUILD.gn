@@ -1,9 +1,7 @@
 static_library("browser") {
   sources = [
-    "de_amp_throttle.cc",
-    "de_amp_throttle.h",
-    "de_amp_url_loader.cc",
-    "de_amp_url_loader.h",
+    "de_amp_body_handler.cc",
+    "de_amp_body_handler.h",
     "de_amp_util.cc",
     "de_amp_util.h",
   ]
