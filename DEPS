@@ -7,7 +7,7 @@ vars = {
 deps = {
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha": {
-    "url": "https://github.com/brave/omaha.git@5c54631a222d60d6cbb75a68cf3e25693396a200",
+    "url": "https://github.com/brave/omaha.git@e57534eb50ed4a676d430c6199b1dc68edfeacd8",
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
