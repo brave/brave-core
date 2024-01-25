@@ -175,6 +175,7 @@ class AddBubble : public PlaylistActionBubbleView {
             const std::vector<playlist::mojom::PlaylistItemPtr>& items);
 
  private:
+  void OnMediaExtracted(bool result);
   void InitListView();
 
   void AddSelected();
@@ -440,7 +441,7 @@ AddBubble::AddBubble(Browser* browser,
   if (playlist_tab_helper_->ShouldExtractMediaFromBackgroundWebContents()) {
     scroll_view_->SetContents(std::make_unique<views::View>());
     playlist_tab_helper_->ExtractMediaFromBackgroundWebContents(base::BindOnce(
-        &AddBubble::InitListView, weak_ptr_factory_.GetWeakPtr()));
+        &AddBubble::OnMediaExtracted, weak_ptr_factory_.GetWeakPtr()));
     scroll_view_->SetPreferredSize(
         gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
     SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
@@ -449,10 +450,22 @@ AddBubble::AddBubble(Browser* browser,
   }
 }
 
+void AddBubble::OnMediaExtracted(bool result) {
+  loading_spinner_->SetVisible(false);
+  if (result) {
+    InitListView();
+  } else {
+    AddChildView(std::make_unique<views::Label>(
+        l10n_util::GetStringUTF16(IDS_PLAYLIST_MEDIA_NOT_FOUND_IN_THIS_PAGE)));
+    if (GetWidget()) {
+      SizeToContents();
+    }
+  }
+}
+
 void AddBubble::InitListView() {
   CHECK(scroll_view_);
   CHECK(!list_view_);
-  loading_spinner_->SetVisible(false);
   scroll_view_->SetVisible(true);
   list_view_ = scroll_view_->SetContents(std::make_unique<SelectableItemsView>(
       thumbnail_provider_.get(), playlist_tab_helper_->found_items(),

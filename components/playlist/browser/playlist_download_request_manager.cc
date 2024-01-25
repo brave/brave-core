@@ -221,21 +221,35 @@ void PlaylistDownloadRequestManager::OnGetMedia(
   }
 
   DVLOG(2) << __func__;
-  ProcessFoundMedia(contents.get(), url, std::move(cb), std::move(value));
+
+  auto items = ProcessFoundMedia(std::move(value), url);
+
+  if (contents.get() == background_contents() && items.size()) {
+    CHECK(!callback_for_current_request_.is_null()) << " callback already ran";
+    auto callback = std::move(callback_for_current_request_);
+
+    DCHECK_GT(in_progress_urls_count_, 0);
+    in_progress_urls_count_--;
+
+    std::vector<mojom::PlaylistItemPtr> cloned_items;
+    base::ranges::transform(items, std::back_inserter(cloned_items),
+                            &mojom::PlaylistItemPtr::Clone);
+    std::move(callback).Run(std::move(cloned_items));
+
+    web_contents_.reset();
+  }
+
+  std::move(cb).Run(std::move(items));
+
   FetchPendingRequest();
 }
 
-void PlaylistDownloadRequestManager::ProcessFoundMedia(
-    content::WebContents* contents,
-    GURL url,
-    base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
-    base::Value value) {
-  CHECK(contents);
-
+std::vector<mojom::PlaylistItemPtr>
+PlaylistDownloadRequestManager::ProcessFoundMedia(base::Value value,
+                                                  GURL page_url) {
   /* Expected output:
     [
       {
-        "detected": boolean,
         "mimeType": "video" | "audio",
         "name": string,
         "pageSrc": url,
@@ -243,19 +257,20 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
         "src": url
         "srcIsMediaSourceObjectURL": boolean,
         "thumbnail": url | undefined
+        "duration": double | undefined
+        "author": string | undefined
       }
     ]
   */
 
+  std::vector<mojom::PlaylistItemPtr> items;
   if (value.is_dict() && value.GetDict().empty()) {
     DVLOG(2) << "No media was detected";
-    return;
+    return items;
   }
 
   CHECK(value.is_list()) << " Got invalid value after running media detector "
                             "script: Should be list";
-
-  std::vector<mojom::PlaylistItemPtr> items;
   for (const auto& media : value.GetList()) {
     if (!media.is_dict()) {
       LOG(ERROR) << __func__ << " Got invalid item";
@@ -284,7 +299,7 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
 
     auto item = mojom::PlaylistItem::New();
     item->id = base::Token::CreateRandom().ToString();
-    item->page_source = url;
+    item->page_source = page_url;
     item->page_redirected = GURL(*page_source);
     item->name = *name;
     // URL data
@@ -334,22 +349,7 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
 
   DVLOG(2) << __func__ << " Media detection result size: " << items.size();
 
-  if (contents == background_contents() && items.size()) {
-    CHECK(!callback_for_current_request_.is_null()) << " callback already ran";
-    auto callback = std::move(callback_for_current_request_);
-
-    DCHECK_GT(in_progress_urls_count_, 0);
-    in_progress_urls_count_--;
-
-    std::vector<mojom::PlaylistItemPtr> cloned_items;
-    base::ranges::transform(items, std::back_inserter(cloned_items),
-                            &mojom::PlaylistItemPtr::Clone);
-    std::move(callback).Run(std::move(cloned_items));
-
-    web_contents_.reset();
-  }
-
-  std::move(cb).Run(std::move(items));
+  return items;
 }
 
 bool PlaylistDownloadRequestManager::CanCacheMedia(
