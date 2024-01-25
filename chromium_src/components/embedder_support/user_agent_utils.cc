@@ -11,6 +11,14 @@ constexpr char kBraveBrandNameForCHUA[] = "Brave";
 
 }  // namespace
 
+namespace embedder_support {
+
+blink::UserAgentMetadata GetUserAgentMetadata_ChromiumImpl(
+    const PrefService* local_state,
+    bool only_low_entropy_ch = false);
+
+}  // namespace embedder_support
+
 // Chromium uses `version_info::GetProductName()` to get the browser's "brand"
 // name, but on MacOS we use different names for different channels (adding Beta
 // or Nightly, for example). In the UA client hint, though, we want a consistent
@@ -19,6 +27,26 @@ constexpr char kBraveBrandNameForCHUA[] = "Brave";
 // constructing the UA in brave/browser/brave_content_browser_client.cc, but we
 // can't use it here in the //components.
 #define BRAVE_GET_USER_AGENT_BRAND_LIST brand = kBraveBrandNameForCHUA;
+#define GetUserAgentMetadata GetUserAgentMetadata_ChromiumImpl
 
 #include "src/components/embedder_support/user_agent_utils.cc"
 #undef BRAVE_GET_USER_AGENT_BRAND_LIST
+#undef GetUserAgentMetadata
+
+namespace embedder_support {
+
+blink::UserAgentMetadata GetUserAgentMetadata(bool only_low_entropy_ch) {
+  return GetUserAgentMetadata(nullptr, only_low_entropy_ch);
+}
+
+blink::UserAgentMetadata GetUserAgentMetadata(const PrefService* pref_service,
+                                              bool only_low_entropy_ch) {
+  blink::UserAgentMetadata metadata =
+      GetUserAgentMetadata_ChromiumImpl(pref_service, only_low_entropy_ch);
+#if BUILDFLAG(IS_LINUX)
+  metadata.platform_version = "";
+#endif
+  return metadata;
+}
+
+}  // namespace embedder_support
