@@ -27,6 +27,8 @@ import * as mixins from '../lib/button_mixins'
 export const root = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  min-height: 400px;
   gap: 24px;
 
   --form-background-url: url(${formBackgroundURL});

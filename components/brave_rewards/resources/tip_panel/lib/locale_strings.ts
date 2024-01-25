@@ -47,7 +47,8 @@ export const localeStrings = {
   selfCustodyTitle: 'Support your favorite creators',
   selfCustodyHeader: 'Show your love and send a token of your gratitude',
   selfCustodyText: 'Use your Web3 wallet to send a one time contribution to this creator and show them your appreciation',
-  selfCustodySendButtonLabel: 'Send with Web3 wallet'
+  selfCustodySendButtonLabel: 'Send with Web3 wallet',
+  selfCustodyNoWeb3Label: 'It looks like this creator isn\'t set up to receive contributions via Web3 wallets yet.'
 }
 
 export type StringKey = keyof typeof localeStrings
