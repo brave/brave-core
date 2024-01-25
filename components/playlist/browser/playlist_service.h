@@ -142,8 +142,10 @@ class PlaylistService : public KeyedService,
   using FindMediaFilesFromContentsCallback =
       base::OnceCallback<void(const GURL& target_url,
                               std::vector<mojom::PlaylistItemPtr> items)>;
-  void FindMediaFilesFromContents(content::WebContents* contents,
-                                  FindMediaFilesFromContentsCallback callback);
+  void FindMediaFilesFromContents(
+      content::WebContents* contents,
+      FindMediaFilesFromContentsCallback callback,
+      bool allow_to_create_background_web_contents = true);
 
   // Synchronous versions of mojom::PlaylistService implementations
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();

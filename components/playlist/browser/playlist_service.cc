@@ -444,7 +444,8 @@ base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
 
 void PlaylistService::FindMediaFilesFromContents(
     content::WebContents* contents,
-    FindMediaFilesFromContentsCallback callback) {
+    FindMediaFilesFromContentsCallback callback,
+    bool allow_to_create_background_web_contents) {
   CHECK(*enabled_pref_) << "Playlist pref must be enabled";
   CHECK(contents);
 
@@ -452,7 +453,8 @@ void PlaylistService::FindMediaFilesFromContents(
   auto* tab_helper = PlaylistTabHelper::FromWebContents(contents);
   CHECK(tab_helper);
 
-  if (ShouldExtractMediaFromBackgroundWebContents(tab_helper->found_items())) {
+  if (allow_to_create_background_web_contents &&
+      ShouldExtractMediaFromBackgroundWebContents(tab_helper->found_items())) {
     PlaylistDownloadRequestManager::Request request;
     request.url = current_url;
     request.should_force_fake_ua = ShouldUseFakeUA(current_url);
@@ -581,7 +583,12 @@ void PlaylistService::FindMediaFilesFromActiveTab(
     return;
   }
 
-  FindMediaFilesFromContents(contents, std::move(callback));
+  // At this moment, Android calls this on every navigation, which can cause
+  // memory regression. So don't allow to create background contents.
+  // Even though we don't allow that, we'll extract media from background web
+  // contents when adding items.
+  FindMediaFilesFromContents(contents, std::move(callback),
+                             /*allow_to_create_background_web_contents=*/false);
 }
 
 void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
