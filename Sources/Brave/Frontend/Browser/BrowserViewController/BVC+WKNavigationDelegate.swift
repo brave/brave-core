@@ -802,10 +802,9 @@ extension BrowserViewController: WKNavigationDelegate {
     // Also, when Chromium cert validation passes, BUT Apple cert validation fails, the request is cancelled automatically by WebKit
     // In such a case, the webView.serverTrust is `nil`. The only time we have a valid trust is when we received the challenge
     // so we need to update the URL-Bar to show that serverTrust when WebKit's is nil.
-    let serverTrust = webView.serverTrust ?? tab.sslPinningTrust
     observeValue(forKeyPath: KVOConstants.serverTrust.keyPath,
                  of: webView,
-                 change: [.newKey: serverTrust as Any, .kindKey: 1],
+                 change: [.newKey: webView.serverTrust ?? tab.sslPinningTrust as Any, .kindKey: 1],
                  context: nil)
     
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
@@ -840,7 +839,7 @@ extension BrowserViewController: WKNavigationDelegate {
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
       
       // The certificate came from the WebKit SSL Handshake validation and the cert is untrusted
-      if let serverTrust = serverTrust, error.userInfo["NSErrorPeerCertificateChainKey"] == nil {
+      if webView.serverTrust == nil, let serverTrust = tab.sslPinningTrust, error.userInfo["NSErrorPeerCertificateChainKey"] == nil {
         // Build a cert chain error to display in the cert viewer in such cases, as we aren't given one by WebKit
         var userInfo = error.userInfo
         userInfo["NSErrorPeerCertificateChainKey"] = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
