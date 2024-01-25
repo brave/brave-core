@@ -201,6 +201,8 @@ source_set("ui") {
       "webui/settings/default_brave_shields_handler.h",
       "webui/settings/settings_cookies_view_handler.cc",
       "webui/settings/settings_cookies_view_handler.h",
+      "webui/side_panel/reading_list/brave_reading_list_page_handler.cc",
+      "webui/side_panel/reading_list/brave_reading_list_page_handler.h",
       "webui/speedreader/speedreader_toolbar_data_handler_impl.cc",
       "webui/speedreader/speedreader_toolbar_data_handler_impl.h",
       "webui/speedreader/speedreader_toolbar_ui.cc",
@@ -215,6 +217,9 @@ source_set("ui") {
       "whats_new/whats_new_util.cc",
       "whats_new/whats_new_util.h",
     ]
+
+    deps +=
+        [ "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings" ]
 
     if (enable_request_otr) {
       deps += [
