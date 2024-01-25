@@ -67,7 +67,7 @@ class PlaylistTabHelper
   bool ShouldExtractMediaFromBackgroundWebContents() const;
   bool IsExtractingMediaFromBackgroundWebContents() const;
   void ExtractMediaFromBackgroundWebContents(
-      base::OnceClosure extracted_callback);
+      base::OnceCallback<void(bool)> extracted_callback);
 
   void RequestAsyncExecuteScript(int32_t world_id,
                                  const std::u16string& script,
@@ -102,6 +102,7 @@ class PlaylistTabHelper
 
  private:
   friend WebContentsUserData;
+
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
   // Hide factory function to enforce use MaybeCreateForWebContents()
@@ -115,6 +116,7 @@ class PlaylistTabHelper
   void FindMediaFromCurrentContents();
   void OnFoundMediaFromContents(const GURL& url,
                                 std::vector<mojom::PlaylistItemPtr> items);
+  void OnMediaExtractionFromBackgroundWebContentsTimeout();
   void OnAddedItems(std::vector<mojom::PlaylistItemPtr> items);
 
   void OnPlaylistEnabledPrefChanged();
@@ -129,8 +131,9 @@ class PlaylistTabHelper
 
   bool is_adding_items_ = false;
 
-  std::vector<base::OnceClosure>
+  std::vector<base::OnceCallback<void(bool)>>
       media_extracted_from_background_web_contents_callbacks_;
+  base::OneShotTimer media_extraction_from_background_web_contents_timer_;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;

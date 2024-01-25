@@ -346,24 +346,36 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
 class PlaylistBrowserTestWithSitesUsingMediaSource
     : public PlaylistBrowserTest {
  public:
+  void SetHTMLContents(const std::string& contents) { contents_ = contents; }
+
   // PlaylistBrowserTest:
   void SetUpHTTPSServer() override {
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &PlaylistBrowserTestWithSitesUsingMediaSource::Serve,
-        https_server_.get()));
+        base::Unretained(this)));
     ASSERT_TRUE(https_server_->Start());
   }
 
  private:
-  static std::unique_ptr<net::test_server::HttpResponse> Serve(
-      net::EmbeddedTestServer* server,
+  std::unique_ptr<net::test_server::HttpResponse> Serve(
       const net::test_server::HttpRequest& request) {
-    GURL absolute_url = server->GetURL(request.relative_url);
+    GURL absolute_url = https_server_->GetURL(request.relative_url);
     auto response = std::make_unique<net::test_server::BasicHttpResponse>();
     response->set_code(net::HTTP_OK);
-    response->set_content(R"html(
+    response->set_content(contents_);
+    response->set_content_type("text/html; charset=utf-8");
+    return response;
+  }
+
+  std::string contents_;
+};
+
+IN_PROC_BROWSER_TEST_F(
+    PlaylistBrowserTestWithSitesUsingMediaSource,
+    MediaShouldBeExtractedFromBackground_SucceedInExtracting) {
+  SetHTMLContents(R"html(
         <html>
         <meta property="og:image" content="/img.jpg">
         <body>
@@ -380,13 +392,7 @@ class PlaylistBrowserTestWithSitesUsingMediaSource
         </script>
         </html>
       )html");
-    response->set_content_type("text/html; charset=utf-8");
-    return response;
-  }
-};
 
-IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
-                       BackgroundWebContentsOnNavigation) {
   auto* playlist_service = GetService();
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
@@ -425,4 +431,97 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   EXPECT_TRUE(playlist_tab_helper->found_items().size());
   EXPECT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
                   .SchemeIsHTTPOrHTTPS());
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
+                       MediaShouldBeExtractedFromBackground_FailToExtract) {
+  SetHTMLContents(R"html(
+        <html>
+        <meta property="og:image" content="/img.jpg">
+        <body>
+          <video id="vid"/>
+        </body>
+        <script>
+          if (window.MediaSource) {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = URL.createObjectURL(new MediaSource());
+          } 
+        </script>
+        </html>
+      )html");
+
+  auto* playlist_service = GetService();
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
+      browser_view->GetLocationBarView());
+  auto* playlist_action_icon_view =
+      location_bar_view->GetPlaylistActionIconView();
+  auto* playlist_tab_helper =
+      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+
+  ASSERT_FALSE(GetDownloadRequestManager()->background_contents());
+
+  GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
+
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!playlist_tab_helper->found_items().size(); }));
+  EXPECT_TRUE(playlist_service->ShouldExtractMediaFromBackgroundWebContents(
+      playlist_tab_helper->found_items()));
+
+  playlist_action_icon_view->ShowPlaylistBubble();
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !playlist_tab_helper->IsExtractingMediaFromBackgroundWebContents();
+  }));
+  EXPECT_TRUE(playlist_tab_helper->found_items().empty());
+}
+
+IN_PROC_BROWSER_TEST_F(
+    PlaylistBrowserTestWithSitesUsingMediaSource,
+    MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia) {
+  SetHTMLContents(R"html(
+        <html>
+        <meta property="og:image" content="/img.jpg">
+        <body>
+          <video id="vid"/>
+        </body>
+        <script>
+          if (window.MediaSource) {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = URL.createObjectURL(new MediaSource());
+          } else {
+            setTimeout(() => {
+              const videoElement = document.querySelector('#vid');
+              videoElement.src = '/test.mp4';
+            }, 3000);
+          }
+        </script>
+        </html>
+      )html");
+
+  auto* playlist_service = GetService();
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
+      browser_view->GetLocationBarView());
+  auto* playlist_action_icon_view =
+      location_bar_view->GetPlaylistActionIconView();
+  auto* playlist_tab_helper =
+      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+
+  ASSERT_FALSE(GetDownloadRequestManager()->background_contents());
+  ASSERT_FALSE(playlist_action_icon_view->GetVisible());
+
+  GURL url = https_server()->GetURL("www.ted.com", "/v12345");
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
+
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!playlist_tab_helper->found_items().size(); }));
+  EXPECT_TRUE(playlist_service->ShouldExtractMediaFromBackgroundWebContents(
+      playlist_tab_helper->found_items()));
+
+  playlist_action_icon_view->ShowPlaylistBubble();
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !playlist_tab_helper->IsExtractingMediaFromBackgroundWebContents();
+  }));
+  EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
 }

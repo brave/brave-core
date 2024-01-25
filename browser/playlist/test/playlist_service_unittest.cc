@@ -1446,6 +1446,29 @@ TEST_F(PlaylistServiceUnitTest, ReorderPlaylist) {
   CheckOrder({std::string(kDefaultPlaylistID)});
 }
 
+TEST_F(PlaylistServiceUnitTest, ShouldExtractMediaFromBackgroundWebContents) {
+  std::vector<mojom::PlaylistItemPtr> items;
+  // Empty items - shouldn't use background web contents
+  EXPECT_FALSE(
+      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
+
+  // Add an item with https:// media source - shouldn't use background web
+  // contents
+  items.push_back(mojom::PlaylistItem::New());
+  items.back()->media_source = GURL("https://foo.com/");
+  EXPECT_FALSE(
+      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
+
+  // Items contain an item with MediaSource-backed blob: - should use background
+  // web contents
+  items.push_back(mojom::PlaylistItem::New());
+  items.back()->page_source = GURL("https://youtube.com");
+  items.back()->media_source = GURL("blob:https://youtube.com/123");
+  items.back()->is_blob_from_media_source = true;
+  EXPECT_TRUE(
+      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
+}
+
 class PlaylistServiceWithFakeUAUnitTest : public PlaylistServiceUnitTest {
  public:
   PlaylistServiceWithFakeUAUnitTest()

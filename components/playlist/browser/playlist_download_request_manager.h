@@ -102,6 +102,8 @@ class PlaylistDownloadRequestManager {
       const mojom::PlaylistItemPtr& item) const;
 
  private:
+  friend class PlaylistDownloadRequestManagerUnitTest;
+
   // Calling this will trigger loading |url| on a web contents,
   // and we'll inject javascript on the contents to get a list of
   // media files on the page.
@@ -114,11 +116,8 @@ class PlaylistDownloadRequestManager {
       GURL url,
       base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
       base::Value value);
-  void ProcessFoundMedia(
-      content::WebContents* contents,
-      GURL url,
-      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
-      base::Value value);
+  std::vector<mojom::PlaylistItemPtr> ProcessFoundMedia(base::Value value,
+                                                        GURL page_url);
 
   // Pop a task from queue and detect media from the page if any.
   void FetchPendingRequest();
