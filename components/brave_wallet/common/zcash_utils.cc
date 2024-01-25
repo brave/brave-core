@@ -171,17 +171,23 @@ std::optional<std::string> ExtractTransparentPart(
     const std::string& unified_address,
     bool is_testnet) {
   auto bech_result = decode_bech32(unified_address);
+  if (!bech_result->is_ok()) {
+    VLOG(0) << std::string(bech_result->error_message());
+    return std::nullopt;
+  }
 
-  if (bech_result.variant != Bech32DecodeVariant::Bech32m) {
+  auto unwrapped = bech_result->unwrap();
+
+  if (unwrapped.variant != Bech32DecodeVariant::Bech32m) {
     return std::nullopt;
   }
 
   std::string expected_hrp = is_testnet ? "utest" : "u";
-  if (bech_result.hrp != expected_hrp) {
+  if (unwrapped.hrp != expected_hrp) {
     return std::nullopt;
   }
 
-  auto reverted = RevertF4Jumble(bech_result.data);
+  auto reverted = RevertF4Jumble(unwrapped.data);
   // HRP with 16 bytes padding which is appended to the end of message
   if (!reverted || reverted->size() < kPaddedHrpSize) {
     return std::nullopt;
