@@ -176,18 +176,18 @@ std::optional<std::string> ExtractTransparentPart(
     return std::nullopt;
   }
 
-  auto unwrapped = bech_result->unwrap();
+  const auto& unwrapped = bech_result->unwrap();
 
-  if (unwrapped.variant != Bech32DecodeVariant::Bech32m) {
+  if (unwrapped.variant() != Bech32DecodeVariant::Bech32m) {
     return std::nullopt;
   }
 
   std::string expected_hrp = is_testnet ? "utest" : "u";
-  if (unwrapped.hrp != expected_hrp) {
+  if (unwrapped.hrp() != expected_hrp) {
     return std::nullopt;
   }
 
-  auto reverted = RevertF4Jumble(unwrapped.data);
+  auto reverted = RevertF4Jumble(unwrapped.data());
   // HRP with 16 bytes padding which is appended to the end of message
   if (!reverted || reverted->size() < kPaddedHrpSize) {
     return std::nullopt;
