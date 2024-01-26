@@ -111,10 +111,12 @@ PermissionRequest::PermissionRequest(
 PermissionRequest::PermissionRequest(
     PermissionRequestData request_data,
     PermissionDecidedCallback permission_decided_callback,
-    base::OnceClosure delete_callback)
+    base::OnceClosure delete_callback,
+    bool uses_automatic_embargo)
     : PermissionRequest_ChromiumImpl(std::move(request_data),
                                      std::move(permission_decided_callback),
-                                     std::move(delete_callback)) {}
+                                     std::move(delete_callback),
+                                     uses_automatic_embargo) {}
 
 PermissionRequest::~PermissionRequest() = default;
 
