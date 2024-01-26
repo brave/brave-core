@@ -10,6 +10,7 @@
 
 #define NextSlide                             \
   SeekTo(base::TimeDelta seek_time) override; \
+  void RequestFullscreen() override;          \
   void NextSlide
 #define media_session_action_next_slide_handled_    \
   media_session_action_next_slide_handled_ = false; \

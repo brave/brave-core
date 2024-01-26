@@ -193,7 +193,14 @@ BraveVideoOverlayWindowViews::~BraveVideoOverlayWindowViews() = default;
 
 void BraveVideoOverlayWindowViews::SetUpViews() {
   VideoOverlayWindowViews::SetUpViews();
-  UpdateControlIcons();
+  // Use CloseImageButton in order to use the same style with the close button
+  fullscreen_button_ =
+      controls_container_view_->AddChildView(std::make_unique<CloseImageButton>(
+          base::BindRepeating(&BraveVideoOverlayWindowViews::RequestFullscreen,
+                              base::Unretained(this))));
+  fullscreen_button_->SetPaintToLayer(ui::LAYER_TEXTURED);
+  fullscreen_button_->layer()->SetFillsBoundsOpaquely(false);
+  fullscreen_button_->layer()->SetName("FullscreenButton");
 
   timestamp_ =
       controls_container_view_->AddChildView(std::make_unique<views::Label>());
@@ -211,6 +218,8 @@ void BraveVideoOverlayWindowViews::SetUpViews() {
   // Before we get the media position, we should hide timestamp and seeker.
   timestamp_->SetVisible(false);
   seeker_->SetVisible(false);
+
+  UpdateControlIcons();
 }
 
 void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
@@ -235,12 +244,20 @@ void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
                          close_controls_view_->width(),
                      kTopControlSpacing - close_button_insets.top()});
 
+  fullscreen_button_->SetSize(close_button_size);
+  fullscreen_button_->SetPosition(
+      {close_controls_view_->origin().x() -
+           (kTopControlSpacing - close_button_insets.left() -
+            fullscreen_button_->GetInsets().right()) -
+           fullscreen_button_->size().width(),
+       close_controls_view_->origin().y()});
+
   if (back_to_tab_label_button_) {
     back_to_tab_label_button_->SetMinSize(close_button_size);
     back_to_tab_label_button_->SetMaxSize(close_button_size);
     back_to_tab_label_button_->SetSize(close_button_size);
     back_to_tab_label_button_->SetPosition(
-        {close_controls_view_->origin().x() -
+        {fullscreen_button_->origin().x() -
              (kTopControlSpacing - close_button_insets.left() -
               back_to_tab_label_button_->GetInsets().right()) -
              back_to_tab_label_button_->size().width(),
@@ -303,6 +320,11 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
       views::Button::STATE_NORMAL,
       ui::ImageModel::FromVectorIcon(kLeoCloseIcon, kColorPipWindowForeground,
                                      kTopControlIconSize));
+  fullscreen_button_->SetImageModel(
+      views::Button::STATE_NORMAL,
+      ui::ImageModel::FromVectorIcon(kLeoFullscreenOnIcon,
+                                     kColorPipWindowForeground,
+                                     kTopControlIconSize));
 
   if (back_to_tab_label_button_) {
     back_to_tab_label_button_->SetImageModel(
@@ -342,6 +364,10 @@ bool BraveVideoOverlayWindowViews::ControlsHitTestContainsPoint(
   gfx::Point point_in_seeker = views::View::ConvertPointToTarget(
       seeker_->parent(), seeker_.get(), point);
   if (seeker_->HitTestPoint(point_in_seeker)) {
+    return true;
+  }
+
+  if (fullscreen_button_->GetMirroredBounds().Contains(point)) {
     return true;
   }
 
@@ -496,4 +522,8 @@ void BraveVideoOverlayWindowViews::UpdateTimestampPeriodically() {
   } else {
     timestamp_update_timer_.Stop();
   }
+}
+
+void BraveVideoOverlayWindowViews::RequestFullscreen() {
+  controller_->RequestFullscreen();
 }

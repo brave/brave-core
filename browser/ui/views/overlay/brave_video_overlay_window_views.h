@@ -16,6 +16,8 @@ namespace views {
 class Label;
 }  // namespace views
 
+class OverlayWindowImageButton;
+
 class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews,
                                      public views::SliderListener {
  public:
@@ -54,11 +56,14 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews,
   // ourselves.
   void UpdateTimestampPeriodically();
 
+  void RequestFullscreen();
+
   std::optional<media_session::MediaPosition> media_position_;
   base::RepeatingTimer timestamp_update_timer_;
 
   PlaybackState playback_state_ = PlaybackState::kEndOfVideo;
 
+  raw_ptr<OverlayWindowImageButton> fullscreen_button_ = nullptr;
   raw_ptr<views::Label> timestamp_ = nullptr;
   raw_ptr<views::Slider> seeker_ = nullptr;
   bool is_seeking_ = false;

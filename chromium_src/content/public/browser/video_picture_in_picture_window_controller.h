@@ -8,6 +8,7 @@
 
 #define NextSlide                      \
   SeekTo(base::TimeDelta seek_time) {} \
+  virtual void RequestFullscreen() {}  \
   virtual void NextSlide
 
 #include "src/content/public/browser/video_picture_in_picture_window_controller.h"  // IWYU pragma: export
