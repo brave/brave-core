@@ -229,9 +229,7 @@ export const BalanceAndChangeWrapper = styled(Column)`
   }
 `
 
-export const CircleButton = styled(WalletButton)<{
-  marginRight?: number
-}>`
+export const PortfolioActionButton = styled(WalletButton)`
   --button-border-color: ${leo.color.divider.interactive};
   display: flex;
   align-items: center;
@@ -240,16 +238,22 @@ export const CircleButton = styled(WalletButton)<{
   outline: none;
   background: none;
   background-color: ${leo.color.container.background};
-  border-radius: 100%;
+  border-radius: 8px;
   border: 1px solid var(--button-border-color);
   height: 36px;
   width: 36px;
-  margin-right: ${(p) => (p.marginRight !== undefined ? p.marginRight : 0)}px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    height: 28px;
+    width: 28px;
+  }
 `
 
 export const ButtonIcon = styled(Icon)`
   --leo-icon-size: 18px;
   color: ${leo.color.icon.interactive};
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    --leo-icon-size: 16px;
+  }
 `
 
 export const SearchBarWrapper = styled(Row)<{

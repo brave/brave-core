@@ -59,7 +59,7 @@ import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 import {
   ButtonIcon,
-  CircleButton,
+  PortfolioActionButton,
   SearchBarWrapper,
   ControlBarWrapper,
   ContentWrapper
@@ -499,35 +499,29 @@ export const Nfts = (props: Props) => {
                   autoFocus={true}
                 />
               </SearchBarWrapper>
-              <CircleButton onClick={onCloseSearchBar}>
+              <PortfolioActionButton onClick={onCloseSearchBar}>
                 <ButtonIcon name='close' />
-              </CircleButton>
+              </PortfolioActionButton>
             </Row>
           ) : (
-            <Row width='unset'>
-              <CircleButton
-                marginRight={12}
-                onClick={() => setShowSearchBar(true)}
-              >
+            <Row
+              width='unset'
+              gap='12px'
+            >
+              <PortfolioActionButton onClick={() => setShowSearchBar(true)}>
                 <ButtonIcon name='search' />
-              </CircleButton>
+              </PortfolioActionButton>
               {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 ? (
-                <CircleButton
-                  onClick={onClickIpfsButton}
-                  marginRight={12}
-                >
+                <PortfolioActionButton onClick={onClickIpfsButton}>
                   <ButtonIcon name='product-ipfs-outline' />
-                </CircleButton>
+                </PortfolioActionButton>
               ) : null}
-              <CircleButton
-                onClick={toggleShowAddNftModal}
-                marginRight={12}
-              >
+              <PortfolioActionButton onClick={toggleShowAddNftModal}>
                 <ButtonIcon name='plus-add' />
-              </CircleButton>
-              <CircleButton onClick={onShowPortfolioSettings}>
+              </PortfolioActionButton>
+              <PortfolioActionButton onClick={onShowPortfolioSettings}>
                 <ButtonIcon name='filter-settings' />
-              </CircleButton>
+              </PortfolioActionButton>
             </Row>
           )}
         </Row>

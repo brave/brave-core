@@ -90,7 +90,7 @@ import {
 } from '../../../../../shared/style'
 import {
   FilterTokenRow,
-  CircleButton,
+  PortfolioActionButton,
   ButtonIcon,
   SearchBarWrapper,
   ControlBarWrapper,
@@ -720,33 +720,32 @@ export const TokenLists = ({
             )}
             {showSearchBar && (
               <Row width='unset'>
-                <CircleButton onClick={onCloseSearchBar}>
+                <PortfolioActionButton onClick={onCloseSearchBar}>
                   <ButtonIcon name='close' />
-                </CircleButton>
+                </PortfolioActionButton>
               </Row>
             )}
             {!showSearchBar && (
-              <Row width='unset'>
+              <Row
+                width='unset'
+                gap='12px'
+              >
                 {!showEmptyState && (
                   <SearchButtonWrapper width='unset'>
-                    <CircleButton
-                      marginRight={12}
+                    <PortfolioActionButton
                       onClick={() => setShowSearchBar(true)}
                     >
                       <ButtonIcon name='search' />
-                    </CircleButton>
+                    </PortfolioActionButton>
                   </SearchButtonWrapper>
                 )}
-                <CircleButton
-                  marginRight={12}
-                  onClick={showAddAssetsModal}
-                >
+                <PortfolioActionButton onClick={showAddAssetsModal}>
                   <ButtonIcon name='list-settings' />
-                </CircleButton>
+                </PortfolioActionButton>
 
-                <CircleButton onClick={onShowPortfolioSettings}>
+                <PortfolioActionButton onClick={onShowPortfolioSettings}>
                   <ButtonIcon name='filter-settings' />
-                </CircleButton>
+                </PortfolioActionButton>
               </Row>
             )}
           </Row>
