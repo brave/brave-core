@@ -160,6 +160,7 @@ provideStrings({
   braveWalletProceedButton: 'Proceed',
 
   // Onboarding - Welcome
+  braveWalletWelcomeRestoreButton: 'Restore',
   braveWalletWelcomeTitle: 'Browser native. Self-custody. And multi-chain.',
   braveWalletWelcomeDescription:
     'Take control of your crypto and NFTs. ' +
@@ -177,7 +178,8 @@ provideStrings({
 
   // Onboarding - Disclosures
   braveWalletDisclosuresTitle: 'Before we begin',
-  braveWalletDisclosuresDescription: 'We require that you acknowledge the items below',
+  braveWalletDisclosuresDescription:
+    'We require that you acknowledge the items below',
   braveWalletSelfCustodyDisclosureCheckboxText:
     'I understand this is a self-custody wallet, ' +
     'and that I alone am responsible for any associated funds, ' +
@@ -281,7 +283,7 @@ provideStrings({
   // Create Password
   braveWalletCreatePasswordTitle: 'Create a new password',
   braveWalletCreatePasswordDescription:
-    "You'll use this password each time you access your wallet.",
+    "You'll use this password to access your wallet.",
   braveWalletCreatePasswordInput: 'Enter new password',
   braveWalletConfirmPasswordInput: 'Re-enter password',
   braveWalletCreatePasswordError: "Password criteria doesn't match.",
@@ -295,8 +297,8 @@ provideStrings({
   braveWalletCreatingWallet: 'Creating Wallet...',
 
   // Create Password - Stength Tooltip
-  braveWalletPasswordStrengthTooltipHeading: 'At least:',
-  braveWalletPasswordStrengthTooltipIsLongEnough: '8 characters',
+  braveWalletPasswordStrengthTooltipHeading: 'Password should have:',
+  braveWalletPasswordStrengthTooltipIsLongEnough: 'At least 8 characters',
 
   // Onboarding Success
   braveWalletOnboardingSuccessTitle:

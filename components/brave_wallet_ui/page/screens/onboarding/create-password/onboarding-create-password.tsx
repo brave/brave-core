@@ -18,30 +18,20 @@ import {
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
+import { autoLockOptions } from '../../../../options/auto-lock-options'
 
 // components
-import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button/index'
 import {
   NewPasswordInput,
   NewPasswordValues
 } from '../../../../components/shared/password-input/new-password-input'
-import {
-  OnboardingStepsNavigation //
-} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CreatingWallet } from '../creating_wallet/creating_wallet'
+import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
+import { AutoLockSettings } from '../components/auto-lock-settings/auto-lock-settings'
 
 // styles
-import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper,
-  TitleAndDescriptionContainer
-} from '../onboarding.style'
+import { ContinueButton, NextButtonRow } from '../onboarding.style'
+import { VerticalSpace } from '../../../../components/shared/style'
 
 interface OnboardingCreatePasswordProps {
   onWalletCreated: () => void
@@ -56,6 +46,9 @@ export const OnboardingCreatePassword = ({
   // state
   const [isValid, setIsValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
+  const [autoLockDuration, setAutoLockDuration] = React.useState(
+    autoLockOptions[0].value
+  )
 
   // mutations
   const [createWallet, { isLoading: isCreatingWallet }] =
@@ -99,35 +92,36 @@ export const OnboardingCreatePassword = ({
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          <OnboardingStepsNavigation preventSkipAhead />
+    <OnboardingContentLayout
+      title={getLocale('braveWalletCreatePasswordTitle')}
+      subTitle={getLocale('braveWalletCreatePasswordDescription')}
+    >
+      <VerticalSpace space='68px' />
 
-          <TitleAndDescriptionContainer>
-            <Title>{getLocale('braveWalletCreatePasswordTitle')}</Title>
-            <Description>
-              {getLocale('braveWalletCreatePasswordDescription')}
-            </Description>
-          </TitleAndDescriptionContainer>
+      <NewPasswordInput
+        autoFocus={true}
+        onSubmit={nextStep}
+        onChange={handlePasswordChange}
+      />
 
-          <NewPasswordInput
-            autoFocus={true}
-            onSubmit={nextStep}
-            onChange={handlePasswordChange}
-          />
+      <VerticalSpace space='68px' />
 
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonNext')}
-              onSubmit={nextStep}
-              disabled={!isValid}
-            />
-          </NextButtonRow>
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+      <AutoLockSettings
+        options={autoLockOptions}
+        value={autoLockDuration}
+        onChange={setAutoLockDuration}
+      />
+      <VerticalSpace space='24px' />
+
+      <NextButtonRow>
+        <ContinueButton
+          onClick={nextStep}
+          disabled={!isValid}
+        >
+          {getLocale('braveWalletButtonNext')}
+        </ContinueButton>
+      </NextButtonRow>
+    </OnboardingContentLayout>
   )
 }
 

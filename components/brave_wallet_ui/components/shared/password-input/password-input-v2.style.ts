@@ -17,7 +17,9 @@ export const Input = styled.input<{ hasError: boolean }>`
   box-shadow: none;
   background-color: ${leo.color.container.highlight};
   border: ${(p) =>
-    p.hasError ? `1px solid ${leo.color.systemfeedback.errorIcon}` : 'none'};
+    p.hasError
+      ? `2px solid ${leo.color.systemfeedback.errorIcon}`
+      : `2px solid transparent`};
   padding: 10px 8px 10px 16px;
   border-radius: 8px;
   font-family: Poppins;
@@ -29,11 +31,15 @@ export const Input = styled.input<{ hasError: boolean }>`
   color: ${leo.color.text.primary};
 
   ::placeholder {
-    color: ${leo.color.text.secondary};
+    color: ${leo.color.text.tertiary};
   }
 
-  :focus {
+  :focus, :focus-visible {
     outline: none;
+    border: ${(p) =>
+      p.hasError
+        ? `2px solid ${leo.color.systemfeedback.errorIcon}`
+        : `2px solid ${leo.color.text.interactive}`};
   }
 
   ::-webkit-inner-spin-button {
@@ -45,6 +51,21 @@ export const Input = styled.input<{ hasError: boolean }>`
     -webkit-appearance: none;
     margin: 0;
   }
+`
+
+export const InputLabel = styled.label`
+  font-family: 'Inter Variable', 'Poppins';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+  color: ${leo.color.text.primary};
+  margin-bottom: 4px;
+`
+
+export const Asterisk = styled.span`
+  color: ${leo.color.systemfeedback.errorIcon};
+  margin-left: 4px;
 `
 
 export const ErrorText = styled(Text)`

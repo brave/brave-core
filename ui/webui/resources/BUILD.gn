@@ -371,8 +371,8 @@ leo_icons = [
   "phantom-color.svg",
   "coinbase-color.svg",
   "trezor-color.svg",
-  "wallet-ledger.svg"
-
+  "wallet-ledger.svg",
+  "close-circle.svg"
 ]
 
 if (enable_brave_vpn_panel) {

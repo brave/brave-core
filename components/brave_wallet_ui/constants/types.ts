@@ -1054,6 +1054,11 @@ export interface BraveRewardsInfo {
   accountLink: string | undefined
 }
 
+export type AutoLockOption = {
+  value: number
+  label: string
+} 
+
 export type BitcoinBalances = {
   availableBalance: string
   pendingBalance: string

@@ -4,17 +4,27 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 
 import { PasswordStrengthTooltip } from './password-strength-tooltip'
 
 export const _PasswordStrengthTooltip = () => {
+  const [isVisible, setIsVisible] = React.useState(false)
+
   return (
-    <PasswordStrengthTooltip
-      isVisible
-      passwordStrength={{ isLongEnough: true }}
-    >
-      Hover
-    </PasswordStrengthTooltip>
+    <>
+      <PasswordStrengthTooltip
+        isVisible={isVisible}
+        passwordStrength={{ isLongEnough: true }}
+      />
+      <Button
+        onClick={() => {
+          setIsVisible(!isVisible)
+        }}
+      >
+        Hover
+      </Button>
+    </>
   )
 }
 
@@ -24,7 +34,7 @@ export const _PasswordStrengthTooltipMini = () => {
   return (
     <div style={{ width: 30 }}>
       <PasswordStrengthTooltip
-        isVisible
+        isVisible={true}
         passwordStrength={{ isLongEnough: true }}
       >
         Hover

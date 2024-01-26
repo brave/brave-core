@@ -4,6 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { DefaultTheme, ThemedStyledProps } from 'styled-components'
+import LeoProgressBar from '@brave/leo/react/progressBar'
+import * as leo from '@brave/leo/tokens/css'
 
 export const BarAndMessageContainer = styled.div`
   width: 100%;
@@ -12,43 +14,16 @@ export const BarAndMessageContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 12px;
+  padding: 0px;
+  gap: 16px;
 `
 
-// outer
-export const Bar = styled.div`
-  position: relative;
-  flex: 1;
-  box-sizing: border-box;
-  height: 8px;
-  border-radius: 100px;
-  margin-right: 40px;
-`
-
-export const BarBackground = styled.div`
-  position: absolute;
-  box-sizing: border-box;
-  height: 8px;
-  background-color: ${(p) => p.theme.color.disabled};
-  opacity: 0.4;
-  border-radius: 100px;
+export const ProgressBar = styled(LeoProgressBar)<{ criteria: boolean[] }>`
   width: 100%;
-  flex: 1;
-`
-
-// inner
-export const BarProgress = styled.div<{ criteria: boolean[] }>`
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  height: 8px;
-  border-radius: 100px;
-
-  width: ${(p) =>
-    (p.criteria.filter((c) => !!c).length / p.criteria.length) * 100}%;
-  background-color: ${(p) => {
-    return getCriteriaPercentColor(p)
-  }};
+  --leo-progressbar-height: 4px;
+  --leo-progressbar-radius: ${leo.spacing.m};
+  --leo-progressbar-color: ${(p) => getCriteriaPercentColor(p)};
+  --leo-progressbar-background-color: ${leo.color.container.highlight};
 `
 
 // floating tooltip positioner
@@ -83,8 +58,8 @@ const getCriteriaPercentColor = (
   const percentComplete =
     (p.criteria.filter((c) => !!c).length / p.criteria.length) * 100
   return percentComplete === 100
-    ? p.theme.color.successBorder
+    ? leo.color.systemfeedback.successIcon
     : percentComplete < 50
-    ? p.theme.color.errorIcon
-    : p.theme.color.warningIcon
+    ? leo.color.systemfeedback.errorIcon
+    : leo.color.systemfeedback.warningIcon
 }
