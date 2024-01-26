@@ -11,15 +11,15 @@ TEST(AdBlockComponentServiceTest, UserModelLanguages) {
   catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid", "https://brave.com", "Testing Filter List #1", {"fr"},
       "https://support.brave.com", "Filter list for testing purposes", false,
-      false, false, 0, "componentid", "base64publickey"));
+      false, false, 0, {}, "componentid", "base64publickey"));
   catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid", "https://brave.com", "Testing Filter List #2", {"en"},
       "https://support.brave.com", "Filter list for testing purposes", false,
-      false, false, 0, "componentid", "base64publickey"));
+      false, false, 0, {}, "componentid", "base64publickey"));
   catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid", "https://brave.com", "Testing Filter List #2", {"fr"},
       "https://support.brave.com", "Filter list for testing purposes", false,
-      false, false, 0, "componentid", "base64publickey"));
+      false, false, 0, {}, "componentid", "base64publickey"));
 
   std::vector<std::string> languages({"fr", "fR", "fr-FR", "fr-ca"});
   std::for_each(
@@ -63,4 +63,5 @@ TEST(AdBlockComponentServiceTest, MissingFieldDefaultValues) {
   ASSERT_EQ(catalog[0].default_enabled, false);
   ASSERT_EQ(catalog[0].first_party_protections, false);
   ASSERT_EQ(catalog[0].permission_mask, 0);
+  ASSERT_EQ(catalog[0].platforms.size(), 0UL);
 }

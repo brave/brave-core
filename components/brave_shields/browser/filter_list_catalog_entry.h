@@ -35,6 +35,7 @@ class FilterListCatalogEntry {
                          bool default_enabled,
                          bool first_party_protections,
                          uint8_t permission_mask,
+                         const std::vector<std::string>& platforms,
                          const std::string& component_id,
                          const std::string& base64_public_key);
   explicit FilterListCatalogEntry(const FilterListCatalogEntry& other);
@@ -52,12 +53,15 @@ class FilterListCatalogEntry {
   bool default_enabled = false;
   bool first_party_protections = false;
   uint8_t permission_mask = 0;
+  std::vector<std::string> platforms = {};
 
   std::string component_id;
   std::string base64_public_key;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<FilterListCatalogEntry>*);
+
+  bool SupportsCurrentPlatform() const;
 };
 
 std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(

@@ -20,6 +20,7 @@
 @property(nonatomic) bool defaultEnabled;
 @property(nonatomic) bool firstPartyProtections;
 @property(nonatomic) uint8_t permissionMask;
+@property(nonatomic, copy) NSArray<NSString*>* platforms;
 @property(nonatomic, copy) NSString* componentId;
 @property(nonatomic, copy) NSString* base64PublicKey;
 @end
@@ -39,6 +40,7 @@
     self.defaultEnabled = entry.default_enabled;
     self.firstPartyProtections = entry.first_party_protections;
     self.permissionMask = entry.permission_mask;
+    self.platforms = brave::vector_to_ns<std::string>(entry.platforms);
     self.componentId = base::SysUTF8ToNSString(entry.component_id);
     self.base64PublicKey = base::SysUTF8ToNSString(entry.base64_public_key);
   }
@@ -53,6 +55,7 @@
       base::SysNSStringToUTF8(self.supportURL),
       base::SysNSStringToUTF8(self.desc), self.hidden, self.defaultEnabled,
       self.firstPartyProtections, self.permissionMask,
+      brave::ns_to_vector<std::string>(self.platforms),
       base::SysNSStringToUTF8(self.componentId),
       base::SysNSStringToUTF8(self.base64PublicKey));
 }

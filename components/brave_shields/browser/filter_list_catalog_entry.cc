@@ -85,6 +85,20 @@ bool GetUint8(const base::Value* value, uint8_t* field) {
   }
 }
 
+#if BUILDFLAG(IS_LINUX)
+constexpr char kCurrentPlatform[] = "LINUX";
+#elif BUILDFLAG(IS_WIN)
+constexpr char kCurrentPlatform[] = "WINDOWS";
+#elif BUILDFLAG(IS_MAC)
+constexpr char kCurrentPlatform[] = "MAC";
+#elif BUILDFLAG(IS_ANDROID)
+constexpr char kCurrentPlatform[] = "ANDROID";
+#elif BUILDFLAG(IS_IOS)
+constexpr char kCurrentPlatform[] = "IOS";
+#else
+constexpr char kCurrentPlatform[] = "OTHER";
+#endif
+
 }  // namespace
 
 namespace brave_shields {
@@ -102,6 +116,7 @@ FilterListCatalogEntry::FilterListCatalogEntry(
     bool default_enabled,
     bool first_party_protections,
     uint8_t permission_mask,
+    const std::vector<std::string>& platforms,
     const std::string& component_id,
     const std::string& base64_public_key)
     : uuid(uuid),
@@ -114,6 +129,7 @@ FilterListCatalogEntry::FilterListCatalogEntry(
       default_enabled(default_enabled),
       first_party_protections(first_party_protections),
       permission_mask(permission_mask),
+      platforms(platforms),
       component_id(component_id),
       base64_public_key(base64_public_key) {}
 
@@ -146,6 +162,17 @@ void FilterListCatalogEntry::RegisterJSONConverter(
   converter->RegisterCustomValueField(
       "list_text_component", &FilterListCatalogEntry::base64_public_key,
       &GetBase64PublicKey);
+  converter->RegisterCustomValueField<std::vector<std::string>>(
+      "platforms", &FilterListCatalogEntry::platforms, &GetStringVector);
+}
+
+bool FilterListCatalogEntry::SupportsCurrentPlatform() const {
+  if (platforms.empty()) {
+    return true;
+  }
+
+  return std::find(platforms.begin(), platforms.end(), kCurrentPlatform) !=
+         platforms.end();
 }
 
 std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(

@@ -224,7 +224,7 @@ bool AdBlockServiceTest::InstallDefaultAdBlockComponent(
       ->component_service_manager()
       ->SetFilterListCatalog({brave_shields::FilterListCatalogEntry(
           "default", "", "Brave Ad Block Updater", {}, "",
-          "Default lists for Brave Browser", true, true, true, 0,
+          "Default lists for Brave Browser", true, true, true, 0, {},
           kDefaultAdBlockComponentTestId,
           kDefaultAdBlockComponentTest64PublicKey)});
   const extensions::Extension* ad_block_component = LoadExtensionAsComponent(
@@ -262,7 +262,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
       "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
-      "Removes advertisements from French websites", false, false, false, 0,
+      "Removes advertisements from French websites", false, false, false, 0, {},
       kRegionalAdBlockComponentTestId,
       kRegionalAdBlockComponentTest64PublicKey));
   g_brave_browser_process->ad_block_service()
@@ -1908,11 +1908,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, HiddenListsNotPresented) {
   std::vector<brave_shields::FilterListCatalogEntry> filter_list_catalog;
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid1", "https://example.com", "Hidden list", {},
-      "https://support.example.com", "first list", true, false, false, 0,
+      "https://support.example.com", "first list", true, false, false, 0, {},
       "testid1", "pubkey1"));
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid2", "https://example.com", "Normal list", {},
-      "https://support.example.com", "second list", false, false, false, 0,
+      "https://support.example.com", "second list", false, false, false, 0, {},
       "testid2", "pubkey2"));
   g_brave_browser_process->ad_block_service()
       ->component_service_manager()

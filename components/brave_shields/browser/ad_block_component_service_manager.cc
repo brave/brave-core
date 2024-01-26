@@ -197,10 +197,12 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   // catalog
   auto catalog_entry =
       brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
-  if (catalog_entry != filter_list_catalog_.end() &&
-      catalog_entry->default_enabled) {
-    // prefer any user setting for the list, unless it's hidden
-    if (!list_touched || catalog_entry->hidden) {
+  if (catalog_entry != filter_list_catalog_.end()) {
+    if (!catalog_entry->SupportsCurrentPlatform()) {
+      return false;
+    }
+    // prefer any user setting for a default-enabled list, unless it's hidden
+    if (catalog_entry->default_enabled && (!list_touched || catalog_entry->hidden)) {
       return true;
     }
   }
@@ -269,7 +271,7 @@ base::Value::List AdBlockComponentServiceManager::GetRegionalLists() {
 
   base::Value::List list;
   for (const auto& region_list : filter_list_catalog_) {
-    if (region_list.hidden) {
+    if (region_list.hidden || !region_list.SupportsCurrentPlatform()) {
       continue;
     }
     // Most settings come directly from the regional catalog from

@@ -22,6 +22,7 @@ OBJC_EXPORT
 @property(readonly) bool defaultEnabled;
 @property(readonly) bool firstPartyProtections;
 @property(readonly) uint8_t permissionMask;
+@property(readonly) NSArray<NSString*>* platforms;
 @property(readonly) NSString* componentId;
 @property(readonly) NSString* base64PublicKey;
 - (instancetype)init NS_UNAVAILABLE;
