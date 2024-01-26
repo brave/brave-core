@@ -24,6 +24,8 @@ const char kSyncFailedDecryptSeedNoticeDismissed[] =
 const char kSyncAccountDeletedNoticePending[] =
     "brave_sync_v2.account_deleted_notice_pending";
 
+const char kSyncLeaveChainDetails[] = "brave_sync_v2.diag.leave_chain_details";
+
 // Deprecated
 // ============================================================================
 const char kSyncSeed[] = "brave_sync.seed";
@@ -69,6 +71,7 @@ void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
   registry->RegisterBooleanPref(kSyncFailedDecryptSeedNoticeDismissed, false);
   registry->RegisterBooleanPref(kSyncAccountDeletedNoticePending, false);
+  registry->RegisterStringPref(kSyncLeaveChainDetails, std::string());
 }
 
 // static
@@ -161,6 +164,19 @@ bool Prefs::IsSyncAccountDeletedNoticePending() const {
 
 void Prefs::SetSyncAccountDeletedNoticePending(bool is_pending) {
   pref_service_->SetBoolean(kSyncAccountDeletedNoticePending, is_pending);
+}
+
+void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
+  std::string details = pref_service_->GetString(kSyncLeaveChainDetails);
+
+  logging::LogMessage lm(file, line, logging::LOGGING_INFO);
+  lm.stream() << " " << func << std::endl;
+
+  pref_service_->SetString(kSyncLeaveChainDetails, details + lm.str());
+}
+
+void Prefs::ClearLeaveChainDetails() {
+  pref_service_->ClearPref(kSyncLeaveChainDetails);
 }
 
 void Prefs::Clear() {

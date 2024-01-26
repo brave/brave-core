@@ -18,6 +18,8 @@ namespace brave_sync {
 void ResetSync(syncer::BraveSyncServiceImpl* sync_service_impl,
                syncer::DeviceInfoSyncService* device_info_service,
                base::OnceClosure on_reset_done) {
+  sync_service_impl->modifying_prefs().AddLeaveChainDetail(__FILE__, __LINE__,
+                                                           __func__);
   if (sync_service_impl->GetTransportState() !=
       syncer::SyncService::TransportState::ACTIVE) {
     sync_service_impl->OnSelfDeviceInfoDeleted(std::move(on_reset_done));

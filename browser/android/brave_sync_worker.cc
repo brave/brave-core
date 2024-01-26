@@ -163,6 +163,9 @@ void BraveSyncWorker::ResetSync(JNIEnv* env) {
   if (!sync_service)
     return;
 
+  sync_service->modifying_prefs().AddLeaveChainDetail(__FILE__, __LINE__,
+                                                      __func__);
+
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   brave_sync::ResetSync(sync_service, device_info_sync_service,
@@ -257,6 +260,9 @@ void BraveSyncWorker::PermanentlyDeleteAccount(
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   auto* sync_service = GetSyncService();
   CHECK_NE(sync_service, nullptr);
+
+  sync_service->modifying_prefs().AddLeaveChainDetail(__FILE__, __LINE__,
+                                                      __func__);
 
   base::android::ScopedJavaGlobalRef<jobject> java_callback;
   java_callback.Reset(env, callback);

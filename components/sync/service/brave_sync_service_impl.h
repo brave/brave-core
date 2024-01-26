@@ -61,6 +61,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void Initialize() override;
 
   const brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
+  brave_sync::Prefs& modifying_prefs() { return brave_sync_prefs_; }
 
   void PermanentlyDeleteAccount(
       base::OnceCallback<void(const SyncProtocolError&)> callback);
