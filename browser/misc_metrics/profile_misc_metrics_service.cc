@@ -5,8 +5,10 @@
 
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
+#include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
+#include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -48,6 +50,13 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     extension_metrics_ = std::make_unique<ExtensionMetrics>(extension_registry);
   }
 #endif
+  auto* personal_data_manager =
+      autofill::PersonalDataManagerFactory::GetInstance()->GetForBrowserContext(
+          context);
+  if (personal_data_manager) {
+    autofill_metrics_ =
+        std::make_unique<AutofillMetrics>(personal_data_manager);
+  }
 }
 
 ProfileMiscMetricsService::~ProfileMiscMetricsService() = default;

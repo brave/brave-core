@@ -13,6 +13,10 @@
 
 class SearchEngineTracker;
 
+namespace autofill {
+class PersonalDataManager;
+}
+
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -34,6 +38,7 @@ class MiscAndroidMetrics;
 #else
 class ExtensionMetrics;
 #endif
+class AutofillMetrics;
 class LanguageMetrics;
 class PageMetrics;
 
@@ -54,6 +59,7 @@ class ProfileMiscMetricsService : public KeyedService {
 #endif
 
  private:
+  std::unique_ptr<AutofillMetrics> autofill_metrics_ = nullptr;
   std::unique_ptr<LanguageMetrics> language_metrics_ = nullptr;
   std::unique_ptr<PageMetrics> page_metrics_ = nullptr;
 #if BUILDFLAG(IS_ANDROID)
