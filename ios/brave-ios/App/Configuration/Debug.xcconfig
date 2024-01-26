@@ -14,9 +14,12 @@ MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).BrowserBeta
 // Flag to indicate if we want to include the debug settings bundle or not
 INCLUDE_SETTINGS_BUNDLE = YES
 
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG MOZ_CHANNEL_DEBUG
+
 // Defines Swift Flags, (used as #if/#endif) inside *Swift* code
 // BASE 'inheritence' at end, due to dynamic nature of those flags
-OTHER_SWIFT_FLAGS=-DMOZ_CHANNEL_DEBUG $(OTHER_SWIFT_FLAGS_BASE)
+// debug-prefix-map is used to fix the invalid source mapping with breakpoints & LLDB
+OTHER_SWIFT_FLAGS=$(brave_ios_debug_prefix_map_flag)
 
 ENABLE_TESTABILITY = YES
 

@@ -10,9 +10,7 @@
 brave_ios_marketing_version = 0.0
 brave_version_build = 0
 
-#include "../../../../out/current_link/args.xcconfig"
-
-OTHER_SWIFT_FLAGS_BASE=-DMOZ_TARGET_$(TARGET_NAME:upper)
+#include "../../../../../out/current_link/args.xcconfig"
 
 FRAMEWORK_BASE_BUNDLE_ID = com.brave
 BASE_BUNDLE_ID = $(FRAMEWORK_BASE_BUNDLE_ID).ios

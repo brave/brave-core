@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -456,3 +456,23 @@ if isNativeTalkEnabled {
 }
 
 package.targets.append(braveTarget)
+
+let iosRootDirectory = URL(string: #file)!.deletingLastPathComponent().absoluteString.dropLast()
+let isStripAbsolutePathsFromDebugSymbolsEnabled = {
+  do {
+    let args = try String(contentsOfFile: "\(iosRootDirectory)/../../../out/current_link/args.xcconfig")
+    return args.contains("brave_ios_debug_prefix_map_flag")
+  } catch {
+    fatalError("Didn't find args xcconfig file. Please run `scripts/bootstrap.sh`")
+  }
+}()
+
+if isStripAbsolutePathsFromDebugSymbolsEnabled {
+  for target in package.targets where target.type == .regular {
+    var settings = target.swiftSettings ?? []
+    settings.append(.unsafeFlags([
+      "-debug-prefix-map", "\(iosRootDirectory)=../../brave/ios/brave-ios"
+    ], .when(configuration: .debug)))
+    target.swiftSettings = settings
+  }
+}

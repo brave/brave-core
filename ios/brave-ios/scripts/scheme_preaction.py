@@ -152,6 +152,7 @@ def GenerateXcodeConfig(output_dir):
     xcconfig = []
     pattern = re.compile("^([^ =]+) =\n*(.+)", re.MULTILINE)
     patch_number = "0"
+    strip_absolute_paths_from_debug_symbols = False
     with open(os.path.join(output_dir, 'args.gn'), 'r') as f:
         args = pattern.findall(f.read())
         for arg in args:
@@ -160,6 +161,9 @@ def GenerateXcodeConfig(output_dir):
             (key, value) = (arg[0].strip(), arg[1].strip('" '))
             if key == 'brave_ios_marketing_version_patch':
                 patch_number = value
+            if (key == 'strip_absolute_paths_from_debug_symbols'
+                    and value == 'true'):
+                strip_absolute_paths_from_debug_symbols = True
             if key in copy_args:
                 xcconfig.append('%s = %s' % (key, value))
     # Some special logic to avoid .0 patch versions in marketing versions
@@ -169,6 +173,19 @@ def GenerateXcodeConfig(output_dir):
     with open(os.path.join(output_dir, 'args.xcconfig'), 'w') as f:
         f.write('\n'.join(xcconfig))
         f.write('\nbrave_ios_marketing_version = %s' % marketing_version)
+        if strip_absolute_paths_from_debug_symbols:
+            debug_prefix_map = [
+                '-debug-prefix-map',
+                '%s=../../brave/ios/brave-ios' % os.path.normpath(
+                    os.path.join(src_dir, 'brave', 'ios', 'brave-ios'))
+            ]
+            f.write('\nbrave_ios_debug_prefix_map_flag = %s' %
+                    ' '.join(debug_prefix_map))
+    # Force Xcode to reload the SPM Package
+    subprocess.call([
+        'touch',
+        os.path.join(brave_root_dir, 'ios', 'brave-ios', 'Package.swift')
+    ])
 
 
 def CallNpm(cmd):

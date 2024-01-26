@@ -17,9 +17,7 @@ MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).BrowserBeta
 // Flag to indicate if we want to include the debug settings bundle or not
 INCLUDE_SETTINGS_BUNDLE = YES
 
-// Defines Swift Flags, (used as #if/#endif) inside *Swift* code
-// BASE 'inheritence' at end, due to dynamic nature of those flags
-OTHER_SWIFT_FLAGS=-DMOZ_CHANNEL_NIGHTLY $(OTHER_SWIFT_FLAGS_BASE)
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = MOZ_CHANNEL_NIGHTLY
 
 GCC_PREPROCESSOR_DEFINITIONS= DEBUG=1
 
