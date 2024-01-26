@@ -744,9 +744,20 @@ class SettingsViewController: TableViewController {
               UIPasteboard.general.setSecureString(AppStorageDebugComposer.compose(),
                                                    expirationDate: Date().addingTimeInterval(2.minutes))
             }
+            
+            let viewMoreDetails = UIAlertAction(title: Strings.viewAllVersionInfo, style: .default) { [unowned self, weak actionSheet] _ in
+              let versionController = ChromeWebViewController(privateBrowsing: false).then {
+                $0.loadURL("brave://version/?show-variations-cmd")
+              }
+              
+              actionSheet?.dismiss(animated: true, completion: {
+                self.present(versionController, animated: true)
+              })
+            }
 
             actionSheet.addAction(copyDebugInfoAction)
             actionSheet.addAction(copyAppInfoAction)
+            actionSheet.addAction(viewMoreDetails)
             actionSheet.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
             self.navigationController?.present(actionSheet, animated: true, completion: nil)
           }, cellClass: MultilineValue1Cell.self),
