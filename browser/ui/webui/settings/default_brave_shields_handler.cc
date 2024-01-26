@@ -101,6 +101,8 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
 
   content_settings_observation_.Observe(
       HostContentSettingsMapFactory::GetForProfile(profile_));
+  cookie_settings_observation_.Observe(
+      CookieSettingsFactory::GetForProfile(profile_).get());
 }
 
 void DefaultBraveShieldsHandler::OnContentSettingChanged(
@@ -127,6 +129,14 @@ void DefaultBraveShieldsHandler::OnContentSettingChanged(
     return;
   }
 
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("brave-shields-settings-changed");
+}
+
+void DefaultBraveShieldsHandler::OnThirdPartyCookieBlockingChanged(
+    bool block_third_party_cookies) {
   if (!IsJavascriptAllowed()) {
     return;
   }
