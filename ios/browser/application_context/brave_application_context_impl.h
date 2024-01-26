@@ -36,7 +36,6 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
 
   // ApplicationContextImpl
   ukm::UkmRecorder* GetUkmRecorder() override;
-  BrowserPolicyConnectorIOS* GetBrowserPolicyConnector() override;
   gcm::GCMDriver* GetGCMDriver() override;
 
   // BraveApplicationContextImpl
