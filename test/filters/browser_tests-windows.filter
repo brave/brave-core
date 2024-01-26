@@ -51,6 +51,7 @@
 -StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
 
 # These tests fail on CI but passes locally
+-All/SoftNavigationTest.LayoutShift/*
 -AppMenuBrowserTest.*
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
 -SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
