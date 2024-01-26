@@ -19,7 +19,8 @@ ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
 
   // When browser is restarted we reset to "initial" count. This will also get
   // set again in the Reset() function, called e.g. when component is updated.
-  count_to_branded_wallpaper_ = features::kInitialCountToBrandedWallpaper.Get();
+  count_to_branded_wallpaper_ =
+      features::kInitialCountToBrandedWallpaper.Get() - 1;
 
   // We also reset when a specific amount of time is elapsed when in SI mode
   timer_counts_reset_.Start(FROM_HERE, features::kResetCounterAfter.Get(), this,
@@ -97,7 +98,7 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
   count_to_branded_wallpaper_--;
   if (count_to_branded_wallpaper_ < 0) {
     // Reset count and randomize image index for next time.
-    count_to_branded_wallpaper_ = features::kCountToBrandedWallpaper.Get();
+    count_to_branded_wallpaper_ = features::kCountToBrandedWallpaper.Get() - 1;
 
     // Randomize SI campaign branded image index for next time.
     campaigns_current_branded_image_index_[current_campaign_index_] =
@@ -152,7 +153,7 @@ void ViewCounterModel::MaybeResetBrandedWallpaperCount() {
   if (!always_show_branded_wallpaper_ && show_branded_wallpaper_) {
     count_to_branded_wallpaper_ =
         std::min(count_to_branded_wallpaper_,
-                 features::kInitialCountToBrandedWallpaper.Get());
+                 features::kInitialCountToBrandedWallpaper.Get() - 1);
   }
 }
 
