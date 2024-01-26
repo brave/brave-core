@@ -941,7 +941,7 @@
           "ZeroDayFlag flag for product test",                                 \
           "This flag will be set through griffin to perform product testing",  \
           kOsAndroid,                                                          \
-          FEATURE_VALUE_TYPE(features::kBraveZeroDayFlagAndroid),              \
+          FEATURE_VALUE_TYPE(preferences::features::kBraveZeroDayFlagAndroid), \
       })                                                                       \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
