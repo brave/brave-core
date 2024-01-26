@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index 136695487f4e9a0c51b277858c66dd6acb661b45..ca014eb17bed7738dbc2bc1ea975b737470e8a57 100644
+index 136695487f4e9a0c51b277858c66dd6acb661b45..cc2a9e06ef96c66b308a3a628c9a5682a8f76120 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 @@ -86,7 +86,7 @@ public class NotificationPlatformBridge {
@@ -11,6 +11,15 @@ index 136695487f4e9a0c51b277858c66dd6acb661b45..ca014eb17bed7738dbc2bc1ea975b737
  
      private static NotificationManagerProxy sNotificationManagerOverride;
  
+@@ -99,7 +99,7 @@ public class NotificationPlatformBridge {
+     private TrustedWebActivityClient mTwaClient;
+ 
+     /** Encapsulates attributes that identify a notification and where it originates from. */
+-    private static class NotificationIdentifyingAttributes {
++    public static class NotificationIdentifyingAttributes {
+         public final String notificationId;
+         public final @NotificationType int notificationType;
+         public final String origin;
 @@ -165,7 +165,7 @@ public class NotificationPlatformBridge {
          sNotificationManagerOverride = notificationManager;
      }
