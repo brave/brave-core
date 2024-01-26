@@ -24,7 +24,9 @@ class HistoryService;
 
 namespace misc_metrics {
 
-inline constexpr char kPagesLoadedHistogramName[] = "Brave.Core.PagesLoaded";
+inline constexpr char kPagesLoadedHistogramName[] = "Brave.Core.PagesLoaded.2";
+inline constexpr char kPagesReloadedHistogramName[] =
+    "Brave.Core.PagesReloaded";
 inline constexpr char kDomainsLoadedHistogramName[] =
     "Brave.Core.DomainsLoaded";
 
@@ -36,17 +38,20 @@ class PageMetrics {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void IncrementPagesLoadedCount();
+  void IncrementPagesLoadedCount(bool is_reload);
 
  private:
   void ReportDomainsLoaded();
   void ReportPagesLoaded();
+
+  WeeklyStorage* GetWeeklyStorage(bool is_reload);
 
   void OnDomainDiversityResult(
       std::pair<history::DomainDiversityResults,
                 history::DomainDiversityResults> result);
 
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
+  std::unique_ptr<WeeklyStorage> pages_reloaded_storage_;
 
   base::CancelableTaskTracker history_service_task_tracker_;
 
