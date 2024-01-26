@@ -176,7 +176,7 @@ std::optional<std::string> ExtractTransparentPart(
     return std::nullopt;
   }
 
-  auto unwrapped = bech_result->unwrap();
+  const auto& unwrapped = bech_result->unwrap();
 
   if (unwrapped.variant != Bech32DecodeVariant::Bech32m) {
     return std::nullopt;

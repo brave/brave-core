@@ -15,7 +15,7 @@ use ed25519_dalek_bip32::ed25519_dalek::{
 use ed25519_dalek_bip32::Error as Ed25519Bip32Error;
 use ed25519_dalek_bip32::{ChildIndex, ExtendedSecretKey};
 use bech32::FromBase32;
-use ffi::{Bech32DecodeVariant, Bech32DecodeValue};
+use ffi::{Bech32DecodeVariant};
 use bech32::Error as Bech32Error;
 
 macro_rules! impl_result {
@@ -69,21 +69,15 @@ mod ffi {
         Bech32m
     }
 
-    struct Bech32DecodeValue {
-        hrp: String,
-        data: Vec<u8>,
-        variant: Bech32DecodeVariant,
-    }
-
     extern "Rust" {
         type Ed25519DalekExtendedSecretKey;
         type Ed25519DalekSignature;
+        type Bech32DecodeValue;
 
         type Ed25519DalekExtendedSecretKeyResult;
         type Ed25519DalekSignatureResult;
         type Ed25519DalekVerificationResult;
         type Bech32DecodeResult;
-
 
         fn generate_ed25519_extended_secrect_key_from_seed(
             bytes: &[u8],
@@ -163,7 +157,14 @@ impl fmt::Display for Error {
         }
     }
 }
+#[allow(dead_code)]
+struct Bech32Decoded {
+    hrp: String,
+    data: Vec<u8>,
+    variant: Bech32DecodeVariant,
+}
 
+pub struct Bech32DecodeValue(Bech32Decoded);
 pub struct Ed25519DalekExtendedSecretKey(ExtendedSecretKey);
 pub struct Ed25519DalekSignature(Signature);
 
@@ -172,44 +173,15 @@ struct Ed25519DalekSignatureResult(Result<Ed25519DalekSignature, Error>);
 struct Ed25519DalekVerificationResult(Result<(), Error>);
 struct Bech32DecodeResult(Result<Bech32DecodeValue, Error>);
 
-
 impl_result!(Ed25519DalekExtendedSecretKey, Ed25519DalekExtendedSecretKeyResult, ExtendedSecretKey);
 impl_result!(Ed25519DalekSignature, Ed25519DalekSignatureResult, Signature);
+impl_result!(Bech32DecodeValue, Bech32DecodeResult, Bech32Decoded);
 
 impl From<bech32::Variant> for Bech32DecodeVariant {
     fn from(v: bech32::Variant) -> Bech32DecodeVariant {
         match v {
             bech32::Variant::Bech32m => Bech32DecodeVariant::Bech32m,
             bech32::Variant::Bech32 => Bech32DecodeVariant::Bech32,
-        }
-    }
-}
-
-impl Bech32DecodeResult {
-    fn unwrap(&self) -> &Bech32DecodeValue {
-        self.0.as_ref().expect("Unhandled error before unwrap call")
-    }
-
-    fn error_message(&self) -> String {
-        match &self.0 {
-            Err(e) => e.to_string(),
-            Ok(_) => "".to_string(),
-        }
-    }
-
-    fn is_ok(&self) -> bool {
-        match &self.0 {
-            Err(_) => false,
-            Ok(_) => true,
-        }
-    }
-}
-
-impl From<Result<Bech32DecodeValue, Error>> for Bech32DecodeResult {
-    fn from(result: Result<Bech32DecodeValue, Error>) -> Self {
-        match result {
-            Ok(v) => Self(Ok(v)),
-            Err(e) => Self(Err(e)),
         }
     }
 }
@@ -273,7 +245,7 @@ fn decode_bech32(input: &str) -> Box<Bech32DecodeResult> {
                 Vec::<u8>::from_base32(&data)
                     .map_err(|err| Error::from(err))
                     .and_then(|as_u8| Ok(
-                        Bech32DecodeValue {
+                        Bech32Decoded {
                             hrp: hrp,
                             data: as_u8,
                             variant : Bech32DecodeVariant::from(variant)
