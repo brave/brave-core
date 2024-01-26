@@ -67,6 +67,30 @@ def load_config(config: str, options: CommonOptions) -> dict:
     return json5.load(config_file)
 
 
+def _RunUpdateProfile(config: perf_config.PerfConfig,
+                      options: CommonOptions) -> int:
+  if len(config.runners) != 1:
+    raise RuntimeError('Only one configuration should be specified.')
+  options.do_report = False
+  config.runners[0].profile_rebase = perf_config.ProfileRebaseType.NONE
+  config.benchmarks = [
+      perf_config.BenchmarkConfig({
+          'name': 'brave_utils.online',
+          'pageset-repeat': 5,
+          'stories': ['UpdateProfile']
+      })
+  ]
+
+  configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
+      options.targets, config.runners[0])
+  if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
+                                            options):
+    return 1
+
+  profile_updater.MakeUpdatedProfileArchive(configurations[0], options)
+  return 0
+
+
 def main():
   parser = argparse.ArgumentParser(
       formatter_class=argparse.RawTextHelpFormatter,
@@ -116,26 +140,7 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
         config.runners, config.benchmarks, options) else 1
 
   if options.mode == PerfMode.UPDATE_PROFILE:
-    if len(config.runners) != 1:
-      raise RuntimeError('Only one configuration should be specified.')
-    options.do_report = False
-    config.runners[0].profile_rebase = perf_config.ProfileRebaseType.NONE
-    config.benchmarks = [
-        perf_config.BenchmarkConfig({
-            'name': 'brave_utils.online',
-            'pageset-repeat': 5,
-            'stories': ['UpdateProfile']
-        })
-    ]
-
-    configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-        options.targets, config.runners[0])
-    if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
-                                              options):
-      return 1
-
-    profile_updater.MakeUpdatedProfileArchive(configurations[0], options)
-    return 0
+    return _RunUpdateProfile(config, options)
 
   raise RuntimeError('Unknown mode')
 

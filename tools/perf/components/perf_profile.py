@@ -35,6 +35,33 @@ def DownloadFromGoogleStorage(sha1: str, output_path: str) -> None:
     raise RuntimeError(f'Failed to download: {gs_path}')
 
 
+def _GetProfileHash(profile: str, version: BraveVersion) -> str:
+  sha1_filepath = os.path.join(path_util.GetBravePerfProfileDir(),
+                               f'{profile}.zip.sha1')
+  sha1_fallback_filepath = sha1_filepath + '.fallback'
+
+  if not os.path.isfile(sha1_filepath) and not os.path.isfile(
+      sha1_fallback_filepath):
+    raise RuntimeError(
+        f'Unknown profile {profile}, file {sha1_filepath}[.fallback] not found')
+
+  sha1 = GetFileAtRevision(sha1_filepath, version.git_hash)
+  if sha1 is None:
+    logging.info('Using the fallback profile %s', sha1_fallback_filepath)
+    if not os.path.isfile(sha1_fallback_filepath):
+      raise RuntimeError(
+          f'Can\'t find fallback profile {sha1_fallback_filepath}')
+
+    with open(sha1_fallback_filepath, 'r', encoding='utf8') as sha1_file:
+      sha1 = sha1_file.read().rstrip()
+
+  if sha1 is None:
+    raise RuntimeError(f'Bad sha1 for profile {profile}')
+  sha1 = sha1.rstrip()
+  logging.debug('Use gs hash %s for profile %s', sha1, profile)
+  return sha1
+
+
 def GetProfilePath(profile: str, work_directory: str,
                    version: BraveVersion) -> str:
   assert profile != 'clean'
@@ -46,33 +73,9 @@ def GetProfilePath(profile: str, work_directory: str,
     logging.debug('Copy %s to %s ', profile, profile_dir)
     shutil.copytree(profile, profile_dir)
   else:
-    zip_path_sha1 = os.path.join(path_util.GetBravePerfProfileDir(),
-                                 f'{profile}.zip.sha1')
-    zip_path_sha1_fallback = zip_path_sha1 + '.fallback'
-
-    if not os.path.isfile(zip_path_sha1) and not os.path.isfile(
-        zip_path_sha1_fallback):
-      raise RuntimeError(
-          f'Unknown profile, file {zip_path_sha1}[.fallback] not found')
-
-    sha1 = GetFileAtRevision(zip_path_sha1, version.git_hash)
-    if sha1 is None:
-      zip_path_sha1 = zip_path_sha1_fallback
-      logging.info('Using the fallback profile %s', zip_path_sha1)
-      if not os.path.isfile(zip_path_sha1):
-        raise RuntimeError(f'No fallback profile for {zip_path_sha1} not found')
-
-      with open(zip_path_sha1, 'r', encoding='utf8') as sha1_file:
-        sha1 = sha1_file.read().rstrip()
-
-    assert sha1 is not None
-    sha1 = sha1.rstrip()
-    logging.debug('Use gs hash %s for profile %s', sha1, profile)
-
+    sha1 = _GetProfileHash(profile, version)
     zip_path = os.path.join(path_util.GetBravePerfProfileDir(),
                             f'{profile}_{sha1}.zip')
-    if not sha1:
-      raise RuntimeError(f'Bad sha1 in {zip_path_sha1}')
 
     if not os.path.isfile(zip_path):
       DownloadFromGoogleStorage(sha1, zip_path)
