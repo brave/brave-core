@@ -460,10 +460,12 @@ package.targets.append(braveTarget)
 let iosRootDirectory = URL(string: #file)!.deletingLastPathComponent().absoluteString.dropLast()
 let isStripAbsolutePathsFromDebugSymbolsEnabled = {
   do {
-    let args = try String(contentsOfFile: "\(iosRootDirectory)/../../../out/current_link/args.xcconfig")
-    return args.contains("brave_ios_debug_prefix_map_flag")
+    let env = try String(contentsOfFile: "\(iosRootDirectory)/../../.env")
+      .split(separator: "\n")
+      .map { $0.split(separator: "=").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) } }
+    return env.contains(where: { $0.first == "use_remoteexec" && $0.last == "true" })
   } catch {
-    fatalError("Didn't find args xcconfig file. Please run `scripts/bootstrap.sh`")
+    fatalError("Didn't find .env file.")
   }
 }()
 
