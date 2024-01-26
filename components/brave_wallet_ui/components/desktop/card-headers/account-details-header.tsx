@@ -77,7 +77,7 @@ import { Row, Column, HorizontalSpace } from '../../shared/style'
 interface Props {
   account: BraveWallet.AccountInfo
   onClickMenuOption: (option: AccountModalTypes) => void
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 }
 
 export const AccountDetailsHeader = (props: Props) => {
