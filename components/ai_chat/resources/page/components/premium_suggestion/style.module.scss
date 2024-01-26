@@ -104,6 +104,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   border: 2px solid var(--leo-color-divider-interactive);
   border-radius: 12px;
   padding: var(--leo-spacing-xl);
