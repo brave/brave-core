@@ -80,6 +80,8 @@ export const ToggleRow = styled.label`
 `
 
 export const LineChartWrapper = styled(StyledWrapper)`
+  padding: 4px;
+  gap: 4px;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     left: 0px;
     right: unset;
@@ -87,5 +89,13 @@ export const LineChartWrapper = styled(StyledWrapper)`
   @media screen and (max-width: ${layoutPanelWidth}px) {
     left: unset;
     right: 0px;
+  }
+`
+
+export const LineChartButton = styled(PopupButton)`
+  margin: 0px;
+  padding: 6px 16px;
+  &:hover {
+    background-color: ${leo.color.page.background};
   }
 `
