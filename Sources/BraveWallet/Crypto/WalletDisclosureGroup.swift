@@ -40,7 +40,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
   }
   
   var body: some View {
-    LazyVStack {
+    VStack(spacing: 4) {
       header
       if isExpanded {
         Divider()

@@ -14,11 +14,10 @@ struct NFTView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var nftStore: NFTStore
   
-  @State private var isPresentingFiltersDisplaySettings: Bool = false
-  @State private var isPresentingEditUserAssets: Bool = false
+  @Binding var isPresentingFilters: Bool
+  @Binding var isPresentingAddCustomNFT: Bool
   @State private var selectedNFTViewModel: NFTAssetViewModel?
   @State private var isShowingNFTDiscoveryAlert: Bool = false
-  @State private var isShowingAddCustomNFT: Bool = false
   @State private var isNFTDiscoveryEnabled: Bool = false
   @State private var nftToBeRemoved: NFTAssetViewModel?
   @State private var groupToggleState: [NFTGroupViewModel.ID: Bool] = [:]
@@ -38,7 +37,7 @@ struct NFTView: View {
           .foregroundColor(Color(.secondaryLabel))
       }
       Button(Strings.Wallet.nftEmptyImportNFT) {
-        isShowingAddCustomNFT = true
+        isPresentingAddCustomNFT = true
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))
       .hidden(isHidden: nftStore.displayType != .visible)
@@ -48,25 +47,6 @@ struct NFTView: View {
     .frame(maxWidth: .infinity)
     .padding(.vertical, 60)
     .padding(.horizontal, 32)
-  }
-  
-  private var editUserAssetsButton: some View {
-    Button(action: { isPresentingEditUserAssets = true }) {
-      Text(Strings.Wallet.editVisibleAssetsButtonTitle)
-        .multilineTextAlignment(.center)
-        .font(.footnote.weight(.semibold))
-        .foregroundColor(Color(.braveBlurpleTint))
-        .frame(maxWidth: .infinity)
-    }
-    .sheet(isPresented: $isPresentingEditUserAssets) {
-      EditUserAssetsView(
-        networkStore: networkStore,
-        keyringStore: keyringStore,
-        userAssetsStore: nftStore.userAssetsStore
-      ) {
-        cryptoStore.updateAssets()
-      }
-    }
   }
   
   private let nftGrids = [GridItem(.adaptive(minimum: 120), spacing: 16, alignment: .top)]
@@ -99,7 +79,7 @@ struct NFTView: View {
   
   private var filtersButton: some View {
     WalletIconButton(braveSystemName: "leo.filter.settings", action: {
-      isPresentingFiltersDisplaySettings = true
+      isPresentingFilters = true
     })
   }
   
@@ -155,7 +135,7 @@ struct NFTView: View {
   
   private var addCustomAssetButton: some View {
     WalletIconButton(braveSystemName: "leo.plus.add") {
-      isShowingAddCustomNFT = true
+      isPresentingAddCustomNFT = true
     }
   }
   
@@ -405,38 +385,6 @@ struct NFTView: View {
           .padding(.bottom, 24)
         })
     )
-    .sheet(isPresented: $isShowingAddCustomNFT) {
-      AddCustomAssetView(
-        networkStore: networkStore,
-        networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
-        keyringStore: keyringStore,
-        userAssetStore: nftStore.userAssetsStore,
-        supportedTokenTypes: [.nft]
-      ) {
-        cryptoStore.updateAssets()
-      }
-    }
-    .sheet(isPresented: $isPresentingFiltersDisplaySettings) {
-      FiltersDisplaySettingsView(
-        filters: nftStore.filters,
-        isNFTFilters: true,
-        networkStore: networkStore,
-        save: { filters in
-          nftStore.saveFilters(filters)
-        }
-      )
-      .osAvailabilityModifiers({ view in
-        if #available(iOS 16, *) {
-          view
-            .presentationDetents([
-              .fraction(0.6),
-              .large
-            ])
-        } else {
-          view
-        }
-      })
-    }
     .onChange(of: keyringStore.isWalletLocked) { isLocked in
       guard isLocked else { return }
       if isShowingNFTDiscoveryAlert {
@@ -493,7 +441,9 @@ struct NFTView_Previews: PreviewProvider {
       cryptoStore: .previewStore,
       keyringStore: .previewStore,
       networkStore: .previewStore,
-      nftStore: CryptoStore.previewStore.nftStore
+      nftStore: CryptoStore.previewStore.nftStore,
+      isPresentingFilters: .constant(false),
+      isPresentingAddCustomNFT: .constant(false)
     )
   }
 }

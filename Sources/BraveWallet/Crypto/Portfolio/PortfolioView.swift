@@ -27,6 +27,11 @@ struct PortfolioView: View {
   @State private var selectedContent: PortfolioSegmentedControl.Item = .assets
   @ObservedObject private var isShowingNFTsTab = Preferences.Wallet.isShowingNFTsTab
   
+  @State private var isPresentingEditUserAssets: Bool = false
+  @State private var isPresentingAssetsFilters: Bool = false
+  @State private var isPresentingAddCustomNFT: Bool = false
+  @State private var isPresentingNFTsFilters: Bool = false
+  
   var body: some View {
     ScrollView {
       VStack(spacing: 0) {
@@ -48,10 +53,76 @@ struct PortfolioView: View {
         Color(braveSystemName: .containerBackground) // bottom drawer scroll rubberband area
       }.edgesIgnoringSafeArea(.all)
     )
+    .background(Color.clear
+      .sheet(isPresented: $isPresentingEditUserAssets) {
+        EditUserAssetsView(
+          networkStore: networkStore,
+          keyringStore: keyringStore,
+          userAssetsStore: portfolioStore.userAssetsStore
+        ) {
+          cryptoStore.updateAssets()
+        }
+      })
+    .background(Color.clear
+      .sheet(isPresented: $isPresentingAssetsFilters) {
+        FiltersDisplaySettingsView(
+          filters: portfolioStore.filters,
+          isNFTFilters: false,
+          networkStore: networkStore,
+          save: { filters in
+            portfolioStore.saveFilters(filters)
+          }
+        )
+        .osAvailabilityModifiers({ view in
+          if #available(iOS 16, *) {
+            view
+              .presentationDetents([
+                .fraction(0.7),
+                .large
+              ])
+          } else {
+            view
+          }
+        })
+      })
+    .background(Color.clear
+      .sheet(isPresented: $isPresentingAddCustomNFT) {
+        AddCustomAssetView(
+          networkStore: networkStore,
+          networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
+          keyringStore: keyringStore,
+          userAssetStore: cryptoStore.nftStore.userAssetsStore,
+          supportedTokenTypes: [.nft]
+        ) {
+          cryptoStore.updateAssets()
+        }
+      })
+    .background(Color.clear
+      .sheet(isPresented: $isPresentingNFTsFilters) {
+        FiltersDisplaySettingsView(
+          filters: cryptoStore.nftStore.filters,
+          isNFTFilters: true,
+          networkStore: networkStore,
+          save: { filters in
+            cryptoStore.nftStore.saveFilters(filters)
+          }
+        )
+        .osAvailabilityModifiers({ view in
+          if #available(iOS 16, *) {
+            view
+              .presentationDetents([
+                .fraction(0.6),
+                .large
+              ])
+          } else {
+            view
+          }
+        })
+      })
   }
   
   private var contentDrawer: some View {
-    LazyVStack {
+    VStack {
       if isShowingNFTsTab.value {
         PortfolioSegmentedControl(selected: $selectedContent)
           .padding(.horizontal)
@@ -63,7 +134,9 @@ struct PortfolioView: View {
             cryptoStore: cryptoStore,
             keyringStore: keyringStore,
             networkStore: networkStore,
-            portfolioStore: portfolioStore
+            portfolioStore: portfolioStore,
+            isPresentingEditUserAssets: $isPresentingEditUserAssets,
+            isPresentingFilters: $isPresentingAssetsFilters
           )
           .padding(.horizontal, 8)
         } else {
@@ -71,7 +144,9 @@ struct PortfolioView: View {
             cryptoStore: cryptoStore,
             keyringStore: keyringStore,
             networkStore: cryptoStore.networkStore,
-            nftStore: cryptoStore.nftStore
+            nftStore: cryptoStore.nftStore,
+            isPresentingFilters: $isPresentingNFTsFilters,
+            isPresentingAddCustomNFT: $isPresentingAddCustomNFT
           )
           .padding(.horizontal, 8)
         }

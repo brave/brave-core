@@ -15,14 +15,14 @@ struct PortfolioAssetsView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var portfolioStore: PortfolioStore
 
-  @State private var isPresentingEditUserAssets: Bool = false
-  @State private var isPresentingFiltersDisplaySettings: Bool = false
+  @Binding var isPresentingEditUserAssets: Bool
+  @Binding var isPresentingFilters: Bool
   @State private var selectedToken: BraveWallet.BlockchainToken?
   @State private var groupToggleState: [AssetGroupViewModel.ID: Bool] = [:]
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
 
   var body: some View {
-    LazyVStack(spacing: 16) {
+    VStack(spacing: 16) {
       assetSectionsHeader
       
       if portfolioStore.isShowingAssetsLoadingState {
@@ -74,54 +74,16 @@ struct PortfolioAssetsView: View {
           .padding(.leading, 5)
       }
       Spacer()
-      editUserAssetsButton
-        .padding(.trailing, 10)
-      filtersButton
+      WalletIconButton(braveSystemName: "leo.list.settings", action: {
+        isPresentingEditUserAssets = true
+      })
+      .padding(.trailing, 10)
+      WalletIconButton(braveSystemName: "leo.filter.settings", action: {
+        isPresentingFilters = true
+      })
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding(.horizontal)
-  }
-
-  private var editUserAssetsButton: some View {
-    WalletIconButton(braveSystemName: "leo.list.settings", action: {
-      isPresentingEditUserAssets = true
-    })
-    .sheet(isPresented: $isPresentingEditUserAssets) {
-      EditUserAssetsView(
-        networkStore: networkStore,
-        keyringStore: keyringStore,
-        userAssetsStore: portfolioStore.userAssetsStore
-      ) {
-        cryptoStore.updateAssets()
-      }
-    }
-  }
-
-  private var filtersButton: some View {
-    WalletIconButton(braveSystemName: "leo.filter.settings", action: {
-      isPresentingFiltersDisplaySettings = true
-    })
-    .sheet(isPresented: $isPresentingFiltersDisplaySettings) {
-      FiltersDisplaySettingsView(
-        filters: portfolioStore.filters,
-        isNFTFilters: false,
-        networkStore: networkStore,
-        save: { filters in
-          portfolioStore.saveFilters(filters)
-        }
-      )
-      .osAvailabilityModifiers({ view in
-        if #available(iOS 16, *) {
-          view
-            .presentationDetents([
-              .fraction(0.7),
-              .large
-            ])
-        } else {
-          view
-        }
-      })
-    }
   }
 
   private var emptyAssetsState: some View {
@@ -174,23 +136,25 @@ struct PortfolioAssetsView: View {
         }
       ),
       content: {
-        ForEach(group.assets) { asset in
-          Button(action: {
-            selectedToken = asset.token
-          }) {
-            PortfolioAssetView(
-              image: AssetIconView(
-                token: asset.token,
-                network: asset.network,
-                shouldShowNetworkIcon: true
-              ),
-              title: asset.token.name,
-              symbol: asset.token.symbol,
-              networkName: asset.network.chainName,
-              amount: asset.fiatAmount(currencyFormatter: portfolioStore.currencyFormatter),
-              quantity: asset.quantity,
-              shouldHideBalance: true
-            )
+        LazyVStack(spacing: 8) {
+          ForEach(group.assets) { asset in
+            Button(action: {
+              selectedToken = asset.token
+            }) {
+              PortfolioAssetView(
+                image: AssetIconView(
+                  token: asset.token,
+                  network: asset.network,
+                  shouldShowNetworkIcon: true
+                ),
+                title: asset.token.name,
+                symbol: asset.token.symbol,
+                networkName: asset.network.chainName,
+                amount: asset.fiatAmount(currencyFormatter: portfolioStore.currencyFormatter),
+                quantity: asset.quantity,
+                shouldHideBalance: true
+              )
+            }
           }
         }
       },
