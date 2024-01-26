@@ -756,6 +756,11 @@
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_STRONG" desc="Password is strong">Strong!</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_MEDIUM_STRENGTH" desc="Password is of medium strength">Medium</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_WEAK" desc="Password is weak">Weak</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_TITLE" desc="Auto lock title">Brave Wallet will auto-lock after</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_FIVE_MINUTES" desc="Auto lock duration - 5 minutes">5 Minutes</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_TEN_MINUTES" desc="Auto lock duration - 10 minutes">10 Minutes</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_ONE_HOUR" desc="Auto lock duration -  one hour">1 Hour</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_THREE_HOURS" desc="Auto lock duration - 3 hours">3 Hours</message>
   <message name="IDS_BRAVE_WALLET_CREATING_WALLET" desc="Is displayed while the wallet is being created.">Creating Wallet...</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE" desc="Title before backing up wallet">Before you start backing up wallet</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_DESCRIPTION" desc="Recovery phrase backup description">The 12-24 word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.</message>

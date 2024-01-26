@@ -3,23 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getLocale } from "../../common/locale";
 import { AutoLockOption } from "../constants/types";
 
 export const autoLockOptions: AutoLockOption[] = [
   {
-    label: '5 minutes',
+    label: getLocale("braveWalletAutoLockDurationFiveMinutes"),
     value: 5
   },
   {
-    label: '10 minutes',
+    label: getLocale("braveWalletAutoLockDurationTenMinutes"),
     value: 10
   },
   {
-    label: '1 hour',
+    label: getLocale("braveWalletAutoLockDurationOneHour"),
     value: 60
   },
   {
-    label: '3 hours',
+    label: getLocale("braveWalletAutoLockDurationThreeHours"),
     value: 180
   }
 ]

@@ -14,8 +14,10 @@ import {
   DurationDropdown,
   LockIcon,
   LockIconContainer,
-  SettingDescription
+  SettingDescription,
+  OptionLabel
 } from './auto-lock-settings.style'
+import { getLocale } from '../../../../../../common/locale'
 
 interface Props {
   options: AutoLockOption[]
@@ -39,7 +41,9 @@ export const AutoLockSettings = ({ options, value, onChange }: Props) => {
       <LockIconContainer>
         <LockIcon />
       </LockIconContainer>
-      <SettingDescription>Brave Wallet will auto-lock after</SettingDescription>
+      <SettingDescription>
+        {getLocale('braveWalletAutoLockTitle')}
+      </SettingDescription>
       <DurationDropdown
         mode='filled'
         value={selectedOption?.value.toString()}
@@ -51,7 +55,7 @@ export const AutoLockSettings = ({ options, value, onChange }: Props) => {
             key={option.value}
             value={option.value.toString()}
           >
-            {option.label}
+            <OptionLabel>{option.label}</OptionLabel>
           </leo-option>
         ))}
       </DurationDropdown>

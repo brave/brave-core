@@ -33,9 +33,13 @@ export const SettingDescription = styled.div`
   font-weight: 400;
   line-height: 22px;
   wrap: nowrap;
+  color: ${leo.color.text.primary};
 `
 
 export const DurationDropdown = styled(Dropdown)`
   min-width: 136px;
+`
 
+export const OptionLabel = styled.div`
+  color: ${leo.color.text.primary};
 `

@@ -292,6 +292,11 @@ provideStrings({
   braveWalletPasswordIsStrong: 'Strong!',
   braveWalletPasswordIsMediumStrength: 'Medium',
   braveWalletPasswordIsWeak: 'Weak',
+  braveWalletAutoLockTitle: 'Brave Wallet will auto-lock after',
+  braveWalletAutoLockDurationFiveMinutes: '5 minutes',
+  braveWalletAutoLockDurationTenMinutes: '10 minutes',
+  braveWalletAutoLockDurationOneHour: '1 hour',
+  braveWalletAutoLockDurationThreeHours: '3 hours',
 
   // Creating Wallet
   braveWalletCreatingWallet: 'Creating Wallet...',
