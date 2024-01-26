@@ -5,6 +5,8 @@
 
 # pylint: disable=too-many-instance-attributes
 
+from enum import Enum
+
 import argparse
 import os
 import sys
@@ -23,7 +25,13 @@ with path_util.SysPath(path_util.GetTelemetryDir()):
 # pytype: enable=import-error
 
 
+class PerfMode(Enum):
+  RUN = 1
+  COMPARE = 2
+  UPDATE_PROFILE = 3
+
 class CommonOptions:
+  mode: PerfMode = PerfMode.RUN
   verbose: bool = False
   ci_mode: bool = False
   chromium: bool = False
@@ -37,7 +45,6 @@ class CommonOptions:
   do_report: bool = False
   report_on_failure: bool = False
   local_run: bool = False
-  compare = False
   targets: List[str] = []
   config: str = ''
 
@@ -55,6 +62,14 @@ class CommonOptions:
         nargs='?',
         help='Format: version1[:<path_or_url1>],..,versionN[:<path_or_urlN>].'
         'Empty value enables the compare mode (see --compare).')
+    parser.add_argument(
+        '--mode',
+        type=str,
+        choices=['run', 'compare', 'update_profile'],
+        help='The operating mode.' +
+        '"run" is run the tests and report to the backend (the default).' +
+        '"compare" is evaluate a few configurations with a local HTML output.' +
+        '"update_profile" is a tool to make an updated profile archive.')
     parser.add_argument(
         '--working-directory',
         type=str,
@@ -76,10 +91,6 @@ class CommonOptions:
         '--local-run',
         action='store_true',
         help='Store results locally as html, don\'t report to the dashboard')
-    parser.add_argument('--compare',
-                        action='store_true',
-                        help='Use compare mode with multiple entries in config.'
-                        'See configs/compare/*.json5 for examples')
 
     parser.add_argument('--ci-mode',
                         action='store_true',
@@ -119,6 +130,14 @@ class CommonOptions:
     else:
       options.working_directory = os.path.expanduser(args.working_directory)
 
+    empty_target = args.targets is None or args.targets == ''
+    if args.mode == 'run':
+      options.mode = PerfMode.RUN
+    elif args.mode == 'compare' or (args.mode is None and empty_target):
+      options.mode = PerfMode.COMPARE
+    elif args.mode == 'update_profile':
+      options.mode = PerfMode.UPDATE_PROFILE
+
     options.verbose = args.verbose
     options.ci_mode = args.ci_mode
     options.chromium = args.chromium
@@ -138,14 +157,12 @@ class CommonOptions:
         options.target_arch = 'x64'
 
     options.report_on_failure = args.report_on_failure
-    compare = args.targets is None or args.targets == '' or args.compare
-    options.compare = compare
     if args.targets is not None:
       options.targets = args.targets.split(',')
 
-    options.local_run = args.local_run or compare
+    options.local_run = args.local_run or options.mode != PerfMode.RUN
     options.do_run_tests = not args.report_only
     options.do_report = (not args.no_report and not args.local_run
-                         and not compare)
+                         and options.mode == PerfMode.RUN)
 
     return options

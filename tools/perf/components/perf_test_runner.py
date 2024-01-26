@@ -16,7 +16,8 @@ import components.perf_test_utils as perf_test_utils
 from components.common_options import CommonOptions
 from components.browser_binary_fetcher import BrowserBinary, PrepareBinary
 from components.browser_type import BraveVersion
-from components.perf_config import BenchmarkConfig, ParseTarget, RunnerConfig
+from components.perf_config import (BenchmarkConfig, ParseTarget,
+                                    ProfileRebaseType, RunnerConfig)
 
 
 def ReportToDashboardImpl(
@@ -93,15 +94,18 @@ class RunableConfiguration:
 
   def RebaseProfile(self) -> bool:
     assert self.binary is not None
-    if self.binary.profile_dir is None:
+    if (self.binary.profile_dir is None
+        or self.config.profile_rebase == ProfileRebaseType.NONE):
       return True
     start_time = time.time()
     logging.info('Rebasing dir %s using binary %s', self.binary.profile_dir,
                  self.binary)
     rebase_runner_config = deepcopy(self.config)
 
+    online_rebase = self.config.profile_rebase == ProfileRebaseType.ONLINE
     rebase_benchmark = BenchmarkConfig()
-    rebase_benchmark.name = 'brave_utils'
+    rebase_benchmark.name = ('brave_utils.online'
+                             if online_rebase else 'brave_utils.offline')
     rebase_benchmark.stories = ['UpdateProfile']
 
     rebase_benchmark.pageset_repeat = 1
@@ -227,11 +231,6 @@ class RunableConfiguration:
 
     if not self.RebaseProfile():
       return False
-
-    # Another preliminary run to make sure that all the components are updated.
-    if self.config.extra_benchmark_args.count('--use-live-sites') > 0:
-      if not self.RebaseProfile():
-        return False
 
     start_time = time.time()
     for benchmark in self.benchmarks:

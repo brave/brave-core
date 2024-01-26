@@ -5,14 +5,13 @@
 
 import logging
 import re
-import subprocess
 import json
 
 from typing import List, Optional
 
 import components.path_util as path_util
 
-from components.perf_test_utils import GetProcessOutput
+from components.perf_test_utils import GetProcessOutput, GetFileAtRevision
 
 
 class ChromiumVersion:
@@ -55,7 +54,9 @@ class BraveVersion:
         raise RuntimeError(f'Bad git revision {revision}')
     self._git_hash = git_hash
 
-    package_json = json.loads(_GetFileAtRevision('package.json', self.git_hash))
+    content = GetFileAtRevision('package.json', self.git_hash)
+    assert content is not None
+    package_json = json.loads(content)
 
     if self.is_tag:
       self._last_tag = version_str
@@ -105,12 +106,6 @@ def _FetchRevision(revision: str):
   args = ['git', 'fetch', 'origin', revision]
   logging.debug('Try to fetch %s', revision)
   GetProcessOutput(args, cwd=path_util.GetBraveDir())
-
-
-def _GetFileAtRevision(filepath: str, revision: str) -> str:
-  return subprocess.check_output(['git', 'show', f'{revision}:{filepath}'],
-                                 cwd=path_util.GetBraveDir(),
-                                 universal_newlines=True)
 
 
 def _GetCommitDate(revision: str) -> str:
