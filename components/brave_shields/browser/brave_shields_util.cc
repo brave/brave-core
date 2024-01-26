@@ -443,10 +443,28 @@ void SetCookieControlType(HostContentSettingsMap* map,
       case ControlType::BLOCK:
         map->SetDefaultContentSetting(ContentSettingsType::COOKIES,
                                       CONTENT_SETTING_BLOCK);
+        // Toggle the state off->on to enforce the pref update event on switch
+        // between BLOCK_THIRD_PARTY->BLOCK so the upstream Third-party cookies
+        // Settings page can be updated correctly. This is a temporary measure
+        // until we figure out a better UI for Cookies Settings page.
+        profile_state->SetInteger(
+            ::prefs::kCookieControlsMode,
+            static_cast<int>(content_settings::CookieControlsMode::kOff));
+        profile_state->SetInteger(
+            ::prefs::kCookieControlsMode,
+            static_cast<int>(
+                content_settings::CookieControlsMode::kBlockThirdParty));
         break;
       case ControlType::BLOCK_THIRD_PARTY:
         map->SetDefaultContentSetting(ContentSettingsType::COOKIES,
                                       CONTENT_SETTING_ALLOW);
+        // Toggle the state off->on to enforce the pref update event on switch
+        // between BLOCK->BLOCK_THIRD_PARTY so the upstream Third-party cookies
+        // Settings page can be updated correctly. This is a temporary measure
+        // until we figure out a better UI for Cookies Settings page.
+        profile_state->SetInteger(
+            ::prefs::kCookieControlsMode,
+            static_cast<int>(content_settings::CookieControlsMode::kOff));
         profile_state->SetInteger(
             ::prefs::kCookieControlsMode,
             static_cast<int>(
