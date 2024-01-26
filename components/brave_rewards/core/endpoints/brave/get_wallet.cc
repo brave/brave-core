@@ -56,8 +56,6 @@ Result ParseBody(const std::string& body) {
     }
   }
 
-  result_value.self_custody_available.Set("solana", true);
-
   return result_value;
 }
 
