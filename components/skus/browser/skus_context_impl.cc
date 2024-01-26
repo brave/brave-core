@@ -67,6 +67,9 @@ RefreshOrderCallbackState::~RefreshOrderCallbackState() = default;
 SubmitReceiptCallbackState::SubmitReceiptCallbackState() {}
 SubmitReceiptCallbackState::~SubmitReceiptCallbackState() {}
 
+CreateOrderFromReceiptCallbackState::CreateOrderFromReceiptCallbackState() {}
+CreateOrderFromReceiptCallbackState::~CreateOrderFromReceiptCallbackState() {}
+
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,
                      skus::TracingLevel level,
