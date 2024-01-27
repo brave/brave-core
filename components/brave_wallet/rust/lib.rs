@@ -246,7 +246,7 @@ fn decode_bech32(input: &str) -> Box<Bech32DecodeResult> {
             let (hrp, data, variant) = decoded_value;
             Box::new(Bech32DecodeResult::from(
                 Vec::<u8>::from_base32(&data)
-                    .map_err(|err| Error::from(err))
+                    .map_err(Error::from)
                     .and_then(|as_u8| Ok(
                         Bech32Decoded {
                             hrp: hrp,
