@@ -145,6 +145,12 @@ extension Preferences {
     /// Whether sponsored images are included into the background image rotation
     static let backgroundSponsoredImages = Option<Bool>(key: "newtabpage.background-sponsored-images", default: true)
 
+    /// The counter that indicates what background should be shown, this is used to determine when a new
+    ///     sponsored image should be shown. (`1` means, first image in cycle N, should be shown).
+    /// One example, if rotation is every 4 images, but sponsored image should be shown as 2nd image, then this will
+    ///     be reset back to `1` after reaching `4`, and when the value is `2`, a sponsored image will be shown.
+    static let backgroundRotationCounter = Option<Int>(key: "newtabpage.background-rotation-count", default: 0)
+
     /// At least one notification must show before we lock showing subsequent notifications.
     static let atleastOneNTPNotificationWasShowed = Option<Bool>(
       key: "newtabpage.one-notificaiton-showed",
