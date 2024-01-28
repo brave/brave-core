@@ -153,13 +153,14 @@ class ConversationDriver {
   bool MaybePopPendingRequests();
   void MaybeSeedOrClearSuggestions();
 
-  void PerformAssistantGeneration(std::string input,
-                                  std::optional<std::string> selected_text,
-                                  std::vector<mojom::ConversationTurn> history,
-                                  int64_t current_navigation_id,
-                                  std::string page_content = "",
-                                  bool is_video = false,
-                                  std::string invalidation_token = "");
+  void PerformAssistantGeneration(
+      const std::string& input,
+      std::optional<std::string> selected_text,
+      const std::vector<mojom::ConversationTurn>& history,
+      int64_t current_navigation_id,
+      std::string page_content = "",
+      bool is_video = false,
+      std::string invalidation_token = "");
 
   void GeneratePageContent(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(int64_t navigation_id,

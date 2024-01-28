@@ -655,12 +655,9 @@ void ConversationDriver::SubmitHumanConversationEntry(
     obs.OnAPIRequestInProgress(IsRequestInProgress());
   }
 
-  bool is_suggested_question = false;
-
   // If it's a suggested question, remove it
   auto found_question_iter = base::ranges::find(suggestions_, turn.text);
   if (found_question_iter != suggestions_.end()) {
-    is_suggested_question = true;
     suggestions_.erase(found_question_iter);
     OnSuggestedQuestionsChanged();
   }
@@ -695,11 +692,7 @@ void ConversationDriver::SubmitHumanConversationEntry(
     question_part = turn.text;
   }
 
-  // Suggested questions were based on only the initial prompt (with content),
-  // so no need to submit all conversation history when they are used.
-  std::vector<mojom::ConversationTurn> history =
-      is_suggested_question ? std::vector<mojom::ConversationTurn>()
-                            : chat_history_;
+  auto history = chat_history_;
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
@@ -712,7 +705,7 @@ void ConversationDriver::SubmitHumanConversationEntry(
     GeneratePageContent(base::BindOnce(
         &ConversationDriver::PerformAssistantGeneration,
         weak_ptr_factory_.GetWeakPtr(), question_part, std::move(selected_text),
-        std::move(history), current_navigation_id_));
+        history, current_navigation_id_));
   } else {
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
@@ -726,9 +719,9 @@ void ConversationDriver::SubmitHumanConversationEntry(
 }
 
 void ConversationDriver::PerformAssistantGeneration(
-    std::string input,
+    const std::string& input,
     std::optional<std::string> selected_text,
-    std::vector<mojom::ConversationTurn> history,
+    const std::vector<mojom::ConversationTurn>& history,
     int64_t current_navigation_id,
     std::string page_content,
     bool is_video,
