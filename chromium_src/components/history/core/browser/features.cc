@@ -14,4 +14,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSyncSegmentsData, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
+BASE_FEATURE(kHistoryMoreSearchResults,
+             "HistoryMoreSearchResults",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace history

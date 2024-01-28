@@ -43,6 +43,7 @@
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
+#include "components/history//core/browser/features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
@@ -416,15 +417,24 @@
 #define BRAVE_AI_CHAT_HISTORY
 #endif
 
-#define BRAVE_OMNIBOX_FEATURES                                              \
-  EXPAND_FEATURE_ENTRIES({                                                  \
-      "brave-omnibox-tab-switch-by-default",                                \
-      "Brave Tab Switch by Default",                                        \
-      "Prefer switching to already open tabs, rather than navigating in a " \
-      "new tab",                                                            \
-      kOsWin | kOsLinux | kOsMac,                                           \
-      FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),              \
-  })
+#define BRAVE_OMNIBOX_FEATURES                                                \
+  EXPAND_FEATURE_ENTRIES(                                                     \
+      {                                                                       \
+          "brave-omnibox-tab-switch-by-default",                              \
+          "Brave Tab Switch by Default",                                      \
+          "Prefer switching to already open tabs, rather than navigating in " \
+          "a "                                                                \
+          "new tab",                                                          \
+          kOsWin | kOsLinux | kOsMac,                                         \
+          FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),            \
+      },                                                                      \
+      {                                                                       \
+          "brave-history-more-search-results",                                \
+          "Brave More History",                                               \
+          "Include more history in the omnibox search results",               \
+          kOsWin | kOsLinux | kOsMac | kOsAndroid,                            \
+          FEATURE_VALUE_TYPE(history::kHistoryMoreSearchResults),             \
+      })
 
 #define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
   IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
