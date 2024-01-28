@@ -35,6 +35,7 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -414,6 +415,19 @@
 #else
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+#define MOBILE_VIEW_SIDE_PANEL_FEATURE_ENTRIES                   \
+  EXPAND_FEATURE_ENTRIES({                                       \
+      kMobileViewSidePanelFeatureInternalName,                   \
+      "Mobile view side panel",                                  \
+      "Enable mobile view side panel",                           \
+      kOsWin | kOsLinux | kOsMac,                                \
+      FEATURE_VALUE_TYPE(sidebar::features::kSidebarMobileView), \
+  })
+#else
+#define MOBILE_VIEW_SIDE_PANEL_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_OMNIBOX_FEATURES                                              \
@@ -949,6 +963,7 @@
   BRAVE_AI_CHAT_HISTORY                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
+  MOBILE_VIEW_SIDE_PANEL_FEATURE_ENTRIES                                       \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

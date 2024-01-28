@@ -44,6 +44,7 @@ class MockSidebarModelObserver : public SidebarModel::Observer {
               OnItemMoved,
               (const SidebarItem& item, size_t from, size_t to),
               (override));
+  MOCK_METHOD(void, OnWillRemoveItem, (const SidebarItem& item), (override));
   MOCK_METHOD(void, OnItemRemoved, (size_t index), (override));
   MOCK_METHOD(void,
               OnActiveIndexChanged,
@@ -165,6 +166,30 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   service()->MoveItem(3, 0);
   testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_THAT(model()->active_index(), Optional(3u));
+}
+
+TEST_F(SidebarModelTest, ItemRemoveTest) {
+  auto built_in_items_size = service()->items().size();
+
+  model()->Init(nullptr);
+
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
+
+  // Add one more item to test with 5 items.
+  SidebarItem new_item = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+
+  service()->AddItem(new_item);
+  const auto items_count = built_in_items_size + 1;
+  EXPECT_EQ(items_count, service()->items().size());
+
+  const auto last_item_index = items_count - 1;
+  // Remove last item.
+  EXPECT_CALL(observer_, OnWillRemoveItem(new_item)).Times(1);
+  EXPECT_CALL(observer_, OnItemRemoved(last_item_index)).Times(1);
+  service()->RemoveItemAt(last_item_index);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
 }
 
 TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {

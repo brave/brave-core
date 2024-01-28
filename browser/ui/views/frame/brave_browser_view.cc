@@ -36,6 +36,7 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
+#include "brave/browser/ui/views/side_panel/mobile_view/mobile_view_side_panel_manager.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -45,6 +46,7 @@
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -331,6 +333,11 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
   UpdateSideBarHorizontalAlignment();
+
+  // Initialize when sidebar is ready.
+  if (base::FeatureList::IsEnabled(sidebar::features::kSidebarMobileView)) {
+    MobileViewSidePanelManager::GetOrCreateForBrowser(browser());
+  }
   return sidebar_container_view_;
 }
 

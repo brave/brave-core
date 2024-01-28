@@ -5,6 +5,8 @@
 
 #include "brave/components/sidebar/sidebar_item.h"
 
+#include "brave/components/sidebar/features.h"
+
 namespace sidebar {
 
 // static
@@ -39,31 +41,48 @@ SidebarItem& SidebarItem::operator=(SidebarItem&&) = default;
 
 SidebarItem::~SidebarItem() = default;
 
+bool SidebarItem::CanOpenInPanel() const {
+  if (base::FeatureList::IsEnabled(sidebar::features::kSidebarMobileView)) {
+    return open_in_panel || mobile_view;
+  }
+  return open_in_panel;
+}
+
 bool SidebarItem::operator==(const SidebarItem& item) const {
   return url == item.url && title == item.title && type == item.type &&
          built_in_item_type == item.built_in_item_type &&
          open_in_panel == item.open_in_panel;
 }
 
-bool IsBuiltInType(const SidebarItem& item) {
-  return item.type == SidebarItem::Type::kTypeBuiltIn;
+bool SidebarItem::IsBuiltInType() const {
+  return type == SidebarItem::Type::kTypeBuiltIn;
 }
 
-bool IsWebType(const SidebarItem& item) {
-  return item.type == SidebarItem::Type::kTypeWeb;
+bool SidebarItem::IsWebType() const {
+  return type == SidebarItem::Type::kTypeWeb;
 }
 
-bool IsValidItem(const SidebarItem& item) {
+bool SidebarItem::IsValidItem() const {
   // Any type should have valid title.
-  if (item.title.empty())
+  if (title.empty()) {
     return false;
+  }
 
-  if (item.type == SidebarItem::Type::kTypeBuiltIn)
-    return item.built_in_item_type != SidebarItem::BuiltInItemType::kNone;
+  if (type == SidebarItem::Type::kTypeBuiltIn) {
+    return built_in_item_type != SidebarItem::BuiltInItemType::kNone;
+  }
 
   // WebType
-  return item.url.is_valid() &&
-         item.built_in_item_type == SidebarItem::BuiltInItemType::kNone;
+  return url.is_valid() &&
+         built_in_item_type == SidebarItem::BuiltInItemType::kNone;
+}
+
+bool SidebarItem::IsMobileViewItem() const {
+  if (!base::FeatureList::IsEnabled(sidebar::features::kSidebarMobileView)) {
+    return false;
+  }
+
+  return url.is_valid() && mobile_view;
 }
 
 }  // namespace sidebar

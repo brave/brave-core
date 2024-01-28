@@ -31,6 +31,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -737,7 +738,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   for (const auto& item : model->GetAllSidebarItems()) {
     // Check disabled builtin items are not included in guest browser's items
     // list.
-    if (IsBuiltInType(item)) {
+    if (item.IsBuiltInType()) {
       EXPECT_FALSE(IsDisabledItemForGuest(item.built_in_item_type));
     }
   }
@@ -749,7 +750,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   for (const auto& item : model->GetAllSidebarItems()) {
     // Check disabled builtin items are not included in private browser's items
     // list.
-    if (IsBuiltInType(item)) {
+    if (item.IsBuiltInType()) {
       EXPECT_FALSE(IsDisabledItemForPrivate(item.built_in_item_type));
     }
   }
@@ -792,6 +793,68 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
 
   // Try Remove an item
   sidebar_service->RemoveItemAt(0);
+}
+
+class SidebarBrowserTestWithMobileView : public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithMobileView() {
+    feature_list_.InitAndEnableFeature(features::kSidebarMobileView);
+  }
+  ~SidebarBrowserTestWithMobileView() override = default;
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithMobileView, MobileViewTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto mobile_view_item = sidebar::SidebarItem::Create(
+      GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, false);
+  mobile_view_item.mobile_view = true;
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  sidebar_service->AddItem(mobile_view_item);
+
+  // Click mobile view item and check sidebar make it activated.
+  auto last_item_index = sidebar_service->items().size() - 1;
+  EXPECT_EQ(mobile_view_item, sidebar_service->items()[last_item_index]);
+  SimulateSidebarItemClickAt(last_item_index);
+  EXPECT_EQ(last_item_index, model()->active_index().value());
+
+  auto item = sidebar::SidebarItem::Create(
+      GURL("http://foo2.bar/"), u"title", SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, false);
+  sidebar_service->AddItem(item);
+
+  // Click non mobile view item and check it doesn't change active index.
+  last_item_index = sidebar_service->items().size() - 1;
+  EXPECT_EQ(item, sidebar_service->items()[last_item_index]);
+  SimulateSidebarItemClickAt(last_item_index);
+  EXPECT_NE(last_item_index, model()->active_index().value());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, MobileViewTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto mobile_view_item = sidebar::SidebarItem::Create(
+      GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, false);
+  mobile_view_item.mobile_view = true;
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  sidebar_service->AddItem(mobile_view_item);
+
+  // Click mobile view item and check it doesn't change active index when
+  // mobile view feature is disabled.
+  auto last_item_index = sidebar_service->items().size() - 1;
+  EXPECT_EQ(mobile_view_item, sidebar_service->items()[last_item_index]);
+  SimulateSidebarItemClickAt(last_item_index);
+  EXPECT_FALSE(model()->active_index().has_value());
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
