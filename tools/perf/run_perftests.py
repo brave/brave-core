@@ -83,6 +83,7 @@ def _RunUpdateProfile(config: perf_config.PerfConfig,
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
       options.targets, config.runners[0])
+  profile_updater.CleanupBeforeRun(configurations[0], options)
   if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
                                             options):
     return 1

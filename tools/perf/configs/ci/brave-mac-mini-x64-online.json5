@@ -7,8 +7,8 @@
 
     // Disable fetching Finch
     "extra-browser-args": ["--variations-server-url=https://127.0.0.1/invalid", "--variations-insecure-server-url=http://127.0.0.1/invalid" ],
-    "extra-benchmark-args": [],
-    "rebase_profile": "online",
+    "extra-benchmark-args": ["--use-live-sites"],
+    "profile-rebase": "online",
   }],
   "benchmarks": [
     {
