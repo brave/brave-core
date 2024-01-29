@@ -98,6 +98,7 @@ import {
   makeFundWalletPurchaseOptionsRoute,
   makeFundWalletRoute
 } from '../../../utils/routes-utils'
+import { networkSupportsAccount } from '../../../utils/network-utils'
 
 const itemSize = 82
 
@@ -507,18 +508,14 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   const [getBuyUrl] = useLazyGetBuyUrlQuery()
 
-  const accountsForSelectedAssetCoinType = React.useMemo(() => {
-    return selectedAsset
-      ? selectedAsset.coin === BraveWallet.CoinType.FIL
-        ? accounts.filter((a) =>
-            a.accountId.coin === selectedAsset.coin &&
-            selectedAsset.chainId === BraveWallet.FILECOIN_TESTNET
-              ? a.accountId.address.startsWith('t')
-              : !a.accountId.address.startsWith('t')
-          )
-        : accounts.filter((a) => a.accountId.coin === selectedAsset.coin)
-      : []
-  }, [selectedAsset, accounts])
+  const accountsForSelectedAssetNetwork = React.useMemo(() => {
+    if (!assetNetwork) {
+      return []
+    }
+    return accounts.filter((a) =>
+      networkSupportsAccount(assetNetwork, a.accountId)
+    )
+  }, [assetNetwork, accounts])
 
   // state
   const [showAccountSearch, setShowAccountSearch] =
@@ -526,7 +523,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
-  >(accountsForSelectedAssetCoinType[0])
+  >(accountsForSelectedAssetNetwork[0])
 
   // state-dependant queries
   const { data: buyWithStripeUrl } = useGetBuyUrlQuery(
@@ -543,12 +540,6 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   )
 
   // memos
-  const accountsForSelectedAssetNetwork = React.useMemo(() => {
-    return assetNetwork
-      ? accounts.filter((a) => a.accountId.coin === assetNetwork.coin)
-      : []
-  }, [assetNetwork, accounts])
-
   const accountListSearchResults = React.useMemo(() => {
     if (accountSearchText === '') {
       return accountsForSelectedAssetNetwork
@@ -679,8 +670,8 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   // effects
   React.useEffect(() => {
     // force selected account option state
-    setSelectedAccount(accountsForSelectedAssetCoinType[0])
-  }, [accountsForSelectedAssetCoinType[0]])
+    setSelectedAccount(accountsForSelectedAssetNetwork[0])
+  }, [accountsForSelectedAssetNetwork])
 
   // render
   if (!selectedOnRampAssetId) {
