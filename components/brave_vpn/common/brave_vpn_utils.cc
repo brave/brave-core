@@ -66,7 +66,7 @@ bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
 #endif
 }
 #if BUILDFLAG(IS_WIN)
-void MigrateWireguardFeatureFlag(PrefService* local_prefs) {
+void UpdateWireguardEnabledPrefsIfNeeded(PrefService* local_prefs) {
   auto* wireguard_enabled_pref =
       local_prefs->FindPreference(prefs::kBraveVPNWireguardEnabled);
   if (wireguard_enabled_pref && wireguard_enabled_pref->IsDefaultValue()) {
