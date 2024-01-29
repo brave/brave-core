@@ -62,7 +62,10 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
         mHasNoPendingTxAfterProcessing = _mHasNoPendingTxAfterProcessing;
     }
 
-    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
+    public PendingTxHelper(
+            TxService txService,
+            AccountInfo[] accountInfos,
+            boolean returnAll,
             boolean shouldObserveTxUpdates) {
         this(txService, accountInfos, returnAll);
         if (shouldObserveTxUpdates) {
@@ -99,8 +102,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                     new AsyncUtils.GetAllTransactionInfoResponseContext(
                             allTxMultiResponse.singleResponseComplete, accountInfo.name);
             allTxContexts.add(allTxContext);
-            mTxService.getAllTransactionInfo(accountInfo.accountId.coin, null,
-                    accountInfo.accountId, allTxContext);
+            mTxService.getAllTransactionInfo(
+                    accountInfo.accountId.coin, null, accountInfo.accountId, allTxContext);
         }
         allTxMultiResponse.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {
