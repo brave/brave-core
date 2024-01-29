@@ -140,14 +140,14 @@ class NewTabPageViewController: UIViewController {
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
     privateBrowsingManager: PrivateBrowsingManager,
-    p3aUtils: BraveP3AUtils
+    p3aHelper: NewTabPageP3AHelper
   ) {
     self.tab = tab
     self.rewards = rewards
     self.feedDataSource = feedDataSource
     self.privateBrowsingManager = privateBrowsingManager
     self.backgroundButtonsView = NewTabPageBackgroundButtonsView(privateBrowsingManager: privateBrowsingManager)
-    self.p3aHelper = .init(p3aUtils: p3aUtils)
+    self.p3aHelper = p3aHelper
     background = NewTabPageBackground(dataSource: dataSource)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
