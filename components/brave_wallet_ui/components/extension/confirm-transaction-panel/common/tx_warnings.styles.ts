@@ -100,7 +100,3 @@ export const WarningsList = styled.ul`
 export const DismissButton = styled(Button)`
   flex-grow: 0;
 `
-
-export const FullWidth = styled.div`
-  min-width: 100%;
-`

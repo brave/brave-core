@@ -14,15 +14,14 @@ import { BraveWallet } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 
 // styles
-import { Row } from '../../../shared/style'
+import { FullWidth, Row } from '../../../shared/style'
 import {
   WarningCollapse,
   WarningTitle,
   WarningsList,
   WarningCloseIcon,
   WarningButton,
-  DismissButton,
-  FullWidth
+  DismissButton
 } from './tx_warnings.styles'
 
 export function TxWarningBanner({
