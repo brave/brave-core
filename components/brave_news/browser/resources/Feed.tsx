@@ -46,6 +46,7 @@ const FeedContainer = styled.div`
 
 interface Props {
   feed: FeedV2 | undefined;
+  onSessionStart?: () => void;
 }
 
 const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
@@ -65,6 +66,8 @@ const PAGE_SIZE = 25;
 const HISTORY_SCROLL_DATA = 'bn-scroll-data'
 const HISTORY_CARD_COUNT = 'bn-card-count'
 
+const CARD_COUNT_ATTRIBUTE = 'data-news-card-count'
+
 const saveScrollPos = (itemId: React.Key) => () => {
   setHistoryState({
     [HISTORY_SCROLL_DATA]: {
@@ -82,7 +85,7 @@ const errors = {
   [FeedV2Error.NoFeeds]: <NoFeeds />
 }
 
-export default function Component({ feed }: Props) {
+export default function Component({ feed, onSessionStart }: Props) {
   const [cardCount, setCardCount] = React.useState(getHistoryValue(HISTORY_CARD_COUNT, PAGE_SIZE));
 
   // Store the number of cards we've loaded in history - otherwise when we
@@ -114,6 +117,36 @@ export default function Component({ feed }: Props) {
     rootMargin: '0px 0px 1000px 0px',
   }))
 
+  // Create intersection observer & relevant state to measure
+  // the amount of viewed cards in the session.
+  const lastViewedCardCount = React.useRef(0);
+  const viewDepthIntersectionObserver = React.useRef(new IntersectionObserver(entries => {
+    const inViewCounts = entries
+      .filter(e => e.intersectionRatio === 1)
+      .map(e => Number(e.target.getAttribute(CARD_COUNT_ATTRIBUTE)));
+    if (!inViewCounts.length) {
+      return;
+    }
+    const largestCardCount = Math.max(...inViewCounts);
+    // Ensure we only report increases in scroll depth
+    // by comparing to the last scroll card count
+    if (lastViewedCardCount.current >= largestCardCount) {
+      return;
+    }
+    const newViews = largestCardCount - lastViewedCardCount.current;
+    if (!!onSessionStart && lastViewedCardCount.current === 0 && newViews > 0) {
+      onSessionStart();
+    }
+    lastViewedCardCount.current = largestCardCount;
+  }));
+
+  const registerViewDepthObservation = (element: HTMLElement | null) => {
+    if (!element) {
+      return;
+    }
+    viewDepthIntersectionObserver.current.observe(element);
+  };
+
   // Only observe the bottom card
   const setLastCardRef = React.useCallback((el: HTMLElement | null) => {
     loadMoreObserver.current.disconnect();
@@ -123,6 +156,7 @@ export default function Component({ feed }: Props) {
   }, [])
   const cards = React.useMemo(() => {
     const count = Math.min(feed?.items.length ?? 0, cardCount)
+    let currentCardCount = 0;
     return feed?.items.slice(0, count).map((item, index) => {
       let el: React.ReactNode
 
@@ -144,10 +178,19 @@ export default function Component({ feed }: Props) {
         throw new Error("Invalid item!" + JSON.stringify(item))
       }
 
+      if (item.cluster) {
+        currentCardCount += item.cluster.articles.length;
+      } else if (!item.advert) {
+        currentCardCount++;
+      }
+
       const key = getKey(item, index)
-      return <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} ref={index === count - 1 ? setLastCardRef : undefined}>
-        {el}
-      </div>
+      return <>
+        <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} ref={index === count - 1 ? setLastCardRef : undefined}>
+          {el}
+        </div>
+        <div key={`${key}-counter`} {...{ [CARD_COUNT_ATTRIBUTE]: currentCardCount }} ref={registerViewDepthObservation} />
+      </>
     })
   }, [cardCount, feed?.items])
 
