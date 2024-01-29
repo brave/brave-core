@@ -309,6 +309,11 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
 void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
   VLOG(1) << "OnInstallSystemServicesCompleted: success=" << success;
   if (success) {
+#if BUILDFLAG(IS_WIN)
+    // Update prefs first before signaling the event because the event could
+    // check the prefs.
+    UpdateWireguardEnabledPrefsIfNeeded(local_prefs_);
+#endif
     system_service_installed_event_.Signal();
   }
   install_in_progress_ = false;
