@@ -7,7 +7,11 @@ import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
 import { eachLimit } from 'async'
 
 // constants
-import { BraveWallet, CoinTypes } from '../../../constants/types'
+import {
+  BraveWallet,
+  CoinTypes,
+  BitcoinBalances
+} from '../../../constants/types'
 import { coinTypesMapping } from '../constants'
 
 // types
@@ -446,6 +450,40 @@ export const tokenBalancesEndpoints = ({
           id: [arg.coin, arg.chainId, arg.address].join('-')
         }
       ]
+    }),
+    getBitcoinBalances: query<BitcoinBalances, BraveWallet.AccountId>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { balance, errorMessage } =
+            await api.bitcoinWalletService.getBalance(arg)
+
+          if (errorMessage || balance === null) {
+            throw new Error(errorMessage || 'Unknown error')
+          }
+          return {
+            data: {
+              availableBalance: Amount.normalize(
+                balance.availableBalance.toString()
+              ),
+              pendingBalance: Amount.normalize(
+                balance.pendingBalance.toString()
+              ),
+              totalBalance: Amount.normalize(balance.totalBalance.toString())
+            }
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Failed to fetch Bitcoin balances: ${JSON.stringify(
+              arg,
+              undefined,
+              2
+            )}`,
+            error
+          )
+        }
+      }
     })
   }
 }
