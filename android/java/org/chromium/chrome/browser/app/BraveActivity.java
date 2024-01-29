@@ -157,6 +157,7 @@ import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
+import org.chromium.chrome.browser.shields.ContentFilteringFragment;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
 import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
@@ -1403,12 +1404,10 @@ public abstract class BraveActivity extends ChromeActivity
         settingsLauncher.launchSettingsActivity(this, BraveNewsPreferencesV2.class);
     }
 
-    // TODO: Once we have a ready for https://github.com/brave/brave-browser/issues/33015, We'll use
-    // this code
-    /*public void openBraveContentFilteringSettings() {
+    public void openBraveContentFilteringSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
         settingsLauncher.launchSettingsActivity(this, ContentFilteringFragment.class);
-    }*/
+    }
 
     public void openBraveWalletSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
