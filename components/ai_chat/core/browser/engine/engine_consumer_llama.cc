@@ -90,7 +90,7 @@ std::string BuildLlama2FirstSequence(
 
   // Create the system prompt through the first user message.
   std::string system_prompt =
-      base::StrCat({kLlama2BSys, system_message, kLlama2ESys, user_message});
+      base::StrCat({kLlama2BSys, system_message, kLlama2ESys, "User: ", user_message});
 
   // Wrap in [INST] [/INST] tags.
   std::string instruction_prompt = BuildLlama2InstructionPrompt(system_prompt);
