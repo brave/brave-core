@@ -23,6 +23,11 @@ OBJC_EXPORT
 @property(readonly, nullable) NTPSponsoredImageData* sponsoredImageData;
 @property(readonly, nullable) NTPSponsoredImageData* superReferralImageData;
 
+// TODO(https://github.com/brave/brave-core/pull/21559): Remove these properties
+// once we have a better way to handle Griffin feature params from iOS.
+@property(nonatomic, readonly) NSInteger initialCountToBrandedWallpaper;
+@property(nonatomic, readonly) NSInteger countToBrandedWallpaper;
+
 - (void)updateSponsoredImageComponentIfNeeded;
 
 @property(readonly) NSString* superReferralCode;
