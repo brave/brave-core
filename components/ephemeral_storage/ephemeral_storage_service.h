@@ -8,19 +8,21 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
-#include <utility>
-#include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/unguessable_token.h"
+#include "base/values.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_observer.h"
-#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "url/gurl.h"
@@ -66,6 +68,8 @@ class EphemeralStorageService : public KeyedService {
   // Enables 1PES for url if nothing is stored for |url|.
   void Enable1PESForUrlIfPossible(const GURL& url,
                                   base::OnceCallback<void(bool)> on_ready);
+  // Returns First Party Ephemeral Storage token to partition storage.
+  std::optional<base::UnguessableToken> Get1PESToken(const url::Origin& origin);
 
   void TLDEphemeralLifetimeCreated(
       const std::string& ephemeral_domain,
@@ -120,6 +124,8 @@ class EphemeralStorageService : public KeyedService {
   base::TimeDelta first_party_storage_startup_cleanup_delay_;
   std::map<TLDEphemeralAreaKey, std::unique_ptr<base::OneShotTimer>>
       tld_ephemeral_areas_to_cleanup_;
+  // Contains First Party Ephemeral Storage tokens to partition storage.
+  base::flat_map<std::string, base::UnguessableToken> fpes_tokens_;
   base::Value::List first_party_storage_areas_to_cleanup_on_startup_;
   base::OneShotTimer first_party_storage_areas_startup_cleanup_timer_;
 

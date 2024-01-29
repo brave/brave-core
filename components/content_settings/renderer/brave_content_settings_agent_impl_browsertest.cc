@@ -407,7 +407,9 @@ class BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest
  public:
   BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest() {
     feature_list_.Reset();
-    feature_list_.InitAndDisableFeature(net::features::kBraveEphemeralStorage);
+    feature_list_.InitWithFeatures(
+        {}, {net::features::kBraveEphemeralStorage,
+             net::features::kThirdPartyStoragePartitioning});
   }
 };
 

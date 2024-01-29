@@ -40,6 +40,11 @@ using brave::FarbleKey;
 
 void LocalDOMWindow::SetEphemeralStorageOrigin(
     const SecurityOrigin* ephemeral_storage_origin) {
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
+      base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    return;
+  }
   DCHECK(ephemeral_storage_origin);
   ephemeral_storage_key_ =
       BlinkStorageKey::CreateFirstParty(ephemeral_storage_origin);

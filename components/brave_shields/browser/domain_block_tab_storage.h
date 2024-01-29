@@ -41,7 +41,7 @@ class DomainBlockTabStorage
   void Enable1PESForUrlIfPossible(
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       const GURL& url,
-      base::OnceCallback<void()> on_ready);
+      base::OnceCallback<void(bool)> on_ready);
   void DropBlockedDomain1PESLifetime();
 
  private:

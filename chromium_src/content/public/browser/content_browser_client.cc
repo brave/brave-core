@@ -19,6 +19,13 @@ bool ContentBrowserClient::AllowWorkerFingerprinting(
   return true;
 }
 
+std::optional<base::UnguessableToken>
+ContentBrowserClient::GetEphemeralStorageToken(
+    RenderFrameHost* render_frame_host,
+    const url::Origin& origin) {
+  return std::nullopt;
+}
+
 uint8_t ContentBrowserClient::WorkerGetBraveFarblingLevel(
     const GURL& url,
     BrowserContext* browser_context) {

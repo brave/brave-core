@@ -37,9 +37,9 @@ DomainBlockTabStorage* DomainBlockTabStorage::GetOrCreate(
 void DomainBlockTabStorage::Enable1PESForUrlIfPossible(
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     const GURL& url,
-    base::OnceCallback<void()> on_ready) {
+    base::OnceCallback<void(bool)> on_ready) {
   if (url.HostIsIPAddress()) {
-    std::move(on_ready).Run();
+    std::move(on_ready).Run(false);
     return;
   }
 

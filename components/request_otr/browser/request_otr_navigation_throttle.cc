@@ -231,9 +231,49 @@ void RequestOTRNavigationThrottle::Enable1PESAndResume() {
   if (tab_storage) {
     tab_storage->MaybeEnable1PESForUrl(
         ephemeral_storage_service_, navigation_handle()->GetURL(),
-        base::BindOnce(&RequestOTRNavigationThrottle::Resume,
+        base::BindOnce(&RequestOTRNavigationThrottle::On1PESState,
                        weak_ptr_factory_.GetWeakPtr()));
   }
+}
+
+void RequestOTRNavigationThrottle::On1PESState(bool is_1pes_enabled) {
+  if (is_1pes_enabled) {
+    RestartNavigation(navigation_handle()->GetURL());
+  } else {
+    Resume();
+  }
+}
+
+void RequestOTRNavigationThrottle::RestartNavigation(const GURL& url) {
+  content::NavigationHandle* handle = navigation_handle();
+
+  content::OpenURLParams params =
+      content::OpenURLParams::FromNavigationHandle(handle);
+
+  content::WebContents* contents = handle->GetWebContents();
+
+  // Cancel without an error status to surface any real errors during page
+  // load.
+  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+      content::NavigationThrottle::CANCEL));
+
+  params.url = url;
+  params.transition = static_cast<ui::PageTransition>(
+      params.transition | ui::PAGE_TRANSITION_CLIENT_REDIRECT);
+  // We get a DCHECK here if we don't clear the redirect chain because
+  // technically this is a new navigation
+  params.redirect_chain.clear();
+
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<content::WebContents> web_contents,
+                        const content::OpenURLParams& params) {
+                       if (!web_contents) {
+                         return;
+                       }
+                       web_contents->OpenURL(params);
+                     },
+                     contents->GetWeakPtr(), std::move(params)));
 }
 
 const char* RequestOTRNavigationThrottle::GetNameForLogging() {
