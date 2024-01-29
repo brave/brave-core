@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -179,8 +180,8 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
-            zcash::BlockID response;
-            response.set_height(2286687);
+            mojom::BlockIDPtr response = mojom::BlockID::New();
+            response->height = 2286687;
             std::move(callback).Run(std::move(response));
           }));
 
@@ -200,8 +201,8 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
       .WillOnce([&](const std::string& chain_id, const std::string& data,
                     ZCashRpc::SendTransactionCallback callback) {
         captured_data = data;
-        zcash::SendResponse response;
-        response.set_errorcode(0);
+        mojom::SendResponsePtr response = mojom::SendResponse::New();
+        response->error_code = 0;
         std::move(callback).Run(std::move(response));
       });
   zcash_wallet_service_->SignAndPostTransaction(
@@ -232,8 +233,8 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
-            zcash::BlockID response;
-            response.set_height(2286687);
+            mojom::BlockIDPtr response = mojom::BlockID::New();
+            response->height = 2286687;
             std::move(callback).Run(std::move(response));
           }));
 
@@ -347,8 +348,8 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
-            zcash::BlockID response;
-            response.set_height(2286687);
+            mojom::BlockIDPtr response = mojom::BlockID::New();
+            response->height = 2286687;
             std::move(callback).Run(std::move(response));
           }));
 

@@ -268,15 +268,15 @@ void ZCashWalletService::OnResolveLastBlockHeightForSendTransaction(
     const mojom::AccountIdPtr& account_id,
     ZCashTransaction zcash_transaction,
     SignAndPostTransactionCallback callback,
-    base::expected<zcash::BlockID, std::string> result) {
-  if (!result.has_value()) {
+    base::expected<mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
     std::move(callback).Run(
         "", std::move(zcash_transaction),
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  zcash_transaction.set_expiry_height(result->height() +
+  zcash_transaction.set_expiry_height((*result)->height +
                                       kDefaultBlockHeightDelta);
 
   if (!SignTransactionInternal(zcash_transaction, account_id)) {
@@ -298,8 +298,8 @@ void ZCashWalletService::OnResolveLastBlockHeightForSendTransaction(
 void ZCashWalletService::OnSendTransactionResult(
     SignAndPostTransactionCallback callback,
     ZCashTransaction tx,
-    base::expected<zcash::SendResponse, std::string> result) {
-  if (result.has_value() && result->errorcode() == 0) {
+    base::expected<mojom::SendResponsePtr, std::string> result) {
+  if (result.has_value() && result.value() && (*result)->error_code == 0) {
     auto tx_id = ZCashSerializer::CalculateTxIdDigest(tx);
     auto tx_id_hex = ToHex(tx_id);
     CHECK(tx_id_hex.starts_with("0x"));
@@ -313,18 +313,18 @@ void ZCashWalletService::OnSendTransactionResult(
 void ZCashWalletService::OnGetUtxos(
     scoped_refptr<GetTransparentUtxosContext> context,
     const std::string& address,
-    base::expected<std::vector<zcash::ZCashUtxo>, std::string> result) {
+    base::expected<mojom::GetAddressUtxosResponsePtr, std::string> result) {
   DCHECK(context->addresses.contains(address));
   DCHECK(!context->utxos.contains(address));
 
-  if (!result.has_value()) {
+  if (!result.has_value() || !result.value()) {
     context->SetError(result.error());
     WorkOnGetUtxos(std::move(context));
     return;
   }
 
   context->addresses.erase(address);
-  context->utxos[address] = result.value();
+  context->utxos[address] = std::move(result.value()->address_utxos);
 
   WorkOnGetUtxos(std::move(context));
 }
@@ -350,7 +350,8 @@ void ZCashWalletService::OnDiscoveryDoneForBalance(
     GetBalanceCallback callback,
     RunDiscoveryResult discovery_result) {
   if (!discovery_result.has_value()) {
-    std::move(callback).Run(nullptr, "Failed to fetch balance");
+    std::move(callback).Run(
+        nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   GetUtxos(chain_id, std::move(account_id),
@@ -371,7 +372,7 @@ void ZCashWalletService::OnUtxosResolvedForBalance(
   for (const auto& by_addr : utxos.value()) {
     uint64_t balance_by_addr = 0;
     for (const auto& by_utxo : by_addr.second) {
-      balance_by_addr += by_utxo.valuezat();
+      balance_by_addr += by_utxo->value_zat;
     }
     result->total_balance += balance_by_addr;
     result->balances[by_addr.first] = balance_by_addr;
@@ -415,13 +416,13 @@ void ZCashWalletService::GetTransactionStatus(
 
 void ZCashWalletService::OnTransactionResolvedForStatus(
     GetTransactionStatusCallback callback,
-    base::expected<zcash::RawTransaction, std::string> result) {
-  if (!result.has_value()) {
+    base::expected<mojom::RawTransactionPtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
     std::move(callback).Run(base::unexpected(result.error()));
     return;
   }
 
-  std::move(callback).Run(result.value().height() > 0);
+  std::move(callback).Run((*result)->height > 0);
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(

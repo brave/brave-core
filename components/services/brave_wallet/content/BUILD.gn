@@ -1,0 +1,20 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("content") {
+  visibility = [ "//brave/components/services/brave_wallet/public/cpp" ]
+
+  sources = [
+    "brave_wallet_utils_service_launcher.cc",
+    "brave_wallet_utils_service_launcher.h",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+  ]
+}

@@ -6,22 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_GRPC_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_GRPC_UTILS_H_
 
-#include <optional>
 #include <string>
 #include <string_view>
 
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 
 namespace brave_wallet {
-
-// Resolves serialized protobuf from length-prefixed string
-std::optional<std::string> ResolveSerializedMessage(
-    const std::string& grpc_response_body);
-
-// Prefixes provided serialized protobuf with compression byte and 4 bytes of
-// message size. See
-// https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md
-std::string GetPrefixedProtobuf(const std::string& serialized_proto);
 
 // Handles a stream of GRPC objects
 class GRrpcMessageStreamHandler

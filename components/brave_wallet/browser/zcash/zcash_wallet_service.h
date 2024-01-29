@@ -17,7 +17,6 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
-#include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -32,7 +31,7 @@ class ZCashWalletService : public KeyedService,
                            public mojom::ZCashWalletService,
                            KeyringServiceObserverBase {
  public:
-  using UtxoMap = std::map<std::string, std::vector<zcash::ZCashUtxo>>;
+  using UtxoMap = std::map<std::string, std::vector<mojom::ZCashUtxoPtr>>;
   using RunDiscoveryResult =
       base::expected<std::vector<mojom::ZCashAddressPtr>, std::string>;
   using GetUtxosCallback =
@@ -122,7 +121,7 @@ class ZCashWalletService : public KeyedService,
   void OnGetUtxos(
       scoped_refptr<GetTransparentUtxosContext> context,
       const std::string& current_address,
-      base::expected<std::vector<zcash::ZCashUtxo>, std::string> result);
+      base::expected<mojom::GetAddressUtxosResponsePtr, std::string> result);
   void WorkOnGetUtxos(scoped_refptr<GetTransparentUtxosContext> context);
 
   void OnDiscoveryDoneForBalance(mojom::AccountIdPtr account_id,
@@ -133,19 +132,19 @@ class ZCashWalletService : public KeyedService,
                                  base::expected<UtxoMap, std::string> result);
   void OnTransactionResolvedForStatus(
       GetTransactionStatusCallback callback,
-      base::expected<zcash::RawTransaction, std::string> result);
+      base::expected<mojom::RawTransactionPtr, std::string> result);
 
   void OnResolveLastBlockHeightForSendTransaction(
       const std::string& chain_id,
       const mojom::AccountIdPtr& account_id,
       ZCashTransaction zcash_transaction,
       SignAndPostTransactionCallback callback,
-      base::expected<zcash::BlockID, std::string> result);
+      base::expected<mojom::BlockIDPtr, std::string> result);
 
   void OnSendTransactionResult(
       SignAndPostTransactionCallback callback,
       ZCashTransaction zcash_transaction,
-      base::expected<zcash::SendResponse, std::string> result);
+      base::expected<mojom::SendResponsePtr, std::string> result);
 
   void CreateTransactionTaskDone(CreateTransparentTransactionTask* task);
 

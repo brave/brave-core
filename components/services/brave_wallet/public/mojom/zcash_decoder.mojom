@@ -1,0 +1,42 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.mojom;
+
+struct ZCashUtxo {
+  string address;
+  array<uint8> tx_id;
+  int32 index;
+  array<uint8> script;
+  int64 value_zat;
+  uint64 height;
+};
+
+struct GetAddressUtxosResponse {
+  array<ZCashUtxo> address_utxos;
+};
+
+struct BlockID {
+  uint64 height;
+  array<uint8> hash;
+};
+
+struct SendResponse {
+  int32 error_code;
+  string error_message;
+};
+
+struct RawTransaction {
+  array<uint8> data;
+  uint64 height;
+};
+
+interface ZCashDecoder {
+  ParseBlockID(string data) => (BlockID? value);
+  ParseGetAddressUtxos(string data) => (GetAddressUtxosResponse? value);
+  ParseSendResponse(string data) => (SendResponse? value);
+  ParseRawTransaction(string adata) => (RawTransaction? tx);
+};
+
