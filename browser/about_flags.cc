@@ -362,9 +362,18 @@
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
+#define BRAVE_ZERO_DAY_FLAG_ANDROID                                        \
+  EXPAND_FEATURE_ENTRIES({                                                 \
+      "brave-zero-day-flag-android",                                       \
+      "ZeroDayFlag flag for product test",                                 \
+      "This flag will be set through griffin to perform product testing",  \
+      kOsAndroid,                                                          \
+      FEATURE_VALUE_TYPE(preferences::features::kBraveZeroDayFlagAndroid), \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
+#define BRAVE_ZERO_DAY_FLAG_ANDROID
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -935,13 +944,6 @@
           "corners, padding, and a drop shadow",                               \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
-      },                                                                       \
-      {                                                                        \
-          "brave-zero-day-flag-android",                                       \
-          "ZeroDayFlag flag for product test",                                 \
-          "This flag will be set through griffin to perform product testing",  \
-          kOsAndroid,                                                          \
-          FEATURE_VALUE_TYPE(preferences::features::kBraveZeroDayFlagAndroid), \
       })                                                                       \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
@@ -960,6 +962,7 @@
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
+  BRAVE_ZERO_DAY_FLAG_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_AI_CHAT                                                                \
