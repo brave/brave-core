@@ -771,7 +771,10 @@ export const transactionEndpoints = ({
                 ? ([
                     'UserBlockchainTokens', // refresh all user tokens
                     'AccountTokenCurrentBalance',
-                    'TokenSpotPrices'
+                    'TokenSpotPrices',
+                    'TokenBalances',
+                    'TokenBalancesForChainId',
+                    'AccountTokenCurrentBalance'
                   ] as const)
                 : [])
             ]
