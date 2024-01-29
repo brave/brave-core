@@ -38,6 +38,10 @@ export function TipForm () {
 
   const insufficientBalance = state.rewardsUser.balance.valueOr(0) < sendAmount
 
+  const isSelfCustodyUser =
+    state.rewardsUser.walletProvider &&
+    isSelfCustodyProvider(state.rewardsUser.walletProvider)
+
   function sendButtonDisabled () {
     return sendAmount <= 0 || insufficientBalance || sendStatus === 'pending'
   }
@@ -118,6 +122,17 @@ export function TipForm () {
   let needsReconnect = false
 
   function renderInfo () {
+    if (isSelfCustodyUser && !state.creatorBanner.web3Url) {
+      showBalance = false
+      return (
+        <InfoBox title={getString('providerMismatchTitle')}>
+          <div>
+            {getString('selfCustodyNoWeb3Label')}
+          </div>
+        </InfoBox>
+      )
+    }
+
     // If the user does not have a wallet provider, then for simplicity assume
     // that this is a legacy "unconnected" user. A 2.5 or later user that is
     // unconnected should never be shown this UI, but if somehow they are it
@@ -226,10 +241,6 @@ export function TipForm () {
       </style.root>
     )
   }
-
-  const isSelfCustodyUser =
-    state.rewardsUser.walletProvider &&
-    isSelfCustodyProvider(state.rewardsUser.walletProvider)
 
   if (isSelfCustodyUser && state.creatorBanner.web3Url) {
     return (

@@ -549,5 +549,8 @@
   <message name="IDS_REWARDS_TIP_SELF_CUSTODY_SEND_BUTTON_LABEL" desc="">
     Send with Web3 wallet
   </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_NO_WEB3_LABEL" desc="">
+    It looks like this creator isn't set up to receive contributions via Web3 wallets yet.
+  </message>
 
 </grit-part>
