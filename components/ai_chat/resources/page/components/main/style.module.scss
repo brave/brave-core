@@ -15,15 +15,29 @@
 .inputBox {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding: 16px;
-  background-color: var(--leo-color-container-background);
+  width: calc(100% - 6px); /* subtract scrollbar width */
+  padding: 0 0 8px 8px;
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(180deg, var(--leo-color-container-background) 0%, rgba(0, 0, 0, 0.00) 100%);
+  backdrop-filter: blur(20px);
 }
 
 .scroller {
   overflow: auto;
   height: 100%;
-  padding-bottom: 16px;
+  padding-bottom: 80px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-gray-20);
+    border-radius: var(--leo-spacing-m);
+  }
 }
 
 .flushBottom {
