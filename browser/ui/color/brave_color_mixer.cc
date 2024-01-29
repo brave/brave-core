@@ -242,6 +242,12 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
       ui::kColorFocusableBorderFocused};
   mixer[kColorTabFocusRingActive] = {ui::kColorFocusableBorderFocused};
   mixer[kColorTabFocusRingInactive] = {ui::kColorFocusableBorderFocused};
+
+  // Upstream uses tab's background color as omnibox chip background color.
+  // In our light mode, there is no difference between location bar's bg
+  // color and tab's bg color. So, it looks like chip's bg color is transparent.
+  // Use frame color as chip background to have different bg color.
+  mixer[kColorOmniboxChipBackground] = {kLightFrame};
 }
 
 void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
