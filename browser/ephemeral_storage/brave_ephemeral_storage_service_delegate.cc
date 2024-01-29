@@ -59,19 +59,15 @@ void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
 
     const GURL http_url(base::StrCat({"http://", key.first}));
 
+    // Only cleanup StorageKey-aware areas.
     content::BrowsingDataRemover::DataType data_to_remove =
-        content::BrowsingDataRemover::DATA_TYPE_CACHE |
-        content::BrowsingDataRemover::DATA_TYPE_MEDIA_LICENSES |
-        content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE |
-        content::BrowsingDataRemover::DATA_TYPE_ATTRIBUTION_REPORTING |
-        content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX |
-        content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX_INTERNAL |
-        chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
+        content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE;
 
     content::BrowsingDataRemover::OriginType origin_type =
         content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
         content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
 
+    // Cookies are partitioned and cleaned separately.
     data_to_remove &= ~content::BrowsingDataRemover::DATA_TYPE_COOKIES;
 
     auto filter_builder = content::BrowsingDataFilterBuilder::Create(
