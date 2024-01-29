@@ -463,10 +463,12 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (process.platform === 'win32' && this.build_omaha) {
+  if (this.build_omaha) {
     args.build_omaha = this.build_omaha
     args.tag_ap = this.tag_ap
-    args.tag_installdataindex = this.tag_installdataindex
+    if (this.tag_installdataindex) {
+      args.tag_installdataindex = this.tag_installdataindex
+    }
   }
 
   if ((process.platform === 'win32' || process.platform === 'darwin') && this.build_delta_installer) {
@@ -1062,9 +1064,19 @@ Config.prototype.update = function (options) {
     this.channel = ''
   }
 
-  if (process.platform === 'win32' && options.build_omaha) {
+  if (options.build_omaha) {
+    assert(process.platform === 'win32')
     this.build_omaha = true
+    assert(options.tag_ap, "--tag_ap is required for --build_omaha")
+  }
+
+  if (options.tag_ap) {
+    assert(options.build_omaha, "--tag_ap requires --build_omaha")
     this.tag_ap = options.tag_ap
+  }
+
+  if (options.tag_installdataindex) {
+    assert(options.build_omaha, "--tag_installdataindex requires --build_omaha")
     this.tag_installdataindex = options.tag_installdataindex
   }
 
