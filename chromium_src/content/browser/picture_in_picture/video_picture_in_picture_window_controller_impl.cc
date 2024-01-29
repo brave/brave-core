@@ -50,9 +50,8 @@ void VideoPictureInPictureWindowControllerImpl::SeekTo(
 void VideoPictureInPictureWindowControllerImpl::RequestFullscreen() {
   DCHECK(active_session_);
 
-  if (IsPlayerActive()) {
-    active_session_->GetMediaPlayerRemote()->RequestFullscreen();
-  }
+  active_session_->GetMediaPlayerRemote()->RequestFullscreen();
+  FocusInitiator();
 }
 
 }  // namespace content
