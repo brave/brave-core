@@ -41,6 +41,7 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
+    "//brave/third_party/rust/bitflags/v1:lib",
     "//brave/third_party/rust/cssparser/v0_28:lib",
     "//brave/third_party/rust/derive_more/v0_99:lib",
     "//brave/third_party/rust/fxhash/v0_2:lib",
@@ -48,7 +49,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/precomputed_hash/v0_1:lib",
     "//brave/third_party/rust/servo_arc/v0_1:lib",
     "//brave/third_party/rust/smallvec/v1:lib",
-    "//third_party/rust/bitflags/v1:lib",
     "//third_party/rust/log/v0_4:lib",
   ]
   build_deps = [ "//brave/third_party/rust/phf_codegen/v0_8:buildrs_support" ]

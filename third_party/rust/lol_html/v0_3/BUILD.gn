@@ -122,6 +122,7 @@ cargo_crate("lib") {
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
+    "//brave/third_party/rust/bitflags/v1:lib",
     "//brave/third_party/rust/cssparser/v0_27:lib",
     "//brave/third_party/rust/encoding_rs/v0_8:lib",
     "//brave/third_party/rust/hashbrown/v0_12:lib",
@@ -129,7 +130,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/safemem/v0_3:lib",
     "//brave/third_party/rust/selectors/v0_22:lib",
     "//brave/third_party/rust/thiserror/v1:lib",
-    "//third_party/rust/bitflags/v1:lib",
     "//third_party/rust/cfg_if/v1:lib",
     "//third_party/rust/lazy_static/v1:lib",
     "//third_party/rust/memchr/v2:lib",
