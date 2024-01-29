@@ -155,10 +155,15 @@ export const FromAsset = (props: Props) => {
     [onChange]
   )
 
-  const tokenBalance =
-    !account || !token || !tokenBalancesRegistry
-      ? ''
-      : getBalance(account.accountId, token, tokenBalancesRegistry)
+  const tokenBalance = React.useMemo(() => {
+    if (!account || !token || !tokenBalancesRegistry) {
+      return ''
+    }
+    if (token.coin === BraveWallet.CoinType.BTC && bitcoinBalances) {
+      return bitcoinBalances.availableBalance
+    }
+    return getBalance(account.accountId, token, tokenBalancesRegistry)
+  }, [account, token, tokenBalancesRegistry, bitcoinBalances])
 
   const hasPendingBalance = new Amount(
     bitcoinBalances?.pendingBalance ?? ''
