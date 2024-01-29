@@ -68,6 +68,7 @@ class EphemeralStorageService : public KeyedService {
   // Enables 1PES for url if nothing is stored for |url|.
   void Enable1PESForUrlIfPossible(const GURL& url,
                                   base::OnceCallback<void(bool)> on_ready);
+  // Returns First Party Ephemeral Storage token to partition storage.
   std::optional<base::UnguessableToken> Get1PESToken(const url::Origin& origin);
 
   void TLDEphemeralLifetimeCreated(
@@ -123,6 +124,7 @@ class EphemeralStorageService : public KeyedService {
   base::TimeDelta first_party_storage_startup_cleanup_delay_;
   std::map<TLDEphemeralAreaKey, std::unique_ptr<base::OneShotTimer>>
       tld_ephemeral_areas_to_cleanup_;
+  // Contains First Party Ephemeral Storage tokens to partition storage.
   base::flat_map<std::string, base::UnguessableToken> fpes_tokens_;
   base::Value::List first_party_storage_areas_to_cleanup_on_startup_;
   base::OneShotTimer first_party_storage_areas_startup_cleanup_timer_;
