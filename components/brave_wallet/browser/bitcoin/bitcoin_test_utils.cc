@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -84,6 +85,17 @@ bitcoin_rpc::AddressStats BitcoinTestRpcServer::TransactedAddressStats(
     const std::string& address) {
   bitcoin_rpc::AddressStats stats = EmptyAddressStats(address);
   stats.chain_stats.tx_count = "1";
+  return stats;
+}
+
+bitcoin_rpc::AddressStats BitcoinTestRpcServer::MempoolAddressStats(
+    const std::string& address,
+    uint64_t funded,
+    uint64_t spent) {
+  bitcoin_rpc::AddressStats stats = EmptyAddressStats(address);
+  stats.mempool_stats.tx_count = "1";
+  stats.mempool_stats.funded_txo_sum = base::NumberToString(funded);
+  stats.mempool_stats.spent_txo_sum = base::NumberToString(spent);
   return stats;
 }
 
@@ -263,6 +275,12 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
 
 void BitcoinTestRpcServer::AddTransactedAddress(const std::string& address) {
   address_stats_map()[address] = TransactedAddressStats(address);
+}
+
+void BitcoinTestRpcServer::AddMempoolBalance(const std::string& address,
+                                             uint64_t funded,
+                                             uint64_t spent) {
+  address_stats_map()[address] = MempoolAddressStats(address, funded, spent);
 }
 
 }  // namespace brave_wallet

@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
@@ -218,7 +219,8 @@ void GetBalanceTask::OnGetAddressStats(
       base::ClampSub(chain_balance.funded,
                      chain_balance.spent + mempool_balance.spent)
           .RawValue();
-  pending_balance_ += mempool_balance.funded - mempool_balance.spent;
+  pending_balance_ += mempool_balance.funded;
+  pending_balance_ -= mempool_balance.spent;
 
   CHECK(std::erase(addresses_, address));
   if (addresses_.empty()) {
@@ -372,7 +374,7 @@ class CreateTransactionTask {
   void OnGetFeeEstimates(
       base::expected<std::map<uint32_t, double>, std::string> estimates);
   void OnGetUtxos(base::expected<UtxoMap, std::string> utxo_map);
-  void OnDiscoverNextUnusedAddress(
+  void OnDiscoverNextUnusedChangeAddress(
       base::expected<mojom::BitcoinAddressPtr, std::string> address);
 
   raw_ptr<BitcoinWalletService> bitcoin_wallet_service_;  // Owns `this`.
@@ -479,8 +481,9 @@ void CreateTransactionTask::WorkOnTask() {
   if (!change_address_) {
     bitcoin_wallet_service_->DiscoverNextUnusedAddress(
         account_id_.Clone(), true,
-        base::BindOnce(&CreateTransactionTask::OnDiscoverNextUnusedAddress,
-                       weak_ptr_factory_.GetWeakPtr()));
+        base::BindOnce(
+            &CreateTransactionTask::OnDiscoverNextUnusedChangeAddress,
+            weak_ptr_factory_.GetWeakPtr()));
     return;
   }
 
@@ -569,13 +572,16 @@ void CreateTransactionTask::OnGetUtxos(
   WorkOnTask();
 }
 
-void CreateTransactionTask::OnDiscoverNextUnusedAddress(
+void CreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
     base::expected<mojom::BitcoinAddressPtr, std::string> address) {
   if (!address.has_value()) {
     SetError(std::move(address.error()));
     WorkOnTask();
     return;
   }
+  DCHECK_EQ(address.value()->key_id->change, kBitcoinChangeIndex);
+  bitcoin_wallet_service_->UpdateNextUnusedAddressForAccount(account_id_,
+                                                             address.value());
   change_address_ = std::move(address.value());
   WorkOnTask();
 }
