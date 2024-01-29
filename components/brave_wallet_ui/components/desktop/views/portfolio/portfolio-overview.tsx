@@ -104,7 +104,9 @@ import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
-import { selectAllVisibleUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../../../../common/slices/entities/blockchain-token.entity'
 
 export const PortfolioOverview = () => {
   // routing
