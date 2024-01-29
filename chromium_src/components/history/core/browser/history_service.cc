@@ -5,6 +5,8 @@
 
 #include "src/components/history/core/browser/history_service.cc"
 
+#include "base/task/bind_post_task.h"
+
 namespace history {
 
 void HistoryService::GetKnownToSyncCount(
@@ -12,7 +14,7 @@ void HistoryService::GetKnownToSyncCount(
   backend_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&HistoryBackend::GetKnownToSyncCount, history_backend_),
-      std::move(callback));
+      base::BindPostTaskToCurrentDefault(std::move(callback)));
 }
 
 }  // namespace history
