@@ -357,7 +357,7 @@ function getPageBackground(p: HasImageProps) {
         background-attachment: fixed;
       `};
       background-position: center center;
-      background-image: ${getBackground};
+      background: ${getBackground};
     }
   `
 }
