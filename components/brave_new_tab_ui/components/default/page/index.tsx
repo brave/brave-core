@@ -348,6 +348,7 @@ function getPageBackground(p: HasImageProps) {
       right: 0;
       display: block;
       transition: opacity .5s ease-in-out;
+      background: ${getBackground};
       ${p => p.hasImage && p.imageSrc && css`
         opacity: var(--bg-opacity);
         background-size: cover;
@@ -355,7 +356,6 @@ function getPageBackground(p: HasImageProps) {
         background-attachment: fixed;
       `};
       background-position: center center;
-      background-image: ${getBackground};
     }
   `
 }
