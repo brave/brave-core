@@ -160,9 +160,9 @@ export const FromAsset = (props: Props) => {
       ? ''
       : getBalance(account.accountId, token, tokenBalancesRegistry)
 
-  const hasPendingBalance = new Amount(
-    bitcoinBalances?.pendingBalance ?? ''
-  ).gt(0)
+  const hasPendingBalance = !new Amount(
+    bitcoinBalances?.pendingBalance ?? '0'
+  ).isZero()
 
   const accountNameAndBalance = React.useMemo(() => {
     if (!token || !account) {
