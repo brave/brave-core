@@ -97,6 +97,8 @@
   <message name="IDS_BRAVE_WALLET_SEARCH_TOKENS" desc="Send tab search for tokens.">Search token by name</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_NFTS" desc="Send tab search for nfts.">Search NFT by name, id</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET" desc="Send tab choose asset button.">Choose Asset</message>
+  <message name="IDS_BRAVE_WALLET_ORDINALS_WARNING_MESSAGE" desc="Warning message when sending BTC.">Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.</message>
+  <message name="IDS_BRAVE_WALLET_USER_UNDERSTANDS_LABEL" desc="Message for use to acknowledge a decision">I understand</message>
   <message name="IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE" desc="Message shown when the selected network is not supported for buy transactions">Buy not supported for selected network</message>
   <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Message shown when searching for a UD or ENS domain">Searching for domain...</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_TITLE" desc="Message title shown when requesting to do an ENS off chain lookup.">Brave supports using off-chain gateways to resolve .eth domains.</message>

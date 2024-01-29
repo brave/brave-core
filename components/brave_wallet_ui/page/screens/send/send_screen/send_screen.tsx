@@ -120,6 +120,7 @@ import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
   DefaultPanelHeader //
 } from '../../../../components/desktop/card-headers/default-panel-header'
+import { OrdinalsWarningMessage } from '../components/ordinals-warning-message/ordinals-warning-message'
 
 interface Props {
   isAndroid?: boolean
@@ -172,6 +173,8 @@ export const SendScreen = React.memo((props: Props) => {
   const [domainPosition, setDomainPosition] = React.useState<number>(0)
   const [selectedNetworkFilter, setSelectedNetworkFilter] =
     React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
+  const [isWarningAcknowledged, setIsWarningAcknowledged] =
+    React.useState<boolean>(false)
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -787,6 +790,12 @@ export const SendScreen = React.memo((props: Props) => {
                     }
                   />
                 )}
+                {tokenFromParams?.coin === BraveWallet.CoinType.BTC && (
+                  <OrdinalsWarningMessage
+                    acknowledged={isWarningAcknowledged}
+                    onChange={setIsWarningAcknowledged}
+                  />
+                )}
               </Column>
               <Row
                 width='100%'
@@ -824,7 +833,9 @@ export const SendScreen = React.memo((props: Props) => {
                       Boolean(addressError) ||
                       sendAmount === '' ||
                       parseFloat(sendAmount) === 0 ||
-                      Boolean(sendAmountValidationError)
+                      Boolean(sendAmountValidationError) ||
+                      (tokenFromParams?.coin === BraveWallet.CoinType.BTC &&
+                        !isWarningAcknowledged)
                     }
                     hasError={reviewButtonHasError}
                   />
