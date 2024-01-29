@@ -64,4 +64,8 @@ mojom::TransactionInfoPtr ZCashTxMeta::ToTransactionInfo() const {
       tx_->to());
 }
 
+mojom::CoinType ZCashTxMeta::GetCoinType() const {
+  return mojom::CoinType::ZEC;
+}
+
 }  // namespace brave_wallet

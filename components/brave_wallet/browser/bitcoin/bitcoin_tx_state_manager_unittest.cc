@@ -93,13 +93,4 @@ TEST_F(BitcoinTxStateManagerUnitTest, BitcoinTxMetaAndValue) {
   EXPECT_EQ(*meta_from_value, meta);
 }
 
-TEST_F(BitcoinTxStateManagerUnitTest, GetTxPrefPathPrefix) {
-  EXPECT_EQ("bitcoin.mainnet", bitcoin_tx_state_manager_->GetTxPrefPathPrefix(
-                                   mojom::kBitcoinMainnet));
-  EXPECT_EQ("bitcoin.testnet", bitcoin_tx_state_manager_->GetTxPrefPathPrefix(
-                                   mojom::kBitcoinTestnet));
-  EXPECT_EQ("bitcoin",
-            bitcoin_tx_state_manager_->GetTxPrefPathPrefix(std::nullopt));
-}
-
 }  // namespace brave_wallet

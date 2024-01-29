@@ -21,9 +21,101 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using base::test::ParseJson;
 using base::test::ParseJsonDict;
 
 namespace brave_wallet {
+
+namespace {
+constexpr char kLegacyFormatTransactionsDict[] = R"({
+    "chain_id_migrated": true,
+    "ethereum": {
+        "goerli": {
+            "a336ef2c-9716-4cb7-8bb2-7fce8704a661": {
+                "chain_id": "0x5",
+                "confirmed_time": "13324786394428041",
+                "tx": {
+                    "data": "",
+                },
+            },
+            "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4": {
+                "chain_id": "0x5",
+            }
+        },
+        "mainnet": {
+            "71a841a4-83dc-4286-9acd-9b7f50e90fda": {
+                "chain_id": "0x1",
+                "confirmed_time": "0",
+                "tx": {
+                    "data": "",
+                },
+                "tx_hash": "",
+                "tx_receipt": {
+                    "block_hash": "",
+                }
+            }
+        }
+    },
+    "solana": {
+        "devnet": {
+            "40fa081e-55c8-4052-a7e9-e32ffaa44ba9": {
+                "chain_id": "0x67",
+                "confirmed_time": "0",
+                "signature_status": {
+                    "confirmation_status": "",
+                    "confirmations": "0",
+                    "err": "",
+                    "slot": "0"
+                },
+                "status": 2,
+                "submitted_time": "0",
+                "tx_hash": ""
+            }
+        }
+    }
+    })";
+
+constexpr char kCurrentFormatTransactionsDict[] = R"({
+    "a336ef2c-9716-4cb7-8bb2-7fce8704a661": {
+        "coin": 60,
+        "chain_id": "0x5",
+        "confirmed_time": "13324786394428041",
+        "tx": {
+            "data": "",
+        },
+    },
+    "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4": {
+        "coin": 60,
+        "chain_id": "0x5",
+    },
+    "71a841a4-83dc-4286-9acd-9b7f50e90fda": {
+        "coin": 60,
+        "chain_id": "0x1",
+        "confirmed_time": "0",
+        "tx": {
+            "data": "",
+        },
+        "tx_hash": "",
+        "tx_receipt": {
+            "block_hash": "",
+        }
+    },
+    "40fa081e-55c8-4052-a7e9-e32ffaa44ba9": {
+        "coin": 501,
+        "chain_id": "0x67",
+        "confirmed_time": "0",
+        "signature_status": {
+            "confirmation_status": "",
+            "confirmations": "0",
+            "err": "",
+            "slot": "0"
+        },
+        "status": 2,
+        "submitted_time": "0",
+        "tx_hash": ""
+    }
+    })";
+}  // namespace
 
 class TxStorageDelegateImplUnitTest : public testing::Test {
  public:
@@ -55,13 +147,13 @@ class TxStorageDelegateImplUnitTest : public testing::Test {
   scoped_refptr<value_store::TestValueStoreFactory> factory_;
 };
 
-TEST_F(TxStorageDelegateImplUnitTest, Initialize) {
+TEST_F(TxStorageDelegateImplUnitTest,
+       BraveWalletTransactionsFromPrefsToDBMigrated) {
   {  // Nothing to migrate, ex. fresh profile
     ASSERT_FALSE(
         prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
     ASSERT_FALSE(prefs_.HasPrefPath(kBraveWalletTransactions));
     auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
-    WaitForTxStorageDelegateInitialized(delegate.get());
     EXPECT_TRUE(delegate->IsInitialized());
     EXPECT_TRUE(
         prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
@@ -71,7 +163,6 @@ TEST_F(TxStorageDelegateImplUnitTest, Initialize) {
   {  // already migrated
     prefs_.SetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated, true);
     auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
-    WaitForTxStorageDelegateInitialized(delegate.get());
     EXPECT_TRUE(delegate->IsInitialized());
     EXPECT_TRUE(
         prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
@@ -81,53 +172,7 @@ TEST_F(TxStorageDelegateImplUnitTest, Initialize) {
     ASSERT_FALSE(
         prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
 
-    base::Value::Dict txs_value = ParseJsonDict(R"({
-    "chain_id_migrated": true,
-    "ethereum": {
-        "goerli": {
-            "a336ef2c-9716-4cb7-8bb2-7fce8704a662": {
-                "chain_id": "0x5",
-                "confirmed_time": "13324786394428041",
-                "tx": {
-                    "data": "",
-                },
-            },
-            "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4": {
-                "chain_id": "0x5",
-            }
-        },
-        "mainnet": {
-            "71a841a4-83dc-4286-9acd-9b7f50e90fdb": {
-                "chain_id": "0x1",
-                "confirmed_time": "0",
-                "tx": {
-                    "data": "",
-                },
-                "tx_hash": "",
-                "tx_receipt": {
-                    "block_hash": "",
-                }
-            }
-        }
-    },
-    "solana": {
-        "devnet": {
-            "40fa081e-55c8-4052-a7e9-e32ffaa44ba8": {
-                "chain_id": "0x67",
-                "confirmed_time": "0",
-                "signature_status": {
-                    "confirmation_status": "",
-                    "confirmations": "0",
-                    "err": "",
-                    "slot": "0"
-                },
-                "status": 2,
-                "submitted_time": "0",
-                "tx_hash": ""
-            }
-        }
-    }
-    })");
+    base::Value::Dict txs_value = ParseJsonDict(kLegacyFormatTransactionsDict);
     prefs_.Set(kBraveWalletTransactions, base::Value(txs_value.Clone()));
     auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
     auto txs_from_db = GetTxsFromDB(delegate.get());
@@ -142,9 +187,64 @@ TEST_F(TxStorageDelegateImplUnitTest, Initialize) {
   }
 }
 
+TEST_F(TxStorageDelegateImplUnitTest, BraveWalletTransactionsDBFormatMigrated) {
+  prefs_.SetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated, true);
+
+  {  // Nothing to migrate, ex. fresh profile
+    ASSERT_FALSE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
+    ASSERT_FALSE(prefs_.HasPrefPath(kBraveWalletTransactions));
+    auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
+    EXPECT_TRUE(delegate->IsInitialized());
+    EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
+
+    prefs_.ClearPref(kBraveWalletTransactionsDBFormatMigrated);
+  }
+
+  {  // fill db with legacy formatted transactions dict
+    auto store = TxStorageDelegateImpl::MakeValueStoreFrontend(
+        factory_, base::SequencedTaskRunner::GetCurrentDefault());
+    store->Set("transactions", ParseJson(kLegacyFormatTransactionsDict));
+  }
+
+  {  // migration happened
+    ASSERT_FALSE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
+
+    base::Value::Dict txs_value = ParseJsonDict(kCurrentFormatTransactionsDict);
+    auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
+    auto txs_from_db = GetTxsFromDB(delegate.get());
+    ASSERT_TRUE(txs_from_db);
+    EXPECT_EQ(txs_from_db->GetDict(), txs_value);
+    EXPECT_EQ(delegate->GetTxs(), txs_value);
+    EXPECT_TRUE(delegate->IsInitialized());
+    EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
+  }
+
+  {  // no double migration
+    auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
+    EXPECT_TRUE(delegate->IsInitialized());
+    EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
+    EXPECT_EQ(delegate->GetTxs(),
+              ParseJsonDict(kCurrentFormatTransactionsDict));
+  }
+}
+
+TEST_F(TxStorageDelegateImplUnitTest, DBFormatMigrationAfterPrefsMigration) {
+  ASSERT_FALSE(
+      prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
+  ASSERT_FALSE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
+
+  prefs_.Set(kBraveWalletTransactions,
+             ParseJson(kLegacyFormatTransactionsDict));
+
+  auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
+  EXPECT_EQ(delegate->GetTxs(), ParseJsonDict(kCurrentFormatTransactionsDict));
+
+  EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
+  EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
+}
+
 TEST_F(TxStorageDelegateImplUnitTest, ReadWriteAndClear) {
   auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
-  WaitForTxStorageDelegateInitialized(delegate.get());
   // OnTxRead with empty txs
   auto& txs = delegate->GetTxs();
   EXPECT_TRUE(txs.empty());

@@ -43,6 +43,18 @@ using testing::ElementsAreArray;
 
 namespace brave_wallet {
 
+// DEPRECATED 01/2024. For migration only.
+std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetKnownEthNetworkId(const std::string& chain_id);
+std::string GetKnownSolNetworkId(const std::string& chain_id);
+std::string GetKnownFilNetworkId(const std::string& chain_id);
+std::string GetKnownBtcNetworkId(const std::string& chain_id);
+std::string GetNetworkId(PrefService* prefs,
+                         mojom::CoinType coin,
+                         const std::string& chain_id);
+
 namespace {
 
 void UpdateCustomNetworks(PrefService* prefs,
@@ -950,18 +962,6 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   EXPECT_TRUE(AllCoinsTested());
 }
 
-TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
-  const std::vector<std::string> expected_network_ids(
-      {"mainnet", mojom::kAuroraMainnetChainId, mojom::kPolygonMainnetChainId,
-       mojom::kBinanceSmartChainMainnetChainId, mojom::kOptimismMainnetChainId,
-       mojom::kAvalancheMainnetChainId, mojom::kFilecoinEthereumMainnetChainId,
-       mojom::kNeonEVMMainnetChainId, "goerli", "sepolia",
-       mojom::kFilecoinEthereumTestnetChainId, "http://localhost:7545/"});
-  ASSERT_EQ(GetAllKnownChains(nullptr, mojom::CoinType::ETH).size(),
-            expected_network_ids.size());
-  EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
-}
-
 TEST(BraveWalletUtilsUnitTest, GetKnownEthNetworkId) {
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kLocalhostChainId),
             "http://localhost:7545/");
@@ -1439,15 +1439,16 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
         nid = chain->chain_id;
         // GetNetworkId supports only ETH for custom networks atm.
         if (chain->coin != mojom::CoinType::ETH) {
-          ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, nid));
+          ASSERT_FALSE(
+              GetChainIdByNetworkId_DEPRECATED(&prefs, coin_type, nid));
           continue;
         }
       }
-      auto chain_id = GetChainIdByNetworkId(&prefs, coin_type, nid);
+      auto chain_id = GetChainIdByNetworkId_DEPRECATED(&prefs, coin_type, nid);
       ASSERT_TRUE(chain_id.has_value());
       EXPECT_EQ(chain->chain_id, chain_id.value());
     }
-    ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, ""));
+    ASSERT_FALSE(GetChainIdByNetworkId_DEPRECATED(&prefs, coin_type, ""));
   };
 
   for (auto coin : kAllCoins) {

@@ -174,6 +174,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   base::Value::Dict value = meta.ToValue();
   auto expect_value = base::JSONReader::Read(R"(
     {
+      "coin": 501,
       "chain_id" : "0x66",
       "id": "meta_id",
       "status": 4,

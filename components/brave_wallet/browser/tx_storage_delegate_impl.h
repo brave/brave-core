@@ -50,13 +50,21 @@ class TxStorageDelegateImpl final : public TxStorageDelegate {
   friend class TxStateManagerUnitTest;
   friend class TxStorageDelegateImplUnitTest;
   FRIEND_TEST_ALL_PREFIXES(TxStorageDelegateImplUnitTest, ReadWriteAndClear);
+  FRIEND_TEST_ALL_PREFIXES(TxStorageDelegateImplUnitTest,
+                           BraveWalletTransactionsDBFormatMigrated);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
+
+  static std::unique_ptr<value_store::ValueStoreFrontend>
+  MakeValueStoreFrontend(
+      scoped_refptr<value_store::ValueStoreFactory> store_factory,
+      scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
 
   // Read all txs from db
   void Initialize();
-  void OnTxsRead(std::optional<base::Value> txs);
+  void OnTxsInitialRead(std::optional<base::Value> txs);
+  void RunDBMigrations();
 
-  bool MigrateTransactionsFromPrefsToDB(PrefService* prefs);
+  bool MigrateTransactionsFromPrefsToDB();
 
   base::ObserverList<TxStorageDelegate::Observer> observers_;
 
@@ -69,6 +77,7 @@ class TxStorageDelegateImpl final : public TxStorageDelegate {
 
   std::unique_ptr<value_store::ValueStoreFrontend> store_;
 
+  raw_ptr<PrefService> prefs_;
   base::WeakPtrFactory<TxStorageDelegateImpl> weak_factory_{this};
 };
 

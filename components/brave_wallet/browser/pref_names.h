@@ -100,5 +100,8 @@ inline constexpr char kBraveWalletSelectedCoinDeprecated[] =
 // 01/2024
 inline constexpr char kBraveWalletUserAssetsDeprecated[] =
     "brave.wallet.wallet_user_assets";
+// Added 01/2024 to migrate transactions DB to one-level dict.
+inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
+    "brave.wallet.transactions_db_format_migrated";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

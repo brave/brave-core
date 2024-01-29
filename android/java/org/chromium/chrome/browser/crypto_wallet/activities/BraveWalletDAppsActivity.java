@@ -195,40 +195,52 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         } else if (mActivityType == ActivityType.ADD_TOKEN) {
             mFragment = new AddTokenFragment();
         } else if (mActivityType == ActivityType.CONFIRM_TRANSACTION) {
-            mKeyringService.getAllAccounts(allAccounts -> {
-                if (mPendingTxHelper != null) {
-                    mPendingTxHelper.destroy();
-                }
-                mPendingTxHelper = new PendingTxHelper(
-                        getTxService(), allAccounts.accounts, false, true, null);
-                mPendingTxHelper.mHasNoPendingTxAfterProcessing.observe(this, hasNoPendingTx -> {
-                    if (hasNoPendingTx) {
-                        finish();
-                    }
-                });
-                mPendingTxHelper.mSelectedPendingRequest.observe(this, transactionInfo -> {
-                    if (transactionInfo == null
-                            || mPendingTxHelper.getPendingTransactions().size() == 0) {
-                        return;
-                    }
-                    if (mApproveTxBottomSheetDialogFragment != null
-                            && mApproveTxBottomSheetDialogFragment.isVisible()) {
-                        // TODO: instead of dismiss, show the details of new Tx once
-                        //  onNextTransaction implementation is done
-                        mApproveTxBottomSheetDialogFragment.dismiss();
-                    }
-                    mApproveTxBottomSheetDialogFragment =
-                            ApproveTxBottomSheetDialogFragment.newInstance(
-                                    mPendingTxHelper.getPendingTransactions(), transactionInfo,
-                                    this);
-                    mApproveTxBottomSheetDialogFragment.show(getSupportFragmentManager(),
-                            ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
-                    mPendingTxHelper.mTransactionInfoLd.observe(this, transactionInfos -> {
-                        mApproveTxBottomSheetDialogFragment.setTxList(transactionInfos);
+            mKeyringService.getAllAccounts(
+                    allAccounts -> {
+                        if (mPendingTxHelper != null) {
+                            mPendingTxHelper.destroy();
+                        }
+                        mPendingTxHelper =
+                                new PendingTxHelper(
+                                        getTxService(), allAccounts.accounts, false, true);
+                        mPendingTxHelper.mHasNoPendingTxAfterProcessing.observe(
+                                this,
+                                hasNoPendingTx -> {
+                                    if (hasNoPendingTx) {
+                                        finish();
+                                    }
+                                });
+                        mPendingTxHelper.mSelectedPendingRequest.observe(
+                                this,
+                                transactionInfo -> {
+                                    if (transactionInfo == null
+                                            || mPendingTxHelper.getPendingTransactions().size()
+                                                    == 0) {
+                                        return;
+                                    }
+                                    if (mApproveTxBottomSheetDialogFragment != null
+                                            && mApproveTxBottomSheetDialogFragment.isVisible()) {
+                                        // TODO: instead of dismiss, show the details of new Tx once
+                                        //  onNextTransaction implementation is done
+                                        mApproveTxBottomSheetDialogFragment.dismiss();
+                                    }
+                                    mApproveTxBottomSheetDialogFragment =
+                                            ApproveTxBottomSheetDialogFragment.newInstance(
+                                                    mPendingTxHelper.getPendingTransactions(),
+                                                    transactionInfo,
+                                                    this);
+                                    mApproveTxBottomSheetDialogFragment.show(
+                                            getSupportFragmentManager(),
+                                            ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+                                    mPendingTxHelper.mTransactionInfoLd.observe(
+                                            this,
+                                            transactionInfos -> {
+                                                mApproveTxBottomSheetDialogFragment.setTxList(
+                                                        transactionInfos);
+                                            });
+                                });
+                        mPendingTxHelper.fetchTransactions(() -> {});
                     });
-                });
-                mPendingTxHelper.fetchTransactions(() -> {});
-            });
         } else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN
                 || mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
             mFragment = new AddSwitchChainNetworkFragment(mActivityType, this);

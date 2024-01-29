@@ -272,6 +272,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 01/2024
   registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
+  // Added 01/2024
+  registry->RegisterBooleanPref(kBraveWalletTransactionsDBFormatMigrated,
+                                false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {

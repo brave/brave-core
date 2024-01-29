@@ -950,14 +950,14 @@ void BraveWalletService::MigrateAssetsPrefToList(PrefService* prefs) {
   const auto& user_assets_dict =
       prefs->GetDict(kBraveWalletUserAssetsDeprecated);
   for (auto coin_it : user_assets_dict) {
-    auto coin = GetCoinTypeFromPrefKey(coin_it.first);
+    auto coin = GetCoinTypeFromPrefKey_DEPRECATED(coin_it.first);
     if (!coin) {
       continue;
     }
 
     for (auto network_it : coin_it.second.GetDict()) {
-      auto chain_id =
-          GetChainIdByNetworkId(prefs, coin.value(), network_it.first);
+      auto chain_id = GetChainIdByNetworkId_DEPRECATED(prefs, coin.value(),
+                                                       network_it.first);
 
       if (!chain_id) {
         continue;

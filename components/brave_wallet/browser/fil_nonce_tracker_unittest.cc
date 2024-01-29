@@ -106,7 +106,6 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
       GetTxStorageDelegateForTest(GetPrefs(), factory);
   auto account_resolver_delegate =
       std::make_unique<AccountResolverDelegateForTest>();
-  WaitForTxStorageDelegateInitialized(delegate.get());
   FilTxStateManager tx_state_manager(GetPrefs(), delegate.get(),
                                      account_resolver_delegate.get());
   FilNonceTracker nonce_tracker(&tx_state_manager, &service);

@@ -1173,7 +1173,7 @@ public class Utils {
         TxService txService = activity.getTxService();
         assert txService != null;
 
-        PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true, null);
+        PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true);
 
         pendingTxHelper.fetchTransactions(() -> {
             HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
