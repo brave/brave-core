@@ -369,6 +369,9 @@ void AssetDiscoveryTask::DiscoverSPLTokensFromRegistry(
     return;
   }
 
+  // For some unknown reason, this barrier callback does not 
+  // call MergeDiscoveredSPL tokens. Perhaps because it's not
+  // being called solana_addresses.size() times.
   const auto barrier_callback =
       base::BarrierCallback<std::vector<SolanaAddress>>(
           solana_addresses.size(),

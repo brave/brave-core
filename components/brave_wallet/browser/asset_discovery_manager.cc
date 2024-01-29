@@ -167,6 +167,7 @@ void AssetDiscoveryManager::AddTask(
                                  weak_ptr_factory_.GetWeakPtr());
   auto* task_ptr = task.get();
   queue_.push(std::move(task));
+  LOG(ERROR) << "AssetDiscoveryManager::AddTask, queue_.size() is now " << queue_.size();
 
   task_ptr->ScheduleTask(fungible_supported_chains,
                          non_fungible_supported_chains, account_addresses,
@@ -175,6 +176,7 @@ void AssetDiscoveryManager::AddTask(
 
 void AssetDiscoveryManager::FinishTask() {
   queue_.pop();
+  LOG(ERROR) << "AssetDiscoveryManager::FinishTask, queue_.size() is now " << queue_.size();
 }
 
 void AssetDiscoveryManager::AccountsAdded(

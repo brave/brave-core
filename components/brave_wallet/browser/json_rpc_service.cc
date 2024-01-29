@@ -3190,6 +3190,14 @@ void JsonRpcService::GetSolanaTokenAccountsByOwner(
     const SolanaAddress& pubkey,
     const std::string& chain_id,
     GetSolanaTokenAccountsByOwnerCallback callback) {
+  // Uncommenting this code that calls the callback and returns early without
+  // making the RPC HTTP solves the issue.
+  // std::move(callback).Run(
+  //     {}, mojom::SolanaProviderError::kInvalidParams,
+  //     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  // return;
+
+  // Comment the remainder of this function if uncommenting above. 
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
