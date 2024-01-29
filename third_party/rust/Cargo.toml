@@ -12,6 +12,7 @@ members = ["cxxbridge_cmd/v1/crate"]
 anyhow = "1"
 async-trait = "0.1"
 base64 = "0.13"
+bech32 = "0.9.1"
 bitflags = "1"
 blake2b_simd = "1"
 cargo-platform = "0.1"

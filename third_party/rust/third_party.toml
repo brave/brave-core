@@ -135,8 +135,10 @@ lazy_static = "1.4.0"
 # regex = "1.5.5"
 
 # brave-wallet
+bech32 = "0.9.1"
 cxx = { version = "1.0", features = [ "alloc", "std" ] }
 ed25519-dalek-bip32 = "0.2.0"
+
 # curve25519-dalek = "3.2.1"
 
 # filecoin

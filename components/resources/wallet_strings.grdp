@@ -444,6 +444,7 @@
   <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain doesn't have a linked <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address</message>
   <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address</message>
   <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address</message>
+  <message name="IDS_BRAVE_WALLET_ZCASH_UNIFIED_ADDRESS_ERROR" desc="Send input trying to send zcash crypto to wrong unified address">Invalid unified address</message>
   <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_TITLE" desc="Send input failed checksum title">Address doesn’t look correct</message>
   <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_DESCRIPTION" desc="Send input failed checksum title">Check your address to make sure it’s the right address (e.g. letters with lower or upper case).</message>
   <message name="IDS_BRAVE_WALLET_HOW_TO_SOLVE" desc="How to solve button text">How can I solve it?</message>
