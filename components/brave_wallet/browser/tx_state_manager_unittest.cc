@@ -122,7 +122,7 @@ TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
 
   auto txs = GetTxs();
   ASSERT_TRUE(txs);
-  const base::Value::Dict* value = txs->GetDict().FindDictByDottedPath("001");
+  const base::Value::Dict* value = txs->GetDict().FindDict("001");
   ASSERT_TRUE(value);
 
   // Transaction is stored with account id.
