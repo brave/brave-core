@@ -117,7 +117,7 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::Emphasis::kMaximum, rect.size());
+      views::Emphasis::kHigh, rect.size());
   SkPath path;
   path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
   return path;
