@@ -51,7 +51,7 @@ void RecordSyncedObjectsCount(int total_entities) {
   // 1 - 1001..10000
   // 2 - 10001..49000
   // 3 - >= 49001
-  p3a_utils::RecordToHistogramBucket(kSyncedObjectsCountHistogramName,
+  p3a_utils::RecordToHistogramBucket(kSyncedObjectsCountHistogramNameV2,
                                      {1000, 10000, 49000}, total_entities);
 }
 
