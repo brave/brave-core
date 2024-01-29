@@ -19,6 +19,8 @@
 #include "build/build_config.h"
 
 #if defined(REDIRECT_CC_AS_REWRAPPER)
+#include "base/base_paths.h"
+#include "base/path_service.h"
 #include "brave/tools/redirect_cc/rewrapper_buildflags.h"
 #else  // defined(REDIRECT_CC_AS_REWRAPPER)
 #include "base/environment.h"
@@ -48,7 +50,10 @@ class RedirectCC {
 
 #if defined(REDIRECT_CC_AS_REWRAPPER)
     *first_compiler_arg_idx = 1;
-    return UTF8ToFilePathString(BUILDFLAG(REAL_REWRAPPER));
+    // Assume DIR_EXE is always src/out/redirect_cc.
+    return base::PathService::CheckedGet(base::DIR_EXE)
+        .Append(UTF8ToFilePathString(BUILDFLAG(REAL_REWRAPPER)))
+        .value();
 #else   // defined(REDIRECT_CC_AS_REWRAPPER)
     std::string cc_wrapper;
     std::unique_ptr<base::Environment> env(base::Environment::Create());
@@ -252,8 +257,9 @@ class RedirectCC {
           // To quote, we need to output 2x as many backslashes.
           backslash_count *= 2;
         }
-        for (size_t j = 0; j < backslash_count; ++j)
+        for (size_t j = 0; j < backslash_count; ++j) {
           out->push_back('\\');
+        }
 
         // Advance i to one before the end to balance i++ in loop.
         i = end - 1;
