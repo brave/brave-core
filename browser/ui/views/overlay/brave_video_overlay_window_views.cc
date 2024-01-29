@@ -16,7 +16,6 @@
 #include "brave/browser/ui/views/overlay/brave_back_to_tab_label_button.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/browser/ui/views/overlay/back_to_tab_label_button.h"
 #include "chrome/browser/ui/views/overlay/close_image_button.h"
 #include "chrome/browser/ui/views/overlay/constants.h"
 #include "chrome/browser/ui/views/overlay/hang_up_button.h"
@@ -24,7 +23,9 @@
 #include "chrome/browser/ui/views/overlay/simple_overlay_window_image_button.h"
 #include "chrome/browser/ui/views/overlay/toggle_camera_button.h"
 #include "chrome/browser/ui/views/overlay/toggle_microphone_button.h"
+#include "chrome/grit/generated_resources.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/canvas.h"
 
 namespace {
@@ -198,6 +199,10 @@ void BraveVideoOverlayWindowViews::SetUpViews() {
       controls_container_view_->AddChildView(std::make_unique<CloseImageButton>(
           base::BindRepeating(&BraveVideoOverlayWindowViews::RequestFullscreen,
                               base::Unretained(this))));
+  const std::u16string fullscreen_button_label =
+      l10n_util::GetStringUTF16(IDS_ACCNAME_FULLSCREEN);
+  fullscreen_button_->SetTooltipText(fullscreen_button_label);
+  fullscreen_button_->SetTooltipText(fullscreen_button_label);
   fullscreen_button_->SetPaintToLayer(ui::LAYER_TEXTURED);
   fullscreen_button_->layer()->SetFillsBoundsOpaquely(false);
   fullscreen_button_->layer()->SetName("FullscreenButton");
