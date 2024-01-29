@@ -350,7 +350,8 @@ void ZCashWalletService::OnDiscoveryDoneForBalance(
     GetBalanceCallback callback,
     RunDiscoveryResult discovery_result) {
   if (!discovery_result.has_value()) {
-    std::move(callback).Run(nullptr, "Failed to fetch balance");
+    std::move(callback).Run(
+        nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
   GetUtxos(chain_id, std::move(account_id),

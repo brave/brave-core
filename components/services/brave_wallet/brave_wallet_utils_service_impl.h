@@ -8,10 +8,8 @@
 
 #include "brave/components/services/brave_wallet/public/mojom/brave_wallet_utils_service.mojom.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
-#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
 
 namespace brave_wallet {
@@ -28,8 +26,8 @@ class BraveWalletUtilsServiceImpl : public mojom::BraveWalletUtilsService {
       delete;
 
   void CreateZCashDecoderService(
-      mojo::PendingAssociatedReceiver<mojom::ZCashDecoder> engine_receiver)
-      override;
+      mojo::PendingAssociatedReceiver<mojom::ZCashDecoder>
+          zcash_decoder_receiver) override;
 
  private:
   mojo::Receiver<mojom::BraveWalletUtilsService> receiver_;

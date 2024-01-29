@@ -282,7 +282,7 @@ bool CreateTransparentTransactionTask::PickInputs() {
   for (const auto& item : utxo_map_) {
     for (const auto& utxo : item.second) {
       if (!utxo) {
-        error_ = "Utxo missing";
+        error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
         return false;
       }
       if (auto input =
