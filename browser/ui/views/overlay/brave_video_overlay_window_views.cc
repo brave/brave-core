@@ -202,7 +202,7 @@ void BraveVideoOverlayWindowViews::SetUpViews() {
   const std::u16string fullscreen_button_label =
       l10n_util::GetStringUTF16(IDS_ACCNAME_FULLSCREEN);
   fullscreen_button_->SetTooltipText(fullscreen_button_label);
-  fullscreen_button_->SetTooltipText(fullscreen_button_label);
+  fullscreen_button_->SetAccessibleName(fullscreen_button_label);
   fullscreen_button_->SetPaintToLayer(ui::LAYER_TEXTURED);
   fullscreen_button_->layer()->SetFillsBoundsOpaquely(false);
   fullscreen_button_->layer()->SetName("FullscreenButton");
@@ -337,7 +337,14 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
         ui::ImageModel::FromVectorIcon(kLeoPictureInPictureReturnIcon,
                                        kColorPipWindowForeground,
                                        kTopControlIconSize));
+    auto text = back_to_tab_label_button_->GetText();
+    // Calling this will clear accessible name as well. We should reset it and
+    // tooltip text.
     back_to_tab_label_button_->SetText({});
+
+    back_to_tab_label_button_->SetAccessibleName(text);
+    back_to_tab_label_button_->SetTooltipText(
+        back_to_tab_label_button_->GetAccessibleName());
   }
 
   previous_track_controls_view_->override_icon(kLeoPreviousOutlineIcon);
