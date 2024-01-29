@@ -47,7 +47,7 @@ export const {
   setHidePortfolioNFTsTab,
   setRemovedNonFungibleTokens,
   setFilteredOutPortfolioNetworkKeys,
-  setFilteredOutPortfolioAccountAddresses,
+  setFilteredOutPortfolioAccountIds,
   setHidePortfolioSmallBalances,
   setShowNetworkLogoOnNfts,
   setIsRefreshingNetworksAndTokens,

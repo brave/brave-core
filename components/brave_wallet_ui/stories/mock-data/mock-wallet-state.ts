@@ -150,7 +150,7 @@ export const mockWalletState: WalletState = {
   deletedNonFungibleTokens: [],
   hidePortfolioNFTsTab: false,
   filteredOutPortfolioNetworkKeys: [],
-  filteredOutPortfolioAccountAddresses: [],
+  filteredOutPortfolioAccountIds: [],
   hidePortfolioSmallBalances: false,
   selectedGroupAssetsByItem: AccountsGroupByOption.id,
   showNetworkLogoOnNfts: false,
