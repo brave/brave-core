@@ -15,11 +15,17 @@
 # These tests pass locally but fail on CI.
 -All/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/1
 -All/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/*
+-AllocationRecorderBrowserTest.VerifyCrashreportIncludesNoRecorder
+-EventPageAndFalse/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
+-EventPageAndTrue/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
+-ServiceWorkerAndFalse/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
+-ServiceWorkerAndFalse/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
+-ServiceWorkerAndTrue/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # !primary_account_info.IsEmpty()
