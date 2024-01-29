@@ -31,7 +31,6 @@ import {
   Spacer,
   SwapAssetAmountSymbol,
   LaunchButton,
-  LaunchIcon,
   SwapAmountRow
 } from './swap.style'
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
@@ -39,7 +38,8 @@ import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 import { withPlaceholderIcon } from '../../shared/create-placeholder-icon/index'
 import {
   IconsWrapper as SwapAssetIconWrapper,
-  NetworkIconWrapper
+  NetworkIconWrapper,
+  LaunchIcon
 } from '../../shared/style'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 

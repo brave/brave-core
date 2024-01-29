@@ -9,6 +9,7 @@ import { FC } from 'react'
 import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
 import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 
 // types
 import { BraveWallet, StringWithAutocomplete } from '../../constants/types'
@@ -488,6 +489,12 @@ export const SwitchAccountIcon = styled.div`
   background: url(${SwitchDown});
   margin-left: 6px;
   margin-right: 6px;
+`
+
+export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
+  --leo-icon-size: 14px;
+  --leo-icon-color: ${leo.color.icon.interactive};
+  margin-bottom: 1px;
 `
 
 // Asset Icon containers

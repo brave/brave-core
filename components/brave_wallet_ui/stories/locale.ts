@@ -5,6 +5,9 @@
 import { provideStrings } from '../../../.storybook/locale'
 
 provideStrings({
+  // Entities
+  braveWalletContract: 'Contract',
+
   // Search Text
   braveWalletSearchText: 'Search',
 
@@ -124,7 +127,7 @@ provideStrings({
   braveWalletChooseAsset: 'Choose asset',
   braveWalletOrdinalsWarningMessage:
     'Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.',
-    braveWalletUserUnderstandsLabel: 'I understand',
+  braveWalletUserUnderstandsLabel: 'I understand',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:
