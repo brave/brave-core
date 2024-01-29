@@ -451,7 +451,6 @@ AddBubble::AddBubble(Browser* browser,
 }
 
 void AddBubble::OnMediaExtracted(bool result) {
-  loading_spinner_->SetVisible(false);
   if (result) {
     InitListView();
   } else {
@@ -466,6 +465,7 @@ void AddBubble::OnMediaExtracted(bool result) {
 void AddBubble::InitListView() {
   CHECK(scroll_view_);
   CHECK(!list_view_);
+  loading_spinner_->SetVisible(false);
   scroll_view_->SetVisible(true);
   list_view_ = scroll_view_->SetContents(std::make_unique<SelectableItemsView>(
       thumbnail_provider_.get(), playlist_tab_helper_->found_items(),
