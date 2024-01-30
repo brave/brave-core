@@ -398,7 +398,7 @@ bool BraveBrowserView::GetSupportsTitle() const {
 #endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
-  BookmarkButton* button =
+  BraveBookmarkButton* button =
       static_cast<BraveToolbarView*>(toolbar())->bookmark_button();
   if (button) {
     button->SetToggled(is_starred);

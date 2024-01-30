@@ -19,24 +19,24 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"
 
-BookmarkButton::BookmarkButton(PressedCallback callback)
+BraveBookmarkButton::BraveBookmarkButton(PressedCallback callback)
     : ToolbarButton(std::move(callback)) {
   SetID(VIEW_ID_STAR_BUTTON);
   set_tag(IDC_BOOKMARK_THIS_TAB);
 }
 
-BookmarkButton::~BookmarkButton() = default;
+BraveBookmarkButton::~BraveBookmarkButton() = default;
 
-const char* BookmarkButton::GetClassName() const {
-  return "BookmarkButton";
+const char* BraveBookmarkButton::GetClassName() const {
+  return "BraveBookmarkButton";
 }
 
-void BookmarkButton::SetToggled(bool on) {
+void BraveBookmarkButton::SetToggled(bool on) {
   active_ = on;
   UpdateImageAndText();
 }
 
-void BookmarkButton::UpdateImageAndText() {
+void BraveBookmarkButton::UpdateImageAndText() {
   const ui::ColorProvider* color_provider = GetColorProvider();
   SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
   const gfx::VectorIcon& icon =
@@ -49,5 +49,5 @@ void BookmarkButton::UpdateImageAndText() {
   SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(tooltip_id));
 }
 
-BEGIN_METADATA(BookmarkButton)
+BEGIN_METADATA(BraveBookmarkButton)
 END_METADATA

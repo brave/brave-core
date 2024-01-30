@@ -18,7 +18,7 @@
 class BraveVPNButton;
 #endif
 
-class BookmarkButton;
+class BraveBookmarkButton;
 class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
@@ -28,7 +28,7 @@ class BraveToolbarView : public ToolbarView,
   explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
   ~BraveToolbarView() override;
 
-  BookmarkButton* bookmark_button() const { return bookmark_; }
+  BraveBookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -61,7 +61,7 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
 
-  raw_ptr<BookmarkButton> bookmark_ = nullptr;
+  raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
 

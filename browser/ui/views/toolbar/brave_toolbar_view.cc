@@ -190,7 +190,7 @@ void BraveToolbarView::Init() {
   views::View* container_view = location_bar_->parent();
   DCHECK(container_view);
   bookmark_ = container_view->AddChildViewAt(
-      std::make_unique<BookmarkButton>(
+      std::make_unique<BraveBookmarkButton>(
           base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
       *container_view->GetIndexOf(location_bar_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
