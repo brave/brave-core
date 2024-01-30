@@ -14,7 +14,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
@@ -163,8 +162,10 @@ class PlaylistService : public KeyedService,
   void GetPlaylistItem(const std::string& id,
                        GetPlaylistItemCallback callback) override;
 
-  void AddMediaFilesFromActiveTabToPlaylist(const std::string& playlist_id,
-                                            bool can_cache) override;
+  void AddMediaFilesFromActiveTabToPlaylist(
+      const std::string& playlist_id,
+      bool can_cache,
+      AddMediaFilesFromActiveTabToPlaylistCallback callback) override;
   void FindMediaFilesFromActiveTab(
       FindMediaFilesFromActiveTabCallback callback) override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
@@ -268,9 +269,11 @@ class PlaylistService : public KeyedService,
 
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
-  void AddMediaFilesFromContentsToPlaylist(const std::string& playlist_id,
-                                           content::WebContents* contents,
-                                           bool cache);
+  void AddMediaFilesFromContentsToPlaylist(
+      const std::string& playlist_id,
+      content::WebContents* contents,
+      bool cache,
+      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> callback);
 
   void AddMediaFilesFromItems(const std::string& playlist_id,
                               bool cache,
