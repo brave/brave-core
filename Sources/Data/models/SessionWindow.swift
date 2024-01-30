@@ -65,7 +65,7 @@ extension SessionWindow {
   }
   
   public static func from(windowId: UUID, in context: NSManagedObjectContext) -> SessionWindow? {
-    let predicate = NSPredicate(format: "\(#keyPath(SessionWindow.windowId)) == %@", windowId.uuidString)
+    let predicate = NSPredicate(format: "\(#keyPath(SessionWindow.windowId)) == %@", windowId as NSUUID)
     return first(where: predicate, context: context)
   }
   
