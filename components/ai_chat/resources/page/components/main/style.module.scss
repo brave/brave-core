@@ -12,17 +12,20 @@
   overflow: hidden;
 }
 
-.inputBox {
+.input {
   display: flex;
   flex-direction: column;
-  width: calc(100% - 6px); /* subtract scrollbar width */
-  padding: 0 0 8px 8px;
+  width: 100%;
+  padding: 0 8px;
   position: absolute;
   z-index: 3;
   bottom: 0;
   left: 0;
-  background: linear-gradient(180deg, var(--leo-color-container-background) 0%, rgba(0, 0, 0, 0.00) 100%);
-  backdrop-filter: blur(20px);
+}
+
+.inputPadBottom {
+  background: var(--leo-color-container-background);
+  padding-bottom: 8px;
 }
 
 .scroller {
