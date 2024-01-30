@@ -9,13 +9,13 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-class BookmarkButton : public ToolbarButton {
-  METADATA_HEADER(BookmarkButton, ToolbarButton)
+class BraveBookmarkButton : public ToolbarButton {
+  METADATA_HEADER(BraveBookmarkButton, ToolbarButton)
  public:
-  explicit BookmarkButton(PressedCallback callback);
-  BookmarkButton(const BookmarkButton&) = delete;
-  BookmarkButton& operator=(const BookmarkButton&) = delete;
-  ~BookmarkButton() override;
+  explicit BraveBookmarkButton(PressedCallback callback);
+  BraveBookmarkButton(const BraveBookmarkButton&) = delete;
+  BraveBookmarkButton& operator=(const BraveBookmarkButton&) = delete;
+  ~BraveBookmarkButton() override;
 
   void SetToggled(bool on);
   void UpdateImageAndText();
