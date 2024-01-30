@@ -2165,8 +2165,11 @@ Are you sure you want to do this?
     <message name="IDS_VERIFY" desc="Brave Wallet onboarding text">
       Verify
     </message>
-    <message name="IDS_RESTORE" desc="Brave Wallet onboarding text">
-      Restore
+    <message name="IDS_RESTORE" desc="Brave Wallet onboarding restore title">
+      Already have a wallet?
+    </message>
+    <message name="IDS_RESTORE_DESCRIPTION" desc="Brave Wallet onboarding restore description">
+      Import your existing wallet
     </message>
     <message name="IDS_UNLOCK" desc="Brave Wallet onboarding text">
       Unlock

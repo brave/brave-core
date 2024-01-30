@@ -70,11 +70,13 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
                     }
                 });
 
-        TextView restoreButton = view.findViewById(R.id.btn_restore);
-        restoreButton.setOnClickListener(v -> {
+        CardView restoreWallet = view.findViewById(R.id.restore_wallet_card_view);
+        restoreWallet.setOnClickListener(v -> {
             checkOnBraveActivity(false, true);
             if (mOnNextPage != null) {
-                mOnNextPage.gotoRestorePage(true);
+                // Add a little delay for a smooth ripple effect animation.
+                PostTask.postDelayedTask(
+                        TaskTraits.UI_DEFAULT, () -> mOnNextPage.gotoRestorePage(true), 200);
             }
         });
         PostTask.postTask(
@@ -83,7 +85,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
                     if (mRestartSetupAction) {
                         newWallet.performClick();
                     } else if (mRestartRestoreAction) {
-                        restoreButton.performClick();
+                        restoreWallet.performClick();
                     }
                     mRestartSetupAction = false;
                     mRestartRestoreAction = false;
