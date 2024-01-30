@@ -24,13 +24,6 @@ export function ProviderRedirectModal () {
   const providerName =
     walletType ? getExternalWalletProviderName(walletType) : ''
 
-  const onClickRetry = () => {
-    actions.hideRedirectModal()
-    if (walletType) {
-      actions.beginExternalWalletLogin(walletType)
-    }
-  }
-
   switch (modalRedirect) {
     case 'show':
       return (
@@ -187,12 +180,13 @@ export function ProviderRedirectModal () {
       return (
         <ModalRedirect
           id={'redirect-modal-error'}
-          errorText={[getString('redirectModalError')]}
-          buttonText={getString('processingRequestButton')}
-          titleText={getString('processingRequest')}
+          errorText={[getString('redirectModalUnableToCompleteRequest')]}
+          errorTextLink={'https://community.brave.com'}
+          titleText={getString('redirectModalSomethingWentWrong')}
+          buttonText={getString('redirectModalClose')}
           walletType={walletType}
           displayCloseButton={true}
-          onClick={onClickRetry}
+          onClick={actions.hideRedirectModal}
           onClose={actions.hideRedirectModal}
         />
       )
