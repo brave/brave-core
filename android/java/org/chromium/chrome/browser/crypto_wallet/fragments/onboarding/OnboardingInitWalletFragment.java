@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 
 import org.chromium.base.Log;
@@ -59,11 +60,13 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button setupCryptoButton = view.findViewById(R.id.btn_setup_crypto);
-        setupCryptoButton.setOnClickListener(v -> {
+        CardView newWallet = view.findViewById(R.id.new_wallet_card_view);
+        newWallet.setOnClickListener(v -> {
             checkOnBraveActivity(true, false);
             if (mOnNextPage != null) {
-                mOnNextPage.gotoCreationPage();
+                // Add a little delay for a smooth ripple effect animation.
+                PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> mOnNextPage.gotoCreationPage(), 200);
+
             }
         });
 
@@ -76,7 +79,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
         });
         PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
             if (mRestartSetupAction) {
-                setupCryptoButton.performClick();
+                newWallet.performClick();
             } else if (mRestartRestoreAction) {
                 restoreButton.performClick();
             }
