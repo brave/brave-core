@@ -47,4 +47,11 @@ void VideoPictureInPictureWindowControllerImpl::SeekTo(
   }
 }
 
+void VideoPictureInPictureWindowControllerImpl::RequestFullscreen() {
+  DCHECK(active_session_);
+
+  active_session_->GetMediaPlayerRemote()->RequestFullscreen();
+  FocusInitiator();
+}
+
 }  // namespace content
