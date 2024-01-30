@@ -147,6 +147,7 @@ class PlaylistTabHelper
 
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
+  raw_ptr<content::RenderFrameHost> script_injector_rfh_ = nullptr;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };
