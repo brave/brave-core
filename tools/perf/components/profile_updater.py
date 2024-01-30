@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-from genericpath import isdir
 import json
 import logging
 import os
@@ -16,7 +15,6 @@ from components.common_options import CommonOptions
 
 from lib.util import make_zip, scoped_cwd
 
-
 def _EraseVariationsFromLocalState(local_state_path: str):
   local_state = {}
   with open(local_state_path, 'r', encoding='utf8') as f:
@@ -28,10 +26,10 @@ def _EraseVariationsFromLocalState(local_state_path: str):
   with open(local_state_path, 'w', encoding='utf8') as f:
     json.dump(local_state, f)
 
+
 def CleanupBeforeRun(cfg: RunnerConfig, options: CommonOptions):
   assert cfg.version is not None
-  profile_dir = GetProfilePath(cfg.profile,
-                               options.working_directory,
+  profile_dir = GetProfilePath(cfg.profile, options.working_directory,
                                cfg.version)
   for f in os.listdir(profile_dir):
     fullpath = os.path.join(profile_dir, f)

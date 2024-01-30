@@ -27,7 +27,8 @@ from telemetry.core import android_platform
 def _CleanProfileCache(profile_dir: str):
   shutil.rmtree(os.path.join(profile_dir, 'cache'), ignore_errors=True)
   shutil.rmtree(os.path.join(profile_dir, 'GrShaderCache'), ignore_errors=True)
-  shutil.rmtree(os.path.join(profile_dir, 'GraphiteDawnCache'), ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'GraphiteDawnCache'),
+                ignore_errors=True)
   shutil.rmtree(os.path.join(profile_dir, 'Default', 'Cache'),
                 ignore_errors=True)
   shutil.rmtree(os.path.join(profile_dir, 'Default', 'Code Cache'),
