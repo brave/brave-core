@@ -296,7 +296,6 @@ class RewardsDOMHandler
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};
-  bool browser_upgrade_required_to_serve_ads_ = false;
 
   PrefChangeRegistrar pref_change_registrar_;
 
@@ -1226,7 +1225,7 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
       prefs->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting));
   ads_data.Set("adsUIEnabled", true);
   ads_data.Set("needsBrowserUpgradeToServeAds",
-               browser_upgrade_required_to_serve_ads_);
+               ads_service_->IsBrowserUpgradeRequiredToServeAds());
 
   const std::string country_code = brave_l10n::GetCountryCode(GetLocalState());
   ads_data.Set("subdivisions",
@@ -1534,7 +1533,6 @@ void RewardsDOMHandler::OnAdRewardsDidChange() {
 }
 
 void RewardsDOMHandler::OnBrowserUpgradeRequiredToServeAds() {
-  browser_upgrade_required_to_serve_ads_ = true;
   GetAdsData(base::Value::List());
 }
 
