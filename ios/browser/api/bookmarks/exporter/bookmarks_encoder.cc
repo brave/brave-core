@@ -21,7 +21,6 @@ base::Value::Dict Encode(const bookmarks::BookmarkNode* bookmark_bar_node,
   auto encoder = std::make_unique<bookmarks::BookmarkCodec>();
   return encoder->Encode(
       bookmark_bar_node, other_folder_node, mobile_folder_node,
-      /*model_meta_info_map*/ nullptr,
       /*sync_metadata_str*/ std::string());
 }
 }  // namespace bookmarks_encoder
