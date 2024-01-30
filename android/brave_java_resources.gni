@@ -555,6 +555,7 @@ brave_java_resources = [
   "java/res/drawable/ic_notification_pending.xml",
   "java/res/drawable/ic_onboarding_arrow_down.xml",
   "java/res/drawable/ic_onboarding_backup.xml",
+  "java/res/drawable/new_wallet.xml",
   "java/res/drawable/ic_onboarding_backup_dark.xml",
   "java/res/drawable/ic_onboarding_bg.xml",
   "java/res/drawable/ic_onboarding_graphic_android_brave_ads.xml",
