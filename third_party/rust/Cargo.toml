@@ -1165,10 +1165,6 @@ package = "string_cache_codegen"
 path = "string_cache/v0_8/crate"
 package = "string_cache"
 
-[patch.crates-io.strobe-rng_v0_2]
-path = "strobe_rng/v0_2/crate"
-package = "strobe-rng"
-
 [patch.crates-io.strobe-rs_v0_8]
 path = "strobe_rs/v0_8/crate"
 package = "strobe-rs"

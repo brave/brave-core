@@ -34,7 +34,6 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/star_sharks/v0_6:lib",
-    "//brave/third_party/rust/strobe_rng/v0_2:lib",
     "//brave/third_party/rust/strobe_rs/v0_8:lib",
     "//brave/third_party/rust/zeroize/v1:lib",
     "//third_party/rust/rand/v0_8:lib",
