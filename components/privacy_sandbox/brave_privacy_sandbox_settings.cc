@@ -148,13 +148,15 @@ bool BravePrivacySandboxSettings::IsEventReportingDestinationAttested(
 bool BravePrivacySandboxSettings::IsSharedStorageAllowed(
     const url::Origin& top_frame_origin,
     const url::Origin& accessing_origin,
+    std::string* out_debug_message,
     content::RenderFrameHost* console_frame) const {
   return false;
 }
 
 bool BravePrivacySandboxSettings::IsSharedStorageSelectURLAllowed(
     const url::Origin& top_frame_origin,
-    const url::Origin& accessing_origin) const {
+    const url::Origin& accessing_origin,
+    std::string* out_debug_message) const {
   return false;
 }
 
