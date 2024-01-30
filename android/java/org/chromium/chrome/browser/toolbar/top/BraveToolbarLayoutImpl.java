@@ -704,7 +704,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mPlaylistService == null || currentTab == null) {
             return;
         }
-        mPlaylistService.addMediaFilesFromActiveTabToPlaylist(ConstantUtils.DEFAULT_PLAYLIST, true);
+        mPlaylistService.addMediaFilesFromActiveTabToPlaylist(
+                ConstantUtils.DEFAULT_PLAYLIST, true, addedItems -> {});
     }
 
     private void showAddedToPlaylistSnackBar() {

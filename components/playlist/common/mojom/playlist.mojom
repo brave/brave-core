@@ -95,7 +95,8 @@ interface PlaylistService {
   GetPlaylistItem(string id) => (PlaylistItem? item);
 
   // Store or find all media files from the active tab.
-  AddMediaFilesFromActiveTabToPlaylist(string playlist_id, bool can_cache);
+  AddMediaFilesFromActiveTabToPlaylist(string playlist_id, bool can_cache)
+      => (array<PlaylistItem> items);
   FindMediaFilesFromActiveTab() => (url.mojom.Url page_url,
                                     array<PlaylistItem> items);
 

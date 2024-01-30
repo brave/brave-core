@@ -7,22 +7,19 @@
 
 #include <memory>
 
-#include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/ranges/algorithm.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
@@ -33,10 +30,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-#include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -445,7 +439,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
           if (window.MediaSource) {
             const videoElement = document.querySelector('#vid');
             videoElement.src = URL.createObjectURL(new MediaSource());
-          } 
+          }
         </script>
         </html>
       )html");
@@ -524,4 +518,118 @@ IN_PROC_BROWSER_TEST_F(
     return !playlist_tab_helper->IsExtractingMediaFromBackgroundWebContents();
   }));
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
+                       AddMediaFiles_WithMediaSourceItem) {
+  SetHTMLContents(R"html(
+        <html>
+        <meta property="og:image" content="/img.jpg">
+        <body>
+          <video id="vid"/>
+        </body>
+        <script>
+          if (window.MediaSource) {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = URL.createObjectURL(new MediaSource());
+          } else {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = '/test.mp4';
+          }
+        </script>
+        </html>
+      )html");
+
+  auto* playlist_service = GetService();
+  auto* playlist_tab_helper =
+      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+
+  GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
+
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!playlist_tab_helper->found_items().size(); }));
+  ASSERT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
+                  .SchemeIsBlob());
+  ASSERT_TRUE(playlist_service->ShouldExtractMediaFromBackgroundWebContents(
+      playlist_tab_helper->found_items()));
+
+  bool callback_invoked = false;
+  std::vector<playlist::mojom::PlaylistItemPtr> cloned_items;
+  base::ranges::transform(playlist_tab_helper->found_items(),
+                          std::back_inserter(cloned_items),
+                          [](const auto& item) { return item->Clone(); });
+
+  playlist_service->AddMediaFiles(
+      std::move(cloned_items), playlist::kDefaultPlaylistID,
+      /* can_cache= */ false,
+      base::BindLambdaForTesting(
+          [&](std::vector<playlist::mojom::PlaylistItemPtr> items) {
+            EXPECT_EQ(items.size(), 1u);
+            EXPECT_FALSE(
+                playlist_service->ShouldExtractMediaFromBackgroundWebContents(
+                    items));
+            base::ranges::for_each(items, [&](const auto& item) {
+              EXPECT_EQ(item->parents.size(), 1u);
+              EXPECT_EQ(item->parents.front(), playlist::kDefaultPlaylistID);
+            });
+
+            callback_invoked = true;
+          }));
+  WaitUntil(base::BindLambdaForTesting([&]() { return callback_invoked; }));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    PlaylistBrowserTestWithSitesUsingMediaSource,
+    AddMediaFilesFromActiveTabToPlaylist_WithMediaSourceItem) {
+  SetHTMLContents(R"html(
+        <html>
+        <meta property="og:image" content="/img.jpg">
+        <body>
+          <video id="vid"/>
+        </body>
+        <script>
+          if (window.MediaSource) {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = URL.createObjectURL(new MediaSource());
+          } else {
+            const videoElement = document.querySelector('#vid');
+            videoElement.src = '/test.mp4';
+          }
+        </script>
+        </html>
+      )html");
+
+  auto* playlist_service = GetService();
+  auto* playlist_tab_helper =
+      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+
+  GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
+
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !!playlist_tab_helper->found_items().size(); }));
+  ASSERT_TRUE(GURL(playlist_tab_helper->found_items().front()->media_source)
+                  .SchemeIsBlob());
+  ASSERT_TRUE(playlist_service->ShouldExtractMediaFromBackgroundWebContents(
+      playlist_tab_helper->found_items()));
+
+  bool callback_invoked = false;
+  playlist_service->AddMediaFilesFromActiveTabToPlaylist(
+      playlist::kDefaultPlaylistID, false,
+      base::BindLambdaForTesting(
+          [&](std::vector<playlist::mojom::PlaylistItemPtr> items) {
+            EXPECT_EQ(items.size(), 1u);
+            EXPECT_FALSE(
+                playlist_service->ShouldExtractMediaFromBackgroundWebContents(
+                    items));
+            base::ranges::for_each(items, [&](const auto& item) {
+              EXPECT_EQ(item->parents.size(), 1u);
+              EXPECT_EQ(item->parents.front(), playlist::kDefaultPlaylistID);
+            });
+
+            callback_invoked = true;
+          }));
+
+  WaitUntil(base::BindLambdaForTesting([&]() { return callback_invoked; }));
 }
