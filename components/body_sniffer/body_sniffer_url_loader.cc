@@ -98,7 +98,7 @@ void BodySnifferURLLoader::Start(
     complete_status_ = network::URLLoaderCompletionStatus(0);
     task_runner_->PostTask(
         FROM_HERE, base::BindOnce(&BodySnifferURLLoader::CompleteSniffing,
-                                  base::Unretained(this), false,
+                                  weak_factory_.GetWeakPtr(), false,
                                   std::move(buffered_body_)));
   }
 }
