@@ -14,6 +14,25 @@
 
 namespace brave_shields {
 
+namespace {
+
+void AddDATBufferToFilterSet(DATFileDataBuffer buffer,
+                             rust::Box<adblock::FilterSet>* filter_set) {
+  (*filter_set)->add_filter_list(buffer);
+}
+
+const char kLocalhostBadfilters[] = R"(
+||0.0.0.0^$third-party,domain=~[::]|~[::ffff:0:0],badfilter
+||[::]^$third-party,domain=~0.0.0.0|~[::ffff:0:0],badfilter
+||[::ffff:0:0]^$third-party,domain=~0.0.0.0|~[::],badfilter
+||localhost^$third-party,domain=~127.0.0.1|~[::1]|~[::ffff:7f00:1],badfilter
+||127.0.0.1^$third-party,domain=~localhost|~[::1]|~[::ffff:7f00:1],badfilter
+||[::1]^$third-party,domain=~localhost|~127.0.0.1|~[::ffff:7f00:1],badfilter
+||[::ffff:7f00:1]^$third-party,domain=~localhost|~127.0.0.1|~[::1],badfilter
+)";
+
+}  // namespace
+
 AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider()
     : AdBlockFiltersProvider(true) {}
 
@@ -23,28 +42,19 @@ std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
   return "AdBlockLocalhostFiltersProvider";
 }
 
-void AdBlockLocalhostFiltersProvider::LoadDATBuffer(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb) {
+void AdBlockLocalhostFiltersProvider::LoadFilterSet(
+    base::OnceCallback<
+        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const std::string& badfilters_for_localhost =
-      R"(
-   ||0.0.0.0^$third-party,domain=~[::]|~[::ffff:0:0],badfilter
-   ||[::]^$third-party,domain=~0.0.0.0|~[::ffff:0:0],badfilter
-   ||[::ffff:0:0]^$third-party,domain=~0.0.0.0|~[::],badfilter
-   ||localhost^$third-party,domain=~127.0.0.1|~[::1]|~[::ffff:7f00:1],badfilter
-   ||127.0.0.1^$third-party,domain=~localhost|~[::1]|~[::ffff:7f00:1],badfilter
-   ||[::1]^$third-party,domain=~localhost|~127.0.0.1|~[::ffff:7f00:1],badfilter
-   ||[::ffff:7f00:1]^$third-party,domain=~localhost|~127.0.0.1|~[::1],badfilter
-  )";
-
-  auto buffer = std::vector<unsigned char>(badfilters_for_localhost.begin(),
-                                           badfilters_for_localhost.end());
+  auto buffer = std::vector<unsigned char>(std::begin(kLocalhostBadfilters),
+                                           std::end(kLocalhostBadfilters));
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb), false, std::move(buffer)));
+      FROM_HERE,
+      base::BindOnce(std::move(cb),
+                     base::BindOnce(&AddDATBufferToFilterSet, buffer)));
 }
 
 void AdBlockLocalhostFiltersProvider::AddObserver(

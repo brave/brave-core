@@ -71,6 +71,8 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void Load(bool deserialize,
             const DATFileDataBuffer& dat_buf,
             const std::string& resources_json);
+  void Load(rust::Box<adblock::FilterSet> filter_set,
+            const std::string& resources_json);
 
   class TestObserver : public base::CheckedObserver {
    public:
@@ -84,9 +86,11 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(rust::Box<adblock::Engine> ad_block_client,
                            const std::string& resources_json);
+
+  void OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
+                         const std::string& resources_json);
   void OnListSourceLoaded(const DATFileDataBuffer& filters,
                           const std::string& resources_json);
-
   void OnDATLoaded(const DATFileDataBuffer& dat_buf,
                    const std::string& resources_json);
 

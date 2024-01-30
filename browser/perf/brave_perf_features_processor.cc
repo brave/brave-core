@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -33,10 +33,10 @@ void EnableAdblockCookieList(base::WeakPtr<Profile> profile) {
   }
 
   // Obtrusive cookie notices list in cosmetic filters.
-  auto* regional_service_manager =
-      g_brave_browser_process->ad_block_service()->regional_service_manager();
-  if (!regional_service_manager ||
-      !regional_service_manager->IsFilterListAvailable(
+  auto* component_service_manager =
+      g_brave_browser_process->ad_block_service()->component_service_manager();
+  if (!component_service_manager ||
+      !component_service_manager->IsFilterListAvailable(
           brave_shields::kCookieListUuid)) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE, base::BindOnce(&EnableAdblockCookieList, profile),
@@ -44,8 +44,8 @@ void EnableAdblockCookieList(base::WeakPtr<Profile> profile) {
     return;
   }
 
-  regional_service_manager->EnableFilterList(brave_shields::kCookieListUuid,
-                                             true);
+  component_service_manager->EnableFilterList(brave_shields::kCookieListUuid,
+                                              true);
 }
 
 }  // namespace
