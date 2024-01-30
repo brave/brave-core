@@ -293,7 +293,7 @@ void BodySnifferURLLoader::OnBodyReadable(MojoResult) {
       base::EraseIf(body_handlers, [](auto& handler) { return !handler; });
       CompleteSniffing(false, std::move(buffered_body_));
       break;
-  };
+  }
 }
 
 void BodySnifferURLLoader::OnBodyWritable(MojoResult) {

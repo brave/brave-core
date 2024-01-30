@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
-#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_BODY_DISTILLER_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_BODY_DISTILLER_H_
 
+#include <memory>
 #include <string>
-#include <tuple>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -20,7 +20,6 @@ enum class DistillationResult : int;
 
 class SpeedreaderRewriterService;
 class SpeedreaderService;
-class SpeedReaderThrottle;
 class SpeedreaderDelegate;
 
 class SpeedreaderBodyDistiller : public body_sniffer::BodyHandler {
@@ -64,4 +63,4 @@ class SpeedreaderBodyDistiller : public body_sniffer::BodyHandler {
 
 }  // namespace speedreader
 
-#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_BODY_DISTILLER_H_

@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_LOCAL_URL_LOADER_H_
-#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_LOCAL_URL_LOADER_H_
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_DISTILLED_PAGE_PRODUCER_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_DISTILLED_PAGE_PRODUCER_H_
+
+#include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
-
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 
 namespace speedreader {
@@ -35,4 +37,4 @@ class SpeedreaderDistilledPageProducer : public body_sniffer::BodyProducer {
 
 }  // namespace speedreader
 
-#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_LOCAL_URL_LOADER_H_
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_DISTILLED_PAGE_PRODUCER_H_
