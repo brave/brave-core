@@ -217,6 +217,8 @@ class AdsServiceImpl : public AdsService,
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
+  bool IsBrowserUpgradeRequiredToServeAds() const override;
+
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdAsDictCallback callback) override;
@@ -373,7 +375,7 @@ class AdsServiceImpl : public AdsService,
 
   // bat_ads::mojom::BatAdsObserver:
   void OnAdRewardsDidChange() override {}
-  void OnBrowserUpgradeRequiredToServeAds() override {}
+  void OnBrowserUpgradeRequiredToServeAds() override;
   void OnIneligibleRewardsWalletToServeAds() override {}
   void OnRemindUser(mojom::ReminderType type) override;
 
@@ -392,6 +394,8 @@ class AdsServiceImpl : public AdsService,
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
+
+  bool browser_upgrade_required_to_serve_ads_ = false;
 
   // Brave Ads Service starts count is needed to avoid possible double Brave
   // Ads initialization.

@@ -47,6 +47,8 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void, GetStatementOfAccounts, (GetStatementOfAccountsCallback));
 
+  MOCK_METHOD(bool, IsBrowserUpgradeRequiredToServeAds, (), (const));
+
   MOCK_METHOD(void,
               MaybeServeInlineContentAd,
               (const std::string&, MaybeServeInlineContentAdAsDictCallback));
