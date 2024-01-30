@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,14 +60,15 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         CardView newWallet = view.findViewById(R.id.new_wallet_card_view);
-        newWallet.setOnClickListener(v -> {
-            checkOnBraveActivity(true, false);
-            if (mOnNextPage != null) {
-                // Add a little delay for a smooth ripple effect animation.
-                PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> mOnNextPage.gotoCreationPage(), 200);
-
-            }
-        });
+        newWallet.setOnClickListener(
+                v -> {
+                    checkOnBraveActivity(true, false);
+                    if (mOnNextPage != null) {
+                        // Add a little delay for a smooth ripple effect animation.
+                        PostTask.postDelayedTask(
+                                TaskTraits.UI_DEFAULT, () -> mOnNextPage.gotoCreationPage(), 200);
+                    }
+                });
 
         TextView restoreButton = view.findViewById(R.id.btn_restore);
         restoreButton.setOnClickListener(v -> {
@@ -77,15 +77,17 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
                 mOnNextPage.gotoRestorePage(true);
             }
         });
-        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
-            if (mRestartSetupAction) {
-                newWallet.performClick();
-            } else if (mRestartRestoreAction) {
-                restoreButton.performClick();
-            }
-            mRestartSetupAction = false;
-            mRestartRestoreAction = false;
-        });
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    if (mRestartSetupAction) {
+                        newWallet.performClick();
+                    } else if (mRestartRestoreAction) {
+                        restoreButton.performClick();
+                    }
+                    mRestartSetupAction = false;
+                    mRestartRestoreAction = false;
+                });
     }
 
     @Override
