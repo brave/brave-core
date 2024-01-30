@@ -94,7 +94,7 @@
      Unlock a higher response rate by subscribing to Premium, or try again later
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature">
-    Explore different models
+    Explore different AI models
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2" desc="A premium feature">
     Unlock your creativity
@@ -121,7 +121,7 @@
     Unlock the full potential of Leo
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
-    Priority access to Claude, Llama-2-70b + more coming soon
+    Priority access to powerful models with different skills
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature to various AI models">
     Access models better suited for creative tasks and content generation.
