@@ -71,7 +71,8 @@ class InfoBarStyledLabel : public CustomStyledLabel {
     return gfx::Size(pref_size.width() * 0.55, pref_size.height());
   }
 
-  gfx::Size CalculatePreferredSize() const override {
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
     // Reset message label's width so that it can calculate preferred size
     // ignoring the current size. This will allow the label to grow bigger than
     // it is.
