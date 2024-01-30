@@ -456,7 +456,6 @@ function AssetSelection({ isAndroid }: Props) {
               )
             }}
             disabled={!isNextStepEnabled}
-            isV2={true}
             minWidth='360px'
           />
         </NextButtonRow>
