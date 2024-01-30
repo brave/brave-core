@@ -34,7 +34,7 @@ export const localeStrings = {
   rewardsSelectCountryHeader: 'Select your country',
   rewardsSelectCountryText: 'To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. $1Privacy Policy$2',
   rewardsSelfCustodyInviteHeader: 'Receive BAT directly to a self-custody crypto address',
-  rewardsSelfCustodyInviteText: 'We’ve added a new option for paying out monthly BAT rewards. Connect a custodial account, or a self-custody wallet to receive Rewards.',
+  rewardsSelfCustodyInviteText: 'We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.',
   rewardsSettings: 'Rewards settings',
   rewardsStartUsingRewards: 'Start using Rewards',
   rewardsTokenGrantTitle: 'A token grant is available!',

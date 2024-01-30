@@ -1292,21 +1292,17 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
 
   if (IsBitFlyerCountry()) {
     providers.push_back(internal::constant::kWalletBitflyer);
-    return providers;
-  }
-
-  if (GetCountryCode() == "IN") {
+  } else if (GetCountryCode() == "IN") {
     providers.push_back(internal::constant::kWalletZebPay);
-    return providers;
-  }
-
-  providers.push_back(internal::constant::kWalletUphold);
+  } else {
+    providers.push_back(internal::constant::kWalletUphold);
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
-  if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
-    providers.push_back(internal::constant::kWalletGemini);
-  }
+    if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
+      providers.push_back(internal::constant::kWalletGemini);
+    }
 #endif
+  }
 
   if (base::FeatureList::IsEnabled(
           features::kAllowSelfCustodyProvidersFeature)) {

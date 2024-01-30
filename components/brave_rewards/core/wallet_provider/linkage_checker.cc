@@ -37,9 +37,10 @@ void LinkageChecker::Stop() {
 }
 
 void LinkageChecker::CheckLinkage() {
-  if (!ShouldPerformCheck()) {
+  if (check_in_progress_ || !ShouldPerformCheck()) {
     return;
   }
+  check_in_progress_ = true;
   endpoints::RequestFor<endpoints::GetWallet>(engine()).Send(base::BindOnce(
       &LinkageChecker::CheckLinkageCallback, weak_factory_.GetWeakPtr()));
 }
@@ -146,6 +147,7 @@ void LinkageChecker::UpdateSelfCustodyAvailableDict(
 
 void LinkageChecker::CheckLinkageCallback(
     endpoints::GetWallet::Result&& result) {
+  check_in_progress_ = false;
   if (!result.has_value()) {
     return;
   }

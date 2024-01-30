@@ -191,6 +191,7 @@ void SolanaWalletProvider::OnWalletLinked(const std::string& address) {
   }
 
   engine().SetState(state::kExternalWalletType, std::string(WalletType()));
+  engine().SetState(state::kAutoContributeEnabled, false);
   client().ExternalWalletConnected();
   engine().database()->SaveEventLog(
       log::kWalletVerified,
