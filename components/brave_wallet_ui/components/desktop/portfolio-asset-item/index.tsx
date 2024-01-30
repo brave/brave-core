@@ -174,16 +174,16 @@ export const PortfolioAssetItem = ({
     ? getNormalizedExternalRewardsNetwork(externalProvider)
     : tokensNetwork
 
-  const hasPendingBalance = new Amount(
-    bitcoinBalances?.pendingBalance ?? ''
-  ).gt(0)
+  const hasPendingBalance = !new Amount(
+    bitcoinBalances?.pendingBalance ?? '0'
+  ).isZero()
 
   const showBalanceInfo =
     hasPendingBalance && account && token.coin === BraveWallet.CoinType.BTC
 
   // effects
   React.useEffect(() => {
-    // Randow value between 100 & 250
+    // Random value between 100 & 250
     // Set value only once
     if (assetNameSkeletonWidth === 0) {
       setAssetNameSkeletonWidth(unbiasedRandom(100, 250))
