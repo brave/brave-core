@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "kuchikiki"
-version = "0.8.2"
+version = "0.8.3"
 authors = [
     "Brave Authors",
     "Ralph Giles <rgiles@brave.com>",
@@ -31,7 +31,7 @@ doctest = false
 version = "0.27"
 
 [dependencies.html5ever]
-version = "0.26.0"
+version = "0.25.1"
 
 [dependencies.indexmap]
 version = "1.6.0"
