@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #![allow(dead_code)]
 extern crate distance;
 extern crate html5ever;
@@ -19,9 +24,9 @@ use std::fs::File;
 use std::io::Read;
 use url::Url;
 
-use kuchiki::NodeData::{Element, Text};
-use kuchiki::NodeRef as Handle;
-use kuchiki::Sink;
+use kuchikiki::NodeData::{Element, Text};
+use kuchikiki::NodeRef as Handle;
+use kuchikiki::Sink;
 use regex::Regex;
 use std::vec::Vec;
 
@@ -82,11 +87,7 @@ pub fn extract_text(handle: &Handle) -> String {
         _ => None,
     };
 
-    let contents = if let Some(text) = node_text {
-        vec![text]
-    } else {
-        vec![]
-    };
+    let contents = if let Some(text) = node_text { vec![text] } else { vec![] };
     contents.join(" ")
 }
 
@@ -220,9 +221,7 @@ fn test_contents(name: &str) {
     // (for comparing with the result)
     let expected_string = load_test_files(stringify!($name));
     let mut feature_extractor = FeatureExtractorStreamer::try_new(&url).unwrap();
-    feature_extractor
-        .write(&mut expected_string.as_bytes())
-        .unwrap();
+    feature_extractor.write(&mut expected_string.as_bytes()).unwrap();
     let expected = feature_extractor.end();
 
     let expected_nodes_str = get_flat_dom_nodes(&expected.rcdom);
@@ -231,9 +230,7 @@ fn test_contents(name: &str) {
     // document
     let product = extractor::extract(&mut source_f, Some(url.as_str())).unwrap();
     let mut feature_extractor = FeatureExtractorStreamer::try_new(&url).unwrap();
-    feature_extractor
-        .write(&mut product.content.as_bytes())
-        .unwrap();
+    feature_extractor.write(&mut product.content.as_bytes()).unwrap();
     let result = feature_extractor.end();
 
     let got_nodes_str = get_flat_dom_nodes(&result.rcdom);
