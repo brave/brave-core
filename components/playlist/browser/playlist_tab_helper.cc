@@ -494,7 +494,11 @@ void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
 
 mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
 PlaylistTabHelper::GetRemote(content::RenderFrameHost* rfh) {
-  if (!script_injector_remote_.is_bound()) {
+  if (rfh != script_injector_rfh_ || !script_injector_remote_.is_bound()) {
+    script_injector_rfh_ = rfh;
+    if (script_injector_remote_.is_bound()) {
+      script_injector_remote_.reset();
+    }
     rfh->GetRemoteAssociatedInterfaces()->GetInterface(
         &script_injector_remote_);
   }
