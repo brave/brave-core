@@ -37,7 +37,6 @@ cargo_crate("lib") {
   deps = [
     "//brave/third_party/rust/adss/v0_2:lib",
     "//brave/third_party/rust/ppoprf/v0_3:lib",
-    "//brave/third_party/rust/strobe_rng/v0_2:lib",
     "//brave/third_party/rust/strobe_rs/v0_8:lib",
     "//brave/third_party/rust/zeroize/v1:lib",
     "//third_party/rust/rand/v0_8:lib",

@@ -2059,14 +2059,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "strobe-rng"
-version = "0.2.0"
-dependencies = [
- "rand_core 0.6.4",
- "strobe-rs",
-]
-
-[[package]]
 name = "strobe-rs"
 version = "0.8.1"
 dependencies = [
