@@ -2001,13 +2001,16 @@ Are you sure you want to do this?
       Deposit
     </message>
     <message name="IDS_DEFI_SECURE_STORAGE" desc="Brave Wallet onboarding text">
-      Welcome to the new Brave Wallet
+      Browser native.\nSelf-custody.\nAnd multi-chain.
     </message>
     <message name="IDS_DEFI_SECURE_STORAGE_TEXT" desc="Brave Wallet onboarding text">
-      Hold crypto assets in your custody and track portfolio performance. All right from the Brave privacy browser.
+      Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana, Filecoin, and more.
     </message>
-    <message name="IDS_SETUP_CRYPTO" desc="Brave Wallet onboarding button text">
-      Get started
+    <message name="IDS_SETUP_CRYPTO" desc="Brave Wallet onboarding new wallet title">
+      Need a new wallet?
+    </message>
+    <message name="IDS_SETUP_CRYPTO_DESCRIPTION" desc="Brave Wallet onboarding new wallet description">
+      Get started with Brave Wallet within minutes
     </message>
     <message name="IDS_BACKUP_YOUR_WALLET" desc="Brave Wallet onboarding text">
       Backup your wallet now!
