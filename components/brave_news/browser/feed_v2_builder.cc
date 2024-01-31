@@ -1159,6 +1159,13 @@ void FeedV2Builder::GenerateFeed(
               return;
             }
 
+            // We post this to another thread, because it can be quite slow.
+            // It's safe because:
+            // 1. Only one update can be run at a time (i.e. the data won't be
+            // updated underneath use while we're in the process of running an
+            // update).
+            // 2. The |build_feed| function takes a const reference to this
+            // builder, and can't modify and shared data.
             base::SequencedTaskRunner::GetCurrentDefault()
                 ->PostTaskAndReplyWithResult(
                     FROM_HERE,
