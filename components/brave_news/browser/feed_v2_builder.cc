@@ -1200,7 +1200,12 @@ void FeedV2Builder::GenerateFeed(
                     base::BindOnce(
                         [](const base::WeakPtr<FeedV2Builder> builder,
                            base::OnceCallback<mojom::FeedV2Ptr(
-                               const FeedV2Builder&)> build_feed) {
+                               const FeedV2Builder&)> build_feed)
+                            -> mojom::FeedV2Ptr {
+                          // If |builder| was destroyed, just return |nullptr|.
+                          if (!builder) {
+                            return nullptr;
+                          }
                           return std::move(build_feed).Run(*builder);
                         },
                         builder, std::move(build_feed)),
@@ -1210,6 +1215,12 @@ void FeedV2Builder::GenerateFeed(
                            BuildFeedCallback callback, mojom::FeedV2Ptr feed) {
                           feed->construct_time = base::Time::Now();
                           feed->type = std::move(type);
+
+                          if (!builder) {
+                            std::move(callback).Run(std::move(feed));
+                            return;
+                          }
+
                           feed->source_hash = builder->hash_;
 
                           if (feed->items.empty()) {
@@ -1233,7 +1244,7 @@ void FeedV2Builder::GenerateFeed(
                             }
                           }
 
-                          std::move(callback).Run(feed->Clone());
+                          std::move(callback).Run(std::move(feed));
                         },
                         builder, std::move(type), std::move(built_callback)));
           },
