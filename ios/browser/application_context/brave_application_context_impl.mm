@@ -35,11 +35,6 @@ ukm::UkmRecorder* BraveApplicationContextImpl::GetUkmRecorder() {
   return nullptr;
 }
 
-BrowserPolicyConnectorIOS*
-BraveApplicationContextImpl::GetBrowserPolicyConnector() {
-  return nullptr;
-}
-
 gcm::GCMDriver* BraveApplicationContextImpl::GetGCMDriver() {
   return nullptr;
 }
