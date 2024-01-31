@@ -15,10 +15,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
-#if BUILDFLAG(IS_WIN)
-#include "base/strings/utf_string_conversions.h"
-#endif
-
 namespace brave_sync {
 namespace {
 
@@ -173,15 +169,9 @@ void Prefs::SetSyncAccountDeletedNoticePending(bool is_pending) {
 void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
   std::string details = pref_service_->GetString(kSyncLeaveChainDetails);
 
-#if BUILDFLAG(IS_WIN)
-  base::FilePath::StringType file_path_string(base::ASCIIToWide(file));
-#else
-  base::FilePath::StringType file_path_string(file);
-#endif
-
   std::ostringstream stream;
   stream << base::Time::Now() << " "
-         << base::FilePath(file_path_string).BaseName() << "(" << line << ") "
+         << base::FilePath::FromASCII(file).BaseName() << "(" << line << ") "
          << func << std::endl;
   pref_service_->SetString(kSyncLeaveChainDetails, details + stream.str());
 }
