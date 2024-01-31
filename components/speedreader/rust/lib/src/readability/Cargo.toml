@@ -24,6 +24,3 @@ url              = "2.2"
 [dev-dependencies]
 assert_approx_eq = "1.1.0"
 reqwest = { version = "0.11.6", features = ["blocking", "stream"] }
-
-[patch.crates-io.kuchiki]
-path = "../../../../../third_party/rust/kuchikiki/v0_8/crate"
