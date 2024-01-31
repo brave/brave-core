@@ -16,8 +16,7 @@ class BraveVPNOSConnectionAPIMac : public BraveVPNOSConnectionAPIBase {
  public:
   BraveVPNOSConnectionAPIMac(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_prefs,
-      version_info::Channel channel);
+      PrefService* local_prefs);
   BraveVPNOSConnectionAPIMac(const BraveVPNOSConnectionAPIMac&) = delete;
   BraveVPNOSConnectionAPIMac& operator=(const BraveVPNOSConnectionAPIMac&) =
       delete;

@@ -52,8 +52,7 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
  protected:
   BraveVPNOSConnectionAPIBase(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_prefs,
-      version_info::Channel channel);
+      PrefService* local_prefs);
   ~BraveVPNOSConnectionAPIBase() override;
 
   // Subclass should add platform dependent impls.
@@ -72,8 +71,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   void OnDisconnected();
   void OnIsDisconnecting();
   bool MaybeReconnect();
-
-  std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
 
  private:
   friend class BraveVPNRegionDataManager;
@@ -108,7 +105,6 @@ class BraveVPNOSConnectionAPIBase : public BraveVPNOSConnectionAPI {
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;
   bool prevent_creation_ = false;
-  std::string target_vpn_entry_name_;
   BraveVPNConnectionInfo connection_info_;
 };
 

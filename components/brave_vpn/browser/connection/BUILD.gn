@@ -21,6 +21,7 @@ source_set("api") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/mojom",
     "//components/prefs",
+    "//components/version_info:channel",
     "//net",
     "//services/network/public/cpp",
   ]

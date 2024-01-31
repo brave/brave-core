@@ -518,8 +518,10 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
 #endif
 
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNConnectionAPI(
-      shared_url_loader_factory(), local_state(), chrome::GetChannel(),
-      service_installer);
+      shared_url_loader_factory(), local_state(), service_installer);
+  if (brave_vpn_os_connection_api_) {
+    brave_vpn_os_connection_api_->SetChannel(chrome::GetChannel());
+  }
   return brave_vpn_os_connection_api_.get();
 }
 #endif

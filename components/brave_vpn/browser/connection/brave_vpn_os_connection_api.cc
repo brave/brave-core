@@ -30,24 +30,23 @@ namespace brave_vpn {
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNIKEv2ConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel,
     base::RepeatingCallback<bool()> service_installer);
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel,
     base::RepeatingCallback<bool()> service_installer);
+#endif
 
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel,
     base::RepeatingCallback<bool()> service_installer) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   if (IsBraveVPNWireguardEnabled(local_prefs)) {
     return CreateBraveVPNWireguardConnectionAPI(url_loader_factory, local_prefs,
-                                                channel, service_installer);
+                                                service_installer);
   }
 #endif
 #if BUILDFLAG(IS_ANDROID)
@@ -55,7 +54,7 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
   return nullptr;
 #else
   return CreateBraveVPNIKEv2ConnectionAPI(url_loader_factory, local_prefs,
-                                          channel, service_installer);
+                                          service_installer);
 #endif
 }
 
@@ -272,6 +271,11 @@ void BraveVPNOSConnectionAPI::ToggleConnection() {
   can_disconnect ? Disconnect() : Connect();
 }
 
+void BraveVPNOSConnectionAPI::SetChannel(version_info::Channel channel) {
+  channel_ = channel;
+  target_vpn_entry_name_ = GetBraveVPNEntryName(channel_);
+}
+
 void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
   if (!install_system_service_callback_) {
     VLOG(2) << __func__ << " : no install system service callback set";
@@ -312,7 +316,7 @@ void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
 #if BUILDFLAG(IS_WIN)
     // Update prefs first before signaling the event because the event could
     // check the prefs.
-    UpdateWireguardEnabledPrefsIfNeeded(local_prefs_);
+    UpdateWireguardEnabledPrefsIfNeeded(local_prefs_, channel_);
 #endif
     system_service_installed_event_.Signal();
   }

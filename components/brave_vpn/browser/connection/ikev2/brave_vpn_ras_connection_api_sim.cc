@@ -13,16 +13,13 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "components/version_info/channel.h"
 
 namespace brave_vpn {
 
 BraveVPNOSConnectionAPISim::BraveVPNOSConnectionAPISim(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
-    : BraveVPNOSConnectionAPIBase(url_loader_factory,
-                                  local_prefs,
-                                  version_info::Channel::DEFAULT) {}
+    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {}
 
 BraveVPNOSConnectionAPISim::~BraveVPNOSConnectionAPISim() = default;
 
