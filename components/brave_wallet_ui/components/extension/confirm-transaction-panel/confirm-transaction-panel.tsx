@@ -34,7 +34,7 @@ import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
-import { Footer } from './common/footer'
+import { PendingTransactionActionsFooter } from './common/footer'
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
@@ -129,7 +129,9 @@ export const ConfirmTransactionPanel = () => {
     isBitcoinTransaction,
     isZCashTransaction,
     hasFeeEstimatesError,
-    isLoadingGasFee
+    isLoadingGasFee,
+    rejectAllTransactions,
+    isConfirmButtonDisabled
   } = usePendingTransactions()
 
   // queries
@@ -426,9 +428,15 @@ export const ConfirmTransactionPanel = () => {
         )}
       </MessageBox>
 
-      <Footer
+      <PendingTransactionActionsFooter
         onConfirm={onConfirm}
         onReject={onReject}
+        rejectAllTransactions={rejectAllTransactions}
+        isConfirmButtonDisabled={isConfirmButtonDisabled}
+        transactionDetails={transactionDetails}
+        transactionsQueueLength={transactionsQueueLength}
+        insufficientFundsForGasError={insufficientFundsForGasError}
+        insufficientFundsError={insufficientFundsError}
       />
     </StyledWrapper>
   )

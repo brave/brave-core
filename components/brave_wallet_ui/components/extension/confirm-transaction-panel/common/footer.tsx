@@ -5,54 +5,69 @@
 
 import * as React from 'react'
 
+// Types
+import { BraveWallet } from '../../../../constants/types'
+import { ParsedTransaction } from '../../../../utils/tx-utils'
+
 // Utils
 import { getLocale } from '../../../../../common/locale'
 
+// components
+import { NavButton } from '../../buttons'
+import { TransactionWarnings } from './tx_warnings'
+
 // Styled components
+import { Row } from '../../../shared/style'
 import {
-  ButtonRow,
   ConfirmingButton,
   ConfirmingButtonText,
-  ErrorText,
   FooterContainer,
   LoadIcon,
   QueueStepButton
 } from './style'
-import { NavButton } from '../../buttons'
-
-// Hooks
-import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
+import { FooterButtonRow, rejectAllButtonRowPadding } from './footer.style'
 
 interface Props {
-  onConfirm: () => Promise<void>
-  onReject: () => void
   rejectButtonType?: 'reject' | 'cancel'
+  blowfishWarnings?: BraveWallet.BlowfishWarning[]
+  setIsWarningCollapsed?: React.Dispatch<React.SetStateAction<boolean>>
+  isWarningCollapsed?: boolean
+  isConfirmButtonDisabled: boolean
+  rejectAllTransactions: (() => Promise<void>) | (() => void)
+  transactionDetails: ParsedTransaction | undefined
+  transactionsQueueLength: number
+  /** omit this prop if you don't want to display gas errors */
+  insufficientFundsForGasError?: boolean
+  /** omit this prop if you don't want to display the error */
+  insufficientFundsError?: boolean
+  onReject: () => void
+  onConfirm: () => Promise<void>
 }
 
-export function Footer(props: Props) {
-  const { onReject, onConfirm, rejectButtonType } = props
+type Warning = Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
 
-  const {
-    isConfirmButtonDisabled,
-    rejectAllTransactions,
-    transactionDetails,
-    transactionsQueueLength
-  } = usePendingTransactions()
-
-  const [transactionConfirmed, setTranactionConfirmed] =
-    React.useState<boolean>(false)
+export function PendingTransactionActionsFooter({
+  isWarningCollapsed,
+  setIsWarningCollapsed,
+  blowfishWarnings,
+  rejectButtonType,
+  isConfirmButtonDisabled,
+  rejectAllTransactions,
+  transactionDetails,
+  transactionsQueueLength,
+  insufficientFundsForGasError,
+  insufficientFundsError,
+  onReject,
+  onConfirm
+}: Props) {
+  // state
+  const [isWarningDismissed, setIsWarningDismissed] = React.useState(false)
+  const [transactionConfirmed, setTranactionConfirmed] = React.useState(false)
   const [queueLength, setQueueLength] = React.useState<number | undefined>(
     undefined
   )
 
-  React.useEffect(() => {
-    // This will update the transactionConfirmed state back to false
-    // if there are more than 1 transactions in the queue.
-    if (queueLength !== transactionsQueueLength || queueLength === undefined) {
-      setTranactionConfirmed(false)
-    }
-  }, [queueLength, transactionsQueueLength])
-
+  // methods
   const onClickConfirmTransaction = React.useCallback(async () => {
     // Checks to see if there are multiple transactions in the queue, if there
     // is we keep track of the length of the last confirmed transaction.
@@ -65,30 +80,77 @@ export function Footer(props: Props) {
     await onConfirm()
   }, [transactionsQueueLength, onConfirm])
 
+  // memos
+  const warnings: Warning[] = React.useMemo(() => {
+    if (blowfishWarnings?.length) {
+      return blowfishWarnings
+    }
+
+    return [
+      transactionDetails?.contractAddressError,
+      transactionDetails?.sameAddressError,
+      transactionDetails?.missingGasLimitError,
+      insufficientFundsForGasError
+        ? getLocale('braveWalletSwapInsufficientFundsForGas')
+        : undefined,
+      !insufficientFundsForGasError && insufficientFundsError
+        ? getLocale('braveWalletSwapInsufficientBalance')
+        : undefined
+    ]
+      .filter((warning): warning is string => Boolean(warning))
+      .map(
+        (warning): Warning => ({
+          message: warning,
+          severity: BraveWallet.BlowfishWarningSeverity.kWarning
+        })
+      )
+  }, [
+    transactionDetails,
+    blowfishWarnings,
+    insufficientFundsForGasError,
+    insufficientFundsError
+  ])
+
+  // effects
+  React.useEffect(() => {
+    // This will update the transactionConfirmed state back to false
+    // if there are more than 1 transactions in the queue.
+    if (queueLength !== transactionsQueueLength || queueLength === undefined) {
+      setTranactionConfirmed(false)
+    }
+  }, [queueLength, transactionsQueueLength])
+
+  // render
   return (
     <FooterContainer>
-      {transactionsQueueLength > 1 && (
-        <QueueStepButton
-          needsMargin={false}
-          onClick={rejectAllTransactions}
-        >
-          {getLocale('braveWalletQueueRejectAll').replace(
-            '$1',
-            transactionsQueueLength.toString()
-          )}
-        </QueueStepButton>
+      {!isWarningDismissed && (
+        <TransactionWarnings
+          warnings={warnings}
+          isWarningCollapsed={isWarningCollapsed ?? true}
+          setIsWarningCollapsed={setIsWarningCollapsed}
+          onDismiss={
+            setIsWarningDismissed
+              ? () => {
+                  setIsWarningDismissed(true)
+                  setIsWarningCollapsed?.(true)
+                }
+              : undefined
+          }
+        />
       )}
 
-      {transactionDetails &&
-        [
-          transactionDetails.contractAddressError,
-          transactionDetails.sameAddressError,
-          transactionDetails.missingGasLimitError
-        ].map((error, index) => (
-          <ErrorText key={`${index}-${error}`}>{error}</ErrorText>
-        ))}
+      {transactionsQueueLength > 1 && (
+        <Row padding={rejectAllButtonRowPadding}>
+          <QueueStepButton onClick={rejectAllTransactions}>
+            {getLocale('braveWalletQueueRejectAll').replace(
+              '$1',
+              transactionsQueueLength.toString()
+            )}
+          </QueueStepButton>
+        </Row>
+      )}
 
-      <ButtonRow>
+      <FooterButtonRow>
         <NavButton
           buttonType={rejectButtonType || 'reject'}
           text={
@@ -116,7 +178,7 @@ export function Footer(props: Props) {
             minWidth='45%'
           />
         )}
-      </ButtonRow>
+      </FooterButtonRow>
     </FooterContainer>
   )
 }

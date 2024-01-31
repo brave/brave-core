@@ -17,7 +17,7 @@ import { EditPendingTransactionGas } from './common/gas'
 
 // Components
 import { TransactionQueueSteps } from './common/queue'
-import { Footer } from './common/footer'
+import { PendingTransactionActionsFooter } from './common/footer'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import {
   PendingTransactionNetworkFeeAndSettings //
@@ -50,7 +50,11 @@ export function ConfirmSwapTransaction() {
     onReject,
     queueNextTransaction,
     transactionQueueNumber,
-    transactionsQueueLength
+    transactionsQueueLength,
+    rejectAllTransactions,
+    isConfirmButtonDisabled,
+    insufficientFundsError,
+    insufficientFundsForGasError
   } = usePendingTransactions()
 
   // computed
@@ -118,10 +122,16 @@ export function ConfirmSwapTransaction() {
         onToggleEditGas={onToggleEditGas}
       />
 
-      <Footer
+      <PendingTransactionActionsFooter
         onConfirm={onConfirm}
         onReject={onReject}
         rejectButtonType={'cancel'}
+        isConfirmButtonDisabled={isConfirmButtonDisabled}
+        rejectAllTransactions={rejectAllTransactions}
+        transactionDetails={transactionDetails}
+        transactionsQueueLength={transactionsQueueLength}
+        insufficientFundsForGasError={insufficientFundsForGasError}
+        insufficientFundsError={insufficientFundsError}
       />
     </StyledWrapper>
   )
