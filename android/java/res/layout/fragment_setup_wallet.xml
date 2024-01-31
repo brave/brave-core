@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
-    android:background="@color/wallet_bg"
+    android:background="@drawable/onboarding_gradient_background"
     android:fillViewport="true"
     android:theme="@style/BraveWalletOnboarding">
 

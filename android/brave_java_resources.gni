@@ -641,6 +641,7 @@ brave_java_resources = [
   "java/res/drawable/ic_phantom.xml",
   "java/res/drawable/ic_metamask.xml",
   "java/res/drawable/ic_coinbase.xml",
+  "java/res/drawable/onboarding_gradient_background.xml",
   "java/res/drawable/news_settings_following_count_bg.xml",
   "java/res/drawable/notification_button_rounded_bg.xml",
   "java/res/drawable/notification_on_button_background.xml",
