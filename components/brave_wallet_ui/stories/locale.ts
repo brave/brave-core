@@ -225,11 +225,9 @@ provideStrings({
 
   // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle:
-    'Before you start backing up wallet',
+    'Save your recovery phrase',
   braveWalletOnboardingRecoveryPhraseBackupIntroDescription:
-    'The 12-24 word recovery phrase is a private key you can use to regain ' +
-    'access to your wallet in case you lose a connected device(s). ' +
-    'Store it someplace safe, and in the exact order it appears below.',
+    'Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.',
   braveWalletRecoveryPhraseBackupWarningImportant:
     '$1Important:$2 Never share your recovery phrase. ' +
     'Anyone with this phrase can take your assets forever.',
@@ -252,11 +250,7 @@ provideStrings({
   // Recovery Phrase Backup - Intro
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
   braveWalletBackupIntroDescription:
-    'In the next step you’ll see a $1-word recovery phrase, ' +
-    'which you can use to recover your primary crypto accounts. ' +
-    'Save it someplace safe. Your recovery phrase is the only way to ' +
-    'regain account access in case of forgotten password, ' +
-    'lost or stolen device, or you want to switch wallets.',
+    'Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.',
   braveWalletBackupIntroTerms:
     'I understand that if I lose my recovery words, ' +
     'I will not be able to access my crypto wallet.',

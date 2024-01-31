@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
 
@@ -58,4 +59,27 @@ export const WarningCircle = styled.div`
   mask-position: center;
   background-color: ${(p) => p.theme.color.errorBorder};
   margin-right: 16px;
+`
+
+export const Subtitle = styled.p`
+  color: ${leo.color.text.secondary};
+  text-align: left;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  margin: 0;
+  padding: 0;
+`
+
+export const BackupInstructions = styled.p`
+  color: ${leo.color.text.primary};
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+  padding: 0;
+  margin: 0;
 `

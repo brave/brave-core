@@ -16,7 +16,7 @@ import {
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
-import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
+// import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // images
 import ExamplePhrase from './images/example-recovery-phrase.svg'
@@ -25,28 +25,19 @@ import ExamplePhrase from './images/example-recovery-phrase.svg'
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import {
-  OnboardingStepsNavigation //
-} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
-import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 // style
-import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper
-} from '../../onboarding/onboarding.style'
+import { NextButtonRow } from '../../onboarding/onboarding.style'
 import {
   BannerCard,
   WarningCircle,
   ImportantText,
   BannerText,
-  CenteredRow
+  Subtitle,
+  BackupInstructions
 } from './explain-recovery-phrase.style'
+import { VerticalSpace } from '../../../../components/shared/style'
+import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
 
 const importantTextParts = splitStringForTag(
   getLocale('braveWalletRecoveryPhraseBackupWarningImportant')
@@ -85,6 +76,8 @@ export const RecoveryPhraseExplainer = () => {
     history.push(WalletRoutes.PortfolioAssets)
   }
 
+  console.log(skipBackup)
+
   // effects
   React.useEffect(() => {
     report(BraveWallet.OnboardingAction.RecoverySetup)
@@ -92,69 +85,43 @@ export const RecoveryPhraseExplainer = () => {
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          {isOnboarding ? (
-            <OnboardingStepsNavigation
-              preventGoBack
-              preventSkipAhead
-              onSkip={skipBackup}
-            />
-          ) : (
-            <StepsNavigation
-              steps={WALLET_BACKUP_STEPS}
-              preventGoBack
-              currentStep={WalletRoutes.BackupExplainRecoveryPhrase}
-              preventSkipAhead
-              onSkip={skipBackup}
-            />
-          )}
+    <OnboardingContentLayout
+      title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+      subTitle=''
+    >
+      <Subtitle>
+        {getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroDescription')}
+      </Subtitle>
+      <VerticalSpace space='14px' />
+      <BackupInstructions>
+        Keep it in a secure place that is not accessible to others and avoid
+        sharing it with anyone.
+      </BackupInstructions>
+      <VerticalSpace space='54px' />
 
-          <div>
-            <Title>
-              {getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
-            </Title>
-            <Description>
-              {getLocale(
-                'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
-              )}
-            </Description>
-            <CenteredRow>
-              <ArticleLinkBubble
-                icon='key'
-                iconBackgroundColor='red200'
-                text={getLocale('braveWalletArticleLinkWhatsARecoveryPhrase')}
-                url='https://brave.com/learn/wallet-recovery-phrase/'
-              />
-            </CenteredRow>
-          </div>
+      <img
+        width='376px'
+        height='118px'
+        src={ExamplePhrase}
+      />
 
-          <img
-            width='376px'
-            height='118px'
-            src={ExamplePhrase}
-          />
+      <BannerCard>
+        <WarningCircle />
+        <ImportantTextSegments />
+      </BannerCard>
 
-          <BannerCard>
-            <WarningCircle />
-            <ImportantTextSegments />
-          </BannerCard>
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonGotIt')}
-              url={
-                isOnboarding
-                  ? WalletRoutes.OnboardingBackupRecoveryPhrase
-                  : WalletRoutes.BackupRecoveryPhrase
-              }
-            />
-          </NextButtonRow>
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+      <NextButtonRow>
+        <NavButton
+          buttonType='primary'
+          text={getLocale('braveWalletButtonGotIt')}
+          url={
+            isOnboarding
+              ? WalletRoutes.OnboardingBackupRecoveryPhrase
+              : WalletRoutes.BackupRecoveryPhrase
+          }
+        />
+      </NextButtonRow>
+    </OnboardingContentLayout>
   )
 }
 
