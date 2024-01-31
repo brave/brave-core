@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_closure.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -944,21 +945,23 @@ void FeedV2Builder::EnsureFeedIsUpdating() {
 }
 
 void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
-  UpdateData({.signals = true},
-             base::BindOnce(
-                 [](base::WeakPtr<FeedV2Builder> builder,
-                    GetSignalsCallback callback) {
-                   if (builder) {
-                     std::move(callback).Run({});
-                     return;
-                   }
-                   base::flat_map<std::string, Signal> signals;
-                   for (const auto& [key, value] : builder->signals_) {
-                     signals[key] = value->Clone();
-                   }
-                   std::move(callback).Run(std::move(signals));
-                 },
-                 weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  UpdateData(
+      {.signals = true},
+      base::BindOnce(
+          [](base::WeakPtr<FeedV2Builder> builder, GetSignalsCallback callback,
+             base::OnceClosure on_complete) {
+            if (builder) {
+              std::move(callback).Run({});
+              return;
+            }
+            base::flat_map<std::string, Signal> signals;
+            for (const auto& [key, value] : builder->signals_) {
+              signals[key] = value->Clone();
+            }
+            std::move(callback).Run(std::move(signals));
+            std::move(on_complete).Run();
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void FeedV2Builder::RecheckFeedHash() {
@@ -978,7 +981,7 @@ void FeedV2Builder::OnPublishersUpdated(
 }
 
 void FeedV2Builder::UpdateData(UpdateSettings settings,
-                               base::OnceCallback<void()> callback) {
+                               UpdateCallback callback) {
   if (current_update_) {
     if (current_update_->IsSufficient(settings)) {
       current_update_->callbacks.push_back(std::move(callback));
@@ -1122,22 +1125,38 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   std::tie(hash_, subscribed_count_) =
       GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
 
-  // Fire all the pending callbacks.
-  for (auto& callback : current_update_->callbacks) {
-    std::move(callback).Run();
-  }
-
   // If we have a |next_update_| then request an update with that data.
+  auto callbacks = std::move(current_update_->callbacks);
   current_update_ = std::move(next_update_);
   next_update_ = std::nullopt;
 
-  // Notify listeners of updated hash.
-  for (const auto& listener : listeners_) {
-    listener->OnUpdateAvailable(hash_);
-  }
+  // Fire all the pending callbacks. Wait for them all to complete before we
+  // fire off the next update.
+  auto on_notify_completed = base::BarrierClosure(
+      callbacks.size(),
+      base::BindOnce(
+          [](base::WeakPtr<FeedV2Builder> builder) {
+            if (!builder) {
+              return;
+            }
 
-  if (current_update_) {
-    UpdateData(current_update_->settings);
+            // Notify listeners of updated hash.
+            for (const auto& listener : builder->listeners_) {
+              listener->OnUpdateAvailable(builder->hash_);
+            }
+
+            if (builder->current_update_) {
+              builder->UpdateData(
+                  builder->current_update_->settings,
+                  base::BindOnce([](base::OnceClosure on_complete) {
+                    std::move(on_complete).Run();
+                  }));
+            }
+          },
+          weak_ptr_factory_.GetWeakPtr()));
+
+  for (auto& callback : callbacks) {
+    std::move(callback).Run(on_notify_completed);
   }
 }
 
@@ -1153,9 +1172,18 @@ void FeedV2Builder::GenerateFeed(
              mojom::FeedV2TypePtr type,
              base::OnceCallback<mojom::FeedV2Ptr(const FeedV2Builder&)>
                  build_feed,
-             BuildFeedCallback callback) {
+             BuildFeedCallback callback, base::OnceClosure on_complete) {
+            auto built_callback = base::BindOnce(
+                [](BuildFeedCallback callback,
+                   base::OnceClosure completion_callback,
+                   mojom::FeedV2Ptr feed) {
+                  std::move(callback).Run(std::move(feed));
+                  std::move(completion_callback).Run();
+                },
+                std::move(callback), std::move(on_complete));
+
             if (!builder) {
-              std::move(callback).Run(mojom::FeedV2::New());
+              std::move(built_callback).Run(mojom::FeedV2::New());
               return;
             }
 
@@ -1207,7 +1235,7 @@ void FeedV2Builder::GenerateFeed(
 
                           std::move(callback).Run(feed->Clone());
                         },
-                        builder, std::move(type), std::move(callback)));
+                        builder, std::move(type), std::move(built_callback)));
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type),
           std::move(build_feed), std::move(callback)));

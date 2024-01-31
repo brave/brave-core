@@ -88,7 +88,7 @@ class FeedV2Builder : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* controller) override;
 
  private:
-  using UpdateCallback = base::OnceCallback<void()>;
+  using UpdateCallback = base::OnceCallback<void(base::OnceClosure completed)>;
   struct UpdateSettings {
     bool signals = false;
     bool suggested_publishers = false;
@@ -133,8 +133,7 @@ class FeedV2Builder : public PublishersController::Observer {
                     UpdateCallback callback);
   };
 
-  void UpdateData(UpdateSettings settings,
-                  UpdateCallback callback = base::DoNothing());
+  void UpdateData(UpdateSettings settings, UpdateCallback callback);
 
   void FetchFeed();
   void OnFetchedFeed(FeedItems items, ETags etags);
