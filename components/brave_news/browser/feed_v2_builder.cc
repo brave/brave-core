@@ -774,6 +774,25 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
 
 }  // namespace
 
+FeedGenerationInfo::FeedGenerationInfo(
+    const std::string& locale,
+    const FeedItems& feed_items,
+    const Publishers& publishers,
+    Channels channels,
+    const Signals& signals,
+    const std::vector<std::string>& suggestion_ids,
+    const TopicsResult& topics)
+    : locale_(locale),
+      publishers_(publishers),
+      signals_(signals),
+      channels_(std::move(channels)),
+      suggestions_ids_(base::make_span(suggestion_ids)),
+      topics_(base::make_span(topics)) {
+  articles_ = GetArticleInfos(locale, feed_items, publishers, signals);
+}
+
+FeedGenerationInfo::~FeedGenerationInfo() = default;
+
 FeedV2Builder::UpdateRequest::UpdateRequest(UpdateSettings settings,
                                             UpdateCallback callback)
     : settings(std::move(settings)) {

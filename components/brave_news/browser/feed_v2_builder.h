@@ -12,6 +12,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -24,6 +25,7 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/rust/lib.rs.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -57,6 +59,42 @@ struct ArticleWeight {
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
 using PickArticles = base::RepeatingCallback<int(const ArticleInfos& infos)>;
+
+class FeedGenerationInfo {
+ public:
+  FeedGenerationInfo(const std::string& locale,
+                     const FeedItems& feed_items,
+                     const Publishers& publishers,
+                     Channels channels,
+                     const Signals& signals,
+                     const std::vector<std::string>& suggestion_ids,
+                     const TopicsResult& topics);
+  FeedGenerationInfo(const FeedGenerationInfo&) = delete;
+  FeedGenerationInfo& operator=(const FeedGenerationInfo&) = delete;
+  ~FeedGenerationInfo();
+
+  const std::string& locale() { return locale_; }
+  ArticleInfos& articles() { return articles_; }
+
+  const Publishers& publishers() { return publishers_.get(); }
+  const Channels& channels() { return channels_; }
+  const Signals& signals() { return signals_.get(); }
+
+  base::span<const std::string>& suggestion_ids() { return suggestions_ids_; }
+
+  base::span<const TopicAndArticles>& topics() { return topics_; }
+
+ private:
+  std::string locale_;
+  ArticleInfos articles_;
+
+  const raw_ref<const Publishers> publishers_;
+  const raw_ref<const Signals> signals_;
+  const Channels channels_;
+
+  base::span<const std::string> suggestions_ids_;
+  base::span<const TopicAndArticles> topics_;
+};
 
 class FeedV2Builder : public PublishersController::Observer {
  public:
