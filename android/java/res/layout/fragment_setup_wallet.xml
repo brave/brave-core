@@ -2,11 +2,11 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/setup_wallet_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
-    android:background="@drawable/onboarding_gradient_background"
     android:fillViewport="true"
     android:theme="@style/BraveWalletOnboarding">
 

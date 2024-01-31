@@ -242,6 +242,10 @@
 
     <color name="wallet_sign_msg_err_bg_color">#FFF1F1</color>
 
+    <color name="wallet_onboarding_gradient_start">#C9CCF0</color>
+    <color name="wallet_onboarding_gradient_center">#D8DCF2</color>
+    <color name="wallet_onboarding_gradient_end">#F2F3F4</color>
+
     <color name="vpn_callout_bg_color">#381E85</color>
     <color name="brave_plan_bg">#27155E</color>
 
