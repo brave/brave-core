@@ -34,7 +34,7 @@
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
             android:text="@string/defi_secure_storage_text"
-            android:textColor="@color/wallet_secondary_text_color"
+            android:textColor="@color/wallet_onboarding_secondary_text_color"
             android:lineSpacingExtra="5sp"
             android:textSize="16sp"/>
 
@@ -46,7 +46,7 @@
             android:layout_marginBottom="16dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
-            app:cardBackgroundColor="@color/brave_wallet_dn_highlight_bg_color"
+            app:cardBackgroundColor="@color/brave_wallet_onboarding_card_view_background"
             app:cardCornerRadius="10dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/setup_crypto_description"
-                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textColor="@color/wallet_onboarding_secondary_text_color"
                     android:textSize="14sp"
                     android:lineSpacingExtra="4sp"
                     android:layout_toEndOf="@+id/add_new_wallet_icon"
@@ -101,7 +101,7 @@
             android:layout_marginBottom="16dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
-            app:cardBackgroundColor="@color/brave_wallet_dn_highlight_bg_color"
+            app:cardBackgroundColor="@color/brave_wallet_onboarding_card_view_background"
             app:cardCornerRadius="10dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@string/restore_description"
-                    android:textColor="@color/wallet_secondary_text_color"
+                    android:textColor="@color/wallet_onboarding_secondary_text_color"
                     android:textSize="14sp"
                     android:lineSpacingExtra="4sp"
                     android:layout_toEndOf="@+id/restore_wallet_icon"
