@@ -16,22 +16,13 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 8px;
-  position: absolute;
-  z-index: 3;
-  bottom: 0;
-  left: 0;
-}
-
-.inputPadBottom {
-  background: var(--leo-color-container-background);
-  padding-bottom: 8px;
+  padding: 0 8px 8px 8px;
 }
 
 .scroller {
   overflow: auto;
   height: 100%;
-  padding-bottom: 80px;
+  padding-bottom: 16px;
 
   &::-webkit-scrollbar {
     width: 6px;
