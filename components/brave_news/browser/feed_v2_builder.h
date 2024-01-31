@@ -88,6 +88,13 @@ class FeedV2Builder : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* controller) override;
 
  private:
+  // FeedGenerator's will be called on a different thread. We guarantee that the
+  // data in |builder| will not be changed while the generator is running.
+  // Additionally, the generator should not modify data in |builder| (hence the
+  // const reference).
+  using FeedGenerator =
+      base::OnceCallback<mojom::FeedV2Ptr(const FeedV2Builder& builder)>;
+
   using UpdateCallback = base::OnceCallback<void(base::OnceClosure completed)>;
   struct UpdateSettings {
     bool signals = false;
@@ -150,12 +157,10 @@ class FeedV2Builder : public PublishersController::Observer {
 
   void NotifyUpdateCompleted();
 
-  void GenerateFeed(
-      UpdateSettings settings,
-      mojom::FeedV2TypePtr type,
-      base::OnceCallback<mojom::FeedV2Ptr(const FeedV2Builder& builder)>
-          build_feed,
-      BuildFeedCallback callback);
+  void GenerateFeed(UpdateSettings settings,
+                    mojom::FeedV2TypePtr type,
+                    FeedGenerator generator,
+                    BuildFeedCallback callback);
 
   static mojom::FeedV2Ptr GenerateBasicFeed(const FeedV2Builder& builder,
                                             const FeedItems& items,
