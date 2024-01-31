@@ -20,6 +20,9 @@ interface ContextMenuAssistantProps {
   turnText: string
   turnId: number
   className?: string
+  isOpen: boolean
+  onClick: () => void
+  onClose: () => void
 }
 
 enum RatingStatus {
@@ -139,11 +142,16 @@ function ContextMenuAssistant_(
 
   return (
     <>
-      <ButtonMenu className={classnames(styles.moreButton, props.className)}>
+      <ButtonMenu
+        className={classnames(styles.moreButton, props.className)}
+        isOpen={props.isOpen}
+        onClose={props.onClose}
+      >
         <Button
           slot='anchor-content'
           size="small"
           kind="plain-faint"
+          onClick={props.onClick}
         >
           <Icon name='more-horizontal' />
         </Button>

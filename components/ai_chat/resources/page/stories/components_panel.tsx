@@ -20,6 +20,16 @@ import AIChatDataContext, {
 
 const HISTORY = [
   {
+    text: 'hello',
+    characterType: mojom.CharacterType.HUMAN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE
+  },
+  {
+    text: 'Hi, How are you?',
+    characterType: mojom.CharacterType.ASSISTANT,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE
+  },
+  {
     text: 'What is pointer compression?',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,

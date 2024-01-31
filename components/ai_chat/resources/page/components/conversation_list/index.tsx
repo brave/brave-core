@@ -7,6 +7,8 @@ import * as React from 'react'
 import classnames from 'classnames'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import { loadTimeData } from '$web-common/loadTimeData'
+import useLongPress from '$web-common/useLongPress'
 
 import styles from './style.module.scss'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
@@ -86,9 +88,24 @@ function ConversationList(props: ConversationListProps) {
   }
 
   const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
+  const [activeMenuId, setActiveMenuId] = React.useState<number | null>()
+
+  const showAssistantMenu = (id: number) => {
+    setActiveMenuId(id)
+  }
+
+  const hideAssistantMenu = () => {
+    setActiveMenuId(null)
+  }
+
+  const longPress = useLongPress({
+    onLongPress: (id: number) => { showAssistantMenu(id) }
+  })
+
 
   React.useEffect(() => {
-    if (!lastEntryElementRef.current) return
+    if (lastEntryElementRef.current === null) return
+    if (!context.isGenerating) return
     props.onLastElementHeightChange()
   }, [conversationHistory.length, lastEntryElementRef.current?.clientHeight])
 
@@ -102,9 +119,14 @@ function ConversationList(props: ConversationListProps) {
           const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
           const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
 
+          const turnContainer = classnames({
+            [styles.turnContainerMobile]: loadTimeData.getBoolean('isMobile'),
+            [styles.turnContainerHighlight]: isAIAssistant && activeMenuId === id
+          })
+
           const turnClass = classnames({
             [styles.turn]: true,
-            [styles.turnAI]: isAIAssistant
+            [styles.turnAI]: isAIAssistant,
           })
 
           const avatarStyles = classnames({
@@ -115,16 +137,23 @@ function ConversationList(props: ConversationListProps) {
           return (
             <div
               key={id}
+              className={turnContainer}
               ref={isLastEntry ? lastEntryElementRef : null}
+              onTouchStart={isAIAssistant ? () => longPress.start(id) : undefined}
+              onTouchMove={isAIAssistant ? () => longPress.stop() : undefined}
+              onTouchEnd={isAIAssistant ? () => longPress.stop() : undefined}
+              onMouseLeave={isAIAssistant ? () => setActiveMenuId(null) : undefined}
             >
               <div className={turnClass}>
                 {isAIAssistant && (
-                  <div className={styles.turnActions}>
+                  <div className={styles.asistantMenu}>
                     <ContextMenuAssistant
-                      className={styles.turnMenuButton}
                       ref={portalRefs}
                       turnId={id}
                       turnText={turn.text}
+                      isOpen={activeMenuId === id}
+                      onClick={() => showAssistantMenu(id)}
+                      onClose={hideAssistantMenu}
                     />
                   </div>
                 )}

@@ -10,19 +10,21 @@
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   padding: 16px;
-  margin-top: 16px;
+  background-color: var(--leo-color-page-background);
   position: relative;
 }
 
-@media (pointer: fine) {
-  .turn:not(:hover) > .turnActions {
-    display: none;
-  }
+.turnContainerMobile {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.turnContainerHighlight {
+  background: var(--leo-color-container-interactive);
 }
 
 .turnAI {
-  margin-top: initial;
-  padding-bottom: 0;
+  background-color: transparent;
 }
 
 .caret {
@@ -81,15 +83,16 @@
   padding: 0 16px;
 }
 
-.turnActions {
+.asistantMenu {
   position: absolute;
-  inset: 16px 16px 0 auto;
-  z-index: 3;
+  right: 16px;
+  z-index: inherit;
 }
 
-.turnMenuButton {
-  position: sticky;
-  top: 16px;
+@media (pointer: fine) {
+  .turn:not(:hover) > .asistantMenu {
+    display: none;
+  }
 }
 
 .siteTitleContainer {

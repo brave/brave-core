@@ -25,6 +25,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -95,6 +96,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "hasUserDismissedPremiumPrompt",
       profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
           ai_chat::prefs::kUserDismissedPremiumPrompt));
+
+  untrusted_source->AddBoolean("isMobile", brave_stats::GetPlatformIdentifier() == "android-bc");
 
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
