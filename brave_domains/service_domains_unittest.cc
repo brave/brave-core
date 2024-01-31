@@ -42,21 +42,21 @@ TEST(BraveServiceDomains, TestValuesPresent) {
 TEST(BraveServiceDomains, ProductionWhenEmpty) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
 
-  EXPECT_EQ(GetServicesDomain("", &cl), kProductionValue);
+  EXPECT_EQ(GetServicesDomainForTesting("", &cl), kProductionValue);
 }
 
 TEST(BraveServiceDomains, GlobalStaging) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
   cl.AppendSwitchASCII("brave-services-env", "staging");
 
-  EXPECT_EQ(GetServicesDomain("", &cl), kStagingValue);
+  EXPECT_EQ(GetServicesDomainForTesting("", &cl), kStagingValue);
 }
 
 TEST(BraveServiceDomains, GlobalDev) {
   base::CommandLine cl(base::CommandLine::NO_PROGRAM);
   cl.AppendSwitchASCII("brave-services-env", "dev");
 
-  EXPECT_EQ(GetServicesDomain("", &cl), kDevValue);
+  EXPECT_EQ(GetServicesDomainForTesting("", &cl), kDevValue);
 }
 
 TEST(BraveServiceDomains, PrefixOverride) {
@@ -66,17 +66,17 @@ TEST(BraveServiceDomains, PrefixOverride) {
   cl.AppendSwitchASCII("brave-services-env", "dev");
   cl.AppendSwitchASCII("env-my.sub.domain", "prod");
 
-  auto prefixed_domain = GetServicesDomain(prefix, &cl);
+  auto prefixed_domain = GetServicesDomainForTesting(prefix, &cl);
 
   // Prefixed domain should be production override
   EXPECT_TRUE(base::EndsWith(prefixed_domain, kProductionValue));
   EXPECT_TRUE(base::StartsWith(prefixed_domain, prefix));
 
   // All other domain retrievals should be dev
-  EXPECT_EQ(GetServicesDomain("", &cl), kDevValue);
+  EXPECT_EQ(GetServicesDomainForTesting("", &cl), kDevValue);
 
   std::string other_prefix = "another_prefix";
-  auto other_prefixed_domain = GetServicesDomain(other_prefix, &cl);
+  auto other_prefixed_domain = GetServicesDomainForTesting(other_prefix, &cl);
 
   EXPECT_TRUE(base::EndsWith(other_prefixed_domain, kDevValue));
   EXPECT_TRUE(base::StartsWith(other_prefixed_domain, other_prefix));

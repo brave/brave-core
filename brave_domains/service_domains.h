@@ -22,10 +22,11 @@ namespace brave_domains {
 // All domains can be overridden globally via
 // CLI param syntax is brave-services-env={dev,staging,prod}.
 //
-// Prefix overridde(s) take precedence over global override.
-std::string GetServicesDomain(
-    std::string prefix = "",
-    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
+// Prefix override(s) take precedence over global override.
+std::string GetServicesDomain(std::string_view prefix = "");
+
+std::string GetServicesDomainForTesting(std::string_view prefix,
+                                        base::CommandLine* command_line);
 
 }  // namespace brave_domains
 

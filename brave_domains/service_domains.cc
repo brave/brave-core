@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
@@ -23,7 +24,8 @@ const char kBraveServicesSwitchValueStaging[] = "staging";
 const char kBraveServicesSwitchValueDev[] = "dev";
 const char kBraveServicesSwitchValueProduction[] = "prod";
 
-std::string GetServicesDomainForSwitchValue(std::string env_from_switch) {
+std::string_view GetServicesDomainForSwitchValue(
+    std::string_view env_from_switch) {
   if (env_from_switch == kBraveServicesSwitchValueStaging) {
     return BUILDFLAG(BRAVE_SERVICES_STAGING_DOMAIN);
   }
@@ -34,7 +36,7 @@ std::string GetServicesDomainForSwitchValue(std::string env_from_switch) {
   return BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
 }
 
-bool IsValidSwitchValue(std::string value) {
+bool IsValidSwitchValue(std::string_view value) {
   static const auto kAllowedSwitchValues =
       base::MakeFixedFlatSet<std::string_view>(
           {kBraveServicesSwitchValueDev, kBraveServicesSwitchValueStaging,
@@ -42,7 +44,7 @@ bool IsValidSwitchValue(std::string value) {
   return base::Contains(kAllowedSwitchValues, value);
 }
 
-void MaybeWarnSwitchValue(std::string key, std::string value) {
+void MaybeWarnSwitchValue(std::string_view key, std::string_view value) {
   if (!value.empty()) {
     if (!IsValidSwitchValue(value)) {
       LOG(ERROR) << "The switch value for --" << key << " is \"" << value
@@ -59,12 +61,11 @@ void MaybeWarnSwitchValue(std::string key, std::string value) {
   }
 }
 
-}  // namespace
+std::string GetServicesDomainInternal(
+    std::string_view prefix,
+    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess()) {
+  DCHECK(command_line);
 
-std::string GetServicesDomain(
-    std::string prefix /* = "" */,
-    base::CommandLine*
-        command_line /* = base::CommandLine::ForCurrentProcess()*/) {
   std::string env_key;
   std::string env_from_switch;
 
@@ -78,6 +79,8 @@ std::string GetServicesDomain(
   // When not overriden or invalid, use global default or override
   if (env_key.empty() || env_from_switch.empty() ||
       !IsValidSwitchValue(env_from_switch)) {
+    // TODO(petemill): Also look at something that is easy to override on
+    // non-desktop OS, e.g. a feature param.
     env_from_switch =
         command_line->GetSwitchValueASCII(kBraveServicesEnvironmentSwitch);
     MaybeWarnSwitchValue(kBraveServicesEnvironmentSwitch, env_from_switch);
@@ -90,11 +93,23 @@ std::string GetServicesDomain(
   // Build hostname
 
   if (prefix.empty()) {
-    return GetServicesDomainForSwitchValue(env_from_switch);
+    return std::string(GetServicesDomainForSwitchValue(env_from_switch));
   }
 
   return base::StrCat(
       {prefix, ".", GetServicesDomainForSwitchValue(env_from_switch)});
+}
+
+}  // namespace
+
+std::string GetServicesDomain(std::string_view prefix /* = "" */) {
+  return GetServicesDomainInternal(prefix);
+}
+
+std::string GetServicesDomainForTesting(std::string_view prefix,
+                                        base::CommandLine* command_line) {
+  CHECK_IS_TEST();
+  return GetServicesDomainInternal(prefix, command_line);
 }
 
 }  // namespace brave_domains
