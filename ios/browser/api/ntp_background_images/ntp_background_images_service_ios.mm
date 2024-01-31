@@ -9,6 +9,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -101,6 +102,14 @@ class NTPBackgroundImagesServiceObserverBridge
     return nil;
   }
   return [[NTPSponsoredImageData alloc] initWithData:*data];
+}
+
+- (NSInteger)initialCountToBrandedWallpaper {
+  return ntp_background_images::features::kInitialCountToBrandedWallpaper.Get();
+}
+
+- (NSInteger)countToBrandedWallpaper {
+  return ntp_background_images::features::kCountToBrandedWallpaper.Get();
 }
 
 - (void)updateSponsoredImageComponentIfNeeded {

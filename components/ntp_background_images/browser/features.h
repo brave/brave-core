@@ -8,6 +8,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 
 namespace ntp_background_images {
 namespace features {
@@ -20,11 +21,11 @@ BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
 
 // Show initial branded wallpaper after nth new tab page for fresh opens.
 inline constexpr base::FeatureParam<int> kInitialCountToBrandedWallpaper{
-    &kBraveNTPBrandedWallpaper, "initial_count_to_branded_wallpaper", 1};
+    &kBraveNTPBrandedWallpaper, "initial_count_to_branded_wallpaper", 2};
 
 // Show branded wallpaper every nth new tab page.
 inline constexpr base::FeatureParam<int> kCountToBrandedWallpaper{
-    &kBraveNTPBrandedWallpaper, "count_to_branded_wallpaper", 2};
+    &kBraveNTPBrandedWallpaper, "count_to_branded_wallpaper", 3};
 
 // Reset counter when a specific amount of time has elapsed in SI mode.
 inline constexpr base::FeatureParam<base::TimeDelta> kResetCounterAfter{
