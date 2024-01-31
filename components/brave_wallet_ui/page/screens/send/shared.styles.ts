@@ -19,12 +19,25 @@ export interface TextProps {
     | '11px'
     | '10px'
   isBold?: boolean
-  textColor?: 'text01' | 'text02' | 'text03' | 'success' | 'error' | 'warning'
+  textColor?:
+    | 'text01'
+    | 'text02'
+    | 'text03'
+    | 'success'
+    | 'error'
+    | 'warning'
+    | 'primary'
+    | 'secondary'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
 }
 
 export const Text = styled.span<TextProps>`
+  --primary: ${leo.color.text.primary};
+  --secondary: ${leo.color.text.secondary};
+  --tertiary: ${leo.color.text.tertiary};
+  // ToDo: We should to remove these old color variables
+  // in a refactor.
   --text01: ${(p) => p.theme.color.text01};
   --text02: ${(p) => p.theme.color.text02};
   --text03: ${(p) => p.theme.color.text03};

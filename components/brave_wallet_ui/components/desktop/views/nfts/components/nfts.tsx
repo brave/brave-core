@@ -54,7 +54,7 @@ import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 
 // styles
 import { NftGrid } from './nfts.styles'
-import { Row, ScrollableColumn, VerticalSpace } from '../../../../shared/style'
+import { Row, ScrollableColumn } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 import {
@@ -376,52 +376,41 @@ export const Nfts = (props: Props) => {
 
   const listUiByAccounts = React.useMemo(() => {
     return accounts.map((account) => (
-      <Row
-        width='100%'
-        key={account.accountId.uniqueKey}
-      >
+      <React.Fragment key={account.accountId.uniqueKey}>
         {getFilteredNftsByAccount(account).length !== 0 && (
           <AssetGroupContainer
-            key={account.accountId.uniqueKey}
             balance=''
             hideBalance={true}
             account={account}
             isDisabled={getFilteredNftsByAccount(account).length === 0}
-            hasBorder={false}
           >
-            <VerticalSpace space='16px' />
             <NftGrid>
               {getFilteredNftsByAccount(account).map(renderGridViewItem)}
               {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
             </NftGrid>
           </AssetGroupContainer>
         )}
-      </Row>
+      </React.Fragment>
     ))
   }, [accounts, getFilteredNftsByAccount, onSelectAsset])
 
   const listUiByNetworks = React.useMemo(() => {
     return networks?.map((network) => (
-      <Row
-        width='100%'
-        key={networkEntityAdapter.selectId(network).toString()}
-      >
+      <React.Fragment key={networkEntityAdapter.selectId(network).toString()}>
         {getAssetsByNetwork(network).length !== 0 && (
           <AssetGroupContainer
             balance=''
             hideBalance={true}
             network={network}
             isDisabled={getAssetsByNetwork(network).length === 0}
-            hasBorder={false}
           >
-            <VerticalSpace space='16px' />
             <NftGrid>
               {getAssetsByNetwork(network).map(renderGridViewItem)}
               {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
             </NftGrid>
           </AssetGroupContainer>
         )}
-      </Row>
+      </React.Fragment>
     ))
   }, [getAssetsByNetwork, networks])
 
@@ -431,13 +420,10 @@ export const Nfts = (props: Props) => {
     ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
       listUiByAccounts
     ) : (
-      <>
-        <VerticalSpace space='16px' />
-        <NftGrid>
-          {renderedList.map(renderGridViewItem)}
-          {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
-        </NftGrid>
-      </>
+      <NftGrid>
+        {renderedList.map(renderGridViewItem)}
+        {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
+      </NftGrid>
     )
   }, [
     listUiByAccounts,
