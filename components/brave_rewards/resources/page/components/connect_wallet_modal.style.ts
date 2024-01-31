@@ -18,6 +18,7 @@ export const root = styled.div.attrs({
   left: 0;
   bottom: 0;
   right: 0;
+  overscroll-behavior: contain;
   font: ${leo.font.default.regular};
   background: ${leo.color.container.background};
   overflow: auto;
