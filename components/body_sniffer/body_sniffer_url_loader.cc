@@ -25,7 +25,8 @@ constexpr const uint32_t kReadBufferSize = 64 * 1024;
 // static
 std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            mojo::PendingReceiver<network::mojom::URLLoaderClient>,
-           BodySnifferURLLoader*>
+           BodySnifferURLLoader*,
+           mojo::ScopedDataPipeConsumerHandle>
 BodySnifferURLLoader::CreateLoader(
     base::WeakPtr<BodySnifferThrottle> throttle,
     network::mojom::URLResponseHeadPtr response_head,
@@ -40,11 +41,16 @@ BodySnifferURLLoader::CreateLoader(
   auto loader = base::WrapUnique(new BodySnifferURLLoader(
       std::move(throttle), std::move(response_head), std::move(handler),
       std::move(url_loader_client), std::move(task_runner)));
+
+  mojo::ScopedDataPipeConsumerHandle body_to_send;
+  mojo::CreateDataPipe(nullptr, loader->body_producer_handle_, body_to_send);
+
   BodySnifferURLLoader* loader_rawptr = loader.get();
   mojo::MakeSelfOwnedReceiver(std::move(loader),
                               url_loader.InitWithNewPipeAndPassReceiver());
   return std::make_tuple(std::move(url_loader),
-                         std::move(url_loader_client_receiver), loader_rawptr);
+                         std::move(url_loader_client_receiver), loader_rawptr,
+                         std::move(body_to_send));
 }
 
 BodySnifferURLLoader::BodySnifferURLLoader(
@@ -153,8 +159,7 @@ void BodySnifferURLLoader::OnComplete(
         Abort();
         return;
       }
-      throttle_->Resume(std::move(response_head_),
-                        mojo::ScopedDataPipeConsumerHandle());
+      throttle_->Resume();
       destination_url_loader_client_->OnComplete(status);
       return;
     case State::kSniffing:
@@ -337,14 +342,7 @@ void BodySnifferURLLoader::CompleteSniffing(bool remove_first,
     Abort();
     return;
   }
-  mojo::ScopedDataPipeConsumerHandle body_to_send;
-  MojoResult result =
-      mojo::CreateDataPipe(nullptr, body_producer_handle_, body_to_send);
-  if (result != MOJO_RESULT_OK) {
-    Abort();
-    return;
-  }
-  throttle_->Resume(std::move(response_head_), std::move(body_to_send));
+  throttle_->Resume();
   // Set up the watcher for the producer handle.
   body_producer_watcher_.Watch(
       body_producer_handle_.get(),

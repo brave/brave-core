@@ -100,7 +100,8 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
   // loader.
   static std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
                     mojo::PendingReceiver<network::mojom::URLLoaderClient>,
-                    BodySnifferURLLoader*>
+                    BodySnifferURLLoader*,
+                    mojo::ScopedDataPipeConsumerHandle>
   CreateLoader(base::WeakPtr<BodySnifferThrottle> throttle,
                network::mojom::URLResponseHeadPtr response_head,
                Handler handler,

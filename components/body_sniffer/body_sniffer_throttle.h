@@ -36,8 +36,7 @@ class BodySnifferThrottle : public blink::URLLoaderThrottle,
 
   void Cancel();
 
-  void Resume(network::mojom::URLResponseHeadPtr response_head,
-              mojo::ScopedDataPipeConsumerHandle body);
+  void Resume();
 
  protected:
   void WillStartRequest(network::ResourceRequest* request,
@@ -50,7 +49,8 @@ class BodySnifferThrottle : public blink::URLLoaderThrottle,
   void InterceptAndStartLoader(
       mojo::PendingRemote<network::mojom::URLLoader> new_remote,
       mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver,
-      BodySnifferURLLoader* loader);
+      BodySnifferURLLoader* loader,
+      mojo::ScopedDataPipeConsumerHandle body);
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   std::unique_ptr<class BodyProducer> producer_;

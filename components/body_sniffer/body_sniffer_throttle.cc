@@ -69,22 +69,23 @@ void BodySnifferThrottle::WillProcessResponse(
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver;
   BodySnifferURLLoader* url_loader = nullptr;
+  mojo::ScopedDataPipeConsumerHandle body;
 
-  std::tie(new_remote, new_receiver, url_loader) =
+  std::tie(new_remote, new_receiver, url_loader, body) =
       BodySnifferURLLoader::CreateLoader(AsWeakPtr(), response_head->Clone(),
                                          std::move(handler), task_runner_);
   InterceptAndStartLoader(std::move(new_remote), std::move(new_receiver),
-                          url_loader);
+                          url_loader, std::move(body));
 }
 
 void BodySnifferThrottle::InterceptAndStartLoader(
     mojo::PendingRemote<network::mojom::URLLoader> new_remote,
     mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver,
-    BodySnifferURLLoader* loader) {
+    BodySnifferURLLoader* loader,
+    mojo::ScopedDataPipeConsumerHandle body) {
   mojo::PendingRemote<network::mojom::URLLoader> source_loader;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> source_client_receiver;
 
-  mojo::ScopedDataPipeConsumerHandle body;
   delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
                                &source_loader, &source_client_receiver, &body);
   loader->Start(std::move(source_loader), std::move(source_client_receiver),
@@ -95,11 +96,7 @@ void BodySnifferThrottle::Cancel() {
   delegate_->CancelWithError(net::ERR_ABORTED);
 }
 
-void BodySnifferThrottle::Resume(
-    network::mojom::URLResponseHeadPtr response_head,
-    mojo::ScopedDataPipeConsumerHandle body) {
-  delegate_->UpdateDeferredResponseHead(std::move(response_head),
-                                        std::move(body));
+void BodySnifferThrottle::Resume() {
   delegate_->Resume();
 }
 

@@ -46,20 +46,6 @@ void MaybeSaveDistilledDataForDebug(const GURL& url,
 #endif
 }
 
-void SetSpeedreaderCSP(const GURL& url,
-                       network::mojom::URLResponseHead* response_head) {
-  response_head->headers->RemoveHeader("Content-Security-Policy");
-  response_head->headers->RemoveHeader("Content-Security-Policy-Report-Only");
-  if (!response_head->parsed_headers) {
-    return;
-  }
-
-  std::vector<network::mojom::ContentSecurityPolicyPtr> new_csp;
-  network::AddContentSecurityPolicyFromHeaders(*response_head->headers, url,
-                                               &new_csp);
-  response_head->parsed_headers->content_security_policy.swap(new_csp);
-}
-
 }  // namespace
 
 SpeedreaderBodyDistiller::SpeedreaderBodyDistiller(
@@ -163,10 +149,6 @@ void SpeedreaderBodyDistiller::Transform(
 }
 
 void SpeedreaderBodyDistiller::UpdateResponseHead(
-    network::mojom::URLResponseHead* response_head) {
-  if (distillation_result_ == speedreader::DistillationResult::kSuccess) {
-    SetSpeedreaderCSP(response_url_, response_head);
-  }
-}
+    network::mojom::URLResponseHead* response_head) {}
 
 }  // namespace speedreader
