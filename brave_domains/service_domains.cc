@@ -61,6 +61,7 @@ void MaybeWarnSwitchValue(std::string key, std::string value) {
   }
 }
 
+#if !defined(OFFICIAL_BUILD)
 std::string ConvertEnvironmentToString(brave_domains::ServicesEnvironment env) {
   static const base::flat_map<ServicesEnvironment, std::string> envMap = {
       {brave_domains::ServicesEnvironment::DEV, kBraveServicesSwitchValueDev},
@@ -77,6 +78,7 @@ std::string ConvertEnvironmentToString(brave_domains::ServicesEnvironment env) {
   NOTREACHED();
   return kBraveServicesSwitchValueProduction;
 }
+#endif
 
 }  // namespace
 
