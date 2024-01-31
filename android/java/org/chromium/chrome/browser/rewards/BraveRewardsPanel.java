@@ -507,7 +507,11 @@ public class BraveRewardsPanel
                 mActivity.getResources().getColor(R.color.rewards_panel_action_color),
                 PorterDuff.Mode.SRC_IN));
 
-        mRewardsSummaryDetailLayout.setVisibility(View.VISIBLE);
+        int rewardsSummaryVisibility = View.VISIBLE;
+        if (mExternalWallet != null && mExternalWallet.getType() != BraveWalletProvider.SOLANA) {
+            rewardsSummaryVisibility = View.GONE;
+        }
+        mRewardsSummaryDetailLayout.setVisibility(rewardsSummaryVisibility);
         mRewardsTipLayout.setVisibility(View.GONE);
     }
 

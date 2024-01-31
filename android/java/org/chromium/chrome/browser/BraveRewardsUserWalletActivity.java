@@ -18,7 +18,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.Log;
 import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
