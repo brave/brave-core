@@ -1028,4 +1028,6 @@
   <message name="IDS_BRAVE_WALLET_TOTAL_BALANCE_DESCRIPTION" desc="Total balance tooltip description">Your available funds plus any not-yet-confirmed transactions.</message>
   <message name="IDS_BRAVE_WALLET_UNAVAILABLE_BALANCES" desc="Some balances may be unavailable info bar">Some balances may be unavailable</message>
   <message name="IDS_BRAVE_WALLET_FOUND_RISKS" desc="Notice that a number of risks were found">We found <ph name="VALUE">$1<ex>2</ex></ph> risks.</message>
+  <message name="IDS_BRAVE_WALLET_WEB_3" desc="Web3 page title">Web3</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_EXPLORE" desc="Navigation title for the 'Explore' tab/page">Explore</message>
 </grit-part>

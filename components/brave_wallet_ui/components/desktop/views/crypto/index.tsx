@@ -63,6 +63,8 @@ import {
 } from '../../card-headers/portfolio-overview-header'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
 import { MarketAsset } from '../market/market_asset'
+import { ExploreWeb3View } from '../explore_web3/explore_web3'
+import { DappDetails } from '../explore_web3/web3_dapp_details'
 
 export interface Props {
   sessionRoute: string | undefined
@@ -296,7 +298,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper
             wrapContentInBox
             cardHeader={
-              <PageTitleHeader title={getLocale('braveWalletTopNavMarket')} />
+              <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
             }
           >
             <StyledWrapper>
@@ -316,6 +318,51 @@ export const CryptoView = ({ sessionRoute }: Props) => {
               <MarketAsset />
             </StyledWrapper>
           </WalletPageWrapper>
+        </Route>
+
+        {/* Web3 */}
+        <Route
+          path={WalletRoutes.Web3}
+          exact={true}
+        >
+          <WalletPageWrapper
+            wrapContentInBox
+            cardHeader={
+              <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
+            }
+          >
+            <StyledWrapper>
+              {banners}
+              <ExploreWeb3View />
+            </StyledWrapper>
+          </WalletPageWrapper>
+        </Route>
+
+        <Route
+          path={WalletRoutes.Web3DappDetails}
+          exact={true}
+        >
+          <WalletPageWrapper
+            wrapContentInBox
+            cardHeader={
+              <PageTitleHeader
+                title={getLocale('braveWalletAccountSettingsDetails')}
+                onBack={() => history.push(WalletRoutes.Web3)}
+              />
+            }
+          >
+            <StyledWrapper>
+              {banners}
+              <DappDetails />
+            </StyledWrapper>
+          </WalletPageWrapper>
+        </Route>
+
+        <Route
+          path={WalletRoutes.Explore}
+          exact={true}
+        >
+          <Redirect to={WalletRoutes.Market} />
         </Route>
 
         {/* Transactions */}

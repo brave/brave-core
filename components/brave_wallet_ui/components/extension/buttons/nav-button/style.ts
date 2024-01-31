@@ -5,6 +5,7 @@
 
 import styled, { css } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 
 // types
 import { PanelButtonTypes } from './index'
@@ -129,4 +130,11 @@ export const ConfirmIcon = styled.div`
   mask-image: url(${CheckIcon});
   mask-size: 100%;
   margin-right: 10px;
+`
+
+export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
+  --leo-icon-size: 20px;
+  --leo-icon-color: ${leo.color.white};
+  margin-left: 8px;
+  margin-bottom: 1px;
 `

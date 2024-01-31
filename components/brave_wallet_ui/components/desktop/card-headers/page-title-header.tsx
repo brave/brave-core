@@ -23,22 +23,24 @@ import {
 
 interface Props {
   title: string
-  showBackButton?: boolean
   onBack?: () => void
 }
 
-export const PageTitleHeader = ({ title, showBackButton, onBack }: Props) => {
+export const PageTitleHeader = ({ title, onBack }: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
-  return isPanel && !showBackButton ? (
-    <DefaultPanelHeader title={title} />
-  ) : (
+  // render
+  if (isPanel && !onBack) {
+    return <DefaultPanelHeader title={title} />
+  }
+
+  return (
     <Row
       padding={isPanel ? '17px 20px' : '24px 0px'}
       justifyContent='flex-start'
     >
-      {showBackButton && (
+      {onBack && (
         <CircleButton
           size={28}
           marginRight={16}

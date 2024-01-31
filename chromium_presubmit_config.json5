@@ -58,6 +58,7 @@
   "default_files_to_skip": [
     "\\.storybook/",
     "components/brave_wallet/resources/solana_web3_script\\.js",
+    "components/brave_wallet_ui/mocks/mock-dapps-list.ts",
     "ios/browser/api/brave_rewards/legacy_database/core_data_models/",
     "third_party/rust/",
     "tools/crates/",
