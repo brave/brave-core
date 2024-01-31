@@ -10,7 +10,6 @@
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   position: relative;
-  background: var(--leo-color-container-background);
   box-shadow: var(--leo-effect-elevation-01);
 
   &:has(textarea:disabled) {
