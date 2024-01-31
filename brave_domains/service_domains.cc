@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_map.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/buildflags.h"
 
@@ -73,6 +74,7 @@ std::string ConvertEnvironmentToString(brave_domains::ServicesEnvironment env) {
     return it->second;
   }
 
+  NOTREACHED();
   return kBraveServicesSwitchValueProduction;
 }
 
