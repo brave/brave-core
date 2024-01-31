@@ -30,7 +30,7 @@ public class BraveRewardsUserWalletActivity
     private static final String TAG = "BraveRewards";
     public static final int UNDEFINED_WALLET_STATUS = -1;
 
-    private String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
+    private String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
 
     @Override
     protected void triggerLayoutInflation() {
@@ -56,11 +56,14 @@ public class BraveRewardsUserWalletActivity
         TextView txtUserStatus = (TextView) findViewById(R.id.user_status);
         Button btnGotoProvider = (Button) findViewById(R.id.provider_action);
         btnGotoProvider.setOnClickListener(this);
-        String providerText = (status == WalletStatus.CONNECTED)
-                ? String.format(getResources().getString(R.string.user_wallet_goto_provider),
-                        getWalletString(walletType))
-                : String.format(getResources().getString(R.string.login_provider),
-                        getWalletString(walletType));
+        String providerText =
+                (status == WalletStatus.CONNECTED)
+                        ? String.format(
+                                getResources().getString(R.string.user_wallet_goto_provider),
+                                getWalletString(mWalletType))
+                        : String.format(
+                                getResources().getString(R.string.login_provider),
+                                getWalletString(mWalletType));
         btnGotoProvider.setText(providerText);
 
         switch (status) {
@@ -77,7 +80,7 @@ public class BraveRewardsUserWalletActivity
 
         String userId = intent.getStringExtra(BraveRewardsExternalWallet.USER_NAME);
         txtUserId.setText(userId);
-        txtUserId.setCompoundDrawablesWithIntrinsicBounds(getWalletIcon(walletType), 0, 0, 0);
+        txtUserId.setCompoundDrawablesWithIntrinsicBounds(getWalletIcon(mWalletType), 0, 0, 0);
     }
 
     private int getWalletIcon(String walletType) {
