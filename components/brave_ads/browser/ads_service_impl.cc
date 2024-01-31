@@ -1164,6 +1164,10 @@ void AdsServiceImpl::GetStatementOfAccounts(
   bat_ads_associated_remote_->GetStatementOfAccounts(std::move(callback));
 }
 
+bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
+  return browser_upgrade_required_to_serve_ads_;
+}
+
 void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdAsDictCallback callback) {
@@ -1792,6 +1796,10 @@ void AdsServiceImpl::Log(const std::string& file,
     ::logging::LogMessage(file.c_str(), line, -verbose_level).stream()
         << message;
   }
+}
+
+void AdsServiceImpl::OnBrowserUpgradeRequiredToServeAds() {
+  browser_upgrade_required_to_serve_ads_ = true;
 }
 
 void AdsServiceImpl::OnRemindUser(const brave_ads::mojom::ReminderType type) {
