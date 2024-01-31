@@ -950,7 +950,7 @@ void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
       base::BindOnce(
           [](base::WeakPtr<FeedV2Builder> builder, GetSignalsCallback callback,
              base::OnceClosure on_complete) {
-            if (builder) {
+            if (!builder) {
               std::move(callback).Run({});
               return;
             }
@@ -1160,18 +1160,15 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   }
 }
 
-void FeedV2Builder::GenerateFeed(
-    UpdateSettings settings,
-    mojom::FeedV2TypePtr type,
-    base::OnceCallback<mojom::FeedV2Ptr(const FeedV2Builder&)> build_feed,
-    BuildFeedCallback callback) {
+void FeedV2Builder::GenerateFeed(UpdateSettings settings,
+                                 mojom::FeedV2TypePtr type,
+                                 FeedGenerator generate,
+                                 BuildFeedCallback callback) {
   UpdateData(
       std::move(settings),
       base::BindOnce(
           [](const base::WeakPtr<FeedV2Builder> builder,
-             mojom::FeedV2TypePtr type,
-             base::OnceCallback<mojom::FeedV2Ptr(const FeedV2Builder&)>
-                 build_feed,
+             mojom::FeedV2TypePtr type, FeedGenerator generate,
              BuildFeedCallback callback, base::OnceClosure on_complete) {
             auto built_callback = base::BindOnce(
                 [](BuildFeedCallback callback,
@@ -1199,16 +1196,14 @@ void FeedV2Builder::GenerateFeed(
                     FROM_HERE,
                     base::BindOnce(
                         [](const base::WeakPtr<FeedV2Builder> builder,
-                           base::OnceCallback<mojom::FeedV2Ptr(
-                               const FeedV2Builder&)> build_feed)
-                            -> mojom::FeedV2Ptr {
+                           FeedGenerator generate) -> mojom::FeedV2Ptr {
                           // If |builder| was destroyed, just return |nullptr|.
                           if (!builder) {
                             return nullptr;
                           }
-                          return std::move(build_feed).Run(*builder);
+                          return std::move(generate).Run(*builder);
                         },
-                        builder, std::move(build_feed)),
+                        builder, std::move(generate)),
                     base::BindOnce(
                         [](base::WeakPtr<const FeedV2Builder> builder,
                            mojom::FeedV2TypePtr type,
@@ -1248,8 +1243,8 @@ void FeedV2Builder::GenerateFeed(
                         },
                         builder, std::move(type), std::move(built_callback)));
           },
-          weak_ptr_factory_.GetWeakPtr(), std::move(type),
-          std::move(build_feed), std::move(callback)));
+          weak_ptr_factory_.GetWeakPtr(), std::move(type), std::move(generate),
+          std::move(callback)));
 }
 
 mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedV2Builder& builder,
