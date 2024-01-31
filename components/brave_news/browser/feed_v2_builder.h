@@ -151,15 +151,18 @@ class FeedV2Builder : public PublishersController::Observer {
 
   void NotifyUpdateCompleted();
 
-  void GenerateFeed(UpdateSettings settings,
-                    mojom::FeedV2TypePtr type,
-                    base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
-                    BuildFeedCallback callback);
+  void GenerateFeed(
+      UpdateSettings settings,
+      mojom::FeedV2TypePtr type,
+      base::OnceCallback<mojom::FeedV2Ptr(const FeedV2Builder& builder)>
+          build_feed,
+      BuildFeedCallback callback);
 
-  mojom::FeedV2Ptr GenerateBasicFeed(const FeedItems& items,
-                                     PickArticles pick_hero,
-                                     PickArticles pick_article);
-  mojom::FeedV2Ptr GenerateAllFeed();
+  static mojom::FeedV2Ptr GenerateBasicFeed(const FeedV2Builder& builder,
+                                            const FeedItems& items,
+                                            PickArticles pick_hero,
+                                            PickArticles pick_article);
+  static mojom::FeedV2Ptr GenerateAllFeed(const FeedV2Builder& builder);
 
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;
