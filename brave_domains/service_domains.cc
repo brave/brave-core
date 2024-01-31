@@ -62,9 +62,11 @@ void MaybeWarnSwitchValue(std::string key, std::string value) {
 
 std::string ConvertEnvironmentToString(brave_domains::ServicesEnvironment env) {
   static const base::flat_map<ServicesEnvironment, std::string> envMap = {
-      {brave_domains::kDev, kBraveServicesSwitchValueDev},
-      {brave_domains::kStaging, kBraveServicesSwitchValueStaging},
-      {brave_domains::kProd, kBraveServicesSwitchValueProduction}};
+      {brave_domains::ServicesEnvironment::DEV, kBraveServicesSwitchValueDev},
+      {brave_domains::ServicesEnvironment::STAGING,
+       kBraveServicesSwitchValueStaging},
+      {brave_domains::ServicesEnvironment::PROD,
+       kBraveServicesSwitchValueProduction}};
 
   auto it = envMap.find(env);
   if (it != envMap.end()) {

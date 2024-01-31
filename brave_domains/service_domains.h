@@ -12,7 +12,7 @@
 
 namespace brave_domains {
 
-enum ServicesEnvironment { kDev, kStaging, kProd };
+enum ServicesEnvironment { DEV, STAGING, PROD };
 
 // Gets production services domain, or returns staging or dev
 // domain if relevant cli parameter is present.
@@ -32,7 +32,7 @@ enum ServicesEnvironment { kDev, kStaging, kProd };
 // 4. Default env (production)
 std::string GetServicesDomain(
     std::string prefix,
-    ServicesEnvironment env_value_default_override = kProd,
+    ServicesEnvironment env_value_default_override = PROD,
     base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
 
 }  // namespace brave_domains
