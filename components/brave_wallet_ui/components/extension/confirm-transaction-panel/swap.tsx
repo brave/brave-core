@@ -17,7 +17,9 @@ import { EditPendingTransactionGas } from './common/gas'
 
 // Components
 import { TransactionQueueSteps } from './common/queue'
-import { PendingTransactionActionsFooter } from './common/footer'
+import {
+  PendingTransactionActionsFooter //
+} from './common/pending_tx_actions_footer'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import {
   PendingTransactionNetworkFeeAndSettings //
@@ -38,6 +40,7 @@ export function ConfirmSwapTransaction() {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [isEditingGas, setIsEditingGas] = React.useState<boolean>(false)
+  const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
 
   // hooks
   const {
@@ -102,18 +105,20 @@ export function ConfirmSwapTransaction() {
 
       <Origin originInfo={originInfo} />
 
-      <SwapBase
-        sellToken={transactionDetails?.sellToken}
-        buyToken={transactionDetails?.buyToken}
-        sellAmount={transactionDetails?.sellAmountWei?.format()}
-        buyAmount={transactionDetails?.minBuyAmountWei?.format()}
-        senderLabel={transactionDetails?.senderLabel}
-        senderOrb={fromOrb}
-        recipientOrb={toOrb}
-        recipientLabel={transactionDetails?.recipientLabel}
-        // set to true once Swap+Send is supported
-        expectRecipientAddress={false}
-      />
+      {isWarningCollapsed && (
+        <SwapBase
+          sellToken={transactionDetails?.sellToken}
+          buyToken={transactionDetails?.buyToken}
+          sellAmount={transactionDetails?.sellAmountWei?.format()}
+          buyAmount={transactionDetails?.minBuyAmountWei?.format()}
+          senderLabel={transactionDetails?.senderLabel}
+          senderOrb={fromOrb}
+          recipientOrb={toOrb}
+          recipientLabel={transactionDetails?.recipientLabel}
+          // set to true once Swap+Send is supported
+          expectRecipientAddress={false}
+        />
+      )}
 
       <PendingTransactionNetworkFeeAndSettings
         onToggleAdvancedTransactionSettings={
@@ -132,6 +137,8 @@ export function ConfirmSwapTransaction() {
         transactionsQueueLength={transactionsQueueLength}
         insufficientFundsForGasError={insufficientFundsForGasError}
         insufficientFundsError={insufficientFundsError}
+        isWarningCollapsed={isWarningCollapsed}
+        setIsWarningCollapsed={setIsWarningCollapsed}
       />
     </StyledWrapper>
   )
