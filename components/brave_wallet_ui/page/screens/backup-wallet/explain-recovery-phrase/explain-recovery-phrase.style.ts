@@ -4,9 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import Dialog from '@brave/leo/react/dialog'
 import * as leo from '@brave/leo/tokens/css'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
+import ExamplePhraseLight from './images/example-recovery-phrase-light.png'
+import ExamplePhraseDark from './images/example-recovery-phrase-dark.png'
 
 export const BannerCard = styled.div`
   margin-top: 24px;
@@ -80,6 +83,38 @@ export const BackupInstructions = styled.p`
   font-style: normal;
   font-weight: 600;
   line-height: 26px;
+  padding: 0;
+  margin: 0;
+`
+
+export const ExampleRecoveryPhrase = styled.img.attrs(() => ({
+  src: window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? ExamplePhraseDark
+    : ExamplePhraseLight
+}))`
+  width: 100%;
+  height: 208px;
+`
+
+export const SkipDialog = styled(Dialog).attrs({
+  modal: true,
+  showClose: true,
+  backdropClickCloses: true
+})`
+  --leo-dialog-background: ${leo.color.container.background};
+  --leo-dialog-border-radius: 16px;
+  --leo-dialog-color: ${leo.color.text.primary};
+  --leo-dialog-padding: ${leo.spacing['4Xl']};
+  --leo-dialog-width: 480px;
+`
+
+export const WarningText = styled.p`
+  color: --leo-color-text-primary;
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
   padding: 0;
   margin: 0;
 `

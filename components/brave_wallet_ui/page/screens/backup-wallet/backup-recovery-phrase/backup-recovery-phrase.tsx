@@ -17,7 +17,7 @@ import {
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
-import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
+// import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // hooks
 import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-copy-to-clipboard'
@@ -32,9 +32,7 @@ import {
 } from '../../../../components/shared/style'
 import {
   Description,
-  MainWrapper,
   NextButtonRow,
-  StyledWrapper,
   Title,
   TitleAndDescriptionContainer,
   PhraseCard,
@@ -45,15 +43,11 @@ import {
 
 // components
 import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
-import {
-  OnboardingStepsNavigation //
-} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
-import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
+import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
 
 export const BackupRecoveryPhrase = () => {
   // routing
@@ -84,6 +78,7 @@ export const BackupRecoveryPhrase = () => {
     }
     history.push(WalletRoutes.PortfolioAssets)
   }
+  console.log(skipBackup)
 
   const revealPhrase = React.useCallback(() => {
     setIsPhraseShown(true)
@@ -104,75 +99,66 @@ export const BackupRecoveryPhrase = () => {
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          {isOnboarding ? (
-            <OnboardingStepsNavigation onSkip={skipBackup} />
-          ) : (
-            <StepsNavigation
-              steps={WALLET_BACKUP_STEPS}
-              currentStep={WalletRoutes.BackupRecoveryPhrase}
-              onSkip={skipBackup}
-            />
+    <OnboardingContentLayout
+      title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+      subTitle={
+        'Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.'
+      }
+    >
+      <TitleAndDescriptionContainer>
+        <Title>{getLocale('braveWalletRecoveryPhraseBackupTitle')}</Title>
+        <Description>
+          {getLocale('braveWalletRecoveryPhraseBackupWarning')}
+          <LinkText
+            href='https://brave.com/learn/wallet-recovery-phrase/#how-should-i-store-my-recovery-phrase'
+            target='_blank'
+            rel='noreferrer'
+            referrerPolicy='no-referrer'
+          >
+            {getLocale('braveWalletLearnMore')}
+          </LinkText>
+        </Description>
+      </TitleAndDescriptionContainer>
+
+      <PhraseCard>
+        <PhraseCardTopRow>
+          <ToggleVisibilityButton
+            isVisible={isPhraseShown}
+            onClick={toggleShowPhrase}
+          />
+        </PhraseCardTopRow>
+
+        <PhraseCardBody>
+          <RecoveryPhrase
+            hidden={!isPhraseShown}
+            onClickReveal={revealPhrase}
+            recoveryPhrase={recoveryPhrase}
+          />
+        </PhraseCardBody>
+
+        <PhraseCardBottomRow>
+          <CopyButton onClick={onCopyPhrase} />
+
+          {isCopied && (
+            <>
+              <CopiedToClipboardConfirmation />
+              <HorizontalSpace space='52px' />
+            </>
           )}
+        </PhraseCardBottomRow>
+      </PhraseCard>
 
-          <TitleAndDescriptionContainer>
-            <Title>{getLocale('braveWalletRecoveryPhraseBackupTitle')}</Title>
-            <Description>
-              {getLocale('braveWalletRecoveryPhraseBackupWarning')}
-              <LinkText
-                href='https://brave.com/learn/wallet-recovery-phrase/#how-should-i-store-my-recovery-phrase'
-                target='_blank'
-                rel='noreferrer'
-                referrerPolicy='no-referrer'
-              >
-                {getLocale('braveWalletLearnMore')}
-              </LinkText>
-            </Description>
-          </TitleAndDescriptionContainer>
-
-          <PhraseCard>
-            <PhraseCardTopRow>
-              <ToggleVisibilityButton
-                isVisible={isPhraseShown}
-                onClick={toggleShowPhrase}
-              />
-            </PhraseCardTopRow>
-
-            <PhraseCardBody>
-              <RecoveryPhrase
-                hidden={!isPhraseShown}
-                onClickReveal={revealPhrase}
-                recoveryPhrase={recoveryPhrase}
-              />
-            </PhraseCardBody>
-
-            <PhraseCardBottomRow>
-              <CopyButton onClick={onCopyPhrase} />
-
-              {isCopied && (
-                <>
-                  <CopiedToClipboardConfirmation />
-                  <HorizontalSpace space='52px' />
-                </>
-              )}
-            </PhraseCardBottomRow>
-          </PhraseCard>
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonNext')}
-              url={
-                isOnboarding
-                  ? WalletRoutes.OnboardingVerifyRecoveryPhrase
-                  : WalletRoutes.BackupVerifyRecoveryPhrase
-              }
-            />
-          </NextButtonRow>
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+      <NextButtonRow>
+        <NavButton
+          buttonType='primary'
+          text={getLocale('braveWalletButtonNext')}
+          url={
+            isOnboarding
+              ? WalletRoutes.OnboardingVerifyRecoveryPhrase
+              : WalletRoutes.BackupVerifyRecoveryPhrase
+          }
+        />
+      </NextButtonRow>
+    </OnboardingContentLayout>
   )
 }

@@ -6,9 +6,11 @@
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
 import { useDispatch } from 'react-redux'
+import Button from '@brave/leo/react/button'
+import * as leo from '@brave/leo/tokens/css'
 
 // utils
-import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
 import {
   useReportOnboardingActionMutation //
@@ -18,42 +20,23 @@ import {
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 // import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
-// images
-import ExamplePhrase from './images/example-recovery-phrase.svg'
-
 // components
-import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button/index'
+import { SkipWarningDialog } from './skip-warning-dialog'
 
 // style
-import { NextButtonRow } from '../../onboarding/onboarding.style'
+import { ContinueButton } from '../../onboarding/onboarding.style'
 import {
-  BannerCard,
-  WarningCircle,
-  ImportantText,
-  BannerText,
   Subtitle,
-  BackupInstructions
+  BackupInstructions,
+  ExampleRecoveryPhrase
 } from './explain-recovery-phrase.style'
-import { VerticalSpace } from '../../../../components/shared/style'
+import { Column, VerticalSpace } from '../../../../components/shared/style'
 import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
 
-const importantTextParts = splitStringForTag(
-  getLocale('braveWalletRecoveryPhraseBackupWarningImportant')
-)
-
-const ImportantTextSegments = () => {
-  return (
-    <BannerText>
-      {importantTextParts.beforeTag}
-      <ImportantText>{importantTextParts.duringTag}</ImportantText>
-      {importantTextParts.afterTag}
-    </BannerText>
-  )
-}
-
 export const RecoveryPhraseExplainer = () => {
+  // state
+  const [isSkipWarningOpen, setIsSkipWarningOpen] = React.useState(false)
+
   // redux
   const dispatch = useDispatch()
 
@@ -76,7 +59,13 @@ export const RecoveryPhraseExplainer = () => {
     history.push(WalletRoutes.PortfolioAssets)
   }
 
-  console.log(skipBackup)
+  const onContinue = () => {
+    history.push(
+      isOnboarding
+        ? WalletRoutes.OnboardingBackupRecoveryPhrase
+        : WalletRoutes.BackupRecoveryPhrase
+    )
+  }
 
   // effects
   React.useEffect(() => {
@@ -85,43 +74,46 @@ export const RecoveryPhraseExplainer = () => {
 
   // render
   return (
-    <OnboardingContentLayout
-      title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
-      subTitle=''
-    >
-      <Subtitle>
-        {getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroDescription')}
-      </Subtitle>
-      <VerticalSpace space='14px' />
-      <BackupInstructions>
-        Keep it in a secure place that is not accessible to others and avoid
-        sharing it with anyone.
-      </BackupInstructions>
-      <VerticalSpace space='54px' />
-
-      <img
-        width='376px'
-        height='118px'
-        src={ExamplePhrase}
+    <>
+      <SkipWarningDialog
+        isOpen={isSkipWarningOpen}
+        onBack={() => setIsSkipWarningOpen(false)}
+        onSkip={skipBackup}
       />
+      <OnboardingContentLayout
+        title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+        subTitle=''
+      >
+        <Subtitle>
+          {getLocale(
+            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
+          )}
+        </Subtitle>
+        <VerticalSpace space='14px' />
+        <BackupInstructions>
+          {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
+        </BackupInstructions>
+        <VerticalSpace space='54px' />
 
-      <BannerCard>
-        <WarningCircle />
-        <ImportantTextSegments />
-      </BannerCard>
+        <ExampleRecoveryPhrase />
 
-      <NextButtonRow>
-        <NavButton
-          buttonType='primary'
-          text={getLocale('braveWalletButtonGotIt')}
-          url={
-            isOnboarding
-              ? WalletRoutes.OnboardingBackupRecoveryPhrase
-              : WalletRoutes.BackupRecoveryPhrase
-          }
-        />
-      </NextButtonRow>
-    </OnboardingContentLayout>
+        <VerticalSpace space='54px' />
+
+        <Column>
+          <ContinueButton onClick={onContinue}>
+            {getLocale('braveWalletButtonGotIt')}
+          </ContinueButton>
+          <VerticalSpace space='24px' />
+          <Button
+            kind='plain-faint'
+            color={leo.color.text.secondary}
+            onClick={() => setIsSkipWarningOpen(true)}
+          >
+            {getLocale('braveWalletButtonSkip')}
+          </Button>
+        </Column>
+      </OnboardingContentLayout>
+    </>
   )
 }
 

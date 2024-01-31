@@ -139,4 +139,5 @@ export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{
 
 export const ContinueButton = styled(Button)`
   --leo-button-radius: 12px;
+  min-height: 44px;
 `

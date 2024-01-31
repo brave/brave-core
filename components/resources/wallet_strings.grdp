@@ -126,7 +126,7 @@
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_NO" desc="Create Account Tab No Button">No</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CONTINUE" desc="General Continue button">Continue</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_NEXT" desc="General Next button">Next</message>
-  <message name="IDS_BRAVE_WALLET_BUTTON_GOT_IT" desc="Acknowledgement Next button">Got it</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_GOT_IT" desc="Acknowledgement Next button">View my recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_COPY" desc="General Copy button">Copy</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied!</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
@@ -141,6 +141,7 @@
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_TITLE" desc="Onboarding welcome screen, import wallet action title">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_WATCH_ONLY_TITLE" desc="Onboarding welcome screen, create watch only wallet">I need a watch-only wallet</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright">©2023 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_DIVIDER_TEXT" desc="Wallet onboarding welcome divider text">or</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_DESCRIPTION" desc="Onboarding welcome screen, import wallet action description">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION" desc="Backup screen description">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH">$1</ph>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
@@ -189,6 +190,9 @@
   <message name="IDS_BRAVE_WALLET_RESTORE_LEGACY_CHECK_BOX" desc="Restore Wallet screen import legacy checkbox">Import from legacy Brave crypto wallets?</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_FORM_TEXT" desc="Restore Wallet new password input">New Password</message>
   <message name="IDS_BRAVE_WALLET_TOOL_TIP_COPY_TO_CLIPBOARD" desc="General tooltip copy to clipboard">Copy to Clipboard</message>
+  <message name="IDS_BRAVE_WALLET_SKIP_BACKUP_WARNING" desc="Warning when user wants to skip recovery phrase backup">You can skip this step now, but you still need to back up your recovery phrase to ensure account security.</message>
+  <message name="IDS_WALLET_SKIP_BACKUP" desc="Skip recovery phrase backup">I'll back up later</message>
+  <message name="IDS_BRAVE_WALLET_GO_BACK" desc="Go back action text">Go back</message>
   <message name="IDS_BRAVE_WALLET_TOOL_TIP_COPIED_TO_CLIPBOARD" desc="General tooltip copy to clipboard">Copied!</message>
   <message name="IDS_BRAVE_WALLET_PASTE_FROM_CLIPBOARD" desc="Paste from clipboard">Paste from clipboard</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY" desc="Accounts screen primary accounts title">Primary crypto accounts</message>
@@ -762,10 +766,12 @@
   <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_ONE_HOUR" desc="Auto lock duration -  one hour">1 Hour</message>
   <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_THREE_HOURS" desc="Auto lock duration - 3 hours">3 Hours</message>
   <message name="IDS_BRAVE_WALLET_CREATING_WALLET" desc="Is displayed while the wallet is being created.">Creating Wallet...</message>
-  <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE" desc="Title before backing up wallet">Before you start backing up wallet</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE" desc="Title before backing up wallet">Save your recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_DESCRIPTION" desc="Recovery phrase backup description">The 12-24 word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING" desc="A warning regarding recovery phrase safety">Brave cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.</message>
-  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT" desc="An important warning regarding recovery phrase safety"><ph name="TAG_BEFORE">$1</ph>Important: <ph name="TAG_AFTER">$2</ph>Never share your recovery phrase. Anyone with this phrase can take your assets forever.</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT" desc="An important warning regarding recovery phrase safety">Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.
+
+</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_TITLE" desc="Title to recovery phrase backup screen">Back up your wallet recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_COPIED_TO_CLIPBOARD" desc="Alert confirming that a value was copied to the system clipboard">Copied to clipboard</message>
   <message name="IDS_BRAVE_WALLET_CLICK_TO_SEE_RECOVERY_PHRASE" desc="Reveal hidden recovery phrase button text">Click to see your phrase</message>
