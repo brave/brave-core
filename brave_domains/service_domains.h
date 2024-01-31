@@ -12,9 +12,7 @@
 
 namespace brave_domains {
 
-inline constexpr char kBraveServicesSwitchValueDev[] = "dev";
-inline constexpr char kBraveServicesSwitchValueStaging[] = "staging";
-inline constexpr char kBraveServicesSwitchValueProduction[] = "prod";
+enum ServicesEnvironment { kDev, kStaging, kProd };
 
 // Gets production services domain, or returns staging or dev
 // domain if relevant cli parameter is present.
@@ -34,7 +32,7 @@ inline constexpr char kBraveServicesSwitchValueProduction[] = "prod";
 // 4. Default env (production)
 std::string GetServicesDomain(
     std::string prefix,
-    std::string env_value_default_override = "",
+    ServicesEnvironment env_value_default_override = kProd,
     base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
 
 }  // namespace brave_domains

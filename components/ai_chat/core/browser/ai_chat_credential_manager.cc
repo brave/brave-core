@@ -61,7 +61,7 @@ void AIChatCredentialManager::GetPremiumStatus(
   }
 
   const std::string leo_sku_domain = brave_domains::GetServicesDomain(
-      kLeoSkuHostnamePart, brave_domains::kBraveServicesSwitchValueStaging);
+      kLeoSkuHostnamePart, brave_domains::kStaging);
 
   // Check the CredentialSummary to get the number of remaining credentials
   // and time when next batch is active.
@@ -226,7 +226,7 @@ void AIChatCredentialManager::OnGetPremiumStatus(
     return;
   }
   const std::string leo_sku_domain = brave_domains::GetServicesDomain(
-      kLeoSkuHostnamePart, brave_domains::kBraveServicesSwitchValueStaging);
+      kLeoSkuHostnamePart, brave_domains::kStaging);
 
   if (!EnsureMojoConnected()) {
     std::move(callback).Run({});

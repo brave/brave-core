@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/flat_map.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/buildflags.h"
@@ -18,6 +19,9 @@ namespace brave_domains {
 
 namespace {
 
+constexpr char kBraveServicesSwitchValueDev[] = "dev";
+constexpr char kBraveServicesSwitchValueStaging[] = "staging";
+constexpr char kBraveServicesSwitchValueProduction[] = "prod";
 constexpr char kBraveServicesEnvironmentSwitch[] = "brave-services-env";
 
 std::string GetServicesDomainForSwitchValue(std::string env_from_switch) {
@@ -56,11 +60,25 @@ void MaybeWarnSwitchValue(std::string key, std::string value) {
   }
 }
 
+std::string ConvertEnvironmentToString(brave_domains::ServicesEnvironment env) {
+  static const base::flat_map<ServicesEnvironment, std::string> envMap = {
+      {brave_domains::kDev, kBraveServicesSwitchValueDev},
+      {brave_domains::kStaging, kBraveServicesSwitchValueStaging},
+      {brave_domains::kProd, kBraveServicesSwitchValueProduction}};
+
+  auto it = envMap.find(env);
+  if (it != envMap.end()) {
+    return it->second;
+  }
+
+  return kBraveServicesSwitchValueProduction;
+}
+
 }  // namespace
 
 std::string GetServicesDomain(
     std::string prefix,
-    std::string env_value_default_override,
+    ServicesEnvironment env_value_default_override,
     base::CommandLine*
         command_line /* = base::CommandLine::ForCurrentProcess() */) {
   // Default to production
@@ -69,9 +87,7 @@ std::string GetServicesDomain(
   // If a default parameter was supplied, use that instead, but only
   // for unofficial builds.
 #if !defined(OFFICIAL_BUILD)
-  if (IsValidSwitchValue(env_value_default_override)) {
-    env_value = env_value_default_override;
-  }
+  env_value = ConvertEnvironmentToString(env_value_default_override);
 #endif
 
   // If a global value was supplied via CLI, use that instead.
