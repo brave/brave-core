@@ -20,12 +20,14 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -1157,30 +1159,42 @@ void FeedV2Builder::GenerateFeed(
               return;
             }
 
-            auto feed = std::move(build_feed).Run();
-            feed->construct_time = base::Time::Now();
-            feed->type = std::move(type);
-            feed->source_hash = builder->hash_;
+            base::SequencedTaskRunner::GetCurrentDefault()
+                ->PostTaskAndReplyWithResult(
+                    FROM_HERE, std::move(build_feed),
+                    base::BindOnce(
+                        [](base::WeakPtr<FeedV2Builder> builder,
+                           mojom::FeedV2TypePtr type,
+                           BuildFeedCallback callback, mojom::FeedV2Ptr feed) {
+                          feed->construct_time = base::Time::Now();
+                          feed->type = std::move(type);
+                          feed->source_hash = builder->hash_;
 
-            if (feed->items.empty()) {
-              // If we have no subscribed items and we've loaded the list of
-              // publishers (which we might not have, if we're offline) then
-              // we're not subscribed to any feeds.
-              if (builder->subscribed_count_ == 0 &&
-                  !builder->publishers_controller_->GetLastPublishers()
-                       .empty()) {
-                feed->error = mojom::FeedV2Error::NoFeeds;
-                // If we don't have any raw feed items (and we're subscribed to
-                // some feeds) then fetching must have failed.
-              } else if (builder->raw_feed_items_.size() == 0) {
-                feed->error = mojom::FeedV2Error::ConnectionError;
-                // Otherwise, this feed must have no articles.
-              } else {
-                feed->error = mojom::FeedV2Error::NoArticles;
-              }
-            }
+                          if (feed->items.empty()) {
+                            // If we have no subscribed items and we've loaded
+                            // the list of publishers (which we might not have,
+                            // if we're offline) then we're not subscribed to
+                            // any feeds.
+                            if (builder->subscribed_count_ == 0 &&
+                                !builder->publishers_controller_
+                                     ->GetLastPublishers()
+                                     .empty()) {
+                              feed->error = mojom::FeedV2Error::NoFeeds;
+                              // If we don't have any raw feed items (and we're
+                              // subscribed to some feeds) then fetching must
+                              // have failed.
+                            } else if (builder->raw_feed_items_.size() == 0) {
+                              feed->error = mojom::FeedV2Error::ConnectionError;
+                              // Otherwise, this feed must have no articles.
+                            } else {
+                              feed->error = mojom::FeedV2Error::NoArticles;
+                            }
+                          }
 
-            std::move(callback).Run(feed->Clone());
+                          std::move(callback).Run(feed->Clone());
+                        },
+                        std::move(builder), std::move(type),
+                        std::move(callback)));
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type),
           std::move(build_feed), std::move(callback)));
