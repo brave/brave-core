@@ -16,6 +16,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/threading/thread_checker.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -96,7 +97,8 @@ class FeedV2Builder : public PublishersController::Observer {
   // data in |builder| will not be changed while the generator is running.
   // Additionally, the generator should not modify data in |builder| (hence the
   // const reference).
-  using FeedGenerator = base::OnceCallback<mojom::FeedV2Ptr(FeedGenerationInfo)>;
+  using FeedGenerator =
+      base::OnceCallback<mojom::FeedV2Ptr(FeedGenerationInfo)>;
 
   using UpdateCallback = base::OnceCallback<void(base::OnceClosure completed)>;
   struct UpdateSettings {
@@ -190,6 +192,8 @@ class FeedV2Builder : public PublishersController::Observer {
   std::optional<UpdateRequest> next_update_;
 
   mojo::RemoteSet<mojom::FeedListener> listeners_;
+
+  THREAD_CHECKER(thread_checker_);
 
   base::WeakPtrFactory<FeedV2Builder> weak_ptr_factory_{this};
 };

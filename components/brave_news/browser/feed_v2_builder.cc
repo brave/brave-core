@@ -29,6 +29,8 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
+#include "base/threading/thread_checker.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -41,6 +43,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -819,6 +822,7 @@ mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
                                    PickArticles pick_hero,
                                    PickArticles pick_article) {
   DVLOG(1) << __FUNCTION__;
+  DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
 
   auto articles = GetArticleInfos(info.locale, info.feed_items, info.publishers,
                                   info.signals);
@@ -857,6 +861,7 @@ mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
 
 mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info) {
   DVLOG(1) << __FUNCTION__;
+  DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
   auto articles = GetArticleInfos(info.locale, info.feed_items, info.publishers,
                                   info.signals);
@@ -1366,6 +1371,7 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
                                  mojom::FeedV2TypePtr type,
                                  FeedGenerator generator,
                                  BuildFeedCallback callback) {
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   UpdateData(
       std::move(settings),
       base::BindOnce(
@@ -1407,43 +1413,41 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
             // We post this to another thread, because the generation process
             // can be quite slow. It's safe because:
             // 1. All data |generator| requires is copied into the lambda.
-            base::SequencedTaskRunner::GetCurrentDefault()
-                ->PostTaskAndReplyWithResult(
-                    FROM_HERE,
-                    base::BindOnce(std::move(generate), std::move(info)),
-                    base::BindOnce(
-                        [](size_t raw_feed_items_size, size_t subscribed_count,
-                           bool has_publishers, std::string hash,
-                           mojom::FeedV2TypePtr type,
-                           BuildFeedCallback callback, mojom::FeedV2Ptr feed) {
-                          feed->construct_time = base::Time::Now();
-                          feed->type = std::move(type);
-                          feed->source_hash = hash;
+            base::ThreadPool::PostTaskAndReplyWithResult(
+                FROM_HERE, base::BindOnce(std::move(generate), std::move(info)),
+                base::BindOnce(
+                    [](size_t raw_feed_items_size, size_t subscribed_count,
+                       bool has_publishers, std::string hash,
+                       mojom::FeedV2TypePtr type, BuildFeedCallback callback,
+                       mojom::FeedV2Ptr feed) {
+                      DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+                      feed->construct_time = base::Time::Now();
+                      feed->type = std::move(type);
+                      feed->source_hash = hash;
 
-                          if (feed->items.empty()) {
-                            // If we have no subscribed items and we've loaded
-                            // the list of publishers (which we might not have,
-                            // if we're offline) then we're not subscribed to
-                            // any feeds.
-                            if (subscribed_count == 0 && has_publishers) {
-                              feed->error = mojom::FeedV2Error::NoFeeds;
-                              // If we don't have any raw feed items (and we're
-                              // subscribed to some feeds) then fetching must
-                              // have failed.
-                            } else if (raw_feed_items_size == 0) {
-                              feed->error = mojom::FeedV2Error::ConnectionError;
-                              // Otherwise, this feed must have no articles.
-                            } else {
-                              feed->error = mojom::FeedV2Error::NoArticles;
-                            }
-                          }
+                      if (feed->items.empty()) {
+                        // If we have no subscribed items and we've loaded
+                        // the list of publishers (which we might not have,
+                        // if we're offline) then we're not subscribed to
+                        // any feeds.
+                        if (subscribed_count == 0 && has_publishers) {
+                          feed->error = mojom::FeedV2Error::NoFeeds;
+                          // If we don't have any raw feed items (and we're
+                          // subscribed to some feeds) then fetching must
+                          // have failed.
+                        } else if (raw_feed_items_size == 0) {
+                          feed->error = mojom::FeedV2Error::ConnectionError;
+                          // Otherwise, this feed must have no articles.
+                        } else {
+                          feed->error = mojom::FeedV2Error::NoArticles;
+                        }
+                      }
 
-                          std::move(callback).Run(std::move(feed));
-                        },
-                        builder->raw_feed_items_.size(),
-                        builder->subscribed_count_, !publishers.empty(),
-                        builder->hash_, std::move(type),
-                        std::move(built_callback)));
+                      std::move(callback).Run(std::move(feed));
+                    },
+                    builder->raw_feed_items_.size(), builder->subscribed_count_,
+                    !publishers.empty(), builder->hash_, std::move(type),
+                    std::move(built_callback)));
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type), std::move(generator),
           std::move(callback)));
