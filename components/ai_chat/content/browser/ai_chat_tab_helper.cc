@@ -26,8 +26,10 @@
 #include "components/strings/grit/components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/ax_event_notification_details.h"
+#include "content/public/browser/browser_accessibility_state.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/scoped_accessibility_mode.h"
 #include "content/public/browser/storage_partition.h"
 #include "pdf/buildflags.h"
 #include "ui/accessibility/ax_mode.h"
@@ -166,7 +168,10 @@ void AIChatTabHelper::InnerWebContentsAttached(
       mode_change_needed = true;
     }
     if (mode_change_needed) {
-      inner_web_contents->SetAccessibilityMode(current_mode);
+      scoped_accessibility_mode_ =
+          content::BrowserAccessibilityState::GetInstance()
+              ->CreateScopedModeForWebContents(inner_web_contents,
+                                               current_mode);
     }
     pdf_load_observer_ =
         std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents, this);
