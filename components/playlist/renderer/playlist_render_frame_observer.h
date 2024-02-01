@@ -34,8 +34,6 @@ class PlaylistRenderFrameObserver
 
   // RenderFrameObserver:
   void OnDestruct() override;
-  void DidCreateScriptContext(v8::Local<v8::Context> context,
-                              int32_t world_id) override;
 
  private:
   const int32_t isolated_world_id_ = 0;

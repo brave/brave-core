@@ -25,17 +25,11 @@ class PlaylistJSHandler {
   explicit PlaylistJSHandler(content::RenderFrame* render_frame);
   ~PlaylistJSHandler();
 
-  void AddWorkerObjectToFrame(v8::Local<v8::Context> context);
+  void OnMediaUpdated(const std::string& page_url);
 
  private:
   bool EnsureConnectedToMediaHandler();
   void OnMediaHandlerDisconnect();
-
-  void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
-  void BindFunctionsToWorkerObject(v8::Isolate* isolate,
-                                   v8::Local<v8::Object> worker_object);
-
-  void OnMediaUpdated(const std::string& page_url);
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
 
