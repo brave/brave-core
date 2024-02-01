@@ -8,6 +8,12 @@
 namespace blink {
 
 void HTMLVideoElement::RequestFullscreen() {
+  // Activate frame first so that fullscreen request is allowed.
+  // https://source.chromium.org/chromium/chromium/src/+/d6b28888aa75d2d8579808102a50a8aceb9afeaf:third_party/blink/renderer/core/fullscreen/fullscreen.cc;l=351
+  LocalFrame::NotifyUserActivation(
+      GetDocument().GetFrame(),
+      mojom::blink::UserActivationNotificationType::kInteraction,
+      /*need_browser_verification*/ false);
   webkitEnterFullscreen();
 }
 
