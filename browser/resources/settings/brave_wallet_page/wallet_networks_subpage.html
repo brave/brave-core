@@ -20,3 +20,9 @@
                         list-title="$i18n{walletBtcNetworksListTitle}">
   </wallet-networks-list>
 </template>
+<template is="dom-if" if="[[isZCashEnabled]]" restamp>
+  <wallet-networks-list id="zec-networks-section"
+                        coin="[[zecCoin]]"
+                        list-title="$i18n{walletZecNetworksListTitle}">
+  </wallet-networks-list>
+</template>
