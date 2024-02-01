@@ -32,6 +32,10 @@
 
 namespace brave_news {
 
+namespace {
+struct FeedGenerationInfo;
+}
+
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
 
@@ -92,8 +96,7 @@ class FeedV2Builder : public PublishersController::Observer {
   // data in |builder| will not be changed while the generator is running.
   // Additionally, the generator should not modify data in |builder| (hence the
   // const reference).
-  using FeedGenerator =
-      base::OnceCallback<mojom::FeedV2Ptr(const FeedV2Builder& builder)>;
+  using FeedGenerator = base::OnceCallback<mojom::FeedV2Ptr(FeedGenerationInfo)>;
 
   using UpdateCallback = base::OnceCallback<void(base::OnceClosure completed)>;
   struct UpdateSettings {
@@ -161,12 +164,6 @@ class FeedV2Builder : public PublishersController::Observer {
                     mojom::FeedV2TypePtr type,
                     FeedGenerator generator,
                     BuildFeedCallback callback);
-
-  static mojom::FeedV2Ptr GenerateBasicFeed(const FeedV2Builder& builder,
-                                            const FeedItems& items,
-                                            PickArticles pick_hero,
-                                            PickArticles pick_article);
-  static mojom::FeedV2Ptr GenerateAllFeed(const FeedV2Builder& builder);
 
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;
