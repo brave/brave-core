@@ -410,21 +410,10 @@ mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
 // Picking a discovery article works the same way as as a normal roulette
 // selection, but we only consider articles that:
 // 1. The user hasn't subscribed to.
-// 2. **AND** The user hasn't visited.
-mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
-    ArticleInfos& articles) {
-  PickArticles pick = base::BindRepeating([](const ArticleInfos& articles) {
-    return PickRouletteWithWeighting(
-        base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
-                               const ArticleWeight& weight) {
-          if (weight.subscribed) {
-            return 0.0;
-          }
-          return weight.pop_recency;
-        }),
-        articles);
-  });
-  return PickAndRemove(articles, pick);
+// 2. The user hasn't visited.
+double GetDiscoveryWeighting(const mojom::FeedItemMetadataPtr& metadata,
+                             const ArticleWeight& weight) {
+  return weight.subscribed && !weight.visited ? 0 : weight.pop_recency;
 }
 
 // Generates a standard block:
@@ -432,8 +421,7 @@ mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
 std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
                                                 PickArticles hero_picker,
-                                                PickArticles article_picker,
-                                                double inline_discovery_ratio) {
+                                                PickArticles article_picker) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
@@ -453,22 +441,15 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
   const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
   auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
   for (auto i = 0; i < follow_count; ++i) {
-    bool is_discover = base::RandDouble() < inline_discovery_ratio;
-    mojom::FeedItemMetadataPtr generated;
-
-    if (is_discover) {
-      generated = PickDiscoveryArticleAndRemove(articles);
-    } else {
-      generated = PickAndRemove(articles, article_picker);
-    }
+    mojom::FeedItemMetadataPtr generated =
+        PickAndRemove(articles, article_picker);
 
     if (!generated) {
-      DVLOG(1) << "Failed to generate article (is_discover=" << is_discover
-               << ")";
+      DVLOG(1) << "Failed to generate article";
       continue;
     }
     result.push_back(mojom::FeedItemV2::NewArticle(
-        mojom::Article::New(std::move(generated), is_discover)));
+        mojom::Article::New(std::move(generated))));
   }
 
   return result;
@@ -477,20 +458,14 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
 std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
                                                 GetWeighting weighting) {
   return GenerateBlock(articles, MakeRoulettePicker(weighting, true),
-                       MakeRoulettePicker(weighting), 0);
+                       MakeRoulettePicker(weighting));
 }
 
 // Generates a block from sampled content groups:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
 std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
-    FeedGenerationInfo& info,
-    // Ratio of inline articles to discovery articles.
-    // discover ratio % of the time, we should do a discover card here instead
-    // of a roulette card.
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    double inline_discovery_ratio =
-        features::kBraveNewsInlineDiscoveryRatio.Get()) {
+    FeedGenerationInfo& info) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (info.articles().empty() || info.GetContentGroups().empty()) {
@@ -504,26 +479,38 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
         GetChannelsForPublisher(info.locale(), publisher);
   }
 
-  // Generates a GetWeighting function tied to a specific content group. Each
-  // invocation of |get_weighting| will generate a new |GetWeighting| tied to a
-  // (freshly sampled) content_group.
+  // Makes a |generate_weighting| function with a specific discovery ratio. Each
+  // invocation of this |generate_weighting| function will be tied to a specific
+  // content_group.
   auto get_weighting = base::BindRepeating(
-      [](std::vector<ContentGroup>& eligible_content_groups) {
+      [](std::vector<ContentGroup>& eligible_content_groups,
+         double inline_discovery_ratio) {
         return base::BindRepeating(
-            [](const ContentGroup& content_group,
-               const mojom::FeedItemMetadataPtr& metadata,
-               const ArticleWeight& weight) {
-              return base::Contains(weight.content_groups, content_group)
-                         ? weight.weighting
-                         : 0;
+            [](std::vector<ContentGroup>& eligible_content_groups,
+               double inline_discovery_ratio) {
+              if (inline_discovery_ratio > base::RandDouble()) {
+                return base::BindRepeating(&GetDiscoveryWeighting);
+              }
+
+              return base::BindRepeating(
+                  [](const ContentGroup& content_group,
+                     const mojom::FeedItemMetadataPtr& metadata,
+                     const ArticleWeight& weight) {
+                    return base::Contains(weight.content_groups, content_group)
+                               ? weight.weighting
+                               : 0;
+                  },
+                  SampleContentGroup(eligible_content_groups));
             },
-            SampleContentGroup(eligible_content_groups));
+            std::ref(eligible_content_groups), inline_discovery_ratio);
       },
       std::ref(info.GetContentGroups()));
 
-  return GenerateBlock(info.articles(), MakeRoulettePicker(get_weighting, true),
-                       MakeRoulettePicker(get_weighting),
-                       inline_discovery_ratio);
+  return GenerateBlock(
+      info.articles(),
+      MakeRoulettePicker(get_weighting.Run(/*inline_discovery_ratio*/ 0), true),
+      MakeRoulettePicker(
+          get_weighting.Run(features::kBraveNewsInlineDiscoveryRatio.Get())));
 }
 
 // Generates a Channel Block
@@ -609,7 +596,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopTopicsBlock(
 
     auto item = FromTopicArticle(info.publishers(), articles.at(0));
     items.push_back(mojom::ArticleElements::NewArticle(
-        mojom::Article::New(std::move(item), false)));
+        mojom::Article::New(std::move(item))));
     if (items.size() >= max_block_size) {
       break;
     }
@@ -637,7 +624,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(FeedGenerationInfo& info) {
   for (const auto& article : articles) {
     auto item = FromTopicArticle(info.publishers(), article);
     result->articles.push_back(mojom::ArticleElements::NewArticle(
-        mojom::Article::New(std::move(item), false)));
+        mojom::Article::New(std::move(item))));
 
     // For now, we truncate at |max_articles|. In future we may want to include
     // more articles here and have the option to show more in the front end.
@@ -1269,8 +1256,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedV2Builder& builder,
   constexpr size_t kIterationsPerAd = 2;
   size_t blocks = 0;
   while (!info.articles().empty()) {
-    auto items = GenerateBlock(info.articles(), pick_hero, pick_article,
-                               /*inline_discovery_ratio=*/0);
+    auto items = GenerateBlock(info.articles(), pick_hero, pick_article);
     if (items.empty()) {
       break;
     }

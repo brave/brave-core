@@ -46,7 +46,6 @@ struct FeedItemMetadata {
 
 struct Article {
   FeedItemMetadata data;
-  bool is_discover;
 };
 
 struct PromotedArticle {

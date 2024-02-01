@@ -43,9 +43,6 @@ export const getFeedStats = (feed: FeedV2 | undefined, truncate?: number) => {
       channelStats[article.data.categoryName]++
       publisherStats[article.data.publisherId]++
     }
-
-    if (item.article?.isDiscover)
-      counts.inlineDiscover++
   }
 
   return {
