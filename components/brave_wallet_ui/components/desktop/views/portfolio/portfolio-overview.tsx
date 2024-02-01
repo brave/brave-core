@@ -13,9 +13,10 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import {
   useSafeWalletSelector,
   useUnsafeWalletSelector,
-  useUnsafePageSelector
+  useUnsafePageSelector,
+  useSafeUISelector
 } from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
+import { UISelectors, WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
 // hooks
@@ -86,7 +87,9 @@ import {
   FiatChange,
   ControlsRow,
   BalanceAndButtonsWrapper,
-  BalanceAndChangeWrapper
+  BalanceAndChangeWrapper,
+  BackgroundWatermark,
+  BalanceAndLineChartWrapper
 } from './style'
 import { Column, Row, HorizontalSpace } from '../../../shared/style'
 
@@ -135,6 +138,7 @@ export const PortfolioOverview = () => {
   const selectedGroupAssetsByItem = useSafeWalletSelector(
     WalletSelectors.selectedGroupAssetsByItem
   )
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -532,11 +536,12 @@ export const PortfolioOverview = () => {
   // render
   return (
     <>
-      <Column
+      <BalanceAndLineChartWrapper
         fullWidth={true}
         justifyContent='flex-start'
         margin={hidePortfolioNFTsTab ? '0px 0px 15px 0px' : '0px'}
       >
+        {isPanel && <BackgroundWatermark />}
         <BalanceAndButtonsWrapper
           fullWidth={true}
           alignItems='center'
@@ -603,7 +608,7 @@ export const PortfolioOverview = () => {
             }
           />
         </ColumnReveal>
-      </Column>
+      </BalanceAndLineChartWrapper>
 
       {!hidePortfolioNFTsTab && (
         <ControlsRow>
