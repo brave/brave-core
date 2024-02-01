@@ -420,6 +420,7 @@ void BodySnifferURLLoader::ForwardBodyToClient() {
           ? body_consumer_handle_->BeginReadData(&buffer, &buffer_size,
                                                  MOJO_BEGIN_READ_DATA_FLAG_NONE)
           : MOJO_RESULT_FAILED_PRECONDITION;
+
   switch (result) {
     case MOJO_RESULT_OK:
       break;

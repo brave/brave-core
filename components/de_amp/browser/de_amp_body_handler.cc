@@ -12,7 +12,6 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
-#include "base/values.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/features.h"
@@ -30,51 +29,37 @@ namespace de_amp {
 namespace {
 
 constexpr const char kDeAmpHeaderName[] = "X-Brave-De-AMP";
-constexpr size_t kMaxBytesToCheck = 3 * 64 * 1024;
+constexpr size_t kMaxBytesToCheck = 3 * 65536;
 constexpr size_t kMaxRedirectHops = 7;
 
-std::string SaveRedirectChain(const std::vector<GURL>& chain) {
-  base::Value::List list;
-  for (const auto& url : chain) {
-    if (url.is_valid()) {
-      list.Append(url.spec());
-    }
-    if (list.size() >= kMaxRedirectHops) {
-      break;
-    }
+base::Value LoadNavigationChain(const network::ResourceRequest& request) {
+  std::string de_amp_header;
+  if (!request.headers.GetHeader(kDeAmpHeaderName, &de_amp_header)) {
+    return base::Value(
+        base::Value::List().Append(base::Value(request.url.spec())));
   }
-  auto result = base::WriteJson(base::Value(std::move(list)));
-  return result.value_or(std::string());
-}
-
-std::vector<GURL> LoadRedirectChain(const std::string& header) {
-  auto value = base::JSONReader::Read(header);
+  auto value = base::JSONReader::Read(de_amp_header);
   if (!value || !value->is_list()) {
-    return {};
+    return base::Value(
+        base::Value::List().Append(base::Value(request.url.spec())));
   }
   DCHECK(value->GetList().size() < kMaxRedirectHops);
-
-  std::vector<GURL> chain;
-  chain.reserve(value->GetList().size());
-  for (const auto& entry : value->GetList()) {
-    if (!entry.is_string()) {
-      continue;
-    }
-    chain.push_back(GURL(entry.GetString()));
-  }
-  return chain;
+  return std::move(*value);
 }
 
-bool FindUrlInRedirectChain(const GURL& url,
-                            const network::ResourceRequest& request) {
-  std::string header;
-  if (!request.headers.GetHeader(kDeAmpHeaderName, &header)) {
-    return false;
+bool FindUrlInNavigationChain(const GURL& url, const base::Value& chain) {
+  const auto& list = chain.GetList();
+  for (const auto& entry : list) {
+    if (entry.GetString() == url.spec()) {
+      return true;
+    }
   }
-  const auto chain = LoadRedirectChain(header);
-  return std::find_if(chain.begin(), chain.end(), [&url](const auto& v) {
-           return v == url;
-         }) != chain.end();
+  return false;
+}
+
+std::string AddUrlToNavigationChain(const GURL& url, base::Value chain) {
+  chain.GetList().Append(url.spec());
+  return base::WriteJson(chain).value_or(std::string());
 }
 
 }  // namespace
@@ -82,7 +67,9 @@ bool FindUrlInRedirectChain(const GURL& url,
 DeAmpBodyHandler::DeAmpBodyHandler(
     const network::ResourceRequest& request,
     const content::WebContents::Getter& wc_getter)
-    : request_(request), wc_getter_(wc_getter) {}
+    : request_(request),
+      wc_getter_(wc_getter),
+      navigation_chain_(LoadNavigationChain(request_)) {}
 
 DeAmpBodyHandler::~DeAmpBodyHandler() = default;
 
@@ -113,7 +100,7 @@ bool DeAmpBodyHandler::ShouldProcess(
     const GURL& response_url,
     network::mojom::URLResponseHead* response_head) {
   response_url_ = response_url;
-  return true;
+  return navigation_chain_.GetList().size() < kMaxRedirectHops;
 }
 
 void DeAmpBodyHandler::OnComplete() {}
@@ -121,21 +108,32 @@ void DeAmpBodyHandler::OnComplete() {}
 DeAmpBodyHandler::Action DeAmpBodyHandler::OnBodyUpdated(
     const std::string& body,
     bool is_complete) {
-  if (found_amp_ || bytes_analyzed_ >= kMaxBytesToCheck) {
+  if (bytes_analyzed_ >= kMaxBytesToCheck) {
     return DeAmpBodyHandler::Action::kComplete;
   }
 
-  // If we are not already on an AMP page, check if this chunk has the AMP HTML
-  found_amp_ = CheckIfAmpPage(body);
   bytes_analyzed_ = body.size();
 
-  if (found_amp_ && MaybeRedirectToCanonicalLink(body)) {
-    // Only abort if we know we're successfully going to the canonical URL
-    return DeAmpBodyHandler::Action::kCancel;
+  switch (state_) {
+    case State::kCheckForAmp:
+      if (!CheckIfAmpPage(body)) {
+        // if we did find AMP, complete the load.
+        return DeAmpBodyHandler::Action::kComplete;
+      }
+      // Amp found, checking for canonical url.
+      state_ = State::kFindForCanonicalUrl;
+      [[fallthrough]];
+    case State::kFindForCanonicalUrl:
+      if (MaybeRedirectToCanonicalLink(body)) {
+        // Only abort if we know we're successfully going to the canonical URL.
+        return DeAmpBodyHandler::Action::kCancel;
+      }
+      break;
   }
 
-  return is_complete ? DeAmpBodyHandler::Action::kComplete
-                     : DeAmpBodyHandler::Action::kContinue;
+  return (is_complete || (bytes_analyzed_ >= kMaxBytesToCheck))
+             ? DeAmpBodyHandler::Action::kComplete
+             : DeAmpBodyHandler::Action::kContinue;
 }
 
 bool DeAmpBodyHandler::IsTransformer() const {
@@ -154,30 +152,27 @@ void DeAmpBodyHandler::UpdateResponseHead(
 }
 
 bool DeAmpBodyHandler::MaybeRedirectToCanonicalLink(const std::string& body) {
-  auto canonical_link = FindCanonicalAmpUrl(body);
+  const auto canonical_link = FindCanonicalAmpUrl(body);
   if (!canonical_link.has_value()) {
     VLOG(2) << __func__ << canonical_link.error();
     return false;
   }
 
-  bool redirected = false;
   const GURL canonical_url(canonical_link.value());
   // Validate the found canonical AMP URL
-  if (VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
-    // Attempt to go to the canonical URL
-    VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
-    if (OpenCanonicalURL(canonical_url)) {
-      redirected = true;
-    } else {
-      VLOG(2) << __func__ << " failed to open canonical url: " << canonical_url;
-    }
-  } else {
+  if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
     VLOG(2) << __func__ << " canonical link verification failed "
             << canonical_url;
+    return false;
   }
-  // At this point we've either redirected, or we should stop trying
-  found_amp_ = false;
-  return redirected;
+  // Attempt to go to the canonical URL
+  if (!OpenCanonicalURL(canonical_url)) {
+    VLOG(2) << __func__ << " failed to open canonical url: " << canonical_url;
+    return false;
+  }
+
+  VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
+  return true;
 }
 
 bool DeAmpBodyHandler::OpenCanonicalURL(const GURL& new_url) {
@@ -204,8 +199,8 @@ bool DeAmpBodyHandler::OpenCanonicalURL(const GURL& new_url) {
   // should stop De-AMPing. This is done to prevent redirect loops.
   // https://github.com/brave/brave-browser/issues/22610
   if (new_url == request_.referrer ||
-      FindUrlInRedirectChain(request_.referrer, request_) ||
-      FindUrlInRedirectChain(new_url, request_)) {
+      FindUrlInNavigationChain(new_url, navigation_chain_) ||
+      FindUrlInNavigationChain(request_.referrer, navigation_chain_)) {
     return false;
   }
 
@@ -220,11 +215,12 @@ bool DeAmpBodyHandler::OpenCanonicalURL(const GURL& new_url) {
   params.user_gesture = request_.has_user_gesture;
   auto redirect_chain = request_.navigation_redirect_chain;
   // This is added to check for server redirect loops
-  params.extra_headers += base::StrCat(
-      {kDeAmpHeaderName, ":", SaveRedirectChain(redirect_chain), "\r\n"});
-
   redirect_chain.pop_back();
   params.redirect_chain = std::move(redirect_chain);
+
+  params.extra_headers += base::StrCat(
+      {kDeAmpHeaderName, ":",
+       AddUrlToNavigationChain(new_url, std::move(navigation_chain_)), "\r\n"});
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(

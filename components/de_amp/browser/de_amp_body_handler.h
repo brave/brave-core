@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/values.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -49,8 +50,13 @@ class DeAmpBodyHandler : public body_sniffer::BodyHandler {
   content::WebContents::Getter wc_getter_;
   GURL response_url_;
 
+  base::Value navigation_chain_;
   size_t bytes_analyzed_ = 0;
-  bool found_amp_ = false;
+
+  enum class State {
+    kCheckForAmp,
+    kFindForCanonicalUrl,
+  } state_ = State::kCheckForAmp;
 };
 
 }  // namespace de_amp
