@@ -242,7 +242,7 @@
     Shields status
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION" desc="Label for shields status on site settings.">
-    Sites can block trackers, ads, and fingerprinting using Shields
+    Shields can block trackers, ads, and fingerprinting
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
     Shields Up
