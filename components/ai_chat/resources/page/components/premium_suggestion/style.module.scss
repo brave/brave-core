@@ -3,47 +3,41 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.actionsBox {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
 .boxPremium {
   width: 100%;
   background: var(--leo-color-private-window-10);
   border-radius: 16px;
-  padding: 16px;
   max-width: 600px;
   margin: 0 auto;
+}
 
-  h1 {
-    margin: 0;
-    padding: 0;
-    font: var(--leo-font-default-semibold);
-  }
+.header {
+  padding: 24px;
 
   h4 {
     font: var(--leo-font-heading-h4);
-    margin: 0 0 5px 0;
+    margin: 0;
   }
 
   p {
-    margin: 0 0 12px 0;
     font: var(--leo-font-default-regular);
+    margin: 0;
   }
 }
 
-.featuresListing {
-  --leo-icon-size: 20px;
+.features {
+  padding: 0 8px 8px 8px;
 
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  border: 1px solid var(--leo-color-primary-20);
-  border-radius: 8px;
-  overflow: hidden;
+  ul {
+    --leo-icon-size: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--leo-color-primary-20);
+    border-radius: 8px;
+    overflow: hidden;
+  }
 
   li {
     font: var(--leo-font-default-semibold);
@@ -70,6 +64,8 @@
 .priceList {
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid var(--leo-color-private-window-20);
+  padding: 16px;
 }
 
 .price {
@@ -93,6 +89,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
 
   leo-icon {
     color: var(--leo-color-private-window-60);
@@ -119,6 +116,14 @@
 .subscriptionPolicy {
   color: var(--leo-color-text-secondary);
   font: var(--leo-font-small-regular);
-  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  padding: var(--leo-spacing-l) 0 0 0;
   text-align: center;
+}
+
+.actions {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding: 24px 16px 16px 16px;
 }

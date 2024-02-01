@@ -82,6 +82,8 @@ source_set("ui") {
       "webui/ai_chat/ai_chat_ui_page_handler.h",
     ]
 
+    deps += [ "//brave/components/brave_stats/browser" ]
+
     if (is_android) {
       sources += [
         "android/ai_chat/brave_leo_settings_launcher_helper.cc",

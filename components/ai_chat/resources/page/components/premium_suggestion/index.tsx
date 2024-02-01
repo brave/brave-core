@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
+import { loadTimeData } from '$web-common/loadTimeData'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import formatMessage from '$web-common/formatMessage'
@@ -51,33 +52,39 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
 
   return (
     <div className={styles.boxPremium}>
-      <h4>{props.title}</h4>
-      <p>{props.description}</p>
-      <ul className={styles.featuresListing}>
-        {featuresList.map((entry) => {
-          return (
-            <li>
-              <div className={styles.icon}>
-                <Icon name={entry.icon} />
-              </div>
-              <span>
-                {entry.title}
-                <p>{entry.desc}</p>
-              </span>
-            </li>
-          )
-        })}
-      </ul>
-      <div className={styles.priceList}>
-        <button className={styles.priceButton} tabIndex={-1}>
-          <span className={styles.priceButtonLabel}>Monthly</span>
-          <span className={styles.price}>{pricingInfo}</span>
-        </button>
-        <div className={styles.subscriptionPolicy}>
-          {getLocale('subscriptionPolicyInfo')}
-        </div>
+      <div className={styles.header}>
+        <h4>{props.title}</h4>
+        <p>{props.description}</p>
       </div>
-      <div className={styles.actionsBox}>
+      <div className={styles.features}>
+        <ul>
+          {featuresList.map((entry) => {
+            return (
+              <li>
+                <div className={styles.icon}>
+                  <Icon name={entry.icon} />
+                </div>
+                <span>
+                  {entry.title}
+                  <p>{entry.desc}</p>
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+      {!loadTimeData.getBoolean('isMobile') && (
+        <div className={styles.priceList}>
+          <button className={styles.priceButton} tabIndex={-1}>
+            <span className={styles.priceButtonLabel}>Monthly</span>
+            <span className={styles.price}>{pricingInfo}</span>
+          </button>
+          <div className={styles.subscriptionPolicy}>
+            {getLocale('subscriptionPolicyInfo')}
+          </div>
+        </div>
+      )}
+      <div className={styles.actions}>
         <Button onClick={context.goPremium}>
           {getLocale('upgradeButtonLabel')}
         </Button>
