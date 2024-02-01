@@ -153,15 +153,29 @@ export const CardHeaderWrapper = styled.div<{
 
 export const CardHeader = styled.div<{
   shadowOpacity?: number
+  backgroundOpacity?: number
   isPanel?: boolean
   useDarkBackground?: boolean
 }>`
   --shadow-opacity: ${(p) =>
     p.shadowOpacity !== undefined ? p.shadowOpacity : 0};
+  --background-opacity: ${(p) =>
+    p.backgroundOpacity !== undefined ? p.backgroundOpacity : 0};
+  // Needed to extract the rgb values from
+  // leo.color.container.background since hex
+  // does not work for this needed effect.
+  --header-background: 255, 255, 255;
+  @media (prefers-color-scheme: dark) {
+    --header-background: 13, 15, 20;
+  }
+  --dark-background-color: rgba(
+    var(--header-background),
+    var(--background-opacity)
+  );
   display: flex;
   background-color: ${(p) =>
     p.useDarkBackground
-      ? leo.color.page.background
+      ? 'var(--dark-background-color)'
       : leo.color.container.background};
   border-radius: ${(p) => (p.isPanel ? '0px' : '24px 24px 0px 0px')};
   width: 100%;

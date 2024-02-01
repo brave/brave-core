@@ -14,6 +14,7 @@ import {
   NoTransactionsIconDark,
   NoTransactionsIconLight
 } from '../../../../assets/svg-icons/empty-state-icons'
+import Lines from '../../../../assets/svg-icons/portfolio_lines_background.svg'
 
 // Shared Styles
 import {
@@ -218,6 +219,7 @@ export const BalanceAndButtonsWrapper = styled(Column)`
 `
 
 export const BalanceAndChangeWrapper = styled(Column)`
+  position: relative;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     align-items: flex-start;
   }
@@ -330,4 +332,23 @@ export const ContentWrapper = styled(Column)<{
 }>`
   background-color: ${(p) =>
     p.isPanel ? leo.color.container.background : 'transparent'};
+`
+
+export const BalanceAndLineChartWrapper = styled(Column)`
+  position: relative;
+`
+
+export const BackgroundWatermark = styled.div`
+  box-shadow: ${leo.color.page.background} 0px 50px 50px -30px inset;
+  width: 100%;
+  height: 100%;
+  background-image: url(${Lines});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  opacity: 0.6;
+  @media (prefers-color-scheme: dark) {
+    opacity: 0.2;
+  }
 `
