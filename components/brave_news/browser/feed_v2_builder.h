@@ -13,9 +13,11 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/threading/thread_checker.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -92,8 +94,7 @@ class FeedV2Builder : public PublishersController::Observer {
   // data in |builder| will not be changed while the generator is running.
   // Additionally, the generator should not modify data in |builder| (hence the
   // const reference).
-  using FeedGenerator =
-      base::OnceCallback<mojom::FeedV2Ptr(const FeedV2Builder& builder)>;
+  using FeedGenerator = base::OnceCallback<mojom::FeedV2Ptr()>;
 
   using UpdateCallback = base::OnceCallback<void(base::OnceClosure completed)>;
   struct UpdateSettings {
@@ -157,16 +158,46 @@ class FeedV2Builder : public PublishersController::Observer {
 
   void NotifyUpdateCompleted();
 
+  // Note that the |generator| will be called on a different thread.
   void GenerateFeed(UpdateSettings settings,
                     mojom::FeedV2TypePtr type,
                     FeedGenerator generator,
                     BuildFeedCallback callback);
+  void PostGenerateFeed(mojom::FeedV2TypePtr type,
+                        FeedGenerator generator,
+                        BuildFeedCallback callback,
+                        base::OnceClosure update_completed_callback);
 
-  static mojom::FeedV2Ptr GenerateBasicFeed(const FeedV2Builder& builder,
-                                            const FeedItems& items,
-                                            PickArticles pick_hero,
-                                            PickArticles pick_article);
-  static mojom::FeedV2Ptr GenerateAllFeed(const FeedV2Builder& builder);
+  // Threadsafe data wrappers for builder. Note that base::RefCountedData is
+  // threadsafe.
+  // TODO(sko) Some of these might not worth being refcounted, or there could
+  // be other types that should be refcounted rather than copying.
+  using RefCountedSignals = base::RefCountedData<Signals>;
+  using RefCountedPublisherIds = base::RefCountedData<std::vector<std::string>>;
+  using RefCountedPublisherMap = base::RefCountedData<Publishers>;
+  using RefCountedFeedItems = base::RefCountedData<FeedItems>;
+  using RefCountedTopics = base::RefCountedData<TopicsResult>;
+
+  // These static methods are run on other thread
+  // TODO(sko) Private static methods can be hidden in anonymous namespace in cc
+  // file.
+  static mojom::FeedV2Ptr GenerateBasicFeed(
+      scoped_refptr<RefCountedPublisherIds> suggested_publisher_ids,
+      const std::string& last_locale,
+      scoped_refptr<RefCountedPublisherMap> last_publishers,
+      scoped_refptr<RefCountedSignals> signals,
+      scoped_refptr<RefCountedFeedItems> items,
+      PickArticles pick_hero,
+      PickArticles pick_article);
+
+  static mojom::FeedV2Ptr GenerateAllFeed(
+      scoped_refptr<RefCountedPublisherIds> suggested_publisher_ids,
+      const std::string& last_locale,
+      scoped_refptr<RefCountedPublisherMap> last_publishers,
+      scoped_refptr<RefCountedSignals> signals,
+      scoped_refptr<RefCountedFeedItems> items,
+      Channels channels,
+      scoped_refptr<RefCountedTopics> topics);
 
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;
@@ -180,19 +211,26 @@ class FeedV2Builder : public PublishersController::Observer {
   TopicsFetcher topics_fetcher_;
   SignalCalculator signal_calculator_;
 
-  FeedItems raw_feed_items_;
+  scoped_refptr<RefCountedFeedItems> raw_feed_items_ =
+      base::MakeRefCounted<RefCountedFeedItems>();
   ETags feed_etags_;
   std::string hash_;
 
-  Signals signals_;
-  std::vector<std::string> suggested_publisher_ids_;
-  TopicsResult topics_;
+  scoped_refptr<RefCountedSignals> signals_ =
+      base::MakeRefCounted<RefCountedSignals>();
+  scoped_refptr<RefCountedPublisherIds> suggested_publisher_ids_ =
+      base::MakeRefCounted<RefCountedPublisherIds>();
+
+  scoped_refptr<RefCountedTopics> topics_ =
+      base::MakeRefCounted<RefCountedTopics>();
   size_t subscribed_count_ = 0;
 
   std::optional<UpdateRequest> current_update_;
   std::optional<UpdateRequest> next_update_;
 
   mojo::RemoteSet<mojom::FeedListener> listeners_;
+
+  THREAD_CHECKER(thread_checker_);
 
   base::WeakPtrFactory<FeedV2Builder> weak_ptr_factory_{this};
 };

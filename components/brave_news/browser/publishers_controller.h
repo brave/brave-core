@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
@@ -59,6 +60,10 @@ class PublishersController {
   void EnsurePublishersIsUpdating();
   void ClearCache();
 
+  scoped_refptr<base::RefCountedData<Publishers>> last_publishers() {
+    return publishers_;
+  }
+
  private:
   void GetOrFetchPublishers(base::OnceClosure callback,
                             bool wait_for_current_update);
@@ -71,8 +76,12 @@ class PublishersController {
 
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
   base::ObserverList<Observer> observers_;
+
   std::string default_locale_;
-  Publishers publishers_;
+  // Threadsafe data for feed builder
+  scoped_refptr<base::RefCountedData<Publishers>> publishers_ =
+      base::MakeRefCounted<base::RefCountedData<Publishers>>();
+
   bool is_update_in_progress_ = false;
 };
 

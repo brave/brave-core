@@ -29,6 +29,8 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
+#include "base/threading/thread_checker.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -40,12 +42,32 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
 
 namespace {
+
+// Macros to check if lambda is executed on the correct thread.
+#define CALLED_ON_WORKER_THREAD(LOCATION, JOB)                                 \
+  base::BindOnce(                                                              \
+      [](base::Location location) {                                            \
+        DVLOG(2) << "WORKER THREAD " << location.ToString();                   \
+        DCHECK(                                                                \
+            !content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)); \
+      },                                                                       \
+      LOCATION)                                                                \
+      .Then(JOB)
+
+#define CALLED_ON_MAIN_THREAD(LOCATION, JOB)                   \
+  JOB.Then(base::BindOnce(                                     \
+      [](base::Location location) {                            \
+        DVLOG(2) << "MAIN THREAD JOB:" << location.ToString(); \
+        DCHECK_CURRENTLY_ON(content::BrowserThread::UI);       \
+      },                                                       \
+      LOCATION))
 
 /* publisher_or_channel_id, is_channel */
 using ContentGroup = std::pair<std::string, bool>;
@@ -838,102 +860,119 @@ void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
   GenerateFeed(
       {.signals = true},
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
-      base::BindOnce([](const FeedV2Builder& builder) {
-        return FeedV2Builder::GenerateBasicFeed(
-            builder, builder.raw_feed_items_,
-            base::BindRepeating(&PickRoulette),
-            base::BindRepeating(&PickRoulette));
-      }),
-      std::move(callback));
+      CALLED_ON_WORKER_THREAD(
+          FROM_HERE,
+          base::BindOnce(&FeedV2Builder::GenerateBasicFeed,
+                         suggested_publisher_ids_,
+                         publishers_controller_->GetLastLocale(),
+                         publishers_controller_->last_publishers(), signals_,
+                         raw_feed_items_, base::BindRepeating(&PickRoulette),
+                         base::BindRepeating(&PickRoulette))),
+      CALLED_ON_MAIN_THREAD(FROM_HERE, std::move(callback)));
 }
 
 void FeedV2Builder::BuildChannelFeed(const std::string& channel,
                                      BuildFeedCallback callback) {
+  // TODO(sko) It might be better to pass filter to GenerateBasicFeed() so that
+  // we can avoid cloning.
+  auto& publishers = publishers_controller_->GetLastPublishers();
+  auto& locale = publishers_controller_->GetLastLocale();
+
+  FeedItems feed_items;
+  for (const auto& item : raw_feed_items_->data) {
+    if (!item->is_article()) {
+      continue;
+    }
+
+    auto publisher_it =
+        publishers.find(item->get_article()->data->publisher_id);
+    if (publisher_it == publishers.end()) {
+      continue;
+    }
+
+    auto locale_info_it = base::ranges::find_if(
+        publisher_it->second->locales, [&locale](const auto& locale_info) {
+          return locale == locale_info->locale;
+        });
+    if (locale_info_it == publisher_it->second->locales.end()) {
+      continue;
+    }
+
+    if (!base::Contains(locale_info_it->get()->channels, channel)) {
+      continue;
+    }
+
+    feed_items.push_back(item->Clone());
+  }
+
   GenerateFeed(
       {.signals = true},
       mojom::FeedV2Type::NewChannel(mojom::FeedV2ChannelType::New(channel)),
-      base::BindOnce(
-          [](const std::string& channel, const FeedV2Builder& builder) {
-            auto& publishers =
-                builder.publishers_controller_->GetLastPublishers();
-            auto& locale = builder.publishers_controller_->GetLastLocale();
-
-            FeedItems feed_items;
-            for (const auto& item : builder.raw_feed_items_) {
-              if (!item->is_article()) {
-                continue;
-              }
-
-              auto publisher_it =
-                  publishers.find(item->get_article()->data->publisher_id);
-              if (publisher_it == publishers.end()) {
-                continue;
-              }
-
-              auto locale_info_it =
-                  base::ranges::find_if(publisher_it->second->locales,
-                                        [&locale](const auto& locale_info) {
-                                          return locale == locale_info->locale;
-                                        });
-              if (locale_info_it == publisher_it->second->locales.end()) {
-                continue;
-              }
-
-              if (!base::Contains(locale_info_it->get()->channels, channel)) {
-                continue;
-              }
-
-              feed_items.push_back(item->Clone());
-            }
-
-            return FeedV2Builder::GenerateBasicFeed(
-                builder, feed_items, base::BindRepeating(&PickRoulette),
-                base::BindRepeating(&PickRoulette));
-          },
-          channel),
-      std::move(callback));
+      CALLED_ON_WORKER_THREAD(
+          FROM_HERE,
+          base::BindOnce(
+              &FeedV2Builder::GenerateBasicFeed, suggested_publisher_ids_,
+              publishers_controller_->GetLastLocale(),
+              publishers_controller_->last_publishers(), signals_,
+              base::MakeRefCounted<RefCountedFeedItems>(std::move(feed_items)),
+              base::BindRepeating(&PickRoulette),
+              base::BindRepeating(&PickRoulette))),
+      CALLED_ON_MAIN_THREAD(FROM_HERE, std::move(callback)));
 }
 
 void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
                                        BuildFeedCallback callback) {
+  FeedItems items;
+
+  for (const auto& item : raw_feed_items_->data) {
+    if (!item->is_article()) {
+      continue;
+    }
+    if (item->get_article()->data->publisher_id != publisher_id) {
+      continue;
+    }
+
+    items.push_back(item->Clone());
+  }
+
+  // Sort by publish time.
+  base::ranges::sort(items, [](const auto& a, const auto& b) {
+    return a->get_article()->data->publish_time >
+           b->get_article()->data->publish_time;
+  });
+
   GenerateFeed(
       {.signals = true},
       mojom::FeedV2Type::NewPublisher(
           mojom::FeedV2PublisherType::New(publisher_id)),
-      base::BindOnce(
-          [](const std::string& publisher_id, const FeedV2Builder& builder) {
-            FeedItems items;
-
-            for (const auto& item : builder.raw_feed_items_) {
-              if (!item->is_article()) {
-                continue;
-              }
-              if (item->get_article()->data->publisher_id != publisher_id) {
-                continue;
-              }
-
-              items.push_back(item->Clone());
-            }
-
-            // Sort by publish time.
-            base::ranges::sort(items, [](const auto& a, const auto& b) {
-              return a->get_article()->data->publish_time >
-                     b->get_article()->data->publish_time;
-            });
-
-            return FeedV2Builder::GenerateBasicFeed(
-                builder, items, base::BindRepeating(&PickFirstIndex),
-                base::BindRepeating(&PickFirstIndex));
-          },
-          publisher_id),
-      std::move(callback));
+      CALLED_ON_WORKER_THREAD(
+          FROM_HERE,
+          base::BindOnce(
+              FeedV2Builder::GenerateBasicFeed, suggested_publisher_ids_,
+              publishers_controller_->GetLastLocale(),
+              publishers_controller_->last_publishers(), signals_,
+              base::MakeRefCounted<RefCountedFeedItems>(std::move(items)),
+              base::BindRepeating(&PickFirstIndex),
+              base::BindRepeating(&PickFirstIndex))),
+      CALLED_ON_MAIN_THREAD(FROM_HERE, std::move(callback)));
 }
 
 void FeedV2Builder::BuildAllFeed(BuildFeedCallback callback) {
-  GenerateFeed({.signals = true, .suggested_publishers = true},
-               mojom::FeedV2Type::NewAll(mojom::FeedV2AllType::New()),
-               base::BindOnce(&FeedV2Builder::GenerateAllFeed),
-               std::move(callback));
+  GenerateFeed(
+      {.signals = true, .suggested_publishers = true},
+      mojom::FeedV2Type::NewAll(mojom::FeedV2AllType::New()),
+      CALLED_ON_WORKER_THREAD(
+          FROM_HERE,
+          base::BindOnce(&FeedV2Builder::GenerateAllFeed,
+                         suggested_publisher_ids_,
+                         publishers_controller_->GetLastLocale(),
+                         publishers_controller_->last_publishers(), signals_,
+                         raw_feed_items_,
+                         channels_controller_->GetChannelsFromPublishers(
+                             publishers_controller_->GetLastPublishers(),
+                             std::to_address(prefs_)),
+                         topics_)),
+      std::move(callback));
 }
 
 void FeedV2Builder::EnsureFeedIsUpdating() {
@@ -955,7 +994,7 @@ void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
               return;
             }
             base::flat_map<std::string, Signal> signals;
-            for (const auto& [key, value] : builder->signals_) {
+            for (const auto& [key, value] : builder->signals_->data) {
               signals[key] = value->Clone();
             }
             std::move(callback).Run(std::move(signals));
@@ -996,19 +1035,19 @@ void FeedV2Builder::UpdateData(UpdateSettings settings,
   }
 
   if (settings.signals) {
-    signals_.clear();
+    signals_->data.clear();
   }
 
   if (settings.feed) {
-    raw_feed_items_.clear();
+    raw_feed_items_->data.clear();
   }
 
   if (settings.suggested_publishers) {
-    suggested_publisher_ids_.clear();
+    suggested_publisher_ids_->data.clear();
   }
 
   if (settings.topics) {
-    topics_.clear();
+    topics_->data.clear();
   }
 
   current_update_.emplace(std::move(settings), std::move(callback));
@@ -1021,10 +1060,10 @@ void FeedV2Builder::FetchFeed() {
 
   // Don't refetch the feed if we have items (clearing the items will trigger a
   // refresh).
-  if (!raw_feed_items_.empty()) {
+  if (!raw_feed_items_->data.empty()) {
     // Note: This isn't ideal because we double move the raw_feed_items and
     // etags, but it makes the algorithm easier to follow.
-    OnFetchedFeed(std::move(raw_feed_items_), std::move(feed_etags_));
+    OnFetchedFeed(std::move(raw_feed_items_->data), std::move(feed_etags_));
     return;
   }
 
@@ -1038,7 +1077,7 @@ void FeedV2Builder::FetchFeed() {
 void FeedV2Builder::OnFetchedFeed(FeedItems items, ETags tags) {
   DVLOG(1) << __FUNCTION__;
 
-  raw_feed_items_ = std::move(items);
+  raw_feed_items_->data = std::move(items);
   feed_etags_ = std::move(tags);
 
   CalculateSignals();
@@ -1048,15 +1087,15 @@ void FeedV2Builder::CalculateSignals() {
   DVLOG(1) << __FUNCTION__;
 
   // Don't recalculate the signals unless they've been cleared.
-  if (!signals_.empty()) {
+  if (!signals_->data.empty()) {
     // Note: We double move signals here because it makes the algorithm easier
     // to follow.
-    OnCalculatedSignals(std::move(signals_));
+    OnCalculatedSignals(std::move(signals_->data));
     return;
   }
 
   signal_calculator_.GetSignals(
-      raw_feed_items_,
+      raw_feed_items_->data,
       base::BindOnce(
           &FeedV2Builder::OnCalculatedSignals,
           // Unretained is safe here because we own the SignalCalculator, and it
@@ -1067,7 +1106,7 @@ void FeedV2Builder::CalculateSignals() {
 void FeedV2Builder::OnCalculatedSignals(Signals signals) {
   DVLOG(1) << __FUNCTION__;
 
-  signals_ = std::move(signals);
+  signals_->data = std::move(signals);
   GetSuggestedPublisherIds();
 }
 
@@ -1075,9 +1114,9 @@ void FeedV2Builder::GetSuggestedPublisherIds() {
   DVLOG(1) << __FUNCTION__;
 
   // Don't get suggested publisher ids unless they're empty - clearing indicates
-  // we should refetch.
-  if (!suggested_publisher_ids_.empty()) {
-    OnGotSuggestedPublisherIds(std::move(suggested_publisher_ids_));
+  // we should refetch. Bypass this and get topics right away.
+  if (!suggested_publisher_ids_->data.empty()) {
+    GetTopics();
     return;
   }
   suggestions_controller_->GetSuggestedPublisherIds(
@@ -1088,7 +1127,7 @@ void FeedV2Builder::GetSuggestedPublisherIds() {
 void FeedV2Builder::OnGotSuggestedPublisherIds(
     const std::vector<std::string>& suggested_ids) {
   DVLOG(1) << __FUNCTION__;
-  suggested_publisher_ids_ = suggested_ids;
+  suggested_publisher_ids_->data = suggested_ids;
 
   GetTopics();
 }
@@ -1097,8 +1136,8 @@ void FeedV2Builder::GetTopics() {
   DVLOG(1) << __FUNCTION__;
 
   // Don't refetch topics, unless we need to.
-  if (!topics_.empty()) {
-    OnGotTopics(std::move(topics_));
+  if (!topics_->data.empty()) {
+    OnGotTopics(std::move(topics_->data));
     return;
   }
 
@@ -1109,7 +1148,7 @@ void FeedV2Builder::GetTopics() {
 
 void FeedV2Builder::OnGotTopics(TopicsResult topics) {
   DVLOG(1) << __FUNCTION__ << " (topic count: " << topics.size() << ")";
-  topics_ = std::move(topics);
+  topics_->data = std::move(topics);
 
   NotifyUpdateCompleted();
 }
@@ -1164,99 +1203,83 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
                                  mojom::FeedV2TypePtr type,
                                  FeedGenerator generate,
                                  BuildFeedCallback callback) {
-  UpdateData(
-      std::move(settings),
-      base::BindOnce(
-          [](const base::WeakPtr<FeedV2Builder> builder,
-             mojom::FeedV2TypePtr type, FeedGenerator generate,
-             BuildFeedCallback callback, base::OnceClosure on_complete) {
-            auto built_callback = base::BindOnce(
-                [](BuildFeedCallback callback,
-                   base::OnceClosure completion_callback,
-                   mojom::FeedV2Ptr feed) {
-                  std::move(callback).Run(std::move(feed));
-                  std::move(completion_callback).Run();
-                },
-                std::move(callback), std::move(on_complete));
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
 
-            if (!builder) {
-              std::move(built_callback).Run(mojom::FeedV2::New());
-              return;
-            }
-
-            // We post this to another thread, because it can be quite slow.
-            // It's safe because:
-            // 1. Only one update can be run at a time (i.e. the data won't be
-            // updated underneath use while we're in the process of running an
-            // update).
-            // 2. The |build_feed| function takes a const reference to this
-            // builder, and can't modify and shared data.
-            base::SequencedTaskRunner::GetCurrentDefault()
-                ->PostTaskAndReplyWithResult(
-                    FROM_HERE,
-                    base::BindOnce(
-                        [](const base::WeakPtr<FeedV2Builder> builder,
-                           FeedGenerator generate) -> mojom::FeedV2Ptr {
-                          // If |builder| was destroyed, just return |nullptr|.
-                          if (!builder) {
-                            return nullptr;
-                          }
-                          return std::move(generate).Run(*builder);
-                        },
-                        builder, std::move(generate)),
-                    base::BindOnce(
-                        [](base::WeakPtr<const FeedV2Builder> builder,
-                           mojom::FeedV2TypePtr type,
-                           BuildFeedCallback callback, mojom::FeedV2Ptr feed) {
-                          feed->construct_time = base::Time::Now();
-                          feed->type = std::move(type);
-
-                          if (!builder) {
-                            std::move(callback).Run(std::move(feed));
-                            return;
-                          }
-
-                          feed->source_hash = builder->hash_;
-
-                          if (feed->items.empty()) {
-                            // If we have no subscribed items and we've loaded
-                            // the list of publishers (which we might not have,
-                            // if we're offline) then we're not subscribed to
-                            // any feeds.
-                            if (builder->subscribed_count_ == 0 &&
-                                !builder->publishers_controller_
-                                     ->GetLastPublishers()
-                                     .empty()) {
-                              feed->error = mojom::FeedV2Error::NoFeeds;
-                              // If we don't have any raw feed items (and we're
-                              // subscribed to some feeds) then fetching must
-                              // have failed.
-                            } else if (builder->raw_feed_items_.size() == 0) {
-                              feed->error = mojom::FeedV2Error::ConnectionError;
-                              // Otherwise, this feed must have no articles.
-                            } else {
-                              feed->error = mojom::FeedV2Error::NoArticles;
-                            }
-                          }
-
-                          std::move(callback).Run(std::move(feed));
-                        },
-                        builder, std::move(type), std::move(built_callback)));
-          },
-          weak_ptr_factory_.GetWeakPtr(), std::move(type), std::move(generate),
-          std::move(callback)));
+  UpdateData(std::move(settings),
+             base::BindOnce(&FeedV2Builder::PostGenerateFeed,
+                            weak_ptr_factory_.GetWeakPtr(), std::move(type),
+                            std::move(generate), std::move(callback)));
 }
 
-mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedV2Builder& builder,
-                                                  const FeedItems& feed_items,
-                                                  PickArticles pick_hero,
-                                                  PickArticles pick_article) {
+void FeedV2Builder::PostGenerateFeed(
+    mojom::FeedV2TypePtr type,
+    FeedGenerator generator,
+    BuildFeedCallback callback,
+    base::OnceClosure update_completed_callback) {
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+
+  auto built_callback = base::BindOnce(
+      [](base::WeakPtr<FeedV2Builder> builder, mojom::FeedV2TypePtr type,
+         BuildFeedCallback callback,
+         base::OnceClosure update_completed_callback, mojom::FeedV2Ptr feed) {
+        feed->construct_time = base::Time::Now();
+        feed->type = std::move(type);
+
+        if (!builder) {
+          std::move(callback).Run(std::move(feed));
+          std::move(update_completed_callback).Run();
+          return;
+        }
+
+        feed->source_hash = builder->hash_;
+
+        if (feed->items.empty()) {
+          // If we have no subscribed items and we've loaded
+          // the list of publishers (which we might not have,
+          // if we're offline) then we're not subscribed to
+          // any feeds.
+          if (builder->subscribed_count_ == 0 &&
+              !builder->publishers_controller_->GetLastPublishers().empty()) {
+            feed->error = mojom::FeedV2Error::NoFeeds;
+            // If we don't have any raw feed items (and we're
+            // subscribed to some feeds) then fetching must
+            // have failed.
+          } else if (builder->raw_feed_items_->data.size() == 0) {
+            feed->error = mojom::FeedV2Error::ConnectionError;
+            // Otherwise, this feed must have no articles.
+          } else {
+            feed->error = mojom::FeedV2Error::NoArticles;
+          }
+        }
+
+        std::move(callback).Run(std::move(feed));
+      },
+      weak_ptr_factory_.GetWeakPtr(), std::move(type), std::move(callback),
+      std::move(update_completed_callback));
+
+  // We post this to another thread, because it can be quite slow.
+  // It's safe because:
+  // 1. Only one update can be run at a time (i.e. the data won't be
+  // updated underneath use while we're in the process of running an
+  // update).
+  // 2. The |build_feed| function takes a const reference to this
+  // builder, and can't modify and shared data.
+  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, std::move(generator),
+                                               std::move(built_callback));
+}
+
+mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(
+    scoped_refptr<RefCountedPublisherIds> suggested_publisher_ids,
+    const std::string& last_locale,
+    scoped_refptr<RefCountedPublisherMap> last_publishers,
+    scoped_refptr<RefCountedSignals> signals,
+    scoped_refptr<RefCountedFeedItems> feed_items,
+    PickArticles pick_hero,
+    PickArticles pick_article) {
   DVLOG(1) << __FUNCTION__;
 
-  auto suggested_publisher_ids = builder.suggested_publisher_ids_;
-  auto articles = GetArticleInfos(
-      builder.publishers_controller_->GetLastLocale(), feed_items,
-      builder.publishers_controller_->GetLastPublishers(), builder.signals_);
+  auto articles = GetArticleInfos(last_locale, feed_items->data,
+                                  last_publishers->data, signals->data);
 
   auto feed = mojom::FeedV2::New();
 
@@ -1271,7 +1294,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedV2Builder& builder,
 
     // After the first block, every second block should be an ad.
     if (blocks % kIterationsPerAd == 0 && blocks != 0) {
-      std::ranges::move(GenerateSpecialBlock(suggested_publisher_ids),
+      std::ranges::move(GenerateSpecialBlock(suggested_publisher_ids->data),
                         std::back_inserter(items));
     }
 
@@ -1290,16 +1313,20 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(const FeedV2Builder& builder,
   return feed;
 }
 
-mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(const FeedV2Builder& builder) {
+mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(
+    scoped_refptr<RefCountedPublisherIds> ref_counted_suggested_publisher_ids,
+    const std::string& last_locale,
+    scoped_refptr<RefCountedPublisherMap> last_publishers,
+    scoped_refptr<RefCountedSignals> signals,
+    scoped_refptr<RefCountedFeedItems> raw_feed_items,
+    Channels channels,
+    scoped_refptr<RefCountedTopics> ref_counted_topics) {
   DVLOG(1) << __FUNCTION__;
-  const auto& publishers = builder.publishers_controller_->GetLastPublishers();
-  const auto& locale = builder.publishers_controller_->GetLastLocale();
+  const auto& publishers = last_publishers->data;
+  const auto& locale = last_locale;
 
   // Get a list of the subscribed channels - we'll use these when determining
   // what channel cards to show.
-  Channels channels = builder.channels_controller_->GetChannelsFromPublishers(
-      publishers, &*builder.prefs_);
-
   std::vector<std::string> subscribed_channels;
   for (const auto& [id, channel] : channels) {
     if (base::Contains(channel->subscribed_locales, locale)) {
@@ -1309,15 +1336,16 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(const FeedV2Builder& builder) {
   }
 
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
-  auto suggested_publisher_ids = builder.suggested_publisher_ids_;
-  auto articles = GetArticleInfos(locale, builder.raw_feed_items_, publishers,
-                                  builder.signals_);
+  auto suggested_publisher_ids = ref_counted_suggested_publisher_ids->data;
+  auto articles =
+      GetArticleInfos(locale, raw_feed_items->data, publishers, signals->data);
   auto feed = mojom::FeedV2::New();
 
-  base::span<const TopicAndArticles> topics = base::make_span(builder.topics_);
+  base::span<const TopicAndArticles> topics =
+      base::make_span(ref_counted_topics->data);
 
-  auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
-    base::ranges::move(items, std::back_inserter(feed->items));
+  auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& raw_feed_items) {
+    base::ranges::move(raw_feed_items, std::back_inserter(feed->items));
   };
 
   std::vector<ContentGroup> eligible_content_groups;
@@ -1334,8 +1362,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(const FeedV2Builder& builder) {
 
   // If we aren't subscribed to anything, or we failed to fetch any articles
   // from the internet, don't try and generate a feed.
-  if (eligible_content_groups.size() == 0 ||
-      builder.raw_feed_items_.size() == 0) {
+  if (eligible_content_groups.size() == 0 || raw_feed_items->data.size() == 0) {
     return feed;
   }
 

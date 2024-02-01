@@ -95,7 +95,7 @@ const mojom::Publisher* PublishersController::GetPublisherForSite(
   }
 
   return FindMatchPreferringLocale(
-      publishers_, default_locale_,
+      publishers_->data, default_locale_,
       base::BindRepeating(
           [](const std::string& site_host, const mojom::Publisher& publisher) {
             return publisher.site_url.host() == site_host;
@@ -106,7 +106,7 @@ const mojom::Publisher* PublishersController::GetPublisherForSite(
 const mojom::Publisher* PublishersController::GetPublisherForFeed(
     const GURL& feed_url) const {
   return FindMatchPreferringLocale(
-      publishers_, default_locale_,
+      publishers_->data, default_locale_,
       base::BindRepeating(
           [](const GURL& feed_url, const mojom::Publisher& publisher) {
             return publisher.feed_source == feed_url;
@@ -115,7 +115,7 @@ const mojom::Publisher* PublishersController::GetPublisherForFeed(
 }
 
 const Publishers& PublishersController::GetLastPublishers() const {
-  return publishers_;
+  return publishers_->data;
 }
 
 void PublishersController::AddObserver(Observer* observer) {
@@ -143,7 +143,7 @@ void PublishersController::GetOrFetchPublishers(
             // again, but it's fine to just send the empty array). Provide data
             // clone for ownership outside of this class.
             Publishers clone;
-            for (auto const& kv : controller->publishers_) {
+            for (auto const& kv : controller->publishers_->data) {
               clone.insert_or_assign(kv.first, kv.second->Clone());
             }
             std::move(callback).Run(std::move(clone));
@@ -160,7 +160,7 @@ void PublishersController::GetOrFetchPublishers(base::OnceClosure callback,
   // otherwise wait for fetch to be complete.
   // Also don't wait if there's an update in progress and this caller
   // wishes to wait.
-  if (!publishers_.empty() &&
+  if (!publishers_->data.empty() &&
       (!wait_for_current_update || !is_update_in_progress_)) {
     std::move(callback).Run();
     return;
@@ -250,7 +250,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
         }
 
         // Set memory cache
-        controller->publishers_ = std::move(*publisher_list);
+        controller->publishers_->data = std::move(*publisher_list);
         controller->UpdateDefaultLocale();
         // Let any callback know that the data is ready.
         VLOG(1) << "Notify subscribers to publishers data";
@@ -286,7 +286,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
 }
 
 void PublishersController::UpdateDefaultLocale() {
-  auto available_locales = GetPublisherLocales(publishers_);
+  auto available_locales = GetPublisherLocales(publishers_->data);
 
   // Locale can be "language_Script_COUNTRY.charset@variant" but Brave News
   // wants the format to be "language_COUNTRY".
@@ -302,7 +302,7 @@ void PublishersController::UpdateDefaultLocale() {
 }
 
 void PublishersController::ClearCache() {
-  publishers_.clear();
+  publishers_->data.clear();
 }
 
 }  // namespace brave_news
