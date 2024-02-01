@@ -10,6 +10,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -49,25 +50,22 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
                                    base::DoNothing());
 
-    btc_account_ =
-        GetAccountUtils().EnsureAccount(mojom::KeyringId::kBitcoin84, 0);
-    ASSERT_TRUE(btc_account_);
-    bitcoin_test_rpc_server_->SetUpBitcoinRpc(btc_account_->account_id);
+    bitcoin_test_rpc_server_->SetUpBitcoinRpc({});
+
+    keyring_ = std::make_unique<BitcoinKeyring>(false);
+    keyring_->ConstructRootHDKey(*MnemonicToSeed(kMnemonicDivideCruise, ""),
+                                 "m/84'/0'");
   }
 
   AccountUtils GetAccountUtils() {
     return AccountUtils(keyring_service_.get());
   }
 
-  mojom::AccountIdPtr account_id() const {
-    return btc_account_->account_id.Clone();
-  }
+  BitcoinKeyring* keyring() { return keyring_.get(); }
 
  protected:
   base::test::ScopedFeatureList feature_list_{
       features::kBraveWalletBitcoinFeature};
-
-  mojom::AccountInfoPtr btc_account_;
 
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -76,15 +74,59 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
+  std::unique_ptr<BitcoinKeyring> keyring_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
-TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountUpdatesExisting) {
-  EXPECT_EQ(*mojom::BitcoinKeyId::New(0, 0),
-            *keyring_service_->GetBitcoinAccountInfo(account_id())
+TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountCreatesNew) {
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      *keyring()->GetAddress(0, {0, 10}));
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      *keyring()->GetAddress(0, {1, 15}));
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      *keyring()->GetAddress(1, {0, 19}));
+
+  EXPECT_EQ(0u, GetAccountUtils().AllBtcAccounts().size());
+
+  AccountDiscoveryManager discovery_manager(nullptr, keyring_service_.get(),
+                                            bitcoin_wallet_service_.get());
+  discovery_manager.StartDiscovery();
+  base::RunLoop().RunUntilIdle();
+
+  EXPECT_EQ(2u, GetAccountUtils().AllBtcAccounts().size());
+  auto account_0 = GetAccountUtils().AllBtcAccounts()[0]->account_id->Clone();
+  auto account_1 = GetAccountUtils().AllBtcAccounts()[1]->account_id->Clone();
+
+  EXPECT_EQ(*mojom::BitcoinKeyId::New(0, 10 + 1),
+            *keyring_service_->GetBitcoinAccountInfo(account_0)
+                 ->next_receive_address->key_id);
+  EXPECT_EQ(*mojom::BitcoinKeyId::New(1, 15 + 1),
+            *keyring_service_->GetBitcoinAccountInfo(account_0)
+                 ->next_change_address->key_id);
+
+  EXPECT_EQ(*mojom::BitcoinKeyId::New(0, 19 + 1),
+            *keyring_service_->GetBitcoinAccountInfo(account_1)
                  ->next_receive_address->key_id);
   EXPECT_EQ(*mojom::BitcoinKeyId::New(1, 0),
-            *keyring_service_->GetBitcoinAccountInfo(account_id())
+            *keyring_service_->GetBitcoinAccountInfo(account_1)
+                 ->next_change_address->key_id);
+}
+
+TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountUpdatesExisting) {
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      *keyring()->GetAddress(0, {0, 10}));
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      *keyring()->GetAddress(0, {1, 15}));
+
+  auto account_id = GetAccountUtils()
+                        .EnsureAccount(mojom::KeyringId::kBitcoin84, 0)
+                        ->account_id->Clone();
+
+  EXPECT_EQ(*mojom::BitcoinKeyId::New(0, 0),
+            *keyring_service_->GetBitcoinAccountInfo(account_id)
+                 ->next_receive_address->key_id);
+  EXPECT_EQ(*mojom::BitcoinKeyId::New(1, 0),
+            *keyring_service_->GetBitcoinAccountInfo(account_id)
                  ->next_change_address->key_id);
 
   AccountDiscoveryManager discovery_manager(nullptr, keyring_service_.get(),
@@ -92,11 +134,11 @@ TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountUpdatesExisting) {
   discovery_manager.StartDiscovery();
   base::RunLoop().RunUntilIdle();
 
-  EXPECT_EQ(*mojom::BitcoinKeyId::New(0, 1),
-            *keyring_service_->GetBitcoinAccountInfo(account_id())
+  EXPECT_EQ(*mojom::BitcoinKeyId::New(0, 10 + 1),
+            *keyring_service_->GetBitcoinAccountInfo(account_id)
                  ->next_receive_address->key_id);
-  EXPECT_EQ(*mojom::BitcoinKeyId::New(1, 1),
-            *keyring_service_->GetBitcoinAccountInfo(account_id())
+  EXPECT_EQ(*mojom::BitcoinKeyId::New(1, 15 + 1),
+            *keyring_service_->GetBitcoinAccountInfo(account_id)
                  ->next_change_address->key_id);
 }
 
