@@ -123,7 +123,7 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
   padding: 4px 8px;
   border-radius: 4px;
   background-color: ${(p) =>
-    p.isDown ? leo.color.red[10] : leo.color.green[10]};
+    p.isDown ? leo.color.red[20] : leo.color.green[20]};
   font-family: Poppins;
   font-size: 11px;
   line-height: 16px;
