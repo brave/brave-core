@@ -29,9 +29,22 @@ const StateContainer = styled.div`
 
 const API = SkusInternalsMojo.SkusInternals.getRemote()
 
+interface CreateOrderFromReceiptInputFields {
+  domain: string
+  receipt: string
+  order_id: string
+}
+
+const defaultState: CreateOrderFromReceiptInputFields = {
+  domain: 'vpn.brave.com',
+  receipt: '',
+  order_id: ''
+}
+
 function App() {
   const [skusState, setSkusState] = React.useState({})
   const [vpnState, setVpnState] = React.useState({})
+  const [createOrderFormData, setCreateOrderFormData] = React.useState<CreateOrderFromReceiptInputFields>(defaultState)
 
   const resetSkusState = () => {
     API.resetSkusState()
@@ -51,6 +64,31 @@ function App() {
     })
   }
 
+  const submitCreateOrderFromReceipt = () => {
+    API.createOrderFromReceipt(
+      createOrderFormData.domain, createOrderFormData.receipt).then((r: any) =>
+    {
+      console.log(r)
+      console.log(r.response)
+      // TODO(bsclifton): show/set order ID here
+    })
+  }
+
+  type FormElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  type BaseType = string | number | React.FormEvent<FormElement>
+  function getOnChangeField<T extends BaseType = BaseType> (key: keyof CreateOrderFromReceiptInputFields) {
+    return function (e: T) {
+      const value = (typeof e === 'string' || typeof e === 'number') ? e : e.currentTarget.value
+      if (createOrderFormData[key] === value) {
+        return
+      }
+      setCreateOrderFormData(data => ({
+        ...data,
+        [key]: value
+      }))
+    }
+  }
+
   return (
     <Container>
       <h2>SKUs internals</h2>
@@ -65,15 +103,52 @@ function App() {
         <button onClick={getVpnState}>Fetch VPN state</button>
         <button onClick={getSkusState}>Fetch SKUs state</button>
       </ButtonContainer>
+
       <StateContainer>
         <b>VPN State:</b>
         <JsonView data={vpnState} shouldInitiallyExpand={(level) => true} />
       </StateContainer>
+
       <StateContainer>
         <b>SKUs State:</b>
         <button onClick={() => API.copySkusStateToClipboard()}>Copy</button>
         <button onClick={() => API.downloadSkusState()}>Download</button>
         <JsonView data={skusState} shouldInitiallyExpand={(level) => true} />
+      </StateContainer>
+
+      <StateContainer>
+        <div>
+          <b>Create Order From Receipt:</b>
+        </div>
+        <div>
+          <div>
+            Domain
+          </div>
+          <div>
+          <input
+            type="text"
+            value={createOrderFormData.domain}
+            onChange={getOnChangeField('domain')}
+          />
+          </div>
+          <div>
+            Receipt
+          </div>
+          <textarea
+            style={{ marginTop: '10px' }}
+            cols={100}
+            rows={10}
+            spellCheck={false}
+            value={createOrderFormData.receipt}
+            onChange={getOnChangeField('receipt')}
+          />
+        </div>
+        <div>
+          <button onClick={submitCreateOrderFromReceipt}>Submit</button>
+        </div>
+        <div>
+          {createOrderFormData.order_id}
+        </div>
       </StateContainer>
     </Container>
   )
