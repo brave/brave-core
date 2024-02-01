@@ -247,8 +247,7 @@ TEST(CommonUtils, MakeAccountId) {
     if (keyring == mojom::KeyringId::kDefault) {
       continue;
     } else if (IsBitcoinKeyring(keyring) || IsZCashKeyring(keyring)) {
-      EXPECT_DCHECK_DEATH(
-          MakeAccountId(coin, id.keyring_id, id.kind, id.address));
+      EXPECT_DCHECK_DEATH(MakeAccountId(id.coin, keyring, id.kind, id.address));
     } else {
       EXPECT_NE(
           id.unique_key,
