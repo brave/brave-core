@@ -6,8 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_HISTORY_BACKEND_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_HISTORY_BACKEND_H_
 
-#define GetHistoryCount  \
-  GetKnownToSyncCount(); \
+#define GetHistoryCount                       \
+  GetKnownToSyncCount();                      \
+  static const int kExpireDaysThreshold = 60; \
   HistoryCountResult GetHistoryCount
 
 #include "src/components/history/core/browser/history_backend.h"  // IWYU pragma: export
