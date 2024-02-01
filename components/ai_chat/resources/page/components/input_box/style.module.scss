@@ -3,11 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.container {
-  border-radius: var(--leo-radius-m);
-  border: 1px solid var(--leo-color-divider-subtle);
-}
-
 .form {
   border-radius: var(--leo-radius-m);
   border: 1px solid var(--leo-color-divider-strong);
@@ -15,6 +10,7 @@
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   position: relative;
+  box-shadow: var(--leo-effect-elevation-01);
 
   &:has(textarea:disabled) {
     border-color: var(--leo-color-divider-subtle);
