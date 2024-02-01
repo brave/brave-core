@@ -38,6 +38,33 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'libaddressinput'),
         os.path.join('brave', 'patches', 'third_party'),
 
+        # Dependencies that are already in brave-core, and whose notices
+        # therefore do not need to be repeated.
+        os.path.join('brave', 'vendor', 'omaha', 'omaha', 'third_party',
+                     'chrome'),
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'libzip'),
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'lzma'),
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'),
+
+        # Dependencies already mentioned in the main breakpad notice.
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad',
+                     'src', 'third_party', 'curl'),
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad',
+                     'src', 'third_party', 'libdisasm'),
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad',
+                     'src', 'third_party', 'linux'),
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad',
+                     'src', 'third_party', 'mac_headers'),
+
+        # Essentially empty directories that should be cleaned up upstream.
+        os.path.join('brave', 'vendor', 'omaha', 'omaha', 'third_party',
+                     'hashlib'),
+
+        # No licensing information in recursive dependency. This should be
+        # added upstream.
+        os.path.join('brave', 'vendor', 'omaha', 'omaha', 'third_party',
+                     'smartany'),
+
         # Build dependencies which don't end up in the binaries.
         os.path.join('brave', 'vendor', 'depot_tools'),
         os.path.join('brave', 'vendor', 'gn-project-generators'),
@@ -80,18 +107,21 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                 "/brave/vendor/omaha/third_party/breakpad/LICENSE"
             ],
         },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad',
+                     'src', 'third_party', 'musl'): {
+            "Name": "musl",
+            "URL": "https://musl.libc.org/",
+            "License File": [
+                "/brave/vendor/omaha/third_party/breakpad/src/third_party/"
+                "musl/COPYRIGHT"
+            ],
+        },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'): {
             "Name": "GoogleTest",
             "URL": "https://github.com/google/googletest",
             "License": "BSD",
             "License File":
                 ["/brave/vendor/omaha/third_party/googletest/LICENSE"],
-        },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'libzip'): {
-            "Name": "libzip",
-            "URL": "https://libzip.org",
-            "License": "BSD",
-            "License File": ["/brave/vendor/omaha/third_party/libzip/LICENSE"],
         },
         os.path.join('brave', 'third_party', 'rapidjson'): {
             "Name": "RapidJSON",
@@ -118,12 +148,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "License": "MIT",
             "License File": \
                 ["/brave/third_party/rust/either/v1/crate/LICENSE-MIT"],
-        },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
-            "Name": "zlib",
-            "URL": "https://zlib.net",
-            "License": "zlib",
-            "License File": ["/brave/vendor/omaha/third_party/zlib/README"],
         },
         os.path.join('brave', 'vendor', 'python-patch'): {
             "Name": "Python Patch",
