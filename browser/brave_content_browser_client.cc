@@ -6,6 +6,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 
 #include <algorithm>
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -108,6 +109,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/url_loader_request_interceptor.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_ui_browser_interface_broker_registry.h"
 #include "content/public/browser/web_ui_controller_interface_binder.h"
@@ -176,6 +178,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ipfs/ipfs_subframe_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
+#include "brave/browser/ipfs/ipfs_trustless_client_url_loader_interceptor.h"
+#include "brave/components/ipfs/ipfs_trustless_url_loader_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -948,6 +952,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       frame_tree_node_id, navigation_id);
   content::WebContents* contents = wc_getter.Run();
 
+
   if (contents) {
     const bool isMainFrame =
         request.resource_type ==
@@ -971,6 +976,10 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       }
     }
 #endif  // ENABLE_SPEEDREADER
+
+// #if BUILDFLAG(ENABLE_IPFS)
+//   result.push_back(std::make_unique<ipfs::IpfsTrustlessUrlLoaderThrottle>());//IN_DEVELOPMENT
+// #endif
 
     if (isMainFrame) {
       // De-AMP
@@ -1364,4 +1373,28 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
   metadata.full_version =
       base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   return metadata;
+}
+
+std::vector<std::unique_ptr<content::URLLoaderRequestInterceptor>>
+BraveContentBrowserClient::WillCreateURLLoaderRequestInterceptors(
+    content::NavigationUIData* navigation_ui_data,
+    int frame_tree_node_id,
+    int64_t navigation_id,
+    scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
+  auto interceptors =
+      ChromeContentBrowserClient::WillCreateURLLoaderRequestInterceptors(
+          navigation_ui_data, frame_tree_node_id, navigation_id,
+          navigation_response_task_runner);
+  LOG(INFO) << "[IPFS] Interceptors size: " << interceptors.size();
+
+#if BUILDFLAG(ENABLE_IPFS)
+  auto trustless_client_interceptor =
+      ipfs::IpfsTrustlessClientUrlLoaderInterceptor::MaybeCreateInterceptor();
+
+  if (trustless_client_interceptor) {
+    interceptors.push_back(std::move(trustless_client_interceptor));
+  }
+#endif
+
+  return interceptors;
 }

@@ -25,7 +25,7 @@ namespace speedreader {
 std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            mojo::PendingReceiver<network::mojom::URLLoaderClient>,
            SpeedReaderLocalURLLoader*>
-SpeedReaderLocalURLLoader::CreateLoader(
+SpeedReaderLocalURLLoader::CreateLoader(//LOADER_EXAMPLE
     base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
     base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
     scoped_refptr<base::SequencedTaskRunner> task_runner) {

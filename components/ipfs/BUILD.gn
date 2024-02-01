@@ -39,6 +39,10 @@ static_library("ipfs") {
     "repo_stats.h",
     "ipld/ipld_utils.h",
     "ipld/ipld_utils.cc",
+    "ipld/content_requester.cc",
+    "ipld/content_requester.h",
+    "ipld/car_content_requester.cc",
+    "ipld/car_content_requester.h",
   ]
 
   deps = [

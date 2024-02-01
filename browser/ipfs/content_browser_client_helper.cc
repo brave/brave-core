@@ -69,6 +69,7 @@ bool HandleIPFSURLRewrite(GURL* url, content::BrowserContext* browser_context) {
        base::EndsWith(url->host_piece(), kIpnsLocalhost))) {
     return true;
   }
+  LOG(INFO) << "[IPFS] !!!! HandleIPFSURLRewrite url:" << *url;
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   if (url->SchemeIs(content::kChromeUIScheme) && url->DomainIs(kIPFSScheme)) {
     GURL::Replacements host_replacements;

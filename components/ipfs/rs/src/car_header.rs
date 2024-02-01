@@ -41,9 +41,10 @@ impl DecodeCarHeaderError {
 }
 
 /**
-Takes vector of DAG-CBOR block bytes (without prefix length of block `variant`) and parse them as CAR_V1 header
+Takes header bytes (without block length prefix) and parse them as CAR_V1 header.
+Returns error if failed.
 |--------------- Header ---------------|
-[ varint block length | DAG-CBOR block ]
+[ varint block length | CAR_V1 header  ]
 
 */
 pub fn decode_carv1_header(data: &CxxVector<u8>) -> CarV1HeaderResult {
@@ -64,7 +65,7 @@ pub fn decode_carv1_header(data: &CxxVector<u8>) -> CarV1HeaderResult {
 }
 
 /**
-Takes vector of bytes (header DAG-CBOR block  with length `variant`) and parse them as CAR_V1 header
+Takes header bytes (without block length prefix) and parse them as CAR_V1 header.
 |--------------- Header -------------------|
 [ pragma 11 bytes | CAR_V2 header 40 bytes ]
 */

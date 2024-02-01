@@ -65,6 +65,8 @@ bool ParsePeerConnectionString(const std::string& value,
                                std::string* id,
                                std::string* address);
 GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash);
+base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
+                                       int64_t* into);
 bool IsAPIGateway(const GURL& url, version_info::Channel channel);
 bool IsIpfsResolveMethodDisabled(PrefService* prefs);
 bool IsIpfsResolveMethodAsk(PrefService* prefs);

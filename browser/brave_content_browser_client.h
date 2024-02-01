@@ -23,6 +23,7 @@ class PrefChangeRegistrar;
 namespace content {
 class BrowserContext;
 class RenderProcessHost;
+class URLLoaderRequestInterceptor;
 }  // namespace content
 
 namespace blink {
@@ -169,7 +170,14 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   void OverrideWebkitPrefs(content::WebContents* web_contents,
                            blink::web_pref::WebPreferences* prefs) override;
   blink::UserAgentMetadata GetUserAgentMetadata() override;
-
+  
+  std::vector<std::unique_ptr<content::URLLoaderRequestInterceptor>>
+  WillCreateURLLoaderRequestInterceptors(
+      content::NavigationUIData* navigation_ui_data,
+      int frame_tree_node_id,
+      int64_t navigation_id,
+      scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner)
+      override;
  private:
   void OnAllowGoogleAuthChanged();
 

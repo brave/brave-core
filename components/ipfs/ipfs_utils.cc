@@ -41,28 +41,6 @@ constexpr char kExecutableRegEx[] =
 const int64_t kIpfsNSCodec = 0xE3;
 const int64_t kIpnsNSCodec = 0xE5;
 
-// Decodes a varint from the given string piece into the given int64_t. Returns
-// remaining span if the string had a valid varint (where a byte was found with
-// it's top bit set).
-base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
-                                       int64_t* into) {
-  auto it = from.begin();
-  int shift = 0;
-  uint64_t ret = 0;
-  do {
-    if (it == from.end())
-      return {};
-
-    // Shifting 64 or more bits is undefined behavior.
-    DCHECK_LT(shift, 64);
-    unsigned char c = *it;
-    ret |= static_cast<uint64_t>(c & 0x7f) << shift;
-    shift += 7;
-  } while (*it++ & 0x80);
-  *into = static_cast<int64_t>(ret);
-  return from.subspan(it - from.begin());
-}
-
 GURL AppendLocalPort(const std::string& port) {
   GURL gateway = GURL(ipfs::kDefaultIPFSLocalGateway);
   GURL::Replacements replacements;
@@ -511,6 +489,28 @@ GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash) {
   std::string cidv1 = "b" + lowercase;
   std::string scheme = (code == kIpnsNSCodec) ? kIPNSScheme : kIPFSScheme;
   return GURL(scheme + "://" + cidv1);
+}
+
+// Decodes a varint from the given string piece into the given int64_t. Returns
+// remaining span if the string had a valid varint (where a byte was found with
+// it's top bit set).
+base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
+                                       int64_t* into) {
+  auto it = from.begin();
+  int shift = 0;
+  uint64_t ret = 0;
+  do {
+    if (it == from.end())
+      return {};
+
+    // Shifting 64 or more bits is undefined behavior.
+    DCHECK_LT(shift, 64);
+    unsigned char c = *it;
+    ret |= static_cast<uint64_t>(c & 0x7f) << shift;
+    shift += 7;
+  } while (*it++ & 0x80);
+  *into = static_cast<int64_t>(ret);
+  return from.subspan(it - from.begin());
 }
 
 bool IsValidCIDOrDomain(const std::string& value) {

@@ -61,9 +61,11 @@ int OnBeforeURLRequest_IPFSRedirectWork(
                : net::OK;
   }
 
+  LOG(INFO) << "[IPFS] OnBeforeURLRequest URL:" << ctx->request_url;
   GURL new_url;
   if (ipfs::TranslateIPFSURI(ctx->request_url, &new_url, ctx->ipfs_gateway_url,
                              false)) {
+  LOG(INFO) << "[IPFS] OnBeforeURLRequest #1 new_url:" << new_url;
     // We only allow translating ipfs:// and ipns:// URIs if the initiator_url
     // is from the same Brave ipfs/ipns gateway.
     // For the local case, we don't want a normal site to be able to populate
@@ -80,6 +82,7 @@ int OnBeforeURLRequest_IPFSRedirectWork(
       ctx->blocked_by = brave::kOtherBlocked;
     }
   } else if (has_ipfs_scheme) {
+  LOG(INFO) << "[IPFS] OnBeforeURLRequest #2 new_url:" << new_url;
     // Block incorrect url.
     ctx->blocked_by = brave::kOtherBlocked;
   }
