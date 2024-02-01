@@ -29,9 +29,11 @@ import org.json.JSONException;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
@@ -155,14 +157,35 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
             background();
             checkForShowSocialLinkIcons();
             setWeb3WalletClick();
+            mBraveRewardsNativeWorker.GetExternalWallet();
         } catch (JSONException e) {
             Log.e(TAG, "TippingBanner -> CreatorPanel:onAttach JSONException error " + e);
         }
     }
 
+    @Override
+    public void OnGetExternalWallet(String externalWallet) {
+        if (!TextUtils.isEmpty(externalWallet)) {
+            try {
+                BraveRewardsExternalWallet braveRewardsExternalWallet =
+                        new BraveRewardsExternalWallet(externalWallet);
+                String custodianType = braveRewardsExternalWallet.getType();
+                if (!TextUtils.isEmpty(custodianType)) {
+                    if (custodianType.equals(BraveWalletProvider.SOLANA)) {
+                        mContentView.findViewById(R.id.send_tip_button).setVisibility(View.GONE);
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "TippingBanner -> OnGetExternalWallet " + e.getMessage());
+            }
+        }
+    }
+
     private void setWeb3WalletClick() {
+        Log.e("solana", "setWeb3WalletClick");
         if (mBannerInfo == null) return;
         String web3Url = mBannerInfo.getWeb3Url();
+        Log.e("solana", "setWeb3WalletClick : web3Url : " + web3Url);
         if (!TextUtils.isEmpty(web3Url)) {
             View web3Button = mContentView.findViewById(R.id.use_web3_wallet_button);
             web3Button.setVisibility(View.VISIBLE);
@@ -310,6 +333,7 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
                     RewardsTippingPanelBottomsheet.showTippingPanelBottomSheet(
                             (AppCompatActivity) mActivity, mCurrentTabId);
                 });
+
     }
 
     @Override

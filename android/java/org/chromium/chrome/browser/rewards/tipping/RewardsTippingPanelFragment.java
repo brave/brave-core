@@ -210,6 +210,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                             String.format(getString(R.string.send_with_custodian),
                                     getWalletStringFromType(custodianType));
                     mSendButton.setText(sendWithCustodian);
+                    if (custodianType.equals(BraveWalletProvider.SOLANA)) {
+                        mSendButton.setVisibility(View.GONE);
+                    }
                 }
                 walletStatus = mExternalWallet.getStatus();
                 if (walletStatus != WalletStatus.NOT_CONNECTED) {
@@ -713,6 +716,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     public void onPublisherBanner(String jsonBannerInfo) {
         try {
             BraveRewardsBannerInfo bannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
+            Log.e("solana", "onPublisherBanner : jsonBannerInfo : " + jsonBannerInfo);
             if (bannerInfo != null && !TextUtils.isEmpty(bannerInfo.getWeb3Url())) {
                 mWeb3Url = bannerInfo.getWeb3Url();
                 mWeb3WalletButton.setVisibility(View.VISIBLE);
