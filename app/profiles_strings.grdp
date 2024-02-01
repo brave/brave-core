@@ -42,6 +42,12 @@
   <message name="IDS_AVATAR_BUTTON_SYNC_PAUSED" desc="Short label for the avatar button when sync is paused for the current profile." meaning="Sync is paused">
     Paused
   </message>
+  <message name="IDS_AVATAR_BUTTON_WORK" desc="Short label for the avatar button when the profile is a work profile." meaning="Using a work profile">
+    Work
+  </message>
+  <message name="IDS_AVATAR_BUTTON_SCHOOL" desc="Short label for the avatar button when the profile is a school profile." meaning="Using a school profile">
+    School
+  </message>
 
   <!-- Multi-profile -->
   <message name="IDS_PROFILES_MENU_NAME" desc="The name of menu for profiles (Mac and linux) and name for the launcher menu section (Mac).">
@@ -136,6 +142,9 @@
       Hide Accounts
     </message>
   </if>
+  <message name="IDS_PROFILES_MANAGED_BY" desc="Label shown under the avatar in the avatar menu bubble view stating that the account is managed.">
+    managed by <ph name="VALUE">$1<ex>1</ex></ph>
+  </message>
   <message name="IDS_PROFILES_MANAGE_PROFILES_BUTTON_TOOLTIP" desc="Button in the avatar menu bubble view for launching the profile picker.">
     Manage profiles
   </message>
@@ -165,6 +174,9 @@
   </message>
   <message name="IDS_GUEST_PROFILE_NAME" desc="The name given to the guest   browsing profile. Displayed in the avatar menu bubble and button UI.">
     Guest
+  </message>
+  <message name="IDS_PROFILE_MENU_OPEN_GUEST_PROFILE" desc="The text label of the open guest profile item in the profile menu.">
+    Open Guest Profile
   </message>
 
   <message name="IDS_DEFAULT_AVATAR_NAME_8" desc="The default name given to a newly created profile with the female spy avatar.">
@@ -596,22 +608,22 @@
     <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_LOCAL_PROFILE_TITLE" desc="Title of the remove warning message shown for local profiles, shown when the user selects remove from the 3 dotted menu.">
       Delete this profile and its data?
     </message>
-    <message translateable="false" name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_DIALOG_NOT_ALLOWED_TITLE" desc="Title of the force sign in error dialog, the dialog is shown when the user attempts to enter a profile that is not allowed to be unlocked.">
+    <message name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_DIALOG_NOT_ALLOWED_TITLE" desc="Title of the force sign in error dialog, the dialog is shown when the user attempts to enter a profile that is not allowed to be unlocked.">
       Can't use this profile
     </message>
-    <message translateable="false" name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_DIALOG_NOT_ALLOWED_BODY" desc="Body of the force sign in error dialog, the dialog is shown when the user attempts to enter a profile that is not allowed to be unlocked.">
+    <message name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_DIALOG_NOT_ALLOWED_BODY" desc="Body of the force sign in error dialog, the dialog is shown when the user attempts to enter a profile that is not allowed to be unlocked.">
       Your administrator has made a system-wide change that disables some old profiles. You can no longer access this profile but can still remove it
     </message>
-    <message translateable="false" name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_DIALOG_WRONG_ACCOUNT_TITLE" desc="Title of the force sign in error dialog, the dialog is shown when the user attempts to reauth a profile with the wrong account.">
+    <message name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_DIALOG_WRONG_ACCOUNT_TITLE" desc="Title of the force sign in error dialog, the dialog is shown when the user attempts to reauth a profile with the wrong account.">
       Can't unlock the profile
     </message>
-    <message translateable="false" name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_DIALOG_WRONG_ACCOUNT_BODY" desc="Body of the force sign in error dialog, the dialog is shown when the user attempts to reauth a profile with the wrong account.">
+    <message name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_DIALOG_WRONG_ACCOUNT_BODY" desc="Body of the force sign in error dialog, the dialog is shown when the user attempts to reauth a profile with the wrong account.">
       To unlock the profile sign in with your main account email: <ph name="EMAIL">$1<ex>example.com</ex></ph>
     </message>
-    <message translateable="false" name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_TIMEOUT_TITLE" desc="Title of the force sign in error dialog, the dialog is shown when the user attempts to reauth a profile, but the process timed out.">
+    <message name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_TIMEOUT_TITLE" desc="Title of the force sign in error dialog, the dialog is shown when the user attempts to reauth a profile, but the process timed out.">
       Sign in timed out
     </message>
-    <message translateable="false" name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_TIMEOUT_BODY" desc="Body of the force sign in error dialog, the dialog is shown when the user attempts to reauth a profile, but the process timed out.">
+    <message name="IDS_PROFILE_PICKER_FORCE_SIGN_IN_ERROR_TIMEOUT_BODY" desc="Body of the force sign in error dialog, the dialog is shown when the user attempts to reauth a profile, but the process timed out.">
       Couldn't sign you in, please try again
     </message>
     <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_HISTORY" desc="The title of a statistic (browsing history) shown inside a table below the warning text when attempting to remove an user. A number is displayed next to it.">
@@ -716,7 +728,7 @@
         Delete this profile and browsing data?
       </message>
       <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE_LACROS" desc="Remove warning message shown for signed in profiles shown when the user selects remove from the 3 dotted menu">
-        This will permanently delete browsing data from this device. The Brave sync chains in this profile may be used by other apps on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. You can remove these accounts in <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph><ph name="SETTING_SECTION">$2<ex>Settings</ex></ph> &gt; <ph name="ACCOUNTS_SECTION">$3<ex>Accounts</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
+        This will permanently delete browsing data and saved desks associated with this profile from this device. The Brave sync chains in this profile may be used by other apps on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. You can remove these accounts in <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph><ph name="SETTING_SECTION">$2<ex>Settings</ex></ph> &gt; <ph name="ACCOUNTS_SECTION">$3<ex>Accounts</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_NEXT_BUTTON_LABEL" desc="Label of the 'next' button of the landing screen in first run experience for the primary profile. The screen promotes Brave sync.">
         Let's go
