@@ -40,6 +40,7 @@ static_library("browser") {
     "publishers_controller.h",
     "publishers_parsing.cc",
     "publishers_parsing.h",
+    "ref_counted_container.h",
     "signal_calculator.cc",
     "signal_calculator.h",
     "suggestions_controller.cc",

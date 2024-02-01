@@ -19,6 +19,8 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
@@ -250,7 +252,9 @@ void PublishersController::EnsurePublishersIsUpdating() {
         }
 
         // Set memory cache
-        controller->publishers_->data = std::move(*publisher_list);
+        controller->publishers_ =
+            base::MakeRefCounted<RefCountedContainer<const Publishers>>(
+                std::move(*publisher_list));
         controller->UpdateDefaultLocale();
         // Let any callback know that the data is ready.
         VLOG(1) << "Notify subscribers to publishers data";
@@ -302,7 +306,7 @@ void PublishersController::UpdateDefaultLocale() {
 }
 
 void PublishersController::ClearCache() {
-  publishers_->data.clear();
+  publishers_ = base::MakeRefCounted<RefCountedContainer<const Publishers>>();
 }
 
 }  // namespace brave_news

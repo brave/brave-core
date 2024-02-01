@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -21,6 +20,7 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/browser/ref_counted_container.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
@@ -172,11 +172,12 @@ class FeedV2Builder : public PublishersController::Observer {
   // threadsafe.
   // TODO(sko) Some of these might not worth being refcounted, or there could
   // be other types that should be refcounted rather than copying.
-  using RefCountedSignals = base::RefCountedData<Signals>;
-  using RefCountedPublisherIds = base::RefCountedData<std::vector<std::string>>;
-  using RefCountedPublisherMap = base::RefCountedData<Publishers>;
-  using RefCountedFeedItems = base::RefCountedData<FeedItems>;
-  using RefCountedTopics = base::RefCountedData<TopicsResult>;
+  using RefCountedSignals = RefCountedContainer<const Signals>;
+  using RefCountedPublisherIds =
+      base::RefCountedData<const std::vector<std::string>>;
+  using RefCountedPublisherMap = RefCountedContainer<const Publishers>;
+  using RefCountedFeedItems = RefCountedContainer<const FeedItems>;
+  using RefCountedTopics = RefCountedContainer<const TopicsResult>;
 
   // These static methods are run on other thread
   // TODO(sko) Private static methods can be hidden in anonymous namespace in cc

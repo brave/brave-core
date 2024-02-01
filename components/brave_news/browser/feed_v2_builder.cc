@@ -947,13 +947,15 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
           mojom::FeedV2PublisherType::New(publisher_id)),
       CALLED_ON_WORKER_THREAD(
           FROM_HERE,
-          base::BindOnce(
-              FeedV2Builder::GenerateBasicFeed, suggested_publisher_ids_,
-              publishers_controller_->GetLastLocale(),
-              publishers_controller_->last_publishers(), signals_,
-              base::MakeRefCounted<RefCountedFeedItems>(std::move(items)),
-              base::BindRepeating(&PickFirstIndex),
-              base::BindRepeating(&PickFirstIndex))),
+          base::BindOnce(FeedV2Builder::GenerateBasicFeed,
+                         suggested_publisher_ids_,
+                         publishers_controller_->GetLastLocale(),
+                         publishers_controller_->last_publishers(), signals_,
+                         base::MakeRefCounted<RefCountedFeedItems>(
+                             FeedItems(std::make_move_iterator(items.begin()),
+                                       std::make_move_iterator(items.end()))),
+                         base::BindRepeating(&PickFirstIndex),
+                         base::BindRepeating(&PickFirstIndex))),
       CALLED_ON_MAIN_THREAD(FROM_HERE, std::move(callback)));
 }
 
@@ -1035,19 +1037,19 @@ void FeedV2Builder::UpdateData(UpdateSettings settings,
   }
 
   if (settings.signals) {
-    signals_->data.clear();
+    signals_ = base::MakeRefCounted<RefCountedSignals>();
   }
 
   if (settings.feed) {
-    raw_feed_items_->data.clear();
+    raw_feed_items_ = base::MakeRefCounted<RefCountedFeedItems>();
   }
 
   if (settings.suggested_publishers) {
-    suggested_publisher_ids_->data.clear();
+    suggested_publisher_ids_ = base::MakeRefCounted<RefCountedPublisherIds>();
   }
 
   if (settings.topics) {
-    topics_->data.clear();
+    topics_ = base::MakeRefCounted<RefCountedTopics>();
   }
 
   current_update_.emplace(std::move(settings), std::move(callback));
@@ -1061,9 +1063,9 @@ void FeedV2Builder::FetchFeed() {
   // Don't refetch the feed if we have items (clearing the items will trigger a
   // refresh).
   if (!raw_feed_items_->data.empty()) {
-    // Note: This isn't ideal because we double move the raw_feed_items and
-    // etags, but it makes the algorithm easier to follow.
-    OnFetchedFeed(std::move(raw_feed_items_->data), std::move(feed_etags_));
+    // As we already have data, bypass and proceed to CalculateSignals() right
+    // away.
+    CalculateSignals();
     return;
   }
 
@@ -1077,7 +1079,9 @@ void FeedV2Builder::FetchFeed() {
 void FeedV2Builder::OnFetchedFeed(FeedItems items, ETags tags) {
   DVLOG(1) << __FUNCTION__;
 
-  raw_feed_items_->data = std::move(items);
+  raw_feed_items_ = base::MakeRefCounted<RefCountedFeedItems>(
+      FeedItems(std::make_move_iterator(items.begin()),
+                std::make_move_iterator(items.end())));
   feed_etags_ = std::move(tags);
 
   CalculateSignals();
@@ -1090,7 +1094,7 @@ void FeedV2Builder::CalculateSignals() {
   if (!signals_->data.empty()) {
     // Note: We double move signals here because it makes the algorithm easier
     // to follow.
-    OnCalculatedSignals(std::move(signals_->data));
+    GetSuggestedPublisherIds();
     return;
   }
 
@@ -1106,7 +1110,9 @@ void FeedV2Builder::CalculateSignals() {
 void FeedV2Builder::OnCalculatedSignals(Signals signals) {
   DVLOG(1) << __FUNCTION__;
 
-  signals_->data = std::move(signals);
+  signals_ = base::MakeRefCounted<RefCountedSignals>(
+      Signals(std::make_move_iterator(signals.begin()),
+              std::make_move_iterator(signals.end())));
   GetSuggestedPublisherIds();
 }
 
@@ -1127,7 +1133,8 @@ void FeedV2Builder::GetSuggestedPublisherIds() {
 void FeedV2Builder::OnGotSuggestedPublisherIds(
     const std::vector<std::string>& suggested_ids) {
   DVLOG(1) << __FUNCTION__;
-  suggested_publisher_ids_->data = suggested_ids;
+  suggested_publisher_ids_ =
+      base::MakeRefCounted<RefCountedPublisherIds>(suggested_ids);
 
   GetTopics();
 }
@@ -1137,7 +1144,7 @@ void FeedV2Builder::GetTopics() {
 
   // Don't refetch topics, unless we need to.
   if (!topics_->data.empty()) {
-    OnGotTopics(std::move(topics_->data));
+    NotifyUpdateCompleted();
     return;
   }
 
@@ -1148,7 +1155,9 @@ void FeedV2Builder::GetTopics() {
 
 void FeedV2Builder::OnGotTopics(TopicsResult topics) {
   DVLOG(1) << __FUNCTION__ << " (topic count: " << topics.size() << ")";
-  topics_->data = std::move(topics);
+  topics_ = base::MakeRefCounted<RefCountedTopics>(
+      TopicsResult(std::make_move_iterator(topics.begin()),
+                   std::make_move_iterator(topics.end())));
 
   NotifyUpdateCompleted();
 }
@@ -1269,7 +1278,7 @@ void FeedV2Builder::PostGenerateFeed(
 }
 
 mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(
-    scoped_refptr<RefCountedPublisherIds> suggested_publisher_ids,
+    scoped_refptr<RefCountedPublisherIds> ref_counted_suggested_publisher_ids,
     const std::string& last_locale,
     scoped_refptr<RefCountedPublisherMap> last_publishers,
     scoped_refptr<RefCountedSignals> signals,
@@ -1280,11 +1289,12 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(
 
   auto articles = GetArticleInfos(last_locale, feed_items->data,
                                   last_publishers->data, signals->data);
-
   auto feed = mojom::FeedV2::New();
 
   constexpr size_t kIterationsPerAd = 2;
   size_t blocks = 0;
+  std::vector suggested_publisher_ids =
+      ref_counted_suggested_publisher_ids->data;
   while (!articles.empty()) {
     auto items = GenerateBlock(articles, pick_hero, pick_article,
                                /*inline_discovery_ratio=*/0);
@@ -1294,7 +1304,8 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(
 
     // After the first block, every second block should be an ad.
     if (blocks % kIterationsPerAd == 0 && blocks != 0) {
-      std::ranges::move(GenerateSpecialBlock(suggested_publisher_ids->data),
+      // Calling GenerateSpacialBlock can modify |suggested_publisher_ids|.
+      std::ranges::move(GenerateSpecialBlock(suggested_publisher_ids),
                         std::back_inserter(items));
     }
 

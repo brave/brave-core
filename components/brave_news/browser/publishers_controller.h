@@ -9,13 +9,13 @@
 #include <memory>
 #include <string>
 
-#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_news/browser/ref_counted_container.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -50,6 +50,9 @@ class PublishersController {
   const mojom::Publisher* GetPublisherForSite(const GURL& site_url) const;
   const mojom::Publisher* GetPublisherForFeed(const GURL& feed_url) const;
   const Publishers& GetLastPublishers() const;
+  scoped_refptr<RefCountedContainer<const Publishers>> last_publishers() {
+    return publishers_;
+  }
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -59,10 +62,6 @@ class PublishersController {
   const std::string& GetLastLocale() const;
   void EnsurePublishersIsUpdating();
   void ClearCache();
-
-  scoped_refptr<base::RefCountedData<Publishers>> last_publishers() {
-    return publishers_;
-  }
 
  private:
   void GetOrFetchPublishers(base::OnceClosure callback,
@@ -79,8 +78,8 @@ class PublishersController {
 
   std::string default_locale_;
   // Threadsafe data for feed builder
-  scoped_refptr<base::RefCountedData<Publishers>> publishers_ =
-      base::MakeRefCounted<base::RefCountedData<Publishers>>();
+  scoped_refptr<RefCountedContainer<const Publishers>> publishers_ =
+      base::MakeRefCounted<RefCountedContainer<const Publishers>>();
 
   bool is_update_in_progress_ = false;
 };
