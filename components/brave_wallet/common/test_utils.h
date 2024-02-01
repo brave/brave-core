@@ -36,6 +36,8 @@ namespace mojom {
 // These are pretty printers for gmock expect/assert failures.
 void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os);
 void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os);
+void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os);
+void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os);
 
 }  // namespace mojom
 
