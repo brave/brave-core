@@ -55,22 +55,30 @@ constexpr float kSampleContentGroupAllRatio = 0.2f;
 
 struct FeedGenerationInfo {
   std::string locale;
+  FeedItems feed_items;
   Publishers publishers;
   std::vector<std::string> channels;
   Signals signals;
   std::vector<std::string> suggested_publisher_ids;
   TopicsResult topics;
   FeedGenerationInfo(const std::string& locale,
+                     const FeedItems& feed_items,
                      const Publishers& publishers,
                      std::vector<std::string> channels,
                      const Signals& signals,
                      const std::vector<std::string>& suggested_publisher_ids,
                      const TopicsResult& topics)
       : locale(locale),
-        channels(channels),
+        channels(std::move(channels)),
         suggested_publisher_ids(suggested_publisher_ids) {
+    for (const auto& item : feed_items) {
+      this->feed_items.push_back(item->Clone());
+    }
     for (const auto& [id, publisher] : publishers) {
-      this->publishers.insert_or_assign(id, publisher->Clone());
+      this->publishers[id] = publisher.Clone();
+    }
+    for (const auto& [id, signal] : signals) {
+      this->signals[id] = signal->Clone();
     }
     for (const auto& topic : topics) {
       std::vector<api::topics::TopicArticle> articles;
@@ -807,14 +815,13 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
   return result;
 }
 
-mojom::FeedV2Ptr GenerateBasicFeed(FeedItems raw_items,
-                                   FeedGenerationInfo info,
+mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
                                    PickArticles pick_hero,
                                    PickArticles pick_article) {
   DVLOG(1) << __FUNCTION__;
 
-  auto articles =
-      GetArticleInfos(info.locale, raw_items, info.publishers, info.signals);
+  auto articles = GetArticleInfos(info.locale, info.feed_items, info.publishers,
+                                  info.signals);
 
   auto feed = mojom::FeedV2::New();
 
@@ -848,12 +855,11 @@ mojom::FeedV2Ptr GenerateBasicFeed(FeedItems raw_items,
   return feed;
 }
 
-mojom::FeedV2Ptr GenerateAllFeed(FeedItems raw_feed, FeedGenerationInfo info) {
+mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info) {
   DVLOG(1) << __FUNCTION__;
-
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
-  auto articles =
-      GetArticleInfos(info.locale, raw_feed, info.publishers, info.signals);
+  auto articles = GetArticleInfos(info.locale, info.feed_items, info.publishers,
+                                  info.signals);
   auto feed = mojom::FeedV2::New();
 
   base::span<const TopicAndArticles> topics_span = base::make_span(info.topics);
@@ -876,7 +882,7 @@ mojom::FeedV2Ptr GenerateAllFeed(FeedItems raw_feed, FeedGenerationInfo info) {
 
   // If we aren't subscribed to anything, or we failed to fetch any articles
   // from the internet, don't try and generate a feed.
-  if (eligible_content_groups.size() == 0 || raw_feed.size() == 0) {
+  if (eligible_content_groups.size() == 0 || info.feed_items.size() == 0) {
     return feed;
   }
 
@@ -1031,13 +1037,11 @@ void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
   GenerateFeed(
       {.signals = true},
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
-      base::BindOnce(
-          [](FeedItems raw_feed_items, FeedGenerationInfo info) {
-            return GenerateBasicFeed(std::move(raw_feed_items), std::move(info),
-                                     base::BindRepeating(&PickRoulette),
-                                     base::BindRepeating(&PickRoulette));
-          },
-          std::move(raw_feed_items)),
+      base::BindOnce([](FeedGenerationInfo info) {
+        return GenerateBasicFeed(std::move(info),
+                                 base::BindRepeating(&PickRoulette),
+                                 base::BindRepeating(&PickRoulette));
+      }),
       std::move(callback));
 }
 
@@ -1050,10 +1054,9 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
       {.signals = true},
       mojom::FeedV2Type::NewChannel(mojom::FeedV2ChannelType::New(channel)),
       base::BindOnce(
-          [](FeedItems raw_feed_items, std::string channel,
-             FeedGenerationInfo info) {
+          [](std::string channel, FeedGenerationInfo info) {
             FeedItems feed_items;
-            for (const auto& item : raw_feed_items) {
+            for (const auto& item : info.feed_items) {
               if (!item->is_article()) {
                 continue;
               }
@@ -1082,29 +1085,27 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
               feed_items.push_back(item->Clone());
             }
 
-            return GenerateBasicFeed(std::move(feed_items), std::move(info),
+            info.feed_items = std::move(feed_items);
+
+            return GenerateBasicFeed(std::move(info),
                                      base::BindRepeating(&PickRoulette),
                                      base::BindRepeating(&PickRoulette));
           },
-          std::move(raw_feed_items), channel),
+          channel),
       std::move(callback));
 }
 
 void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
                                        BuildFeedCallback callback) {
-  FeedItems raw_feed_items;
-  base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
-                          [](const auto& item) { return item->Clone(); });
   GenerateFeed(
       {.signals = true},
       mojom::FeedV2Type::NewPublisher(
           mojom::FeedV2PublisherType::New(publisher_id)),
       base::BindOnce(
-          [](FeedItems raw_feed_items, const std::string& publisher_id,
-             FeedGenerationInfo info) {
+          [](const std::string& publisher_id, FeedGenerationInfo info) {
             FeedItems items;
 
-            for (const auto& item : raw_feed_items) {
+            for (const auto& item : info.feed_items) {
               if (!item->is_article()) {
                 continue;
               }
@@ -1121,23 +1122,20 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
                      b->get_article()->data->publish_time;
             });
 
-            return GenerateBasicFeed(std::move(items), std::move(info),
+            info.feed_items = std::move(items);
+
+            return GenerateBasicFeed(std::move(info),
                                      base::BindRepeating(&PickFirstIndex),
                                      base::BindRepeating(&PickFirstIndex));
           },
-          std::move(raw_feed_items), publisher_id),
+          publisher_id),
       std::move(callback));
 }
 
 void FeedV2Builder::BuildAllFeed(BuildFeedCallback callback) {
-  FeedItems raw_feed_items;
-  base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
-                          [](const auto& item) { return item->Clone(); });
-
   GenerateFeed({.signals = true, .suggested_publishers = true},
                mojom::FeedV2Type::NewAll(mojom::FeedV2AllType::New()),
-               base::BindOnce(&GenerateAllFeed, std::move(raw_feed_items)),
-               std::move(callback));
+               base::BindOnce(&GenerateAllFeed), std::move(callback));
 }
 
 void FeedV2Builder::EnsureFeedIsUpdating() {
@@ -1400,8 +1398,10 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
                 channels.push_back(channel_id);
               }
             }
+
             FeedGenerationInfo info(
-                locale, publishers, channels, builder->signals_,
+                locale, builder->raw_feed_items_, publishers,
+                std::move(channels), builder->signals_,
                 builder->suggested_publisher_ids_, builder->topics_);
 
             // We post this to another thread, because the generation process
@@ -1441,9 +1441,7 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
                           std::move(callback).Run(std::move(feed));
                         },
                         builder->raw_feed_items_.size(),
-                        builder->subscribed_count_,
-                        !builder->publishers_controller_->GetLastPublishers()
-                             .empty(),
+                        builder->subscribed_count_, !publishers.empty(),
                         builder->hash_, std::move(type),
                         std::move(built_callback)));
           },
