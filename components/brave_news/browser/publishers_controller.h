@@ -26,6 +26,8 @@ class DirectFeedController;
 using GetPublishersCallback = mojom::BraveNewsController::GetPublishersCallback;
 using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
+bool IsPublisherEnabled(const mojom::Publisher* publisher);
+
 class PublishersController {
  public:
   PublishersController(

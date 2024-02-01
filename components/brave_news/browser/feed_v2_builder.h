@@ -12,6 +12,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
@@ -37,6 +38,9 @@ namespace brave_news {
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
 
+/* publisher_or_channel_id, is_channel */
+using ContentGroup = std::pair<std::string, bool>;
+
 // An ArticleWeight has a few different components
 struct ArticleWeight {
   // The pop_recency of the article. This is used for discover cards, where we
@@ -54,10 +58,21 @@ struct ArticleWeight {
   // Whether any sources/channels that could cause this article to be shown are
   // subscribed. At this point, disabled sources have already been filtered out.
   bool subscribed = false;
-};
 
-/* publisher_or_channel_id, is_channel */
-using ContentGroup = std::pair<std::string, bool>;
+  // All the content groups this article belongs to.
+  base::flat_set<ContentGroup> content_groups;
+
+  ArticleWeight(double pop_recency,
+                double weighting,
+                bool visited,
+                bool subscribed,
+                base::flat_set<ContentGroup> content_groups);
+  ArticleWeight(const ArticleWeight&) = delete;
+  ArticleWeight& operator=(const ArticleWeight&) = delete;
+  ArticleWeight(ArticleWeight&&);
+  ArticleWeight& operator=(ArticleWeight&&);
+  ~ArticleWeight();
+};
 
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
@@ -206,7 +221,8 @@ class FeedV2Builder : public PublishersController::Observer {
 
 class FeedGenerationInfo {
  public:
-  static FeedGenerationInfo From(const FeedV2Builder& builder, const FeedItems& feed_items);
+  static FeedGenerationInfo From(const FeedV2Builder& builder,
+                                 const FeedItems& feed_items);
 
   FeedGenerationInfo(const FeedGenerationInfo&) = delete;
   FeedGenerationInfo& operator=(const FeedGenerationInfo&) = delete;

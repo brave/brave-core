@@ -29,6 +29,7 @@
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_private_cdn/headers.h"
@@ -71,6 +72,11 @@ mojom::Publisher* FindMatchPreferringLocale(
   return match;
 }
 }  // namespace
+
+bool IsPublisherEnabled(const mojom::Publisher* publisher) {
+  return publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
+         publisher->type == mojom::PublisherType::DIRECT_SOURCE;
+}
 
 PublishersController::PublishersController(
     PrefService* prefs,

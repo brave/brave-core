@@ -30,6 +30,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/default_tick_clock.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -45,6 +46,21 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
+
+ArticleWeight::ArticleWeight(double pop_recency,
+                             double weighting,
+                             bool visited,
+                             bool subscribed,
+                             base::flat_set<ContentGroup> content_groups)
+    : pop_recency(pop_recency),
+      weighting(weighting),
+      visited(visited),
+      subscribed(subscribed),
+      content_groups(std::move(content_groups)) {}
+
+ArticleWeight::ArticleWeight(ArticleWeight&&) = default;
+ArticleWeight& ArticleWeight::operator=(ArticleWeight&&) = default;
+ArticleWeight::~ArticleWeight() = default;
 
 namespace {
 
@@ -67,8 +83,7 @@ std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
   }
 
   for (const auto& [id, publisher] : publishers) {
-    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
-        publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
+    if (IsPublisherEnabled(&*publisher)) {
       hash_items.push_back(id);
       subscribed_count++;
     }
@@ -98,20 +113,27 @@ std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
 // **Note:** Importantly, this function returns the Signal from the publisher
 // first, and |GetArticleWeight| depends on this to determine whether the
 // Publisher has been visited.
-std::vector<mojom::Signal*> GetSignals(
-    const std::string& locale,
-    const mojom::FeedItemMetadataPtr& article,
-    const Publishers& publishers,
-    const Signals& signals) {
-  std::vector<mojom::Signal*> result;
+std::tuple<std::vector<mojom::Signal*>, base::flat_set<ContentGroup>>
+GetSignalsAndGroups(const std::string& locale,
+                    const mojom::FeedItemMetadataPtr& article,
+                    const Publishers& publishers,
+                    const Signals& signals) {
+  std::vector<mojom::Signal*> result_signals;
+  base::flat_set<ContentGroup> result_content_groups;
+
   auto it = signals.find(article->publisher_id);
   if (it != signals.end()) {
-    result.push_back(it->second.get());
+    result_signals.push_back(it->second.get());
   }
 
   auto publisher_it = publishers.find(article->publisher_id);
   if (publisher_it == publishers.end()) {
-    return result;
+    return std::make_tuple(result_signals, result_content_groups);
+  }
+
+  // If the publisher is subscribed, add the publisher content group.
+  if (it->second->subscribed_weight != 0) {
+    result_content_groups.emplace(publisher_it->first, false);
   }
 
   for (const auto& locale_info : publisher_it->second->locales) {
@@ -123,10 +145,15 @@ std::vector<mojom::Signal*> GetSignals(
       if (signal_it == signals.end()) {
         continue;
       }
-      result.push_back(signal_it->second.get());
+      result_signals.push_back(signal_it->second.get());
+
+      // If the channel is subscribed, add the channel content group.
+      if (signal_it->second->subscribed_weight != 0) {
+        result_content_groups.emplace(channel, true);
+      }
     }
   }
-  return result;
+  return std::make_tuple(result_signals, result_content_groups);
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
@@ -153,7 +180,8 @@ double GetSubscribedWeight(const mojom::FeedItemMetadataPtr& article,
 }
 
 ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
-                               const std::vector<mojom::Signal*>& signals) {
+                               const std::vector<mojom::Signal*>& signals,
+                               base::flat_set<ContentGroup> content_groups) {
   // We should have at least one |Signal| from the |Publisher| for this source.
   CHECK(!signals.empty());
 
@@ -163,14 +191,12 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
       source_visits_min + signals.at(0)->visit_weight * (1 - source_visits_min);
   const auto pop_recency = GetPopRecency(article);
 
-  return {
-      .pop_recency = pop_recency,
-      .weighting = source_visits_projected + subscribed_weight + pop_recency,
+  return ArticleWeight(
+      pop_recency, source_visits_projected + subscribed_weight + pop_recency,
       // Note: GetArticleWeight returns the Signal for the Publisher first, and
       // we use that to determine whether this Publisher has ever been visited.
-      .visited = signals.at(0)->visit_weight != 0,
-      .subscribed = subscribed_weight != 0,
-  };
+      signals.at(0)->visit_weight != 0, subscribed_weight != 0,
+      std::move(content_groups));
 }
 
 template <typename T>
@@ -201,8 +227,8 @@ ArticleInfos GetArticleInfos(const std::string& locale,
 
       seen_articles.insert(article->data->url);
 
-      auto article_signals =
-          GetSignals(locale, article->data, publishers, signals);
+      auto [article_signals, groups] =
+          GetSignalsAndGroups(locale, article->data, publishers, signals);
 
       // If we don't have any signals for this article, or the source this
       // article comes from has been disabled then filter it out.
@@ -213,9 +239,9 @@ ArticleInfos GetArticleInfos(const std::string& locale,
         continue;
       }
 
-      ArticleInfo pair =
-          std::tuple(article->data->Clone(),
-                     GetArticleWeight(article->data, article_signals));
+      ArticleInfo pair = std::tuple(
+          article->data->Clone(),
+          GetArticleWeight(article->data, article_signals, std::move(groups)));
 
       articles.push_back(std::move(pair));
     }
@@ -801,8 +827,7 @@ std::vector<ContentGroup>& FeedGenerationInfo::GetContentGroups() {
   if (!content_groups_) {
     std::vector<ContentGroup> content_groups;
     for (const auto& [publisher_id, publisher] : *publishers_) {
-      if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
-          publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
+      if (IsPublisherEnabled(&*publisher)) {
         content_groups.emplace_back(publisher_id, false);
       }
     }

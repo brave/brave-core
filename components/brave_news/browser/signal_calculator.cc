@@ -13,6 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 
@@ -172,8 +173,7 @@ double SignalCalculator::GetSubscribedWeight(
     return 0;
   }
 
-  return publisher->type == mojom::PublisherType::DIRECT_SOURCE ||
-                 enabled == mojom::UserEnabled::ENABLED
+  return IsPublisherEnabled(&*publisher)
              ? features::kBraveNewsSourceSubscribedBoost.Get()
              : 0;
 }

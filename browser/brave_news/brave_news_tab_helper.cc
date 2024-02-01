@@ -91,14 +91,7 @@ bool BraveNewsTabHelper::IsSubscribed(const GURL& feed_url) {
 
   // When a direct feed exists, it is always subscribed (there is no way to
   // have an unsubscribed direct feed).
-  if (publisher->type == brave_news::mojom::PublisherType::DIRECT_SOURCE) {
-    return true;
-  }
-
-  // Otherwise, it's a combined feed, so just return whether the user has
-  // enabled it.
-  return publisher->user_enabled_status ==
-         brave_news::mojom::UserEnabled::ENABLED;
+  return brave_news::IsPublisherEnabled(publisher);
 }
 
 bool BraveNewsTabHelper::IsSubscribed() {
