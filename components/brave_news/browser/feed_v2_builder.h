@@ -56,6 +56,9 @@ struct ArticleWeight {
   bool subscribed = false;
 };
 
+/* publisher_or_channel_id, is_channel */
+using ContentGroup = std::pair<std::string, bool>;
+
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
 using PickArticles = base::RepeatingCallback<int(const ArticleInfos& infos)>;
@@ -203,7 +206,7 @@ class FeedV2Builder : public PublishersController::Observer {
 
 class FeedGenerationInfo {
  public:
-  static FeedGenerationInfo From(const FeedV2Builder& builder);
+  static FeedGenerationInfo From(const FeedV2Builder& builder, const FeedItems& feed_items);
 
   FeedGenerationInfo(const FeedGenerationInfo&) = delete;
   FeedGenerationInfo& operator=(const FeedGenerationInfo&) = delete;
@@ -219,6 +222,8 @@ class FeedGenerationInfo {
   base::span<const std::string>& suggestion_ids() { return suggestions_ids_; }
 
   base::span<const TopicAndArticles>& topics() { return topics_; }
+
+  std::vector<ContentGroup>& GetContentGroups();
 
  private:
   FeedGenerationInfo(const std::string& locale,
@@ -237,6 +242,8 @@ class FeedGenerationInfo {
 
   base::span<const std::string> suggestions_ids_;
   base::span<const TopicAndArticles> topics_;
+
+  std::optional<std::vector<ContentGroup>> content_groups_;
 };
 
 }  // namespace brave_news
