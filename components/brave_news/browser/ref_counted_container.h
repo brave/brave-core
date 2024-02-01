@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_REF_COUNTED_CONTAINER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_REF_COUNTED_CONTAINER_H_
 
+#include <utility>
+
 #include "base/memory/ref_counted.h"
 
 namespace brave_news {
@@ -44,7 +46,7 @@ class RefCountedContainer
     : public base::RefCountedThreadSafe<RefCountedContainer<ContainerType>> {
  public:
   RefCountedContainer() = default;
-  RefCountedContainer(std::remove_const_t<ContainerType>&& data)
+  RefCountedContainer(std::remove_const_t<ContainerType>&& data)  // NO-LINT
       : data(std::move(data)) {}
   RefCountedContainer(RefCountedContainer&& other) {
     data = std::move(other.data);
