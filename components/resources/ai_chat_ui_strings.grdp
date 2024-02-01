@@ -91,7 +91,7 @@
      Response rate limit reached
   </message>
   <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC" desc="A description to unlock premium features">
-     Unlock a higher response rate by subscribing to Premium, or try again later
+    Unlock a higher response rate by subscribing to Premium. You can also switch to our less powerful Llama2 13b free model to continue.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature">
     Explore different AI models
@@ -118,7 +118,7 @@
     Switch to the free model
   </message>
   <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
-    Unlock the full potential of Leo
+    Unleash Leo's full powers with Premium:
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
     Priority access to powerful models with different skills
