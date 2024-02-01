@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -285,38 +286,33 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private void replaceNavigationFragments(@NonNull final WalletAction walletAction) {
         if (mCryptoWalletOnboardingViewPager == null) return;
         if (mCryptoWalletOnboardingPagerAdapter == null) return;
+
+        final List<NavigationItem> navigationItems = new ArrayList<>();
         if (walletAction == WalletAction.RESTORE) {
             mShowBiometricPrompt = false;
-            OnboardingRestoreWalletFragment onboardingRestoreWalletFragment =
+
+            final OnboardingRestoreWalletFragment onboardingRestoreWalletFragment =
                     OnboardingRestoreWalletFragment.newInstance();
-            mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
+            navigationItems.add(
                     new NavigationItem(
                             getResources().getString(R.string.restore_crypto_account),
-                            onboardingRestoreWalletFragment),
-                    mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+                            onboardingRestoreWalletFragment));
+            addWalletCreationPage(navigationItems, R.string.your_wallet_is_restoring_page_title);
 
-            OnboardingCreatingWalletFragment onboardingCreatingWalletFragment =
-                    new OnboardingCreatingWalletFragment();
-            mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
-                    new NavigationItem(
-                            getResources().getString(R.string.your_wallet_is_restoring_page_title),
-                            onboardingCreatingWalletFragment),
-                    mCryptoWalletOnboardingPagerAdapter.getCount());
         } else if (walletAction == WalletAction.PASSWORD_CREATION) {
             mShowBiometricPrompt = true;
-            List<NavigationItem> navigationItems = new ArrayList<>();
-            OnboardingSecurePasswordFragment onboardingSecurePasswordFragment =
+
+            final OnboardingSecurePasswordFragment onboardingSecurePasswordFragment =
                     new OnboardingSecurePasswordFragment();
             navigationItems.add(
                     new NavigationItem(
                             getResources().getString(R.string.secure_your_crypto),
                             onboardingSecurePasswordFragment));
-            addWalletCreatingPage(navigationItems);
+            addWalletCreationPage(navigationItems, R.string.your_wallet_is_creating_page_title);
             addBackupWalletSequence(navigationItems, true);
-            mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
-                    navigationItems, mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
         }
-
+        mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
+                navigationItems, mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
         mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
 
         mCryptoWalletOnboardingViewPager.setCurrentItem(
@@ -367,13 +363,13 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         onboardingVerifyRecoveryPhraseFragment));
     }
 
-    private void addWalletCreatingPage(List<NavigationItem> navigationItems) {
+    private void addWalletCreationPage(
+            @NonNull final List<NavigationItem> navigationItems, @StringRes int stringId) {
         OnboardingCreatingWalletFragment onboardingCreatingWalletFragment =
                 new OnboardingCreatingWalletFragment();
         navigationItems.add(
                 new NavigationItem(
-                        getResources().getString(R.string.your_wallet_is_creating_page_title),
-                        onboardingCreatingWalletFragment));
+                        getResources().getString(stringId), onboardingCreatingWalletFragment));
     }
 
     public void showOnboardingLayout() {

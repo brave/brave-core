@@ -27,19 +27,12 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapte
 
     /**
      * Replaces all navigation items starting from a given index.
-     * @param navigationItem single navigation item to add.
-     * @param index Index pointing to the first item that will be replaced.
-     */
-    public void replaceWithNavigationItem(@NonNull final NavigationItem navigationItem, final int index) {
-        replaceWithNavigationItems(Collections.singletonList(navigationItem), index);
-    }
-
-    /**
-     * Replaces all navigation items starting from a given index.
+     *
      * @param navigationItems Navigation items to add.
      * @param index Index pointing to the first item that will be replaced.
      */
-    public void replaceWithNavigationItems(@NonNull final List<NavigationItem> navigationItems, final int index) {
+    public void replaceWithNavigationItems(
+            @NonNull final List<NavigationItem> navigationItems, final int index) {
         // Clear the list from the index (included).
         mNavigationItems.subList(index, mNavigationItems.size()).clear();
         // Append new navigation items to the list.
