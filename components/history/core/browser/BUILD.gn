@@ -6,11 +6,14 @@
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "//brave/components/history/core/browser/brave_history_backend_unittest.cc",
     "//brave/components/history/core/browser/brave_visit_database_unittest.cc",
   ]
   deps = [
     "//base",
+    "//base/test:test_support",
     "//components/history/core/browser",
+    "//components/history/core/test",
     "//testing/gtest",
   ]
 }
