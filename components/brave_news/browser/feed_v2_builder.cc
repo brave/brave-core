@@ -519,22 +519,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
                 }
               }
 
-              if (/*is_channel*/ content_group.second &&
-                  content_group.first != kAllContentGroup) {
-                auto channels =
-                    publisher_id_to_channels.find(metadata->publisher_id);
-                if (base::Contains(channels->second, content_group.first)) {
-                  return weight.weighting;
-                }
-
-                return 0.0;
-              } else if (/*is_channel*/ !content_group.second) {
-                return metadata->publisher_id == content_group.first
-                           ? weight.weighting
-                           : 0.0;
-              }
-
-              return weight.weighting;
+              return base::Contains(weight.content_groups, content_group)
+                         ? weight.weighting
+                         : 0;
             },
             is_hero, SampleContentGroup(eligible_content_groups),
             publisher_id_to_channels, locale);
