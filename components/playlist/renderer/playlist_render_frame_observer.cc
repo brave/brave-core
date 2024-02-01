@@ -5,16 +5,12 @@
 
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 
-#include <vector>
-
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/values.h"
-#include "brave/components/playlist/common/features.h"
-#include "brave/components/playlist/renderer/playlist_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/converter.h"
 #include "gin/function_template.h"
+#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/blink/public/platform/web_isolated_world_info.h"
 #include "third_party/blink/public/platform/web_string.h"
@@ -22,7 +18,9 @@
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+#include "v8/include/v8.h"
 
+namespace {
 std::string CreateExceptionString(v8::Local<v8::Context> context,
                                   const v8::TryCatch& try_catch) {
   v8::Local<v8::Message> message(try_catch.Message());
@@ -112,11 +110,12 @@ void LoadScriptWithSafeBuiltins(blink::WebLocalFrame* web_frame,
                                 int32_t isolated_world_id,
                                 const std::string& script,
                                 base::RepeatingCallback<Sig> callback) {
-  v8::Local<v8::Context> context = web_frame->GetScriptContextFromWorldId(
-      blink::MainThreadIsolate(), isolated_world_id);
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context =
+      web_frame->GetScriptContextFromWorldId(isolate, isolated_world_id);
   v8::Local<v8::String> wrapped_source =
       gin::StringToV8(context->GetIsolate(), script);
-  // Wrapping script in function(...) {...}
   v8::Local<v8::Value> func_as_value = RunScript(context, wrapped_source);
   if (func_as_value.IsEmpty() || func_as_value->IsUndefined()) {
     std::string message = base::StringPrintf("Bad source");
@@ -131,22 +130,44 @@ void LoadScriptWithSafeBuiltins(blink::WebLocalFrame* web_frame,
       gin::CreateFunctionTemplate(context->GetIsolate(), callback)
           ->GetFunction(context)
           .ToLocalChecked();
-  v8::Local<v8::Value> args[] = {v8::Local<v8::Value>::Cast(v8_callback)};
-
-  SafeCallFunction(web_frame, context, func, std::size(args), args);
+  v8::Local<v8::Value> arg = v8::Local<v8::Value>::Cast(v8_callback);
+  SafeCallFunction(web_frame, context, func, 1, &arg);
 }
+}  // namespace
 
 namespace playlist {
 
 PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     content::RenderFrame* render_frame,
-    const int32_t isolated_world_id)
+    int32_t isolated_world_id)
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(render_frame),
-      isolated_world_id_(isolated_world_id),
-      javascript_handler_(std::make_unique<PlaylistJSHandler>(render_frame)) {}
+      isolated_world_id_(isolated_world_id) {
+  EnsureConnectedToMediaHandler();
+}
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
+
+void PlaylistRenderFrameObserver::OnDestruct() {
+  delete this;
+}
+
+bool PlaylistRenderFrameObserver::EnsureConnectedToMediaHandler() {
+  if (!media_handler_.is_bound()) {
+    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+        media_handler_.BindNewPipeAndPassReceiver());
+    media_handler_.set_disconnect_handler(
+        base::BindOnce(&PlaylistRenderFrameObserver::OnMediaHandlerDisconnect,
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
+
+  return media_handler_.is_bound();
+}
+
+void PlaylistRenderFrameObserver::OnMediaHandlerDisconnect() {
+  media_handler_.reset();
+  EnsureConnectedToMediaHandler();
+}
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   const auto& blink_preferences = render_frame()->GetBlinkPreferences();
@@ -159,38 +180,34 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   }
 }
 
+// Disables the MediaSource API in hope of the page switching to
+// network-fetchable HTTPS URLs. This script is from
+// https://github.com/brave/brave-ios/blob/development/Sources/Brave/Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js
 void PlaylistRenderFrameObserver::HideMediaSourceAPI() {
-  // Hide MediaSource API so that we can get downloadable URL from the page.
-  // Otherwise, we get "blob: " url which we can't handle.
-  // This script is from
-  // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/PlaylistSwizzler.js
-  static const char16_t kScriptToHideMediaSourceAPI[] =
-      uR"-(
-    (function() {
-      // Stub out the MediaSource API so video players do not attempt to use `blob` for streaming
-      if (window.MediaSource || window.WebKitMediaSource || window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId) {
-        window.MediaSource = null;
-        window.WebKitMediaSource = null;
-        delete window.MediaSource;
-        delete window.WebKitMediaSource;
-      }
-    })();
-    )-";
-
   blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
   if (web_frame->IsProvisional()) {
     return;
   }
 
-  web_frame->ExecuteScript(blink::WebScriptSource(
-      blink::WebString::FromUTF16(kScriptToHideMediaSourceAPI)));
+  DVLOG(2) << __FUNCTION__;
+
+  web_frame->ExecuteScript(
+      blink::WebScriptSource(blink::WebString::FromASCII(R"(
+        (function() {
+          if (
+            window.MediaSource ||
+            window.WebKitMediaSource ||
+            window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId
+          ) {
+            delete window.MediaSource;
+            delete window.WebKitMediaSource;
+          }
+        })();
+      )")));
 }
 
 void PlaylistRenderFrameObserver::InstallMediaDetector() {
-  DVLOG(2) << __FUNCTION__;
-
-  static const char kScript[] =
-      R"-(
+  static const char kScript[] = R"(
     (function(cb) {
       // Firstly, we try to get find all <video> or <audio> tags periodically,
       // for a a while from the start up. If we find them, then we attach
@@ -231,22 +248,33 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
         cb(window.location.href);
       });
     })
-    )-";
+  )";
 
   blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
   if (web_frame->IsProvisional()) {
     return;
   }
 
-  v8::HandleScope handle_scope(blink::MainThreadIsolate());
+  DVLOG(2) << __FUNCTION__;
+
   LoadScriptWithSafeBuiltins(
       web_frame, isolated_world_id_, kScript,
-      base::BindRepeating(&PlaylistJSHandler::OnMediaUpdated,
-                          base::Unretained(javascript_handler_.get())));
+      base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaUpdated,
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
-void PlaylistRenderFrameObserver::OnDestruct() {
-  delete this;
+void PlaylistRenderFrameObserver::OnMediaUpdated(const std::string& page_url) {
+  if (!GURL(page_url).SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  DVLOG(2) << __FUNCTION__ << " " << page_url;
+
+  if (!EnsureConnectedToMediaHandler()) {
+    return;
+  }
+
+  media_handler_->OnMediaUpdatedFromRenderFrame();
 }
 
 }  // namespace playlist
