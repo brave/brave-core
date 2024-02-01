@@ -24,9 +24,11 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
            std::move(callback));
 }
 
-void ComponentInstaller::Register(RegisterCallback register_callback,
-                                  base::OnceClosure callback,
-                                  const base::Version& registered_version) {
+void ComponentInstaller::Register(
+    RegisterCallback register_callback,
+    base::OnceClosure callback,
+    const base::Version& registered_version,
+    const base::Version& max_previous_product_version) {
   static std::string disallowed_components[] = {
     "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
@@ -54,7 +56,7 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
     }
   }
   Register_ChromiumImpl(std::move(register_callback), std::move(callback),
-                        registered_version);
+                        registered_version, max_previous_product_version);
 }
 
 }  // namespace component_updater
