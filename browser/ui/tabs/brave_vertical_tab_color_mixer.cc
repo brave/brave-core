@@ -67,10 +67,12 @@ void AddBraveVerticalTabLightThemeColorMixer(ui::ColorProvider* provider,
                                              const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  static constexpr const auto kDefaultColorMap =
+  static const auto kDefaultColorMap =
       base::MakeFixedFlatMap<BraveColorIds, SkColor>({
-          {kColorBraveVerticalTabActiveBackground, SK_ColorWHITE},
-          {kColorBraveVerticalTabInactiveBackground, kLightToolbar},
+          {kColorBraveVerticalTabActiveBackground,
+           mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)},
+          {kColorBraveVerticalTabInactiveBackground,
+           mixer.GetResultColor(kColorToolbar)},
           {kColorBraveVerticalTabSeparator,
            SkColorSetA(SK_ColorBLACK, 0.05 * 255)},
           {kColorBraveVerticalTabNTBIconColor,
@@ -89,10 +91,12 @@ void AddBraveVerticalTabDarkThemeColorMixer(ui::ColorProvider* provider,
                                             const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  static constexpr const auto kDefaultColorMap =
+  static const auto kDefaultColorMap =
       base::MakeFixedFlatMap<BraveColorIds, SkColor>({
-          {kColorBraveVerticalTabActiveBackground, kDarkFrame},
-          {kColorBraveVerticalTabInactiveBackground, kDarkToolbar},
+          {kColorBraveVerticalTabActiveBackground,
+           mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)},
+          {kColorBraveVerticalTabInactiveBackground,
+           mixer.GetResultColor(kColorToolbar)},
           {kColorBraveVerticalTabSeparator,
            SkColorSetA(SK_ColorWHITE, 0.1 * 255)},
           {kColorBraveVerticalTabNTBIconColor,
