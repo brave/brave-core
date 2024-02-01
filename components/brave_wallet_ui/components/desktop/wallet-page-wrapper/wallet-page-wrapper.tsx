@@ -47,7 +47,6 @@ export interface Props {
   wrapContentInBox?: boolean
   noPadding?: boolean
   noCardPadding?: boolean
-  hideBackground?: boolean
   hideNav?: boolean
   hideHeader?: boolean
   hideHeaderMenu?: boolean
@@ -66,7 +65,6 @@ export const WalletPageWrapper = (props: Props) => {
     noCardPadding,
     wrapContentInBox,
     cardHeader,
-    hideBackground,
     hideNav,
     hideHeader,
     hideHeaderMenu,
@@ -88,6 +86,8 @@ export const WalletPageWrapper = (props: Props) => {
     React.useState<number>(0)
   const [headerDividerOpacity, setHeaderDividerOpacity] =
     React.useState<number>(1)
+  const [headerBackgroundOpacity, setHeaderBackgroundOpacity] =
+    React.useState<number>(0)
   const [headerHeight, setHeaderHeight] = React.useState<number>(0)
 
   // Refs
@@ -107,12 +107,13 @@ export const WalletPageWrapper = (props: Props) => {
     if (scrollPosition !== null) {
       const { scrollTop } = scrollPosition
 
-      // Assures that shadowOpacity and dividerOpacity are
-      // the expect value when scrollTop is 0, since some values
+      // Assures that shadowOpacity, dividerOpacity and backgroundOpacity are
+      // the expected values when scrollTop is 0, since some values
       // may not get calculated when scrolling fast.
       if (scrollTop === 0) {
         setHeaderShadowOpacity(0)
         setHeaderDividerOpacity(1)
+        setHeaderBackgroundOpacity(0)
         return
       }
 
@@ -129,21 +130,28 @@ export const WalletPageWrapper = (props: Props) => {
         // 0.015625 until it reaches desired opacity of 1.
         // example: 0.015625 * 64 = 1
         setHeaderDividerOpacity((100 - (100 / 64) * scrollTop) * 0.01)
+
+        // Increases backgroundOpacity by 0.015625 until it reaches
+        // desired opacity of 1, or will decrease backgroundOpacity by
+        // 0.015625 until it reaches desired opacity of 0.
+        // example: 0.015625 * 64 = 1
+        setHeaderBackgroundOpacity((100 / 64) * scrollTop * 0.01)
         return
       }
 
-      // Assures that shadowOpacity and dividerOpacity are
-      // the expect value when scrollTop is greater than 64,
+      // Assures that shadowOpacity, dividerOpacity and backgroundOpacity are
+      // the expected values when scrollTop is greater than 64,
       // since some values may not get calculated when scrolling fast.
       setHeaderShadowOpacity(0.08)
       setHeaderDividerOpacity(0)
+      setHeaderBackgroundOpacity(1)
     }
   }, [scrollRef.current])
 
   return (
     <>
       <StaticBackground />
-      {!hideBackground && (
+      {!isPanel && (
         <BackgroundGradientWrapper>
           <BackgroundGradientTopLayer />
           <BackgroundGradientMiddleLayer />
@@ -198,6 +206,7 @@ export const WalletPageWrapper = (props: Props) => {
                   shadowOpacity={headerShadowOpacity}
                   isPanel={isPanel}
                   useDarkBackground={useDarkBackground}
+                  backgroundOpacity={headerBackgroundOpacity}
                 >
                   <CardHeaderContentWrapper
                     dividerOpacity={headerDividerOpacity}

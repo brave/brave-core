@@ -14,6 +14,7 @@ export const RevealableContentContainer = styled.div<{ hideContent?: boolean }>`
   transition: opacity 0.3s ease-in-out;
   transition-delay: 0.3s;
   height: auto;
+  position: relative;
 `
 
 export const RevealableContentColumn = styled.div`
