@@ -17,6 +17,9 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 // hooks
 import useAssetManagement from '../../../common/hooks/assets-management'
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
+import {
+  useGetCustomAssetSupportedNetworks //
+} from '../../../common/hooks/use_get_custom_asset_supported_networks'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'
@@ -95,6 +98,8 @@ export const AddCustomTokenForm = (props: Props) => {
         }
       : skipToken
   )
+
+  const networkList = useGetCustomAssetSupportedNetworks()
 
   const decimals =
     customTokenDecimals ?? matchedTokenInfo?.decimals.toFixed() ?? ''
@@ -292,6 +297,7 @@ export const AddCustomTokenForm = (props: Props) => {
           onClick={onShowNetworkDropDown}
           showNetworkDropDown={showNetworkDropDown}
           onSelectCustomNetwork={onSelectCustomNetwork}
+          networkListSubset={networkList}
         />
         <FormRow>
           <FormColumn>
