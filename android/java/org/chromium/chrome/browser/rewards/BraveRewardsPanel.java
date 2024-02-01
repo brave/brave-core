@@ -193,7 +193,6 @@ public class BraveRewardsPanel
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
     private int mCurrentTabId;
-    private boolean mAutoContributeEnabled;
     private TextView mPublisherAttention;
 
     private BraveRewardsExternalWallet mExternalWallet;
@@ -2032,14 +2031,19 @@ public class BraveRewardsPanel
 
     @Override
     public void OnGetAutoContributeProperties() {
-        if (mBraveRewardsNativeWorker != null
-                && mBraveRewardsNativeWorker.IsAutoContributeEnabled()) {
-            mPopupView.findViewById(R.id.attention_layout).setVisibility(View.VISIBLE);
-            mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(View.VISIBLE);
-            mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
-                    .setVisibility(View.VISIBLE);
-            mPopupView.findViewById(R.id.auto_contribute_summary_layout)
-                    .setVisibility(View.VISIBLE);
+        if (mBraveRewardsNativeWorker != null) {
+            int shouldShow =
+                    mBraveRewardsNativeWorker.IsAutoContributeEnabled() ? View.VISIBLE : View.GONE;
+            Log.e(
+                    "solana",
+                    "mBraveRewardsNativeWorker.IsAutoContributeEnabled() : "
+                            + mBraveRewardsNativeWorker.IsAutoContributeEnabled());
+            mPopupView.findViewById(R.id.attention_layout).setVisibility(shouldShow);
+            mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(shouldShow);
+            mPopupView
+                    .findViewById(R.id.auto_contribute_summary_seperator)
+                    .setVisibility(shouldShow);
+            mPopupView.findViewById(R.id.auto_contribute_summary_layout).setVisibility(shouldShow);
         }
     }
 
