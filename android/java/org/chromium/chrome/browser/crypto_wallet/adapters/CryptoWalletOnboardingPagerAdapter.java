@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapter {

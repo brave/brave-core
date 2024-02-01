@@ -2171,6 +2171,9 @@ Are you sure you want to do this?
     <message name="IDS_ALREADY_HAVE_A_WALLET" desc="Brave Wallet onboarding restore title">
       Already have a wallet?
     </message>
+    <message name="IDS_BEFORE_WE_BEGIN" desc="Brave Wallet term of use screen title">
+      Before we begin
+    </message>
     <message name="IDS_ALREADY_HAVE_A_WALLET_DESCRIPTION" desc="Brave Wallet onboarding restore description">
       Import your existing wallet
     </message>
