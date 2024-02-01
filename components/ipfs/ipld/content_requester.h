@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "components/prefs/pref_service.h"
+#include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -14,20 +15,22 @@ class SimpleURLLoader;
 
 namespace ipfs::ipld {
 
+using ContentRequestBufferCallback =
+    base::RepeatingCallback<void(base::StringPiece, const bool)>;
+
 class IContentRequester {
  public:
   virtual ~IContentRequester() = default;
 
-  virtual void Start() = 0;
+  virtual void Request(ContentRequestBufferCallback callback) = 0;
   virtual bool IsStarted() const = 0;
 };
 
-class ContentRequester : public IContentRequester {
+class ContentRequester : public IContentRequester, 
+    network::SimpleURLLoaderStreamConsumer {
  public:
-  void Start() override;
+  void Request(ContentRequestBufferCallback callback) override;
   bool IsStarted() const override;
-
-  virtual const GURL GetGatewayRequestUrl() const;
 
  protected:
   explicit ContentRequester(
@@ -36,17 +39,22 @@ class ContentRequester : public IContentRequester {
       PrefService* prefs);
   ~ContentRequester() override;
 
-  virtual std::unique_ptr<network::ResourceRequest> RequestContent(
-      const GURL& url);
+  virtual const GURL GetGatewayRequestUrl() const;
+  virtual std::unique_ptr<network::SimpleURLLoader> CreateLoader() const = 0;
 
  private:
   friend class CarContentRequesterUnitTest;
 
-  void OnUrlDownloadedToTempFile(
-      std::unique_ptr<network::SimpleURLLoader> simple_loader,
-      base::FilePath temp_path);
+  // network::SimpleURLLoaderStreamConsumer implementations.
+  void OnDataReceived(base::StringPiece string_piece, base::OnceClosure resume) override;
+  void OnRetry(base::OnceClosure start_retry) override;
+  void OnComplete(bool success) override;
 
   GURL url_;
+  std::string data_;
+  uint64_t bytes_received_{0};
+  ContentRequestBufferCallback buffer_ready_callback_;
+  std::unique_ptr<network::SimpleURLLoader> url_loader_;
   raw_ptr<PrefService> prefs_;
   bool is_started_{false};
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

@@ -8,9 +8,8 @@
 
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
+#include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
@@ -21,19 +20,8 @@ constexpr char kGatewayUrlFormatParamVal[] = "car";
 constexpr char kGatewayUrlDagScopeParamName[] = "dag-scope";
 constexpr char kGatewayUrlDagScopeParamVal[] = "entity";
 
-GURL SetUrlParams(const GURL& url) {
-  GURL::Replacements replacements;
-  auto query_str = base::JoinString(
-      {base::StringPrintf("%s=%s", kGatewayUrlFormatParamName,
-                          kGatewayUrlFormatParamVal)
-           .c_str(),
-       base::StringPrintf("%s=%s", kGatewayUrlDagScopeParamName,
-                          kGatewayUrlDagScopeParamVal)
-           .c_str()},
-      "&");
-  replacements.SetQueryStr(query_str);
-  return url.ReplaceComponents(replacements);
-}
+constexpr char kGatewayUrlEntityBytesParamName[] = "entity-bytes";
+constexpr char kGatewayUrlEntityBytesOnlyStructParamVal[] = "0:0";
 
 }  // namespace
 
@@ -42,13 +30,34 @@ namespace ipfs::ipld {
 CarContentRequester::CarContentRequester(
     const GURL& url,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* prefs)
-    : ContentRequester(url, url_loader_factory, prefs) {}
+    PrefService* prefs,
+    const bool only_structure)
+    : ContentRequester(url, url_loader_factory, prefs),
+      only_structure_(only_structure) {}
 
 CarContentRequester::~CarContentRequester() = default;
 
 const GURL CarContentRequester::GetGatewayRequestUrl() const {
-  return SetUrlParams(ContentRequester::GetGatewayRequestUrl());
+  auto car_request_url = ContentRequester::GetGatewayRequestUrl();
+
+  car_request_url = net::AppendQueryParameter(
+      car_request_url, kGatewayUrlFormatParamName, kGatewayUrlFormatParamVal);
+  car_request_url =
+      net::AppendQueryParameter(car_request_url, kGatewayUrlDagScopeParamName,
+                                kGatewayUrlDagScopeParamVal);
+
+  if (only_structure_) {
+    car_request_url = net::AppendQueryParameter(
+        car_request_url, kGatewayUrlEntityBytesParamName,
+        kGatewayUrlEntityBytesOnlyStructParamVal);
+  }
+
+  return car_request_url;
+}
+
+std::unique_ptr<network::SimpleURLLoader> CarContentRequester::CreateLoader()
+    const {
+  return CreateURLLoader(GetGatewayRequestUrl(), "GET");
 }
 
 }  // namespace ipfs::ipld

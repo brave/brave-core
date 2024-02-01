@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ipfs/ipld/car_content_requester.h"
+#include <cstdint>
 #include <memory>
 
 #include "base/containers/contains.h"
@@ -13,10 +14,10 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "gtest/gtest.h"
+#include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "base/memory/scoped_refptr.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -56,14 +57,28 @@ class CarContentRequesterUnitTest : public testing::Test {
 
 TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
     {
+        auto request_callback = base::BindLambdaForTesting([&](base::StringPiece buffer, const bool is_completed){
+            EXPECT_TRUE(false) << "request_callback must not be called";
+        });
         auto ccr = std::make_unique<ipfs::ipld::CarContentRequester>(GURL(""), 
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 url_loader_factory()), GetPrefs());
-        ccr->Start();
+        ccr->Request(request_callback);
         EXPECT_FALSE(ccr->IsStarted());
     }
 
     {
+        const uint64_t content_size = 1024;
+        std::vector<char> content_data;
+        for(uint64_t i=0; i < content_size; i++) { content_data.push_back('%'); }
+        auto request_callback_counter = 0;
+        auto request_callback = base::BindLambdaForTesting([&](base::StringPiece buffer, const bool is_success){
+            LOG(INFO) << "[IPFS] request_callback is_success:" << is_success;
+            request_callback_counter++;
+            if(is_success){
+                for(char ch : buffer) { EXPECT_EQ(ch, '%'); }
+            }
+        });
         url_loader_factory()->SetInterceptor(
             base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
                 LOG(INFO) << "[IPFS] Request url: " << request.url;
@@ -72,6 +87,7 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
 
                 ASSERT_TRUE(base::Contains(request.url.query(), "format=car"));
                 ASSERT_TRUE(base::Contains(request.url.query(), "dag-scope=entity"));
+                ASSERT_TRUE(base::Contains(net::UnescapePercentEncodedUrl(request.url.query()), "entity-bytes=0:0"));
 
                 auto response_head = network::mojom::URLResponseHead::New();
                 response_head->headers =
@@ -79,14 +95,16 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
                 response_head->headers->SetHeader("Content-Type", "application/vnd.ipld.car; version=1; order=dfs; dups=n");
                 response_head->headers->ReplaceStatusLine("HTTP/1.1 200 OK");
                 url_loader_factory()->AddResponse(
-                     request.url, std::move(response_head), std::string("blablabla"),
+                     request.url, std::move(response_head), std::string(content_data.data(), content_data.size() - 1),
                      network::URLLoaderCompletionStatus(net::OK));
         }));
         GURL url(kDefaultIpfsUrl);
         auto ccr = std::make_unique<ipfs::ipld::CarContentRequester>(url, base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 url_loader_factory()), GetPrefs());
-        ccr->Start();
+        ccr->Request(request_callback);
         EXPECT_TRUE(ccr->IsStarted());
         task_environment()->RunUntilIdle();
+        EXPECT_FALSE(ccr->IsStarted());
+        EXPECT_EQ(request_callback_counter, 1);
     }
 }

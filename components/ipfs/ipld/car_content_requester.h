@@ -8,16 +8,21 @@
 namespace ipfs::ipld {
 
 class CarContentRequester : public ContentRequester {
-  friend class CarContentRequesterUnitTest;
-
  public:
   explicit CarContentRequester(
       const GURL& url,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs);
+      PrefService* prefs,
+      const bool only_structure = true);
   ~CarContentRequester() override;
 
   const GURL GetGatewayRequestUrl() const override;
+
+  std::unique_ptr<network::SimpleURLLoader> CreateLoader() const override;
+
+  private:
+    friend class CarContentRequesterUnitTest;
+    bool only_structure_;
 };
 
 }  // namespace ipfs::ipld

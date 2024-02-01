@@ -8,14 +8,11 @@
 #include "base/logging.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
 namespace {
-
-constexpr int64_t kMaxFileSizeInBytes = 8 * 1024 * 1024;  // 8 MB
 
 bool IsPublicGatewayLink(const GURL& ipfs_url, PrefService* prefs) {
   if (ipfs::IsIPFSScheme(ipfs_url)) {
@@ -43,25 +40,15 @@ bool ContentRequester::IsStarted() const {
   return is_started_;
 }
 
-void ContentRequester::Start() {
-  auto gateway_request_url = GetGatewayRequestUrl();
-
-  if (gateway_request_url.is_empty()) {
+void ContentRequester::Request(ContentRequestBufferCallback callback) {
+  if (GetGatewayRequestUrl().is_empty()) {
     return;
   }
 
+  buffer_ready_callback_ = std::move(callback);
+  url_loader_ = CreateLoader();
+  url_loader_->DownloadAsStream(url_loader_factory_.get(), this);
   is_started_ = true;
-
-  auto simple_url_loader = CreateURLLoader(gateway_request_url, "GET");
-
-  simple_url_loader->DownloadToTempFile(
-      url_loader_factory_.get(),
-      base::BindOnce(&ContentRequester::OnUrlDownloadedToTempFile,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     std::move(simple_url_loader)
-                     // std::move(download_job)
-                     ),
-      kMaxFileSizeInBytes);
 }
 
 const GURL ContentRequester::GetGatewayRequestUrl() const {
@@ -81,19 +68,31 @@ const GURL ContentRequester::GetGatewayRequestUrl() const {
   return url_res;
 }
 
-std::unique_ptr<network::ResourceRequest> ContentRequester::RequestContent(
-    const GURL& url) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = url;
+void ContentRequester::OnDataReceived(base::StringPiece string_piece,
+                                      base::OnceClosure resume) {
+  data_.append(string_piece);
+  bytes_received_ += string_piece.size();
 
-  return request;
+  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << bytes_received_;
+
+  // Continue to read data.
+  std::move(resume).Run();
 }
 
-void ContentRequester::OnUrlDownloadedToTempFile(
-    std::unique_ptr<network::SimpleURLLoader> simple_loader,
-    //    std::unique_ptr<Job> download_job,
-    base::FilePath temp_path) {
-  LOG(INFO) << "[IPFS] OnUrlDownloadedToTempFile: " << temp_path;
-}
+void ContentRequester::OnRetry(base::OnceClosure start_retry) {}
 
+void ContentRequester::OnComplete(bool success) {
+  LOG(INFO) << "[IPFS] OnComplete success:" << success
+            << "  bytes_received_:" << bytes_received_;
+  
+  if (buffer_ready_callback_) {
+    buffer_ready_callback_.Run(data_, true);
+  }
+
+  data_.clear();
+  bytes_received_ = 0;
+
+  is_started_ = false;
+  url_loader_.release();
+}
 }  // namespace ipfs::ipld
