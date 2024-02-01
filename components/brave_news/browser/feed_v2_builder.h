@@ -60,42 +60,7 @@ using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
 using PickArticles = base::RepeatingCallback<int(const ArticleInfos& infos)>;
 
-class FeedGenerationInfo {
- public:
-  FeedGenerationInfo(const std::string& locale,
-                     const FeedItems& feed_items,
-                     const Publishers& publishers,
-                     Channels channels,
-                     const Signals& signals,
-                     const std::vector<std::string>& suggestion_ids,
-                     const TopicsResult& topics);
-  FeedGenerationInfo(const FeedGenerationInfo&) = delete;
-  FeedGenerationInfo& operator=(const FeedGenerationInfo&) = delete;
-  ~FeedGenerationInfo();
-
-  const std::string& locale() { return locale_; }
-  ArticleInfos& articles() { return articles_; }
-
-  const Publishers& publishers() { return publishers_.get(); }
-  const Channels& channels() { return channels_; }
-  const Signals& signals() { return signals_.get(); }
-
-  base::span<const std::string>& suggestion_ids() { return suggestions_ids_; }
-
-  base::span<const TopicAndArticles>& topics() { return topics_; }
-
- private:
-  std::string locale_;
-  ArticleInfos articles_;
-
-  const raw_ref<const Publishers> publishers_;
-  const raw_ref<const Signals> signals_;
-  const Channels channels_;
-
-  base::span<const std::string> suggestions_ids_;
-  base::span<const TopicAndArticles> topics_;
-};
-
+class FeedGenerationInfo;
 class FeedV2Builder : public PublishersController::Observer {
  public:
   FeedV2Builder(
@@ -126,6 +91,7 @@ class FeedV2Builder : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* controller) override;
 
  private:
+  friend class FeedGenerationInfo;
   // FeedGenerator's will be called on a different thread. We guarantee that the
   // data in |builder| will not be changed while the generator is running.
   // Additionally, the generator should not modify data in |builder| (hence the
@@ -233,6 +199,44 @@ class FeedV2Builder : public PublishersController::Observer {
   mojo::RemoteSet<mojom::FeedListener> listeners_;
 
   base::WeakPtrFactory<FeedV2Builder> weak_ptr_factory_{this};
+};
+
+class FeedGenerationInfo {
+ public:
+  static FeedGenerationInfo From(const FeedV2Builder& builder);
+
+  FeedGenerationInfo(const FeedGenerationInfo&) = delete;
+  FeedGenerationInfo& operator=(const FeedGenerationInfo&) = delete;
+  ~FeedGenerationInfo();
+
+  const std::string& locale() const { return locale_; }
+  ArticleInfos& articles() { return articles_; }
+
+  const Publishers& publishers() const { return publishers_.get(); }
+  const std::vector<std::string>& channels() const { return channels_; }
+  const Signals& signals() const { return signals_.get(); }
+
+  base::span<const std::string>& suggestion_ids() { return suggestions_ids_; }
+
+  base::span<const TopicAndArticles>& topics() { return topics_; }
+
+ private:
+  FeedGenerationInfo(const std::string& locale,
+                     const FeedItems& feed_items,
+                     const Publishers& publishers,
+                     const Channels& channels,
+                     const Signals& signals,
+                     const std::vector<std::string>& suggestion_ids,
+                     const TopicsResult& topics);
+  std::string locale_;
+  ArticleInfos articles_;
+
+  const raw_ref<const Publishers> publishers_;
+  const raw_ref<const Signals> signals_;
+  std::vector<std::string> channels_;
+
+  base::span<const std::string> suggestions_ids_;
+  base::span<const TopicAndArticles> topics_;
 };
 
 }  // namespace brave_news
