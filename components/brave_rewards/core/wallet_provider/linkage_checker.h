@@ -40,6 +40,7 @@ class LinkageChecker : public RewardsEngineHelper {
   void UpdateSelfCustodyAvailableDict(endpoints::GetWallet::Value& value);
   void CheckLinkageCallback(endpoints::GetWallet::Result&& result);
 
+  bool check_in_progress_ = false;
   base::RepeatingTimer timer_;
   base::WeakPtrFactory<LinkageChecker> weak_factory_{this};
 };

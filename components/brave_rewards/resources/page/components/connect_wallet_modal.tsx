@@ -41,6 +41,14 @@ export function ConnectWalletModal (props: Props) {
   const [selectedProvider, setSelectedProvider] =
     React.useState<ExternalWalletProvider | null>(null)
 
+  React.useEffect(() => {
+    // While this overlay is displayed, hide any scrollbars attached to the
+    // document body, as that can result in two visible scrollbars on some
+    // platforms.
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; }
+  }, []);
+
   if (props.providers.length === 0) {
     return null
   }
