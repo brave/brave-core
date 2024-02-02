@@ -170,6 +170,10 @@ void PlaylistRenderFrameObserver::OnMediaHandlerDisconnect() {
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
+  if (render_frame()->GetWebFrame()->IsProvisional()) {
+    return;
+  }
+
   const auto& blink_preferences = render_frame()->GetBlinkPreferences();
   if (blink_preferences.hide_media_src_api) {
     HideMediaSourceAPI();
@@ -184,14 +188,9 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
 // network-fetchable HTTPS URLs. This script is from
 // https://github.com/brave/brave-ios/blob/development/Sources/Brave/Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js
 void PlaylistRenderFrameObserver::HideMediaSourceAPI() {
-  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
-  if (web_frame->IsProvisional()) {
-    return;
-  }
-
   DVLOG(2) << __FUNCTION__;
 
-  web_frame->ExecuteScript(
+  render_frame()->GetWebFrame()->ExecuteScript(
       blink::WebScriptSource(blink::WebString::FromASCII(R"(
         (function() {
           if (
@@ -207,6 +206,8 @@ void PlaylistRenderFrameObserver::HideMediaSourceAPI() {
 }
 
 void PlaylistRenderFrameObserver::InstallMediaDetector() {
+  DVLOG(2) << __FUNCTION__;
+
   static const char kScript[] = R"(
     (function(cb) {
       // Firstly, we try to get find all <video> or <audio> tags periodically,
@@ -250,15 +251,8 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
     })
   )";
 
-  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
-  if (web_frame->IsProvisional()) {
-    return;
-  }
-
-  DVLOG(2) << __FUNCTION__;
-
   LoadScriptWithSafeBuiltins(
-      web_frame, isolated_world_id_, kScript,
+      render_frame()->GetWebFrame(), isolated_world_id_, kScript,
       base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaUpdated,
                           weak_ptr_factory_.GetWeakPtr()));
 }
