@@ -230,6 +230,7 @@ TEST(CommonUtils, MakeAccountId) {
       id.unique_key,
       MakeAccountId(id.coin, id.keyring_id, id.kind, id.address)->unique_key);
 
+  // Coin differs
   for (const auto& coin : kAllCoins) {
     if (coin == mojom::CoinType::ETH) {
       continue;
@@ -243,6 +244,7 @@ TEST(CommonUtils, MakeAccountId) {
     }
   }
 
+  // Keyring differs
   for (const auto& keyring : kAllKeyrings) {
     if (keyring == mojom::KeyringId::kDefault) {
       continue;
@@ -273,6 +275,9 @@ TEST(CommonUtils, MakeAccountId) {
   EXPECT_TRUE(MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kDefault,
                             mojom::AccountKind::kDerived, "0xabc"));
   EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::BTC,
+                                    mojom::KeyringId::kDefault,
+                                    mojom::AccountKind::kDerived, "0xabc"));
+  EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::ZEC,
                                     mojom::KeyringId::kDefault,
                                     mojom::AccountKind::kDerived, "0xabc"));
   EXPECT_TRUE(AllCoinsTested());
@@ -309,6 +314,7 @@ TEST(CommonUtils, MakeBitcoinAccountId) {
                                    mojom::KeyringId::kBitcoin84,
                                    mojom::AccountKind::kDerived, 123));
 
+  // Coin differs
   for (const auto& coin : kAllCoins) {
     if (coin == mojom::CoinType::BTC) {
       continue;
@@ -317,6 +323,7 @@ TEST(CommonUtils, MakeBitcoinAccountId) {
         coin, mojom::KeyringId::kBitcoin84, mojom::AccountKind::kDerived, 123));
   }
 
+  // Keyring differs
   for (const auto& keyring : kAllKeyrings) {
     if (IsBitcoinKeyring(keyring)) {
       continue;

@@ -12,7 +12,7 @@
 namespace brave_wallet {
 
 bool AllCoinsTested() {
-  // Change hardcoded value here only when all failed callers have adequate
+  // Change hardcoded values here only when all failed callers have adequate
   // testing for newly added coin.
   return 5 == std::size(kAllCoins) && 8 == std::size(kAllKeyrings);
 }

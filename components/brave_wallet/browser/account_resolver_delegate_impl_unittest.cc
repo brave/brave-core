@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
@@ -16,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -31,6 +33,9 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
+    feature_list_.InitWithFeatures({features::kBraveWalletBitcoinFeature,
+                                    features::kBraveWalletZCashFeature},
+                                   {});
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     json_rpc_service_ =
@@ -55,8 +60,7 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
   }
 
  private:
-  base::test::ScopedFeatureList feature_list_{
-      features::kBraveWalletBitcoinFeature};
+  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
@@ -68,25 +72,20 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
 };
 
 TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
-  auto eth_acc = GetAccountUtils().EnsureEthAccount(0);
-  auto sol_acc = GetAccountUtils().EnsureSolAccount(0);
-  auto fil_acc = GetAccountUtils().EnsureFilAccount(0);
-  auto btc_acc = GetAccountUtils().EnsureBtcAccount(0);
+  std::vector<mojom::AccountInfoPtr> accounts;
+  for (const auto& keyring_id : kAllKeyrings) {
+    auto account = GetAccountUtils().EnsureAccount(keyring_id, 0);
+    accounts.push_back(std::move(account));
+  }
+
   auto hw_acc = GetAccountUtils().CreateEthHWAccount();
+  accounts.push_back(hw_acc.Clone());
 
   auto some_acc = GetAccountUtils().EnsureEthAccount(1);
+  accounts.push_back(some_acc.Clone());
 
-  ASSERT_TRUE(eth_acc);
-  ASSERT_TRUE(sol_acc);
-  ASSERT_TRUE(fil_acc);
-  ASSERT_TRUE(btc_acc);
-  ASSERT_TRUE(hw_acc);
-
-  EXPECT_EQ(some_acc->account_id,
-            resolver()->ResolveAccountId(nullptr, &some_acc->address));
-
-  for (auto& acc : {eth_acc.Clone(), sol_acc.Clone(), fil_acc.Clone(),
-                    btc_acc.Clone(), hw_acc.Clone()}) {
+  for (const auto& acc : accounts) {
+    ASSERT_TRUE(acc);
     const auto& account_id = acc->account_id;
     // Resolved by unique_key.
     EXPECT_EQ(account_id,
@@ -96,7 +95,8 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
     // Resolved by unique_key even if address is provided.
     EXPECT_EQ(account_id, resolver()->ResolveAccountId(&account_id->unique_key,
                                                        &some_acc->address));
-    if (account_id->coin != mojom::CoinType::BTC) {
+    if (account_id->coin != mojom::CoinType::BTC &&
+        account_id->coin != mojom::CoinType::ZEC) {
       // Resolved by address.
       EXPECT_EQ(account_id,
                 resolver()->ResolveAccountId(nullptr, &acc->address));
@@ -113,10 +113,16 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
                                             &hw_acc->address));
   EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &hw_acc->address));
 
-  // Btc acc has no address and should not be resolvable by an empty
+  // Btc-like accs have no address and should not be resolvable by an empty
   // address.
-  EXPECT_EQ("", btc_acc->address);
-  EXPECT_EQ("", btc_acc->account_id->address);
+  for (const auto& keyring_id :
+       {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoin84Testnet,
+        mojom::KeyringId::kZCashMainnet, mojom::KeyringId::kBitcoin84Testnet}) {
+    auto btc_like_account = GetAccountUtils().EnsureAccount(keyring_id, 0);
+    EXPECT_EQ("", btc_like_account->address);
+    EXPECT_EQ("", btc_like_account->account_id->address);
+  }
+
   const std::string empty_address = "";
   EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &empty_address));
   EXPECT_FALSE(resolver()->ResolveAccountId(&empty_address, &empty_address));
@@ -131,20 +137,17 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
 }
 
 TEST_F(AccountResolverDelegateImplUnitTest, ValidateAccountId) {
-  auto eth_acc = GetAccountUtils().EnsureEthAccount(0);
-  auto sol_acc = GetAccountUtils().EnsureSolAccount(0);
-  auto fil_acc = GetAccountUtils().EnsureFilAccount(0);
-  auto btc_acc = GetAccountUtils().EnsureBtcAccount(0);
+  std::vector<mojom::AccountInfoPtr> accounts;
+  for (const auto& keyring_id : kAllKeyrings) {
+    auto account = GetAccountUtils().EnsureAccount(keyring_id, 0);
+    accounts.push_back(std::move(account));
+  }
+
   auto hw_acc = GetAccountUtils().CreateEthHWAccount();
+  accounts.push_back(hw_acc.Clone());
 
-  ASSERT_TRUE(eth_acc);
-  ASSERT_TRUE(sol_acc);
-  ASSERT_TRUE(fil_acc);
-  ASSERT_TRUE(btc_acc);
-  ASSERT_TRUE(hw_acc);
-
-  for (auto& acc : {eth_acc.Clone(), sol_acc.Clone(), fil_acc.Clone(),
-                    btc_acc.Clone(), hw_acc.Clone()}) {
+  for (const auto& acc : accounts) {
+    ASSERT_TRUE(acc);
     EXPECT_TRUE(resolver()->ValidateAccountId(acc->account_id));
   }
   EXPECT_TRUE(AllCoinsTested());

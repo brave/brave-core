@@ -13,6 +13,7 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
@@ -229,31 +230,17 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   ASSERT_TRUE(result->Equals(chain));
 
   {
-    mojom::NetworkInfo test_chain = GetTestNetworkInfo1();
-
-    test_chain.coin = mojom::CoinType::ETH;
-    auto eth_value = NetworkInfoToValue(test_chain);
-    EXPECT_EQ(eth_value.FindInt("coin"),
-              static_cast<int>(mojom::CoinType::ETH));
-    EXPECT_TRUE(eth_value.FindBool("is_eip1559"));
-
-    test_chain.coin = mojom::CoinType::FIL;
-    auto fil_value = NetworkInfoToValue(test_chain);
-    EXPECT_EQ(fil_value.FindInt("coin"),
-              static_cast<int>(mojom::CoinType::FIL));
-    EXPECT_FALSE(fil_value.FindBool("is_eip1559"));
-
-    test_chain.coin = mojom::CoinType::SOL;
-    auto sol_value = NetworkInfoToValue(test_chain);
-    EXPECT_EQ(sol_value.FindInt("coin"),
-              static_cast<int>(mojom::CoinType::SOL));
-    EXPECT_FALSE(sol_value.FindBool("is_eip1559"));
-
-    test_chain.coin = mojom::CoinType::BTC;
-    auto btc_value = NetworkInfoToValue(test_chain);
-    EXPECT_EQ(btc_value.FindInt("coin"),
-              static_cast<int>(mojom::CoinType::BTC));
-    EXPECT_FALSE(btc_value.FindBool("is_eip1559"));
+    for (const auto& coin : kAllCoins) {
+      mojom::NetworkInfo test_chain = GetTestNetworkInfo1();
+      test_chain.coin = coin;
+      auto network_value = NetworkInfoToValue(test_chain);
+      EXPECT_EQ(network_value.FindInt("coin"), static_cast<int>(coin));
+      if (coin == mojom::CoinType::ETH) {
+        EXPECT_FALSE(network_value.FindBool("is_eip1559").value());
+      } else {
+        EXPECT_FALSE(network_value.FindBool("is_eip1559"));
+      }
+    }
 
     EXPECT_TRUE(AllCoinsTested());
   }
@@ -288,6 +275,12 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
     EXPECT_EQ(value_network->coin, mojom::CoinType::BTC);
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet}));
+
+    data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::ZEC));
+    value_network = ValueToNetworkInfo(data_value);
+    EXPECT_EQ(value_network->coin, mojom::CoinType::ZEC);
+    EXPECT_THAT(value_network->supported_keyrings,
+                ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
     EXPECT_TRUE(AllCoinsTested());
   }
