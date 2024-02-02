@@ -13,16 +13,17 @@
     android:fillViewport="true"
     android:theme="@style/BraveWalletOnboarding">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/before_we_begin"
             style="@style/BraveWalletTextViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
             android:gravity="center_horizontal"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="14dp"
@@ -33,76 +34,75 @@
             android:textSize="22sp"/>
 
         <TextView
+            android:id="@+id/wallet_accept_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="40dp"
+            android:layout_below="@+id/before_we_begin"
+            android:layout_alignParentStart="true"
             android:text="@string/wallet_accept_items"
             android:textColor="@color/wallet_onboarding_secondary_text_color"
             android:lineSpacingExtra="4sp"
             android:textSize="14sp"/>
 
-        <LinearLayout
+        <CheckBox
+            android:id="@+id/self_custody_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/wallet_accept_items" />
+        <TextView
+            android:id="@+id/understand_self_custody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@+id/wallet_accept_items"
+            android:layout_toEndOf="@+id/self_custody_check_box"
+            android:gravity="start"
+            android:text="@string/understand_self_custody"
+            android:textColor="@color/wallet_text_color"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp"/>
 
-            <CheckBox
-                android:id="@+id/self_custody_check_box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:gravity="start"
-                android:text="@string/understand_self_custody"
-                android:textColor="@color/wallet_text_color"
-                android:lineSpacingExtra="4sp"
-                android:textSize="14sp"/>
-        </LinearLayout>
-
-        <LinearLayout
+        <CheckBox
+            android:id="@+id/terms_of_use_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_below="@+id/understand_self_custody"
+            android:layout_alignParentStart="true"/>
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@+id/understand_self_custody"
+            android:layout_toEndOf="@+id/terms_of_use_check_box"
+            android:gravity="start"
+            android:text="@string/accept_terms_of_use"
+            android:textColor="@color/wallet_text_color"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp"/>
 
-            <CheckBox
-                android:id="@+id/terms_of_use_check_box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:gravity="start"
-                android:text="@string/accept_terms_of_use"
-                android:textColor="@color/wallet_text_color"
-                android:lineSpacingExtra="4sp"
-                android:textSize="14sp"/>
-        </LinearLayout>
-
-        <FrameLayout
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/continue_button"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/continue_button"
-                android:layout_width="match_parent"
-                android:layout_gravity="bottom"
-                android:gravity="center"
-                android:text="@string/continue_text"
-                android:enabled="false"
-                android:alpha="0.5"
-                android:layout_marginBottom="40dp"
-                android:layout_marginHorizontal="16dp"
-                style="@style/BraveWalletOnboardingButton"/>
-        </FrameLayout>
-    </LinearLayout>
+            android:gravity="center"
+            android:text="@string/continue_text"
+            android:enabled="false"
+            android:alpha="0.5"
+            android:layout_marginBottom="40dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            style="@style/BraveWalletOnboardingButton"/>
+    </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>
