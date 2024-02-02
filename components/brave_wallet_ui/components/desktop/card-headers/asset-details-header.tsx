@@ -42,7 +42,7 @@ import { AssetDetailsMenu } from '../wallet-menus/asset-details-menu'
 
 // Styled Components
 import {
-  CircleButton,
+  MenuButton,
   ButtonIcon,
   MenuWrapper,
   HorizontalDivider
@@ -169,7 +169,7 @@ export const AssetDetailsHeader = (props: Props) => {
       justifyContent='space-between'
     >
       <Row width='unset'>
-        <CircleButton
+        <MenuButton
           size={28}
           marginRight={16}
           onClick={onBack}
@@ -178,7 +178,7 @@ export const AssetDetailsHeader = (props: Props) => {
             size={16}
             name='arrow-left'
           />
-        </CircleButton>
+        </MenuButton>
         <Row
           width='unset'
           gap='8px'
@@ -259,11 +259,11 @@ export const AssetDetailsHeader = (props: Props) => {
               <HorizontalDivider />
               <HorizontalSpace space='16px' />
               <MenuWrapper ref={assetDetailsMenuRef}>
-                <CircleButton
+                <MenuButton
                   onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
                 >
                   <ButtonIcon name='more-vertical' />
-                </CircleButton>
+                </MenuButton>
                 {showAssetDetailsMenu && (
                   <AssetDetailsMenu
                     assetSymbol={selectedAsset?.symbol ?? ''}
