@@ -101,11 +101,11 @@ function ContextMenuAssistant_(
           actions: [
             {
               text: getLocale('addFeedbackButtonLabel'),
-              kind: 'plain',
+              kind: 'plain-faint',
               action: () => setIsFormVisible(true)
             }
           ]
-        })
+        }, 5000)
       })
   }
 
