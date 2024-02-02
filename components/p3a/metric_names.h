@@ -50,6 +50,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.DNS.AutoSecureRequests",
     "Brave.DNS.SecureSetting",
     "Brave.Extensions.AdBlock",
+    "Brave.IOS.IsLikelyDefault",
 
     // IPFS
     "Brave.IPFS.DaemonRunTime",
