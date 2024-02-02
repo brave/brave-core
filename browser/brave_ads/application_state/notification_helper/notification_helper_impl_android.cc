@@ -41,7 +41,7 @@ bool IsBraveAdsNotificationChannelEnabled(const bool is_foreground) {
     return true;
   }
 
-  JNIEnv* env = base::android::AttachCurrentThread();
+  JNIEnv* env = jni_zero::AttachCurrentThread();
 
   const auto j_channel_id =
       (is_foreground) ? Java_BraveAds_getBraveAdsChannelId(env)
@@ -61,7 +61,7 @@ NotificationHelperImplAndroid::NotificationHelperImplAndroid() = default;
 NotificationHelperImplAndroid::~NotificationHelperImplAndroid() = default;
 
 bool NotificationHelperImplAndroid::CanShowNotifications() {
-  JNIEnv* env = base::android::AttachCurrentThread();
+  JNIEnv* env = jni_zero::AttachCurrentThread();
   const int status =
       Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
 
@@ -88,7 +88,7 @@ bool NotificationHelperImplAndroid::CanShowNotifications() {
 
 bool NotificationHelperImplAndroid::
     CanShowSystemNotificationsWhileBrowserIsBackgrounded() const {
-  JNIEnv* env = base::android::AttachCurrentThread();
+  JNIEnv* env = jni_zero::AttachCurrentThread();
   return Java_BraveAdsSignupDialog_showAdsInBackground(env);
 }
 
@@ -96,7 +96,7 @@ bool NotificationHelperImplAndroid::ShowOnboardingNotification() {
   const bool should_show_custom_notifications =
       base::FeatureList::IsEnabled(kCustomNotificationAdFeature);
 
-  JNIEnv* env = base::android::AttachCurrentThread();
+  JNIEnv* env = jni_zero::AttachCurrentThread();
   Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(
       env, should_show_custom_notifications);
 
