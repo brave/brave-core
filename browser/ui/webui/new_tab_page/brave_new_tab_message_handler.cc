@@ -567,15 +567,15 @@ void BraveNewTabMessageHandler::OnPreferencesChanged() {
 }
 
 base::Value::Dict BraveNewTabMessageHandler::GetAdsDataDictionary() const {
-  base::Value::Dict ads_data;
+  if (!ads_service_) {
+    return {};
+  }
 
-  ads_data.Set(kNeedsBrowserUpgradeToServeAds,
-               browser_upgrade_required_to_serve_ads_);
-
-  return ads_data;
+  return base::Value::Dict().Set(
+      kNeedsBrowserUpgradeToServeAds,
+      ads_service_->IsBrowserUpgradeRequiredToServeAds());
 }
 
 void BraveNewTabMessageHandler::OnBrowserUpgradeRequiredToServeAds() {
-  browser_upgrade_required_to_serve_ads_ = true;
   FireWebUIListener("new-tab-ads-data-updated", GetAdsDataDictionary());
 }
