@@ -19,10 +19,6 @@ struct FilterListsView: View {
   @State private var expectedEnabledSources: Set<CachedAdBlockEngine.Source> = Set(AdBlockStats.shared.enabledSources)
   private let dateFormatter = RelativeDateTimeFormatter()
   
-  private var reachedMaxLimit: Bool {
-    expectedEnabledSources.count >= AdBlockStats.maxNumberOfAllowedFilterLists
-  }
-  
   var body: some View {
     List {
       Section {
@@ -85,7 +81,6 @@ struct FilterListsView: View {
             .foregroundColor(Color(.secondaryBraveLabel))
         }
       }
-      .disabled(!filterList.isEnabled && reachedMaxLimit)
       .onChange(of: filterList.isEnabled) { isEnabled in
         if isEnabled {
           expectedEnabledSources.insert(filterList.engineSource)
@@ -124,7 +119,6 @@ struct FilterListsView: View {
             }
           }
         }
-        .disabled(reachedMaxLimit && !filterListURL.setting.isEnabled)
         .onChange(of: filterListURL.setting.isEnabled) { isEnabled in
           if isEnabled {
             expectedEnabledSources.insert(filterListURL.setting.engineSource)

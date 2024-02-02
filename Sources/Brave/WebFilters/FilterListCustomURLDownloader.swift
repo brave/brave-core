@@ -89,7 +89,7 @@ actor FilterListCustomURLDownloader: ObservableObject {
     let uuid = await filterListCustomURL.setting.uuid
       
     // Add/remove the resource depending on if it is enabled/disabled
-    guard let resourcesInfo = await FilterListResourceDownloader.shared.resourcesInfo else {
+    guard let resourcesInfo = await AdBlockStats.shared.resourcesInfo else {
       assertionFailure("This should not have been called if the resources are not ready")
       return
     }

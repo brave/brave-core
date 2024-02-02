@@ -18,16 +18,6 @@ extension AdblockEngine {
     try useResources(fromFileURL: resourcesFileURL)
   }
   
-  convenience init(datFileURL fileURL: URL, resourcesFileURL: URL) throws {
-    self.init()
-    
-    if try !deserialize(data: Data(contentsOf: fileURL)) {
-      throw CompileError.couldNotDeserializeDATFile
-    }
-    
-    try useResources(fromFileURL: resourcesFileURL)
-  }
-  
   /// Combine all resources of type rule lists to one single string
   private static func combineAllRuleLists(from infos: [CachedAdBlockEngine.FilterListInfo]) -> String {
     // Combine all rule lists that need to be injected during initialization
@@ -39,8 +29,6 @@ extension AdblockEngine {
         }
         
         return String(data: data, encoding: .utf8)
-      case .dat:
-        return nil
       }
     }
     

@@ -82,6 +82,12 @@ actor ContentBlockerManager {
     fileprivate static let filterListPrefix = "filter-list"
     fileprivate static let filterListURLPrefix = "filter-list-url"
     
+    /// These are all types that are non-configurable by the user 
+    /// and don't need additional stored or fetched catalogues to get a complete list.
+    static var allStaticTypes: Set<BlocklistType> {
+      return Set(ContentBlockerManager.GenericBlocklistType.allCases.map { .generic($0) })
+    }
+    
     case generic(GenericBlocklistType)
     case filterList(componentId: String, isAlwaysAggressive: Bool)
     case customFilterList(uuid: String)

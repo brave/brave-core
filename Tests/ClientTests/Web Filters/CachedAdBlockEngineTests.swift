@@ -61,7 +61,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
     
     let filterListInfo = CachedAdBlockEngine.FilterListInfo(
       source: .adBlock,
-      localFileURL: Bundle.module.url(forResource: "cdbbhgbmjhfnhnmgeddbliobbofkgdhe", withExtension: "txt")!,
+      localFileURL: Bundle.module.url(forResource: "iodkpdagapdfkphljnddpjlldadblomo", withExtension: "txt")!,
       version: "bundled", fileType: .text
     )
     
@@ -83,14 +83,9 @@ final class CachedAdBlockEngineTests: XCTestCase {
   
   func testCompilationofResources() throws {
     let textFilterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .filterList(componentId: "cdbbhgbmjhfnhnmgeddbliobbofkgdhe"),
-      localFileURL: Bundle.module.url(forResource: "cdbbhgbmjhfnhnmgeddbliobbofkgdhe", withExtension: "txt")!,
+      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo"),
+      localFileURL: Bundle.module.url(forResource: "iodkpdagapdfkphljnddpjlldadblomo", withExtension: "txt")!,
       version: "bundled", fileType: .text
-    )
-    let datFilterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .adBlock,
-      localFileURL: Bundle.module.url(forResource: "cffkpbalmllkdoenhmdmpbkajipdjfam", withExtension: "dat")!,
-      version: "bundled", fileType: .dat
     )
     let resourcesInfo = CachedAdBlockEngine.ResourcesInfo(
       localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!, version: "bundled"
@@ -101,7 +96,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
     
     Task { @MainActor in
       let filterListInfos = [
-        textFilterListInfo, datFilterListInfo
+        textFilterListInfo
       ]
       
       await filterListInfos.asyncConcurrentForEach { filterListInfo in
@@ -123,7 +118,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
           // We should have no scripts injected
           XCTAssertEqual(sameDomainTypes.count, 0)
           
-          if engine.filterListInfo == datFilterListInfo {
+          if engine.filterListInfo == textFilterListInfo {
             // This engine file contains some scriplet rules so we can test this part is working
             let crossDomainTypes = try await engine.makeEngineScriptTypes(
               frameURL: URL(string:  "https://reddit.com")!, isMainFrame: true, domain: domain, index: 0
@@ -151,7 +146,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
   func testPerformance() throws {
     // Given
     // Ad block data and an engine manager
-    let sampleFilterListURL = Bundle.module.url(forResource: "cdbbhgbmjhfnhnmgeddbliobbofkgdhe", withExtension: "txt")!
+    let sampleFilterListURL = Bundle.module.url(forResource: "iodkpdagapdfkphljnddpjlldadblomo", withExtension: "txt")!
     let resourcesInfo = CachedAdBlockEngine.ResourcesInfo(
       localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!, version: "bundled"
     )

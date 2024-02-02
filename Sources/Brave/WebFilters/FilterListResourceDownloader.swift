@@ -26,8 +26,6 @@ public actor FilterListResourceDownloader {
   /// A marker that says that we loaded shield components for the first time.
   /// This boolean is used to configure this downloader only once after `AdBlockService` generic shields have been loaded.
   private var registeredFilterLists = false
-  /// The path to the resources file
-  private(set) var resourcesInfo: CachedAdBlockEngine.ResourcesInfo?
   
   init() {
     self.adBlockServiceTasks = [:]
@@ -40,27 +38,37 @@ public actor FilterListResourceDownloader {
   /// - Warning: This method loads filter list settings.
   /// You need to wait for `DataController.shared.initializeOnce()` to be called first before invoking this method
   public func loadFilterListSettingsAndCachedData() async {
-    if let defaultFilterListFolderURL = await FilterListSetting.makeFolderURL(
-      forFilterListFolderPath: Preferences.AppState.lastFilterListCatalogueComponentFolderPath.value
-    ), FileManager.default.fileExists(atPath: defaultFilterListFolderURL.path),
-       let resourcesFolderURL = await FilterListSetting.makeFolderURL(
-         forFilterListFolderPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
-       ), FileManager.default.fileExists(atPath: resourcesFolderURL.path) {
-      let resourcesInfo = await didUpdateResourcesComponent(folderURL: resourcesFolderURL)
-      async let startedCustomFilterListsDownloader: Void = FilterListCustomURLDownloader.shared.startIfNeeded()
-      async let cachedFilterLists: Void = compileCachedFilterLists(resourcesInfo: resourcesInfo)
-      async let compileDefaultEngine: Void = compileDefaultEngine(defaultFilterListFolderURL: defaultFilterListFolderURL, resourcesInfo: resourcesInfo)
-      _ = await (startedCustomFilterListsDownloader, cachedFilterLists, compileDefaultEngine)
-    } else if let legacyComponentFolderURL = await FilterListSetting.makeFolderURL(
-      forFilterListFolderPath: Preferences.AppState.lastLegacyDefaultFilterListFolderPath.value
-    ), FileManager.default.fileExists(atPath: legacyComponentFolderURL.path) {
-      // TODO: @JS Remove this after this release. Its here just so users can upgrade without a pause to their adblocking
-      let resourcesInfo = await didUpdateResourcesComponent(folderURL: legacyComponentFolderURL)
-      async let startedCustomFilterListsDownloader: Void = FilterListCustomURLDownloader.shared.startIfNeeded()
-      async let cachedFilterLists: Void = compileCachedFilterLists(resourcesInfo: resourcesInfo)
-      async let compileDefaultEngine: Void = compileDefaultEngine(defaultFilterListFolderURL: legacyComponentFolderURL, resourcesInfo: resourcesInfo)
-      _ = await (startedCustomFilterListsDownloader, cachedFilterLists, compileDefaultEngine)
+    guard let resourcesFolderURL = await FilterListSetting.makeFolderURL(
+      forComponentFolderPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
+    ), FileManager.default.fileExists(atPath: resourcesFolderURL.path) else {
+      // We need this for all filter lists so we can't compile anything until we download it
+      return
     }
+    
+    let resourcesInfo = await didUpdateResourcesComponent(folderURL: resourcesFolderURL)
+    async let startedCustomFilterListsDownloader: Void = FilterListCustomURLDownloader.shared.startIfNeeded()
+    async let cachedFilterLists: Void = compileCachedFilterLists(resourcesInfo: resourcesInfo)
+    async let compileDefaultEngine: Void = compileDefaultFilterList(resourcesInfo: resourcesInfo)
+    
+    _ = await (startedCustomFilterListsDownloader, cachedFilterLists, compileDefaultEngine)
+  }
+  
+  /// Compile the default filter list from cache
+  private func compileDefaultFilterList(resourcesInfo: CachedAdBlockEngine.ResourcesInfo) async {
+    guard let defaultFilterListFolderURL = await FilterListSetting.makeFolderURL(
+      forComponentFolderPath: Preferences.AppState.lastFilterListCatalogueComponentFolderPath.value
+    ), FileManager.default.fileExists(atPath: defaultFilterListFolderURL.path) else {
+      // We don't really need this but its the most important filter list
+      // so without this not much point compiling anything else because we probably don't have it
+      return
+    }
+    
+    await compileEngine(
+      filterListFolderURL: defaultFilterListFolderURL, resourcesInfo: resourcesInfo,
+      engineSource: .adBlock, isAlwaysAggressive: false,
+      // This is false because we use a slim-list version of the list downloaded from S3
+      compileContentBlockers: false
+    )
   }
   
   /// This function adds engine resources to `AdBlockManager` from cached data representing the enabled filter lists.
@@ -106,7 +114,11 @@ public actor FilterListResourceDownloader {
   public func start(with adBlockService: AdblockService) {
     self.adBlockService = adBlockService
     
-    // Start listening to changes to the install url
+    // Here we register components in a specific order in order to avoid race conditions:
+    // 1. All our filter lists need the resources component. So we register this first
+    // 2. We also register the catalogue component since we don't need the resources for this
+    // 3. When either of the above triggers we check if we have our resources and catalogue 
+    // and if we do have both we register all of the filter lists.
     Task { @MainActor in
       for await folderURL in adBlockService.resourcesComponentStream() {
         guard let folderURL = folderURL else {
@@ -127,7 +139,7 @@ public actor FilterListResourceDownloader {
       for await filterListEntries in adBlockService.filterListCatalogComponentStream() {
         FilterListStorage.shared.loadFilterLists(from: filterListEntries)
         
-        if await self.resourcesInfo != nil {
+        if await AdBlockStats.shared.resourcesInfo != nil {
           await registerAllFilterListsIfNeeded(with: adBlockService)
         }
       }
@@ -156,12 +168,16 @@ public actor FilterListResourceDownloader {
         }
         
         await Task { @MainActor in
-          let folderSubPath = FilterListSetting.extractFolderPath(fromFilterListFolderURL: folderURL)
+          let folderSubPath = FilterListSetting.extractFolderPath(fromComponentFolderURL: folderURL)
           Preferences.AppState.lastFilterListCatalogueComponentFolderPath.value = folderSubPath
         }.value
         
-        if let resourcesInfo = await self.resourcesInfo {
-          await compileDefaultEngine(defaultFilterListFolderURL: folderURL, resourcesInfo: resourcesInfo)
+        if let resourcesInfo = await AdBlockStats.shared.resourcesInfo {
+          await compileEngine(
+            filterListFolderURL: folderURL, resourcesInfo: resourcesInfo,
+            engineSource: .adBlock, isAlwaysAggressive: false, 
+            compileContentBlockers: false // This is set to false because we unfortunately have to use the slim list version of these lists
+          )
         }
       }
     }
@@ -171,7 +187,7 @@ public actor FilterListResourceDownloader {
   /// When the 
   private func didUpdateResourcesComponent(folderURL: URL) async -> CachedAdBlockEngine.ResourcesInfo {
     await Task { @MainActor in
-      let folderSubPath = FilterListSetting.extractFolderPath(fromFilterListFolderURL: folderURL)
+      let folderSubPath = FilterListSetting.extractFolderPath(fromComponentFolderURL: folderURL)
       Preferences.AppState.lastAdBlockResourcesFolderPath.value = folderSubPath
     }.value
     
@@ -181,29 +197,31 @@ public actor FilterListResourceDownloader {
       version: version
     )
     
-    self.resourcesInfo = resourcesInfo
+    await AdBlockStats.shared.updateIfNeeded(resourcesInfo: resourcesInfo)
     return resourcesInfo
   }
   
-  /// Compile the general engine from the given `AdblockService` `shieldsInstallPath` `URL`.
-  private func compileDefaultEngine(defaultFilterListFolderURL folderURL: URL, resourcesInfo: CachedAdBlockEngine.ResourcesInfo) async {
-    // TODO: @JS Remove this on the next update. This is here so users don't have a pause to their ad-blocking
-    let isLegacy = folderURL.pathExtension == "dat"
-    let localFileURL = isLegacy ? folderURL.appendingPathComponent("rs-ABPFilterParserData.dat", conformingTo: .data) : folderURL.appendingPathComponent("list.txt", conformingTo: .text)
+  /// Compile the engine from the given `AdblockService` `shieldsInstallPath` `URL`.
+  private func compileEngine(
+    filterListFolderURL folderURL: URL, resourcesInfo: CachedAdBlockEngine.ResourcesInfo, 
+    engineSource: CachedAdBlockEngine.Source,
+    isAlwaysAggressive: Bool, compileContentBlockers: Bool
+  ) async {
+    let localFileURL = folderURL.appendingPathComponent("list.txt", conformingTo: .text)
     
     let version = folderURL.lastPathComponent
     let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .adBlock,
+      source: engineSource,
       localFileURL: localFileURL,
-      version: version, fileType: isLegacy ? .dat : .text
+      version: version, fileType: .text
     )
     let lazyInfo = AdBlockStats.LazyFilterListInfo(
-      filterListInfo: filterListInfo, isAlwaysAggressive: false
+      filterListInfo: filterListInfo, isAlwaysAggressive: isAlwaysAggressive
     )
     
     await AdBlockStats.shared.compile(
       lazyInfo: lazyInfo, resourcesInfo: resourcesInfo,
-      compileContentBlockers: false
+      compileContentBlockers: compileContentBlockers
     )
   }
   
@@ -253,7 +271,7 @@ public actor FilterListResourceDownloader {
     adBlockServiceTasks[filterList.entry.componentId] = Task { @MainActor in
       for await folderURL in adBlockService.register(filterList: filterList) {
         guard let folderURL = folderURL else { continue }
-        guard let resourcesInfo = await self.resourcesInfo else {
+        guard let resourcesInfo = await AdBlockStats.shared.resourcesInfo else {
           assertionFailure("We shouldn't have started downloads before getting this value")
           return
         }

@@ -26,11 +26,10 @@ public class CachedAdBlockEngine {
   }
   
   public enum FileType: Hashable, CustomDebugStringConvertible {
-    case dat, text
+    case text
     
     public var debugDescription: String {
       switch self {
-      case .dat: return "dat"
       case .text: return "txt"
       }
     }
@@ -201,13 +200,6 @@ public class CachedAdBlockEngine {
     filterListInfo: FilterListInfo, resourcesInfo: ResourcesInfo, isAlwaysAggressive: Bool
   ) throws -> CachedAdBlockEngine {
     switch filterListInfo.fileType {
-    case .dat:
-      let engine = try AdblockEngine(datFileURL: filterListInfo.localFileURL, resourcesFileURL: resourcesInfo.localFileURL)
-      let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
-      return CachedAdBlockEngine(
-        engine: engine, filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-        serialQueue: serialQueue, isAlwaysAggressive: isAlwaysAggressive
-      )
     case .text:
       let engine = try AdblockEngine(textFileURL: filterListInfo.localFileURL, resourcesFileURL: resourcesInfo.localFileURL)
       let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")

@@ -25,11 +25,11 @@ public final class FilterListSetting: NSManagedObject, CRUD {
 
   @MainActor public var folderURL: URL? {
     get {
-      return Self.makeFolderURL(forFilterListFolderPath: folderPath)
+      return Self.makeFolderURL(forComponentFolderPath: folderPath)
     }
     set {
       // We need to extract the path. We don't want to store the full URL
-      self.folderPath = Self.extractFolderPath(fromFilterListFolderURL: newValue)
+      self.folderPath = Self.extractFolderPath(fromComponentFolderURL: newValue)
     }
   }
   
@@ -98,13 +98,17 @@ public final class FilterListSetting: NSManagedObject, CRUD {
     return NSEntityDescription.entity(forEntityName: "FilterListSetting", in: context)!
   }
 
-  public static func makeFolderURL(forFilterListFolderPath folderPath: String?) -> URL? {
+  /// Since the folder changes upon relaunches we cannot store the whole folder but the path.
+  /// Here we re-construct the actual folder
+  public static func makeFolderURL(forComponentFolderPath folderPath: String?) -> URL? {
     // Combine the path with the base URL
     guard let folderPath = folderPath else { return nil }
     return filterListBaseFolderURL?.appendingPathComponent(folderPath)
   }
   
-  public static func extractFolderPath(fromFilterListFolderURL folderURL: URL?) -> String? {
+  /// Since the folder changes upon relaunches we cannot store the whole folder but the path.
+  /// Here we extract the path from the folder URL for storage
+  public static func extractFolderPath(fromComponentFolderURL folderURL: URL?) -> String? {
     guard let baseURL = filterListBaseFolderURL, let folderURL = folderURL else {
       return nil
     }
