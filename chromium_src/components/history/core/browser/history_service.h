@@ -15,7 +15,14 @@ class BraveHistoryQuickProviderTest;
   friend class ::BraveHistoryQuickProviderTest; \
   void CleanupUnused
 
+#define AddRelatedSearchesForVisit                                     \
+  GetKnownToSyncCount(                                                 \
+      base::OnceCallback<void(history::HistoryCountResult)> callback); \
+  void AddRelatedSearchesForVisit
+
 #include "src/components/history/core/browser/history_service.h"  // IWYU pragma: export
+
+#undef AddRelatedSearchesForVisit
 
 #undef Cleanup
 

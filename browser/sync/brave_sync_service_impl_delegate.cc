@@ -12,6 +12,7 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
+#include "components/history/core/browser/history_service.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
@@ -19,8 +20,10 @@
 namespace syncer {
 
 BraveSyncServiceImplDelegate::BraveSyncServiceImplDelegate(
-    DeviceInfoSyncService* device_info_sync_service)
+    DeviceInfoSyncService* device_info_sync_service,
+    history::HistoryService* history_service)
     : device_info_sync_service_(device_info_sync_service),
+      history_service_(history_service),
       weak_ptr_factory_(this) {
   DCHECK(device_info_sync_service_);
 
@@ -97,6 +100,17 @@ void BraveSyncServiceImplDelegate::RecordP3ASyncStatus() {
 void BraveSyncServiceImplDelegate::SetLocalDeviceAppearedCallback(
     base::OnceCallback<void()> local_device_appeared_callback) {
   local_device_appeared_callback_ = std::move(local_device_appeared_callback);
+}
+
+void BraveSyncServiceImplDelegate::GetKnownToSyncHistoryCount(
+    base::OnceCallback<void(std::pair<bool, int>)> callback) {
+  history_service_->GetKnownToSyncCount(base::BindOnce(
+      [](base::OnceCallback<void(std::pair<bool, int>)> callback,
+         history::HistoryCountResult known_to_sync) {
+        std::move(callback).Run(
+            std::pair(known_to_sync.success, known_to_sync.count));
+      },
+      std::move(callback)));
 }
 
 }  // namespace syncer
