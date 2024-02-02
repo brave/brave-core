@@ -23,7 +23,6 @@ const createDist = require('../lib/createDist')
 const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
-const pylint = require('../lib/pylint')
 const perfTests = require('../lib/perfTests')
 
 const collect = (value, accumulator) => {
@@ -347,11 +346,6 @@ program
   .action(test.bind(null, parsedArgs.unknown))
 
 program
-  .command('lint')
-  .option('--base <base branch>', 'set the destination branch for the PR')
-  .action(util.lint)
-
-program
   .command('presubmit')
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option('--all', 'run presubmit on all files')
@@ -360,13 +354,6 @@ program
   .option('--verbose [arg]', 'pass --verbose 2 for more debugging info', JSON.parse)
   .option('--fix', 'try to fix found issues automatically')
   .action(util.presubmit)
-
-program
-  .command('pylint')
-  .option('--base <base_branch>', 'only analyse files changed relative to base_branch')
-  .option('--all', 'run pylint on all files')
-  .option('--report', 'produce a parseable report file')
-  .action(pylint)
 
 program
   .command('format')
