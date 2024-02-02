@@ -19,9 +19,7 @@ import androidx.fragment.app.FragmentActivity;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 
-/**
- * Onboarding fragment showing terms and conditions to accept before using Brave Wallet.
- */
+/** Onboarding fragment showing terms and conditions to accept before using Brave Wallet. */
 public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment {
     @NonNull
     public static OnboardingTermsOfUseFragment newInstance() {
@@ -49,8 +47,8 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment {
         super.onViewCreated(view, savedInstanceState);
 
         AppCompatButton continueButton = view.findViewById(R.id.continue_button);
-//        continueButton.setAlpha(1f);
-//        continueButton.setEnabled(true);
+        //        continueButton.setAlpha(1f);
+        //        continueButton.setEnabled(true);
         continueButton.setOnClickListener(
                 v -> {
                     if (mOnNextPage != null) {
