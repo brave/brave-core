@@ -164,6 +164,12 @@ mod ffi {
             order_id: String,
             receipt: String,
         );
+        fn create_order_from_receipt(
+            self: &CppSDK,
+            callback: CreateOrderFromReceiptCallback,
+            callback_state: UniquePtr<CreateOrderFromReceiptCallbackState>,
+            receipt: String,
+        );
 
         fn result_to_string(result: &SkusResult) -> String;
     }
@@ -203,6 +209,8 @@ mod ffi {
         type CredentialSummaryCallback = crate::CredentialSummaryCallback;
         type SubmitReceiptCallbackState;
         type SubmitReceiptCallback = crate::SubmitReceiptCallback;
+        type CreateOrderFromReceiptCallbackState;
+        type CreateOrderFromReceiptCallback = crate::CreateOrderFromReceiptCallback;
     }
 }
 
@@ -365,6 +373,27 @@ impl CppSDK {
 
         self.sdk.client.try_run_until_stalled();
     }
+    fn create_order_from_receipt(
+        self: &CppSDK,
+        callback: CreateOrderFromReceiptCallback,
+        callback_state: UniquePtr<ffi::CreateOrderFromReceiptCallbackState>,
+        receipt: String,
+    ) {
+        let spawner = self.sdk.client.spawner.clone();
+        if spawner
+            .spawn_local(create_order_from_receipt_task(
+                self.sdk.clone(),
+                callback,
+                callback_state,
+                receipt,
+            ))
+            .is_err()
+        {
+            debug!("pool is shutdown");
+        }
+
+        self.sdk.client.try_run_until_stalled();
+    }
 }
 
 #[allow(improper_ctypes_definitions)]
@@ -486,7 +515,7 @@ async fn credential_summary_task(
     {
         Ok(Some(summary)) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary),
         Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, "{}"), /* none, empty */
-        Err(e) => callback.0(callback_state.into_raw(), e, "{}"), // none, empty
+        Err(e) => callback.0(callback_state.into_raw(), e, "{}"),                     // none, empty
     }
 }
 
@@ -510,5 +539,36 @@ async fn submit_receipt_task(
     match sdk.submit_receipt(&order_id, &receipt).await.map_err(|e| e.into()) {
         Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
         Err(e) => callback.0(callback_state.into_raw(), e),
+    }
+}
+
+#[allow(improper_ctypes_definitions)]
+#[repr(transparent)]
+pub struct CreateOrderFromReceiptCallback(
+    pub  extern "C" fn(
+        callback_state: *mut ffi::CreateOrderFromReceiptCallbackState,
+        result: ffi::SkusResult,
+        order_id: &str,
+    ),
+);
+
+unsafe impl ExternType for CreateOrderFromReceiptCallback {
+    type Id = type_id!("skus::CreateOrderFromReceiptCallback");
+    type Kind = cxx::kind::Trivial;
+}
+
+async fn create_order_from_receipt_task(
+    sdk: Rc<skus::sdk::SDK<NativeClient>>,
+    callback: CreateOrderFromReceiptCallback,
+    callback_state: UniquePtr<ffi::CreateOrderFromReceiptCallbackState>,
+    receipt: String,
+) {
+    match sdk
+        .create_order_from_receipt(&receipt)
+        .await
+        .map_err(|e| e.into())
+    {
+        Ok(order_id) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order_id),
+        Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
