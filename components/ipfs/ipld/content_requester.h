@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifndef BRAVE_COMPONENTS_IPFS_IPLD_CONTENT_REQUESTER_H_
+#define BRAVE_COMPONENTS_IPFS_IPLD_CONTENT_REQUESTER_H_
+
+#include <cstdint>
+#include <memory>
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 #include "url/gurl.h"
@@ -16,7 +21,7 @@ class SimpleURLLoader;
 namespace ipfs::ipld {
 
 using ContentRequestBufferCallback =
-    base::RepeatingCallback<void(base::StringPiece, const bool)>;
+    base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool)>;
 
 class IContentRequester {
  public:
@@ -26,8 +31,8 @@ class IContentRequester {
   virtual bool IsStarted() const = 0;
 };
 
-class ContentRequester : public IContentRequester, 
-    network::SimpleURLLoaderStreamConsumer {
+class ContentRequester : public IContentRequester,
+                         network::SimpleURLLoaderStreamConsumer {
  public:
   void Request(ContentRequestBufferCallback callback) override;
   bool IsStarted() const override;
@@ -46,13 +51,13 @@ class ContentRequester : public IContentRequester,
   friend class CarContentRequesterUnitTest;
 
   // network::SimpleURLLoaderStreamConsumer implementations.
-  void OnDataReceived(base::StringPiece string_piece, base::OnceClosure resume) override;
+  void OnDataReceived(base::StringPiece string_piece,
+                      base::OnceClosure resume) override;
   void OnRetry(base::OnceClosure start_retry) override;
   void OnComplete(bool success) override;
 
   GURL url_;
-  std::string data_;
-  uint64_t bytes_received_{0};
+  std::unique_ptr<std::vector<uint8_t>> data_;
   ContentRequestBufferCallback buffer_ready_callback_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   raw_ptr<PrefService> prefs_;
@@ -61,4 +66,22 @@ class ContentRequester : public IContentRequester,
   base::WeakPtrFactory<ContentRequester> weak_ptr_factory_{this};
 };
 
+class ContentReaderFactory {
+ public:
+  ContentReaderFactory() = default;
+  ~ContentReaderFactory() = default;
+  ContentReaderFactory(const ContentReaderFactory&) = delete;
+  ContentReaderFactory(ContentReaderFactory&&) = delete;
+  ContentReaderFactory& operator=(const ContentReaderFactory&) = delete;
+  ContentReaderFactory& operator=(ContentReaderFactory&&) = delete;
+
+  std::unique_ptr<IContentRequester> CreateCarContentRequester(
+      const GURL& url,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* prefs,
+      const bool only_structure = true);
+};
+
 }  // namespace ipfs::ipld
+
+#endif  // BRAVE_COMPONENTS_IPFS_IPLD_CONTENT_REQUESTER_H_

@@ -57,7 +57,7 @@ class CarContentRequesterUnitTest : public testing::Test {
 
 TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
     {
-        auto request_callback = base::BindLambdaForTesting([&](base::StringPiece buffer, const bool is_completed){
+        auto request_callback = base::BindLambdaForTesting([&](std::unique_ptr<std::vector<uint8_t>> buffer, const bool is_completed){
             EXPECT_TRUE(false) << "request_callback must not be called";
         });
         auto ccr = std::make_unique<ipfs::ipld::CarContentRequester>(GURL(""), 
@@ -72,11 +72,11 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
         std::vector<char> content_data;
         for(uint64_t i=0; i < content_size; i++) { content_data.push_back('%'); }
         auto request_callback_counter = 0;
-        auto request_callback = base::BindLambdaForTesting([&](base::StringPiece buffer, const bool is_success){
+        auto request_callback = base::BindLambdaForTesting([&](std::unique_ptr<std::vector<uint8_t>> buffer, const bool is_success){
             LOG(INFO) << "[IPFS] request_callback is_success:" << is_success;
             request_callback_counter++;
             if(is_success){
-                for(char ch : buffer) { EXPECT_EQ(ch, '%'); }
+                for(char ch : *buffer) { EXPECT_EQ(ch, '%'); }
             }
         });
         url_loader_factory()->SetInterceptor(

@@ -4,7 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ipfs/ipld/content_requester.h"
+#include <cstdint>
+#include <memory>
 
+#include "brave/components/ipfs/ipld/car_content_requester.h"
 #include "base/logging.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -28,6 +31,13 @@ bool IsPublicGatewayLink(const GURL& ipfs_url, PrefService* prefs) {
 
 namespace ipfs::ipld {
 
+std::unique_ptr<IContentRequester> ContentReaderFactory::CreateCarContentRequester(const GURL& url,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* prefs,
+      const bool only_structure) {
+return std::make_unique<CarContentRequester>(url, url_loader_factory, prefs, only_structure);
+}
+
 ContentRequester::ContentRequester(
     const GURL& url,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -44,7 +54,7 @@ void ContentRequester::Request(ContentRequestBufferCallback callback) {
   if (GetGatewayRequestUrl().is_empty()) {
     return;
   }
-
+  data_ = std::make_unique<std::vector<uint8_t>>();
   buffer_ready_callback_ = std::move(callback);
   url_loader_ = CreateLoader();
   url_loader_->DownloadAsStream(url_loader_factory_.get(), this);
@@ -70,10 +80,10 @@ const GURL ContentRequester::GetGatewayRequestUrl() const {
 
 void ContentRequester::OnDataReceived(base::StringPiece string_piece,
                                       base::OnceClosure resume) {
-  data_.append(string_piece);
-  bytes_received_ += string_piece.size();
+LOG(INFO) << "[IPFS] !!!"                                        ;
+  data_->insert(data_->end(), string_piece.begin(), string_piece.end());
 
-  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << bytes_received_;
+  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data_->size();
 
   // Continue to read data.
   std::move(resume).Run();
@@ -83,14 +93,13 @@ void ContentRequester::OnRetry(base::OnceClosure start_retry) {}
 
 void ContentRequester::OnComplete(bool success) {
   LOG(INFO) << "[IPFS] OnComplete success:" << success
-            << "  bytes_received_:" << bytes_received_;
+            << "  bytes_received_:" << data_->size();
   
   if (buffer_ready_callback_) {
-    buffer_ready_callback_.Run(data_, true);
+    buffer_ready_callback_.Run(std::move(data_), true);
   }
 
-  data_.clear();
-  bytes_received_ = 0;
+  data_ = std::make_unique<std::vector<uint8_t>>();
 
   is_started_ = false;
   url_loader_.release();
