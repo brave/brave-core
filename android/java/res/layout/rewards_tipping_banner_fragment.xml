@@ -230,8 +230,7 @@
         android:contentDescription="@null"
         android:layout_marginTop="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/top_tipping_banner_ui_background_scenery"
-         />
+        app:layout_constraintTop_toTopOf="@id/top_tipping_banner_ui_background_scenery"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -242,8 +241,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginHorizontal="8dp"
         android:padding="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/textView4"
@@ -256,6 +254,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tipping_warning_message_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/tipping_logout_message_background"
+            android:padding="24dp"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView4">
+
+            <include layout="@layout/tipping_warning_message_layout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/send_tip_button"
             android:layout_width="match_parent"
@@ -266,8 +282,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/textView4"
-             />
+            app:layout_constraintTop_toBottomOf="@id/textView4" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/use_web3_wallet_button"
@@ -281,8 +296,8 @@
             android:textSize="13sp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/send_tip_button"
-            app:layout_goneMarginTop="24dp"
-             />
+            app:layout_goneMarginTop="24dp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
@@ -291,6 +306,5 @@
         android:layout_height="47dp"
         android:background="@drawable/transparent_shadow_background"
         app:layout_constraintBottom_toBottomOf="@id/scroll_view_tipping" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

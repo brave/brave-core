@@ -1296,7 +1296,6 @@ public class BraveRewardsPanel
                                             && !BraveRewardsHelper.isRewardsEnabled()) {
                                         showOnBoarding();
                                     } else {
-                                        // fetchRewardsData();
                                         mBraveRewardsNativeWorker.GetExternalWallet();
                                         panelShadow(false);
                                     }
@@ -2034,10 +2033,6 @@ public class BraveRewardsPanel
         if (mBraveRewardsNativeWorker != null) {
             int shouldShow =
                     mBraveRewardsNativeWorker.IsAutoContributeEnabled() ? View.VISIBLE : View.GONE;
-            Log.e(
-                    "solana",
-                    "mBraveRewardsNativeWorker.IsAutoContributeEnabled() : "
-                            + mBraveRewardsNativeWorker.IsAutoContributeEnabled());
             mPopupView.findViewById(R.id.attention_layout).setVisibility(shouldShow);
             mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(shouldShow);
             mPopupView
