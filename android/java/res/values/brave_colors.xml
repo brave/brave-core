@@ -367,9 +367,19 @@
     <color name="rewards_estimated_earning_close_color">#697284</color>
     <color name="rewards_tipping_progress_bar">@android:color/black</color>
 
-    <color name="leo_reset_text_color">#FF4B6A</color>
 
     <color name="vpn_timer_bg_color">#F6F7F8</color>
     <color name="vpn_timer_text_color">#0D0F14</color>
     <color name="vpn_timer_icon_color">#687485</color>
+
+    <!-- Brave Leo colors-->
+    <color name="leo_plan_monthly_bt_bg">#542FE5</color>
+    <color name="leo_plan_monthly_bt_bg_border">#6754F8</color>
+    <color name="leo_plan_upgrade_now_bt_bg_start">#FF006B</color>
+    <color name="leo_plan_upgrade_now_bt_bg_end">#FF5500</color>
+    <color name="leo_reset_text_color">#FF4B6A</color>
+    <color name="brave_leo_plans_bg">#1F0B63</color>
+    <color name="brave_leo_plans_tips_border">#4100C1</color>
+    <color name="brave_leo_plans_tips_desc">#BFC3FE</color>
+    <!-- End Brave Leo colors-->
 </resources>
