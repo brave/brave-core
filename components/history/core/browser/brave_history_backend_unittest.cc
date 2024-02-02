@@ -24,9 +24,7 @@ class BraveHistoryBackendTestDelegate : public HistoryBackend::Delegate {
   BraveHistoryBackendTestDelegate& operator=(
       const BraveHistoryBackendTestDelegate&) = delete;
 
-  bool CanAddURL(const GURL& url) const override {
-    return false;
-  }
+  bool CanAddURL(const GURL& url) const override { return false; }
   void NotifyProfileError(sql::InitStatus init_status,
                           const std::string& diagnostics) override {}
   void SetInMemoryBackend(

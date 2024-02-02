@@ -7,8 +7,6 @@
 
 namespace history {
 
-const int HistoryBackend::kExpireDaysThreshold;
-
 HistoryCountResult HistoryBackend::GetKnownToSyncCount() {
   int count = 0;
   return {db_ && db_->GetKnownToSyncCount(&count), count};
