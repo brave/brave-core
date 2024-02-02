@@ -21,23 +21,14 @@
         android:orientation="vertical">
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/continue_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
             android:gravity="center"
-            android:background="@drawable/crypto_wallet_blue_button"
             android:text="@string/continue_text"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
             android:enabled="false"
             android:alpha="0.5"
             android:layout_marginBottom="16dp"
-            android:textColor="@android:color/white"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:layout_marginHorizontal="16dp"
+            style="@style/BraveWalletOnboardingButton"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

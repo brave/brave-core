@@ -90,22 +90,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_unlock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:background="@drawable/crypto_wallet_blue_button"
             android:text="@string/unlock"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:textColor="@android:color/white"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
-            style="?android:attr/borderlessButtonStyle"/>
+            style="@style/BraveWalletOnboardingButton"/>
 
         <TextView
             android:id="@+id/btn_unlock_wallet_restore"

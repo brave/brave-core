@@ -50,8 +50,8 @@ public class OnboardingTermOfUseFragment extends BaseOnboardingWalletFragment {
         super.onViewCreated(view, savedInstanceState);
 
         AppCompatButton continueButton = view.findViewById(R.id.continue_button);
-        continueButton.setAlpha(1f);
-        continueButton.setEnabled(true);
+//        continueButton.setAlpha(1f);
+//        continueButton.setEnabled(true);
         continueButton.setOnClickListener(
                 v -> {
                     if (mOnNextPage != null) {
