@@ -404,6 +404,19 @@
 #define BRAVE_TABS_FEATURE_ENTRIES
 #endif
 
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                      \
+  EXPAND_FEATURE_ENTRIES({                                               \
+      "middle-button-autoscroll",                                        \
+      "Middle button autoscroll",                                        \
+      "Enables autoscrolling when the middle mouse button is clicked",   \
+      kOsMac | kOsLinux,                                                 \
+      FEATURE_VALUE_TYPE(blink::features::kMiddleButtonClickAutoscroll), \
+  })
+#else
+#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
+#endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT                                          \
   EXPAND_FEATURE_ENTRIES({                                     \
@@ -969,6 +982,7 @@
   BRAVE_AI_CHAT_HISTORY                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
+  BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
