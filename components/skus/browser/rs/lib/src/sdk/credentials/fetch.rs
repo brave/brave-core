@@ -132,13 +132,6 @@ where
                     let blinded_creds: Vec<BlindedToken> =
                         match self.client.get_time_limited_v2_creds(&item.id).await? {
                             Some(item_creds) => {
-                                // overwrite our request id if creds are already present
-                                request_id = match item_creds.request_id {
-                                    Some(request_id) => request_id,
-                                    // use the item id as the request id if it was not persisted
-                                    None => item_id.to_string(),
-                                };
-
                                 // are we almost expired
                                 let almost_expired = self
                                     .last_matching_time_limited_v2_credential(&item.id)
@@ -155,6 +148,14 @@ where
                                 match item_creds.state {
                                     CredentialState::GeneratedCredentials
                                     | CredentialState::SubmittedCredentials => {
+                                        // overwrite our request id if creds are already present
+                                        // that we need to resubmit
+                                        request_id = match item_creds.request_id {
+                                            Some(request_id) => request_id,
+                                            // use the item id as the request id if it was not persisted
+                                            None => item_id.to_string(),
+                                        };
+
                                         // we have generated, or performed submission, reuse the
                                         // creds we created for signing.
                                         creds
