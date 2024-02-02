@@ -15,12 +15,14 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -156,7 +158,6 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
             setLogo();
             background();
             checkForShowSocialLinkIcons();
-            setWeb3WalletClick();
             mBraveRewardsNativeWorker.GetExternalWallet();
         } catch (JSONException e) {
             Log.e(TAG, "TippingBanner -> CreatorPanel:onAttach JSONException error " + e);
@@ -170,29 +171,38 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
                 BraveRewardsExternalWallet braveRewardsExternalWallet =
                         new BraveRewardsExternalWallet(externalWallet);
                 String custodianType = braveRewardsExternalWallet.getType();
-                if (!TextUtils.isEmpty(custodianType)) {
-                    if (custodianType.equals(BraveWalletProvider.SOLANA)) {
-                        mContentView.findViewById(R.id.send_tip_button).setVisibility(View.GONE);
+                boolean isSolanaWallet =
+                        (!TextUtils.isEmpty(custodianType)
+                                && custodianType.equals(BraveWalletProvider.SOLANA));
+                Button sendTipButton = mContentView.findViewById(R.id.send_tip_button);
+                Button web3Button = mContentView.findViewById(R.id.use_web3_wallet_button);
+                if (mBannerInfo != null) {
+                    String web3Url = mBannerInfo.getWeb3Url();
+                    if (!TextUtils.isEmpty(web3Url)) {
+                        web3Button.setVisibility(View.VISIBLE);
+                        web3Button.setOnClickListener(
+                                v -> {
+                                    TabUtils.openUrlInNewTab(false, web3Url);
+                                    dismissRewardsPanel();
+                                });
+                    } else {
+                        if (isSolanaWallet) {
+                            showWarningMessage(mContentView);
+                        }
                     }
+                }
+                if (isSolanaWallet) {
+                    sendTipButton.setVisibility(View.GONE);
+                    web3Button.setBackgroundDrawable(
+                            ResourcesCompat.getDrawable(
+                                    getResources(),
+                                    R.drawable.tipping_send_button_background,
+                                    null));
+                    web3Button.setTextColor(getResources().getColor(android.R.color.white));
                 }
             } catch (JSONException e) {
                 Log.e(TAG, "TippingBanner -> OnGetExternalWallet " + e.getMessage());
             }
-        }
-    }
-
-    private void setWeb3WalletClick() {
-        Log.e("solana", "setWeb3WalletClick");
-        if (mBannerInfo == null) return;
-        String web3Url = mBannerInfo.getWeb3Url();
-        Log.e("solana", "setWeb3WalletClick : web3Url : " + web3Url);
-        if (!TextUtils.isEmpty(web3Url)) {
-            View web3Button = mContentView.findViewById(R.id.use_web3_wallet_button);
-            web3Button.setVisibility(View.VISIBLE);
-            web3Button.setOnClickListener(v -> {
-                TabUtils.openUrlInNewTab(false, web3Url);
-                dismissRewardsPanel();
-            });
         }
     }
 
@@ -358,5 +368,24 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
             mActivity.setResult(Activity.RESULT_OK);
             mActivity.finish();
         }
+    }
+
+    private void showWarningMessage(View view) {
+        View warningLayout = view.findViewById(R.id.tipping_warning_message_layout);
+        warningLayout.setVisibility(View.VISIBLE);
+        warningLayout.setBackground(
+                ResourcesCompat.getDrawable(
+                        getResources(),
+                        R.drawable.rewards_tipping_web3_error_background,
+                        /* theme= */ null));
+        ImageView tippingWarningIcon = view.findViewById(R.id.tipping_warning_icon);
+        tippingWarningIcon.setVisibility(View.VISIBLE);
+        TextView warningTitle = view.findViewById(R.id.tipping_warning_title_text);
+        warningTitle.setText(getResources().getString(R.string.can_not_send_your_contribution));
+        warningTitle.setTextColor(getResources().getColor(R.color.tipping_web3_error_text_color));
+        TextView warningDescription = view.findViewById(R.id.tipping_warning_description_text);
+        warningDescription.setText(getResources().getString(R.string.creator_isnt_setup_web3));
+        warningDescription.setTextColor(
+                getResources().getColor(R.color.tipping_web3_error_text_color));
     }
 }

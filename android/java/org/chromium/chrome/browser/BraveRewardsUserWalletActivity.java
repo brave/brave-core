@@ -65,6 +65,8 @@ public class BraveRewardsUserWalletActivity
                                 getResources().getString(R.string.login_provider),
                                 getWalletString(mWalletType));
         btnGotoProvider.setText(providerText);
+        btnGotoProvider.setCompoundDrawablesWithIntrinsicBounds(
+                0, 0, R.drawable.ic_rewards_external_link, 0);
 
         switch (status) {
             case WalletStatus.CONNECTED:
