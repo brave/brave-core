@@ -1203,7 +1203,7 @@ void IpfsService::OnGatewayValidationComplete(
     const auto final_url = response.final_url();
     const std::string valid_host = base::StringPrintf(
         "%s.ipfs.%s", kGatewayValidationCID, initial_url.host().c_str());
-    success = (response.body() ==
+    success = (response.SerializeBodyToString() ==
                ConvertPlainStringToJsonArray(kGatewayValidationResult)) &&
               (initial_url.host() != final_url.host()) &&
               (initial_url.scheme() == final_url.scheme()) &&

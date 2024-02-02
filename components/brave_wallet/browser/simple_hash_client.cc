@@ -188,14 +188,14 @@ void SimpleHashClient::OnFetchNFTsFromSimpleHash(
   }
 
   // Invalid JSON becomes an empty string after sanitization
-  if (api_request_result.body().empty()) {
+  if (api_request_result.value_body().is_none()) {
     std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
   }
 
   std::optional<std::pair<std::optional<std::string>,
                           std::vector<mojom::BlockchainTokenPtr>>>
-      result = ParseNFTsFromSimpleHash(api_request_result.value_body(), coin,
+      result = ParseNFTsFromSimpleHash(api_request_result.TakeBody(), coin,
                                        skip_spam, only_spam);
   if (!result) {
     std::move(callback).Run(std::move(nfts), std::nullopt);
