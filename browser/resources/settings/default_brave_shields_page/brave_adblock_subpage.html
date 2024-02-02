@@ -86,8 +86,18 @@
     font-weight: 500;
   }
 
-  .show-list-button-box {
+  .list-actions-box {
+    display: flex;
     margin-bottom: 10px;
+    gap: 8px;
+  }
+
+  .update-lists-updated {
+    --leo-button-color: var(--leo-color-systemfeedback-success-text);
+  }
+
+  .update-lists-failed {
+    --leo-button-color: var(--leo-color-systemfeedback-error-text);
   }
 
   .subscribe-url-form {
@@ -186,11 +196,38 @@
             </div>
           </template>
         </div>
-        <template is="dom-if" if="[[!hasListExpanded_]]">
-          <div class="show-list-button-box">
-            <cr-button on-click="handleShowList_">$i18n{adblockShowFullListsButtonLabel}</cr-button>
+        <div class="list-actions-box">
+          <template is="dom-if" if="[[!hasListExpanded_]]">
+            <div>
+              <cr-button on-click="handleShowList_">$i18n{adblockShowFullListsButtonLabel}</cr-button>
+            </div>
+          </template>
+          <div class$="update-lists-[[listsUpdatingState_]]">
+            <template is="dom-if" if="[[!listsUpdatingState_]]">
+              <cr-button on-click="handleUpdateLists_">
+                <span>$i18n{adblockUpdateListsButtonLabel}</span>
+              </cr-button>
+            </template>
+            <template is="dom-if" if="[[isEqual_(listsUpdatingState_, 'updating')]]">
+              <cr-button on-click="handleUpdateLists_">
+                <leo-progressring slot="prefix-icon"></leo-progressring>
+                <span>$i18n{adblockUpdateListsUpdatingButtonLabel}</span>
+              </cr-button>
+            </template>
+            <template is="dom-if" if="[[isEqual_(listsUpdatingState_, 'updated')]]">
+              <cr-button on-click="handleUpdateLists_">
+                <leo-icon name="check-circle-outline" slot="prefix-icon"></leo-icon>
+                <span>$i18n{adblockUpdateListsUpdatedButtonLabel}</span>
+              </cr-button>
+            </template>
+            <template is="dom-if" if="[[isEqual_(listsUpdatingState_, 'failed')]]">
+              <cr-button on-click="handleUpdateLists_">
+                <leo-icon name="warning-circle-outline" slot="prefix-icon"></leo-icon>
+                <span>$i18n{adblockUpdateListsRetryButtonLabel}</span>
+              </cr-button>
+            </template>
           </div>
-        </template>
+        </div>
     </div>
   </div>
   <div class="settings-box">

@@ -9,9 +9,11 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/ranges/algorithm.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -257,6 +259,35 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
   // Update preferences to reflect enabled/disabled state of specified
   // filter list
   UpdateFilterListPrefs(uuid, enabled);
+}
+
+void AdBlockComponentServiceManager::UpdateFilterLists(
+    base::OnceCallback<void(bool)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // If there are currently no components to update, then run the callback with
+  // a success value in a future turn.
+  if (component_filters_providers_.empty()) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  // This callback will be executed by our barrier callback once all filter
+  // list components have been updated.
+  auto on_all_updated = [](decltype(callback) cb, std::vector<bool> results) {
+    std::move(cb).Run(
+        base::ranges::all_of(results, [](bool result) { return result; }));
+  };
+
+  // This barrier callback maintains a "completed count". When it has been
+  // called the expected number of times, it will execute `on_all_updated`.
+  auto barrier_callback = base::BarrierCallback<bool>(
+      component_filters_providers_.size(),
+      base::BindOnce(on_all_updated, std::move(callback)));
+
+  for (auto& [key, provider] : component_filters_providers_) {
+    provider->UpdateComponent(barrier_callback);
+  }
 }
 
 void AdBlockComponentServiceManager::SetFilterListCatalog(

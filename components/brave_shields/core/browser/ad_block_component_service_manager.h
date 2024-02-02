@@ -54,6 +54,8 @@ class AdBlockComponentServiceManager
   bool IsFilterListEnabled(const std::string& uuid) const;
   void EnableFilterList(const std::string& uuid, bool enabled);
 
+  void UpdateFilterLists(base::OnceCallback<void(bool)> callback);
+
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
 
