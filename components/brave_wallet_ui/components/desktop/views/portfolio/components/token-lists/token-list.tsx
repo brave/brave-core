@@ -63,7 +63,6 @@ import {
 
 // Components
 import SearchBar from '../../../../../shared/search-bar/index'
-import NetworkFilterSelector from '../../../../network-filter-selector/index'
 import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 import {
   AssetGroupContainer //
@@ -89,7 +88,6 @@ import {
   Text
 } from '../../../../../shared/style'
 import {
-  FilterTokenRow,
   PortfolioActionButton,
   ButtonIcon,
   SearchBarWrapper,
@@ -108,10 +106,8 @@ interface Props {
   estimatedItemSize: number
   horizontalPadding?: number
   hideSmallBalances?: boolean
-  isPortfolio?: boolean
-  isV2?: boolean
   onShowPortfolioSettings?: () => void
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
   spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
@@ -124,8 +120,6 @@ export const TokenLists = ({
   maxListHeight,
   horizontalPadding,
   hideSmallBalances,
-  isPortfolio,
-  isV2,
   onShowPortfolioSettings,
   tokenBalancesRegistry,
   spotPriceRegistry
@@ -148,6 +142,7 @@ export const TokenLists = ({
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: { provider: externalRewardsProvider } = emptyRewardsInfo } =
     useGetRewardsInfoQuery()
 
@@ -170,15 +165,10 @@ export const TokenLists = ({
   }, [])
 
   // memos
-  const visibleTokens = React.useMemo(() => {
-    return userAssetList.filter((asset) => asset.asset.visible)
-  }, [userAssetList])
-
-  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const filteredOutSmallBalanceTokens = React.useMemo(() => {
     if (hideSmallBalances) {
-      return visibleTokens.filter((token) =>
+      return userAssetList.filter((token) =>
         computeFiatAmount({
           spotPriceRegistry,
           value: token.assetBalance,
@@ -186,15 +176,8 @@ export const TokenLists = ({
         }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
       )
     }
-    return visibleTokens
-  }, [visibleTokens, hideSmallBalances, spotPriceRegistry])
-
-  const fungibleTokens = React.useMemo(() => {
-    return filteredOutSmallBalanceTokens.filter(
-      (token) =>
-        !(token.asset.isErc721 || token.asset.isNft || token.asset.isErc1155)
-    )
-  }, [filteredOutSmallBalanceTokens])
+    return userAssetList
+  }, [userAssetList, hideSmallBalances, spotPriceRegistry])
 
   const assetFilterItemInfo = React.useMemo(() => {
     return (
@@ -204,11 +187,10 @@ export const TokenLists = ({
   }, [selectedAssetFilter])
 
   const filteredAssetList = React.useMemo(() => {
-    const listToUse = isPortfolio ? fungibleTokens : userAssetList
     if (searchValue === '') {
-      return listToUse.filter((asset) => asset.asset.visible)
+      return filteredOutSmallBalanceTokens
     }
-    return listToUse.filter((item) => {
+    return filteredOutSmallBalanceTokens.filter((item) => {
       return (
         item.asset.name.toLowerCase() === searchValue.toLowerCase() ||
         item.asset.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
@@ -216,7 +198,7 @@ export const TokenLists = ({
         item.asset.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
       )
     })
-  }, [searchValue, fungibleTokens, isPortfolio, userAssetList])
+  }, [searchValue, filteredOutSmallBalanceTokens])
 
   // Returns a sorted list of assets based on the users
   // sort by pref.
@@ -621,29 +603,18 @@ export const TokenLists = ({
   ])
 
   const listUi = React.useMemo(() => {
-    if (isPortfolio) {
-      return selectedGroupAssetsByItem === NetworksGroupByOption.id ? (
-        listUiByNetworks
-      ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
-        listUiByAccounts
-      ) : noNetworks ? (
-        <EmptyTokenListState />
-      ) : (
-        <>
-          {getSortedFungibleTokensList(filteredAssetList).map((token, index) =>
-            renderToken({ index, item: token, viewMode: 'list' })
-          )}
-          {!assetAutoDiscoveryCompleted && (
-            <PortfolioAssetItemLoadingSkeleton />
-          )}
-        </>
-      )
-    }
-    return (
+    return selectedGroupAssetsByItem === NetworksGroupByOption.id ? (
+      listUiByNetworks
+    ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
+      listUiByAccounts
+    ) : noNetworks ? (
+      <EmptyTokenListState />
+    ) : (
       <>
-        {filteredAssetList.map((token, index) =>
+        {getSortedFungibleTokensList(filteredAssetList).map((token, index) =>
           renderToken({ index, item: token, viewMode: 'list' })
         )}
+        {!assetAutoDiscoveryCompleted && <PortfolioAssetItemLoadingSkeleton />}
       </>
     )
   }, [
@@ -653,7 +624,6 @@ export const TokenLists = ({
     listUiByAccounts,
     renderToken,
     assetAutoDiscoveryCompleted,
-    isPortfolio,
     getSortedFungibleTokensList,
     noNetworks
   ])
@@ -666,91 +636,63 @@ export const TokenLists = ({
       justifyContent='flex-start'
       isPanel={isPanel}
     >
-      {!isPortfolio && (
-        <FilterTokenRow
-          horizontalPadding={horizontalPadding}
-          isV2={isV2}
-        >
-          <Column
-            flex={1}
-            style={{ minWidth: '25%' }}
-            alignItems='flex-start'
+      <ControlBarWrapper
+        justifyContent='space-between'
+        alignItems='center'
+        showSearchBar={showSearchBar}
+      >
+        {!showSearchBar && (
+          <Text
+            textSize='16px'
+            isBold={true}
           >
-            <SearchBar
-              placeholder={getLocale('braveWalletSearchText')}
-              action={onSearchValueChange}
-              value={searchValue}
-              isV2={isV2}
-            />
-          </Column>
-          <NetworkFilterSelector
-            networkListSubset={networks}
-            isV2={isV2}
-          />
-        </FilterTokenRow>
-      )}
-
-      {isPortfolio && (
-        <ControlBarWrapper
-          justifyContent='space-between'
-          alignItems='center'
-          showSearchBar={showSearchBar}
-        >
-          {!showSearchBar && (
-            <Text
-              textSize='16px'
-              isBold={true}
+            {getLocale('braveWalletAccountsAssets')}
+          </Text>
+        )}
+        <Row width={showSearchBar ? '100%' : 'unset'}>
+          {!showEmptyState && (
+            <SearchBarWrapper
+              margin='0px 12px 0px 0px'
+              showSearchBar={showSearchBar}
             >
-              {getLocale('braveWalletAccountsAssets')}
-            </Text>
+              <SearchBar
+                placeholder={getLocale('braveWalletSearchText')}
+                action={onSearchValueChange}
+                value={searchValue}
+                isV2={true}
+              />
+            </SearchBarWrapper>
           )}
-          <Row width={showSearchBar ? '100%' : 'unset'}>
-            {!showEmptyState && (
-              <SearchBarWrapper
-                margin='0px 12px 0px 0px'
-                showSearchBar={showSearchBar}
-              >
-                <SearchBar
-                  placeholder={getLocale('braveWalletSearchText')}
-                  action={onSearchValueChange}
-                  value={searchValue}
-                  isV2={isV2}
-                />
-              </SearchBarWrapper>
-            )}
-            {showSearchBar && (
-              <Row width='unset'>
-                <PortfolioActionButton onClick={onCloseSearchBar}>
-                  <ButtonIcon name='close' />
-                </PortfolioActionButton>
-              </Row>
-            )}
-            {!showSearchBar && (
-              <Row
-                width='unset'
-                gap='12px'
-              >
-                {!showEmptyState && (
-                  <SearchButtonWrapper width='unset'>
-                    <PortfolioActionButton
-                      onClick={() => setShowSearchBar(true)}
-                    >
-                      <ButtonIcon name='search' />
-                    </PortfolioActionButton>
-                  </SearchButtonWrapper>
-                )}
-                <PortfolioActionButton onClick={showAddAssetsModal}>
-                  <ButtonIcon name='list-settings' />
-                </PortfolioActionButton>
+          {showSearchBar && (
+            <Row width='unset'>
+              <PortfolioActionButton onClick={onCloseSearchBar}>
+                <ButtonIcon name='close' />
+              </PortfolioActionButton>
+            </Row>
+          )}
+          {!showSearchBar && (
+            <Row
+              width='unset'
+              gap='12px'
+            >
+              {!showEmptyState && (
+                <SearchButtonWrapper width='unset'>
+                  <PortfolioActionButton onClick={() => setShowSearchBar(true)}>
+                    <ButtonIcon name='search' />
+                  </PortfolioActionButton>
+                </SearchButtonWrapper>
+              )}
+              <PortfolioActionButton onClick={showAddAssetsModal}>
+                <ButtonIcon name='list-settings' />
+              </PortfolioActionButton>
 
-                <PortfolioActionButton onClick={onShowPortfolioSettings}>
-                  <ButtonIcon name='filter-settings' />
-                </PortfolioActionButton>
-              </Row>
-            )}
-          </Row>
-        </ControlBarWrapper>
-      )}
+              <PortfolioActionButton onClick={onShowPortfolioSettings}>
+                <ButtonIcon name='filter-settings' />
+              </PortfolioActionButton>
+            </Row>
+          )}
+        </Row>
+      </ControlBarWrapper>
 
       {enableScroll ? (
         <ScrollableColumn

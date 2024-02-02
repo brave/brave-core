@@ -81,7 +81,7 @@ interface Props {
   nftList: BraveWallet.BlockchainToken[]
   accounts: BraveWallet.AccountInfo[]
   onShowPortfolioSettings?: () => void
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 }
 
 const compareFn = (

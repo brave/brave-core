@@ -22,7 +22,7 @@ interface Props {
   nftsList: BraveWallet.BlockchainToken[]
   accounts: BraveWallet.AccountInfo[]
   onShowPortfolioSettings?: () => void
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 }
 
 export const NftView = ({

@@ -107,7 +107,10 @@ export const tokenEndpoints = ({
       },
       invalidatesTags: (_, __, tokenArg) => [
         { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
+        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) },
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
       ]
     }),
     removeUserToken: mutation<boolean, BraveWallet.BlockchainToken>({
@@ -188,7 +191,10 @@ export const tokenEndpoints = ({
       },
       invalidatesTags: (_, __, tokenArg) => [
         { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
+        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) },
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
       ]
     }),
     updateUserAssetVisible: mutation<boolean, SetUserAssetVisiblePayloadType>({
@@ -269,7 +275,10 @@ export const tokenEndpoints = ({
               {
                 type: 'UserBlockchainTokens',
                 id: TOKEN_TAG_IDS.REGISTRY
-              }
+              },
+              'TokenBalances',
+              'TokenBalancesForChainId',
+              'AccountTokenCurrentBalance'
             ]
           : ['UNKNOWN_ERROR']
     }),
