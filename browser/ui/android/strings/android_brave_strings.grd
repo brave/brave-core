@@ -2027,6 +2027,15 @@ Are you sure you want to do this?
     <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.
     </message>
+    <message name="IDS_WALLET_ACCEPT_ITEMS" desc="Brave Wallet creation subtitle">
+      We require that you acknowledge the items below
+    </message>
+    <message name="IDS_UNDERSTAND_SELF_CUSTODY" desc="Brave Wallet self-custody explaination text">
+      I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.
+    </message>
+    <message name="IDS_ACCEPT_TERMS_OF_USE" desc="Brave Wallet terms of use text">
+      I have read and agree to the Terms of Use
+    </message>
     <message name="IDS_YOUR_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Your recovery phrase
     </message>
