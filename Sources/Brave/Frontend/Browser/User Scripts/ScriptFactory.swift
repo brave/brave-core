@@ -157,7 +157,7 @@ class ScriptFactory {
       let source = [
         "(function(){",
         // This map is used by some of uBlock Origin's resources
-        "const scriptletGlobals = new Map();",
+        "const scriptletGlobals = (() => {\nconst forwardedMapMethods = [\"has\", \"get\", \"set\"];\nconst handler = {\nget(target, prop) { if (forwardedMapMethods.includes(prop)) { return Map.prototype[prop].bind(target) } return target.get(prop); },\nset(target, prop, value) { if (!forwardedMapMethods.includes(prop)) { target.set(prop, value); } }\n};\nreturn new Proxy(new Map(), handler);\n})();",
         // This boolean is used by a script injected by cosmetic filters and enables that script via this boolean
         // The script is found here: https://github.com/brave/adblock-resources/blob/master/resources/de-amp.js
         // - Note: This script is only a smaller part (1 of 3) of de-amping:
