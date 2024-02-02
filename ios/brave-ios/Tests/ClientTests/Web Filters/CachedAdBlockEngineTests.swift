@@ -68,7 +68,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
     )
 
     let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .adBlock,
+      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),
       localFileURL: Bundle.module.url(
         forResource: "iodkpdagapdfkphljnddpjlldadblomo",
         withExtension: "txt"
@@ -98,7 +98,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
 
   func testCompilationofResources() throws {
     let textFilterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo"),
+      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),
       localFileURL: Bundle.module.url(
         forResource: "iodkpdagapdfkphljnddpjlldadblomo",
         withExtension: "txt"
@@ -194,7 +194,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
       let uuid = UUID().uuidString
 
       let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-        source: .filterList(componentId: uuid),
+        source: .filterListURL(uuid: uuid),
         localFileURL: sampleFilterListURL,
         version: "bundled",
         fileType: .text

@@ -58,29 +58,9 @@ actor FilterListCustomURLDownloader: ObservableObject {
     self.startedService = true
     await CustomFilterListStorage.shared.loadCachedFilterLists()
 
-    do {
-      try await CustomFilterListStorage.shared.filterListsURLs.asyncConcurrentForEach { customURL in
-        let resource = await customURL.setting.resource
-
-        do {
-          if let cachedResult = try resource.cachedResult() {
-            await self.handle(downloadResult: cachedResult, for: customURL)
-          }
-        } catch {
-          let uuid = await customURL.setting.uuid
-          ContentBlockerManager.log.error(
-            "Failed to cached data for custom filter list `\(uuid)`: \(error)"
-          )
-        }
-
-        // Always fetch this resource so it's ready if the user enables it.
-        await self.startFetching(filterListCustomURL: customURL)
-
-        // Sleep for 1ms. This drastically reduces memory usage without much impact to usability
-        try await Task.sleep(nanoseconds: 1_000_000)
-      }
-    } catch {
-      // Ignore cancellation errors
+    await CustomFilterListStorage.shared.filterListsURLs.asyncForEach { customURL in
+      // Always fetch this resource so it's ready if the user enables it.
+      await self.startFetching(filterListCustomURL: customURL)
     }
   }
 
@@ -110,9 +90,7 @@ actor FilterListCustomURLDownloader: ObservableObject {
       isAlwaysAggressive: true
     )
 
-    guard await AdBlockStats.shared.isEagerlyLoaded(source: source) else {
-      // Don't compile unless eager
-      await AdBlockStats.shared.updateIfNeeded(resourcesInfo: resourcesInfo)
+    guard await AdBlockStats.shared.isEnabled(source: source) else {
       await AdBlockStats.shared.updateIfNeeded(
         filterListInfo: filterListInfo,
         isAlwaysAggressive: true

@@ -64,3 +64,13 @@ import Foundation
     }
   }
 }
+
+extension CustomFilterListStorage {
+  /// Gives us source representations of all the enabled custom filter lists
+  @MainActor var enabledSources: [CachedAdBlockEngine.Source] {
+    return filterListsURLs.compactMap { filterList -> CachedAdBlockEngine.Source? in
+      guard filterList.setting.isEnabled else { return nil }
+      return filterList.setting.engineSource
+    }
+  }
+}

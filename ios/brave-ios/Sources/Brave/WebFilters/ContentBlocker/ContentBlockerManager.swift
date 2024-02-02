@@ -153,6 +153,8 @@ actor ContentBlockerManager {
   /// Should be used only as a cleanup once during launch to get rid of unecessary/old data.
   /// This is mostly for custom filter lists a user may have added.
   public func cleaupInvalidRuleLists(validTypes: Set<BlocklistType>) async {
+    let signpostID = Self.signpost.makeSignpostID()
+    let state = Self.signpost.beginInterval("cleaupInvalidRuleLists", id: signpostID)
     let availableIdentifiers = await ruleStore.availableIdentifiers() ?? []
 
     await availableIdentifiers.asyncConcurrentForEach { identifier in
@@ -175,6 +177,8 @@ actor ContentBlockerManager {
         assertionFailure()
       }
     }
+
+    Self.signpost.endInterval("cleaupInvalidRuleLists", state)
   }
 
   /// Compile the rule list found in the given local URL using the specified modes

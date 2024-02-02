@@ -7,19 +7,18 @@ import BraveCore
 import Data
 import Foundation
 import Preferences
+import os
 
 /// An object that wraps around an `AdblockEngine` and caches some results
 /// and ensures information is always returned on the correct thread on the engine.
 public class CachedAdBlockEngine {
   public enum Source: Hashable, CustomDebugStringConvertible {
-    case adBlock
-    case filterList(componentId: String)
+    case filterList(componentId: String, uuid: String)
     case filterListURL(uuid: String)
 
     public var debugDescription: String {
       switch self {
-      case .adBlock: return "adBlock"
-      case .filterList(let componentId): return "filterList(\(componentId))"
+      case .filterList(let componentId, _): return "filterList(\(componentId))"
       case .filterListURL(let uuid): return "filterListURL(\(uuid))"
       }
     }
@@ -52,6 +51,7 @@ public class CachedAdBlockEngine {
     let version: String
   }
 
+  static let signpost = OSSignposter(logger: ContentBlockerManager.log)
   /// We cache the models so that they load faster when we need to poll information about the frame
   private var cachedCosmeticFilterModels = FifoDict<URL, CosmeticFilterModel?>()
   /// We cache the models so that they load faster when doing stats tracking or request blocking
@@ -246,16 +246,29 @@ public class CachedAdBlockEngine {
     resourcesInfo: ResourcesInfo,
     isAlwaysAggressive: Bool
   ) throws -> CachedAdBlockEngine {
-    let engine = try makeEngine(from: filterListInfo)
-    try engine.useResources(fromFileURL: resourcesInfo.localFileURL)
-    let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
-    return CachedAdBlockEngine(
-      engine: engine,
-      filterListInfo: filterListInfo,
-      resourcesInfo: resourcesInfo,
-      serialQueue: serialQueue,
-      isAlwaysAggressive: isAlwaysAggressive
+    let signpostID = Self.signpost.makeSignpostID()
+    let state = Self.signpost.beginInterval(
+      "compileEngine",
+      id: signpostID,
+      "\(filterListInfo.debugDescription)"
     )
+    
+    do {
+      let engine = try makeEngine(from: filterListInfo)
+      try engine.useResources(fromFileURL: resourcesInfo.localFileURL)
+      let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
+      Self.signpost.endInterval("compileEngine", state)
+      return CachedAdBlockEngine(
+        engine: engine,
+        filterListInfo: filterListInfo,
+        resourcesInfo: resourcesInfo,
+        serialQueue: serialQueue,
+        isAlwaysAggressive: isAlwaysAggressive
+      )
+    } catch {
+      Self.signpost.endInterval("compileEngine", state, "\(error.localizedDescription)")
+      throw error
+    }
   }
 
   private static func makeEngine(from filterListInfo: FilterListInfo) throws -> AdblockEngine {
