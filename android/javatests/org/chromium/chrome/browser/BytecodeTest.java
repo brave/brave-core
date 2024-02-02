@@ -40,6 +40,7 @@ import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.bookmarks.BookmarkMoveSnackbarManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs;
 import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
@@ -754,22 +755,55 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         DseNewTabUrlManager.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
-                BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
-                CompositorViewHolder.class, Callback.class, TopUiThemeColorProvider.class,
-                TabObscuringHandler.class, ObservableSupplier.class, IdentityDiscController.class,
-                List.class, ActivityTabProvider.class, ScrimCoordinator.class,
-                ToolbarActionModeCallback.class, FindToolbarManager.class, ObservableSupplier.class,
-                ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, boolean.class, ObservableSupplier.class,
-                OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                WindowAndroid.class, Supplier.class, Supplier.class, StatusBarColorController.class,
-                AppMenuDelegate.class, ActivityLifecycleDispatcher.class, Supplier.class,
-                BottomSheetController.class, Supplier.class, TabContentManager.class,
-                TabCreatorManager.class, SnackbarManager.class, Supplier.class,
-                OneshotSupplier.class, OmniboxActionDelegate.class, Supplier.class, boolean.class,
-                BackPressManager.class, OpenHistoryClustersDelegate.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "org/chromium/chrome/browser/toolbar/BraveToolbarManager",
+                        AppCompatActivity.class,
+                        BrowserControlsSizer.class,
+                        FullscreenManager.class,
+                        ToolbarControlContainer.class,
+                        CompositorViewHolder.class,
+                        Callback.class,
+                        TopUiThemeColorProvider.class,
+                        TabObscuringHandler.class,
+                        ObservableSupplier.class,
+                        IdentityDiscController.class,
+                        List.class,
+                        ActivityTabProvider.class,
+                        ScrimCoordinator.class,
+                        ToolbarActionModeCallback.class,
+                        FindToolbarManager.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class,
+                        Supplier.class,
+                        OneshotSupplier.class,
+                        OneshotSupplier.class,
+                        boolean.class,
+                        ObservableSupplier.class,
+                        OneshotSupplier.class,
+                        ObservableSupplier.class,
+                        OneshotSupplier.class,
+                        WindowAndroid.class,
+                        Supplier.class,
+                        Supplier.class,
+                        StatusBarColorController.class,
+                        AppMenuDelegate.class,
+                        ActivityLifecycleDispatcher.class,
+                        Supplier.class,
+                        BottomSheetController.class,
+                        Supplier.class,
+                        TabContentManager.class,
+                        TabCreatorManager.class,
+                        SnackbarManager.class,
+                        Supplier.class,
+                        OneshotSupplier.class,
+                        OmniboxActionDelegate.class,
+                        Supplier.class,
+                        boolean.class,
+                        BackPressManager.class,
+                        OpenHistoryClustersDelegate.class,
+                        BooleanSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -1107,10 +1141,14 @@ public class BytecodeTest {
                         boolean.class,
                         BackPressManager.class,
                         Bundle.class,
-                        MultiInstanceManager.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
-                "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbar", Context.class,
-                AttributeSet.class));
+                        MultiInstanceManager.class,
+                        BooleanSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbar",
+                        Context.class,
+                        AttributeSet.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbarCoordinator",
@@ -1126,7 +1164,8 @@ public class BytecodeTest {
                         BookmarkOpener.class,
                         BookmarkUiPrefs.class,
                         ModalDialogManager.class,
-                        Runnable.class));
+                        Runnable.class,
+                        BookmarkMoveSnackbarManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
@@ -1159,7 +1198,8 @@ public class BytecodeTest {
                         BookmarkImageFetcher.class,
                         ShoppingService.class,
                         SnackbarManager.class,
-                        Consumer.class));
+                        Consumer.class,
+                        BookmarkMoveSnackbarManager.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
         Assert.assertTrue(
