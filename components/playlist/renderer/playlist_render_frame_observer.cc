@@ -95,7 +95,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
   DVLOG(2) << __FUNCTION__;
 
   static const char kScript[] = R"(
-    (function(cb) {
+    (function(onMediaUpdated) {
       // Firstly, we try to get find all <video> or <audio> tags periodically,
       // for a a while from the start up. If we find them, then we attach
       // MutationObservers to them to detect source URL.
@@ -106,7 +106,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       const mutationSources = new Set();
       const mutationObserver = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
-            cb(window.location.href);
+            onMediaUpdated(window.location.href);
         })
       });
       const findNewMediaAndObserveMutation = () => {
@@ -115,7 +115,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
               if (mutationSources.has(mediaNode)) return
 
               mutationSources.add(mediaNode)
-              cb(window.location.href)
+              onMediaUpdated(window.location.href)
               mutationObserver.observe(mediaNode, { attributeFilter: ['src'] })
           });
       }
@@ -132,7 +132,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
 
       // Try getting media after page was restored or navigated back.
       window.addEventListener('pageshow', () => {
-        cb(window.location.href);
+        onMediaUpdated(window.location.href);
       });
     })
   )";
@@ -144,23 +144,24 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
           isolate, isolated_world_id_);
   v8::Context::Scope context_scope(context);
-
-  v8::Local<v8::String> source = gin::StringToV8(isolate, kScript);
-  v8::MicrotasksScope microtasks(context->GetIsolate(),
-                                 context->GetMicrotaskQueue(),
+  v8::MicrotasksScope microtasks(context,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
+
   v8::Local<v8::Script> script =
-      v8::Script::Compile(context, source).ToLocalChecked();
-  v8::Local<v8::Value> result = script->Run(context).ToLocalChecked();
-  v8::Local<v8::Function> function = v8::Local<v8::Function>::Cast(result);
-  v8::Local<v8::Function> v8_callback =
+      v8::Script::Compile(context, gin::StringToV8(isolate, kScript))
+          .ToLocalChecked();
+  v8::Local<v8::Function> function =
+      v8::Local<v8::Function>::Cast(script->Run(context).ToLocalChecked());
+
+  v8::Local<v8::Function> on_media_updated =
       gin::CreateFunctionTemplate(
           context->GetIsolate(),
           base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaUpdated,
                               weak_ptr_factory_.GetWeakPtr()))
           ->GetFunction(context)
           .ToLocalChecked();
-  v8::Local<v8::Value> arg = v8::Local<v8::Value>::Cast(v8_callback);
+  v8::Local<v8::Value> arg = on_media_updated.As<v8::Value>();
+
   std::ignore = function->Call(context, context->Global(), 1, &arg);
 }
 
