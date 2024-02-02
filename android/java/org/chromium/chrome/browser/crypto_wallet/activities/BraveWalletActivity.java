@@ -301,7 +301,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                             onboardingTermOfUseFragment));
         }
 
-        if (walletAction == WalletAction.ONBOARDING_RESTORE) {
+        if (walletAction == WalletAction.ONBOARDING_RESTORE || walletAction == WalletAction.RESTORE) {
             mShowBiometricPrompt = false;
 
             final OnboardingRestoreWalletFragment onboardingRestoreWalletFragment =
