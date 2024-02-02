@@ -11,6 +11,7 @@ import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import { showAlert } from '@brave/leo/react/alertCenter'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 import getPageHandlerInstance from '../../api/page_handler'
 import styles from './style.module.scss'
@@ -19,7 +20,6 @@ import FeedbackForm from '../feedback_form'
 interface ContextMenuAssistantProps {
   turnText: string
   turnId: number
-  className?: string
   isOpen: boolean
   onClick: () => void
   onClose: () => void
@@ -143,7 +143,10 @@ function ContextMenuAssistant_(
   return (
     <>
       <ButtonMenu
-        className={classnames(styles.moreButton, props.className)}
+        className={classnames({
+          [styles.moreButton]: true,
+          [styles.moreButtonHide]: loadTimeData.getBoolean('isMobile')
+        })}
         isOpen={props.isOpen}
         onClose={props.onClose}
       >

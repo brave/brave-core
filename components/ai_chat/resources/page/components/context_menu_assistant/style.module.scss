@@ -21,6 +21,15 @@
   }
 }
 
+.moreButtonHide {
+  border: 0;
+  background: none;
+
+  leo-button {
+    display: none;
+  }
+}
+
 .liked {
   color: var(--leo-color-systemfeedback-success-text);
 }
