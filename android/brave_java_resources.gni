@@ -912,7 +912,7 @@ brave_java_resources = [
   "java/res/layout/fragment_sign_message_error.xml",
   "java/res/layout/fragment_sign_tx_message.xml",
   "java/res/layout/fragment_siwe.xml",
-  "java/res/layout/fragment_term_of_use_wallet.xml",
+  "java/res/layout/fragment_terms_of_use_wallet.xml",
   "java/res/layout/fragment_timer_dialog_list_dialog.xml",
   "java/res/layout/fragment_timer_dialog_list_dialog_item.xml",
   "java/res/layout/fragment_transaction.xml",

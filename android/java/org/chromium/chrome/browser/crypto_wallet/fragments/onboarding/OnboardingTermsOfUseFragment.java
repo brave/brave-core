@@ -18,15 +18,14 @@ import androidx.fragment.app.FragmentActivity;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity.WalletAction;
 
 /**
  * Onboarding fragment showing terms and conditions to accept before using Brave Wallet.
  */
-public class OnboardingTermOfUseFragment extends BaseOnboardingWalletFragment {
+public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment {
     @NonNull
-    public static OnboardingTermOfUseFragment newInstance() {
-        return new OnboardingTermOfUseFragment();
+    public static OnboardingTermsOfUseFragment newInstance() {
+        return new OnboardingTermsOfUseFragment();
     }
 
     @Override
@@ -42,7 +41,7 @@ public class OnboardingTermOfUseFragment extends BaseOnboardingWalletFragment {
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_term_of_use_wallet, container, false);
+        return inflater.inflate(R.layout.fragment_terms_of_use_wallet, container, false);
     }
 
     @Override

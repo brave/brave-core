@@ -43,7 +43,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.Onboarding
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingRestoreWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingSecurePasswordFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingTermOfUseFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingTermsOfUseFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
@@ -293,12 +293,12 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         final List<NavigationItem> navigationItems = new ArrayList<>();
         // Term of use screen is shown only during onboarding actions.
         if (walletAction != WalletAction.RESTORE) {
-            final OnboardingTermOfUseFragment onboardingTermOfUseFragment =
-                    OnboardingTermOfUseFragment.newInstance();
+            final OnboardingTermsOfUseFragment onboardingTermsOfUseFragment =
+                    OnboardingTermsOfUseFragment.newInstance();
             navigationItems.add(
                     new NavigationItem(
                             getResources().getString(R.string.before_we_begin),
-                            onboardingTermOfUseFragment));
+                            onboardingTermsOfUseFragment));
         }
 
         if (walletAction == WalletAction.ONBOARDING_RESTORE || walletAction == WalletAction.RESTORE) {
