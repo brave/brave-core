@@ -350,6 +350,10 @@ where
                 // overwrite the request_id with the new value
                 if let Credentials::TimeLimitedV2(item_credentials) = item_credentials {
                     item_credentials.request_id = Some(request_id.to_string());
+                } else {
+                    return Err(InternalError::StorageWriteFailed(
+                        "Item is not time limited v2".to_string(),
+                    ));
                 }
             }
         }
