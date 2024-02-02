@@ -145,8 +145,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
           isolate, isolated_world_id_);
   v8::Context::Scope context_scope(context);
 
-  v8::Local<v8::String> source =
-      v8::String::NewFromUtf8Literal(isolate, kScript);
+  v8::Local<v8::String> source = gin::StringToV8(isolate, kScript);
   v8::MicrotasksScope microtasks(context->GetIsolate(),
                                  context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -162,7 +161,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
           ->GetFunction(context)
           .ToLocalChecked();
   v8::Local<v8::Value> arg = v8::Local<v8::Value>::Cast(v8_callback);
-  static_cast<void>(function->Call(context, context->Global(), 1, &arg));
+  std::ignore = function->Call(context, context->Global(), 1, &arg);
 }
 
 void PlaylistRenderFrameObserver::OnMediaUpdated(const std::string& page_url) {
