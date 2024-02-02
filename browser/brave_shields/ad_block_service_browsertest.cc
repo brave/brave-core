@@ -2384,7 +2384,7 @@ IN_PROC_BROWSER_TEST_F(ScriptletDebugLogsFlagEnabledTest, CanDebugSetToTrue) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   std::string scriptlet =
       "(function() {"
-      "  if (scriptletGlobals.get('canDebug')) {"
+      "  if (scriptletGlobals.get('canDebug') && scriptletGlobals.canDebug) {"
       "    window.success = true;"
       "  }"
       "})();";
