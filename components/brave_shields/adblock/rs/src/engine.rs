@@ -82,7 +82,7 @@ pub fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRu
 
         /// This value corresponds to `maxRuleCount` here:
         /// https://github.com/WebKit/WebKit/blob/4a2df13be2253f64d8da58b794d74347a3742652/Source/WebCore/contentextensions/ContentExtensionParser.cpp#L299
-        const MAX_CB_LIST_SIZE: usize = 150000;
+        const MAX_CB_LIST_SIZE: usize = 150000 - 1;
 
         let mut filter_set = InnerFilterSet::new(true);
         filter_set.add_filter_list(
