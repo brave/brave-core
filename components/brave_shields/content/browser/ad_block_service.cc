@@ -15,7 +15,6 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/threading/thread_restrictions.h"
-#include "base/time/time.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"

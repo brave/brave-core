@@ -10,6 +10,9 @@
 namespace brave_shields {
 namespace features {
 
+BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
+             "AdBlockDefaultResourceUpdateInterval",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, Brave will block first-party requests that appear in a filter
 // list when Shields is in "standard" blocking mode. When disabled, Brave will
 // allow first-party requests in "standard" blocking mode regardless of whether
@@ -109,6 +112,9 @@ BASE_FEATURE(kCosmeticFilteringExtraPerfMetrics,
 BASE_FEATURE(kCosmeticFilteringJsPerformance,
              "CosmeticFilteringJsPerformance",
              base::FEATURE_ENABLED_BY_DEFAULT);
+
+constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
+    &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
 
 constexpr base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs{

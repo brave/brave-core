@@ -13,6 +13,7 @@
 
 namespace brave_shields {
 namespace features {
+BASE_DECLARE_FEATURE(kAdBlockDefaultResourceUpdateInterval);
 BASE_DECLARE_FEATURE(kBraveAdblockCnameUncloaking);
 BASE_DECLARE_FEATURE(kBraveAdblockCollapseBlockedElements);
 BASE_DECLARE_FEATURE(kBraveAdblockCookieListDefault);
@@ -33,6 +34,7 @@ BASE_DECLARE_FEATURE(kBraveShowStrictFingerprintingMode);
 BASE_DECLARE_FEATURE(kCosmeticFilteringExtraPerfMetrics);
 BASE_DECLARE_FEATURE(kCosmeticFilteringJsPerformance);
 BASE_DECLARE_FEATURE(kCosmeticFilteringSyncLoad);
+extern const base::FeatureParam<int> kComponentUpdateCheckIntervalMins;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;
 extern const base::FeatureParam<std::string>

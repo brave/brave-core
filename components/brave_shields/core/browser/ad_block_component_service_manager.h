@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
@@ -92,6 +93,8 @@ class AdBlockComponentServiceManager
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   raw_ptr<AdBlockListP3A> list_p3a_;
+
+  base::RepeatingTimer update_check_timer_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
