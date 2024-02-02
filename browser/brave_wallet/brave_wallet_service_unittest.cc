@@ -63,6 +63,8 @@
 #include "url/origin.h"
 
 using content::StoragePartition;
+using testing::ElementsAre;
+using testing::Eq;
 
 namespace {
 
@@ -509,6 +511,14 @@ class BraveWalletServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
+      const std::string& chain_id,
+      mojom::CoinType coin_type) {
+    std::vector<mojom::BlockchainTokenPtr> result;
+    GetUserAssets(chain_id, coin_type, &result);
+    return result;
+  }
+
   void AddUserAsset(mojom::BlockchainTokenPtr token, bool* out_success) {
     base::RunLoop run_loop;
     service_->AddUserAsset(std::move(token),
@@ -517,6 +527,18 @@ class BraveWalletServiceUnitTest : public testing::Test {
                              run_loop.Quit();
                            }));
     run_loop.Run();
+  }
+
+  bool AddUserAsset(mojom::BlockchainTokenPtr token) {
+    bool out_success;
+    base::RunLoop run_loop;
+    service_->AddUserAsset(std::move(token),
+                           base::BindLambdaForTesting([&](bool success) {
+                             out_success = success;
+                             run_loop.Quit();
+                           }));
+    run_loop.Run();
+    return out_success;
   }
 
   void RemoveUserAsset(mojom::BlockchainTokenPtr token, bool* out_success) {
@@ -938,6 +960,56 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(tokens.size(), 2u);
   EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
   EXPECT_EQ(token1_0xaa36a7, tokens[1]);
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForBtc) {
+  GetPrefs()->SetDict(kBraveWalletUserAssets, base::Value::Dict());
+
+  auto btc_mainnet_token = GetBitcoinNativeToken(mojom::kBitcoinMainnet);
+  auto btc_testnet_token = GetBitcoinNativeToken(mojom::kBitcoinTestnet);
+
+  EXPECT_THAT(GetUserAssets(mojom::kBitcoinMainnet, mojom::CoinType::BTC),
+              ElementsAre(Eq(std::ref(btc_mainnet_token))));
+  EXPECT_THAT(GetUserAssets(mojom::kBitcoinTestnet, mojom::CoinType::BTC),
+              ElementsAre(Eq(std::ref(btc_testnet_token))));
+
+  btc_mainnet_token->visible = false;
+  btc_testnet_token->visible = false;
+  AddUserAsset(btc_mainnet_token.Clone());
+  AddUserAsset(btc_testnet_token.Clone());
+  bool success = false;
+  SetUserAssetVisible(btc_mainnet_token.Clone(), false, &success);
+  SetUserAssetVisible(btc_testnet_token.Clone(), false, &success);
+
+  EXPECT_THAT(GetUserAssets(mojom::kBitcoinMainnet, mojom::CoinType::BTC),
+              ElementsAre(Eq(std::ref(btc_mainnet_token))));
+  EXPECT_THAT(GetUserAssets(mojom::kBitcoinTestnet, mojom::CoinType::BTC),
+              ElementsAre(Eq(std::ref(btc_testnet_token))));
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForZec) {
+  GetPrefs()->SetDict(kBraveWalletUserAssets, base::Value::Dict());
+
+  auto zec_mainnet_token = GetZcashNativeToken(mojom::kZCashMainnet);
+  auto zec_testnet_token = GetZcashNativeToken(mojom::kZCashTestnet);
+
+  EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+              ElementsAre(Eq(std::ref(zec_mainnet_token))));
+  EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+              ElementsAre(Eq(std::ref(zec_testnet_token))));
+
+  zec_mainnet_token->visible = false;
+  zec_testnet_token->visible = false;
+  AddUserAsset(zec_mainnet_token.Clone());
+  AddUserAsset(zec_testnet_token.Clone());
+  bool success = false;
+  SetUserAssetVisible(zec_mainnet_token.Clone(), false, &success);
+  SetUserAssetVisible(zec_testnet_token.Clone(), false, &success);
+
+  EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+              ElementsAre(Eq(std::ref(zec_mainnet_token))));
+  EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+              ElementsAre(Eq(std::ref(zec_testnet_token))));
 }
 
 TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {

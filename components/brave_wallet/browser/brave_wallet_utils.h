@@ -193,6 +193,9 @@ std::string GenerateRandomHexString();
 
 std::string WalletInternalErrorMessage();
 
+mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id);
+mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_
