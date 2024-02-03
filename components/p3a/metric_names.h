@@ -50,6 +50,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.DNS.AutoSecureRequests",
     "Brave.DNS.SecureSetting",
     "Brave.Extensions.AdBlock",
+    "Brave.IOS.IsLikelyDefault",
 
     // IPFS
     "Brave.IPFS.DaemonRunTime",
@@ -138,6 +139,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Playlist.UsageDaysInWeek",
     "Brave.Rewards.AdTypesEnabled",
     "Brave.Rewards.AutoContributionsState.3",
+    "Brave.Rewards.CustomNotificationAdPosition",
     "Brave.Rewards.DesktopPanelCount",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.MobileConversion",
@@ -230,7 +232,7 @@ inline constexpr auto kCollectedSlowHistograms =
     "Brave.Rewards.PageViewCount",
     "Brave.Rewards.TipsSent.2",
     "Brave.Sync.EnabledTypes",
-    "Brave.Sync.SyncedObjectsCount",
+    "Brave.Sync.SyncedObjectsCount.2",
     "Brave.Today.UsageMonthly",
     "Brave.Toolbar.ForwardNavigationAction",
     "Brave.Wallet.UsageMonthly",

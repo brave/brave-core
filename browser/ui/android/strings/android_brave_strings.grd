@@ -1758,7 +1758,7 @@ Are you sure you want to do this?
         You blocked <ph name="COUNT">%1$s</ph> trackers &amp; ads with Brave browser in the past 3 hours.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_3_TEXT_2" desc="3_hours notification text">
-        Browse up to 6x faster on major news sites in Brave by blocking trackes &amp; ads.
+        Browse up to 6x faster on major news sites in Brave by blocking trackers &amp; ads.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_3_TEXT_3" desc="3_hours notification text">
         Turn on Privacy Reports to see how many trackers &amp; ads have been blocked in the past 3 hours.

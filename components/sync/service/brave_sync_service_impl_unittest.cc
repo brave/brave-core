@@ -7,8 +7,11 @@
 
 #include "base/base64.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/gtest_util.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_model_type_controller.h"
 #include "brave/components/history/core/browser/sync/brave_history_model_type_controller.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
@@ -19,6 +22,7 @@
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
+#include "components/sync/model/type_entities_count.h"
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/test/data_type_manager_mock.h"
 #include "components/sync/test/fake_data_type_controller.h"
@@ -65,10 +69,13 @@ class SyncServiceImplDelegateMock : public SyncServiceImplDelegate {
  public:
   SyncServiceImplDelegateMock() = default;
   ~SyncServiceImplDelegateMock() override = default;
-  void SuspendDeviceObserverForOwnReset() override {}
-  void ResumeDeviceObserver() override {}
-  void SetLocalDeviceAppearedCallback(
-      base::OnceCallback<void()> local_device_appeared_callback) override {}
+
+  MOCK_METHOD0(SuspendDeviceObserverForOwnReset, void());
+  MOCK_METHOD0(ResumeDeviceObserver, void());
+  MOCK_METHOD1(SetLocalDeviceAppearedCallback,
+               void(base::OnceCallback<void()>));
+  MOCK_METHOD1(GetKnownToSyncHistoryCount,
+               void(base::OnceCallback<void(std::pair<bool, int>)>));
 };
 
 class SyncServiceObserverMock : public SyncServiceObserver {
@@ -110,9 +117,12 @@ class BraveSyncServiceImplTest : public testing::Test {
     ON_CALL(*sync_client, CreateDataTypeControllers(_))
         .WillByDefault(Return(ByMove(std::move(controllers))));
 
+    auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
+    sync_service_delegate_ = sync_service_delegate.get();
+
     sync_service_impl_ = std::make_unique<BraveSyncServiceImpl>(
         sync_service_impl_bundle_.CreateBasicInitParams(std::move(sync_client)),
-        std::make_unique<SyncServiceImplDelegateMock>());
+        std::move(sync_service_delegate));
   }
 
   brave_sync::Prefs* brave_sync_prefs() { return &brave_sync_prefs_; }
@@ -141,6 +151,7 @@ class BraveSyncServiceImplTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
+  raw_ptr<SyncServiceImplDelegateMock> sync_service_delegate_;
 
  private:
   SyncServiceImplBundle sync_service_impl_bundle_;
@@ -588,6 +599,50 @@ TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
       brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
   EXPECT_EQ(selected_types.Size(), 1u);
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(ModelTypeSet({BOOKMARKS, HISTORY}));
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+  base::HistogramTester histogram_tester;
+
+  std::vector<syncer::TypeEntitiesCount> counts;
+  syncer::TypeEntitiesCount bookmarks_count(syncer::BOOKMARKS);
+  bookmarks_count.entities = bookmarks_count.non_tombstone_entities = 1;
+  counts.push_back(bookmarks_count);
+
+  brave_sync_service_impl()->OnGotEntityCounts(counts);
+  histogram_tester.ExpectBucketCount(
+      brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 0, 1);
+
+  // Enable History and pretend we got its number from delegate.
+  // We need to have setup handle, otherwise
+  // |SyncUserSettingsImpl::SetSelectedTypes| and
+  // |SyncUserSettingsImpl::GetSelectedTypes| work wrong
+  auto sync_blocker = brave_sync_service_impl()->GetSetupInProgressHandle();
+  auto selected_types =
+      brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
+  selected_types.Put(UserSelectableType::kHistory);
+  brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
+      false, selected_types);
+
+  ON_CALL(*sync_service_delegate_, GetKnownToSyncHistoryCount(_))
+      .WillByDefault(
+          [](base::OnceCallback<void(std::pair<bool, int>)> callback) {
+            std::move(callback).Run(std::pair<bool, int>(true, 10001));
+          });
+
+  brave_sync_service_impl()->OnGotEntityCounts(counts);
+  histogram_tester.ExpectBucketCount(
+      brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 2, 1);
 
   OSCryptMocker::TearDown();
 }

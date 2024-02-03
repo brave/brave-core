@@ -52,7 +52,10 @@ export const accountEndpoints = ({
       },
       invalidatesTags: [
         { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }
+        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY },
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
       ]
     }),
 
@@ -144,7 +147,12 @@ export const accountEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['AccountInfos']
+      invalidatesTags: [
+        'AccountInfos',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
     }),
 
     updateAccountName: mutation<
@@ -227,7 +235,13 @@ export const accountEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['AccountInfos', 'Network']
+      invalidatesTags: [
+        'AccountInfos',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
     }),
 
     importAccountFromJson: mutation<
@@ -265,7 +279,13 @@ export const accountEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['AccountInfos', 'Network']
+      invalidatesTags: [
+        'AccountInfos',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
     }),
 
     importHardwareAccounts: mutation<true, BraveWallet.HardwareWalletAccount[]>(
@@ -291,7 +311,12 @@ export const accountEndpoints = ({
             )
           }
         },
-        invalidatesTags: ['AccountInfos']
+        invalidatesTags: [
+          'AccountInfos',
+          'TokenBalances',
+          'TokenBalancesForChainId',
+          'AccountTokenCurrentBalance'
+        ]
       }
     ),
 

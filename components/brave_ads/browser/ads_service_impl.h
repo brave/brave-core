@@ -111,7 +111,7 @@ class AdsServiceImpl : public AdsService,
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
 
-  void InitializeNotificationsForCurrentProfile() const;
+  void InitializeNotificationsForCurrentProfile();
 
   void GetDeviceIdAndMaybeStartBatAdsService();
   void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
@@ -194,6 +194,8 @@ class AdsServiceImpl : public AdsService,
   void URLRequestCallback(SimpleURLLoaderList::iterator url_loader_iter,
                           UrlRequestCallback callback,
                           std::unique_ptr<std::string> response_body);
+
+  void OnNotificationAdPositionChanged();
 
   // KeyedService:
   void Shutdown() override;

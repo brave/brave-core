@@ -89,7 +89,7 @@ interface Props {
   formattedFullAssetBalance: string
   selectedAssetTransactions: SerializableTransactionInfo[]
   accounts: BraveWallet.AccountInfo[]
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
   spotPriceRegistry: SpotPriceRegistry | undefined
 }
 

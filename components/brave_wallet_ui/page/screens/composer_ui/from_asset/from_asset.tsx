@@ -76,7 +76,7 @@ interface Props {
   token: BraveWallet.BlockchainToken | undefined
   network: BraveWallet.NetworkInfo | undefined
   account: BraveWallet.AccountInfo | undefined
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
   isLoadingBalances: boolean
 }
 
