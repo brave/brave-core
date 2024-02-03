@@ -31,6 +31,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kEventTimingReportAllEarlyEntriesOnPaintedPresentation,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFencedFramesM120FeaturesPart2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeBiddingAndAuctionServer, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeConsiderKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},

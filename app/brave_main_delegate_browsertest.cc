@@ -29,6 +29,7 @@
 #include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/language/core/common/language_experiments.h"
 #include "components/lens/lens_features.h"
+#include "components/manta/features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
@@ -137,6 +138,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kEventTimingReportAllEarlyEntriesOnPaintedPresentation,
       &blink::features::kFencedFrames,
+      &blink::features::kFencedFramesM120FeaturesPart2,
       &blink::features::kFledge,
       &blink::features::kFledgeBiddingAndAuctionServer,
       &blink::features::kFledgeConsiderKAnonymity,
@@ -252,6 +254,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &kVerifyRequestInitiatorForMirrorHeaders,
 #endif
       &lens::features::kLensStandalone,
+      &manta::features::kMantaService,
       &media::kLiveCaption,
       &metrics::structured::kEnabledStructuredMetricsService,
       &metrics::structured::kNearbyShareMetrics,
