@@ -70,7 +70,8 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
             MVCListAdapter.ListItem item = modelList.get(i);
             int id = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
 
-            if (id == R.id.request_brave_vpn_row_menu_id) {
+            if (id == R.id.request_brave_vpn_row_menu_id
+                    || id == R.id.request_vpn_location_row_menu_id) {
                 int menutype = AppMenuItemType.TITLE_BUTTON;
 
                 modelList.update(i, new MVCListAdapter.ListItem(menutype, item.model));

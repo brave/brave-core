@@ -54,7 +54,7 @@ std::optional<TransactionInfo> ParseTransaction(const base::Value::Dict& dict) {
   if (!confirmation_type) {
     return std::nullopt;
   }
-  transaction.confirmation_type = ParseConfirmationType(*confirmation_type);
+  transaction.confirmation_type = ToConfirmationType(*confirmation_type);
 
   return transaction;
 }

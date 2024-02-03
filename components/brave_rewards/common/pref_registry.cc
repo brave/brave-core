@@ -32,6 +32,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kBadgeText, "1");
   registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
   registry->RegisterStringPref(prefs::kExternalWalletType, "");
+  registry->RegisterDictionaryPref(prefs::kSelfCustodyAvailable);
+  registry->RegisterBooleanPref(prefs::kSelfCustodyInviteDismissed, false);
   registry->RegisterUint64Pref(prefs::kPromotionLastFetchStamp, 0ull);
   registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);
   registry->RegisterBooleanPref(prefs::kAnonTransferChecked, false);
@@ -68,8 +70,10 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");
   registry->RegisterStringPref(prefs::kWalletGemini, "");
   registry->RegisterStringPref(prefs::kWalletZebPay, "");
+  registry->RegisterStringPref(prefs::kWalletSolana, "");
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
   registry->RegisterIntegerPref(prefs::kWalletCreationEnvironment, -1);
+  registry->RegisterListPref(prefs::kRewardsPageViewCount);
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {

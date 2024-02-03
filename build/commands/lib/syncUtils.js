@@ -33,7 +33,7 @@ function maybeInstallDepotTools(options = config.defaultOptions) {
 
   const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg');
   if (!fs.existsSync(ninjaLogCfgPath)) {
-    // Create a ninja config to prevent (auto)ninja from calling goma_auth
+    // Create a ninja config to prevent autoninja from calling "cipd auth-info"
     // each time. See for details:
     // https://chromium.googlesource.com/chromium/tools/depot_tools/+/main/ninjalog.README.md
     const ninjaLogCfgConfig = {

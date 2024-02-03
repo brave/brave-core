@@ -12,7 +12,6 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "brave/components/brave_rewards/core/logging/logging_util.h"
 
 namespace brave_rewards::internal::endpoints {
 
@@ -27,7 +26,6 @@ class ResponseHandler {
   static void OnResponse(base::OnceCallback<void(Result&&)> callback,
                          mojom::UrlResponsePtr response) {
     DCHECK(response);
-    LogUrlResponse(__func__, *response);
     std::move(callback).Run(Endpoint::ProcessResponse(*response));
   }
 

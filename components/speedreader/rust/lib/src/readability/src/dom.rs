@@ -10,10 +10,10 @@ use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{parse_document, ParseOpts};
 use html5ever::{Attribute, LocalName, QualName};
-use kuchiki::iter::NodeIterator;
-use kuchiki::NodeData::{Element, Text};
-use kuchiki::NodeRef as Handle;
-use kuchiki::Sink;
+use kuchikiki::iter::NodeIterator;
+use kuchikiki::NodeData::{Element, Text};
+use kuchikiki::NodeRef as Handle;
+use kuchikiki::Sink;
 use std::str::FromStr;
 
 /// A small wrapper function that creates a NodeOrText from a Text handle or an

@@ -10,6 +10,8 @@
 
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -83,7 +85,8 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   }
 
   if (!zcash_wallet_service_) {
-    std::move(callback_).Run(base::unexpected("Internal error"));
+    std::move(callback_).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
@@ -97,6 +100,14 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
     return;
   }
 
+  if (!block_end_) {
+    zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
+        GetNetworkForZCashKeyring(account_id_->keyring_id),
+        base::BindOnce(&DiscoverNextUnusedZCashAddressTask::OnGetLastBlock,
+                       this));
+    return;
+  }
+
   if (start_address_) {
     current_address_ = std::move(start_address_);
   } else {
@@ -104,16 +115,8 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   }
 
   if (!current_address_) {
-    error_ = "Internal error";
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
-    return;
-  }
-
-  if (!block_end_) {
-    zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
-        GetNetworkForZCashKeyring(account_id_->keyring_id),
-        base::BindOnce(&DiscoverNextUnusedZCashAddressTask::OnGetLastBlock,
-                       this));
     return;
   }
 
@@ -125,14 +128,14 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
 }
 
 void DiscoverNextUnusedZCashAddressTask::OnGetLastBlock(
-    base::expected<zcash::BlockID, std::string> result) {
-  if (!result.has_value()) {
+    base::expected<mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
     error_ = result.error();
     WorkOnTask();
     return;
   }
 
-  block_end_ = result.value().height();
+  block_end_ = (*result)->height;
   WorkOnTask();
 }
 
@@ -215,13 +218,14 @@ void CreateTransparentTransactionTask::WorkOnTask() {
   transaction_.set_locktime(chain_height_.value());
 
   if (!PickInputs()) {
-    SetError("Couldn't pick transaction inputs");
+    // TODO(cypt4) : switch to IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE when ready
+    SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     ScheduleWorkOnTask();
     return;
   }
 
   if (!PrepareOutputs()) {
-    SetError("Couldn't prepare outputs");
+    SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     ScheduleWorkOnTask();
     return;
   }
@@ -233,14 +237,14 @@ void CreateTransparentTransactionTask::WorkOnTask() {
 }
 
 void CreateTransparentTransactionTask::OnGetChainHeight(
-    base::expected<zcash::BlockID, std::string> result) {
-  if (!result.has_value()) {
+    base::expected<mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
     SetError(std::move(result).error());
     WorkOnTask();
     return;
   }
 
-  chain_height_ = result.value().height();
+  chain_height_ = (*result)->height;
   WorkOnTask();
 }
 
@@ -277,8 +281,12 @@ bool CreateTransparentTransactionTask::PickInputs() {
   std::vector<ZCashTransaction::TxInput> all_inputs;
   for (const auto& item : utxo_map_) {
     for (const auto& utxo : item.second) {
+      if (!utxo) {
+        error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+        return false;
+      }
       if (auto input =
-              ZCashTransaction::TxInput::FromRpcUtxo(item.first, utxo)) {
+              ZCashTransaction::TxInput::FromRpcUtxo(item.first, *utxo)) {
         all_inputs.emplace_back(std::move(*input));
       }
     }
@@ -325,7 +333,6 @@ bool CreateTransparentTransactionTask::PrepareOutputs() {
     return true;
   }
 
-  // TODO(cypt4): should always pick new change address.
   const auto& change_address = change_address_;
   if (!change_address) {
     return false;

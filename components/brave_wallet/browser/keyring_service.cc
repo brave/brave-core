@@ -684,9 +684,10 @@ void KeyringService::MigrateDerivedAccountIndex(PrefService* profile_prefs) {
   ScopedDictPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
 
   const std::vector<mojom::KeyringId> keyrings = {
-      mojom::KeyringId::kDefault,   mojom::KeyringId::kSolana,
-      mojom::KeyringId::kFilecoin,  mojom::KeyringId::kFilecoinTestnet,
-      mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoin84Testnet};
+      mojom::KeyringId::kDefault,      mojom::KeyringId::kSolana,
+      mojom::KeyringId::kFilecoin,     mojom::KeyringId::kFilecoinTestnet,
+      mojom::KeyringId::kBitcoin84,    mojom::KeyringId::kBitcoin84Testnet,
+      mojom::KeyringId::kZCashMainnet, mojom::KeyringId::kZCashTestnet};
 
   for (auto keyring_id : keyrings) {
     base::Value::Dict* keyring_dict =
@@ -828,18 +829,6 @@ void KeyringService::MaybeMigrateSelectedAccountPrefs() {
   }
   SetSelectedWalletAccountInPrefs(profile_prefs_, wallet_selected->unique_key);
   profile_prefs_->ClearPref(kBraveWalletSelectedCoinDeprecated);
-}
-
-// static
-void KeyringService::MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
-  // Moving hardware part under default keyring.
-  ScopedDictPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
-  auto* obsolete = update->FindDict(kHardwareAccounts);
-  if (obsolete) {
-    SetPrefForKeyring(profile_prefs, kHardwareAccounts,
-                      base::Value(obsolete->Clone()), mojom::kDefaultKeyringId);
-    update->Remove(kHardwareAccounts);
-  }
 }
 
 // static
@@ -2131,6 +2120,8 @@ bool KeyringService::CreateEncryptorForKeyring(const std::string& password,
   }
 
   // Added 08.08.2022
+  // Let's keep this migration for a while to reduce risk someone loses access
+  // to their wallet.
   MaybeMigratePBKDF2Iterations(password);
 
   encryptors_[keyring_id] = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
@@ -2516,7 +2507,7 @@ KeyringService::GetZCashAddresses(const mojom::AccountIdPtr& account_id) {
                                          kBitcoinChangeIndex, i);
     auto address = zcash_keyring->GetAddress(*key_id);
     if (!address) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     addresses.emplace_back(std::move(address));
   }
@@ -2680,7 +2671,7 @@ KeyringService::GetBitcoinAddresses(const mojom::AccountIdPtr& account_id) {
 
   std::vector<mojom::BitcoinAddressPtr> addresses;
   for (auto i = 0u;
-       i < bitcoin_account_info->next_receive_address->key_id->index; ++i) {
+       i <= bitcoin_account_info->next_receive_address->key_id->index; ++i) {
     auto key_id = mojom::BitcoinKeyId::New(kBitcoinReceiveIndex, i);
     auto address =
         bitcoin_keyring->GetAddress(account_id->bitcoin_account_index, *key_id);
@@ -2691,7 +2682,7 @@ KeyringService::GetBitcoinAddresses(const mojom::AccountIdPtr& account_id) {
         mojom::BitcoinAddress::New(*address, std::move(key_id)));
   }
   for (auto i = 0u;
-       i < bitcoin_account_info->next_change_address->key_id->index; ++i) {
+       i <= bitcoin_account_info->next_change_address->key_id->index; ++i) {
     auto key_id = mojom::BitcoinKeyId::New(kBitcoinChangeIndex, i);
     auto address =
         bitcoin_keyring->GetAddress(account_id->bitcoin_account_index, *key_id);

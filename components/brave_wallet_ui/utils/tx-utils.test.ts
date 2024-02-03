@@ -5,7 +5,8 @@
 import {
   getMockedTransactionInfo,
   mockAccount,
-  mockNetwork
+  mockNetwork,
+  mockSolanaAccount
 } from '../common/constants/mocks'
 import { SwapExchangeProxy } from '../common/constants/registry'
 import { BraveWallet, SerializableTransactionInfo } from '../constants/types'
@@ -13,12 +14,24 @@ import { makeNetworkAsset } from '../options/asset-options'
 import {
   mockBasicAttentionToken,
   mockBitcoinErc20Token,
-  mockErc20TokensList
+  mockBtcToken,
+  mockErc20TokensList,
+  mockEthToken,
+  mockFilToken,
+  mockMoonCatNFT,
+  mockSolToken,
+  mockSplBat,
+  mockZecToken
 } from '../stories/mock-data/mock-asset-options'
 import { mockEthMainnet } from '../stories/mock-data/mock-networks'
 import {
+  createMockTransactionInfo,
+  mockBtcSendTransaction,
+  mockEthSendTransaction,
   mockFilSendTransaction,
-  mockTransactionInfo
+  mockSolanaTransactionInfo,
+  mockTransactionInfo,
+  mockZecSendTransaction
 } from '../stories/mock-data/mock-transaction-info'
 import { mockEthAccount } from '../stories/mock-data/mock-wallet-accounts'
 import Amount from './amount'
@@ -135,7 +148,6 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
           fromAddress: mockAccount.address,
           effectiveRecipient: mockAccount.address,
           fromAccountId: mockAccount.accountId,
-          groupId: undefined,
           id: 'swap',
           originInfo: undefined,
           submittedTime: { microseconds: Date.now() },
@@ -270,6 +282,11 @@ describe('check for insufficient funds errors', () => {
         gasFee
       })
 
+      const nativeAsset = {
+        ...makeNetworkAsset(mockEthMainnet),
+        chainId: mockTransactionInfo.chainId
+      }
+
       const token = findTransactionToken(
         mockTransactionInfo,
         mockErc20TokensList
@@ -279,10 +296,7 @@ describe('check for insufficient funds errors', () => {
         getETHSwapTransactionBuyAndSellTokens({
           tokensList: mockErc20TokensList,
           tx: mockTransactionInfo,
-          nativeAsset: {
-            ...makeNetworkAsset(mockEthMainnet),
-            chainId: mockTransactionInfo.chainId
-          }
+          nativeAsset
         })
 
       const accountNativeBalance =
@@ -462,16 +476,18 @@ describe('check for insufficient funds errors', () => {
         gasFee
       })
 
+      const nativeAsset = {
+        ...makeNetworkAsset(mockEthMainnet),
+        chainId: transactionInfo.chainId
+      }
+
       const token = findTransactionToken(transactionInfo, mockErc20TokensList)
 
       const { sellAmountWei, sellToken } =
         getETHSwapTransactionBuyAndSellTokens({
           tokensList: mockErc20TokensList,
           tx: transactionInfo,
-          nativeAsset: {
-            ...makeNetworkAsset(mockEthMainnet),
-            chainId: transactionInfo.chainId
-          }
+          nativeAsset
         })
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
@@ -548,16 +564,18 @@ describe('check for insufficient funds errors', () => {
         gasFee
       })
 
+      const nativeAsset = {
+        ...makeNetworkAsset(mockEthMainnet),
+        chainId: transactionInfo.chainId
+      }
+
       const token = findTransactionToken(transactionInfo, mockErc20TokensList)
 
       const { sellAmountWei, sellToken } =
         getETHSwapTransactionBuyAndSellTokens({
           tokensList: mockErc20TokensList,
           tx: transactionInfo,
-          nativeAsset: {
-            ...makeNetworkAsset(mockEthMainnet),
-            chainId: transactionInfo.chainId
-          }
+          nativeAsset
         })
 
       const insufficientFundsError = accountHasInsufficientFundsForTransaction({
@@ -624,5 +642,98 @@ describe('getIsRevokeApprovalTx', () => {
         ]
       })
     ).toBe(false)
+  })
+})
+
+describe('findTransactionToken', () => {
+  describe('Native asset Transfers', () => {
+    it(
+      'should detect SOL ' +
+        'as the token for Solana System transfer transactions',
+      () => {
+        expect(
+          findTransactionToken(mockSolanaTransactionInfo, [mockSolToken])
+            ?.symbol
+        ).toBe('SOL')
+      }
+    )
+
+    it('should detect FIL as the token for Filecoin send transactions', () => {
+      expect(
+        findTransactionToken(mockFilSendTransaction, [mockFilToken])?.symbol
+      ).toBe('FIL')
+    })
+
+    it('should detect ETH as the token for Ethereum send transactions', () => {
+      expect(
+        findTransactionToken(mockEthSendTransaction, [mockEthToken])?.symbol
+      ).toBe('ETH')
+    })
+
+    it('should detect BTC as the token for Bitcoin transactions', () => {
+      expect(
+        findTransactionToken(mockBtcSendTransaction, [mockBtcToken])?.symbol
+      ).toBe('BTC')
+    })
+
+    it('should detect ZEC as the token for ZCash transactions', () => {
+      expect(
+        findTransactionToken(mockZecSendTransaction, [mockZecToken])?.symbol
+      ).toBe('ZEC')
+    })
+  })
+
+  describe('Token Transfers', () => {
+    it('should detect sent ERC20 tokens', () => {
+      expect(
+        findTransactionToken(
+          createMockTransactionInfo({
+            chainId: BraveWallet.MAINNET_CHAIN_ID,
+            coinType: BraveWallet.CoinType.ETH,
+            fromAccount: mockEthAccount,
+            sendApproveOrSellAmount: '1000',
+            sendApproveOrSellAssetContractAddress:
+              mockBasicAttentionToken.contractAddress,
+            toAddress: mockAccount.address,
+            isERC20Send: true
+          }),
+          [mockEthToken, mockBasicAttentionToken]
+        )?.symbol
+      ).toBe('BAT')
+    })
+
+    it('should detect sent ERC721 tokens', () => {
+      expect(
+        findTransactionToken(
+          createMockTransactionInfo({
+            chainId: BraveWallet.MAINNET_CHAIN_ID,
+            coinType: BraveWallet.CoinType.ETH,
+            fromAccount: mockEthAccount,
+            sendApproveOrSellAmount: '1000',
+            sendApproveOrSellAssetContractAddress:
+              mockMoonCatNFT.contractAddress,
+            toAddress: mockAccount.address,
+            isERC721Send: true
+          }),
+          [mockEthToken, mockMoonCatNFT]
+        )?.symbol
+      ).toBe('AMC')
+    })
+
+    it('should detect sent SPL tokens', () => {
+      expect(
+        findTransactionToken(
+          createMockTransactionInfo({
+            chainId: BraveWallet.SOLANA_MAINNET,
+            coinType: BraveWallet.CoinType.SOL,
+            fromAccount: mockSolanaAccount,
+            sendApproveOrSellAmount: '1000',
+            sendApproveOrSellAssetContractAddress: mockSplBat.contractAddress,
+            toAddress: mockSolanaAccount.address
+          }),
+          [mockSolToken, mockSplBat]
+        )?.symbol
+      ).toBe('BAT')
+    })
   })
 })

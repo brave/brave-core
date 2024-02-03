@@ -39,9 +39,9 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
       case mojom::KeyringId::kBitcoin84Testnet:
         return "Bitcoin Testnet Account";
       case mojom::KeyringId::kZCashMainnet:
-        return "ZCash Mainnet Account";
+        return "Zcash Mainnet Account";
       case mojom::KeyringId::kZCashTestnet:
-        return "ZCash Testnet Account";
+        return "Zcash Testnet Account";
     }
     NOTREACHED();
     return "";
@@ -260,8 +260,10 @@ scoped_refptr<value_store::TestValueStoreFactory> GetTestValueStoreFactory(
 std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
     PrefService* prefs,
     scoped_refptr<value_store::ValueStoreFactory> store_factory) {
-  return std::make_unique<TxStorageDelegateImpl>(
+  auto delegate = std::make_unique<TxStorageDelegateImpl>(
       prefs, store_factory, base::SequencedTaskRunner::GetCurrentDefault());
+  WaitForTxStorageDelegateInitialized(delegate.get());
+  return delegate;
 }
 
 AccountResolverDelegateForTest::AccountResolverDelegateForTest() = default;

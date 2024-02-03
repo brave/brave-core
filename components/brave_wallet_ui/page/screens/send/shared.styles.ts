@@ -5,6 +5,9 @@
 
 import styled from 'styled-components'
 
+// Leo styles
+import * as leo from '@brave/leo/tokens/css'
+
 export interface TextProps {
   textSize?:
     | '22px'
@@ -16,16 +19,30 @@ export interface TextProps {
     | '11px'
     | '10px'
   isBold?: boolean
-  textColor?: 'text01' | 'text02' | 'text03' | 'success' | 'error'
+  textColor?:
+    | 'text01'
+    | 'text02'
+    | 'text03'
+    | 'success'
+    | 'error'
+    | 'warning'
+    | 'primary'
+    | 'secondary'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
 }
 
 export const Text = styled.span<TextProps>`
+  --primary: ${leo.color.text.primary};
+  --secondary: ${leo.color.text.secondary};
+  --tertiary: ${leo.color.text.tertiary};
+  // ToDo: We should to remove these old color variables
+  // in a refactor.
   --text01: ${(p) => p.theme.color.text01};
   --text02: ${(p) => p.theme.color.text02};
   --text03: ${(p) => p.theme.color.text03};
   --success: ${(p) => p.theme.color.successIcon};
+  --warning: ${leo.color.systemfeedback.warningText};
   --line-height: ${(p) =>
     p.textSize === '12px' ? '18px' : p.textSize === '22px' ? '24px' : '20px'};
   font-family: 'Poppins';

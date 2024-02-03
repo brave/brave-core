@@ -441,6 +441,7 @@ void PageGraph::WillSendNavigationRequest(uint64_t identifier,
 }
 
 void PageGraph::WillSendRequest(
+    blink::ExecutionContext* execution_context,
     blink::DocumentLoader* loader,
     const blink::KURL& fetch_context_url,
     const blink::ResourceRequest& request,
@@ -453,9 +454,6 @@ void PageGraph::WillSendRequest(
     LOG(INFO) << "Skip request redirect";
     return;
   }
-
-  blink::ExecutionContext* execution_context =
-      loader->GetFrame()->GetDocument()->GetExecutionContext();
 
   const String page_graph_resource_type = blink::Resource::ResourceTypeToString(
       resource_type, options.initiator_info.name);
@@ -885,12 +883,12 @@ void PageGraph::RegisterV8ScriptCompilationFromEval(
     v8::Local<v8::String> source) {
   v8::page_graph::ExecutingScript executing_script =
       v8::page_graph::GetExecutingScript(isolate);
-  ScriptData script_data{
-      .code = blink::ToBlinkString<String>(source, blink::kExternalize),
-      .source = {
-          .parent_script_id = executing_script.script_id,
-          .is_eval = true,
-      }};
+  ScriptData script_data{.code = blink::ToBlinkString<String>(
+                             isolate, source, blink::kExternalize),
+                         .source = {
+                             .parent_script_id = executing_script.script_id,
+                             .is_eval = true,
+                         }};
 
   RegisterScriptCompilation(
       blink::ToExecutionContext(isolate->GetCurrentContext()), script_id,

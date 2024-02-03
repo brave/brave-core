@@ -7,80 +7,233 @@ import * as React from 'react'
 
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import ProgressRing from '@brave/leo/react/progressRing'
 
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { NewTabLink } from '../../shared/components/new_tab_link'
-import { GeminiIcon } from '../../shared/components/icons/gemini_icon'
-import { UpholdIcon } from '../../shared/components/icons/uphold_icon'
-import { BitflyerIcon } from '../../shared/components/icons/bitflyer_icon'
-import { ZebPayIcon } from '../../shared/components/icons/zebpay_icon'
+import { WalletProviderIcon } from '../../shared/components/icons/wallet_provider_icon'
 import { BraveLogoText } from './icons/brave_logo_text'
+
+import {
+  ExternalWalletProvider,
+  isSelfCustodyProvider,
+  getExternalWalletProviderName
+} from '../../shared/lib/external_wallet'
 
 import * as urls from '../../shared/lib/rewards_urls'
 import * as style from './connect_wallet_modal.style'
 
-function renderProviderIcon (provider: string) {
-  switch (provider) {
-    case 'bitflyer': return <BitflyerIcon />
-    case 'gemini': return <GeminiIcon />
-    case 'uphold': return <UpholdIcon />
-    case 'zebpay': return <ZebPayIcon />
-    default: return null
-  }
-}
-
-interface ExternalWalletProvider {
-  type: string
-  name: string
+interface ProviderInfo {
+  provider: ExternalWalletProvider
   enabled: boolean
 }
 
 interface Props {
   currentCountryCode: string
-  providers: ExternalWalletProvider[]
+  providers: ProviderInfo[]
+  connectState: 'loading' | 'error' | ''
   onContinue: (provider: string) => void
   onClose: () => void
 }
 
 export function ConnectWalletModal (props: Props) {
   const { getString } = React.useContext(LocaleContext)
+  const [selectedProvider, setSelectedProvider] =
+    React.useState<ExternalWalletProvider | null>(null)
+
+  React.useEffect(() => {
+    // While this overlay is displayed, hide any scrollbars attached to the
+    // document body, as that can result in two visible scrollbars on some
+    // platforms.
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; }
+  }, []);
 
   if (props.providers.length === 0) {
     return null
   }
 
-  function renderProviderButton (provider: ExternalWalletProvider) {
+  function renderCustodialProviders () {
+    const entries = props.providers.filter(
+      (info => !isSelfCustodyProvider(info.provider)))
+
+    if (entries.length === 0) {
+      return null
+    }
+
+    return (
+      <div>
+        <style.providerGroupHeader>
+          <span>{getString('connectWalletCustodialHeader')}</span>
+          <style.providerGroupHeaderIcon>
+            <Icon name='info-outline' />
+            <div className='custodial tooltip'>
+              <style.providerGroupTooltip>
+                {getString('connectWalletCustodialTooltip')}
+              </style.providerGroupTooltip>
+            </div>
+          </style.providerGroupHeaderIcon>
+        </style.providerGroupHeader>
+        <style.providerGroupItems>
+          {entries.map(renderProviderButton)}
+        </style.providerGroupItems>
+        <style.regionsLearnMore>
+          <NewTabLink href={urls.supportedWalletRegionsURL}>
+            {getString('connectWalletLearnMore')}
+          </NewTabLink>
+        </style.regionsLearnMore>
+      </div>
+    )
+  }
+
+  function renderSelfCustodyProviders () {
+    const entries = props.providers.filter(
+      (info => isSelfCustodyProvider(info.provider)))
+
+    if (entries.length === 0) {
+      return null
+    }
+
+    return (
+      <div>
+        <style.providerGroupHeader>
+          {getString('connectWalletSelfCustodyHeader')}
+          <style.providerGroupHeaderIcon>
+            <Icon name='info-outline' />
+            <div className='self-custody tooltip'>
+              <style.providerGroupTooltip>
+                <div>
+                  {getString('connectWalletSelfCustodyTooltip')}
+                </div>
+                <div>
+                  <NewTabLink href={urls.selfCustodyLearnMoreURL}>
+                    {getString('learnMore')}
+                  </NewTabLink>
+                </div>
+              </style.providerGroupTooltip>
+            </div>
+          </style.providerGroupHeaderIcon>
+        </style.providerGroupHeader>
+        <style.providerGroupItems>
+          {entries.map(renderProviderButton)}
+        </style.providerGroupItems>
+        {
+          props.connectState === 'error' &&
+            <style.connectError>
+              <Icon name='warning-triangle-filled' />
+              <span>{getString('connectWalletSelfCustodyError')}</span>
+            </style.connectError>
+        }
+        <style.selfCustodyNote>
+          {getString('connectWalletSelfCustodyNote')}
+          {' '}
+          {
+            formatMessage(getString('connectWalletSelfCustodyTerms'), {
+              tags: {
+                $1: (content) => (
+                  <NewTabLink key='terms' href={urls.termsOfServiceURL}>
+                    {content}
+                  </NewTabLink>
+                ),
+                $3: (content) => (
+                  <NewTabLink key='privacy-policy' href={urls.privacyPolicyURL}>
+                    {content}
+                  </NewTabLink>
+                )
+              }
+            })
+          }
+        </style.selfCustodyNote>
+      </div>
+    )
+  }
+
+  function renderProviderIcon (provider: ExternalWalletProvider) {
+    if (provider === 'solana') {
+      return (
+        <>
+          <Icon name='brave-icon-release-color' />
+          <style.newBadge>{getString('newBadgeText')}</style.newBadge>
+        </>
+      )
+    }
+    return <WalletProviderIcon provider={provider} />
+  }
+
+  function providerButtonText (provider: ExternalWalletProvider) {
+    if (provider === 'solana') {
+      return getString('connectWalletSolanaLabel')
+    }
+    return getExternalWalletProviderName(provider)
+  }
+
+  function providerButtonMessage (providerInfo: ProviderInfo) {
+    if (!providerInfo.enabled) {
+      return (
+        <style.providerButtonMessage>
+          {getString('connectWalletProviderNotAvailable')}
+        </style.providerButtonMessage>
+      )
+    }
+    if (providerInfo.provider === 'solana') {
+      return (
+        <style.providerButtonMessage>
+          {getString('connectWalletSolanaMessage')}
+        </style.providerButtonMessage>
+      )
+    }
+    return null
+  }
+
+  function providerButtonCaret (providerInfo: ProviderInfo) {
+    if (!providerInfo.enabled) {
+      return null
+    }
+    if (isSelfCustodyProvider(providerInfo.provider)) {
+      if (selectedProvider === providerInfo.provider &&
+          props.connectState === 'loading') {
+        return (
+          <style.providerButtonCaret>
+            <ProgressRing />
+          </style.providerButtonCaret>
+        )
+      }
+      return null
+    }
+    return (
+      <style.providerButtonCaret>
+        <style.providerButtonCaretText>
+          {getString('connectWalletLoginText')}
+        </style.providerButtonCaretText>
+        <Icon name='carat-right' />
+      </style.providerButtonCaret>
+    )
+  }
+
+  function renderProviderButton (providerInfo: ProviderInfo) {
+    const { provider, enabled } = providerInfo
     const onClick = () => {
-      if (provider.enabled) {
-        props.onContinue(provider.type)
+      if (enabled) {
+        setSelectedProvider(provider)
+        props.onContinue(provider)
       }
     }
 
     return (
       <button
         data-test-id='connect-provider-button'
-        key={provider.type}
+        key={provider}
         onClick={onClick}
-        disabled={!provider.enabled}
+        disabled={!enabled}
       >
         <style.providerButtonIcon>
-          {renderProviderIcon(provider.type)}
+          {renderProviderIcon(provider)}
         </style.providerButtonIcon>
         <style.providerButtonName>
-          {provider.name}
-          {
-            !provider.enabled &&
-              <style.providerButtonMessage>
-                {getString('connectWalletProviderNotAvailable')}
-              </style.providerButtonMessage>
-          }
+          {providerButtonText(provider)}
+          {providerButtonMessage(providerInfo)}
         </style.providerButtonName>
-        {
-          provider.enabled &&
-            <style.providerButtonCaret>
-              <Icon name='carat-right' />
-            </style.providerButtonCaret>
-        }
+        {providerButtonCaret(providerInfo)}
       </button>
     )
   }
@@ -112,27 +265,10 @@ export function ConnectWalletModal (props: Props) {
         <style.text>
           {getString('connectWalletText')}
         </style.text>
-        <style.providerSelection>
-          <style.providerGroupHeader>
-            {getString('connectWalletCustodialHeader')}
-            <style.providerGroupHeaderIcon>
-              <Icon name='info-filled' />
-              <div className='tooltip'>
-                <style.providerGroupTooltip>
-                  {getString('connectWalletCustodialTooltip')}
-                </style.providerGroupTooltip>
-              </div>
-            </style.providerGroupHeaderIcon>
-          </style.providerGroupHeader>
-          <style.providerGroup>
-            {props.providers.map(renderProviderButton)}
-          </style.providerGroup>
-          <style.regionsLearnMore>
-            <NewTabLink href={urls.supportedWalletRegionsURL}>
-              {getString('connectWalletLearnMore')}
-            </NewTabLink>
-          </style.regionsLearnMore>
-        </style.providerSelection>
+        <style.providerGroups>
+          {renderCustodialProviders()}
+          {renderSelfCustodyProviders()}
+        </style.providerGroups>
       </style.content>
     </style.root>
   )

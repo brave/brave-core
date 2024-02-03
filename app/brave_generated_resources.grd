@@ -898,6 +898,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_NO" desc="Ignore proposition">
         Cancel
       </message>
+      <!-- Brave Wallet -->
+      <message name="IDS_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The utility process running wallet utils">
+        Brave Wallet Utility Service
+      </message>
 
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
@@ -1146,6 +1150,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
         </if>
       </if>
+
+      <message name="IDS_BOOKMARKS_SORT_CUSTOM" desc="Label for the custom order sort type">
+        Custom order
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_CUSTOM_LOWER" desc="Lowercase label for the custom order sort type">
+        custom order
+      </message>
 
       <!-- Playlist -->
       <if expr="enable_playlist_webui">

@@ -9,6 +9,7 @@
     <item name="brave_rewards_id" type="id"/>
     <item name="brave_wallet_id" type="id"/>
     <item name="brave_playlist_id" type="id"/>
+    <item name="add_to_playlist_id" type="id"/>
     <item name="brave_leo_id" type="id"/>
     <item name="brave_news_id" type="id"/>
     <item name="exit_id" type="id"/>
@@ -16,7 +17,9 @@
     <item name="request_brave_vpn_row_menu_id" type="id"/>
     <item name="request_brave_vpn_id" type="id"/>
     <item name="request_brave_vpn_check_id" type="id"/>
-    <item name="brave_vpn_id" type="id"/>
+    <item name="request_vpn_location_row_menu_id" type="id"/>
+    <item name="request_vpn_location_id" type="id"/>
+    <item name="request_vpn_location_icon_id" type="id"/>
 
     <!-- App menu item custom tags -->
     <item type="id" name="menu_item_enter_anim_id" />

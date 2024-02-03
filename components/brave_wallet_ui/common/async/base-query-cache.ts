@@ -18,7 +18,9 @@ import {
   SupportedTestNetworks,
   SupportedOnRampNetworks,
   SupportedOffRampNetworks,
-  ERC721Metadata
+  ERC721Metadata,
+  BraveRewardsInfo,
+  WalletStatus
 } from '../../constants/types'
 
 // entities
@@ -49,25 +51,19 @@ import { addLogoToToken } from './lib'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { isIpfs } from '../../utils/string-utils'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
+import {
+  getBraveRewardsProxy
+} from './brave_rewards_api_proxy'
+import {
+  getRewardsBATToken,
+  getNormalizedExternalRewardsWallet,
+  getNormalizedExternalRewardsNetwork,
+  getRewardsProviderName
+} from '../../utils/rewards_utils'
 
-/**
- * A function to return the ref to either the main api proxy, or a mocked proxy
- * @returns function that returns an ApiProxy instance
- */
-export let apiProxyFetcher = () =>
-  getAPIProxy() as WalletApiProxy &
-    Partial<WalletPanelApiProxy> &
-    Partial<WalletPageApiProxy>
-
-/**
- * Assigns a function to use for fetching the walletApiProxy
- * (useful for injecting spies during testing)
- * @param fetcher A function to return the ref to either the main api proxy,
- *  or a mocked proxy
- */
-export const setApiProxyFetcher = (fetcher: () => WalletApiProxy) => {
-  apiProxyFetcher = fetcher
-}
+type IsomorphicApiProxy = WalletApiProxy &
+  Partial<WalletPanelApiProxy> &
+  Partial<WalletPageApiProxy>
 
 /**
  * A place to store & manage dependency data for other queries
@@ -82,11 +78,11 @@ export class BaseQueryCache {
   private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
   private _enabledCoinTypes: number[]
   private _erc721MetadataRegistry: Record<string, ERC721Metadata>
+  public rewardsInfo: BraveRewardsInfo | undefined = undefined
 
   getWalletInfo = async () => {
     if (!this.walletInfo) {
-      const { walletInfo } =
-        await apiProxyFetcher().walletHandler.getWalletInfo()
+      const { walletInfo } = await getAPIProxy().walletHandler.getWalletInfo()
       this.walletInfo = walletInfo
     }
     return this.walletInfo
@@ -95,7 +91,7 @@ export class BaseQueryCache {
   getAllAccounts = async () => {
     if (!this._allAccountsInfo) {
       const { allAccounts } =
-        await apiProxyFetcher().keyringService.getAllAccounts()
+        await getAPIProxy().keyringService.getAllAccounts()
       this._allAccountsInfo = allAccounts
     }
     return this._allAccountsInfo
@@ -129,7 +125,7 @@ export class BaseQueryCache {
 
   getNetworksRegistry = async () => {
     if (!this._networksRegistry) {
-      const { jsonRpcService } = apiProxyFetcher()
+      const { jsonRpcService } = getAPIProxy()
 
       // network type flags
       const { isBitcoinEnabled, isZCashEnabled } = await this.getWalletInfo()
@@ -281,7 +277,7 @@ export class BaseQueryCache {
       if (isIpfs(trimmedURL)) {
         this._extractedIPFSUrlRegistry[trimmedURL] = trimmedURL
       } else {
-        const api = apiProxyFetcher()
+        const api = getAPIProxy()
         const { ipfsUrl } =
           await api.braveWalletIpfsService.extractIPFSUrlFromGatewayLikeUrl(
             trimmedURL
@@ -298,7 +294,7 @@ export class BaseQueryCache {
     const trimmedURL = urlArg.trim()
 
     if (!this._nftImageIpfsGateWayUrlRegistry[trimmedURL]) {
-      const { braveWalletIpfsService } = apiProxyFetcher()
+      const { braveWalletIpfsService } = getAPIProxy()
 
       const testUrl = isIpfs(trimmedURL)
         ? trimmedURL
@@ -317,7 +313,7 @@ export class BaseQueryCache {
   getEnabledCoinTypes = async () => {
     if (!this._enabledCoinTypes || !this._enabledCoinTypes.length) {
       // network type flags
-      this._enabledCoinTypes = await getEnabledCoinTypes(apiProxyFetcher())
+      this._enabledCoinTypes = await getEnabledCoinTypes(getAPIProxy())
     }
 
     return this._enabledCoinTypes
@@ -331,7 +327,7 @@ export class BaseQueryCache {
     const tokenId = blockchainTokenEntityAdaptor.selectId(tokenArg)
 
     if (!this._erc721MetadataRegistry[tokenId]) {
-      const { jsonRpcService } = apiProxyFetcher()
+      const { jsonRpcService } = getAPIProxy()
 
       const result = await jsonRpcService.getERC721Metadata(
         tokenArg.contractAddress,
@@ -350,6 +346,37 @@ export class BaseQueryCache {
 
     return this._erc721MetadataRegistry[tokenId]
   }
+
+  // Brave Rewards
+  getBraveRewardsInfo = async () => {
+    if (!this.rewardsInfo) {
+      const isRewardsEnabled = await getBraveRewardsProxy().getRewardsEnabled()
+
+      if (!isRewardsEnabled) {
+        this.rewardsInfo = emptyRewardsInfo
+        return this.rewardsInfo
+      }
+
+      const balance = await getBraveRewardsProxy().fetchBalance()
+
+      const { provider, status, links } =
+        (await getBraveRewardsProxy().getExternalWallet()) || {}
+
+      this.rewardsInfo = {
+        isRewardsEnabled: true,
+        balance,
+        provider,
+        status: status || WalletStatus.kNotConnected,
+        accountLink: links?.account,
+        rewardsToken: getRewardsBATToken(provider),
+        rewardsAccount: getNormalizedExternalRewardsWallet(provider),
+        rewardsNetwork: getNormalizedExternalRewardsNetwork(provider),
+        providerName: getRewardsProviderName(provider)
+      }
+    }
+
+    return this.rewardsInfo
+  }
 }
 
 let cache = new BaseQueryCache()
@@ -358,7 +385,7 @@ export const baseQueryFunction = () => {
   if (!cache) {
     cache = new BaseQueryCache()
   }
-  return { data: apiProxyFetcher(), cache: cache }
+  return { data: getAPIProxy() as IsomorphicApiProxy, cache }
 }
 
 export const resetCache = () => {
@@ -372,7 +399,7 @@ async function fetchAssetsForNetwork(
   listType: AssetsListType,
   network: BraveWallet.NetworkInfo
 ) {
-  const { blockchainRegistry, braveWalletService } = apiProxyFetcher()
+  const { blockchainRegistry, braveWalletService } = getAPIProxy()
   // Get a list of user tokens for each coinType and network.
   const { tokens } =
     listType === 'known'
@@ -586,3 +613,16 @@ export async function makeTokensRegistry(
   )
   return userTokensByChainIdRegistry
 }
+
+// defaults
+export const emptyRewardsInfo: BraveRewardsInfo = {
+  isRewardsEnabled: false,
+  balance: undefined,
+  rewardsToken: undefined,
+  provider: undefined,
+  providerName: '',
+  status: WalletStatus.kNotConnected,
+  rewardsAccount: undefined,
+  rewardsNetwork: undefined,
+  accountLink: undefined
+} as const

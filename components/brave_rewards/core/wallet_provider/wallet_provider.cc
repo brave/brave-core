@@ -22,6 +22,8 @@ base::TimeDelta WalletProvider::GetDelay() const {
   return util::GetRandomizedDelay(base::Seconds(45));
 }
 
+void WalletProvider::OnWalletLinked(const std::string& address) {}
+
 void WalletProvider::Initialize() {
   if (auto wallet = GetWallet()) {
     for (const auto& value : wallet->fees) {

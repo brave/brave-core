@@ -32,6 +32,7 @@ class BitcoinTxMeta : public TxMeta {
   // TxMeta
   base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
+  mojom::CoinType GetCoinType() const override;
 
   BitcoinTransaction* tx() const { return tx_.get(); }
   void set_tx(std::unique_ptr<BitcoinTransaction> tx) { tx_ = std::move(tx); }

@@ -19,6 +19,8 @@
       const GURL& document_url, blink::mojom::ReferrerPtr* referrer) {}      \
   virtual std::string GetEffectiveUserAgent(BrowserContext* browser_context, \
                                             const GURL& url);                \
+  virtual std::optional<base::UnguessableToken> GetEphemeralStorageToken(    \
+      RenderFrameHost* render_frame_host, const url::Origin& origin);        \
   virtual bool AllowWorkerFingerprinting(const GURL& url,                    \
                                          BrowserContext* browser_context);   \
   virtual uint8_t WorkerGetBraveFarblingLevel(                               \

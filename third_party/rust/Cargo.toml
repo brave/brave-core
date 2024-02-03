@@ -12,6 +12,7 @@ members = ["cxxbridge_cmd/v1/crate"]
 anyhow = "1"
 async-trait = "0.1"
 base64 = "0.13"
+bech32 = "0.9.1"
 bitflags = "1"
 blake2b_simd = "1"
 cargo-platform = "0.1"
@@ -31,7 +32,7 @@ fvm_shared = "3"
 hex = "0.4"
 hex-literal = "0.4"
 hmac = "0.10"
-kuchiki = "0.8"
+kuchikiki = "0.8"
 lazy_static = "1"
 libc = "0.2"
 lifeguard = "0.6"
@@ -692,9 +693,9 @@ package = "itoa"
 path = "keccak/v0_1/crate"
 package = "keccak"
 
-[patch.crates-io.kuchiki_v0_8]
-path = "kuchiki/v0_8/crate"
-package = "kuchiki"
+[patch.crates-io.kuchikiki_v0_8]
+path = "kuchikiki/v0_8/crate"
+package = "kuchikiki"
 
 [patch.crates-io.lazy_static_v1]
 path = "../../../third_party/rust/lazy_static/v1/crate"

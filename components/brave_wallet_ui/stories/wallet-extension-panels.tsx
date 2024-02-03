@@ -49,7 +49,7 @@ import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { createMockStore } from '../utils/test-utils'
 import { deserializeTransaction } from '../utils/model-serialization-utils'
-import { WalletApiDataOverrides } from '../common/async/__mocks__/bridge'
+import { WalletApiDataOverrides } from '../constants/testing_types'
 
 export default {
   title: 'Wallet/Extension/Panels',

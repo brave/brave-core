@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-export function ZebPayIcon() {
+export function ZebPayIcon () {
   const fill = 'var(--provider-icon-color, #0273F2)'
   return (
     <svg className='icon' viewBox='0 0 1697.362 1251.056'>

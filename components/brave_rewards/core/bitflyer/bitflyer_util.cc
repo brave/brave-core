@@ -19,14 +19,6 @@ std::string GetUrl() {
              : BUILDFLAG(BITFLYER_SANDBOX_URL);
 }
 
-std::string GetAccountUrl() {
-  return GetUrl() + "/ex/Home?login=1";
-}
-
-std::string GetActivityUrl() {
-  return GetUrl() + "/ja-jp/ex/tradehistory";
-}
-
 }  // namespace
 
 namespace bitflyer {
@@ -67,15 +59,12 @@ std::string GetFeeAddress() {
              : BUILDFLAG(BITFLYER_SANDBOX_FEE_ADDRESS);
 }
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
-  if (wallet) {
-    wallet->account_url = GetAccountUrl();
-    wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
-                               ? GetActivityUrl()
-                               : "";
-  }
+std::string GetAccountUrl() {
+  return GetUrl() + "/ex/Home?login=1";
+}
 
-  return wallet;
+std::string GetActivityUrl() {
+  return GetUrl() + "/ja-jp/ex/tradehistory";
 }
 
 }  // namespace bitflyer

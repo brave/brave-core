@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <map>
 #include <utility>
 
@@ -402,10 +403,10 @@ void CreativePromotedContentAds::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE creative_promoted_content_ads "
-      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT "
-      "REPLACE, creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
-      "title TEXT NOT NULL, description TEXT NOT NULL);";
+      "CREATE TABLE creative_promoted_content_ads (creative_instance_id TEXT "
+      "NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, creative_set_id TEXT "
+      "NOT NULL, campaign_id TEXT NOT NULL, title TEXT NOT NULL, description "
+      "TEXT NOT NULL);";
   transaction->commands.push_back(std::move(command));
 }
 

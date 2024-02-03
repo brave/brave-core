@@ -13,7 +13,7 @@ public class BraveVpnPrefModel {
     private String mApiAuthToken;
     private String mHostname;
     private String mHostnameDisplay;
-    private String mServerRegion;
+    private BraveVpnServerRegion mServerRegion;
     private String mClientPrivateKey;
     private String mClientPublicKey;
 
@@ -45,7 +45,7 @@ public class BraveVpnPrefModel {
         mHostnameDisplay = hostnameDisplay;
     }
 
-    public void setServerRegion(String serverRegion) {
+    public void setServerRegion(BraveVpnServerRegion serverRegion) {
         mServerRegion = serverRegion;
     }
 
@@ -85,7 +85,7 @@ public class BraveVpnPrefModel {
         return mHostnameDisplay;
     }
 
-    public String getServerRegion() {
+    public BraveVpnServerRegion getServerRegion() {
         return mServerRegion;
     }
 

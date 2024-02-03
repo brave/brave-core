@@ -10,7 +10,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"

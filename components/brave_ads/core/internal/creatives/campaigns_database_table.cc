@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"

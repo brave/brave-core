@@ -77,10 +77,10 @@ const chromiumConfigs = {
     }
   },
   'android': {
-    buildTarget: 'chrome_public_apk',
+    buildTarget: 'monochrome_64_public_apk',
     processArtifacts: () => {
       fs.moveSync(
-        path.join(config.outputDir, 'apks', 'ChromePublic.apk'),
+        path.join(config.outputDir, 'apks', 'MonochromePublic64.apk'),
         path.join(config.outputDir, `${getOutputFilename()}.apk`))
     }
   },
@@ -101,6 +101,7 @@ function getChromiumGnArgs() {
     ffmpeg_branding: 'Chrome',
     enable_widevine: true,
     ignore_missing_widevine_signing_cert: true,
+    skip_secondary_abi_for_cq: true,
     ...config.extraGnArgs,
   }
 

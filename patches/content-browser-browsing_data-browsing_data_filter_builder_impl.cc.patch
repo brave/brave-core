@@ -1,0 +1,12 @@
+diff --git a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
+index 7618c480af8344cd680fbfa5ab0ed4bfd9c07e65..7940d0a433a7330c92a59f2ff94bb8ebf0e42d1c 100644
+--- a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
++++ b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
+@@ -57,6 +57,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
+         storage_key.origin() == origin) {
+       return is_delete_list;
+     }
++    BRAVE_MATCHES_STORAGE_KEY
+   }
+ 
+   bool found_domain = false;

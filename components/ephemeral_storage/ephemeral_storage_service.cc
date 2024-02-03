@@ -23,6 +23,7 @@
 #include "content/public/browser/storage_partition_config.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
+#include "net/base/url_util.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
 
@@ -107,9 +108,11 @@ void EphemeralStorageService::Set1PESEnabledForUrl(const GURL& url,
 }
 
 bool EphemeralStorageService::Is1PESEnabledForUrl(const GURL& url) const {
+  content_settings::SettingInfo settings_info;
   return host_content_settings_map_->GetContentSetting(
-             url, url, ContentSettingsType::COOKIES) ==
-         CONTENT_SETTING_SESSION_ONLY;
+             url, url, ContentSettingsType::COOKIES, &settings_info) ==
+             CONTENT_SETTING_SESSION_ONLY &&
+         !settings_info.primary_pattern.MatchesAllHosts();
 }
 
 void EphemeralStorageService::Enable1PESForUrlIfPossible(
@@ -119,6 +122,25 @@ void EphemeralStorageService::Enable1PESForUrlIfPossible(
       url,
       base::BindOnce(&EphemeralStorageService::OnCanEnable1PESForUrl,
                      weak_ptr_factory_.GetWeakPtr(), url, std::move(on_ready)));
+}
+
+std::optional<base::UnguessableToken> EphemeralStorageService::Get1PESToken(
+    const url::Origin& origin) {
+  const GURL url(origin.GetURL());
+  const std::string ephemeral_storage_domain =
+      net::URLToEphemeralStorageDomain(url);
+  std::optional<base::UnguessableToken> token;
+  if (Is1PESEnabledForUrl(url)) {
+    auto token_it = fpes_tokens_.find(ephemeral_storage_domain);
+    if (token_it != fpes_tokens_.end()) {
+      return token_it->second;
+    }
+    token = base::UnguessableToken::Create();
+    fpes_tokens_[ephemeral_storage_domain] = *token;
+  } else {
+    fpes_tokens_.erase(ephemeral_storage_domain);
+  }
+  return token;
 }
 
 void EphemeralStorageService::OnCanEnable1PESForUrl(
@@ -193,7 +215,9 @@ void EphemeralStorageService::RemoveObserver(
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
     const std::string& ephemeral_domain) {
   if (!base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage)) {
+          net::features::kBraveForgetFirstPartyStorage) &&
+      !base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
     return;
   }
 
@@ -212,7 +236,16 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
     const std::string& ephemeral_domain,
     bool shields_disabled_on_one_of_hosts) {
   if (!base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage)) {
+          net::features::kBraveForgetFirstPartyStorage) &&
+      !base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    return false;
+  }
+
+  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
+  if (base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning) &&
+      Is1PESEnabledForUrl(url)) {
     return false;
   }
 
@@ -222,7 +255,6 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
     return false;
   }
 
-  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
   if (host_content_settings_map_->GetContentSetting(
           url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE) !=
       CONTENT_SETTING_BLOCK) {
@@ -250,6 +282,7 @@ void EphemeralStorageService::CleanupTLDEphemeralArea(
     bool cleanup_first_party_storage_area) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   delegate_->CleanupTLDEphemeralArea(key);
+  fpes_tokens_.erase(key.first);
   if (cleanup_first_party_storage_area) {
     CleanupFirstPartyStorageArea(key.first);
   }

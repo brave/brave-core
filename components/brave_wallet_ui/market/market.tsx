@@ -42,7 +42,6 @@ import {
   UpdateBuyableAssetsMessage,
   UpdateDepositableAssetsMessage,
   UpdateCoinMarketMessage,
-  UpdateTradableAssetsMessage,
   UpdateIframeHeightMessage,
   braveWalletPanelOrigin
 } from './market-ui-messages'
@@ -75,9 +74,6 @@ const App = () => {
   const [coinMarkets, setCoinMarkets] = React.useState<
     BraveWallet.CoinMarket[]
   >([])
-  const [tradableAssets, setTradableAssets] = React.useState<
-    BraveWallet.BlockchainToken[]
-  >([])
   const [buyableAssets, setBuyableAssets] = React.useState<
     BraveWallet.BlockchainToken[]
   >([])
@@ -100,11 +96,18 @@ const App = () => {
         : searchCoinMarkets(coinMarkets, searchTerm)
     const filteredCoins = filterCoinMarkets(
       searchResults,
-      tradableAssets,
+      buyableAssets,
       currentFilter
     )
     return [...sortCoinMarkets(filteredCoins, sortOrder, sortByColumnId)]
-  }, [coinMarkets, sortOrder, sortByColumnId, searchTerm, currentFilter])
+  }, [
+    searchTerm,
+    coinMarkets,
+    buyableAssets,
+    currentFilter,
+    sortOrder,
+    sortByColumnId
+  ])
 
   // Methods
   const isBuySupported = React.useCallback(
@@ -177,12 +180,6 @@ const App = () => {
             const { payload } = message as UpdateCoinMarketMessage
             setCoinMarkets(payload.coins)
             setDefaultFiatCurrency(payload.defaultFiatCurrency)
-            break
-          }
-
-          case MarketUiCommand.UpdateTradableAssets: {
-            const { payload } = message as UpdateTradableAssetsMessage
-            setTradableAssets(payload)
             break
           }
 

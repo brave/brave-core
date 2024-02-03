@@ -31,7 +31,7 @@ export const getPercentAmount = (
   asset: BraveWallet.BlockchainToken,
   accountId: BraveWallet.AccountId,
   percent: number,
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 ): string => {
   const assetBalance =
     getBalance(accountId, asset, tokenBalancesRegistry) || '0'
@@ -48,7 +48,7 @@ export const getPercentAmount = (
 export const getBalance = (
   accountId: BraveWallet.AccountId | undefined,
   asset: BraveWallet.BlockchainToken | undefined,
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 ) => {
   if (!accountId || !asset || !tokenBalancesRegistry) {
     return ''

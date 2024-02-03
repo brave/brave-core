@@ -41,7 +41,7 @@ class BrowserBinary:
         if b.package == android_package:
           self.telemetry_browser_type = b.browser_type
       if self.telemetry_browser_type is None:
-        raise RuntimeError('No matching browser-type found')
+        raise RuntimeError('No matching browser-type found ' + android_package)
     else:
       assert binary_path is not None
 
@@ -67,7 +67,8 @@ def _GetPackageName(apk_path: str) -> str:
 def _GetPackageVersion(package: str) -> str:
   _, dump_info = GetProcessOutput(
       [path_util.GetAdbPath(), 'shell', 'dumpsys', 'package', package],
-      check=True)
+      check=True,
+      output_to_debug=False)
   version_match = re.search(r'versionName=((?:\w|\.)+)', dump_info)
   assert version_match is not None
   return version_match.group(1)
@@ -121,8 +122,10 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
 
   profile_dir = None
   if config.profile != 'clean':
+    assert config.version is not None
     profile_dir = GetProfilePath(config.profile,
-                                 common_options.working_directory)
+                                 common_options.working_directory,
+                                 config.version)
 
   field_trial_config = config.browser_type.MakeFieldTrials(
       config.version, artifacts_dir, common_options)
@@ -156,4 +159,5 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
     package = _InstallApk(binary_location, config.browser_type, config.version)
 
   _PostInstallAndroidSetup(package)
-  return BrowserBinary(None, package, profile_dir, field_trial_config)
+  return BrowserBinary(binary_location, package, profile_dir,
+                       field_trial_config)

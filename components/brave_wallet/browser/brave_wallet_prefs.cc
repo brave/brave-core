@@ -31,18 +31,45 @@ namespace {
 
 constexpr int kDefaultWalletAutoLockMinutes = 10;
 
-base::Value::Dict GetDefaultUserAssets() {
-  base::Value::Dict user_assets_pref;
-  user_assets_pref.Set(kEthereumPrefKey,
-                       BraveWalletService::GetDefaultEthereumAssets());
-  user_assets_pref.Set(kSolanaPrefKey,
-                       BraveWalletService::GetDefaultSolanaAssets());
-  user_assets_pref.Set(kFilecoinPrefKey,
-                       BraveWalletService::GetDefaultFilecoinAssets());
-  user_assets_pref.Set(kBitcoinPrefKey,
-                       BraveWalletService::GetDefaultBitcoinAssets());
-  user_assets_pref.Set(kZCashPrefKey,
-                       BraveWalletService::GetDefaultZCashAssets());
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetEthContractAddressMigrated[] =
+    "brave.wallet.user.asset.eth_contract_address_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =
+    "brave.wallet.user.assets.add_preloading_networks_migrated_3";
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetsAddIsNFTMigrated[] =
+    "brave.wallet.user.assets.add_is_nft_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletEthereumTransactionsCoinTypeMigrated[] =
+    "brave.wallet.ethereum_transactions.coin_type_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
+    "brave.wallet.deprecated_ethereum_test_networks_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
+    "brave.wallet.user.assets.add_is_spam_migrated";
+// Deprecated 12/2023.
+constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
+    "brave.wallet.user.assets.add_is_erc1155_migrated";
+
+base::Value::List GetDefaultUserAssets() {
+  base::Value::List user_assets_pref;
+  for (auto& asset : BraveWalletService::GetDefaultEthereumAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
+  for (auto& asset : BraveWalletService::GetDefaultSolanaAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
+  for (auto& asset : BraveWalletService::GetDefaultFilecoinAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
+  for (auto& asset : BraveWalletService::GetDefaultBitcoinAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
+  for (auto& asset : BraveWalletService::GetDefaultZCashAssets()) {
+    user_assets_pref.Append(std::move(asset));
+  }
   return user_assets_pref;
 }
 
@@ -100,6 +127,46 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   return hidden_networks;
 }
 
+void RegisterProfilePrefsDeprecatedMigrationFlags(
+    user_prefs::PrefRegistrySyncable* registry) {
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
+                                false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(
+      kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(
+      kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(
+      kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
+  // Deprecated 12/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
+                                false);
+}
+
+void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetEthContractAddressMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetsAddPreloadingNetworksMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetsAddIsNFTMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletDeprecateEthereumTestNetworksMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetsAddIsSpamMigrated);
+  // Deprecated 12/2023
+  prefs->ClearPref(kBraveWalletUserAssetsAddIsERC1155Migrated);
+}
+
 }  // namespace
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -137,8 +204,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                    GetDefaultSelectedNetworks());
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworksPerOrigin,
                                    GetDefaultSelectedNetworksPerOrigin());
-  registry->RegisterDictionaryPref(kBraveWalletUserAssets,
-                                   GetDefaultUserAssets());
+  registry->RegisterListPref(kBraveWalletUserAssetsList,
+                             GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes,
                                 kDefaultWalletAutoLockMinutes);
   registry->RegisterDictionaryPref(kBraveWalletEthAllowancesCache);
@@ -158,70 +225,33 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   // Added 04/2023
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTimeDeprecated,
+                             base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTimeDeprecated,
+                             base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 }
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-  // Added 10/2021
-  registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
-                                false);
-  // Added 09/2021
-  registry->RegisterIntegerPref(
-      kBraveWalletWeb3ProviderDeprecated,
-      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
+  RegisterProfilePrefsDeprecatedMigrationFlags(registry);
 
-  // Added 25/10/2021
-  registry->RegisterIntegerPref(
-      kDefaultWalletDeprecated,
-      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
-
-  // Added 02/2022
-  registry->RegisterBooleanPref(
-      kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
-
-  // Added 22/02/2022
-  registry->RegisterListPref(kBraveWalletCustomNetworksDeprecated);
-  registry->RegisterStringPref(kBraveWalletCurrentChainId,
-                               brave_wallet::mojom::kMainnetChainId);
-
-  // Added 04/2022
-  registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
-
-  // Added 06/2022
-  registry->RegisterBooleanPref(
-      kBraveWalletUserAssetsAddPreloadingNetworksMigrated, false);
-
-  // Added 10/2022
-  registry->RegisterBooleanPref(
-      kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
-
-  // Added 10/2022
-  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
-
-  // Added 11/2022
+  // Added 04/2023
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
       kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
-
-  // Added 12/2022
-  registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTimeDeprecated,
+                             base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTimeDeprecated,
+                             base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 
   // Added 02/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
 
   // Added 03/2023
   registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
-
-  // Added 03/2023
-  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
-                                false);
 
   // Added 04/2023
   registry->RegisterBooleanPref(kBraveWalletSolanaTransactionsV0SupportMigrated,
@@ -233,14 +263,17 @@ void RegisterProfilePrefsForMigration(
       static_cast<int>(brave_wallet::mojom::CoinType::ETH));
 
   // Added 07/2023
-  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsSpamMigrated, false);
-
-  // Added 07/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsFromPrefsToDBMigrated,
                                 false);
 
   // Added 08/2023
   registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                                false);
+
+  // Added 01/2024
+  registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
+  // Added 01/2024
+  registry->RegisterBooleanPref(kBraveWalletTransactionsDBFormatMigrated,
                                 false);
 }
 
@@ -270,89 +303,30 @@ void ClearTxServiceProfilePrefs(PrefService* prefs) {
 
 void ClearBraveWalletServicePrefs(PrefService* prefs) {
   DCHECK(prefs);
-  prefs->ClearPref(kBraveWalletUserAssets);
+  prefs->ClearPref(kBraveWalletUserAssetsList);
   prefs->ClearPref(kDefaultBaseCurrency);
   prefs->ClearPref(kDefaultBaseCryptocurrency);
   prefs->ClearPref(kBraveWalletEthAllowancesCache);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  // Added 10/2021 for migrating the contract address for eth in user asset
-  // list from 'eth' to an empty string.
-  BraveWalletService::MigrateUserAssetEthContractAddress(prefs);
+  ClearDeprecatedProfilePrefsMigrationFlags(prefs);
 
-  // Added 04/22 to have coin_type as the top level, also rename
-  // contract_address key to address.
-  BraveWalletService::MigrateMultichainUserAssets(prefs);
-
-  // Added 06/22 to have native tokens for all preloading networks.
-  BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(prefs);
-
-  // Added 10/22 to have is_nft set for existing ERC721 tokens.
-  BraveWalletService::MigrateUserAssetsAddIsNFT(prefs);
-
-  // Added 03/23 to add filecoin evm support.
+  // Added 03/2023 to add filecoin evm support.
   BraveWalletService::MigrateHiddenNetworks(prefs);
 
-  // Added 03/23 to have is_erc1155 set false for existing ERC1155 tokens.
-  BraveWalletService::MigrateUserAssetsAddIsERC1155(prefs);
-
-  // Added 07/23 to have is_spam set false for existing tokens.
-  BraveWalletService::MigrateUserAssetsAddIsSpam(prefs);
-
-  // Added 08/09 to add Fantom as a custom network if selected for the default
+  // Added 08/2023 to add Fantom as a custom network if selected for the default
   // or custom origins.
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
-
-  JsonRpcService::MigrateMultichainNetworks(prefs);
-
-  if (prefs->HasPrefPath(kBraveWalletWeb3ProviderDeprecated)) {
-    mojom::DefaultWallet provider = static_cast<mojom::DefaultWallet>(
-        prefs->GetInteger(kBraveWalletWeb3ProviderDeprecated));
-    mojom::DefaultWallet default_wallet =
-        mojom::DefaultWallet::BraveWalletPreferExtension;
-    if (provider == mojom::DefaultWallet::None) {
-      default_wallet = mojom::DefaultWallet::None;
-    }
-    prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
-    prefs->ClearPref(kBraveWalletWeb3ProviderDeprecated);
-  }
-  if (prefs->HasPrefPath(kDefaultWalletDeprecated)) {
-    mojom::DefaultWallet provider = static_cast<mojom::DefaultWallet>(
-        prefs->GetInteger(kDefaultWalletDeprecated));
-    mojom::DefaultWallet default_wallet =
-        mojom::DefaultWallet::BraveWalletPreferExtension;
-    if (provider == mojom::DefaultWallet::None) {
-      default_wallet = mojom::DefaultWallet::None;
-    }
-    prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
-    prefs->ClearPref(kDefaultWalletDeprecated);
-  }
-
-  // Added 02/2022.
-  // Migrate kBraveWalletTransactions to have coin_type as the top level.
-  // Ethereum transactions were at kBraveWalletTransactions.network_id.tx_id,
-  // migrate it to be at kBraveWalletTransactions.ethereum.network_id.tx_id.
-  if (!prefs->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated)) {
-    auto transactions = prefs->GetDict(kBraveWalletTransactions).Clone();
-    prefs->ClearPref(kBraveWalletTransactions);
-    if (!transactions.empty()) {
-      ScopedDictPrefUpdate update(prefs, kBraveWalletTransactions);
-      update->Set(kEthereumPrefKey, std::move(transactions));
-    }
-    prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
-  }
-  // Added 10/2022
-  JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
-
-  // Added 12/2022
-  JsonRpcService::MigrateShowTestNetworksToggle(prefs);
 
   // Added 02/2023
   TxStateManager::MigrateAddChainIdToTransactionInfo(prefs);
 
   // Added 07/2023
   KeyringService::MigrateDerivedAccountIndex(prefs);
+
+  // Added 01/2024 migrate assets pref to plain list.
+  BraveWalletService::MigrateAssetsPrefToList(prefs);
 }
 
 }  // namespace brave_wallet

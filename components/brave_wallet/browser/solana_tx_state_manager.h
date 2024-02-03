@@ -7,10 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TX_STATE_MANAGER_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
-#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
 class PrefService;
@@ -34,20 +32,15 @@ class SolanaTxStateManager : public TxStateManager {
   SolanaTxStateManager(const SolanaTxStateManager&) = delete;
   SolanaTxStateManager operator=(const SolanaTxStateManager&) = delete;
 
-  std::unique_ptr<SolanaTxMeta> GetSolanaTx(const std::string& chain_id,
-                                            const std::string& id);
+  std::unique_ptr<SolanaTxMeta> GetSolanaTx(const std::string& id);
   std::unique_ptr<SolanaTxMeta> ValueToSolanaTxMeta(
       const base::Value::Dict& value);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(SolanaTxStateManagerUnitTest, GetTxPrefPathPrefix);
-
   mojom::CoinType GetCoinType() const override;
 
   std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) override;
-  std::string GetTxPrefPathPrefix(
-      const std::optional<std::string>& chain_id) override;
 };
 
 }  // namespace brave_wallet

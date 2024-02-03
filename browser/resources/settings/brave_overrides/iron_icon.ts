@@ -35,7 +35,7 @@ const iconMap: { [key: string]: string } = {
   'settings:photo-off': 'image-off', // images off
   'cr:open-in-new': 'launch', // popups & redirects
   'settings:ads': '', // intrusive ads (unused)
-  'cr:sync': 'sync', // background sync
+  'cr:sync': 'product-sync', // background sync
   'settings:volume-up': 'volume-on', // sound
   'settings:volume-up-off': 'volume-off', // sound off
   'cr:file-download': 'download', // automatic downloads
@@ -102,7 +102,7 @@ RegisterPolymerPrototypeModification({
         leoIcon.setAttribute('name', name ?? this.icon)
       } else {
         removeAllOfType('leo-icon')
-        _updateIcon.apply(this, ...args)
+        _updateIcon.apply(this, args)
       }
     }
   }

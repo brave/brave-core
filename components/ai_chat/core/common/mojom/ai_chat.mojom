@@ -36,7 +36,17 @@ enum ModelCategory {
   CHAT,
 };
 
+enum ModelAccess {
+  // The model only has a single basic tier, accessible by any level
+  BASIC,
+  // The model has a basic tier and a more capable premium tier (a.k.a freemium)
+  BASIC_AND_PREMIUM,
+  // The model only has a premium tier
+  PREMIUM,
+};
+
 enum PremiumStatus {
+  Unknown,
   Inactive,
   Active,
   ActiveDisconnected,
@@ -96,7 +106,8 @@ struct Model {
   ModelEngineType engine_type;
   // user-facing category
   ModelCategory category;
-  bool is_premium;
+  // Which access level grants permission to use the model
+  ModelAccess access;
   // max limit to truncate page contents (measured in chars, not tokens)
   uint32 max_page_content_length;
   // max limit for overall conversation (measured in chars, not tokens)
@@ -166,8 +177,6 @@ interface ChatUIPage {
   // |is_fetching| will be |true|.
   OnSiteInfoChanged(SiteInfo info);
   OnFaviconImageDataChanged(array<uint8> favicon_image_data);
-  // This reports if there are any pending entries to be sent to the remote LLM.
-  OnConversationEntryPending();
 };
 
 [EnableIf=is_android]

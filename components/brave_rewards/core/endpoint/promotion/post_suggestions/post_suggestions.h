@@ -59,8 +59,8 @@ class PostSuggestions {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 PostSuggestionsCallback callback);
+  void OnRequest(PostSuggestionsCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

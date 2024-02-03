@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 
+#include "brave/browser/ui/tabs/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -23,6 +24,17 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
 #endif
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
   registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 220);
+  registry->RegisterBooleanPref(kVerticalTabsOnRight, false);
+  registry->RegisterBooleanPref(kVerticalTabsShowScrollbar, false);
+}
+
+void MigrateBraveProfilePrefs(PrefService* prefs) {
+  if (auto* pref = prefs->FindPreference(kVerticalTabsShowScrollbar);
+      pref && pref->IsDefaultValue() &&
+      base::FeatureList::IsEnabled(
+          tabs::features::kBraveVerticalTabScrollBar)) {
+    prefs->SetBoolean(kVerticalTabsShowScrollbar, true);
+  }
 }
 
 bool AreTooltipsEnabled(PrefService* prefs) {

@@ -13,10 +13,10 @@ fn follows_from_current() {}
 
 #[test]
 fn follows_from_sync_test() {
-    let cause_a = span::mock().named("cause_a");
-    let cause_b = span::mock().named("cause_b");
-    let cause_c = span::mock().named("cause_c");
-    let consequence = span::mock().named("with_follows_from_sync");
+    let cause_a = expect::span().named("cause_a");
+    let cause_b = expect::span().named("cause_b");
+    let cause_c = expect::span().named("cause_c");
+    let consequence = expect::span().named("with_follows_from_sync");
 
     let (subscriber, handle) = subscriber::mock()
         .new_span(cause_a.clone())
@@ -28,7 +28,7 @@ fn follows_from_sync_test() {
         .follows_from(consequence.clone(), cause_c)
         .enter(consequence.clone())
         .exit(consequence)
-        .done()
+        .only()
         .run_with_handle();
 
     with_default(subscriber, || {
@@ -44,10 +44,10 @@ fn follows_from_sync_test() {
 
 #[test]
 fn follows_from_async_test() {
-    let cause_a = span::mock().named("cause_a");
-    let cause_b = span::mock().named("cause_b");
-    let cause_c = span::mock().named("cause_c");
-    let consequence = span::mock().named("with_follows_from_async");
+    let cause_a = expect::span().named("cause_a");
+    let cause_b = expect::span().named("cause_b");
+    let cause_c = expect::span().named("cause_c");
+    let consequence = expect::span().named("with_follows_from_async");
 
     let (subscriber, handle) = subscriber::mock()
         .new_span(cause_a.clone())
@@ -58,8 +58,10 @@ fn follows_from_async_test() {
         .follows_from(consequence.clone(), cause_b)
         .follows_from(consequence.clone(), cause_c)
         .enter(consequence.clone())
+        .exit(consequence.clone())
+        .enter(consequence.clone())
         .exit(consequence)
-        .done()
+        .only()
         .run_with_handle();
 
     with_default(subscriber, || {
@@ -77,8 +79,8 @@ fn follows_from_async_test() {
 
 #[test]
 fn follows_from_current_test() {
-    let cause = span::mock().named("cause");
-    let consequence = span::mock().named("follows_from_current");
+    let cause = expect::span().named("cause");
+    let consequence = expect::span().named("follows_from_current");
 
     let (subscriber, handle) = subscriber::mock()
         .new_span(cause.clone())
@@ -88,7 +90,7 @@ fn follows_from_current_test() {
         .enter(consequence.clone())
         .exit(consequence)
         .exit(cause)
-        .done()
+        .only()
         .run_with_handle();
 
     with_default(subscriber, || {

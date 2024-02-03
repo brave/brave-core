@@ -8,6 +8,7 @@ import getWalletPanelApiProxy from '../../panel/wallet_panel_api_proxy'
 import getWalletPageApiProxy from '../../page/wallet_page_api_proxy'
 
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
+import { WalletApiDataOverrides } from '../../constants/testing_types'
 
 const debugProxyHandler = (path?: string) => ({
   get(target: any, propertyKey: PropertyKey, receiver?: unknown): any {
@@ -44,6 +45,11 @@ export function getAPIProxy(): WalletApiProxy {
   }
 
   return new Proxy(nativeProxy, debugProxyHandler())
+}
+
+/** For testing */
+export function resetAPIProxy(overrides?: WalletApiDataOverrides | undefined) {
+  // no-op in production
 }
 
 export default getAPIProxy

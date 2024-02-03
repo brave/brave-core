@@ -8,6 +8,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 
+#include <cstddef>
+
 namespace brave_ads {
 
 class ConfirmationTokens final {
@@ -35,7 +37,7 @@ class ConfirmationTokens final {
 
   bool TokenExists(const ConfirmationTokenInfo& confirmation_token) const;
 
-  int Count() const;
+  size_t Count() const;
 
   bool IsEmpty() const;
 

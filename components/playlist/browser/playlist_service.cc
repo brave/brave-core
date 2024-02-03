@@ -70,6 +70,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   download_request_manager_ =
       std::make_unique<PlaylistDownloadRequestManager>(context, manager);
+  playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
 
   enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
                      base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
@@ -78,7 +79,6 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   // This is for cleaning up malformed items during development. Once we
   // release Playlist feature officially, we should migrate items
   // instead of deleting them.
-  CleanUpMalformedPlaylistItems();
   MigratePlaylistValues();
 
   CleanUpOrphanedPlaylistItemDirs();
@@ -88,11 +88,13 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   observers_.Clear();
+  streaming_observers_.Clear();
   download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
   download_request_manager_.reset();
   task_runner_.reset();
+  playlist_streaming_.reset();
 #if BUILDFLAG(IS_ANDROID)
   receivers_.Clear();
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -226,11 +228,9 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
   item->parents.erase(iter);
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
-
   for (auto& observer : observers_) {
     observer->OnItemRemovedFromList(*playlist_id, item->id);
   }
-
   return true;
 }
 
@@ -587,6 +587,9 @@ void PlaylistService::UpdateItem(mojom::PlaylistItemPtr item) {
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemUpdated, item->id);
+  for (auto& observer : observers_) {
+    observer->OnItemUpdated(item.Clone());
+  }
 }
 
 void PlaylistService::UpdateItemLastPlayedPosition(
@@ -598,6 +601,21 @@ void PlaylistService::UpdateItemLastPlayedPosition(
 
   auto item = GetPlaylistItem(id);
   item->last_played_position = last_played_position;
+  UpdateItem(std::move(item));
+}
+
+void PlaylistService::UpdateItemHlsMediaFilePath(
+    const std::string& id,
+    const std::string& hls_media_file_path,
+    int64_t updated_file_size) {
+  if (!HasPlaylistItem(id)) {
+    return;
+  }
+
+  auto item = GetPlaylistItem(id);
+  item->hls_media_path = GURL(base::StrCat(
+      {url::kFileScheme, url::kStandardSchemeSeparator, hls_media_file_path}));
+  item->media_file_bytes = updated_file_size;
   UpdateItem(std::move(item));
 }
 
@@ -838,7 +856,7 @@ void PlaylistService::ResetAll() {
   prefs_->ClearPref(kPlaylistItemsPref);
   for (const auto& item : items) {
     for (auto& observer : observers_) {
-      observer->OnItemDeleted(item->id);
+      observer->OnItemLocalDataDeleted(item->id);
     }
   }
 
@@ -969,7 +987,7 @@ void PlaylistService::DeletePlaylistItemData(const std::string& id) {
   RemovePlaylistItemValue(id);
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemDeleted, id);
   for (auto& observer : observers_) {
-    observer->OnItemDeleted(id);
+    observer->OnItemLocalDataDeleted(id);
   }
 
   // TODO(simonhong): Delete after getting cancel complete message from all
@@ -1115,6 +1133,11 @@ void PlaylistService::OnMediaFileDownloadFinished(
   NotifyPlaylistChanged(item->cached ? mojom::PlaylistEvent::kItemCached
                                      : mojom::PlaylistEvent::kItemAborted,
                         item->id);
+  if (item->cached) {
+    for (auto& observer : observers_) {
+      observer->OnItemCached(item.Clone());
+    }
+  }
 
   if (callback) {
     std::move(callback).Run(item.Clone());
@@ -1144,6 +1167,15 @@ mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
 void PlaylistService::AddObserver(
     mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {
   observers_.Add(std::move(observer));
+}
+
+void PlaylistService::AddObserverForStreaming(
+    mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) {
+  streaming_observers_.Add(std::move(observer));
+}
+
+void PlaylistService::ClearObserverForStreaming() {
+  streaming_observers_.Clear();
 }
 
 void PlaylistService::OnMediaUpdatedFromContents(
@@ -1207,22 +1239,8 @@ void PlaylistService::OnGetOrphanedPaths(
   }
 }
 
-void PlaylistService::CleanUpMalformedPlaylistItems() {
-  if (base::ranges::none_of(prefs_->GetDict(kPlaylistItemsPref),
-                            /* has_malformed_data = */ [](const auto& pair) {
-                              auto* dict = pair.second.GetIfDict();
-                              DCHECK(dict);
-                              return IsItemValueMalformed(*dict);
-                            })) {
-    return;
-  }
-
-  for (const auto* pref_key : {kPlaylistsPref, kPlaylistItemsPref}) {
-    prefs_->ClearPref(pref_key);
-  }
-}
-
 void PlaylistService::MigratePlaylistValues() {
+  // Migration code here should be gone after a few versions
   base::Value::List order = prefs_->GetList(kPlaylistOrderPref).Clone();
   MigratePlaylistOrder(prefs_->GetDict(kPlaylistsPref), order);
   prefs_->SetList(kPlaylistOrderPref, std::move(order));
@@ -1307,6 +1325,57 @@ base::SequencedTaskRunner* PlaylistService::GetTaskRunner() {
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return task_runner_.get();
+}
+
+void PlaylistService::RequestStreamingQuery(const std::string& query_id,
+                                            const std::string& url,
+                                            const std::string& method) {
+  playlist_streaming_->RequestStreamingQuery(
+      query_id, url, method,
+      base::BindOnce(&PlaylistService::OnResponseStarted,
+                     weak_factory_.GetWeakPtr()),
+      base::BindRepeating(&PlaylistService::OnDataReceived,
+                          weak_factory_.GetWeakPtr()),
+      base::BindOnce(&PlaylistService::OnDataComplete,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void PlaylistService::ClearAllQueries() {
+  playlist_streaming_->ClearAllQueries();
+}
+
+void PlaylistService::CancelQuery(const std::string& query_id) {
+  playlist_streaming_->CancelQuery(query_id);
+}
+
+void PlaylistService::OnResponseStarted(const std::string& url,
+                                        const int64_t content_length) {
+  for (auto& observer : streaming_observers_) {
+    observer->OnResponseStarted(url, content_length);
+  }
+}
+
+void PlaylistService::OnDataReceived(
+    data_decoder::DataDecoder::ValueOrError result) {
+  if (!result.has_value()) {
+    return;
+  }
+
+  std::vector<uint8_t> data_received(result.value().GetString().begin(),
+                                     result.value().GetString().end());
+
+  for (auto& observer : streaming_observers_) {
+    observer->OnDataReceived(data_received);
+  }
+}
+
+void PlaylistService::OnDataComplete(
+    api_request_helper::APIRequestResult result) {
+  if (result.Is2XXResponseCode()) {
+    for (auto& observer : streaming_observers_) {
+      observer->OnDataCompleted();
+    }
+  }
 }
 
 }  // namespace playlist

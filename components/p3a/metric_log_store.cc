@@ -337,4 +337,9 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
   }
 }
 
+const metrics::LogMetadata MetricLogStore::staged_log_metadata() const {
+  DCHECK(has_staged_log());
+  return {};
+}
+
 }  // namespace p3a

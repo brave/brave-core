@@ -1,8 +1,24 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index c1a712883d4b5af6d77d2174589f2f95625cb05e..6350ff5b8c964d5791dda151a8625d2443ae10d2 100644
+index 17683fab4f4d8132c6a3d6741d3996c371aa77a7..d7c8cec6effd0d31d96e802cc08fff6470e0a6d3 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
-@@ -8286,6 +8286,8 @@ void RenderFrameHostImpl::CreateNewWindow(
+@@ -4151,6 +4151,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+     candidate_site_for_cookies = net::SiteForCookies(top_frame_site);
+   }
+ 
++  BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_ISOLATION_INFO_INTERNAL
+   absl::optional<base::UnguessableToken> nonce =
+       ComputeNonce(is_credentialless, fenced_frame_nonce_for_navigation);
+   return net::IsolationInfo::Create(request_type, top_frame_origin,
+@@ -4161,6 +4162,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+ absl::optional<base::UnguessableToken> RenderFrameHostImpl::ComputeNonce(
+     bool is_credentialless,
+     absl::optional<base::UnguessableToken> fenced_frame_nonce_for_navigation) {
++  BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_NONCE
+   // If it's a credentialless frame tree, use its nonce even if it's within a
+   // fenced frame tree to maintain the guarantee that a credentialless frame
+   // tree has a unique nonce.
+@@ -8267,6 +8269,8 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  

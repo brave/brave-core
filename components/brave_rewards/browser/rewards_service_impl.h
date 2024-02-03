@@ -31,6 +31,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "build/build_config.h"
@@ -65,6 +66,10 @@ class SimpleURLLoader;
 
 class Profile;
 
+namespace brave_wallet {
+class JsonRpcService;
+}
+
 namespace brave_rewards {
 
 class RewardsFlagBrowserTest;
@@ -95,13 +100,12 @@ class RewardsServiceImpl : public RewardsService,
 #endif
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
+  RewardsServiceImpl(Profile* profile,
 #if BUILDFLAG(ENABLE_GREASELION)
-  explicit RewardsServiceImpl(
-      Profile* profile,
-      greaselion::GreaselionService* greaselion_service);
-#else
-  explicit RewardsServiceImpl(Profile* profile);
+                     greaselion::GreaselionService* greaselion_service,
 #endif
+                     brave_wallet::JsonRpcService* wallet_rpc_service);
+
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
   ~RewardsServiceImpl() override;
@@ -194,6 +198,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetEnvironment(GetEnvironmentCallback callback) override;
 
   p3a::ConversionMonitor* GetP3AConversionMonitor() override;
+  void OnRewardsPageShown() override;
 
   mojom::RewardsEngineOptionsPtr HandleFlags(const RewardsFlags& flags);
 
@@ -356,6 +361,14 @@ class RewardsServiceImpl : public RewardsService,
                            LoadURLCallback callback,
                            std::unique_ptr<std::string> response_body);
 
+  void OnGetSPLTokenAccountBalance(
+      GetSPLTokenAccountBalanceCallback callback,
+      const std::string& amount,
+      uint8_t decimals,
+      const std::string& amount_string,
+      brave_wallet::mojom::SolanaProviderError error,
+      const std::string& error_message);
+
   void StartNotificationTimers();
   void StopNotificationTimers();
   void OnNotificationTimerFired();
@@ -368,6 +381,9 @@ class RewardsServiceImpl : public RewardsService,
                              const mojom::Result result);
 
   void OnEngineInitialized(mojom::Result result);
+
+  void OnExternalWalletLoginStarted(BeginExternalWalletLoginCallback callback,
+                                    mojom::ExternalWalletLoginParamsPtr params);
 
   void OnClaimPromotion(ClaimPromotionCallback callback,
                         const mojom::Result result,
@@ -395,6 +411,10 @@ class RewardsServiceImpl : public RewardsService,
   void LoadLegacyState(LoadLegacyStateCallback callback) override;
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
+  void GetSPLTokenAccountBalance(
+      const std::string& solana_address,
+      const std::string& token_mint_address,
+      GetSPLTokenAccountBalanceCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
   void OnPanelPublisherInfo(mojom::Result result,
                             mojom::PublisherInfoPtr info,
@@ -572,6 +592,7 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
+  raw_ptr<brave_wallet::JsonRpcService> wallet_rpc_service_ = nullptr;
   mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
   mojo::Remote<mojom::RewardsEngineFactory> engine_factory_;

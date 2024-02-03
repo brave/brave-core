@@ -111,7 +111,7 @@ class AdsServiceImpl : public AdsService,
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
 
-  void InitializeNotificationsForCurrentProfile() const;
+  void InitializeNotificationsForCurrentProfile();
 
   void GetDeviceIdAndMaybeStartBatAdsService();
   void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
@@ -195,6 +195,8 @@ class AdsServiceImpl : public AdsService,
                           UrlRequestCallback callback,
                           std::unique_ptr<std::string> response_body);
 
+  void OnNotificationAdPositionChanged();
+
   // KeyedService:
   void Shutdown() override;
 
@@ -216,6 +218,8 @@ class AdsServiceImpl : public AdsService,
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
+
+  bool IsBrowserUpgradeRequiredToServeAds() const override;
 
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
@@ -373,7 +377,7 @@ class AdsServiceImpl : public AdsService,
 
   // bat_ads::mojom::BatAdsObserver:
   void OnAdRewardsDidChange() override {}
-  void OnBrowserUpgradeRequiredToServeAds() override {}
+  void OnBrowserUpgradeRequiredToServeAds() override;
   void OnIneligibleRewardsWalletToServeAds() override {}
   void OnRemindUser(mojom::ReminderType type) override;
 
@@ -392,6 +396,8 @@ class AdsServiceImpl : public AdsService,
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
+
+  bool browser_upgrade_required_to_serve_ads_ = false;
 
   // Brave Ads Service starts count is needed to avoid possible double Brave
   // Ads initialization.

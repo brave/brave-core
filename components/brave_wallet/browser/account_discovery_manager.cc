@@ -117,6 +117,11 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
     return;
   }
 
+  if (!json_rpc_service_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   auto chain_id = context->chain_id;
   auto coin_type = context->coin_type;
   if (context->coin_type == mojom::CoinType::ETH) {
@@ -125,9 +130,9 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
         base::BindOnce(&AccountDiscoveryManager::OnEthGetTransactionCount,
                        weak_ptr_factory_.GetWeakPtr(), std::move(context)));
   } else if (context->coin_type == mojom::CoinType::SOL) {
-    // We use balance for Solana account discovery since pratically
-    // getSignaturesForAddress method could work not properly sometimes when
-    // node losts bigtable connection
+    // We use balance for Solana account discovery since practically
+    // getSignaturesForAddress method sometimes does not work properly when
+    // node loses bigtable connection.
     json_rpc_service_->GetSolanaBalance(
         addr.value(), chain_id,
         base::BindOnce(&AccountDiscoveryManager::OnResolveSolanaAccountBalance,
@@ -202,12 +207,12 @@ void AccountDiscoveryManager::ProcessDiscoveryResult(
 }
 
 void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
-    base::expected<DiscoveredBitcoinAccount, std::string> dicovered_account) {
-  if (!dicovered_account.has_value()) {
+    base::expected<DiscoveredBitcoinAccount, std::string> discovered_account) {
+  if (!discovered_account.has_value()) {
     return;
   }
 
-  auto& acc = dicovered_account.value();
+  auto& acc = discovered_account.value();
   if (acc.next_unused_receive_index == 0 && acc.next_unused_change_index == 0) {
     // This account has no transacted addresses in blockchain. Don't add it and
     // stop discovery.
@@ -217,10 +222,15 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
   CHECK(IsBitcoinKeyring(acc.keyring_id));
 
   mojom::AccountIdPtr last_bitcoin_account;
+  mojom::AccountIdPtr bitcoin_account_to_update;
   for (const auto& account : keyring_service_->GetAllAccountInfos()) {
     const auto& account_id = account->account_id;
     if (account_id->coin == mojom::CoinType::BTC &&
         account_id->keyring_id == acc.keyring_id) {
+      if (account->account_id->bitcoin_account_index == acc.account_index) {
+        bitcoin_account_to_update = account->account_id->Clone();
+      }
+
       if (!last_bitcoin_account || last_bitcoin_account->bitcoin_account_index <
                                        account_id->bitcoin_account_index) {
         last_bitcoin_account = account_id->Clone();
@@ -228,21 +238,25 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
     }
   }
 
-  if (last_bitcoin_account &&
-      last_bitcoin_account->bitcoin_account_index + 1 != acc.account_index) {
-    // We don't allow gaps in account indexes, so just return if discovered
-    // account would not be the next account.
-    return;
+  if (!bitcoin_account_to_update) {
+    if (last_bitcoin_account &&
+        last_bitcoin_account->bitcoin_account_index + 1 != acc.account_index) {
+      // We don't allow gaps in account indexes, so just return if discovered
+      // account would not be the next account.
+      return;
+    }
+
+    auto created_account = keyring_service_->AddAccountSync(
+        mojom::CoinType::BTC, acc.keyring_id,
+        DiscoveredBitcoinAccountName(acc.keyring_id, acc.account_index));
+    if (!created_account) {
+      return;
+    }
+    bitcoin_account_to_update = created_account->account_id.Clone();
   }
 
-  auto created_account = keyring_service_->AddAccountSync(
-      mojom::CoinType::BTC, acc.keyring_id,
-      DiscoveredBitcoinAccountName(acc.keyring_id, acc.account_index));
-  if (!created_account) {
-    return;
-  }
   keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
-      created_account->account_id, acc.next_unused_receive_index,
+      bitcoin_account_to_update, acc.next_unused_receive_index,
       acc.next_unused_change_index);
 
   auto next_account_index = acc.account_index + 1;

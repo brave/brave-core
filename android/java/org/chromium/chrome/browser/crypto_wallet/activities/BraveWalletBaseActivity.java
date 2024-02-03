@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.view.MenuItem;
 
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
@@ -27,7 +28,9 @@ import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserve
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl.KeyringServiceObserverImplDelegate;
 import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl.TxServiceObserverImplDelegate;
+import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
@@ -273,4 +276,9 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
 
     @Override
     public void onTransactionStatusChanged(TransactionInfo txInfo) {}
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
+    }
 }

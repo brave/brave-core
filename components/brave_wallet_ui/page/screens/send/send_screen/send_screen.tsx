@@ -57,6 +57,9 @@ import { makeSendRoute } from '../../../../utils/routes-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult //
 } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  getDominantColorFromImageURL //
+} from '../../../../utils/style.utils'
 
 // Hooks
 import {
@@ -120,6 +123,7 @@ import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
   DefaultPanelHeader //
 } from '../../../../components/desktop/card-headers/default-panel-header'
+import { OrdinalsWarningMessage } from '../components/ordinals-warning-message/ordinals-warning-message'
 
 interface Props {
   isAndroid?: boolean
@@ -172,6 +176,8 @@ export const SendScreen = React.memo((props: Props) => {
   const [domainPosition, setDomainPosition] = React.useState<number>(0)
   const [selectedNetworkFilter, setSelectedNetworkFilter] =
     React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
+  const [isWarningAcknowledged, setIsWarningAcknowledged] =
+    React.useState<boolean>(false)
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -442,6 +448,10 @@ export const SendScreen = React.memo((props: Props) => {
         addressWarningLocaleKey
       ]
     )
+
+  const tokenColor = React.useMemo(() => {
+    return getDominantColorFromImageURL(tokenFromParams?.logo ?? '')
+  }, [tokenFromParams?.logo])
 
   // Methods
   const selectSendAsset = React.useCallback(
@@ -723,6 +733,7 @@ export const SendScreen = React.memo((props: Props) => {
           <ToSectionWrapper
             fullWidth={true}
             justifyContent='flex-start'
+            tokenColor={tokenColor}
           >
             <Column
               fullWidth={true}
@@ -787,6 +798,12 @@ export const SendScreen = React.memo((props: Props) => {
                     }
                   />
                 )}
+                {tokenFromParams?.coin === BraveWallet.CoinType.BTC && (
+                  <OrdinalsWarningMessage
+                    acknowledged={isWarningAcknowledged}
+                    onChange={setIsWarningAcknowledged}
+                  />
+                )}
               </Column>
               <Row
                 width='100%'
@@ -824,7 +841,9 @@ export const SendScreen = React.memo((props: Props) => {
                       Boolean(addressError) ||
                       sendAmount === '' ||
                       parseFloat(sendAmount) === 0 ||
-                      Boolean(sendAmountValidationError)
+                      Boolean(sendAmountValidationError) ||
+                      (tokenFromParams?.coin === BraveWallet.CoinType.BTC &&
+                        !isWarningAcknowledged)
                     }
                     hasError={reviewButtonHasError}
                   />

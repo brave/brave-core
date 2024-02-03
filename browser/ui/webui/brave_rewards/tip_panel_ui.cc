@@ -60,7 +60,13 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"unexpectedErrorTitle", IDS_REWARDS_TIP_UNEXPECTED_ERROR_TITLE},
     {"unexpectedErrorText", IDS_REWARDS_TIP_UNEXPECTED_ERROR_TEXT},
     {"defaultCreatorDescription", IDS_REWARDS_TIP_DEFAULT_CREATOR_DESCRIPTION},
-    {"platformPublisherTitle", IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE}};
+    {"platformPublisherTitle", IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE},
+    {"selfCustodyTitle", IDS_REWARDS_TIP_SELF_CUSTODY_TITLE},
+    {"selfCustodyHeader", IDS_REWARDS_TIP_SELF_CUSTODY_HEADER},
+    {"selfCustodyText", IDS_REWARDS_TIP_SELF_CUSTODY_TEXT},
+    {"selfCustodySendButtonLabel",
+     IDS_REWARDS_TIP_SELF_CUSTODY_SEND_BUTTON_LABEL},
+    {"selfCustodyNoWeb3Label", IDS_REWARDS_TIP_SELF_CUSTODY_NO_WEB3_LABEL}};
 
 }  // namespace
 

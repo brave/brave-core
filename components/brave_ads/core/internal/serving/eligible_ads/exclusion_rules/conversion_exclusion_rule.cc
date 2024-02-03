@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
 
+#include <cstddef>
 #include <utility>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 
@@ -24,11 +25,13 @@ bool DoesRespectCap(const AdEventList& ad_events,
     return true;
   }
 
-  const size_t count = base::ranges::count_if(
-      ad_events, [&creative_ad](const AdEventInfo& ad_event) {
+  const size_t count = count_if_until(
+      ad_events,
+      [&creative_ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == ConfirmationType::kConversion &&
                ad_event.creative_set_id == creative_ad.creative_set_id;
-      });
+      },
+      kConversionCap);
 
   return count < kConversionCap;
 }

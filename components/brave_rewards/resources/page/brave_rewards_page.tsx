@@ -248,6 +248,8 @@ function onboardingStatus (result: { showOnboarding: boolean }) {
 function externalWalletLogin (url: string) {
   if (url) {
     window.open(url, '_self', 'noreferrer')
+  } else {
+    actions.onExternalWalletLoginError()
   }
 }
 

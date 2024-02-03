@@ -67,6 +67,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory)
       override;
 
+  std::optional<base::UnguessableToken> GetEphemeralStorageToken(
+      content::RenderFrameHost* render_frame_host,
+      const url::Origin& origin) override;
+
   bool AllowWorkerFingerprinting(
       const GURL& url,
       content::BrowserContext* browser_context) override;

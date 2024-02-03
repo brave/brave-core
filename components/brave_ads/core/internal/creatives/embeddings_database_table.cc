@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/embeddings_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -42,12 +43,14 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 void MigrateToV27(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  DropTable(transaction, "embeddings");
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS embeddings (creative_set_id TEXT NOT NULL, "
-      "embedding TEXT NOT NULL, PRIMARY KEY (creative_set_id), "
-      "UNIQUE(creative_set_id) ON CONFLICT REPLACE);";
+      "CREATE TABLE embeddings (creative_set_id TEXT NOT NULL, embedding TEXT "
+      "NOT NULL, PRIMARY KEY (creative_set_id), UNIQUE(creative_set_id) ON "
+      "CONFLICT REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -85,9 +88,9 @@ void Embeddings::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE embeddings (creative_set_id TEXT NOT NULL, "
-      "embedding TEXT NOT NULL, PRIMARY KEY (creative_set_id), "
-      "UNIQUE(creative_set_id) ON CONFLICT REPLACE);";
+      "CREATE TABLE embeddings (creative_set_id TEXT NOT NULL, embedding TEXT "
+      "NOT NULL, PRIMARY KEY (creative_set_id), UNIQUE(creative_set_id) ON "
+      "CONFLICT REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 

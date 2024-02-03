@@ -8,7 +8,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { useChannelSubscribed } from '../../../../../brave_news/browser/resources/shared/Context'
 import { channelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
-import FollowButton from './FollowButton'
+import FollowButton from '../../../../../brave_news/browser/resources/shared/FollowButton'
 import { getTranslatedChannelName } from '../../../../../brave_news/browser/resources/shared/channel'
 
 const SubscribeButton = styled(FollowButton)`
@@ -56,7 +56,7 @@ interface Props {
   channelName: string
 }
 
-export default function ChannelCard ({ channelName }: Props) {
+export default function ChannelCard({ channelName }: Props) {
   const { subscribed, setSubscribed } = useChannelSubscribed(channelName)
   return <Container
     direction='column'

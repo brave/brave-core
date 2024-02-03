@@ -90,6 +90,12 @@ impl TryFrom<OrderItemResponse> for OrderItem {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+struct CreateOrderFromReceiptResponse {
+    order_id: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct OrderResponse {
     id: String,
     created_at: DateTime<Utc>,
@@ -191,7 +197,7 @@ where
 
                 let body = to_vec(&order).or(Err(InternalError::SerializationFailed))?;
 
-                let req = builder.body(body).unwrap();
+                let req = builder.body(body)?;
                 let resp = self.fetch(req).await?;
 
                 match resp.status() {
@@ -219,7 +225,7 @@ where
                     .method("GET")
                     .uri(format!("{}/v1/orders/{}", self.base_url, order_id));
 
-                let req = builder.body(vec![]).unwrap();
+                let req = builder.body(vec![])?;
                 let resp = self.fetch(req).await?;
 
                 match resp.status() {
@@ -238,7 +244,37 @@ where
         Ok(order)
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
+    // create_order_from_receipt allows for order creation with a vendor receipt, returning the
+    // order id of the created order
+    pub async fn create_order_from_receipt(&self, receipt: &str) -> Result<String, InternalError> {
+        let request_with_retries = FutureRetry::new(
+            || async {
+                let builder = http::Request::builder()
+                    .method("POST")
+                    .uri(format!("{}/v1/orders/receipt", self.base_url));
+
+                let receipt_bytes = receipt.as_bytes().to_vec();
+                let req = builder.body(receipt_bytes)?;
+                let resp = self.fetch(req).await?;
+
+                match resp.status() {
+                    http::StatusCode::CREATED => Ok(resp),
+                    http::StatusCode::CONFLICT => Ok(resp),
+                    http::StatusCode::NOT_FOUND => Err(InternalError::NotFound),
+                    _ => Err(resp.into()),
+                }
+            },
+            HttpHandler::new(3, "Create new order from receipt", &self.client),
+        );
+
+        let (resp, _) = request_with_retries.await?;
+
+        let cofrr: CreateOrderFromReceiptResponse = serde_json::from_slice(resp.body())?;
+        Ok(cofrr.order_id)
+    }
+
+    #[instrument(err(level = Level::WARN), ret)]
     // submit_receipt allows for order proof of payment
     pub async fn submit_receipt(&self, order_id: &str, receipt: &str) -> Result<(), InternalError> {
         event!(Level::DEBUG, order_id = order_id, "submit_receipt called");
@@ -249,8 +285,7 @@ where
                     .uri(format!("{}/v1/orders/{}/submit-receipt", self.base_url, order_id));
 
                 let receipt_bytes = receipt.as_bytes().to_vec();
-                let req =
-                    builder.body(receipt_bytes).map_err(|_| InternalError::SerializationFailed)?;
+                let req = builder.body(receipt_bytes)?;
 
                 let resp = self.fetch(req).await?;
                 event!(
@@ -272,7 +307,7 @@ where
         Ok(())
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
     pub async fn refresh_order(&self, order_id: &str) -> Result<Order, SkusError> {
         event!(Level::DEBUG, order_id = order_id, "refresh_order called",);
         let order = self.fetch_order(order_id).await?;

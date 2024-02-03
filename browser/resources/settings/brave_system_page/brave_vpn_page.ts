@@ -96,29 +96,10 @@ export class SettingsBraveVpnPageElement
       this.initialProtocolValue_)
   }
 
-  private isWireguardServiceRegistered(success: boolean) {
-    if (success)
-      return;
-    // Try to register it.
-    this.vpnBrowserProxy_.registerWireguardService().then(
-        (success: boolean) => {
-      if (!success) {
-        this.resetToInitialValue()
-        this.updateState()
-        return;
-      }
-    })
-  }
-
   private onChange_() {
     this.updateState();
     if (!this.getCurrentPrefValue())
       return
-    // <if expr="is_win">
-    // If user enabled Wireguard service we have to check if it was registered.
-    this.vpnBrowserProxy_.isWireguardServiceRegistered().then(
-      this.isWireguardServiceRegistered.bind(this))
-    // </if>
   }
 
   private onRestartClick_(e: Event) {

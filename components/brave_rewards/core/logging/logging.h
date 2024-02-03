@@ -11,7 +11,6 @@
 
 #include "base/logging.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
-#include "brave/components/brave_rewards/core/logging/logging_util.h"
 
 namespace brave_rewards::internal {
 

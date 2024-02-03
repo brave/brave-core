@@ -218,20 +218,20 @@ std::optional<ZCashTransaction::TxInput> ZCashTransaction::TxInput::FromValue(
 // static
 std::optional<ZCashTransaction::TxInput> ZCashTransaction::TxInput::FromRpcUtxo(
     const std::string& address,
-    const zcash::ZCashUtxo& utxo) {
-  if (address != utxo.address()) {
+    const mojom::ZCashUtxo& utxo) {
+  if (address != utxo.address) {
     return std::nullopt;
   }
   ZCashTransaction::TxInput result;
-  result.utxo_address = utxo.address();
+  result.utxo_address = utxo.address;
   result.script_pub_key.insert(result.script_pub_key.begin(),
-                               utxo.script().begin(), utxo.script().end());
-  if (utxo.txid().size() != 32) {
+                               utxo.script.begin(), utxo.script.end());
+  if (utxo.tx_id.size() != 32) {
     return std::nullopt;
   }
-  std::copy_n(utxo.txid().begin(), 32, result.utxo_outpoint.txid.begin());
-  result.utxo_outpoint.index = utxo.index();
-  result.utxo_value = utxo.valuezat();
+  std::copy_n(utxo.tx_id.begin(), 32, result.utxo_outpoint.txid.begin());
+  result.utxo_outpoint.index = utxo.index;
+  result.utxo_value = utxo.value_zat;
   return result;
 }
 

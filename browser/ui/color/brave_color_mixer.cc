@@ -11,7 +11,6 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
-#include "brave/browser/ui/tabs/brave_vertical_tab_color_mixer.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -216,7 +215,7 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
       leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kLight)};
   mixer[kColorTabStrokeFrameActive] = {SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
   mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
-  mixer[kColorToolbar] = {kLightToolbar};
+  mixer[kColorToolbar] = {leo::kColorPrimitiveGray1};
   mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveGray50};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -242,6 +241,12 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
       ui::kColorFocusableBorderFocused};
   mixer[kColorTabFocusRingActive] = {ui::kColorFocusableBorderFocused};
   mixer[kColorTabFocusRingInactive] = {ui::kColorFocusableBorderFocused};
+
+  // Upstream uses tab's background color as omnibox chip background color.
+  // In our light mode, there is no difference between location bar's bg
+  // color and tab's bg color. So, it looks like chip's bg color is transparent.
+  // Use frame color as chip background to have different bg color.
+  mixer[kColorOmniboxChipBackground] = {kLightFrame};
 }
 
 void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -267,7 +272,7 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
       leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)};
   mixer[kColorTabStrokeFrameActive] = {kColorToolbar};
   mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
-  mixer[kColorToolbar] = {kDarkToolbar};
+  mixer[kColorToolbar] = {leo::kColorPrimitiveGray90};
   mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveGray40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -469,8 +474,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.15 * 255)};
 
-  tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
-
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::AddThemeColorMixer(provider, leo::Theme::kLight, key);
@@ -580,8 +583,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.25 * 255)};
 
-  tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
-
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::AddThemeColorMixer(provider, leo::Theme::kDark, key);
@@ -675,7 +676,7 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xCC, 0xBE, 0xFE)};
   mixer[kColorTabForegroundInactiveFrameActive] = {
       SkColorSetRGB(0xCC, 0xBE, 0xFE)};
-  mixer[kColorToolbar] = {kPrivateToolbar};
+  mixer[kColorToolbar] = {leo::kColorPrimitivePrivateWindow90};
   mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitivePrivateWindow40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -708,7 +709,7 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xE3, 0xB3, 0xFF)};
   mixer[kColorTabForegroundInactiveFrameActive] = {
       SkColorSetRGB(0xE3, 0xB3, 0xFF)};
-  mixer[kColorToolbar] = {kPrivateTorToolbar};
+  mixer[kColorToolbar] = {leo::kColorPrimitiveTorWindow90};
   mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveTorWindow40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};

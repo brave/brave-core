@@ -15,15 +15,54 @@ import ContextMenuAssistant from '../context_menu_assistant'
 import { getLocale } from '$web-common/locale'
 import SiteTitle from '../site_title'
 
+const CodeBlock = React.lazy(async () => ({ default: (await import('../code_block')).default.Block }))
+const CodeInline = React.lazy(async () => ({ default: (await import('../code_block')).default.Inline }))
+
+// Capture markdown-style code blocks and inline code.
+// It captures:
+// 1. Multiline code blocks with optional language specifiers (```lang\n...code...```).
+// 2. Inline code segments (`code`).
+// 3. Regular text outside of code segments.
+const codeFormatRegexp = /```([^\n`]+)?\n?([\s\S]*?)```|`(.*?)`|([^`]+)/gs
+
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
   mojom.SuggestionGenerationStatus.IsGenerating
 ]
 
-function ConversationList() {
-  // Scroll the last conversation item in to view when entries are added.
-  const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
+interface ConversationListProps {
+  onLastElementHeightChange: () => void
+}
 
+interface FormattedTextProps {
+  text: string
+}
+
+function FormattedTextRenderer(props: FormattedTextProps): JSX.Element {
+  const nodes = React.useMemo(() => {
+    const formattedNodes = Array.from(props.text.matchAll(codeFormatRegexp)).map((match: any) => {
+      if (match[0].substring(0,3).includes('```')) {
+        return (<React.Suspense fallback={'...'}>
+          <CodeBlock lang={match[1]} code={match[2].trim()} />
+        </React.Suspense>)
+      } else if (match[0].substring(0,1).includes('`')) {
+        return (
+          <React.Suspense fallback={'...'}>
+            <CodeInline code={match[3]}/>
+        </React.Suspense>
+        )
+      } else {
+        return match[0]
+      }
+    })
+
+    return <>{formattedNodes}</>
+  }, [props.text])
+
+  return nodes
+}
+
+function ConversationList(props: ConversationListProps) {
   const context = React.useContext(DataContext)
   const {
     isGenerating,
@@ -41,25 +80,16 @@ function ConversationList() {
     suggestedQuestions.length > 0 ||
     SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
 
-  React.useEffect(() => {
-    if (!conversationHistory.length && !isGenerating) {
-      return
-    }
-
-    if (!lastConversationEntryElementRef.current) {
-      console.error('Conversation entry element did not exist when expected')
-    } else {
-      lastConversationEntryElementRef.current.scrollIntoView(false)
-    }
-  }, [
-    conversationHistory.length,
-    isGenerating,
-    lastConversationEntryElementRef.current?.clientHeight
-  ])
-
   const handleQuestionSubmit = (question: string) => {
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
   }
+
+  const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (!lastEntryElementRef.current) return
+    props.onLastElementHeightChange()
+  }, [conversationHistory.length, lastEntryElementRef.current?.clientHeight])
 
   return (
     <>
@@ -84,7 +114,7 @@ function ConversationList() {
           return (
             <div
               key={id}
-              ref={isLastEntry ? lastConversationEntryElementRef : null}
+              ref={isLastEntry ? lastEntryElementRef : null}
             >
               <div className={turnClass}>
                 {isAIAssistant && (
@@ -100,8 +130,10 @@ function ConversationList() {
                 <div className={avatarStyles}>
                   <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />
                 </div>
-                <div className={styles.message}>
-                  {turn.text}
+                <div
+                  className={styles.message}
+                >
+                  {<FormattedTextRenderer text={turn.text} />}
                   {isLoading && <span className={styles.caret} />}
                   {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
                 </div>
@@ -118,9 +150,6 @@ function ConversationList() {
       </div>
       {showSuggestions && (
         <div className={styles.suggestedQuestionsBox}>
-          <div className={styles.suggestedQuestionLabel}>
-            {getLocale('suggestionsTitle')}
-          </div>
           <div className={styles.questionsList}>
             {suggestedQuestions.map((question, id) => (
               <Button

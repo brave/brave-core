@@ -64,6 +64,11 @@ class FeatureUsageTest : public testing::Test {
         &pref_service_, kLastUsagePrefName, kLastUsageTimeHistogramName);
   }
 
+  void RecordFeatureLastUsageTimeMetricSingleMonth() {
+    ::p3a_utils::RecordFeatureLastUsageTimeMetric(
+        &pref_service_, kLastUsagePrefName, kLastUsageTimeHistogramName, true);
+  }
+
   content::BrowserTaskEnvironment task_environment_;
   base::HistogramTester histogram_tester_;
 
@@ -115,6 +120,51 @@ TEST_F(FeatureUsageTest, TestLastUsageTime) {
   RecordFeatureLastUsageTimeMetric();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 8);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 6, 2);
+}
+
+TEST_F(FeatureUsageTest, TestLastUsageTimeSingleMonth) {
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  // Should not report if News was never used
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 0);
+
+  RecordFeatureUsage();
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 1);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 1, 1);
+
+  task_environment_.AdvanceClock(base::Days(7));
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 2);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 2, 1);
+
+  task_environment_.AdvanceClock(base::Days(7));
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 3);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 3, 1);
+
+  RecordFeatureUsage();
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 4);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 1, 2);
+
+  task_environment_.AdvanceClock(base::Days(21));
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 5);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 4, 1);
+
+  task_environment_.AdvanceClock(base::Days(7));
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 6);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 4, 2);
+
+  task_environment_.AdvanceClock(base::Days(2));
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 7);
+  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 4, 3);
+
+  task_environment_.AdvanceClock(base::Days(1));
+  RecordFeatureLastUsageTimeMetricSingleMonth();
+  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 7);
 }
 
 TEST_F(FeatureUsageTest, TestDaysInMonthUsedCount) {

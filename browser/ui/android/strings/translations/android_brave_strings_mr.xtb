@@ -4,7 +4,6 @@
 <translation id="370665806235115550">लोड करीत आहे...</translation>
 <translation id="1177863135347784049">सानुकूल</translation>
 <translation id="7307834434086582547">ब्रेव्ह शिल्ड्स सक्षम / अक्षम करा</translation>
-<translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स ब्लॉक करा</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
@@ -22,10 +21,9 @@
 <translation id="4176463684765177261">अक्षम</translation>
 <translation id="59174027418879706">सक्षम केलेले</translation>
 <translation id="6527303717912515753">शेअर करा</translation>
-<translation id="5787084571334399599">ब्राउझरला फिंगरप्रिंटिंगपासून प्रतिबंधित करते</translation>
 <translation id="7459000603787995422">बाहेर पडताना टॅब बंद करा</translation>
+<translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="1680858055899097121">ब्राउझिंग सत्र दरम्यान टॅब टिकवून ठेवू नका</translation>
-<translation id="1842747674580016420">ब्रेव्हमध्ये व्हिडिओ प्लेबॅक</translation>
 <translation id="410351446219883937">ऑटोप्ले</translation>
 <translation id="7445411102860286510">साइटना स्वयंचलितपणे नि:शब्द केलेले व्हिडिओ प्ले करण्याची अनुमती द्या (शिफारस केलेले)</translation>
 <translation id="7837721118676387834">एका विशिष्ट साइटकरिता नि:शब्द केलेल्या व्हिडिओंच्या ऑटोप्ले ला अनुमती द्या.</translation>
@@ -49,7 +47,6 @@
 <translation id="8457451314607652708">बुकमार्क आयात करा</translation>
 <translation id="1008186147501209563">बुकमार्क निर्यात करा</translation>
 <translation id="7173114856073700355">सेटिंग्ज उघडा</translation>
-<translation id="6965382102122355670">ठीक आहे</translation>
 <translation id="1056898198331236512">चेतावणी</translation>
 <translation id="1426410128494586442">होय</translation>
 <translation id="6336451774241870485">नवीन गुप्त टॅब</translation>
@@ -94,7 +91,6 @@
 <translation id="473775607612524610">अपडेट करा</translation>
 <translation id="5045550434625856497">अयोग्य पासवर्ड</translation>
 <translation id="1367951781824006909">फाइल निवडा</translation>
-<translation id="8648684608605749476">तृतीय पक्ष कुकी गुप्त मोडमध्ये ब्लॉक करा</translation>
 <translation id="1165039591588034296">एरर</translation>
 <translation id="7791543448312431591">जोडा</translation>
 <translation id="4250680216510889253">नाही</translation>
@@ -107,6 +103,7 @@
 <translation id="4804818685124855865">‍डिस्कनेक्ट</translation>
 <translation id="7982789257301363584">नेटवर्क</translation>
 <translation id="5039804452771397117">परवानगी द्या</translation>
+<translation id="4394049700291259645">अक्षम करा</translation>
 <translation id="583281660410589416">अज्ञात</translation>
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="6040143037577758943">बंद करा</translation>

@@ -12,13 +12,12 @@
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_rewards/core/common/brotli_util.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 // Due to privacy concerns, the request length must be consistent
 // for all publisher lookups. Do not add URL parameters or headers
@@ -215,20 +214,20 @@ mojom::Result GetPublisher::ParseBody(const std::string& body,
 void GetPublisher::Request(const std::string& publisher_key,
                            const std::string& hash_prefix,
                            GetPublisherCallback callback) {
-  auto url_callback =
-      std::bind(&GetPublisher::OnRequest, this, _1, publisher_key, callback);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(hash_prefix);
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
-  engine_->LoadURL(std::move(request), url_callback);
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&GetPublisher::OnRequest, base::Unretained(this),
+                     publisher_key, std::move(callback)));
 }
 
-void GetPublisher::OnRequest(mojom::UrlResponsePtr response,
-                             const std::string& publisher_key,
-                             GetPublisherCallback callback) {
+void GetPublisher::OnRequest(const std::string& publisher_key,
+                             GetPublisherCallback callback,
+                             mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   auto result = CheckStatusCode(response->status_code);
 
   auto info = mojom::ServerPublisherInfo::New();

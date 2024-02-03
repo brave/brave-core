@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_BUTTON_CONTAINER_H_
 
 #include "base/memory/raw_ptr.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/view.h"
 
@@ -17,6 +18,7 @@ class BraveWaybackMachineInfoBarThrobber;
 // When throbbing is requested, button extends its right inset and throbber runs
 // on that area.
 class BraveWaybackMachineInfoBarButtonContainer : public views::View {
+  METADATA_HEADER(BraveWaybackMachineInfoBarButtonContainer, views::View)
  public:
   explicit BraveWaybackMachineInfoBarButtonContainer(
       views::Button::PressedCallback callback);

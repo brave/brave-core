@@ -53,7 +53,10 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 }  // namespace
 
 bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
-  DCHECK(IsBraveVPNFeatureEnabled());
+  if (!IsBraveVPNFeatureEnabled()) {
+    return false;
+  }
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   auto enabled = local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
 #if BUILDFLAG(IS_MAC)
@@ -66,14 +69,14 @@ bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
 #endif
 }
 #if BUILDFLAG(IS_WIN)
-void MigrateWireguardFeatureFlag(PrefService* local_prefs) {
+void UpdateWireguardEnabledPrefsIfNeeded(PrefService* local_prefs) {
   auto* wireguard_enabled_pref =
       local_prefs->FindPreference(prefs::kBraveVPNWireguardEnabled);
   if (wireguard_enabled_pref && wireguard_enabled_pref->IsDefaultValue()) {
     local_prefs->SetBoolean(
         prefs::kBraveVPNWireguardEnabled,
         base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService) &&
-            brave_vpn::wireguard::IsWireguardServiceRegistered());
+            brave_vpn::wireguard::IsWireguardServiceInstalled());
   }
 }
 #endif  // BUILDFLAG(IS_WIN)

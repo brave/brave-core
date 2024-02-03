@@ -46,7 +46,7 @@ const char kObservingScriptletEntryPoint[] =
 
 const char kScriptletInitScript[] =
     R"((function() {
-          let text = '(function() {\nconst scriptletGlobals = new Map(%s);\nlet deAmpEnabled = %s;\n' + %s + '})()';
+          let text = '(function() {\nconst scriptletGlobals = (() => {\nconst forwardedMapMethods = ["has", "get", "set"];\nconst handler = {\nget(target, prop) { if (forwardedMapMethods.includes(prop)) { return Map.prototype[prop].bind(target) } return target.get(prop); },\nset(target, prop, value) { if (!forwardedMapMethods.includes(prop)) { target.set(prop, value); } }\n};\nreturn new Proxy(new Map(%s), handler);\n})();\nlet deAmpEnabled = %s;\n' + %s + '})()';
           let script;
           try {
             script = document.createElement('script');

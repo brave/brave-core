@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom
+index 9b1710960e19cda745164f25a9751479cfbd11bd..8b9be69518dc50d7886ec70ff85e5ce12d4a9413 100644
+--- a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom
++++ b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom
+@@ -23,9 +23,10 @@ enum SortOrder {
+   kLastOpened = 2,
+   kAlphabetical = 3,
+   kReverseAlphabetical = 4,
++  kCustom = 5,
+ 
+   // Must be last. May add new values before this one.
+-  kCount = 5,
++  kCount = 6,
+ };
+ 
+ // Used to indicate the order bookmarks are sorted in the side panel.

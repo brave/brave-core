@@ -23,6 +23,6 @@ export default function FeedPage() {
   const { feedV2 } = useBraveNews()
   return <Container>
     <h2>The Feed ({feedV2?.items.length} items. Truncated at {truncate})</h2>
-    <Feed feed={feedV2} hasSubscriptions />
+    <Feed feed={feedV2} />
   </Container>
 }

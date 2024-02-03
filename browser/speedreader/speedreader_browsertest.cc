@@ -67,6 +67,7 @@
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
+const char kTestEsPageReadable[] = "/speedreader/article/es.html";
 const char kTestPageReadableOnUnreadablePath[] =
     "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
@@ -318,6 +319,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   const std::string kGetFontsExists =
       "!!(document.getElementById('atkinson_hyperligible_font') && "
       "document.getElementById('open_dyslexic_font'))";
+  const std::string kCheckReferrer =
+      R"js(document.querySelector('meta[name="referrer"]')
+             .getAttribute('content') === 'no-referrer')js";
 
   // Check that the document became much smaller and that non-empty speedreader
   // style is injected.
@@ -329,6 +333,11 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckReferrer,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                  .ExtractBool());
+
   const auto speedreaded_length =
       content::EvalJs(ActiveWebContents(), kGetContentLength,
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
@@ -426,6 +435,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  NavigateToPageSynchronously(kTestEsPageReadable);
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  ClickReaderButton();
+
+  constexpr const char kCheckText[] =
+      R"js( document.querySelector('#par-to-check').innerText.length )js";
+  EXPECT_EQ(92, content::EvalJs(ActiveWebContents(), kCheckText,
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                    .ExtractInt());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {

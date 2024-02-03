@@ -19,7 +19,6 @@ import {
 } from './entities/network.entity'
 
 // api
-import { apiProxyFetcher } from '../async/base-query-cache'
 import { createWalletApiBase } from './api-base.slice'
 import { transactionSimulationEndpoints } from './endpoints/tx-simulation.endpoints'
 import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
@@ -93,14 +92,14 @@ export function createWalletApi() {
         endpoints: ({ mutation, query }) => ({
           openPanelUI: mutation<boolean, void>({
             queryFn(arg, api, extraOptions, baseQuery) {
-              const { panelHandler } = apiProxyFetcher()
+              const { panelHandler } = baseQuery(undefined).data
               panelHandler?.showUI()
               return { data: true }
             }
           }),
           closePanelUI: mutation<boolean, void>({
             queryFn(arg, api, extraOptions, baseQuery) {
-              const { panelHandler } = apiProxyFetcher()
+              const { panelHandler } = baseQuery(undefined).data
               panelHandler?.closeUI()
               return { data: true }
             }
@@ -185,6 +184,7 @@ export const {
   useGetAddressFromNameServiceUrlQuery,
   useGetAllKnownNetworksQuery,
   useGetAutopinEnabledQuery,
+  useGetBitcoinBalancesQuery,
   useGetBuyUrlQuery,
   useGetCoingeckoIdQuery,
   useGetCoinMarketQuery,
@@ -195,7 +195,6 @@ export const {
   useGetERC721MetadataQuery,
   useGetEthAddressChecksumQuery,
   useGetEVMTransactionSimulationQuery,
-  useGetExternalRewardsWalletQuery,
   useGetFVMAddressQuery,
   useGetGasEstimation1559Query,
   useGetHardwareAccountDiscoveryBalanceQuery,
@@ -218,8 +217,7 @@ export const {
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
   useGetQrCodeImageQuery,
-  useGetRewardsBalanceQuery,
-  useGetRewardsEnabledQuery,
+  useGetRewardsInfoQuery,
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery,
   useGetSimpleHashSpamNftsQuery,
@@ -248,12 +246,12 @@ export const {
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
   useLazyGetAllKnownNetworksQuery,
+  useLazyGetBitcoinBalancesQuery,
   useLazyGetBuyUrlQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC20AllowanceQuery,
   useLazyGetERC721MetadataQuery,
   useLazyGetEVMTransactionSimulationQuery,
-  useLazyGetExternalRewardsWalletQuery,
   useLazyGetGasEstimation1559Query,
   useLazyGetIpfsGatewayTranslatedNftUrlQuery,
   useLazyGetIPFSUrlFromGatewayLikeUrlQuery,
@@ -261,8 +259,6 @@ export const {
   useLazyGetNetworksRegistryQuery,
   useLazyGetNftDiscoveryEnabledStatusQuery,
   useLazyGetPendingTokenSuggestionRequestsQuery,
-  useLazyGetRewardsBalanceQuery,
-  useLazyGetRewardsEnabledQuery,
   useLazyGetSelectedAccountIdQuery,
   useLazyGetSelectedChainQuery,
   useLazyGetSellAssetUrlQuery,

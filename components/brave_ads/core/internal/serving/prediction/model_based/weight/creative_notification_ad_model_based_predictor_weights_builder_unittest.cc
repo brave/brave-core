@@ -29,9 +29,9 @@ TEST_F(BraveAdsCreativeNotificationAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.latent_interest_segment.parent = 1.0;
   expected_weights.interest_segment.child = 1.0;
   expected_weights.interest_segment.parent = 1.0;
+  expected_weights.untargeted_segment = 0.0001;
   expected_weights.last_seen_ad = 1.0;
   expected_weights.last_seen_advertiser = 1.0;
-  expected_weights.priority = 1.0;
   EXPECT_EQ(expected_weights, weights);
 }
 

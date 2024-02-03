@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -39,7 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
@@ -117,11 +118,6 @@ import java.util.stream.Collectors;
 
 public class Utils {
     private static final String TAG = "Utils";
-
-    public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
-    public static int ONBOARDING_ACTION = 2;
-    public static int UNLOCK_WALLET_ACTION = 3;
-    public static int RESTORE_WALLET_ACTION = 4;
 
     public static int ACCOUNT_ITEM = 1;
     public static int ASSET_ITEM = 2;
@@ -1177,7 +1173,7 @@ public class Utils {
         TxService txService = activity.getTxService();
         assert txService != null;
 
-        PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true, null);
+        PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true);
 
         pendingTxHelper.fetchTransactions(() -> {
             HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
@@ -1399,16 +1395,8 @@ public class Utils {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    private static boolean canAuthenticate(BiometricManager biometricManager) {
-        assert biometricManager != null;
-
-        return biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
-                == BiometricManager.BIOMETRIC_SUCCESS;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public static boolean isBiometricAvailable(Context context) {
+    @SuppressLint("MissingPermission")
+    public static boolean isBiometricAvailable(@Nullable Context context) {
         // Only Android versions 9 and above are supported.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
             return false;
@@ -1420,16 +1408,19 @@ public class Utils {
                 return false;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                return Utils.canAuthenticate(biometricManager);
+                return biometricManager.canAuthenticate(
+                                BiometricManager.Authenticators.BIOMETRIC_WEAK)
+                        == BiometricManager.BIOMETRIC_SUCCESS;
             }
 
+            //noinspection deprecation
             return biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS;
         } else {
             // For API level < Q, we will use FingerprintManagerCompat to check enrolled
             // fingerprints. Note that for API level lower than 23, FingerprintManagerCompat behaves
             // like no fingerprint hardware and no enrolled fingerprints.
             FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(context);
-            return fingerprintManager != null && fingerprintManager.isHardwareDetected()
+            return fingerprintManager.isHardwareDetected()
                     && fingerprintManager.hasEnrolledFingerprints();
         }
     }

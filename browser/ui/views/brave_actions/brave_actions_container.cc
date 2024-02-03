@@ -19,14 +19,9 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/view.h"
-
-namespace {
-
-constexpr gfx::Size kToolbarActionSize(34, 30);
-
-}  // namespace
 
 BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
     : browser_(browser) {}
@@ -83,14 +78,14 @@ void BraveActionsContainer::AddActionViewForShields() {
       AddChildViewAt(std::make_unique<BraveShieldsActionView>(
                          *browser_->profile(), *browser_->tab_strip_model()),
                      1);
-  shields_action_btn_->SetPreferredSize(kToolbarActionSize);
+  shields_action_btn_->SetPreferredSize(GetActionSize());
   shields_action_btn_->Init();
 }
 
 void BraveActionsContainer::AddActionViewForRewards() {
   auto button = std::make_unique<BraveRewardsActionView>(browser_);
   rewards_action_btn_ = AddChildViewAt(std::move(button), 2);
-  rewards_action_btn_->SetPreferredSize(kToolbarActionSize);
+  rewards_action_btn_->SetPreferredSize(GetActionSize());
   rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
   rewards_action_btn_->Update();
 }
@@ -124,6 +119,11 @@ void BraveActionsContainer::UpdateVisibility() {
   SetVisible(!should_hide_ && can_show);
 }
 
+gfx::Size BraveActionsContainer::GetActionSize() const {
+  return {34, GetLayoutConstant(LOCATION_BAR_HEIGHT) -
+                  2 * GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING)};
+}
+
 void BraveActionsContainer::SetShouldHide(bool should_hide) {
   should_hide_ = should_hide;
   Update();
@@ -139,3 +139,6 @@ void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
     rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
   }
 }
+
+BEGIN_METADATA(BraveActionsContainer)
+END_METADATA

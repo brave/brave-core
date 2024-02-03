@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -84,9 +85,9 @@ void Segments::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE segments (creative_set_id TEXT NOT NULL, "
-      "segment TEXT NOT NULL, PRIMARY KEY (creative_set_id, segment), "
-      "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE);";
+      "CREATE TABLE segments (creative_set_id TEXT NOT NULL, segment TEXT NOT "
+      "NULL, PRIMARY KEY (creative_set_id, segment), UNIQUE(creative_set_id, "
+      "segment) ON CONFLICT REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 

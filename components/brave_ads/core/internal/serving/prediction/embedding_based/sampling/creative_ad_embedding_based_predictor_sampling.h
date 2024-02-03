@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_EMBEDDING_BASED_SAMPLING_CREATIVE_AD_EMBEDDING_BASED_PREDICTOR_SAMPLING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_EMBEDDING_BASED_SAMPLING_CREATIVE_AD_EMBEDDING_BASED_PREDICTOR_SAMPLING_H_
 
+#include <cstddef>
 #include <limits>
 #include <optional>
 #include <vector>
@@ -14,6 +15,14 @@
 #include "base/rand_util.h"
 
 namespace brave_ads {
+
+// Performs a random sampling operation based on the provided probabilities. It
+// generates a random number and iterates through the creative ad probabilities,
+// accumulating the probabilities. Once the accumulated sum is greater than or
+// approximately equal to the random number, the function returns the
+// corresponding creative ad. If no ad is sampled during the iteration (which
+// can happen if the probabilities do not sum up to 1), the function returns
+// `std::nullopt`.
 
 template <typename T>
 std::optional<T> MaybeSampleCreativeAd(
@@ -26,7 +35,7 @@ std::optional<T> MaybeSampleCreativeAd(
   for (size_t i = 0; i < creative_ads.size(); ++i) {
     sum += creative_ad_probabilities.at(i);
 
-    if (rand <= sum || base::IsApproximatelyEqual(
+    if (sum >= rand || base::IsApproximatelyEqual(
                            rand, sum, std::numeric_limits<double>::epsilon())) {
       return creative_ads.at(i);
     }

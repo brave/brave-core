@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getLocale } from '$web-common/locale';
 import Icon from '@brave/leo/react/icon';
-import { color, effect, gradient, radius, spacing } from '@brave/leo/tokens/css';
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { NEWS_FEED_CLASS } from './Feed';
+import Variables from './Variables';
 import { MetaInfo } from './feed/ArticleMetaRow';
 import Card, { SmallImage, Title } from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { useUnpaddedImageUrl } from './shared/useUnpaddedImageUrl';
-import Variables from './Variables';
-import { getLocale } from '$web-common/locale'
 
 const NewsButton = styled.button`
   cursor: pointer;
@@ -27,10 +27,7 @@ const NewsButton = styled.button`
   backdrop-filter: blur(40px);
 
   color: ${color.white};
-
-  & > leo-icon[name="news-default"] {
-    --leo-icon-color: ${gradient.iconsActive};
-  }
+  font: ${font.default.semibold};
 
   & > leo-icon[name="carat-down"] {
     --leo-icon-color: rgba(255, 255, 255, 0.25);
@@ -114,8 +111,8 @@ export default function Peek() {
 
   return isShowOnNTPPrefEnabled
     ? <Container>
-      {(!isOptInPrefEnabled || data) && <NewsButton onClick={scrollToNews}>
-        <Icon name='news-default' />
+      {(!isOptInPrefEnabled || feedV2) && <NewsButton onClick={scrollToNews}>
+        <Icon name='product-brave-news' />
         {getLocale('braveNewsNewsPeek')}
         <Icon name='carat-down' />
       </NewsButton>}

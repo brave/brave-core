@@ -43,8 +43,7 @@ class EthPendingTxTracker {
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
 
-  void OnGetTxReceipt(const std::string& chain_id,
-                      std::string id,
+  void OnGetTxReceipt(const std::string& meta_id,
                       TransactionReceipt receipt,
                       mojom::ProviderError error,
                       const std::string& error_message);

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -74,8 +75,8 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   AdEventInfo ad_event;
 
   ad_event.placement_id = ColumnString(record, 0);
-  ad_event.type = ParseAdType(ColumnString(record, 1));
-  ad_event.confirmation_type = ParseConfirmationType(ColumnString(record, 2));
+  ad_event.type = ToAdType(ColumnString(record, 1));
+  ad_event.confirmation_type = ToConfirmationType(ColumnString(record, 2));
   ad_event.campaign_id = ColumnString(record, 3);
   ad_event.creative_set_id = ColumnString(record, 4);
   ad_event.creative_instance_id = ColumnString(record, 5);

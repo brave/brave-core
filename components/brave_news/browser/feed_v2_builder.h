@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_V2_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_V2_BUILDER_H_
 
-#include <memory>
+#include <cstddef>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <vector>
 
-#include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -34,6 +34,29 @@ namespace brave_news {
 
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
+
+// An ArticleWeight has a few different components
+struct ArticleWeight {
+  // The pop_recency of the article. This is used for discover cards, where we
+  // don't consider the subscription status or visit_weighting.
+  double pop_recency = 0;
+
+  // The complete weighting of the article, combining the pop_score,
+  // visit_weighting & subscribed_weighting.
+  double weighting = 0;
+
+  // Whether the source which this article comes from has been visited. This
+  // only considers Publishers, not Channels.
+  bool visited = false;
+
+  // Whether any sources/channels that could cause this article to be shown are
+  // subscribed. At this point, disabled sources have already been filtered out.
+  bool subscribed = false;
+};
+
+using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
+using ArticleInfos = std::vector<ArticleInfo>;
+using PickArticles = base::RepeatingCallback<int(const ArticleInfos& infos)>;
 
 class FeedV2Builder : public PublishersController::Observer {
  public:
@@ -133,7 +156,9 @@ class FeedV2Builder : public PublishersController::Observer {
                     base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
                     BuildFeedCallback callback);
 
-  mojom::FeedV2Ptr GenerateBasicFeed(const FeedItems& items);
+  mojom::FeedV2Ptr GenerateBasicFeed(const FeedItems& items,
+                                     PickArticles pick_hero,
+                                     PickArticles pick_article);
   mojom::FeedV2Ptr GenerateAllFeed();
 
   raw_ref<PublishersController> publishers_controller_;
@@ -155,6 +180,7 @@ class FeedV2Builder : public PublishersController::Observer {
   Signals signals_;
   std::vector<std::string> suggested_publisher_ids_;
   TopicsResult topics_;
+  size_t subscribed_count_ = 0;
 
   std::optional<UpdateRequest> current_update_;
   std::optional<UpdateRequest> next_update_;

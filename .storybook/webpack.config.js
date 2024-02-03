@@ -6,7 +6,10 @@
 const path = require('path')
 const webpack = require('webpack')
 const fs = require('fs')
-const { fallback, provideNodeGlobals } = require('../components/webpack/polyfill')
+const {
+  fallback,
+  provideNodeGlobals
+} = require('../components/webpack/polyfill')
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
@@ -24,10 +27,10 @@ function getBuildOuptutPathList(buildOutputRelativePath) {
 }
 
 const genFolder = getBuildOuptutPathList('gen')
-  .filter(a => fs.existsSync(a))
+  .filter((a) => fs.existsSync(a))
   .sort((a, b) => fs.statSync(b).mtime - fs.statSync(a).mtime)[0]
 if (!genFolder) {
-  throw new Error("Failed to find build output folder!")
+  throw new Error('Failed to find build output folder!')
 }
 
 const basePathMap = require('../components/webpack/path-map')(genFolder)
@@ -47,12 +50,12 @@ const pathMap = {
 /**
  * Maps a prefix to a corresponding path. We need this as Webpack5 dropped
  * support for scheme prefixes (like chrome://)
- * 
+ *
  * Note: This prefixReplacer is slightly different from the one we use in proper
  * builds, as it takes the first match from any build folder, rather than
  * specifying one - we don't know what the user built last, so we just see what
  * we can find.
- * 
+ *
  * This isn't perfect, and in future it'd be good to pass the build folder in
  * via an environment variable. For now though, this works well.
  * @param {string} prefix The prefix
@@ -62,16 +65,52 @@ const prefixReplacer = (prefix, replacements) => {
   if (!Array.isArray(replacements)) replacements = [replacements]
 
   const regex = new RegExp(`^${prefix}/(.*)`)
-  return new webpack.NormalModuleReplacementPlugin(regex, resource => {
+  return new webpack.NormalModuleReplacementPlugin(regex, (resource) => {
     resource.request = resource.request.replace(regex, (_, subpath) => {
       if (!subpath) {
-        throw new Error("Subpath is undefined")
+        throw new Error('Subpath is undefined')
       }
 
-      const match = replacements.find((dir) => fs.existsSync(path.join(dir, subpath))) ?? replacements[0]
+      const match =
+        replacements.find((dir) => fs.existsSync(path.join(dir, subpath))) ??
+        replacements[0]
       const result = path.join(match, subpath)
       return result
     })
+  })
+}
+
+/**
+ * Attempts to use mock implementations of a provided module name
+ * the mocked implementation should live in a `__mocks__` folder adjacent to the
+ * module (`./bridge` -> `./__mocks__/bridge`)
+ *
+ * Names of the modules to use mock implementations for
+ * @param {string[]} moduleNames
+ */
+function useMockedModules(moduleNames) {
+  if (!Array.isArray(moduleNames)) {
+    throw new Error('moduleNames must be an array of strings')
+  }
+
+  const moduleNamesGroup = moduleNames.join('|')
+
+  // Match paths containing any of the module name
+  // but not if they are preceded by "__mocks__/"
+  const moduleRegex = new RegExp(
+    `^(?!.*__mocks__\/(${
+      moduleNamesGroup //
+    })(?:\.ts)?$).*\/(${
+      moduleNamesGroup //
+    })(?:\.ts)?$`
+  )
+
+  return new webpack.NormalModuleReplacementPlugin(moduleRegex, (resource) => {
+    const foldersAndFile = resource.request.split('/')
+    const fileName = foldersAndFile[foldersAndFile.length - 1]
+    const mockedFile = `__mocks__/${fileName}`
+    // Modify the resource path
+    resource.request = resource.request.replace(fileName, mockedFile)
   })
 }
 
@@ -129,10 +168,13 @@ module.exports = async ({ config, mode }) => {
   config.resolve.alias = pathMap
   config.resolve.fallback = fallback
 
-  config.plugins.push(provideNodeGlobals,
+  config.plugins.push(
+    provideNodeGlobals,
+    useMockedModules(['bridge', 'brave_rewards_api_proxy']),
     ...Object.keys(pathMap)
-      .filter(prefix => prefix.startsWith('chrome://'))
-      .map(prefix => prefixReplacer(prefix, pathMap[prefix])))
+      .filter((prefix) => prefix.startsWith('chrome://'))
+      .map((prefix) => prefixReplacer(prefix, pathMap[prefix]))
+  )
   config.resolve.extensions.push('.ts', '.tsx', '.scss')
   return config
 }

@@ -29,6 +29,7 @@
 #include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_provider_manager.h"
@@ -116,7 +117,7 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::Emphasis::kMaximum, rect.size());
+      views::Emphasis::kHigh, rect.size());
   SkPath path;
   path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
   return path;
@@ -298,3 +299,6 @@ void BraveShieldsActionView::OnTabStripModelChanged(
     UpdateIconState();
   }
 }
+
+BEGIN_METADATA(BraveShieldsActionView)
+END_METADATA

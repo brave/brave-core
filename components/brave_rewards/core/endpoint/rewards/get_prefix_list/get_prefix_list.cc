@@ -7,11 +7,10 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -35,17 +34,18 @@ mojom::Result GetPrefixList::CheckStatusCode(const int status_code) {
 }
 
 void GetPrefixList::Request(GetPrefixListCallback callback) {
-  auto url_callback = std::bind(&GetPrefixList::OnRequest, this, _1, callback);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
-  engine_->LoadURL(std::move(request), url_callback);
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kBasic,
+      base::BindOnce(&GetPrefixList::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void GetPrefixList::OnRequest(mojom::UrlResponsePtr response,
-                              GetPrefixListCallback callback) {
+void GetPrefixList::OnRequest(GetPrefixListCallback callback,
+                              mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response, true);
 
   if (CheckStatusCode(response->status_code) != mojom::Result::OK ||
       response->body.empty()) {

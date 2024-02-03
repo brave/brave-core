@@ -219,6 +219,37 @@ TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
 }
 
 TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
+     UntargetedSegmentAdPredictorWeight) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeNotificationAdModelBasedPredictorFeature,
+      {{"untargeted_segment_predictor_weight", "0.5"}});
+
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.5, kNotificationAdUntargetedSegmentPredictorWeight.Get());
+}
+
+TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
+     DefaultUntargetedSegmentAdPredictorWeight) {
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0001,
+                   kNotificationAdUntargetedSegmentPredictorWeight.Get());
+}
+
+TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
+     DefaultUntargetedSegmentAdPredictorWeightWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeNotificationAdModelBasedPredictorFeature);
+
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0001,
+                   kNotificationAdUntargetedSegmentPredictorWeight.Get());
+}
+
+TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
      LastSeenAdAdPredictorWeight) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
@@ -274,35 +305,6 @@ TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
 
   // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kNotificationAdLastSeenAdvertiserPredictorWeight.Get());
-}
-
-TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
-     PriorityAdPredictorWeight) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kCreativeNotificationAdModelBasedPredictorFeature,
-      {{"priority_predictor_weight", "0.5"}});
-
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(0.5, kNotificationAdPriorityPredictorWeight.Get());
-}
-
-TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
-     DefaultPriorityAdPredictorWeight) {
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, kNotificationAdPriorityPredictorWeight.Get());
-}
-
-TEST(BraveAdsCreativeNotificationAdModelBasedPredictorFeatureTest,
-     DefaultPriorityAdPredictorWeightWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(
-      kCreativeNotificationAdModelBasedPredictorFeature);
-
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, kNotificationAdPriorityPredictorWeight.Get());
 }
 
 }  // namespace brave_ads

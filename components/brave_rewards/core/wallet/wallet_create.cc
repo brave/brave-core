@@ -8,7 +8,7 @@
 #include <optional>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/patch_wallets.h"
@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
 
 namespace brave_rewards::internal {
 
@@ -64,7 +65,7 @@ void WalletCreate::CreateWallet(std::optional<std::string>&& geo_country,
 
   if (!wallet) {
     wallet = mojom::RewardsWallet::New();
-    wallet->recovery_seed = util::Security::GenerateSeed();
+    wallet->recovery_seed = Signer::GenerateRecoverySeed();
 
     if (!engine_->wallet()->SetWallet(std::move(wallet))) {
       BLOG(0, "Failed to set Rewards wallet!");
@@ -137,6 +138,7 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
       engine_->state()->SetPromotionCorruptedMigrated(true);
     }
     engine_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
+    engine_->Get<LinkageChecker>().Start();
   }
 
   std::move(callback).Run(mojom::CreateRewardsWalletResult::kSuccess);

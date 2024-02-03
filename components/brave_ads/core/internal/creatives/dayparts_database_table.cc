@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -90,11 +91,11 @@ void Dayparts::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE dayparts (campaign_id TEXT NOT NULL, "
-      "days_of_week TEXT NOT NULL, start_minute INT NOT NULL, end_minute INT "
-      "NOT NULL, PRIMARY KEY (campaign_id, days_of_week, start_minute, "
-      "end_minute), UNIQUE(campaign_id, days_of_week, start_minute, "
-      "end_minute) ON CONFLICT REPLACE);";
+      "CREATE TABLE dayparts (campaign_id TEXT NOT NULL, days_of_week TEXT NOT "
+      "NULL, start_minute INT NOT NULL, end_minute INT NOT NULL, PRIMARY KEY "
+      "(campaign_id, days_of_week, start_minute, end_minute), "
+      "UNIQUE(campaign_id, days_of_week, start_minute, end_minute) ON CONFLICT "
+      "REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 

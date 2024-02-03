@@ -56,9 +56,9 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
        {"parent_latent_interest_segment_predictor_weight", "0.0"},
        {"child_interest_segment_predictor_weight", "0.0"},
        {"parent_interest_segment_predictor_weight", "0.0"},
+       {"untargeted_segment_predictor_weight", "0.0"},
        {"last_seen_ad_predictor_weight", "0.0"},
-       {"last_seen_advertiser_predictor_weight", "0.0"},
-       {"priority_predictor_weight", "0.0"}});
+       {"last_seen_advertiser_predictor_weight", "0.0"}});
 
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =

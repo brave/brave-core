@@ -30,7 +30,8 @@ import { getBalance } from '../../../../utils/balance-utils'
 import { filterNetworksForAccount } from '../../../../utils/network-utils'
 import {
   makeAccountRoute,
-  makeAccountTransactionRoute
+  makeAccountTransactionRoute,
+  makePortfolioAssetRoute
 } from '../../../../utils/routes-utils'
 
 import Amount from '../../../../utils/amount'
@@ -68,7 +69,7 @@ import {
 } from '../../card-headers/account-details-header'
 import {
   SegmentedControl //
-} from '../../../shared/segmented-control/segmented-control'
+} from '../../../shared/segmented_control/segmented_control'
 import {
   NFTGridViewItem //
 } from '../portfolio/components/nft-grid-view/nft-grid-view-item'
@@ -366,34 +367,11 @@ export const Account = () => {
 
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
-      if (asset.contractAddress === '') {
-        history.push(
-          `${
-            WalletRoutes.PortfolioAssets //
-          }/${
-            asset.chainId //
-          }/${asset.symbol}`
-        )
-        return
-      }
-      if (asset.isErc721 || asset.isNft || asset.isErc1155) {
-        history.push(
-          `${
-            WalletRoutes.PortfolioNFTs //
-          }/${
-            asset.chainId //
-          }/${
-            asset.contractAddress //
-          }/${asset.tokenId}`
-        )
-        return
-      }
       history.push(
-        `${
-          WalletRoutes.PortfolioAssets //
-        }/${
-          asset.chainId //
-        }/${asset.contractAddress}`
+        makePortfolioAssetRoute(
+          asset.isErc721 || asset.isNft || asset.isErc1155,
+          getAssetIdKey(asset)
+        )
       )
     },
     []
@@ -464,6 +442,7 @@ export const Account = () => {
                   ? '0'
                   : ''
               }
+              isAccountDetails={true}
             />
           ))}
           {showAssetDiscoverySkeleton && <PortfolioAssetItemLoadingSkeleton />}

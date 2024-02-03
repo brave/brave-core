@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">የ Brave መከላከያዎችን አንቃ/አቦዝን</translation>
 <translation id="6945863270524203017">በመከታተያ እና በማስታወቂያ እገዳ ላይ ሳምንታዊ የግላዊነት ዝመናዎችን ያግኙ።</translation>
 <translation id="4324735664183300693">ማሳወቂያዎችን ያብሩ</translation>
-<translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
 <translation id="6395059271589866759">Brave እንደ ስራ ማስኬጂያ ክፍያ ከተላከው 5% መጠን ይሰበስባል።</translation>
 <translation id="6661699662755460155">ምንዛሬ</translation>
 <translation id="6790981891677399838">Brave Browserን በመጠቀም <ph name="AMOUNT"/> BAT አበርክቻለሁ። ተወዳጅ ፈጣሪዎችዎን እና ድህረ ገጾችዎን እንዴት መደገፍ እንደሚችሉ ይመልከቱ፡ https://brave.com/rewards</translation>
-<translation id="2278950434998763147">ከ HTTP ይልቅ ደሕንነቱ የተጠበቀ HTTPS በመጠቀም አንዳንድ ድረ ገጾችን ይከፍታል</translation>
 <translation id="5510493033031835532">የ AMP ገጾችን በራስ ሰር አዙር</translation>
 <translation id="5197219128592971597">ሁልጊዜ ኦሪጅናል (AMP ያልሆኑ) ገጽ URLs ን ይጎብኙ፣ ከ Google Accelerated Mobile ገጽ ስሪቶች ይልቅ</translation>
 <translation id="920638232916443453">የመከታተያ URLsን በራስ-አዙር</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">መጨረሻ የተሻሻለው <ph name="TIME"/></translation>
 <translation id="802154636333426148">ማውረድ አልተሳካም</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> ማዘመን አልተሳካም</translation>
+<translation id="8580328754808744073">ብጁ ማጣሪያዎችን ፍጠር</translation>
+<translation id="6532106788206463496">ለውጦችን ያስቀምጡ</translation>
+<translation id="5132969826889386652">ለውጦች በተሳካ ሁኔታ ተቀምጠዋል</translation>
+<translation id="4335929145384293789">የፈጠሩዋቸውን ብጁ ማጣሪያዎች ከላይ ባለው መስክ ውስጥ በአንድ መስመር አንድ አድርገው ያክሉ። <ph name="ADBLOCK_FILTER_SYNTAX"/>ን መጠቀምዎን ያረጋግጡ።</translation>
+<translation id="5023212862780303376">የማስታወቂያ እገዳ ማጣሪያ አገባብ</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> ዋጋ (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">የEthereum ስም አገልግሎት</translation>
 <translation id="531747189990625622">Solana ስም አገልግሎት</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">ምንም ይዘት የለም</translation>
 <translation id="7172792761509429092">Brave ዜና ምንም የሚያሳየው ይዘት የለውም።</translation>
 <translation id="1771307734839364850">የይዘት ምንጮችን ይምረጡ</translation>
-<translation id="5787084571334399599">አሳሹ የጣት አሻራ እንዳይወስድ ይከለክላል</translation>
+<translation id="6891769200437737956">ድር ጣቢያዎች የጣት አሻራ እንዳያደርጉኝ ይከለክላል</translation>
 <translation id="7459000603787995422">ሲወጡ ትሮችን ይዝጉ</translation>
 <translation id="4448697385961650078">ተከታታዮችን &amp; ማስታወቂያዎችን አግድ</translation>
 <translation id="2448893613530489637">መከታተያዎችን ይከላከላል &amp; ማስታወቂያዎች በድረ-ገፆች ላይ ከመጫን እና ከማሳየት</translation>
 <translation id="1025207378813960343">ከዌብሳይቶቹ ጋር ያለው ግንኙነት ደሕንነቱ የተጠበቀ መሆኑን ያረጋግጡ።</translation>
+<translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳዳግ</translation>
 <translation id="6686219838158572786">ሁሉንም ግንኙነቶች HTTPS እንዲጠቀሙ ይጠይቁ (ጥብቅ)</translation>
 <translation id="4221284400051835823">በተቻለ መጠን ወደ HTTPS ያዘምኑ (ነባሪ)</translation>
 <translation id="4690906712010847708">ግንኙነቶችን ወደ HTTPS አያዘምኑ (ጠፍቷል)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave\u2019s ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
 <translation id="9008534313521214777">የተቆጠበ\nጊዜ በግምት</translation>
-<translation id="1842747674580016420">በ Brave ውስጥ የቪድዮ መልሰህ አጫውት</translation>
-<translation id="5368992950177874750">ከነቃ፣ ቪድዮዎች ከተጓዳኝ መተግበሪያ ይልቅ በ Brave ይጫወታሉ</translation>
 <translation id="410351446219883937">ራስ-አጫውት</translation>
 <translation id="7445411102860286510">ጣቢያዎች ድምፀ-ከል የተደረገባቸው ቪዲዮዎችን በራስ-ሰር እንዲያጫውቱ ይፍቀዱላቸው (የሚመከር)</translation>
 <translation id="7837721118676387834">ለአንድ የተወሰነ ጣቢያ ድምጸ-ከል የተደረጉ ቪዲዮዎችን በራስ-ሰር ማጫወትን ይፍቀዱ።</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">የበስተጀርባ ጨዋታ</translation>
 <translation id="6332924730165919598">ሁሉንም ትሮች መዝጋት Braveን ይዘጋል</translation>
 <translation id="8308305244351876417">በ Brave ውስጥ ወይም በሌላ መተግበሪያ ውስጥ ወደሌላ ትር ሲቀይሩ ወይም የመሣሪያዎ ማያ ገጽ ሲጠፋ፣ ድምጽ እንዲጫወት ይፈቅዳል።</translation>
+<translation id="49147335255967913">የYouTube ማገናኛዎችን በBrave ክፈት</translation>
 <translation id="4150201353443180367">ማሳያ</translation>
 <translation id="4275663329226226506">ማህደረ መረጃ</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -376,13 +379,8 @@
 <translation id="4803910478683254032">ማስመጣት አልተሳካም</translation>
 <translation id="8325139248201792113">የዕልባት ማስመጣት አልተሳካም። እባክዎ ዳግም ይሞክሩ።</translation>
 <translation id="2803313416453193357">አቃፊውን ክፈት</translation>
-<translation id="3396347744975515056">Brave አስምር የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
-<translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
 <translation id="8985635554450124959">ማመሳሰል ሊዘጋጅ አልቻለም</translation>
-<translation id="2514300153301737214">እርስዎ Brave አስምር እንዳበሩ ኣይተናል፣ ሆኖም የእርስዎ የ አስምር ስርዓት እንደጠፋ ነው ስለዚህም Brave አስምር እንዲሆን ኣይፈቅድለትም። ቅንብሮችን ለመክፈት ይጫኑ</translation>
 <translation id="7173114856073700355">ቅንብሮችን ክፈት</translation>
-<translation id="6965382102122355670">እሺ</translation>
-<translation id="4450893287417543264">እንደገና አታሳይ</translation>
 <translation id="496896260395129787">ይህ Brave Sync መለያ ከሌላ መሳሪያ ተሰርዟል። ማመሳሰልን ለማሰናከል ፈልገው ካልሆነ፣ <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> መለያውን እንደገና ይፍጠሩ</translation>
 <translation id="4094590686212463338">ይህን የማመሳሰል ሰንሰለት መቀላቀል አልተቻለም። የማመሳሰል ሰንሰለት ተሰርዟል።</translation>
@@ -479,7 +477,7 @@
 <translation id="7854108565842971747">እነዚህ ነባሪ የአዲስ ድረ ገጽ የጋሻ ቅንብሮች ናቸው። እነዚህን መቀየር ነባር የድረ ገጽ ቅንብሮችዎ ላይ ተጽእኖ አያሳድርም።</translation>
 <translation id="218587021686734263">በቋንቋ ቅንጅቶች የጣት አሻራን መከላከል</translation>
 <translation id="1706099589708266367">በአሳሽዎ የቋንቋ ቅንጅቶች ላይ በመመስረት ምን ያህል ድር ጣቢያዎች ስለ እርስዎ ሊያውቁ የሚችሉትን መረጃ ይቀንሳል።</translation>
-<translation id="184568144098869637">ማሰሻው መሳሪያዎን እንዳይለይ ይከለክለዋል</translation>
+<translation id="4721088070859595932">ድር ጣቢያዎች መሳሪያዎን እንዳይያውቁ ይከለክላል</translation>
 <translation id="7445306466605902444">የጣት አሻራ ታግ (ል (ጥብቅ ፣ ጣቢያዎችን ሊሰብር ይችላል)</translation>
 <translation id="5582686930349810484">የጣት አሻራ ታግ (ል (መደበኛ)</translation>
 <translation id="769702552748212954">ሁሉም የጣት አሻራ መውሰድን ፍቀድ</translation>
@@ -623,8 +621,9 @@
 <translation id="1783600039044302171">የእርስዎ ክሪፕቶ በይለፍ ቃል ይጠብቁ</translation>
 <translation id="3726490322412361740">የይለፍ ቃል ያስገቡ</translation>
 <translation id="3038243139480464605">የይለፍ ቃል ያረጋግጡ</translation>
-<translation id="3717685683157254329">የይለፍ ቃሎዎት ቢያንስ 7 ቁምፊዎች መሆን ያለባቸው ሲሆን፣ ቢያንስ አንድ ፊደል፣ አንድ ቁጥር እና አንድ ልዩ ቁምፊ ይይዛሉ።</translation>
+<translation id="3043677904160378840">የይለፍ ቃሎች ቢያንስ 8 ቁምፊዎች መሆን አለባቸው።</translation>
 <translation id="7396672979287122068">የተረጋገጠው የይለፍ ቃል አልተዛመደም።</translation>
+<translation id="7084181009966710506">ዋሌትን በመፍጠር ላይ...</translation>
 <translation id="3188963375823360044">1ሰ</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -775,7 +774,6 @@
 <translation id="1705662265912724430">እርግጠኛ ነዎት የVPN ውቅረትን ዳግም ማስጀመር ይፈልጋሉ?</translation>
 <translation id="604124094241169006">ራስ-ሰር</translation>
 <translation id="7475580600756356589">ከአስተናጋጅዎ ጋር በመገናኘት ላይ። ትንሽ ጊዜ ብቻ መውሰድ አለበት ...</translation>
-<translation id="1342728075788541348">ከአገልጋይዎ ማለያየት። ትንሽ ጊዜ ብቻ መውሰድ አለበት ...</translation>
 <translation id="669072536454692117">የደንበኝነት ምዝገባ በተሳካ ሁኔታ ጥቅም ላይ ውሏል</translation>
 <translation id="1187506504156101449">ግዢውን መቀበል አልተሳካም፦</translation>
 <translation id="8420522105268941892">አስቀድመው ለደንበኝነት ተመዝግበዋል። የደንበኝነት ምዝገባውን ወደነበረበት ለመመለስ ይሞክሩ።</translation>
@@ -808,7 +806,6 @@
 <translation id="8084782383392198011">የመለያ ስም ባዶ ሊሆን አይችልም።</translation>
 <translation id="5045550434625856497">ትክክል ያልሆነ የይለፍ ቃል</translation>
 <translation id="1367951781824006909">ፋይል ይምረጡ</translation>
-<translation id="8648684608605749476">ማንነትን በማያሳውቅ ሁነታ ሦስተኛ ወገን ኩኪዎች ያግዱ</translation>
 <translation id="5932938770824268122">የግል ቁልፍ</translation>
 <translation id="2472882733835903303">የግል ቁልፍ አሳይ</translation>
 <translation id="4391056902675005799">የግል ቁልፍ ደብቅ</translation>
@@ -965,9 +962,12 @@
 <translation id="6044189892950611565">ለ Brave Browser የማስታወቂያ ጣቢያ</translation>
 <translation id="1173919438868967364">መለያ ይምረጡ</translation>
 <translation id="8922793255489232731">የሚዛመደውን የሰዓት ሰቅ ማግኘት አልተቻለም ለ፦ <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">የዋሌት ውሂብ ፋይልን በማውረድ ላይ \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">ከ<ph name="VALUE"/> ጋር ተገናኝቷል</translation>
 <translation id="1968852757206592413">ሙከራ</translation>
+<translation id="6458565248779152483">Brave ቪፒኤንን አሰናክል</translation>
+<translation id="9080536793704001825">ለ15 ደቂቃዎች ባለበት አቁም</translation>
+<translation id="803706420145725977">ለ1 ሰዓት ባለበት አቁም</translation>
+<translation id="4394049700291259645">አሰናክል</translation>
 <translation id="7733890291091968191">የዊብ3 ማሳወቂያዎችን አሳይ</translation>
 <translation id="1371627247679035769">\n\n\n\n#### ብሬቭ እርስዎን አይከታተልዎትም ወይም የእኛን መተግበሪያ እንዴት እንደሚጠቀሙ አያውቅም፣ ስለዚህ VPNን እንዴት እንዳዋቀሩ አናውቅም። እባክዎ እያጋጠሞት ስላለው ችግር መረጃ ያጋሩን እና በተቻለን ፍጥነት ለመፍታት የተቻለንን ሁሉ እናደርጋለን። ####\n\n</translation>
 <translation id="3367162038532116157">\n\nየቪፒኤን አስተናጋጅ ስም\n <ph name="VALUE"/></translation>
@@ -997,6 +997,7 @@
 <translation id="8219806187375413057"><ph name="CLICK_START"/>በRainbow Bridge ላይ ስጋትን እንዴት መቀነስ እንደሚችሉ ይወቁ<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> በአውታረ መረቦች ላይ ያሉ ንብረቶችን እንዲያገናኙና የእርስዎን crypto በሌሎች አውታረ መረቦች እና በDApp ስነ-ምህዳሮች ላይ እንዲጠቀሙ የሚያግዝዎ ገለልተኛ አገልግሎት ነው። ንብረቶችን ወደ ሌሎች አውታረ መረቦች ማገናኘት አንዳንድ አደጋዎች አሉት።</translation>
 <translation id="8423380132356660250"><ph name="APP_NAME"/> መተግበሪያን ይክፈቱ</translation>
+<translation id="4450893287417543264">እንደገና አታሳይ</translation>
 <translation id="168154537623654021">የቪፒኤን መገለጫን በማዘመን ላይ...</translation>
 <translation id="7457027586454688423">የ Brave Wallet የ ይለፍ ቃልዎን ያስገቡ</translation>
 <translation id="4784306439879850873">ልብ ይበሉ እርስዎ ቢፈርሙ Brave  ምን እንደሚሆን ማረጋገጥ አይችልም። ጥያቄው ለሚያደርገው ጣቢያ የመለያዎን እና የ Crypto ንብረቶችን አጠቃላይ ቁጥጥር (ግን አይገደብም) ጨምሮ በመለያዎ ውስጥ ወይም በርስዎ ስም ማንኛውንም ክወና ማለት ይቻላል ሊፈቅድ ይችላል። ይህንን እርምጃ መውሰድ እንደሚፈልጉ እርግጠኛ ከሆኑ እና ጠያቂውን ጣቢያ ካመኑ ብቻ ይፈርሙ።</translation>

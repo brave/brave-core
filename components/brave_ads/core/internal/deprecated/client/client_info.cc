@@ -146,8 +146,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
 
       for (const auto [creative_instance_id, seen_ad] : ads.GetDict()) {
         CHECK(seen_ad.is_bool());
-        seen_ads[ParseAdType(ad_type)][creative_instance_id] =
-            seen_ad.GetBool();
+        seen_ads[ToAdType(ad_type)][creative_instance_id] = seen_ad.GetBool();
       }
     }
   }
@@ -161,7 +160,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
       for (const auto [advertiser_id, seen_advertiser] :
            advertisers.GetDict()) {
         CHECK(seen_advertiser.is_bool());
-        seen_advertisers[ParseAdType(ad_type)][advertiser_id] =
+        seen_advertisers[ToAdType(ad_type)][advertiser_id] =
             seen_advertiser.GetBool();
       }
     }

@@ -9,7 +9,7 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
-import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
+import { isExternalWalletProviderAllowed, isSelfCustodyProvider } from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
 
@@ -172,6 +172,31 @@ export function Settings () {
     })
   }
 
+  const shouldShowAutoContribute = () => {
+    if (rewardsData.userType === 'unconnected') {
+      return false
+    }
+    if (!rewardsData.isAcSupported) {
+      return false
+    }
+    const { externalWallet } = rewardsData
+    if (externalWallet && isSelfCustodyProvider(externalWallet.type)) {
+      return false
+    }
+    return true
+  }
+
+  const shouldShowTips = () => {
+    if (rewardsData.userType === 'unconnected') {
+      return false
+    }
+    const { externalWallet } = rewardsData
+    if (externalWallet && isSelfCustodyProvider(externalWallet.type)) {
+      return false
+    }
+    return true
+  }
+
   const onManageClick = () => { actions.onModalResetOpen() }
 
   function renderUnsupportedRegionNotice () {
@@ -259,13 +284,13 @@ export function Settings () {
             <AdsPanel />
           </style.settingGroup>
           {
-            rewardsData.userType !== 'unconnected' &&
+            shouldShowAutoContribute() &&
               <style.settingGroup data-test-id='auto-contribute-settings'>
                 <AutoContributePanel />
               </style.settingGroup>
           }
           {
-            rewardsData.userType !== 'unconnected' &&
+            shouldShowTips() &&
               <>
                 <style.settingGroup>
                   <TipsPanel />

@@ -144,7 +144,8 @@ export const ConfirmTransactionPanel = () => {
   )
 
   // computed
-  const isContract = !isLoading && byteCode !== '0x'
+  const isContract =
+    !isLoading && isEthereumTransaction && byteCode && byteCode !== '0x'
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // hooks
@@ -285,7 +286,7 @@ export const ConfirmTransactionPanel = () => {
             maxWidth={isContract ? '90%' : 'unset'}
             width={'100%'}
             gap={'8px'}
-            wrap
+            $wrap
           >
             <Tooltip
               text={fromAccount.address}

@@ -12,6 +12,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/view_class_properties.h"
 
@@ -79,3 +80,6 @@ void BraveWaybackMachineInfoBarButtonContainer::AdjustButtonInsets(
   button_->SetBorder(views::CreateEmptyBorder(button_insets));
   button_->SizeToPreferredSize();
 }
+
+BEGIN_METADATA(BraveWaybackMachineInfoBarButtonContainer)
+END_METADATA

@@ -6,7 +6,6 @@
 import styled from 'styled-components'
 import { ArrowRightIcon, LoaderIcon } from 'brave-ui/components/icons'
 import * as leo from '@brave/leo/tokens/css'
-import Icon from '@brave/leo/react/icon'
 
 import LinkIcon from '../../../assets/svg-icons/link-icon.svg'
 import { WarningBoxIcon } from '../shared-panel-styles'
@@ -259,10 +258,4 @@ export const ExplorerIcon = styled.div`
   margin-left: 8px;
   mask-size: contain;
   background-color: ${(p) => p.theme.color.interactive05};
-`
-
-export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
-  --leo-icon-size: 14px;
-  --leo-icon-color: ${leo.color.icon.interactive};
-  margin-bottom: 1px;
 `

@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -15,14 +16,20 @@ namespace brave_wallet {
 
 namespace evm {
 
-std::optional<std::string> EncodeScanTransactionParams(
+std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     const mojom::TransactionInfoPtr& tx_info);
 
 }  // namespace evm
 
 namespace solana {
 
-std::optional<std::string> EncodeScanTransactionParams(
+std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
+    const mojom::SolanaTransactionRequestUnionPtr& request);
+
+void PopulateRecentBlockhash(mojom::SolanaTransactionRequestUnion& request,
+                             const std::string& recent_blockhash);
+
+std::optional<bool> HasEmptyRecentBlockhash(
     const mojom::SolanaTransactionRequestUnionPtr& request);
 
 }  // namespace solana

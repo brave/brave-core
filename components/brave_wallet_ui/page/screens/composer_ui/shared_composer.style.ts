@@ -12,17 +12,20 @@ import {
   layoutPanelWidth //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const ToSectionWrapper = styled(Column)`
+export const ToSectionWrapper = styled(Column)<{
+  tokenColor?: string
+}>`
+  --default-background: ${leo.color.container.interactive};
+  @media (prefers-color-scheme: dark) {
+    --default-background: ${leo.color.container.highlight};
+  }
   padding: 0px 32px 32px 32px;
   border-radius: 0px 0px 24px 24px;
+  background-color: ${(p) => p.tokenColor ?? 'var(--default-background)'};
   @media screen and (max-width: ${layoutPanelWidth}px) {
     border-radius: 0px;
     padding: 0px 0px 16px 0px;
     height: 100%;
-  }
-  background-color: ${leo.color.container.interactive};
-  @media (prefers-color-scheme: dark) {
-    background-color: ${leo.color.container.highlight};
   }
 `
 

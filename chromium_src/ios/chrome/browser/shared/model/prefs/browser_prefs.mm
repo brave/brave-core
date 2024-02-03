@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -34,6 +36,7 @@ void BraveRegisterBrowserStatePrefs(
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsService::RegisterProfilePrefs(registry);
 #endif
+  ai_chat::prefs::RegisterProfilePrefs(registry);
 }
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -49,6 +52,8 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
   brave_l10n::RegisterL10nLocalStatePrefs(registry);
+  ai_chat::prefs::RegisterLocalStatePrefs(registry);
+  ai_chat::AIChatMetrics::RegisterPrefs(registry);
 }
 
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \
@@ -69,10 +74,10 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #undef BRAVE_REGISTER_LOCAL_STATE_PREFS
 #undef BRAVE_REGISTER_BROWSER_STATE_PREFS
 
-void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
-  MigrateObsoleteBrowserStatePrefs_ChromiumImpl(prefs);
+void MigrateObsoleteBrowserStatePrefs(const base::FilePath& state_path,
+                                      PrefService* prefs) {
+  MigrateObsoleteBrowserStatePrefs_ChromiumImpl(state_path, prefs);
 
-  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
   brave_wallet::MigrateObsoleteProfilePrefs(prefs);
 }
 

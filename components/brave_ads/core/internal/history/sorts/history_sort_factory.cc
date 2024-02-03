@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_factory.h"
 
 #include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/ascending_history_sort.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/descending_history_sort.h"
 
@@ -28,7 +29,7 @@ std::unique_ptr<HistorySortInterface> HistorySortFactory::Build(
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for HistorySortType: "
-                        << static_cast<int>(type);
+                        << base::to_underlying(type);
 }
 
 }  // namespace brave_ads

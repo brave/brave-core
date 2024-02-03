@@ -27,6 +27,8 @@ BASE_DECLARE_FEATURE(kVerboseLoggingFeature);
 
 BASE_DECLARE_FEATURE(kAllowUnsupportedWalletProvidersFeature);
 
+BASE_DECLARE_FEATURE(kAllowSelfCustodyProvidersFeature);
+
 }  // namespace features
 }  // namespace brave_rewards
 

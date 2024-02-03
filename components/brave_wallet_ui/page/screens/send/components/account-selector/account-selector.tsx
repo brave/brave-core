@@ -69,7 +69,10 @@ export const AccountSelector = (props: Props) => {
   const handleOnSelectAccount = React.useCallback(
     async (account: BraveWallet.AccountInfo) => {
       setShowAccountSelector(false)
-      if (account.accountId.coin === BraveWallet.CoinType.ZEC) {
+      if (
+        account.accountId.coin === BraveWallet.CoinType.BTC ||
+        account.accountId.coin === BraveWallet.CoinType.ZEC
+      ) {
         const generatedAddress = await generateReceiveAddress(
           account.accountId
         ).unwrap()
@@ -95,13 +98,6 @@ export const AccountSelector = (props: Props) => {
   // Memos
   const accountsByNetwork = React.useMemo(() => {
     if (!selectedNetwork || !selectedAccountId) {
-      return []
-    }
-
-    // TODO(apaymyshev): for bitcoin we need design how to send coins between
-    // accounts as there is no direct receving address for btc.
-    // Now just return empty list for send-to account picker.
-    if (selectedAccountId.coin === BraveWallet.CoinType.BTC) {
       return []
     }
 

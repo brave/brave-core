@@ -481,6 +481,27 @@ class BraveRewardsIsInitializedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsSelfCustodyInviteDismissedFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.selfCustodyInviteDismissed", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSelfCustodyInviteDismissedFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsDismissSelfCustodyInviteFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.dismissSelfCustodyInvite", UNKNOWN)
+
+ protected:
+  ~BraveRewardsDismissSelfCustodyInviteFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetScheduledCaptchaInfoFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getScheduledCaptchaInfo", UNKNOWN)

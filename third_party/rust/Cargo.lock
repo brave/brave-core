@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "base64",
  "bitflags",
@@ -316,7 +316,7 @@ dependencies = [
  "http",
  "iana-time-zone",
  "keccak",
- "kuchiki",
+ "kuchikiki",
  "lazy_static",
  "libc",
  "libsecp256k1",
@@ -1141,7 +1141,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "kuchiki"
+name = "kuchikiki"
 version = "0.8.1"
 dependencies = [
  "cssparser 0.27.2",
@@ -2217,9 +2217,8 @@ dependencies = [
 
 [[package]]
 name = "tracing"
-version = "0.1.37"
+version = "0.1.40"
 dependencies = [
- "cfg-if",
  "pin-project-lite",
  "tracing-attributes",
  "tracing-core",
@@ -2227,16 +2226,16 @@ dependencies = [
 
 [[package]]
 name = "tracing-attributes"
-version = "0.1.23"
+version = "0.1.27"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 2.0.29",
 ]
 
 [[package]]
 name = "tracing-core"
-version = "0.1.30"
+version = "0.1.32"
 dependencies = [
  "once_cell",
  "valuable",

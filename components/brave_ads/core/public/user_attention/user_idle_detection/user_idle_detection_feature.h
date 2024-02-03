@@ -21,6 +21,7 @@ inline constexpr base::FeatureParam<base::TimeDelta>
     kUserIdleDetectionThreshold{&kUserIdleDetectionFeature, "idle_threshold",
                                 base::Seconds(5)};
 
+// Set to 0 for infinite idle time.
 inline constexpr base::FeatureParam<base::TimeDelta>
     kMaximumUserIdleDetectionTime{&kUserIdleDetectionFeature,
                                   "maximum_idle_time", base::Seconds(0)};

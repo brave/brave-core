@@ -8,12 +8,14 @@ import * as leo from '@brave/leo/tokens/css'
 import { Row } from '../../shared/style'
 
 const minCardHeight = 497
-const maxCardWidth = 768
-const layoutScaleWithNav = 1374
+export const maxCardWidth = 768
 const layoutSmallCardBottom = 67
-export const layoutSmallWidth = 980
+export const layoutSmallWidth = 1100
 export const layoutPanelWidth = 660
 export const layoutTopPosition = 68
+// navSpace and navWidth need to be defined here to prevent circular imports.
+export const navSpace = 24
+export const navWidth = 240
 
 export const Wrapper = styled.div<{
   noPadding?: boolean
@@ -48,10 +50,22 @@ export const LayoutCardWrapper = styled.div<{
       ? 'var(--no-header-top-position)'
       : 'var(--header-top-position)'};
   --bottom-position: ${(p) => (p.hideNav ? 0 : layoutSmallCardBottom)}px;
+  /*
+    (100vw / 2) - (${maxCardWidth}px / 2) makes the card body perfectly centered
+    horizontally in the browser window.
+  */
+  --left-padding-without-nav: calc((100vw / 2) - (${maxCardWidth}px / 2));
+  /*
+    + (${navWidth}px / 2) + (${navSpace}px / 2) is to then adjust the card body
+    to the right to be centered with the nav.
+  */
+  --left-padding-with-nav: calc(
+    var(--left-padding-without-nav) + (${navWidth}px / 2) + (${navSpace}px / 2)
+  );
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   top: var(--top-position);
   bottom: 0px;
   position: absolute;
@@ -62,10 +76,10 @@ export const LayoutCardWrapper = styled.div<{
   &::-webkit-scrollbar {
     display: none;
   }
-  @media screen and (max-width: ${layoutScaleWithNav}px) {
-    padding: 0px 32px 32px 304px;
-    align-items: flex-start;
-  }
+  padding-left: ${(p) =>
+    p.hideNav
+      ? 'var(--left-padding-without-nav)'
+      : 'var(--left-padding-with-nav)'};
   @media screen and (max-width: ${layoutSmallWidth}px) {
     bottom: var(--bottom-position);
     padding: 0px 32px 32px 32px;
@@ -78,7 +92,6 @@ export const LayoutCardWrapper = styled.div<{
 
 export const ContainerCard = styled.div<{
   noPadding?: boolean
-  maxWidth?: number
   hideCardHeader?: boolean
   noMinCardHeight?: boolean
   noBorderRadius?: boolean
@@ -99,10 +112,10 @@ export const ContainerCard = styled.div<{
   padding: ${(p) => (p.noPadding ? 0 : 20)}px;
   width: 100%;
   min-height: ${(p) => (p.noMinCardHeight ? 'unset' : `${minCardHeight}px`)};
-  max-width: ${(p) => (p.maxWidth ? p.maxWidth : maxCardWidth)}px;
+  max-width: ${maxCardWidth}px;
   position: relative;
   @media screen and (max-width: ${layoutSmallWidth}px) {
-    max-width: ${(p) => (p.maxWidth ? `${p.maxWidth}px` : 'unset')};
+    max-width: unset;
     width: 100%;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
@@ -117,28 +130,20 @@ export const ContainerCard = styled.div<{
 `
 
 export const CardHeaderWrapper = styled.div<{
-  maxWidth?: number
   isPanel?: boolean
 }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   top: var(--layout-top-position);
   position: fixed;
   width: 100%;
-  max-width: ${(p) => (p.maxWidth ? `${p.maxWidth}px` : 'unset')};
-  @media screen and (max-width: ${layoutScaleWithNav}px) {
-    padding: ${(p) => (p.maxWidth ? '0px' : '0px 32px 0px 304px')};
-    left: ${(p) => (p.maxWidth ? 'unset' : '0px')};
-    right: ${(p) => (p.maxWidth ? 'unset' : '0px')};
-    align-items: flex-start;
-  }
   @media screen and (max-width: ${layoutSmallWidth}px) {
     left: unset;
     right: unset;
     align-items: center;
-    padding: ${(p) => (p.maxWidth ? '0px' : '0px 32px')};
+    padding: 0px 32px;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px;
@@ -148,15 +153,29 @@ export const CardHeaderWrapper = styled.div<{
 
 export const CardHeader = styled.div<{
   shadowOpacity?: number
+  backgroundOpacity?: number
   isPanel?: boolean
   useDarkBackground?: boolean
 }>`
   --shadow-opacity: ${(p) =>
     p.shadowOpacity !== undefined ? p.shadowOpacity : 0};
+  --background-opacity: ${(p) =>
+    p.backgroundOpacity !== undefined ? p.backgroundOpacity : 0};
+  // Needed to extract the rgb values from
+  // leo.color.container.background since hex
+  // does not work for this needed effect.
+  --header-background: 255, 255, 255;
+  @media (prefers-color-scheme: dark) {
+    --header-background: 13, 15, 20;
+  }
+  --dark-background-color: rgba(
+    var(--header-background),
+    var(--background-opacity)
+  );
   display: flex;
   background-color: ${(p) =>
     p.useDarkBackground
-      ? leo.color.page.background
+      ? 'var(--dark-background-color)'
       : leo.color.container.background};
   border-radius: ${(p) => (p.isPanel ? '0px' : '24px 24px 0px 0px')};
   width: 100%;

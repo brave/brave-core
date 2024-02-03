@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
@@ -34,6 +35,11 @@ MockRewardsEngineClient::MockRewardsEngineClient() {
 
   ON_CALL(*this, LoadURL(_, _))
       .WillByDefault([](mojom::UrlRequestPtr, auto callback) {
+        std::move(callback).Run(nullptr);
+      });
+
+  ON_CALL(*this, GetSPLTokenAccountBalance(_, _, _))
+      .WillByDefault([](const std::string&, const std::string&, auto callback) {
         std::move(callback).Run(nullptr);
       });
 

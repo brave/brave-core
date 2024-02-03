@@ -1,12 +1,12 @@
 diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
-index 287c9de8f3f9c63a410c94906e8821c83c701515..faeb652e710e9a89ec12e176083a370fa7725441 100644
+index 7468d23f9e2e92e27f9eb05b934ca2c8a5470010..df31417199da2305d0d753bda0069ff8cd1eb471 100644
 --- a/net/proxy_resolution/configured_proxy_resolution_service.cc
 +++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
-@@ -977,6 +977,7 @@ int ConfiguredProxyResolutionService::TryToCompleteSynchronously(
-   config_->value().proxy_rules().Apply(url, result);
-   result->set_traffic_annotation(
-       MutableNetworkTrafficAnnotationTag(config_->traffic_annotation()));
-+  BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY
- 
-   return OK;
- }
+@@ -921,6 +921,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(
+   // Check if the request can be completed right away. (This is the case when
+   // using a direct connection for example).
+   int rv = TryToCompleteSynchronously(url, result);
++  BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY
+   if (rv != ERR_IO_PENDING) {
+     rv = DidFinishResolvingProxy(url, network_anonymization_key, method, result,
+                                  rv, net_log);

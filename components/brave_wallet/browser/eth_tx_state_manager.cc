@@ -6,18 +6,14 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 
 #include <optional>
-#include <utility>
 
 #include "base/logging.h"
-#include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
 
 namespace brave_wallet {
 
@@ -29,11 +25,9 @@ EthTxStateManager::EthTxStateManager(
 
 EthTxStateManager::~EthTxStateManager() = default;
 
-std::unique_ptr<EthTxMeta> EthTxStateManager::GetEthTx(
-    const std::string& chain_id,
-    const std::string& id) {
+std::unique_ptr<EthTxMeta> EthTxStateManager::GetEthTx(const std::string& id) {
   return std::unique_ptr<EthTxMeta>{
-      static_cast<EthTxMeta*>(TxStateManager::GetTx(chain_id, id).release())};
+      static_cast<EthTxMeta*>(TxStateManager::GetTx(id).release())};
 }
 
 std::unique_ptr<EthTxMeta> EthTxStateManager::ValueToEthTxMeta(
@@ -114,16 +108,6 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
   }
 
   return meta;
-}
-
-std::string EthTxStateManager::GetTxPrefPathPrefix(
-    const std::optional<std::string>& chain_id) {
-  if (chain_id.has_value()) {
-    return base::StrCat(
-        {kEthereumPrefKey, ".",
-         GetNetworkId(prefs_, mojom::CoinType::ETH, *chain_id)});
-  }
-  return kEthereumPrefKey;
 }
 
 }  // namespace brave_wallet

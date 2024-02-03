@@ -11,8 +11,6 @@ import {
   AssetIconProps,
   WalletButton
 } from '../../shared/style'
-import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css'
 
 export const ExchangeRate = styled.div`
   font-family: 'Poppins';
@@ -187,10 +185,4 @@ export const SwapAmountRow = styled.div`
   align-items: flex-end;
   justify-content: center;
   flex-direction: row;
-`
-
-export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
-  --leo-icon-size: 14px;
-  --leo-icon-color: ${leo.color.icon.interactive};
-  margin-bottom: 1px;
 `

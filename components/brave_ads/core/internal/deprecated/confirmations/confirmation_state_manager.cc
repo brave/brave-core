@@ -304,7 +304,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Type
     if (const auto* const value = item_dict->FindString("type")) {
-      confirmation.type = ParseConfirmationType(*value);
+      confirmation.type = ToConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
       continue;
@@ -312,7 +312,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Ad type
     if (const auto* const value = item_dict->FindString("ad_type")) {
-      confirmation.ad_type = ParseAdType(*value);
+      confirmation.ad_type = ToAdType(*value);
     } else {
       BLOG(0, "Missing confirmation ad type");
       continue;

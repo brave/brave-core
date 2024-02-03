@@ -11,9 +11,9 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_ads.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_advertisers.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_constants.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
@@ -200,7 +200,7 @@ void EligibleInlineContentAdsV1::GetForUntargeted(
 
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
-      {kUntargeted}, dimensions,
+      {kUntargetedSegment}, dimensions,
       base::BindOnce(&EligibleInlineContentAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
                      std::move(callback)));
@@ -255,7 +255,15 @@ CreativeInlineContentAdList EligibleInlineContentAdsV1::FilterCreativeAds(
 
   PaceCreativeAds(eligible_creative_ads);
 
-  return PrioritizeCreativeAds(eligible_creative_ads);
+  const PrioritizedCreativeAdBuckets<CreativeInlineContentAdList> buckets =
+      SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
+  if (buckets.empty()) {
+    return {};
+  }
+
+  LogNumberOfCreativeAdsPerBucket(buckets);
+
+  return buckets.cbegin()->second;
 }
 
 }  // namespace brave_ads

@@ -12,11 +12,13 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/engine_test_observer.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/test/browser_test.h"
@@ -48,7 +50,11 @@ class EphemeralStorage1pDomainBlockBrowserTest
         g_brave_browser_process->ad_block_service();
     ad_block_service->UseSourceProvidersForTest(source_provider_.get(),
                                                 source_provider_.get());
-    WaitForAdBlockServiceThreads();
+
+    auto* engine =
+        g_brave_browser_process->ad_block_service()->default_engine_.get();
+    EngineTestObserver engine_observer(engine);
+    engine_observer.Wait();
   }
 
   void WaitForAdBlockServiceThreads() {
@@ -89,7 +95,11 @@ class EphemeralStorage1pDomainBlockBrowserTest
           content_settings(), brave_shields::ControlType::BLOCK, url);
     }
 
-    WebContents* first_party_tab = LoadURLInNewTab(url);
+    chrome::AddTabAt(browser(), GURL("about:blank"), -1, true);
+    WebContents* first_party_tab =
+        browser()->tab_strip_model()->GetActiveWebContents();
+    content::NavigateToURLBlockUntilNavigationsComplete(first_party_tab, url, 1,
+                                                        true);
 
     if (is_aggressive) {
       EXPECT_TRUE(IsShowingInterstitial(first_party_tab));
@@ -121,7 +131,8 @@ class EphemeralStorage1pDomainBlockBrowserTest
     // After keepalive values should be cleared.
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_simple_url_));
     WaitForCleanupAfterKeepAlive();
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), a_site_simple_url_));
+    content::NavigateToURLBlockUntilNavigationsComplete(
+        first_party_tab, a_site_simple_url_, 1, true);
 
     ExpectValuesFromFrameAreEmpty(
         FROM_HERE, GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame()));

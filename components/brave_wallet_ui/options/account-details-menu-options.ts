@@ -14,7 +14,7 @@ export const AccountDetailsMenuOptions: AccountButtonOptionsObjectType[] = [
   {
     id: 'deposit',
     name: 'braveWalletAccountsDeposit',
-    icon: 'qr-code'
+    icon: 'money-bag-coins'
   },
   {
     id: 'privateKey',

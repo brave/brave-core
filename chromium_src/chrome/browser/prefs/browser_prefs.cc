@@ -15,7 +15,6 @@
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
@@ -34,6 +33,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -42,10 +42,6 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
@@ -106,7 +102,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
   profile_prefs->ClearPref(kBraveSearchVisitCount);
 #endif
 
-  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(profile_prefs);
   brave_wallet::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added 05/2021
@@ -236,6 +231,11 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
   // Added 2023-11
   brave_ads::MigrateObsoleteProfilePrefs(profile_prefs);
 
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 2024-01
+  brave_tabs::MigrateBraveProfilePrefs(profile_prefs);
+#endif  // !BUILDFLAG(IS_ANDROID)
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
@@ -250,11 +250,6 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
 
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-  // Migrating the feature flag here because dependencies relying on its value.
-  brave_vpn::MigrateWireguardFeatureFlag(local_state);
-#endif
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022

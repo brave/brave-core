@@ -17,8 +17,14 @@
 #define resizeTo resizeTo_ChromiumImpl
 #define moveTo moveTo_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
+#define BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS                        \
+  if (WebContentSettingsClient* settings_client =                         \
+          GetFrame()->GetContentSettingsClient()) {                       \
+    script_enabled = settings_client->AllowScript(allow_script_renderer); \
+  }
 
+#include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
+#undef BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS
 #undef outerHeight
 #undef outerWidth
 #undef screenX
@@ -34,6 +40,11 @@ using brave::FarbleKey;
 
 void LocalDOMWindow::SetEphemeralStorageOrigin(
     const SecurityOrigin* ephemeral_storage_origin) {
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
+      base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    return;
+  }
   DCHECK(ephemeral_storage_origin);
   ephemeral_storage_key_ =
       BlinkStorageKey::CreateFirstParty(ephemeral_storage_origin);
@@ -95,13 +106,16 @@ int LocalDOMWindow::screenY() const {
              : screenY_ChromiumImpl();
 }
 
-void LocalDOMWindow::resizeTo(int width, int height) const {
+void LocalDOMWindow::resizeTo(int width,
+                              int height,
+                              ExceptionState& exception_state) const {
   ExecutionContext* context = GetExecutionContext();
   if (BlockScreenFingerprinting(context)) {
     resizeTo_ChromiumImpl(width + outerWidth_ChromiumImpl() - outerWidth(),
-                          height + outerHeight_ChromiumImpl() - outerHeight());
+                          height + outerHeight_ChromiumImpl() - outerHeight(),
+                          exception_state);
   } else {
-    resizeTo_ChromiumImpl(width, height);
+    resizeTo_ChromiumImpl(width, height, exception_state);
   }
 }
 

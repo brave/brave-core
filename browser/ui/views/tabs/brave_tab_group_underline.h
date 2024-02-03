@@ -7,10 +7,12 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_UNDERLINE_H_
 
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 // In vertical tabs, TabGroupUnderline is not actually "underline'. It's an
 // enclosing rounded rect for views in the group.
 class BraveTabGroupUnderline : public TabGroupUnderline {
+  METADATA_HEADER(BraveTabGroupUnderline, TabGroupUnderline)
  public:
   BraveTabGroupUnderline(TabGroupViews* tab_group_views,
                          const tab_groups::TabGroupId& group,

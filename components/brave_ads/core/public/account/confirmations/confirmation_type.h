@@ -27,11 +27,11 @@ enum class ConfirmationType {
   kConversion
 };
 
-// Provides a corresponding string to a given ConfirmationType value.
-const char* ToString(ConfirmationType type);
+// Returns a `ConfirmationType` value based on the string input.
+ConfirmationType ToConfirmationType(std::string_view value);
 
-// Returns a ConfirmationType value based on the string input.
-ConfirmationType ParseConfirmationType(std::string_view value);
+// Returns a string constant for a given `ConfirmationType` value.
+const char* ToString(ConfirmationType type);
 
 std::ostream& operator<<(std::ostream& os, ConfirmationType type);
 

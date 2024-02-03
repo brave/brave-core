@@ -56,29 +56,17 @@ mojom::BlowfishWarningKind ParseWarningKind(
     case simulation_responses::WarningKind::kDanglingApproval:
       return mojom::BlowfishWarningKind::kDanglingApproval;
 
-    case simulation_responses::WarningKind::kDevtoolsDisabled:
-      return mojom::BlowfishWarningKind::kDevtoolsDisabled;
-
     case simulation_responses::WarningKind::kEthSignTxHash:
       return mojom::BlowfishWarningKind::kEthSignTxHash;
 
     case simulation_responses::WarningKind::kKnownMalicious:
       return mojom::BlowfishWarningKind::kKnownMalicious;
 
-    case simulation_responses::WarningKind::kMainnetReplayPossible:
-      return mojom::BlowfishWarningKind::kMainnetReplayPossible;
-
     case simulation_responses::WarningKind::kMultiCopyCatDomain:
       return mojom::BlowfishWarningKind::kMultiCopyCatDomain;
 
     case simulation_responses::WarningKind::kNewDomain:
       return mojom::BlowfishWarningKind::kNewDomain;
-
-    case simulation_responses::WarningKind::kNonAsciiUrl:
-      return mojom::BlowfishWarningKind::kNonAsciiUrl;
-
-    case simulation_responses::WarningKind::kObfuscatedCode:
-      return mojom::BlowfishWarningKind::kObfuscatedCode;
 
     case simulation_responses::WarningKind::kPermitNoExpiration:
       return mojom::BlowfishWarningKind::kPermitNoExpiration;
@@ -147,7 +135,104 @@ mojom::BlowfishAssetPriceSource ParseAssetPriceSource(
   }
 }
 
-mojom::BlowfishEVMRawInfoKind ParseEVMRawInfoKind(
+mojom::BlowfishPricePtr ParsePrice(const base::Value& value) {
+  if (value.is_dict()) {
+    const auto& price_value =
+        simulation_responses::Price::FromValue(value.GetDict());
+    if (!price_value) {
+      return nullptr;
+    }
+
+    return mojom::BlowfishPrice::New(ParseAssetPriceSource(price_value->source),
+                                     price_value->updated_at,
+                                     price_value->dollar_value_per_token);
+  }
+
+  return nullptr;
+}
+
+mojom::BlowfishSuggestedAction ParseBlowfishActionKind(
+    const std::string& action) {
+  if (action == "BLOCK") {
+    return mojom::BlowfishSuggestedAction::kBlock;
+  }
+  if (action == "WARN") {
+    return mojom::BlowfishSuggestedAction::kWarn;
+  }
+  if (action == "NONE") {
+    return mojom::BlowfishSuggestedAction::kNone;
+  }
+  return mojom::BlowfishSuggestedAction::kNone;
+}
+
+std::vector<mojom::BlowfishWarningPtr> ParseWarnings(
+    const std::vector<simulation_responses::Warning>& values) {
+  std::vector<mojom::BlowfishWarningPtr> warnings;
+  for (const auto& warning : values) {
+    warnings.push_back(mojom::BlowfishWarning::New(
+        ParseWarningSeverity(warning.severity), ParseWarningKind(warning.kind),
+        warning.message));
+  }
+  return warnings;
+}
+
+std::optional<std::string> ParseNullableString(const base::Value& value) {
+  if (value.is_none()) {
+    return "";
+  }
+
+  if (value.is_string()) {
+    return value.GetString();
+  }
+
+  return std::nullopt;
+}
+
+std::optional<std::string> ParseOptionalNullableString(
+    const std::optional<base::Value>& value) {
+  if (!value.has_value()) {
+    return "";
+  }
+
+  return ParseNullableString(value.value());
+}
+
+}  // namespace
+
+namespace evm {
+
+namespace {
+
+mojom::BlowfishEVMErrorKind ParseErrorKind(
+    const simulation_responses::EVMErrorKind& kind) {
+  switch (kind) {
+    case simulation_responses::EVMErrorKind::kSimulationFailed:
+      return mojom::BlowfishEVMErrorKind::kSimulationFailed;
+
+    case simulation_responses::EVMErrorKind::kTransactionError:
+      return mojom::BlowfishEVMErrorKind::kTransactionError;
+
+    case simulation_responses::EVMErrorKind::kTransactionReverted:
+      return mojom::BlowfishEVMErrorKind::kTransactionReverted;
+
+    case simulation_responses::EVMErrorKind::kUnknownError:
+    default:
+      return mojom::BlowfishEVMErrorKind::kUnknownError;
+  }
+}
+
+mojom::BlowfishEVMAddressKind ParseBlowfishAddressKind(
+    const simulation_responses::EVMAddressKind& kind) {
+  switch (kind) {
+    case simulation_responses::EVMAddressKind::kAccount:
+      return mojom::BlowfishEVMAddressKind::kAccount;
+
+    default:
+      return mojom::BlowfishEVMAddressKind::kUnknown;
+  }
+}
+
+mojom::BlowfishEVMRawInfoKind ParseRawInfoKind(
     const simulation_responses::EVMRawInfoKind& kind) {
   switch (kind) {
     case simulation_responses::EVMRawInfoKind::kAnyNftFromCollectionTransfer:
@@ -182,137 +267,24 @@ mojom::BlowfishEVMRawInfoKind ParseEVMRawInfoKind(
   }
 }
 
-mojom::BlowfishSolanaRawInfoKind ParseSolanaRawInfoKind(
-    const simulation_responses::SolanaRawInfoKind& kind) {
-  switch (kind) {
-    case simulation_responses::SolanaRawInfoKind::kSolStakeAuthorityChange:
-      return mojom::BlowfishSolanaRawInfoKind::kSolStakeAuthorityChange;
-
-    case simulation_responses::SolanaRawInfoKind::kSolTransfer:
-      return mojom::BlowfishSolanaRawInfoKind::kSolTransfer;
-
-    case simulation_responses::SolanaRawInfoKind::kSplApproval:
-      return mojom::BlowfishSolanaRawInfoKind::kSplApproval;
-
-    case simulation_responses::SolanaRawInfoKind::kSplTransfer:
-      return mojom::BlowfishSolanaRawInfoKind::kSplTransfer;
-
-    case simulation_responses::SolanaRawInfoKind::kUserAccountOwnerChange:
-      return mojom::BlowfishSolanaRawInfoKind::kUserAccountOwnerChange;
-
-    default:
-      return mojom::BlowfishSolanaRawInfoKind::kUnknown;
-  }
+mojom::BlowfishEVMCounterpartyPtr ParseCounterparty(
+    const simulation_responses::EVMCounterparty& value) {
+  return mojom::BlowfishEVMCounterparty::New(
+      value.address, ParseBlowfishAddressKind(value.kind));
 }
 
-mojom::BlowfishMetaplexTokenStandardKind ParseMetaplexTokenStandardKind(
-    const simulation_responses::MetaplexTokenStandardKind& kind) {
-  switch (kind) {
-    case simulation_responses::MetaplexTokenStandardKind::kFungible:
-      return mojom::BlowfishMetaplexTokenStandardKind::kFungible;
-
-    case simulation_responses::MetaplexTokenStandardKind::kFungibleAsset:
-      return mojom::BlowfishMetaplexTokenStandardKind::kFungibleAsset;
-
-    case simulation_responses::MetaplexTokenStandardKind::kNonFungible:
-      return mojom::BlowfishMetaplexTokenStandardKind::kNonFungible;
-
-    case simulation_responses::MetaplexTokenStandardKind::kNonFungibleEdition:
-      return mojom::BlowfishMetaplexTokenStandardKind::kNonFungibleEdition;
-
-    default:
-      return mojom::BlowfishMetaplexTokenStandardKind::kUnknown;
-  }
-}
-
-mojom::BlowfishEVMErrorKind ParseEVMErrorKind(
-    const simulation_responses::EVMErrorKind& kind) {
-  switch (kind) {
-    case simulation_responses::EVMErrorKind::kSimulationFailed:
-      return mojom::BlowfishEVMErrorKind::kSimulationFailed;
-
-    case simulation_responses::EVMErrorKind::kTransactionError:
-      return mojom::BlowfishEVMErrorKind::kTransactionError;
-
-    case simulation_responses::EVMErrorKind::kTransactionReverted:
-      return mojom::BlowfishEVMErrorKind::kTransactionReverted;
-
-    case simulation_responses::EVMErrorKind::kUnknownError:
-    default:
-      return mojom::BlowfishEVMErrorKind::kUnknownError;
-  }
-}
-
-mojom::BlowfishEVMAddressKind ParseBlowfishEVMAddressKind(
-    const simulation_responses::EVMAddressKind& kind) {
-  switch (kind) {
-    case simulation_responses::EVMAddressKind::kAccount:
-      return mojom::BlowfishEVMAddressKind::kAccount;
-
-    default:
-      return mojom::BlowfishEVMAddressKind::kUnknown;
-  }
-}
-
-mojom::BlowfishSuggestedAction ParseBlowfishActionKind(
-    const std::string& action) {
-  if (action == "BLOCK") {
-    return mojom::BlowfishSuggestedAction::kBlock;
-  }
-  if (action == "WARN") {
-    return mojom::BlowfishSuggestedAction::kWarn;
-  }
-  if (action == "NONE") {
-    return mojom::BlowfishSuggestedAction::kNone;
-  }
-  return mojom::BlowfishSuggestedAction::kNone;
-}
-
-std::vector<mojom::BlowfishWarningPtr> ParseWarnings(
-    const std::vector<simulation_responses::Warning>& values) {
-  std::vector<mojom::BlowfishWarningPtr> warnings;
-  for (const auto& warning : values) {
-    warnings.push_back(mojom::BlowfishWarning::New(
-        ParseWarningSeverity(warning.severity), ParseWarningKind(warning.kind),
-        warning.message));
-  }
-  return warnings;
-}
-
-std::optional<std::string> ParseNullableString(const base::Value& value) {
-  if (value.is_string()) {
-    return value.GetString();
+mojom::BlowfishEVMCounterpartyPtr ParseCounterparty(const base::Value& value) {
+  if (!value.is_dict()) {
+    return nullptr;
   }
 
-  return std::nullopt;
-}
-
-}  // namespace
-
-namespace evm {
-
-namespace {
-
-mojom::BlowfishPricePtr ParsePrice(const base::Value& value) {
-  if (value.is_dict()) {
-    const auto& price_value =
-        simulation_responses::Price::FromValue(value.GetDict());
-    if (!price_value) {
-      return nullptr;
-    }
-
-    return mojom::BlowfishPrice::New(ParseAssetPriceSource(price_value->source),
-                                     price_value->updated_at,
-                                     price_value->dollar_value_per_token);
+  const auto& counterparty_value =
+      simulation_responses::EVMCounterparty::FromValue(value.GetDict());
+  if (!counterparty_value) {
+    return nullptr;
   }
 
-  return nullptr;
-}
-
-mojom::BlowfishEVMContractPtr ParseContract(
-    const simulation_responses::EVMContract& value) {
-  return mojom::BlowfishEVMContract::New(
-      value.address, ParseBlowfishEVMAddressKind(value.kind));
+  return ParseCounterparty(counterparty_value.value());
 }
 
 mojom::BlowfishEVMAmountPtr ParseAmount(
@@ -324,22 +296,32 @@ mojom::BlowfishEVMAssetPtr ParseAsset(
     const simulation_responses::EVMAsset& value) {
   auto asset = mojom::BlowfishEVMAsset::New();
   asset->address = value.address;
-  asset->symbol = value.symbol;
-  asset->name = value.name;
 
-  if (!base::StringToInt(value.decimals, &asset->decimals)) {
+  if (auto symbol = ParseOptionalNullableString(value.symbol)) {
+    asset->symbol = symbol.value();
+  } else {
     return nullptr;
   }
 
-  asset->verified = value.verified;
-
-  if (value.lists) {
-    asset->lists = *value.lists;
+  if (auto name = ParseOptionalNullableString(value.name)) {
+    asset->name = name.value();
   } else {
-    asset->lists = {};
+    return nullptr;
   }
 
-  asset->image_url = ParseNullableString(value.image_url);
+  if (auto collection = ParseOptionalNullableString(value.collection)) {
+    asset->collection = collection.value();
+  } else {
+    return nullptr;
+  }
+
+  if (!base::StringToInt(value.decimals.value_or("0"), &asset->decimals)) {
+    return nullptr;
+  }
+
+  asset->verified = value.verified.value_or(false);
+  asset->lists = value.lists.value_or(std::vector<std::string>{});
+  asset->image_url = ParseOptionalNullableString(value.image_url).value_or("");
   asset->price = ParsePrice(value.price);
   return asset;
 }
@@ -351,7 +333,7 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
   }
 
   auto raw_info = mojom::BlowfishEVMStateChangeRawInfo::New();
-  raw_info->kind = ParseEVMRawInfoKind(value.kind);
+  raw_info->kind = ParseRawInfoKind(value.kind);
 
   if (value.kind == simulation_responses::EVMRawInfoKind::kErc20Transfer) {
     auto data_value = simulation_responses::ERC20TransferData::FromValue(
@@ -361,8 +343,8 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
     }
 
     auto data = mojom::BlowfishERC20TransferData::New();
-    data->contract = ParseContract(data_value->contract);
     data->amount = ParseAmount(data_value->amount);
+    data->counterparty = ParseCounterparty(data_value->counterparty);
 
     if (auto asset = ParseAsset(data_value->asset)) {
       data->asset = std::move(asset);
@@ -382,9 +364,18 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
     }
 
     auto data = mojom::BlowfishERC20ApprovalData::New();
-    data->contract = ParseContract(data_value->contract);
-    data->owner = ParseContract(data_value->owner);
-    data->spender = ParseContract(data_value->spender);
+    if (auto counterparty = ParseCounterparty(data_value->owner)) {
+      data->owner = std::move(counterparty);
+    } else {
+      return nullptr;
+    }
+
+    if (auto counterparty = ParseCounterparty(data_value->spender)) {
+      data->spender = std::move(counterparty);
+    } else {
+      return nullptr;
+    }
+
     data->amount = ParseAmount(data_value->amount);
 
     if (auto asset = ParseAsset(data_value->asset)) {
@@ -406,7 +397,7 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     auto data = mojom::BlowfishNativeAssetTransferData::New();
     data->amount = ParseAmount(data_value->amount);
-    data->contract = ParseContract(data_value->contract);
+    data->counterparty = ParseCounterparty(data_value->counterparty);
     if (auto asset = ParseAsset(data_value->asset)) {
       data->asset = std::move(asset);
     } else {
@@ -425,13 +416,20 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     auto data = mojom::BlowfishERC721TransferData::New();
     data->amount = ParseAmount(data_value->amount);
-    data->contract = ParseContract(data_value->contract);
+    data->counterparty = ParseCounterparty(data_value->counterparty);
     data->metadata =
         mojom::BlowfishEVMMetadata::New(data_value->metadata.raw_image_url);
-    data->name = data_value->name;
-    data->symbol = data_value->symbol;
-    data->token_id = ParseNullableString(data_value->token_id);
-    data->asset_price = ParsePrice(data_value->asset_price);
+
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
+      return nullptr;
+    }
+    if (auto token_id = ParseNullableString(data_value->token_id)) {
+      data->asset->token_id = token_id.value();
+    } else {
+      return nullptr;
+    }
 
     raw_info->data =
         mojom::BlowfishEVMStateChangeRawInfoDataUnion::NewErc721TransferData(
@@ -446,15 +444,31 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     auto data = mojom::BlowfishERC721ApprovalData::New();
     data->amount = ParseAmount(data_value->amount);
-    data->contract = ParseContract(data_value->contract);
     data->metadata =
         mojom::BlowfishEVMMetadata::New(data_value->metadata.raw_image_url);
-    data->name = data_value->name;
-    data->owner = ParseContract(data_value->owner);
-    data->spender = ParseContract(data_value->spender);
-    data->symbol = data_value->symbol;
-    data->token_id = ParseNullableString(data_value->token_id);
-    data->asset_price = ParsePrice(data_value->asset_price);
+
+    if (auto counterparty = ParseCounterparty(data_value->owner)) {
+      data->owner = std::move(counterparty);
+    } else {
+      return nullptr;
+    }
+
+    if (auto counterparty = ParseCounterparty(data_value->spender)) {
+      data->spender = std::move(counterparty);
+    } else {
+      return nullptr;
+    }
+
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
+      return nullptr;
+    }
+    if (auto token_id = ParseNullableString(data_value->token_id)) {
+      data->asset->token_id = token_id.value();
+    } else {
+      return nullptr;
+    }
 
     raw_info->data =
         mojom::BlowfishEVMStateChangeRawInfoDataUnion::NewErc721ApprovalData(
@@ -469,12 +483,24 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     auto data = mojom::BlowfishERC721ApprovalForAllData::New();
     data->amount = ParseAmount(data_value->amount);
-    data->contract = ParseContract(data_value->contract);
-    data->name = data_value->name;
-    data->owner = ParseContract(data_value->owner);
-    data->spender = ParseContract(data_value->spender);
-    data->symbol = data_value->symbol;
-    data->asset_price = ParsePrice(data_value->asset_price);
+
+    if (auto counterparty = ParseCounterparty(data_value->owner)) {
+      data->owner = std::move(counterparty);
+    } else {
+      return nullptr;
+    }
+
+    if (auto counterparty = ParseCounterparty(data_value->spender)) {
+      data->spender = std::move(counterparty);
+    } else {
+      return nullptr;
+    }
+
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
+      return nullptr;
+    }
 
     raw_info->data = mojom::BlowfishEVMStateChangeRawInfoDataUnion::
         NewErc721ApprovalForAllData(std::move(data));
@@ -488,12 +514,20 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     auto data = mojom::BlowfishERC1155TransferData::New();
     data->amount = ParseAmount(data_value->amount);
-    data->contract = ParseContract(data_value->contract);
     data->metadata =
         mojom::BlowfishEVMMetadata::New(data_value->metadata.raw_image_url);
-    data->token_id = ParseNullableString(data_value->token_id);
-    data->asset_price = ParsePrice(data_value->asset_price);
-    data->name = data_value->name;
+    data->counterparty = ParseCounterparty(data_value->counterparty);
+
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
+      return nullptr;
+    }
+    if (auto token_id = ParseNullableString(data_value->token_id)) {
+      data->asset->token_id = token_id.value();
+    } else {
+      return nullptr;
+    }
 
     raw_info->data =
         mojom::BlowfishEVMStateChangeRawInfoDataUnion::NewErc1155TransferData(
@@ -509,10 +543,24 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     auto data = mojom::BlowfishERC1155ApprovalForAllData::New();
     data->amount = ParseAmount(data_value->amount);
-    data->contract = ParseContract(data_value->contract);
-    data->owner = ParseContract(data_value->owner);
-    data->spender = ParseContract(data_value->spender);
-    data->asset_price = ParsePrice(data_value->asset_price);
+
+    if (auto counterparty = ParseCounterparty(data_value->owner)) {
+      data->owner = std::move(counterparty);
+    } else {
+      return nullptr;
+    }
+
+    if (auto counterparty = ParseCounterparty(data_value->spender)) {
+      data->spender = std::move(counterparty);
+    } else {
+      return nullptr;
+    }
+
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
+      return nullptr;
+    }
 
     raw_info->data = mojom::BlowfishEVMStateChangeRawInfoDataUnion::
         NewErc1155ApprovalForAllData(std::move(data));
@@ -523,50 +571,73 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
   return raw_info;
 }
 
+mojom::BlowfishEVMStateChangePtr ParseStateChange(const base::Value& value) {
+  if (!value.is_dict()) {
+    return nullptr;
+  }
+
+  auto state_change_value =
+      simulation_responses::EVMStateChange::FromValue(value.GetDict());
+  if (!state_change_value) {
+    return nullptr;
+  }
+
+  auto state_change = mojom::BlowfishEVMStateChange::New();
+  state_change->human_readable_diff = state_change_value->human_readable_diff;
+
+  if (auto raw_info = ParseStateChangeRawInfo(state_change_value->raw_info)) {
+    state_change->raw_info = std::move(raw_info);
+  } else {
+    return nullptr;
+  }
+
+  return state_change;
+}
+
 }  // namespace
 
 mojom::EVMSimulationResponsePtr ParseSimulationResponse(
-    const base::Value& json_value) {
+    const base::Value& json_value,
+    const std::string& user_account) {
   // {
   //   "action": "NONE",
   //   "warnings": [],
   //   "simulationResults": {
-  //     "error": null,
-  //     "gas": {
-  //       "gasLimit": null
-  //     },
-  //     "expectedStateChanges": [
-  //       {
-  //         "humanReadableDiff": "Send 1 ETH",
-  //         "rawInfo": {
-  //           "kind": "NATIVE_ASSET_TRANSFER",
-  //           "data": {
-  //             "amount": {
-  //               "after": "1182957389356504134754",
-  //               "before": "1183957389356504134754"
-  //             },
-  //             "contract": {
-  //               "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-  //               "kind": "ACCOUNT"
-  //             },
-  //             "asset": {
-  //               "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-  //               "symbol": "ETH",
-  //               "name": "Ether",
-  //               "decimals": 18,
-  //               "verified": true,
-  //               "imageUrl":
-  //               "https://d1ts37qlq4uz4s.cloudfront.net/evm__evm%3A%3Aethereum__evm%3A%3Aethereum%3A%3Amainnet__0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-  //               "price": {
-  //                 "source": "Coingecko",
-  //                 "updatedAt": 1681958792,
-  //                 "dollarValuePerToken": 1945.92
+  //     "aggregated": {
+  //       "expectedStateChanges": {
+  //         "0x397ff1542f962076d0bfe58ea045ffa2d347aca0": [
+  //           {
+  //             "humanReadableDiff": "Send 1 ETH",
+  //             "rawInfo": {
+  //               "kind": "NATIVE_ASSET_TRANSFER",
+  //               "data": {
+  //                 "amount": {
+  //                   "after": "1182957389356504134754",
+  //                   "before": "1183957389356504134754"
+  //                 },
+  //                 "counterparty": {
+  //                   "kind": "ACCOUNT",
+  //                   "address": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+  //                 },
+  //                 "asset": {
+  //                   "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  //                   "symbol": "ETH",
+  //                   "name": "Ether",
+  //                   "decimals": "18",
+  //                   "verified": true,
+  //                   "imageUrl": "https://eth.png",
+  //                   "price": {
+  //                     "source": "Coingecko",
+  //                     "updatedAt": "1681958792",
+  //                     "dollarValuePerToken": "1945.92"
+  //                   }
+  //                 }
   //               }
   //             }
   //           }
-  //         }
+  //         ]
   //       }
-  //     ]
+  //     }
   //   }
   // }
   if (!json_value.is_dict()) {
@@ -586,41 +657,52 @@ mojom::EVMSimulationResponsePtr ParseSimulationResponse(
   simulation_response->warnings =
       ParseWarnings(simulation_response_value->warnings);
 
-  auto simulation_results = mojom::EVMSimulationResults::New();
-
   // Parse nullable field "error" of type EVMError.
-  if (simulation_response_value->simulation_results.error.is_dict()) {
+  if (simulation_response_value->simulation_results.aggregated.error
+          .is_dict()) {
     const auto& error_value = simulation_responses::EVMError::FromValue(
-        simulation_response_value->simulation_results.error.GetDict());
+        simulation_response_value->simulation_results.aggregated.error
+            .GetDict());
     if (!error_value) {
       return nullptr;
     }
 
-    simulation_results->error =
-        mojom::BlowfishEVMError::New(ParseEVMErrorKind(error_value->kind),
-                                     error_value->human_readable_error);
-  } else if (simulation_response_value->simulation_results.error.is_none()) {
-    simulation_results->error = nullptr;
+    simulation_response->error = mojom::BlowfishEVMError::New(
+        ParseErrorKind(error_value->kind), error_value->human_readable_error);
+  } else if (simulation_response_value->simulation_results.aggregated.error
+                 .is_none()) {
+    simulation_response->error = nullptr;
   } else {
     return nullptr;
   }
 
-  for (const auto& state_change_value :
-       simulation_response_value->simulation_results.expected_state_changes) {
-    auto state_change = mojom::BlowfishEVMStateChange::New();
-    state_change->human_readable_diff = state_change_value.human_readable_diff;
+  if (!simulation_response_value->simulation_results.aggregated
+           .expected_state_changes.is_dict()) {
+    return nullptr;
+  }
 
-    if (auto raw_info = ParseStateChangeRawInfo(state_change_value.raw_info)) {
-      state_change->raw_info = std::move(raw_info);
+  auto& expected_state_changes_value =
+      simulation_response_value->simulation_results.aggregated
+          .expected_state_changes.GetDict();
+
+  auto* account_state_changes_value =
+      expected_state_changes_value.FindList(user_account);
+  if (!account_state_changes_value) {
+    account_state_changes_value =
+        expected_state_changes_value.FindList(base::ToLowerASCII(user_account));
+    if (!account_state_changes_value) {
+      return nullptr;
+    }
+  }
+
+  for (const auto& state_change_value : *account_state_changes_value) {
+    if (auto state_change = ParseStateChange(state_change_value)) {
+      simulation_response->expected_state_changes.push_back(
+          std::move(state_change));
     } else {
       return nullptr;
     }
-
-    simulation_results->expected_state_changes.push_back(
-        std::move(state_change));
   }
-
-  simulation_response->simulation_results = std::move(simulation_results);
 
   return simulation_response;
 }
@@ -631,20 +713,53 @@ namespace solana {
 
 namespace {
 
-mojom::BlowfishPricePtr ParsePrice(const base::Value& value) {
-  if (value.is_dict()) {
-    const auto& price_value =
-        simulation_responses::SolanaPrice::FromValue(value.GetDict());
-    if (!price_value) {
-      return nullptr;
-    }
-
-    return mojom::BlowfishPrice::New(ParseAssetPriceSource(price_value->source),
-                                     price_value->last_updated_at,
-                                     price_value->dollar_value_per_token);
+mojom::BlowfishMetaplexTokenStandardKind ParseMetaplexTokenStandard(
+    const std::optional<base::Value>& value) {
+  if (!value || value->is_none() || !value->is_string()) {
+    return mojom::BlowfishMetaplexTokenStandardKind::kUnknown;
   }
 
-  return nullptr;
+  const auto& kind =
+      simulation_responses::ParseMetaplexTokenStandardKind(value->GetString());
+  switch (kind) {
+    case simulation_responses::MetaplexTokenStandardKind::kFungible:
+      return mojom::BlowfishMetaplexTokenStandardKind::kFungible;
+
+    case simulation_responses::MetaplexTokenStandardKind::kFungibleAsset:
+      return mojom::BlowfishMetaplexTokenStandardKind::kFungibleAsset;
+
+    case simulation_responses::MetaplexTokenStandardKind::kNonFungible:
+      return mojom::BlowfishMetaplexTokenStandardKind::kNonFungible;
+
+    case simulation_responses::MetaplexTokenStandardKind::kNonFungibleEdition:
+      return mojom::BlowfishMetaplexTokenStandardKind::kNonFungibleEdition;
+
+    default:
+      return mojom::BlowfishMetaplexTokenStandardKind::kUnknown;
+  }
+}
+
+mojom::BlowfishSolanaRawInfoKind ParseRawInfoKind(
+    const simulation_responses::SolanaRawInfoKind& kind) {
+  switch (kind) {
+    case simulation_responses::SolanaRawInfoKind::kSolStakeAuthorityChange:
+      return mojom::BlowfishSolanaRawInfoKind::kSolStakeAuthorityChange;
+
+    case simulation_responses::SolanaRawInfoKind::kSolTransfer:
+      return mojom::BlowfishSolanaRawInfoKind::kSolTransfer;
+
+    case simulation_responses::SolanaRawInfoKind::kSplApproval:
+      return mojom::BlowfishSolanaRawInfoKind::kSplApproval;
+
+    case simulation_responses::SolanaRawInfoKind::kSplTransfer:
+      return mojom::BlowfishSolanaRawInfoKind::kSplTransfer;
+
+    case simulation_responses::SolanaRawInfoKind::kUserAccountOwnerChange:
+      return mojom::BlowfishSolanaRawInfoKind::kUserAccountOwnerChange;
+
+    default:
+      return mojom::BlowfishSolanaRawInfoKind::kUnknown;
+  }
 }
 
 mojom::BlowfishDiffSign ParseDiffSign(
@@ -670,6 +785,27 @@ mojom::BlowfishSolanaDiffPtr ParseDiff(
   return diff;
 }
 
+mojom::BlowfishSolanaAssetPtr ParseAsset(
+    const simulation_responses::SolanaAsset& value) {
+  auto asset = mojom::BlowfishSolanaAsset::New();
+
+  asset->symbol = value.symbol;
+  asset->name = value.name;
+  asset->mint = value.mint.value_or("");
+
+  if (!base::StringToInt(value.decimals, &asset->decimals)) {
+    return nullptr;
+  }
+
+  asset->image_url = ParseOptionalNullableString(value.image_url).value_or("");
+  asset->price = ParsePrice(value.price);
+
+  asset->metaplex_token_standard =
+      ParseMetaplexTokenStandard(value.metaplex_token_standard);
+
+  return asset;
+}
+
 mojom::BlowfishSolanaStakeAuthoritiesPtr ParseStakeAuthorities(
     const simulation_responses::SolanaStakeAuthorities& value) {
   auto authorities = mojom::BlowfishSolanaStakeAuthorities::New();
@@ -685,7 +821,7 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
   }
 
   auto raw_info = mojom::BlowfishSolanaStateChangeRawInfo::New();
-  raw_info->kind = ParseSolanaRawInfoKind(value.kind);
+  raw_info->kind = ParseRawInfoKind(value.kind);
 
   if (value.kind == simulation_responses::SolanaRawInfoKind::kSolTransfer) {
     auto data_value =
@@ -695,13 +831,18 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
     }
 
     auto data = mojom::BlowfishSOLTransferData::New();
-    data->symbol = data_value->symbol;
-    data->name = data_value->name;
 
-    if (!base::StringToInt(data_value->decimals, &data->decimals)) {
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
       return nullptr;
     }
-    data->diff = ParseDiff(data_value->diff);
+
+    if (auto diff = ParseDiff(data_value->diff)) {
+      data->diff = std::move(diff);
+    } else {
+      return nullptr;
+    }
 
     raw_info->data =
         mojom::BlowfishSolanaStateChangeRawInfoDataUnion::NewSolTransferData(
@@ -715,19 +856,21 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
     }
 
     auto data = mojom::BlowfishSPLTransferData::New();
-    data->symbol = data_value->symbol;
-    data->name = data_value->name;
-    data->mint = data_value->mint;
-    if (!base::StringToInt(data_value->decimals, &data->decimals)) {
+
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
       return nullptr;
     }
-    data->diff = ParseDiff(data_value->diff);
-    if (!base::StringToUint64(data_value->supply, &data->supply)) {
+
+    if (auto diff = ParseDiff(data_value->diff)) {
+      data->diff = std::move(diff);
+    } else {
       return nullptr;
     }
-    data->metaplex_token_standard =
-        ParseMetaplexTokenStandardKind(data_value->metaplex_token_standard);
-    data->asset_price = ParsePrice(data_value->asset_price);
+
+    data->counterparty =
+        ParseNullableString(data_value->counterparty).value_or("");
 
     raw_info->data =
         mojom::BlowfishSolanaStateChangeRawInfoDataUnion::NewSplTransferData(
@@ -742,21 +885,18 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     auto data = mojom::BlowfishSPLApprovalData::New();
     data->delegate = data_value->delegate;
-    data->mint = data_value->mint;
-    data->symbol = data_value->symbol;
-    data->name = data_value->name;
 
-    if (!base::StringToInt(data_value->decimals, &data->decimals)) {
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
       return nullptr;
     }
 
-    data->diff = ParseDiff(data_value->diff);
-    if (!base::StringToUint64(data_value->supply, &data->supply)) {
+    if (auto diff = ParseDiff(data_value->diff)) {
+      data->diff = std::move(diff);
+    } else {
       return nullptr;
     }
-    data->metaplex_token_standard =
-        ParseMetaplexTokenStandardKind(data_value->metaplex_token_standard);
-    data->asset_price = ParsePrice(data_value->asset_price);
 
     raw_info->data =
         mojom::BlowfishSolanaStateChangeRawInfoDataUnion::NewSplApprovalData(
@@ -772,20 +912,21 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     auto data = mojom::BlowfishSOLStakeAuthorityChangeData::New();
     data->stake_account = data_value->stake_account;
-    data->curr_authorities =
-        ParseStakeAuthorities(data_value->curr_authorities);
+    data->current_authorities =
+        ParseStakeAuthorities(data_value->current_authorities);
     data->future_authorities =
         ParseStakeAuthorities(data_value->future_authorities);
-    data->symbol = data_value->symbol;
-    data->name = data_value->name;
 
-    if (!base::StringToInt(data_value->decimals, &data->decimals)) {
+    if (auto asset = ParseAsset(data_value->asset)) {
+      data->asset = std::move(asset);
+    } else {
       return nullptr;
     }
 
     if (!base::StringToUint64(data_value->sol_staked, &data->sol_staked)) {
       return nullptr;
     }
+
     raw_info->data = mojom::BlowfishSolanaStateChangeRawInfoDataUnion::
         NewSolStakeAuthorityChangeData(std::move(data));
   } else {
@@ -809,7 +950,7 @@ mojom::BlowfishSuggestedColor ParseSuggestedColor(
 
 // Detects documented error kinds (see:
 // https://docs.blowfish.xyz/v2023-03-08/reference/scan-transactions-solana)
-mojom::BlowfishSolanaErrorKind ParseSolanaErrorKind(const std::string& error) {
+mojom::BlowfishSolanaErrorKind ParseErrorKind(const std::string& error) {
   // ERROR_PROCESSING_INSTRUCTION_{0}:_{1}
   if (error.find("ERROR_PROCESSING_INSTRUCTION") == 0) {
     return mojom::BlowfishSolanaErrorKind::kErrorProcessingInstruction;
@@ -1010,49 +1151,78 @@ mojom::BlowfishSolanaErrorKind ParseSolanaErrorKind(const std::string& error) {
   return mojom::BlowfishSolanaErrorKind::kUnknownError;
 }
 
+mojom::BlowfishSolanaStateChangePtr ParseStateChange(const base::Value& value) {
+  if (!value.is_dict()) {
+    return nullptr;
+  }
+
+  auto state_change_value =
+      simulation_responses::SolanaStateChange::FromValue(value.GetDict());
+  if (!state_change_value) {
+    return nullptr;
+  }
+
+  auto state_change = mojom::BlowfishSolanaStateChange::New();
+  state_change->human_readable_diff = state_change_value->human_readable_diff;
+  state_change->suggested_color =
+      ParseSuggestedColor(state_change_value->suggested_color);
+
+  if (auto raw_info = ParseStateChangeRawInfo(state_change_value->raw_info)) {
+    state_change->raw_info = std::move(raw_info);
+  } else {
+    return nullptr;
+  }
+
+  return state_change;
+}
+
 }  // namespace
 
 mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
-    const base::Value& json_value) {
+    const base::Value& json_value,
+    const std::string& user_account) {
   // {
-  //   "status": "CHECKS_PASSED",
-  //   "action": "NONE",
-  //   "warnings": [],
-  //   "simulationResults": {
-  //     "isRecentBlockhashExpired": false,
-  //     "expectedStateChanges": [
+  //   "aggregated": {
+  //     "action": "WARN",
+  //     "warnings": [
   //       {
-  //         "humanReadableDiff": "Send 2 USDT",
-  //         "suggestedColor": "DEBIT",
-  //         "rawInfo": {
-  //           "kind": "SPL_TRANSFER",
-  //           "data": {
-  //             "symbol": "USDT",
-  //             "name": "USDT",
-  //             "mint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
-  //             "decimals": 6,
-  //             "supply": 1000000000,
-  //             "metaplexTokenStandard": "unknown",
-  //             "assetPrice": {
-  //               "source": "Coingecko",
-  //               "last_updated_at": 1679331222,
-  //               "dollar_value_per_token": 0.99
-  //             },
-  //             "diff": {
-  //               "sign": "MINUS",
-  //               "digits": 2000000
+  //         "severity": "WARNING",
+  //         "kind": "SUSPECTED_MALICIOUS",
+  //         "message": "Domain found on blocklists maintained by: Blowfish.
+  //         This website is very likely to be a scam."
+  //       }
+  //     ],
+  //     "error": {
+  //       "kind": "BAD_REQUEST",
+  //       "humanReadableError": "User account supplied in request not found"
+  //     },
+  //     "expectedStateChanges": {
+  //       "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT": [
+  //         {
+  //           "humanReadableDiff": "Receive 0.05657 SOL",
+  //           "suggestedColor": "CREDIT",
+  //           "rawInfo": {
+  //             "kind": "SOL_TRANSFER",
+  //             "data": {
+  //               "asset": {
+  //                 "symbol": "SOL",
+  //                 "name": "Solana Native Token",
+  //                 "decimals": "9",
+  //                 "price": {
+  //                   "source": "Coingecko",
+  //                   "updatedAt": "1679331222",
+  //                   "dollarValuePerToken": "0.2784"
+  //                 },
+  //                 "imageUrl": "https://sol.png"
+  //               },
+  //               "diff": {
+  //                 "sign": "PLUS",
+  //                 "digits": "500000"
+  //               }
   //             }
   //           }
   //         }
-  //       }
-  //     ],
-  //     "error": null,
-  //     "raw": {
-  //       "err": null,
-  //       "logs": [],
-  //       "accounts": [],
-  //       "returnData": null,
-  //       "unitsConsumed": 148013
+  //       ]
   //     }
   //   }
   // }
@@ -1070,47 +1240,51 @@ mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
 
   auto simulation_response = mojom::SolanaSimulationResponse::New();
   simulation_response->action =
-      ParseBlowfishActionKind(simulation_response_value->action);
+      ParseBlowfishActionKind(simulation_response_value->aggregated.action);
   simulation_response->warnings =
-      ParseWarnings(simulation_response_value->warnings);
-
-  auto simulation_results = mojom::SolanaSimulationResults::New();
+      ParseWarnings(simulation_response_value->aggregated.warnings);
 
   // Parse nullable field "error" of type SolanaError.
-  if (simulation_response_value->simulation_results.error.is_dict()) {
+  if (simulation_response_value->aggregated.error.is_dict()) {
     const auto& error_value = simulation_responses::SolanaError::FromValue(
-        simulation_response_value->simulation_results.error.GetDict());
+        simulation_response_value->aggregated.error.GetDict());
     if (!error_value) {
       return nullptr;
     }
 
-    simulation_results->error =
-        mojom::BlowfishSolanaError::New(ParseSolanaErrorKind(error_value->kind),
-                                        error_value->human_readable_error);
-  } else if (simulation_response_value->simulation_results.error.is_none()) {
-    simulation_results->error = nullptr;
+    simulation_response->error = mojom::BlowfishSolanaError::New(
+        ParseErrorKind(error_value->kind), error_value->human_readable_error);
+  } else if (simulation_response_value->aggregated.error.is_none()) {
+    simulation_response->error = nullptr;
   } else {
     return nullptr;
   }
 
-  for (const auto& state_change_value :
-       simulation_response_value->simulation_results.expected_state_changes) {
-    auto state_change = mojom::BlowfishSolanaStateChange::New();
-    state_change->human_readable_diff = state_change_value.human_readable_diff;
-    state_change->suggested_color =
-        ParseSuggestedColor(state_change_value.suggested_color);
+  if (!simulation_response_value->aggregated.expected_state_changes.is_dict()) {
+    return nullptr;
+  }
 
-    if (auto raw_info = ParseStateChangeRawInfo(state_change_value.raw_info)) {
-      state_change->raw_info = std::move(raw_info);
+  auto& expected_state_changes_value =
+      simulation_response_value->aggregated.expected_state_changes.GetDict();
+
+  auto* account_state_changes_value =
+      expected_state_changes_value.FindList(user_account);
+  if (!account_state_changes_value) {
+    account_state_changes_value =
+        expected_state_changes_value.FindList(base::ToLowerASCII(user_account));
+    if (!account_state_changes_value) {
+      return nullptr;
+    }
+  }
+
+  for (const auto& state_change_value : *account_state_changes_value) {
+    if (auto state_change = ParseStateChange(state_change_value)) {
+      simulation_response->expected_state_changes.push_back(
+          std::move(state_change));
     } else {
       return nullptr;
     }
-
-    simulation_results->expected_state_changes.push_back(
-        std::move(state_change));
   }
-
-  simulation_response->simulation_results = std::move(simulation_results);
 
   return simulation_response;
 }

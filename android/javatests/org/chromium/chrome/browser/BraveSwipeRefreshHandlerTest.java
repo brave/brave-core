@@ -98,7 +98,7 @@ public class BraveSwipeRefreshHandlerTest {
                         () -> {
                             try {
                                 Tab tab =
-                                        new TabBuilder()
+                                        new TabBuilder(sActivityTestRule.getProfile(false))
                                                 .setWindow(
                                                         sActivityTestRule
                                                                 .getActivity()

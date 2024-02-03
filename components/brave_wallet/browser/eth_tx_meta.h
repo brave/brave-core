@@ -35,6 +35,7 @@ class EthTxMeta : public TxMeta {
   // TxMeta
   base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
+  mojom::CoinType GetCoinType() const override;
 
   TransactionReceipt tx_receipt() const { return tx_receipt_; }
   EthTransaction* tx() const { return tx_.get(); }

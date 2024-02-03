@@ -27,7 +27,6 @@ patches/**/*.patchinfo
 /third_party/rapidjson/src
 /third_party/reclient_configs/src
 /third_party/rust/challenge_bypass_ristretto/v1/crate
-/third_party/rust/kuchiki/v0_8/crate
 /third_party/rust/futures_retry/v0_5/crate
 /third_party/cryptography
 /third_party/macholib

@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
+import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
@@ -54,9 +55,8 @@ public class BraveVpnUtils {
     private static final String BRAVE_ACCOUNT_STAGING_PAGE_URL =
             "https://account.bravesoftware.com?intent=connect-receipt&product=vpn";
 
-    public static boolean mIsServerLocationChanged;
     public static boolean mUpdateProfileAfterSplitTunnel;
-    public static String selectedServerRegion;
+    public static BraveVpnServerRegion selectedServerRegion;
     private static ProgressDialog sProgressDialog;
 
     public static String getBraveAccountUrl() {
@@ -91,6 +91,11 @@ public class BraveVpnUtils {
         activity.startActivity(braveVpnSupportIntent);
     }
 
+    public static void openVpnServerSelectionActivity(Activity activity) {
+        Intent vpnServerSelectionIntent = new Intent(activity, VpnServerSelectionActivity.class);
+        activity.startActivity(vpnServerSelectionIntent);
+    }
+
     public static void showProgressDialog(Activity activity, String message) {
         sProgressDialog = ProgressDialog.show(activity, "", message, true);
     }
@@ -101,7 +106,8 @@ public class BraveVpnUtils {
         }
     }
 
-    public static String getRegionForTimeZone(String jsonTimezones, String currentTimezone) {
+    public static BraveVpnServerRegion getServerRegionForTimeZone(
+            String jsonTimezones, String currentTimezone) {
         // Add root element to make it real JSON, otherwise getJSONArray cannot parse it
         jsonTimezones = "{\"regions\":" + jsonTimezones + "}";
         try {
@@ -112,14 +118,19 @@ public class BraveVpnUtils {
                 JSONArray timezones = region.getJSONArray("timezones");
                 for (int j = 0; j < timezones.length(); j++) {
                     if (timezones.getString(j).equals(currentTimezone)) {
-                        return region.getString("name");
+                        BraveVpnServerRegion braveVpnServerRegion =
+                                new BraveVpnServerRegion(
+                                        region.getString("continent"),
+                                                region.getString("country-iso-code"),
+                                        region.getString("name"), region.getString("name-pretty"));
+                        return braveVpnServerRegion;
                     }
                 }
             }
         } catch (JSONException e) {
             Log.e(TAG, "BraveVpnUtils -> getRegionForTimeZone JSONException error " + e);
         }
-        return "";
+        return null;
     }
 
     public static Pair<String, String> getHostnameForRegion(String jsonHostnames) {
@@ -206,7 +217,8 @@ public class BraveVpnUtils {
             for (int i = 0; i < servers.length(); i++) {
                 JSONObject server = servers.getJSONObject(i);
                 BraveVpnServerRegion vpnServerRegion =
-                        new BraveVpnServerRegion(server.getString("continent"),
+                        new BraveVpnServerRegion(
+                                server.getString("continent"), server.getString("country-iso-code"),
                                 server.getString("name"), server.getString("name-pretty"));
                 vpnServerRegions.add(vpnServerRegion);
             }
@@ -282,5 +294,12 @@ public class BraveVpnUtils {
     public static boolean isVpnFeatureSupported(Context context) {
         return isRegionSupported()
                 && ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(context);
+    }
+
+    public static String countryCodeToEmoji(String countryCode) {
+        int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
+        int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
+        return new String(Character.toChars(firstLetter))
+                + new String(Character.toChars(secondLetter));
     }
 }

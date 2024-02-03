@@ -43,6 +43,7 @@ import {
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
+import { makePortfolioAssetRoute } from '../../../../../utils/routes-utils'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -53,12 +54,12 @@ import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 
 // styles
 import { NftGrid } from './nfts.styles'
-import { Row, ScrollableColumn, VerticalSpace } from '../../../../shared/style'
+import { Row, ScrollableColumn } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 import {
   ButtonIcon,
-  CircleButton,
+  PortfolioActionButton,
   SearchBarWrapper,
   ControlBarWrapper,
   ContentWrapper
@@ -80,7 +81,7 @@ interface Props {
   nftList: BraveWallet.BlockchainToken[]
   accounts: BraveWallet.AccountInfo[]
   onShowPortfolioSettings?: () => void
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 }
 
 const compareFn = (
@@ -159,15 +160,7 @@ export const Nfts = (props: Props) => {
 
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
-      history.push(
-        `${
-          WalletRoutes.PortfolioNFTs //
-        }/${
-          asset.chainId //
-        }/${
-          asset.contractAddress //
-        }/${asset.tokenId}`
-      )
+      history.push(makePortfolioAssetRoute(true, getAssetIdKey(asset)))
       // reset nft metadata
       dispatch(WalletPageActions.updateNFTMetadata(undefined))
     },
@@ -383,52 +376,41 @@ export const Nfts = (props: Props) => {
 
   const listUiByAccounts = React.useMemo(() => {
     return accounts.map((account) => (
-      <Row
-        width='100%'
-        key={account.accountId.uniqueKey}
-      >
+      <React.Fragment key={account.accountId.uniqueKey}>
         {getFilteredNftsByAccount(account).length !== 0 && (
           <AssetGroupContainer
-            key={account.accountId.uniqueKey}
             balance=''
             hideBalance={true}
             account={account}
             isDisabled={getFilteredNftsByAccount(account).length === 0}
-            hasBorder={false}
           >
-            <VerticalSpace space='16px' />
             <NftGrid>
               {getFilteredNftsByAccount(account).map(renderGridViewItem)}
               {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
             </NftGrid>
           </AssetGroupContainer>
         )}
-      </Row>
+      </React.Fragment>
     ))
   }, [accounts, getFilteredNftsByAccount, onSelectAsset])
 
   const listUiByNetworks = React.useMemo(() => {
     return networks?.map((network) => (
-      <Row
-        width='100%'
-        key={networkEntityAdapter.selectId(network).toString()}
-      >
+      <React.Fragment key={networkEntityAdapter.selectId(network).toString()}>
         {getAssetsByNetwork(network).length !== 0 && (
           <AssetGroupContainer
             balance=''
             hideBalance={true}
             network={network}
             isDisabled={getAssetsByNetwork(network).length === 0}
-            hasBorder={false}
           >
-            <VerticalSpace space='16px' />
             <NftGrid>
               {getAssetsByNetwork(network).map(renderGridViewItem)}
               {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
             </NftGrid>
           </AssetGroupContainer>
         )}
-      </Row>
+      </React.Fragment>
     ))
   }, [getAssetsByNetwork, networks])
 
@@ -438,13 +420,10 @@ export const Nfts = (props: Props) => {
     ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
       listUiByAccounts
     ) : (
-      <>
-        <VerticalSpace space='16px' />
-        <NftGrid>
-          {renderedList.map(renderGridViewItem)}
-          {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
-        </NftGrid>
-      </>
+      <NftGrid>
+        {renderedList.map(renderGridViewItem)}
+        {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
+      </NftGrid>
     )
   }, [
     listUiByAccounts,
@@ -506,35 +485,29 @@ export const Nfts = (props: Props) => {
                   autoFocus={true}
                 />
               </SearchBarWrapper>
-              <CircleButton onClick={onCloseSearchBar}>
+              <PortfolioActionButton onClick={onCloseSearchBar}>
                 <ButtonIcon name='close' />
-              </CircleButton>
+              </PortfolioActionButton>
             </Row>
           ) : (
-            <Row width='unset'>
-              <CircleButton
-                marginRight={12}
-                onClick={() => setShowSearchBar(true)}
-              >
+            <Row
+              width='unset'
+              gap='12px'
+            >
+              <PortfolioActionButton onClick={() => setShowSearchBar(true)}>
                 <ButtonIcon name='search' />
-              </CircleButton>
+              </PortfolioActionButton>
               {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 ? (
-                <CircleButton
-                  onClick={onClickIpfsButton}
-                  marginRight={12}
-                >
+                <PortfolioActionButton onClick={onClickIpfsButton}>
                   <ButtonIcon name='product-ipfs-outline' />
-                </CircleButton>
+                </PortfolioActionButton>
               ) : null}
-              <CircleButton
-                onClick={toggleShowAddNftModal}
-                marginRight={12}
-              >
+              <PortfolioActionButton onClick={toggleShowAddNftModal}>
                 <ButtonIcon name='plus-add' />
-              </CircleButton>
-              <CircleButton onClick={onShowPortfolioSettings}>
+              </PortfolioActionButton>
+              <PortfolioActionButton onClick={onShowPortfolioSettings}>
                 <ButtonIcon name='filter-settings' />
-              </CircleButton>
+              </PortfolioActionButton>
             </Row>
           )}
         </Row>

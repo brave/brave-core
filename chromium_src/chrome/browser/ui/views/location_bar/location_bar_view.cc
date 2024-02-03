@@ -9,6 +9,18 @@
 #include "brave/browser/ui/views/page_action/brave_page_action_icon_container_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 
+// |icon_left| - Padding between left border of location bar and first
+//               decoration. Use element padding.
+// |text_left| - Padding between omnibox view and last leading decoration.
+//               If last decoration has label, it has sufficient padding inside.
+//               If custom padding is provided(text_left is not null), respect
+//               it. Otherwise, set our design value - 5px.
+#define BRAVE_LAYOUT_LEADING_DECORATIONS                           \
+  icon_left = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);     \
+  if (text_left == 0 && !location_icon_view_->ShouldShowLabel()) { \
+    text_left = 5;                                                 \
+  }
+
 #define BRAVE_LAYOUT_TRAILING_DECORATIONS                                    \
   auto right_most = GetTrailingViews();                                      \
   for (auto* item : base::Reversed(right_most)) {                            \
@@ -26,6 +38,7 @@
 #undef ChromeOmniboxClient
 #undef OmniboxViewViews
 #undef BRAVE_LAYOUT_TRAILING_DECORATIONS
+#undef BRAVE_LAYOUT_LEADING_DECORATIONS
 
 std::vector<views::View*> LocationBarView::GetTrailingViews() {
   return std::vector<views::View*>();

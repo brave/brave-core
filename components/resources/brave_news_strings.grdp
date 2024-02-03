@@ -85,13 +85,13 @@
     Try again
   </message>
   <message name="IDS_BRAVE_NEWS_NO_CONTENT_HEADING" desc="Message heading for when there is no Brave News content">
-    No content
+    Your Feed is Empty
   </message>
   <message name="IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE" desc="Message body for when there is no Brave News content">
-    Brave News has no content to show.
+    Follow publishers and channels to see them in your feed.
   </message>
   <message name="IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL" desc="Message action label for when there is no Brave News content">
-    Choose content sources
+    Add content sources
   </message>
 
   <message name="IDS_BRAVE_NEWS_CHANNEL_BRAVE" desc="Translation of the 'Brave' channel">
@@ -183,17 +183,11 @@
   <message name="IDS_BRAVE_NEWS_NEWS_PEEK" desc="The 'News' heading for the peeking card">
     News
   </message>
-  <message name="IDS_BRAVE_NEWS_MY_FEED_HEADING" desc="The heading for the feed sidebar">
-    My Feed
-  </message>
   <message name="IDS_BRAVE_NEWS_FOR_YOU_FEED" desc="The heading for For You feed">
     For You
   </message>
   <message name="IDS_BRAVE_NEWS_FOLLOWING_FEED" desc="The heading for Following feed">
     Following
-  </message>
-  <message name="IDS_BRAVE_NEWS_ADD_CHANNELS_OR_PUBLISHERS" desc="Text for the buttons for adding channels or adding publishers">
-    Add
   </message>
   <message name="IDS_BRAVE_NEWS_PUBLISHERS_HEADING" desc="Heading for the list of followed publishers">
     Publishers
@@ -218,6 +212,12 @@
   </message>
   <message name="IDS_BRAVE_NEWS_NO_ARTICLES_MESSAGE" desc="Message displayed when there are no articles available">
     There don't seem to be any articles in this feed at this moment. Try coming back later or refreshing the feed.
+  </message>
+  <message name="IDS_BRAVE_NEWS_OFFLINE_TITLE" desc="Title of offline message">
+    You appear to be offline
+  </message>
+  <message name="IDS_BRAVE_NEWS_OFFLINE_MESSAGE" desc="Message displayed when offline">
+    Check your internet connection and refresh
   </message>
   <message name="IDS_BRAVE_NEWS_CUSTOMIZE_FEED" desc="Text of button for opening the customize dialog">
     Customize

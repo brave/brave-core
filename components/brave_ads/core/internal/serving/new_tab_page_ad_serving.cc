@@ -94,8 +94,12 @@ void NewTabPageAdServing::GetEligibleAdsForUserModelCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  ServeAd(BuildNewTabPageAd(ChooseCreativeAd(creative_ads)),
-          std::move(callback));
+  const CreativeNewTabPageAdInfo creative_ad = ChooseCreativeAd(creative_ads);
+  BLOG(1, "Chosen eligible ad with creative instance id "
+              << creative_ad.creative_instance_id << " and a priority of "
+              << creative_ad.priority);
+
+  ServeAd(BuildNewTabPageAd(creative_ad), std::move(callback));
 }
 
 void NewTabPageAdServing::ServeAd(

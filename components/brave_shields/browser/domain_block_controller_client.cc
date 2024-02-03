@@ -64,7 +64,7 @@ void DomainBlockControllerClient::Proceed() {
   if (!dont_warn_again_ && ephemeral_storage_service_) {
     tab_storage->Enable1PESForUrlIfPossible(
         ephemeral_storage_service_, request_url_,
-        base::BindOnce(&DomainBlockControllerClient::ReloadPage,
+        base::BindOnce(&DomainBlockControllerClient::On1PESState,
                        weak_ptr_factory_.GetWeakPtr()));
   } else {
     ReloadPage();
@@ -73,6 +73,10 @@ void DomainBlockControllerClient::Proceed() {
 
 void DomainBlockControllerClient::ReloadPage() {
   web_contents_->GetController().Reload(content::ReloadType::NORMAL, false);
+}
+
+void DomainBlockControllerClient::On1PESState(bool is_1pes_enabled) {
+  ReloadPage();
 }
 
 void DomainBlockControllerClient::SetDontWarnAgain(bool value) {

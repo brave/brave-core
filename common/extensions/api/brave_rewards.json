@@ -259,6 +259,12 @@
         ]
       },
       {
+        "name": "onSelfCustodyInviteDismissed",
+        "type": "function",
+        "description": "Fired when the self-custody invitation has been dismissed.",
+        "parameters": []
+      },
+      {
         "name": "onExternalWalletConnected",
         "type": "function",
         "description": "Fired when an external wallet is connected",
@@ -1269,6 +1275,29 @@
             ]
           }
         ]
+      },
+      {
+        "name": "selfCustodyInviteDismissed",
+        "type": "function",
+        "description": "Returns a value indicating whether the self-custody invitation has been dismissed.",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "dismissed",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "dismissSelfCustodyInvite",
+        "type": "function",
+        "description": "Dismisses the self-custody invitation.",
+        "parameters": []
       },
       {
         "name": "getScheduledCaptchaInfo",

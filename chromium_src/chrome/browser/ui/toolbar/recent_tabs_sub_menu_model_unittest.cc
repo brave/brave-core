@@ -20,6 +20,21 @@
 #define RecentlyClosedGroupsFromCurrentSession \
   DISABLED_RecentlyClosedGroupsFromCurrentSession
 
+// Disabling these tests because they reference items in menu explicitly by
+// index which doesn't match our menu since we insert an additional "Clear
+// browsing data" item ahead of the entries of interest to the test.
+#define MaxSessionsAndRecency DISABLED_MaxSessionsAndRecency
+
+// Disabling these tests because our "More..." item doesn't match the test's
+// expectation of the tab name.
+#define MaxTabsPerSessionAndRecency DISABLED_MaxTabsPerSessionAndRecency
+
+// Disabling this because we have refresh disabled, but it fails because
+// ExtensionWebContentsObserver::GetForWebContents returns nullptr and makes
+// the test crash.
+#define RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh \
+  DISABLED_RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh
+
 #define BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST           \
   void VerifyModel(const RecentTabsSubMenuModel& model, \
                    base::span<const ModelData> data);   \
@@ -33,6 +48,9 @@
 
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
 
+#undef RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh
+#undef MaxTabsPerSessionAndRecency
+#undef MaxSessionsAndRecency
 #undef RecentlyClosedTabsAndWindowsFromLastSession
 #undef RecentlyClosedTabsFromCurrentSession
 #undef RecentlyClosedGroupsFromCurrentSession
@@ -45,11 +63,6 @@ void RecentTabsSubMenuModelTest::VerifyModel(
     base::span<const ModelData> data) {
   std::vector<ModelData> v_data{data.begin(), data.end()};
   v_data.insert(v_data.begin() + 1, {ui::MenuModel::TYPE_COMMAND, true});
-  const std::string_view test_name =
-      testing::UnitTest::GetInstance()->current_test_info()->name();
-  if (base::StartsWith(test_name, "MaxTabsPerSessionAndRecency/")) {
-    v_data.push_back({ui::MenuModel::TYPE_COMMAND, true});
-  }
   ::VerifyModel(model, base::make_span(v_data.begin(), v_data.size()));
 }
 

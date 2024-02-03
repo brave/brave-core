@@ -45,6 +45,10 @@ class Prefs {
   bool IsFailedDecryptSeedNoticeDismissed() const;
   void DismissFailedDecryptSeedNotice();
 
+  void AddLeaveChainDetail(const char* file, int line, const char* func);
+  std::string GetLeaveChainDetails() const;
+  void ClearLeaveChainDetails();
+
   void Clear();
 
  private:

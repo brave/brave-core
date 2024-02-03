@@ -5,6 +5,9 @@
 import { provideStrings } from '../../../.storybook/locale'
 
 provideStrings({
+  // Entities
+  braveWalletContract: 'Contract',
+
   // Search Text
   braveWalletSearchText: 'Search',
 
@@ -122,6 +125,9 @@ provideStrings({
   braveWalletSearchTokens: 'Search token by name',
   braveWalletSearchNFTs: 'Search NFT by name, id',
   braveWalletChooseAsset: 'Choose asset',
+  braveWalletOrdinalsWarningMessage:
+    'Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.',
+  braveWalletUserUnderstandsLabel: 'I understand',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:
@@ -963,7 +969,8 @@ provideStrings({
   braveWalletFILAccountDescription: 'Filecoin',
   braveWalletBTCMainnetAccountDescription: 'Bitcoin Mainnet',
   braveWalletBTCTestnetAccountDescription: 'Bitcoin Testnet',
-  braveWalletZECAccountDescription: 'ZCash',
+  braveWalletZECAccountDescription: 'Zcash Mainnet',
+  braveWalletZECTestnetAccountDescription: 'Zcash Testnet',
   braveWalletShowNetworkLogoOnNftsTitle: 'Network Logo',
   braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
   braveWalletShowSpamNftsTitle: 'Spam NFTs',
@@ -1095,6 +1102,7 @@ provideStrings({
   // Warnings
   braveWalletNonAsciiCharactersInMessageWarning:
     'Non-ASCII characters detected!',
+  braveWalletFoundRisks: 'We found $1 risks.',
 
   // ASCII toggles
   braveWalletViewEncodedMessage: 'View original message',
@@ -1244,5 +1252,15 @@ provideStrings({
     'Brave works with a partner to provide this service. ' +
     'By enabling, you agree to share unsigned transactions ' +
     'and their DApp URLs with our partner.',
-  braveWalletChangeAnytimeInSettings: 'Change anytime in $1Settings$2.'
+  braveWalletChangeAnytimeInSettings: 'Change anytime in $1Settings$2.',
+
+  // Balance Details Modal
+  braveWalletAvailable: 'Available',
+  braveWalletAvailableBalanceDescription: 'Funds available for you to use.',
+  braveWalletPending: 'Pending',
+  braveWalletPendingBalanceDescription:
+    'A pending change in your wallet balance.',
+  braveWalletTotalBalanceDescription:
+    'Your available funds plus any not-yet-confirmed transactions.',
+  braveWalletUnavailableBalances: 'Some balances may be unavailable'
 })

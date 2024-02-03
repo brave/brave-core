@@ -8,60 +8,21 @@
 #include <fwpmu.h>
 #include <iphlpapi.h>
 #include <ras.h>
+#include <windows.h>
+#include <winerror.h>
 
+#include <ios>
 #include <optional>
 #include <vector>
 
 #include "base/logging.h"
-#include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
-#include "base/win/windows_version.h"
+#include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
-#include "brave/components/brave_vpn/common/win/utils.h"
 
 namespace brave_vpn {
 
 namespace {
-
-// Microsoft-Windows-NetworkProfile
-// fbcfac3f-8459-419f-8e48-1f0b49cdb85e
-constexpr GUID kNetworkProfileGUID = {
-    0xfbcfac3f,
-    0x8459,
-    0x419f,
-    {0x8e, 0x48, 0x1f, 0x0b, 0x49, 0xcd, 0xb8, 0x5e}};
-
-bool SetServiceTriggerForVPNConnection(SC_HANDLE hService,
-                                       const std::wstring& brave_vpn_entry) {
-  std::wstring brave_vpn_entry_with_null(brave_vpn_entry);
-  brave_vpn_entry_with_null += L'\0';
-  // Allocate and set the SERVICE_TRIGGER_SPECIFIC_DATA_ITEM structure
-  SERVICE_TRIGGER_SPECIFIC_DATA_ITEM deviceData = {0};
-  deviceData.dwDataType = SERVICE_TRIGGER_DATA_TYPE_STRING;
-  // Exclude EOL
-  deviceData.cbData = brave_vpn_entry_with_null.size() *
-                      sizeof(brave_vpn_entry_with_null.front());
-  deviceData.pData = (PBYTE)brave_vpn_entry_with_null.c_str();
-  // Allocate and set the SERVICE_TRIGGER structure
-  SERVICE_TRIGGER serviceTrigger = {0};
-  serviceTrigger.dwTriggerType = SERVICE_TRIGGER_TYPE_CUSTOM;
-  serviceTrigger.dwAction = SERVICE_TRIGGER_ACTION_SERVICE_START;
-  serviceTrigger.pTriggerSubtype = const_cast<GUID*>(&kNetworkProfileGUID);
-  serviceTrigger.cDataItems = 1;
-  serviceTrigger.pDataItems = &deviceData;
-
-  // Allocate and set the SERVICE_TRIGGER_INFO structure
-  SERVICE_TRIGGER_INFO serviceTriggerInfo = {0};
-  serviceTriggerInfo.cTriggers = 1;
-  serviceTriggerInfo.pTriggers = &serviceTrigger;
-
-  // Call ChangeServiceConfig2 with the SERVICE_CONFIG_TRIGGER_INFO level
-  // and pass to it the address of the SERVICE_TRIGGER_INFO structure
-  return ChangeServiceConfig2(hService, SERVICE_CONFIG_TRIGGER_INFO,
-                              &serviceTriggerInfo);
-}
 
 DWORD AddSublayer(GUID uuid) {
   FWPM_SESSION0 session = {};
@@ -305,35 +266,6 @@ bool SubscribeRasConnectionNotification(HANDLE event_handle) {
         << std::hex << result;
   }
   return success;
-}
-
-bool ConfigureServiceAutoRestart(const std::wstring& service_name,
-                                 const std::wstring& brave_vpn_entry) {
-  ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
-  if (!scm.IsValid()) {
-    LOG(ERROR) << "::OpenSCManager failed. service_name: " << service_name
-               << ", error: " << std::hex << HRESULTFromLastError();
-    return false;
-  }
-  ScopedScHandle service(
-      ::OpenService(scm.Get(), service_name.c_str(), SERVICE_ALL_ACCESS));
-  if (!service.IsValid()) {
-    LOG(ERROR) << "::OpenService failed. service_name: " << service_name
-               << ", error: " << std::hex << HRESULTFromLastError();
-    return false;
-  }
-
-  if (!brave_vpn::SetServiceFailureActions(service.Get())) {
-    LOG(ERROR) << "SetServiceFailureActions failed:" << std::hex
-               << HRESULTFromLastError();
-    return false;
-  }
-  if (!SetServiceTriggerForVPNConnection(service.Get(), brave_vpn_entry)) {
-    LOG(ERROR) << "SetServiceTriggerForVPNConnection failed:" << std::hex
-               << HRESULTFromLastError();
-    return false;
-  }
-  return true;
 }
 
 void SetFiltersInstalledFlag() {

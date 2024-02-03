@@ -17,6 +17,8 @@ inline constexpr char kMiscMetricsMenuShownStorage[] =
     "brave.misc_metrics.menu_shown_storage";
 inline constexpr char kMiscMetricsPagesLoadedCount[] =
     "brave.core_metrics.pages_loaded";
+inline constexpr char kMiscMetricsPagesReloadedCount[] =
+    "brave.core_metrics.pages_reloaded";
 inline constexpr char kMiscMetricsPrivacyHubViews[] =
     "brave.misc_metrics.privacy_hub_views";
 inline constexpr char kMiscMetricsOpenTabsStorage[] =

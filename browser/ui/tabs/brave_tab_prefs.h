@@ -25,11 +25,17 @@ inline constexpr char kVerticalTabsFloatingEnabled[] =
     "brave.tabs.vertical_tabs_floating_enabled";
 inline constexpr char kVerticalTabsExpandedWidth[] =
     "brave.tabs.vertical_tabs_expanded_width";
+inline constexpr char kVerticalTabsOnRight[] =
+    "brave.tabs.vertical_tabs_on_right";
+inline constexpr char kVerticalTabsShowScrollbar[] =
+    "brave.tabs.vertical_tabs_show_scrollbar";
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
+void MigrateBraveProfilePrefs(PrefService* prefs);
 
 bool AreTooltipsEnabled(PrefService* prefs);
 bool AreCardPreviewsEnabled(PrefService* prefs);
+
 }  // namespace brave_tabs
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_

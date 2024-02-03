@@ -7,13 +7,12 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -65,28 +64,28 @@ void PostBatLoss::Request(const double amount,
 
   const std::string payload = GeneratePayload(amount);
 
-  const std::string header_url =
-      base::StringPrintf("post /v1/wallets/%s/events/batloss/%d",
-                         wallet->payment_id.c_str(), version);
-
-  const auto headers = util::BuildSignHeaders(
-      header_url, payload, wallet->payment_id, wallet->recovery_seed);
-
-  auto url_callback = std::bind(&PostBatLoss::OnRequest, this, _1, callback);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(version);
   request->content = payload;
-  request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  engine_->LoadURL(std::move(request), url_callback);
+
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer || !signer->SignRequest(*request)) {
+    BLOG(0, "Unable to sign request");
+    callback(mojom::Result::FAILED);
+    return;
+  }
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&PostBatLoss::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void PostBatLoss::OnRequest(mojom::UrlResponsePtr response,
-                            PostBatLossCallback callback) {
+void PostBatLoss::OnRequest(PostBatLossCallback callback,
+                            mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   callback(CheckStatusCode(response->status_code));
 }
 

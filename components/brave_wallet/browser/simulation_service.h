@@ -29,12 +29,15 @@ class SharedURLLoaderFactory;
 
 namespace brave_wallet {
 
+class JsonRpcService;
+
 class SimulationService : public KeyedService, public mojom::SimulationService {
  public:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
   SimulationService(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      JsonRpcService* json_rpc_service);
   ~SimulationService() override;
   SimulationService(const SimulationService&) = delete;
   SimulationService& operator=(const SimulationService&) = delete;
@@ -69,12 +72,25 @@ class SimulationService : public KeyedService, public mojom::SimulationService {
 
  private:
   void OnScanEVMTransaction(ScanEVMTransactionCallback callback,
+                            const std::string& user_account,
                             APIRequestResult api_request_result);
 
+  void OnGetLatestSolanaBlockhash(
+      mojom::SolanaTransactionRequestUnionPtr request,
+      const std::string& chain_id,
+      const std::string& language,
+      ScanSolanaTransactionCallback callback,
+      const std::string& latest_blockhash,
+      uint64_t last_valid_block_height,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
+
   void OnScanSolanaTransaction(ScanSolanaTransactionCallback callback,
+                               const std::string& user_account,
                                APIRequestResult api_request_result);
 
   api_request_helper::APIRequestHelper api_request_helper_;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   mojo::ReceiverSet<mojom::SimulationService> receivers_;
   base::WeakPtrFactory<SimulationService> weak_ptr_factory_{this};
 };

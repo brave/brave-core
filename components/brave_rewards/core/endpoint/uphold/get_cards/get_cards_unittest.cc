@@ -102,6 +102,35 @@ TEST_F(GetCardsTest, ServerOK) {
   task_environment_.RunUntilIdle();
 }
 
+TEST_F(GetCardsTest, ServerPartialContent) {
+  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 206;
+        response->url = request->url;
+        response->body = R"([
+             {
+               "available": "12.35",
+               "balance": "12.35",
+               "currency": "BAT",
+               "id": "3ed3b2c4-a715-4c01-b302-fa2681a971ea",
+               "label": "Brave Browser"
+             }
+            ])";
+        std::move(callback).Run(std::move(response));
+      });
+
+  base::MockCallback<GetCardsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(mojom::Result::OK,
+                  std::string("3ed3b2c4-a715-4c01-b302-fa2681a971ea")))
+      .Times(1);
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+
+  task_environment_.RunUntilIdle();
+}
+
 TEST_F(GetCardsTest, CardNotFound) {
   EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)

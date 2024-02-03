@@ -55,9 +55,9 @@ BlockedDomain1PESLifetime::~BlockedDomain1PESLifetime() {
 }
 
 void BlockedDomain1PESLifetime::AddOnReadyCallback(
-    base::OnceCallback<void()> on_ready) {
+    base::OnceCallback<void(bool)> on_ready) {
   if (is_1pes_enabled_.has_value()) {
-    std::move(on_ready).Run();
+    std::move(on_ready).Run(*is_1pes_enabled_);
   } else {
     on_ready_.push_back(std::move(on_ready));
   }
@@ -74,7 +74,7 @@ void BlockedDomain1PESLifetime::On1PESEnableRequestComplete(bool is_enabled) {
   is_1pes_enabled_ = is_enabled;
   auto on_ready = std::move(on_ready_);
   for (auto& ready_cb : on_ready) {
-    std::move(ready_cb).Run();
+    std::move(ready_cb).Run(is_enabled);
   }
 }
 

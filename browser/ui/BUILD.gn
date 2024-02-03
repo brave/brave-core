@@ -201,6 +201,8 @@ source_set("ui") {
       "webui/settings/default_brave_shields_handler.h",
       "webui/settings/settings_cookies_view_handler.cc",
       "webui/settings/settings_cookies_view_handler.h",
+      "webui/side_panel/reading_list/brave_reading_list_page_handler.cc",
+      "webui/side_panel/reading_list/brave_reading_list_page_handler.h",
       "webui/speedreader/speedreader_toolbar_data_handler_impl.cc",
       "webui/speedreader/speedreader_toolbar_data_handler_impl.h",
       "webui/speedreader/speedreader_toolbar_ui.cc",
@@ -215,6 +217,9 @@ source_set("ui") {
       "whats_new/whats_new_util.cc",
       "whats_new/whats_new_util.h",
     ]
+
+    deps +=
+        [ "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings" ]
 
     if (enable_request_otr) {
       deps += [
@@ -258,6 +263,8 @@ source_set("ui") {
         "webui/settings/brave_tor_handler.cc",
         "webui/settings/brave_tor_handler.h",
       ]
+
+      deps += [ "//chrome/browser/image_fetcher" ]
     }
     if (enable_extensions) {
       sources += [
@@ -344,6 +351,10 @@ source_set("ui") {
       "views/omnibox/brave_rounded_omnibox_results_frame.h",
       "views/omnibox/brave_search_conversion_promotion_view.cc",
       "views/omnibox/brave_search_conversion_promotion_view.h",
+      "views/overlay/brave_back_to_tab_label_button.cc",
+      "views/overlay/brave_back_to_tab_label_button.h",
+      "views/overlay/brave_video_overlay_window_views.cc",
+      "views/overlay/brave_video_overlay_window_views.h",
       "views/page_action/brave_page_action_icon_container_view.cc",
       "views/page_action/brave_page_action_icon_container_view.h",
       "views/rounded_separator.cc",

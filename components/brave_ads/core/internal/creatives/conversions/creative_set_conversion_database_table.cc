@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <utility>
 #include <vector>
 
@@ -115,14 +116,16 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "ad_conversions");
 
+  DropTable(transaction, "creative_ad_conversions");
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS creative_ad_conversions (creative_set_id "
-      "TEXT NOT NULL, type TEXT NOT NULL, url_pattern TEXT NOT NULL, "
-      "advertiser_public_key TEXT, observation_window INTEGER NOT NULL, "
-      "expiry_timestamp TIMESTAMP NOT NULL, UNIQUE(creative_set_id, type) ON "
-      "CONFLICT REPLACE, PRIMARY KEY(creative_set_id, type));";
+      "CREATE TABLE creative_ad_conversions (creative_set_id TEXT NOT NULL, "
+      "type TEXT NOT NULL, url_pattern TEXT NOT NULL, advertiser_public_key "
+      "TEXT, observation_window INTEGER NOT NULL, expiry_timestamp TIMESTAMP "
+      "NOT NULL, UNIQUE(creative_set_id, type) ON CONFLICT REPLACE, PRIMARY "
+      "KEY(creative_set_id, type));";
   transaction->commands.push_back(std::move(command));
 }
 

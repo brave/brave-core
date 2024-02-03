@@ -35,11 +35,13 @@ class BraveTabStrip : public TabStrip {
       BrowserFrameActiveState active_state) const override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
 
   void UpdateTabContainer();
   void UpdateTabStripMargins();
   bool ShouldShowVerticalTabs() const;
+
+  TabContainer* GetTabContainerForTesting();
 
   // TabStrip overrides:
   SkColor GetTabSeparatorColor() const override;

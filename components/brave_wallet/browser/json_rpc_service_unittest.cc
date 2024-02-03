@@ -34,6 +34,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
@@ -72,7 +73,10 @@
 #include "url/origin.h"
 
 using testing::_;
+using testing::Contains;
 using testing::ElementsAreArray;
+using testing::Eq;
+using testing::Not;
 
 MATCHER_P(MatchesCIDv1URL, ipfs_url, "") {
   return ipfs::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
@@ -572,9 +576,9 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
   std::vector<uint8_t> token_account_data_;
 };
 
-class JsonRpcEnpointHandler {
+class JsonRpcEndpointHandler {
  public:
-  explicit JsonRpcEnpointHandler(const GURL& endpoint) : endpoint_(endpoint) {}
+  explicit JsonRpcEndpointHandler(const GURL& endpoint) : endpoint_(endpoint) {}
 
   std::optional<std::string> HandleRequest(
       const network::ResourceRequest& request) {
@@ -1949,6 +1953,18 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
+  auto expected_token = mojom::BlockchainToken::New();
+  expected_token->coin = mojom::CoinType::ETH;
+  expected_token->chain_id = "0x111";
+  expected_token->name = "symbol_name";
+  expected_token->symbol = "symbol";
+  expected_token->decimals = 11;
+  expected_token->logo = "https://url1.com";
+  expected_token->visible = true;
+
+  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+              Not(Contains(Eq(std::ref(expected_token)))));
+
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
   bool callback_is_called = false;
   mojom::ProviderError expected = mojom::ProviderError::kSuccess;
@@ -1968,6 +1984,9 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
             callback_is_called = true;
           }));
   base::RunLoop().RunUntilIdle();
+
+  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+              Contains(Eq(std::ref(expected_token))));
 
   bool failed_callback_is_called = false;
   mojom::ProviderError expected_error =
@@ -1997,27 +2016,24 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   ASSERT_EQ(GetAllEthCustomChains(prefs()).size(), 1u);
   EXPECT_EQ(GetAllEthCustomChains(prefs())[0], chain.Clone());
 
-  const auto& assets_pref = prefs()->GetDict(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref.FindByDottedPath("ethereum.0x111");
-  ASSERT_TRUE(list->is_list());
-  const base::Value::List& asset_list = list->GetList();
-  ASSERT_EQ(asset_list.size(), 1u);
-
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("address"), "");
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("name"), "symbol_name");
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("symbol"), "symbol");
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc20"), false);
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].GetDict().FindInt("decimals"), 11);
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
-
   callback_is_called = false;
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
   ASSERT_FALSE(callback_is_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
+  auto expected_token = mojom::BlockchainToken::New();
+  expected_token->coin = mojom::CoinType::ETH;
+  expected_token->chain_id = "0x111";
+  expected_token->name = "symbol_name";
+  expected_token->symbol = "symbol";
+  expected_token->decimals = 11;
+  expected_token->logo = "https://url1.com";
+  expected_token->visible = true;
+
+  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+              Not(Contains(Eq(std::ref(expected_token)))));
+
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
 
   base::RunLoop loop;
@@ -2040,6 +2056,9 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
   loop.Run();
 
+  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+              Contains(Eq(std::ref(expected_token))));
+
   ASSERT_TRUE(
       brave_wallet::GetNetworkURL(prefs(), "0x111", mojom::CoinType::ETH)
           .is_valid());
@@ -2047,21 +2066,6 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   // Prefs should be updated.
   ASSERT_EQ(GetAllEthCustomChains(prefs()).size(), 1u);
   EXPECT_EQ(GetAllEthCustomChains(prefs())[0], chain.Clone());
-
-  const auto& assets_pref = prefs()->GetDict(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref.FindByDottedPath("ethereum.0x111");
-  ASSERT_TRUE(list->is_list());
-  const base::Value::List& asset_list = list->GetList();
-  ASSERT_EQ(asset_list.size(), 1u);
-
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("address"), "");
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("name"), "symbol_name");
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("symbol"), "symbol");
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc20"), false);
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].GetDict().FindInt("decimals"), 11);
-  EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
 
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
 }
@@ -2957,7 +2961,7 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
 
   void SetUp() override {
     JsonRpcServiceUnitTest::SetUp();
-    eth_mainnet_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
+    eth_mainnet_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
     eth_mainnet_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
         EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
@@ -2965,7 +2969,7 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
     eth_mainnet_endpoint_handler_->AddEthCallHandler(
         eth_mainnet_getmany_call_handler_.get());
 
-    polygon_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
+    polygon_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         GetUnstoppableDomainsRpcUrl(mojom::kPolygonMainnetChainId));
     polygon_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
         EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
@@ -2981,7 +2985,7 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
   static constexpr char k0x8aaD44Addr[] =
       "0x8aaD44321A86b170879d7A244c1e8d360c99DdA8";
 
-  // Plygon: javajobs.crypto -> 0x3a2f3f7aab82d69036763cfd3f755975f84496e6
+  // Polygon: javajobs.crypto -> 0x3a2f3f7aab82d69036763cfd3f755975f84496e6
   static constexpr char k0x3a2f3fAddr[] =
       "0x3a2f3f7aab82d69036763cfd3f755975f84496e6";
 
@@ -3036,8 +3040,8 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
   }
 
  protected:
-  std::unique_ptr<JsonRpcEnpointHandler> eth_mainnet_endpoint_handler_;
-  std::unique_ptr<JsonRpcEnpointHandler> polygon_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> eth_mainnet_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> polygon_endpoint_handler_;
 
   std::unique_ptr<UDGetManyCallHandler> eth_mainnet_getmany_call_handler_;
   std::unique_ptr<UDGetManyCallHandler> polygon_getmany_call_handler_;
@@ -3657,11 +3661,11 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidDomain) {
   }
 }
 
-TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
+TEST_F(JsonRpcServiceUnitTest, IsValidEnsDomain) {
   std::vector<std::string> valid_domains = {"brave.eth", "test.brave.eth",
                                             "brave-test.test-dev.eth"};
   for (const auto& domain : valid_domains) {
-    EXPECT_TRUE(JsonRpcService::IsValidDomain(domain))
+    EXPECT_TRUE(JsonRpcService::IsValidEnsDomain(domain))
         << domain << " should be valid";
   }
 
@@ -3669,7 +3673,42 @@ TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
       "",      ".eth",    "-brave.eth",      "brave-.eth",     "brave.e-th",
       "b.eth", "brave.e", "-brave.test.eth", "brave-.test.eth"};
   for (const auto& domain : invalid_domains) {
-    EXPECT_FALSE(JsonRpcService::IsValidDomain(domain))
+    EXPECT_FALSE(JsonRpcService::IsValidEnsDomain(domain))
+        << domain << " should be invalid";
+  }
+}
+
+TEST_F(JsonRpcServiceUnitTest, IsValidSnsDomain) {
+  std::vector<std::string> valid_domains = {
+      "brave.sol",                //
+      "test.brave.sol",           //
+      "brave-test.test-dev.sol",  //
+      "b.sol",                    //
+      "w.sol",                    //
+      "-.sol",                    //
+      "-brave.sol",               //
+      "brave-.sol",               //
+      "---.sol",                  //
+      "-.-.sol",                  //
+      "-brave.test.sol",          //
+      "brave-.test.sol"           //
+  };
+  for (const auto& domain : valid_domains) {
+    EXPECT_TRUE(JsonRpcService::IsValidSnsDomain(domain))
+        << domain << " should be valid";
+  }
+
+  std::vector<std::string> invalid_domains = {
+      "",            //
+      "b.eth",       //
+      ".sol",        //
+      "brave.s-ol",  //
+      "B.sol",       //
+      "brave.s",     //
+      "b.Sol"        //
+  };
+  for (const auto& domain : invalid_domains) {
+    EXPECT_FALSE(JsonRpcService::IsValidSnsDomain(domain))
         << domain << " should be invalid";
   }
 }
@@ -4296,141 +4335,6 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaLatestBlockhash) {
       mojom::kLocalhostChainId, "", 0,
       mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-}
-
-TEST_F(JsonRpcServiceUnitTest, MigrateDeprecatedEthereumTestnets) {
-  // If Ropsten (0x3), Rinkeby (0x4), or Kovan (0x2a) is set as selected network
-  // it should be switched to mainnet after migration
-  const std::vector<std::string> deprecated_chain_ids = {"0x3", "0x4", "0x2a"};
-  for (const std::string& deprecated_chain_id : deprecated_chain_ids) {
-    // Set up test by setting migrated pref to false
-    prefs()->SetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated,
-                        false);
-    ASSERT_FALSE(
-        prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
-
-    // Set selected network to deprecated network and validate
-    ScopedDictPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
-    update->Set(kEthereumPrefKey, deprecated_chain_id);
-    const auto& selected_networks =
-        prefs()->GetDict(kBraveWalletSelectedNetworks);
-    const std::string* selected_eth_network =
-        selected_networks.FindString(kEthereumPrefKey);
-    ASSERT_TRUE(selected_eth_network);
-    EXPECT_EQ(*selected_eth_network, deprecated_chain_id);
-
-    // Run deprecation migration and validate network is set to mainnet and
-    // migrated pref flag is set to true
-    JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs());
-    const auto& new_selected_networks =
-        prefs()->GetDict(kBraveWalletSelectedNetworks);
-    selected_eth_network = new_selected_networks.FindString(kEthereumPrefKey);
-    EXPECT_EQ(*selected_eth_network, mojom::kMainnetChainId);
-    EXPECT_TRUE(
-        prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
-    EXPECT_EQ(GetCurrentChainId(prefs(), mojom::CoinType::ETH, std::nullopt),
-              mojom::kMainnetChainId);
-  }
-
-  // Nothing happens if non deprecated network is selected
-  prefs()->SetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated, false);
-  ASSERT_FALSE(
-      prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
-
-  // Set selected network to deprecated network and validate
-  ScopedDictPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
-  update->Set(kEthereumPrefKey, mojom::kSepoliaChainId);
-  const auto& selected_networks =
-      prefs()->GetDict(kBraveWalletSelectedNetworks);
-  const std::string* selected_eth_network =
-      selected_networks.FindString(kEthereumPrefKey);
-  ASSERT_TRUE(selected_eth_network);
-  EXPECT_EQ(*selected_eth_network, mojom::kSepoliaChainId);
-
-  // Run migration and validate network is unchanged and migrated
-  // pref flag is set to true
-  JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs());
-  const auto& new_selected_networks =
-      prefs()->GetDict(kBraveWalletSelectedNetworks);
-  selected_eth_network = new_selected_networks.FindString(kEthereumPrefKey);
-  EXPECT_EQ(*selected_eth_network, mojom::kSepoliaChainId);
-  EXPECT_TRUE(
-      prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
-  EXPECT_EQ(GetCurrentChainId(prefs(), mojom::CoinType::ETH, std::nullopt),
-            mojom::kSepoliaChainId);
-}
-
-TEST_F(JsonRpcServiceUnitTest, MigrateMultichainNetworks) {
-  prefs()->ClearPref(kBraveWalletCustomNetworks);
-  prefs()->ClearPref(kBraveWalletSelectedNetworks);
-
-  std::optional<base::Value> old_custom_networks = base::JSONReader::Read(R"([
-    {
-        "blockExplorerUrls": [
-            "https://thaichain.io"
-        ],
-        "chainId": "0x7",
-        "chainName": "ThaiChain",
-        "iconUrls": [],
-        "is_eip1559": false,
-        "nativeCurrency": {
-            "decimals": 18,
-            "name": "ThaiChain Ether",
-            "symbol": "TCH"
-        },
-        "rpcUrls": [
-            "https://rpc.dome.cloud"
-        ]
-    },
-    {
-        "blockExplorerUrls": [
-            "https://ubiqscan.io"
-        ],
-        "chainId": "0x8",
-        "chainName": "Ubiq",
-        "iconUrls": [],
-        "is_eip1559": false,
-        "nativeCurrency": {
-            "decimals": 18,
-            "name": "Ubiq Ether",
-            "symbol": "UBQ"
-        },
-        "rpcUrls": [
-            "https://rpc.octano.dev",
-            "https://pyrus2.ubiqscan.io"
-        ]
-    }
-  ])");
-  prefs()->Set(kBraveWalletCustomNetworksDeprecated, *old_custom_networks);
-  prefs()->SetString(kBraveWalletCurrentChainId, "0x3");
-
-  JsonRpcService::MigrateMultichainNetworks(prefs());
-
-  const auto& new_custom_networks =
-      prefs()->GetDict(kBraveWalletCustomNetworks);
-  const base::Value* eth_custom_networks =
-      new_custom_networks.Find(kEthereumPrefKey);
-  ASSERT_TRUE(eth_custom_networks);
-  EXPECT_EQ(*eth_custom_networks, *old_custom_networks);
-
-  const auto& selected_networks =
-      prefs()->GetDict(kBraveWalletSelectedNetworks);
-  const std::string* eth_selected_networks =
-      selected_networks.FindString(kEthereumPrefKey);
-  ASSERT_TRUE(eth_selected_networks);
-  EXPECT_EQ(*eth_selected_networks, "0x3");
-  const std::string* sol_selected_networks =
-      selected_networks.FindString(kSolanaPrefKey);
-  ASSERT_TRUE(sol_selected_networks);
-  EXPECT_EQ(*sol_selected_networks, mojom::kSolanaMainnet);
-
-  const std::string* fil_selected_networks =
-      selected_networks.FindString(kFilecoinPrefKey);
-  ASSERT_TRUE(fil_selected_networks);
-  EXPECT_EQ(*fil_selected_networks, mojom::kFilecoinMainnet);
-
-  EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCustomNetworksDeprecated));
-  EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCurrentChainId));
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetSolanaSignatureStatuses) {
@@ -5501,7 +5405,7 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   void SetUp() override {
     JsonRpcServiceUnitTest::SetUp();
 
-    json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
+    json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
 
     ens_resolver_handler_ =
@@ -5605,7 +5509,7 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::unique_ptr<Ensip10SupportHandler> ensip10_support_handler_;
   std::unique_ptr<Ensip10ResolveHandler> ensip10_resolve_handler_;
   std::unique_ptr<OffchainCallbackHandler> ensip10_resolve_callback_handler_;
-  std::unique_ptr<JsonRpcEnpointHandler> json_rpc_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> json_rpc_endpoint_handler_;
   std::unique_ptr<OffchainGatewayHandler> offchain_gateway_handler_;
 };
 
@@ -5946,7 +5850,7 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
     ED25519_keypair_from_seed(domain_owner_public_key_.data(),
                               domain_owner_private_key_.data(), seed);
 
-    json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEnpointHandler>(
+    json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL));
 
     mint_address_handler_ = std::make_unique<GetAccountInfoHandler>(
@@ -6072,7 +5976,7 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::unique_ptr<GetAccountInfoHandler> ipfs_record_address_handler_;
   std::unique_ptr<GetAccountInfoHandler> default_handler_;
 
-  std::unique_ptr<JsonRpcEnpointHandler> json_rpc_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> json_rpc_endpoint_handler_;
 };
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {

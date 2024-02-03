@@ -28,14 +28,6 @@ std::string GetUrl(UrlType type) {
   }
 }
 
-std::string GetAccountUrl() {
-  return GetUrl(UrlType::kAPI) + "/dashboard";
-}
-
-std::string GetActivityUrl() {
-  return GetUrl(UrlType::kAPI) + "/activity";
-}
-
 }  // namespace
 
 namespace zebpay {
@@ -69,15 +61,12 @@ std::string GetClientSecret() {
              : BUILDFLAG(ZEBPAY_SANDBOX_CLIENT_SECRET);
 }
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
-  if (wallet) {
-    wallet->account_url = GetAccountUrl();
-    wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
-                               ? GetActivityUrl()
-                               : "";
-  }
+std::string GetAccountUrl() {
+  return GetUrl(UrlType::kAPI) + "/dashboard";
+}
 
-  return wallet;
+std::string GetActivityUrl() {
+  return GetUrl(UrlType::kAPI) + "/activity";
 }
 
 }  // namespace zebpay

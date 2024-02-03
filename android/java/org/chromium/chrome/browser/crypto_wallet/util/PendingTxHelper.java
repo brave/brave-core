@@ -42,13 +42,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     public LiveData<TransactionInfo> mSelectedPendingRequest;
     public LiveData<Boolean> mHasNoPendingTxAfterProcessing;
     private TxServiceObserverImpl mTxServiceObserver;
-    private String mChainIdForTxs;
 
-    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
-            String chainIdForTxs) {
-        // ChainId to fetch network specific transactions, pass null as value for `chainIdForTxs` to
-        // fetch all transactions across all networks.
-        mChainIdForTxs = chainIdForTxs;
+    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll) {
         assert txService != null;
         mTxService = txService;
         mAccountInfos = accountInfos;
@@ -67,9 +62,12 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
         mHasNoPendingTxAfterProcessing = _mHasNoPendingTxAfterProcessing;
     }
 
-    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
-            boolean shouldObserveTxUpdates, String chainIdForTxs) {
-        this(txService, accountInfos, returnAll, chainIdForTxs);
+    public PendingTxHelper(
+            TxService txService,
+            AccountInfo[] accountInfos,
+            boolean returnAll,
+            boolean shouldObserveTxUpdates) {
+        this(txService, accountInfos, returnAll);
         if (shouldObserveTxUpdates) {
             mTxServiceObserver = new TxServiceObserverImpl(this);
             txService.addObserver(mTxServiceObserver);
@@ -104,8 +102,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                     new AsyncUtils.GetAllTransactionInfoResponseContext(
                             allTxMultiResponse.singleResponseComplete, accountInfo.name);
             allTxContexts.add(allTxContext);
-            mTxService.getAllTransactionInfo(accountInfo.accountId.coin, mChainIdForTxs,
-                    accountInfo.accountId, allTxContext);
+            mTxService.getAllTransactionInfo(
+                    accountInfo.accountId.coin, null, accountInfo.accountId, allTxContext);
         }
         allTxMultiResponse.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {

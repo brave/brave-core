@@ -10,8 +10,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -85,23 +85,27 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
       base::BindOnce(&PostSuggestionsClaim::OnRequest, base::Unretained(this),
                      std::move(callback));
 
-  auto headers =
-      util::BuildSignHeaders("post /v2/suggestions/claim", payload,
-                             wallet->payment_id, wallet->recovery_seed);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = payload;
-  request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer || !signer->SignRequest(*request)) {
+    BLOG(0, "Unable to sign request");
+    std::move(callback).Run(mojom::Result::FAILED, "");
+    return;
+  }
+
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
                                      mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   auto result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::OK) {
     std::move(callback).Run(result, "");

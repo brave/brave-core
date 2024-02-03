@@ -6,18 +6,12 @@
 #ifndef BRAVE_NET_PROXY_RESOLUTION_PROXY_CONFIG_SERVICE_TOR_H_
 #define BRAVE_NET_PROXY_RESOLUTION_PROXY_CONFIG_SERVICE_TOR_H_
 
-#include <map>
-#include <queue>
 #include <string>
-#include <utility>
 
-#include "base/compiler_specific.h"
 #include "base/observer_list.h"
-#include "base/timer/timer.h"
 #include "net/base/net_export.h"
 #include "net/base/proxy_server.h"
 #include "net/proxy_resolution/proxy_config_service.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
 
 class GURL;
 
@@ -27,6 +21,7 @@ class Time;
 
 namespace net {
 
+class NetworkAnonymizationKey;
 class ProxyConfigWithAnnotation;
 class ProxyInfo;
 class ProxyResolutionService;
@@ -44,6 +39,7 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
   void SetNewTorCircuit(const GURL& url);
   static void SetProxyAuthorization(const ProxyConfigWithAnnotation& config,
                                     const GURL& url,
+                                    const NetworkAnonymizationKey& key,
                                     ProxyResolutionService* service,
                                     ProxyInfo* result);
 

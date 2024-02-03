@@ -28,7 +28,7 @@
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Звіт про пошкоджений сайт",
+    "message": "Повідомити про пошкоджений сайт",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -44,7 +44,7 @@
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "з'єднання оновлені",
+    "message": "з'єднань оновлено",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
@@ -56,19 +56,19 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Стеження та реклама заблоковані",
+    "message": "Стеження та реклама блокуються",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Стеження та реклама заблоковані (агресивно)",
+    "message": "Стеження та реклама блокуються (агресивно)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Стеження та реклама заблоковані (стандартно)",
+    "message": "Стеження та реклама блокуються (стандартно)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Дозволити все стеження та рекламу",
+    "message": "Дозволити стеження та рекламу",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -80,35 +80,35 @@
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Скрипти блоковано",
+    "message": "Скрипти заблоковано",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Сторонні куки заблоковано",
+    "message": "Сторонні файли cookie блокуються",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Куки заблоковано",
+    "message": "Файли cookie блокуються",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Всі куки дозволено",
+    "message": "Всі файли cookie дозволено",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Цифрові відбитки заблоковано",
+    "message": "Зчитування цифрового відбитка блокується",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Цифрові відбитки заблоковано (стандартно)",
+    "message": "Зчитування цифрового відбитка блокується (стандартно)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Цифрові відбитки заблоковано (суворо, може пошкодити сайти)",
+    "message": "Зчитування цифрового відбитка блокується (посилено, може пошкодити сайти)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Дозволити усі цифрові відбитки",
+    "message": "Дозволити зчитування цифрового відбитка",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
@@ -180,23 +180,23 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Розширений вигляд",
+    "message": "Розширене подання",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Простий вигляд",
+    "message": "Просте подання",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Сайти часто містять куки та скрипти, які намагаються ідентифікувати вас та ваш пристрій (часто вбудовані в рекламу). Вони хочуть сформувати ваш профіль і потім переслідувати вас в Інтернеті, стежачи за вашими діями на кожному сайті. Brave блокує такі елементи, щоб ви могли переглядати сайти без стеження.",
+    "message": "Сайти часто містять файли cookie та скрипти, які намагаються ідентифікувати вас і ваш пристрій (часто вбудовані в рекламу). Вони хочуть сформувати ваш профіль і потім переслідувати вас в інтернеті, збираючи дані про вашу діяльність на кожному сайті. Brave блокує такі елементи, щоб ви могли переглядати сайти без стеження.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Стеження між сайтами та інші шкідливі елементи заблоковано",
+    "message": "Стеження між сайтами й інші елементи заблоковано",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Зміна налаштувань Щита у цьому вигляді може вплинути на веб-сумісність на цьому сайті.",
+    "message": "Зміна налаштувань щитів у цьому поданні може вплинути на вебсумісність цього сайту.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {

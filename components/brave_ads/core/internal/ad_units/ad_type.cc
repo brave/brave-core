@@ -24,14 +24,13 @@ constexpr char kPromotedContentAdType[] = "promoted_content_ad";
 constexpr char kInlineContentAdType[] = "inline_content_ad";
 constexpr char kSearchResultAdType[] = "search_result_ad";
 
-constexpr auto kParseAdTypeMap =
-    base::MakeFixedFlatMap<std::string_view, AdType>(
-        {{kUndefinedType, AdType::kUndefined},
-         {kNotificationAdType, AdType::kNotificationAd},
-         {kNewTabPageAdType, AdType::kNewTabPageAd},
-         {kPromotedContentAdType, AdType::kPromotedContentAd},
-         {kInlineContentAdType, AdType::kInlineContentAd},
-         {kSearchResultAdType, AdType::kSearchResultAd}});
+constexpr auto kToAdTypeMap = base::MakeFixedFlatMap<std::string_view, AdType>(
+    {{kUndefinedType, AdType::kUndefined},
+     {kNotificationAdType, AdType::kNotificationAd},
+     {kNewTabPageAdType, AdType::kNewTabPageAd},
+     {kPromotedContentAdType, AdType::kPromotedContentAd},
+     {kInlineContentAdType, AdType::kInlineContentAd},
+     {kSearchResultAdType, AdType::kSearchResultAd}});
 
 constexpr auto kAdTypeToStringMap =
     base::MakeFixedFlatMap<AdType, std::string_view>(
@@ -44,9 +43,9 @@ constexpr auto kAdTypeToStringMap =
 
 }  // namespace
 
-AdType ParseAdType(std::string_view value) {
-  const auto* iter = kParseAdTypeMap.find(value);
-  if (iter != kParseAdTypeMap.cend()) {
+AdType ToAdType(std::string_view value) {
+  const auto* iter = kToAdTypeMap.find(value);
+  if (iter != kToAdTypeMap.cend()) {
     return iter->second;
   }
 

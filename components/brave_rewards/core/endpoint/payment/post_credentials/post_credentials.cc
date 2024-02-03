@@ -9,6 +9,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
@@ -80,13 +81,15 @@ void PostCredentials::Request(const std::string& order_id,
   request->content = GeneratePayload(item_id, type, std::move(blinded_creds));
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void PostCredentials::OnRequest(PostCredentialsCallback callback,
                                 mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 

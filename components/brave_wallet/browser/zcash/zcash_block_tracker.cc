@@ -48,18 +48,18 @@ std::optional<uint32_t> ZCashBlockTracker::GetLatestHeight(
 
 void ZCashBlockTracker::OnGetLatestBlockForHeight(
     const std::string& chain_id,
-    base::expected<zcash::BlockID, std::string> latest_block) {
-  if (!latest_block.has_value()) {
+    base::expected<mojom::BlockIDPtr, std::string> latest_block) {
+  if (!latest_block.has_value() || !latest_block.value()) {
     return;
   }
   auto cur_latest_height = GetLatestHeight(chain_id);
   if (cur_latest_height &&
-      cur_latest_height.value() == latest_block->height()) {
+      cur_latest_height.value() == (*latest_block)->height) {
     return;
   }
-  latest_height_map_[chain_id] = latest_block->height();
+  latest_height_map_[chain_id] = (*latest_block)->height;
   for (auto& observer : observers_) {
-    observer.OnLatestHeightUpdated(chain_id, latest_block->height());
+    observer.OnLatestHeightUpdated(chain_id, (*latest_block)->height);
   }
 }
 

@@ -7,11 +7,10 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -58,21 +57,21 @@ mojom::Result PostClobberedClaims::CheckStatusCode(const int status_code) {
 
 void PostClobberedClaims::Request(base::Value::List corrupted_claims,
                                   PostClobberedClaimsCallback callback) {
-  auto url_callback =
-      std::bind(&PostClobberedClaims::OnRequest, this, _1, callback);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(std::move(corrupted_claims));
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  engine_->LoadURL(std::move(request), url_callback);
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&PostClobberedClaims::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void PostClobberedClaims::OnRequest(mojom::UrlResponsePtr response,
-                                    PostClobberedClaimsCallback callback) {
+void PostClobberedClaims::OnRequest(PostClobberedClaimsCallback callback,
+                                    mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   callback(CheckStatusCode(response->status_code));
 }
 

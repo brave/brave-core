@@ -38,7 +38,17 @@ const HISTORY = [
     text: 'The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.',
     characterType: mojom.CharacterType.ASSISTANT,
     visibility: mojom.ConversationTurnVisibility.VISIBLE
-  }
+  },
+  {
+    text: 'Write a hello world program in c++',
+    characterType: mojom.CharacterType.HUMAN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE
+  },
+  {
+    text: "Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!",
+    characterType: mojom.CharacterType.ASSISTANT,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE
+  },
 ]
 
 const MODELS: mojom.Model[] = [
@@ -49,7 +59,7 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: false,
+    access: mojom.ModelAccess.BASIC,
     maxPageContentLength: 10000,
     longConversationWarningCharacterLimit: 9700
   },
@@ -60,7 +70,18 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: true,
+    access: mojom.ModelAccess.PREMIUM,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
+  },
+  {
+    key: '3',
+    name: 'model-three-freemium',
+    displayName: 'Model Three',
+    displayMaker: 'Company',
+    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+    category: mojom.ModelCategory.CHAT,
+    access: mojom.ModelAccess.BASIC_AND_PREMIUM,
     maxPageContentLength: 10000,
     longConversationWarningCharacterLimit: 9700
   }

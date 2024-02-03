@@ -189,12 +189,16 @@ impl DenyOption {
         ]
     }
     /// Get the warning::Kind that corresponds to self, if applicable
-    pub fn get_warning_kind(self) -> Option<WarningKind> {
+    pub fn get_warning_kind(self) -> &'static [WarningKind] {
         match self {
-            DenyOption::Warnings => None,
-            DenyOption::Unmaintained => Some(WarningKind::Unmaintained),
-            DenyOption::Unsound => Some(WarningKind::Unsound),
-            DenyOption::Yanked => Some(WarningKind::Yanked),
+            DenyOption::Warnings => &[
+                WarningKind::Unmaintained,
+                WarningKind::Unsound,
+                WarningKind::Yanked,
+            ],
+            DenyOption::Unmaintained => &[WarningKind::Unmaintained],
+            DenyOption::Unsound => &[WarningKind::Unsound],
+            DenyOption::Yanked => &[WarningKind::Yanked],
         }
     }
 }
@@ -217,7 +221,7 @@ impl FromStr for DenyOption {
 }
 
 /// Output format
-#[derive(Copy, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Default, Copy, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum OutputFormat {
     /// Display JSON
     #[serde(rename = "json")]
@@ -225,13 +229,8 @@ pub enum OutputFormat {
 
     /// Display human-readable output to the terminal
     #[serde(rename = "terminal")]
+    #[default]
     Terminal,
-}
-
-impl Default for OutputFormat {
-    fn default() -> Self {
-        OutputFormat::Terminal
-    }
 }
 
 /// Target configuration

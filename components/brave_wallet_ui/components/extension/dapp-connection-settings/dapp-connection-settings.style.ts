@@ -15,7 +15,7 @@ export const SettingsButton = styled(WalletButton)<{
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
-  border-radius: 38px;
+  border-radius: 12px;
   outline: none;
   border: 1px solid ${leo.color.divider.subtle};
   background: none;

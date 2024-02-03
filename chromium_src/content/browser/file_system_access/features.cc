@@ -10,7 +10,6 @@
 namespace content::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kFileSystemAccessMoveLocalFiles, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFileSystemAccessDirectoryIterationSymbolicLinkCheck,
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});

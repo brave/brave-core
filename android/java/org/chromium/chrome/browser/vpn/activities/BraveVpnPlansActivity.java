@@ -123,7 +123,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         // Set up monthly subscription
         mMonthlyPlanProgress.setVisibility(View.VISIBLE);
         LiveDataUtil.observeOnce(
-                InAppPurchaseWrapper.getInstance().getMonthlyProductDetails(),
+                InAppPurchaseWrapper.getInstance()
+                        .getMonthlyProductDetails(InAppPurchaseWrapper.SubscriptionProduct.VPN),
                 monthlyProductDetails -> {
                     if (monthlyProductDetails != null) {
                         runOnUiThread(

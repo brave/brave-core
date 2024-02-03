@@ -12,7 +12,8 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
-#include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_rewards/core/common/callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -52,16 +53,18 @@ class RequestFor {
                     "Please make sure the error type of your endpoint has the "
                     "kFailedToCreateRequest enumerator!");
 
-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE,
-          base::BindOnce(
-              std::move(callback),
-              base::unexpected(Endpoint::Error::kFailedToCreateRequest)));
+      DeferCallback(FROM_HERE, std::move(callback),
+                    base::unexpected(Endpoint::Error::kFailedToCreateRequest));
       return;
     }
 
-    engine_->LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
-                                                          std::move(callback)));
+    URLLoader::LogLevel log_level = (*request_)->skip_log
+                                        ? URLLoader::LogLevel::kNone
+                                        : URLLoader::LogLevel::kDetailed;
+
+    engine_->Get<URLLoader>().Load(
+        std::move(*request_), log_level,
+        base::BindOnce(&Endpoint::OnResponse, std::move(callback)));
   }
 
  private:

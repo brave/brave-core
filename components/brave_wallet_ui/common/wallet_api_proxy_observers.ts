@@ -210,6 +210,9 @@ export function makeBraveWalletServiceObserver(store: Store) {
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(false))
       },
       onDiscoverAssetsCompleted: function () {
+        store.dispatch(
+          walletApi.endpoints.invalidateUserTokensRegistry.initiate()
+        )
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(true))
       },
       onResetWallet: function () {}

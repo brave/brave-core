@@ -154,6 +154,17 @@ TEST_F(GeminiUtilTest, GetLoginUrl) {
   EXPECT_EQ(GetLoginUrl("one_time_string"), login_url);
 }
 
+TEST_F(GeminiUtilTest, GetAccountUrl) {
+  _environment = mojom::Environment::STAGING;
+  EXPECT_EQ(GetAccountUrl(), std::string(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL)));
+}
+
+TEST_F(GeminiUtilTest, GetActivityUrl) {
+  _environment = mojom::Environment::STAGING;
+  EXPECT_EQ(GetActivityUrl(),
+            std::string(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL)) + "/balances");
+}
+
 TEST_F(GeminiUtilTest, GenerateRandomHexString) {
   is_testing = true;
   auto result = util::GenerateRandomHexString();
@@ -162,47 +173,6 @@ TEST_F(GeminiUtilTest, GenerateRandomHexString) {
   is_testing = false;
   result = util::GenerateRandomHexString();
   EXPECT_EQ(result.length(), 64u);
-}
-
-INSTANTIATE_TEST_SUITE_P(GenerateLinks,
-                         GeminiUtilTest,
-                         Combine(Values(mojom::Environment::PRODUCTION,
-                                        mojom::Environment::STAGING,
-                                        mojom::Environment::DEVELOPMENT),
-                                 Values(mojom::WalletStatus::kNotConnected,
-                                        mojom::WalletStatus::kConnected,
-                                        mojom::WalletStatus::kLoggedOut)),
-                         [](const auto& info) {
-                           return (std::ostringstream()
-                                   << std::get<0>(info.param) << '_'
-                                   << std::get<1>(info.param))
-                               .str();
-                         });
-
-TEST_P(GeminiUtilTest, Paths) {
-  const auto [environment, wallet_status] = GetParam();
-
-  _environment = environment;
-  auto wallet = mojom::ExternalWallet::New();
-  wallet->status = wallet_status;
-
-  const auto* account_url = environment == mojom::Environment::PRODUCTION
-                                ? BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)
-                                : BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL);
-
-  const auto activity_url =
-      wallet->status == mojom::WalletStatus::kConnected
-          ? base::StrCat({environment == mojom::Environment::PRODUCTION
-                              ? BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)
-                              : BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL),
-                          "/balances"})
-          : "";
-
-  EXPECT_FALSE(gemini::GenerateLinks(nullptr));
-  const auto result = GenerateLinks(std::move(wallet));
-  EXPECT_TRUE(result);
-  EXPECT_EQ(result->account_url, account_url);
-  EXPECT_EQ(result->activity_url, activity_url);
 }
 
 TEST_F(GeminiUtilTest, CheckStatusCodeTest) {

@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/containers/contains.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -51,8 +50,7 @@ bool EthPendingTxTracker::UpdatePendingTransactions(
     json_rpc_service_->GetTransactionReceipt(
         pending_chain_id, pending_transaction->tx_hash(),
         base::BindOnce(&EthPendingTxTracker::OnGetTxReceipt,
-                       weak_factory_.GetWeakPtr(), pending_chain_id,
-                       std::move(id)));
+                       weak_factory_.GetWeakPtr(), std::move(id)));
   }
 
   return true;
@@ -63,8 +61,7 @@ void EthPendingTxTracker::Reset() {
   dropped_blocks_counter_.clear();
 }
 
-void EthPendingTxTracker::OnGetTxReceipt(const std::string& chain_id,
-                                         std::string id,
+void EthPendingTxTracker::OnGetTxReceipt(const std::string& meta_id,
                                          TransactionReceipt receipt,
                                          mojom::ProviderError error,
                                          const std::string& error_message) {
@@ -72,7 +69,7 @@ void EthPendingTxTracker::OnGetTxReceipt(const std::string& chain_id,
     return;
   }
 
-  std::unique_ptr<EthTxMeta> meta = tx_state_manager_->GetEthTx(chain_id, id);
+  std::unique_ptr<EthTxMeta> meta = tx_state_manager_->GetEthTx(meta_id);
   if (!meta) {
     return;
   }
@@ -156,7 +153,7 @@ void EthPendingTxTracker::DropTransaction(TxMeta* meta) {
   if (!meta) {
     return;
   }
-  tx_state_manager_->DeleteTx(meta->chain_id(), meta->id());
+  tx_state_manager_->DeleteTx(meta->id());
 }
 
 }  // namespace brave_wallet

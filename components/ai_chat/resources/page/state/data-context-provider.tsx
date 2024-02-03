@@ -67,13 +67,21 @@ function DataContextProvider (props: DataContextProviderProps) {
   const isPremiumUser = premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive
 
   const apiHasError = (currentError !== mojom.APIError.None)
-  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.isPremium))
+  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.access === mojom.ModelAccess.PREMIUM))
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
       .pageHandler.getConversationHistory()
       .then((res) => setConversationHistory(res.conversationHistory))
   }
+
+  // If a conversation entry is submitted but we haven't yet
+  // accepted the policy, show the policy.
+  React.useEffect(() => {
+    if (conversationHistory.length && !hasAcceptedAgreement) {
+      setShowAgreementModal(true)
+    }
+  }, [conversationHistory?.length, hasAcceptedAgreement])
 
   const getSuggestedQuestions = () => {
     getPageHandlerInstance()
@@ -125,9 +133,9 @@ function DataContextProvider (props: DataContextProviderProps) {
     setCanShowPremiumPrompt(false)
   }
 
-  const switchToDefaultModel = () => {
+  const switchToBasicModel = () => {
     // Select the first non-premium model
-    const nonPremium = allModels.find(m => !m.isPremium)
+    const nonPremium = allModels.find(m => m.access === mojom.ModelAccess.BASIC)
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')
       return
@@ -251,12 +259,6 @@ function DataContextProvider (props: DataContextProviderProps) {
       setCurrentModelKey(modelKey)
     })
 
-    getPageHandlerInstance().callbackRouter.onConversationEntryPending.addListener(() => {
-      if (!hasAcceptedAgreement) {
-        setShowAgreementModal(true)
-      }
-    })
-
     // Since there is no server-side event for premium status changing,
     // we should check often. And since purchase or login is performed in
     // a separate WebContents, we can check when focus is returned here.
@@ -293,7 +295,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     showAgreementModal,
     shouldSendPageContents: shouldSendPageContents && siteInfo?.isContentAssociationPossible,
     setCurrentModel,
-    switchToDefaultModel,
+    switchToBasicModel,
     goPremium,
     managePremium,
     generateSuggestedQuestions,

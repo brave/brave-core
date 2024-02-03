@@ -70,6 +70,16 @@ void OnSubmitReceipt(skus::SubmitReceiptCallbackState* callback_state,
   delete callback_state;
 }
 
+void OnCreateOrderFromReceipt(
+    skus::CreateOrderFromReceiptCallbackState* callback_state,
+    skus::SkusResult result,
+    rust::cxxbridge1::Str order_id) {
+  if (callback_state->cb) {
+    std::move(callback_state->cb).Run(static_cast<std::string>(order_id));
+  }
+  delete callback_state;
+}
+
 }  // namespace
 
 namespace skus {
@@ -172,6 +182,17 @@ void SkusServiceImpl::SubmitReceipt(
   cbs->cb = std::move(callback);
   GetOrCreateSDK(domain)->submit_receipt(OnSubmitReceipt, std::move(cbs),
                                          order_id, receipt);
+}
+
+void SkusServiceImpl::CreateOrderFromReceipt(
+    const std::string& domain,
+    const std::string& receipt,
+    skus::mojom::SkusService::CreateOrderFromReceiptCallback callback) {
+  std::unique_ptr<skus::CreateOrderFromReceiptCallbackState> cbs(
+      new skus::CreateOrderFromReceiptCallbackState);
+  cbs->cb = std::move(callback);
+  GetOrCreateSDK(domain)->create_order_from_receipt(::OnCreateOrderFromReceipt,
+                                                    std::move(cbs), receipt);
 }
 
 }  // namespace skus

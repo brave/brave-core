@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
@@ -72,15 +73,15 @@ void PostRecipientId::Request(const std::string& token,
   request->headers = RequestAuthorization(token);
   request->headers.push_back("X-GEMINI-PAYLOAD: " + GeneratePayload());
 
-  engine_->LoadURL(std::move(request),
-                   base::BindOnce(&PostRecipientId::OnRequest,
-                                  base::Unretained(this), std::move(callback)));
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&PostRecipientId::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void PostRecipientId::OnRequest(PostRecipientIdCallback callback,
                                 mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   auto header = response->headers.find("www-authenticate");
   if (header != response->headers.end()) {

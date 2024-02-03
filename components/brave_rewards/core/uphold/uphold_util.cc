@@ -27,16 +27,6 @@ std::string GetUrl(UrlType type) {
   }
 }
 
-std::string GetAccountUrl() {
-  return GetUrl(UrlType::kOAuth) + "/dashboard";
-}
-
-std::string GetActivityUrl(const std::string& address) {
-  DCHECK(!address.empty());
-  return base::StringPrintf("%s/dashboard/cards/%s/activity",
-                            GetUrl(UrlType::kOAuth).c_str(), address.c_str());
-}
-
 }  // namespace
 
 namespace uphold {
@@ -75,15 +65,14 @@ std::string GetFeeAddress() {
              : BUILDFLAG(UPHOLD_SANDBOX_FEE_ADDRESS);
 }
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
-  if (wallet) {
-    wallet->account_url = GetAccountUrl();
-    wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
-                               ? GetActivityUrl(wallet->address)
-                               : "";
-  }
+std::string GetAccountUrl() {
+  return GetUrl(UrlType::kOAuth) + "/dashboard";
+}
 
-  return wallet;
+std::string GetActivityUrl(const std::string& address) {
+  DCHECK(!address.empty());
+  return base::StringPrintf("%s/dashboard/cards/%s/activity",
+                            GetUrl(UrlType::kOAuth).c_str(), address.c_str());
 }
 
 }  // namespace uphold

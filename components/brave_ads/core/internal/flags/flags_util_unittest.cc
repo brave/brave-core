@@ -91,8 +91,8 @@ TEST_P(BraveAdsFlagsUtilTest, BuildFlags) {
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
   // Environment
-  const std::string environment_type = test::EnvironmentTypeEnumToString(
-      test_param.param.expected_environment_type);
+  const std::string environment_type =
+      test::ToString(test_param.param.expected_environment_type);
 
   // When
   std::vector<std::string> flags;

@@ -12,7 +12,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "third_party/rust/cxx/v1/crate/include/cxx.h"
+#include "third_party/rust/chromium_crates_io/vendor/cxx-1.0.110/include/cxx.h"
 
 class PrefService;
 
@@ -60,6 +60,13 @@ class SubmitReceiptCallbackState {
   base::OnceCallback<void(const std::string&)> cb;
 };
 
+class CreateOrderFromReceiptCallbackState {
+ public:
+  CreateOrderFromReceiptCallbackState();
+  ~CreateOrderFromReceiptCallbackState();
+  base::OnceCallback<void(const std::string&)> cb;
+};
+
 class SkusUrlLoader {
  public:
   virtual ~SkusUrlLoader() = default;
@@ -96,6 +103,11 @@ using CredentialSummaryCallback =
              rust::cxxbridge1::Str summary);
 using SubmitReceiptCallback =
     void (*)(SubmitReceiptCallbackState* callback_state, SkusResult result);
+
+using CreateOrderFromReceiptCallback =
+    void (*)(CreateOrderFromReceiptCallbackState* callback_state,
+             SkusResult result,
+             rust::cxxbridge1::Str order_id);
 
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,

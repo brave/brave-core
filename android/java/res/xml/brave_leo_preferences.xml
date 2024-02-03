@@ -10,6 +10,10 @@
         android:key="leo_summary"
         android:summary="@string/leo_summary" />
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="autocomplete_switch"
+        android:title="@string/leo_autocomplete_pref"
+        android:defaultValue="true" />
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="link_subscription"
         android:title="@string/link_subscription_title_leo"

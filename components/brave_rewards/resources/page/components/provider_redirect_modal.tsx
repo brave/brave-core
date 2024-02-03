@@ -6,28 +6,24 @@
 import * as React from 'react'
 
 import { useActions, useRewardsData } from '../lib/redux_hooks'
-import { lookupExternalWalletProviderName } from '../../shared/lib/external_wallet'
+import { externalWalletProviderFromString, getExternalWalletProviderName } from '../../shared/lib/external_wallet'
 import { LocaleContext } from '../../shared/lib/locale_context'
+import { contactSupportURL } from '../../shared/lib/rewards_urls'
 import { ModalRedirect } from '../../ui/components'
 import * as mojom from '../../shared/lib/mojom'
 
 export function ProviderRedirectModal () {
   const { getString } = React.useContext(LocaleContext)
   const actions = useActions()
-  const { externalWallet, modalRedirect } = useRewardsData((data) => ({
-    externalWallet: data.externalWallet,
+  const { modalRedirectProvider, modalRedirect } = useRewardsData((data) => ({
+    modalRedirectProvider: data.ui.modalRedirectProvider,
     modalRedirect: data.ui.modalRedirect
   }))
 
-  const walletType = externalWallet ? externalWallet.type : ''
-  const providerName = lookupExternalWalletProviderName(walletType)
-
-  const onClickRetry = () => {
-    actions.hideRedirectModal()
-    if (walletType) {
-      actions.beginExternalWalletLogin(walletType)
-    }
-  }
+  const walletType =
+    externalWalletProviderFromString(modalRedirectProvider) || undefined
+  const providerName =
+    walletType ? getExternalWalletProviderName(walletType) : ''
 
   switch (modalRedirect) {
     case 'show':
@@ -138,7 +134,7 @@ export function ProviderRedirectModal () {
         <ModalRedirect
           id={'redirect-modal-wallet-ownership-verification-failure'}
           errorText={[getString('redirectModalWalletOwnershipVerificationFailureText').replace('$1', providerName)]}
-          errorTextLink={'https://community.brave.com'}
+          errorTextLink={contactSupportURL}
           titleText={getString('redirectModalWalletOwnershipVerificationFailureTitle')}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
@@ -173,7 +169,7 @@ export function ProviderRedirectModal () {
         <ModalRedirect
           id={'redirect-modal-wallet-ownership-verification-failure'}
           errorText={[getString('redirectModalWalletOwnershipVerificationFailureText').replace('$1', providerName)]}
-          errorTextLink={'https://community.brave.com'}
+          errorTextLink={contactSupportURL}
           titleText={getString('redirectModalWalletOwnershipVerificationFailureTitle')}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
@@ -185,12 +181,13 @@ export function ProviderRedirectModal () {
       return (
         <ModalRedirect
           id={'redirect-modal-error'}
-          errorText={[getString('redirectModalError')]}
-          buttonText={getString('processingRequestButton')}
-          titleText={getString('processingRequest')}
+          errorText={[getString('redirectModalUnableToCompleteRequest')]}
+          errorTextLink={contactSupportURL}
+          titleText={getString('redirectModalSomethingWentWrong')}
+          buttonText={getString('redirectModalClose')}
           walletType={walletType}
           displayCloseButton={true}
-          onClick={onClickRetry}
+          onClick={actions.hideRedirectModal}
           onClose={actions.hideRedirectModal}
         />
       )

@@ -10,11 +10,16 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
+
+using SidePanelWebUIViewT_AIChatUI = SidePanelWebUIViewT<AIChatUI>;
+BEGIN_TEMPLATE_METADATA(SidePanelWebUIViewT_AIChatUI, SidePanelWebUIViewT)
+END_METADATA
 
 namespace {
 

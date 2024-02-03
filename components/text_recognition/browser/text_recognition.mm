@@ -21,7 +21,8 @@
 
 namespace text_recognition {
 
-std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
+std::pair<bool, std::vector<std::string>> GetTextFromImage(
+    const SkBitmap& image) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   std::vector<std::string> result;
@@ -77,7 +78,7 @@ std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
     }
   }
 
-  return result;
+  return {true, result};
 }
 
 }  // namespace text_recognition

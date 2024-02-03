@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
@@ -28,15 +29,16 @@ void GetCapabilities::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetServerUrl("/v0/me/capabilities");
   request->headers = RequestAuthorization(token);
-  engine_->LoadURL(std::move(request),
-                   base::BindOnce(&GetCapabilities::OnRequest,
-                                  base::Unretained(this), std::move(callback)));
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&GetCapabilities::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
                                 mojom::UrlResponsePtr response) const {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   auto [result, capability_map] = ProcessResponse(*response);
 

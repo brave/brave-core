@@ -10,13 +10,14 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
+
 using Error = GetWallet::Error;
 using Result = GetWallet::Result;
 
@@ -29,27 +30,41 @@ Result ParseBody(const std::string& body) {
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto* deposit_account_provider =
-      value->GetDict().FindDict("depositAccountProvider");
-  if (!deposit_account_provider) {
-    return std::pair{"" /* wallet provider */, false /* linked */};
+  GetWallet::Value result_value;
+
+  auto& dict = value->GetDict();
+
+  if (auto* provider_dict = dict.FindDict("depositAccountProvider")) {
+    const auto* name = provider_dict->FindString("name");
+    const auto* id = provider_dict->FindString("id");
+    const auto* linking_id = provider_dict->FindString("linkingId");
+
+    if (!name || !id || !linking_id) {
+      return base::unexpected(Error::kFailedToParseBody);
+    }
+
+    result_value.wallet_provider = *name;
+    result_value.provider_id = *id;
+    result_value.linked = !id->empty() && !linking_id->empty();
   }
 
-  auto* name = deposit_account_provider->FindString("name");
-  const auto* id = deposit_account_provider->FindString("id");
-  const auto* linking_id = deposit_account_provider->FindString("linkingId");
-
-  if (!name || !id || !linking_id) {
-    return base::unexpected(Error::kFailedToParseBody);
+  if (auto* self_custody_available = dict.FindDict("selfCustodyAvailable")) {
+    for (auto&& [provider_name, dict_value] : *self_custody_available) {
+      if (auto available = dict_value.GetIfBool()) {
+        result_value.self_custody_available.Set(provider_name, *available);
+      }
+    }
   }
 
-  return std::pair{
-      std::move(*name),                     // wallet provider
-      !id->empty() && !linking_id->empty()  // linked
-  };
+  return result_value;
 }
 
 }  // namespace
+
+GetWalletValue::GetWalletValue() = default;
+GetWalletValue::~GetWalletValue() = default;
+GetWalletValue::GetWalletValue(GetWalletValue&&) = default;
+GetWalletValue& GetWalletValue::operator=(GetWalletValue&&) = default;
 
 // static
 Result GetWallet::ProcessResponse(const mojom::UrlResponse& response) {
@@ -104,8 +119,14 @@ std::optional<std::vector<std::string>> GetWallet::Headers(
   DCHECK(!wallet->payment_id.empty());
   DCHECK(!wallet->recovery_seed.empty());
 
-  return util::BuildSignHeaders("get " + Path() + wallet->payment_id, content,
-                                wallet->payment_id, wallet->recovery_seed);
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer) {
+    BLOG(0, "Unable to sign request");
+    return std::nullopt;
+  }
+
+  return signer->GetSignedHeaders("get " + Path() + wallet->payment_id,
+                                  content);
 }
 
 }  // namespace brave_rewards::internal::endpoints

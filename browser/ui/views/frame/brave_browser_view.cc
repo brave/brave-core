@@ -841,3 +841,6 @@ void BraveBrowserView::SetSidePanelOperationByActiveTabChange(bool tab_change) {
 
   sidebar_container_view_->set_operation_from_active_tab_change(tab_change);
 }
+
+BEGIN_METADATA(BraveBrowserView)
+END_METADATA

@@ -8,10 +8,12 @@
 <resources>
     <!-- Theme colors -->
     <!-- Overriding chromium theme colors to brave theme colors -->
+    <color name="baseline_primary_30">#F0F2FF</color>
+    <color name="baseline_primary_80">#FA7250</color>
     <color name="baseline_primary_90">#5B2A23</color>
-    <color name="baseline_primary_80">#F35333</color>
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark_baseline">@color/default_bg_color_baseline</color>
+    <color name="modern_blue_600">@color/baseline_primary_30</color>
 
     <!-- Theme colors -->
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
@@ -22,7 +24,7 @@
     <color name="onboarding_bg_color">#1E2029</color>
     <color name="onboarding_timer_color">#478AFF</color>
 
-    <color name="onboarding_progress_start_color">#FA7250</color>
+    <color name="onboarding_progress_start_color">@color/baseline_primary_80</color>
     <color name="onboarding_progress_mid_color">#FF1893</color>
     <color name="onboarding_progress_end_color">#A78AFF</color>
 
@@ -38,6 +40,7 @@
     <color name="scan_qr_code_bg_color">#1E2029</color>
     
     <!-- Day/Night brave wallet colors -->
+    <color name="brave_wallet_onboarding_item_background_color">#A1ABBA</color>
     <color name="brave_wallet_day_night_toolbar_icon_color">@android:color/white</color>
     <color name="brave_wallet_day_night_icon_color">#F0F2FF</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#272733</color>
@@ -125,7 +128,6 @@
     <color name="wallet_secondary_text_color">#84889C</color>
     <color name="wallet_secondary_layout_text_color">#C2C4CF</color>
     <color name="recovery_phrase_text_color">#1E2029</color>
-    <color name="rounded_filled_background">#1E2029</color>
     <color name="wallet_toolbar_bg_color">#000000</color>
     <color name="chip_outline_selected_color">#0D0F14</color>
     <color name="wallet_bg">#0D0F14</color>
@@ -198,7 +200,6 @@
     <color name="notification_rationale_dialog_card_bg_color">#17171F</color>
     <color name="you_are_not_earning_rewards_bg_color">#17171F</color>
 
-    <color name="playlist_warning_dialog_bg">#17171F</color>
     <color name="tipping_details_description_text_color">#8C90A1</color>
     <color name="link_icon_color">#8C90A1</color>
     <color name="rewards_background_gradient_start_color">#240F1E</color>

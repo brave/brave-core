@@ -153,26 +153,18 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
 }
 
 void BraveLeoAssistantHandler::HandleGetModels(const base::Value::List& args) {
-  std::vector<ai_chat::mojom::ModelPtr> models(
-      ai_chat::kAllModelKeysDisplayOrder.size());
-  // Ensure we return only in intended display order
-  std::transform(ai_chat::kAllModelKeysDisplayOrder.cbegin(),
-                 ai_chat::kAllModelKeysDisplayOrder.cend(), models.begin(),
-                 [](auto& model_key) {
-                   auto model_match = ai_chat::kAllModels.find(model_key);
-                   DCHECK(model_match != ai_chat::kAllModels.end());
-                   return model_match->second.Clone();
-                 });
+  auto& models = ai_chat::GetAllModels();
   base::Value::List models_list;
   for (auto& model : models) {
     base::Value::Dict dict;
-    dict.Set("key", model->key);
-    dict.Set("name", model->name);
-    dict.Set("display_name", model->display_name);
-    dict.Set("display_maker", model->display_maker);
-    dict.Set("engine_type", static_cast<int>(model->engine_type));
-    dict.Set("category", static_cast<int>(model->category));
-    dict.Set("is_premium", model->is_premium);
+    dict.Set("key", model.key);
+    dict.Set("name", model.name);
+    dict.Set("display_name", model.display_name);
+    dict.Set("display_maker", model.display_maker);
+    dict.Set("engine_type", static_cast<int>(model.engine_type));
+    dict.Set("category", static_cast<int>(model.category));
+    dict.Set("is_premium",
+             model.access == ai_chat::mojom::ModelAccess::PREMIUM);
     models_list.Append(std::move(dict));
   }
 

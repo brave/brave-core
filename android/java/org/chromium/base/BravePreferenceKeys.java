@@ -64,6 +64,19 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES =
             "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES";
 
+    public static final String BRAVE_LEO_AUTOCOMPLETE =
+            "org.chromium.chrome.browser.Brave_Leo_AutoComplete";
+
+    // Playlist prefrence keys
+    public static final String PREF_ENABLE_PLAYLIST = "enable_playlist";
+    public static final String PREF_ADD_TO_PLAYLIST_BUTTON = "add_to_playlist_button";
+    public static final String PREF_REMEMBER_FILE_PLAYBACK_POSITION =
+            "remember_file_playback_position";
+    public static final String PREF_REMEMBER_LIST_PLAYBACK_POSITION =
+            "remember_list_playback_position";
+    public static final String PREF_CONTINUOUS_LISTENING = "continuous_listening";
+    public static final String PREF_RESET_PLAYLIST = "reset_playlist";
+
     // These are dynamic keys
     public static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
     public static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION = "recyclerview_offset_position_";
@@ -108,7 +121,14 @@ public final class BravePreferenceKeys {
                 BRAVE_DEFERRED_DEEPLINK_VPN,
                 BRAVE_CLOSE_TABS_ON_EXIT,
                 BRAVE_CLEAR_ON_EXIT,
-                BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES);
+                BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
+                BRAVE_LEO_AUTOCOMPLETE,
+                PREF_ENABLE_PLAYLIST,
+                PREF_ADD_TO_PLAYLIST_BUTTON,
+                PREF_REMEMBER_FILE_PLAYBACK_POSITION,
+                PREF_REMEMBER_LIST_PLAYBACK_POSITION,
+                PREF_CONTINUOUS_LISTENING,
+                PREF_RESET_PLAYLIST);
     }
 
     /*

@@ -14,22 +14,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-bool DoesRespectCap(const AdEventList& ad_events,
-                    const CreativeAdInfo& creative_ad) {
-  if (creative_ad.per_month == 0) {
-    // Always respect cap if set to 0.
-    return true;
-  }
-
-  return DoesRespectCreativeSetCap(creative_ad, ad_events,
-                                   ConfirmationType::kServed, base::Days(28),
-                                   creative_ad.per_month);
-}
-
-}  // namespace
-
 PerMonthExclusionRule::PerMonthExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
@@ -42,7 +26,9 @@ std::string PerMonthExclusionRule::GetUuid(
 
 base::expected<void, std::string> PerMonthExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
-  if (!DoesRespectCap(ad_events_, creative_ad)) {
+  if (!DoesRespectCreativeSetCap(
+          creative_ad, ad_events_, ConfirmationType::kServed,
+          /*time_constraint=*/base::Days(28), creative_ad.per_month)) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 has exceeded the perMonth frequency cap",
         {creative_ad.creative_set_id}, nullptr));
