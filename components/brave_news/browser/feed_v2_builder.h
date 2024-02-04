@@ -16,7 +16,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "base/threading/thread_checker.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -32,10 +31,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
-
-namespace {
-struct FeedGenerationInfo;
-}
 
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
@@ -93,6 +88,8 @@ class FeedV2Builder : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* controller) override;
 
  private:
+  struct FeedGenerationInfo;
+
   // FeedGenerator's will be called on a different thread. We guarantee that the
   // data in |builder| will not be changed while the generator is running.
   // Additionally, the generator should not modify data in |builder| (hence the
@@ -145,6 +142,11 @@ class FeedV2Builder : public PublishersController::Observer {
                     UpdateCallback callback);
   };
 
+  static mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
+                                            PickArticles pick_hero,
+                                            PickArticles pick_article);
+  static mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info);
+
   void UpdateData(UpdateSettings settings, UpdateCallback callback);
 
   void FetchFeed();
@@ -192,8 +194,6 @@ class FeedV2Builder : public PublishersController::Observer {
   std::optional<UpdateRequest> next_update_;
 
   mojo::RemoteSet<mojom::FeedListener> listeners_;
-
-  THREAD_CHECKER(thread_checker_);
 
   base::WeakPtrFactory<FeedV2Builder> weak_ptr_factory_{this};
 };

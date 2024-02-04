@@ -56,48 +56,6 @@ using ContentGroup = std::pair<std::string, bool>;
 constexpr char kAllContentGroup[] = "all";
 constexpr float kSampleContentGroupAllRatio = 0.2f;
 
-struct FeedGenerationInfo {
-  std::string locale;
-  FeedItems feed_items;
-  Publishers publishers;
-  std::vector<std::string> channels;
-  Signals signals;
-  std::vector<std::string> suggested_publisher_ids;
-  TopicsResult topics;
-  FeedGenerationInfo(const std::string& locale,
-                     const FeedItems& feed_items,
-                     const Publishers& publishers,
-                     std::vector<std::string> channels,
-                     const Signals& signals,
-                     const std::vector<std::string>& suggested_publisher_ids,
-                     const TopicsResult& topics)
-      : locale(locale),
-        channels(std::move(channels)),
-        suggested_publisher_ids(suggested_publisher_ids) {
-    for (const auto& item : feed_items) {
-      this->feed_items.push_back(item->Clone());
-    }
-    for (const auto& [id, publisher] : publishers) {
-      this->publishers[id] = publisher.Clone();
-    }
-    for (const auto& [id, signal] : signals) {
-      this->signals[id] = signal->Clone();
-    }
-    for (const auto& topic : topics) {
-      std::vector<api::topics::TopicArticle> articles;
-      for (const auto& article : topic.second) {
-        articles.push_back(article.Clone());
-      }
-      this->topics.emplace_back(topic.first.Clone(), std::move(articles));
-    }
-  }
-  FeedGenerationInfo(const FeedGenerationInfo&) = delete;
-  FeedGenerationInfo& operator=(const FeedGenerationInfo&) = delete;
-  FeedGenerationInfo(FeedGenerationInfo&&) = default;
-  FeedGenerationInfo& operator=(FeedGenerationInfo&&) = default;
-  ~FeedGenerationInfo() = default;
-};
-
 // Returns a tuple of the feed hash and the number of subscribed publishers.
 std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
     const Channels& channels,
@@ -818,9 +776,82 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
   return result;
 }
 
-mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
-                                   PickArticles pick_hero,
-                                   PickArticles pick_article) {
+}  // namespace
+
+struct FeedV2Builder::FeedGenerationInfo {
+  std::string locale;
+  FeedItems feed_items;
+  Publishers publishers;
+  std::vector<std::string> channels;
+  Signals signals;
+  std::vector<std::string> suggested_publisher_ids;
+  TopicsResult topics;
+  FeedGenerationInfo(const std::string& locale,
+                     const FeedItems& feed_items,
+                     const Publishers& publishers,
+                     std::vector<std::string> channels,
+                     const Signals& signals,
+                     const std::vector<std::string>& suggested_publisher_ids,
+                     const TopicsResult& topics)
+      : locale(locale),
+        channels(std::move(channels)),
+        suggested_publisher_ids(suggested_publisher_ids) {
+    for (const auto& item : feed_items) {
+      this->feed_items.push_back(item->Clone());
+    }
+    for (const auto& [id, publisher] : publishers) {
+      this->publishers[id] = publisher.Clone();
+    }
+    for (const auto& [id, signal] : signals) {
+      this->signals[id] = signal->Clone();
+    }
+    for (const auto& topic : topics) {
+      std::vector<api::topics::TopicArticle> articles;
+      for (const auto& article : topic.second) {
+        articles.push_back(article.Clone());
+      }
+      this->topics.emplace_back(topic.first.Clone(), std::move(articles));
+    }
+  }
+  FeedGenerationInfo(const FeedGenerationInfo&) = delete;
+  FeedGenerationInfo& operator=(const FeedGenerationInfo&) = delete;
+  FeedGenerationInfo(FeedGenerationInfo&&) = default;
+  FeedGenerationInfo& operator=(FeedGenerationInfo&&) = default;
+  ~FeedGenerationInfo() = default;
+};
+
+FeedV2Builder::UpdateRequest::UpdateRequest(UpdateSettings settings,
+                                            UpdateCallback callback)
+    : settings(std::move(settings)) {
+  callbacks.push_back(std::move(callback));
+}
+FeedV2Builder::UpdateRequest::~UpdateRequest() = default;
+FeedV2Builder::UpdateRequest::UpdateRequest(UpdateRequest&&) = default;
+FeedV2Builder::UpdateRequest& FeedV2Builder::UpdateRequest::operator=(
+    UpdateRequest&&) = default;
+bool FeedV2Builder::UpdateRequest::IsSufficient(
+    const UpdateSettings& other_settings) {
+  return !(
+      (other_settings.feed && !settings.feed) ||
+      (other_settings.signals && !settings.signals) ||
+      (other_settings.suggested_publishers && !settings.suggested_publishers) ||
+      (other_settings.topics && !settings.topics));
+}
+
+void FeedV2Builder::UpdateRequest::AlsoUpdate(
+    const UpdateSettings& other_settings,
+    UpdateCallback callback) {
+  settings.feed |= other_settings.feed;
+  settings.signals |= other_settings.signals;
+  settings.suggested_publishers |= other_settings.suggested_publishers;
+  settings.topics |= other_settings.suggested_publishers;
+  callbacks.push_back(std::move(callback));
+}
+
+// static
+mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
+                                                  PickArticles pick_hero,
+                                                  PickArticles pick_article) {
   DVLOG(1) << __FUNCTION__;
   DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
 
@@ -859,7 +890,8 @@ mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
   return feed;
 }
 
-mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info) {
+// static
+mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   DVLOG(1) << __FUNCTION__;
   DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
@@ -971,36 +1003,6 @@ mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info) {
   }
 
   return feed;
-}
-
-}  // namespace
-
-FeedV2Builder::UpdateRequest::UpdateRequest(UpdateSettings settings,
-                                            UpdateCallback callback)
-    : settings(std::move(settings)) {
-  callbacks.push_back(std::move(callback));
-}
-FeedV2Builder::UpdateRequest::~UpdateRequest() = default;
-FeedV2Builder::UpdateRequest::UpdateRequest(UpdateRequest&&) = default;
-FeedV2Builder::UpdateRequest& FeedV2Builder::UpdateRequest::operator=(
-    UpdateRequest&&) = default;
-bool FeedV2Builder::UpdateRequest::IsSufficient(
-    const UpdateSettings& other_settings) {
-  return !(
-      (other_settings.feed && !settings.feed) ||
-      (other_settings.signals && !settings.signals) ||
-      (other_settings.suggested_publishers && !settings.suggested_publishers) ||
-      (other_settings.topics && !settings.topics));
-}
-
-void FeedV2Builder::UpdateRequest::AlsoUpdate(
-    const UpdateSettings& other_settings,
-    UpdateCallback callback) {
-  settings.feed |= other_settings.feed;
-  settings.signals |= other_settings.signals;
-  settings.suggested_publishers |= other_settings.suggested_publishers;
-  settings.topics |= other_settings.suggested_publishers;
-  callbacks.push_back(std::move(callback));
 }
 
 FeedV2Builder::FeedV2Builder(
@@ -1371,7 +1373,7 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
                                  mojom::FeedV2TypePtr type,
                                  FeedGenerator generator,
                                  BuildFeedCallback callback) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   UpdateData(
       std::move(settings),
       base::BindOnce(
@@ -1411,8 +1413,8 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
                 builder->suggested_publisher_ids_, builder->topics_);
 
             // We post this to another thread, because the generation process
-            // can be quite slow. It's safe because:
-            // 1. All data |generator| requires is copied into the lambda.
+            // can be quite slow. It's safe because all data |generator|
+            // requires is copied into the lambda.
             base::ThreadPool::PostTaskAndReplyWithResult(
                 FROM_HERE, base::BindOnce(std::move(generate), std::move(info)),
                 base::BindOnce(
