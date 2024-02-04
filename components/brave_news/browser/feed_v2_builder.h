@@ -90,10 +90,8 @@ class FeedV2Builder : public PublishersController::Observer {
  private:
   struct FeedGenerationInfo;
 
-  // FeedGenerator's will be called on a different thread. We guarantee that the
-  // data in |builder| will not be changed while the generator is running.
-  // Additionally, the generator should not modify data in |builder| (hence the
-  // const reference).
+  // FeedGenerator's will be called on a different thread. The data in
+  // |FeedGenerationInfo| is a copy and can be safely modified.
   using FeedGenerator =
       base::OnceCallback<mojom::FeedV2Ptr(FeedGenerationInfo)>;
 

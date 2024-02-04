@@ -8,6 +8,8 @@
 #include <cstddef>
 #include <iterator>
 #include <memory>
+#include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -19,6 +21,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
+#include "base/task/thread_pool.h"
+#include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
@@ -152,47 +156,72 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
     return;
   }
 
-  std::move(callback).Run({locale, etag, ParseFeedItems(result.value_body())});
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce([](base::Value value) { return ParseFeedItems(value); },
+                     std::move(result.value_body())),
+      base::BindOnce(
+          [](std::string locale, std::string etag,
+             FetchFeedSourceCallback callback,
+             std::vector<mojom::FeedItemPtr> items) {
+            std::move(callback).Run(
+                {std::move(locale), std::move(etag), std::move(items)});
+          },
+          std::move(locale), std::move(etag), std::move(callback)));
 }
 
 void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
                                         Publishers publishers,
                                         std::vector<FeedSourceResult> results) {
-  std::size_t total_size = 0;
-  for (const auto& result : results) {
-    total_size += result.items.size();
-  }
-  VLOG(1) << "All feed item fetches done with item count: " << total_size;
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(
+          [](std::vector<FeedSourceResult> results) {
+            std::size_t total_size = 0;
+            for (const auto& result : results) {
+              total_size += result.items.size();
+            }
+            VLOG(1) << "All feed item fetches done with item count: "
+                    << total_size;
 
-  ETags etags;
-  FeedItems feed;
-  feed.reserve(total_size);
+            ETags etags;
+            FeedItems feed;
+            feed.reserve(total_size);
 
-  // We want to deduplicate the feed, as the feeds for different regions **may**
-  // have overlap.
-  base::flat_set<GURL> seen;
+            // We want to deduplicate the feed, as the feeds for different
+            // regions
+            // **may** have overlap.
+            base::flat_set<GURL> seen;
 
-  for (auto& result : results) {
-    etags[result.key] = result.etag;
-    for (auto& item : result.items) {
-      GURL url;
-      if (item->is_article()) {
-        url = item->get_article()->data->url;
-      } else if (item->is_promoted_article()) {
-        url = item->get_promoted_article()->data->url;
-      }
+            for (auto& result : results) {
+              etags[result.key] = result.etag;
+              for (auto& item : result.items) {
+                GURL url;
+                if (item->is_article()) {
+                  url = item->get_article()->data->url;
+                } else if (item->is_promoted_article()) {
+                  url = item->get_promoted_article()->data->url;
+                }
 
-      // Skip this, we've already seen it.
-      if (!url.is_empty() && seen.contains(url)) {
-        continue;
-      }
-      seen.insert(url);
+                // Skip this, we've already seen it.
+                if (!url.is_empty() && seen.contains(url)) {
+                  continue;
+                }
+                seen.insert(url);
 
-      feed.push_back(std::move(item));
-    }
-  }
+                feed.push_back(std::move(item));
+              }
+            }
 
-  std::move(callback).Run(std::move(feed), std::move(etags));
+            return std::make_tuple(std::move(feed), std::move(etags));
+          },
+          std::move(results)),
+      base::BindOnce(
+          [](FetchFeedCallback callback, std::tuple<FeedItems, ETags> result) {
+            std::move(callback).Run(std::move(std::get<0>(result)),
+                                    std::move(std::get<1>(result)));
+          },
+          std::move(callback)));
 }
 
 void FeedFetcher::IsUpdateAvailable(ETags etags,
