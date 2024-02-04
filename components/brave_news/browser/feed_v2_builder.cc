@@ -30,7 +30,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/thread_checker.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -38,8 +37,6 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
@@ -796,17 +793,25 @@ struct FeedV2Builder::FeedGenerationInfo {
       : locale(locale),
         channels(std::move(channels)),
         suggested_publisher_ids(suggested_publisher_ids) {
+    this->feed_items.reserve(feed_items.size());
     for (const auto& item : feed_items) {
       this->feed_items.push_back(item->Clone());
     }
+
+    this->publishers.reserve(publishers.size());
     for (const auto& [id, publisher] : publishers) {
       this->publishers[id] = publisher.Clone();
     }
+
+    this->signals.reserve(signals.size());
     for (const auto& [id, signal] : signals) {
       this->signals[id] = signal->Clone();
     }
+
+    this->topics.reserve(topics.size());
     for (const auto& topic : topics) {
       std::vector<api::topics::TopicArticle> articles;
+      articles.reserve(topic.second.size());
       for (const auto& article : topic.second) {
         articles.push_back(article.Clone());
       }
