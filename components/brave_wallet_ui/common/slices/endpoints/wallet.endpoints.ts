@@ -222,13 +222,7 @@ export const walletEndpoints = ({
           )
         }
       },
-      invalidatesTags: [
-        'AccountInfos',
-        'IsWalletBackedUp',
-        'TokenBalances',
-        'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     showRecoveryPhrase: mutation<boolean, ShowRecoveryPhrasePayload>({
@@ -389,13 +383,7 @@ export const walletEndpoints = ({
           )
         }
       },
-      invalidatesTags: [
-        'AccountInfos',
-        'IsWalletBackedUp',
-        'TokenBalances',
-        'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     importFromMetaMask: mutation<
@@ -450,13 +438,7 @@ export const walletEndpoints = ({
           )
         }
       },
-      invalidatesTags: [
-        'AccountInfos',
-        'IsWalletBackedUp',
-        'TokenBalances',
-        'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
     }),
 
     completeWalletBackup: mutation<boolean, void>({

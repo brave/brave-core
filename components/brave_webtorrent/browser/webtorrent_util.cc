@@ -58,7 +58,7 @@ bool IsWebtorrentPrefEnabled(content::BrowserContext* browser_context) {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kWebTorrentEnabled, true);
-}
+  }
 
 bool IsWebtorrentURL(const GURL& url) {
   if (url.SchemeIs(extensions::kExtensionScheme) &&

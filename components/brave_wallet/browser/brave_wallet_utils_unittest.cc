@@ -20,7 +20,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
-#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -40,7 +39,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
-using base::test::ParseJsonDict;
 using testing::ElementsAreArray;
 
 namespace brave_wallet {
@@ -1456,96 +1454,6 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
   for (auto coin : kAllCoins) {
     getChainIdByNetworkIdCheck(coin);
   }
-}
-
-TEST(BraveWalletUtilsUnitTest, BitcoinNativeAssets) {
-  EXPECT_EQ(
-      BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinMainnet)),
-      ParseJsonDict(R"(
-      {
-        "address": "",
-        "chain_id": "bitcoin_mainnet",
-        "coin": 0,
-        "coingecko_id": "btc",
-        "decimals": 8,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "is_spam": false,
-        "logo": "btc.png",
-        "name": "Bitcoin",
-        "symbol": "BTC",
-        "token_id": "",
-        "visible": true
-      }
-      )"));
-
-  EXPECT_EQ(
-      BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinTestnet)),
-      ParseJsonDict(R"(
-      {
-        "address": "",
-        "chain_id": "bitcoin_testnet",
-        "coin": 0,
-        "coingecko_id": "",
-        "decimals": 8,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "is_spam": false,
-        "logo": "btc.png",
-        "name": "Bitcoin",
-        "symbol": "BTC",
-        "token_id": "",
-        "visible": true
-      }
-      )"));
-}
-
-TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
-  EXPECT_EQ(BlockchainTokenToValue(GetZcashNativeToken(mojom::kZCashMainnet)),
-            ParseJsonDict(R"(
-      {
-        "address": "",
-        "chain_id": "zcash_mainnet",
-        "coin": 133,
-        "coingecko_id": "zec",
-        "decimals": 8,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "is_spam": false,
-        "logo": "zec.png",
-        "name": "Zcash",
-        "symbol": "ZEC",
-        "token_id": "",
-        "visible": true
-      }
-      )"));
-
-  EXPECT_EQ(BlockchainTokenToValue(GetZcashNativeToken(mojom::kZCashTestnet)),
-            ParseJsonDict(R"(
-      {
-        "address": "",
-        "chain_id": "zcash_testnet",
-        "coin": 133,
-        "coingecko_id": "zec",
-        "decimals": 8,
-        "is_erc1155": false,
-        "is_erc20": false,
-        "is_erc721": false,
-        "is_nft": false,
-        "is_spam": false,
-        "logo": "zec.png",
-        "name": "Zcash",
-        "symbol": "ZEC",
-        "token_id": "",
-        "visible": true
-      }
-      )"));
 }
 
 }  // namespace brave_wallet

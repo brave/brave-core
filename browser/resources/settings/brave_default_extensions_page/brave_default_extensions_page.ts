@@ -25,6 +25,7 @@ export interface SettingBraveDefaultExtensionsPageElement {
   $: {
     widevineEnabled: SettingsCheckboxElement,
     webTorrentEnabled: SettingsCheckboxElement,
+    simpleExtensionEnabled: SettingsCheckboxElement,
     hangoutsEnabled: SettingsCheckboxElement
   }
 }
@@ -97,6 +98,10 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
 
   onWebTorrentEnabledChange_() {
     this.browserProxy_.setWebTorrentEnabled(this.$.webTorrentEnabled.checked)
+  }
+
+  onSimpleExtensionEnabledChange_() {
+    this.browserProxy_.setSimpleExtensionEnabled(this.$.simpleExtensionEnabled.checked)
   }
 
   onHangoutsEnabledChange_() {

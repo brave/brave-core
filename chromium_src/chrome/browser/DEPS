@@ -20,6 +20,7 @@ include_rules = [
   "+brave/components/brave_wallet",
   "+brave/components/brave_webtorrent/browser",
   "+brave/components/brave_webtorrent/grit",
+  "+brave/components/simple_extension/grit",
   "+brave/components/commander",
   "+brave/components/ai_chat",
   "+brave/components/constants",

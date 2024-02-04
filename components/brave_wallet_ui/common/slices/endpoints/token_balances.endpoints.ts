@@ -10,8 +10,7 @@ import { eachLimit } from 'async'
 import {
   BraveWallet,
   CoinTypes,
-  BitcoinBalances,
-  WalletStatus
+  BitcoinBalances
 } from '../../../constants/types'
 import { coinTypesMapping } from '../constants'
 
@@ -33,10 +32,9 @@ import { networkEntityAdapter } from '../entities/network.entity'
 import { TokenBalancesRegistry } from '../entities/token-balance.entity'
 import { baseQueryFunction } from '../../async/base-query-cache'
 import {
-  getPersistedPortfolioTokenBalances,
-  setPersistedPortfolioTokenBalances
+  getPersistedTokenBalances,
+  setPersistedTokenBalances
 } from '../../../utils/local-storage-utils'
-import { getIsRewardsNetwork } from '../../../utils/rewards_utils'
 
 type BalanceNetwork = Pick<
   BraveWallet.NetworkInfo,
@@ -81,20 +79,10 @@ type GetTokenBalancesForChainIdArg =
   | GetSPLTokenBalancesForAddressAndChainIdArg
   | GetTokenBalancesForAddressAndChainIdArg
 
-export type GetTokenBalancesRegistryArg = {
+type GetTokenBalancesRegistryArg = {
   accountIds: BraveWallet.AccountId[]
   networks: BalanceNetwork[]
   useAnkrBalancesFeature: boolean
-  /**
-   * Allows the results to be save in local-storage.
-   *
-   * Only allowing the portfolio-page registry for now since that loads the most
-   * balances.
-   *
-   * All calls to this query will use the persisted portfolio registry for the
-   * initial balance before the latest values are streamed-in
-   */
-  persistKey?: 'portfolio'
 }
 
 export const tokenBalancesEndpoints = ({
@@ -190,20 +178,13 @@ export const tokenBalancesEndpoints = ({
             ) || ['TokenBalancesForChainId']
     }),
 
-    /**
-     * `isLoading` should not be use when consuming this query, as it is `false`
-     * when streaming
-     */
     getTokenBalancesRegistry: query<
-      TokenBalancesRegistry | null,
+      TokenBalancesRegistry,
       GetTokenBalancesRegistryArg
     >({
       queryFn: function () {
-        const persistedBalances = getPersistedPortfolioTokenBalances()
-
-        // return null so we can tell if we have data or not to start with
         return {
-          data: Object.keys(persistedBalances).length ? persistedBalances : null
+          data: getPersistedTokenBalances()
         }
       },
       async onCacheEntryAdded(
@@ -218,38 +199,9 @@ export const tokenBalancesEndpoints = ({
           bitcoinWalletService,
           zcashWalletService
         } = api
+        const { getUserTokensRegistry } = cache
 
         const tokenBalancesRegistry: TokenBalancesRegistry = {}
-
-        const includeRewardsBalance = arg.networks.some(getIsRewardsNetwork)
-
-        if (includeRewardsBalance) {
-          const rewardsData =
-            cache.rewardsInfo || (await cache.getBraveRewardsInfo())
-
-          const {
-            balance: rewardsBalance,
-            provider: externalRewardsProvider,
-            rewardsToken,
-            status: rewardsStatus
-          } = rewardsData
-
-          if (
-            rewardsStatus === WalletStatus.kConnected &&
-            rewardsToken &&
-            externalRewardsProvider &&
-            rewardsBalance
-          ) {
-            // add rewards info to balance registry
-            tokenBalancesRegistry[externalRewardsProvider] = {
-              [BraveWallet.MAINNET_CHAIN_ID]: {
-                [rewardsToken.contractAddress]: new Amount(rewardsBalance)
-                  .multiplyByDecimals(rewardsToken.decimals)
-                  .format()
-              }
-            }
-          }
-        }
 
         function onBalance(
           accountBalanceKey: string,
@@ -338,7 +290,7 @@ export const tokenBalancesEndpoints = ({
                     networkSupportsAccount(network, accountId)
                   )
 
-                const userTokens = await cache.getUserTokensRegistry()
+                const userTokens = await getUserTokensRegistry()
 
                 if (nonAnkrSupportedAccountNetworks.length) {
                   await eachLimit(
@@ -396,9 +348,7 @@ export const tokenBalancesEndpoints = ({
               return tokenBalancesRegistry
             })
 
-            if (arg.persistKey === 'portfolio') {
-              setPersistedPortfolioTokenBalances(tokenBalancesRegistry)
-            }
+            setPersistedTokenBalances(tokenBalancesRegistry)
           } catch (error) {
             handleEndpointError(
               'getTokenBalancesRegistry.onCacheEntryAdded',

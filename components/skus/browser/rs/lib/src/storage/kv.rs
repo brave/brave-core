@@ -303,7 +303,6 @@ where
                 // blinded tokens to the item_credentials.creds for signing
                 // request
                 if let Credentials::TimeLimitedV2(item_credentials) = item_credentials {
-                    item_credentials.request_id = Some(request_id.to_string());
                     item_credentials.creds = creds;
                     // update state to generated credentials
                     item_credentials.state = CredentialState::GeneratedCredentials;

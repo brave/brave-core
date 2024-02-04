@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/simple_extension/buildflags/buildflags.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/page_info/page_info.h"
 #include "content/public/common/url_constants.h"

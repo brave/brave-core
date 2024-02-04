@@ -8,6 +8,7 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#include "brave/components/simple_extension/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/extensions/extension_service.h"

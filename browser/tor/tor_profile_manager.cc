@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/simple_extension/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_profile_service.h"

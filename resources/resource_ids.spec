@@ -221,5 +221,12 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_player/brave_player.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [59010],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-simple_extension/simple_extension.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [59020],
+  },
+    "brave/components/simple_extension/resources.grd": {
+    "includes": [59030],
   }
 }

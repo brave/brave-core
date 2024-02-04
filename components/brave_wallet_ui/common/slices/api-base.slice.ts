@@ -10,16 +10,6 @@ import { cacher } from '../../utils/query-cache-utils'
 
 import { baseQueryFunction } from '../async/base-query-cache'
 
-// TODO: These should eventually get refactored into a single tag with a type of
-// `'TokenBalances'` with various IDs to simplify clearing cached balances
-// across queries
-const balancesTags = [
-  'AccountTokenCurrentBalance',
-  'TokenBalancesForChainId',
-  'TokenBalances',
-  'HardwareAccountDiscoveryBalance'
-] as const
-
 /**
  * Creates an api to use as a base for adding endpoints
  * endpoints can be added via `.injectEndpoints(endpoints)`
@@ -30,8 +20,11 @@ export function createWalletApiBase() {
     baseQuery: baseQueryFunction,
     tagTypes: [
       ...cacher.defaultTags,
-      ...balancesTags,
       'AccountInfos',
+      'AccountTokenCurrentBalance',
+      'TokenBalancesForChainId',
+      'TokenBalances',
+      'HardwareAccountDiscoveryBalance',
       'DefaultFiatCurrency',
       'ERC721Metadata',
       'SolanaEstimatedFees',

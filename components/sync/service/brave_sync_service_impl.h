@@ -78,8 +78,6 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinActiveOrNewChain);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, HistoryPreconditions);
-  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
-                           P3aForHistoryThroughDelegate);
 
   BraveSyncAuthManager* GetBraveSyncAuthManager();
   SyncServiceCrypto* GetCryptoForTests();

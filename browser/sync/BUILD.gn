@@ -11,7 +11,6 @@ source_set("sync") {
 
   deps = [
     "//base",
-    "//components/history/core/browser",
     "//components/sync/service",
     "//components/sync_device_info",
   ]

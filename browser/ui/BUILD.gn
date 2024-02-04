@@ -690,6 +690,10 @@ source_set("ui") {
     ]
   }
 
+  deps += [
+    "//brave/components/simple_extension:static_resources", 
+  ]
+
   # This is no longer compiled into Chromium on Android, but we still
   # need it
   if (is_android) {

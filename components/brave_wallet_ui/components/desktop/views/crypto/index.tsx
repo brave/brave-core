@@ -169,13 +169,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         isMetaMaskInstalled)) &&
     !isDefaultWalletBannerDismissed
 
-  const noBannerPadding =
-    isPanel &&
-    (!showBanner ||
-      (!isCheckingWalletBackupStatus &&
-        !isWalletBackedUp &&
-        !isBackupWarningDismissed))
-
   // memos
   const banners = React.useMemo(
     () => (
@@ -230,12 +223,11 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
             useDarkBackground={isPanel}
-            hideDivider={true}
           >
             <StyledWrapper>
               <Column
                 fullWidth={true}
-                padding={noBannerPadding ? '0px' : '20px 20px 0px 20px'}
+                padding='20px 20px 0px 20px'
               >
                 {banners}
               </Column>
@@ -264,12 +256,11 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
             useDarkBackground={isPanel}
-            hideDivider={isPanel}
           >
             <StyledWrapper>
               <Column
                 fullWidth={true}
-                padding={noBannerPadding ? '0px' : '20px 20px 0px 20px'}
+                padding='20px 20px 0px 20px'
               >
                 {banners}
               </Column>

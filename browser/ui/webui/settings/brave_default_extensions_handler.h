@@ -47,6 +47,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 
   void GetRestartNeeded(const base::Value::List& args);
   void SetWebTorrentEnabled(const base::Value::List& args);
+  void SetSimpleExtensionEnabled(const base::Value::List& args);
   void SetHangoutsEnabled(const base::Value::List& args);
   void SetIPFSCompanionEnabled(const base::Value::List& args);
   void SetMediaRouterEnabled(const base::Value::List& args);

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/simple_extension/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
@@ -94,6 +95,13 @@ template("brave_extra_paks") {
 
       deps += [ "//brave/components/brave_webtorrent:resources" ]
     }
+
+    # if (enable_simple_extension) {
+    sources += [ "$root_gen_dir/brave/components/simple_extension/simple_extension_resources.pak" ]
+
+    deps += [ "//brave/components/simple_extension:resources" ]
+    # }
+
 
     if (enable_extensions) {
       sources += [ "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak" ]

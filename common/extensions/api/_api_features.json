@@ -10,6 +10,7 @@
 // WebTorrent          3D9518A72EB02667A773B69DBA9E72E0F4A37423: echo -n lgjmpdmojkpocjcopdikifhejkkjglho | openssl sha1 | tr '[:lower:]' '[:upper:]'
 // ipfs-companion      780BF954C0F7C586EA9662D4F967771F49CC2114: echo -n nibjojkomfdiaoajekhjakgkdhaomnch | openssl sha1 | tr '[:lower:]' '[:upper:]'
 // ipfs-companion-beta FF32507DC3DB5DFFD1D6733187C84D4B74713D63: echo -n hjoieblefckbooibpepigmacodalfndh | openssl sha1 | tr '[:lower:]' '[:upper:]'
+// Simple Extension    21CD7D9A69F8726E798D729DE733D9159C533A44: echo -n mdfliblilggoilncehgeklckminpjhog | openssl sha1 | tr '[:lower:]' '[:upper:]'
 
 {
   "braveShields": {

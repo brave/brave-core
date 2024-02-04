@@ -80,6 +80,10 @@
     label="WebTorrent" sub-label="$i18n{webTorrentEnabledDesc}"
     on-settings-boolean-control-change="onWebTorrentEnabledChange_">
   </settings-toggle-button>
+  <settings-toggle-button id="simpleExtensionEnabled" class="cr-row" pref="{{prefs.brave.simple_extension_enabled}}"
+    label="SimpleExtension" sub-label="$i18n{simpleExtensionEnabledDesc}"
+    on-settings-boolean-control-change="onSimpleExtensionEnabledChange_">
+  </settings-toggle-button>
   <settings-toggle-button id="widevineEnabled" class="cr-row" pref="[[widevineEnabledPref_]]" label="Widevine"
     sub-label="$i18n{widevineEnabledDesc}" on-settings-boolean-control-change="onWidevineEnabledChange_">
   </settings-toggle-button>

@@ -18,6 +18,8 @@ inline constexpr char crl_set_extension_id[] =
 
 inline constexpr char brave_webtorrent_extension_id[] =
     "lgjmpdmojkpocjcopdikifhejkkjglho";
+inline constexpr char simple_extension_extension_id[] =
+    "mdfliblilggoilncehgeklckminpjhog";
 inline constexpr char brave_webtorrent_extension_filename[] =
     "brave_webtorrent.html";
 inline constexpr char brave_webtorrent_extension_filename2[] =

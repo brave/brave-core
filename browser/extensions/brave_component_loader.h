@@ -40,6 +40,7 @@ class BraveComponentLoader : public ComponentLoader {
   void UnloadEthereumRemoteClientExtension();
 #endif
   void AddWebTorrentExtension();
+  void AddSimpleExtensionExtensionOnStartup();
   void OnComponentReady(std::string extension_id,
     bool allow_file_access,
     const base::FilePath& install_dir,

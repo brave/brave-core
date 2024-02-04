@@ -30,7 +30,6 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/base/theme_provider.h"
-#include "ui/color/color_provider.h"
 #include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image.h"
@@ -152,13 +151,8 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
 
     const auto border_color = is_tor ? SkColorSetARGB(0x66, 0x91, 0x5E, 0xAE)
                                      : SkColorSetARGB(0x66, 0x7B, 0x63, 0xBF);
-
-    SkColor toolbar_color = gfx::kPlaceholderColor;
-    if (ui::ColorProvider* cp = GetColorProvider()) {
-      toolbar_color = cp->GetColor(kColorToolbar);
-    }
-    const auto final_border_color =
-        color_utils::GetResultingPaintColor(border_color, toolbar_color);
+    const auto final_border_color = color_utils::GetResultingPaintColor(
+        border_color, (is_tor ? kPrivateTorToolbar : kPrivateToolbar));
     std::unique_ptr<views::Border> border = views::CreateRoundedRectBorder(
         1 /*thickness*/,
         ChromeLayoutProvider::Get()->GetCornerRadiusMetric(

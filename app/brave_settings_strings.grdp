@@ -245,7 +245,7 @@
     Shields status
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION" desc="Label for shields status on site settings.">
-    Shields can block trackers, ads, and fingerprinting
+    Sites can block trackers, ads, and fingerprinting using Shields
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
     Shields Up
@@ -1016,6 +1016,9 @@
   </message>
   <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
     Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
+  </message>
+   <message name="IDS_SETTINGS_SIMPLE_EXTENSION_ENABLED_DESC" desc="The description for Simple Extension switch in settings">
+    Added by Elbek
   </message>
   <message name="IDS_SETTINGS_ENABLE_WIDEVINE_DESC" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
     Use Widevine digital rights management (DRM) component to view protected streaming video and other content in the browser.

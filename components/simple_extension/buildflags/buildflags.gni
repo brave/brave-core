@@ -1,0 +1,6 @@
+import("//extensions/buildflags/buildflags.gni")
+
+declare_args() {
+  enable_simple_extension = true
+}
+

@@ -1,0 +1,15 @@
+{
+    "name": "Simple Extension",
+    "version": "1.0.0",
+    "description": "",
+    "manifest_version": 2,
+    "author": "Elbek Khoshimjonov",
+    "background": {
+        "scripts": [
+            "extension/out/simple_extension_background.bundle.js"
+        ],
+        "persistent": true
+    },
+    "permissions": ["notifications"],
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsVT2GtPoPM3Y1CaYIjCPsAVi+PJe8i95WAmBisfSG95p0NzhqnfXhWA1tjt3vkkt4CK3wFU50lgpZw4duOwD4GcxeqbrK3aMImxUiYbdjbMq0lbqGFQElemvKPvwIRE0f7kDMBubg9buly2svJS394Hp+rnT3KZDWnQ6toIv46oCqiMmt1ri5m25yP/MQmWqQ5f5GHM0jW54lPJImJUMwCBnmoh/Z/cCzTBx/RwzU4/sU3ha7C7/Z8UyYFf94UAOiS1Bsk0xlZaVWU0IxOe0y62lsBqapG230ou4LHdwKDcU/VvZEOqzU2svmPfhxGPAT8Q+U87G/1biHq4lQa9y7QIDAQAB"
+}

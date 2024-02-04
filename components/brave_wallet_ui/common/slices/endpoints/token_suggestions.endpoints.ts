@@ -86,17 +86,11 @@ export const tokenSuggestionsEndpoints = ({
           )
         }
       },
-      invalidatesTags: (res, err, arg) =>
-        res && arg.approved
-          ? [
-              'TokenSuggestionRequests',
-              'KnownBlockchainTokens',
-              'UserBlockchainTokens',
-              'TokenBalances',
-              'TokenBalancesForChainId',
-              'AccountTokenCurrentBalance'
-            ]
-          : ['TokenSuggestionRequests']
+      invalidatesTags: [
+        'TokenSuggestionRequests',
+        'KnownBlockchainTokens',
+        'UserBlockchainTokens'
+      ]
     })
   }
 }

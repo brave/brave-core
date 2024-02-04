@@ -102,7 +102,7 @@ interface Props {
   onDelete?: () => void
   onClick: (account: BraveWallet.AccountInfo) => void
   account: BraveWallet.AccountInfo
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined
   isLoadingBalances: boolean
   spotPriceRegistry: SpotPriceRegistry | undefined
   isLoadingSpotPrices: boolean
