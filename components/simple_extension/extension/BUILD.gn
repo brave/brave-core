@@ -1,0 +1,24 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("generate_simple_extension") {
+  entry_points = [
+    [
+      "simple_extension_background",
+      rebase_path("background.js"),
+    ],
+  ]
+
+  webpack_aliases = [ "chromeapp" ]
+  resource_name = "simple_extension"
+
+  # Must match the relative path from the static GRD to the manifest.json
+  # plus any other relative path we want these files to live in the extension
+  resource_path_prefix = "simple_extension/extension/out"
+
+  public_asset_path = "/extension/out/"
+}

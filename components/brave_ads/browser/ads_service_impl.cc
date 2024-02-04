@@ -33,7 +33,6 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
-#include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
@@ -335,11 +334,8 @@ bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
   return profile_->GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
 }
 
-void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
+void AdsServiceImpl::InitializeNotificationsForCurrentProfile() const {
   NotificationHelper::GetInstance()->InitForProfile(profile_);
-
-  RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(),
-                                     profile_->GetPrefs());
 }
 
 void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsService() {
@@ -701,12 +697,6 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
       base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
                           base::Unretained(this),
                           prefs::kMaximumNotificationAdsPerHour));
-  auto notification_ad_position_callback = base::BindRepeating(
-      &AdsServiceImpl::OnNotificationAdPositionChanged, base::Unretained(this));
-  pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateX,
-                             notification_ad_position_callback);
-  pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateY,
-                             notification_ad_position_callback);
 }
 
 void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
@@ -1048,11 +1038,6 @@ void AdsServiceImpl::URLRequestCallback(
   url_response->headers = headers;
 
   std::move(callback).Run(std::move(url_response));
-}
-
-void AdsServiceImpl::OnNotificationAdPositionChanged() {
-  RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(),
-                                     profile_->GetPrefs());
 }
 
 void AdsServiceImpl::Shutdown() {

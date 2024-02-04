@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <stdio.h>
 
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
@@ -19,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/simple_extension/grit/simple_extension_resources.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -163,6 +165,12 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setWebTorrentEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWebTorrentEnabled,
                           base::Unretained(this)));
+  
+  web_ui()->RegisterMessageCallback(
+      "setSimpleExtensionEnabled",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetSimpleExtensionEnabled,
+                          base::Unretained(this)));
+
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   web_ui()->RegisterMessageCallback(
       "setBraveWalletEnabled",
@@ -278,6 +286,31 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
   } else {
     service->DisableExtension(
         brave_webtorrent_extension_id,
+        extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
+  }
+}
+
+void BraveDefaultExtensionsHandler::SetSimpleExtensionEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+  bool enabled = args[0].GetBool();
+
+  extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
+  extensions::ComponentLoader* loader = service->component_loader();
+
+  if (enabled) {
+    if (!loader->Exists(simple_extension_extension_id)) {
+      base::FilePath simple_extension_path(FILE_PATH_LITERAL(""));
+      simple_extension_path =
+        simple_extension_path.Append(FILE_PATH_LITERAL("simple_extension"));
+      loader->Add(IDR_SIMPLE_EXTENSION, simple_extension_path);
+    }
+    service->EnableExtension(simple_extension_extension_id);
+  } else {
+    service->DisableExtension(
+        simple_extension_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
 }

@@ -210,4 +210,13 @@ void BraveBrowserMainParts::PostProfileInit(Profile* profile,
         ->AddEthereumRemoteClientExtensionOnStartup();
   }
 #endif
+
+  extensions::ExtensionService* s =
+      extensions::ExtensionSystem::Get(profile)->extension_service();
+  if (s) {
+    extensions::ComponentLoader* loader = s->component_loader();
+    static_cast<extensions::BraveComponentLoader*>(loader)
+        ->AddSimpleExtensionExtensionOnStartup();
+  }
+
 }

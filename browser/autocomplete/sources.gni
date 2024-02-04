@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/simple_extension/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -16,6 +17,7 @@ brave_browser_autocomplete_deps = [
   "//base",
   "//brave/common",
   "//brave/components/brave_webtorrent/browser/buildflags",
+  "//brave/components/simple_extension/buildflags",
   "//brave/components/ipfs/buildflags",
   "//chrome/browser/profiles:profile",
 ]

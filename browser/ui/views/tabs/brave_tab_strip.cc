@@ -84,9 +84,6 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
     return false;
   }
 
-  // TODO(simonhong): We can return false always here as horizontal tab design
-  // doesn't need additional stroke.
-  // Delete all below code when horizontal tab feature flag is removed.
   if (tabs::features::HorizontalTabsUpdateEnabled()) {
     // We never automatically draw strokes around tabs. For pinned tabs, we draw
     // the stroke when generating the tab drawing path.

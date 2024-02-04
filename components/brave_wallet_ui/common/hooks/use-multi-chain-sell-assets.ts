@@ -80,10 +80,15 @@ export const useMultiChainSellAssets = () => {
           offRampProvider: BraveWallet.OffRampProvider.kRamp,
           chainId: sellAsset.chainId,
           address: sellAddress,
-          amount: new Amount(sellAmount)
-            .multiplyByDecimals(sellAsset?.decimals ?? 18)
-            .toNumber()
-            .toString(),
+          amount:
+            sellAsset.coin === BraveWallet.CoinType.SOL
+              ? new Amount(sellAmount)
+                  .multiplyByDecimals(sellAsset?.decimals ?? 18)
+                  .toNumber()
+                  .toString()
+              : new Amount(sellAmount)
+                  .multiplyByDecimals(sellAsset?.decimals ?? 18)
+                  .toHex(),
           fiatCurrencyCode: defaultFiatCurrency
         }).unwrap()
 

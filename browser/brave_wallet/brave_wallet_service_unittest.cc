@@ -514,14 +514,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
-      const std::string& chain_id,
-      mojom::CoinType coin_type) {
-    std::vector<mojom::BlockchainTokenPtr> result;
-    GetUserAssets(chain_id, coin_type, &result);
-    return result;
-  }
-
   bool AddUserAsset(mojom::BlockchainTokenPtr token) {
     bool out_success = false;
     base::RunLoop run_loop;
@@ -950,50 +942,6 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(tokens.size(), 2u);
   EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
   EXPECT_EQ(token1_0xaa36a7, tokens[1]);
-}
-
-TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForBtc) {
-  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
-
-  auto btc_mainnet_token = GetBitcoinNativeToken(mojom::kBitcoinMainnet);
-  auto btc_testnet_token = GetBitcoinNativeToken(mojom::kBitcoinTestnet);
-
-  EXPECT_THAT(GetUserAssets(mojom::kBitcoinMainnet, mojom::CoinType::BTC),
-              ElementsAre(Eq(std::ref(btc_mainnet_token))));
-  EXPECT_THAT(GetUserAssets(mojom::kBitcoinTestnet, mojom::CoinType::BTC),
-              ElementsAre(Eq(std::ref(btc_testnet_token))));
-
-  btc_mainnet_token->visible = false;
-  btc_testnet_token->visible = false;
-  AddUserAsset(btc_mainnet_token.Clone());
-  AddUserAsset(btc_testnet_token.Clone());
-
-  EXPECT_THAT(GetUserAssets(mojom::kBitcoinMainnet, mojom::CoinType::BTC),
-              ElementsAre(Eq(std::ref(btc_mainnet_token))));
-  EXPECT_THAT(GetUserAssets(mojom::kBitcoinTestnet, mojom::CoinType::BTC),
-              ElementsAre(Eq(std::ref(btc_testnet_token))));
-}
-
-TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForZec) {
-  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
-
-  auto zec_mainnet_token = GetZcashNativeToken(mojom::kZCashMainnet);
-  auto zec_testnet_token = GetZcashNativeToken(mojom::kZCashTestnet);
-
-  EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
-              ElementsAre(Eq(std::ref(zec_mainnet_token))));
-  EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
-              ElementsAre(Eq(std::ref(zec_testnet_token))));
-
-  zec_mainnet_token->visible = false;
-  zec_testnet_token->visible = false;
-  AddUserAsset(zec_mainnet_token.Clone());
-  AddUserAsset(zec_testnet_token.Clone());
-
-  EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
-              ElementsAre(Eq(std::ref(zec_mainnet_token))));
-  EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
-              ElementsAre(Eq(std::ref(zec_testnet_token))));
 }
 
 TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
@@ -1901,9 +1849,9 @@ TEST_F(BraveWalletServiceUnitTest, MigrateAssetsPrefToList) {
   ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
   ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsList));
 
-  EXPECT_THAT(
-      BraveWalletService::GetUserAssets(GetPrefs()),
-      ElementsAre(Eq(std::ref(custom_eth_token)), Eq(std::ref(eth_token)),
+  EXPECT_THAT(BraveWalletService::GetUserAssets(GetPrefs()),
+              testing::ElementsAre(
+                  Eq(std::ref(custom_eth_token)), Eq(std::ref(eth_token)),
                   Eq(std::ref(bat_token)), Eq(std::ref(sol_token))));
 }
 

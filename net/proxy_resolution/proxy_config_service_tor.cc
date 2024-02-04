@@ -7,32 +7,23 @@
 
 #include <stdlib.h>
 
-#include <cstdint>
-#include <map>
+#include <algorithm>
+#include <memory>
 #include <optional>
-#include <queue>
-#include <string>
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
-#include "base/location.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "base/timer/timer.h"
+#include "base/values.h"
 #include "crypto/random.h"
-#include "net/base/host_port_pair.h"
 #include "net/base/network_anonymization_key.h"
-#include "net/base/proxy_chain.h"
-#include "net/base/proxy_server.h"
 #include "net/base/proxy_string_util.h"
 #include "net/base/schemeful_site.h"
-#include "net/proxy_resolution/proxy_config.h"
-#include "net/proxy_resolution/proxy_config_service.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
 
 namespace net {
 
@@ -80,12 +71,12 @@ constexpr NetworkTrafficAnnotationTag kTorProxyTrafficAnnotation =
         policy_exception_justification: "Not implemented."
       })");
 
-static base::NoDestructor<std::map<ProxyResolutionService*, TorProxyMap>>
-    g_tor_proxy_map;
+static base::NoDestructor<std::map<
+    ProxyResolutionService*, TorProxyMap>> tor_proxy_map_;
 
 TorProxyMap* GetTorProxyMap(
     ProxyResolutionService* service) {
-  return &(g_tor_proxy_map.get()->operator[](service));
+  return &(tor_proxy_map_.get()->operator[](service));
 }
 
 bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
@@ -94,10 +85,10 @@ bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
   // empty TorProxyMap (all entries have expired)
   // we do this here because the other methods are only called when
   // IsTorProxy is true so the last entry will never be deleted
-  for (auto it = g_tor_proxy_map.get()->cbegin();
-       it != g_tor_proxy_map.get()->cend();) {
+  for (auto it = tor_proxy_map_.get()->cbegin();
+       it != tor_proxy_map_.get()->cend(); ) {
     if (it->second.size() == 0) {
-      g_tor_proxy_map->erase(it++);
+      tor_proxy_map_->erase(it++);
     } else {
       ++it;
     }
@@ -105,14 +96,6 @@ bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
 
   return tag.unique_id_hash_code ==
          kTorProxyTrafficAnnotation.unique_id_hash_code;
-}
-
-std::string AnonymizationKeyToString(const NetworkAnonymizationKey& key) {
-  const std::optional<net::SchemefulSite>& schemeful_site =
-      key.GetTopFrameSite();
-  CHECK(schemeful_site.has_value());
-  std::string host = GURL(schemeful_site->Serialize()).host();
-  return host;
 }
 
 }  // namespace
@@ -163,7 +146,11 @@ std::string ProxyConfigServiceTor::CircuitAnonymizationKey(const GURL& url) {
   const auto network_anonymization_key =
       net::NetworkAnonymizationKey::CreateFromFrameSite(url_site, url_site);
 
-  return AnonymizationKeyToString(network_anonymization_key);
+  const std::optional<net::SchemefulSite>& schemeful_site =
+      network_anonymization_key.GetTopFrameSite();
+  DCHECK(schemeful_site.has_value());
+  std::string host = GURL(schemeful_site->Serialize()).host();
+  return host;
 }
 
 void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
@@ -187,16 +174,14 @@ void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
 void ProxyConfigServiceTor::SetProxyAuthorization(
     const ProxyConfigWithAnnotation& config,
     const GURL& url,
-    const NetworkAnonymizationKey& key,
     ProxyResolutionService* service,
     ProxyInfo* result) {
-  if (!IsTorProxyConfig(config)) {
+  if (!IsTorProxyConfig(config))
     return;
-  }
 
   // Adding username & password to global sock://127.0.0.1:[port] config
   // without actually modifying it when resolving proxy for each url.
-  const std::string username = AnonymizationKeyToString(key);
+  const std::string username = CircuitAnonymizationKey(url);
   const net::ProxyChain& chain =
       config.value().proxy_rules().single_proxies.First();
   CHECK(chain.is_single_proxy());

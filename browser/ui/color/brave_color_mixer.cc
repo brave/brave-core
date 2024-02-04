@@ -11,6 +11,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
+#include "brave/browser/ui/tabs/brave_vertical_tab_color_mixer.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -215,7 +216,7 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
       leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kLight)};
   mixer[kColorTabStrokeFrameActive] = {SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
   mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
-  mixer[kColorToolbar] = {leo::kColorPrimitiveGray1};
+  mixer[kColorToolbar] = {kLightToolbar};
   mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveGray50};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -272,7 +273,7 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
       leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)};
   mixer[kColorTabStrokeFrameActive] = {kColorToolbar};
   mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
-  mixer[kColorToolbar] = {leo::kColorPrimitiveGray90};
+  mixer[kColorToolbar] = {kDarkToolbar};
   mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveGray40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -474,6 +475,8 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.15 * 255)};
 
+  tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
+
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::AddThemeColorMixer(provider, leo::Theme::kLight, key);
@@ -583,6 +586,8 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.25 * 255)};
 
+  tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
+
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::AddThemeColorMixer(provider, leo::Theme::kDark, key);
@@ -676,7 +681,7 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xCC, 0xBE, 0xFE)};
   mixer[kColorTabForegroundInactiveFrameActive] = {
       SkColorSetRGB(0xCC, 0xBE, 0xFE)};
-  mixer[kColorToolbar] = {leo::kColorPrimitivePrivateWindow90};
+  mixer[kColorToolbar] = {kPrivateToolbar};
   mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitivePrivateWindow40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -709,7 +714,7 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xE3, 0xB3, 0xFF)};
   mixer[kColorTabForegroundInactiveFrameActive] = {
       SkColorSetRGB(0xE3, 0xB3, 0xFF)};
-  mixer[kColorToolbar] = {leo::kColorPrimitiveTorWindow90};
+  mixer[kColorToolbar] = {kPrivateTorToolbar};
   mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveTorWindow40};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};

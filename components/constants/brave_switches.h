@@ -35,6 +35,10 @@ inline constexpr char kDisableBraveUpdate[] = "disable-brave-update";
 inline constexpr char kDisableWebTorrentExtension[] =
     "disable-webtorrent-extension";
 
+// Allows disabling the SimpleExtension extension.
+inline constexpr char kDisableSimpleExtension[] =
+    "disable-simple-extension";
+
 // Allows disabling the Wayback Machine extension.
 inline constexpr char kDisableBraveWaybackMachineExtension[] =
     "disable-brave-wayback-machine-extension";

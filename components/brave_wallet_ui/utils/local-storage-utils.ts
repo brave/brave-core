@@ -122,7 +122,7 @@ export function setStoredPortfolioTimeframe(
   )
 }
 
-export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
+export const getPersistedTokenBalances = (): TokenBalancesRegistry => {
   try {
     return JSON.parse(
       window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN_BALANCES) || '{}'
@@ -133,9 +133,7 @@ export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
   }
 }
 
-export const setPersistedPortfolioTokenBalances = (
-  registry: TokenBalancesRegistry
-) => {
+export const setPersistedTokenBalances = (registry: TokenBalancesRegistry) => {
   try {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.TOKEN_BALANCES,

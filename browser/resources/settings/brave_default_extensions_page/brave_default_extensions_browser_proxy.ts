@@ -15,6 +15,7 @@ export type ExtensionV2 = {
 
 export interface BraveDefaultExtensionsBrowserProxy  {
   setWebTorrentEnabled(value: boolean): void
+  setSimpleExtensionEnabled(value: boolean): void
   setHangoutsEnabled(value: boolean): void
   setWidevineEnabled(value: boolean): void
   setMediaRouterEnabled(value: boolean): void
@@ -29,6 +30,10 @@ export interface BraveDefaultExtensionsBrowserProxy  {
 export class BraveDefaultExtensionsBrowserProxyImpl implements BraveDefaultExtensionsBrowserProxy {
   setWebTorrentEnabled(value: boolean) {
     chrome.send('setWebTorrentEnabled', [value])
+  }
+
+  setSimpleExtensionEnabled(value: boolean) {
+    chrome.send('setSimpleExtensionEnabled', [value])
   }
 
   setHangoutsEnabled(value: boolean) {

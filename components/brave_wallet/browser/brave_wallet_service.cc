@@ -180,31 +180,6 @@ bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                         account_id.keyring_id);
 }
 
-// Ensure token list contains native tokens when appears empty. Only for BTC
-// and ZEC by now.
-std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
-    const std::string& chain_id,
-    mojom::CoinType coin,
-    std::vector<mojom::BlockchainTokenPtr> tokens) {
-  if (coin != mojom::CoinType::BTC && coin != mojom::CoinType::ZEC) {
-    return tokens;
-  }
-
-  if (!tokens.empty()) {
-    return tokens;
-  }
-
-  if (coin == mojom::CoinType::BTC && IsBitcoinNetwork(chain_id)) {
-    tokens.push_back(GetBitcoinNativeToken(chain_id));
-  }
-
-  if (coin == mojom::CoinType::ZEC && IsZCashNetwork(chain_id)) {
-    tokens.push_back(GetZcashNativeToken(chain_id));
-  }
-
-  return tokens;
-}
-
 }  // namespace
 
 struct PendingDecryptRequest {
@@ -452,8 +427,7 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        GetUserAssetsCallback callback) {
   std::vector<mojom::BlockchainTokenPtr> result =
       GetUserAssets(chain_id, coin, profile_prefs_);
-  std::move(callback).Run(
-      EnsureNativeTokens(chain_id, coin, std::move(result)));
+  std::move(callback).Run(std::move(result));
 }
 
 void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
@@ -1098,10 +1072,32 @@ base::Value::List BraveWalletService::GetDefaultFilecoinAssets() {
 base::Value::List BraveWalletService::GetDefaultBitcoinAssets() {
   base::Value::List user_assets_list;
 
-  user_assets_list.Append(
-      BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinMainnet)));
-  user_assets_list.Append(
-      BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinTestnet)));
+  base::Value::Dict btc;
+  btc.Set("coin", static_cast<int>(mojom::CoinType::BTC));
+  btc.Set("address", "");
+  btc.Set("name", "Bitcoin");
+  btc.Set("decimals", 8);
+  btc.Set("is_erc20", false);
+  btc.Set("is_erc721", false);
+  btc.Set("is_erc1155", false);
+  btc.Set("is_spam", false);
+  btc.Set("is_nft", false);
+  btc.Set("visible", true);
+  btc.Set("logo", "btc.png");
+
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::BTC)) {
+    auto asset = btc.Clone();
+    asset.Set("chain_id", chain->chain_id);
+    if (chain->chain_id == mojom::kBitcoinMainnet) {
+      asset.Set("symbol", "BTC");
+      asset.Set("coingecko_id", "btc");
+    } else if (chain->chain_id == mojom::kBitcoinTestnet) {
+      asset.Set("symbol", "BTC");
+    } else {
+      NOTREACHED();
+    }
+    user_assets_list.Append(std::move(asset));
+  }
 
   return user_assets_list;
 }
@@ -1110,10 +1106,26 @@ base::Value::List BraveWalletService::GetDefaultBitcoinAssets() {
 base::Value::List BraveWalletService::GetDefaultZCashAssets() {
   base::Value::List user_assets_list;
 
-  user_assets_list.Append(
-      BlockchainTokenToValue(GetZcashNativeToken(mojom::kZCashMainnet)));
-  user_assets_list.Append(
-      BlockchainTokenToValue(GetZcashNativeToken(mojom::kZCashTestnet)));
+  base::Value::Dict zec;
+  zec.Set("coin", static_cast<int>(mojom::CoinType::ZEC));
+  zec.Set("address", "");
+  zec.Set("name", "Zcash");
+  zec.Set("decimals", 8);
+  zec.Set("is_erc20", false);
+  zec.Set("is_erc721", false);
+  zec.Set("is_erc1155", false);
+  zec.Set("is_spam", false);
+  zec.Set("is_nft", false);
+  zec.Set("visible", true);
+  zec.Set("logo", "zec.png");
+  zec.Set("symbol", "ZEC");
+  zec.Set("coingecko_id", "zec");
+
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ZEC)) {
+    auto asset = zec.Clone();
+    asset.Set("chain_id", chain->chain_id);
+    user_assets_list.Append(std::move(asset));
+  }
 
   return user_assets_list;
 }

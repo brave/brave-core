@@ -228,12 +228,6 @@ void NotificationAdPopup::OnMouseReleased(const ui::MouseEvent& event) {
   WidgetDelegateView::OnMouseReleased(event);
 
   if (is_dragging_) {
-    profile_->GetPrefs()->SetDouble(
-        prefs::kNotificationAdLastNormalizedCoordinateX,
-        last_normalized_coordinate_.x());
-    profile_->GetPrefs()->SetDouble(
-        prefs::kNotificationAdLastNormalizedCoordinateY,
-        last_normalized_coordinate_.y());
     is_dragging_ = false;
     return;
   }
@@ -338,7 +332,7 @@ void NotificationAdPopup::CreatePopup(gfx::NativeWindow browser_native_window,
   CreateWidgetView(browser_native_window, browser_native_view);
 }
 
-bool NotificationAdPopup::DidChangePopupPosition() const {
+bool NotificationAdPopup::WasNotificationAdPopupShownBefore() const {
   return profile_->GetPrefs()->HasPrefPath(
              prefs::kNotificationAdLastNormalizedCoordinateX) &&
          profile_->GetPrefs()->HasPrefPath(
@@ -347,12 +341,6 @@ bool NotificationAdPopup::DidChangePopupPosition() const {
 
 gfx::Rect NotificationAdPopup::GetInitialWidgetBounds(
     gfx::NativeView browser_native_view) {
-  if (DidChangePopupPosition()) {
-    last_normalized_coordinate_.set_x(profile_->GetPrefs()->GetDouble(
-        prefs::kNotificationAdLastNormalizedCoordinateX));
-    last_normalized_coordinate_.set_y(profile_->GetPrefs()->GetDouble(
-        prefs::kNotificationAdLastNormalizedCoordinateY));
-  }
   const gfx::Size size = CalculateViewSize();
   return GetWidgetBoundsForSize(size, browser_native_view);
 }
@@ -368,9 +356,11 @@ gfx::Rect NotificationAdPopup::GetWidgetBoundsForSize(
   double normalized_display_coordinate_y =
       kCustomNotificationAdNormalizedCoordinateY.Get();
 
-  if (DidChangePopupPosition()) {
-    normalized_display_coordinate_x = last_normalized_coordinate_.x();
-    normalized_display_coordinate_y = last_normalized_coordinate_.y();
+  if (WasNotificationAdPopupShownBefore()) {
+    normalized_display_coordinate_x = profile_->GetPrefs()->GetDouble(
+        prefs::kNotificationAdLastNormalizedCoordinateX);
+    normalized_display_coordinate_y = profile_->GetPrefs()->GetDouble(
+        prefs::kNotificationAdLastNormalizedCoordinateY);
   }
 
   // Calculate position
@@ -393,7 +383,7 @@ gfx::Rect NotificationAdPopup::GetWidgetBoundsForSize(
 }
 
 void NotificationAdPopup::SaveWidgetOrigin(const gfx::Point& origin,
-                                           gfx::NativeView native_view) {
+                                           gfx::NativeView native_view) const {
   const gfx::Rect display_work_area =
       GetDefaultDisplayScreenWorkArea(native_view);
 
@@ -402,11 +392,18 @@ void NotificationAdPopup::SaveWidgetOrigin(const gfx::Point& origin,
   const gfx::Size size = CalculateViewSize();
   const double width =
       static_cast<double>(display_work_area.width() - size.width());
-  last_normalized_coordinate_.set_x(offset.x() / width);
+  const double normalized_display_coordinate_x = offset.x() / width;
 
   const double height =
       static_cast<double>(display_work_area.height() - size.height());
-  last_normalized_coordinate_.set_y(offset.y() / height);
+  const double normalized_display_coordinate_y = offset.y() / height;
+
+  profile_->GetPrefs()->SetDouble(
+      prefs::kNotificationAdLastNormalizedCoordinateX,
+      normalized_display_coordinate_x);
+  profile_->GetPrefs()->SetDouble(
+      prefs::kNotificationAdLastNormalizedCoordinateY,
+      normalized_display_coordinate_y);
 }
 
 gfx::Size NotificationAdPopup::CalculateViewSize() const {

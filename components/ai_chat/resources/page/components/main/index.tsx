@@ -201,7 +201,7 @@ function Main() {
         </div>}
         {!hasAcceptedAgreement && <WelcomeGuide />}
       </div>
-      <div className={styles.input}>
+      <div className={styles.inputBox}>
         {showContextToggle && (
           <div className={styles.toggleContainer}>
             <PageContextToggle />

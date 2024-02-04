@@ -12,5 +12,4 @@ interface SkusInternals {
   CopySkusStateToClipboard();
   DownloadSkusState();
   ResetSkusState();
-  CreateOrderFromReceipt(string domain, string receipt) => (string response);
 };

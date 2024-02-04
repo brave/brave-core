@@ -15,6 +15,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/simple_extension/grit/simple_extension_resources.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -161,6 +162,19 @@ void BraveComponentLoader::AddWebTorrentExtension() {
     brave_webtorrent_path =
         brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
+  }
+}
+
+void BraveComponentLoader::AddSimpleExtensionExtensionOnStartup() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kDisableSimpleExtension) &&
+      (!profile_prefs_->FindPreference(kSimpleExtensionEnabled) ||
+       profile_prefs_->GetBoolean(kSimpleExtensionEnabled))) {
+    base::FilePath simple_extension_path(FILE_PATH_LITERAL(""));
+    simple_extension_path =
+        simple_extension_path.Append(FILE_PATH_LITERAL("simple_extension"));
+    Add(IDR_SIMPLE_EXTENSION, simple_extension_path);
   }
 }
 

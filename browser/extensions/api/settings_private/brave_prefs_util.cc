@@ -229,6 +229,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kMRUCyclingEnabled] = settings_api::PrefType::kBoolean;
   // WebTorrent pref
   (*s_brave_allowlist)[kWebTorrentEnabled] = settings_api::PrefType::kBoolean;
+  // SimpleExtension pref
+  (*s_brave_allowlist)[kSimpleExtensionEnabled] = settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
       settings_api::PrefType::kBoolean;

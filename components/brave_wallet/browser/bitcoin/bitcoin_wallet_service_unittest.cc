@@ -46,6 +46,13 @@ bool operator==(const UnspentOutput& l, const UnspentOutput& r) {
 
 }  // namespace bitcoin_rpc
 
+namespace mojom {
+void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os) {
+  *os << balance->total_balance << "/" << balance->available_balance << "/"
+      << balance->pending_balance;
+}
+}  // namespace mojom
+
 class BitcoinWalletServiceUnitTest : public testing::Test {
  public:
   BitcoinWalletServiceUnitTest()

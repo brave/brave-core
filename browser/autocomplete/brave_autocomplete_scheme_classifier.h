@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/simple_extension/buildflags/buildflags.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

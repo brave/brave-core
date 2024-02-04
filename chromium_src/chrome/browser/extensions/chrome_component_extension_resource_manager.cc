@@ -8,11 +8,18 @@
 #include "brave/components/brave_extension/grit/brave_extension_generated_map.h"
 #include "brave/components/brave_extension/grit/brave_extension_resources_map.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/simple_extension/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_generated_map.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
 #endif
+
+#if BUILDFLAG(ENABLE_SIMPLE_EXTENSION)
+#include "brave/components/simple_extension/grit/simple_extension_generated_map.h"
+#include "brave/components/simple_extension/grit/simple_extension_resources_map.h"
+#endif
+
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #define BRAVE_WEBTORRENT_RESOURCES                            \
@@ -24,12 +31,25 @@
 #define BRAVE_WEBTORRENT_RESOURCES
 #endif
 
+#if BUILDFLAG(ENABLE_SIMPLE_EXTENSION)
+#define SIMPLE_EXTENSION_RESOURCES                            \
+  AddComponentResourceEntries(kSimpleExtensionResources,      \
+                              kSimpleExtensionResourcesSize); \
+  AddComponentResourceEntries(kSimpleExtensionGenerated,      \
+                              kSimpleExtensionGeneratedSize);
+#else
+#define SIMPLE_EXTENSION_RESOURCES
+#endif
+
+
 #define BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA  \
   AddComponentResourceEntries(kBraveExtension, kBraveExtensionSize); \
   AddComponentResourceEntries(kBraveExtensionGenerated,              \
                               kBraveExtensionGeneratedSize);         \
-  BRAVE_WEBTORRENT_RESOURCES
+  BRAVE_WEBTORRENT_RESOURCES \
+  SIMPLE_EXTENSION_RESOURCES
 
 #include "src/chrome/browser/extensions/chrome_component_extension_resource_manager.cc"
 #undef BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA
 #undef BRAVE_WEBTORRENT_RESOURCES
+#undef SIMPLE_EXTENSION_RESOURCES

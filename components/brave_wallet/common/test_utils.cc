@@ -50,25 +50,13 @@ mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id,
 }
 
 namespace mojom {
-
 void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os) {
   *os << base::StringPrintf("[%s %d/%d]", address->address_string.c_str(),
                             address->key_id->change, address->key_id->index);
 }
-
 void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os) {
   *os << BlockchainTokenToValue(token).DebugString();
 }
-
-void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os) {
-  *os << balance->total_balance << "/" << balance->available_balance << "/"
-      << balance->pending_balance;
-}
-
-void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os) {
-  *os << key_id.change << "/" << key_id.index;
-}
-
 }  // namespace mojom
 
 }  // namespace brave_wallet

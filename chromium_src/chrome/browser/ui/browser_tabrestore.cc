@@ -6,6 +6,7 @@
 #include <optional>
 
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/simple_extension/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
