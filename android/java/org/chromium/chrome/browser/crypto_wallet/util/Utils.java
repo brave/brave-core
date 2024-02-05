@@ -1356,23 +1356,26 @@ public class Utils {
     }
 
     /**
-     * This method should be used to make substring of a string clickable
-     * Example: This is <ph name="START">%1$s</ph>Clickable<ph name="END">%2$s</ph> text.
+     * This method should be used to make substring of a string clickable Example: This is <ph
+     * name="START">%1$s</ph>Clickable<ph name="END">%2$s</ph> text.
      *
-     * @param context         The context
-     * @param stringRes       The id of resource string
+     * @param context The context
+     * @param stringRes The id of resource string
      * @param onClickListener The callback when clickable substring is clicked.
      */
     @NonNull
     public static SpannableString createSpanForSurroundedPhrase(
-            @NonNull Context context, @StringRes int stringRes, @NonNull View.OnClickListener onClickListener) {
+            @NonNull Context context,
+            @StringRes int stringRes,
+            @NonNull View.OnClickListener onClickListener) {
         String htmlString =
                 String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
         SpannableString spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
-            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(
-                    context, R.color.brave_link, onClickListener::onClick);
+            NoUnderlineClickableSpan linkSpan =
+                    new NoUnderlineClickableSpan(
+                            context, R.color.brave_link, onClickListener::onClick);
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

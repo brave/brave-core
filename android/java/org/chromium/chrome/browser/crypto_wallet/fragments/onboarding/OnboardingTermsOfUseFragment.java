@@ -66,11 +66,14 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
         mTermsOfUseCheckBox = view.findViewById(R.id.terms_of_use_check_box);
         mTermsOfUseCheckBox.setOnCheckedChangeListener(this);
 
-        Spanned termsOfUseSpanned = Utils.createSpanForSurroundedPhrase(
-                requireContext(), R.string.accept_terms_of_use, (v) -> {
-                    TabUtils.openUrlInNewTab(false, Utils.BRAVE_TERMS_OF_USE_URL);
-                    TabUtils.bringChromeTabbedActivityToTheTop(requireActivity());
-                });
+        Spanned termsOfUseSpanned =
+                Utils.createSpanForSurroundedPhrase(
+                        requireContext(),
+                        R.string.accept_terms_of_use,
+                        (v) -> {
+                            TabUtils.openUrlInNewTab(false, Utils.BRAVE_TERMS_OF_USE_URL);
+                            TabUtils.bringChromeTabbedActivityToTheTop(requireActivity());
+                        });
         mTermsOfUseCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
         mTermsOfUseCheckBox.setText(termsOfUseSpanned);
 
