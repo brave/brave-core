@@ -328,6 +328,9 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         mPlaylistService.getPlaylist(
                 playlistId,
                 playlist -> {
+                    if (playlist == null) {
+                        Log.e(TAG, "PlaylistHostActivity.loadPlaylist is null from service");
+                    }
                     List<PlaylistItemModel> playlistItems = new ArrayList();
                     for (PlaylistItem playlistItem : playlist.items) {
                         PlaylistItemModel playlistItemModel =
