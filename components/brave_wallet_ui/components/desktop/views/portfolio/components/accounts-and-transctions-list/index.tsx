@@ -200,13 +200,6 @@ export const AccountsAndTransactionsList = ({
     []
   )
 
-  const onOpenSellAssetLink = React.useCallback(() => {
-    openSellAssetLink({
-      sellAddress: selectedSellAccount?.address ?? '',
-      sellAsset: selectedAsset
-    })
-  }, [selectedAsset, selectedSellAccount?.address, openSellAssetLink])
-
   const onToggleHideBalances = React.useCallback(() => {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
@@ -388,7 +381,7 @@ export const AccountsAndTransactionsList = ({
           onClose={() => setShowSellModal(false)}
           sellAmount={sellAmount}
           setSellAmount={setSellAmount}
-          openSellAssetLink={onOpenSellAssetLink}
+          openSellAssetLink={openSellAssetLink}
           showSellModal={showSellModal}
           account={selectedSellAccount}
           sellAssetBalance={getBalance(

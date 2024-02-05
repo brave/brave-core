@@ -121,15 +121,6 @@ export const AssetItemMenu = (props: Props) => {
     setShowSellModal(true)
   }, [setSelectedSellAsset, asset])
 
-  const onOpenSellAssetLink = React.useCallback(() => {
-    if (account?.address) {
-      openSellAssetLink({
-        sellAddress: account.address,
-        sellAsset: selectedSellAsset
-      })
-    }
-  }, [account?.address, openSellAssetLink])
-
   return (
     <StyledWrapper yPosition={42}>
       {isBuySupported && (
@@ -169,7 +160,7 @@ export const AssetItemMenu = (props: Props) => {
           onClose={() => setShowSellModal(false)}
           sellAmount={sellAmount}
           setSellAmount={setSellAmount}
-          openSellAssetLink={onOpenSellAssetLink}
+          openSellAssetLink={openSellAssetLink}
           showSellModal={showSellModal}
           account={account}
           sellAssetBalance={assetBalance}

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
@@ -22,10 +23,12 @@ import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import {
   useScopedBalanceUpdater //
 } from '../../../../common/hooks/use-scoped-balance-updater'
+import {
+  useReceiveAddressQuery //
+} from '../../../../common/slices/api.slice.extra'
 
 // Components
 import PopupModal from '../../../desktop/popup-modals'
-import { NavButton } from '../../../extension/buttons/nav-button/index'
 import {
   withPlaceholderIcon //
 } from '../../../shared/create-placeholder-icon/index'
@@ -52,7 +55,13 @@ interface Props {
   sellAssetBalance: string
   account?: BraveWallet.AccountInfo
   setSellAmount: (value: string) => void
-  openSellAssetLink: () => void
+  openSellAssetLink: ({
+    sellAddress,
+    sellAsset
+  }: {
+    sellAddress: string
+    sellAsset: BraveWallet.BlockchainToken | undefined
+  }) => Promise<void>
   onClose: () => void
 }
 
@@ -82,6 +91,7 @@ export const SellAssetModal = (props: Props) => {
   }, [])
 
   // Computed
+  const generatedAddress = useReceiveAddressQuery(account?.accountId)
   const insufficientBalance = new Amount(sellAmount)
     .multiplyByDecimals(selectedAsset.decimals)
     .gt(sellAssetBalance)
@@ -138,6 +148,13 @@ export const SellAssetModal = (props: Props) => {
     setSellAmount('')
     onClose()
   }, [setSellAmount, onClose])
+
+  const onOpenSellAssetLink = React.useCallback(() => {
+    openSellAssetLink({
+      sellAddress: generatedAddress,
+      sellAsset: selectedAsset
+    })
+  }, [selectedAsset, generatedAddress, openSellAssetLink])
 
   // Hooks
   useOnClickOutside(sellAssetModalRef, onCloseSellModal, showSellModal)
@@ -238,17 +255,15 @@ export const SellAssetModal = (props: Props) => {
           )}
         </Column>
         <VerticalSpacer space={8} />
-        <NavButton
-          disabled={isSellButtonDisabled}
-          buttonType='primary'
-          minHeight='52px'
-          text={
-            // Ramp is hardcoded for now, but we can update with
-            // selectedProvider.name once we add more offramp providers.
-            getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')
-          }
-          onSubmit={openSellAssetLink}
-        />
+        {/* Ramp is hardcoded for now, but we can update with
+        selectedProvider.name once we add more offramp providers. */}
+        <Button
+          isDisabled={isSellButtonDisabled}
+          onClick={onOpenSellAssetLink}
+          isLoading={!isSellButtonDisabled && generatedAddress === ''}
+        >
+          {getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')}
+        </Button>
       </StyledWrapper>
     </PopupModal>
   )
