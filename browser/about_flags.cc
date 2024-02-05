@@ -450,14 +450,6 @@
           FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl),      \
       },                                                                       \
       {                                                                        \
-          "allow-certain-client-hints",                                        \
-          "Allow certain request client hints",                                \
-          "Allows setting certain request client hints (sec-ch-ua, "           \
-          "sec-ch-ua-mobile, sec-ch-ua-platform)",                             \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(blink::features::kAllowCertainClientHints),       \
-      },                                                                       \
-      {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
           "New Tab Page Demo Branded Wallpaper",                               \
           "Force dummy data for the Branded Wallpaper New Tab Page "           \
