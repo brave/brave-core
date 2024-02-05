@@ -14,8 +14,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "chrome/common/channel_info.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
 #include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/install_static/product_install_details.h"
@@ -39,7 +38,7 @@ base::FilePath GetBraveWireguardServiceProfileDir() {
   }
   return base::FilePath(base::UTF8ToWide(program_data))
       .Append(install_static::kCompanyPathName)
-      .Append(brave_vpn::GetBraveVpnWireguardServiceName(chrome::GetChannel()));
+      .Append(brave_vpn::GetBraveVpnWireguardServiceName());
 }
 
 }  // namespace
@@ -90,8 +89,7 @@ void BraveWireguardCrashReporterClient::GetProductNameAndVersion(
     std::wstring* version,
     std::wstring* special_build,
     std::wstring* channel_name) {
-  *product_name =
-      brave_vpn::GetBraveVpnWireguardServiceName(chrome::GetChannel());
+  *product_name = brave_vpn::GetBraveVpnWireguardServiceName();
   std::unique_ptr<FileVersionInfo> version_info(
       FileVersionInfo::CreateFileVersionInfo(base::FilePath(exe_path)));
   if (version_info) {

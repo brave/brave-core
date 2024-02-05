@@ -17,6 +17,7 @@ source_set("common") {
     "features.h",
     "pref_names.h",
   ]
+
   deps = [
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/p3a_utils",
@@ -28,9 +29,6 @@ source_set("common") {
     "//components/version_info",
     "//net",
   ]
-  if (is_win) {
-    deps += [ "//brave/components/brave_vpn/common/wireguard/win" ]
-  }
 }
 
 source_set("unit_tests") {
@@ -49,9 +47,5 @@ source_set("unit_tests") {
     "//components/sync_preferences:test_support",
     "//testing/gmock",
     "//testing/gtest",
-    "//third_party/abseil-cpp:absl",
   ]
-  if (is_win) {
-    deps += [ "wireguard/win:unittests" ]
-  }
 }

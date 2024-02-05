@@ -80,7 +80,7 @@ bool IsNetworkFiltersInstalled() {
 
 std::wstring GetBraveVPNConnectionName() {
   return base::UTF8ToWide(
-      brave_vpn::GetBraveVPNEntryName(install_static::GetChromeChannel()));
+      brave_vpn::GetBraveVPNEntryName(chrome::GetChannel()));
 }
 
 std::wstring GetBraveVpnHelperServiceDisplayName() {

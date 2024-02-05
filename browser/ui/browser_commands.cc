@@ -72,8 +72,8 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
+#include "brave/browser/brave_vpn/win/storage_utils.h"
+#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -130,10 +130,8 @@ void ShowBraveVPNBubble(Browser* browser) {
 
 void ToggleBraveVPNTrayIcon() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-  const auto channel = chrome::GetChannel();
-  brave_vpn::EnableVPNTrayIcon(!brave_vpn::IsVPNTrayIconEnabled(channel),
-                               channel);
-  if (brave_vpn::IsVPNTrayIconEnabled(channel)) {
+  brave_vpn::EnableVPNTrayIcon(!brave_vpn::IsVPNTrayIconEnabled());
+  if (brave_vpn::IsVPNTrayIconEnabled()) {
     brave_vpn::wireguard::ShowBraveVpnStatusTrayIcon();
   }
 #endif

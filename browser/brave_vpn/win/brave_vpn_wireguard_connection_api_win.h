@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_CONNECTION_API_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_CONNECTION_API_H_
+#ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_CONNECTION_API_WIN_H_
+#define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_CONNECTION_API_WIN_H_
 
 #include <memory>
 
@@ -19,19 +19,20 @@ class PrefService;
 
 namespace brave_vpn {
 
-class BraveVPNWireguardConnectionAPI
+// Implemented in chrome layer as it needs channel specific apis.
+class BraveVPNWireguardConnectionAPIWin
     : public BraveVPNWireguardConnectionAPIBase {
  public:
-  BraveVPNWireguardConnectionAPI(
+  BraveVPNWireguardConnectionAPIWin(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_prefs,
       base::RepeatingCallback<bool()> service_installer);
 
-  BraveVPNWireguardConnectionAPI(const BraveVPNWireguardConnectionAPI&) =
+  BraveVPNWireguardConnectionAPIWin(const BraveVPNWireguardConnectionAPIWin&) =
       delete;
-  BraveVPNWireguardConnectionAPI& operator=(
-      const BraveVPNWireguardConnectionAPI&) = delete;
-  ~BraveVPNWireguardConnectionAPI() override;
+  BraveVPNWireguardConnectionAPIWin& operator=(
+      const BraveVPNWireguardConnectionAPIWin&) = delete;
+  ~BraveVPNWireguardConnectionAPIWin() override;
 
   // BraveVPNOSConnectionAPI
   void Disconnect() override;
@@ -52,9 +53,9 @@ class BraveVPNWireguardConnectionAPI
   void ResetServiceWatcher();
 
   std::unique_ptr<brave::ServiceWatcher> service_watcher_;
-  base::WeakPtrFactory<BraveVPNWireguardConnectionAPI> weak_factory_{this};
+  base::WeakPtrFactory<BraveVPNWireguardConnectionAPIWin> weak_factory_{this};
 };
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_CONNECTION_API_H_
+#endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_CONNECTION_API_WIN_H_

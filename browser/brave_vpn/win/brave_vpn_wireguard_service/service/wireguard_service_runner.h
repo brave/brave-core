@@ -11,7 +11,6 @@
 #include "base/functional/callback.h"
 #include "base/no_destructor.h"
 #include "base/win/windows_types.h"
-#include "components/version_info/channel.h"
 
 namespace brave_vpn {
 
@@ -70,7 +69,6 @@ class WireguardServiceRunner {
   SERVICE_STATUS_HANDLE service_status_handle_ = nullptr;
   SERVICE_STATUS service_status_;
   base::OnceClosure quit_;
-  version_info::Channel channel_ = version_info::Channel::UNKNOWN;
 };
 
 }  // namespace brave_vpn

@@ -10,7 +10,6 @@
 #include "base/process/process.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/installer/util/brave_shell_util.h"
-#include "chrome/common/channel_info.h"
 #include "chrome/installer/setup/modify_params.h"
 #include "chrome/installer/util/registry_util.h"
 #include "chrome/installer/util/shell_util.h"
@@ -21,8 +20,8 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #endif
 #define UninstallProduct UninstallProduct_ChromiumImpl
 
@@ -99,8 +98,7 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
     if (!brave_vpn::UninstallBraveWireguardService() ||
         !brave_vpn::UninstallStatusTrayIcon()) {
       LOG(WARNING) << "Failed to delete "
-                   << brave_vpn::GetBraveVpnWireguardServiceName(
-                          chrome::GetChannel());
+                   << brave_vpn::GetBraveVpnWireguardServiceName();
     }
   }
   brave_vpn::ras::RemoveEntry(brave_vpn::GetBraveVPNConnectionName());

@@ -17,6 +17,5 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//net",
     "//testing/gtest",
-    "//third_party/abseil-cpp:absl",
   ]
 }

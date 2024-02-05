@@ -10,10 +10,63 @@ assert(enable_brave_vpn && is_win)
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_vpn_wireguard_observer_service_win_unittest.cc" ]
+  sources = [
+    "brave_vpn_wireguard_observer_service_win_unittest.cc",
+    "storage_utils_unittest.cc",
+  ]
+
   deps = [
+    ":wireguard_utils",
+    "//base",
     "//chrome/test:test_support",
+    "//components/version_info:channel",
     "//testing/gtest",
-    "//third_party/abseil-cpp:absl",
+  ]
+}
+
+source_set("win") {
+  sources = [
+    "brave_vpn_service_delegate_win.cc",
+    "brave_vpn_service_delegate_win.h",
+    "brave_vpn_wireguard_connection_api_win.cc",
+    "brave_vpn_wireguard_connection_api_win.h",
+    "vpn_utils_win.cc",
+    "vpn_utils_win.h",
+  ]
+
+  deps = [
+    ":wireguard_utils",
+    "//base",
+    "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/browser/connection/wireguard",
+    "//brave/components/brave_vpn/browser/connection/wireguard/credentials",
+    "//brave/components/brave_vpn/common/win",
+    "//chrome/elevation_service:public_headers",
+    "//chrome/install_static:install_static_util",
+    "//components/keyed_service/core",
+  ]
+}
+
+source_set("wireguard_utils") {
+  sources = [
+    "service_commands.cc",
+    "service_commands.h",
+    "service_constants.h",
+    "service_details.cc",
+    "service_details.h",
+    "storage_utils.cc",
+    "storage_utils.h",
+    "wireguard_utils_win.cc",
+    "wireguard_utils_win.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard",
+    "//brave/components/brave_vpn/common/wireguard/win:brave_wireguard_manager_idl",
+    "//chrome/common:channel_info",
+    "//components/version_info",
   ]
 }

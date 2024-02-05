@@ -20,7 +20,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/channel_info.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -29,6 +28,7 @@
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_service_delegate_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 #endif
@@ -66,7 +66,7 @@ std::unique_ptr<KeyedService> BuildVpnService(
           shared_url_loader_factory, local_state,
           user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
-  vpn_service->set_channel(chrome::GetChannel());
+  vpn_service->set_delegate(std::make_unique<BraveVPNServiceDelegateWin>());
   if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
     auto* observer_service =
         brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()

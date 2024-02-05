@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
 
 #include <guiddef.h>
 
@@ -12,8 +12,10 @@
 #include "base/containers/cxx20_erase.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
 #include "build/build_config.h"
+#include "chrome/common/channel_info.h"
+#include "components/version_info/channel.h"
 
 using version_info::Channel;
 
@@ -81,8 +83,8 @@ constexpr CLSID kBraveWireguardServiceCLSID = {
 
 // Returns the Brave Vpn Service CLSID, IID, Name, and Display Name
 // respectively.
-const CLSID& GetBraveVpnWireguardServiceClsid(version_info::Channel channel) {
-  switch (channel) {
+const CLSID& GetBraveVpnWireguardServiceClsid() {
+  switch (chrome::GetChannel()) {
     case Channel::CANARY:
       return kBraveNightlyWireguardServiceCLSID;
     case Channel::DEV:
@@ -102,9 +104,8 @@ const IID& GetBraveVpnWireguardServiceIid() {
   return kBraveWireguardServiceIID;
 }
 
-std::wstring GetBraveVpnWireguardServiceDisplayName(
-    version_info::Channel channel) {
-  switch (channel) {
+std::wstring GetBraveVpnWireguardServiceDisplayName() {
+  switch (chrome::GetChannel()) {
     case Channel::CANARY:
       return L"Brave Nightly Vpn Wireguard Service";
     case Channel::DEV:
@@ -120,15 +121,14 @@ std::wstring GetBraveVpnWireguardServiceDisplayName(
   NOTREACHED_NORETURN();
 }
 
-std::wstring GetBraveVpnWireguardServiceName(version_info::Channel channel) {
-  std::wstring name = GetBraveVpnWireguardServiceDisplayName(channel);
+std::wstring GetBraveVpnWireguardServiceName() {
+  std::wstring name = GetBraveVpnWireguardServiceDisplayName();
   std::erase_if(name, isspace);
   return name;
 }
 
-std::wstring GetBraveVpnWireguardTunnelServiceName(
-    version_info::Channel channel) {
-  switch (channel) {
+std::wstring GetBraveVpnWireguardTunnelServiceName() {
+  switch (chrome::GetChannel()) {
     case Channel::CANARY:
       return kBraveNightlyWireguardTunnelServiceName;
     case Channel::DEV:

@@ -34,7 +34,6 @@ group("connection") {
   ]
   if (is_win) {
     deps += [ "ikev2/win" ]
-    deps += [ "wireguard/win" ]
   }
 
   if (is_mac) {

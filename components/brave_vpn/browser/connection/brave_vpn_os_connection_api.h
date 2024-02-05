@@ -18,7 +18,6 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
-#include "components/version_info/channel.h"
 #include "net/base/network_change_notifier.h"
 
 namespace network {
@@ -62,9 +61,10 @@ class BraveVPNOSConnectionAPI
   std::string GetLastConnectionError() const;
   void ToggleConnection();
 
-  version_info::Channel channel() const { return channel_; }
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
-  void SetChannel(version_info::Channel channel);
+  void set_target_vpn_entry_name(const std::string& name) {
+    target_vpn_entry_name_ = name;
+  }
 
   // Connection dependent APIs.
   virtual void Connect() = 0;
@@ -158,18 +158,9 @@ class BraveVPNOSConnectionAPI
   // AND they did a system level install, we should call
   // install_system_service_callback_ once per browser open.
   base::OneShotEvent system_service_installed_event_;
-  version_info::Channel channel_ = version_info::Channel::UNKNOWN;
   std::string target_vpn_entry_name_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_factory_;
 };
-
-// Create platform specific api instance.
-// NOTE: Don't call this method directly.
-// Only BraveBrowserProcess need to use this method.
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    base::RepeatingCallback<bool()> service_installer);
 
 }  // namespace brave_vpn
 

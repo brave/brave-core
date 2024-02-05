@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/common/wireguard/win/service_commands.h"
+#include "brave/browser/brave_vpn/win/service_commands.h"
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
@@ -13,7 +13,7 @@
 #include "base/process/process_handle.h"
 #include "base/process/process_iterator.h"
 #include "base/win/windows_types.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
 
 namespace brave_vpn {
 

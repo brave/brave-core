@@ -27,12 +27,11 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/constants.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/icon_utils.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
+#include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "chrome/common/channel_info.h"
 #include "chrome/installer/util/install_service_work_item.h"
 
 namespace brave_vpn {
@@ -175,25 +174,22 @@ bool ConfigureBraveWireguardService(const std::wstring& service_name) {
 // config.
 bool InstallBraveWireguardService() {
   base::CommandLine service_cmd(GetBraveVPNWireguardServiceExecutablePath());
-  const auto channel = chrome::GetChannel();
   installer::InstallServiceWorkItem install_service_work_item(
-      brave_vpn::GetBraveVpnWireguardServiceName(channel),
-      brave_vpn::GetBraveVpnWireguardServiceDisplayName(channel),
-      SERVICE_DEMAND_START, service_cmd,
-      base::CommandLine(base::CommandLine::NO_PROGRAM),
-      brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(
-          channel),
-      {brave_vpn::GetBraveVpnWireguardServiceClsid(channel)},
+      brave_vpn::GetBraveVpnWireguardServiceName(),
+      brave_vpn::GetBraveVpnWireguardServiceDisplayName(), SERVICE_DEMAND_START,
+      service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
+      brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(),
+      {brave_vpn::GetBraveVpnWireguardServiceClsid()},
       {brave_vpn::GetBraveVpnWireguardServiceIid()});
   install_service_work_item.set_best_effort(true);
   install_service_work_item.set_rollback_enabled(false);
   if (install_service_work_item.Do()) {
     auto success = brave_vpn::ConfigureBraveWireguardService(
-        brave_vpn::GetBraveVpnWireguardServiceName(channel));
+        brave_vpn::GetBraveVpnWireguardServiceName());
     if (success) {
       service_cmd.AppendSwitch(
           brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);
-      AddToStartup(brave_vpn::GetBraveVpnWireguardServiceName(channel).c_str(),
+      AddToStartup(brave_vpn::GetBraveVpnWireguardServiceName().c_str(),
                    service_cmd);
     }
     return success;
@@ -204,24 +200,22 @@ bool InstallBraveWireguardService() {
 // Uninstalling and clearing Brave VPN service data.
 bool UninstallBraveWireguardService() {
   brave_vpn::wireguard::RemoveExistingWireguardService();
-  const auto channel = chrome::GetChannel();
-  auto last_used_config = brave_vpn::wireguard::GetLastUsedConfigPath(channel);
+  auto last_used_config = brave_vpn::wireguard::GetLastUsedConfigPath();
   if (last_used_config.has_value() &&
       !RemoveWireguardConfigDirectory(last_used_config.value())) {
     LOG(WARNING) << "Failed to delete config directory"
                  << last_used_config.value().DirName();
   }
-  RemoveFromStartup(
-      brave_vpn::GetBraveVpnWireguardServiceName(channel).c_str());
-  wireguard::RemoveStorageKey(channel);
+  RemoveFromStartup(brave_vpn::GetBraveVpnWireguardServiceName().c_str());
+  wireguard::RemoveStorageKey();
 
   if (!installer::InstallServiceWorkItem::DeleteService(
-          brave_vpn::GetBraveVpnWireguardServiceName(channel),
-          brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(
-              channel),
+          brave_vpn::GetBraveVpnWireguardServiceName(),
+          brave_vpn::wireguard::
+              GetBraveVpnWireguardServiceRegistryStoragePath(),
           {}, {})) {
     LOG(WARNING) << "Failed to delete "
-                 << brave_vpn::GetBraveVpnWireguardServiceName(channel);
+                 << brave_vpn::GetBraveVpnWireguardServiceName();
     return false;
   }
   return true;

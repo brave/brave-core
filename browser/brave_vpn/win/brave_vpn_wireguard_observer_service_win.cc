@@ -5,9 +5,8 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 
+#include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "chrome/common/channel_info.h"
 
 namespace brave_vpn {
 
@@ -38,7 +37,7 @@ bool BraveVpnWireguardObserverService::ShouldShowFallbackDialog() const {
     return should_fallback_for_testing_.value();
   }
 
-  return ShouldFallbackToIKEv2(chrome::GetChannel());
+  return ShouldFallbackToIKEv2();
 }
 
 }  // namespace brave_vpn

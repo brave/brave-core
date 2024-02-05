@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
+#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 
 #include <objbase.h>
 #include <stdint.h>
@@ -24,8 +24,8 @@
 #include "base/win/scoped_bstr.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
 
 namespace brave_vpn {
 
@@ -35,12 +35,12 @@ std::optional<bool> g_wireguard_service_registered_for_testing;
 
 namespace wireguard {
 
-bool IsWireguardServiceInstalled(version_info::Channel channel) {
+bool IsWireguardServiceInstalled() {
   if (g_wireguard_service_registered_for_testing.has_value()) {
     return g_wireguard_service_registered_for_testing.value();
   }
   return brave_vpn::GetWindowsServiceStatus(
-             brave_vpn::GetBraveVpnWireguardServiceName(channel))
+             brave_vpn::GetBraveVpnWireguardServiceName())
       .has_value();
 }
 
@@ -48,9 +48,9 @@ void SetWireguardServiceRegisteredForTesting(bool value) {
   g_wireguard_service_registered_for_testing = value;
 }
 
-bool IsBraveVPNWireguardTunnelServiceRunning(version_info::Channel channel) {
+bool IsBraveVPNWireguardTunnelServiceRunning() {
   auto status =
-      GetWindowsServiceStatus(GetBraveVpnWireguardTunnelServiceName(channel));
+      GetWindowsServiceStatus(GetBraveVpnWireguardTunnelServiceName());
   if (!status.has_value()) {
     return false;
   }
@@ -58,14 +58,13 @@ bool IsBraveVPNWireguardTunnelServiceRunning(version_info::Channel channel) {
          status.value() == SERVICE_START_PENDING;
 }
 
-bool EnableBraveVpnWireguardServiceImpl(const std::string& config,
-                                        version_info::Channel channel) {
+bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
   base::win::AssertComInitialized();
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
-  if (FAILED(CoCreateInstance(
-          brave_vpn::GetBraveVpnWireguardServiceClsid(channel), nullptr,
-          CLSCTX_LOCAL_SERVER, brave_vpn::GetBraveVpnWireguardServiceIid(),
-          IID_PPV_ARGS_Helper(&service)))) {
+  if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
+                              nullptr, CLSCTX_LOCAL_SERVER,
+                              brave_vpn::GetBraveVpnWireguardServiceIid(),
+                              IID_PPV_ARGS_Helper(&service)))) {
     VLOG(1) << "Unable to create IBraveVpnWireguardManager instance";
     return false;
   }
@@ -89,7 +88,6 @@ bool EnableBraveVpnWireguardServiceImpl(const std::string& config,
 }
 
 void EnableBraveVpnWireguardService(const std::string& config,
-                                    version_info::Channel channel,
                                     wireguard::BooleanCallback callback) {
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
@@ -98,18 +96,18 @@ void EnableBraveVpnWireguardService(const std::string& config,
       base::SingleThreadTaskRunnerThreadMode::DEDICATED)
       ->PostTaskAndReplyWithResult(
           FROM_HERE,
-          base::BindOnce(&EnableBraveVpnWireguardServiceImpl, config, channel),
+          base::BindOnce(&EnableBraveVpnWireguardServiceImpl, config),
           std::move(callback));
 }
 
-bool DisableBraveVpnWireguardServiceImpl(version_info::Channel channel) {
+bool DisableBraveVpnWireguardServiceImpl() {
   base::win::AssertComInitialized();
 
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
-  if (FAILED(CoCreateInstance(
-          brave_vpn::GetBraveVpnWireguardServiceClsid(channel), nullptr,
-          CLSCTX_LOCAL_SERVER, brave_vpn::GetBraveVpnWireguardServiceIid(),
-          IID_PPV_ARGS_Helper(&service)))) {
+  if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
+                              nullptr, CLSCTX_LOCAL_SERVER,
+                              brave_vpn::GetBraveVpnWireguardServiceIid(),
+                              IID_PPV_ARGS_Helper(&service)))) {
     VLOG(1) << "Unable to create IBraveVpnService instance";
     return false;
   }
@@ -129,27 +127,24 @@ bool DisableBraveVpnWireguardServiceImpl(version_info::Channel channel) {
   return error_code == 0;
 }
 
-void DisableBraveVpnWireguardService(version_info::Channel channel,
-                                     wireguard::BooleanCallback callback) {
+void DisableBraveVpnWireguardService(wireguard::BooleanCallback callback) {
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
        base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::SingleThreadTaskRunnerThreadMode::DEDICATED)
       ->PostTaskAndReplyWithResult(
-          FROM_HERE,
-          base::BindOnce(&DisableBraveVpnWireguardServiceImpl, channel),
+          FROM_HERE, base::BindOnce(&DisableBraveVpnWireguardServiceImpl),
           std::move(callback));
 }
 
-wireguard::WireguardKeyPair WireguardGenerateKeypairImpl(
-    version_info::Channel channel) {
+wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
   base::win::AssertComInitialized();
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
-  if (FAILED(CoCreateInstance(
-          brave_vpn::GetBraveVpnWireguardServiceClsid(channel), nullptr,
-          CLSCTX_LOCAL_SERVER, brave_vpn::GetBraveVpnWireguardServiceIid(),
-          IID_PPV_ARGS_Helper(&service)))) {
+  if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
+                              nullptr, CLSCTX_LOCAL_SERVER,
+                              brave_vpn::GetBraveVpnWireguardServiceIid(),
+                              IID_PPV_ARGS_Helper(&service)))) {
     VLOG(1) << "Unable to create IBraveVpnWireguardManager instance";
     return std::nullopt;
   }
@@ -186,7 +181,6 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl(
 }
 
 void WireguardGenerateKeypair(
-    version_info::Channel channel,
     wireguard::WireguardGenerateKeypairCallback callback) {
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
@@ -194,7 +188,7 @@ void WireguardGenerateKeypair(
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::SingleThreadTaskRunnerThreadMode::DEDICATED)
       ->PostTaskAndReplyWithResult(
-          FROM_HERE, base::BindOnce(&WireguardGenerateKeypairImpl, channel),
+          FROM_HERE, base::BindOnce(&WireguardGenerateKeypairImpl),
           std::move(callback));
 }
 
