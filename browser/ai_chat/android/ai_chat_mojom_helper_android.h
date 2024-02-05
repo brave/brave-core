@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_AI_CHAT_ANDROID_AI_CHAT_CM_HELPER_ANDROID_H_
-#define BRAVE_BROWSER_AI_CHAT_ANDROID_AI_CHAT_CM_HELPER_ANDROID_H_
+#ifndef BRAVE_BROWSER_AI_CHAT_ANDROID_AI_CHAT_MOJOM_HELPER_ANDROID_H_
+#define BRAVE_BROWSER_AI_CHAT_ANDROID_AI_CHAT_MOJOM_HELPER_ANDROID_H_
 
 #include <memory>
 
@@ -17,16 +17,19 @@
 
 namespace ai_chat {
 
-class AIChatCMHelperAndroid : public mojom::CredentialManagerHelper {
+class AIChatMojomHelperAndroid : public mojom::AIChatAndroidHelper {
  public:
-  AIChatCMHelperAndroid(
+  AIChatMojomHelperAndroid(
       const base::android::JavaParamRef<jobject>& jbrowser_context_handle);
-  ~AIChatCMHelperAndroid() override;
+  ~AIChatMojomHelperAndroid() override;
 
   void Destroy(JNIEnv* env);
 
+  // mojom::AIChatAndroidHelper methods
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
-  jlong GetInterfaceToCredentialManagerHelper(JNIEnv* env);
+  void GetModelsWithSubtitles(GetModelsWithSubtitlesCallback callback) override;
+  //
+  jlong GetInterfaceToAndroidHelper(JNIEnv* env);
 
  private:
   void OnPremiumStatusReceived(
@@ -34,10 +37,10 @@ class AIChatCMHelperAndroid : public mojom::CredentialManagerHelper {
       mojom::PremiumStatus premium_status,
       mojom::PremiumInfoPtr premium_info);
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
-  mojo::ReceiverSet<mojom::CredentialManagerHelper> receivers_;
-  base::WeakPtrFactory<AIChatCMHelperAndroid> weak_ptr_factory_{this};
+  mojo::ReceiverSet<mojom::AIChatAndroidHelper> receivers_;
+  base::WeakPtrFactory<AIChatMojomHelperAndroid> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_BROWSER_AI_CHAT_ANDROID_AI_CHAT_CM_HELPER_ANDROID_H_
+#endif  // BRAVE_BROWSER_AI_CHAT_ANDROID_AI_CHAT_MOJOM_HELPER_ANDROID_H_

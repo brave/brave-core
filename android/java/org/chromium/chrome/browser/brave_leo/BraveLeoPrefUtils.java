@@ -79,4 +79,22 @@ public class BraveLeoPrefUtils {
         }
         UserPrefs.get(profileToUse).setString(BravePref.BRAVE_CHAT_PRODUCT_ID_ANDROID, productId);
     }
+
+    public static String getDefaultModel() {
+        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        if (profileToUse == null) {
+            Log.e(TAG, "BraveLeoPrefUtils.getDefaultModel profile is null");
+            return "";
+        }
+        return UserPrefs.get(profileToUse).getString(BravePref.DEFAULT_MODEL_KEY);
+    }
+
+    public static void setDefaultModel(String modelKey) {
+        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        if (profileToUse == null) {
+            Log.e(TAG, "BraveLeoPrefUtils.setDefaultModel profile is null");
+            return;
+        }
+        UserPrefs.get(profileToUse).setString(BravePref.DEFAULT_MODEL_KEY, modelKey);
+    }
 }

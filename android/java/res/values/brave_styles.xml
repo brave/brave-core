@@ -309,10 +309,6 @@
     <style name="BraveLeoResetTextColor" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/leo_reset_text_color</item>
     </style>
-    <style name="BraveLeoDescriptionText" parent="Widget.AppCompat.TextView">
-        <item name="android:textStyle">bold</item>
-    </style>
-
 
     <style name="TimerBottomSheetDialogTheme"
            parent="Theme.Design.Light.BottomSheetDialog">

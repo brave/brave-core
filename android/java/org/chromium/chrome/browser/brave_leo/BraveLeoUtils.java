@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.ai_chat.mojom.ModelWithSubtitle;
 import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -54,6 +55,18 @@ public class BraveLeoUtils {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "get BraveActivity exception", e);
         }
+    }
+
+    public static String getDefaultModelName(ModelWithSubtitle[] models) {
+        String defaultModelKey = BraveLeoPrefUtils.getDefaultModel();
+
+        for (ModelWithSubtitle model : models) {
+            if (model.model.key.equals(defaultModelKey)) {
+                return model.model.displayName;
+            }
+        }
+
+        return "";
     }
 
     @NativeMethods
