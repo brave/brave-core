@@ -32,10 +32,10 @@
 -All/MemorySaverBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
 -All/PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
--All/PageInfoCookiesContentViewPre3pcdTest.*
 -All/PageInfoCookiesContentViewTest.*
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
 -All/PrintContentAnalysisUtilsTest.*/*
+-All/SyncConfirmationHandlerTest.*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
 -ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
 -ApcScrimManagerImplTest.HideFocusOnTheWebContent
@@ -49,6 +49,7 @@
 -BookmarkBubbleViewTest.*
 -BrowserCommandControllerWithBookmarksTest.BookmarkAllTabsUpdatesOnTabStripChanges
 -BrowserFeaturePromoControllerPolicyTest.*
+-BrowserFeaturePromoControllerPriorityTest.*
 -BrowserFeaturePromoControllerViewsTest.*
 -BrowserFinderTest.ScheduledForDeletion
 -BrowserViewPipTest.CanFullscreenPolicyDoesNotEnableFullscreen
@@ -62,6 +63,9 @@
 -ChromeTailoredSecurityServiceTest.*
 -ComposeEnablingTest.*
 -CookieControlsBubbleCoordinatorTest.ShowBubbleTest
+-CookieControlsBubbleViewControllerPre3pcdTest.ThirdPartyCookiesAllowedPermanent
+-CookieControlsBubbleViewControllerPre3pcdTest.ThirdPartyCookiesAllowedTemporary
+-CookieControlsBubbleViewControllerPre3pcdTest.ThirdPartyCookiesBlocked
 -CookieControlsBubbleViewControllerTest.*
 -CookieControlsBubbleViewImplTest.BubbleWidth
 -CookieControlsContentViewUnitTest.FeedbackSection
@@ -74,10 +78,7 @@
 -CustomizeChromeFeaturePromoHelperTest.*
 -DeleteAddressProfileDialogControllerImplTest.*
 -DiceWebSigninInterceptorTestWithUnoDisabled.InterceptShouldLogChromeSigninBubbleOfferedForControlGroup
--DiceWebSigninInterceptorTestWithUnoEnabled.InterceptShouldNotShowChromeSigninBubbleOnAccessPointUnkown
--DiceWebSigninInterceptorTestWithUnoEnabled.InterceptShouldShowChromeSigninBubbleOnAccountSigninAndChromeSignOut
--DiceWebSigninInterceptorTestWithUnoEnabled.NoInterceptionIfAcccountNotFirstButNoPrimaryAccount
--DiceWebSigninInterceptorTestWithUnoEnabled.NoInterceptionIfPrimaryAccountAlreadySet
+-DiceWebSigninInterceptorTestWithUnoEnabled.*
 -DoesFirstPartyPrecedeThirdPartyTest.*
 -DownloadBubbleRowListViewTest.AddRow
 -DownloadBubbleRowListViewTest.RemoveRow
@@ -127,6 +128,7 @@
 -PageCaptureApiUnitTest.PageNavigationDuringSaveAsMHTML
 -PageInfoCookiesContentView3pcdCookieToggleTest.*
 -PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
+-PageInfoCookiesContentViewPre3pcdTest.*
 -PageLiveStateDecoratorHelperTabsTest.IsActiveTab
 -PageLiveStateDecoratorHelperTabsTest.IsPinnedTab
 -PeopleHandlerSignoutTest.RevokeSyncNotAllowed
@@ -148,6 +150,7 @@
 -ProfileTokenWebSigninInterceptorTest.*
 -ReadAnythingCoordinatorScreen2xDataCollectionModeTest.OnBrowserSetLastActive_SidePanelIsVisible
 -SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.Metrics_*
+-SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.Upload_OnSave_HideIconAndBubbleAfterUpload
 -SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.VisibilityChange_*
 -SaveCvcBubbleLoggingTest.Metrics_*
 -SavedTabGroupModelListenerTest.CreatesRemovesBrowserListener
@@ -165,6 +168,7 @@
 -UserNotesPageHandlerTest.CurrentTabUrlChangedWithTabStripModelChanged
 -VideoStreamCoordinatorTest.ChooseTheClosetFormat
 -VideoStreamCoordinatorTest.ConnectToFrameHandlerAndReceiveFrames
+-VirtualCardEnrollBubbleControllerImplBubbleViewTest.ShowBubble*
 
 # These tests crash due to unregistered pref
 # brave.default_search_provider_by_extension
@@ -175,6 +179,8 @@
 -SearchEngineChoiceDialogServiceTest.DoNotCreateServiceIfPolicyIsSet
 -SearchEngineChoiceDialogServiceTest.DoNotDisplayDialogIfPolicyIsSetDynamically
 -SearchEngineChoiceDialogServiceTest.NotifyChoiceMade*
+-SearchEngineChoiceDialogServiceTest.SearchEngineChoicePropagatesFromIncognitoToParentProfile
+-SearchEngineChoiceDialogServiceTest.SearchEngineChoicePropagatesFromParentProfileToIncognito
 -SearchEnginesHandlerParametrizedTest.ChangeInTemplateUrlDataTriggersCallback/Default
 -SearchEnginesHandlerParametrizedTest.ChangeInTemplateUrlDataTriggersCallback/WithSearchEngineChoiceEnabled
 -SearchEnginesHandlerParametrizedTest.SettingTheDefaultSearchEngineRecordsHistogram/Default
@@ -315,6 +321,7 @@
 -All/ProcessDiceHeaderDelegateImplTestEnableSync.*
 -All/ProcessDiceHeaderDelegateImplTestHandleTokenExchangeFailure.*
 -DiceSigninUiUtilTest.*
+-DiceTabHelperPrerenderTest.SigninStatusAfterPrerendering
 -DiceTurnSyncOnHelperTest.*
 -DiceWebSigninInterceptorForcedSeparationTest.*
 -DiceWebSigninInterceptorTest.*
@@ -400,7 +407,7 @@
 
 # This test is disabled because Brave overrides how underlines are drawn for tab
 # groups
--All/TabGroupViewsTest.UnderlineBoundsWhenTabsAreNotVisible/1
+-TabGroupViewsTest.UnderlineBoundsWhenTabsAreNotVisible
 
 # Isolated Web Apps (IWAs) use web bundles which we don't support.
 -All/InstallIsolatedWebAppCommandBundleTest.*
@@ -414,6 +421,7 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-EnclaveManagerTest.PrimaryUserChange
 -PeopleHandlerDiceUnifiedConsentTest.StoredAccountsList
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed
@@ -583,6 +591,30 @@
 # This test fails on CI but passes locally, due to directory security
 # restrictions on the CI nodes
 -WebAppRegistrarTest.AppsInstalledByUserMetric
+-WebAppRegistrarTest.GetApps
+-WebAppSyncBridgeTest.ApplyIncrementalSyncChanges_AddSyncAppsWithOverlappingPolicyApps
+-WebAppSyncBridgeTest.CommitUpdate_DeleteSyncAppWithOverlappingPolicyApp
+
+# These tests fail because of the following failed expectation in prerender_test_util.cc:
+# Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
+# kPrerender2 feature is disabled in Brave.
+-All/HistoryTabHelperMPArchTest.DoNotAffectToLimitTitleUpdates/1
+-AuthenticatorRequestSchedulerPrerenderTest.SingleWebContents_OneRequestInPrerendering
+-LcpCriticalPathPredictorPageLoadMetricsObserverTest.Prerender*
+-LcpCriticalPathPredictorPageLoadMetricsObserverTest.Prerender*
+-MediaEngagementContentsObserverPrerenderTest.EnsureDoNotCleanupAfterNavigation_AudioContextInPrerendering
+-ReauthTabHelperPrerenderTest.PrerenderDoesNotAffectLastCommittedErrorPage
+-TranslatePageLoadMetricsObserverTest.PrerenderAndActivation
+-TrustedVaultEncryptionKeysTabHelperPrerenderingTest.CreateEncryptionKeysInPrerendering
+-WebAppIconDownloaderPrerenderTest.PrerenderedPageNavigates
+
+# These tests fail because we disable the kChromeRefresh2023 feature
+-All/NewTabPageHandlerThemeTest.SetTheme/2
+-All/NewTabPageHandlerThemeTest.SetTheme/3
+-All/OpaqueBrowserFrameViewLayoutTest.BasicWindow/Maximized
+-All/OpaqueBrowserFrameViewLayoutTest.WindowButtonsOnLeft/Maximized
+-All/OpaqueBrowserFrameViewLayoutTest.WindowWithTitleAndIcon/Maximized
+-DownloadBubbleRowViewInfoTest.InterruptedInfo
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -882,6 +914,7 @@
 -SafeBrowsingVerdictHandlerUnitTest.*
 -SafetyCheckHandlerTest.*
 -SaveCardBubbleControllerImplTest.*
+-SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.*
 -SaveCardBubbleControllerImplTestWithoutStatusChip.*
 -SaveCardBubbleLoggingTest.*
 -SaveCardBubbleSingletonTest.*
@@ -935,7 +968,6 @@
 -StorageAccessGrantPermissionContextTest.*
 -StubResolverConfigReaderTest.*
 -SubresourceFilterComponentInstallerTest.*
--SyncConfirmationHandlerTest.*
 -SyncPromoUITest.*
 -SyncServiceFactoryTest.*
 -TabActiveWatcherDisableBackgroundLogTest.*
