@@ -96,7 +96,7 @@
       Brave is your default browser
     </message>
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT" desc="Default browser checkbox label">
-      Make Brave the default browser
+      Make Ping the default browser
     </message>
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_ERROR" desc="The text displayed when Brave cannot determine or set the default browser">
       Brave cannot determine or set the default browser
