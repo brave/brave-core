@@ -213,6 +213,8 @@ public class BraveRewardsPanel
     private View mConnectAccountModal;
     private View mRewardsVbatExpireNoticeModal;
 
+    private View mRewardsSolanaEligibleLayout;
+
     private BraveRewardsOnboardingPagerAdapter mBraveRewardsOnboardingPagerAdapter;
     private HeightWrappingViewPager mBraveRewardsViewPager;
     private View mBraveRewardsOnboardingView;
@@ -361,6 +363,9 @@ public class BraveRewardsPanel
 
         mRewardsVbatExpireNoticeModal =
                 mPopupView.findViewById(R.id.brave_rewards_vbat_expire_notice_modal_id);
+
+        mRewardsSolanaEligibleLayout =
+                mPopupView.findViewById(R.id.brave_rewards_solana_eligible_ui_layout_id);
         mPopupWindow.setContentView(mPopupView);
 
         mWalletBalanceProgress = mPopupView.findViewById(R.id.wallet_progress_bar_group);
@@ -1204,13 +1209,16 @@ public class BraveRewardsPanel
 
     @Override
     public void OnRewardsParameters() {
+        Log.e("solana", "OnRewardsParameters 1");
         if (mShouldShowOnboardingForConnectAccount) {
             mShouldShowOnboardingForConnectAccount = false;
             showBraveRewardsOnboarding(true);
+            Log.e("solana", "OnRewardsParameters 2");
         } else if (mExternalWallet != null) {
             if (mBraveRewardsNativeWorker.getVbatDeadline() > 0) {
                 mBraveRewardsNativeWorker.getUserType();
             }
+            Log.e("solana", "OnRewardsParameters 3");
             showViewsBasedOnExternalWallet();
         }
     }
@@ -1243,6 +1251,48 @@ public class BraveRewardsPanel
         }
     }
 
+    private void showSolanaEligibleUi() {
+        if (mRewardsSolanaEligibleLayout != null) {
+            mRewardsSolanaEligibleLayout.setVisibility(View.VISIBLE);
+            AppCompatImageView modalCloseButton =
+                    mRewardsSolanaEligibleLayout.findViewById(R.id.solana_eligible_ui_modal_close);
+            modalCloseButton.setOnClickListener(
+                    (new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mRewardsSolanaEligibleLayout.setVisibility(View.GONE);
+                            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                    .setBoolean(BravePref.SELF_CUSTODY_INVITE_DISMISSED, true);
+                        }
+                    }));
+            LinearLayout connectButton =
+                    mRewardsSolanaEligibleLayout.findViewById(R.id.btn_connect);
+            connectButton.setOnClickListener(
+                    (new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                    .setBoolean(BravePref.SELF_CUSTODY_INVITE_DISMISSED, true);
+                            TabUtils.openUrlInNewTab(
+                                    false,
+                                    BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                            dismiss();
+                        }
+                    }));
+
+            Button notNowButton = mRewardsSolanaEligibleLayout.findViewById(R.id.btn_not_now);
+            notNowButton.setOnClickListener(
+                    (new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mRewardsSolanaEligibleLayout.setVisibility(View.GONE);
+                            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                    .setBoolean(BravePref.SELF_CUSTODY_INVITE_DISMISSED, true);
+                        }
+                    }));
+        }
+    }
+
     private void showOnBoarding() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
@@ -1265,6 +1315,9 @@ public class BraveRewardsPanel
             }
         } else {
             existingUserViewChanges();
+        }
+        if (mBraveRewardsNativeWorker.shouldShowSelfCustodyInvite()) {
+            showSolanaEligibleUi();
         }
     }
 
