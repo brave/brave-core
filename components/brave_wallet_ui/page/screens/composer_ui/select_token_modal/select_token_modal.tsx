@@ -568,7 +568,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               showNetworkDropDown={showNetworkDropDown}
               onSelectNetwork={onSelectAssetsNetwork}
               networkSelectorDisabled={showFullFlatTokenList}
-              useSwapNetworks={modalType === 'swap'}
+              networkListSubset={
+                modalType === 'swap' ? swapNetworks : undefined
+              }
             />
           </SearchBarRow>
         )}

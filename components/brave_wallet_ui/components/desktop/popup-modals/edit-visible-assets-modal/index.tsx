@@ -71,6 +71,9 @@ import {
 import {
   blockchainTokenEntityAdaptorInitialState //
 } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  useGetCustomAssetSupportedNetworks //
+} from '../../../../common/hooks/use_get_custom_asset_supported_networks'
 
 export interface Props {
   onClose: () => void
@@ -91,6 +94,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     data: tokenEntityState = blockchainTokenEntityAdaptorInitialState,
     isLoading
   } = useGetTokensRegistryQuery()
+  const networkList = useGetCustomAssetSupportedNetworks()
 
   // custom hooks
   const { onUpdateVisibleAssets } = useAssetManagement()
@@ -407,6 +411,11 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
             />
             <HorizontalSpace space='16px' />
             <NetworkFilterSelector
+              networkListSubset={
+                hash === WalletRoutes.AvailableAssetsHash
+                  ? networkList
+                  : undefined
+              }
               onSelectNetwork={onSelectAssetsNetwork}
               selectedNetwork={selectedNetworkFilter}
               isV2={true}

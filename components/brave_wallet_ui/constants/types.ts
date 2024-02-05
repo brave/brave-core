@@ -792,6 +792,11 @@ export const DAppSupportedCoinTypes = [
   BraveWallet.CoinType.ETH
 ]
 
+export const CustomAssetSupportedCoinTypes = [
+  BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ETH
+]
+
 export const DAppSupportedPrimaryChains = [
   BraveWallet.MAINNET_CHAIN_ID,
   BraveWallet.SOLANA_MAINNET

@@ -24,6 +24,9 @@ import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
 import { useGetNetworksRegistryQuery } from '../../../common/slices/api.slice'
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
+import {
+  useGetCustomAssetSupportedNetworks //
+} from '../../../common/hooks/use_get_custom_asset_supported_networks'
 
 // components
 import {
@@ -111,6 +114,8 @@ export const AddNftForm = (props: Props) => {
         }
       : skipToken
   )
+
+  const networkList = useGetCustomAssetSupportedNetworks()
 
   const name = customTokenName ?? matchedTokenInfo?.name ?? ''
   const symbol = customTokenSymbol ?? matchedTokenInfo?.symbol ?? ''
@@ -298,6 +303,7 @@ export const AddNftForm = (props: Props) => {
             showNetworkDropDown={showNetworkDropDown}
             onSelectCustomNetwork={onSelectCustomNetwork}
             useWithSearch={false}
+            networkListSubset={networkList}
           />
         </FullWidthFormColumn>
         <FullWidthFormColumn>

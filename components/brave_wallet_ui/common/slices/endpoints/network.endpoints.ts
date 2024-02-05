@@ -21,7 +21,8 @@ import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED',
-  SWAP_SUPPORTED: 'SWAP_SUPPORTED'
+  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
+  CUSTOM_ASSET_SUPPORTED: 'CUSTOM_ASSET_SUPPORTED'
 } as const
 
 interface IsEip1559ChangedMutationArg {
