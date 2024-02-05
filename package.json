@@ -48,7 +48,7 @@
     "gen_env": "node ./build/commands/scripts/genEnv.js",
     "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle",
     "ios_pack_js": "webpack --config ios/brave-ios/webpack.config.js",
-    "ios_create_xcframeworks": "node ./build/commands/scripts/commands.js ios_create_xcframeworks"
+    "ios_create_xcframeworks": "node ./build/commands/scripts/iosCommands.js ios_create_xcframeworks"
   },
   "repository": {
     "type": "git",

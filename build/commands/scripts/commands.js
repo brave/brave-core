@@ -99,13 +99,6 @@ program
   })
 
 program
-  .command('ios_create_xcframeworks')
-  .option('--target_arch <target_arch>', 'target architecture', /^(host_cpu|x64|arm64|x86)$/i)
-  .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)', /^(device|catalyst|simulator)$/i)
-  .arguments('[build_config]')
-  .action(util.iosCreateXCFrameworks)
-
-program
   .command('build')
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--target_os <target_os>', 'target OS')
