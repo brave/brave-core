@@ -301,7 +301,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                       ISOLATED_WORLD_ID_BRAVE_INTERNAL)
           .ExtractInt();
-  EXPECT_LT(106000, first_load_page_length);
+  EXPECT_LT(83000, first_load_page_length);
 
   ToggleSpeedreader();
   EXPECT_TRUE(speedreader_service()->IsEnabledForAllSites());
@@ -359,7 +359,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                       ISOLATED_WORLD_ID_BRAVE_INTERNAL)
           .ExtractInt();
-  EXPECT_LT(106000, second_load_page_length)
+  EXPECT_LT(83000, second_load_page_length)
       << " First load length: " << first_load_page_length
       << " speedreaded length: " << speedreaded_length
       << " Second load length: " << second_load_page_length
