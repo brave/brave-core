@@ -584,11 +584,13 @@ public class BraveRewardsPanel
     }
 
     private void showNotification(String id, int type, long timestamp, String[] args) {
+        Log.e("Solana", "id : " + id + " type : " + type + " args : " + args);
         if (mBraveRewardsNativeWorker == null) {
             return;
         }
 
-        if (mExternalWallet == null || mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED) {
+        if (mExternalWallet == null || (mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
+                        && type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT)) {
             return;
         }
 

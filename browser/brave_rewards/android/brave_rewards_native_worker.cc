@@ -15,6 +15,7 @@
 #include "base/android/jni_string.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
+#include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -27,8 +28,10 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
+#include "brave/components/brave_rewards/core/global_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
@@ -107,6 +110,33 @@ bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
       ->GetOriginalProfile()
       ->GetPrefs()
       ->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
+bool BraveRewardsNativeWorker::ShouldShowSelfCustodyInvite(JNIEnv* env) {
+  if (base::FeatureList::IsEnabled(
+          brave_rewards::features::kAllowSelfCustodyProvidersFeature)) {
+    auto& self_custody_dict =
+        ProfileManager::GetActiveUserProfile()
+            ->GetOriginalProfile()
+            ->GetPrefs()
+            ->GetDict(brave_rewards::prefs::kSelfCustodyAvailable);
+
+    bool isSelfCustodyInviteDismissed =
+        ProfileManager::GetActiveUserProfile()
+            ->GetOriginalProfile()
+            ->GetPrefs()
+            ->GetBoolean(brave_rewards::prefs::kSelfCustodyInviteDismissed);
+
+    LOG(ERROR) << "solana" << "isSelfCustodyInviteDismissed : "
+               << isSelfCustodyInviteDismissed;
+
+    if (auto solana_entry = self_custody_dict.FindBool(
+            brave_rewards::internal::constant::kWalletSolana);
+        solana_entry && *solana_entry && !isSelfCustodyInviteDismissed) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void BraveRewardsNativeWorker::CreateRewardsWallet(

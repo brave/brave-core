@@ -185,6 +185,13 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public boolean shouldShowSelfCustodyInvite() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get()
+                    .shouldShowSelfCustodyInvite(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public void CreateRewardsWallet(String countryCode) {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().createRewardsWallet(
@@ -797,6 +804,9 @@ public class BraveRewardsNativeWorker {
         boolean isSupported(long nativeBraveRewardsNativeWorker);
         boolean isSupportedSkipRegionCheck(long nativeBraveRewardsNativeWorker);
         boolean isRewardsEnabled(long nativeBraveRewardsNativeWorker);
+
+        boolean shouldShowSelfCustodyInvite(long nativeBraveRewardsNativeWorker);
+
         String getWalletBalance(long nativeBraveRewardsNativeWorker);
         String getExternalWalletType(long nativeBraveRewardsNativeWorker);
         void GetPublisherBanner(long nativeBraveRewardsNativeWorker, String publisher_key);
