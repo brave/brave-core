@@ -46,4 +46,9 @@ extension Preferences {
     /// The date when the rating card in news feed is shown
     public static let newsCardShownDate = Option<Date?>(key: "review.news-card", default: nil)
   }
+  
+  final class UptimeMonitor {
+    static let startTime: Option<Date?> = .init(key: "uptime-monitor-start-time", default: nil)
+    static let uptimeSum: Option<TimeInterval> = .init(key: "uptime-monitor-uptime-sum", default: 0)
+  }
 }

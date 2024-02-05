@@ -218,6 +218,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     Preferences.AppState.backgroundedCleanly.value = false
     AppState.shared.profile.reopen()
+    AppState.shared.uptimeMonitor.beginMonitoring()
 
     appDelegate.receivedURLs = nil
     UIApplication.shared.applicationIconBadgeNumber = 0
@@ -248,6 +249,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func sceneWillResignActive(_ scene: UIScene) {
     Preferences.AppState.backgroundedCleanly.value = true
     scene.userActivity?.resignCurrent()
+    AppState.shared.uptimeMonitor.pauseMonitoring()
   }
 
   func sceneWillEnterForeground(_ scene: UIScene) {

@@ -33,6 +33,7 @@ public class AppState {
   public let profile: Profile
   public let rewards: Brave.BraveRewards
   public let newsFeedDataSource: FeedDataSource
+  public let uptimeMonitor = UptimeMonitor()
   private var didBecomeActive = false
   
   public var state: State = .launching(options: [:], active: false) {
