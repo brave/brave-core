@@ -3789,6 +3789,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_LEO_DEFAULT_MODEL_PREF_SCREEN" desc="Title for Leo Default Model settings screen.">
       Default model
+    </message>
     <message name="IDS_SOLANA_ELIGIBLE_UI_TITLE" desc="Solana payout eligible ui title">
       Receive BAT directly to a self-custody crypto address
     </message>

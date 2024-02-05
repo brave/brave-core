@@ -127,9 +127,6 @@ bool BraveRewardsNativeWorker::ShouldShowSelfCustodyInvite(JNIEnv* env) {
             ->GetPrefs()
             ->GetBoolean(brave_rewards::prefs::kSelfCustodyInviteDismissed);
 
-    LOG(ERROR) << "solana" << "isSelfCustodyInviteDismissed : "
-               << isSelfCustodyInviteDismissed;
-
     if (auto solana_entry = self_custody_dict.FindBool(
             brave_rewards::internal::constant::kWalletSolana);
         solana_entry && *solana_entry && !isSelfCustodyInviteDismissed) {

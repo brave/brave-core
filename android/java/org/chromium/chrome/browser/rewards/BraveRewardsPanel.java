@@ -589,12 +589,12 @@ public class BraveRewardsPanel
     }
 
     private void showNotification(String id, int type, long timestamp, String[] args) {
-        Log.e("Solana", "id : " + id + " type : " + type + " args : " + args);
         if (mBraveRewardsNativeWorker == null) {
             return;
         }
 
-        if (mExternalWallet == null || (mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
+        if (mExternalWallet == null
+                || (mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
                         && type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT)) {
             return;
         }
@@ -1209,16 +1209,13 @@ public class BraveRewardsPanel
 
     @Override
     public void OnRewardsParameters() {
-        Log.e("solana", "OnRewardsParameters 1");
         if (mShouldShowOnboardingForConnectAccount) {
             mShouldShowOnboardingForConnectAccount = false;
             showBraveRewardsOnboarding(true);
-            Log.e("solana", "OnRewardsParameters 2");
         } else if (mExternalWallet != null) {
             if (mBraveRewardsNativeWorker.getVbatDeadline() > 0) {
                 mBraveRewardsNativeWorker.getUserType();
             }
-            Log.e("solana", "OnRewardsParameters 3");
             showViewsBasedOnExternalWallet();
         }
     }
@@ -1260,9 +1257,7 @@ public class BraveRewardsPanel
                     (new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mRewardsSolanaEligibleLayout.setVisibility(View.GONE);
-                            UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                    .setBoolean(BravePref.SELF_CUSTODY_INVITE_DISMISSED, true);
+                            removeSolanaEligibleUi();
                         }
                     }));
             LinearLayout connectButton =
@@ -1271,8 +1266,7 @@ public class BraveRewardsPanel
                     (new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                    .setBoolean(BravePref.SELF_CUSTODY_INVITE_DISMISSED, true);
+                            removeSolanaEligibleUi();
                             TabUtils.openUrlInNewTab(
                                     false,
                                     BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
@@ -1285,12 +1279,16 @@ public class BraveRewardsPanel
                     (new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mRewardsSolanaEligibleLayout.setVisibility(View.GONE);
-                            UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                    .setBoolean(BravePref.SELF_CUSTODY_INVITE_DISMISSED, true);
+                            removeSolanaEligibleUi();
                         }
                     }));
         }
+    }
+
+    private void removeSolanaEligibleUi() {
+        mRewardsSolanaEligibleLayout.setVisibility(View.GONE);
+        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                .setBoolean(BravePref.SELF_CUSTODY_INVITE_DISMISSED, true);
     }
 
     private void showOnBoarding() {
