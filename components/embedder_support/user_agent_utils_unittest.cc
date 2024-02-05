@@ -46,8 +46,6 @@ TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
   command_line.GetProcessCommandLine()->AppendSwitchASCII(kUserAgent,
                                                           kCmdUserAgentValue);
   ASSERT_TRUE(
-      base::FeatureList::IsEnabled(blink::features::kAllowCertainClientHints));
-  ASSERT_TRUE(
       base::FeatureList::IsEnabled(blink::features::kUACHOverrideBlank));
   const auto brave_metadata = GetUserAgentMetadata(nullptr);
   const blink::UserAgentMetadata empty_metadata;
