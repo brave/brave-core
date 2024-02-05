@@ -291,7 +291,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         if (mCryptoWalletOnboardingPagerAdapter == null) return;
 
         final List<NavigationItem> navigationItems = new ArrayList<>();
-        // Term of use screen is shown only during onboarding actions.
+        // Terms of use screen is shown only during onboarding actions.
         if (walletAction != WalletAction.RESTORE) {
             final OnboardingTermsOfUseFragment onboardingTermsOfUseFragment =
                     OnboardingTermsOfUseFragment.newInstance();
