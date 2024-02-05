@@ -10,13 +10,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
@@ -25,8 +26,8 @@ import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
         implements CompoundButton.OnCheckedChangeListener {
 
-    private CheckBox mSelfCustodyCheckBox;
-    private CheckBox mTermsOfUseCheckBox;
+    private MaterialCheckBox mSelfCustodyCheckBox;
+    private MaterialCheckBox mTermsOfUseCheckBox;
 
     private AppCompatButton mContinueButton;
 
