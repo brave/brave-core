@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include <tuple>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -189,9 +190,12 @@ void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
             feed.reserve(total_size);
 
             // We want to deduplicate the feed, as the feeds for different
-            // regions
-            // **may** have overlap.
-            base::flat_set<GURL> seen;
+            // regions **may** have overlap.
+            std::unordered_set<std::string> seen;
+
+            // reserve |total_size| space in |seen|. This is more than we'll
+            // likely need but should be in the correct ballpark.
+            seen.reserve(total_size);
 
             for (auto& result : results) {
               etags[result.key] = result.etag;
@@ -204,10 +208,11 @@ void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
                 }
 
                 // Skip this, we've already seen it.
-                if (!url.is_empty() && seen.contains(url)) {
+                auto spec = url.spec();
+                if (!url.is_empty() && seen.contains(spec)) {
                   continue;
                 }
-                seen.insert(url);
+                seen.insert(std::move(spec));
 
                 feed.push_back(std::move(item));
               }
