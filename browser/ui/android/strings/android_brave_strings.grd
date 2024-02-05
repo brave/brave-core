@@ -1131,7 +1131,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
 	Pair
       </message>
       <message name="IDS_BRAVE_SYNC_CATEGORIES_TEXT" desc="Text for button to show data types to sync. Renamed from Categories">
- Sync Options 
+  Sync Options
       </message>
       <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_TEXT" desc="Text for button which deletes all sync chain data on the server">
   Delete Sync account
