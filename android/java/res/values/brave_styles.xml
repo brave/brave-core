@@ -83,6 +83,10 @@
         <item name="android:textAppearance">?attr/textAppearanceListItem</item>
     </style>
 
+    <style name="BraveWalletCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/brave_wallet_checkbox_color</item>
+    </style>
+
     <!--  Brave Wallet buttons  -->
     <style name="BraveWalletButton" parent="Widget.AppCompat.Button">
         <item name="buttonStyle">?android:attr/borderlessButtonStyle</item>

@@ -49,6 +49,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/self_custody_check_box"
+            style="@style/BraveWalletCheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -64,6 +65,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/terms_of_use_check_box"
+            style="@style/BraveWalletCheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
