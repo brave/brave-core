@@ -4097,6 +4097,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LEO_SUBSCRIPTION_UPGRADE_NOW" desc="Upgrade now button for Brave Leo subscription">
       Upgrade now
     </message>
+    <message name="IDS_LEO_SUBSCRIPTION_PREF" desc="Brave Leo Subscription section">
+      Subscription
+    </message>
+    <message name="IDS_LEO_DEFAULT_MODEL_PREF" desc="Title for Leo Default Model settings.">
+      Default model for new conversations
+    </message>
+    <message name="IDS_LEO_DEFAULT_MODEL_PREF_SCREEN" desc="Title for Leo Default Model settings screen.">
+      Default model
+    </message>
   </messages>
   </release>
 </grit>

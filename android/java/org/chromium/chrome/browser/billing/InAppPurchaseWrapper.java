@@ -41,6 +41,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class InAppPurchaseWrapper {
+    public static final String MANAGE_SUBSCRIPTION_PAGE =
+            "https://play.google.com/store/account/subscriptions";
     private static final String TAG = "InAppPurchaseWrapper";
     private static final String LEO_MONTHLY_SUBSCRIPTION = "brave.leo.monthly";
 
