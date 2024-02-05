@@ -388,13 +388,16 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
     return;
   }
 
-  base::Value::Dict data;
-  if (wallet) {
-    data.Set("address", wallet->address);
-    data.Set("memberId", wallet->member_id);
-    data.Set("status", static_cast<int>(wallet->status));
-    data.Set("type", wallet->type);
+  if (!wallet) {
+    CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet");
+    return;
   }
+
+  base::Value::Dict data;
+  data.Set("address", wallet->address);
+  data.Set("memberId", wallet->member_id);
+  data.Set("status", static_cast<int>(wallet->status));
+  data.Set("type", wallet->type);
 
   CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet", data);
 }

@@ -599,8 +599,8 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_REWARDS_OFF" desc="">Rewards was turned off</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_AUTO_CONTRIBUTE_OFF" desc="">Auto-contribute was turned off</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_RETRY_COUNT" desc="">Stopped retrying</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_CUSTODIAN" desc="Custodian">Custodian:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_CUSTODIAN_MEMBER_ID" desc="Custodian member ID">Custodian member ID:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET_TYPE" desc="The external wallet type">Account type:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET_ACCOUNT" desc="The external wallet account ID">Account:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_KEY" desc="event log key">Key</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_VALUE" desc="event log value">Value</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_TIME" desc="when event was logged">Logged at</message>
@@ -609,7 +609,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE" desc="Contribution type">Type:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON" desc="">Download full log</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET" desc="">Custodial account connection info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET" desc="">Connected accounts info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_INVALID" desc="Invalid indicator">Invalid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED" desc="Key info seed">Key info seed:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_LOG_NOTICE" desc="">We show the last [[numberOfLines]] lines of the log. If you want the whole log, you can download it above.</message>
@@ -650,15 +650,15 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE" desc="Total balance">Total balance</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_USER_ID" desc="Wallet user ID">User ID</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_ADDRESS" desc="">Wallet address:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_ADDRESS" desc="">Account deposit address:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_HISTORY" desc="">Wallet History</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Rewards info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Rewards profile not yet created</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Rewards payment ID">Rewards payment ID:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Rewards state:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Not connected</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED" desc="">Verified</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED" desc="">Disconnected (Verified)</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Non-connected</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED" desc="">Connected</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED" desc="">Disconnected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_CREATION_ENVIRONMENT" desc="">Creation environment:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CURRENT_ENVIRONMENT" desc="">Current environment:</message>
 
