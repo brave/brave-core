@@ -8,9 +8,10 @@
 #include <optional>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -55,12 +56,22 @@ PostOAuthUphold::PostOAuthUphold(RewardsEngineImpl& engine,
 PostOAuthUphold::~PostOAuthUphold() = default;
 
 std::optional<std::string> PostOAuthUphold::Url() const {
-  return endpoint::uphold::GetServerUrl("/oauth2/token");
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve("/oauth2/token")
+      .spec();
 }
 
 std::optional<std::vector<std::string>> PostOAuthUphold::Headers(
     const std::string&) const {
-  return endpoint::uphold::RequestAuthorization();
+  auto& config = engine_->Get<EnvironmentConfig>();
+
+  std::string user;
+  base::Base64Encode(base::StrCat({config.uphold_client_id(), ":",
+                                   config.uphold_client_secret()}),
+                     &user);
+
+  return std::vector<std::string>{"Authorization: Basic " + user};
 }
 
 std::optional<std::string> PostOAuthUphold::Content() const {

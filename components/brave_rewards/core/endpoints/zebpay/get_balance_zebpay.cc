@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/zebpay/zebpay_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -58,7 +58,10 @@ GetBalanceZebPay::GetBalanceZebPay(RewardsEngineImpl& engine,
 GetBalanceZebPay::~GetBalanceZebPay() = default;
 
 std::optional<std::string> GetBalanceZebPay::Url() const {
-  return endpoint::zebpay::GetApiServerUrl("/api/balance");
+  return engine_->Get<EnvironmentConfig>()
+      .zebpay_api_url()
+      .Resolve("/api/balance")
+      .spec();
 }
 
 mojom::UrlMethod GetBalanceZebPay::Method() const {
@@ -67,7 +70,7 @@ mojom::UrlMethod GetBalanceZebPay::Method() const {
 
 std::optional<std::vector<std::string>> GetBalanceZebPay::Headers(
     const std::string&) const {
-  return endpoint::zebpay::RequestAuthorization(token_);
+  return std::vector<std::string>{"Authorization: Bearer " + token_};
 }
 
 }  // namespace brave_rewards::internal::endpoints

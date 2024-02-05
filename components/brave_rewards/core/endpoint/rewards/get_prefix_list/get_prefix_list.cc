@@ -7,8 +7,8 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/endpoint/rewards/rewards_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -21,7 +21,10 @@ GetPrefixList::GetPrefixList(RewardsEngineImpl& engine) : engine_(engine) {}
 GetPrefixList::~GetPrefixList() = default;
 
 std::string GetPrefixList::GetUrl() {
-  return GetServerUrl("/publishers/prefix-list");
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_url()
+      .Resolve("/publishers/prefix-list")
+      .spec();
 }
 
 mojom::Result GetPrefixList::CheckStatusCode(const int status_code) {

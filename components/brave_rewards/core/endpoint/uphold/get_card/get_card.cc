@@ -10,11 +10,11 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
@@ -26,7 +26,10 @@ GetCard::GetCard(RewardsEngineImpl& engine) : engine_(engine) {}
 GetCard::~GetCard() = default;
 
 std::string GetCard::GetUrl(const std::string& address) {
-  return GetServerUrl("/v0/me/cards/" + address);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
+                          {"/v0/me/cards/", address});
+  return url.spec();
 }
 
 mojom::Result GetCard::CheckStatusCode(const int status_code) {
@@ -76,7 +79,7 @@ void GetCard::Request(const std::string& address,
       &GetCard::OnRequest, base::Unretained(this), std::move(callback));
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address);
-  request->headers = RequestAuthorization(token);
+  request->headers = {"Authorization: Bearer " + token};
 
   engine_->Get<URLLoader>().Load(std::move(request),
                                  URLLoader::LogLevel::kDetailed,

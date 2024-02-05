@@ -2,6 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_safetynet/post_safetynet.h"
 
 #include <optional>
@@ -9,9 +10,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
@@ -25,7 +25,10 @@ PostSafetynet::PostSafetynet(RewardsEngineImpl& engine) : engine_(engine) {}
 PostSafetynet::~PostSafetynet() = default;
 
 std::string PostSafetynet::GetUrl() {
-  return GetServerUrl("/v2/attestations/safetynet");
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_grant_url()
+      .Resolve("/v2/attestations/safetynet")
+      .spec();
 }
 
 std::string PostSafetynet::GeneratePayload() {

@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
@@ -21,39 +22,6 @@ using std::placeholders::_2;
 namespace brave_rewards::internal {
 
 namespace {
-
-const char kACSKUDev[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGINiB9dUmpqLyeSEdZ23E4dPXwI"
-    "BOUNJCFN9d5toIME2M";  // NOLINT
-const char kACSKUStaging[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGIOH4Li+"
-    "rduCtFOfV8Lfa2o8h4SQjN5CuIwxmeQFjOk4W";  // NOLINT
-const char kACSKUProduction[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGIOaNAUCBMKm0IaLqxefhvxOtAK"
-    "B0OfoiPn0NPVfI602J";  // NOLINT
-
-std::string GetACSKU() {
-  if (_environment == mojom::Environment::PRODUCTION) {
-    return kACSKUProduction;
-  }
-
-  if (_environment == mojom::Environment::STAGING) {
-    return kACSKUStaging;
-  }
-
-  if (_environment == mojom::Environment::DEVELOPMENT) {
-    return kACSKUDev;
-  }
-
-  NOTREACHED();
-  return kACSKUDev;
-}
 
 void GetCredentialTrigger(mojom::SKUOrderPtr order,
                           credential::CredentialsTrigger* trigger) {
@@ -86,7 +54,7 @@ void ContributionSKU::AutoContribution(const std::string& contribution_id,
                                        const std::string& wallet_type,
                                        LegacyResultCallback callback) {
   mojom::SKUOrderItem item;
-  item.sku = GetACSKU();
+  item.sku = engine_->Get<EnvironmentConfig>().auto_contribute_sku();
 
   Start(contribution_id, item, wallet_type, callback);
 }

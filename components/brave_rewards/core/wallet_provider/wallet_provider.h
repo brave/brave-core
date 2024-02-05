@@ -98,11 +98,11 @@ class WalletProvider {
   void RemoveTransferFee(const std::string& contribution_id);
 
  protected:
+  const raw_ref<RewardsEngineImpl> engine_;
   std::unique_ptr<ConnectExternalWallet> connect_wallet_;
   std::unique_ptr<Transfer> transfer_;
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 

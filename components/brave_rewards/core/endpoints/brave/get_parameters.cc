@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_rewards/core/endpoint/api/api_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/get_parameters_utils.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
@@ -147,7 +147,10 @@ GetParameters::GetParameters(RewardsEngineImpl& engine)
 GetParameters::~GetParameters() = default;
 
 std::optional<std::string> GetParameters::Url() const {
-  return endpoint::api::GetServerUrl("/v1/parameters");
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_api_url()
+      .Resolve("/v1/parameters")
+      .spec();
 }
 
 mojom::UrlMethod GetParameters::Method() const {

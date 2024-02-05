@@ -6,7 +6,7 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/get_wallet.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
@@ -31,8 +31,12 @@ class GetWalletTest : public RewardsEngineTest {
   }
 
   GetWallet::Result SendRequest(mojom::UrlResponsePtr response) {
-    std::string url = endpoint::promotion::GetServerUrl(
-        "/v4/wallets/fa5dea51-6af4-44ca-801b-07b6df3dcfe4");
+    std::string url =
+        engine()
+            .Get<EnvironmentConfig>()
+            .rewards_grant_url()
+            .Resolve("/v4/wallets/fa5dea51-6af4-44ca-801b-07b6df3dcfe4")
+            .spec();
 
     AddNetworkResultForTesting(url, mojom::UrlMethod::GET, std::move(response));
 

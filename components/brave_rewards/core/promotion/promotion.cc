@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
@@ -99,7 +100,8 @@ void Promotion::Initialize() {
 void Promotion::Fetch(FetchPromotionsCallback callback) {
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
-  if (!is_testing && _environment != mojom::Environment::STAGING) {
+  auto env = engine_->Get<EnvironmentConfig>().current_environment();
+  if (!is_testing && env != mojom::Environment::kStaging) {
     const uint64_t last_promo_stamp =
         engine_->state()->GetPromotionLastFetchStamp();
     const uint64_t now = util::GetCurrentTimeStamp();

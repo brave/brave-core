@@ -11,9 +11,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -26,7 +25,10 @@ PostOrder::PostOrder(RewardsEngineImpl& engine) : engine_(engine) {}
 PostOrder::~PostOrder() = default;
 
 std::string PostOrder::GetUrl() {
-  return GetServerUrl("/v1/orders");
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_payment_url()
+      .Resolve("/v1/orders")
+      .spec();
 }
 
 std::string PostOrder::GeneratePayload(

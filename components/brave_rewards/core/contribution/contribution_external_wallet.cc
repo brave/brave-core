@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_external_wallet.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -16,7 +15,6 @@
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

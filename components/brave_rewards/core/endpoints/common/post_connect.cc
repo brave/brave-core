@@ -10,8 +10,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
@@ -178,8 +178,10 @@ std::optional<std::string> PostConnect::Url() const {
 
   DCHECK(!wallet->payment_id.empty());
 
-  return endpoint::promotion::GetServerUrl(
-      base::StringPrintf(Path(), wallet->payment_id.c_str()));
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_grant_url()
+      .Resolve(base::StringPrintf(Path(), wallet->payment_id.c_str()))
+      .spec();
 }
 
 std::optional<std::vector<std::string>> PostConnect::Headers(

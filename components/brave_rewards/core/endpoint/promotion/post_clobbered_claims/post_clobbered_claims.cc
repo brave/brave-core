@@ -2,13 +2,14 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_clobbered_claims/post_clobbered_claims.h"
 
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -22,7 +23,10 @@ PostClobberedClaims::PostClobberedClaims(RewardsEngineImpl& engine)
 PostClobberedClaims::~PostClobberedClaims() = default;
 
 std::string PostClobberedClaims::GetUrl() {
-  return GetServerUrl("/v2//promotions/reportclobberedclaims");
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_grant_url()
+      .Resolve("/v2/promotions/reportclobberedclaims")
+      .spec();
 }
 
 std::string PostClobberedClaims::GeneratePayload(

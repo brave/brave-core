@@ -10,10 +10,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
@@ -27,10 +27,10 @@ PostCreds::PostCreds(RewardsEngineImpl& engine) : engine_(engine) {}
 PostCreds::~PostCreds() = default;
 
 std::string PostCreds::GetUrl(const std::string& promotion_id) {
-  const std::string& path =
-      base::StringPrintf("/v1/promotions/%s", promotion_id.c_str());
-
-  return GetServerUrl(path);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
+                          {"/v1/promotions/", promotion_id});
+  return url.spec();
 }
 
 std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {

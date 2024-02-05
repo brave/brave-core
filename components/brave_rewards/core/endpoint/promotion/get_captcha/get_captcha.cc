@@ -2,14 +2,15 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_captcha/get_captcha.h"
 
 #include <utility>
 
 #include "base/base64.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -22,10 +23,10 @@ GetCaptcha::GetCaptcha(RewardsEngineImpl& engine) : engine_(engine) {}
 GetCaptcha::~GetCaptcha() = default;
 
 std::string GetCaptcha::GetUrl(const std::string& captcha_id) {
-  const std::string path =
-      base::StringPrintf("/v1/captchas/%s.png", captcha_id.c_str());
-
-  return GetServerUrl(path);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
+                          {"/v1/captchas/", captcha_id, ".png"});
+  return url.spec();
 }
 
 mojom::Result GetCaptcha::CheckStatusCode(const int status_code) {
@@ -58,8 +59,7 @@ mojom::Result GetCaptcha::ParseBody(const std::string& body,
 
   std::string encoded_image;
   base::Base64Encode(body, &encoded_image);
-  *image =
-      base::StringPrintf("data:image/jpeg;base64,%s", encoded_image.c_str());
+  *image = "data:image/jpeg;base64," + encoded_image;
 
   return mojom::Result::OK;
 }

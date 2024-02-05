@@ -2081,13 +2081,13 @@ mojom::RewardsEngineOptionsPtr RewardsServiceImpl::HandleFlags(
   if (flags.environment) {
     switch (*flags.environment) {
       case RewardsFlags::Environment::kDevelopment:
-        options->environment = mojom::Environment::DEVELOPMENT;
+        options->environment = mojom::Environment::kDevelopment;
         break;
       case RewardsFlags::Environment::kStaging:
-        options->environment = mojom::Environment::STAGING;
+        options->environment = mojom::Environment::kStaging;
         break;
       case RewardsFlags::Environment::kProduction:
-        options->environment = mojom::Environment::PRODUCTION;
+        options->environment = mojom::Environment::kProduction;
         break;
     }
   } else {
@@ -2479,18 +2479,18 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsAC(bool ac_enabled) {
 }
 
 mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironment() {
-  mojom::Environment environment = mojom::Environment::STAGING;
+  mojom::Environment environment = mojom::Environment::kStaging;
 #if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_ANDROID)
   environment = GetDefaultServerEnvironmentForAndroid();
 #elif defined(OFFICIAL_BUILD)
-  environment = mojom::Environment::PRODUCTION;
+  environment = mojom::Environment::kProduction;
 #endif
   return environment;
 }
 
 #if BUILDFLAG(IS_ANDROID)
 mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironmentForAndroid() {
-  auto result = mojom::Environment::PRODUCTION;
+  auto result = mojom::Environment::kProduction;
   bool use_staging = false;
   if (profile_ && profile_->GetPrefs()) {
     use_staging =
@@ -2498,7 +2498,7 @@ mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironmentForAndroid() {
   }
 
   if (use_staging) {
-    result = mojom::Environment::STAGING;
+    result = mojom::Environment::kStaging;
   }
 
   return result;

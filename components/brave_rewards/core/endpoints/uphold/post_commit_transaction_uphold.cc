@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -65,14 +65,16 @@ Result PostCommitTransactionUphold::ProcessResponse(
 }
 
 std::optional<std::string> PostCommitTransactionUphold::Url() const {
-  return endpoint::uphold::GetServerUrl(base::StringPrintf(
-      "/v0/me/cards/%s/transactions/%s/commit", address_.c_str(),
-      transaction_->transaction_id.c_str()));
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
+                          {"/v0/me/cards/", address_, "/transactions/",
+                           transaction_->transaction_id, "/commit"});
+  return url.spec();
 }
 
 std::optional<std::vector<std::string>> PostCommitTransactionUphold::Headers(
     const std::string&) const {
-  return endpoint::uphold::RequestAuthorization(token_);
+  return std::vector<std::string>{"Authorization: Bearer " + token_};
 }
 
 }  // namespace brave_rewards::internal::endpoints

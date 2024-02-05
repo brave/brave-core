@@ -12,9 +12,10 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
 
@@ -23,7 +24,10 @@ PostRecipientId::PostRecipientId(RewardsEngineImpl& engine) : engine_(engine) {}
 PostRecipientId::~PostRecipientId() = default;
 
 std::string PostRecipientId::GetUrl() {
-  return GetApiServerUrl("/v1/payments/recipientIds");
+  return engine_->Get<EnvironmentConfig>()
+      .gemini_api_url()
+      .Resolve("/v1/payments/recipientIds")
+      .spec();
 }
 
 mojom::Result PostRecipientId::ParseBody(const std::string& body,
@@ -55,7 +59,7 @@ mojom::Result PostRecipientId::ParseBody(const std::string& body,
 
 std::string PostRecipientId::GeneratePayload() {
   base::Value::Dict payload;
-  payload.Set("label", internal::gemini::kGeminiRecipientIDLabel);
+  payload.Set("label", kRecipientLabel);
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
@@ -70,8 +74,8 @@ void PostRecipientId::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->method = mojom::UrlMethod::POST;
-  request->headers = RequestAuthorization(token);
-  request->headers.push_back("X-GEMINI-PAYLOAD: " + GeneratePayload());
+  request->headers = {"Authorization: Bearer " + token,
+                      "X-GEMINI-PAYLOAD: " + GeneratePayload()};
 
   engine_->Get<URLLoader>().Load(
       std::move(request), URLLoader::LogLevel::kDetailed,
@@ -91,13 +95,23 @@ void PostRecipientId::OnRequest(PostRecipientIdCallback callback,
     }
   }
 
-  mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::OK) {
-    return std::move(callback).Run(result, "");
+  switch (response->status_code) {
+    case net::HTTP_OK:
+      break;
+    case net::HTTP_NOT_FOUND:
+      std::move(callback).Run(mojom::Result::NOT_FOUND, "");
+      return;
+    case net::HTTP_UNAUTHORIZED:
+    case net::HTTP_FORBIDDEN:
+      std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "");
+      return;
+    default:
+      std::move(callback).Run(mojom::Result::FAILED, "");
+      return;
   }
 
   std::string recipient_id;
-  result = ParseBody(response->body, &recipient_id);
+  mojom::Result result = ParseBody(response->body, &recipient_id);
   std::move(callback).Run(result, std::move(recipient_id));
 }
 

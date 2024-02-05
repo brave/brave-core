@@ -2,6 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_suggestions_claim/post_suggestions_claim.h"
 
 #include <optional>
@@ -9,11 +10,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
@@ -28,7 +28,10 @@ PostSuggestionsClaim::PostSuggestionsClaim(RewardsEngineImpl& engine)
 PostSuggestionsClaim::~PostSuggestionsClaim() = default;
 
 std::string PostSuggestionsClaim::GetUrl() {
-  return GetServerUrl("/v2/suggestions/claim");
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_grant_url()
+      .Resolve("/v2/suggestions/claim")
+      .spec();
 }
 
 std::string PostSuggestionsClaim::GeneratePayload(

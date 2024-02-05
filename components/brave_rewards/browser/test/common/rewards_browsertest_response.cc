@@ -18,7 +18,6 @@
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "chrome/test/base/ui_test_utils.h"
 
 namespace {

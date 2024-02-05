@@ -225,15 +225,15 @@ static const auto kOneDay =
     switch (*flags.environment) {
       case brave_rewards::RewardsFlags::Environment::kDevelopment:
         brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::DEVELOPMENT;
+            brave_rewards::mojom::Environment::kDevelopment;
         break;
       case brave_rewards::RewardsFlags::Environment::kStaging:
         brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::STAGING;
+            brave_rewards::mojom::Environment::kStaging;
         break;
       case brave_rewards::RewardsFlags::Environment::kProduction:
         brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::PRODUCTION;
+            brave_rewards::mojom::Environment::kProduction;
         break;
     }
   }

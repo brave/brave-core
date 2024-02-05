@@ -9,10 +9,9 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
-#include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -25,7 +24,10 @@ PostVotes::PostVotes(RewardsEngineImpl& engine) : engine_(engine) {}
 PostVotes::~PostVotes() = default;
 
 std::string PostVotes::GetUrl() {
-  return GetServerUrl("/v1/votes");
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_payment_url()
+      .Resolve("/v1/votes")
+      .spec();
 }
 
 std::string PostVotes::GeneratePayload(

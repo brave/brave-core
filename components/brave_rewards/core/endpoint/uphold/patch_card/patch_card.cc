@@ -8,10 +8,10 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
@@ -21,7 +21,10 @@ PatchCard::PatchCard(RewardsEngineImpl& engine) : engine_(engine) {}
 PatchCard::~PatchCard() = default;
 
 std::string PatchCard::GetUrl(const std::string& address) const {
-  return GetServerUrl("/v0/me/cards/" + address);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
+                          {"/v0/me/cards/", address});
+  return url.spec();
 }
 
 std::string PatchCard::GeneratePayload() const {
@@ -57,7 +60,7 @@ void PatchCard::Request(const std::string& token,
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(address);
   request->content = GeneratePayload();
-  request->headers = RequestAuthorization(token);
+  request->headers = {"Authorization: Bearer " + token};
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PATCH;
 

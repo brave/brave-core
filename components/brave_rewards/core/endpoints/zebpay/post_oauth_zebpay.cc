@@ -10,9 +10,10 @@
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/zebpay/zebpay_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -108,12 +109,20 @@ PostOAuthZebPay::PostOAuthZebPay(RewardsEngineImpl& engine,
 PostOAuthZebPay::~PostOAuthZebPay() = default;
 
 std::optional<std::string> PostOAuthZebPay::Url() const {
-  return endpoint::zebpay::GetOauthServerUrl("/connect/token");
+  return engine_->Get<EnvironmentConfig>()
+      .zebpay_oauth_url()
+      .Resolve("/connect/token")
+      .spec();
 }
 
 std::optional<std::vector<std::string>> PostOAuthZebPay::Headers(
     const std::string&) const {
-  return endpoint::zebpay::RequestAuthorization();
+  auto& config = engine_->Get<EnvironmentConfig>();
+  std::string user;
+  base::Base64Encode(base::StrCat({config.zebpay_client_id(), ":",
+                                   config.zebpay_client_secret()}),
+                     &user);
+  return std::vector<std::string>{"Authorization: Basic " + user};
 }
 
 std::optional<std::string> PostOAuthZebPay::Content() const {

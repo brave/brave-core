@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
@@ -24,36 +25,6 @@ using std::placeholders::_1;
 namespace brave_rewards::internal {
 
 namespace {
-
-bool IsPublicKeyValid(const std::string& public_key) {
-  if (public_key.empty()) {
-    return false;
-  }
-
-  std::vector<std::string> keys;
-  if (_environment == mojom::Environment::PRODUCTION) {
-    keys = {
-        "yr4w9Y0XZQISBOToATNEl5ADspDUgm7cBSOhfYgPWx4=",  // AC
-        "PGLvfpIn8QXuQJEtv2ViQSWw2PppkhexKr1mlvwCpnM="   // User funds
-    };
-  }
-
-  if (_environment == mojom::Environment::STAGING) {
-    keys = {
-        "mMMWZrWPlO5b9IB8vF5kUJW4f7ULH1wuEop3NOYqNW0=",  // AC
-        "CMezK92X5wmYHVYpr22QhNsTTq6trA/N9Alw+4cKyUY="   // User funds
-    };
-  }
-
-  if (_environment == mojom::Environment::DEVELOPMENT) {
-    keys = {
-        "RhfxGp4pT0Kqe2zx4+q+L6lwC3G9v3fIj1L+PbINNzw=",  // AC
-        "nsSoWgGMJpIiCGVdYrne03ldQ4zqZOMERVD5eSPhhxc="   // User funds
-    };
-  }
-
-  return base::Contains(keys, public_key);
-}
 
 std::string ConvertItemTypeToString(const std::string& type) {
   int type_int;
@@ -325,7 +296,11 @@ void CredentialsSKU::Unblind(ResultCallback callback,
     return;
   }
 
-  if (!IsPublicKeyValid(creds->public_key)) {
+  std::vector valid_public_keys = {
+      engine_->Get<EnvironmentConfig>().auto_contribute_public_key(),
+      engine_->Get<EnvironmentConfig>().user_funds_public_key()};
+
+  if (!base::Contains(valid_public_keys, creds->public_key)) {
     BLOG(0, "Public key is not valid");
     std::move(callback).Run(mojom::Result::FAILED);
     return;
