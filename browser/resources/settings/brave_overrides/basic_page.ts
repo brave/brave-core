@@ -334,11 +334,17 @@ RegisterPolymerTemplateModifications({
       ))
 
       // Remove all hidden performance options from basic page.
-      // We moved performance elements in system settings.
+      // We moved performance elements into system settings.
       const performanceTemplate = actualTemplate.content.querySelector(
         'template[if="[[showPerformancePage_(pageVisibility.performance)]]"]')
       if (performanceTemplate) {
         performanceTemplate.remove()
+      }
+
+      const speedTemplate = actualTemplate.content.querySelector(
+        'template[if="[[showSpeedPage_(pageVisibility.performance)]]"]')
+      if (speedTemplate) {
+        speedTemplate.remove()
       }
 
       const batteryTemplate = actualTemplate.content.querySelector(

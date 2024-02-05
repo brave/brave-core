@@ -201,7 +201,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kNotificationTriggers,
       &features::kOmniboxTriggerForNoStatePrefetch,
       &features::kOmniboxTriggerForPrerender2,
-      &features::kPerformanceSettingsPreloadingSubpage,
       &features::kPrivacyGuide3,
 #if BUILDFLAG(IS_ANDROID)
       &features::kPrivacyGuideAndroidPostMVP,
