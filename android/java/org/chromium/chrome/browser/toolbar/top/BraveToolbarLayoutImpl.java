@@ -388,6 +388,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mPlaylistServiceObserver = new PlaylistServiceObserverImpl(this);
             mPlaylistService.addObserver(mPlaylistServiceObserver);
         }
+
+        Log.e(
+                "Solana",
+                "shouldShowSelfCustodyInvite : "
+                        + BraveRewardsNativeWorker.getInstance().shouldShowSelfCustodyInvite());
+
         mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
         mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 

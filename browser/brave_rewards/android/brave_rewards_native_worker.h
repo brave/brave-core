@@ -49,6 +49,8 @@ class BraveRewardsNativeWorker
 
   bool IsRewardsEnabled(JNIEnv* env);
 
+  bool ShouldShowSelfCustodyInvite(JNIEnv* env);
+
   void CreateRewardsWallet(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& country_code);
