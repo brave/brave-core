@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +22,14 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 
 /** Onboarding fragment showing terms and conditions to accept before using Brave Wallet. */
-public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment {
+public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
+        implements CompoundButton.OnCheckedChangeListener {
+
+    private CheckBox mSelfCustodyCheckBox;
+    private CheckBox mTermsOfUseCheckBox;
+
+    private AppCompatButton mContinueButton;
+
     @NonNull
     public static OnboardingTermsOfUseFragment newInstance() {
         return new OnboardingTermsOfUseFragment();
@@ -46,14 +55,29 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        AppCompatButton continueButton = view.findViewById(R.id.continue_button);
-        //        continueButton.setAlpha(1f);
-        //        continueButton.setEnabled(true);
-        continueButton.setOnClickListener(
+        mSelfCustodyCheckBox = view.findViewById(R.id.self_custody_check_box);
+        mSelfCustodyCheckBox.setOnCheckedChangeListener(this);
+
+        mTermsOfUseCheckBox = view.findViewById(R.id.terms_of_use_check_box);
+        mTermsOfUseCheckBox.setOnCheckedChangeListener(this);
+
+        mContinueButton = view.findViewById(R.id.continue_button);
+        mContinueButton.setOnClickListener(
                 v -> {
                     if (mOnNextPage != null) {
                         mOnNextPage.gotoNextPage();
                     }
                 });
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (mSelfCustodyCheckBox.isChecked() && mTermsOfUseCheckBox.isChecked()) {
+            mContinueButton.setAlpha(1f);
+            mContinueButton.setEnabled(true);
+        } else {
+            mContinueButton.setAlpha(0.5f);
+            mContinueButton.setEnabled(false);
+        }
     }
 }
