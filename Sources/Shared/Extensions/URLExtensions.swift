@@ -638,4 +638,13 @@ public struct InternalURL {
     }
     return nil
   }
+  
+  public var displayURL: URL? {
+    if isErrorPage {
+      return originalURLFromErrorPage
+    } else if isReaderModePage {
+      return extractedUrlParam
+    }
+    return nil
+  }
 }

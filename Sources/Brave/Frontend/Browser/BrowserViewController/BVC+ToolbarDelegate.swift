@@ -446,8 +446,11 @@ extension BrowserViewController: TopToolbarDelegate {
     
     shields.showSubmitReportView = { [weak self] shieldsViewController in
       shieldsViewController.dismiss(animated: true) {
-        guard let url = shieldsViewController.tab.url else { return }
-        self?.showSubmitReportView(for: url)
+        if let internalURL = InternalURL(url), let displayURL = internalURL.displayURL {
+          self?.showSubmitReportView(for: displayURL)
+        } else {
+          self?.showSubmitReportView(for: url)
+        }
       }
     }
     
