@@ -188,7 +188,10 @@ function Container() {
 
   if (
     selectedAccount &&
-    (selectedPendingTransaction || signMessageData.length) &&
+    (selectedPendingTransaction ||
+      signMessageData.length ||
+      signAllTransactionsRequests.length ||
+      signTransactionRequests.length) &&
     selectedPanel === 'connectHardwareWallet'
   ) {
     return (
