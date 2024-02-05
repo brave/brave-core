@@ -252,17 +252,17 @@ void RequestOTRNavigationThrottle::RestartNavigation(const GURL& url) {
 
   content::WebContents* contents = handle->GetWebContents();
 
-  // Cancel without an error status to surface any real errors during page
-  // load.
-  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
-      content::NavigationThrottle::CANCEL));
-
   params.url = url;
   params.transition = static_cast<ui::PageTransition>(
       params.transition | ui::PAGE_TRANSITION_CLIENT_REDIRECT);
   // We get a DCHECK here if we don't clear the redirect chain because
   // technically this is a new navigation
   params.redirect_chain.clear();
+
+  // Cancel without an error status to surface any real errors during page
+  // load.
+  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+      content::NavigationThrottle::CANCEL));
 
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(
