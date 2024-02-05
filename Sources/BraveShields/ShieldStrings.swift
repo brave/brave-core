@@ -147,7 +147,8 @@ public extension Strings.Shields {
   )
 }
 
-// MARK: - Shields
+// MARK: - GPC
+
 public extension Strings.Shields {
   /// A label of the GPC toggle
   static let enableGPCLabel = NSLocalizedString(
@@ -161,5 +162,51 @@ public extension Strings.Shields {
     "EnableGPCDescription", tableName: "BraveShared", bundle: .module,
     value: "Enable the Global Privacy Control JS API",
     comment: "A description of what the Enable GPC toggle does"
+  )
+}
+
+// MARK: - Blocked Page
+
+public extension Strings.Shields {
+  /// A tab title that appears when a page was blocked
+  static let domainBlockedTitle = NSLocalizedString(
+    "DomainBlockedTitle", tableName: "BraveShared", bundle: .module,
+    value: "Domain Blocked",
+    comment: "A tab title for the warning page that appears when a page was blocked"
+  )
+  
+  /// A title in the warning page that appears when a page was blocked
+  static let domainBlockedPageTitle = NSLocalizedString(
+    "DomainBlockedPageTitle", tableName: "BraveShared", bundle: .module,
+    value: "This Site May Attempt to Track You Across Other Sites",
+    comment: "A title in the warning page that appears when a page was blocked"
+  )
+  
+  /// A title in the warning page that appears when a page was blocked
+  static let domainBlockedPageMessage = NSLocalizedString(
+    "DomainBlockedPageMessage", tableName: "BraveShared", bundle: .module,
+    value: "Brave has prevented the following site from loading:",
+    comment: "A message in the warning page that appears when a page was blocked"
+  )
+  
+  /// A description in the warning page that appears when a page was blocked
+  static let domainBlockedPageDescription = NSLocalizedString(
+    "DomainBlockedPageDescription", tableName: "BraveShared", bundle: .module,
+    value: "Because you requested to aggressively block trackers and ads, Brave is blocking this site before the first network connection.",
+    comment: "A description in the warning page that appears when a page was blocked"
+  )
+  
+  /// Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning
+  static let domainBlockedProceedAction = NSLocalizedString(
+    "DomainBlockedProceedAction", tableName: "BraveShared", bundle: .module,
+    value: "Proceed",
+    comment: "Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning"
+  )
+  
+  /// A description in the warning page that appears when a page was blocked
+  static let domainBlockedGoBackAction = NSLocalizedString(
+    "DomainBlockedGoBackAction", tableName: "BraveShared", bundle: .module,
+    value: "Go Back",
+    comment: "Text for a button in a blocked page info screen that takes you back where you came from"
   )
 }

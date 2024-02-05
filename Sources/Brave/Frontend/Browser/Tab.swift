@@ -594,6 +594,9 @@ class Tab: NSObject {
     }
     return favicon
   }
+  
+  /// A list of domains that we want to proceed to anyways regardless of any ad-blocking
+  var proceedAnywaysDomainList: Set<String> = []
 
   var canGoBack: Bool {
     return webView?.canGoBack ?? false

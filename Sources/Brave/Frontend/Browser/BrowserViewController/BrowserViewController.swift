@@ -2507,6 +2507,7 @@ extension BrowserViewController: TabDelegate {
       ReaderModeScriptHandler(tab: tab),
       ErrorPageHelper(certStore: profile.certStore),
       SessionRestoreScriptHandler(tab: tab),
+      BlockedDomainScriptHandler(tab: tab),
       PrintScriptHandler(browserController: self, tab: tab),
       CustomSearchScriptHandler(tab: tab),
       NightModeScriptHandler(tab: tab),

@@ -146,7 +146,7 @@ extension URL {
       return internalUrl.originalURLFromErrorPage?.displayURL
     }
     
-    if let internalUrl = InternalURL(self), internalUrl.isSessionRestore || internalUrl.isWeb3URL {
+    if let internalUrl = InternalURL(self), internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isBlockedPage {
       return internalUrl.extractedUrlParam?.displayURL
     }
 
@@ -503,10 +503,13 @@ public struct InternalURL {
   public static let scheme = "internal"
   public static let host = "local"
   public static let baseUrl = "\(scheme)://\(host)"
+  
   public enum Path: String {
-    case errorpage = "errorpage"
-    case sessionrestore = "sessionrestore"
+    case errorpage
+    case sessionrestore
     case readermode = "reader-mode"
+    case blocked
+    
     func matches(_ string: String) -> Bool {
       return string.range(of: "/?\(self.rawValue)", options: .regularExpression, range: nil, locale: nil) != nil
     }
@@ -568,6 +571,10 @@ public struct InternalURL {
     // Error pages can be nested in session restore URLs, and session restore handler will forward them to the error page handler
     let path = url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl) ? extractedUrlParam?.path : url.path
     return InternalURL.Path.errorpage.matches(path ?? "")
+  }
+  
+  public var isBlockedPage: Bool {
+    return InternalURL.Path.blocked.matches(url.path)
   }
   
   public var isReaderModePage: Bool {

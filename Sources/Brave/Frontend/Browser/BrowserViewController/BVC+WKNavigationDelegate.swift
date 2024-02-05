@@ -356,6 +356,27 @@ extension BrowserViewController: WKNavigationDelegate {
     if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
       if navigationAction.targetFrame?.isMainFrame == true {
         tab?.updateUserAgent(webView, newURL: requestURL)
+        
+        if let etldP1 = requestURL.baseDomain, tab?.proceedAnywaysDomainList.contains(etldP1) == false {
+          let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+          
+          let shouldBlock = await AdBlockStats.shared.shouldBlock(
+            requestURL: requestURL, sourceURL: requestURL, resourceType: .document,
+            isAggressiveMode: domain.blockAdsAndTrackingLevel.isAggressive
+          )
+          
+          if shouldBlock, let escapingURL = requestURL.absoluteString.escape() {
+            var components = URLComponents(string: InternalURL.baseUrl)
+            components?.path = "/\(InternalURL.Path.blocked.rawValue)"
+            components?.queryItems = [URLQueryItem(name: "url", value: escapingURL)]
+            
+            if let url = components?.url {
+              let request = PrivilegedRequest(url: url) as URLRequest
+              tab?.loadRequest(request)
+              return (.cancel, preferences)
+            }
+          }
+        }
       }
 
       pendingRequests[requestURL.absoluteString] = navigationAction.request

@@ -35,6 +35,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
     let allowedInternalResources = [
       // interstitial
       "/interstitial-style/InterstitialStyles.css": "text/css",
+      "/interstitial-style/BlockedDomain.css": "text/css",
       "/interstitial-style/NetworkError.css": "text/css",
       "/interstitial-style/CertificateError.css": "text/css",
       "/interstitial-style/Web3Domain.css": "text/css",
@@ -49,6 +50,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       "/interstitial-icon/Carret.png": "image/png",
       "/interstitial-icon/BraveIPFS.svg": "image/svg+xml",
       "/interstitial-icon/IPFSBackground.svg": "image/svg+xml",
+      "/interstitial-icon/warning-triangle-outline.svg": "image/svg+xml",
 
       // readermode
       "/\(InternalURL.Path.readermode.rawValue)/styles/Reader.css": "text/css",

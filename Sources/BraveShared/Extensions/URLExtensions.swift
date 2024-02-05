@@ -34,7 +34,7 @@ extension URL {
       switch internalURL.urlType {
       case .errorPage:
         return internalURL.originalURLFromErrorPage
-      case .web3Page, .sessionRestorePage, .readerModePage, .aboutHomePage:
+      case .web3Page, .sessionRestorePage, .readerModePage, .aboutHomePage, .blockedPage:
         return internalURL.extractedUrlParam
       default:
         return nil
@@ -48,6 +48,7 @@ extension URL {
 extension InternalURL {
   
   enum URLType {
+    case blockedPage
     case sessionRestorePage
     case errorPage
     case readerModePage
@@ -57,6 +58,10 @@ extension InternalURL {
   }
   
   var urlType: URLType {
+    if isBlockedPage {
+      return .blockedPage
+    }
+    
     if isErrorPage {
       return .errorPage
     }

@@ -11,6 +11,7 @@ extension AdblockEngine {
     case xmlhttprequest
     case script
     case image
+    case document
     case subdocument
   }
   
