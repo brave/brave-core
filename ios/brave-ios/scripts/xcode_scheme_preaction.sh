@@ -9,6 +9,21 @@
 # $ACTION is empty for Xcode builds unfortunately
 # $RUN_CLANG_STATIC_ANALYZER is NO for builds, YES for cleans
 if [[ $RUN_CLANG_STATIC_ANALYZER = "NO" ]]; then
+  if ! command -v npm &> /dev/null; then
+    # Fixup PATH for users who didn't install node directly or use nvm
+    if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+      . "$HOME/.nvm/nvm.sh"
+    else
+      if [[ -x "$(command -v brew)" ]]; then
+        if [[ -s "$(brew --prefix nvm)/nvm.sh" ]]; then
+          . "$(brew --prefix nvm)/nvm.sh"
+        else
+          # Fixup PATH for brew users
+          export PATH="$PATH:$(brew --prefix)/bin"
+        fi
+      fi
+    fi
+  fi
   # Do not inject Xcode build configs into the GN build
   env -i PATH="$PATH" python3 \
     "${PROJECT_DIR}/../scripts/scheme_preaction.py" \
