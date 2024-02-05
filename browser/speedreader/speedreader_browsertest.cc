@@ -66,12 +66,12 @@
 
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
-const char kTestPageReadable[] = "/articles/guardian.html";
+const char kTestPageReadable[] = "/speedreader/article/guardian.html";
 const char kTestEsPageReadable[] = "/speedreader/article/es.html";
 const char kTestPageReadableOnUnreadablePath[] =
     "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
-const char kTestXml[] = "/articles/rss.xml";
+const char kTestXml[] = "/speedreader/article/rss.xml";
 const char kTestTtsSimple[] = "/speedreader/article/simple.html";
 const char kTestTtsTags[] = "/speedreader/article/tags.html";
 const char kTestTtsStructure[] = "/speedreader/article/structure.html";
