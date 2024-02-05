@@ -39,6 +39,10 @@
                         android:id="@+id/brave_rewards_onboarding_layout_id"
                         layout="@layout/brave_rewards_onboarding_layout"/>
 
+                    <include
+                        android:id="@+id/brave_rewards_solana_eligible_ui_layout_id"
+                        layout="@layout/rewards_solana_eligible_layout"/>
+
                     <FrameLayout
                         android:id="@+id/panel_shadow"
                         android:layout_width="match_parent"
