@@ -21,6 +21,16 @@ function PageContextToggle() {
     context.updateShouldSendPageContents(e.detail.checked)
   }
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setShowTooltip(true)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setShowTooltip(false)
+  }
+
   return (
     <div className={styles.box}>
       <Toggle
@@ -47,8 +57,8 @@ function PageContextToggle() {
             <div
               onMouseOver={() => setShowTooltip(true)}
               onMouseOut={() => setShowTooltip(false)}
-              onTouchStart={() => setShowTooltip(true)}
-              onTouchEnd={() => setShowTooltip(false)}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
               onFocus={() => setShowTooltip(true)}
               onBlur={() => setShowTooltip(false)}
             >
