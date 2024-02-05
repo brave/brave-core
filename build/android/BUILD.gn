@@ -212,7 +212,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
     "//brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge.java",
-    "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoCMHelper.java",
+    "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",
