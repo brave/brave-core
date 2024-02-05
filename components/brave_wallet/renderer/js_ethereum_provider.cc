@@ -31,6 +31,7 @@
 #include "third_party/abseil-cpp/absl/base/macros.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -151,7 +152,9 @@ bool JSEthereumProvider::EnsureConnected() {
 void JSEthereumProvider::Install(bool install_ethereum_provider,
                                  bool allow_overwrite_window_ethereum_provider,
                                  content::RenderFrame* render_frame) {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame);
+  v8::Isolate* isolate =
+      render_frame->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame->GetWebFrame()->MainWorldScriptContext();
@@ -597,7 +600,8 @@ void JSEthereumProvider::FireEvent(const std::string& event,
   base::Value event_name(event);
   base::ValueView args_list[] = {event_name, event_args};
 
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame()->GetWebFrame()->MainWorldScriptContext();
@@ -670,7 +674,9 @@ void JSEthereumProvider::OnProviderRequested() {
 }
 
 void JSEthereumProvider::BindRequestProviderListener() {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame());
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame()->GetWebFrame()->MainWorldScriptContext();
@@ -691,7 +697,9 @@ void JSEthereumProvider::BindRequestProviderListener() {
 }
 
 void JSEthereumProvider::AnnounceProvider() {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame());
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame()->GetWebFrame()->MainWorldScriptContext();

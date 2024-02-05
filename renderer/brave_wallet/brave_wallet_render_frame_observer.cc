@@ -13,6 +13,7 @@
 #include "build/buildflag.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
@@ -73,7 +74,9 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     return;
   }
 
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame());
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   auto* web_frame = render_frame()->GetWebFrame();
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
