@@ -28,7 +28,7 @@ interface Props {
   searchAutoFocus?: boolean
   searchValue?: string
   networkSelectorDisabled?: boolean
-  useSwapNetworks?: boolean
+  networkListSubset?: BraveWallet.NetworkInfo[]
 }
 
 export const NetworkFilterWithSearch = (props: Props) => {
@@ -42,7 +42,7 @@ export const NetworkFilterWithSearch = (props: Props) => {
     searchAutoFocus,
     searchValue,
     networkSelectorDisabled,
-    useSwapNetworks
+    networkListSubset
   } = props
 
   return (
@@ -63,7 +63,7 @@ export const NetworkFilterWithSearch = (props: Props) => {
         showNetworkDropDown={showNetworkDropDown}
         useWithSearch={true}
         customNetwork={AllNetworksOption}
-        useSwapNetworks={useSwapNetworks}
+        networkListSubset={networkListSubset}
         disabled={networkSelectorDisabled}
         reduceDisplayName={true}
       />
