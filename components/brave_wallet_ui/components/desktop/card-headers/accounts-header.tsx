@@ -23,7 +23,7 @@ import { AccountsMenu } from '../wallet-menus/accounts-menu'
 // Styled Components
 import {
   HeaderTitle,
-  CircleButton,
+  MenuButton,
   ButtonIcon,
   MenuWrapper
 } from './shared-card-headers.style'
@@ -56,11 +56,11 @@ export const AccountsHeader = () => {
     >
       <HeaderTitle>{getLocale('braveWalletTopNavAccounts')}</HeaderTitle>
       <MenuWrapper ref={portfolioOverviewMenuRef}>
-        <CircleButton
+        <MenuButton
           onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}
         >
           <ButtonIcon name='plus-add' />
-        </CircleButton>
+        </MenuButton>
         {showPortfolioOverviewMenu && <AccountsMenu />}
       </MenuWrapper>
     </Row>
