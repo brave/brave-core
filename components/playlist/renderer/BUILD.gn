@@ -11,8 +11,6 @@ assert(enable_playlist)
 # https://github.com/brave/brave-browser/issues/27764
 static_library("renderer") {
   sources = [
-    "playlist_js_handler.cc",
-    "playlist_js_handler.h",
     "playlist_render_frame_observer.cc",
     "playlist_render_frame_observer.h",
   ]

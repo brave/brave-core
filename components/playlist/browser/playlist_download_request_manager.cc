@@ -172,8 +172,10 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
       return;
     }
 
-    DVLOG(2) << "Try detecting media files from existing web contents: "
-             << web_contents_->GetVisibleURL();
+    if (web_contents_) {
+      DVLOG(2) << "Try detecting media files from existing web contents: "
+               << web_contents_->GetVisibleURL();
+    }
     requested_url_ = weak_contents->GetVisibleURL();
     GetMedia(weak_contents.get());
   }
