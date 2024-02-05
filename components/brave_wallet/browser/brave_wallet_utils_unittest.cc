@@ -837,7 +837,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   EXPECT_EQ(GURL("https://mainnet.lightwalletd.com:9067/"),
             GetNetworkURL(&prefs, mojom::kZCashMainnet, mojom::CoinType::ZEC));
   auto custom_zec_network =
-      GetKnownChain(&prefs, mojom::kZCashTestnet, mojom::CoinType::ZEC);
+      GetKnownChain(&prefs, mojom::kZCashMainnet, mojom::CoinType::ZEC);
   custom_zec_network->rpc_endpoints.emplace_back("https://test-zec.com");
   custom_zec_network->active_rpc_endpoint_index = 1;
   UpdateCustomNetworks(&prefs, {NetworkInfoToValue(*custom_zec_network)},
