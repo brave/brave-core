@@ -162,13 +162,18 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
       base::BindOnce([](base::Value value) { return ParseFeedItems(value); },
                      std::move(result.value_body())),
       base::BindOnce(
-          [](std::string locale, std::string etag,
-             FetchFeedSourceCallback callback,
+          [](base::WeakPtr<FeedFetcher> fetcher, std::string locale,
+             std::string etag, FetchFeedSourceCallback callback,
              std::vector<mojom::FeedItemPtr> items) {
+            // If the fetcher was destroyed, don't run the callback.
+            if (!fetcher) {
+              return;
+            }
             std::move(callback).Run(
                 {std::move(locale), std::move(etag), std::move(items)});
           },
-          std::move(locale), std::move(etag), std::move(callback)));
+          weak_ptr_factory_.GetWeakPtr(), std::move(locale), std::move(etag),
+          std::move(callback)));
 }
 
 void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
@@ -222,11 +227,16 @@ void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
           },
           std::move(results)),
       base::BindOnce(
-          [](FetchFeedCallback callback, std::tuple<FeedItems, ETags> result) {
+          [](base::WeakPtr<FeedFetcher> fetcher, FetchFeedCallback callback,
+             std::tuple<FeedItems, ETags> result) {
+            // If we've been destroyed, don't run the callback.
+            if (!fetcher) {
+              return;
+            }
             std::move(callback).Run(std::move(std::get<0>(result)),
                                     std::move(std::get<1>(result)));
           },
-          std::move(callback)));
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void FeedFetcher::IsUpdateAvailable(ETags etags,
