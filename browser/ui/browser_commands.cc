@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
+#include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -517,6 +518,13 @@ void ScrollTabToTop(Browser* browser) {
 void ScrollTabToBottom(Browser* browser) {
   auto* contents = browser->tab_strip_model()->GetActiveWebContents();
   contents->ScrollToBottomOfDocument();
+}
+
+void ToggleAllBookmarksButtonVisibility(Browser* browser) {
+  auto* prefs = browser->profile()->GetPrefs();
+  prefs->SetBoolean(
+      brave::bookmarks::prefs::kShowAllBookmarksButton,
+      !prefs->GetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton));
 }
 
 }  // namespace brave
