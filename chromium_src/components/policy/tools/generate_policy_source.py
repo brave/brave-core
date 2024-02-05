@@ -1,13 +1,17 @@
-#!/usr/bin/env python
-
-# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/. */
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import override_utils
 
 CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\BraveSoftware\\\\Brave'
 
+@override_utils.override_function(globals())
+def _LoadJSONFile(orig_func, json_file):
+  json = orig_func(json_file)
+  AddBravePolicies(json)
+  return json
 
 def AddBravePolicies(template_file_contents):
     highest_id = template_file_contents['highest_id_currently_used']
