@@ -16,6 +16,7 @@
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "v8/include/v8.h"
@@ -102,7 +103,8 @@ PlaylistRenderFrameObserver::GetMediaHandler() {
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
   if (media_source_api_suppressor_) {
-    v8::Isolate* isolate = blink::MainThreadIsolate();
+    v8::Isolate* isolate =
+        render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
     v8::Isolate::Scope isolate_scope(isolate);
     v8::HandleScope handle_scope(isolate);
 
@@ -113,7 +115,8 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentEnd() {
   if (media_detector_) {
-    v8::Isolate* isolate = blink::MainThreadIsolate();
+    v8::Isolate* isolate =
+        render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
     v8::Isolate::Scope isolate_scope(isolate);
     v8::HandleScope handle_scope(isolate);
 
