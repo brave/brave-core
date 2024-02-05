@@ -162,7 +162,8 @@ class TorPrefObserver : public BooleanPrefMember {
   SEL action = [item action];
   if (action == @selector(commandFromDock:) &&
       tag == IDC_NEW_OFFTHERECORD_WINDOW_TOR) {
-    return !brave::IsTorDisabledForProfile([self lastProfileIfLoaded]) &&
+    auto* profile = [self lastProfileIfLoaded];
+    return profile && !brave::IsTorDisabledForProfile(profile) &&
            [self canOpenNewBrowser];
   }
 
