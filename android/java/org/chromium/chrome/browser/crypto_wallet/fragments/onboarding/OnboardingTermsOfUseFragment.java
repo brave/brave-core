@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,8 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.util.TabUtils;
 
 /** Onboarding fragment showing terms and conditions to accept before using Brave Wallet. */
 public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
@@ -61,6 +65,14 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
 
         mTermsOfUseCheckBox = view.findViewById(R.id.terms_of_use_check_box);
         mTermsOfUseCheckBox.setOnCheckedChangeListener(this);
+
+        Spanned termsOfUseSpanned = Utils.createSpanForSurroundedPhrase(
+                requireContext(), R.string.accept_terms_of_use, (v) -> {
+                    TabUtils.openUrlInNewTab(false, Utils.BRAVE_TERMS_OF_USE_URL);
+                    TabUtils.bringChromeTabbedActivityToTheTop(requireActivity());
+                });
+        mTermsOfUseCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
+        mTermsOfUseCheckBox.setText(termsOfUseSpanned);
 
         mContinueButton = view.findViewById(R.id.continue_button);
         mContinueButton.setOnClickListener(

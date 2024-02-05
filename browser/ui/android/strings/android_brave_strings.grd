@@ -2034,7 +2034,7 @@ Are you sure you want to do this?
       I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.
     </message>
     <message name="IDS_ACCEPT_TERMS_OF_USE" desc="Brave Wallet terms of use text">
-      I have read and agree to the Terms of Use
+      I have read and agree to the <ph name="CLICK_START">%1$s</ph>Terms of Use<ph name="CLICK_END">%2$s</ph>.
     </message>
     <message name="IDS_YOUR_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Your recovery phrase

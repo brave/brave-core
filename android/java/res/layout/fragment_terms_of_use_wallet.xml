@@ -73,7 +73,6 @@
             android:layout_below="@+id/self_custody_check_box"
             android:layout_alignParentStart="true"
             android:paddingStart="8dp"
-            android:text="@string/accept_terms_of_use"
             android:textColor="@color/wallet_text_color"
             android:lineSpacingExtra="4sp"
             android:textSize="14sp"/>
