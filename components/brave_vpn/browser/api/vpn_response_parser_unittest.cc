@@ -32,7 +32,7 @@ TEST(VpnResponseParserUnitTest, ParseSubscriberCredentialFromJson) {
                                                            &error_value)
                   .empty());
   EXPECT_TRUE(error_value.empty());
-  EXPECT_TRUE(brave_vpn::ParseSubscriberCredentialFromJson(ParseJson(R"({,})"),
+  EXPECT_TRUE(brave_vpn::ParseSubscriberCredentialFromJson(ParseJson(R"({})"),
                                                            &error_value)
                   .empty());
   EXPECT_TRUE(error_value.empty());
