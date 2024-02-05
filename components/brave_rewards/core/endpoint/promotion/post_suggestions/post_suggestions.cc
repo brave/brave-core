@@ -46,8 +46,8 @@ std::string PostSuggestions::GeneratePayload(
   std::string data_encoded;
   base::Base64Encode(data_json, &data_encoded);
 
-  base::Value::List credentials =
-      credential::GenerateCredentials(redeem.token_list, data_encoded);
+  base::Value::List credentials = credential::GenerateCredentials(
+      *engine_, redeem.token_list, data_encoded);
 
   const std::string data_key = is_sku ? "vote" : "suggestion";
   base::Value::Dict payload;

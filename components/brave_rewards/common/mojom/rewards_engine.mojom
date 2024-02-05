@@ -9,6 +9,14 @@ import "brave/components/brave_rewards/common/mojom/rewards_database.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
+struct RewardsEngineOptions {
+  Environment environment = Environment.kProduction;
+  bool is_testing = false;
+  int32 state_migration_target_version_for_testing = -1;
+  int32 reconcile_interval = 0;
+  int32 retry_interval = 0;
+};
+
 interface RewardsEngine {
   Initialize() => (Result result);
 

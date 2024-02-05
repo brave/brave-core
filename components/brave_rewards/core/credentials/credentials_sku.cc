@@ -307,7 +307,7 @@ void CredentialsSKU::Unblind(ResultCallback callback,
   }
 
   std::vector<std::string> unblinded_encoded_creds;
-  if (is_testing) {
+  if (engine_->options().is_testing) {
     unblinded_encoded_creds = UnBlindCredsMock(*creds);
   } else {
     auto result = UnBlindCreds(*creds);

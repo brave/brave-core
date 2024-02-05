@@ -134,7 +134,7 @@ void Contribution::Initialize() {
 }
 
 void Contribution::CheckContributionQueue() {
-  base::TimeDelta delay = is_testing
+  base::TimeDelta delay = engine_->options().is_testing
                               ? base::Seconds(1)
                               : util::GetRandomizedDelay(base::Seconds(15));
 
@@ -773,8 +773,8 @@ void Contribution::SetRetryTimer(const std::string& contribution_id,
     return;
   }
 
-  if (retry_interval) {
-    delay = base::Seconds(retry_interval);
+  if (engine_->options().retry_interval) {
+    delay = base::Seconds(engine_->options().retry_interval);
   }
 
   BLOG(1, "Timer for contribution retry (" << contribution_id

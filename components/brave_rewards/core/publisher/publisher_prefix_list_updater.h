@@ -41,6 +41,13 @@ class PublisherPrefixListUpdater {
   // Cancels the auto updater
   void StopAutoUpdate();
 
+  static constexpr uint64_t kRefreshInterval =
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+      7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+#else
+      3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+#endif
+
  private:
   void StartFetchTimer(const base::Location& posted_from,
                        base::TimeDelta delay);

@@ -31,10 +31,6 @@ namespace brave_rewards::internal {
 namespace util {
 
 std::string GenerateRandomHexString() {
-  if (is_testing) {
-    return "123456789";
-  }
-
   const size_t kLength = 32;
   uint8_t bytes[kLength];
   crypto::RandBytes(bytes, sizeof(bytes));

@@ -32,7 +32,9 @@ ConnectExternalWallet::ConnectExternalWallet(RewardsEngineImpl& engine)
 ConnectExternalWallet::~ConnectExternalWallet() = default;
 
 std::string ConnectExternalWallet::GenerateLoginURL() {
-  oauth_info_.one_time_string = util::GenerateRandomHexString();
+  oauth_info_.one_time_string = engine_->options().is_testing
+                                    ? "123456789"
+                                    : util::GenerateRandomHexString();
   oauth_info_.code_verifier = util::GeneratePKCECodeVerifier();
   return GetOAuthLoginURL();
 }

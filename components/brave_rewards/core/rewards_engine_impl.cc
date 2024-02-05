@@ -38,8 +38,10 @@
 namespace brave_rewards::internal {
 
 RewardsEngineImpl::RewardsEngineImpl(
-    mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote)
+    mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
+    const mojom::RewardsEngineOptions& options)
     : client_(std::move(client_remote)),
+      options_(options),
       helpers_(std::make_unique<EnvironmentConfig>(*this),
                std::make_unique<InitializationManager>(*this),
                std::make_unique<URLLoader>(*this),
@@ -233,7 +235,7 @@ void RewardsEngineImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
   // When performing automated testing, ignore changes in browser window
   // activation. When running tests in parallel, activation changes can
   // interfere with AC calculations on some platforms.
-  if (is_testing) {
+  if (options().is_testing) {
     return;
   }
 
@@ -252,7 +254,7 @@ void RewardsEngineImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
   // When performing automated testing, ignore changes in browser window
   // activation. When running tests in parallel, activation changes can
   // interfere with AC calculations on some platforms.
-  if (is_testing) {
+  if (options().is_testing) {
     return;
   }
 
@@ -299,7 +301,7 @@ void RewardsEngineImpl::FetchPromotions(FetchPromotionsCallback callback) {
   // the interface method, and all calling code will be removed when the
   // "grandfathered" vBAT state is removed from the codebase. Browser tests that
   // assume vBAT contributions will also need to be modified.
-  if (!is_testing) {
+  if (!options().is_testing) {
     std::move(callback).Run(mojom::Result::OK, {});
     return;
   }

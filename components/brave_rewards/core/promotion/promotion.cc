@@ -101,7 +101,7 @@ void Promotion::Fetch(FetchPromotionsCallback callback) {
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
   auto env = engine_->Get<EnvironmentConfig>().current_environment();
-  if (!is_testing && env != mojom::Environment::kStaging) {
+  if (!engine_->options().is_testing && env != mojom::Environment::kStaging) {
     const uint64_t last_promo_stamp =
         engine_->state()->GetPromotionLastFetchStamp();
     const uint64_t now = util::GetCurrentTimeStamp();

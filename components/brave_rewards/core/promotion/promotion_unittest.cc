@@ -120,14 +120,14 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   EXPECT_CALL(callback, Run).Times(2);
 
   // to avoid fulfilling the fetch request from database in Promotion::Fetch()
-  is_testing = true;
+  mock_engine_impl_.GetOptionsForTesting().is_testing = true;
   promotion_.Fetch(callback.Get());
   task_environment_.RunUntilIdle();
 
   inserted = true;
   promotion_.Fetch(callback.Get());
   task_environment_.RunUntilIdle();
-  is_testing = false;
+  mock_engine_impl_.GetOptionsForTesting().is_testing = false;
 }
 
 }  // namespace brave_rewards::internal::promotion

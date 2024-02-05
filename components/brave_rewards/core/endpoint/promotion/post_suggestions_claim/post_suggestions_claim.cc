@@ -42,8 +42,8 @@ std::string PostSuggestionsClaim::GeneratePayload(
     return "";
   }
 
-  base::Value::List credentials =
-      credential::GenerateCredentials(redeem.token_list, wallet->payment_id);
+  base::Value::List credentials = credential::GenerateCredentials(
+      *engine_, redeem.token_list, wallet->payment_id);
 
   base::Value::Dict body;
   body.Set("paymentId", wallet->payment_id);

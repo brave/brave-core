@@ -77,9 +77,10 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
 
   auto transaction = mojom::DBTransaction::New();
   int migrated_version = table_version;
-  const uint32_t target_version = is_testing && test_target_version_
-                                      ? test_target_version_
-                                      : database::GetCurrentVersion();
+  const uint32_t target_version =
+      engine_->options().is_testing && test_target_version_
+          ? test_target_version_
+          : database::GetCurrentVersion();
 
   if (target_version == table_version) {
     return std::move(callback).Run(mojom::Result::OK);
