@@ -352,7 +352,7 @@ extension BrowserViewController {
     }
     
 #if canImport(BraveTalk)
-    if braveTalkJitsiCoordinator.isCallActive {
+    if braveTalkJitsiCoordinator.isCallActive && !braveTalkJitsiCoordinator.isBraveTalkInPiPMode {
       keyCommandList.append(contentsOf: braveTalkKeyCommands)
     }
 #endif

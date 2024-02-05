@@ -49,9 +49,9 @@ import JitsiMeetSDK
   
   private var pipViewCoordinator: PiPViewCoordinator?
   private var jitsiMeetView: JitsiMeetView?
-  private var isBraveTalkInPiPMode: Bool = false
   private var delegate: JitsiDelegate?
   private var isMuted: Bool = false
+  public private(set) var isBraveTalkInPiPMode: Bool = false
   public private(set) var isCallActive: Bool = false
   
   public func toggleMute() {
@@ -65,7 +65,7 @@ import JitsiMeetSDK
   }
   
   public func handleResponderPresses(presses: Set<UIPress>, phase: KeyboardPressPhase) {
-    guard Self.isIntegrationEnabled, isCallActive else { return }
+    guard Self.isIntegrationEnabled, isCallActive, !isBraveTalkInPiPMode else { return }
     let isSpacebarPressed = presses.contains(where: { $0.key?.keyCode == .keyboardSpacebar })
     switch phase {
     case .began:
@@ -130,7 +130,11 @@ import JitsiMeetSDK
         }
       },
       enterPictureInPicture: { [weak self] in
+        self?.isBraveTalkInPiPMode = true
         self?.pipViewCoordinator?.enterPictureInPicture()
+      },
+      exitedPictureInPicture: { [weak self] in
+        self?.isBraveTalkInPiPMode = false
       },
       audioIsMuted: { [weak self] isMuted in
         self?.isMuted = isMuted
@@ -150,6 +154,7 @@ import JitsiMeetSDK
     jitsiMeetView?.delegate = delegate
     
     pipViewCoordinator = PiPViewCoordinator(withView: jitsiMeetView!)
+    pipViewCoordinator?.delegate = delegate
     pipViewCoordinator?.configureAsStickyView()
     
     jitsiMeetView?.join(.braveTalkOptions(room: room, token: token))
@@ -164,11 +169,12 @@ import JitsiMeetSDK
   }
 }
 
-private class JitsiDelegate: NSObject, JitsiMeetViewDelegate {
+private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinatorDelegate {
   var conferenceWillJoin: () -> Void
   var conferenceJoined: () -> Void
   var conferenceTerminated: () -> Void
   var enterPiP: () -> Void
+  var exitedPiP: () -> Void
   var audioIsMuted: (Bool) -> Void
   var readyToClose: () -> Void
   
@@ -177,6 +183,7 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate {
     conferenceJoined: @escaping () -> Void,
     conferenceTerminated: @escaping () -> Void,
     enterPictureInPicture: @escaping () -> Void,
+    exitedPictureInPicture: @escaping () -> Void,
     audioIsMuted: @escaping (Bool) -> Void,
     readyToClose: @escaping () -> Void
   ) {
@@ -184,6 +191,7 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate {
     self.conferenceJoined = conferenceJoined
     self.conferenceTerminated = conferenceTerminated
     self.enterPiP = enterPictureInPicture
+    self.exitedPiP = exitedPictureInPicture
     self.audioIsMuted = audioIsMuted
     self.readyToClose = readyToClose
   }
@@ -205,6 +213,11 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate {
   
   func enterPicture(inPicture data: [AnyHashable: Any]!) {
     enterPiP()
+  }
+  
+  func exitPictureInPicture() {
+    // Actually happens after exiting PiP, unlike entering PiP
+    exitedPiP()
   }
   
   func audioMutedChanged(_ data: [AnyHashable: Any]!) {
