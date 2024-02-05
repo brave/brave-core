@@ -14,6 +14,30 @@ import os.log
 
 extension BrowserViewController {
   
+  func recordDefaultBrowserLikelyhoodP3A(openedHTTPLink: Bool = false) {
+    let isInstalledInThePastWeek: Bool = {
+      guard let installDate = Preferences.DAU.installationDate.value else {
+        // Pref is removed after 14 days
+        return false
+      }
+      return Date.now.timeIntervalSince(installDate) <= 7.days
+    }()
+    enum Answer: Int, CaseIterable {
+      case notEnoughInfo = 0
+      case no = 1
+      case yes = 2
+    }
+    let isLikelyDefault = DefaultBrowserHelper.isBraveLikelyDefaultBrowser()
+    let answer: Answer = {
+      if !openedHTTPLink, isInstalledInThePastWeek {
+        // Hasn't been at least 7 days
+        return .notEnoughInfo
+      }
+      return isLikelyDefault ? .yes : .no
+    }()
+    UmaHistogramEnumeration("Brave.IOS.IsLikelyDefault", sample: answer)
+  }
+  
   func maybeRecordInitialShieldsP3A() {
     if Preferences.Shields.initialP3AStateReported.value { return }
     defer { Preferences.Shields.initialP3AStateReported.value = true }

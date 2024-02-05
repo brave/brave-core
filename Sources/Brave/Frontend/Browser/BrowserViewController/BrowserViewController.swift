@@ -575,6 +575,7 @@ public class BrowserViewController: UIViewController {
     recordGeneralBottomBarLocationP3A()
     PlaylistP3A.recordHistogram()
     recordAdsUsageType()
+    recordDefaultBrowserLikelyhoodP3A()
     
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)
@@ -3156,6 +3157,9 @@ extension BrowserViewController {
     // in case an external url is triggered
     if case .url(let navigatedURL, _) = path {
       if navigatedURL?.isWebPage(includeDataURIs: false) == true {
+        Preferences.General.lastHTTPURLOpenedDate.value = .now
+        recordDefaultBrowserLikelyhoodP3A(openedHTTPLink: true)
+        
         Preferences.General.defaultBrowserCalloutDismissed.value = true
         Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value = true
         

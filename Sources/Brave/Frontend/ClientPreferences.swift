@@ -84,6 +84,9 @@ extension Preferences {
     static var defaultPageZoomLevel = Option<Double>(key: "general.default-page-zoom-level", default: 1.0)
     
     static let isUsingBottomBar = Option<Bool>(key: "general.bottom-bar", default: false)
+    
+    /// The last time the app opened and handed a http or https url
+    static let lastHTTPURLOpenedDate = Option<Date?>(key: "general.last-url-opened-date", default: nil)
   }
 
   final public class Search {
