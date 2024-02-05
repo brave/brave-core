@@ -111,6 +111,8 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
   void FetchPendingRequest();
 
   // content::WebContentsObserver overrides:
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
 

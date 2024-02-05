@@ -5,6 +5,7 @@
 
 module playlist.mojom;
 
+import "mojo/public/mojom/base/shared_memory.mojom";
 import "url/mojom/url.mojom";
 
 // TODO(sko) This should be removed
@@ -195,4 +196,8 @@ interface PlaylistStreamingObserver {
   OnResponseStarted(string url, int64 content_length);
   OnDataReceived(array<uint8> data_received);
   OnDataCompleted();
+};
+
+interface OnLoadScriptInjector {
+  AddOnLoadScript(mojo_base.mojom.ReadOnlySharedMemoryRegion script);
 };

@@ -10,6 +10,8 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
+#include "base/memory/read_only_shared_memory_region.h"
+#include "base/memory/writable_shared_memory_region.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -20,7 +22,9 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/isolated_world_ids.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -183,6 +187,28 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
 
 bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
   return in_progress_urls_count_ == 0;
+}
+
+void PlaylistDownloadRequestManager::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  const std::string script =
+      media_detector_component_manager_->GetMediaDetectorScript(
+          navigation_handle->GetWebContents()->GetVisibleURL());
+  base::WritableSharedMemoryRegion script_writable_shared_memory =
+      base::WritableSharedMemoryRegion::Create(script.size());
+  std::memcpy(script_writable_shared_memory.Map().memory(), script.data(),
+              script.size());
+
+  base::ReadOnlySharedMemoryRegion script_readonly_shared_memory =
+      base::WritableSharedMemoryRegion::ConvertToReadOnly(
+          std::move(script_writable_shared_memory));
+  CHECK(script_readonly_shared_memory.IsValid());
+
+  mojo::AssociatedRemote<mojom::OnLoadScriptInjector> injector;
+  navigation_handle->GetRenderFrameHost()
+      ->GetRemoteAssociatedInterfaces()
+      ->GetInterface(&injector);
+  injector->AddOnLoadScript(std::move(script_readonly_shared_memory));
 }
 
 void PlaylistDownloadRequestManager::DidFinishLoad(

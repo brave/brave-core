@@ -12,23 +12,36 @@
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
+#include "mojo/public/cpp/bindings/associated_receiver_set.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace playlist {
 
 class PlaylistRenderFrameObserver final
     : public content::RenderFrameObserver,
-      public content::RenderFrameObserverTracker<PlaylistRenderFrameObserver> {
+      public content::RenderFrameObserverTracker<PlaylistRenderFrameObserver>,
+      public mojom::OnLoadScriptInjector {
  public:
   PlaylistRenderFrameObserver(content::RenderFrame* render_frame,
                               int32_t isolated_world_id);
 
+  PlaylistRenderFrameObserver(const PlaylistRenderFrameObserver&) = delete;
+  PlaylistRenderFrameObserver& operator=(const PlaylistRenderFrameObserver&) = delete;
+
+  void BindToReceiver(
+      mojo::PendingAssociatedReceiver<mojom::OnLoadScriptInjector> receiver);
+
   void RunScriptsAtDocumentStart();
 
- private:
   // RenderFrameObserver:
-  ~PlaylistRenderFrameObserver() override;
   void OnDestruct() override;
+
+  // mojom::OnLoadScriptInjector
+  void AddOnLoadScript(base::ReadOnlySharedMemoryRegion script) override;
+
+ private:
+  ~PlaylistRenderFrameObserver() override;
 
   bool EnsureConnectedToMediaHandler();
   void OnMediaHandlerDisconnect();
@@ -37,6 +50,9 @@ class PlaylistRenderFrameObserver final
   void InstallMediaDetector();
 
   void OnMediaUpdated(const std::string& page_url);
+
+  std::vector<base::ReadOnlySharedMemoryRegion> on_load_scripts_;
+  mojo::AssociatedReceiverSet<mojom::OnLoadScriptInjector> receivers_;
 
   int32_t isolated_world_id_;
   mojo::Remote<playlist::mojom::PlaylistMediaHandler> media_handler_;
