@@ -103,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|top"
                 android:contentDescription="@null"
+                app:tint="@color/rewards_estimated_earning_close_color"
                 app:srcCompat="@drawable/btn_close" />
 
         </FrameLayout>
