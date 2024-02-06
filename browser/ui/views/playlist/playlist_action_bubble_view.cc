@@ -52,7 +52,7 @@ void ShowBubble(std::unique_ptr<ActionBubbleView> bubble) {
 }
 
 // LoadingSpinner represents the loading animation for the 'Add bubble'
-class LoadingSpinner : public views::View, gfx::AnimationDelegate {
+class LoadingSpinner : public views::View, public gfx::AnimationDelegate {
  public:
   METADATA_HEADER(LoadingSpinner);
 
