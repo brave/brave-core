@@ -103,6 +103,14 @@ void BraveContentRendererClient::
     blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
   }
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
+
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+  if (base::FeatureList::IsEnabled(
+          blink::features::kMiddleButtonClickAutoscroll)) {
+    blink::WebRuntimeFeatures::EnableFeatureFromString("MiddleClickAutoscroll",
+                                                       true);
+  }
+#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;

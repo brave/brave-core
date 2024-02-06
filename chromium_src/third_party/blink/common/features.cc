@@ -104,6 +104,12 @@ BASE_FEATURE(kRestrictEventSourcePool,
 #endif
 );
 
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+BASE_FEATURE(kMiddleButtonClickAutoscroll,
+             "MiddelButtonClickAutoscroll",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+
 bool IsPrerender2Enabled() {
   return false;
 }
