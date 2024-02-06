@@ -71,19 +71,6 @@ public class NTPDataSource {
   /// This is reset on each launch, so `3` can be shown again if app is removed from memory.
   /// This number _must_ be less than the number of backgrounds!
   private static let numberOfDuplicateAvoidance = 6
-  /// The number of images in a sponsorship rotation.
-  ///     i.e. This number will be repeated before a new sponsorship is shown.
-  ///          If sposnored image is shown as Nth image, this number of normal images will be shown before Nth is reached again.
-  private static let sponsorshipShowRate = 4
-  /// On this value, a sponsored image will be shown.
-  private static let sponsorshipShowValue = 2
-
-  /// The counter that indicates what background should be shown, this is used to determine when a new
-  ///     sponsored image should be shown. (`1` means, first image in cycle N, should be shown).
-  /// One example, if rotation is every 4 images, but sponsored image should be shown as 2nd image, then this will
-  ///     be reset back to `1` after reaching `4`, and when the value is `2`, a sponsored image will be shown.
-  /// This can be easily converted to a preference to persist
-  private var backgroundRotationCounter = 1
 
   let service: NTPBackgroundImagesService
 
@@ -133,7 +120,7 @@ public class NTPDataSource {
       if let sponsor = service.sponsoredImageData {
         let attemptSponsored =
           Preferences.NewTabPage.backgroundSponsoredImages.value
-          && backgroundRotationCounter == NTPDataSource.sponsorshipShowValue
+          &&  Preferences.NewTabPage.backgroundRotationCounter.value == service.initialCountToBrandedWallpaper
           && !privateBrowsingManager.isPrivateBrowsing
 
         if attemptSponsored {
@@ -186,9 +173,9 @@ public class NTPDataSource {
     }()
 
     // Force back to `0` if at end
-    backgroundRotationCounter %= NTPDataSource.sponsorshipShowRate
+    Preferences.NewTabPage.backgroundRotationCounter.value %= service.countToBrandedWallpaper
     // Increment regardless, this is a counter, not an index, so smallest should be `1`
-    backgroundRotationCounter += 1
+    Preferences.NewTabPage.backgroundRotationCounter.value += 1
 
     guard let bgWithIndex = backgroundSet[safe: backgroundIndex] else { return nil }
     return bgWithIndex
