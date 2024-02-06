@@ -663,7 +663,7 @@ class SettingsViewController: TableViewController {
           text: Strings.Privacy.browserLock,
           detailText: Strings.Privacy.browserLockDescription,
           image: UIImage(braveSystemNamed: "leo.biometric.login"),
-          accessory: .view(SwitchAccessoryView(initialValue: Preferences.Privacy.lockWithPasscode.value, valueChange: { isOn in
+          accessory: .view(SwitchAccessoryView(initialValue: Preferences.Privacy.lockWithPasscode.value, valueChange: { [unowned self] isOn in
             if isOn {
               Preferences.Privacy.lockWithPasscode.value = isOn
             } else {
