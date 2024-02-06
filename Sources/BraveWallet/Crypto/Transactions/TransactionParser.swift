@@ -22,6 +22,11 @@ enum TransactionParser {
     // Show additional decimal places for gas fee calculations (Solana has low tx fees).
     currencyFormatter.minimumFractionDigits = 2
     currencyFormatter.maximumFractionDigits = 10
+    defer {
+      // Restore previous fraction digits
+      currencyFormatter.minimumFractionDigits = existingMinimumFractionDigits
+      currencyFormatter.maximumFractionDigits = existingMaximumFractionDigits
+    }
     switch network.coin {
     case .eth:
       let isEIP1559Transaction = transaction.isEIP1559Transaction
@@ -78,9 +83,6 @@ enum TransactionParser {
     @unknown default:
       break
     }
-    // Restore previous fraction digits
-    currencyFormatter.minimumFractionDigits = existingMinimumFractionDigits
-    currencyFormatter.maximumFractionDigits = existingMaximumFractionDigits
     return gasFee
   }
   

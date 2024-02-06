@@ -7,6 +7,7 @@ import Combine
 import XCTest
 import BraveCore
 @testable import BraveWallet
+import Preferences
 
 class AccountActivityStoreTests: XCTestCase {
   
@@ -51,10 +52,15 @@ class AccountActivityStoreTests: XCTestCase {
       completion(self.networks[coin] ?? [])
     }
     rpcService._balance = { _, coin, chainId, completion in
-      if coin == .eth {
-        completion(mockEthBalanceWei, .success, "") // eth balance
-      } else { // .fil
-        completion(chainId == BraveWallet.FilecoinMainnet ? mockFilBalance : mockFilTestnetBalance, .success, "")
+      switch chainId {
+      case BraveWallet.MainnetChainId:
+        completion(mockEthBalanceWei, .success, "")
+      case BraveWallet.FilecoinMainnet:
+        completion(mockFilBalance, .success, "")
+      case BraveWallet.FilecoinTestnet:
+        completion(mockFilTestnetBalance, .success, "")
+      default:
+        completion("", .internalError, "")
       }
     }
     rpcService._erc20TokenBalance = { _, _, _, completion in
@@ -64,7 +70,11 @@ class AccountActivityStoreTests: XCTestCase {
       completion(mockERC721BalanceWei, .success, "") // eth nft balance
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
-      completion(mockLamportBalance, .success, "") // sol balance
+      if chainId == BraveWallet.SolanaMainnet {
+        completion(mockLamportBalance, .success, "")
+      } else { // testnet balance
+        completion(0, .success, "")
+      }
     }
     rpcService._splTokenAccountBalance = { _, tokenMintAddress, _, completion in
       // spd token, sol nft balance
@@ -120,7 +130,8 @@ class AccountActivityStoreTests: XCTestCase {
   }
   
   func testUpdateEthereumAccount() {
-    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM 
+    Preferences.Wallet.showTestNetworks.value = true
+    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
     let account: BraveWallet.AccountInfo = .mockEthAccount
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockEthDecimalBalance: Double = 0.0896
@@ -143,7 +154,7 @@ class AccountActivityStoreTests: XCTestCase {
       mockERC721BalanceWei: mockERC721BalanceWei,
       transactions: [goerliSwapTxCopy, ethSendTxCopy].enumerated().map { (index, tx) in
         // transactions sorted by created time, make sure they are in-order
-        tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index * 10))
+        tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index) * 1.days)
         return tx
       }
     )
@@ -179,13 +190,12 @@ class AccountActivityStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     
-    let userAssetsException = expectation(description: "accountActivityStore-assetStores")
+    let userAssetsException = expectation(description: "accountActivityStore-userAssets")
     accountActivityStore.$userAssets
       .dropFirst()
-      .collect(2)
+      .collect(3)
       .sink { userAssets in
         defer { userAssetsException.fulfill() }
-        XCTAssertEqual(userAssets.count, 2) // empty assets, populated assets
         guard let lastUpdatedAssets = userAssets.last else {
           XCTFail("Unexpected test result")
           return
@@ -201,17 +211,21 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[1].network, BraveWallet.NetworkInfo.mockMainnet)
         XCTAssertEqual(lastUpdatedAssets[1].totalBalance, mockERC20DecimalBalance)
         XCTAssertEqual(lastUpdatedAssets[1].price, self.mockAssetPrices[safe: 1]?.price ?? "")
+        
+        XCTAssertEqual(lastUpdatedAssets[2].token.symbol, BraveWallet.NetworkInfo.mockGoerli.nativeToken.symbol)
+        XCTAssertEqual(lastUpdatedAssets[2].network, BraveWallet.NetworkInfo.mockGoerli)
+        XCTAssertEqual(lastUpdatedAssets[2].totalBalance, 0)
+        XCTAssertEqual(lastUpdatedAssets[2].price, self.mockAssetPrices[safe: 0]?.price ?? "")
       }
       .store(in: &cancellables)
     
-    let userNFTsException = expectation(description: "accountActivityStore-userVisibleNFTs")
+    let userNFTsException = expectation(description: "accountActivityStore-userNFTs")
     XCTAssertTrue(accountActivityStore.userNFTs.isEmpty)  // Initial state
     accountActivityStore.$userNFTs
       .dropFirst()
-      .collect(2)
+      .collect(3)
       .sink { userNFTs in
         defer { userNFTsException.fulfill() }
-        XCTAssertEqual(userNFTs.count, 2) // empty nfts, populated nfts
         guard let lastUpdatedNFTs = userNFTs.last else {
           XCTFail("Unexpected test result")
           return
@@ -224,18 +238,26 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.description, mockERC721Metadata.description)
       }.store(in: &cancellables)
     
-    let transactionSummariesExpectation = expectation(description: "accountActivityStore-transactions")
-    XCTAssertTrue(accountActivityStore.transactionSummaries.isEmpty)
-    accountActivityStore.$transactionSummaries
+    let transactionSectionsExpectation = expectation(description: "accountActivityStore-transactions")
+    XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
+    accountActivityStore.$transactionSections
       .dropFirst()
-      .sink { transactionSummaries in
-        defer { transactionSummariesExpectation.fulfill() }
-        // summaries are tested in `TransactionParserTests`, just verify they are populated with correct tx
-        XCTAssertEqual(transactionSummaries.count, 2)
-        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo, ethSendTxCopy)
-        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo.chainId, ethSendTxCopy.chainId)
-        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo, goerliSwapTxCopy)
-        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo.chainId, goerliSwapTxCopy.chainId)
+      .collect(3)
+      .sink { transactionSectionsCollected in
+        defer { transactionSectionsExpectation.fulfill() }
+        guard let transactionSections = transactionSectionsCollected.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        // `ParsedTransaction`s are tested in `TransactionParserTests`,
+        // just verify they are populated with correct tx
+        XCTAssertEqual(transactionSections.count, 2)
+        let firstSectionTxs = transactionSections[safe: 0]?.transactions ?? []
+        XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction, ethSendTxCopy)
+        XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction.chainId, ethSendTxCopy.chainId)
+        let secondSectionTxs = transactionSections[safe: 1]?.transactions ?? []
+        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction, goerliSwapTxCopy)
+        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction.chainId, goerliSwapTxCopy.chainId)
       }.store(in: &cancellables)
     
     accountActivityStore.update()
@@ -246,6 +268,7 @@ class AccountActivityStoreTests: XCTestCase {
   }
   
   func testUpdateSolanaAccount() {
+    Preferences.Wallet.showTestNetworks.value = true
     let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
     let account: BraveWallet.AccountInfo = .mockSolAccount
     let mockLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL
@@ -270,7 +293,7 @@ class AccountActivityStoreTests: XCTestCase {
       mockSplTokenBalances: mockSplTokenBalances,
       transactions: [solTestnetSendTxCopy, solSendTxCopy].enumerated().map { (index, tx) in
         // transactions sorted by created time, make sure they are in-order
-        tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index * 10))
+        tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index) * 1.days)
         return tx
       }
     )
@@ -309,13 +332,12 @@ class AccountActivityStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     
-    let userAssetsExpectation = expectation(description: "accountActivityStore-assetStores")
+    let userAssetsExpectation = expectation(description: "accountActivityStore-userAssets")
     accountActivityStore.$userAssets
       .dropFirst()
-      .collect(2)
+      .collect(3)
       .sink { userAssets in
         defer { userAssetsExpectation.fulfill() }
-        XCTAssertEqual(userAssets.count, 2) // empty assets, populated assets
         guard let lastUpdatedAssets = userAssets.last else {
           XCTFail("Unexpected test result")
           return
@@ -334,14 +356,13 @@ class AccountActivityStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
     
-    let userNFTsExpectation = expectation(description: "accountActivityStore-userVisibleNFTs")
+    let userNFTsExpectation = expectation(description: "accountActivityStore-userNFTs")
     XCTAssertTrue(accountActivityStore.userNFTs.isEmpty)  // Initial state
     accountActivityStore.$userNFTs
       .dropFirst()
-      .collect(2)
+      .collect(3)
       .sink { userNFTs in
         defer { userNFTsExpectation.fulfill() }
-        XCTAssertEqual(userNFTs.count, 2) // empty nfts, populated nfts
         guard let lastUpdatedNFTs = userNFTs.last else {
           XCTFail("Unexpected test result")
           return
@@ -354,18 +375,26 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)
       }.store(in: &cancellables)
     
-    let transactionSummariesExpectation = expectation(description: "accountActivityStore-transactions")
-    XCTAssertTrue(accountActivityStore.transactionSummaries.isEmpty)
-    accountActivityStore.$transactionSummaries
+    let transactionSectionsExpectation = expectation(description: "accountActivityStore-transactions")
+    XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
+    accountActivityStore.$transactionSections
       .dropFirst()
-      .sink { transactionSummaries in
-        defer { transactionSummariesExpectation.fulfill() }
-        // summaries are tested in `TransactionParserTests`, just verify they are populated with correct tx
-        XCTAssertEqual(transactionSummaries.count, 2)
-        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo, solSendTxCopy)
-        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo.chainId, solSendTxCopy.chainId)
-        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo, solTestnetSendTxCopy)
-        XCTAssertEqual(transactionSummaries[safe: 1]?.txInfo.chainId, solTestnetSendTxCopy.chainId)
+      .collect(3)
+      .sink { transactionSectionsCollected in
+        defer { transactionSectionsExpectation.fulfill() }
+        guard let transactionSections = transactionSectionsCollected.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        // `ParsedTransaction`s are tested in `TransactionParserTests`,
+        // just verify they are populated with correct tx
+        XCTAssertEqual(transactionSections.count, 2)
+        let firstSectionTxs = transactionSections[safe: 0]?.transactions ?? []
+        XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction, solSendTxCopy)
+        XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction.chainId, solSendTxCopy.chainId)
+        let secondSectionTxs = transactionSections[safe: 1]?.transactions ?? []
+        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction, solTestnetSendTxCopy)
+        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction.chainId, solTestnetSendTxCopy.chainId)
       }.store(in: &cancellables)
     
     accountActivityStore.update()
@@ -376,6 +405,7 @@ class AccountActivityStoreTests: XCTestCase {
   }
   
   func testUpdateFilecoinAccount() {
+    Preferences.Wallet.showTestNetworks.value = true
     let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
     let account: BraveWallet.AccountInfo = .mockFilAccount
     
@@ -412,10 +442,10 @@ class AccountActivityStoreTests: XCTestCase {
     transactionCopy.chainId = BraveWallet.FilecoinTestnet
     
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    let mockFilDecimalBalance: Double = 1
+    let mockFilDecimalBalance: Double = 2
     let filecoinMainnetDecimals = Int(BraveWallet.NetworkInfo.mockFilecoinMainnet.decimals)
     let mockFilDecimalBalanceInWei = formatter.weiString(from: "\(mockFilDecimalBalance)", radix: .decimal, decimals: filecoinMainnetDecimals) ?? ""
-    let mockFileTestnetDecimalBalance: Double = 2
+    let mockFileTestnetDecimalBalance: Double = 1
     let filecoinTestnetDecimals = Int(BraveWallet.NetworkInfo.mockFilecoinTestnet.decimals)
     let mockFilTestnetDecimalBalanceInWei = formatter.weiString(from: "\(mockFileTestnetDecimalBalance)", radix: .decimal, decimals: filecoinTestnetDecimals) ?? ""
     
@@ -424,7 +454,7 @@ class AccountActivityStoreTests: XCTestCase {
       mockFilTestnetBalance: mockFilTestnetDecimalBalanceInWei,
       transactions: [transaction, transactionCopy].enumerated().map { (index, tx) in
         // transactions sorted by created time, make sure they are in-order
-        tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index * 10))
+        tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index) * 1.days)
         return tx
       }
     )
@@ -461,13 +491,12 @@ class AccountActivityStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     
-    let userAssetsExpectation = expectation(description: "accountActivityStore-assetStores")
+    let userAssetsExpectation = expectation(description: "accountActivityStore-userAssets")
     accountActivityStore.$userAssets
       .dropFirst()
-      .collect(2)
+      .collect(3)
       .sink { userAssets in
         defer { userAssetsExpectation.fulfill() }
-        XCTAssertEqual(userAssets.count, 2) // empty assets, populated assets
         guard let lastUpdatedAssets = userAssets.last else {
           XCTFail("Unexpected test result")
           return
@@ -486,16 +515,25 @@ class AccountActivityStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
     
-    let transactionSummariesExpectation = expectation(description: "accountActivityStore-transactions")
-    XCTAssertTrue(accountActivityStore.transactionSummaries.isEmpty)
-    accountActivityStore.$transactionSummaries
+    let transactionSectionsExpectation = expectation(description: "accountActivityStore-transactions")
+    XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
+    accountActivityStore.$transactionSections
       .dropFirst()
-      .sink { transactionSummaries in
-        defer { transactionSummariesExpectation.fulfill() }
-        // summaries are tested in `TransactionParserTests`, just verify they are populated with correct tx
-        XCTAssertEqual(transactionSummaries.count, 1) // // should not have `transactionCopy` since it's on testnet but the account is on mainnet
-        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo, transaction)
-        XCTAssertEqual(transactionSummaries[safe: 0]?.txInfo.chainId, transaction.chainId)
+      .collect(3)
+      .sink { transactionSectionsCollected in
+        defer { transactionSectionsExpectation.fulfill() }
+        guard let transactionSections = transactionSectionsCollected.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        // `ParsedTransaction`s are tested in `TransactionParserTests`,
+        // just verify they are populated with correct tx
+        XCTAssertEqual(transactionSections.count, 1)
+        let firstSectionTxs = transactionSections[safe: 0]?.transactions ?? []
+        // should not have `transactionCopy` since it's on testnet but the account is on mainnet
+        XCTAssertEqual(firstSectionTxs.count, 1)
+        XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction, transaction)
+        XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction.chainId, transaction.chainId)
       }.store(in: &cancellables)
     
     accountActivityStore.update()
@@ -503,5 +541,10 @@ class AccountActivityStoreTests: XCTestCase {
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
+  }
+  
+  override class func tearDown() {
+    super.tearDown()
+    Preferences.Wallet.showTestNetworks.reset()
   }
 }

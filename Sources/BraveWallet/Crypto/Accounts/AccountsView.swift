@@ -18,8 +18,11 @@ struct AccountsView: View {
   @State private var selectedAccountActivity: BraveWallet.AccountInfo?
   /// When populated, account info presented modally for given account (rename, export private key)
   @State private var selectedAccountForEdit: BraveWallet.AccountInfo?
-  
+  /// When populated, private key export is presented modally for the given account.
   @State private var selectedAccountForExport: BraveWallet.AccountInfo?
+  
+  @Environment(\.buySendSwapDestination)
+  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
   
   var body: some View {
     ScrollView {
@@ -63,25 +66,31 @@ struct AccountsView: View {
     }
     .navigationTitle(Strings.Wallet.accountsPageTitle)
     .navigationBarTitleDisplayMode(.inline)
+    .background(Color(braveSystemName: .containerBackground))
     .background(
       NavigationLink(
         isActive: Binding(
           get: { selectedAccountActivity != nil },
-          set: { if !$0 { selectedAccountActivity = nil } }
+          set: { 
+            if !$0 {
+              selectedAccountActivity = nil
+              if let selectedAccountActivity {
+                cryptoStore.closeAccountActivityStore(for: selectedAccountActivity)
+              }
+            }
+          }
         ),
         destination: {
           if let account = selectedAccountActivity {
             AccountActivityView(
-              keyringStore: keyringStore,
-              activityStore: cryptoStore.accountActivityStore(
+              store: cryptoStore.accountActivityStore(
                 for: account,
                 observeAccountUpdates: false
               ),
-              networkStore: cryptoStore.networkStore
+              cryptoStore: cryptoStore,
+              keyringStore: keyringStore,
+              buySendSwapDestination: buySendSwapDestination
             )
-            .onDisappear {
-              cryptoStore.closeAccountActivityStore(for: account)
-            }
           }
         },
         label: {

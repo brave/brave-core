@@ -9,13 +9,11 @@ import struct Shared.Strings
 import BraveUI
 
 struct AccountTransactionListView: View {
-  @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var activityStore: AccountActivityStore
   @ObservedObject var networkStore: NetworkStore
   
-  @Environment(\.openURL) private var openWalletURL
-  
   @State private var transactionDetails: TransactionDetailsStore?
+  @State private var query: String = ""
   
   private func emptyTextView(_ message: String) -> some View {
     Text(message)
@@ -26,40 +24,15 @@ struct AccountTransactionListView: View {
   }
   
   var body: some View {
-    List {
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
-      ) {
-        Group {
-          if activityStore.transactionSummaries.isEmpty {
-            emptyTextView(Strings.Wallet.noTransactions)
-          } else {
-            ForEach(activityStore.transactionSummaries) { txSummary in
-              Button(action: {
-                self.transactionDetails = activityStore.transactionDetailsStore(for: txSummary.txInfo)
-              }) {
-                TransactionSummaryView(summary: txSummary)
-              }
-              .contextMenu {
-                if !txSummary.txHash.isEmpty {
-                  Button(action: {
-                    if let txNetwork = self.networkStore.allChains.first(where: { $0.chainId == txSummary.txInfo.chainId }),
-                       let url = txNetwork.txBlockExplorerLink(txHash: txSummary.txHash, for: txNetwork.coin) {
-                      openWalletURL(url)
-                    }
-                  }) {
-                    Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
-                  }
-                }
-              }
-            }
-          }
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    TransactionsListView(
+      transactionSections: activityStore.transactionSections,
+      query: $query,
+      showFilter: false,
+      filtersButtonTapped: { },
+      transactionTapped: { transaction in
+        self.transactionDetails = activityStore.transactionDetailsStore(for: transaction)
       }
-    }
-    .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    )
     .navigationTitle(Strings.Wallet.transactionsTitle)
     .navigationBarTitleDisplayMode(.inline)
     .sheet(
@@ -82,10 +55,8 @@ struct AccountTransactionListView: View {
 struct AccountTransactionListView_Previews: PreviewProvider {
   static var previews: some View {
     AccountTransactionListView(
-      keyringStore: .previewStore,
       activityStore: {
         let store: AccountActivityStore = .previewStore
-        store.previewTransactions()
         return store
       }(),
       networkStore: .previewStore

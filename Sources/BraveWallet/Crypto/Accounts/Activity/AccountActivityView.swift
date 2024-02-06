@@ -11,229 +11,362 @@ import DesignSystem
 import BraveUI
 
 struct AccountActivityView: View {
-  @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var activityStore: AccountActivityStore
-  @ObservedObject var networkStore: NetworkStore
-
-  @State private var detailsPresentation: DetailsPresentation?
-  @State private var transactionDetails: TransactionDetailsStore?
   
-  @Environment(\.presentationMode) @Binding private var presentationMode
-  @Environment(\.openURL) private var openWalletURL
-
-  private struct DetailsPresentation: Identifiable {
-    var inEditMode: Bool
-    var id: String {
-      "\(inEditMode)"
-    }
-  }
-
-  private var accountInfo: BraveWallet.AccountInfo {
-    guard let info = keyringStore.allAccounts.first(where: { $0.address == activityStore.account.address }) else {
-      // The account has been removed... User should technically never see this state because
-      // `AccountsViewController` pops this view off the stack when the account is removed
-      presentationMode.dismiss()
-      return activityStore.account
-    }
-    return info
-  }
-
-  private func emptyTextView(_ message: String) -> some View {
-    Text(message)
-      .font(.footnote.weight(.medium))
-      .frame(maxWidth: .infinity)
-      .multilineTextAlignment(.center)
-      .foregroundColor(Color(.secondaryBraveLabel))
-  }
-
+  @ObservedObject var store: AccountActivityStore
+  var cryptoStore: CryptoStore
+  var keyringStore: KeyringStore
+  @Binding var buySendSwapDestination: BuySendSwapDestination?
+  
+  @State private var didLoad: Bool = false
+  @State private var isPresentingEditAccount: Bool = false
+  @State private var isPresentingExportAccount: Bool = false
+  
   var body: some View {
-    List {
-      Section {
-        AccountActivityHeaderView(account: accountInfo) { editMode in
-          // Needed to use an identifiable object here instead of two @State Bool's due to a SwiftUI bug
-          detailsPresentation = .init(inEditMode: editMode)
-        }
-        .frame(maxWidth: .infinity)
-        .listRowInsets(.zero)
-        .listRowBackground(Color(.braveGroupedBackground))
+    ScrollView {
+      VStack(spacing: 0) {
+        headerSection
+
+        rowsSection
       }
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
-      ) {
-        Group {
-          if activityStore.userAssets.isEmpty {
-            emptyTextView(Strings.Wallet.noAssets)
-          } else {
-            ForEach(activityStore.userAssets) { asset in
-              PortfolioAssetView(
-                image: AssetIconView(
-                  token: asset.token,
-                  network: asset.network,
-                  shouldShowNetworkIcon: true
-                ),
-                title: asset.token.name,
-                symbol: asset.token.symbol,
-                networkName: asset.network.chainName,
-                amount: asset.fiatAmount(currencyFormatter: activityStore.currencyFormatter),
-                quantity: asset.quantity
-              )
-            }
+    }
+    .navigationBarTitleDisplayMode(.inline)
+    .navigationTitle(store.account.name)
+    .toolbar {
+      ToolbarItem(placement: .navigationBarTrailing) {
+        Menu(content: {
+          Button(action: {
+            isPresentingEditAccount = true
+          }) {
+            Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
           }
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }
-      if !activityStore.userNFTs.isEmpty {
-        Section(content: {
-          Group {
-            ForEach(activityStore.userNFTs) { nftAsset in
-              NFTAssetView(
-                image: NFTIconView(
-                  token: nftAsset.token,
-                  network: nftAsset.network,
-                  url: nftAsset.nftMetadata?.imageURL,
-                  shouldShowNetworkIcon: true
-                ),
-                title: nftAsset.token.nftTokenTitle,
-                symbol: nftAsset.token.symbol,
-                networkName: nftAsset.network.chainName,
-                quantity: "\(nftAsset.balanceForAccounts[activityStore.account.address] ?? 0)"
-              )
-            }
+          Button(action: {
+            isPresentingExportAccount = true
+          }) {
+            Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }, header: {
-          WalletListHeaderView(title: Text(Strings.Wallet.nftsTitle))
+        }, label: {
+          Image(braveSystemName: "leo.more.horizontal")
+            .foregroundColor(Color(braveSystemName: .iconInteractive))
         })
       }
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
-      ) {
-        Group {
-          if activityStore.transactionSummaries.isEmpty {
-            emptyTextView(Strings.Wallet.noTransactions)
-          } else {
-            ForEach(activityStore.transactionSummaries) { txSummary in
-              Button(action: {
-                self.transactionDetails = activityStore.transactionDetailsStore(for: txSummary.txInfo)
-              }) {
-                TransactionSummaryView(summary: txSummary)
-              }
-              .contextMenu {
-                if !txSummary.txHash.isEmpty {
-                  Button(action: {
-                    if let txNetwork = self.networkStore.allChains.first(where: { $0.chainId == txSummary.txInfo.chainId }),
-                       let url = txNetwork.txBlockExplorerLink(txHash: txSummary.txHash, for: txNetwork.coin) {
-                      openWalletURL(url)
-                    }
-                  }) {
-                    Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
-                  }
+    }
+    .background(
+      VStack(spacing: 0) {
+        Color(braveSystemName: .containerBackground)
+          .frame(maxHeight: 200)
+          .edgesIgnoringSafeArea(.top)
+        Color(braveSystemName: .pageBackground)
+          .edgesIgnoringSafeArea(.all)
+      }
+    )
+    .background(
+      Color.clear
+        .sheet(isPresented: $isPresentingEditAccount) {
+          AccountDetailsView(
+            keyringStore: keyringStore,
+            account: store.account,
+            editMode: true
+          )
+        }
+    )
+    .background(
+      Color.clear
+        .sheet(isPresented: $isPresentingExportAccount) {
+          NavigationView {
+            AccountPrivateKeyView(
+              keyringStore: keyringStore,
+              account: store.account
+            )
+            .toolbar {
+              ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                  isPresentingExportAccount = false
+                }) {
+                  Text(Strings.cancelButtonTitle)
+                    .foregroundColor(Color(.braveBlurpleTint))
                 }
               }
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }
-    }
-    .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .background(
-      Color.clear
-        .sheet(item: $detailsPresentation) {
-          AccountDetailsView(
-            keyringStore: keyringStore,
-            account: accountInfo,
-            editMode: $0.inEditMode
-          )
-        }
     )
-    .background(
-      Color.clear
-        .sheet(
-          isPresented: Binding(
-            get: { self.transactionDetails != nil },
-            set: {
-              if !$0 {
-                self.transactionDetails = nil
-                self.activityStore.closeTransactionDetailsStore()
-              }
-            }
-          )
-        ) {
-          if let transactionDetailsStore = transactionDetails {
-            TransactionDetailsView(
-              transactionDetailsStore: transactionDetailsStore,
-              networkStore: networkStore
-            )
-          }
-        }
-    )
-    .onReceive(keyringStore.$allAccounts) { allAccounts in
-      if !allAccounts.contains(where: { $0.address == accountInfo.address }) {
-        // Account was deleted
-        detailsPresentation = nil
-        presentationMode.dismiss()
-      }
-    }
     .onAppear {
-      activityStore.update()
+      // Skip reload when popping detail view off stack (assets, nfts, transactions)
+      guard !didLoad else { return }
+      didLoad = true
+      store.update()
     }
   }
-}
-
-private struct AccountActivityHeaderView: View {
-  var account: BraveWallet.AccountInfo
-  var action: (_ tappedEdit: Bool) -> Void
-
-  var body: some View {
-    VStack {
-      Blockie(address: account.address)
-        .frame(width: 64, height: 64)
-        .clipShape(RoundedRectangle(cornerRadius: 4))
-        .accessibilityHidden(true)
-      VStack(spacing: 4) {
-        Text(account.name)
-          .fontWeight(.semibold)
-        AddressView(address: account.address) {
-          Text(account.address.truncatedAddress)
-            .font(.footnote)
-        }
-      }
-      .padding(.bottom, 12)
-      HStack {
-        Button(action: { action(false) }) {
-          HStack {
-            Image(braveSystemName: "leo.qr.code")
-              .font(.body)
-            Text(Strings.Wallet.detailsButtonTitle)
-              .font(.footnote.weight(.bold))
-          }
-        }
-        Button(action: { action(true) }) {
-          HStack {
-            Image(braveSystemName: "leo.edit.pencil")
-              .font(.body)
-            Text(Strings.Wallet.renameButtonTitle)
-              .font(.footnote.weight(.bold))
+  
+  private var headerSection: some View {
+    VStack(spacing: 0) {
+      VStack(spacing: 8) {
+        Blockie(address: store.account.address)
+          .frame(width: 44, height: 44)
+          .clipShape(RoundedRectangle(cornerRadius: 4))
+          .accessibilityHidden(true)
+        VStack(spacing: 0) {
+          Text(store.account.name)
+            .font(.title2.weight(.semibold))
+          AddressView(address: store.account.address) {
+            Text(store.account.address.truncatedAddress)
+              .font(.caption)
           }
         }
       }
-      .buttonStyle(BraveOutlineButtonStyle(size: .normal))
+      
+      Spacer().frame(height: 16)
+      
+      VStack {
+        if store.isLoadingAccountFiat {
+          Text(store.accountTotalFiat)
+            .font(.title.weight(.medium))
+            .redacted(reason: .placeholder)
+            .shimmer(store.isLoadingAccountFiat)
+        } else {
+          Text(store.accountTotalFiat)
+            .font(.title.weight(.medium))
+        }
+        Text(store.account.accountSupportDisplayString)
+          .font(.caption)
+      }
+      
+      Spacer().frame(height: 24)
+      
+      HStack(spacing: 24) {
+        PortfolioHeaderButton(style: .buy) {
+          buySendSwapDestination = .init(kind: .buy)
+        }
+        PortfolioHeaderButton(style: .send) {
+          buySendSwapDestination = .init(kind: .send)
+        }
+        PortfolioHeaderButton(style: .swap) {
+          buySendSwapDestination = .init(kind: .swap)
+        }
+      }
     }
+    .padding(.vertical, 24)
+    .frame(maxWidth: .infinity)
+    .background(
+      Color(braveSystemName: .containerBackground)
+    )
+  }
+  
+  private var rowsSection: some View {
+    VStack(spacing: 0) {
+      NavigationLink(destination: {
+        AssetsListDetailView(
+          store: store,
+          cryptoStore: cryptoStore,
+          keyringStore: keyringStore
+        )
+      }, label: {
+        let assetsCount = store.userAssets.count
+        RowView(
+          iconBraveSystemName: "leo.crypto.wallets",
+          title: Strings.Wallet.assetsTitle,
+          description: String.localizedStringWithFormat(
+            assetsCount == 1 ?
+            Strings.Wallet.assetsSingularDescription : Strings.Wallet.assetsDescription,
+            assetsCount
+          )
+        )
+      })
+      Divider()
+      NavigationLink(destination: {
+        NFTGridDetailView(
+          store: store,
+          cryptoStore: cryptoStore,
+          keyringStore: keyringStore
+        )
+      }, label: {
+        let nftCount = store.userNFTs.count
+        RowView(
+          iconBraveSystemName: "leo.grid04",
+          title: Strings.Wallet.nftsTitle,
+          description: String.localizedStringWithFormat(
+            nftCount == 1 ?
+            Strings.Wallet.nftsSingularDescription : Strings.Wallet.nftsDescription,
+            nftCount
+          )
+        )
+      })
+      Divider()
+      NavigationLink(destination: {
+        AccountTransactionListView(
+          activityStore: store,
+          networkStore: cryptoStore.networkStore
+        )
+      }, label: {
+        let transactionCount = store.transactionSections.flatMap(\.transactions).count
+        RowView(
+          iconBraveSystemName: "leo.history",
+          title: Strings.Wallet.transactionsTitle,
+          description: String.localizedStringWithFormat(
+            transactionCount == 1 ?
+            Strings.Wallet.transactionsSingularDescription : Strings.Wallet.transactionsDescription,
+            transactionCount
+          )
+        )
+      })
+      if WalletConstants.supportedCoinTypes(.dapps).contains(store.account.coin) {
+        Divider()
+        NavigationLink(destination: {
+          DappsSettings(
+            coin: store.account.coin,
+            siteConnectionStore: cryptoStore.settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
+          )
+        }, label: {
+          RowView(
+            iconBraveSystemName: "leo.lock.dots",
+            title: Strings.Wallet.securityTitle,
+            description: Strings.Wallet.accountSecurityDescription
+          )
+        })
+      }
+    }
+    .background(
+      Color(braveSystemName: .containerBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    )
     .padding()
+    .background(
+      Color(braveSystemName: .pageBackground)
+    )
+  }
+  
+  private struct RowView: View {
+    let iconBraveSystemName: String
+    let title: String
+    let description: String
+    
+    var body: some View {
+      HStack(spacing: 16) {
+        Circle()
+          .fill(Color(braveSystemName: .pageBackground))
+          .frame(width: 40, height: 40)
+          .overlay {
+            Image(braveSystemName: iconBraveSystemName)
+              .foregroundColor(Color(braveSystemName: .iconDefault))
+          }
+        VStack(alignment: .leading) {
+          Text(title)
+            .font(.callout.weight(.semibold))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
+          Text(description)
+            .font(.footnote)
+            .foregroundColor(Color(braveSystemName: .textSecondary))
+        }
+        Spacer()
+        Image(systemName: "chevron.right")
+          .font(.body.weight(.semibold))
+          .foregroundColor(Color(.separator))
+      }
+      .padding(.vertical, 10)
+      .padding(.horizontal, 16)
+    }
   }
 }
 
 #if DEBUG
 struct AccountActivityView_Previews: PreviewProvider {
   static var previews: some View {
-    AccountActivityView(
-      keyringStore: .previewStore,
-      activityStore: .previewStore,
-      networkStore: .previewStore
-    )
+    NavigationView {
+      AccountActivityView(
+        store: .previewStore,
+        cryptoStore: .previewStore,
+        keyringStore: .previewStore,
+        buySendSwapDestination: .constant(.none)
+      )
+    }
     .previewColorSchemes()
   }
 }
 #endif
+
+private struct AssetsListDetailView: View {
+  
+  @ObservedObject var store: AccountActivityStore
+  var cryptoStore: CryptoStore
+  var keyringStore: KeyringStore
+  @State private var assetForDetails: BraveWallet.BlockchainToken?
+  
+  var body: some View {
+    AssetsListView(
+      assets: store.userAssets,
+      currencyFormatter: store.currencyFormatter,
+      selectedAsset: { asset in
+        assetForDetails = asset
+      }
+    )
+    .navigationTitle(Strings.Wallet.assetsTitle)
+    .background(
+      NavigationLink(
+        isActive: Binding(
+          get: { assetForDetails != nil },
+          set: { if !$0 { assetForDetails = nil } }
+        ),
+        destination: {
+          if let token = assetForDetails {
+            AssetDetailView(
+              assetDetailStore: cryptoStore.assetDetailStore(for: .blockchainToken(token)),
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore
+            )
+            .onDisappear {
+              cryptoStore.closeAssetDetailStore(for: .blockchainToken(token))
+            }
+          }
+        },
+        label: {
+          EmptyView()
+        })
+    )
+  }
+}
+
+private struct NFTGridDetailView: View {
+  
+  @ObservedObject var store: AccountActivityStore
+  var cryptoStore: CryptoStore
+  var keyringStore: KeyringStore
+  
+  @State private var nftForDetails: BraveWallet.BlockchainToken?
+  @Environment(\.buySendSwapDestination)
+  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
+  
+  var body: some View {
+    NFTsGridView(
+      assets: store.userNFTs,
+      selectedAsset: { nft in
+        nftForDetails = nft
+      }
+    )
+    .navigationTitle(Strings.Wallet.nftsTitle)
+    .background(
+      NavigationLink(
+        isActive: Binding(
+          get: { nftForDetails != nil },
+          set: { if !$0 { nftForDetails = nil } }
+        ),
+        destination: {
+          if let token = nftForDetails {
+            NFTDetailView(
+              keyringStore: keyringStore,
+              nftDetailStore: cryptoStore.nftDetailStore(for: token, nftMetadata: nil, owner: nil),
+              buySendSwapDestination: buySendSwapDestination
+            ) { metadata in
+              
+            }
+            .onDisappear {
+              cryptoStore.closeNFTDetailStore(for: token)
+            }
+          }
+        },
+        label: {
+          EmptyView()
+        })
+    )
+  }
+}
+

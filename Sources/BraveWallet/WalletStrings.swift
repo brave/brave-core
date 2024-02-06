@@ -4850,5 +4850,61 @@ extension Strings {
       value: "Search",
       comment: "The label as a placeholder in search fields."
     )
+    public static let securityTitle = NSLocalizedString(
+      "wallet.securityTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Security",
+      comment: "The title used in the row opening DApp settings in Account Details."
+    )
+    public static let accountSecurityDescription = NSLocalizedString(
+      "wallet.accountSecurityDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Connected Sites and Allowances",
+      comment: "The description used below Security title in the row opening DApp settings in Account Details."
+    )
+    public static let assetsSingularDescription = NSLocalizedString(
+      "wallet.assetsSingularDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%d asset",
+      comment: "The description of the assets row in Account Details when user has 1 Asset."
+    )
+    public static let assetsDescription = NSLocalizedString(
+      "wallet.assetsDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%d assets",
+      comment: "The description of the assets row in Account Details when user has zero or multiple Assets."
+    )
+    public static let nftsSingularDescription = NSLocalizedString(
+      "wallet.nftsSingularDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%d NFT",
+      comment: "The description of the NFTs row in Account Details when user has 1 NFT."
+    )
+    public static let nftsDescription = NSLocalizedString(
+      "wallet.nftsDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%d NFTs",
+      comment: "The description of the NFTs row in Account Details when user has zero or multiple NFTs."
+    )
+    public static let transactionsSingularDescription = NSLocalizedString(
+      "wallet.transactionsSingularDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%d transactions",
+      comment: "The description of the transactions row in Account Details when user has 1 Transaction."
+    )
+    public static let transactionsDescription = NSLocalizedString(
+      "wallet.transactionsDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%d transactions",
+      comment: "The description of the transactions row in Account Details when user has zero or multiple Transactions."
+    )
   }
 }

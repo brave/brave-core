@@ -129,7 +129,6 @@ public struct CryptoView: View {
             case .transactionHistory:
               NavigationView {
                 AccountTransactionListView(
-                  keyringStore: walletStore.keyringStore,
                   activityStore: store.accountActivityStore(
                     for: walletStore.keyringStore.selectedAccount,
                     observeAccountUpdates: true
