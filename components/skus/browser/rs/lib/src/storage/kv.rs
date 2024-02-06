@@ -332,6 +332,36 @@ where
     }
 
     #[instrument]
+    async fn upsert_time_limited_v2_item_creds_request_id(
+        &self,
+        item_id: &str,
+        request_id: &str,
+    ) -> Result<(), InternalError> {
+        let mut store = self.get_store()?;
+        let mut state: KVState = store.get_state()?;
+
+        if state.credentials.is_none() {
+            state.credentials = Some(CredentialsState::default());
+        }
+
+        if let Some(credentials) = state.credentials.as_mut() {
+            // check and see if we already have this item initialized
+            if let Some(item_credentials) = credentials.items.get_mut(item_id) {
+                // overwrite the request_id with the new value
+                if let Credentials::TimeLimitedV2(item_credentials) = item_credentials {
+                    item_credentials.request_id = Some(request_id.to_string());
+                } else {
+                    return Err(InternalError::StorageWriteFailed(
+                        "Item is not time limited v2".to_string(),
+                    ));
+                }
+            }
+        }
+
+        store.set_state(&state)
+    }
+
+    #[instrument]
     async fn init_single_use_item_creds(
         &self,
         item_id: &str,
