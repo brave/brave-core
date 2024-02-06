@@ -365,10 +365,6 @@ void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
 void PlaylistService::NotifyMediaFilesUpdated(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
-  if (items.empty()) {
-    return;
-  }
-
   DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
            << " were updated: count =>" << items.size();
 
@@ -530,6 +526,18 @@ bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
     return download_request_manager_
         ->ShouldExtractMediaFromBackgroundWebContents(item);
   });
+}
+
+base::ReadOnlySharedMemoryRegion
+PlaylistService::GetMediaSourceAPISuppressorScript() const {
+  return download_request_manager_->media_detector_component_manager()
+      ->GetMediaSourceAPISuppressorScript();
+}
+
+base::ReadOnlySharedMemoryRegion PlaylistService::GetMediaDetectorScript(
+    const GURL& url) const {
+  return download_request_manager_->media_detector_component_manager()
+      ->GetMediaDetectorScript(url);
 }
 
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
@@ -1206,16 +1214,17 @@ void PlaylistService::ClearObserverForStreaming() {
   streaming_observers_.Clear();
 }
 
-void PlaylistService::OnMediaUpdatedFromContents(
-    content::WebContents* contents) {
+void PlaylistService::OnMediaDetected(base::Value media,
+                                      content::WebContents* contents) {
   if (!*enabled_pref_) {
     return;
   }
 
-  download_request_manager_->GetMedia(
-      contents,
-      base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
-                     weak_factory_.GetWeakPtr(), contents->GetVisibleURL()));
+  CHECK(contents);
+
+  NotifyMediaFilesUpdated(
+      contents->GetVisibleURL(),
+      download_request_manager_->GetPlaylistItems(std::move(media), contents));
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(

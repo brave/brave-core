@@ -267,10 +267,7 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
 PlaylistServiceFactory::PlaylistServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "PlaylistService",
-          BrowserContextDependencyManager::GetInstance()) {
-  PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-}
+          BrowserContextDependencyManager::GetInstance()) {}
 
 PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 
