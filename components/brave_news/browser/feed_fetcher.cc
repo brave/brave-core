@@ -7,7 +7,6 @@
 
 #include <cstddef>
 #include <iterator>
-#include <memory>
 #include <string>
 #include <tuple>
 #include <unordered_set>
@@ -20,7 +19,6 @@
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
 #include "base/memory/weak_ptr.h"
-#include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
@@ -60,6 +58,51 @@ FeedFetcher::FeedSourceResult::FeedSourceResult(std::string key,
 FeedFetcher::FeedSourceResult::~FeedSourceResult() = default;
 FeedFetcher::FeedSourceResult::FeedSourceResult(
     FeedFetcher::FeedSourceResult&&) = default;
+
+// static
+std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
+    std::vector<FeedSourceResult> results) {
+  std::size_t total_size = 0;
+  for (const auto& result : results) {
+    total_size += result.items.size();
+  }
+  VLOG(1) << "All feed item fetches done with item count: " << total_size;
+
+  ETags etags;
+  FeedItems feed;
+  feed.reserve(total_size);
+
+  // We want to deduplicate the feed, as the feeds for different
+  // regions **may** have overlap.
+  std::unordered_set<std::string> seen;
+
+  // reserve |total_size| space in |seen|. This is more than we'll
+  // likely need but should be in the correct ballpark.
+  seen.reserve(total_size);
+
+  for (auto& result : results) {
+    etags[result.key] = result.etag;
+    for (auto& item : result.items) {
+      GURL url;
+      if (item->is_article()) {
+        url = item->get_article()->data->url;
+      } else if (item->is_promoted_article()) {
+        url = item->get_promoted_article()->data->url;
+      }
+
+      // Skip this, we've already seen it.
+      auto spec = url.spec();
+      if (!url.is_empty() && seen.contains(spec)) {
+        continue;
+      }
+      seen.insert(std::move(spec));
+
+      feed.push_back(std::move(item));
+    }
+  }
+
+  return std::make_tuple(std::move(feed), std::move(etags));
+}
 
 FeedFetcher::FeedFetcher(
     PublishersController& publishers_controller,
@@ -159,8 +202,7 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce([](base::Value value) { return ParseFeedItems(value); },
-                     std::move(result.value_body())),
+      base::BindOnce(&ParseFeedItems, std::move(result.value_body())),
       base::BindOnce(
           [](base::WeakPtr<FeedFetcher> fetcher, std::string locale,
              std::string etag, FetchFeedSourceCallback callback,
@@ -180,52 +222,7 @@ void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
                                         Publishers publishers,
                                         std::vector<FeedSourceResult> results) {
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          [](std::vector<FeedSourceResult> results) {
-            std::size_t total_size = 0;
-            for (const auto& result : results) {
-              total_size += result.items.size();
-            }
-            VLOG(1) << "All feed item fetches done with item count: "
-                    << total_size;
-
-            ETags etags;
-            FeedItems feed;
-            feed.reserve(total_size);
-
-            // We want to deduplicate the feed, as the feeds for different
-            // regions **may** have overlap.
-            std::unordered_set<std::string> seen;
-
-            // reserve |total_size| space in |seen|. This is more than we'll
-            // likely need but should be in the correct ballpark.
-            seen.reserve(total_size);
-
-            for (auto& result : results) {
-              etags[result.key] = result.etag;
-              for (auto& item : result.items) {
-                GURL url;
-                if (item->is_article()) {
-                  url = item->get_article()->data->url;
-                } else if (item->is_promoted_article()) {
-                  url = item->get_promoted_article()->data->url;
-                }
-
-                // Skip this, we've already seen it.
-                auto spec = url.spec();
-                if (!url.is_empty() && seen.contains(spec)) {
-                  continue;
-                }
-                seen.insert(std::move(spec));
-
-                feed.push_back(std::move(item));
-              }
-            }
-
-            return std::make_tuple(std::move(feed), std::move(etags));
-          },
-          std::move(results)),
+      FROM_HERE, base::BindOnce(&CombineFeedSourceResults, std::move(results)),
       base::BindOnce(
           [](base::WeakPtr<FeedFetcher> fetcher, FetchFeedCallback callback,
              std::tuple<FeedItems, ETags> result) {

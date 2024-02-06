@@ -147,6 +147,7 @@ class FeedV2Builder : public PublishersController::Observer {
 
   void UpdateData(UpdateSettings settings, UpdateCallback callback);
 
+  void PrepareAndFetch();
   void FetchFeed();
   void OnFetchedFeed(FeedItems items, ETags etags);
 

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -55,6 +56,8 @@ class FeedFetcher {
   };
   using FetchFeedSourceCallback =
       base::OnceCallback<void(FeedSourceResult items)>;
+  static std::tuple<FeedItems, ETags> CombineFeedSourceResults(
+      std::vector<FeedSourceResult> results);
 
   // Steps for |FetchFeed|
   void OnFetchFeedFetchedPublishers(FetchFeedCallback callback,

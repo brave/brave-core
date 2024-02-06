@@ -1209,23 +1209,30 @@ void FeedV2Builder::UpdateData(UpdateSettings settings,
     return;
   }
 
-  if (settings.signals) {
+  current_update_.emplace(std::move(settings), std::move(callback));
+
+  PrepareAndFetch();
+}
+
+void FeedV2Builder::PrepareAndFetch() {
+  DVLOG(1) << __FUNCTION__;
+  CHECK(current_update_);
+
+  if (current_update_->settings.signals) {
     signals_.clear();
   }
 
-  if (settings.feed) {
+  if (current_update_->settings.feed) {
     raw_feed_items_.clear();
   }
 
-  if (settings.suggested_publishers) {
+  if (current_update_->settings.suggested_publishers) {
     suggested_publisher_ids_.clear();
   }
 
-  if (settings.topics) {
+  if (current_update_->settings.topics) {
     topics_.clear();
   }
-
-  current_update_.emplace(std::move(settings), std::move(callback));
 
   FetchFeed();
 }
@@ -1339,38 +1346,42 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   std::tie(hash_, subscribed_count_) =
       GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
 
-  // If we have a |next_update_| then request an update with that data.
+  // Move the |callbacks| out of the current update. At this point, the update
+  // has completed, we just need to fire off the callbacks.
   auto callbacks = std::move(current_update_->callbacks);
-  current_update_ = std::move(next_update_);
-  next_update_ = std::nullopt;
+
+  // Force all update requests after this point to be part of |next_update_|, as
+  // any callbacks added after this point won't be invoked.
+  current_update_ = {};
 
   // Fire all the pending callbacks. Wait for them all to complete before we
   // fire off the next update.
-  auto on_notify_completed = base::BarrierClosure(
-      callbacks.size(),
-      base::BindOnce(
-          [](base::WeakPtr<FeedV2Builder> builder) {
-            if (!builder) {
-              return;
-            }
+  auto notify_listeners_completed = base::BarrierClosure(
+      callbacks.size(), base::BindOnce(
+                            [](base::WeakPtr<FeedV2Builder> builder) {
+                              if (!builder) {
+                                return;
+                              }
 
-            // Notify listeners of updated hash.
-            for (const auto& listener : builder->listeners_) {
-              listener->OnUpdateAvailable(builder->hash_);
-            }
+                              // Notify listeners of updated hash.
+                              for (const auto& listener : builder->listeners_) {
+                                listener->OnUpdateAvailable(builder->hash_);
+                              }
 
-            if (builder->current_update_) {
-              builder->UpdateData(
-                  builder->current_update_->settings,
-                  base::BindOnce([](base::OnceClosure on_complete) {
-                    std::move(on_complete).Run();
-                  }));
-            }
-          },
-          weak_ptr_factory_.GetWeakPtr()));
+                              // Move |next_update_| into |current_update_|, and
+                              // if it's set, kick off the update.
+                              builder->current_update_ =
+                                  std::move(builder->next_update_);
+                              builder->next_update_ = std::nullopt;
+
+                              if (builder->current_update_) {
+                                builder->PrepareAndFetch();
+                              }
+                            },
+                            weak_ptr_factory_.GetWeakPtr()));
 
   for (auto& callback : callbacks) {
-    std::move(callback).Run(on_notify_completed);
+    std::move(callback).Run(notify_listeners_completed);
   }
 }
 
