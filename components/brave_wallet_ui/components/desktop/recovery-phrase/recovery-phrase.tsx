@@ -6,18 +6,20 @@
 import * as React from 'react'
 
 // utils
-import { getLocale } from '../../../../common/locale'
 import { formatOrdinals } from '../../../utils/ordinal-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
 
 // styles
+import { Row } from '../../shared/style'
 import {
   RecoveryPhraseContainer,
   RecoveryBubble,
   FrostedGlass,
   HiddenPhraseContainer,
   EyeOffIcon,
-  RecoveryBubbleBadge
+  RecoveryBubbleBadge,
+  Number,
+  IconWrapper
 } from './recovery-phrase.style'
 
 export interface SelectedPhraseWord {
@@ -136,8 +138,9 @@ export const RecoveryPhrase: React.FC<Props> = ({
     return (
       <HiddenPhraseContainer onClick={onClickReveal}>
         <FrostedGlass>
-          <EyeOffIcon />
-          <p>{getLocale('braveWalletClickToSeeRecoveryPhrase')}</p>
+          <IconWrapper>
+            <EyeOffIcon />
+          </IconWrapper>
         </FrostedGlass>
         <RecoveryPhraseContainer>
           {FAKE_PHRASE_WORDS.map((word, index) => (
@@ -177,11 +180,16 @@ export const RecoveryPhrase: React.FC<Props> = ({
               </RecoveryBubbleBadge>
             )}
 
-            <span>
-              {verificationModeEnabled
-                ? word.value
-                : `${word.index + 1}. ${word.value}`}
-            </span>
+            <Row gap='8px'>
+              {verificationModeEnabled ? (
+                word.value
+              ) : (
+                <>
+                  <Number> #{word.index + 1}</Number>
+                  <span>{word.value}</span>
+                </>
+              )}
+            </Row>
           </RecoveryBubble>
         )
       })}

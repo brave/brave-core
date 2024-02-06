@@ -195,6 +195,7 @@
   <message name="IDS_BRAVE_WALLET_GO_BACK" desc="Go back action text">Go back</message>
   <message name="IDS_BRAVE_WALLET_TOOL_TIP_COPIED_TO_CLIPBOARD" desc="General tooltip copy to clipboard">Copied!</message>
   <message name="IDS_BRAVE_WALLET_PASTE_FROM_CLIPBOARD" desc="Paste from clipboard">Paste from clipboard</message>
+  <message name="IDS_BRAVE_WALLET_CLICK_TO_COPY" desc="Click to copy">Clip to copy</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY" desc="Accounts screen primary accounts title">Primary crypto accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY" desc="Accounts screen secondary accounts title">Imported accounts</message>
   <message name="IDS_BRAVE_WALLET_CONNECTED_HARDWARE_WALLETS" desc="Accounts screen connected hardware wallets">Connected hardware wallets</message>

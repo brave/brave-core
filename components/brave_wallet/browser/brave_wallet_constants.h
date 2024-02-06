@@ -343,6 +343,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_TOOL_TIP_COPY_TO_CLIPBOARD},
     {"braveWalletToolTipCopiedToClipboard",
      IDS_BRAVE_WALLET_TOOL_TIP_COPIED_TO_CLIPBOARD},
+         {"braveWalletClickToCopy",
+     IDS_BRAVE_WALLET_CLICK_TO_COPY},
     {"braveWalletPasteFromClipboard", IDS_BRAVE_WALLET_PASTE_FROM_CLIPBOARD},
     {"braveWalletAccountsPrimary", IDS_BRAVE_WALLET_ACCOUNTS_PRIMARY},
     {"braveWalletAccountsSecondary", IDS_BRAVE_WALLET_ACCOUNTS_SECONDARY},

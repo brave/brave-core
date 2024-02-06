@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
+import * as leo from '@brave/leo/tokens/css'
 
 // styles
 import { Column } from '../../../components/shared/style'
@@ -106,7 +107,7 @@ export const PhraseCard = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  width: 376px;
+  width: 100%;
   align-items: center;
 `
 
@@ -125,8 +126,8 @@ export const PhraseCardBody = styled.div`
   width: 100%;
   border-style: solid;
   border-width: 1px;
-  border-color: ${(p) => p.theme.color.divider01};
-  border-radius: 4px;
+  border-color: ${leo.color.divider.subtle};
+  border-radius: 8px;
 `
 
 export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{

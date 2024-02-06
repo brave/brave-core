@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 import Dialog from '@brave/leo/react/dialog'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
@@ -117,4 +119,24 @@ export const WarningText = styled.p`
   line-height: 28px;
   padding: 0;
   margin: 0;
+`
+
+export const CopyButton = styled(Button).attrs({
+  kind: 'plain'
+})<{ isCopied?: boolean }>`
+  --leo-button-color: ${(p) =>
+    p.isCopied ? leo.color.systemfeedback.successText : leo.color.icon.default};
+`
+
+export const CopyText = styled.span`
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 400 !important;
+`
+
+export const CopiedTick = styled(Icon).attrs({
+  name: 'check-normal'
+})`
+  --leo-icon-size: 16px;
+  --leo-icon-color: ${leo.color.systemfeedback.successText};
 `

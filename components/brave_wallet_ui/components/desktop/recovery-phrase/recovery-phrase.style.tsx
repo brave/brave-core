@@ -4,20 +4,38 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-
-// images
-import EyeOffSvg from '../../../assets/svg-icons/eye-off-icon.svg'
-import FrostedGlassRecoveryPhrase from './images/frosted-glass-recovery-phrase.png'
+import Icon from '@brave/leo/react/icon'
+import * as leo from '@brave/leo/tokens/css'
+import { layoutSmallWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const RecoveryPhraseContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 29px;
   flex-direction: row;
   flex-wrap: wrap;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 16px;
+  padding: 16px;
+  width: 100%;
+  height: 208px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${leo.color.gray[20]};
+    border-radius: 100px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 8px;
+  }
+
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `
 
 export const RecoveryBubble = styled.div<{
@@ -26,23 +44,23 @@ export const RecoveryBubble = styled.div<{
 }>`
   position: ${(p) => (p.verificationModeEnabled ? 'relative' : 'unset')};
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-direction: column;
-  padding: 5px 0px;
+  padding: 8px;
   border-radius: 4px;
-  flex-basis: 100px;
-  margin-bottom: ${(p) => (p.verificationModeEnabled ? 24 : 16)}px;
+  border: 1px solid ${leo.color.divider.subtle};
   cursor: ${(p) => (p.verificationModeEnabled ? 'pointer' : 'unset')};
 
   font-family: Poppins;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 12px;
+  font-style: normal;
   font-weight: 600;
+  line-height: 16px;
 
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   background-color: ${(p) =>
-    p.selected ? p.theme.palette.blurple200 : p.theme.color.background01};
+    p.selected ? p.theme.palette.blurple200 : leo.color.container.background};
 
   @media (prefers-color-scheme: dark) {
     color: ${(p) =>
@@ -77,13 +95,14 @@ export const FrostedGlass = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-image: url(${FrostedGlassRecoveryPhrase});
-  border-radius: 4px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex: 1;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6.5px);
 `
 
 export const HiddenPhraseContainer = styled.div`
@@ -109,12 +128,29 @@ export const HiddenPhraseContainer = styled.div`
   }
 `
 
-export const EyeOffIcon = styled.div`
-  height: 24px;
+export const EyeOffIcon = styled(Icon).attrs({
+  name: 'eye-off'
+})`
+  --leo-icon-size: 24px;
+  --leo-icon-color: ${leo.color.icon.default};
+`
+
+export const Number = styled.span`
+  color: ${leo.color.text.tertiary};
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+`
+
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --leo-button-radius: 50%;
   width: 24px;
-  mask-image: url(${EyeOffSvg});
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: 24px;
-  background-color: ${(p) => p.theme.color.background01};
+  height: 60px;
+  border: 1px solid ${leo.color.divider.interactive};
+  border-radius: 16px;
 `

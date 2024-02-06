@@ -356,8 +356,9 @@ provideStrings({
 
   // Clipboard
   braveWalletToolTipCopyToClipboard: 'Copy to Clipboard',
-  braveWalletToolTipCopiedToClipboard: 'Copied!',
+  braveWalletToolTipCopiedToClipboard: 'Copied',
   braveWalletPasteFromClipboard: 'Paste from clipboard',
+  braveWalletClickToCopy: 'Click to copy',
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',

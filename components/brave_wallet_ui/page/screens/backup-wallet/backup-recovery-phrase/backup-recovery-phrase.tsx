@@ -6,6 +6,8 @@
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
 import { useDispatch } from 'react-redux'
+import Button from '@brave/leo/react/button'
+import * as leo from '@brave/leo/tokens/css'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -23,33 +25,32 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-copy-to-clipboard'
 import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 
-// styles
-import {
-  ToggleVisibilityButton,
-  LinkText,
-  CopyButton,
-  HorizontalSpace
-} from '../../../../components/shared/style'
-import {
-  Description,
-  NextButtonRow,
-  Title,
-  TitleAndDescriptionContainer,
-  PhraseCard,
-  PhraseCardBody,
-  PhraseCardBottomRow,
-  PhraseCardTopRow
-} from '../../onboarding/onboarding.style'
-
 // components
 import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
-import { CopiedToClipboardConfirmation } from '../../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
-import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button/index'
 import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
+import {
+  BackupInstructions,
+  Subtitle,
+  CopyButton,
+  CopiedTick,
+  CopyText
+} from '../explain-recovery-phrase/explain-recovery-phrase.style'
+import { SkipWarningDialog } from '../explain-recovery-phrase/skip-warning-dialog'
+
+// styles
+import { VerticalSpace } from '../../../../components/shared/style'
+import {
+  ContinueButton,
+  NextButtonRow,
+  PhraseCard,
+  PhraseCardBody,
+  PhraseCardBottomRow
+} from '../../onboarding/onboarding.style'
 
 export const BackupRecoveryPhrase = () => {
+  // state
+  const [isSkipWarningOpen, setIsSkipWarningOpen] = React.useState(false)
+
   // routing
   const history = useHistory()
   const { pathname } = useLocation()
@@ -67,6 +68,7 @@ export const BackupRecoveryPhrase = () => {
 
   // custom hooks
   const { isCopied, temporaryCopyToClipboard } = useTemporaryCopyToClipboard()
+  console.log(isCopied)
 
   // methods
   const skipBackup = () => {
@@ -84,9 +86,9 @@ export const BackupRecoveryPhrase = () => {
     setIsPhraseShown(true)
   }, [])
 
-  const toggleShowPhrase = () => {
-    setIsPhraseShown((prev) => !prev)
-  }
+  // const toggleShowPhrase = () => {
+  //   setIsPhraseShown((prev) => !prev)
+  // }
 
   const onCopyPhrase = async () => {
     await temporaryCopyToClipboard(mnemonic || '')
@@ -99,66 +101,82 @@ export const BackupRecoveryPhrase = () => {
 
   // render
   return (
-    <OnboardingContentLayout
-      title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
-      subTitle={
-        'Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.'
-      }
-    >
-      <TitleAndDescriptionContainer>
-        <Title>{getLocale('braveWalletRecoveryPhraseBackupTitle')}</Title>
-        <Description>
-          {getLocale('braveWalletRecoveryPhraseBackupWarning')}
-          <LinkText
-            href='https://brave.com/learn/wallet-recovery-phrase/#how-should-i-store-my-recovery-phrase'
-            target='_blank'
-            rel='noreferrer'
-            referrerPolicy='no-referrer'
-          >
-            {getLocale('braveWalletLearnMore')}
-          </LinkText>
-        </Description>
-      </TitleAndDescriptionContainer>
-
-      <PhraseCard>
-        <PhraseCardTopRow>
-          <ToggleVisibilityButton
-            isVisible={isPhraseShown}
-            onClick={toggleShowPhrase}
-          />
-        </PhraseCardTopRow>
-
-        <PhraseCardBody>
-          <RecoveryPhrase
-            hidden={!isPhraseShown}
-            onClickReveal={revealPhrase}
-            recoveryPhrase={recoveryPhrase}
-          />
-        </PhraseCardBody>
-
-        <PhraseCardBottomRow>
-          <CopyButton onClick={onCopyPhrase} />
-
-          {isCopied && (
-            <>
-              <CopiedToClipboardConfirmation />
-              <HorizontalSpace space='52px' />
-            </>
+    <>
+      <OnboardingContentLayout
+        title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+        subTitle=''
+      >
+        <Subtitle>
+          {getLocale(
+            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
           )}
-        </PhraseCardBottomRow>
-      </PhraseCard>
+        </Subtitle>
+        <VerticalSpace space='14px' />
+        <BackupInstructions>
+          {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
+        </BackupInstructions>
+        <VerticalSpace space='54px' />
 
-      <NextButtonRow>
-        <NavButton
-          buttonType='primary'
-          text={getLocale('braveWalletButtonNext')}
-          url={
-            isOnboarding
-              ? WalletRoutes.OnboardingVerifyRecoveryPhrase
-              : WalletRoutes.BackupVerifyRecoveryPhrase
-          }
-        />
-      </NextButtonRow>
-    </OnboardingContentLayout>
+        <PhraseCard>
+          <PhraseCardBody>
+            <RecoveryPhrase
+              hidden={!isPhraseShown}
+              onClickReveal={revealPhrase}
+              recoveryPhrase={recoveryPhrase}
+            />
+          </PhraseCardBody>
+
+          <VerticalSpace space='24px' />
+
+          <PhraseCardBottomRow>
+            <CopyButton
+              onClick={() => onCopyPhrase()}
+              isCopied={isCopied}
+            >
+              {isCopied ? (
+                <>
+                  <CopyText>
+                    {getLocale('braveWalletToolTipCopiedToClipboard')}
+                  </CopyText>
+                  <div slot='icon-after'>
+                    <CopiedTick />
+                  </div>
+                </>
+              ) : (
+                <CopyText>Click to copy</CopyText>
+              )}
+            </CopyButton>
+          </PhraseCardBottomRow>
+        </PhraseCard>
+
+        <VerticalSpace space='24px' />
+
+        <NextButtonRow>
+          <ContinueButton
+            onClick={() =>
+              history.push(
+                isOnboarding
+                  ? WalletRoutes.OnboardingBackupRecoveryPhrase
+                  : WalletRoutes.BackupRecoveryPhrase
+              )
+            }
+          >
+            {getLocale('braveWalletButtonContinue')}
+          </ContinueButton>
+        </NextButtonRow>
+        <Button
+          kind='plain-faint'
+          color={leo.color.text.secondary}
+          onClick={() => setIsSkipWarningOpen(true)}
+        >
+          {getLocale('braveWalletButtonSkip')}
+        </Button>
+      </OnboardingContentLayout>
+      <SkipWarningDialog
+        isOpen={isSkipWarningOpen}
+        onBack={() => setIsSkipWarningOpen(false)}
+        onSkip={skipBackup}
+      />
+    </>
   )
 }
