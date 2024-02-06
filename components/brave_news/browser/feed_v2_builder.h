@@ -95,7 +95,7 @@ class FeedV2Builder : public PublishersController::Observer {
   using FeedGenerator =
       base::OnceCallback<mojom::FeedV2Ptr(FeedGenerationInfo)>;
 
-  using UpdateCallback = base::OnceCallback<void(base::OnceClosure completed)>;
+  using UpdateCallback = base::OnceClosure;
   struct UpdateSettings {
     bool signals = false;
     bool suggested_publishers = false;

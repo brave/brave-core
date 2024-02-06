@@ -13,7 +13,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/barrier_closure.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -28,7 +27,6 @@
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
@@ -1159,23 +1157,20 @@ void FeedV2Builder::EnsureFeedIsUpdating() {
 }
 
 void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
-  UpdateData(
-      {.signals = true},
-      base::BindOnce(
-          [](base::WeakPtr<FeedV2Builder> builder, GetSignalsCallback callback,
-             base::OnceClosure on_complete) {
-            if (!builder) {
-              std::move(callback).Run({});
-              return;
-            }
-            base::flat_map<std::string, Signal> signals;
-            for (const auto& [key, value] : builder->signals_) {
-              signals[key] = value->Clone();
-            }
-            std::move(callback).Run(std::move(signals));
-            std::move(on_complete).Run();
-          },
-          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  UpdateData({.signals = true},
+             base::BindOnce(
+                 [](base::WeakPtr<FeedV2Builder> builder,
+                    GetSignalsCallback callback) {
+                   if (!builder) {
+                     return;
+                   }
+                   base::flat_map<std::string, Signal> signals;
+                   for (const auto& [key, value] : builder->signals_) {
+                     signals[key] = value->Clone();
+                   }
+                   std::move(callback).Run(std::move(signals));
+                 },
+                 weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void FeedV2Builder::RecheckFeedHash() {
@@ -1346,42 +1341,21 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   std::tie(hash_, subscribed_count_) =
       GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
 
-  // Move the |callbacks| out of the current update. At this point, the update
-  // has completed, we just need to fire off the callbacks.
-  auto callbacks = std::move(current_update_->callbacks);
+  for (auto& callback : current_update_->callbacks) {
+    std::move(callback).Run();
+  }
 
-  // Force all update requests after this point to be part of |next_update_|, as
-  // any callbacks added after this point won't be invoked.
-  current_update_ = {};
+  // Notify listeners of updated hash.
+  for (const auto& listener : listeners_) {
+    listener->OnUpdateAvailable(hash_);
+  }
 
-  // Fire all the pending callbacks. Wait for them all to complete before we
-  // fire off the next update.
-  auto notify_listeners_completed = base::BarrierClosure(
-      callbacks.size(), base::BindOnce(
-                            [](base::WeakPtr<FeedV2Builder> builder) {
-                              if (!builder) {
-                                return;
-                              }
+  // Move |next_update_| into |current_update_|, and kick it off (if set).
+  current_update_ = std::move(next_update_);
+  next_update_ = std::nullopt;
 
-                              // Notify listeners of updated hash.
-                              for (const auto& listener : builder->listeners_) {
-                                listener->OnUpdateAvailable(builder->hash_);
-                              }
-
-                              // Move |next_update_| into |current_update_|, and
-                              // if it's set, kick off the update.
-                              builder->current_update_ =
-                                  std::move(builder->next_update_);
-                              builder->next_update_ = std::nullopt;
-
-                              if (builder->current_update_) {
-                                builder->PrepareAndFetch();
-                              }
-                            },
-                            weak_ptr_factory_.GetWeakPtr()));
-
-  for (auto& callback : callbacks) {
-    std::move(callback).Run(notify_listeners_completed);
+  if (current_update_) {
+    PrepareAndFetch();
   }
 }
 
@@ -1395,18 +1369,9 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
       base::BindOnce(
           [](const base::WeakPtr<FeedV2Builder> builder,
              mojom::FeedV2TypePtr type, FeedGenerator generate,
-             BuildFeedCallback callback, base::OnceClosure on_complete) {
-            auto built_callback = base::BindOnce(
-                [](BuildFeedCallback callback,
-                   base::OnceClosure completion_callback,
-                   mojom::FeedV2Ptr feed) {
-                  std::move(callback).Run(std::move(feed));
-                  std::move(completion_callback).Run();
-                },
-                std::move(callback), std::move(on_complete));
-
+             BuildFeedCallback callback) {
             if (!builder) {
-              std::move(built_callback).Run(mojom::FeedV2::New());
+              std::move(callback).Run(mojom::FeedV2::New());
               return;
             }
 
@@ -1465,7 +1430,7 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
                     },
                     builder->raw_feed_items_.size(), builder->subscribed_count_,
                     !publishers.empty(), builder->hash_, std::move(type),
-                    std::move(built_callback)));
+                    std::move(callback)));
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type), std::move(generator),
           std::move(callback)));
