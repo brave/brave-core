@@ -122,6 +122,16 @@ INSTANTIATE_TEST_SUITE_P(
       {}
     },
     PostCommitTransactionUpholdParamType{
+      "HTTP_2xx_transaction_completed",
+      net::HTTP_PARTIAL_CONTENT,
+      R"(
+        {
+          "status": "completed"
+        }
+      )",
+      {}
+    },
+    PostCommitTransactionUpholdParamType{
       "HTTP_401_access_token_expired",
       net::HTTP_UNAUTHORIZED,
       "",
