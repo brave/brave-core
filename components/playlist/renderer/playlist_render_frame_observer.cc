@@ -75,6 +75,8 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
     return;
   }
 
+  DVLOG(2) << __FUNCTION__ << ", main frame: " << render_frame()->IsMainFrame();
+
   const auto& blink_preferences = render_frame()->GetBlinkPreferences();
   if (blink_preferences.hide_media_src_api) {
     HideMediaSourceAPI();
