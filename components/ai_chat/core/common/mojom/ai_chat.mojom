@@ -77,14 +77,28 @@ struct SiteInfo {
   bool is_content_association_possible;
 };
 
+enum ActionType {
+  UNSPECIFIED,
+  RESPONSE,
+  SUMMARIZE_PAGE,
+  SUMMARIZE_VIDEO,
+  SUMMARIZE_SELECTED_TEXT,
+  QUERY,
+};
+
 // Represents a single turn in a conversation.
-// The character type defines which party initiated the turn in the conversation
+// The character type defines which party initiated the turn in the
+// conversation.
 // The text attribute contains the actual content of the turn, which can be a
 // message, statement, or question, among others.
+// The selected_text attribute contains what user selects in the page when
+// calling from the context menu.
 struct ConversationTurn {
   CharacterType character_type;
+  ActionType action_type;
   ConversationTurnVisibility visibility;
   string text;
+  string? selected_text;
 };
 
 // Represents an AI engine model choice, usually for the user to choose for a

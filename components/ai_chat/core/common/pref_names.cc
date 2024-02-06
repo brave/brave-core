@@ -33,6 +33,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kBraveChatPackageNameAndroid, "");
   registry->RegisterStringPref(kBraveChatProductIdAndroid, "");
 #endif
+  registry->RegisterBooleanPref(kBraveAIChatContextMenuEnabled, true);
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {

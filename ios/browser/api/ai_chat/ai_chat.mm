@@ -101,8 +101,9 @@
 - (void)submitHumanConversationEntry:(NSString*)text {
   driver_->SubmitHumanConversationEntry(
       {ai_chat::mojom::CharacterType::HUMAN,
+       ai_chat::mojom::ActionType::UNSPECIFIED,
        ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
-       base::SysNSStringToUTF8(text)});
+       base::SysNSStringToUTF8(text), std::nullopt});
 }
 
 - (void)submitSummarizationRequest {

@@ -14,6 +14,7 @@ import DataContext from '../../state/context'
 import ContextMenuAssistant from '../context_menu_assistant'
 import { getLocale } from '$web-common/locale'
 import SiteTitle from '../site_title'
+import Quote from '../quote'
 
 const CodeBlock = React.lazy(async () => ({ default: (await import('../code_block')).default.Block }))
 const CodeInline = React.lazy(async () => ({ default: (await import('../code_block')).default.Inline }))
@@ -135,6 +136,7 @@ function ConversationList(props: ConversationListProps) {
                 >
                   {<FormattedTextRenderer text={turn.text} />}
                   {isLoading && <span className={styles.caret} />}
+                  {turn.selectedText && <Quote text={turn.selectedText} />}
                   {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
                 </div>
               </div>

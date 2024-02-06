@@ -1442,6 +1442,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL" desc="The text for settings option">
     Show Leo icon in the sidebar
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_LABEL" desc="The text for settings option to show Leo in context menu">
+    Show Leo in the context menu on websites
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC" desc="The description for settings option to show Leo in context menu">
+    Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo.
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation
   </message>

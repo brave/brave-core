@@ -1,0 +1,39 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.quote {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 12px;
+  width: 100%;
+}
+
+.text::before {
+  content: "";
+  width: 3px;
+  background: var(--leo-color-divider-strong);
+  border-radius: 2px;
+  margin-right: 12px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.text {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.1px;
+  color: var(--leo-color-text-secondary);
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
