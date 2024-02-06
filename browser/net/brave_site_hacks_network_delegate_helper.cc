@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/query_filter/utils.h"
 #include "content/public/common/referrer.h"

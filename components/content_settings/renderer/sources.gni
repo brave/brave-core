@@ -9,7 +9,7 @@ brave_components_content_settings_renderer_sources = [
 ]
 
 brave_components_content_settings_renderer_deps = [
-  "//brave/components/brave_shields/common",
-  "//brave/components/brave_shields/common:mojom",
+  "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_shields/core/common:mojom",
   "//brave/third_party/blink/renderer",
 ]

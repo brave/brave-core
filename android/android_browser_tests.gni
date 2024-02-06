@@ -114,7 +114,7 @@ android_test_exception_deps = [
   "//brave/browser/ui:browser_tests",
   "//brave/browser/ui/tabs/test:browser_tests",
   "//brave/browser/ui/views/tabs:browser_tests",
-  "//brave/components/brave_shields/browser:test_support",
+  "//brave/components/brave_shields/content/test:test_support",
   "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
   "//brave/components/de_amp/browser/test:browser_tests",
   "//brave/renderer/skus:browser_tests",

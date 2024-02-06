@@ -11,7 +11,7 @@
 
 #include "base/memory/ref_counted.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/common/brave_shields.mojom.h"
+#include "brave/components/brave_shields/core/common/brave_shields.mojom.h"
 #include "url/gurl.h"
 
 namespace network {

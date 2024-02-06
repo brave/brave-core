@@ -10,8 +10,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
 namespace cosmetic_filters {

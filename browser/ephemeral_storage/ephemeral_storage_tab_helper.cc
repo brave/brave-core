@@ -8,7 +8,7 @@
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"

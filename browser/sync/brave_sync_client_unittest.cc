@@ -9,7 +9,7 @@
 #include "base/path_service.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"

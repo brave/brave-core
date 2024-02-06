@@ -1,0 +1,53 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "engine_test_observer.cc",
+    "engine_test_observer.h",
+    "test_filters_provider.cc",
+    "test_filters_provider.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "adblock_stub_response_unittest.cc",
+    "brave_farbling_service_unittest.cc",
+    "cookie_list_opt_in_service_unittest.cc",
+    "cosmetic_merge_unittest.cc",
+    "csp_merge_unittest.cc",
+  ]
+
+  deps = [
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+
+  if (!is_android) {
+    sources += [
+      "brave_shields_p3a_unittest.cc",
+      "brave_shields_util_unittest.cc",
+    ]
+
+    deps += [ "//brave/browser/profiles" ]
+  }
+}

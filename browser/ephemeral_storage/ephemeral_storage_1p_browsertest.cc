@@ -5,7 +5,7 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"

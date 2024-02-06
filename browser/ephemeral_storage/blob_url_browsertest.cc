@@ -8,7 +8,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/pattern.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
