@@ -21,6 +21,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
@@ -246,6 +247,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
       base::SysNSStringToUTF16([[normal_window_submenu itemAtIndex:4] title]));
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorItemEnabled) {
   NSApplication* app = [NSApplication sharedApplication];
   BraveAppController* ac =
@@ -328,5 +330,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   EXPECT_FALSE(tor_menu.enabled);
   EXPECT_TRUE(tor_menu.isHidden);
 }
+#endif  // BUILDFLAG(ENABLE_TOR)
 
 }  // namespace
