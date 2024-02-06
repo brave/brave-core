@@ -12,6 +12,7 @@
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
+#include "gin/arguments.h"
 #include "mojo/public/cpp/bindings/associated_receiver_set.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -49,7 +50,7 @@ class PlaylistRenderFrameObserver final
   void HideMediaSourceAPI() const;
   void InstallMediaDetector();
 
-  void OnMediaUpdated(std::string value);
+  void OnMediaUpdated(gin::Arguments* args);
 
   std::vector<base::ReadOnlySharedMemoryRegion> on_load_scripts_;
   mojo::AssociatedReceiverSet<mojom::OnLoadScriptInjector> receivers_;

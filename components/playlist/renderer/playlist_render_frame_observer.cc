@@ -6,7 +6,9 @@
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 
 #include "base/functional/bind.h"
+#include "base/values.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/v8_value_converter.h"
 #include "gin/converter.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
@@ -108,7 +110,8 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
 
   CHECK(on_load_scripts_.size() == 1);
   auto mapping = on_load_scripts_[0].Map();
-  std::string script_converted(mapping.GetMemoryAs<char>(), on_load_scripts_[0].GetSize());
+  std::string script_converted(mapping.GetMemoryAs<char>(),
+                               on_load_scripts_[0].GetSize());
   DVLOG(2) << "Lofasz:\n" << script_converted;
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
@@ -139,8 +142,24 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
   std::ignore = function->Call(context, context->Global(), 1, &arg);
 }
 
-void PlaylistRenderFrameObserver::OnMediaUpdated(std::string value) {
-  DVLOG(2) << "lofasz\n" << " " << value;
+void PlaylistRenderFrameObserver::OnMediaUpdated(gin::Arguments* args) {
+  if (args->Length() != 1) {
+    return;
+  }
+
+  v8::Local<v8::Value> arg = args->PeekNext();
+  if (arg.IsEmpty()) {
+    return;
+  }
+
+  std::unique_ptr<base::Value> value =
+      content::V8ValueConverter::Create()->FromV8Value(
+          arg, args->GetHolderCreationContext());
+  if (value) {
+    DVLOG(2) << "lofasz\n" << *value;
+  } else {
+    DVLOG(2) << "lofasz failed";
+  }
 
   // media_handler_->OnMediaUpdatedFromRenderFrame();
 }
