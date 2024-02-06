@@ -8,7 +8,7 @@ from os import getcwd
 from os.path import basename, dirname
 from subprocess import check_call
 
-from import_inline import sys_path
+from brave_chromium_utils import sys_path
 
 with sys_path('//chrome/tools/build/win'):
     import create_installer_archive as upstream_impl

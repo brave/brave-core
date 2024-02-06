@@ -6,23 +6,18 @@
         ".*\\.clangd",
         ".*\\.gn",
         ".*\\.gni",
-        ".*\\.idl",
         ".*\\.in",
         ".*\\.info",
-        ".*\\.json",
-        ".*\\.json5",
-        ".*\\.mojom",
-        ".*\\.pdl",
-        ".*\\.py",
+        ".*\\.pyc",
         ".*\\.xml",
         "(.*/)?DEPS",
-        "python_modules/.*",
     ],
 
     // Files matching these exact paths will be excluded.
     // Please, keep in alphabetical order.
     "path_excludes": [
         "base/feature_override.h",
+        "check_chromium_src_config.json5",
         "chrome/browser/devtools/url_constants_unittest.cc",
         "chrome/browser/history/history_utils_unittest.cc",
         "chrome/browser/notifications/notification_handler_impl.h",
