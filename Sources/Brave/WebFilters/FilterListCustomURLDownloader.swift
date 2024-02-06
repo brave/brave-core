@@ -123,7 +123,7 @@ actor FilterListCustomURLDownloader: ObservableObject {
     
     await AdBlockStats.shared.compile(
       lazyInfo: lazyInfo, resourcesInfo: resourcesInfo,
-      compileContentBlockers: downloadResult.isModified
+      compileContentBlockers: true
     )
   }
   

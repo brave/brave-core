@@ -17,14 +17,8 @@ actor ContentBlockerManager {
   // TODO: Use a proper logger system once implemented and adblock files are moved to their own module(#5928).
   /// Logger to use for debugging.
   static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "adblock")
-  
-  struct CompileOptions: OptionSet {
-    let rawValue: Int
-    
-    static let stripContentBlockers = CompileOptions(rawValue: 1 << 0)
-    static let punycodeDomains = CompileOptions(rawValue: 1 << 1)
-    static let all: CompileOptions = [.stripContentBlockers, .punycodeDomains]
-  }
+  static let signpost = OSSignposter(logger: log)
+  private static let maxContentBlockerSize = 150_000
   
   enum CompileError: Error {
     case noRuleListReturned
@@ -179,34 +173,36 @@ actor ContentBlockerManager {
   }
   
   /// Compile the rule list found in the given local URL using the specified modes
-  func compileRuleList(at localFileURL: URL, for type: BlocklistType, options: CompileOptions = [], modes: [BlockingMode]) async throws {
-    let filterSet = try String(contentsOf: localFileURL)
-    let result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
-    try await compile(encodedContentRuleList: result.rulesJSON, for: type, options: options, modes: modes)
-  }
-  
-  /// Compile the given resource and store it in cache for the given blocklist type and specified modes
-  func compile(encodedContentRuleList: String, for type: BlocklistType, options: CompileOptions = [], modes: [BlockingMode]) async throws {
-    guard !modes.isEmpty else { return }
-    let cleanedRuleList: [[String: Any?]]
+  func compileRuleList(at localFileURL: URL, for type: BlocklistType, modes: [BlockingMode]) async throws {
+    let result: ContentBlockingRulesResult
+    let signpostID = Self.signpost.makeSignpostID()
+    let state = Self.signpost.beginInterval("convertRules", id: signpostID, "\(type.debugDescription)")
     
     do {
-      cleanedRuleList = try await process(encodedContentRuleList: encodedContentRuleList, for: type, with: options)
+      let filterSet = try String(contentsOf: localFileURL)
+      result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+      Self.signpost.endInterval("convertRules", state)
     } catch {
-      for mode in modes {
-        self.cachedRuleLists[type.makeIdentifier(for: mode)] = .failure(error)
-      }
+      Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
       throw error
     }
     
+    try await compile(encodedContentRuleList: result.rulesJSON, for: type, modes: modes)
+  }
+  
+  /// Compile the given resource and store it in cache for the given blocklist type and specified modes
+  func compile(encodedContentRuleList: String, for type: BlocklistType, modes: [BlockingMode]) async throws {
+    guard !modes.isEmpty else { return }
     var foundError: Error?
     
     for mode in modes {
-      let moddedRuleList = self.set(mode: mode, forRuleList: cleanedRuleList)
       let identifier = type.makeIdentifier(for: mode)
       
       do {
-        let ruleList = try await compile(ruleList: moddedRuleList, for: type, mode: mode)
+        let moddedRuleList = try self.modify(encodedContentRuleList: encodedContentRuleList, for: mode)
+        let ruleList = try await compile(
+          encodedContentRuleList: moddedRuleList ?? encodedContentRuleList, for: type, mode: mode
+        )
         self.cachedRuleLists[identifier] = .success(ruleList)
         Self.log.debug("Compiled rule list for `\(identifier)`")
       } catch {
@@ -221,23 +217,22 @@ actor ContentBlockerManager {
     }
   }
   
-  private func set(mode: BlockingMode, forRuleList ruleList: [[String: Any?]]) -> [[String: Any?]] {
-    guard let lastRule = ruleList.last else { return ruleList }
-    
+  private func modify(encodedContentRuleList: String, for mode: BlockingMode) throws -> String? {
     switch mode {
-    case .aggressive:
-      guard isFirstPartyException(jsonObject: lastRule) else { return ruleList }
-      
-      // Remove this rule to make it aggressive
-      var ruleList = ruleList
-      ruleList.removeLast()
-      return ruleList
+    case .aggressive, .general:
+      // Aggressive mode and general mode has no modification to the rules
+      return nil
       
     case .standard:
-      guard !isFirstPartyException(jsonObject: lastRule) else { return ruleList }
-      
       // Add the ignore first party rule to make it standard
-      var ruleList = ruleList
+      var ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
+      
+      // We need to make sure we are not going over the limit
+      // So we make space for the added rule
+      if ruleList.count >= (Self.maxContentBlockerSize) {
+        ruleList = Array(ruleList[..<(Self.maxContentBlockerSize - 1)])
+      }
+      
       ruleList.append([
         "action": ["type": "ignore-previous-rules"],
         "trigger": [
@@ -245,27 +240,28 @@ actor ContentBlockerManager {
           "load-type": ["first-party"]
         ] as [String: Any?]
       ])
-      return ruleList
       
-    case .general:
-      // Nothing needs to be done
-      return ruleList
+      let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
+      return String(bytes: modifiedData, encoding: .utf8)
     }
   }
   
   /// Compile the given resource and store it in cache for the given blocklist type
-  private func compile(ruleList: [[String: Any?]], for type: BlocklistType, mode: BlockingMode) async throws -> WKContentRuleList {
+  private func compile(encodedContentRuleList: String, for type: BlocklistType, mode: BlockingMode) async throws -> WKContentRuleList {
     let identifier = type.makeIdentifier(for: mode)
-    let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
-    let cleanedRuleList = String(bytes: modifiedData, encoding: .utf8)
-    let ruleList = try await ruleStore.compileContentRuleList(
-      forIdentifier: identifier, encodedContentRuleList: cleanedRuleList)
+    let signpostID = Self.signpost.makeSignpostID()
+    let state = Self.signpost.beginInterval("compileRuleList", id: signpostID, "\(identifier)")
     
-    guard let ruleList = ruleList else {
-      throw CompileError.noRuleListReturned
+    do {
+      let ruleList = try await ruleStore.compileContentRuleList(
+        forIdentifier: identifier, encodedContentRuleList: encodedContentRuleList)
+      guard let ruleList = ruleList else { throw CompileError.noRuleListReturned }
+      Self.signpost.endInterval("compileRuleList", state)
+      return ruleList
+    } catch {
+      Self.signpost.endInterval("compileRuleList", state, "\(error.localizedDescription)")
+      throw error
     }
-    
-    return ruleList
   }
   
   /// Return all the modes that need to be compiled for the given type
@@ -443,33 +439,6 @@ actor ContentBlockerManager {
     return jsonArray
   }
   
-  /// Perform operations of the rule list given by the provided options
-  func process(encodedContentRuleList: String, for type: BlocklistType, with options: CompileOptions) async throws -> [[String: Any?]] {
-    var ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
-    if options.isEmpty { return ruleList }
-    
-    #if DEBUG
-    let originalCount = ruleList.count
-    #endif
-    
-    if options.contains(.stripContentBlockers) {
-      ruleList = await stripCosmeticFilters(jsonArray: ruleList)
-    }
-    
-    if options.contains(.punycodeDomains) {
-      ruleList = await punycodeDomains(jsonArray: ruleList)
-    }
-    
-    #if DEBUG
-    let count = originalCount - ruleList.count
-    if count > 0 {
-      Self.log.debug("Filtered out \(count) rules for `\(type.debugDescription)`")
-    }
-    #endif
-    
-    return ruleList
-  }
-  
   private func encode(ruleList: [[String: Any?]], isAggressive: Bool) throws -> String {
     let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
     
@@ -478,88 +447,6 @@ actor ContentBlockerManager {
     }
     
     return result
-  }
-  
-  private func isFirstPartyException(jsonObject: [String: Any?]) -> Bool {
-    guard
-      let actionDictionary = jsonObject["action"] as? [String: Any],
-      let actionType = actionDictionary["type"] as? String, actionType == "ignore-previous-rules",
-      let triggerDictionary = jsonObject["trigger"] as? [String: Any],
-      let urlFilter = triggerDictionary["url-filter"] as? String, urlFilter == ".*",
-      let loadType = triggerDictionary["load-type"] as? [String], loadType == ["first-party"],
-      triggerDictionary["resource-type"] == nil
-    else {
-      return false
-    }
-    
-    return true
-  }
-  
-  /// This will remove cosmetic filters from the provided encoded rule list. These are any rules that have a `selector` in the `action` field.
-  /// We do this because our cosmetic filtering is handled via the `SelectorsPoller.js` file and these selectors come from the engine directly.
-  private func stripCosmeticFilters(jsonArray: [[String: Any?]]) async -> [[String: Any?]] {
-    let updatedArray = await jsonArray.asyncConcurrentCompactMap { dictionary in
-      guard let actionDictionary = dictionary["action"] as? [String: Any] else {
-        return dictionary
-      }
-      
-      // Filter out with any dictionaries with `selector` actions
-      if actionDictionary["selector"] != nil {
-        return nil
-      } else {
-        return dictionary
-      }
-    }
-    
-    return updatedArray
-  }
-  
-  /// Convert all domain in the `if-domain` and `unless-domain` fields.
-  ///
-  /// Sometimes we get non-punycoded domans in our JSON and apple does not allow non-punycoded domains to be passed to the rule store.
-  private func punycodeDomains(jsonArray: [[String: Any?]]) async -> [[String: Any?]] {
-    var jsonArray = jsonArray
-    
-    await jsonArray.enumerated().asyncConcurrentForEach({ index, dictionary in
-      guard var triggerObject = dictionary["trigger"] as? [String: Any] else {
-        return
-      }
-      
-      if let domainArray = triggerObject["if-domain"] as? [String] {
-        triggerObject["if-domain"] = self.punycodeConversion(domains: domainArray)
-      }
-      
-      if let domainArray = triggerObject["unless-domain"] as? [String] {
-        triggerObject["unless-domain"] = self.punycodeConversion(domains: domainArray)
-      }
-      
-      jsonArray[index]["trigger"] = triggerObject
-    })
-    
-    return jsonArray
-  }
-  
-  /// Punycode an array of `domains` and return the punycoded results.
-  /// The array size shoud be unchanged but this is not guarantted.
-  private func punycodeConversion(domains: [String]) -> [String] {
-    return domains.compactMap { domain -> String? in
-      guard domain.allSatisfy({ $0.isASCII }) else {
-        if let result = NSURL(idnString: domain)?.absoluteString {
-          #if DEBUG
-          Self.log.debug("Punycoded domain: \(domain) -> \(result)")
-          #endif
-          return result
-        } else {
-          #if DEBUG
-          Self.log.debug("Could not punycode domain: \(domain)")
-          #endif
-          
-          return nil
-        }
-      }
-      
-      return domain
-    }
   }
 }
 
