@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -41,14 +42,12 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
 // static
 Result PostOAuthUphold::ProcessResponse(RewardsEngineImpl& engine,
                                         const mojom::UrlResponse& response) {
-  switch (response.status_code) {
-    case net::HTTP_OK:  // HTTP 200
-      return ParseBody(engine, response.body);
-    default:
-      engine.LogError(FROM_HERE)
-          << "Unexpected status code! (HTTP " << response.status_code << ')';
-      return base::unexpected(Error::kUnexpectedStatusCode);
+  if (URLLoader::IsSuccessCode(response.status_code)) {
+    return ParseBody(engine, response.body);
   }
+  engine.LogError(FROM_HERE)
+      << "Unexpected status code: " << response.status_code;
+  return base::unexpected(Error::kUnexpectedStatusCode);
 }
 
 PostOAuthUphold::PostOAuthUphold(RewardsEngineImpl& engine,

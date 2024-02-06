@@ -83,6 +83,19 @@ INSTANTIATE_TEST_SUITE_P(
       "9fd84e43c803622cc65a63c6d380a47612d7d718"
     },
     PostOAuthUpholdParamType{
+      "HTTP_2xx_success",
+      net::HTTP_PARTIAL_CONTENT,
+      R"(
+        {
+          "access_token": "9fd84e43c803622cc65a63c6d380a47612d7d718",
+          "expires_in": 7775999,
+          "scope": "cards:read cards:write user:read transactions:transfer:application transactions:transfer:others",
+          "token_type": "bearer"
+        }
+      )",
+      "9fd84e43c803622cc65a63c6d380a47612d7d718"
+    },
+    PostOAuthUpholdParamType{
       "HTTP_200_failed_to_parse_body",
       net::HTTP_OK,
       R"(

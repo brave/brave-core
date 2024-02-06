@@ -48,6 +48,12 @@ class URLLoader : public RewardsEngineHelper {
   // logged when using the `kDetailed` log level.
   static bool ShouldLogRequestHeader(const std::string& header);
 
+  // Returns a value indicating whether the specified HTTP response code
+  // indicates success (i.e. is in the 200 range).
+  static bool IsSuccessCode(int http_status_code) {
+    return http_status_code >= 200 && http_status_code < 300;
+  }
+
  private:
   void LogRequest(const mojom::UrlRequest& request, LogLevel log_level);
   void LogResponse(const mojom::UrlResponse& response, LogLevel log_level);

@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -43,9 +44,10 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
 Result PostCreateTransactionUphold::ProcessResponse(
     RewardsEngineImpl& engine,
     const mojom::UrlResponse& response) {
+  if (URLLoader::IsSuccessCode(response.status_code)) {
+    return ParseBody(engine, response.body);
+  }
   switch (response.status_code) {
-    case net::HTTP_ACCEPTED:  // HTTP 202
-      return ParseBody(engine, response.body);
     case net::HTTP_UNAUTHORIZED:  // HTTP 401
       engine.LogError(FROM_HERE) << "Access token expired";
       return base::unexpected(Error::kAccessTokenExpired);

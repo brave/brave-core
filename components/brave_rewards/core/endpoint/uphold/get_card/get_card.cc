@@ -41,7 +41,7 @@ mojom::Result GetCard::CheckStatusCode(const int status_code) {
     return mojom::Result::EXPIRED_TOKEN;
   }
 
-  if (status_code != net::HTTP_OK) {
+  if (!URLLoader::IsSuccessCode(status_code)) {
     engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
