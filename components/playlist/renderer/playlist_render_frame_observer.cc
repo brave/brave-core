@@ -25,14 +25,9 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     int32_t isolated_world_id)
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(render_frame),
-<<<<<<< HEAD
       isolated_world_id_(isolated_world_id) {
   EnsureConnectedToMediaHandler();
 }
-=======
-      isolated_world_id_(isolated_world_id),
-      javascript_handler_(std::make_unique<PlaylistJSHandler>(render_frame)) {}
->>>>>>> a45d9f3528 (Request media detection script from browser side)
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
