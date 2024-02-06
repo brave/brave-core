@@ -50,7 +50,8 @@ void PlaylistRenderFrameObserver::OnDestruct() {
 
 void PlaylistRenderFrameObserver::AddOnLoadScript(
     base::ReadOnlySharedMemoryRegion script) {
-  on_load_scripts_.push_back(std::move(script));
+  media_detector_.emplace(script.Map().GetMemoryAs<char>(), script.GetSize());
+  CHECK(!media_detector_->empty());
 }
 
 bool PlaylistRenderFrameObserver::EnsureConnectedToMediaHandler() {
@@ -75,7 +76,9 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
     return;
   }
 
-  DVLOG(2) << __FUNCTION__ << ", main frame: " << render_frame()->IsMainFrame();
+  if (!render_frame()->IsMainFrame()) {
+    return;
+  }
 
   const auto& blink_preferences = render_frame()->GetBlinkPreferences();
   if (blink_preferences.hide_media_src_api) {
@@ -110,11 +113,7 @@ void PlaylistRenderFrameObserver::HideMediaSourceAPI() const {
 void PlaylistRenderFrameObserver::InstallMediaDetector() {
   DVLOG(2) << __FUNCTION__;
 
-  CHECK(on_load_scripts_.size() == 1);
-  auto mapping = on_load_scripts_[0].Map();
-  std::string script_converted(mapping.GetMemoryAs<char>(),
-                               on_load_scripts_[0].GetSize());
-  DCHECK(!script_converted.empty());
+  CHECK(media_detector_);
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::Isolate::Scope isolate_scope(isolate);
@@ -127,7 +126,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       context, v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Script> script =
-      v8::Script::Compile(context, gin::StringToV8(isolate, script_converted))
+      v8::Script::Compile(context, gin::StringToV8(isolate, *media_detector_))
           .ToLocalChecked();
   v8::Local<v8::Function> function =
       v8::Local<v8::Function>::Cast(script->Run(context).ToLocalChecked());
@@ -161,9 +160,7 @@ void PlaylistRenderFrameObserver::OnMediaUpdated(gin::Arguments* args) {
     return;
   }
 
-  // CHECK(value->is_list());
-
-  DVLOG(2) << "lofasz\n" << *value;
+  DVLOG(2) << __FUNCTION__ << '\n' << *value;
 
   media_handler_->OnMediaUpdatedFromRenderFrame(std::move(*value));
 }

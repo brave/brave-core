@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_RENDERER_PLAYLIST_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_RENDERER_PLAYLIST_RENDER_FRAME_OBSERVER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -52,7 +53,8 @@ class PlaylistRenderFrameObserver final
 
   void OnMediaUpdated(gin::Arguments* args);
 
-  std::vector<base::ReadOnlySharedMemoryRegion> on_load_scripts_;
+  std::optional<std::string> media_detector_;
+
   mojo::AssociatedReceiverSet<mojom::OnLoadScriptInjector> receivers_;
 
   int32_t isolated_world_id_;
