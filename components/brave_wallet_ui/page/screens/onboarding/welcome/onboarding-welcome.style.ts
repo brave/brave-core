@@ -24,11 +24,11 @@ export const Title = styled.p<{ maxWidth?: string }>`
 export const LearnMoreLink = styled.a`
   font-family: Poppins;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 13px;
   line-height: 20px;
   text-align: center;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.brandBat};
   display: flex;
   flex-direction: column;
   justify-content: center;
