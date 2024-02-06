@@ -39,6 +39,11 @@ pub trait StorageClient {
         request_id: &str,
         creds: Vec<Token>,
     ) -> Result<(), InternalError>;
+    async fn upsert_time_limited_v2_item_creds_request_id(
+        &self,
+        item_id: &str,
+        request_id: &str,
+    ) -> Result<(), InternalError>;
     async fn append_time_limited_v2_item_unblinded_creds(
         &self,
         item_id: &str,
