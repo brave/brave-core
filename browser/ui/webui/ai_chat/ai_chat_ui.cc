@@ -15,7 +15,6 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -96,9 +95,6 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "hasUserDismissedPremiumPrompt",
       profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
           ai_chat::prefs::kUserDismissedPremiumPrompt));
-
-  untrusted_source->AddBoolean(
-      "isMobile", brave_stats::GetPlatformIdentifier() == "android-bc");
 
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
