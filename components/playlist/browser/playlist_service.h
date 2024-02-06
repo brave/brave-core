@@ -12,6 +12,7 @@
 
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/read_only_shared_memory_region.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -220,7 +221,7 @@ class PlaylistService : public KeyedService,
       mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
   void ClearObserverForStreaming() override;
 
-  void OnMediaUpdatedFromContents(content::WebContents* contents);
+  void OnMediaDetected(base::Value media, content::WebContents* contents);
 
   bool HasPlaylistItem(const std::string& id) const;
 
@@ -239,6 +240,10 @@ class PlaylistService : public KeyedService,
       const std::vector<mojom::PlaylistItemPtr>& items);
 
   bool playlist_enabled() const { return *enabled_pref_; }
+
+  base::ReadOnlySharedMemoryRegion GetMediaSourceAPISuppressorScript() const;
+  base::ReadOnlySharedMemoryRegion GetMediaDetectorScript(
+      const GURL& url) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;

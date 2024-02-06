@@ -5,11 +5,14 @@
 
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 
+#include <utility>
+
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/memory/writable_shared_memory_region.h"
 #include "base/no_destructor.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/browser/media_detector_component_installer.h"
@@ -25,24 +28,33 @@ using ScriptName = base::FilePath::StringType;
 using ScriptToSchemefulSiteMap = base::flat_map<ScriptName, net::SchemefulSite>;
 using ScriptToResourceIdMap = base::flat_map<ScriptName, int>;
 
+const base::FilePath::StringType& GetMediaSourceAPISuppressorScriptName() {
+  static const base::NoDestructor kMediaSourceApiSuppressor(
+      ScriptName(FILE_PATH_LITERAL("media_source_api_suppressor.js")));
+  return *kMediaSourceApiSuppressor;
+}
+
 const base::FilePath::StringType& GetBaseScriptName() {
-  static const base::NoDestructor base_script(
+  static const base::NoDestructor kBaseScript(
       ScriptName(FILE_PATH_LITERAL("index.js")));
-  return *base_script;
+  return *kBaseScript;
 }
 
 const ScriptToSchemefulSiteMap& GetScriptNameToSchemefulSiteMap() {
-  static const base::NoDestructor script_name_to_schemeful_sites(
+  static const base::NoDestructor kScriptNameToSchemefulSites(
       ScriptToSchemefulSiteMap{
           {FILE_PATH_LITERAL("youtube.com.js"),
            net::SchemefulSite(GURL("https://youtube.com"))}});
 
-  return *script_name_to_schemeful_sites;
+  return *kScriptNameToSchemefulSites;
 }
 
 base::flat_map<ScriptName, std::string> GetLocalScriptMap() {
   const auto& rb = ui::ResourceBundle::GetSharedInstance();
   return {
+      {GetMediaSourceAPISuppressorScriptName(),
+       std::string(rb.LoadDataResourceString(
+           IDR_PLAYLIST_MEDIA_SOURCE_API_SUPPRESSOR_JS))},
       {GetBaseScriptName(),
        std::string(rb.LoadDataResourceString(IDR_PLAYLIST_MEDIA_DETECTOR_JS))},
       {FILE_PATH_LITERAL("youtube.com.js"),
@@ -119,7 +131,8 @@ void MediaDetectorComponentManager::RegisterIfNeeded() {
 void MediaDetectorComponentManager::OnComponentReady(
     const base::FilePath& install_path) {
   base::flat_set<base::FilePath> files(
-      {install_path.Append(GetBaseScriptName())});
+      {install_path.Append(GetMediaSourceAPISuppressorScriptName()),
+       install_path.Append(GetBaseScriptName())});
   for (const auto& [file, _] : GetScriptNameToSchemefulSiteMap()) {
     files.insert(install_path.Append(file));
   }
@@ -138,7 +151,11 @@ void MediaDetectorComponentManager::OnGetScripts(
     return;
   }
 
-  DCHECK(script_map.count(GetBaseScriptName()));
+  CHECK(script_map.contains(GetMediaSourceAPISuppressorScriptName()));
+  media_source_api_suppressor_ =
+      script_map.at(GetMediaSourceAPISuppressorScriptName());
+
+  CHECK(script_map.contains(GetBaseScriptName()));
   base_script_ = script_map.at(GetBaseScriptName());
 
   // This could have been filled when we've used media detector script before
@@ -147,7 +164,7 @@ void MediaDetectorComponentManager::OnGetScripts(
 
   const auto& schemeful_site_map = GetScriptNameToSchemefulSiteMap();
   for (const auto& [script_name, script] : script_map) {
-    if (schemeful_site_map.count(script_name)) {
+    if (schemeful_site_map.contains(script_name)) {
       site_specific_detectors_[schemeful_site_map.at(script_name)] = script;
     }
   }
@@ -155,6 +172,21 @@ void MediaDetectorComponentManager::OnGetScripts(
   for (auto& observer : observer_list_) {
     observer.OnScriptReady(base_script_);
   }
+}
+
+base::ReadOnlySharedMemoryRegion
+MediaDetectorComponentManager::GetReadOnlySharedMemoryForScript(
+    const std::string& script) const {
+  base::WritableSharedMemoryRegion writable_shared_memory =
+      base::WritableSharedMemoryRegion::Create(script.size());
+  std::memcpy(writable_shared_memory.Map().memory(), script.data(),
+              script.size());
+  base::ReadOnlySharedMemoryRegion readonly_shared_memory =
+      base::WritableSharedMemoryRegion::ConvertToReadOnly(
+          std::move(writable_shared_memory));
+  CHECK(readonly_shared_memory.IsValid());
+
+  return readonly_shared_memory;
 }
 
 void MediaDetectorComponentManager::SetUseLocalScript() {
@@ -172,8 +204,15 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
                               });
 }
 
-std::string MediaDetectorComponentManager::GetMediaDetectorScript(
-    const GURL& url) {
+base::ReadOnlySharedMemoryRegion
+MediaDetectorComponentManager::GetMediaSourceAPISuppressorScript() {
+  MaybeInitScripts();
+  CHECK(!media_source_api_suppressor_.empty());
+  return GetReadOnlySharedMemoryForScript(media_source_api_suppressor_);
+}
+
+base::ReadOnlySharedMemoryRegion
+MediaDetectorComponentManager::GetMediaDetectorScript(const GURL& url) {
   MaybeInitScripts();
 
   net::SchemefulSite site(url);
@@ -203,7 +242,7 @@ std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     }
   }
 
-  return detector_script;
+  return GetReadOnlySharedMemoryForScript(detector_script);
 }
 
 void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {

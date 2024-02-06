@@ -5,6 +5,7 @@
 
 module playlist.mojom;
 
+import "mojo/public/mojom/base/shared_memory.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
@@ -193,11 +194,18 @@ interface PlaylistServiceObserver {
 // Interface that is used to notify that found media from renderer process to
 // browser process.
 interface PlaylistMediaHandler {
-  OnMediaUpdatedFromRenderFrame();
+  OnMediaDetected(mojo_base.mojom.Value media);
 };
 
 interface PlaylistStreamingObserver {
   OnResponseStarted(string url, int64 content_length);
   OnDataReceived(array<uint8> data_received);
   OnDataCompleted();
+};
+
+interface PlaylistRenderFrameObserverConfigurator {
+  AddScripts(
+      mojo_base.mojom.ReadOnlySharedMemoryRegion? media_source_api_suppressor,
+      mojo_base.mojom.ReadOnlySharedMemoryRegion media_detector);
+  SetUpForTesting();
 };

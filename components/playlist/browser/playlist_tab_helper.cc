@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/read_only_shared_memory_region.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -18,6 +19,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -26,7 +28,8 @@ namespace playlist {
 // static
 void PlaylistTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents,
-    playlist::PlaylistService* service) {
+    playlist::PlaylistService* service,
+    bool is_background /* = false */) {
   if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     return;
   }
@@ -38,12 +41,15 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
   }
 
   content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-      contents, service);
+      contents, service, is_background);
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
-                                     PlaylistService* service)
-    : WebContentsUserData(*contents), service_(service) {
+                                     PlaylistService* service,
+                                     bool is_background)
+    : WebContentsUserData(*contents),
+      service_(service),
+      is_background_(is_background) {
   Observe(contents);
   CHECK(service_);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
@@ -181,14 +187,24 @@ void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
   ExtractMediaFromBackgroundContents();
 }
 
-void PlaylistTabHelper::RequestAsyncExecuteScript(
-    int32_t world_id,
-    const std::u16string& script,
-    base::OnceCallback<void(base::Value)> cb) {
-  GetRemote(web_contents()->GetPrimaryMainFrame())
-      ->RequestAsyncExecuteScript(
-          world_id, script, blink::mojom::UserActivationOption::kActivate,
-          blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+void PlaylistTabHelper::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  DVLOG(2) << __FUNCTION__;
+
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
+
+  mojo::AssociatedRemote<mojom::PlaylistRenderFrameObserverConfigurator>
+      frame_observer_config;
+  navigation_handle->GetRenderFrameHost()
+      ->GetRemoteAssociatedInterfaces()
+      ->GetInterface(&frame_observer_config);
+  frame_observer_config->AddScripts(
+      is_background_ ? service_->GetMediaSourceAPISuppressorScript()
+                     : base::ReadOnlySharedMemoryRegion(),
+      service_->GetMediaDetectorScript(
+          navigation_handle->GetWebContents()->GetVisibleURL()));
 }
 
 void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
@@ -278,6 +294,10 @@ void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
 void PlaylistTabHelper::OnMediaFilesUpdated(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
+  if (items.empty()) {
+    return;
+  }
+
   OnFoundMediaFromContents(url, std::move(items));
 }
 
@@ -477,19 +497,6 @@ void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
     Observe(nullptr);
     ResetData();
   }
-}
-
-mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
-PlaylistTabHelper::GetRemote(content::RenderFrameHost* rfh) {
-  if (rfh != script_injector_rfh_ || !script_injector_remote_.is_bound()) {
-    script_injector_rfh_ = rfh;
-    if (script_injector_remote_.is_bound()) {
-      script_injector_remote_.reset();
-    }
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &script_injector_remote_);
-  }
-  return script_injector_remote_;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);

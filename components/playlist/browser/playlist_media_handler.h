@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_HANDLER_H_
 
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/global_routing_id.h"
 
@@ -20,7 +21,7 @@ class PlaylistMediaHandler : public mojom::PlaylistMediaHandler {
   ~PlaylistMediaHandler() override;
 
   // mojom::PlaylistMediaHandler:
-  void OnMediaUpdatedFromRenderFrame() override;
+  void OnMediaDetected(base::Value media) override;
 
  private:
   content::GlobalRenderFrameHostId frame_id_;
