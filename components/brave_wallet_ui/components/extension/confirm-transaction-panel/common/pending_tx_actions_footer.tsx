@@ -114,6 +114,9 @@ export function PendingTransactionActionsFooter({
     insufficientFundsError
   ])
 
+  // computed
+  const displayIssuesAsRisks = Boolean(blowfishWarnings?.length)
+
   // effects
   React.useEffect(() => {
     // This will update the transactionConfirmed state back to false
@@ -128,6 +131,7 @@ export function PendingTransactionActionsFooter({
     <FooterContainer>
       {!isWarningDismissed && (
         <TransactionWarnings
+          classifyAs={displayIssuesAsRisks ? 'risks' : 'issues'}
           warnings={warnings}
           isWarningCollapsed={isWarningCollapsed ?? true}
           setIsWarningCollapsed={setIsWarningCollapsed}

@@ -67,6 +67,7 @@ export const _TxWarning = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(false)
   return (
     <TransactionWarnings
+      classifyAs='issues'
       isWarningCollapsed={isCollapsed}
       setIsWarningCollapsed={setIsCollapsed}
       warnings={[warnings[0]]}
@@ -80,6 +81,7 @@ export const _TxWarnings = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(true)
   return (
     <TransactionWarnings
+      classifyAs='issues'
       isWarningCollapsed={isCollapsed}
       setIsWarningCollapsed={setIsCollapsed}
       warnings={warnings}
@@ -93,6 +95,7 @@ export const _CriticalTxWarning = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(false)
   return (
     <TransactionWarnings
+      classifyAs='risks'
       isWarningCollapsed={isCollapsed}
       setIsWarningCollapsed={setIsCollapsed}
       warnings={[criticalWarnings[0]]}
@@ -106,6 +109,7 @@ export const _CriticalTxWarnings = () => {
   const [isCollapsed, setIsCollapsed] = React.useState(false)
   return (
     <TransactionWarnings
+      classifyAs='risks'
       isWarningCollapsed={isCollapsed}
       setIsWarningCollapsed={setIsCollapsed}
       warnings={criticalWarnings}
