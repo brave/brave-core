@@ -114,6 +114,13 @@ function Container() {
     PanelSelectors.signMessageErrorData
   )
 
+  const signTransactionRequests = useUnsafePanelSelector(
+    PanelSelectors.signTransactionRequests
+  )
+  const signAllTransactionsRequests = useUnsafePanelSelector(
+    PanelSelectors.signAllTransactionsRequests
+  )
+
   // queries & mutations
   const { accounts } = useAccountsQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
@@ -292,8 +299,10 @@ function Container() {
   }
 
   if (
-    selectedPanel === 'signTransaction' ||
-    selectedPanel === 'signAllTransactions'
+    (signAllTransactionsRequests.length > 0 ||
+      signTransactionRequests.length > 0) &&
+    (selectedPanel === 'signTransaction' ||
+      selectedPanel === 'signAllTransactions')
   ) {
     return (
       <PanelWrapper isLonger={true}>
