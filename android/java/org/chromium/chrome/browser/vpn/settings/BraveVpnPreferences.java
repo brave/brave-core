@@ -77,8 +77,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
 
     private static final String VPN_SUPPORT_PAGE =
             "https://support.brave.com/hc/en-us/articles/4410838268429";
-    private static final String MANAGE_SUBSCRIPTION_PAGE =
-            "https://play.google.com/store/account/subscriptions";
 
     private static final String DATE_FORMAT = "dd/MM/yyyy";
 
@@ -155,15 +153,20 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 });
 
         findPreference(PREF_SUBSCRIPTION_MANAGE)
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        Intent browserIntent =
-                                new Intent(Intent.ACTION_VIEW, Uri.parse(MANAGE_SUBSCRIPTION_PAGE));
-                        getActivity().startActivity(browserIntent);
-                        return true;
-                    }
-                });
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(Preference preference) {
+                                Intent browserIntent =
+                                        new Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse(
+                                                        InAppPurchaseWrapper
+                                                                .MANAGE_SUBSCRIPTION_PAGE));
+                                getActivity().startActivity(browserIntent);
+                                return true;
+                            }
+                        });
 
         findPreference(PREF_SERVER_RESET_CONFIGURATION)
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

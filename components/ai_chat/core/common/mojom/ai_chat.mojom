@@ -180,8 +180,15 @@ interface ChatUIPage {
 };
 
 [EnableIf=is_android]
-interface CredentialManagerHelper {
+struct ModelWithSubtitle {
+  Model model;
+  string subtitle;
+};
+
+[EnableIf=is_android]
+interface AIChatAndroidHelper {
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
+  GetModelsWithSubtitles() => (array<ModelWithSubtitle> models);
 };
 
 [EnableIf=is_android]
