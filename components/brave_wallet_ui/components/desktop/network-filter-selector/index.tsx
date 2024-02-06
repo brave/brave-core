@@ -69,9 +69,7 @@ export const NetworkFilterSelector = ({
   const dispatch = useDispatch()
 
   // queries
-  const { data: reduxNetworkList } = useGetVisibleNetworksQuery(undefined, {
-    skip: !!networkListSubset?.length
-  })
+  const { data: reduxNetworkList } = useGetVisibleNetworksQuery()
 
   const networks = networkListSubset?.length
     ? networkListSubset
