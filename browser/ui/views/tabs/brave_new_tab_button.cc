@@ -17,7 +17,6 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
-#include "ui/views/view_class_properties.h"
 
 using tabs::features::HorizontalTabsUpdateEnabled;
 
@@ -67,13 +66,7 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
 
 BraveNewTabButton::BraveNewTabButton(TabStrip* tab_strip,
                                      PressedCallback callback)
-    : NewTabButton(tab_strip, std::move(callback)) {
-  if (HorizontalTabsUpdateEnabled()) {
-    // Ensure that the new tab button is vertically centered within its flex
-    // layout container.
-    SetProperty(views::kCrossAxisAlignmentKey, views::LayoutAlignment::kCenter);
-  }
-}
+    : NewTabButton(tab_strip, std::move(callback)) {}
 
 BraveNewTabButton::~BraveNewTabButton() = default;
 
