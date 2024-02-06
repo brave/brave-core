@@ -7,6 +7,7 @@ import logging
 import os
 import uuid
 import shutil
+import re
 
 import components.path_util as path_util
 
@@ -19,6 +20,9 @@ with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
 with path_util.SysPath(path_util.GetDepotToolsDir()):
   import download_from_google_storage  # pylint: disable=import-error
 
+
+def _IsSha1Hash(s: str) -> bool:
+  return re.match(r'[a-f0-9]{40}', s) is not None
 
 def DownloadFromGoogleStorage(sha1: str, output_path: str) -> None:
   """Download a file from brave perf bucket.
@@ -36,6 +40,8 @@ def DownloadFromGoogleStorage(sha1: str, output_path: str) -> None:
 
 
 def _GetProfileHash(profile: str, version: BraveVersion) -> str:
+  if _IsSha1Hash(profile):  # the explicit profile hash
+    return profile
   sha1_filepath = os.path.join(path_util.GetBravePerfProfileDir(),
                                f'{profile}.zip.sha1')
   sha1_fallback_filepath = sha1_filepath + '.fallback'

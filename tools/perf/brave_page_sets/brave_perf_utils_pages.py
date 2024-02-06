@@ -11,10 +11,10 @@
 # pylint: disable=no-name-in-module, too-few-public-methods
 # pytype: disable=import-error
 
-import json
 import logging
 import shutil
 import os
+import time
 
 from typing import Optional
 
@@ -26,6 +26,9 @@ from telemetry.core import android_platform
 
 def _CleanProfileCache(profile_dir: str):
   shutil.rmtree(os.path.join(profile_dir, 'cache'), ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'GrShaderCache'), ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'GraphiteDawnCache'),
+                ignore_errors=True)
   shutil.rmtree(os.path.join(profile_dir, 'Default', 'Cache'),
                 ignore_errors=True)
   shutil.rmtree(os.path.join(profile_dir, 'Default', 'Code Cache'),
@@ -69,6 +72,7 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
       else:
         # profile_type = 'exact' is used to update the profile
         pass
+      time.sleep(5)
       _CleanProfileCache(self._profile_dir)
       self._profile_dir = None
 

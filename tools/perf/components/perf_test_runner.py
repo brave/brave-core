@@ -108,9 +108,9 @@ class RunableConfiguration:
                              if online_rebase else 'brave_utils.offline')
     rebase_benchmark.stories = ['UpdateProfile']
 
-    rebase_benchmark.pageset_repeat = 1
+    rebase_benchmark.pageset_repeat = 2 if online_rebase else 1
 
-    REBASE_TIMEOUT = 240
+    REBASE_TIMEOUT = 240 * rebase_benchmark.pageset_repeat
 
     rebase_out_dir = os.path.join(self.out_dir, 'rebase_artifacts')
     result = self.RunSingleTest(rebase_runner_config, rebase_benchmark,
