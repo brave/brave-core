@@ -38,6 +38,11 @@ class TorPrefObserver : public BooleanPrefMember {
     Profile* profile = [controller_ lastProfileIfLoaded];
     CHECK(profile);
 
+    // The incognito profile will be deleted before app termination. So we
+    // should original profile in order to avoid crash.
+    // https://github.com/brave/brave-core/pull/21892#issuecomment-1928944343
+    profile = profile->GetOriginalProfile();
+
     incognito_pref_observer_.Init(
         policy::policy_prefs::kIncognitoModeAvailability, profile->GetPrefs(),
         base::BindRepeating(&TorPrefObserver::UpdateMenu,
