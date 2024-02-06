@@ -77,7 +77,8 @@ class ConversationDriver {
   // when the page changes.
   void OnConversationActiveChanged(bool is_conversation_active);
   void AddToConversationHistory(mojom::ConversationTurn turn);
-  void UpdateOrCreateLastAssistantEntry(std::string text);
+  void UpdateOrCreateAssistantEntryById(const base::UnguessableToken& id,
+                                        std::string text);
   void SubmitHumanConversationEntry(mojom::ConversationTurn turn);
   void RetryAPIRequest();
   bool IsRequestInProgress();
@@ -155,9 +156,12 @@ class ConversationDriver {
                                      std::string invalidation_token);
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback);
 
-  void OnEngineCompletionDataReceived(int64_t navigation_id,
-                                      std::string result);
-  void OnEngineCompletionComplete(int64_t navigation_id,
+  void OnEngineCompletionDataReceived(
+      const base::UnguessableToken& assistant_id,
+      int64_t navigation_id,
+      std::string result);
+  void OnEngineCompletionComplete(const base::UnguessableToken& assistant_id,
+                                  int64_t navigation_id,
                                   EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(int64_t navigation_id,
                                     std::vector<std::string> result);

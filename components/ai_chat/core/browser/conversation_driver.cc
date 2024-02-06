@@ -11,6 +11,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/containers/adapters.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
@@ -282,15 +283,24 @@ void ConversationDriver::AddToConversationHistory(mojom::ConversationTurn turn) 
   }
 }
 
-void ConversationDriver::UpdateOrCreateLastAssistantEntry(std::string updated_text) {
+void ConversationDriver::UpdateOrCreateAssistantEntryById(
+    const base::UnguessableToken& id,
+    std::string updated_text) {
   updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
-  if (chat_history_.empty() ||
-      chat_history_.back().character_type != CharacterType::ASSISTANT) {
-    AddToConversationHistory({CharacterType::ASSISTANT,
-                              ConversationTurnVisibility::VISIBLE,
-                              updated_text});
+
+  // We're scanning from the back as the updates are most commonly done on the
+  // most recent entry
+  auto entry_rit = base::ranges::find_if(
+      base::Reversed(chat_history_),
+      [&id](const ConversationTurn& entry) { return entry.id == id; });
+
+  if (entry_rit != chat_history_.rend()) {
+    DCHECK(entry_rit->character_type == CharacterType::ASSISTANT);
+    entry_rit->text = updated_text;
   } else {
-    chat_history_.back().text = updated_text;
+    AddToConversationHistory({id, CharacterType::ASSISTANT,
+                              ConversationTurnVisibility::VISIBLE,
+                              base::Time::Now(), updated_text});
   }
 
   // Trigger an observer update to refresh the UI.
@@ -699,13 +709,15 @@ void ConversationDriver::PerformAssistantGeneration(
     std::string page_content,
     bool is_video,
     std::string invalidation_token) {
+  const base::UnguessableToken& assistant_id = base::UnguessableToken::Create();
+
   auto data_received_callback = base::BindRepeating(
       &ConversationDriver::OnEngineCompletionDataReceived,
-      weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
+      weak_ptr_factory_.GetWeakPtr(), assistant_id, current_navigation_id);
 
-  auto data_completed_callback =
-      base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
-                     weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
+  auto data_completed_callback = base::BindOnce(
+      &ConversationDriver::OnEngineCompletionComplete,
+      weak_ptr_factory_.GetWeakPtr(), assistant_id, current_navigation_id);
   engine_->GenerateAssistantResponse(is_video, page_content, history, input,
                                      std::move(data_received_callback),
                                      std::move(data_completed_callback));
@@ -733,14 +745,16 @@ bool ConversationDriver::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
-void ConversationDriver::OnEngineCompletionDataReceived(int64_t navigation_id,
-                                                  std::string result) {
+void ConversationDriver::OnEngineCompletionDataReceived(
+    const base::UnguessableToken& assistant_id,
+    int64_t navigation_id,
+    std::string result) {
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
   }
 
-  UpdateOrCreateLastAssistantEntry(result);
+  UpdateOrCreateAssistantEntryById(assistant_id, result);
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -749,6 +763,7 @@ void ConversationDriver::OnEngineCompletionDataReceived(int64_t navigation_id,
 }
 
 void ConversationDriver::OnEngineCompletionComplete(
+    const base::UnguessableToken& assistant_id,
     int64_t navigation_id,
     EngineConsumer::GenerationResult result) {
   if (navigation_id != current_navigation_id_) {
@@ -762,7 +777,7 @@ void ConversationDriver::OnEngineCompletionComplete(
     // Handle success, which might mean do nothing much since all
     // data was passed in the streaming "received" callback.
     if (!result->empty()) {
-      UpdateOrCreateLastAssistantEntry(*result);
+      UpdateOrCreateAssistantEntryById(assistant_id, *result);
     }
   } else {
     // handle failure
@@ -815,7 +830,8 @@ void ConversationDriver::SubmitSummarizationRequest() {
       << "This conversation request should send page contents\n";
 
   mojom::ConversationTurn turn = {
-      CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE,
+      base::UnguessableToken::Create(), CharacterType::HUMAN,
+      ConversationTurnVisibility::VISIBLE, base::Time::Now(),
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
   SubmitHumanConversationEntry(std::move(turn));
 }
