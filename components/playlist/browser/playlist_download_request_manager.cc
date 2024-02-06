@@ -31,19 +31,6 @@
 
 namespace playlist {
 
-namespace {
-
-constexpr int32_t kInvalidWorldID = -1;
-
-int32_t g_playlist_javascript_world_id = kInvalidWorldID;
-bool g_run_script_on_main_world = false;
-
-bool PlaylistJavaScriptWorldIdIsSet() {
-  return g_playlist_javascript_world_id != kInvalidWorldID;
-}
-
-}  // namespace
-
 PlaylistDownloadRequestManager::Request::Request() = default;
 PlaylistDownloadRequestManager::Request&
 PlaylistDownloadRequestManager::Request::operator=(
@@ -51,24 +38,6 @@ PlaylistDownloadRequestManager::Request::operator=(
 PlaylistDownloadRequestManager::Request::Request(
     PlaylistDownloadRequestManager::Request&&) noexcept = default;
 PlaylistDownloadRequestManager::Request::~Request() = default;
-
-// static
-void PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
-    const int32_t id) {
-  // Never allow running in main world (0).
-  CHECK(id > content::ISOLATED_WORLD_ID_CONTENT_END);
-  // Only allow ID to be set once.
-  if (PlaylistJavaScriptWorldIdIsSet()) {
-    CHECK_IS_TEST();
-  }
-  g_playlist_javascript_world_id = id;
-}
-
-// static
-void PlaylistDownloadRequestManager::SetRunScriptOnMainWorldForTest() {
-  CHECK_IS_TEST();
-  g_run_script_on_main_world = true;
-}
 
 PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
     PlaylistService* service,
@@ -86,8 +55,8 @@ void PlaylistDownloadRequestManager::CreateWebContents(
   create_params.is_never_visible = true;
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetAudioMuted(true);
-  PlaylistTabHelper::MaybeCreateForWebContents(web_contents_.get(),
-                                               service_.get());
+  PlaylistTabHelper::MaybeCreateForWebContents(
+      web_contents_.get(), service_.get(), /* is_background = */ true);
   if (should_force_fake_ua ||
       base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
     DVLOG(2) << __func__ << " Faked UA to detect media files";
@@ -136,7 +105,6 @@ void PlaylistDownloadRequestManager::FetchPendingRequest() {
 
 void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
   DVLOG(2) << __func__;
-  CHECK(PlaylistJavaScriptWorldIdIsSet());
 
   DCHECK_GE(in_progress_urls_count_, 0);
   in_progress_urls_count_++;
@@ -177,54 +145,17 @@ bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
   return in_progress_urls_count_ == 0;
 }
 
-void PlaylistDownloadRequestManager::GetMedia(
-    content::WebContents* contents,
-    base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb) {
+std::vector<mojom::PlaylistItemPtr>
+PlaylistDownloadRequestManager::GetPlaylistItems(
+    base::Value media,
+    content::WebContents* contents) {
   DVLOG(2) << __func__;
-  CHECK(contents && contents->GetPrimaryMainFrame());
+  CHECK(contents);
 
-  const auto& media_detector_script =
-      media_detector_component_manager_->GetMediaDetectorScript(
-          contents->GetLastCommittedURL());
-  DCHECK(!media_detector_script.empty());
+  auto items =
+      ProcessFoundMedia(std::move(media), contents->GetLastCommittedURL());
 
-  auto callback = base::BindOnce(
-      &PlaylistDownloadRequestManager::OnGetMedia, weak_factory_.GetWeakPtr(),
-      contents->GetWeakPtr(), contents->GetLastCommittedURL(), std::move(cb));
-
-#if BUILDFLAG(IS_ANDROID)
-  content::RenderFrameHost::AllowInjectingJavaScript();
-  PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-      content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
-      base::UTF8ToUTF16(media_detector_script), std::move(callback));
-#else
-  if (g_run_script_on_main_world) {
-    PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-        content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
-        base::UTF8ToUTF16(media_detector_script), std::move(callback));
-  } else {
-    CHECK(PlaylistJavaScriptWorldIdIsSet());
-    PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-        g_playlist_javascript_world_id,
-        base::UTF8ToUTF16(media_detector_script), std::move(callback));
-  }
-#endif
-}
-
-void PlaylistDownloadRequestManager::OnGetMedia(
-    base::WeakPtr<content::WebContents> contents,
-    GURL url,
-    base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
-    base::Value value) {
-  if (!contents) {
-    return;
-  }
-
-  DVLOG(2) << __func__;
-
-  auto items = ProcessFoundMedia(std::move(value), url);
-
-  if (contents.get() == background_contents() && items.size()) {
+  if (contents == background_contents() && items.size()) {
     CHECK(!callback_for_current_request_.is_null()) << " callback already ran";
     auto callback = std::move(callback_for_current_request_);
 
@@ -239,9 +170,9 @@ void PlaylistDownloadRequestManager::OnGetMedia(
     web_contents_.reset();
   }
 
-  std::move(cb).Run(std::move(items));
-
   FetchPendingRequest();
+
+  return items;
 }
 
 std::vector<mojom::PlaylistItemPtr>
@@ -402,12 +333,9 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
     return;
   }
 
-  web_prefs->should_detect_media_files = true;
-
   if (web_contents_ && web_contents_.get() == web_contents) {
     // Background web contents.
     web_prefs->force_cosmetic_filtering = true;
-    web_prefs->hide_media_src_api = true;
   }
 }
 
