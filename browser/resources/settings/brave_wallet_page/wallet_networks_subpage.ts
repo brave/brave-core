@@ -32,6 +32,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
   static get properties() {
     return {
+      isZCashEnabled: {
+        type: Boolean,
+        value: false
+      },
       isBitcoinEnabled: {
         type: Boolean,
         value: false
@@ -52,6 +56,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         type: Number,
         value: 0
       },
+      zecCoin: {
+        type: Number,
+        value: 133
+      }
     }
   }
 
@@ -59,6 +67,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
   ready() {
     super.ready()
+
+    this.browserProxy_.isZCashEnabled().then(val => {
+      this.isZCashEnabled = val
+    });
 
     this.browserProxy_.isBitcoinEnabled().then(val => {
       this.isBitcoinEnabled = val

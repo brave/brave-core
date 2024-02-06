@@ -212,6 +212,9 @@ mojom::AccountIdPtr MakeAccountId(mojom::CoinType coin,
                                   mojom::AccountKind kind,
                                   const std::string& address) {
   DCHECK_NE(coin, mojom::CoinType::BTC);
+  DCHECK_NE(coin, mojom::CoinType::ZEC);
+  DCHECK(!IsBitcoinKeyring(keyring_id));
+  DCHECK(!IsZCashKeyring(keyring_id));
 
   std::string unique_key =
       base::JoinString({base::NumberToString(static_cast<int>(coin)),
