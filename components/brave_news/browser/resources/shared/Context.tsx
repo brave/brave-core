@@ -155,17 +155,17 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     configurationCache.set({ openArticlesInNewTab: inNewTab })
   }, [])
 
-  const reportViewCount = (newViews: number) => {
+  const reportViewCount = useCallback((newViews: number) => {
     getBraveNewsController().onNewCardsViewed(newViews)
-  }
+  }, [])
 
-  const reportVisit = (depth: number) => {
+  const reportVisit = useCallback((depth: number) => {
     getBraveNewsController().onCardVisited(depth + 1)
-  }
+  }, [])
 
-  const reportSessionStart = () => {
+  const reportSessionStart = useCallback(() => {
     getBraveNewsController().onInteractionSessionStarted()
-  }
+  }, [])
 
   const isSidebarFilterUsed = useRef<boolean>(false);
   const reportSidebarFilterUsage = useCallback(() => {
@@ -202,7 +202,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     reportVisit,
     reportSidebarFilterUsage,
     reportSessionStart
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage])
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

@@ -13,6 +13,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -79,6 +80,8 @@ class ChannelsController : public PublishersController::Observer {
 
   base::ScopedObservation<PublishersController, PublishersController::Observer>
       scoped_observation_{this};
+
+  base::WeakPtrFactory<ChannelsController> weak_ptr_factory_{this};
 };
 }  // namespace brave_news
 

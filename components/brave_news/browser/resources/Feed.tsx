@@ -135,7 +135,7 @@ export default function Component({ feed, onViewCountChange, onSessionStart }: P
       return;
     }
     const newViews = largestCardCount - lastViewedCardCount.current;
-    if (!!onSessionStart && lastViewedCardCount.current === 0 && newViews > 0) {
+    if (onSessionStart && lastViewedCardCount.current === 0 && newViews > 0) {
       onSessionStart();
     }
     lastViewedCardCount.current = largestCardCount;

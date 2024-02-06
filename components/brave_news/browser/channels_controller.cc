@@ -127,8 +127,11 @@ std::vector<std::string> ChannelsController::GetChannelLocales(
 
 void ChannelsController::GetAllChannels(ChannelsCallback callback) {
   publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      [](ChannelsController* controller, ChannelsCallback callback,
-         PrefService* prefs, Publishers publishers) {
+      [](base::WeakPtr<ChannelsController> controller,
+         ChannelsCallback callback, PrefService* prefs, Publishers publishers) {
+        if (!controller) {
+          return;
+        }
         auto result = GetChannelsFromPublishers(publishers, prefs);
         // fix this. result is a map
         controller->enabled_channel_count_ = 0;
@@ -144,7 +147,8 @@ void ChannelsController::GetAllChannels(ChannelsCallback callback) {
         }
         std::move(callback).Run(std::move(std::move(result)));
       },
-      base::Unretained(this), std::move(callback), base::Unretained(prefs_)));
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+      base::Unretained(prefs_)));
 }
 
 void ChannelsController::AddListener(
