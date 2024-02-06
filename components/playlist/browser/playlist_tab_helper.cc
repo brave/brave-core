@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/memory/read_only_shared_memory_region.h"
+#include "base/memory/writable_shared_memory_region.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -18,6 +20,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -189,6 +192,28 @@ void PlaylistTabHelper::RequestAsyncExecuteScript(
       ->RequestAsyncExecuteScript(
           world_id, script, blink::mojom::UserActivationOption::kActivate,
           blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+}
+
+void PlaylistTabHelper::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  const std::string script =
+      media_detector_component_manager_->GetMediaDetectorScript(
+          navigation_handle->GetWebContents()->GetVisibleURL());
+  base::WritableSharedMemoryRegion script_writable_shared_memory =
+      base::WritableSharedMemoryRegion::Create(script.size());
+  std::memcpy(script_writable_shared_memory.Map().memory(), script.data(),
+              script.size());
+
+  base::ReadOnlySharedMemoryRegion script_readonly_shared_memory =
+      base::WritableSharedMemoryRegion::ConvertToReadOnly(
+          std::move(script_writable_shared_memory));
+  CHECK(script_readonly_shared_memory.IsValid());
+
+  mojo::AssociatedRemote<mojom::OnLoadScriptInjector> injector;
+  navigation_handle->GetRenderFrameHost()
+      ->GetRemoteAssociatedInterfaces()
+      ->GetInterface(&injector);
+  injector->AddOnLoadScript(std::move(script_readonly_shared_memory));
 }
 
 void PlaylistTabHelper::DidFinishNavigation(

@@ -74,6 +74,8 @@ class PlaylistTabHelper
                                  base::OnceCallback<void(base::Value)> cb);
 
   // content::WebContentsObserver:
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 

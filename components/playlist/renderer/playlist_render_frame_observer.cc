@@ -9,6 +9,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "gin/converter.h"
 #include "gin/function_template.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/blink/public/platform/web_string.h"
@@ -21,18 +22,33 @@
 namespace playlist {
 
 PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
-    content::RenderFrame* render_frame,
+    content::RenderFrame* frame,
     int32_t isolated_world_id)
-    : RenderFrameObserver(render_frame),
-      RenderFrameObserverTracker<PlaylistRenderFrameObserver>(render_frame),
+    : RenderFrameObserver(frame),
+      RenderFrameObserverTracker<PlaylistRenderFrameObserver>(frame),
       isolated_world_id_(isolated_world_id) {
+  render_frame()
+      ->GetAssociatedInterfaceRegistry()
+      ->AddInterface<mojom::OnLoadScriptInjector>(
+          base::BindRepeating(&PlaylistRenderFrameObserver::BindToReceiver,
+                              weak_ptr_factory_.GetWeakPtr()));
   EnsureConnectedToMediaHandler();
 }
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
+void PlaylistRenderFrameObserver::BindToReceiver(
+    mojo::PendingAssociatedReceiver<mojom::OnLoadScriptInjector> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
 void PlaylistRenderFrameObserver::OnDestruct() {
   delete this;
+}
+
+void PlaylistRenderFrameObserver::AddOnLoadScript(
+    base::ReadOnlySharedMemoryRegion script) {
+  on_load_scripts_.push_back(std::move(script));
 }
 
 bool PlaylistRenderFrameObserver::EnsureConnectedToMediaHandler() {
@@ -53,6 +69,12 @@ void PlaylistRenderFrameObserver::OnMediaHandlerDisconnect() {
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
+  for (base::ReadOnlySharedMemoryRegion& script : on_load_scripts_) {
+    auto mapping = script.Map();
+    std::string script_converted(mapping.GetMemoryAs<char>(), script.GetSize());
+    DVLOG(2) << "Lofasz:\n" << script_converted;
+  }
+
   if (render_frame()->GetWebFrame()->IsProvisional()) {
     return;
   }
