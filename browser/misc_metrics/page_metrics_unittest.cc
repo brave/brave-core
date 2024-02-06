@@ -7,6 +7,7 @@
 
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/misc_metrics/page_metrics.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/history/core/browser/history_service.h"
@@ -30,8 +31,10 @@ class PageMetricsUnitTest : public testing::Test {
     history_service_ = HistoryServiceFactory::GetForProfile(
         profile_.get(), ServiceAccessType::EXPLICIT_ACCESS);
     misc_metrics::PageMetrics::RegisterPrefs(local_state_.registry());
-    page_metrics_service_ =
-        std::make_unique<PageMetrics>(&local_state_, history_service_);
+    page_metrics_service_ = std::make_unique<PageMetrics>(
+        &local_state_,
+        HostContentSettingsMapFactory::GetForProfile(profile_.get()),
+        history_service_);
   }
 
  protected:
