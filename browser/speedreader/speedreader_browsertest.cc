@@ -66,12 +66,12 @@
 
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
-const char kTestPageReadable[] = "/articles/guardian.html";
+const char kTestPageReadable[] = "/speedreader/article/guardian.html";
 const char kTestEsPageReadable[] = "/speedreader/article/es.html";
 const char kTestPageReadableOnUnreadablePath[] =
     "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
-const char kTestXml[] = "/articles/rss.xml";
+const char kTestXml[] = "/speedreader/article/rss.xml";
 const char kTestTtsSimple[] = "/speedreader/article/simple.html";
 const char kTestTtsTags[] = "/speedreader/article/tags.html";
 const char kTestTtsStructure[] = "/speedreader/article/structure.html";
@@ -301,7 +301,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                       ISOLATED_WORLD_ID_BRAVE_INTERNAL)
           .ExtractInt();
-  EXPECT_LT(106000, first_load_page_length);
+  EXPECT_LT(83000, first_load_page_length);
 
   ToggleSpeedreader();
   EXPECT_TRUE(speedreader_service()->IsEnabledForAllSites());
@@ -359,7 +359,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                       ISOLATED_WORLD_ID_BRAVE_INTERNAL)
           .ExtractInt();
-  EXPECT_LT(106000, second_load_page_length)
+  EXPECT_LT(83000, second_load_page_length)
       << " First load length: " << first_load_page_length
       << " speedreaded length: " << speedreaded_length
       << " Second load length: " << second_load_page_length
