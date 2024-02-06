@@ -82,6 +82,14 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   untrusted_source->AddBoolean("hasAcceptedAgreement",
                                !last_accepted_disclaimer.is_null());
 
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+  constexpr bool kIsMobile = false;
+#else
+  constexpr bool kIsMobile = true;
+#endif
+
+  untrusted_source->AddBoolean("isMobile", kIsMobile);
+
   untrusted_source->AddBoolean(
       "hasUserDismissedPremiumPrompt",
       profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(

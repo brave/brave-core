@@ -159,6 +159,7 @@ export default {
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
     model: MODELS[0].name,
     showAgreementModal: false,
+    isMobile: false,
   },
   decorators: [
     (Story: any, options: any) => {
@@ -197,6 +198,7 @@ export default {
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
+        isMobile: options.args.isMobile,
       }
 
       return (
