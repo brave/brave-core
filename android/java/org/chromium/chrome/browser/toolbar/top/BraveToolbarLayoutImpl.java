@@ -1629,6 +1629,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
+        if (items.length == 0) return;
         Tab currentTab = getToolbarDataProvider().getTab();
         if (currentTab == null || !pageUrl.url.equals(currentTab.getUrl().getSpec())) {
             return;

@@ -17,6 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
@@ -27,6 +28,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/filename_util.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 namespace playlist {
 namespace {
@@ -364,11 +366,7 @@ void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
 
 void PlaylistService::NotifyMediaFilesUpdated(
     const GURL& url,
-    std::vector<mojom::PlaylistItemPtr> items) {
-  if (items.empty()) {
-    return;
-  }
-
+    const std::vector<mojom::PlaylistItemPtr>& items) {
   DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
            << " were updated: count =>" << items.size();
 
@@ -417,12 +415,11 @@ void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
     return;
   }
 
-  if (!PlaylistTabHelper::FromWebContents(web_contents)) {
+  if (!PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents)) {
     return;
   }
 
-  download_request_manager_->ConfigureWebPrefsForBackgroundWebContents(
-      web_contents, web_prefs);
+  web_prefs->force_cosmetic_filtering = true;
 }
 
 base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
@@ -530,6 +527,11 @@ bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
     return download_request_manager_
         ->ShouldExtractMediaFromBackgroundWebContents(item);
   });
+}
+
+std::string PlaylistService::GetMediaDetectorScript(const GURL& url) const {
+  return download_request_manager_->media_detector_component_manager()
+      ->GetMediaDetectorScript(url);
 }
 
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
@@ -1206,16 +1208,20 @@ void PlaylistService::ClearObserverForStreaming() {
   streaming_observers_.Clear();
 }
 
-void PlaylistService::OnMediaUpdatedFromContents(
-    content::WebContents* contents) {
+void PlaylistService::OnMediaDetected(base::Value media,
+                                      content::WebContents* contents) {
   if (!*enabled_pref_) {
     return;
   }
 
-  download_request_manager_->GetMedia(
-      contents, base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
-                               weak_factory_.GetWeakPtr(),
-                               contents->GetLastCommittedURL()));
+  CHECK(contents);
+  const GURL url = contents->GetLastCommittedURL();
+  const auto items =
+      download_request_manager_->GetPlaylistItems(std::move(media), url);
+  NotifyMediaFilesUpdated(url, items);
+
+  download_request_manager_->MaybeResetBackgroundWebContentsAndFetchNextRequest(
+      items, contents);
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(
