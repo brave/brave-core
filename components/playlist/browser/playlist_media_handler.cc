@@ -20,7 +20,7 @@ PlaylistMediaHandler::~PlaylistMediaHandler() {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
 }
 
-void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame() {
+void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame(base::Value media) {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
   auto* render_frame_host = content::RenderFrameHost::FromID(frame_id_);
   if (!render_frame_host) {
@@ -34,7 +34,7 @@ void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame() {
   }
 
   if (service_) {
-    service_->OnMediaUpdatedFromContents(web_contents);
+    service_->OnMediaUpdatedFromContents(std::move(media), web_contents);
   }
 }
 

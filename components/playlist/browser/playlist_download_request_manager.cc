@@ -178,19 +178,16 @@ bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
 }
 
 void PlaylistDownloadRequestManager::GetMedia(
+    base::Value media,
     content::WebContents* contents,
     base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb) {
   DVLOG(2) << __func__;
   CHECK(contents && contents->GetPrimaryMainFrame());
 
-  const auto& media_detector_script =
-      media_detector_component_manager_->GetMediaDetectorScript(
-          contents->GetVisibleURL());
-  DCHECK(!media_detector_script.empty());
-
   auto callback = base::BindOnce(
       &PlaylistDownloadRequestManager::OnGetMedia, weak_factory_.GetWeakPtr(),
       contents->GetWeakPtr(), contents->GetVisibleURL(), std::move(cb));
+  std::move(callback).Run(std::move(media));
 
 #if BUILDFLAG(IS_ANDROID)
   content::RenderFrameHost::AllowInjectingJavaScript();
@@ -198,16 +195,16 @@ void PlaylistDownloadRequestManager::GetMedia(
       content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
       base::UTF8ToUTF16(media_detector_script), std::move(callback));
 #else
-  if (g_run_script_on_main_world) {
-    PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-        content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
-        base::UTF8ToUTF16(media_detector_script), std::move(callback));
-  } else {
-    CHECK(PlaylistJavaScriptWorldIdIsSet());
-    PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-        g_playlist_javascript_world_id,
-        base::UTF8ToUTF16(media_detector_script), std::move(callback));
-  }
+  // if (g_run_script_on_main_world) {
+  //   PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
+  //       content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
+  //       base::UTF8ToUTF16(media_detector_script), std::move(callback));
+  // } else {
+  //   CHECK(PlaylistJavaScriptWorldIdIsSet());
+  //   PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
+  //       g_playlist_javascript_world_id,
+  //       base::UTF8ToUTF16(media_detector_script), std::move(callback));
+  // }
 #endif
 }
 

@@ -94,6 +94,7 @@ class PlaylistDownloadRequestManager {
   }
 
   void GetMedia(
+      base::Value media,
       content::WebContents* contents,
       base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb);
 

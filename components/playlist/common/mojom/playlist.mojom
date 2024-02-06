@@ -194,7 +194,7 @@ interface PlaylistServiceObserver {
 // Interface that is used to notify that found media from renderer process to
 // browser process.
 interface PlaylistMediaHandler {
-  OnMediaUpdatedFromRenderFrame();
+  OnMediaUpdatedFromRenderFrame(mojo_base.mojom.Value media);
 };
 
 interface PlaylistStreamingObserver {

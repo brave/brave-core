@@ -1212,13 +1212,14 @@ void PlaylistService::ClearObserverForStreaming() {
 }
 
 void PlaylistService::OnMediaUpdatedFromContents(
+    base::Value media,
     content::WebContents* contents) {
   if (!*enabled_pref_) {
     return;
   }
 
   download_request_manager_->GetMedia(
-      contents,
+      std::move(media), contents,
       base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
                      weak_factory_.GetWeakPtr(), contents->GetVisibleURL()));
 }

@@ -196,6 +196,8 @@ void PlaylistTabHelper::RequestAsyncExecuteScript(
 
 void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
+  DVLOG(2) << __FUNCTION__;
+
   const std::string script = service_->GetMediaDetectorScript(
       navigation_handle->GetWebContents()->GetVisibleURL());
 

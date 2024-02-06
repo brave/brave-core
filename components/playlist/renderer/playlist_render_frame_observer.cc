@@ -112,7 +112,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
   auto mapping = on_load_scripts_[0].Map();
   std::string script_converted(mapping.GetMemoryAs<char>(),
                                on_load_scripts_[0].GetSize());
-  DVLOG(2) << "Lofasz:\n" << script_converted;
+  DCHECK(!script_converted.empty());
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::Isolate::Scope isolate_scope(isolate);
@@ -155,13 +155,15 @@ void PlaylistRenderFrameObserver::OnMediaUpdated(gin::Arguments* args) {
   std::unique_ptr<base::Value> value =
       content::V8ValueConverter::Create()->FromV8Value(
           arg, args->GetHolderCreationContext());
-  if (value) {
-    DVLOG(2) << "lofasz\n" << *value;
-  } else {
-    DVLOG(2) << "lofasz failed";
+  if (!value) {
+    return;
   }
 
-  // media_handler_->OnMediaUpdatedFromRenderFrame();
+  // CHECK(value->is_list());
+
+  DVLOG(2) << "lofasz\n" << *value;
+
+  media_handler_->OnMediaUpdatedFromRenderFrame(std::move(*value));
 }
 
 }  // namespace playlist
