@@ -37,19 +37,19 @@ class Report {
                  mojom::BalanceReportInfoPtr balance_report);
 
   void OnTransactions(
-      std::vector<mojom::TransactionReportInfoPtr> transaction_report,
       const mojom::ActivityMonth month,
       const uint32_t year,
-      std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-      GetMonthlyReportCallback callback);
+      mojom::MonthlyReportInfoPtr report,
+      GetMonthlyReportCallback callback,
+      std::vector<mojom::TransactionReportInfoPtr> transaction_report);
 
   void OnContributions(
-      std::vector<mojom::ContributionReportInfoPtr> contribution_report,
-      std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-      GetMonthlyReportCallback callback);
+      mojom::MonthlyReportInfoPtr report,
+      GetMonthlyReportCallback callback,
+      std::vector<mojom::ContributionReportInfoPtr> contribution_report);
 
-  void OnGetAllBalanceReports(std::vector<mojom::BalanceReportInfoPtr> reports,
-                              GetAllMonthlyReportIdsCallback callback);
+  void OnGetAllBalanceReports(GetAllMonthlyReportIdsCallback callback,
+                              std::vector<mojom::BalanceReportInfoPtr> reports);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

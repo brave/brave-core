@@ -36,11 +36,10 @@ void ContributionAC::Process(const uint64_t reconcile_stamp) {
       "", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED, true,
       reconcile_stamp, false, engine_->state()->GetPublisherMinVisits());
 
-  auto get_callback =
-      std::bind(&ContributionAC::PreparePublisherList, this, _1);
-
-  engine_->database()->GetActivityInfoList(0, 0, std::move(filter),
-                                           get_callback);
+  engine_->database()->GetActivityInfoList(
+      0, 0, std::move(filter),
+      base::BindOnce(&ContributionAC::PreparePublisherList,
+                     base::Unretained(this)));
 }
 
 void ContributionAC::PreparePublisherList(

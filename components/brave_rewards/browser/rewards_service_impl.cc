@@ -2590,7 +2590,7 @@ void RewardsServiceImpl::GetAllMonthlyReportIds(
 }
 
 void RewardsServiceImpl::GetAllContributions(
-    GetAllContributionsCallback callback) {
+    ContributionInfoListCallback callback) {
   if (!Connected()) {
     return DeferCallback(FROM_HERE, std::move(callback),
                          std::vector<mojom::ContributionInfoPtr>());

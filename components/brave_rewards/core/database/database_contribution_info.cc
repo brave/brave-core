@@ -155,19 +155,18 @@ void DatabaseContributionInfo::OnGetRecord(
       static_cast<mojom::ContributionProcessor>(GetIntColumn(record, 5));
   info->created_at = GetInt64Column(record, 6);
 
-  auto publishers_callback = std::bind(
-      &DatabaseContributionInfo::OnGetPublishers, this, _1,
-      std::make_shared<mojom::ContributionInfoPtr>(info->Clone()), callback);
+  auto publishers_callback = base::BindOnce(
+      &DatabaseContributionInfo::OnGetPublishers, base::Unretained(this),
+      info->Clone(), std::move(callback));
 
   publishers_.GetRecordByContributionList({info->contribution_id},
-                                          publishers_callback);
+                                          std::move(publishers_callback));
 }
 
 void DatabaseContributionInfo::OnGetPublishers(
-    std::vector<mojom::ContributionPublisherPtr> list,
-    std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-    GetContributionInfoCallback callback) {
-  auto contribution = std::move(*shared_contribution);
+    mojom::ContributionInfoPtr contribution,
+    GetContributionInfoCallback callback,
+    std::vector<mojom::ContributionPublisherPtr> list) {
   if (!contribution) {
     BLOG(1, "Contribution is null");
     callback(nullptr);
@@ -302,7 +301,7 @@ void DatabaseContributionInfo::GetContributionReport(
     GetContributionReportCallback callback) {
   if (year == 0) {
     BLOG(1, "Year is 0");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -347,7 +346,7 @@ void DatabaseContributionInfo::OnGetContributionReport(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -369,23 +368,19 @@ void DatabaseContributionInfo::OnGetContributionReport(
     list.push_back(std::move(info));
   }
 
-  auto publisher_callback = std::bind(
-      &DatabaseContributionInfo::OnGetContributionReportPublishers, this, _1,
-      std::make_shared<std::vector<mojom::ContributionInfoPtr>>(
-          std::move(list)),
-      callback);
-
-  publishers_.GetContributionPublisherPairList(contribution_ids,
-                                               publisher_callback);
+  publishers_.GetContributionPublisherPairList(
+      contribution_ids,
+      base::BindOnce(
+          &DatabaseContributionInfo::OnGetContributionReportPublishers,
+          base::Unretained(this), std::move(list), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetContributionReportPublishers(
-    std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-    std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
-        shared_contributions,
-    GetContributionReportCallback callback) {
+    std::vector<mojom::ContributionInfoPtr> contributions,
+    GetContributionReportCallback callback,
+    std::vector<ContributionPublisherInfoPair> publisher_pair_list) {
   std::vector<mojom::ContributionReportInfoPtr> report_list;
-  for (const auto& contribution : *shared_contributions) {
+  for (const auto& contribution : contributions) {
     auto report = mojom::ContributionReportInfo::New();
     report->contribution_id = contribution->contribution_id;
     report->amount = contribution->amount;
@@ -406,7 +401,7 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
     }
   }
 
-  callback(std::move(report_list));
+  std::move(callback).Run(std::move(report_list));
 }
 
 void DatabaseContributionInfo::GetNotCompletedRecords(
@@ -467,12 +462,12 @@ void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
   if (response->result->get_records().empty()) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -497,21 +492,19 @@ void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
     list.push_back(std::move(info));
   }
 
-  auto publisher_callback =
-      std::bind(&DatabaseContributionInfo::OnGetListPublishers, this, _1,
-                std::make_shared<std::vector<mojom::ContributionInfoPtr>>(
-                    std::move(list)),
-                callback);
+  auto publisher_callback = base::BindOnce(
+      &DatabaseContributionInfo::OnGetListPublishers, base::Unretained(this),
+      std::move(list), std::move(callback));
 
-  publishers_.GetRecordByContributionList(contribution_ids, publisher_callback);
+  publishers_.GetRecordByContributionList(contribution_ids,
+                                          std::move(publisher_callback));
 }
 
 void DatabaseContributionInfo::OnGetListPublishers(
-    std::vector<mojom::ContributionPublisherPtr> list,
-    std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
-        shared_contributions,
-    ContributionInfoListCallback callback) {
-  for (const auto& contribution : *shared_contributions) {
+    std::vector<mojom::ContributionInfoPtr> contributions,
+    ContributionInfoListCallback callback,
+    std::vector<mojom::ContributionPublisherPtr> list) {
+  for (const auto& contribution : contributions) {
     for (const auto& item : list) {
       if (item->contribution_id != contribution->contribution_id) {
         continue;
@@ -521,7 +514,7 @@ void DatabaseContributionInfo::OnGetListPublishers(
     }
   }
 
-  callback(std::move(*shared_contributions));
+  std::move(callback).Run(std::move(contributions));
 }
 
 void DatabaseContributionInfo::UpdateStep(const std::string& contribution_id,

@@ -282,7 +282,7 @@ void DatabaseBalanceReport::OnGetAllRecords(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -301,7 +301,7 @@ void DatabaseBalanceReport::OnGetAllRecords(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void DatabaseBalanceReport::DeleteAllRecords(LegacyResultCallback callback) {

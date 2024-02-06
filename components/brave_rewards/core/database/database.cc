@@ -72,7 +72,8 @@ void Database::GetActivityInfoList(uint32_t start,
                                    uint32_t limit,
                                    mojom::ActivityInfoFilterPtr filter,
                                    GetActivityInfoListCallback callback) {
-  activity_info_.GetRecordsList(start, limit, std::move(filter), callback);
+  activity_info_.GetRecordsList(start, limit, std::move(filter),
+                                std::move(callback));
 }
 
 void Database::DeleteActivityInfo(const std::string& publisher_key,
@@ -115,7 +116,7 @@ void Database::GetBalanceReportInfo(
 }
 
 void Database::GetAllBalanceReports(GetBalanceReportListCallback callback) {
-  balance_report_.GetAllRecords(callback);
+  balance_report_.GetAllRecords(std::move(callback));
 }
 
 void Database::DeleteAllBalanceReports(LegacyResultCallback callback) {
@@ -136,7 +137,7 @@ void Database::GetContributionInfo(const std::string& contribution_id,
 }
 
 void Database::GetAllContributions(ContributionInfoListCallback callback) {
-  contribution_info_.GetAllRecords(callback);
+  contribution_info_.GetAllRecords(std::move(callback));
 }
 
 void Database::GetOneTimeTips(const mojom::ActivityMonth month,
@@ -148,12 +149,12 @@ void Database::GetOneTimeTips(const mojom::ActivityMonth month,
 void Database::GetContributionReport(const mojom::ActivityMonth month,
                                      const int year,
                                      GetContributionReportCallback callback) {
-  contribution_info_.GetContributionReport(month, year, callback);
+  contribution_info_.GetContributionReport(month, year, std::move(callback));
 }
 
 void Database::GetNotCompletedContributions(
     ContributionInfoListCallback callback) {
-  contribution_info_.GetNotCompletedRecords(callback);
+  contribution_info_.GetNotCompletedRecords(std::move(callback));
 }
 
 void Database::UpdateContributionInfoStep(const std::string& contribution_id,
@@ -258,7 +259,7 @@ void Database::SaveEventLogs(const std::map<std::string, std::string>& records,
 }
 
 void Database::GetLastEventLogs(GetEventLogsCallback callback) {
-  event_log_.GetLastRecords(callback);
+  event_log_.GetLastRecords(std::move(callback));
 }
 
 /**
@@ -298,7 +299,7 @@ void Database::GetMediaPublisherInfo(const std::string& media_key,
 void Database::GetTransactionReport(const mojom::ActivityMonth month,
                                     const int year,
                                     GetTransactionReportCallback callback) {
-  multi_tables_.GetTransactionReport(month, year, callback);
+  multi_tables_.GetTransactionReport(month, year, std::move(callback));
 }
 
 /**
@@ -315,7 +316,7 @@ void Database::GetPromotion(const std::string& id,
 }
 
 void Database::GetAllPromotions(GetAllPromotionsCallback callback) {
-  promotion_.GetAllRecords(callback);
+  promotion_.GetAllRecords(std::move(callback));
 }
 
 void Database::SavePromotionClaimId(const std::string& promotion_id,
@@ -410,7 +411,7 @@ void Database::GetNextMonthlyContributionTime(
 }
 
 void Database::GetRecurringTips(GetRecurringTipsCallback callback) {
-  recurring_tip_.GetAllRecords(callback);
+  recurring_tip_.GetAllRecords(std::move(callback));
 }
 
 void Database::RemoveRecurringTip(const std::string& publisher_key,

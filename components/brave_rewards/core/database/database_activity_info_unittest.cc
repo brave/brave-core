@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
@@ -75,9 +76,11 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
   EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
-  MockFunction<GetActivityInfoListCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  activity_.GetRecordsList(0, 0, nullptr, callback.AsStdFunction());
+  testing::StrictMock<
+      base::MockOnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>>
+      callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  activity_.GetRecordsList(0, 0, nullptr, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -107,10 +110,12 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<GetActivityInfoListCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
+  testing::StrictMock<
+      base::MockOnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>>
+      callback;
+  EXPECT_CALL(callback, Run).Times(1);
   activity_.GetRecordsList(0, 0, mojom::ActivityInfoFilter::New(),
-                           callback.AsStdFunction());
+                           callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -143,9 +148,11 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
   auto filter = mojom::ActivityInfoFilter::New();
   filter->id = "publisher_key";
 
-  MockFunction<GetActivityInfoListCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  activity_.GetRecordsList(0, 0, std::move(filter), callback.AsStdFunction());
+  testing::StrictMock<
+      base::MockOnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>>
+      callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  activity_.GetRecordsList(0, 0, std::move(filter), callback.Get());
 
   task_environment_.RunUntilIdle();
 }

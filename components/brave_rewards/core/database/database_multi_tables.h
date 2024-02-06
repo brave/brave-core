@@ -28,10 +28,10 @@ class DatabaseMultiTables {
 
  private:
   void OnGetTransactionReportPromotion(
-      base::flat_map<std::string, mojom::PromotionPtr> promotions,
       const mojom::ActivityMonth month,
       const int year,
-      GetTransactionReportCallback callback);
+      GetTransactionReportCallback callback,
+      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

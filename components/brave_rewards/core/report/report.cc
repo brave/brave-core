@@ -47,48 +47,33 @@ void Report::OnBalance(const mojom::ActivityMonth month,
   auto monthly_report = mojom::MonthlyReportInfo::New();
   monthly_report->balance = std::move(balance_report);
 
-  auto transaction_callback = std::bind(
-      &Report::OnTransactions, this, _1, month, year,
-      std::make_shared<mojom::MonthlyReportInfoPtr>(std::move(monthly_report)),
-      callback);
-
-  engine_->database()->GetTransactionReport(month, year, transaction_callback);
+  engine_->database()->GetTransactionReport(
+      month, year,
+      base::BindOnce(&Report::OnTransactions, base::Unretained(this), month,
+                     year, std::move(monthly_report), std::move(callback)));
 }
 
 void Report::OnTransactions(
-    std::vector<mojom::TransactionReportInfoPtr> transaction_report,
     const mojom::ActivityMonth month,
     const uint32_t year,
-    std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-    GetMonthlyReportCallback callback) {
-  if (!shared_report) {
-    BLOG(0, "Could not parse monthly report");
-    callback(mojom::Result::FAILED, nullptr);
-    return;
-  }
+    mojom::MonthlyReportInfoPtr report,
+    GetMonthlyReportCallback callback,
+    std::vector<mojom::TransactionReportInfoPtr> transaction_report) {
+  report->transactions = std::move(transaction_report);
 
-  (*shared_report)->transactions = std::move(transaction_report);
-
-  auto contribution_callback =
-      std::bind(&Report::OnContributions, this, _1, shared_report, callback);
-
-  engine_->database()->GetContributionReport(month, year,
-                                             contribution_callback);
+  engine_->database()->GetContributionReport(
+      month, year,
+      base::BindOnce(&Report::OnContributions, base::Unretained(this),
+                     std::move(report), std::move(callback)));
 }
 
 void Report::OnContributions(
-    std::vector<mojom::ContributionReportInfoPtr> contribution_report,
-    std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-    GetMonthlyReportCallback callback) {
-  if (!shared_report) {
-    BLOG(0, "Could not parse monthly report");
-    callback(mojom::Result::FAILED, nullptr);
-    return;
-  }
+    mojom::MonthlyReportInfoPtr report,
+    GetMonthlyReportCallback callback,
+    std::vector<mojom::ContributionReportInfoPtr> contribution_report) {
+  report->contributions = std::move(contribution_report);
 
-  (*shared_report)->contributions = std::move(contribution_report);
-
-  callback(mojom::Result::OK, std::move(*shared_report));
+  callback(mojom::Result::OK, std::move(report));
 }
 
 // This will be removed when we move reports in database and just order in db
@@ -114,17 +99,16 @@ bool CompareReportIds(const std::string& id_1, const std::string& id_2) {
 }
 
 void Report::GetAllMonthlyIds(GetAllMonthlyReportIdsCallback callback) {
-  auto balance_reports_callback =
-      std::bind(&Report::OnGetAllBalanceReports, this, _1, callback);
-
-  engine_->database()->GetAllBalanceReports(balance_reports_callback);
+  engine_->database()->GetAllBalanceReports(
+      base::BindOnce(&Report::OnGetAllBalanceReports, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void Report::OnGetAllBalanceReports(
-    std::vector<mojom::BalanceReportInfoPtr> reports,
-    GetAllMonthlyReportIdsCallback callback) {
+    GetAllMonthlyReportIdsCallback callback,
+    std::vector<mojom::BalanceReportInfoPtr> reports) {
   if (reports.empty()) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -136,7 +120,7 @@ void Report::OnGetAllBalanceReports(
 
   std::sort(ids.begin(), ids.end(), CompareReportIds);
 
-  callback(ids);
+  std::move(callback).Run(ids);
 }
 
 }  // namespace report

@@ -102,7 +102,7 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
           map.emplace(std::move(id), std::move(promotion));
         }
 
-        callback(std::move(map));
+        std::move(callback).Run(std::move(map));
       });
 
   // to suppress the Fetch(base::DoNothing()) calls

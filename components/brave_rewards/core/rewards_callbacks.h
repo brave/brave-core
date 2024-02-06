@@ -54,28 +54,26 @@ using ResultCallback = base::OnceCallback<void(mojom::Result)>;
 using RunDBTransactionCallback =
     base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
 
-// Legacy callbacks:
-
 using ContributionInfoListCallback =
-    std::function<void(std::vector<mojom::ContributionInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionInfoPtr>)>;
 
 using GetActivityInfoListCallback =
-    std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
+
+using GetBalanceReportListCallback =
+    base::OnceCallback<void(std::vector<mojom::BalanceReportInfoPtr>)>;
 
 using GetAllMonthlyReportIdsCallback =
-    std::function<void(const std::vector<std::string>&)>;
+    base::OnceCallback<void(const std::vector<std::string>&)>;
 
 using GetAllPromotionsCallback =
-    std::function<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
-
-using GetBalanceReportListCallback = std::function<void(
-    std::vector<mojom::BalanceReportInfoPtr>)>;  // TODO(sszaloki): unused?
+    base::OnceCallback<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
 
 using GetContributionReportCallback =
-    std::function<void(std::vector<mojom::ContributionReportInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionReportInfoPtr>)>;
 
 using GetEventLogsCallback =
-    std::function<void(std::vector<mojom::EventLogPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::EventLogPtr>)>;
 
 using GetExcludedListCallback =
     std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
@@ -99,7 +97,7 @@ using GetRecurringTipsCallback =
     std::function<void(std::vector<mojom::PublisherInfoPtr>)>;
 
 using GetTransactionReportCallback =
-    std::function<void(std::vector<mojom::TransactionReportInfoPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::TransactionReportInfoPtr>)>;
 
 using LegacyLoadURLCallback = std::function<void(mojom::UrlResponsePtr)>;
 

@@ -480,7 +480,7 @@ void RewardsEngineImpl::GetActivityInfoList(
     mojom::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) {
   WhenReady([this, start, limit, filter = std::move(filter),
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+             callback = std::move(callback)]() mutable {
     database()->GetActivityInfoList(start, limit, std::move(filter),
                                     std::move(callback));
   });
@@ -627,8 +627,7 @@ void RewardsEngineImpl::GetTransactionReport(
     mojom::ActivityMonth month,
     int year,
     GetTransactionReportCallback callback) {
-  WhenReady([this, month, year,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
     database()->GetTransactionReport(month, year, std::move(callback));
   });
 }
@@ -637,15 +636,14 @@ void RewardsEngineImpl::GetContributionReport(
     mojom::ActivityMonth month,
     int year,
     GetContributionReportCallback callback) {
-  WhenReady([this, month, year,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
     database()->GetContributionReport(month, year, std::move(callback));
   });
 }
 
 void RewardsEngineImpl::GetAllContributions(
-    GetAllContributionsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    ContributionInfoListCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetAllContributions(std::move(callback));
   });
 }
@@ -661,13 +659,13 @@ void RewardsEngineImpl::GetMonthlyReport(mojom::ActivityMonth month,
 
 void RewardsEngineImpl::GetAllMonthlyReportIds(
     GetAllMonthlyReportIdsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     report()->GetAllMonthlyIds(std::move(callback));
   });
 }
 
 void RewardsEngineImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetAllPromotions(std::move(callback));
   });
 }
@@ -679,7 +677,7 @@ void RewardsEngineImpl::Shutdown(ShutdownCallback callback) {
 }
 
 void RewardsEngineImpl::GetEventLogs(GetEventLogsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetLastEventLogs(std::move(callback));
   });
 }

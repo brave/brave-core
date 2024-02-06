@@ -61,10 +61,9 @@ class DatabaseContributionInfo : public DatabaseTable {
   void OnGetRecord(GetContributionInfoCallback callback,
                    mojom::DBCommandResponsePtr response);
 
-  void OnGetPublishers(
-      std::vector<mojom::ContributionPublisherPtr> list,
-      std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-      GetContributionInfoCallback callback);
+  void OnGetPublishers(mojom::ContributionInfoPtr contribution,
+                       GetContributionInfoCallback callback,
+                       std::vector<mojom::ContributionPublisherPtr> list);
 
   void OnGetOneTimeTips(GetOneTimeTipsCallback callback,
                         mojom::DBCommandResponsePtr response);
@@ -73,19 +72,17 @@ class DatabaseContributionInfo : public DatabaseTable {
                                mojom::DBCommandResponsePtr response);
 
   void OnGetContributionReportPublishers(
-      std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-      std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
-          shared_contributions,
-      GetContributionReportCallback callback);
+      std::vector<mojom::ContributionInfoPtr> contributions,
+      GetContributionReportCallback callback,
+      std::vector<ContributionPublisherInfoPair> publisher_pair_list);
 
   void OnGetList(ContributionInfoListCallback callback,
                  mojom::DBCommandResponsePtr response);
 
   void OnGetListPublishers(
-      std::vector<mojom::ContributionPublisherPtr> list,
-      std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
-          shared_contributions,
-      ContributionInfoListCallback callback);
+      std::vector<mojom::ContributionInfoPtr> contributions,
+      ContributionInfoListCallback callback,
+      std::vector<mojom::ContributionPublisherPtr> list);
 
   DatabaseContributionInfoPublishers publishers_;
 };

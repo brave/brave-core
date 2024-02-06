@@ -126,7 +126,7 @@ void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -143,7 +143,7 @@ void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database
