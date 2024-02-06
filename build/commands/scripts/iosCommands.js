@@ -34,12 +34,27 @@ const createXCFrameworks = (buildConfig = config.defaultBuildConfig, options = {
   })
 }
 
+const bootstrap = (options = {}) => {
+  util.run('vpython3', ['script/ios_bootstrap.py'], config)
+  if (options.open_xcodeproj) {
+    const args = [
+      path.join(config.srcDir, 'brave', 'ios', 'brave-ios', 'App', 'Client.xcodeproj')
+    ]
+    util.run('open', args)
+  }
+}
+
 program
   .command('ios_create_xcframeworks')
   .option('--target_arch <target_arch>', 'target architecture', /^(host_cpu|x64|arm64|x86)$/i)
   .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)', /^(device|catalyst|simulator)$/i)
   .arguments('[build_config]')
   .action(createXCFrameworks)
+
+program
+  .command('ios_bootstrap')
+  .option('--open_xcodeproj', 'Open the Xcode project after bootstrapping')
+  .action(bootstrap)
 
 program
   .parse(process.argv)

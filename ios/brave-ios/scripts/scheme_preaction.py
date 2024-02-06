@@ -43,8 +43,8 @@ def main():
     target_environment = 'simulator' if (options.platform_name
                                          == 'iphonesimulator') else None
 
-    UpdateSymlink(config, target_arch, target_environment)
     BuildCore(config, target_arch, target_environment)
+    UpdateSymlink(config, target_arch, target_environment)
     GenerateXCFrameworks(config, target_arch, target_environment)
     CleanupChromiumAssets(output_dir)
     FixMaterialComponentsVersionString(output_dir)
@@ -62,10 +62,10 @@ def BuildOutputDirectory(config, platform_name):
 
 
 def UpdateSymlink(config, target_arch, target_environment):
-    """Updates the 'current_link' symlink"""
+    """Updates the 'ios_current_link' symlink"""
     cmd_args = [
         'npm', 'run', 'update_symlink', '--', config, '--symlink_dir',
-        os.path.join(src_dir, 'out/current_link'), '--target_os', 'ios',
+        os.path.join(src_dir, 'out/ios_current_link'), '--target_os', 'ios',
         '--target_arch', target_arch
     ]
     if target_environment != None:

@@ -7,12 +7,6 @@ fastlane_version "2.86.0"
 default_platform :ios
 
 platform :ios do
-  before_all do |lane, options|
-    unless lane == :upload
-      sh("pushd .. && ./scripts/bootstrap.sh --ci && popd")
-    end
-  end
-
   desc "Run Unit Tests"
   lane :test do |options|
     run_tests(
