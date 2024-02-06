@@ -49,7 +49,7 @@ class PlaylistRenderFrameObserver final
   void HideMediaSourceAPI() const;
   void InstallMediaDetector();
 
-  void OnMediaUpdated(const std::string& page_url);
+  void OnMediaUpdated(std::string value);
 
   std::vector<base::ReadOnlySharedMemoryRegion> on_load_scripts_;
   mojo::AssociatedReceiverSet<mojom::OnLoadScriptInjector> receivers_;

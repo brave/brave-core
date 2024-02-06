@@ -69,12 +69,6 @@ void PlaylistRenderFrameObserver::OnMediaHandlerDisconnect() {
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  for (base::ReadOnlySharedMemoryRegion& script : on_load_scripts_) {
-    auto mapping = script.Map();
-    std::string script_converted(mapping.GetMemoryAs<char>(), script.GetSize());
-    DVLOG(2) << "Lofasz:\n" << script_converted;
-  }
-
   if (render_frame()->GetWebFrame()->IsProvisional()) {
     return;
   }
@@ -112,45 +106,10 @@ void PlaylistRenderFrameObserver::HideMediaSourceAPI() const {
 void PlaylistRenderFrameObserver::InstallMediaDetector() {
   DVLOG(2) << __FUNCTION__;
 
-  static const char kScript[] = R"(
-    (function(onMediaUpdated) {
-      // Firstly, we try to get find all <video> or <audio> tags periodically,
-      // for a a while from the start up. If we find them, then we attach
-      // MutationObservers to them to detect source URL.
-      // After a given amount of time, we do this in requestIdleCallback().
-      // Note that there's a global object named |pl_worker|. This worker is
-      // created and bound by PlaylistJSHandler.
-
-      const mutationSources = new Set();
-      const mutationObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => { onMediaUpdated(window.location.href); })
-      });
-      const findNewMediaAndObserveMutation = () => {
-          return document.querySelectorAll('video, audio').forEach(
-            (mediaNode) => {
-              if (mutationSources.has(mediaNode)) return
-
-              mutationSources.add(mediaNode)
-              onMediaUpdated(window.location.href)
-              mutationObserver.observe(mediaNode, { attributeFilter: ['src'] })
-          });
-      }
-
-      const pollingIntervalId = window.setInterval(
-          findNewMediaAndObserveMutation, 1000);
-      window.setTimeout(() => {
-          window.clearInterval(pollingIntervalId)
-          window.requestIdleCallback(findNewMediaAndObserveMutation)
-          // TODO(sko) We might want to check if idle callback is waiting too
-          // long. In that case, we should get back to the polling style. And
-          // also, this time could be too long for production.
-      }, 20000)
-
-      // Try getting media after page was restored or navigated back.
-        window.addEventListener(
-            'pageshow', () => { onMediaUpdated(window.location.href); });
-    })
-  )";
+  CHECK(on_load_scripts_.size() == 1);
+  auto mapping = on_load_scripts_[0].Map();
+  std::string script_converted(mapping.GetMemoryAs<char>(), on_load_scripts_[0].GetSize());
+  DVLOG(2) << "Lofasz:\n" << script_converted;
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::Isolate::Scope isolate_scope(isolate);
@@ -163,7 +122,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       context, v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Script> script =
-      v8::Script::Compile(context, gin::StringToV8(isolate, kScript))
+      v8::Script::Compile(context, gin::StringToV8(isolate, script_converted))
           .ToLocalChecked();
   v8::Local<v8::Function> function =
       v8::Local<v8::Function>::Cast(script->Run(context).ToLocalChecked());
@@ -180,14 +139,10 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
   std::ignore = function->Call(context, context->Global(), 1, &arg);
 }
 
-void PlaylistRenderFrameObserver::OnMediaUpdated(const std::string& page_url) {
-  if (!GURL(page_url).SchemeIsHTTPOrHTTPS()) {
-    return;
-  }
+void PlaylistRenderFrameObserver::OnMediaUpdated(std::string value) {
+  DVLOG(2) << "lofasz\n" << " " << value;
 
-  DVLOG(2) << __FUNCTION__ << " " << page_url;
-
-  media_handler_->OnMediaUpdatedFromRenderFrame();
+  // media_handler_->OnMediaUpdatedFromRenderFrame();
 }
 
 }  // namespace playlist
