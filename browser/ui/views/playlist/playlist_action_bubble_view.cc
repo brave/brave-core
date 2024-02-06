@@ -453,6 +453,7 @@ void AddBubble::OnMediaExtracted(bool result) {
   } else {
     AddChildView(std::make_unique<views::Label>(
         l10n_util::GetStringUTF16(IDS_PLAYLIST_MEDIA_NOT_FOUND_IN_THIS_PAGE)));
+    loading_spinner_->SetVisible(false);
     if (GetWidget()) {
       SizeToContents();
     }
