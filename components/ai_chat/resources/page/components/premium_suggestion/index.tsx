@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
-import { loadTimeData } from '$web-common/loadTimeData'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import formatMessage from '$web-common/formatMessage'
@@ -73,7 +72,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
           })}
         </ul>
       </div>
-      {!loadTimeData.getBoolean('isMobile') && (
+      {!context.isMobile && (
         <div className={styles.priceList}>
           <button className={styles.priceButton} tabIndex={-1}>
             <span className={styles.priceButtonLabel}>Monthly</span>
