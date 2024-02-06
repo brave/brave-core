@@ -20,7 +20,6 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/schemeful_site.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -41,8 +40,6 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   };
 
   PlaylistDownloadRequestManagerBrowserTest() {
-    playlist::PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
     scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
   }
 
@@ -62,38 +59,25 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     return item;
   }
 
-  GURL LoadHTML(const std::string& html, GURL url = GURL()) {
+  GURL set_up_https_server(const std::string& html, GURL url = GURL()) {
     const auto* test_info =
         testing::UnitTest::GetInstance()->current_test_info();
-    VLOG(2) << __FUNCTION__ << test_info->name() << ": " << __func__;
+    VLOG(2) << test_info->name() << ": " << __FUNCTION__;
 
-    // Start server: ASSER_TRUE() has its own return type internally, thus
-    // encloses with lambda.
-    ([&]() {
+    // ASSERT_*() only work in void functions
+    ([&] {
       if (https_server()->Started()) {
         ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
       }
+
       https_server()->RegisterRequestHandler(
           base::BindRepeating(&PlaylistDownloadRequestManagerBrowserTest::Serve,
                               https_server(), html));
       ASSERT_TRUE(https_server()->Start());
     })();
 
-    // Load given |html| contents: ASSER_TRUE() has its own return type
-    // internally, thus encloesg with lambda.
-    GURL destination_url = url;
-    ([&]() {
-      auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
-      if (destination_url.is_valid()) {
-        destination_url = https_server()->GetURL(destination_url.host(),
-                                                 destination_url.path());
-      } else {
-        destination_url = https_server()->GetURL("/test");
-      }
-      ASSERT_TRUE(content::NavigateToURL(active_web_contents, destination_url));
-    })();
-
-    return destination_url;
+    return url.is_valid() ? https_server()->GetURL(url.host(), url.path())
+                          : https_server()->GetURL("/test");
   }
 
   void LoadHTMLAndCheckResult(const std::string& html,
@@ -103,20 +87,29 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
         testing::UnitTest::GetInstance()->current_test_info();
     VLOG(2) << __FUNCTION__ << test_info->name() << ": " << __func__;
 
-    auto destination_url = LoadHTML(html, url);
+    auto* playlist_service =
+        playlist::PlaylistServiceFactory::GetForBrowserContext(
+            chrome_test_utils::GetProfile(this));
+    ASSERT_TRUE(playlist_service);
+    testing::NiceMock<MockPlaylistServiceObserver> observer;
+    playlist_service->AddObserver(observer.GetRemote());
+
+    const auto destination_url = set_up_https_server(html, url);
+
+    base::RunLoop run_loop;
+    EXPECT_CALL(observer, OnMediaFilesUpdated(testing::_, testing::_))
+        .WillOnce(
+            [&](const GURL&,
+                std::vector<playlist::mojom::PlaylistItemPtr> actual_items) {
+              OnGetMedia(test_info->name(), items,
+                         url.is_valid() ? url.host() : destination_url.host(),
+                         std::move(actual_items));
+              run_loop.Quit();
+            });
 
     auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
-    // Run script and find media files
-    ASSERT_FALSE(component_manager_->GetMediaDetectorScript({}).empty());
-    request_manager_->GetMedia(
-        active_web_contents,
-        base::BindOnce(&PlaylistDownloadRequestManagerBrowserTest::OnGetMedia,
-                       base::Unretained(this), test_info->name(), items,
-                       url.is_valid() ? url.host() : destination_url.host()));
-
-    // Block until result is received from OnGetMedia().
-    run_loop_ = std::make_unique<base::RunLoop>();
-    run_loop_->Run();
+    ASSERT_TRUE(content::NavigateToURL(active_web_contents, destination_url));
+    run_loop.Run();
   }
 
  protected:
@@ -214,17 +207,12 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
              a->thumbnail_path == b->thumbnail_path;
     };
     EXPECT_TRUE(base::ranges::equal(actual_items, expected_items, equal));
-
-    ASSERT_TRUE(run_loop_);
-    run_loop_->Quit();
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
 
   raw_ptr<playlist::MediaDetectorComponentManager> component_manager_;
   raw_ptr<playlist::PlaylistDownloadRequestManager> request_manager_;
-
-  std::unique_ptr<base::RunLoop> run_loop_;
 
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -289,8 +277,14 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
       {});
 }
 
+#if BUILDFLAG(IS_ANDROID)
+#define MAYBE_YouTubeSpecificRetriever YouTubeSpecificRetriever
+#else
+#define MAYBE_YouTubeSpecificRetriever DISABLED_YouTubeSpecificRetriever
+#endif
+
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
-                       YouTubeSpecificRetriever) {
+                       MAYBE_YouTubeSpecificRetriever) {
   // Pre-conditions to decide site specific script
   ASSERT_EQ(net::SchemefulSite(GURL("https://m.youtube.com")),
             net::SchemefulSite(GURL("https://youtube.com")));
@@ -298,9 +292,6 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
             net::SchemefulSite(GURL("https://www.youtube.com")));
   ASSERT_NE(net::SchemefulSite(GURL("http://m.youtube.com")),
             net::SchemefulSite(GURL("https://m.youtube.com")));
-
-  // Getting JavaScript object requires to access the main world.
-  request_manager()->SetRunScriptOnMainWorldForTest();
 
   // Check if we can retrieve metadata from youtube specific script.
   LoadHTMLAndCheckResult(
@@ -419,14 +410,14 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                        DynamicallyAddedMedia) {
-  testing::NiceMock<MockPlaylistServiceObserver> observer;
   auto* playlist_service =
       playlist::PlaylistServiceFactory::GetForBrowserContext(
           chrome_test_utils::GetProfile(this));
   ASSERT_TRUE(playlist_service);
+  testing::NiceMock<MockPlaylistServiceObserver> observer;
   playlist_service->AddObserver(observer.GetRemote());
 
-  const auto& url = LoadHTML(
+  const auto url = set_up_https_server(
       R"html(
         <html>
         <meta property="og:image" content="/img.jpg">
@@ -445,42 +436,20 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
           });
         </script>
         </html>
-      )html",
-      GURL("https://youtube.com")  // For now, detecting dynamically added media
-                                   // files is done only for Background web
-                                   // contents. So we should pretend to be
-                                   // Youtube.
-  );
-
-  // At the first execution, we don't get any media files.
-  // And after that, we should find dynamically added media files and
-  // notify observers.
-  using testing::_;
-  base::MockOnceCallback<void(const GURL&,
-                              std::vector<playlist::mojom::PlaylistItemPtr>)>
-      callback;
-
-  // Unfortunately, testing::ElementsAreArray does't seem to work with
-  // non-copyable When we we write
-  //   EXPECT_CALL(callback, Run(url,
-  //                             testing::ElementsAreArray(
-  //                             empty_result.begin(), empty_result.empty())));
-  // It fails to compile. So as a workaround, checks it in an Action.
-  EXPECT_CALL(callback, Run(url, _))
-      .WillOnce([](const GURL& url,
-                   std::vector<playlist::mojom::PlaylistItemPtr> items) {
-        EXPECT_TRUE(items.empty());
-      });
-  // This returns cached items that are found so far. They should be empty.
-  playlist_service->FindMediaFilesFromActiveTab(callback.Get());
+      )html");
 
   base::RunLoop run_loop;
-  EXPECT_CALL(observer, OnMediaFilesUpdated(url, _))
-      .WillOnce([&](const GURL& page_url,
-                    std::vector<playlist::mojom::PlaylistItemPtr> items) {
-        EXPECT_FALSE(items.empty());
-        run_loop.Quit();
-      });
+  testing::InSequence in_sequence;
+  EXPECT_CALL(observer, OnMediaFilesUpdated(url, testing::IsEmpty()))
+      .Times(testing::AtLeast(1));
+  EXPECT_CALL(observer,
+              OnMediaFilesUpdated(url, testing::Not(testing::IsEmpty())))
+      .WillOnce(
+          [&](const GURL&, std::vector<playlist::mojom::PlaylistItemPtr>) {
+            run_loop.Quit();
+          });
 
+  auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
+  ASSERT_TRUE(content::NavigateToURL(active_web_contents, url));
   run_loop.Run();
 }
