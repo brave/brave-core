@@ -240,6 +240,8 @@ class PlaylistService : public KeyedService,
 
   bool playlist_enabled() const { return *enabled_pref_; }
 
+  std::string GetMediaDetectorScript(const GURL& url) const;
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;

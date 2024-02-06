@@ -532,6 +532,11 @@ bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
   });
 }
 
+std::string PlaylistService::GetMediaDetectorScript(const GURL& url) const {
+  return download_request_manager_->media_detector_component_manager()
+      ->GetMediaDetectorScript(url);
+}
+
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
     const std::string& playlist_id,
     bool can_cache,

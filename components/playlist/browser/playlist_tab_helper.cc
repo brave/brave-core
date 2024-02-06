@@ -196,9 +196,9 @@ void PlaylistTabHelper::RequestAsyncExecuteScript(
 
 void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
-  const std::string script =
-      media_detector_component_manager_->GetMediaDetectorScript(
-          navigation_handle->GetWebContents()->GetVisibleURL());
+  const std::string script = service_->GetMediaDetectorScript(
+      navigation_handle->GetWebContents()->GetVisibleURL());
+
   base::WritableSharedMemoryRegion script_writable_shared_memory =
       base::WritableSharedMemoryRegion::Create(script.size());
   std::memcpy(script_writable_shared_memory.Map().memory(), script.data(),
