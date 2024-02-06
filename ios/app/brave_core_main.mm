@@ -32,6 +32,7 @@
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
+#include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
@@ -116,6 +117,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
+@property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @end
 
@@ -482,6 +484,14 @@ static bool CustomLogHandler(int severity,
                 p3aService:_p3a_service];
   }
   return _p3aUtils;
+}
+
+- (DeAmpPrefs*)deAmpPrefs {
+  if (!_deAmpPrefs) {
+    _deAmpPrefs =
+        [[DeAmpPrefs alloc] initWithProfileState:_mainBrowserState->GetPrefs()];
+  }
+  return _deAmpPrefs;
 }
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {

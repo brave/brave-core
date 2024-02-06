@@ -10,6 +10,8 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/prefs.h"
@@ -33,6 +35,8 @@ void BraveRegisterBrowserStatePrefs(
   brave_sync::Prefs::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefsForMigration(registry);
+  de_amp::RegisterProfilePrefs(registry);
+  debounce::DebounceService::RegisterProfilePrefs(registry);
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsService::RegisterProfilePrefs(registry);
 #endif

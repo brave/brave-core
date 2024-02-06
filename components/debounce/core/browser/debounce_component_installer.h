@@ -1,10 +1,10 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_DEBOUNCE_BROWSER_DEBOUNCE_COMPONENT_INSTALLER_H_
-#define BRAVE_COMPONENTS_DEBOUNCE_BROWSER_DEBOUNCE_COMPONENT_INSTALLER_H_
+#ifndef BRAVE_COMPONENTS_DEBOUNCE_CORE_BROWSER_DEBOUNCE_COMPONENT_INSTALLER_H_
+#define BRAVE_COMPONENTS_DEBOUNCE_CORE_BROWSER_DEBOUNCE_COMPONENT_INSTALLER_H_
 
 #include <memory>
 #include <string>
@@ -19,8 +19,8 @@
 #include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
-#include "brave/components/debounce/browser/debounce_rule.h"
-#include "brave/components/debounce/browser/debounce_service.h"
+#include "brave/components/debounce/core/browser/debounce_rule.h"
+#include "brave/components/debounce/core/browser/debounce_service.h"
 
 namespace debounce {
 
@@ -79,4 +79,4 @@ class DebounceComponentInstaller
 
 }  // namespace debounce
 
-#endif  // BRAVE_COMPONENTS_DEBOUNCE_BROWSER_DEBOUNCE_COMPONENT_INSTALLER_H_
+#endif  // BRAVE_COMPONENTS_DEBOUNCE_CORE_BROWSER_DEBOUNCE_COMPONENT_INSTALLER_H_

@@ -1,9 +1,9 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/debounce/browser/debounce_service.h"
+#include "brave/components/debounce/core/browser/debounce_service.h"
 
 #include <memory>
 #include <string>
@@ -12,10 +12,9 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
-#include "brave/components/debounce/browser/debounce_component_installer.h"
-#include "brave/components/debounce/common/pref_names.h"
+#include "brave/components/debounce/core/browser/debounce_component_installer.h"
+#include "brave/components/debounce/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
 namespace debounce {
@@ -35,8 +34,9 @@ bool DebounceService::Debounce(const GURL& original_url,
       component_installer_->host_cache();
   const std::string etldp1 =
       DebounceRule::GetETLDForDebounce(original_url.host());
-  if (!base::Contains(host_cache, etldp1))
+  if (!base::Contains(host_cache, etldp1)) {
     return false;
+  }
 
   const std::vector<std::unique_ptr<DebounceRule>>& rules =
       component_installer_->rules();
@@ -58,6 +58,11 @@ void DebounceService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 
 bool DebounceService::IsEnabled() {
   return prefs_->GetBoolean(prefs::kDebounceEnabled);
+}
+
+void DebounceService::SetIsEnabled(const bool isEnabled) {
+  prefs_->SetBoolean(prefs::kDebounceEnabled, isEnabled);
+  prefs_->CommitPendingWrite();
 }
 
 }  // namespace debounce

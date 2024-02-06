@@ -75,7 +75,7 @@ if (!is_ios) {
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/constants",
       "//brave/components/content_settings/core/common",
-      "//brave/components/debounce/common",
+      "//brave/components/debounce/core/common",
       "//brave/components/ephemeral_storage",
       "//brave/components/https_upgrade_exceptions/browser",
       "//brave/components/l10n/common",

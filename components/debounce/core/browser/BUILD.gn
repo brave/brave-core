@@ -1,11 +1,12 @@
-import("//brave/build/config.gni")
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("browser") {
   sources = [
     "debounce_component_installer.cc",
     "debounce_component_installer.h",
-    "debounce_navigation_throttle.cc",
-    "debounce_navigation_throttle.h",
     "debounce_rule.cc",
     "debounce_rule.h",
     "debounce_service.cc",
@@ -15,13 +16,13 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_shields/browser",
-    "//brave/components/debounce/common:common",
+    "//brave/components/debounce/core/common",
     "//brave/extensions:common",
+    "//components/keyed_service/core",
     "//components/prefs",
     "//components/prefs:prefs",
     "//components/user_prefs",
-    "//content/public/browser",
+    "//net",
     "//third_party/re2:re2",
     "//ui/base",
     "//url",
