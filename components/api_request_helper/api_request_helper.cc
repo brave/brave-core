@@ -17,6 +17,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/time/time.h"
+#include "base/timer/elapsed_timer.h"
 #include "base/trace_event/trace_event.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
@@ -60,22 +61,17 @@ APIRequestResult ToAPIRequestResult(
 // A helper class to measure performance of the callback.
 class ScopedPerfTracker {
  public:
-  ScopedPerfTracker() {
-    if (base::ThreadTicks::IsSupported()) {
-      start_timestamp_ = base::ThreadTicks::Now();
-    }
-  }
+  explicit ScopedPerfTracker(const char* uma_name) : uma_name_(uma_name) {}
 
   ~ScopedPerfTracker() {
-    if (base::ThreadTicks::IsSupported()) {
-      base::UmaHistogramMediumTimes(
-          "Brave.APIRequestHelper.ProcessResultOnUI",
-          base::ThreadTicks::Now() - start_timestamp_);
+    if (timer_.is_supported()) {
+      base::UmaHistogramMediumTimes(uma_name_, timer_.Elapsed());
     }
   }
 
  private:
-  base::ThreadTicks start_timestamp_;
+  const char* uma_name_;
+  base::ElapsedThreadTimer timer_;
 };
 
 }  // namespace
@@ -117,10 +113,8 @@ bool APIRequestResult::IsResponseCodeValid() const {
 }
 
 base::Value APIRequestResult::TakeBody() {
-#if DCHECK_IS_ON()
-  DCHECK(!body_consumed_);
+  CHECK(!body_consumed_);
   body_consumed_ = true;
-#endif
   return std::move(value_body_);
 }
 
@@ -132,6 +126,7 @@ std::string APIRequestResult::SerializeBodyToString() const {
   if (!base::JSONWriter::Write(value_body_, &safe_json)) {
     VLOG(1) << "Response validation error: Encoding error";
   }
+
   return safe_json;
 }
 
@@ -413,7 +408,7 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
     data_decoder::DataDecoder::ValueOrError result_value) {
   TRACE_EVENT1("brave", "APIRequestHelper_ProcessResultOnUI", "url",
                result.final_url().spec());
-  ScopedPerfTracker tracker;
+  ScopedPerfTracker tracker("Brave.APIRequestHelper.ProcessResultOnUI");
   // TODO(petemill): Simplify by combining OnParseJsonResponse with the Json
   // response handler in ParseSSE.
   if (!result_value.has_value()) {

@@ -256,6 +256,7 @@ void NftMetadataFetcher::OnGetTokenMetadataPayload(
     return;
   }
 
+  // TODO(supermassive): Refactor and remove SerializeBodyToString().
   std::move(callback).Run(api_request_result.SerializeBodyToString(), 0,
                           "");  // 0 is kSuccess
 }

@@ -83,10 +83,7 @@ class APIRequestResult {
   base::flat_map<std::string, std::string> headers_;
   int error_code_ = -1;
   GURL final_url_;
-
-#if DCHECK_IS_ON()
   bool body_consumed_ = false;
-#endif
 };
 
 struct APIRequestOptions {
