@@ -11,7 +11,6 @@
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
-#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -20,16 +19,16 @@ using Result = GetTransactionStatusUphold::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   const auto* status = value->GetDict().FindString("status");
   if (!status || status->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -48,15 +47,17 @@ Result ParseBody(const std::string& body) {
 
 // static
 Result GetTransactionStatusUphold::ProcessResponse(
+    RewardsEngineImpl& engine,
     const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     case net::HTTP_UNAUTHORIZED:  // HTTP 401
-      BLOG(0, "Access token expired!");
+      engine.LogError(FROM_HERE) << "Access token expired";
       return base::unexpected(Error::kAccessTokenExpired);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }

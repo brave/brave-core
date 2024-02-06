@@ -68,7 +68,8 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
     LegacyResultCallback callback,
     bool success) {
   if (!success) {
-    BLOG(0, "Unable to advance monthly contribution dates.");
+    engine_->LogError(FROM_HERE)
+        << "Unable to advance monthly contribution dates";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -82,7 +83,8 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
            publisher->status == mojom::PublisherStatus::NOT_VERIFIED;
   });
 
-  BLOG(1, "Sending " << publishers.size() << " monthly contributions");
+  engine_->Log(FROM_HERE) << "Sending " << publishers.size()
+                          << " monthly contributions";
 
   for (const auto& item : publishers) {
     auto publisher = mojom::ContributionQueuePublisher::New();

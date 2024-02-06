@@ -55,8 +55,8 @@ void BitFlyerTransfer::OnCommitTransaction(
     if (result.error() ==
         PostCommitTransactionBitFlyer::Error::kAccessTokenExpired) {
       if (!engine_->bitflyer()->LogOutWallet()) {
-        BLOG(0, "Failed to disconnect " << constant::kWalletBitflyer
-                                        << " wallet!");
+        engine_->LogError(FROM_HERE) << "Failed to disconnect "
+                                     << constant::kWalletBitflyer << " wallet";
       }
     }
 

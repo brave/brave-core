@@ -38,37 +38,37 @@ mojom::Result PostAccount::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const base::Value::Dict* account = dict.FindDict("account");
   if (!account) {
-    BLOG(0, "Missing account info");
+    engine_->LogError(FROM_HERE) << "Missing account info";
     return mojom::Result::FAILED;
   }
 
   const auto* linking_information = account->FindString("verificationToken");
   if (!linking_info) {
-    BLOG(0, "Missing linking info");
+    engine_->LogError(FROM_HERE) << "Missing linking info";
     return mojom::Result::FAILED;
   }
 
   const auto* users = dict.FindList("users");
   if (!users) {
-    BLOG(0, "Missing users");
+    engine_->LogError(FROM_HERE) << "Missing users";
     return mojom::Result::FAILED;
   }
 
   if (users->size() == 0) {
-    BLOG(0, "No users associated with this token");
+    engine_->LogError(FROM_HERE) << "No users associated with this token";
     return mojom::Result::FAILED;
   }
 
   const auto* name = (*users)[0].GetDict().FindString("name");
   if (!name) {
-    BLOG(0, "Missing user name");
+    engine_->LogError(FROM_HERE) << "Missing user name";
     return mojom::Result::FAILED;
   }
 

@@ -33,7 +33,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
     std::vector<mojom::UnblindedTokenPtr> list,
     LegacyResultCallback callback) {
   if (list.empty()) {
-    BLOG(1, "List is empty");
+    engine_->Log(FROM_HERE) << "List is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -76,7 +76,7 @@ void DatabaseUnblindedToken::OnGetRecords(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }
@@ -142,7 +142,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
     const std::string& redeem_id,
     LegacyResultCallback callback) {
   if (ids.empty()) {
-    BLOG(1, "List of ids is empty");
+    engine_->Log(FROM_HERE) << "List of ids is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -174,7 +174,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
     const std::string& redeem_id,
     LegacyResultCallback callback) {
   if (ids.empty()) {
-    BLOG(1, "List of ids is empty");
+    engine_->Log(FROM_HERE) << "List of ids is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -238,13 +238,13 @@ void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback(mojom::Result::FAILED);
     return;
   }
 
   if (response->result->get_records().size() != expected_row_count) {
-    BLOG(0, "Records size doesn't match");
+    engine_->LogError(FROM_HERE) << "Records size doesn't match";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -256,7 +256,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpendable(
     const std::string& redeem_id,
     LegacyResultCallback callback) {
   if (redeem_id.empty()) {
-    BLOG(1, "Redeem id is empty");
+    engine_->Log(FROM_HERE) << "Redeem id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -285,7 +285,7 @@ void DatabaseUnblindedToken::GetReservedRecordList(
     const std::string& redeem_id,
     GetUnblindedTokenListCallback callback) {
   if (redeem_id.empty()) {
-    BLOG(1, "Redeem id is empty");
+    engine_->Log(FROM_HERE) << "Redeem id is empty";
     callback({});
     return;
   }
@@ -323,7 +323,7 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
     const std::vector<mojom::CredsBatchType>& batch_types,
     GetUnblindedTokenListCallback callback) {
   if (batch_types.empty()) {
-    BLOG(1, "Batch types is empty");
+    engine_->Log(FROM_HERE) << "Batch types is empty";
     callback({});
     return;
   }

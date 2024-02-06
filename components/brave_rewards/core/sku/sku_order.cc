@@ -26,7 +26,7 @@ SKUOrder::~SKUOrder() = default;
 void SKUOrder::Create(const std::vector<mojom::SKUOrderItem>& items,
                       SKUOrderCallback callback) {
   if (items.empty()) {
-    BLOG(0, "List is empty");
+    engine_->LogError(FROM_HERE) << "List is empty";
     callback(mojom::Result::FAILED, "");
     return;
   }
@@ -40,7 +40,7 @@ void SKUOrder::OnCreate(const mojom::Result result,
                         mojom::SKUOrderPtr order,
                         SKUOrderCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order response could not be parsed");
+    engine_->LogError(FROM_HERE) << "Order response could not be parsed";
     callback(mojom::Result::FAILED, "");
     return;
   }
@@ -55,7 +55,7 @@ void SKUOrder::OnCreateSave(const mojom::Result result,
                             const std::string& order_id,
                             SKUOrderCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order couldn't be saved");
+    engine_->LogError(FROM_HERE) << "Order couldn't be saved";
     callback(result, "");
     return;
   }

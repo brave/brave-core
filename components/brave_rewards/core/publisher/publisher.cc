@@ -109,7 +109,7 @@ void Publisher::SaveVisit(const std::string& publisher_key,
                           uint64_t window_id,
                           const PublisherInfoCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    engine_->LogError(FROM_HERE) << "Publisher key is empty";
     return;
   }
 
@@ -204,7 +204,7 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
                                   mojom::PublisherInfoPtr publisher_info) {
   DCHECK(result != mojom::Result::TOO_MANY_RESULTS);
   if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
-    BLOG(0, "Visit was not saved " << result);
+    engine_->LogError(FROM_HERE) << "Visit was not saved " << result;
     callback(mojom::Result::FAILED, nullptr);
     return;
   }
@@ -312,7 +312,7 @@ void Publisher::onFetchFavIcon(const std::string& publisher_key,
                                bool success,
                                const std::string& favicon_url) {
   if (!success || favicon_url.empty()) {
-    BLOG(1, "Corrupted favicon file");
+    engine_->Log(FROM_HERE) << "Corrupted favicon file";
     return;
   }
 
@@ -326,7 +326,7 @@ void Publisher::onFetchFavIconDBResponse(mojom::Result result,
                                          const std::string& favicon_url,
                                          uint64_t window_id) {
   if (result != mojom::Result::OK || favicon_url.empty()) {
-    BLOG(1, "Missing or corrupted favicon file");
+    engine_->Log(FROM_HERE) << "Missing or corrupted favicon file";
     return;
   }
 
@@ -345,7 +345,7 @@ void Publisher::onFetchFavIconDBResponse(mojom::Result result,
 
 void Publisher::OnPublisherInfoSaved(const mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Publisher info was not saved!");
+    engine_->LogError(FROM_HERE) << "Publisher info was not saved";
     return;
   }
 
@@ -373,13 +373,13 @@ void Publisher::OnSetPublisherExclude(ResultCallback callback,
                                       mojom::Result result,
                                       mojom::PublisherInfoPtr publisher_info) {
   if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
-    BLOG(0, "Publisher exclude status not saved");
+    engine_->LogError(FROM_HERE) << "Publisher exclude status not saved";
     std::move(callback).Run(result);
     return;
   }
 
   if (!publisher_info) {
-    BLOG(0, "Publisher is null");
+    engine_->LogError(FROM_HERE) << "Publisher is null";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -404,7 +404,7 @@ void Publisher::OnSetPublisherExclude(ResultCallback callback,
 void Publisher::OnRestorePublishers(mojom::Result result,
                                     ResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Could not restore publishers.");
+    engine_->LogError(FROM_HERE) << "Could not restore publishers.";
     std::move(callback).Run(result);
     return;
   }
@@ -425,7 +425,7 @@ void Publisher::synopsisNormalizerInternal(
     const std::vector<mojom::PublisherInfoPtr>* list,
     uint32_t /* next_record */) {
   if (list->empty()) {
-    BLOG(1, "Publisher list is empty");
+    engine_->Log(FROM_HERE) << "Publisher list is empty";
     return;
   }
 
@@ -622,7 +622,7 @@ void Publisher::OnGetPublisherBannerPublisher(
   auto new_banner = mojom::PublisherBanner::New(banner);
 
   if (!publisher_info || result != mojom::Result::OK) {
-    BLOG(0, "Publisher info not found");
+    engine_->LogError(FROM_HERE) << "Publisher info not found";
     callback(std::move(new_banner));
     return;
   }
@@ -696,7 +696,7 @@ void Publisher::UpdateMediaDuration(const uint64_t window_id,
                                     const std::string& publisher_key,
                                     const uint64_t duration,
                                     const bool first_visit) {
-  BLOG(1, "Media duration: " << duration);
+  engine_->Log(FROM_HERE) << "Media duration: " << duration;
   engine_->database()->GetPublisherInfo(
       publisher_key,
       std::bind(&Publisher::OnGetPublisherInfoForUpdateMediaDuration, this, _1,
@@ -710,7 +710,8 @@ void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
     const uint64_t duration,
     const bool first_visit) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to retrieve publisher info while updating media duration");
+    engine_->LogError(FROM_HERE)
+        << "Failed to retrieve publisher info while updating media duration";
     return;
   }
 
@@ -740,7 +741,7 @@ void Publisher::OnGetPanelPublisherInfo(
     mojom::PublisherInfoPtr info,
     GetPublisherPanelInfoCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to retrieve panel publisher info");
+    engine_->LogError(FROM_HERE) << "Failed to retrieve panel publisher info";
     callback(result, nullptr);
     return;
   }
@@ -752,7 +753,7 @@ void Publisher::SavePublisherInfo(uint64_t window_id,
                                   mojom::PublisherInfoPtr publisher_info,
                                   LegacyResultCallback callback) {
   if (!publisher_info || publisher_info->id.empty()) {
-    BLOG(0, "Publisher key is missing for url");
+    engine_->LogError(FROM_HERE) << "Publisher key is missing for url";
     callback(mojom::Result::FAILED);
     return;
   }

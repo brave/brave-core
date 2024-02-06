@@ -39,22 +39,22 @@ std::string PutSafetynet::GeneratePayload(const std::string& token) {
 
 mojom::Result PutSafetynet::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::CAPTCHA_FAILED;
   }
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
-    BLOG(0, "Invalid solution");
+    engine_->LogError(FROM_HERE) << "Invalid solution";
     return mojom::Result::CAPTCHA_FAILED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Failed to verify captcha solution");
+    engine_->LogError(FROM_HERE) << "Failed to verify captcha solution";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 

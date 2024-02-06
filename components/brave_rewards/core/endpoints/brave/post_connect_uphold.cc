@@ -24,13 +24,13 @@ PostConnectUphold::~PostConnectUphold() = default;
 
 std::optional<std::string> PostConnectUphold::Content() const {
   if (address_.empty()) {
-    BLOG(0, "address_ is empty!");
+    engine_->LogError(FROM_HERE) << "address_ is empty";
     return std::nullopt;
   }
 
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::nullopt;
   }
 
@@ -46,13 +46,13 @@ std::optional<std::string> PostConnectUphold::Content() const {
 
   std::string octets;
   if (!base::JSONWriter::Write(body, &octets)) {
-    BLOG(0, "Failed to write octets to JSON!");
+    engine_->LogError(FROM_HERE) << "Failed to write octets to JSON";
     return std::nullopt;
   }
 
   auto signer = RequestSigner::FromRewardsWallet(*wallet);
   if (!signer) {
-    BLOG(0, "Unable to sign request");
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
     return std::nullopt;
   }
 
@@ -65,7 +65,7 @@ std::optional<std::string> PostConnectUphold::Content() const {
       std::vector<std::pair<std::string, std::string>>{{"digest", digest}});
 
   if (signature.empty()) {
-    BLOG(0, "Failed to create signature!");
+    engine_->LogError(FROM_HERE) << "Failed to create signature";
     return std::nullopt;
   }
 
@@ -80,7 +80,7 @@ std::optional<std::string> PostConnectUphold::Content() const {
 
   std::string json_request;
   if (!base::JSONWriter::Write(std::move(request), &json_request)) {
-    BLOG(0, "Failed to write request to JSON!");
+    engine_->LogError(FROM_HERE) << "Failed to write request to JSON";
     return std::nullopt;
   }
 
@@ -92,7 +92,7 @@ std::optional<std::string> PostConnectUphold::Content() const {
 
   std::string json;
   if (!base::JSONWriter::Write(std::move(content), &json)) {
-    BLOG(0, "Failed to write content to JSON!");
+    engine_->LogError(FROM_HERE) << "Failed to write content to JSON";
     return std::nullopt;
   }
 

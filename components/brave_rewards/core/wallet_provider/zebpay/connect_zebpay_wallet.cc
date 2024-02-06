@@ -72,7 +72,8 @@ void ConnectZebPayWallet::OnAuthorize(
   }
 
   if (!result.has_value()) {
-    BLOG(0, "Couldn't exchange code for the access token!");
+    engine_->LogError(FROM_HERE)
+        << "Couldn't exchange code for the access token";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 

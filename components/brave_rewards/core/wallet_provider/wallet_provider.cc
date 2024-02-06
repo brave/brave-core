@@ -37,12 +37,13 @@ void WalletProvider::StartContribution(const std::string& contribution_id,
                                        double amount,
                                        LegacyResultCallback callback) {
   if (!transfer_) {
-    BLOG(0, WalletType() << " does not support contributions!");
+    engine_->LogError(FROM_HERE)
+        << WalletType() << " does not support contributions";
     return callback(mojom::Result::FAILED);
   }
 
   if (!info) {
-    BLOG(0, "Publisher info is null");
+    engine_->LogError(FROM_HERE) << "Publisher info is null";
     return callback(mojom::Result::FAILED);
   }
 
@@ -80,9 +81,10 @@ void WalletProvider::OnFetchBalance(
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
+    engine_->LogError(FROM_HERE) << "Access token expired";
     if (!LogOutWallet()) {
-      BLOG(0, "Failed to disconnect " << WalletType() << " wallet!");
+      engine_->LogError(FROM_HERE)
+          << "Failed to disconnect " << WalletType() << " wallet";
       return std::move(callback).Run(mojom::Result::FAILED, 0.0);
     }
 
@@ -90,7 +92,8 @@ void WalletProvider::OnFetchBalance(
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to get " << WalletType() << " balance!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to get " << WalletType() << " balance";
     return std::move(callback).Run(mojom::Result::FAILED, 0.0);
   }
 
@@ -102,7 +105,8 @@ void WalletProvider::TransferFunds(double amount,
                                    const std::string& contribution_id,
                                    LegacyResultCallback callback) {
   if (!transfer_) {
-    BLOG(0, WalletType() << " does not support contributions!");
+    engine_->LogError(FROM_HERE)
+        << WalletType() << " does not support contributions";
     return callback(mojom::Result::FAILED);
   }
 
@@ -136,12 +140,14 @@ void WalletProvider::SaveTransferFee(const std::string& contribution_id,
 
   auto wallet = GetWallet();
   if (!wallet) {
-    return BLOG(0, WalletType() << " wallet is null!");
+    engine_->LogError(FROM_HERE) << WalletType() << " wallet is null";
+    return;
   }
 
   wallet->fees.insert(std::make_pair(contribution_id, fee));
   if (!SetWallet(std::move(wallet))) {
-    BLOG(0, "Failed to set " << WalletType() << " wallet!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to set " << WalletType() << " wallet";
   }
 }
 
@@ -151,7 +157,8 @@ void WalletProvider::StartTransferFeeTimer(const std::string& fee_id,
 
   base::TimeDelta delay = GetDelay();
 
-  BLOG(1, WalletType() << " transfer fee timer is being set for " << delay);
+  engine_->Log(FROM_HERE) << WalletType()
+                          << " transfer fee timer is being set for " << delay;
 
   transfer_fee_timers_[fee_id].Start(
       FROM_HERE, delay,
@@ -164,12 +171,14 @@ void WalletProvider::OnTransferFeeCompleted(const std::string& contribution_id,
                                             mojom::Result result) {
   if (result != mojom::Result::OK) {
     if (attempts < 3) {
-      BLOG(0, "Transaction fee failed, retrying");
-      return StartTransferFeeTimer(contribution_id, attempts + 1);
+      engine_->LogError(FROM_HERE) << "Transaction fee failed, retrying";
+      StartTransferFeeTimer(contribution_id, attempts + 1);
+      return;
     }
 
-    return BLOG(0,
-                "Transaction fee failed, no remaining attempts this session");
+    engine_->LogError(FROM_HERE)
+        << "Transaction fee failed, no remaining attempts this session";
+    return;
   }
 
   RemoveTransferFee(contribution_id);
@@ -179,7 +188,9 @@ void WalletProvider::TransferFee(const std::string& contribution_id,
                                  double amount,
                                  int attempts) {
   if (!transfer_) {
-    return BLOG(0, WalletType() << " does not support contributions!");
+    engine_->LogError(FROM_HERE)
+        << WalletType() << " does not support contributions";
+    return;
   }
 
   transfer_->Run(
@@ -194,12 +205,14 @@ void WalletProvider::OnTransferFeeTimerElapsed(const std::string& id,
 
   auto wallet = GetWallet();
   if (!wallet) {
-    return BLOG(0, WalletType() << " wallet is null!");
+    engine_->LogError(FROM_HERE) << WalletType() << " wallet is null";
+    return;
   }
 
   for (const auto& value : wallet->fees) {
     if (value.first == id) {
-      return TransferFee(value.first, value.second, attempts);
+      TransferFee(value.first, value.second, attempts);
+      return;
     }
   }
 }
@@ -224,12 +237,14 @@ bool WalletProvider::LogOutWallet(const std::string& notification) {
 void WalletProvider::RemoveTransferFee(const std::string& contribution_id) {
   auto wallet = GetWallet();
   if (!wallet) {
-    return BLOG(0, WalletType() << " wallet is null!");
+    engine_->LogError(FROM_HERE) << WalletType() << " wallet is null";
+    return;
   }
 
   wallet->fees.erase(contribution_id);
   if (!SetWallet(std::move(wallet))) {
-    BLOG(0, "Failed to set " << WalletType() << " wallet!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to set " << WalletType() << " wallet";
   }
 }
 

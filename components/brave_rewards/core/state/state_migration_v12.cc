@@ -40,7 +40,8 @@ StateMigrationV12::~StateMigrationV12() = default;
 bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
   auto wallet = wallet::GetWallet(*engine_, wallet_type);
   if (!wallet) {
-    BLOG(1, "User doesn't have a(n) " << wallet_type << " wallet.");
+    engine_->Log(FROM_HERE)
+        << "User doesn't have a(n) " << wallet_type << " wallet.";
     return true;
   }
 
@@ -82,7 +83,8 @@ bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
   }
 
   if (!wallet::SetWallet(*engine_, std::move(wallet))) {
-    BLOG(0, "Failed to set " << wallet_type << " wallet!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to set " << wallet_type << " wallet";
     return false;
   }
 

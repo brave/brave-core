@@ -423,8 +423,6 @@ static_library("engine") {
     "logging/event_log_keys.h",
     "logging/event_log_util.cc",
     "logging/event_log_util.h",
-    "logging/logging.cc",
-    "logging/logging.h",
     "notifications/notification_keys.h",
     "promotion/promotion.cc",
     "promotion/promotion.h",

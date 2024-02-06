@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 
@@ -46,6 +47,7 @@ class UpholdCard {
                                std::string&& id,
                                mojom::Result) const;
 
+  const raw_ref<RewardsEngineImpl> engine_;
   endpoint::UpholdServer uphold_server_;
 };
 

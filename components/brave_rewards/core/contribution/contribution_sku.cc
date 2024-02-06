@@ -75,7 +75,7 @@ void ContributionSKU::GetContributionInfo(
     const std::string& wallet_type,
     LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution not found");
+    engine_->LogError(FROM_HERE) << "Contribution not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -105,7 +105,7 @@ void ContributionSKU::GetOrder(mojom::Result result,
                                const std::string& contribution_id,
                                LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "SKU was not processed");
+    engine_->LogError(FROM_HERE) << "SKU was not processed";
     callback(result);
     return;
   }
@@ -119,7 +119,7 @@ void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
                                  const std::string& contribution_id,
                                  LegacyResultCallback callback) {
   if (!order) {
-    BLOG(0, "Order was not found");
+    engine_->LogError(FROM_HERE) << "Order was not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -139,7 +139,7 @@ void ContributionSKU::Completed(mojom::Result result,
                                 mojom::RewardsType type,
                                 LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order not completed");
+    engine_->LogError(FROM_HERE) << "Order not completed";
     callback(result);
     return;
   }
@@ -155,7 +155,7 @@ void ContributionSKU::CredsStepSaved(mojom::Result result,
                                      const std::string& contribution_id,
                                      LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Creds step not saved");
+    engine_->LogError(FROM_HERE) << "Creds step not saved";
     callback(result);
     return;
   }
@@ -178,7 +178,7 @@ void ContributionSKU::GetUnblindedTokens(
     const mojom::SKUTransaction& transaction,
     LegacyResultCallback callback) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    engine_->LogError(FROM_HERE) << "List is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -195,7 +195,7 @@ void ContributionSKU::GetUnblindedTokens(
   }
 
   if (current_amount < transaction.amount) {
-    BLOG(0, "Not enough funds");
+    engine_->LogError(FROM_HERE) << "Not enough funds";
     callback(mojom::Result::NOT_ENOUGH_FUNDS);
     return;
   }
@@ -217,7 +217,7 @@ void ContributionSKU::GetOrderMerchant(
     const credential::CredentialsRedeem& redeem,
     LegacyResultCallback callback) {
   if (!order) {
-    BLOG(0, "Order was not found");
+    engine_->LogError(FROM_HERE) << "Order was not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -234,7 +234,7 @@ void ContributionSKU::GetOrderMerchant(
 void ContributionSKU::OnRedeemTokens(mojom::Result result,
                                      LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Problem redeeming tokens");
+    engine_->LogError(FROM_HERE) << "Problem redeeming tokens";
     callback(result);
     return;
   }
@@ -245,7 +245,7 @@ void ContributionSKU::OnRedeemTokens(mojom::Result result,
 void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,
                             LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution was not found");
+    engine_->LogError(FROM_HERE) << "Contribution was not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -265,7 +265,7 @@ void ContributionSKU::OnOrder(
     LegacyResultCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -292,7 +292,7 @@ void ContributionSKU::OnOrder(
     case mojom::ContributionStep::STEP_FAILED:
     case mojom::ContributionStep::STEP_COMPLETED:
     case mojom::ContributionStep::STEP_NO: {
-      BLOG(0, "Step not correct " << contribution->step);
+      engine_->LogError(FROM_HERE) << "Step not correct " << contribution->step;
       NOTREACHED();
       return;
     }
@@ -303,7 +303,7 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
                                      mojom::SKUOrderPtr order,
                                      LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -323,7 +323,7 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
   }
 
   if (wallet_type.empty()) {
-    BLOG(0, "Invalid processor for SKU contribution");
+    engine_->LogError(FROM_HERE) << "Invalid processor for SKU contribution";
     callback(mojom::Result::FAILED);
     return;
   }

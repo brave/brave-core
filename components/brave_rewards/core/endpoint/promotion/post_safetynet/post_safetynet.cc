@@ -34,7 +34,7 @@ std::string PostSafetynet::GetUrl() {
 std::string PostSafetynet::GeneratePayload() {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
+    engine_->LogError(FROM_HERE) << "Wallet is null";
     return "";
   }
 
@@ -52,17 +52,17 @@ std::string PostSafetynet::GeneratePayload() {
 
 mojom::Result PostSafetynet::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
-    BLOG(0, "Invalid token");
+    engine_->LogError(FROM_HERE) << "Invalid token";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -75,14 +75,14 @@ mojom::Result PostSafetynet::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* nonce_string = dict.FindString("nonce");
   if (!nonce_string) {
-    BLOG(0, "Nonce is wrong");
+    engine_->LogError(FROM_HERE) << "Nonce is wrong";
     return mojom::Result::FAILED;
   }
 

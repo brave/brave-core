@@ -307,7 +307,7 @@ void YouTube::OnMediaActivityError(const mojom::VisitData& visit_data,
     engine_->publisher()->GetPublisherActivityFromUrl(
         window_id, mojom::VisitData::New(new_visit_data), std::string());
   } else {
-    BLOG(0, "Media activity error");
+    engine_->LogError(FROM_HERE) << "Media activity error";
   }
 }
 
@@ -361,7 +361,7 @@ void YouTube::OnMediaPublisherInfo(const std::string& media_id,
                                    mojom::Result result,
                                    mojom::PublisherInfoPtr publisher_info) {
   if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
-    BLOG(0, "Failed to get publisher info");
+    engine_->LogError(FROM_HERE) << "Failed to get publisher info";
     return;
   }
 
@@ -459,7 +459,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
                                 const std::string& channel_id) {
   std::string url;
   if (channel_id.empty()) {
-    BLOG(0, "Channel id is missing");
+    engine_->LogError(FROM_HERE) << "Channel id is missing";
     return;
   }
 
@@ -467,7 +467,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   url = publisher_url + "/videos";
 
   if (publisher_id.empty()) {
-    BLOG(0, "Publisher id is missing");
+    engine_->LogError(FROM_HERE) << "Publisher id is missing";
     return;
   }
 

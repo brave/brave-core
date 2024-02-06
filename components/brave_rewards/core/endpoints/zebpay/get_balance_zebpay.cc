@@ -19,16 +19,16 @@ using Result = GetBalanceZebPay::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   const auto balance = value->GetDict().FindDouble("BAT");
   if (!balance) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -38,15 +38,17 @@ Result ParseBody(const std::string& body) {
 }  // namespace
 
 // static
-Result GetBalanceZebPay::ProcessResponse(const mojom::UrlResponse& response) {
+Result GetBalanceZebPay::ProcessResponse(RewardsEngineImpl& engine,
+                                         const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     case net::HTTP_UNAUTHORIZED:  // HTTP 401
-      BLOG(0, "Access token expired!");
+      engine.LogError(FROM_HERE) << "Access token expired";
       return base::unexpected(Error::kAccessTokenExpired);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }

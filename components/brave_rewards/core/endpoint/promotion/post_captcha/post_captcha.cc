@@ -34,7 +34,7 @@ std::string PostCaptcha::GetUrl() {
 std::string PostCaptcha::GeneratePayload() {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
+    engine_->LogError(FROM_HERE) << "Wallet is null";
     return "";
   }
 
@@ -49,12 +49,12 @@ std::string PostCaptcha::GeneratePayload() {
 
 mojom::Result PostCaptcha::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -68,20 +68,20 @@ mojom::Result PostCaptcha::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* captcha_id_parse = dict.FindString("captchaId");
   if (!captcha_id_parse) {
-    BLOG(0, "Captcha id is wrong");
+    engine_->LogError(FROM_HERE) << "Captcha id is wrong";
     return mojom::Result::FAILED;
   }
 
   const auto* hint_parse = dict.FindString("hint");
   if (!hint_parse) {
-    BLOG(0, "Hint is wrong");
+    engine_->LogError(FROM_HERE) << "Hint is wrong";
     return mojom::Result::FAILED;
   }
 

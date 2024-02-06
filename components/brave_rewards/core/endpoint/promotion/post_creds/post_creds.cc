@@ -36,7 +36,7 @@ std::string PostCreds::GetUrl(const std::string& promotion_id) {
 std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
+    engine_->LogError(FROM_HERE) << "Wallet is null";
     return "";
   }
 
@@ -52,32 +52,32 @@ std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {
 
 mojom::Result PostCreds::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_FORBIDDEN) {
-    BLOG(0, "Signature validation failed");
+    engine_->LogError(FROM_HERE) << "Signature validation failed";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
-    BLOG(0, "Incorrect blinded credentials");
+    engine_->LogError(FROM_HERE) << "Incorrect blinded credentials";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_GONE) {
-    BLOG(0, "Promotion is gone");
+    engine_->LogError(FROM_HERE) << "Promotion is gone";
     return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
+    engine_->LogError(FROM_HERE) << "Internal server error";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -90,14 +90,14 @@ mojom::Result PostCreds::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* id = dict.FindString("claimId");
   if (!id || id->empty()) {
-    BLOG(0, "Claim id is missing");
+    engine_->LogError(FROM_HERE) << "Claim id is missing";
     return mojom::Result::FAILED;
   }
 
@@ -111,7 +111,7 @@ void PostCreds::Request(const std::string& promotion_id,
                         PostCredsCallback callback) {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
+    engine_->LogError(FROM_HERE) << "Wallet is null";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -129,7 +129,7 @@ void PostCreds::Request(const std::string& promotion_id,
 
   auto signer = RequestSigner::FromRewardsWallet(*wallet);
   if (!signer || !signer->SignRequest(*request)) {
-    BLOG(0, "Unable to sign request");
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }

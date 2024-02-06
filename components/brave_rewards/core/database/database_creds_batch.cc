@@ -27,7 +27,7 @@ DatabaseCredsBatch::~DatabaseCredsBatch() = default;
 void DatabaseCredsBatch::InsertOrUpdate(mojom::CredsBatchPtr creds,
                                         LegacyResultCallback callback) {
   if (!creds) {
-    BLOG(1, "Creds is null");
+    engine_->Log(FROM_HERE) << "Creds is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -105,14 +105,14 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback(nullptr);
     return;
   }
 
   if (response->result->get_records().size() != 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
     callback(nullptr);
     return;
   }
@@ -137,7 +137,7 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
 void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
                                          LegacyResultCallback callback) {
   if (!creds) {
-    BLOG(1, "Creds is null");
+    engine_->Log(FROM_HERE) << "Creds is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -201,7 +201,7 @@ void DatabaseCredsBatch::OnGetRecords(GetCredsBatchListCallback callback,
                                       mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }
@@ -234,7 +234,7 @@ void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
                                       mojom::CredsBatchStatus status,
                                       LegacyResultCallback callback) {
   if (trigger_id.empty()) {
-    BLOG(0, "Trigger id is empty");
+    engine_->LogError(FROM_HERE) << "Trigger id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -266,7 +266,7 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
     mojom::CredsBatchStatus status,
     LegacyResultCallback callback) {
   if (trigger_ids.empty()) {
-    BLOG(0, "Trigger id is empty");
+    engine_->LogError(FROM_HERE) << "Trigger id is empty";
     callback(mojom::Result::FAILED);
     return;
   }

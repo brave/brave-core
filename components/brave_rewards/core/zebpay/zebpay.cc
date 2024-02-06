@@ -61,8 +61,7 @@ void ZebPay::OnFetchBalance(
           return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
         }
 
-        BLOG(0,
-             "Failed to disconnect " << constant::kWalletZebPay << " wallet!");
+        engine_->LogError(FROM_HERE) << "Failed to disconnect zebpay wallet";
         ABSL_FALLTHROUGH_INTENDED;
       default:
         return std::move(callback).Run(mojom::Result::FAILED, 0.0);

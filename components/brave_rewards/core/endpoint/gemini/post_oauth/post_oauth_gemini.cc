@@ -53,14 +53,14 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
-    BLOG(0, "Missing access token");
+    engine_->LogError(FROM_HERE) << "Missing access token";
     return mojom::Result::FAILED;
   }
 

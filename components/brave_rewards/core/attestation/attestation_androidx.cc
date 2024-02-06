@@ -28,20 +28,20 @@ void AttestationAndroid::ParseClaimSolution(const std::string& response,
 
   std::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Parsing of solution failed");
+    engine_->LogError(FROM_HERE) << "Parsing of solution failed";
     return;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* nonce_string = dict.FindString("nonce");
   if (!nonce_string) {
-    BLOG(0, "Nonce is missing");
+    engine_->LogError(FROM_HERE) << "Nonce is missing";
     return;
   }
 
   const auto* token_string = dict.FindString("token");
   if (!token_string) {
-    BLOG(0, "Token is missing");
+    engine_->LogError(FROM_HERE) << "Token is missing";
     return;
   }
 
@@ -61,7 +61,7 @@ void AttestationAndroid::OnStart(StartCallback callback,
                                  mojom::Result result,
                                  const std::string& nonce) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to start attestation");
+    engine_->LogError(FROM_HERE) << "Failed to start attestation";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -86,7 +86,7 @@ void AttestationAndroid::Confirm(const std::string& solution,
 void AttestationAndroid::OnConfirm(ConfirmCallback callback,
                                    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to confirm attestation");
+    engine_->LogError(FROM_HERE) << "Failed to confirm attestation";
     std::move(callback).Run(result);
     return;
   }

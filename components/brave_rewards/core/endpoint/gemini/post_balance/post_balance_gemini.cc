@@ -39,7 +39,7 @@ mojom::Result PostBalance::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
@@ -54,14 +54,14 @@ mojom::Result PostBalance::ParseBody(const std::string& body,
 
     const auto* available_value = balance.FindString("available");
     if (!available_value) {
-      BLOG(0, "Missing available");
+      engine_->LogError(FROM_HERE) << "Missing available";
       return mojom::Result::FAILED;
     }
 
     const bool result =
         base::StringToDouble(std::string_view(*available_value), available);
     if (!result) {
-      BLOG(0, "Invalid balance");
+      engine_->LogError(FROM_HERE) << "Invalid balance";
       return mojom::Result::FAILED;
     }
 

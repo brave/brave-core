@@ -35,8 +35,8 @@ void LegacyBatState::OnLoad(LegacyResultCallback callback,
 
   ClientProperties state;
   if (!state.FromJson(data)) {
-    BLOG(0, "Failed to load client state");
-    BLOG(6, "Client state contents: " << data);
+    engine_->LogError(FROM_HERE) << "Failed to load client state";
+    engine_->Log(FROM_HERE) << "Client state contents: " << data;
     callback(mojom::Result::FAILED);
     return;
   }

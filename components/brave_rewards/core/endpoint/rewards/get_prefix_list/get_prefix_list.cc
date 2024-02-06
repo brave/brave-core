@@ -29,7 +29,7 @@ std::string GetPrefixList::GetUrl() {
 
 mojom::Result GetPrefixList::CheckStatusCode(const int status_code) {
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -52,7 +52,8 @@ void GetPrefixList::OnRequest(GetPrefixListCallback callback,
 
   if (CheckStatusCode(response->status_code) != mojom::Result::OK ||
       response->body.empty()) {
-    BLOG(0, "Invalid server response for publisher prefix list");
+    engine_->LogError(FROM_HERE)
+        << "Invalid server response for publisher prefix list";
     callback(mojom::Result::FAILED, "");
     return;
   }

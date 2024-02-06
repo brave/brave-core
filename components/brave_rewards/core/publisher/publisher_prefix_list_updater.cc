@@ -44,7 +44,7 @@ void PublisherPrefixListUpdater::StartAutoUpdate(
 }
 
 void PublisherPrefixListUpdater::StopAutoUpdate() {
-  BLOG(1, "Cancelling publisher prefix list update");
+  engine_->Log(FROM_HERE) << "Cancelling publisher prefix list update";
   auto_update_ = false;
   timer_.Stop();
 }
@@ -52,15 +52,15 @@ void PublisherPrefixListUpdater::StopAutoUpdate() {
 void PublisherPrefixListUpdater::StartFetchTimer(
     const base::Location& posted_from,
     base::TimeDelta delay) {
-  BLOG(1, "Scheduling publisher prefix list update in " << delay.InSeconds()
-                                                        << " seconds");
+  engine_->Log(FROM_HERE) << "Scheduling publisher prefix list update in "
+                          << delay.InSeconds() << " seconds";
   timer_.Start(posted_from, delay,
                base::BindOnce(&PublisherPrefixListUpdater::OnFetchTimerElapsed,
                               base::Unretained(this)));
 }
 
 void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
-  BLOG(1, "Fetching publisher prefix list");
+  engine_->Log(FROM_HERE) << "Fetching publisher prefix list";
   auto url_callback =
       std::bind(&PublisherPrefixListUpdater::OnFetchCompleted, this, _1, _2);
   rewards_server_.get_prefix_list().Request(url_callback);
@@ -69,7 +69,8 @@ void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
 void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
                                                   const std::string& body) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Invalid server response for publisher prefix list");
+    engine_->LogError(FROM_HERE)
+        << "Invalid server response for publisher prefix list";
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
   }
@@ -80,21 +81,22 @@ void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
     // This could be a problem on the client or the server, but
     // optimistically assume that it is a server issue and retry
     // with back-off.
-    BLOG(0, "Failed to parse publisher prefix list: "
-                << static_cast<int>(parse_error));
+    engine_->LogError(FROM_HERE) << "Failed to parse publisher prefix list: "
+                                 << static_cast<int>(parse_error);
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
   }
 
   if (reader.empty()) {
-    BLOG(1, "Publisher prefix list did not contain any values");
+    engine_->Log(FROM_HERE)
+        << "Publisher prefix list did not contain any values";
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
   }
 
   retry_count_ = 0;
 
-  BLOG(1, "Resetting publisher prefix list table");
+  engine_->Log(FROM_HERE) << "Resetting publisher prefix list table";
   engine_->database()->ResetPublisherPrefixList(
       std::move(reader),
       std::bind(&PublisherPrefixListUpdater::OnPrefixListInserted, this, _1));
@@ -114,7 +116,8 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Error updating publisher prefix list table: " << result);
+    engine_->LogError(FROM_HERE)
+        << "Error updating publisher prefix list table: " << result;
     return;
   }
 

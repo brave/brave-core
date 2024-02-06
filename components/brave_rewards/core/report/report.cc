@@ -39,7 +39,7 @@ void Report::OnBalance(const mojom::ActivityMonth month,
                        const mojom::Result result,
                        mojom::BalanceReportInfoPtr balance_report) {
   if (result != mojom::Result::OK || !balance_report) {
-    BLOG(0, "Could not get balance report");
+    engine_->LogError(FROM_HERE) << "Could not get balance report";
     callback(result, nullptr);
     return;
   }
@@ -62,7 +62,7 @@ void Report::OnTransactions(
     std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
     GetMonthlyReportCallback callback) {
   if (!shared_report) {
-    BLOG(0, "Could not parse monthly report");
+    engine_->LogError(FROM_HERE) << "Could not parse monthly report";
     callback(mojom::Result::FAILED, nullptr);
     return;
   }
@@ -81,7 +81,7 @@ void Report::OnContributions(
     std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
     GetMonthlyReportCallback callback) {
   if (!shared_report) {
-    BLOG(0, "Could not parse monthly report");
+    engine_->LogError(FROM_HERE) << "Could not parse monthly report";
     callback(mojom::Result::FAILED, nullptr);
     return;
   }

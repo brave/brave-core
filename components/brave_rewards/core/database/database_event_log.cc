@@ -31,7 +31,7 @@ DatabaseEventLog::~DatabaseEventLog() = default;
 void DatabaseEventLog::Insert(const std::string& key,
                               const std::string& value) {
   if (key.empty()) {
-    BLOG(0, "Key is empty");
+    engine_->LogError(FROM_HERE) << "Key is empty";
     return;
   }
 
@@ -62,7 +62,7 @@ void DatabaseEventLog::InsertRecords(
     const std::map<std::string, std::string>& records,
     LegacyResultCallback callback) {
   if (records.empty()) {
-    BLOG(0, "No records");
+    engine_->LogError(FROM_HERE) << "No records";
     callback(mojom::Result::NOT_FOUND);
     return;
   }
@@ -125,7 +125,7 @@ void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
                                        mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }

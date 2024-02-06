@@ -32,7 +32,7 @@ DatabasePromotion::~DatabasePromotion() = default;
 void DatabasePromotion::InsertOrUpdate(mojom::PromotionPtr info,
                                        LegacyResultCallback callback) {
   if (!info) {
-    BLOG(1, "Info is null");
+    engine_->Log(FROM_HERE) << "Info is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -74,7 +74,7 @@ void DatabasePromotion::InsertOrUpdate(mojom::PromotionPtr info,
 void DatabasePromotion::GetRecord(const std::string& id,
                                   GetPromotionCallback callback) {
   if (id.empty()) {
-    BLOG(1, "Id is empty");
+    engine_->Log(FROM_HERE) << "Id is empty";
     return callback({});
   }
 
@@ -119,14 +119,14 @@ void DatabasePromotion::OnGetRecord(GetPromotionCallback callback,
                                     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
     callback({});
     return;
   }
@@ -191,7 +191,7 @@ void DatabasePromotion::OnGetAllRecords(GetAllPromotionsCallback callback,
                                         mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }
@@ -227,7 +227,8 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
                                     const std::string& claim_id,
                                     LegacyResultCallback callback) {
   if (promotion_id.empty() || claim_id.empty()) {
-    BLOG(1, "Data is empty " << promotion_id << "/" << claim_id);
+    engine_->Log(FROM_HERE)
+        << "Data is empty " << promotion_id << "/" << claim_id;
     callback(mojom::Result::FAILED);
     return;
   }
@@ -254,7 +255,7 @@ void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
                                      mojom::PromotionStatus status,
                                      LegacyResultCallback callback) {
   if (promotion_id.empty()) {
-    BLOG(0, "Promotion id is empty");
+    engine_->LogError(FROM_HERE) << "Promotion id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -281,7 +282,7 @@ void DatabasePromotion::UpdateRecordsStatus(const std::vector<std::string>& ids,
                                             mojom::PromotionStatus status,
                                             LegacyResultCallback callback) {
   if (ids.empty()) {
-    BLOG(1, "List of ids is empty");
+    engine_->Log(FROM_HERE) << "List of ids is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -307,7 +308,7 @@ void DatabasePromotion::UpdateRecordsStatus(const std::vector<std::string>& ids,
 void DatabasePromotion::CredentialCompleted(const std::string& promotion_id,
                                             LegacyResultCallback callback) {
   if (promotion_id.empty()) {
-    BLOG(1, "Promotion id is empty");
+    engine_->Log(FROM_HERE) << "Promotion id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -337,7 +338,7 @@ void DatabasePromotion::CredentialCompleted(const std::string& promotion_id,
 void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
                                    GetPromotionListCallback callback) {
   if (ids.empty()) {
-    BLOG(1, "List of ids is empty");
+    engine_->Log(FROM_HERE) << "List of ids is empty";
     callback({});
     return;
   }
@@ -382,7 +383,7 @@ void DatabasePromotion::OnGetRecords(GetPromotionListCallback callback,
                                      mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }
@@ -419,7 +420,7 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
     const std::vector<std::string>& ids,
     LegacyResultCallback callback) {
   if (ids.empty()) {
-    BLOG(1, "List of ids is empty");
+    engine_->Log(FROM_HERE) << "List of ids is empty";
     callback(mojom::Result::FAILED);
     return;
   }

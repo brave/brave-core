@@ -37,7 +37,7 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
   // or if banner data is empty.
   mojom::PublisherBanner default_banner;
   if (!server_info.banner || server_info.banner->Equals(default_banner)) {
-    BLOG(1, "Empty publisher banner data, skipping insert");
+    engine_->Log(FROM_HERE) << "Empty publisher banner data, skipping insert";
     return;
   }
 
@@ -84,7 +84,7 @@ void DatabaseServerPublisherBanner::GetRecord(
     const std::string& publisher_key,
     GetPublisherBannerCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(1, "Publisher key is empty");
+    engine_->Log(FROM_HERE) << "Publisher key is empty";
     callback(nullptr);
     return;
   }
@@ -122,20 +122,20 @@ void DatabaseServerPublisherBanner::OnGetRecord(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback(nullptr);
     return;
   }
 
   if (response->result->get_records().empty()) {
-    BLOG(1, "Server publisher banner not found");
+    engine_->Log(FROM_HERE) << "Server publisher banner not found";
     callback(nullptr);
     return;
   }
 
   if (response->result->get_records().size() > 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
   }
 
   auto* record = response->result->get_records()[0].get();

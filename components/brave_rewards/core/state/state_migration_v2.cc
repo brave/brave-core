@@ -32,13 +32,14 @@ void StateMigrationV2::Migrate(LegacyResultCallback callback) {
 void StateMigrationV2::OnLoadState(mojom::Result result,
                                    LegacyResultCallback callback) {
   if (result == mojom::Result::NO_LEGACY_STATE) {
-    BLOG(1, "No engine state");
+    engine_->Log(FROM_HERE) << "No engine state";
     callback(mojom::Result::OK);
     return;
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to load engine state file, setting default values");
+    engine_->LogError(FROM_HERE)
+        << "Failed to load engine state file, setting default values";
     callback(mojom::Result::OK);
     return;
   }

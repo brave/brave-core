@@ -20,16 +20,16 @@ using Result = PostCommitTransactionBitFlyer::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   const auto* transfer_status = value->GetDict().FindString("transfer_status");
   if (!transfer_status || transfer_status->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -42,17 +42,19 @@ Result ParseBody(const std::string& body) {
 
 // static
 Result PostCommitTransactionBitFlyer::ProcessResponse(
+    RewardsEngineImpl& engine,
     const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
       return {};
     case net::HTTP_UNAUTHORIZED:  // HTTP 401
-      BLOG(0, "Access token expired!");
+      engine.LogError(FROM_HERE) << "Access token expired";
       return base::unexpected(Error::kAccessTokenExpired);
     case net::HTTP_CONFLICT:  // HTTP 409
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }

@@ -42,7 +42,7 @@ StateMigrationV10::~StateMigrationV10() = default;
 void StateMigrationV10::Migrate(LegacyResultCallback callback) {
   auto uphold_wallet = engine_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(1, "Uphold wallet is null.");
+    engine_->Log(FROM_HERE) << "Uphold wallet is null.";
     return callback(mojom::Result::OK);
   }
 
@@ -112,7 +112,7 @@ void StateMigrationV10::OnGetWallet(LegacyResultCallback callback,
                                     endpoints::GetWallet::Result&& result) {
   auto uphold_wallet = engine_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "Uphold wallet is null!");
+    engine_->LogError(FROM_HERE) << "Uphold wallet is null";
     return callback(mojom::Result::FAILED);
   }
 

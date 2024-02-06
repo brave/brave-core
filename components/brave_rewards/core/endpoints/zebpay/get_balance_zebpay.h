@@ -41,7 +41,8 @@ struct ResultFor<GetBalanceZebPay> {
 class GetBalanceZebPay final : public RequestBuilder,
                                public ResponseHandler<GetBalanceZebPay> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse& response);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse& response);
 
   GetBalanceZebPay(RewardsEngineImpl& engine, std::string&& token);
   ~GetBalanceZebPay() override;

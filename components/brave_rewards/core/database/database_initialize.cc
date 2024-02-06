@@ -36,12 +36,12 @@ void DatabaseInitialize::OnInitialize(ResultCallback callback,
                                       mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     return std::move(callback).Run(mojom::Result::DATABASE_INIT_FAILED);
   }
 
   if (!response->result || !response->result->get_value()->is_int_value()) {
-    BLOG(0, "DB init failed");
+    engine_->LogError(FROM_HERE) << "DB init failed";
     return std::move(callback).Run(mojom::Result::DATABASE_INIT_FAILED);
   }
 

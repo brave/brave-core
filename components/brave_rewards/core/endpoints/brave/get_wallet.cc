@@ -23,10 +23,10 @@ using Result = GetWallet::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -67,21 +67,23 @@ GetWalletValue::GetWalletValue(GetWalletValue&&) = default;
 GetWalletValue& GetWalletValue::operator=(GetWalletValue&&) = default;
 
 // static
-Result GetWallet::ProcessResponse(const mojom::UrlResponse& response) {
+Result GetWallet::ProcessResponse(RewardsEngineImpl& engine,
+                                  const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     case net::HTTP_BAD_REQUEST:  // HTTP 400
-      BLOG(0, "Invalid request!");
+      engine.LogError(FROM_HERE) << "Invalid request";
       return base::unexpected(Error::kInvalidRequest);
     case net::HTTP_FORBIDDEN:  // HTTP 403
-      BLOG(0, "Request signature verification failure!");
+      engine.LogError(FROM_HERE) << "Request signature verification failure";
       return base::unexpected(Error::kRequestSignatureVerificationFailure);
     case net::HTTP_NOT_FOUND:  // HTTP 404
-      BLOG(0, "Rewards payment ID not found!");
+      engine.LogError(FROM_HERE) << "Rewards payment ID not found";
       return base::unexpected(Error::kRewardsPaymentIDNotFound);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
@@ -97,7 +99,7 @@ std::string GetWallet::Path() const {
 std::optional<std::string> GetWallet::Url() const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::nullopt;
   }
 
@@ -116,7 +118,7 @@ std::optional<std::vector<std::string>> GetWallet::Headers(
     const std::string& content) const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::nullopt;
   }
 
@@ -125,7 +127,7 @@ std::optional<std::vector<std::string>> GetWallet::Headers(
 
   auto signer = RequestSigner::FromRewardsWallet(*wallet);
   if (!signer) {
-    BLOG(0, "Unable to sign request");
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
     return std::nullopt;
   }
 

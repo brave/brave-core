@@ -72,7 +72,8 @@ struct ResultFor<GetWallet> {
 class GetWallet final : public RequestBuilder,
                         public ResponseHandler<GetWallet> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse& response);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse& response);
 
   explicit GetWallet(RewardsEngineImpl& engine);
   ~GetWallet() override;

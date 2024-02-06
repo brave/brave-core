@@ -28,7 +28,9 @@ class GetPublisherTest : public RewardsEngineTest {
     base::RunLoop run_loop;
     mojom::Result result;
 
-    GetPublisher(engine()).Request(
+    GetPublisher endpoint(engine());
+
+    endpoint.Request(
         id, prefix,
         [&run_loop, &result, info](mojom::Result request_result,
                                    mojom::ServerPublisherInfoPtr request_info) {

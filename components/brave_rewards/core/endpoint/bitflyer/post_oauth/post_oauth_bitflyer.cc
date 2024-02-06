@@ -58,7 +58,7 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
 
 mojom::Result PostOauth::CheckStatusCode(int status_code) {
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -75,26 +75,26 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
-    BLOG(0, "Missing access token");
+    engine_->LogError(FROM_HERE) << "Missing access token";
     return mojom::Result::FAILED;
   }
 
   const auto* deposit_id = dict.FindString("deposit_id");
   if (!deposit_id) {
-    BLOG(0, "Missing deposit id");
+    engine_->LogError(FROM_HERE) << "Missing deposit id";
     return mojom::Result::FAILED;
   }
 
   const auto* linking_information = dict.FindString("linking_info");
   if (!linking_information) {
-    BLOG(0, "Missing linking info");
+    engine_->LogError(FROM_HERE) << "Missing linking info";
     return mojom::Result::FAILED;
   }
 

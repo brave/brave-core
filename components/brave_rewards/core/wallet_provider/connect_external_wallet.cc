@@ -62,7 +62,7 @@ ConnectExternalWallet::GetCode(
     const std::string& current_one_time_string) const {
   if (query_parameters.contains("error_description")) {
     const std::string message = query_parameters.at("error_description");
-    BLOG(1, message);
+    engine_->Log(FROM_HERE) << message;
     if (base::Contains(message, "User does not meet minimum requirements")) {
       engine_->database()->SaveEventLog(log::kKYCRequired, WalletType());
       return base::unexpected(ConnectExternalWalletResult::kKYCRequired);
@@ -76,12 +76,13 @@ ConnectExternalWallet::GetCode(
 
   if (!query_parameters.contains("code") ||
       !query_parameters.contains("state")) {
-    BLOG(0, "Query parameters should contain both code and state!");
+    engine_->LogError(FROM_HERE)
+        << "Query parameters should contain both code and state";
     return base::unexpected(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (current_one_time_string != query_parameters.at("state")) {
-    BLOG(0, "One time string mismatch!");
+    engine_->LogError(FROM_HERE) << "One time string mismatch";
     return base::unexpected(ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -107,7 +108,8 @@ void ConnectExternalWallet::OnConnect(
   if (const auto connect_external_wallet_result =
           PostConnect::ToConnectExternalWalletResult(result);
       connect_external_wallet_result != ConnectExternalWalletResult::kSuccess) {
-    BLOG(0, "Failed to connect " << WalletType() << " wallet!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to connect " << WalletType() << " wallet";
 
     if (const auto key =
             log::GetEventLogKeyForLinkingResult(connect_external_wallet_result);
@@ -125,7 +127,8 @@ void ConnectExternalWallet::OnConnect(
   // {kNotConnected, kLoggedOut} ==> kConnected
   if (!wallet::TransitionWallet(*engine_, std::move(wallet),
                                 mojom::WalletStatus::kConnected)) {
-    BLOG(0, "Failed to transition " << WalletType() << " wallet state!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to transition " << WalletType() << " wallet state";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 

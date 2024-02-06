@@ -86,7 +86,7 @@ Promotion::~Promotion() = default;
 
 void Promotion::Initialize() {
   if (!engine_->state()->GetPromotionCorruptedMigrated()) {
-    BLOG(1, "Migrating corrupted promotions");
+    engine_->Log(FROM_HERE) << "Migrating corrupted promotions";
     auto check_callback = std::bind(&Promotion::CheckForCorrupted, this, _1);
 
     engine_->database()->GetAllPromotions(check_callback);
@@ -146,9 +146,10 @@ void Promotion::OnFetch(FetchPromotionsCallback callback,
 
   // even though that some promotions are corrupted
   // we should display non corrupted ones either way
-  BLOG_IF(1, result == mojom::Result::CORRUPTED_DATA,
-          "Promotions are not correct: " << base::JoinString(
-              corrupted_promotions, ", "));
+  if (result == mojom::Result::CORRUPTED_DATA) {
+    engine_->Log(FROM_HERE) << "Promotions are not correct: "
+                            << base::JoinString(corrupted_promotions, ", ");
+  }
 
   auto all_callback =
       base::BindOnce(&Promotion::OnGetAllPromotions, base::Unretained(this),
@@ -242,7 +243,7 @@ void Promotion::LegacyClaimedSaved(
     const mojom::Result result,
     std::shared_ptr<mojom::PromotionPtr> shared_promotion) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Save failed");
+    engine_->LogError(FROM_HERE) << "Save failed";
     return;
   }
 
@@ -268,20 +269,20 @@ void Promotion::OnClaimPromotion(ClaimPromotionCallback callback,
                                  const std::string& payload,
                                  mojom::PromotionPtr promotion) {
   if (!promotion) {
-    BLOG(0, "Promotion is null");
+    engine_->LogError(FROM_HERE) << "Promotion is null";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
   if (promotion->status != mojom::PromotionStatus::ACTIVE) {
-    BLOG(1, "Promotion already in progress");
+    engine_->Log(FROM_HERE) << "Promotion already in progress";
     std::move(callback).Run(mojom::Result::IN_PROGRESS, "");
     return;
   }
 
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet does not exist");
+    engine_->LogError(FROM_HERE) << "Rewards wallet does not exist";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -308,13 +309,13 @@ void Promotion::OnAttestPromotion(AttestPromotionCallback callback,
                                   const std::string& solution,
                                   mojom::PromotionPtr promotion) {
   if (!promotion) {
-    BLOG(1, "Promotion is null");
+    engine_->Log(FROM_HERE) << "Promotion is null";
     std::move(callback).Run(mojom::Result::FAILED, nullptr);
     return;
   }
 
   if (promotion->status != mojom::PromotionStatus::ACTIVE) {
-    BLOG(1, "Promotion already in progress");
+    engine_->Log(FROM_HERE) << "Promotion already in progress";
     std::move(callback).Run(mojom::Result::IN_PROGRESS, nullptr);
     return;
   }
@@ -329,7 +330,7 @@ void Promotion::OnAttestedPromotion(AttestPromotionCallback callback,
                                     const std::string& promotion_id,
                                     mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Attestation failed " << result);
+    engine_->LogError(FROM_HERE) << "Attestation failed " << result;
     std::move(callback).Run(result, nullptr);
     return;
   }
@@ -349,13 +350,13 @@ void Promotion::OnAttestedPromotion(AttestPromotionCallback callback,
 void Promotion::OnCompletedAttestation(AttestPromotionCallback callback,
                                        mojom::PromotionPtr promotion) {
   if (!promotion) {
-    BLOG(0, "Promotion does not exist");
+    engine_->LogError(FROM_HERE) << "Promotion does not exist";
     std::move(callback).Run(mojom::Result::FAILED, nullptr);
     return;
   }
 
   if (promotion->status == mojom::PromotionStatus::FINISHED) {
-    BLOG(0, "Promotions already claimed");
+    engine_->LogError(FROM_HERE) << "Promotions already claimed";
     std::move(callback).Run(mojom::Result::GRANT_ALREADY_CLAIMED, nullptr);
     return;
   }
@@ -377,7 +378,7 @@ void Promotion::AttestedSaved(AttestPromotionCallback callback,
                               mojom::PromotionPtr promotion,
                               mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Save failed ");
+    engine_->LogError(FROM_HERE) << "Save failed ";
     std::move(callback).Run(result, nullptr);
     return;
   }
@@ -407,7 +408,7 @@ void Promotion::Complete(AttestPromotionCallback callback,
 void Promotion::OnComplete(AttestPromotionCallback callback,
                            mojom::Result result,
                            mojom::PromotionPtr promotion) {
-  BLOG(1, "Promotion completed with result " << result);
+  engine_->Log(FROM_HERE) << "Promotion completed with result " << result;
   if (promotion && result == mojom::Result::OK) {
     engine_->database()->SaveBalanceReportInfoItem(
         util::GetCurrentMonth(), util::GetCurrentYear(),
@@ -434,7 +435,7 @@ void Promotion::ProcessFetchedPromotions(
 void Promotion::GetCredentials(ResultCallback callback,
                                mojom::PromotionPtr promotion) {
   if (!promotion) {
-    BLOG(0, "Promotion is null");
+    engine_->LogError(FROM_HERE) << "Promotion is null";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -470,7 +471,8 @@ void Promotion::CredentialsProcessed(ResultCallback callback,
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Credentials process not succeeded " << result);
+    engine_->LogError(FROM_HERE)
+        << "Credentials process not succeeded " << result;
     std::move(callback).Run(result);
     return;
   }
@@ -514,8 +516,8 @@ void Promotion::Refresh(const bool retry_after_error) {
   if (retry_after_error) {
     start_timer_in = util::GetRandomizedDelay(base::Seconds(300));
 
-    BLOG(1,
-         "Failed to refresh promotion, will try again in " << start_timer_in);
+    engine_->Log(FROM_HERE)
+        << "Failed to refresh promotion, will try again in " << start_timer_in;
   } else {
     const auto default_time = constant::kPromotionRefreshInterval;
     const uint64_t now = util::GetCurrentTimeStamp();
@@ -545,7 +547,7 @@ void Promotion::Refresh(const bool retry_after_error) {
 void Promotion::CheckForCorrupted(
     const base::flat_map<std::string, mojom::PromotionPtr>& promotions) {
   if (promotions.empty()) {
-    BLOG(1, "Promotion is empty");
+    engine_->Log(FROM_HERE) << "Promotion is empty";
     return;
   }
 
@@ -563,7 +565,7 @@ void Promotion::CheckForCorrupted(
   }
 
   if (corrupted_promotions.empty()) {
-    BLOG(1, "No corrupted promotions");
+    engine_->Log(FROM_HERE) << "No corrupted promotions";
     CorruptedPromotionFixed(mojom::Result::OK);
     return;
   }
@@ -576,7 +578,7 @@ void Promotion::CheckForCorrupted(
 
 void Promotion::CorruptedPromotionFixed(const mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Could not update public keys");
+    engine_->LogError(FROM_HERE) << "Could not update public keys";
     return;
   }
 
@@ -587,7 +589,7 @@ void Promotion::CorruptedPromotionFixed(const mojom::Result result) {
 
 void Promotion::CheckForCorruptedCreds(std::vector<mojom::CredsBatchPtr> list) {
   if (list.empty()) {
-    BLOG(1, "Creds list is empty");
+    engine_->Log(FROM_HERE) << "Creds list is empty";
     engine_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
@@ -603,13 +605,13 @@ void Promotion::CheckForCorruptedCreds(std::vector<mojom::CredsBatchPtr> list) {
     auto unblinded_encoded_tokens = credential::UnBlindCreds(*item);
 
     if (!unblinded_encoded_tokens.has_value()) {
-      BLOG(1, "Promotion corrupted " << item->trigger_id);
+      engine_->Log(FROM_HERE) << "Promotion corrupted " << item->trigger_id;
       corrupted_promotions.push_back(item->trigger_id);
     }
   }
 
   if (corrupted_promotions.empty()) {
-    BLOG(1, "No corrupted creds");
+    engine_->Log(FROM_HERE) << "No corrupted creds";
     engine_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
@@ -633,7 +635,7 @@ void Promotion::CorruptedPromotions(std::vector<mojom::PromotionPtr> promotions,
   }
 
   if (corrupted_claims.empty()) {
-    BLOG(1, "No corrupted creds");
+    engine_->Log(FROM_HERE) << "No corrupted creds";
     engine_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
@@ -648,7 +650,8 @@ void Promotion::OnCheckForCorrupted(
     const mojom::Result result,
     const std::vector<std::string>& promotion_id_list) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to parse corrupted promotions response");
+    engine_->LogError(FROM_HERE)
+        << "Failed to parse corrupted promotions response";
     return;
   }
 
@@ -666,7 +669,7 @@ void Promotion::ErrorStatusSaved(
     const std::vector<std::string>& promotion_id_list) {
   // even if promotions fail, let's try to update at least creds
   if (result != mojom::Result::OK) {
-    BLOG(0, "Promotion status save failed");
+    engine_->LogError(FROM_HERE) << "Promotion status save failed";
   }
 
   auto update_callback = std::bind(&Promotion::ErrorCredsStatusSaved, this, _1);
@@ -678,7 +681,7 @@ void Promotion::ErrorStatusSaved(
 
 void Promotion::ErrorCredsStatusSaved(const mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Creds status save failed");
+    engine_->LogError(FROM_HERE) << "Creds status save failed";
   }
 
   // let's retry promotions that are valid now

@@ -62,19 +62,16 @@ RewardsEngineImpl::RewardsEngineImpl(
       uphold_(std::make_unique<uphold::Uphold>(*this)),
       zebpay_(std::make_unique<zebpay::ZebPay>(*this)) {
   DCHECK(base::ThreadPoolInstance::Get());
-  set_client_for_logging(client_.get());
 }
 
-RewardsEngineImpl::~RewardsEngineImpl() {
-  set_client_for_logging(nullptr);
-}
+RewardsEngineImpl::~RewardsEngineImpl() = default;
 
 // mojom::RewardsEngine implementation begin (in the order of appearance in
 // Mojom)
 void RewardsEngineImpl::Initialize(InitializeCallback callback) {
   Get<InitializationManager>().Initialize(
-      base::BindOnce(&RewardsEngineImpl::OnInitializationComplete,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&RewardsEngineImpl::OnInitializationComplete, GetWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsEngineImpl::GetEnvironment(GetEnvironmentCallback callback) {
@@ -674,8 +671,8 @@ void RewardsEngineImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
 
 void RewardsEngineImpl::Shutdown(ShutdownCallback callback) {
   Get<InitializationManager>().Shutdown(
-      base::BindOnce(&RewardsEngineImpl::OnShutdownComplete,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&RewardsEngineImpl::OnShutdownComplete, GetWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsEngineImpl::GetEventLogs(GetEventLogsCallback callback) {
@@ -748,6 +745,14 @@ std::optional<std::string> RewardsEngineImpl::DecryptString(
   return result;
 }
 // mojom::RewardsEngineClient helpers end
+
+base::WeakPtr<RewardsEngineImpl> RewardsEngineImpl::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
+
+base::WeakPtr<const RewardsEngineImpl> RewardsEngineImpl::GetWeakPtr() const {
+  return weak_factory_.GetWeakPtr();
+}
 
 mojom::RewardsEngineClient* RewardsEngineImpl::client() {
   return client_.get();

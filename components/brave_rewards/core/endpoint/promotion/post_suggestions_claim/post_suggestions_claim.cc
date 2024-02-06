@@ -38,7 +38,7 @@ std::string PostSuggestionsClaim::GeneratePayload(
     const credential::CredentialsRedeem& redeem) {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
+    engine_->LogError(FROM_HERE) << "Wallet is null";
     return "";
   }
 
@@ -56,17 +56,17 @@ std::string PostSuggestionsClaim::GeneratePayload(
 
 mojom::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_SERVICE_UNAVAILABLE) {
-    BLOG(0, "No conversion rate yet in ratios service");
+    engine_->LogError(FROM_HERE) << "No conversion rate yet in ratios service";
     return mojom::Result::BAD_REGISTRATION_RESPONSE;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -79,7 +79,7 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
 
   auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
+    engine_->LogError(FROM_HERE) << "Wallet is null";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -96,7 +96,7 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
 
   auto signer = RequestSigner::FromRewardsWallet(*wallet);
   if (!signer || !signer->SignRequest(*request)) {
-    BLOG(0, "Unable to sign request");
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -117,7 +117,7 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
 
   std::optional<base::Value> value = base::JSONReader::Read(response->body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -125,7 +125,7 @@ void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
   const base::Value::Dict& dict = value->GetDict();
   auto* drain_id = dict.FindString("drainId");
   if (!drain_id) {
-    BLOG(0, "Missing drain id");
+    engine_->LogError(FROM_HERE) << "Missing drain id";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }

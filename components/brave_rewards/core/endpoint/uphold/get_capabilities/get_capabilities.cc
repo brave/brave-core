@@ -64,12 +64,13 @@ GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) const {
   const auto status_code = response.status_code;
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
-    BLOG(1, "Unauthorized access, HTTP status: " << status_code);
+    engine_->Log(FROM_HERE)
+        << "Unauthorized access, HTTP status: " << status_code;
     return {mojom::Result::EXPIRED_TOKEN, {}};
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return {mojom::Result::FAILED, {}};
   }
 
@@ -82,7 +83,7 @@ GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
     const std::string& body) const {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
-    BLOG(0, "Invalid body format!");
+    engine_->LogError(FROM_HERE) << "Invalid body format";
     return {};
   }
 
@@ -103,7 +104,7 @@ GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
   }
 
   if (capability_map.empty()) {
-    BLOG(0, "Invalid body format!");
+    engine_->LogError(FROM_HERE) << "Invalid body format";
   }
 
   return capability_map;
