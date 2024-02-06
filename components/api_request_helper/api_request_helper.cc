@@ -13,6 +13,7 @@
 #include "base/check_op.h"
 #include "base/containers/cxx20_erase_vector.h"
 #include "base/json/json_writer.h"
+#include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
@@ -70,7 +71,7 @@ class ScopedPerfTracker {
   }
 
  private:
-  const char* uma_name_;
+  raw_ptr<const char> uma_name_;
   base::ElapsedThreadTimer timer_;
 };
 
@@ -338,6 +339,8 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
   if (is_sse_) {
     ParseSSE(string_piece);
   } else {
+    TRACE_EVENT0("brave", "APIRequestHelper_OnDataReceivedNoSSE");
+    ScopedPerfTracker tracker("Brave.APIRequestHelper.OnDataReceivedNoSSE");
     data_received_callback_.Run(base::Value(string_piece));
   }
   // Get next chunk
@@ -487,6 +490,8 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
           if (!handler) {
             return;
           }
+          TRACE_EVENT0("brave", "APIRequestHelper_ParseSSECallback");
+          ScopedPerfTracker tracker("Brave.APIRequestHelper.ParseSSECallback");
           handler->current_decoding_operation_count_--;
           DCHECK(handler->data_received_callback_);
           handler->data_received_callback_.Run(std::move(result));
