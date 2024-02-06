@@ -8,27 +8,41 @@ import * as React from 'react'
 const DEFAULT_THRESHOLD = 500
 
 export interface LongPressProps {
-  onLongPress: (id?: number) => void
+  /**
+   * Handler that is called when the threshold time is met while
+   * the press is over the target.
+   */
+  onLongPress: (e: React.TouchEvent) => void
+  /**
+   * The amount of time in milliseconds to wait before triggering a long press.
+   * @default 500ms
+   */
   delay?: number
 }
 
 export default function useLongPress(props: LongPressProps) {
   const touchTimer = React.useRef<NodeJS.Timeout | number>()
 
-  const start = React.useCallback((id: number) => {
-    touchTimer.current = setTimeout(() => props.onLongPress(id), props.delay === undefined ? DEFAULT_THRESHOLD : props.delay)
-  }, [props.onLongPress, props.delay])
+  const handleTouchStart = React.useCallback(
+    (e: React.TouchEvent) => {
+      touchTimer.current = setTimeout(
+        () => props.onLongPress(e),
+        props.delay === undefined ? DEFAULT_THRESHOLD : props.delay
+      )
+    },
+    [props.onLongPress, props.delay]
+  )
 
-  const stop = React.useCallback(() => {
+  const handleTouchEnd = React.useCallback(() => {
     if (touchTimer.current) {
       clearTimeout(touchTimer.current)
       touchTimer.current = undefined
     }
   }, [])
 
-
   return {
-    start,
-    stop
+    onTouchStart: handleTouchStart,
+    onTouchEnd: handleTouchEnd,
+    onTouchMove: handleTouchEnd
   }
 }

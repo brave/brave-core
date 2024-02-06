@@ -98,10 +98,15 @@ function ConversationList(props: ConversationListProps) {
     setActiveMenuId(null)
   }
 
-  const longPress = useLongPress({
-    onLongPress: (id: number) => { showAssistantMenu(id) }
+  const longPressProps = useLongPress({
+    onLongPress: (e: React.TouchEvent) => {
+      const target = e.target as HTMLElement
+      const id = target.getAttribute('data-id')
+      if (id !== null) {
+        showAssistantMenu(parseInt(id))
+      }
+     }
   })
-
 
   React.useEffect(() => {
     if (lastEntryElementRef.current === null) return
@@ -137,12 +142,11 @@ function ConversationList(props: ConversationListProps) {
           return (
             <div
               key={id}
+              data-id={id}
               className={turnContainer}
               ref={isLastEntry ? lastEntryElementRef : null}
-              onTouchStart={isAIAssistant ? () => longPress.start(id) : undefined}
-              onTouchMove={isAIAssistant ? () => longPress.stop() : undefined}
-              onTouchEnd={isAIAssistant ? () => longPress.stop() : undefined}
               onMouseLeave={isAIAssistant ? () => setActiveMenuId(null) : undefined}
+              {...(isAIAssistant && longPressProps)}
             >
               <div className={turnClass}>
                 {isAIAssistant && (
