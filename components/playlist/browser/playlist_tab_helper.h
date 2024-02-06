@@ -12,11 +12,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
-#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 namespace playlist {
@@ -69,11 +67,9 @@ class PlaylistTabHelper
   void ExtractMediaFromBackgroundWebContents(
       base::OnceCallback<void(bool)> extracted_callback);
 
-  void RequestAsyncExecuteScript(int32_t world_id,
-                                 const std::u16string& script,
-                                 base::OnceCallback<void(base::Value)> cb);
-
   // content::WebContentsObserver:
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void PrimaryPageChanged(content::Page& page) override;
 
   // mojom::PlaylistServiceObserver:
@@ -119,9 +115,6 @@ class PlaylistTabHelper
 
   void OnPlaylistEnabledPrefChanged();
 
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
-      content::RenderFrameHost* rfh);
-
   raw_ptr<PlaylistService> service_;
 
   GURL target_url_;
@@ -142,10 +135,6 @@ class PlaylistTabHelper
       this};
 
   BooleanPrefMember playlist_enabled_pref_;
-
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
-      script_injector_remote_;
-  raw_ptr<content::RenderFrameHost> script_injector_rfh_ = nullptr;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };

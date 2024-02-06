@@ -23,10 +23,6 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace blink::web_pref {
-struct WebPreferences;
-}  // namespace blink::web_pref
-
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -39,9 +35,6 @@ class PlaylistService;
 // by injecting media detector script to dedicated WebContents.
 class PlaylistDownloadRequestManager {
  public:
-  static void SetRunScriptOnMainWorldForTest();
-  static void SetPlaylistJavaScriptWorldId(const int32_t id);
-
   struct Request {
     using Callback =
         base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)>;
@@ -72,10 +65,6 @@ class PlaylistDownloadRequestManager {
   // Request::callback will be called with generated param.
   virtual void GetMediaFilesFromPage(Request request);
 
-  // Update |web_prefs| if we want for |web_contents|.
-  void ConfigureWebPrefsForBackgroundWebContents(
-      content::WebContents* web_contents,
-      blink::web_pref::WebPreferences* web_prefs);
   void ResetRequests();
 
   const content::WebContents* background_contents() const {
@@ -93,9 +82,11 @@ class PlaylistDownloadRequestManager {
     return media_detector_component_manager_;
   }
 
-  void GetMedia(
-      content::WebContents* contents,
-      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb);
+  std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(base::Value value,
+                                                       GURL page_url);
+  void MaybeResetBackgroundWebContentsAndFetchNextRequest(
+      const std::vector<mojom::PlaylistItemPtr>& items,
+      content::WebContents* contents);
 
   bool CanCacheMedia(const mojom::PlaylistItemPtr& item) const;
   bool ShouldExtractMediaFromBackgroundWebContents(
@@ -110,14 +101,7 @@ class PlaylistDownloadRequestManager {
   void RunMediaDetector(Request request);
 
   bool ReadyToRunMediaDetectorScript() const;
-  void CreateWebContents(bool should_force_fake_ua);
-  void OnGetMedia(
-      base::WeakPtr<content::WebContents> contents,
-      GURL url,
-      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
-      base::Value value);
-  std::vector<mojom::PlaylistItemPtr> ProcessFoundMedia(base::Value value,
-                                                        GURL page_url);
+  void CreateWebContents(const Request& request = {});
 
   // Pop a task from queue and detect media from the page if any.
   void FetchPendingRequest();

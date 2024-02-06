@@ -23,9 +23,9 @@ class PlaylistDownloadRequestManagerUnitTest : public testing::Test {
     return *download_request_manager_;
   }
 
-  std::vector<mojom::PlaylistItemPtr> ProcessFoundMedia(base::Value value) {
-    return manager().ProcessFoundMedia(std::move(value),
-                                       GURL("https://example.com"));
+  std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(base::Value value) {
+    return manager().GetPlaylistItems(std::move(value),
+                                      GURL("https://example.com"));
   }
 
   // testing::Test:
@@ -100,20 +100,20 @@ TEST_F(PlaylistDownloadRequestManagerUnitTest,
 }
 
 TEST_F(PlaylistDownloadRequestManagerUnitTest,
-       ProcessFoundMedia_NoMediaDetected) {
+       GetPlaylistItems_NoMediaDetected) {
   // When media detection script doesn't find any media, it returns an empty
   // dict.
-  EXPECT_TRUE(ProcessFoundMedia(base::Value(base::Value::Type::DICT)).empty());
+  EXPECT_TRUE(GetPlaylistItems(base::Value(base::Value::Type::DICT)).empty());
 }
 
-TEST_F(PlaylistDownloadRequestManagerUnitTest, ProcessFoundMedia_InvalidValue) {
-  // ProcessFoundMedia only takes either list or dict
-  BASE_EXPECT_DEATH(ProcessFoundMedia(base::Value(base::Value::Type::BOOLEAN)),
+TEST_F(PlaylistDownloadRequestManagerUnitTest, GetPlaylistItems_InvalidValue) {
+  // GetPlaylistItems only takes either list or dict
+  BASE_EXPECT_DEATH(GetPlaylistItems(base::Value(base::Value::Type::BOOLEAN)),
                     CHECK_WILL_STREAM() ? "Check failed: value\\.is_list" : "");
 }
 
 TEST_F(PlaylistDownloadRequestManagerUnitTest,
-       ProcessFoundMedia_RequiredProperties) {
+       GetPlaylistItems_RequiredProperties) {
   base::Value value(base::Value::Dict()
                         .Set("name", "Video 1")
                         .Set("pageTitle", "Example page")
@@ -123,7 +123,7 @@ TEST_F(PlaylistDownloadRequestManagerUnitTest,
                         .Set("srcIsMediaSourceObjectURL", false));
 
   std::vector<mojom::PlaylistItemPtr> result =
-      ProcessFoundMedia(base::Value(base::Value::List().Append(value.Clone())));
+      GetPlaylistItems(base::Value(base::Value::List().Append(value.Clone())));
   EXPECT_EQ(result.size(), 1u);
   EXPECT_FALSE(result[0]->id.empty());
   EXPECT_EQ(result[0]->name, "Video 1");
@@ -139,14 +139,14 @@ TEST_F(PlaylistDownloadRequestManagerUnitTest,
                                   "src", "srcIsMediaSourceObjectURL"}) {
     auto invalid_value = value.Clone();
     invalid_value.GetDict().Set(required_property, base::Value());
-    EXPECT_TRUE(ProcessFoundMedia(base::Value(base::Value::List().Append(
-                                      std::move(invalid_value))))
+    EXPECT_TRUE(GetPlaylistItems(base::Value(base::Value::List().Append(
+                                     std::move(invalid_value))))
                     .empty());
   }
 }
 
 TEST_F(PlaylistDownloadRequestManagerUnitTest,
-       ProcessFoundMedia_OptionalProperties) {
+       GetPlaylistItems_OptionalProperties) {
   base::Value value(base::Value::Dict()
                         .Set("name", "Video 1")
                         .Set("pageTitle", "Example page")
@@ -159,7 +159,7 @@ TEST_F(PlaylistDownloadRequestManagerUnitTest,
                         .Set("duration", 1234.0));
 
   std::vector<mojom::PlaylistItemPtr> result =
-      ProcessFoundMedia(base::Value(base::Value::List().Append(value.Clone())));
+      GetPlaylistItems(base::Value(base::Value::List().Append(value.Clone())));
   EXPECT_EQ(result.size(), 1u);
   EXPECT_FALSE(result[0]->id.empty());
   EXPECT_EQ(result[0]->author, "Me");
@@ -172,7 +172,7 @@ TEST_F(PlaylistDownloadRequestManagerUnitTest,
 }
 
 TEST_F(PlaylistDownloadRequestManagerUnitTest,
-       ProcessFoundMedia_MediaSourceScheme) {
+       GetPlaylistItems_MediaSourceScheme) {
   base::Value value(base::Value::Dict()
                         .Set("name", "Video 1")
                         .Set("pageTitle", "Example page")
@@ -182,32 +182,32 @@ TEST_F(PlaylistDownloadRequestManagerUnitTest,
                         .Set("srcIsMediaSourceObjectURL", false));
 
   EXPECT_FALSE(
-      ProcessFoundMedia(base::Value(base::Value::List().Append(value.Clone())))
+      GetPlaylistItems(base::Value(base::Value::List().Append(value.Clone())))
           .empty());
 
   // http:// scheme is not allowed.
   value.GetDict().Set("src", "http://example.com/12345");
   EXPECT_TRUE(
-      ProcessFoundMedia(base::Value(base::Value::List().Append(value.Clone())))
+      GetPlaylistItems(base::Value(base::Value::List().Append(value.Clone())))
           .empty());
 
   // blob: that's not backed by MediaSource is not allowed
   value.GetDict().Set("src", "blob:https://example.com/12345");
   EXPECT_TRUE(
-      ProcessFoundMedia(base::Value(base::Value::List().Append(value.Clone())))
+      GetPlaylistItems(base::Value(base::Value::List().Append(value.Clone())))
           .empty());
 
   // blob: that's backed by MediaSource but from unknown source is not allowed
   value.GetDict().Set("src", "blob:https://example.com/12345");
   value.GetDict().Set("srcIsMediaSourceObjectURL", true);
   EXPECT_TRUE(
-      ProcessFoundMedia(base::Value(base::Value::List().Append(value.Clone())))
+      GetPlaylistItems(base::Value(base::Value::List().Append(value.Clone())))
           .empty());
 
   // blob: that's backed by MediaSource and from known source is allowed
   value.GetDict().Set("src", "blob:https://youtube.com/12345");
   EXPECT_FALSE(
-      ProcessFoundMedia(base::Value(base::Value::List().Append(value.Clone())))
+      GetPlaylistItems(base::Value(base::Value::List().Append(value.Clone())))
           .empty());
 }
 
