@@ -31,6 +31,8 @@ const pushL10n = (options) => {
         'python3',
         [
           'script/push-l10n.py',
+          '--service', options.service,
+          '--channel', options.channel,
           '--source_string_path',
           sourceStringPath,
           extraScriptOptions
