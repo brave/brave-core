@@ -39,7 +39,7 @@
     Something went wrong. Try again later
   </message>
   <message name="IDS_ACCESS_CODE_CAST_ERROR_PROFILE_SYNC" desc="Error message for profile sync error">
-    To cast with a code, turn on Brave browser sync settings
+    To cast with a code, turn on Ping browser sync settings
   </message>
   <message name="IDS_ACCESS_CODE_CAST_INPUT_ARIA_LABEL" is_accessibility_with_no_ui="true" desc="Label for the text box where users type the access code to start casting to a Chromecast device">
     Type the access code to start casting

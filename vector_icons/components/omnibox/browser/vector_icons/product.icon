@@ -1,11 +1,6 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at http://mozilla.org/MPL/2.0/.
-
 CANVAS_DIMENSIONS, 32,
 // BRAVE ORANGE
-PATH_COLOR_ARGB, 0xFF, 0xFB, 0x54, 0x2B,
+PATH_COLOR_ARGB, 0xFF, 0xFE, 0xFE, 0xFE,
 MOVE_TO, 27.14f, 8.73f,
 R_LINE_TO, 0.63f, -1.4f,
 R_ARC_TO, 0.35f, 0.35f, 0, 0, 0, -0.08f, -0.4f,
@@ -33,7 +28,7 @@ R_LINE_TO, 0.58f, -2.11f,
 CLOSE,
 NEW_PATH,
 // BRAVE WHITE
-PATH_COLOR_ARGB, 0xFF, 0xFF, 0xFF, 0xFF,
+PATH_COLOR_ARGB, 0xFF, 0xFE, 0xFE, 0xFE,
 MOVE_TO, 22.08f, 6.52f,
 R_LINE_TO, -2.8f, 0.53f,
 R_CUBIC_TO, -0.13f, 0, -3, -0.78f, -3.24f, -0.78f,
@@ -97,7 +92,7 @@ R_CUBIC_TO, -0.06f, -0.13f, -3.08f, -4.22f, -3.09f, -4.22f,
 CLOSE,
 NEW_PATH,
 // BRAVE WHITE
-PATH_COLOR_ARGB, 0xFF, 0xFF, 0xFF, 0xFF,
+PATH_COLOR_ARGB, 0xFF, 0xFE, 0xFE, 0xFE,
 MOVE_TO, 19.62f, 21,
 LINE_TO, 16, 19.42f,
 LINE_TO, 12.38f, 21,

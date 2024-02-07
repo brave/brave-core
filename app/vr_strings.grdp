@@ -94,13 +94,13 @@
   <message name="IDS_VR_SHELL_EXIT_PROMPT_DESCRIPTION_SITE_INFO" desc="Text on the exit prompt that shows up when the user clicks on URL bar security icon in VR">
     Site information is not available in VR
   </message>
-  <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_DESCRIPTION" desc="Text on the exit prompt in VR that shows up when the user needs to grant audio permission to Brave">
-    Allow Brave to record audio?
+  <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_DESCRIPTION" desc="Text on the exit prompt in VR that shows up when the user needs to grant audio permission to Ping">
+    Allow Ping to record audio?
   </message>
-  <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_ABORT_BUTTON" desc="Text on the cancel button of the prompt that shows up in VR when user needs to grant audio permission to Brave">
+  <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_ABORT_BUTTON" desc="Text on the cancel button of the prompt that shows up in VR when user needs to grant audio permission to Ping">
     Cancel
   </message>
-  <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_CONTINUE_BUTTON" desc="Text on the exit button of the prompt that shows up when user needs to grant audio permission to Brave to perform a voice search">
+  <message name="IDS_VR_SHELL_AUDIO_PERMISSION_PROMPT_CONTINUE_BUTTON" desc="Text on the exit button of the prompt that shows up when user needs to grant audio permission to Ping to perform a voice search">
     Continue
   </message>
   <!-- TODO(https://crbug.com/787654): Make mixed case before using in production on a non-Android platform. -->
