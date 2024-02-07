@@ -76,7 +76,6 @@ class PlaylistTabHelper
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DOMContentLoaded(content::RenderFrameHost* render_frame_host) override;
 
   // mojom::PlaylistServiceObserver:
   void OnEvent(mojom::PlaylistEvent event,
@@ -113,7 +112,7 @@ class PlaylistTabHelper
 
   void ResetData();
   void UpdateSavedItemFromCurrentContents();
-  void FindMediaFromCurrentContents();
+  void ExtractMediaFromBackgroundContents();
   void OnFoundMediaFromContents(const GURL& url,
                                 std::vector<mojom::PlaylistItemPtr> items);
   void OnMediaExtractionFromBackgroundWebContentsTimeout();
@@ -127,7 +126,7 @@ class PlaylistTabHelper
   raw_ptr<PlaylistService> service_;
 
   GURL target_url_;
-  bool sent_find_media_request_ = false;
+  bool sent_extract_media_request_ = false;
 
   bool is_adding_items_ = false;
 
