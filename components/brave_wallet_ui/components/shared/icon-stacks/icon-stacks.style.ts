@@ -14,7 +14,6 @@ export const StackContainer = styled.div<{
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  background-color: ${leo.color.container.highlight};
   border-radius: 4px;
   margin-right: 26px;
   width: ${(p) => p.width};
@@ -40,7 +39,7 @@ export const AdditionalCountBubble = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-left: 4px;
+  padding: 0px 4px;
   height: 16px;
   background-color: ${leo.color.container.highlight};
   color: ${leo.color.text.secondary};
