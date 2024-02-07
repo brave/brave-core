@@ -155,6 +155,8 @@
 
 # These tests crash due to unregistered pref
 # brave.default_search_provider_by_extension
+-SearchEngineChoiceServiceTest.DoNotCreateServiceIfPolicyIsSet
+-SearchEngineChoiceServiceTest.DoNotDisplayDialogIfPolicyIsSetDynamically
 -SearchEngineChoiceServiceTest.NotifyChoiceMade
 -SearchEnginesHandlerParametrizedTest.ChangeInTemplateUrlDataTriggersCallback/Default
 -SearchEnginesHandlerParametrizedTest.ChangeInTemplateUrlDataTriggersCallback/WithSearchEngineChoiceEnabled
