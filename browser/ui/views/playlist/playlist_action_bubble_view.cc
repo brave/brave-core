@@ -428,23 +428,20 @@ AddBubble::AddBubble(Browser* browser,
       /*thickness=*/1,
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
   scroll_view_->SetVisible(false);
-  loading_spinner_ = AddChildView(std::make_unique<LoadingSpinner>());
-
+  scroll_view_->SetContents(std::make_unique<views::View>());
   // Fix preferred width. This is for ignoring insets that could be added by
   // border.
+  scroll_view_->SetPreferredSize(
+      gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
+
+  loading_spinner_ = AddChildView(std::make_unique<LoadingSpinner>());
+
   SetButtonLabel(ui::DialogButton::DIALOG_BUTTON_OK,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
+  SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
 
-  if (playlist_tab_helper_->ShouldExtractMediaFromBackgroundWebContents()) {
-    scroll_view_->SetContents(std::make_unique<views::View>());
-    playlist_tab_helper_->ExtractMediaFromBackgroundWebContents(base::BindOnce(
-        &AddBubble::OnMediaExtracted, weak_ptr_factory_.GetWeakPtr()));
-    scroll_view_->SetPreferredSize(
-        gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
-    SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
-  } else {
-    InitListView();
-  }
+  playlist_tab_helper_->ExtractMediaFromBackgroundWebContents(base::BindOnce(
+      &AddBubble::OnMediaExtracted, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AddBubble::OnMediaExtracted(bool result) {
