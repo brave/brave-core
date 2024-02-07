@@ -132,13 +132,6 @@ where
                     let blinded_creds: Vec<BlindedToken> =
                         match self.client.get_time_limited_v2_creds(&item.id).await? {
                             Some(item_creds) => {
-                                // overwrite our request id if creds are already present
-                                request_id = match item_creds.request_id {
-                                    Some(request_id) => request_id,
-                                    // use the item id as the request id if it was not persisted
-                                    None => item_id.to_string(),
-                                };
-
                                 // are we almost expired
                                 let almost_expired = self
                                     .last_matching_time_limited_v2_credential(&item.id)
@@ -155,6 +148,14 @@ where
                                 match item_creds.state {
                                     CredentialState::GeneratedCredentials
                                     | CredentialState::SubmittedCredentials => {
+                                        // overwrite our request id if creds are already present
+                                        // that we need to resubmit
+                                        request_id = match item_creds.request_id {
+                                            Some(request_id) => request_id,
+                                            // use the item id as the request id if it was not persisted
+                                            None => item_id.to_string(),
+                                        };
+
                                         // we have generated, or performed submission, reuse the
                                         // creds we created for signing.
                                         creds
@@ -209,6 +210,22 @@ where
 
                                 match resp.status() {
                                     http::StatusCode::OK => Ok(()),
+                                    http::StatusCode::CONFLICT => {
+                                        // On conflict we need to regenerate our request id since
+                                        // this indicates a different set of credentials were
+                                        // already submitted for the existing id
+                                        // NOTE: this should only happen in one of two cases:
+                                        // 1. we upgraded from a browser version that did not
+                                        //    persist request ids and there are multiple devices
+                                        // 2. we accidentally re-used a request id due to
+                                        //    https://github.com/brave/brave-browser/issues/35742
+                                        self.client.upsert_time_limited_v2_item_creds_request_id(
+                                            &item.id,
+                                            &Uuid::new_v4().to_string(),
+                                        )
+                                        .await?;
+                                        Err(resp.into())
+                                    },
                                     _ => Err(resp.into()),
                                 }
                             },
