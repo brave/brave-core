@@ -276,9 +276,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
             }
           }
           dispatchGroup.notify(queue: .main) {
-            if !discoveredAssets.isEmpty {
-              self.updateAutoDiscoveredAssets()
-            }
+            self.updateAutoDiscoveredAssets()
           }
         } else {
           self.autoDiscoveredAssets.append(contentsOf: discoveredAssets)
