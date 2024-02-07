@@ -184,16 +184,6 @@ void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
   ExtractMediaFromBackgroundContents();
 }
 
-void PlaylistTabHelper::RequestAsyncExecuteScript(
-    int32_t world_id,
-    const std::u16string& script,
-    base::OnceCallback<void(base::Value)> cb) {
-  GetRemote(web_contents()->GetPrimaryMainFrame())
-      ->RequestAsyncExecuteScript(
-          world_id, script, blink::mojom::UserActivationOption::kActivate,
-          blink::mojom::PromiseResultOption::kAwait, std::move(cb));
-}
-
 void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
@@ -519,19 +509,6 @@ void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
     Observe(nullptr);
     ResetData();
   }
-}
-
-mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
-PlaylistTabHelper::GetRemote(content::RenderFrameHost* rfh) {
-  if (rfh != script_injector_rfh_ || !script_injector_remote_.is_bound()) {
-    script_injector_rfh_ = rfh;
-    if (script_injector_remote_.is_bound()) {
-      script_injector_remote_.reset();
-    }
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &script_injector_remote_);
-  }
-  return script_injector_remote_;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);

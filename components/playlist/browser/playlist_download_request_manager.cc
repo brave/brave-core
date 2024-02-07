@@ -206,11 +206,12 @@ PlaylistDownloadRequestManager::GetPlaylistItems(
 
   return items;
 
+// TODO(sszaloki):
 #if BUILDFLAG(IS_ANDROID)
-  content::RenderFrameHost::AllowInjectingJavaScript();
-  PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-      content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
-      base::UTF8ToUTF16(media_detector_script), std::move(callback));
+  // content::RenderFrameHost::AllowInjectingJavaScript();
+  // PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
+  //     content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
+  //     base::UTF8ToUTF16(media_detector_script), std::move(callback));
 #else
   // if (g_run_script_on_main_world) {
   //   PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
