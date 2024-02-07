@@ -188,8 +188,8 @@
 
 - (void)sendFeedback:(NSString*)category
             feedback:(NSString*)feedback
-            ratingId:(NSString*)ratingId,
-            sendPageUrl:(bool)sendPageUrl,
+            ratingId:(NSString*)ratingId
+            sendPageUrl:(bool)sendPageUrl
           completion:(void (^)(bool))completion {
   driver_->SendFeedback(
       base::SysNSStringToUTF8(category), base::SysNSStringToUTF8(feedback),
