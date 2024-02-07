@@ -13,7 +13,6 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/playlist_action_dialogs.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
-#include "brave/browser/ui/views/playlist/selectable_list_view.h"
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
@@ -152,40 +151,6 @@ class Row : public views::LabelButton {
 
 BEGIN_METADATA(Row)
 END_METADATA
-
-////////////////////////////////////////////////////////////////////////////////
-// AddBubble
-//  * Shows when users try adding items found from the current contents.
-//  * Shows a list of found items and users can select which one to add.
-class AddBubble : public PlaylistActionBubbleView {
- public:
-  METADATA_HEADER(AddBubble);
-
-  static constexpr int kWidth = 288;
-
-  AddBubble(Browser* browser,
-            PlaylistActionIconView* anchor,
-            playlist::PlaylistTabHelper* playlist_tab_helper);
-  AddBubble(Browser* browser,
-            PlaylistActionIconView* anchor,
-            playlist::PlaylistTabHelper* playlist_tab_helper,
-            const std::vector<playlist::mojom::PlaylistItemPtr>& items);
-
- private:
-  void OnMediaExtracted(bool result);
-  void InitListView();
-
-  void AddSelected();
-  void OnSelectionChanged();
-
-  raw_ptr<views::ScrollView> scroll_view_ = nullptr;
-  raw_ptr<SelectableItemsView> list_view_ = nullptr;
-  raw_ptr<LoadingSpinner> loading_spinner_ = nullptr;
-
-  std::unique_ptr<ThumbnailProvider> thumbnail_provider_;
-
-  base::WeakPtrFactory<AddBubble> weak_ptr_factory_{this};
-};
 
 ////////////////////////////////////////////////////////////////////////////////
 // ConfirmBubble Impl
@@ -368,9 +333,9 @@ void ConfirmBubble::MoreMediaInContents() {
           return;
         }
 
-        ::ShowBubble(
-            std::make_unique<AddBubble>(browser, anchor.get(), tab_helper.get(),
-                                        tab_helper->GetUnsavedItems()));
+        ::ShowBubble(std::make_unique<PlaylistActionAddBubble>(
+            browser, anchor.get(), tab_helper.get(),
+            tab_helper->GetUnsavedItems()));
       },
       playlist_tab_helper_->GetWeakPtr(),
       // |Browser| outlives TabHelper so it's okay to bind raw ptr here
@@ -390,20 +355,24 @@ void ConfirmBubble::MoreMediaInContents() {
 BEGIN_METADATA(ConfirmBubble, PlaylistActionBubbleView)
 END_METADATA
 
+}  // namespace
+
 ////////////////////////////////////////////////////////////////////////////////
 // AddBubble Impl
-AddBubble::AddBubble(Browser* browser,
-                     PlaylistActionIconView* anchor,
-                     playlist::PlaylistTabHelper* playlist_tab_helper)
-    : AddBubble(browser,
-                anchor,
-                playlist_tab_helper,
-                playlist_tab_helper->found_items()) {}
+PlaylistActionAddBubble::PlaylistActionAddBubble(
+    Browser* browser,
+    PlaylistActionIconView* anchor,
+    playlist::PlaylistTabHelper* playlist_tab_helper)
+    : PlaylistActionAddBubble(browser,
+                              anchor,
+                              playlist_tab_helper,
+                              playlist_tab_helper->found_items()) {}
 
-AddBubble::AddBubble(Browser* browser,
-                     PlaylistActionIconView* anchor,
-                     playlist::PlaylistTabHelper* playlist_tab_helper,
-                     const std::vector<playlist::mojom::PlaylistItemPtr>& items)
+PlaylistActionAddBubble::PlaylistActionAddBubble(
+    Browser* browser,
+    PlaylistActionIconView* anchor,
+    playlist::PlaylistTabHelper* playlist_tab_helper,
+    const std::vector<playlist::mojom::PlaylistItemPtr>& items)
     : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper),
       thumbnail_provider_(
           std::make_unique<ThumbnailProvider>(playlist_tab_helper)) {
@@ -440,11 +409,14 @@ AddBubble::AddBubble(Browser* browser,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
 
-  playlist_tab_helper_->ExtractMediaFromBackgroundWebContents(base::BindOnce(
-      &AddBubble::OnMediaExtracted, weak_ptr_factory_.GetWeakPtr()));
+  playlist_tab_helper_->ExtractMediaFromBackgroundWebContents(
+      base::BindOnce(&PlaylistActionAddBubble::OnMediaExtracted,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AddBubble::OnMediaExtracted(bool result) {
+PlaylistActionAddBubble::~PlaylistActionAddBubble() = default;
+
+void PlaylistActionAddBubble::OnMediaExtracted(bool result) {
   if (result) {
     InitListView();
   } else {
@@ -457,22 +429,23 @@ void AddBubble::OnMediaExtracted(bool result) {
   }
 }
 
-void AddBubble::InitListView() {
+void PlaylistActionAddBubble::InitListView() {
   CHECK(scroll_view_);
   CHECK(!list_view_);
   loading_spinner_->SetVisible(false);
   scroll_view_->SetVisible(true);
   list_view_ = scroll_view_->SetContents(std::make_unique<SelectableItemsView>(
       thumbnail_provider_.get(), playlist_tab_helper_->found_items(),
-      base::BindRepeating(&AddBubble::OnSelectionChanged,
+      base::BindRepeating(&PlaylistActionAddBubble::OnSelectionChanged,
                           base::Unretained(this))));
   list_view_->SetSelected(playlist_tab_helper_->found_items());
 
   // This callback is called by itself, it's okay to pass Unretained(this).
-  SetAcceptCallback(base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
-                                   base::Unretained(this))
-                        .Then(base::BindOnce(&AddBubble::AddSelected,
-                                             base::Unretained(this))));
+  SetAcceptCallback(
+      base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
+                     base::Unretained(this))
+          .Then(base::BindOnce(&PlaylistActionAddBubble::AddSelected,
+                               base::Unretained(this))));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, true);
 
   scroll_view_->SetPreferredSize(
@@ -482,7 +455,7 @@ void AddBubble::InitListView() {
   }
 }
 
-void AddBubble::AddSelected() {
+void PlaylistActionAddBubble::AddSelected() {
   CHECK(playlist_tab_helper_);
 
   if (playlist_tab_helper_->is_adding_items()) {
@@ -501,17 +474,15 @@ void AddBubble::AddSelected() {
                      playlist_tab_helper_->GetWeakPtr(), std::move(items)));
 }
 
-void AddBubble::OnSelectionChanged() {
+void PlaylistActionAddBubble::OnSelectionChanged() {
   if (bool has_selected = list_view_->HasSelected();
       has_selected != IsDialogButtonEnabled(ui::DIALOG_BUTTON_OK)) {
     SetButtonEnabled(ui::DIALOG_BUTTON_OK, has_selected);
   }
 }
 
-BEGIN_METADATA(AddBubble, PlaylistActionBubbleView)
+BEGIN_METADATA(PlaylistActionAddBubble, PlaylistActionBubbleView)
 END_METADATA
-
-}  // namespace
 
 // static
 void PlaylistActionBubbleView::ShowBubble(
@@ -522,8 +493,8 @@ void PlaylistActionBubbleView::ShowBubble(
     ::ShowBubble(
         std::make_unique<ConfirmBubble>(browser, anchor, playlist_tab_helper));
   } else if (playlist_tab_helper->found_items().size()) {
-    ::ShowBubble(
-        std::make_unique<AddBubble>(browser, anchor, playlist_tab_helper));
+    ::ShowBubble(std::make_unique<PlaylistActionAddBubble>(
+        browser, anchor, playlist_tab_helper));
   } else {
     NOTREACHED() << "Caller should filter this case";
   }

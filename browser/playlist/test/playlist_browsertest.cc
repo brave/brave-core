@@ -6,6 +6,7 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 
 #include <memory>
+#include "gtest/gtest.h"
 
 #include "base/path_service.h"
 #include "base/ranges/algorithm.h"
@@ -31,6 +32,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -173,6 +175,13 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return playlist_action_icon_view->GetVisible(); }));
 
+  // The test page is simple video url. So we expect it to be found without
+  // necessity of extracting media from background web contents.
+  auto* tab_helper =
+      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  ASSERT_FALSE(tab_helper->found_items().empty());
+  ASSERT_FALSE(tab_helper->ShouldExtractMediaFromBackgroundWebContents());
+
   // Show up bubble and add all found items.
   location_bar_view->ShowPlaylistBubble();
   PlaylistActionBubbleView* action_bubble = nullptr;
@@ -180,6 +189,19 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
     action_bubble = PlaylistActionBubbleView::GetBubble();
     return !!action_bubble;
   }));
+
+  auto* add_bubble = views::AsViewClass<PlaylistActionAddBubble>(action_bubble);
+  ASSERT_TRUE(add_bubble);
+  // As we don't have to extract media from background web contents, spinner
+  // shouldn't appear and items should be visible right away.
+  EXPECT_FALSE(add_bubble->loading_spinner_->GetVisible());
+  EXPECT_TRUE(add_bubble->scroll_view_->GetVisible());
+  auto selected_items = add_bubble->list_view_->GetSelected();
+  EXPECT_EQ(selected_items.size(), tab_helper->found_items().size());
+  EXPECT_EQ(selected_items.size(), 1u);
+  EXPECT_EQ(selected_items.front()->media_source,
+            tab_helper->found_items().front()->media_source);
+
   action_bubble->Accept();
 
   // Checks if the added items are shown on playlist web ui.
