@@ -66,13 +66,10 @@ std::optional<std::string> PostOAuthUphold::Url() const {
 std::optional<std::vector<std::string>> PostOAuthUphold::Headers(
     const std::string&) const {
   auto& config = engine_->Get<EnvironmentConfig>();
-
-  std::string user;
-  base::Base64Encode(base::StrCat({config.uphold_client_id(), ":",
-                                   config.uphold_client_secret()}),
-                     &user);
-
-  return std::vector<std::string>{"Authorization: Basic " + user};
+  return std::vector<std::string>{
+      "Authorization: Basic " +
+      base::Base64Encode(base::StrCat(
+          {config.uphold_client_id(), ":", config.uphold_client_secret()}))};
 }
 
 std::optional<std::string> PostOAuthUphold::Content() const {
