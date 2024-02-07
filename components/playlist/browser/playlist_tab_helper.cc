@@ -188,11 +188,7 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
 
-  if (!navigation_handle->IsInPrimaryMainFrame() ||
-      navigation_handle
-          ->IsSameDocument() ||  // although ReadyToCommitNavigation is not
-                                 // invoked for same-document navigations
-      navigation_handle->IsErrorPage()) {
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
     return;
   }
 

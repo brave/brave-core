@@ -150,7 +150,9 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
 }
 
 void PlaylistRenderFrameObserver::OnMediaDetected(gin::Arguments* args) {
-  if (args->Length() != 1) {
+  DVLOG(2) << __FUNCTION__;
+
+  if (!args || args->Length() != 1) {
     return;
   }
 
@@ -166,7 +168,7 @@ void PlaylistRenderFrameObserver::OnMediaDetected(gin::Arguments* args) {
     return;
   }
 
-  DVLOG(2) << __FUNCTION__ << '\n' << *media;
+  DVLOG(2) << "Media detected:\n" << *media;
 
   media_handler_->OnMediaDetected(std::move(*media));
 }
