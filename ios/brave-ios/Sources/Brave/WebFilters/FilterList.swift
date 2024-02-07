@@ -8,7 +8,7 @@ import Foundation
 
 struct FilterList: Identifiable {
   /// This is the uuid of the default filter list. This is a special filter list which we use slim list content blockers for
-  public static let defaultFilterListUUID = "default"
+  public static let defaultComponentUUID = "default"
   /// The component ID of the "Fanboy's Mobile Notifications List"
   /// This is a special filter list that is enabled by default
   public static let mobileAnnoyancesComponentID = "bfpgedeaaibpoidldhjcknekahbikncb"

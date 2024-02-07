@@ -81,7 +81,6 @@ final class CachedAdBlockEngineTests: XCTestCase {
       engine: engine!,
       filterListInfo: filterListInfo,
       resourcesInfo: resourcesInfo,
-      serialQueue: DispatchQueue(label: "test"),
       isAlwaysAggressive: false
     )
 

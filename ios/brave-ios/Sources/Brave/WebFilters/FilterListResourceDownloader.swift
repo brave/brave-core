@@ -162,35 +162,6 @@ public actor FilterListResourceDownloader {
     return resourcesInfo
   }
 
-  /// Compile the engine from the given `AdblockService` `shieldsInstallPath` `URL`.
-  private func compileEngine(
-    filterListFolderURL folderURL: URL,
-    resourcesInfo: CachedAdBlockEngine.ResourcesInfo,
-    engineSource: CachedAdBlockEngine.Source,
-    isAlwaysAggressive: Bool,
-    compileContentBlockers: Bool
-  ) async {
-    let localFileURL = folderURL.appendingPathComponent("list.txt", conformingTo: .text)
-
-    let version = folderURL.lastPathComponent
-    let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: engineSource,
-      localFileURL: localFileURL,
-      version: version,
-      fileType: .text
-    )
-    let lazyInfo = AdBlockStats.LazyFilterListInfo(
-      filterListInfo: filterListInfo,
-      isAlwaysAggressive: isAlwaysAggressive
-    )
-
-    await AdBlockStats.shared.compile(
-      lazyInfo: lazyInfo,
-      resourcesInfo: resourcesInfo,
-      compileContentBlockers: compileContentBlockers
-    )
-  }
-
   /// Load general filter lists (shields) from the given `AdblockService` `shieldsInstallPath` `URL`.
   private func compileFilterListEngineIfNeeded(
     source: CachedAdBlockEngine.Source,

@@ -60,7 +60,6 @@ public class CachedAdBlockEngine {
   private var cachedFrameScriptTypes = FifoDict<URL, Set<UserScriptType>>()
 
   private let engine: AdblockEngine
-  private let serialQueue: DispatchQueue
 
   let isAlwaysAggressive: Bool
   let filterListInfo: FilterListInfo
@@ -70,60 +69,12 @@ public class CachedAdBlockEngine {
     engine: AdblockEngine,
     filterListInfo: FilterListInfo,
     resourcesInfo: ResourcesInfo,
-    serialQueue: DispatchQueue,
     isAlwaysAggressive: Bool
   ) {
     self.engine = engine
     self.filterListInfo = filterListInfo
     self.resourcesInfo = resourcesInfo
-    self.serialQueue = serialQueue
     self.isAlwaysAggressive = isAlwaysAggressive
-  }
-
-  /// Checks the general and regional engines to see if the request should be blocked.
-  func shouldBlock(
-    requestURL: URL,
-    sourceURL: URL,
-    resourceType: AdblockEngine.ResourceType,
-    isAggressiveMode: Bool
-  ) async -> Bool {
-    return await withCheckedContinuation { continuation in
-      serialQueue.async { [weak self] in
-        let shouldBlock =
-          self?.shouldBlock(
-            requestURL: requestURL,
-            sourceURL: sourceURL,
-            resourceType: resourceType,
-            isAggressiveMode: isAggressiveMode
-          ) == true
-
-        continuation.resume(returning: shouldBlock)
-      }
-    }
-  }
-
-  /// Returns all the models for this frame URL
-  /// The results are cached per url, so you may call this method as many times for the same url without any performance implications.
-  func cosmeticFilterModel(forFrameURL frameURL: URL) async throws -> CosmeticFilterModel? {
-    return try await withCheckedThrowingContinuation {
-      (continuation: CheckedContinuation<CosmeticFilterModel?, Error>) in
-      serialQueue.async { [weak self] in
-        guard let self = self else {
-          continuation.resume(returning: nil)
-          return
-        }
-
-        do {
-          if let model = try self.cachedCosmeticFilterModel(forFrameURL: frameURL) {
-            continuation.resume(returning: model)
-          } else {
-            continuation.resume(returning: nil)
-          }
-        } catch {
-          continuation.resume(throwing: error)
-        }
-      }
-    }
   }
 
   /// Return the selectors that need to be hidden given the frameURL, ids and classes
@@ -131,36 +82,22 @@ public class CachedAdBlockEngine {
     frameURL: URL,
     ids: [String],
     classes: [String]
-  ) async throws -> Set<String>? {
-    return try await withCheckedThrowingContinuation {
-      (continuation: CheckedContinuation<Set<String>?, Error>) in
-      serialQueue.async { [weak self] in
-        guard let self = self else {
-          continuation.resume(returning: nil)
-          return
-        }
+  ) throws -> Set<String>? {
+    let model = try self.cosmeticFilterModel(forFrameURL: frameURL)
 
-        do {
-          let model = try self.cachedCosmeticFilterModel(forFrameURL: frameURL)
+    let selectors = try self.engine.stylesheetForCosmeticRulesIncluding(
+      classes: classes,
+      ids: ids,
+      exceptions: model?.exceptions ?? []
+    )
 
-          let selectors = try self.engine.stylesheetForCosmeticRulesIncluding(
-            classes: classes,
-            ids: ids,
-            exceptions: model?.exceptions ?? []
-          )
-
-          continuation.resume(returning: Set(selectors))
-        } catch {
-          continuation.resume(throwing: error)
-        }
-      }
-    }
+    return Set(selectors)
   }
 
   /// Return a cosmetic filter modelf or the given frameURL
   ///
   /// - Warning: The caller is responsible for syncing on the `serialQueue`
-  private func cachedCosmeticFilterModel(forFrameURL frameURL: URL) throws -> CosmeticFilterModel? {
+  func cosmeticFilterModel(forFrameURL frameURL: URL) throws -> CosmeticFilterModel? {
     if let result = self.cachedCosmeticFilterModels.getElement(frameURL) {
       return result
     }
@@ -171,7 +108,7 @@ public class CachedAdBlockEngine {
   }
 
   /// Checks the general and regional engines to see if the request should be blocked
-  private func shouldBlock(
+  func shouldBlock(
     requestURL: URL,
     sourceURL: URL,
     resourceType: AdblockEngine.ResourceType,
@@ -202,7 +139,7 @@ public class CachedAdBlockEngine {
     isMainFrame: Bool,
     domain: Domain,
     index: Int
-  ) async throws -> Set<UserScriptType> {
+  ) throws -> Set<UserScriptType> {
     if let userScriptTypes = cachedFrameScriptTypes.getElement(frameURL) {
       return userScriptTypes
     }
@@ -210,8 +147,7 @@ public class CachedAdBlockEngine {
     // Add the selectors poller scripts for this frame
     var userScriptTypes: Set<UserScriptType> = []
 
-    if let source = try await cosmeticFilterModel(forFrameURL: frameURL)?.injectedScript,
-      !source.isEmpty
+    if let source = try cosmeticFilterModel(forFrameURL: frameURL)?.injectedScript, !source.isEmpty
     {
       let configuration = UserScriptType.EngineScriptConfiguration(
         frameURL: frameURL,
@@ -252,17 +188,16 @@ public class CachedAdBlockEngine {
       id: signpostID,
       "\(filterListInfo.debugDescription)"
     )
-    
+
     do {
       let engine = try makeEngine(from: filterListInfo)
       try engine.useResources(fromFileURL: resourcesInfo.localFileURL)
-      let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
       Self.signpost.endInterval("compileEngine", state)
+
       return CachedAdBlockEngine(
         engine: engine,
         filterListInfo: filterListInfo,
         resourcesInfo: resourcesInfo,
-        serialQueue: serialQueue,
         isAlwaysAggressive: isAlwaysAggressive
       )
     } catch {

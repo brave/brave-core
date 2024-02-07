@@ -217,7 +217,7 @@ public actor AdBlockStats {
   ) async -> Bool {
     let sources = await self.enabledSources
     return await cachedEngines(for: sources).asyncConcurrentMap({ cachedEngine in
-      return await cachedEngine.shouldBlock(
+      return cachedEngine.shouldBlock(
         requestURL: requestURL,
         sourceURL: sourceURL,
         resourceType: resourceType,
@@ -276,7 +276,7 @@ public actor AdBlockStats {
     return await cachedEngines(for: domain).asyncConcurrentCompactMap {
       cachedEngine -> CosmeticFilterModelTuple? in
       do {
-        guard let model = try await cachedEngine.cosmeticFilterModel(forFrameURL: frameURL) else {
+        guard let model = try cachedEngine.cosmeticFilterModel(forFrameURL: frameURL) else {
           return nil
         }
         return (cachedEngine.isAlwaysAggressive, model)
@@ -331,7 +331,7 @@ extension AdBlockStats.LazyFilterListInfo {
   var blocklistType: ContentBlockerManager.BlocklistType? {
     switch filterListInfo.source {
     case .filterList(let componentId, let uuid):
-      guard uuid != FilterList.defaultFilterListUUID else {
+      guard uuid != FilterList.defaultComponentUUID else {
         // For now we don't compile this into content blockers because we use the one coming from slim list
         // We might change this in the future as it ends up with 95k items whereas the limit is 150k.
         // So there is really no reason to use slim list except perhaps for performance which we need to test out.
