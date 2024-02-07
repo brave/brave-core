@@ -33,6 +33,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
@@ -76,7 +77,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   }
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY &&
-      ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::IsAIChatEnabled(profile_->GetPrefs()) &&
       ai_chat::features::IsAIChatHistoryEnabled()) {
     ClearAiChatHistory(delete_begin, delete_end);
   }

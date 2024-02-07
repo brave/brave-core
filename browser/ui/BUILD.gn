@@ -623,6 +623,7 @@ source_set("ui") {
     "//components/strings:components_strings",
     "//components/tab_groups",
     "//components/update_client",
+    "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
     "//mojo/public/cpp/bindings",
