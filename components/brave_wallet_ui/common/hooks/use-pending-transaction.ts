@@ -37,6 +37,7 @@ import useGetTokenInfo from './use-get-token-info'
 import { useAccountOrb, useAddressOrb } from './use-orb'
 import { useSafeUISelector } from './use-safe-selector'
 import {
+  useApproveTransactionMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetDefaultFiatCurrencyQuery,
@@ -59,7 +60,7 @@ import {
 } from '../slices/constants'
 
 // Constants
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, emptyProviderErrorCodeUnion } from '../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType
@@ -99,6 +100,7 @@ export const usePendingTransactions = () => {
 
   // mutations
   const [rejectTransactions] = useRejectTransactionsMutation()
+  const [approveTransaction] = useApproveTransactionMutation();
 
   // queries
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
@@ -455,15 +457,12 @@ export const usePendingTransactions = () => {
     }
 
     try {
-      const result = await dispatch(
-        walletApi.endpoints.approveTransaction.initiate({
+      const result = await approveTransaction({
           chainId: transactionInfo.chainId,
           id: transactionInfo.id,
           coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
-          txType: transactionInfo.txType
-        })
-      ).unwrap()
-      if (!result.status) {
+          txType: transactionInfo.txType}).unwrap()
+      if (!result.success) {
         dispatch(
           UIActions.setTransactionProviderError({
             providerError: {
@@ -477,7 +476,13 @@ export const usePendingTransactions = () => {
     } catch (error) {
       dispatch(
         UIActions.setTransactionProviderError({
-          providerError: error.toString(),
+          providerError: {
+            code: {
+              ...emptyProviderErrorCodeUnion,
+              providerError: BraveWallet.ProviderError.kUnknown
+            },
+            message: error.toString()
+          },
           transactionId: transactionInfo.id
         })
       )

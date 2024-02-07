@@ -171,19 +171,19 @@ export function TransactionStatus(props: Props) {
   if (tx.txStatus === BraveWallet.TransactionStatus.Error) {
     const providerError = transactionProviderErrorRegistry[tx.id]
     const errorCode =
-        providerError.code.providerError ??
-        providerError.code.zcashProviderError ??
-        providerError.code.bitcoinProviderError ??
-        providerError.code.solanaProviderError ??
-        providerError.code.filecoinProviderError
+      providerError?.code.providerError ??
+      providerError?.code.zcashProviderError ??
+      providerError?.code.bitcoinProviderError ??
+      providerError?.code.solanaProviderError ??
+      providerError?.code.filecoinProviderError ??
+      BraveWallet.ProviderError.kUnknown
 
     const errorDetailContent =
-      errorCode !== BraveWallet.ProviderError.kSuccess ?
-      `${errorCode}: ${providerError.message}` : undefined
+      providerError && `${errorCode}: ${providerError.message}`
     const customDescription =
-      providerError?.code.zcashProviderError ===
-          BraveWallet.ZCashProviderError.kMultipleTransactionsNotSupported ?
-          providerError.message : undefined
+      errorCode ===
+        BraveWallet.ZCashProviderError.kMultipleTransactionsNotSupported ?
+        providerError.message : undefined
 
     return (
       <TransactionFailed

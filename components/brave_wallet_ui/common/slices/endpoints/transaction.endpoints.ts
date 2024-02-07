@@ -779,7 +779,7 @@ export const transactionEndpoints = ({
 
     approveTransaction: mutation<
       {
-        status: boolean
+        success: boolean
         errorUnion: BraveWallet.ProviderErrorUnion
         errorMessage: string
       },
@@ -807,7 +807,13 @@ export const transactionEndpoints = ({
             braveWalletP3A.reportTransactionSent(txInfo.coinType, true)
           }
 
-          return { data: result }
+          return {
+            data: {
+              success: result.status,
+              errorMessage: result.errorMessage,
+              errorUnion: result.errorUnion
+            }
+          }
         } catch (error) {
           return handleEndpointError(
             endpoint,

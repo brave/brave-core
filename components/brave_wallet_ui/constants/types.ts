@@ -719,6 +719,14 @@ export interface TransactionProviderError {
   message: string
 }
 
+export const emptyProviderErrorCodeUnion: BraveWallet.ProviderErrorUnion = {
+  providerError: undefined,
+  zcashProviderError: undefined,
+  bitcoinProviderError: undefined,
+  filecoinProviderError: undefined,
+  solanaProviderError: undefined
+}
+
 export interface TransactionProviderErrorRegistry {
   [transactionId: string]: TransactionProviderError
 }
