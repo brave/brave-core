@@ -440,6 +440,9 @@
     <message name="IDS_AUTOFILL_CARD_UNMASK_CVC_IMAGE_ANNOUNCEMENT_AMEX" desc="Announcement for the CVC image. It describes where to find the CVC on an American Express credit card.">
       Your CVC is on the front of your card. It’s the 4-digit code at the top right above your card number.
     </message>
+    <message name="IDS_AUTOFILL_IBAN_UNMASK_PROGRESS_DIALOG_TITLE" desc="Title for the progress dialog that occurs during server IBAN unmasking flows. The progress dialog is shown after the user selects a server IBAN, and will be dismissed once we receive a server response that indicates that we can continue to the next step. The main purpose of the dialog is to inform the user that something is happening in the background, but that task is not done yet.">
+      Filling IBAN
+    </message>
   </if>
   <if expr="is_ios">
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_TITLE" desc="Title for the credit card unmasking dialog.">
@@ -518,7 +521,10 @@
     Contacting your bank...
   </message>
   <message name="IDS_AUTOFILL_MASKED_SERVER_CARD_RISK_BASED_UNMASK_PROGRESS_BAR_MESSAGE" desc="Loading message displayed after selecting/tapping a credit card entry in Autofill, before possibly showing the user any other verification steps.">
-    Securely checking your payment details
+    Securely verifying your payment details...
+  </message>
+  <message name="IDS_AUTOFILL_IBAN_UNMASK_PROGRESS_BAR_MESSAGE" desc="The progress dialog is shown after the user selects a server IBAN, and will be dismissed once we receive a server response that indicates that we can continue to the next step. The main purpose of the dialog is to inform the user that something is happening in the background, but that task is not done yet.">
+    Loading...
   </message>
   <message name="IDS_AUTOFILL_CARD_UNMASK_CANCEL_BUTTON_LABEL" desc="Button that allows the user to cancel the card unmasking process.">
     Cancel
@@ -528,6 +534,12 @@
   </message>
   <message name="IDS_AUTOFILL_FIDO_AUTHENTICATION_PROMPT_TITLE" desc="Title for FIDO authentication progress dialog">
       Verifying...
+  </message>
+  <message name="IDS_AUTOFILL_IBAN_UNMASK_ERROR_DIALOG_TITLE" desc="Title displayed when there is a server failure during the process of unmasking a server IBAN.">
+    IBAN not filled in
+  </message>
+  <message name="IDS_AUTOFILL_IBAN_UNMASK_ERROR_DIALOG_MESSAGE" desc="Message displayed when there is a server failure during the process of unmasking a server IBAN.">
+    Something went wrong. Try again.
   </message>
 
   <!-- DeviceAuthentication titles-->
@@ -1072,9 +1084,16 @@
       Delete saved security codes
     </message>
   </if>
-  <message name="IDS_AUTOFILL_CVC_SUGGESTION_MAIN_TEXT" desc="The main text shown in the credit card suggestion list when the CVC field is focused. It will be the main text which is on the first line of suggestion. If the user hovers over the suggestion, the credit card will be previewed. If the user clicks on the suggestion, credit card will be filled.">
-    CVC
-  </message>
+  <if expr="not is_android">
+    <message name="IDS_AUTOFILL_CVC_SUGGESTION_MAIN_TEXT" desc="The main text shown in the credit card suggestion list when the CVC field is focused. It will be the main text which is on the first line of suggestion. If the user hovers over the suggestion, the credit card will be previewed. If the user clicks on the suggestion, credit card will be filled.">
+      CVC
+    </message>
+  </if>
+  <if expr="is_android">
+    <message name="IDS_AUTOFILL_CVC_SUGGESTION_MAIN_TEXT" desc="The main text shown in the credit card suggestion list when the CVC field is focused. It will be the main text which is on the first line of suggestion. If the user clicks on the suggestion, credit card will be filled.">
+      CVC for <ph name="CARD_NAME">$1<ex>Visa</ex></ph>
+    </message>
+  </if>
   <message name="IDS_AUTOFILL_SETTINGS_PAGE_CVC_SAVED_LABEL" desc="Label for a credit card on the payment settings page when the user has stored the cvc." formatter_data="android_java">
     CVC saved
   </message>

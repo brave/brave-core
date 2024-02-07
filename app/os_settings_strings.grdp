@@ -77,7 +77,7 @@
   <message name="IDS_OS_SETTINGS_ABOUT_DEVELOPER_MODE" desc="The title label for developer mode.">
     Developer Mode
   </message>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
+  <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
     Restart
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH_AND_POWERWASH" desc="The label for the button that relaunches and powerwashes the browser once update is complete">
@@ -593,6 +593,27 @@
   <message name="IDS_SETTINGS_LANGUAGES_LANGUAGE_PACKS_NOTICE" desc="Privacy notice on the language and input settings page that informs users that language files are visible to all users on the device. See go/language-pack-ux slide 4 for more details.">
     Choose which languages to install on this device. Language files are shared among users to save disk space. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_APP_LANGUAGES_TITLE" desc="The label for the section where users can customize display language for supported apps.">
+    App languages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_APP_LANGUAGES_DESCRIPTION" desc="The description for section under app languages title, where clicking this will bring user to app languages settings subpage.">
+    Customize display language for supported apps
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_APP_LANGUAGES_SUPPORTED_APPS_DESCRIPTION" desc="The description inside app languages subpage informing that only apps supporting per-app language selection are shown in this subpage.">
+    Only apps that support language selection are shown here
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_APP_LANGUAGES_NO_APPS_SUPPORTED_DESCRIPTION" desc="The description for section under app languages title, when there's no apps supporting app language selection.">
+    No apps support app language selection
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_APP_LANGUAGES_EDIT_SELECTION_LABEL" desc="The label inside app languages subpage when clicking 'three-dots more info' (kebab) button to edit app language.">
+    Edit language selection
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_APP_LANGUAGES_RESET_SELECTION_LABEL" desc="The label inside app languages subpage when clicking 'three-dots more info' (kebab) button to reset app language back to device language.">
+    Reset to device language
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_APP_LANGUAGES_CHANGE_LANGUAGE_BUTTON_DESCRIPTION" desc="The description read by screenreader for the button where users can change the app language, either to another one, or reset to device language.">
+    Change <ph name="APP">$1<ex>Brave TV</ex></ph> language. Current language is <ph name="LANGUAGE">$2<ex>English (United States)</ex></ph>.
+  </message>
 
   <!-- Suggestions Section -->
   <message name="IDS_SETTINGS_SUGGESTIONS_TITLE" desc="The label for the suggestions section, which contains features to help users type faster or more expressively such as suggesting personal information or suggesting emoji to use.">
@@ -944,11 +965,11 @@
   <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB" desc="Title for the link to open personalization hub.">
     Set your wallpaper &amp; style
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_PERSONALIZATION_HUB" desc="Title for the link to open personalization hub.">
-    Personalize wallpaper, screen saver, accent colors, and more
-  </message>
   <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB_SUBTITLE" desc="Description for the link to open personalization hub.">
     Personalize wallpaper, screen saver, accent colors, and more
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_PERSONALIZATION_HUB_SUBTITLE" desc="Description for the link to open personalization hub.">
+    Personalize wallpaper, screen saver, dark theme, and more
   </message>
 
   <!-- Search and Assistant section. -->
@@ -1032,7 +1053,7 @@
     Can’t clean up storage until offline storage size is known.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_SIGNED_IN_AS" desc="Label indicating account signed in with Google Drive in Settings: Files: Google Drive.">
-    Signed in as <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
+    Signed in as <ph name="SPAN_START">&lt;span id="driveAccountEmail"&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="SPAN_END">&lt;/span&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_FILE_SYNC_TITLE" desc="Title for the everything offline feature in Settings: Files: Google Drive.">
     File sync
@@ -1110,7 +1131,7 @@
     File sync on
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_RECONNECT_AS" desc="Label indicating account that Google Drive would sign in as in Settings: Files: Google Drive.">
-    Connect <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph> to access your Drive files in the Files app
+    Connect <ph name="SPAN_START">&lt;span id="driveAccountEmail"&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="SPAN_END">&lt;/span&gt;</ph> to access your Drive files in the Files app
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_CONNECT" desc="Action to connect Google Drive in Settings: Files: Google Drive.">
     Connect
@@ -1225,14 +1246,23 @@
   <message name="IDS_SETTINGS_LARGE_MOUSE_CURSOR_LABEL" desc="Label for checkbox which enables showing a larger mouse cursor than normal.">
     Show large mouse cursor
   </message>
-  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACE_TRACKING_LABEL" desc="Label for checkbox which enables controlling the mouse cursor and keyboard with face movements.">
-    Face tracking
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_LABEL" desc="Label for checkbox which enables controlling the mouse cursor and keyboard with face movements." translateable="false">
+    Face control
   </message>
-  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACE_TRACKING_DESCRIPTION" desc="The description for the checkbox that enables controlling the mouse cursor and keyboard with face movements.">
-    Control your cursor and keyboard with face movements
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_DESCRIPTION" desc="The description for the checkbox that enables controlling the mouse cursor and keyboard with face movements." translateable="false">
+    Use face and gaze movement to control cursor and keyboard
   </message>
-  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACE_TRACKING_SETTINGS" desc="Label for the option to configure the feature that enables controlling the mouse cursor and keyboard with face movements.">
-    Face tracking settings
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_CURSOR_SETTINGS_LABEL" desc="Label for the option to configure the feature that enables controlling the mouse cursor and keyboard with face movements." translateable="false">
+    Cursor control
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_CURSOR_SETTINGS_DESCRIPTION" desc="Label description for the option to configure the feature that enables controlling the mouse cursor and keyboard with face movements." translateable="false">
+    Cursor calibration and movement settings
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_GESTURE_SETTINGS_LABEL" desc="Label for the option to configure facial expressions for Face Gaze." translateable="false">
+    Facial expressions
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_GESTURE_SETTINGS_DESCRIPTION" desc="Label description for the option to configure facial expressions for Face Gaze." translateable="false">
+    Use facial expressions to click and trigger key presses
   </message>
   <message name="IDS_SETTINGS_LARGE_MOUSE_CURSOR_SIZE_LABEL" desc="Label for a slider which changes the size of large mouse cursor.">
     Cursor size
@@ -2809,6 +2839,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_CUSTOMIZE_MOUSE_BUTTONS_TITLE" desc="Title of Customize mouse buttons page">
     Customize mouse buttons
   </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_MOUSE_BUTTONS_NUDGE_HEADER" desc="Header in the customize mouse buttons page nudge above the customize buttons subsection suggesting users to click buttons on their mice.">
+    Add or locate buttons on your mouse
+  </message>
   <message name="IDS_SETTINGS_KEY_COMBINATION_OPTION_LABEL" desc="Label of key combination option in the button remapping action dropdown menu.">
     Key combination
   </message>
@@ -2820,6 +2853,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_DIALOG_DESCRIPTION" desc="Description of dialog that allows the user to input shortcuts that will be used as the action on a button.">
     Press 1-4 modifier keys (ctrl, alt, shift, search, or launcher) and 1 more key. You can also select a single key.
+  </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_DIALOG_CHANGE" desc="Label of change button on dialogs in customize device buttons pages.">
+    Change
   </message>
   <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_DIALOG_CANCEL" desc="Label of cancel button on dialogs in customize device buttons pages.">
     Cancel
@@ -3928,6 +3964,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_OS_SETTINGS_INTERNET_MENU_ITEM_DESCRIPTION_WIFI_AND_MOBILE_DATA" desc="Description for the Internet menu item in the left menu when no networks are connected but mobile data is supported.">
     Wi-Fi, mobile data
   </message>
+  <message name="IDS_OS_SETTINGS_INTERNET_MENU_ITEM_DESCRIPTION_INSTANT_HOTSPOT_AVAILABLE" desc="Description for the Internet menu item in the left menu when no networks are connected but instant hotspot available.">
+    Instant hotspot available
+  </message>
   <message name="IDS_SETTINGS_INTERNET_ADD_CELLULAR" desc="The accessibility label for the add cellular icon at Settings &gt; Internet &gt; Add Cellular label. This text will not be visible, but will be announced when ChromeVox is on and the user navigates to the icon. Clicking this icon will show a dialog that allows the user to activate a physical SIM or set up eSIM.">
     Add Cellular...
   </message>
@@ -4101,9 +4140,6 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET" desc="Name of the settings page which displays internet preferences.">
     Network
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_INTERNET" desc="Name of the settings page which displays internet preferences.">
-    Internet
   </message>
   <message name="IDS_SETTINGS_INTERNET_HOTSPOT" desc="Name of the settings page which displays hotspot preferences.">
     Hotspot
@@ -4678,6 +4714,21 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_DISABLED" desc="Text to tell user multidevice features are turned off">
     Disabled
+  </message>
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_NEARBY_SHARE_DESCRIPTION_VISIBLE_TO_ALL_CONTACTS" desc="Description for the nearby share settings row when nearby share is enabled and selected to be visible to all contacts.">
+    Visible to all contacts
+  </message>
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_NEARBY_SHARE_DESCRIPTION_VISIBLE_TO_SELECTED_CONTACTS" desc="Description for the nearby share settings row when nearby share is enabled and selected to be visible to selected contacts only.">
+    Visible to some contacts
+  </message>
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_NEARBY_SHARE_DESCRIPTION_VISIBLE_TO_YOUR_DEVICES" desc="Description for the nearby share settings row when nearby share is enabled and selected to be visible to your devices.">
+    Visible to your devices
+  </message>
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_NEARBY_SHARE_DESCRIPTION_HIDDEN" desc="Description for the nearby share settings row when nearby share is enabled and selected to be hidden.">
+    Hidden
+  </message>
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_NEARBY_SHARE_DESCRIPTION_OFF" desc="Description for the nearby share settings row when nearby share setting is disabled.">
+    Share files and more with nearby devices. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_MULTIDEVICE_TOGGLE_LABEL" desc="Label for the top level toggle button on the Connected Devices details subpage">
     Connect to your phone
@@ -5312,7 +5363,7 @@ Press an assigned switch or key to remove assignment.
     <ph name="percentage">$1<ex>56</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_LABEL" desc="In Device Settings &gt; Power, label for toggling battery saver mode">
-    Battery Saver
+    Battery saver
   </message>
   <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_SUBTEXT" desc="In Device Settings &gt; Power, description of the behavior of battery saver mode">
     Extends battery life by reducing brightness, limiting background activity and visual effects, delaying notifications, and turning on Brave Energy Saver.
@@ -5459,7 +5510,7 @@ Press an assigned switch or key to remove assignment.
     Sunset to sunrise
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_GEOLOCATION_WARNING_TEXT" translateable="false" desc="In Device Settings &gt; Displays, the warning text that tells users that system geolocation permission is needed for scheduled night light.">
-    Current schedule is set to 6am - 6pm. To automatically update the sunset and sunrise schedule <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>turn on Location access<ph name="END_LINK">&lt;/a&gt;</ph>
+    Current schedule won't be updated. To automatically update the sunset and sunrise schedule <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>turn on Location access<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEXT" desc="In Device Settings &gt; Displays, text describing the Night Light feature.">
     Make it easier to look at your screen or read in dim light
@@ -5690,7 +5741,7 @@ Press an assigned switch or key to remove assignment.
     Use your IP address to determine location (default)
   </message>
   <message name="IDS_SETTINGS_TIME_ZONE_DETECTION_GEOLOCATION_WARNING_TEXT" translateable="false" desc="Displays the text notifying users that the system geolocation permission is required for the Automatic Time Zone Detection. Displaying the current status of Automatic Time Zone Detection with inline link to resolve the breakage.">
-    Time Zone is currently set to (UTC+/-X:XX). Location access is needed to automatically update the time zone. <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>Turn on Location access<ph name="END_LINK">&lt;/a&gt;</ph>
+    Time Zone is currently set to <ph name="TIME_ZONE_ENTRY">$1<ex>(UTC+4:00) Georgia Standard Time (Tbilisi)</ex></ph>. Location access is needed to automatically update the time zone. <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>Turn on Location access<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_TIME_ZONE_DETECTION_MODE_IP_ONLY_DEFAULT" desc="Display name for the automatic time zone detection mode which enables time zone detection sending unprecise location to Brave servers.">
     Use your IP address to determine location
@@ -6103,6 +6154,9 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_STORAGE_ITEM_APPS" desc="In Device Settings &gt; Storage, label for the total size of Android apps and web store apps and extensions.">
     Apps and extensions
   </message>
+  <message name="IDS_OS_SETTINGS_STORAGE_ITEM_APPS" desc="In Device Settings &gt; Storage, label for the total size of Android apps and web store apps and extensions.">
+    Apps
+  </message>
   <message name="IDS_SETTINGS_STORAGE_ITEM_OFFLINE" desc="In Device Settings &gt; Storage, label for the total size of pinned files in Google Drive.">
     Offline files
   </message>
@@ -6284,10 +6338,19 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
     Camera access
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_CAMERA_TOGGLE_SUBTEXT" desc="Sub-label for the camera access toggle in the Privacy controls (aka Privacy Hub) os-settings page.">
-    Allow access for apps and websites with the camera permission
+    Allow access for apps and websites with the camera permission and system services
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_FALLBACK_CAMERA_TOGGLE_SUBTEXT" desc="Sub-label for the camera access toggle in the Privacy controls (aka Privacy Hub) os-settings page.">
-    Allow apps and webpages to use the camera(s) connected to this device. If you still have a problem with your camera, try restart the app or refresh the webpage.
+    Allow access for apps and websites with the camera permission and system services. To use the camera, you may need to restart the app or refresh the page.
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_PAGE_CAMERA_ROW_SUBTEXT" desc="Sub-label for the camera access row in the Privacy controls (aka Privacy Hub) os-settings page.">
+    Apps and websites with the camera permissions, and system services can use your camera
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_PAGE_CAMERA_ROW_FALLBACK_SUBTEXT" desc="Sub-label for the camera access row in the Privacy controls (aka Privacy Hub) os-settings page.">
+    Apps and websites with the camera permissions, and system services can use your camera. To use the camera, you may need to restart the app or refresh the page.
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_PAGE_MICROPHONE_ROW_SUBTEXT" desc="Sub-label for the microphone access row in the Privacy controls (aka Privacy Hub) os-settings page.">
+    Apps and websites with the microphone permissions, and system services can use your microphone
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_CAMERA_CONNECTED_TEXT" desc="Text to display in the Privacy Hub subpage when no camera is connected to the device.">
     No camera
@@ -6296,7 +6359,7 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
     Microphone access
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_TOGGLE_SUBTEXT" desc="Sub-label for the microphone access toggle in the Privacy controls (aka Privacy Hub) os-settings page.">
-    Allow access for apps and websites with the microphone permission
+    Allow access for apps and websites with the microphone permission and system services
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_MICROPHONE_CONNECTED_TEXT" desc="Text to display in the Privacy Hub subpage when no microphone is connected to the device.">
     No microphone
@@ -6331,32 +6394,44 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_DESC" desc="The description of the checkbox to enable/disable device hardware data collection and usage in ChromeOS Flex.">
     Let Brave use your hardware data to help improve <ph name="DEVICE_OS">$1<ex>ChromeOS Flex</ex></ph>. If you decline, this data is still sent to Brave to determine proper updates, but is not stored or used otherwise.
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_WEBSITES_SECTION_TITLE" translateable="false" desc="The title of the Websites section of the privacy hub sensor subpages.">
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_WEBSITES_SECTION_TITLE" desc="The title of the Websites section of the privacy hub sensor subpages.">
     Websites
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MANAGE_CAMERA_PERMISSIONS_IN_CHROME_TEXT" translateable="false" desc="The label of the Brave row in the Websites section of the camera subpage. This row is displayed when camera is allowed.">
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MANAGE_CAMERA_PERMISSIONS_IN_CHROME_TEXT" desc="The label of the Brave row in the Websites section of the camera subpage. This row is displayed when camera is allowed.">
     Manage site camera permissions in Brave
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MANAGE_MIC_PERMISSIONS_IN_CHROME_TEXT" translateable="false" desc="The label of the Brave row in the Websites section of the microphone subpage. This row is displayed when microphone is allowed.">
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MANAGE_MIC_PERMISSIONS_IN_CHROME_TEXT" desc="The label of the Brave row in the Websites section of the microphone subpage. This row is displayed when microphone is allowed.">
     Manage site microphone permissions in Brave
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_WEBSITE_CAN_USE_CAMERA_TEXT" translateable="false" desc="The text displayed in the Websites section of the camera subpage when camera is not allowed.">
-    No website is allowed to use your camera
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MANAGE_LOCATION_PERMISSIONS_IN_CHROME_TEXT" translateable="false" desc="The label of the Brave row in the Websites section of the location subpage. This row is displayed when location is allowed.">
+    Manage site location permissions in Brave
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_WEBSITE_CAN_USE_MIC_TEXT" translateable="false" desc="The text displayed in the Websites section of the microphone subpage when microphone is not allowed.">
-    No website is allowed to use your microphone
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_WEBSITE_CAN_USE_CAMERA_TEXT" desc="The text displayed in the Websites section of the camera subpage when camera is not allowed.">
+    No websites are allowed to use your camera
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_APPS_SECTION_TITLE" translateable="false" desc="The title of the Apps section of the privacy hub sensor subpages.">
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_WEBSITE_CAN_USE_MIC_TEXT" desc="The text displayed in the Websites section of the microphone subpage when microphone is not allowed.">
+    No websites are allowed to use your microphone
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_WEBSITE_CAN_USE_LOCATION_TEXT" translateable="false" desc="The text displayed in the Websites section of the location subpage when location is not allowed for websites.">
+    No website is allowed to use your location
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_APPS_SECTION_TITLE" desc="The title of the Apps section of the privacy hub sensor subpages.">
     Apps
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_APP_CAN_USE_CAMERA_TEXT" translateable="false" desc="The text displayed in the Apps section of the camera subpage when camera is not allowed.">
-    No app is allowed to use your camera
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_APP_CAN_USE_CAMERA_TEXT" desc="The text displayed in the Apps section of the camera subpage when camera is not allowed.">
+    No apps are allowed use your camera
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_APP_CAN_USE_MIC_TEXT" translateable="false" desc="The text displayed in the Apps section of the microphone subpage when microphone is not allowed.">
-    No app is allowed to use your microphone
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_APP_CAN_USE_MIC_TEXT" desc="The text displayed in the Apps section of the microphone subpage when microphone is not allowed.">
+    No apps are allowed use your microphone
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_BLOCKED_FOR_ALL_TEXT" translateable="false" desc="The text displayed as a sublabel in privacy hub page and in sensor subpages when sensor access is disabled.">
-    Blocked for all
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_APP_CAN_USE_LOCATION_TEXT" translateable="false" desc="The text displayed in the Apps section of the location subpage when location is not allowed.">
+    No app is allowed to use your location
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_CAMERA_ACCESS_BLOCKED_TEXT" desc="The text displayed as a sublabel in the privacy hub page and in the camera subpage when camera access is disabled.">
+    Camera access is blocked
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_ACCESS_BLOCKED_TEXT" desc="The text displayed as a sublabel in the privacy hub page and in the microphone subpage when microphone access is disabled.">
+    Microphone access is blocked
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_SECURE_DNS" desc="Text for secure DNS toggle in Privacy options for ChromeOS">
     Encrypt URLs entered into the browser
@@ -6375,6 +6450,51 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_SECURE_DNS_DIALOG_TURN_OFF" desc="Text for secure DNS dialog to turn off DNS in Privacy options for ChromeOS">
     Turn off
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_SYSTEM_SERVICES_SECTION_TITLE" desc="The title of the System services section of the privacy hub sensor subpages.">
+    System services
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_SYSTEM_SERVICES_ALLOWED_TEXT" desc="The sub-label displayed in the rows of the System services section of the privacy hub sensor subpages when sensor access is allowed.">
+    Allowed
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_SYSTEM_SERVICES_BLOCKED_TEXT" desc="The sub-label displayed in the rows of the System services section of the privacy hub sensor subpages when sensor access is not allowed.">
+    Blocked
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_SENSOR_NAME_WITH_BLOCKED_SUFFIX" desc="The text displayed in the rows of the sensor (camera or microphone) list when the sensor access is blocked.">
+    <ph name="SENSOR_NAME">$1<ex>Front Camera</ex></ph> (blocked)
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_CAMERA_APP_PERMISSION_ROW_ARIA_LABEL" desc="ARIA (accessibility) label describing the action button (toggle button or external link button or managed icon) in the app permission rows of the privacy hub camera subpage.">
+    <ph name="APP_NAME">$1<ex>Brave Meet</ex></ph> camera permission
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_LOCATION_APP_PERMISSION_ROW_ARIA_LABEL" desc="ARIA (accessibility) label describing the action button (toggle button or external link button or managed icon) in the app permission rows of the privacy hub location subpage.">
+    <ph name="APP_NAME">$1<ex>Brave Meet</ex></ph> location permission
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_APP_PERMISSION_ROW_ARIA_LABEL" desc="ARIA (accessibility) label describing the action button (toggle button or external link button or managed icon) in the app permission rows of the privacy hub microphone subpage.">
+    <ph name="APP_NAME">$1<ex>Brave Meet</ex></ph> microphone permission
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_APP_PERMISSION_ROW_ARIA_DESCRIPTION" desc="ARIA (accessibility) description describing the action buttons (toggle button or managed icon) in the app permission rows of the privacy hub subpages.">
+    Permission is <ph name="PERMISSION_STATE">$1<ex>Ask every time</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_APP_PERMISSION_ROW_ANDROID_SETTINGS_LINK_ARIA_DESCRIPTION" desc="ARIA (accessibility) description describing the android settings link in the app permission rows of the privacy hub subpages.">
+    Opens in new tab, Permission is <ph name="PERMISSION_STATE">$1<ex>Ask every time</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_SYSTEM_SERVICES_AUTOMATIC_TIME_ZONE_NAME" desc="The name label of the 'Automatic time zone' service displayed in the System services section of the privacy hub 'Location access' subpage.">
+    Automatic time zone
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_SYSTEM_SERVICES_SUNSET_SCHEDULE_NAME" desc="The name label of the 'Sunset schedule' service displayed in the System services section of the privacy hub 'Location access' subpage.">
+    Sunset schedule
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_SYSTEM_SERVICES_LOCAL_WEATHER_NAME" desc="The name label of the 'Local weather' service displayed in the System services section of the privacy hub 'Location access' subpage.">
+    Local weather
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_SYSTEM_SERVICES_DARK_THEME_NAME" desc="The name label of the 'Wallpaper Dark Mode' service displayed in the System services section of the privacy hub 'Location access' subpage.">
+    Dark theme
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_CAMERA_TOGGLE_NO_CAMERA_CONNECTED_TOOLTIP_TEXT" desc="Text displayed in the privacy hub subpage camera toggle button tooltip when no camera is connected to the device.">
+    No camera connected
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_TOGGLE_NO_MICROPHONE_CONNECTED_TOOLTIP_TEXT" desc="Text displayed in the privacy hub subpage microphone toggle button tooltip when no microphone is connected to the device.">
+    No microphone connected
   </message>
 
   <!-- On Startup (OS settings) -->
