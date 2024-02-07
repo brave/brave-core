@@ -82,7 +82,10 @@ export const ErrorText = styled.span`
 `
 
 type FlexProps = Partial<
-  Pick<CSSProperties, 'flex' | 'alignItems' | 'justifyContent' | 'gap'>
+  Pick<
+    CSSProperties,
+    'flex' | 'alignItems' | 'justifyContent' | 'gap' | 'alignSelf'
+  >
 >
 
 // Mixins
@@ -152,6 +155,7 @@ export const Row = styled.div<
   flex-wrap: ${(p) => (p.$wrap ? 'wrap' : 'unset')};
   flex: ${(p) => p.flex ?? 'unset'};
   align-items: ${(p) => p.alignItems ?? 'center'};
+  align-self: ${(p) => p.alignSelf ?? 'unset'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
   gap: ${(p) => p.gap ?? 'unset'};
   width: ${(p) => p.width ?? '100%'};
@@ -189,6 +193,7 @@ export const Column = styled.div<
   display: flex;
   flex-direction: column;
   align-items: ${(p) => p.alignItems ?? 'center'};
+  align-self: ${(p) => p.alignSelf ?? 'unset'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
   gap: ${(p) => p.gap ?? 'unset'};
   margin: ${(p) => p.margin ?? 0};

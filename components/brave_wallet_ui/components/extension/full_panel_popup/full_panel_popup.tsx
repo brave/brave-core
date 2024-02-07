@@ -13,7 +13,7 @@ import {
 
 interface Props {
   kind?: 'danger'
-  onClose: () => void
+  onClose?: () => void
 }
 
 export const FullPanelPopup: React.FC<Props> = ({
@@ -28,20 +28,22 @@ export const FullPanelPopup: React.FC<Props> = ({
         fullWidth
         justifyContent='flex-start'
       >
-        <Row
-          justifyContent='flex-end'
-          alignItems='center'
-          padding={'16px'}
-        >
-          <Column width='20px'>
-            <IconButton
-              kind='plain'
-              onClick={onClose}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Column>
-        </Row>
+        {onClose && (
+          <Row
+            justifyContent='flex-end'
+            alignItems='center'
+            padding={'16px'}
+          >
+            <Column width='20px'>
+              <IconButton
+                kind='plain'
+                onClick={onClose}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Column>
+          </Row>
+        )}
         {children}
       </Column>
     </FullScreenPanelPopupWrapper>
