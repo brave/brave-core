@@ -124,7 +124,7 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   EXPECT_CALL(callback,
               Run(EqualsMojo(expected_balance), std::optional<std::string>()));
   bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   bitcoin_test_rpc_server_->AddMempoolBalance(address_0, 1000, 10000000);
@@ -139,7 +139,7 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   EXPECT_CALL(callback,
               Run(EqualsMojo(expected_balance), std::optional<std::string>()));
   bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -169,7 +169,7 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {
 
   EXPECT_CALL(callback, Run(EqualsMojo(expected_bitcoin_account_info)));
   bitcoin_wallet_service_->GetBitcoinAccountInfo(account_id(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -213,7 +213,7 @@ TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
   EXPECT_CALL(callback, Run(Eq(std::ref(expected_receive_address)),
                             std::optional<std::string>()));
   bitcoin_wallet_service_->RunDiscovery(account_id(), false, callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   bitcoin_account_info =
@@ -228,7 +228,7 @@ TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
   EXPECT_CALL(callback, Run(Eq(std::ref(expected_change_address)),
                             std::optional<std::string>()));
   bitcoin_wallet_service_->RunDiscovery(account_id(), true, callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   bitcoin_account_info =
@@ -271,7 +271,7 @@ TEST_F(BitcoinWalletServiceUnitTest, GetUtxos) {
                 return true;
               })));
   bitcoin_wallet_service_->GetUtxos(account_id(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -294,7 +294,7 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction_UpdatesChangeAddress) {
 
   bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
                                              48000, false, callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   auto change_address_6 =
@@ -320,7 +320,7 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
               })));
   bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
                                              48000, false, callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_EQ(actual_tx.locktime(), 12345u);
@@ -383,7 +383,7 @@ TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
               })));
   bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
                                              48000, false, callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   BitcoinTransaction signed_tx;
@@ -392,7 +392,7 @@ TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
           WithArg<1>([&](const BitcoinTransaction& tx) { signed_tx = tx; }));
   bitcoin_wallet_service_->SignAndPostTransaction(
       account_id(), std::move(initial_tx), sign_callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&sign_callback);
 
   EXPECT_EQ(BitcoinSerializer::CalcTransactionWeight(signed_tx, false), 832u);
@@ -440,7 +440,7 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
               })));
   bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
                                            callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
@@ -450,7 +450,7 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
               })));
   bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
                                            callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Receive addresses 5 and 30 for account 0 are transacted.
@@ -475,7 +475,7 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
               })));
   bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
                                            callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // For acc 1 nothing is still discovered.
@@ -486,7 +486,7 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
               })));
   bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
                                            callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Receive address 15 and change address 17 for account 0 are transacted.
@@ -519,7 +519,7 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
               })));
   bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
                                            callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Discovered 9 and 0.
@@ -531,7 +531,7 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
               })));
   bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
                                            callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 

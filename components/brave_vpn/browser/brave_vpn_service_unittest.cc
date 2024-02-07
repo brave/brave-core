@@ -726,9 +726,9 @@ TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
   SetConnectionStateForTesting(ConnectionState::CONNECTING);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   SetConnectionStateForTesting(ConnectionState::CONNECTED);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
 }
 
@@ -740,9 +740,9 @@ TEST_F(BraveVPNServiceTest, IsConnectedWithPurchasedStateTest) {
 
   // Prepare connected state.
   SetConnectionStateForTesting(ConnectionState::CONNECTING);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   SetConnectionStateForTesting(ConnectionState::CONNECTED);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
   // Gets connected for purchased user.
   EXPECT_TRUE(service_->IsConnected());
@@ -760,10 +760,10 @@ TEST_F(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy) {
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
   SetConnectionStateForTesting(ConnectionState::CONNECTED);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
   BlockVPNByPolicy(true);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(ConnectionState::DISCONNECTED, observer.GetConnectionState());
 }
 
@@ -939,12 +939,12 @@ TEST_F(BraveVPNServiceTest, SetPurchasedState) {
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
 
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   observer.ResetStates();
   // Do not notify if status is not changed.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
 }
 

@@ -57,6 +57,7 @@ class GetAdaptiveCaptchaChallengeTest : public testing::Test {
 
  protected:
   network::TestURLLoaderFactory test_url_loader_factory_;
+  base::test::TaskEnvironment scoped_task_environment_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::unique_ptr<GetAdaptiveCaptchaChallenge> get_challenge_;
 
@@ -70,7 +71,6 @@ class GetAdaptiveCaptchaChallengeTest : public testing::Test {
   }
 
  private:
-  base::test::TaskEnvironment scoped_task_environment_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   std::unique_ptr<base::RunLoop> run_loop_;
   bool url_loaded_ = false;

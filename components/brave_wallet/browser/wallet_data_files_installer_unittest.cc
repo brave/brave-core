@@ -257,6 +257,7 @@ TEST_F(WalletDataFilesInstallerUnitTest, OnDemandInstallAndParsing_EmptyPath) {
       .Times(1)
       .WillOnce(testing::Return(true));
   SetOnDemandUpdateCallbackWithComponentReady(base::FilePath());
+  RunUntilIdle();
   CreateWallet();
 
   RunUntilIdle();

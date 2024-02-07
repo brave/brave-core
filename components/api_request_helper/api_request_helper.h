@@ -111,7 +111,8 @@ class APIRequestHelper {
 
   class URLLoaderHandler : public network::SimpleURLLoaderStreamConsumer {
    public:
-    explicit URLLoaderHandler(APIRequestHelper* api_request_helper);
+    URLLoaderHandler(APIRequestHelper* api_request_helper,
+                     scoped_refptr<base::SequencedTaskRunner> task_runner);
     ~URLLoaderHandler() override;
     URLLoaderHandler(const URLLoaderHandler&) = delete;
     URLLoaderHandler& operator=(const URLLoaderHandler&) = delete;
@@ -127,7 +128,8 @@ class APIRequestHelper {
    private:
     friend class APIRequestHelper;
 
-    data_decoder::DataDecoder* GetDataDecoder();
+    void ParseJsonImpl(const std::string& json,
+                       data_decoder::DataDecoder::ValueParseCallback callback);
 
     // Run completion callback if there are no operations in progress.
     // If Cancel is needed even if url or data operations are in progress,
@@ -171,6 +173,8 @@ class APIRequestHelper {
     // completes.
     int current_decoding_operation_count_ = 0;
     bool request_is_finished_ = false;
+
+    const scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
     base::WeakPtrFactory<URLLoaderHandler> weak_ptr_factory_{this};
   };
@@ -248,6 +252,7 @@ class APIRequestHelper {
   net::NetworkTrafficAnnotationTag annotation_tag_;
   URLLoaderHandlerList url_loaders_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  const scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::WeakPtrFactory<APIRequestHelper> weak_ptr_factory_{this};
 };
 
