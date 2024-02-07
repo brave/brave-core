@@ -292,7 +292,7 @@ export const PortfolioOverview = () => {
           network.coin === asset.coin && network.chainId === asset.chainId
       )
 
-      const amounts = accountsListWithRewards
+      const amounts = usersFilteredAccounts
         .filter((account) => {
           return network && networkSupportsAccount(network, account.accountId)
         })
@@ -310,7 +310,7 @@ export const PortfolioOverview = () => {
         return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
       })
     },
-    [accountsListWithRewards, tokenBalancesRegistry]
+    [usersFilteredAccounts, tokenBalancesRegistry]
   )
 
   // This looks at the users asset list and returns the full balance for
