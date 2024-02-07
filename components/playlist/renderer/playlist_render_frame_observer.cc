@@ -50,6 +50,7 @@ void PlaylistRenderFrameObserver::OnDestruct() {
 
 void PlaylistRenderFrameObserver::AddOnLoadScript(
     base::ReadOnlySharedMemoryRegion script) {
+  DVLOG(2) << __FUNCTION__;
   media_detector_.emplace(script.Map().GetMemoryAs<char>(), script.GetSize());
   CHECK(!media_detector_->empty());
 }
