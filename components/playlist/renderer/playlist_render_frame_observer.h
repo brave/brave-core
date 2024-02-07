@@ -49,7 +49,7 @@ class PlaylistRenderFrameObserver final
 
   void HideMediaSourceAPI() const;
   void InstallMediaDetector();
-  void OnMediaUpdated(gin::Arguments* args);
+  void OnMediaDetected(gin::Arguments* args);
 
   int32_t isolated_world_id_;
   mojo::AssociatedReceiver<mojom::ScriptConfigurator> script_configurator_receiver_{this};

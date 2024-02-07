@@ -18,7 +18,6 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
-#include "url/gurl.h"
 #include "v8/include/v8.h"
 
 namespace playlist {
@@ -31,9 +30,9 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
       isolated_world_id_(isolated_world_id) {
   render_frame()
       ->GetAssociatedInterfaceRegistry()
-      ->AddInterface<mojom::ScriptConfigurator>(
-          base::BindRepeating(&PlaylistRenderFrameObserver::BindScriptConfigurator,
-                              weak_ptr_factory_.GetWeakPtr()));
+      ->AddInterface<mojom::ScriptConfigurator>(base::BindRepeating(
+          &PlaylistRenderFrameObserver::BindScriptConfigurator,
+          weak_ptr_factory_.GetWeakPtr()));
   EnsureConnectedToMediaHandler();
 }
 
@@ -46,7 +45,8 @@ void PlaylistRenderFrameObserver::OnDestruct() {
 void PlaylistRenderFrameObserver::AddMediaDetector(
     base::ReadOnlySharedMemoryRegion script) {
   DVLOG(2) << __FUNCTION__;
-  media_detector_script_.emplace(script.Map().GetMemoryAs<char>(), script.GetSize());
+  media_detector_script_.emplace(script.Map().GetMemoryAs<char>(),
+                                 script.GetSize());
   CHECK(!media_detector_script_->empty());
 }
 
@@ -128,24 +128,25 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       context, v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Script> script =
-      v8::Script::Compile(context, gin::StringToV8(isolate, *media_detector_script_))
+      v8::Script::Compile(context,
+                          gin::StringToV8(isolate, *media_detector_script_))
           .ToLocalChecked();
   v8::Local<v8::Function> function =
       v8::Local<v8::Function>::Cast(script->Run(context).ToLocalChecked());
 
-  v8::Local<v8::Function> on_media_updated =
+  v8::Local<v8::Function> on_media_detected =
       gin::CreateFunctionTemplate(
           context->GetIsolate(),
-          base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaUpdated,
+          base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaDetected,
                               weak_ptr_factory_.GetWeakPtr()))
           ->GetFunction(context)
           .ToLocalChecked();
-  v8::Local<v8::Value> arg = on_media_updated.As<v8::Value>();
+  v8::Local<v8::Value> arg = on_media_detected.As<v8::Value>();
 
   std::ignore = function->Call(context, context->Global(), 1, &arg);
 }
 
-void PlaylistRenderFrameObserver::OnMediaUpdated(gin::Arguments* args) {
+void PlaylistRenderFrameObserver::OnMediaDetected(gin::Arguments* args) {
   if (args->Length() != 1) {
     return;
   }
