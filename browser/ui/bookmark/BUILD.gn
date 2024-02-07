@@ -14,6 +14,8 @@ source_set("bookmark") {
     "bookmark_prefs_service.h",
     "bookmark_prefs_service_factory.cc",
     "bookmark_prefs_service_factory.h",
+    "brave_bookmark_prefs.cc",
+    "brave_bookmark_prefs.h",
     "brave_bookmark_tab_helper.cc",
     "brave_bookmark_tab_helper.h",
   ]

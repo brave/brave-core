@@ -6,6 +6,7 @@
 #include "brave/browser/prefs/brave_pref_service_incognito_allowlist.h"
 
 #include "base/no_destructor.h"
+#include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -46,6 +47,7 @@ const std::vector<const char*>& GetBravePersistentPrefNames() {
       ai_chat::prefs::kLastAcceptedDisclaimer,
       ai_chat::prefs::kBraveChatAutocompleteProviderEnabled,
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+      brave::bookmarks::prefs::kShowAllBookmarksButton,
   });
 
   return *brave_allowlist;
