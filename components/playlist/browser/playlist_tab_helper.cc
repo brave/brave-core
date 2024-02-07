@@ -166,6 +166,11 @@ bool PlaylistTabHelper::IsExtractingMediaFromBackgroundWebContents() const {
 
 void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
     base::OnceCallback<void(bool)> extracted_callback) {
+  if (!ShouldExtractMediaFromBackgroundWebContents()) {
+    std::move(extracted_callback).Run(true);
+    return;
+  }
+
   media_extracted_from_background_web_contents_callbacks_.push_back(
       std::move(extracted_callback));
   media_extraction_from_background_web_contents_timer_.Start(
