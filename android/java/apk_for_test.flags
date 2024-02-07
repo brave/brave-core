@@ -821,3 +821,13 @@
 -keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUiPrefs {
     <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBottomSheetStrategy {
+    public <init>(...);
+    *** mStopShowingSpinner;
+    *** mTab;
+}
+
+-keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy {
+    public <init>(...);
+}

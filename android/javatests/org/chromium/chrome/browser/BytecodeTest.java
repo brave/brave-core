@@ -45,10 +45,13 @@ import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
+import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.contextmenu.ContextMenuItemDelegate;
 import org.chromium.chrome.browser.contextmenu.ContextMenuNativeDelegate;
+import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
+import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabHandleStrategyFactory;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.SnapScrollHelper;
@@ -1116,6 +1119,23 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkUiPrefs",
                         SharedPreferencesManager.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/customtabs/features/"
+                                + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
+                        "org/chromium/chrome/browser/customtabs/features/"
+                                + "partialcustomtab/BravePartialCustomTabBottomSheetStrategy",
+                        Activity.class,
+                        BrowserServicesIntentDataProvider.class,
+                        Supplier.class,
+                        Supplier.class,
+                        BravePartialCustomTabBottomSheetStrategy.getOnResizedCallbackClass(),
+                        BravePartialCustomTabBottomSheetStrategy.getOnActivityLayoutCallbackClass(),
+                        ActivityLifecycleDispatcher.class,
+                        FullscreenManager.class,
+                        boolean.class,
+                        boolean.class,
+                        PartialCustomTabHandleStrategyFactory.class));
     }
 
     @Test
@@ -1353,6 +1373,17 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/SwipeRefreshHandler", "mSwipeType"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/SwipeRefreshHandler", "mTab"));
+
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/features/"
+                                + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
+                        "mStopShowingSpinner"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/features/"
+                                + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
+                        "mTab"));
     }
 
     @Test
