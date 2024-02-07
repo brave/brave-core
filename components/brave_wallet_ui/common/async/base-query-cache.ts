@@ -45,15 +45,15 @@ import getAPIProxy from './bridge'
 import {
   addChainIdToToken,
   getAssetIdKey,
-  GetBlockchainTokenIdArg
+  GetBlockchainTokenIdArg,
+  getDeletedTokenIds,
+  getHiddenTokenIds
 } from '../../utils/asset-utils'
 import { addLogoToToken } from './lib'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { isIpfs } from '../../utils/string-utils'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
-import {
-  getBraveRewardsProxy
-} from './brave_rewards_api_proxy'
+import { getBraveRewardsProxy } from './brave_rewards_api_proxy'
 import {
   getRewardsBATToken,
   getNormalizedExternalRewardsWallet,
@@ -73,11 +73,12 @@ export class BaseQueryCache {
   private _networksRegistry?: NetworksRegistry
   private _allAccountsInfo?: BraveWallet.AllAccountsInfo
   private _accountsRegistry?: AccountInfoEntityState
+  private _knownTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
   private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
   private _enabledCoinTypes: number[]
-  private _erc721MetadataRegistry: Record<string, ERC721Metadata>
+  private _erc721MetadataRegistry: Record<string, ERC721Metadata> = {}
   public rewardsInfo: BraveRewardsInfo | undefined = undefined
 
   getWalletInfo = async () => {
@@ -252,18 +253,30 @@ export class BaseQueryCache {
     this._networksRegistry = undefined
   }
 
+  getKnownTokensRegistry = async () => {
+    if (!this._knownTokensRegistry) {
+      const networksRegistry = await this.getNetworksRegistry()
+      this._knownTokensRegistry = await makeTokensRegistry(
+        networksRegistry,
+        'known'
+      )
+    }
+    return this._knownTokensRegistry
+  }
+
   getUserTokensRegistry = async () => {
     if (!this._userTokensRegistry) {
       const networksRegistry = await this.getNetworksRegistry()
-
-      const userTokensByChainIdRegistry = await makeTokensRegistry(
+      this._userTokensRegistry = await makeTokensRegistry(
         networksRegistry,
         'user'
       )
-
-      this._userTokensRegistry = userTokensByChainIdRegistry
     }
     return this._userTokensRegistry
+  }
+
+  clearKnownTokensRegistry = () => {
+    this._knownTokensRegistry = undefined
   }
 
   clearUserTokensRegistry = () => {
@@ -431,17 +444,29 @@ export async function makeTokensRegistry(
   networksRegistry: NetworksRegistry,
   listType: AssetsListType
 ) {
+  const locallyDeletedTokenIds: string[] =
+    listType === 'user' ? getDeletedTokenIds() : []
+  const locallyHiddenTokenIds: string[] =
+    listType === 'user' ? getHiddenTokenIds() : []
+  const locallyRemovedTokenIds = locallyDeletedTokenIds.concat(
+    locallyHiddenTokenIds
+  )
+
   const nonFungibleTokenIds: string[] = []
   const fungibleTokenIds: string[] = []
 
   const idsByChainId: Record<string, string[]> = {}
   const idsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
   const visibleTokenIds: string[] = []
-  const hiddenTokenIds: string[] = []
   const visibleTokenIdsByChainId: Record<string, string[]> = {}
   const hiddenTokenIdsByChainId: Record<string, string[]> = {}
   const visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
   const hiddenTokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
+
+  const deletedTokenIds: string[] = locallyDeletedTokenIds
+  const hiddenTokenIds: string[] = []
+  const spamTokenIds: string[] = []
+  const nonSpamTokenIds: string[] = []
 
   const fungibleIdsByChainId: Record<string, string[]> = {}
   const fungibleIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
@@ -493,33 +518,40 @@ export async function makeTokensRegistry(
       nonFungibleIdsByChainId[networkId] = []
       nonFungibleVisibleTokenIdsByChainId[networkId] = []
       nonFungibleHiddenTokenIdsByChainId[networkId] = []
+
       for (const token of fullTokensListForNetwork) {
         const tokenId = getAssetIdKey(token)
         const { visible } = token
         const isNft = token.isNft || token.isErc1155 || token.isErc721
+        const isHidden = !visible || locallyRemovedTokenIds.includes(tokenId)
 
         idsByChainId[networkId].push(tokenId)
+
+        if (token.isSpam) {
+          spamTokenIds.push(tokenId)
+        } else {
+          nonSpamTokenIds.push(tokenId)
+        }
+
         if (isNft) {
           nonFungibleTokenIds.push(tokenId)
           nonFungibleIdsByChainId[networkId].push(tokenId)
+          if (isHidden) {
+            hiddenTokenIdsByChainId[networkId].push(tokenId)
+            nonFungibleHiddenTokenIdsByChainId[networkId].push(tokenId)
+          } else {
+            visibleTokenIdsByChainId[networkId].push(tokenId)
+            nonFungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
+          }
         } else {
           fungibleTokenIds.push(tokenId)
           fungibleIdsByChainId[networkId].push(tokenId)
-        }
-
-        if (visible) {
-          visibleTokenIdsByChainId[networkId].push(tokenId)
-          if (isNft) {
-            nonFungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
-          } else {
-            fungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
-          }
-        } else {
-          hiddenTokenIdsByChainId[networkId].push(tokenId)
-          if (isNft) {
-            nonFungibleHiddenTokenIdsByChainId[networkId].push(tokenId)
-          } else {
+          if (isHidden) {
+            hiddenTokenIdsByChainId[networkId].push(tokenId)
             fungibleHiddenTokenIdsByChainId[networkId].push(tokenId)
+          } else {
+            visibleTokenIdsByChainId[networkId].push(tokenId)
+            fungibleVisibleTokenIdsByChainId[networkId].push(tokenId)
           }
         }
       }
@@ -572,11 +604,12 @@ export async function makeTokensRegistry(
         ...fungibleVisibleTokenIdsByChainId[networkId]
       )
 
-      // All hidden ids
       hiddenTokenIds.push(...hiddenTokenIdsByChainId[networkId])
+
       nonFungibleHiddenTokenIds.push(
         ...nonFungibleHiddenTokenIdsByChainId[networkId]
       )
+
       fungibleHiddenTokenIds.push(...fungibleHiddenTokenIdsByChainId[networkId])
 
       return fullTokensListForNetwork
@@ -589,6 +622,7 @@ export async function makeTokensRegistry(
       idsByChainId,
       visibleTokenIds,
       hiddenTokenIds,
+      deletedTokenIds,
       visibleTokenIdsByChainId,
       visibleTokenIdsByCoinType,
       idsByCoinType,
@@ -607,7 +641,10 @@ export async function makeTokensRegistry(
       nonFungibleIdsByCoinType,
       nonFungibleVisibleTokenIds,
       nonFungibleVisibleTokenIdsByChainId,
-      nonFungibleVisibleTokenIdsByCoinType
+      nonFungibleVisibleTokenIdsByCoinType,
+
+      spamTokenIds,
+      nonSpamTokenIds
     },
     userTokenListsForNetworks.flat(1)
   )
