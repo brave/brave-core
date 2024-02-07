@@ -228,7 +228,7 @@ inline constexpr auto kCollectedSlowHistograms =
     "Brave.Rewards.PageViewCount",
     "Brave.Rewards.TipsSent.2",
     "Brave.Sync.EnabledTypes",
-    "Brave.Sync.SyncedObjectsCount",
+    "Brave.Sync.SyncedObjectsCount.2",
     "Brave.Today.UsageMonthly",
     "Brave.Toolbar.ForwardNavigationAction",
     "Brave.Wallet.UsageMonthly",
