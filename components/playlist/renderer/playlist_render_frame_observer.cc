@@ -151,21 +151,21 @@ void PlaylistRenderFrameObserver::OnMediaDetected(gin::Arguments* args) {
     return;
   }
 
-  v8::Local<v8::Value> arg = args->PeekNext();
-  if (arg.IsEmpty()) {
+  v8::Local<v8::Value> value = args->PeekNext();
+  if (value.IsEmpty()) {
     return;
   }
 
-  std::unique_ptr<base::Value> value =
+  std::unique_ptr<base::Value> media =
       content::V8ValueConverter::Create()->FromV8Value(
-          arg, args->GetHolderCreationContext());
-  if (!value) {
+          value, args->GetHolderCreationContext());
+  if (!media) {
     return;
   }
 
-  DVLOG(2) << __FUNCTION__ << '\n' << *value;
+  DVLOG(2) << __FUNCTION__ << '\n' << *media;
 
-  media_handler_->OnMediaUpdatedFromRenderFrame(std::move(*value));
+  media_handler_->OnMediaDetected(std::move(*media));
 }
 
 }  // namespace playlist

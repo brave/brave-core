@@ -177,17 +177,34 @@ bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
   return in_progress_urls_count_ == 0;
 }
 
-void PlaylistDownloadRequestManager::GetMedia(
+std::vector<mojom::PlaylistItemPtr>
+PlaylistDownloadRequestManager::GetPlaylistItems(
     base::Value media,
-    content::WebContents* contents,
-    base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb) {
+    content::WebContents* contents) {
   DVLOG(2) << __func__;
-  CHECK(contents && contents->GetPrimaryMainFrame());
 
-  auto callback = base::BindOnce(
-      &PlaylistDownloadRequestManager::OnGetMedia, weak_factory_.GetWeakPtr(),
-      contents->GetWeakPtr(), contents->GetVisibleURL(), std::move(cb));
-  std::move(callback).Run(std::move(media));
+  CHECK(contents->GetPrimaryMainFrame());
+
+  auto items = ProcessFoundMedia(std::move(media), contents->GetVisibleURL());
+
+  if (contents == background_contents() && items.size()) {
+    CHECK(!callback_for_current_request_.is_null()) << " callback already ran";
+    auto callback = std::move(callback_for_current_request_);
+
+    DCHECK_GT(in_progress_urls_count_, 0);
+    in_progress_urls_count_--;
+
+    std::vector<mojom::PlaylistItemPtr> cloned_items;
+    base::ranges::transform(items, std::back_inserter(cloned_items),
+                            &mojom::PlaylistItemPtr::Clone);
+    std::move(callback).Run(std::move(cloned_items));
+
+    web_contents_.reset();
+  }
+
+  FetchPendingRequest();
+
+  return items;
 
 #if BUILDFLAG(IS_ANDROID)
   content::RenderFrameHost::AllowInjectingJavaScript();
@@ -206,39 +223,6 @@ void PlaylistDownloadRequestManager::GetMedia(
   //       base::UTF8ToUTF16(media_detector_script), std::move(callback));
   // }
 #endif
-}
-
-void PlaylistDownloadRequestManager::OnGetMedia(
-    base::WeakPtr<content::WebContents> contents,
-    GURL url,
-    base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
-    base::Value value) {
-  if (!contents) {
-    return;
-  }
-
-  DVLOG(2) << __func__;
-
-  auto items = ProcessFoundMedia(std::move(value), url);
-
-  if (contents.get() == background_contents() && items.size()) {
-    CHECK(!callback_for_current_request_.is_null()) << " callback already ran";
-    auto callback = std::move(callback_for_current_request_);
-
-    DCHECK_GT(in_progress_urls_count_, 0);
-    in_progress_urls_count_--;
-
-    std::vector<mojom::PlaylistItemPtr> cloned_items;
-    base::ranges::transform(items, std::back_inserter(cloned_items),
-                            &mojom::PlaylistItemPtr::Clone);
-    std::move(callback).Run(std::move(cloned_items));
-
-    web_contents_.reset();
-  }
-
-  std::move(cb).Run(std::move(items));
-
-  FetchPendingRequest();
 }
 
 std::vector<mojom::PlaylistItemPtr>

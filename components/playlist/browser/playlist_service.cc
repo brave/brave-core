@@ -1211,17 +1211,15 @@ void PlaylistService::ClearObserverForStreaming() {
   streaming_observers_.Clear();
 }
 
-void PlaylistService::OnMediaUpdatedFromContents(
-    base::Value media,
-    content::WebContents* contents) {
+void PlaylistService::OnMediaDetected(base::Value media,
+                                      content::WebContents* contents) {
   if (!*enabled_pref_) {
     return;
   }
 
-  download_request_manager_->GetMedia(
-      std::move(media), contents,
-      base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
-                     weak_factory_.GetWeakPtr(), contents->GetVisibleURL()));
+  NotifyMediaFilesUpdated(
+      contents->GetVisibleURL(),
+      download_request_manager_->GetPlaylistItems(std::move(media), contents));
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(

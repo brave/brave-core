@@ -20,8 +20,13 @@ PlaylistMediaHandler::~PlaylistMediaHandler() {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
 }
 
-void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame(base::Value media) {
+void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
   DVLOG(2) << __FUNCTION__ << " " << frame_id_;
+
+  if (!service_) {
+    return;
+  }
+
   auto* render_frame_host = content::RenderFrameHost::FromID(frame_id_);
   if (!render_frame_host) {
     return;
@@ -33,9 +38,7 @@ void PlaylistMediaHandler::OnMediaUpdatedFromRenderFrame(base::Value media) {
     return;
   }
 
-  if (service_) {
-    service_->OnMediaUpdatedFromContents(std::move(media), web_contents);
-  }
+  service_->OnMediaDetected(std::move(media), web_contents);
 }
 
 }  // namespace playlist

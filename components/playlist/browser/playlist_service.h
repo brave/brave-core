@@ -220,8 +220,7 @@ class PlaylistService : public KeyedService,
       mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
   void ClearObserverForStreaming() override;
 
-  void OnMediaUpdatedFromContents(base::Value media,
-                                  content::WebContents* contents);
+  void OnMediaDetected(base::Value media, content::WebContents* contents);
 
   bool HasPlaylistItem(const std::string& id) const;
 

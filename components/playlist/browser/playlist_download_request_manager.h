@@ -93,10 +93,9 @@ class PlaylistDownloadRequestManager {
     return media_detector_component_manager_;
   }
 
-  void GetMedia(
+  std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(
       base::Value media,
-      content::WebContents* contents,
-      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb);
+      content::WebContents* contents);
 
   bool CanCacheMedia(const mojom::PlaylistItemPtr& item) const;
   bool ShouldExtractMediaFromBackgroundWebContents(
@@ -112,11 +111,6 @@ class PlaylistDownloadRequestManager {
 
   bool ReadyToRunMediaDetectorScript() const;
   void CreateWebContents(bool should_force_fake_ua);
-  void OnGetMedia(
-      base::WeakPtr<content::WebContents> contents,
-      GURL url,
-      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> cb,
-      base::Value value);
   std::vector<mojom::PlaylistItemPtr> ProcessFoundMedia(base::Value value,
                                                         GURL page_url);
 
