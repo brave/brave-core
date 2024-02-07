@@ -79,6 +79,11 @@ export function useAssetManagement() {
 
   const addOrRemoveTokenInLocalStorage = React.useCallback(
     (token: BraveWallet.BlockchainToken, addOrRemove: 'add' | 'remove') => {
+      if (token.contractAddress === '') {
+        // prevent permanently removing native tokens
+        return
+      }
+
       const assetId = getAssetIdKey(token)
       const isNFT = token.isNft || token.isErc1155 || token.isErc721
       const removedList = isNFT

@@ -261,7 +261,7 @@ export const AccountListItem = ({
 
     const reducedAmounts = amounts.reduce(function (a, b) {
       return a.plus(b)
-    })
+    }, Amount.empty())
 
     return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
   }, [
