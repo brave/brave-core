@@ -19,5 +19,8 @@ public class BravePartialCustomTabBottomSheetStrategyClassAdapter extends BraveC
 
         deleteField(sBraveStrategy, "mStopShowingSpinner");
         makeProtectedField(sStrategy, "mStopShowingSpinner");
+
+        deleteField(sBraveStrategy, "mTab");
+        makeProtectedField(sStrategy, "mTab");
     }
 }

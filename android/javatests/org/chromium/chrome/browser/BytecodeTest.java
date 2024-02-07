@@ -1379,6 +1379,11 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/customtabs/features/"
                                 + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
                         "mStopShowingSpinner"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/features/"
+                                + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
+                        "mTab"));
     }
 
     @Test

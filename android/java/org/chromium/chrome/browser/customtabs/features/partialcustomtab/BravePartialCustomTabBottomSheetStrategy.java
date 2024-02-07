@@ -12,7 +12,10 @@ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntent
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.widget.TouchEventProvider;
+import org.chromium.ui.base.PageTransition;
+import org.chromium.url.GURL;
 
 public class BravePartialCustomTabBottomSheetStrategy extends PartialCustomTabBottomSheetStrategy {
 
@@ -43,11 +46,20 @@ public class BravePartialCustomTabBottomSheetStrategy extends PartialCustomTabBo
     }
 
     public boolean mStopShowingSpinner;
+    public Supplier<Tab> mTab;
 
     @Override
     public void onDragStart(int y) {
         super.onDragStart(y);
-        mStopShowingSpinner = true;
+        if (!mTab.hasValue()) {
+            return;
+        }
+        GURL url = mTab.get().getUrl();
+        if (url.getScheme().equals("chrome-untrusted")
+                && url.getHost().equals("chat")
+                && TabUtils.getTransition(mTab.get()) == PageTransition.FROM_API) {
+            mStopShowingSpinner = true;
+        }
     }
 
     public static Class<OnResizedCallback> getOnResizedCallbackClass() {

@@ -825,6 +825,7 @@
 -keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBottomSheetStrategy {
     public <init>(...);
     *** mStopShowingSpinner;
+    *** mTab;
 }
 
 -keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy {
