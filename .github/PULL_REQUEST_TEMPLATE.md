@@ -1,5 +1,5 @@
 <!-- Add brave-browser issue below that this PR will resolve -->
-Resolves 
+Resolves
 
 <!-- CI-related labels that can be applied to this PR:
 * CI/run-audit-deps (1) - check for known npm/cargo vulnerabilities (audit_deps)
@@ -25,7 +25,7 @@ Resolves
 - [ ] Added appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`; `OS/...`) to the associated issue
 - [ ] Checked the PR locally:
   * `npm run test -- brave_browser_tests`, `npm run test -- brave_unit_tests` [wiki](https://github.com/brave/brave-browser/wiki/Tests)
-  * `npm run lint`, `npm run presubmit` [wiki](https://github.com/brave/brave-browser/wiki/Presubmit-checks), `npm run gn_check`, `npm run tslint`
+  * `npm run presubmit` [wiki](https://github.com/brave/brave-browser/wiki/Presubmit-checks), `npm run gn_check`, `npm run tslint`
 - [ ] Ran `git rebase master` (if needed)
 
 ## Reviewer Checklist:
