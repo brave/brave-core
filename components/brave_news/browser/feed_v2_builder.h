@@ -89,7 +89,14 @@ class FeedV2Builder : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* controller) override;
 
  private:
-  using UpdateCallback = base::OnceCallback<void()>;
+  struct FeedGenerationInfo;
+
+  // FeedGenerator's will be called on a different thread. The data in
+  // |FeedGenerationInfo| is a copy and can be safely modified.
+  using FeedGenerator =
+      base::OnceCallback<mojom::FeedV2Ptr(FeedGenerationInfo)>;
+
+  using UpdateCallback = base::OnceClosure;
   struct UpdateSettings {
     bool signals = false;
     bool suggested_publishers = false;
@@ -134,9 +141,14 @@ class FeedV2Builder : public PublishersController::Observer {
                     UpdateCallback callback);
   };
 
-  void UpdateData(UpdateSettings settings,
-                  UpdateCallback callback = base::DoNothing());
+  static mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
+                                            PickArticles pick_hero,
+                                            PickArticles pick_article);
+  static mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info);
 
+  void UpdateData(UpdateSettings settings, UpdateCallback callback);
+
+  void PrepareAndFetch();
   void FetchFeed();
   void OnFetchedFeed(FeedItems items, ETags etags);
 
@@ -154,13 +166,8 @@ class FeedV2Builder : public PublishersController::Observer {
 
   void GenerateFeed(UpdateSettings settings,
                     mojom::FeedV2TypePtr type,
-                    base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
+                    FeedGenerator generator,
                     BuildFeedCallback callback);
-
-  mojom::FeedV2Ptr GenerateBasicFeed(const FeedItems& items,
-                                     PickArticles pick_hero,
-                                     PickArticles pick_article);
-  mojom::FeedV2Ptr GenerateAllFeed();
 
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;

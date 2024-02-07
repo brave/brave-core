@@ -58,6 +58,7 @@ class APIRequestResult {
   const std::string& body() const { return body_; }
   // `base::Value` of sanitized json response.
   const base::Value& value_body() const { return value_body_; }
+  base::Value& value_body() { return value_body_; }
   // HTTP response headers.
   const base::flat_map<std::string, std::string>& headers() const {
     return headers_;
