@@ -10,7 +10,7 @@ import shutil
 import sys
 
 from distutils.dir_util import copy_tree
-from import_inline import wspath
+from brave_chromium_utils import wspath
 from lib.config import PLATFORM, enable_verbose_mode, is_verbose_mode
 from lib.util import execute_stdout
 from pathlib import Path
