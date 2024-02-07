@@ -5,6 +5,8 @@
 
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 
+#include <utility>
+
 #include "brave/components/playlist/browser/playlist_service.h"
 
 namespace playlist {

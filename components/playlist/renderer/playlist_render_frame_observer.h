@@ -29,7 +29,8 @@ class PlaylistRenderFrameObserver final
                               int32_t isolated_world_id);
 
   PlaylistRenderFrameObserver(const PlaylistRenderFrameObserver&) = delete;
-  PlaylistRenderFrameObserver& operator=(const PlaylistRenderFrameObserver&) = delete;
+  PlaylistRenderFrameObserver& operator=(const PlaylistRenderFrameObserver&) =
+      delete;
 
   void RunScriptsAtDocumentStart();
 
@@ -52,7 +53,8 @@ class PlaylistRenderFrameObserver final
   void OnMediaDetected(gin::Arguments* args);
 
   int32_t isolated_world_id_;
-  mojo::AssociatedReceiver<mojom::ScriptConfigurator> script_configurator_receiver_{this};
+  mojo::AssociatedReceiver<mojom::ScriptConfigurator>
+      script_configurator_receiver_{this};
   mojo::Remote<playlist::mojom::PlaylistMediaHandler> media_handler_;
   std::optional<std::string> media_detector_script_;
   base::WeakPtrFactory<PlaylistRenderFrameObserver> weak_ptr_factory_{this};

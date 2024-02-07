@@ -5,6 +5,9 @@
 
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 
+#include <memory>
+#include <utility>
+
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "content/public/renderer/render_frame.h"
