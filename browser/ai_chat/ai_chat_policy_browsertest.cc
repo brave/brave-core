@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
@@ -139,6 +140,23 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, Autocomplete) {
     EXPECT_TRUE(is_in_providers);
   } else {
     EXPECT_FALSE(is_in_providers);
+  }
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, ContextMenu) {
+  content::ContextMenuParams params;
+  params.is_editable = false;
+  params.page_url = GURL("http://test.page/");
+  params.selection_text = u"brave";
+  TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
+                                 params);
+  menu.Init();
+  std::optional<size_t> ai_chat_index =
+      menu.menu_model().GetIndexOfCommandId(IDC_AI_CHAT_CONTEXT_LEO_TOOLS);
+  if (IsAIChatEnabledTest()) {
+    EXPECT_TRUE(ai_chat_index.has_value());
+  } else {
+    EXPECT_FALSE(ai_chat_index.has_value());
   }
 }
 

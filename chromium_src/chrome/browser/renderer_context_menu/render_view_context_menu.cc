@@ -45,7 +45,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
@@ -345,7 +345,7 @@ void BraveRenderViewContextMenu::CopyTextFromImage() {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
-  return ai_chat::features::IsAIChatEnabled() &&
+  return ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
          brave::IsRegularProfile(GetProfile()) &&
          GetProfile()->GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveAIChatContextMenuEnabled) &&
