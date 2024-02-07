@@ -98,7 +98,6 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
     return false;
   }
 
-  const std::string seed_string = base::Base64Encode(wallet->recovery_seed);
   std::string event_string;
   if (wallet->recovery_seed.size() > 1) {
     event_string =
@@ -107,7 +106,7 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
 
   base::Value::Dict new_wallet;
   new_wallet.Set("payment_id", wallet->payment_id);
-  new_wallet.Set("recovery_seed", seed_string);
+  new_wallet.Set("recovery_seed", base::Base64Encode(wallet->recovery_seed));
 
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);

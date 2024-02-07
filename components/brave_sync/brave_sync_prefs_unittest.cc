@@ -88,10 +88,8 @@ TEST_F(BraveSyncPrefsTest, FailedToDecryptBraveSeedValue) {
   // Valid base64 string but not valid encrypted string must set
   // failed_to_decrypt to true. Note: "v10" prefix is important to make
   // DecryptString fail. Also the remaining string must be 12 or more bytes.
-  std::string valid_base64_string;
-  base::Base64Encode("v10_AABBCCDDEEFF", &valid_base64_string);
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
-                            valid_base64_string);
+                            base::Base64Encode("v10_AABBCCDDEEFF"));
   EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
   EXPECT_TRUE(failed_to_decrypt);
 

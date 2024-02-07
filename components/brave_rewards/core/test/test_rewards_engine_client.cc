@@ -41,10 +41,7 @@ std::optional<std::string> FakeEncryption::DecryptString(
 }
 
 std::string FakeEncryption::Base64EncryptString(const std::string& value) {
-  std::string fake_encrypted = EncryptString(value);
-  std::string encoded;
-  base::Base64Encode(fake_encrypted, &encoded);
-  return encoded;
+  return base::Base64Encode(EncryptString(value));
 }
 
 std::optional<std::string> FakeEncryption::Base64DecryptString(

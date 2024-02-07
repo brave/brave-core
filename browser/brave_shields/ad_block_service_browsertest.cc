@@ -2371,8 +2371,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
       "    return { 'color': 'Impossible value' };"
       "  }"
       "})();";
-  std::string scriptlet_base64;
-  base::Base64Encode(scriptlet, &scriptlet_base64);
   UpdateAdBlockInstanceWithRules(
       "b.com##+js(hjt)",
       "[{"
@@ -2380,7 +2378,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
       "\"aliases\": [\"hjt.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
-          scriptlet_base64 + "\"}]");
+          base::Base64Encode(scriptlet) + "\"}]");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2403,8 +2401,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ScriptletInjectionPermissions) {
       "(function() {"
       "  window.success = true;"
       "})();";
-  std::string scriptlet_base64;
-  base::Base64Encode(scriptlet, &scriptlet_base64);
   std::string resources =
       "[{"
       "\"name\": \"set-success.js\","
@@ -2412,7 +2408,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ScriptletInjectionPermissions) {
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"permission\": 3,"  // i.e. 0b00000011
       "\"content\": \"" +
-      scriptlet_base64 + "\"}]";
+      base::Base64Encode(scriptlet) + "\"}]";
   std::string rules = "b.com##+js(set-success)";
 
   GURL tab_url =
@@ -2473,8 +2469,6 @@ IN_PROC_BROWSER_TEST_F(ScriptletDebugLogsFlagEnabledTest, CanDebugSetToTrue) {
       "    window.success = true;"
       "  }"
       "})();";
-  std::string scriptlet_base64;
-  base::Base64Encode(scriptlet, &scriptlet_base64);
   UpdateAdBlockInstanceWithRules(
       "b.com##+js(debuggable)",
       "[{"
@@ -2482,7 +2476,7 @@ IN_PROC_BROWSER_TEST_F(ScriptletDebugLogsFlagEnabledTest, CanDebugSetToTrue) {
       "\"aliases\": [],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
-          scriptlet_base64 + "\"}]");
+          base::Base64Encode(scriptlet) + "\"}]");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2508,8 +2502,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CheckForDeAmpPref) {
       "   }"
       " }"
       "})();";
-  std::string scriptlet_base64;
-  base::Base64Encode(scriptlet, &scriptlet_base64);
   UpdateAdBlockInstanceWithRules(
       "b.*##+js(deamp)",
       "[{"
@@ -2517,7 +2509,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CheckForDeAmpPref) {
       "\"aliases\": [\"deamp.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
-          scriptlet_base64 + "\"}]");
+          base::Base64Encode(scriptlet) + "\"}]");
 
   GURL url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2546,8 +2538,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
       "(function() {"
       "  window.JSON.parse = function() { return {} }"
       "})();";
-  std::string scriptlet_base64;
-  base::Base64Encode(scriptlet, &scriptlet_base64);
   UpdateAdBlockInstanceWithRules(
       "b.com##+js(hjt)",
       "[{"
@@ -2555,7 +2545,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
       "\"aliases\": [\"hjt.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
-          scriptlet_base64 + "\"}]");
+          base::Base64Encode(scriptlet) + "\"}]");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/iframe_messenger.html");

@@ -66,10 +66,7 @@ void AIChatIAPSubscription::GetPurchaseTokenOrderId(
 
   std::string response_json;
   base::JSONWriter::Write(response, &response_json);
-
-  std::string encoded_response_json;
-  base::Base64Encode(response_json, &encoded_response_json);
-  std::move(callback).Run(encoded_response_json, order_id_string);
+  std::move(callback).Run(base::Base64Encode(response_json), order_id_string);
 }
 
 }  // namespace ai_chat

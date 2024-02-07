@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/hash/md5.h"
 #include "base/logging.h"
@@ -113,11 +114,8 @@ std::wstring HashString(std::wstring_view input_string) {
   }
 
   DWORD hash[2] = {h0 ^ h1, h0_acc ^ h1_acc};
-  std::string base64_text;
-  base::Base64Encode(
-      std::string_view(reinterpret_cast<const char*>(hash), sizeof(hash)),
-      &base64_text);
-  return base::UTF8ToWide(base64_text);
+  return base::UTF8ToWide(
+      base::Base64Encode(base::as_bytes(base::make_span(hash))));
 }
 
 std::wstring FormatUserChoiceString(std::wstring_view ext,
