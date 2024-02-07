@@ -165,6 +165,17 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         favicons_map_(favicons_map),
         observer_(observer) {}
 
+  Writer(const bookmarks::BookmarkModel* model,
+         const base::FilePath& path,
+         BookmarkFaviconFetcher::URLFaviconMap* favicons_map,
+         BookmarksExportObserver* observer)
+      : path_(path), favicons_map_(favicons_map), observer_(observer) {
+    BookmarkCodec codec;
+    bookmarks_ =
+        codec.Encode(model->bookmark_bar_node(), model->other_node(),
+                     model->mobile_node(), /*sync_metadata_str=*/std::string());
+  }
+
   Writer(const Writer&) = delete;
 
   Writer& operator=(const Writer&) = delete;
@@ -493,10 +504,8 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
       base::BindOnce(
           &Writer::DoWrite,
           base::MakeRefCounted<Writer>(
-              codec.Encode(
-                  ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-                      browser_state_),
-                  /*sync_metadata_str=*/std::string()),
+              ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
+                  browser_state_),
               path_, favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!
