@@ -98,11 +98,11 @@
 
 #define IDC_BRAVE_SEND_TAB_TO_SELF 56225
 
-// Commands for AI chat --------------------------------------------------------
+// AI chat commands.
 #define IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT 56226
 #define IDC_AI_CHAT_CONTEXT_LEO_TOOLS 56227
 
-// Commands for bookmarks ------------------------------------------------------
+// Bookmark commands.
 #define IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY 56300
 
 #define IDC_BRAVE_COMMANDS_LAST 57000
