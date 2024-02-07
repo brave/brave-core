@@ -16,11 +16,8 @@
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
-#include "third_party/blink/public/common/web_preferences/web_preferences.h"
-#include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
 #include "v8/include/v8.h"
 
 namespace playlist {
@@ -43,6 +40,14 @@ PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
 void PlaylistRenderFrameObserver::OnDestruct() {
   delete this;
+}
+
+void PlaylistRenderFrameObserver::AddMediaSourceAPISuppressor(
+    base::ReadOnlySharedMemoryRegion script) {
+  DVLOG(2) << __FUNCTION__;
+  media_source_api_suppressor_script_.emplace(script.Map().GetMemoryAs<char>(),
+                                              script.GetSize());
+  CHECK(!media_source_api_suppressor_script_->empty());
 }
 
 void PlaylistRenderFrameObserver::AddMediaDetector(
@@ -77,76 +82,50 @@ void PlaylistRenderFrameObserver::OnMediaHandlerDisconnect() {
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  if (render_frame()->GetWebFrame()->IsProvisional()) {
-    return;
-  }
-
-  if (!render_frame()->IsMainFrame()) {
-    return;
-  }
-
-  const auto& blink_preferences = render_frame()->GetBlinkPreferences();
-  if (blink_preferences.hide_media_src_api) {
-    HideMediaSourceAPI();
-  }
-
-  if (blink_preferences.should_detect_media_files) {
-    InstallMediaDetector();
-  }
-}
-
-// Disables the MediaSource API in hope of the page switching to
-// network-fetchable HTTPS URLs. This script is from
-// https://github.com/brave/brave-ios/blob/development/Sources/Brave/Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js
-void PlaylistRenderFrameObserver::HideMediaSourceAPI() const {
-  DVLOG(2) << __FUNCTION__;
-
-  render_frame()->GetWebFrame()->ExecuteScript(
-      blink::WebScriptSource(blink::WebString::FromASCII(R"(
-    (function() {
-      if (
-        window.MediaSource ||
-        window.WebKitMediaSource ||
-        window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId
-      ) {
-        delete window.MediaSource;
-        delete window.WebKitMediaSource;
-      }
-    })();)")));
-}
-
-void PlaylistRenderFrameObserver::InstallMediaDetector() {
-  DVLOG(2) << __FUNCTION__;
-
-  CHECK(media_detector_script_);
-
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::Isolate::Scope isolate_scope(isolate);
   v8::HandleScope handle_scope(isolate);
-  v8::Local<v8::Context> context =
-      render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
-          isolate, isolated_world_id_);
+
+  if (media_source_api_suppressor_script_) {
+    Inject(*media_source_api_suppressor_script_,
+           render_frame()->GetWebFrame()->MainWorldScriptContext());
+  }
+
+  if (media_detector_script_) {
+    v8::Local<v8::Context> context =
+        render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
+            isolate, isolated_world_id_);
+    v8::Local<v8::Function> on_media_detected =
+        gin::CreateFunctionTemplate(
+            isolate,
+            base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaDetected,
+                                weak_ptr_factory_.GetWeakPtr()))
+            ->GetFunction(context)
+            .ToLocalChecked();
+    Inject(*media_detector_script_, context,
+           {on_media_detected.As<v8::Value>()});
+  }
+}
+
+void PlaylistRenderFrameObserver::Inject(
+    const std::string& script_text,
+    v8::Local<v8::Context> context,
+    std::vector<v8::Local<v8::Value>> args) const {
+  DVLOG(2) << __FUNCTION__;
+
   v8::Context::Scope context_scope(context);
   v8::MicrotasksScope microtasks_scope(
       context, v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Script> script =
       v8::Script::Compile(context,
-                          gin::StringToV8(isolate, *media_detector_script_))
+                          gin::StringToV8(context->GetIsolate(), script_text))
           .ToLocalChecked();
   v8::Local<v8::Function> function =
       v8::Local<v8::Function>::Cast(script->Run(context).ToLocalChecked());
 
-  v8::Local<v8::Function> on_media_detected =
-      gin::CreateFunctionTemplate(
-          context->GetIsolate(),
-          base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaDetected,
-                              weak_ptr_factory_.GetWeakPtr()))
-          ->GetFunction(context)
-          .ToLocalChecked();
-  v8::Local<v8::Value> arg = on_media_detected.As<v8::Value>();
-
-  std::ignore = function->Call(context, context->Global(), 1, &arg);
+  std::ignore = function->Call(context, context->Global(), args.size(),
+                               args.empty() ? nullptr : args.data());
 }
 
 void PlaylistRenderFrameObserver::OnMediaDetected(gin::Arguments* args) {

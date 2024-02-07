@@ -40,6 +40,7 @@ class PlaylistRenderFrameObserver final
   // RenderFrameObserver:
   void OnDestruct() override;
   // mojom::ScriptConfigurator
+  void AddMediaSourceAPISuppressor(base::ReadOnlySharedMemoryRegion script) override;
   void AddMediaDetector(base::ReadOnlySharedMemoryRegion script) override;
 
   void BindScriptConfigurator(
@@ -48,14 +49,16 @@ class PlaylistRenderFrameObserver final
   bool EnsureConnectedToMediaHandler();
   void OnMediaHandlerDisconnect();
 
-  void HideMediaSourceAPI() const;
-  void InstallMediaDetector();
+  void Inject(const std::string& script_text,
+              v8::Local<v8::Context> context,
+              std::vector<v8::Local<v8::Value>> args = {}) const;
   void OnMediaDetected(gin::Arguments* args);
 
   int32_t isolated_world_id_;
   mojo::AssociatedReceiver<mojom::ScriptConfigurator>
       script_configurator_receiver_{this};
   mojo::Remote<playlist::mojom::PlaylistMediaHandler> media_handler_;
+  std::optional<std::string> media_source_api_suppressor_script_;
   std::optional<std::string> media_detector_script_;
   base::WeakPtrFactory<PlaylistRenderFrameObserver> weak_ptr_factory_{this};
 };

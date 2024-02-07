@@ -172,6 +172,24 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
                               });
 }
 
+// Disables the MediaSource API in hope of the page switching to
+// network-fetchable HTTPS URLs. This script is from
+// https://github.com/brave/brave-ios/blob/development/Sources/Brave/Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js
+std::string MediaDetectorComponentManager::GetMediaSourceAPISuppressorScript() {
+  return R"(
+    (function() {
+      if (
+        window.MediaSource ||
+        window.WebKitMediaSource ||
+        window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId
+      ) {
+        delete window.MediaSource;
+        delete window.WebKitMediaSource;
+      }
+    })
+  )";
+}
+
 std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     const GURL& url) {
   MaybeInitScripts();

@@ -27,15 +27,6 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
     return r.force_cosmetic_filtering;
   }
 
-  static bool hide_media_src_api(const blink::web_pref::WebPreferences& r) {
-    return r.hide_media_src_api;
-  }
-
-  static bool should_detect_media_files(
-      const blink::web_pref::WebPreferences& r) {
-    return r.should_detect_media_files;
-  }
-
   static bool Read(blink::mojom::WebPreferencesDataView r,
                    blink::web_pref::WebPreferences* out);
 };

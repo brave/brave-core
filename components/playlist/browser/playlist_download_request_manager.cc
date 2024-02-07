@@ -87,7 +87,7 @@ void PlaylistDownloadRequestManager::CreateWebContents(
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetAudioMuted(true);
   PlaylistTabHelper::MaybeCreateForWebContents(web_contents_.get(),
-                                               service_.get());
+                                               service_.get(), true);
   if (should_force_fake_ua ||
       base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
     DVLOG(2) << __func__ << " Faked UA to detect media files";
@@ -384,12 +384,9 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
     return;
   }
 
-  web_prefs->should_detect_media_files = true;
-
   if (web_contents_ && web_contents_.get() == web_contents) {
     // Background web contents.
     web_prefs->force_cosmetic_filtering = true;
-    web_prefs->hide_media_src_api = true;
   }
 }
 

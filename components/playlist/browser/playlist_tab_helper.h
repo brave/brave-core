@@ -28,7 +28,8 @@ class PlaylistTabHelper
       public mojom::PlaylistServiceObserver {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents,
-                                        playlist::PlaylistService* service);
+                                        playlist::PlaylistService* service,
+                                        bool is_background = false);
 
   ~PlaylistTabHelper() override;
 
@@ -104,7 +105,9 @@ class PlaylistTabHelper
   template <typename... Args>
   static void CreateForWebContents(content::WebContents*, Args&&...);
 
-  PlaylistTabHelper(content::WebContents* contents, PlaylistService* service);
+  PlaylistTabHelper(content::WebContents* contents,
+                    PlaylistService* service,
+                    bool is_background);
 
   void ResetData();
   void UpdateSavedItemFromCurrentContents();
@@ -117,6 +120,7 @@ class PlaylistTabHelper
   void OnPlaylistEnabledPrefChanged();
 
   raw_ptr<PlaylistService> service_;
+  bool is_background_;
 
   GURL target_url_;
   bool sent_extract_media_request_ = false;

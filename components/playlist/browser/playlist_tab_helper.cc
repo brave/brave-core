@@ -29,7 +29,8 @@ namespace playlist {
 // static
 void PlaylistTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents,
-    playlist::PlaylistService* service) {
+    playlist::PlaylistService* service,
+    bool is_background /* = false */) {
   if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     return;
   }
@@ -41,12 +42,15 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
   }
 
   content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-      contents, service);
+      contents, service, is_background);
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
-                                     PlaylistService* service)
-    : WebContentsUserData(*contents), service_(service) {
+                                     PlaylistService* service,
+                                     bool is_background)
+    : WebContentsUserData(*contents),
+      service_(service),
+      is_background_(is_background) {
   Observe(contents);
   CHECK(service_);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
@@ -190,6 +194,28 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
 
   if (!navigation_handle->IsInPrimaryMainFrame()) {
     return;
+  }
+  {
+    if (is_background_) {
+      const std::string script = service_->GetMediaSourceAPISuppressor();
+
+      base::WritableSharedMemoryRegion script_writable_shared_memory =
+          base::WritableSharedMemoryRegion::Create(script.size());
+      std::memcpy(script_writable_shared_memory.Map().memory(), script.data(),
+                  script.size());
+
+      base::ReadOnlySharedMemoryRegion script_readonly_shared_memory =
+          base::WritableSharedMemoryRegion::ConvertToReadOnly(
+              std::move(script_writable_shared_memory));
+      CHECK(script_readonly_shared_memory.IsValid());
+
+      mojo::AssociatedRemote<mojom::ScriptConfigurator> script_configurator;
+      navigation_handle->GetRenderFrameHost()
+          ->GetRemoteAssociatedInterfaces()
+          ->GetInterface(&script_configurator);
+      script_configurator->AddMediaSourceAPISuppressor(
+          std::move(script_readonly_shared_memory));
+    }
   }
 
   const std::string script = service_->GetMediaDetectorScript(
