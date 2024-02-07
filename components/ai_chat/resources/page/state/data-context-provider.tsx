@@ -228,6 +228,8 @@ function DataContextProvider (props: DataContextProviderProps) {
     getShouldSendPageContents()
   }
 
+  const isMobile = React.useMemo(() => loadTimeData.getBoolean('isMobile'), [])
+
   React.useEffect(() => {
     initialiseForTargetTab()
 
@@ -294,6 +296,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     shouldShowLongConversationInfo,
     showAgreementModal,
     shouldSendPageContents: shouldSendPageContents && siteInfo?.isContentAssociationPossible,
+    isMobile,
     setCurrentModel,
     switchToBasicModel,
     goPremium,
