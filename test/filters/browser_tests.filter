@@ -67,6 +67,7 @@
 -ServiceWorker/DeclarativeContentApiTestWithContextType.RulesPersistence/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdated/0
 -PersistentBackground/ContentScriptApiTestWithContextType.CannotScriptTheNewTabPage/0
+-PersistentBackground/ContentScriptApiTestWithContextType.ExtensionIframe/0
 -PersistentBackground/ExtensionApiTabTestWithContextType.OnUpdated/0
 -PersistentBackground/NTPInterceptionTest.ContentScript/0
 -PersistentBackground/DeclarativeContentApiTestWithContextType.RulesPersistence/0
