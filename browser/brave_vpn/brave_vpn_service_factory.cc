@@ -67,20 +67,15 @@ std::unique_ptr<KeyedService> BuildVpnService(
           user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
   vpn_service->set_delegate(std::make_unique<BraveVPNServiceDelegateWin>());
-  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
-    auto* observer_service =
-        brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
-            ->GetServiceForContext(context);
-    if (observer_service) {
-      observer_service->Observe(vpn_service.get());
-    }
-  } else {
-    auto* observer_service =
-        brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
-            ->GetServiceForContext(context);
-    if (observer_service) {
-      observer_service->Observe(vpn_service.get());
-    }
+  if (auto* wg_observer_service =
+          brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
+              ->GetServiceForContext(context)) {
+    wg_observer_service->Observe(vpn_service.get());
+  }
+  if (auto* dns_observer_service =
+          brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
+              ->GetServiceForContext(context)) {
+    dns_observer_service->Observe(vpn_service.get());
   }
 #endif
 
@@ -118,11 +113,8 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
 #if BUILDFLAG(IS_WIN)
-  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
-    DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
-  } else {
-    DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
-  }
+  DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
+  DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
 #endif
 }
 

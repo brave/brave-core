@@ -8,17 +8,19 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
-#include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
-#include "net/base/network_change_notifier.h"
+#include "components/prefs/pref_member.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -29,13 +31,27 @@ class PrefService;
 namespace brave_vpn {
 
 class BraveVPNRegionDataManager;
-struct Hostname;
+class ConnectionAPIImpl;
 
-// Interface for managing OS' vpn connection.
-class BraveVPNOSConnectionAPI
-    : public net::NetworkChangeNotifier::NetworkChangeObserver {
+// Interface for managing vpn connection & region data managing.
+//   * BraveVPNRegionDataManager: Manages region data.
+//   * ConnectionAPIImpl: Manages connection state.
+// All client should use this class to manage VPN connection.
+// This class will have proper concrete implemention of ConnectionAPIImpl
+// based on current protocol(ikev2/wireguard).
+class BraveVPNOSConnectionAPI {
  public:
-  ~BraveVPNOSConnectionAPI() override;
+  using ConnectionAPIImplGetter =
+      base::RepeatingCallback<std::unique_ptr<ConnectionAPIImpl>(
+          BraveVPNOSConnectionAPI*,
+          scoped_refptr<network::SharedURLLoaderFactory>,
+          bool)>;
+
+  explicit BraveVPNOSConnectionAPI(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* local_prefs,
+      base::RepeatingCallback<bool()> service_installer);
+  virtual ~BraveVPNOSConnectionAPI();
 
   class Observer : public base::CheckedObserver {
    public:
@@ -48,74 +64,45 @@ class BraveVPNOSConnectionAPI
     ~Observer() override = default;
   };
 
+  BraveVPNRegionDataManager& GetRegionDataManager();
+
   // Shared APIs implementation between IKEv2/Wireguard connections.
-  mojom::ConnectionState GetConnectionState() const;
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
-  BraveVPNRegionDataManager& GetRegionDataManager();
-  void ResetHostname();
+
   std::string GetHostname() const;
+
   void ResetConnectionState();
+  mojom::ConnectionState GetConnectionState() const;
+  void ToggleConnection();
+  void Connect();
+  void Disconnect();
+  void CheckConnection();
+
+  void SetSelectedRegion(const std::string& name);
+
   // Returns user friendly error string if existed.
   // Otherwise returns empty.
   std::string GetLastConnectionError() const;
-  void ToggleConnection();
+  void MaybeInstallSystemServices();
 
+  void NotifyConnectionStateChanged(mojom::ConnectionState state) const;
+  void NotifySelectedRegionChanged(const std::string& name) const;
+
+  void set_connection_api_impl_getter(ConnectionAPIImplGetter getter) {
+    connection_api_impl_getter_ = std::move(getter);
+  }
+
+  void UpdateConnectionAPIImpl();
+
+  PrefService* local_prefs() const { return local_prefs_; }
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
   void set_target_vpn_entry_name(const std::string& name) {
     target_vpn_entry_name_ = name;
   }
 
-  // Connection dependent APIs.
-  virtual void Connect() = 0;
-  virtual void Disconnect() = 0;
-  virtual void CheckConnection() = 0;
-  virtual void UpdateAndNotifyConnectionStateChange(
-      mojom::ConnectionState state);
-  virtual void SetSelectedRegion(const std::string& name) = 0;
-  virtual void FetchProfileCredentials() = 0;
-  virtual void MaybeInstallSystemServices();
-
- protected:
-  explicit BraveVPNOSConnectionAPI(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_prefs);
-
-  std::string GetCurrentEnvironment() const;
-  PrefService* local_prefs() { return local_prefs_; }
-  // True when do quick cancel.
-  bool QuickCancelIfPossible();
-  void ResetAPIRequestInstance();
-  BraveVpnAPIRequest* GetAPIRequest();
-  void SetLastConnectionError(const std::string& error);
-  void FetchHostnamesForRegion(const std::string& name);
-  void OnFetchHostnames(const std::string& region,
-                        const std::string& hostnames,
-                        bool success);
-  void ParseAndCacheHostnames(const std::string& region,
-                              const base::Value::List& hostnames_value);
-  // BraveVPNRegionDataManager callbacks
-  // Notify it's ready when |regions_| is not empty.
-  void NotifyRegionDataReady(bool ready) const;
-  void NotifySelectedRegionChanged(const std::string& name) const;
-  // net::NetworkChangeNotifier::NetworkChangeObserver
-  void OnNetworkChanged(
-      net::NetworkChangeNotifier::ConnectionType type) override;
-  void OnInstallSystemServicesCompleted(bool success);
-
-  // For now, this is called when Connect() is called.
-  // If system service installation is in-progress, connect request
-  // is queued and return true.
-  // Then, start connect after installation is done.
-  bool ScheduleConnectRequestIfNeeded();
-
-  // Installs system services (if neeeded) or is nullptr.
-  // Bound in brave_vpn::CreateBraveVPNConnectionAPI.
-  base::RepeatingCallback<bool()> install_system_service_callback_;
-
  private:
   friend class BraveVpnButtonUnitTest;
-
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
@@ -132,33 +119,48 @@ class BraveVPNOSConnectionAPI
   FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
                            SetSelectedRegion);
 
-  void SetConnectionStateForTesting(mojom::ConnectionState state);
+  std::string GetCurrentEnvironment() const;
 
-  raw_ptr<PrefService> local_prefs_;
+  // BraveVPNRegionDataManager callbacks
+  // Notify it's ready when |regions_| is not empty.
+  void NotifyRegionDataReady(bool ready) const;
 
-  std::unique_ptr<Hostname> hostname_;
-  std::string last_connection_error_;
-  // Only not null when there is active network request.
-  // When network request is done, we reset this so we can know
-  // whether we're waiting the response or not.
-  // We can cancel connecting request quickly when fetching hostnames or
-  // profile credentials is not yet finished by reset this.
-  std::unique_ptr<BraveVpnAPIRequest> api_request_;
+  void OnInstallSystemServicesCompleted(bool success);
+
+  // For now, this is called when Connect() is called.
+  // If system service installation is in-progress, connect request
+  // is queued and return true.
+  // Then, start connect after installation is done.
+  bool ScheduleConnectRequestIfNeeded();
+
+  // Installs system services (if neeeded) or is nullptr.
+  // Bound in brave_vpn::CreateBraveVPNConnectionAPI.
+  base::RepeatingCallback<bool()> install_system_service_callback_;
+
+  ConnectionAPIImplGetter connection_api_impl_getter_;
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  BooleanPrefMember wireguard_enabled_;
+#endif
+
+  raw_ptr<PrefService> local_prefs_ = nullptr;
+  std::string target_vpn_entry_name_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  mojom::ConnectionState connection_state_ =
-      mojom::ConnectionState::DISCONNECTED;
+  std::unique_ptr<ConnectionAPIImpl> connection_api_impl_;
   BraveVPNRegionDataManager region_data_manager_;
   base::ObserverList<Observer> observers_;
+
   // Used for tracking if the VPN dependencies are being installed.
   // Guard against calling install_system_service_callback_ while a call
   // is already in progress.
   bool install_in_progress_ = false;
+
   // Used for tracking if the VPN dependencies have been installed.
   // If the user has Brave VPN purchased and loaded with this profile
   // AND they did a system level install, we should call
   // install_system_service_callback_ once per browser open.
   base::OneShotEvent system_service_installed_event_;
-  std::string target_vpn_entry_name_;
+
   base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_factory_;
 };
 

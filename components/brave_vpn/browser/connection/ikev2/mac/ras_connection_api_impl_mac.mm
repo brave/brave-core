@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/mac/brave_vpn_ras_connection_api_mac.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/mac/ras_connection_api_impl_mac.h"
 
 #include <memory>
 
@@ -18,6 +18,7 @@
 #include "base/files/file_util.h"
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 // Referenced GuardianConnect implementation.
 // https://github.com/GuardianFirewall/GuardianConnect
@@ -148,30 +149,21 @@ NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
 
 }  // namespace
 
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNIKEv2ConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    base::RepeatingCallback<bool()> service_installer) {
-  // service_installer not currently used on macOS.
-  return std::make_unique<BraveVPNOSConnectionAPIMac>(url_loader_factory,
-                                                      local_prefs);
-}
-
-BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs)
-    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {
+RasConnectionAPIImplMac::RasConnectionAPIImplMac(
+    BraveVPNOSConnectionAPI* api,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : RasConnectionAPIImplBase(api, url_loader_factory) {
   ObserveVPNConnectionChange();
 }
 
-BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() {
+RasConnectionAPIImplMac::~RasConnectionAPIImplMac() {
   if (vpn_observer_) {
     [[NSNotificationCenter defaultCenter] removeObserver:vpn_observer_];
     vpn_observer_ = nil;
   }
 }
 
-void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
+void RasConnectionAPIImplMac::CreateVPNConnectionImpl(
     const BraveVPNConnectionInfo& info) {
   std::string store_pwd_error;
   if (StorePassword(base::SysUTF8ToNSString(info.password()),
@@ -239,7 +231,7 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
   }];
 }
 
-void BraveVPNOSConnectionAPIMac::ConnectImpl(const std::string& name) {
+void RasConnectionAPIImplMac::ConnectImpl(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
@@ -270,7 +262,7 @@ void BraveVPNOSConnectionAPIMac::ConnectImpl(const std::string& name) {
   }];
 }
 
-void BraveVPNOSConnectionAPIMac::DisconnectImpl(const std::string& name) {
+void RasConnectionAPIImplMac::DisconnectImpl(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
@@ -290,7 +282,7 @@ void BraveVPNOSConnectionAPIMac::DisconnectImpl(const std::string& name) {
   }];
 }
 
-void BraveVPNOSConnectionAPIMac::CheckConnectionImpl(const std::string& name) {
+void RasConnectionAPIImplMac::CheckConnectionImpl(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
@@ -322,7 +314,7 @@ void BraveVPNOSConnectionAPIMac::CheckConnectionImpl(const std::string& name) {
   }];
 }
 
-void BraveVPNOSConnectionAPIMac::ObserveVPNConnectionChange() {
+void RasConnectionAPIImplMac::ObserveVPNConnectionChange() {
   vpn_observer_ = [[NSNotificationCenter defaultCenter]
       addObserverForName:NEVPNStatusDidChangeNotification
                   object:nil
@@ -333,7 +325,7 @@ void BraveVPNOSConnectionAPIMac::ObserveVPNConnectionChange() {
               }];
 }
 
-bool BraveVPNOSConnectionAPIMac::IsPlatformNetworkAvailable() {
+bool RasConnectionAPIImplMac::IsPlatformNetworkAvailable() {
   // 0.0.0.0 is a special token that causes reachability to monitor the general
   // routing status of the device, both IPv4 and IPv6.
   struct sockaddr_in addr = {0};

@@ -6,20 +6,17 @@
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
-#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
-#include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
+#include "brave/components/brave_vpn/browser/connection/connection_api_impl.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -29,12 +26,21 @@ namespace brave_vpn {
 
 BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs)
+    PrefService* local_prefs,
+    base::RepeatingCallback<bool()> service_installer)
     : local_prefs_(local_prefs),
       url_loader_factory_(url_loader_factory),
       region_data_manager_(url_loader_factory, local_prefs),
       weak_factory_(this) {
   DCHECK(url_loader_factory_);
+  install_system_service_callback_ = std::move(service_installer);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  wireguard_enabled_.Init(
+      prefs::kBraveVPNWireguardEnabled, local_prefs_,
+      base::BindRepeating(&BraveVPNOSConnectionAPI::UpdateConnectionAPIImpl,
+                          weak_factory_.GetWeakPtr()));
+#endif
   // Safe to use Unretained here because |region_data_manager_| is owned
   // instance.
   region_data_manager_.set_selected_region_changed_callback(
@@ -42,16 +48,9 @@ BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI(
                           base::Unretained(this)));
   region_data_manager_.set_region_data_ready_callback(base::BindRepeating(
       &BraveVPNOSConnectionAPI::NotifyRegionDataReady, base::Unretained(this)));
-  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
-BraveVPNOSConnectionAPI::~BraveVPNOSConnectionAPI() {
-  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
-}
-
-mojom::ConnectionState BraveVPNOSConnectionAPI::GetConnectionState() const {
-  return connection_state_;
-}
+BraveVPNOSConnectionAPI::~BraveVPNOSConnectionAPI() = default;
 
 BraveVPNRegionDataManager& BraveVPNOSConnectionAPI::GetRegionDataManager() {
   return region_data_manager_;
@@ -63,11 +62,6 @@ void BraveVPNOSConnectionAPI::AddObserver(Observer* observer) {
 
 void BraveVPNOSConnectionAPI::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
-}
-
-void BraveVPNOSConnectionAPI::SetConnectionStateForTesting(
-    mojom::ConnectionState state) {
-  UpdateAndNotifyConnectionStateChange(state);
 }
 
 void BraveVPNOSConnectionAPI::NotifyRegionDataReady(bool ready) const {
@@ -83,166 +77,126 @@ void BraveVPNOSConnectionAPI::NotifySelectedRegionChanged(
   }
 }
 
-void BraveVPNOSConnectionAPI::OnNetworkChanged(
-    net::NetworkChangeNotifier::ConnectionType type) {
-  VLOG(1) << __func__ << " : " << type;
-  CheckConnection();
-}
+void BraveVPNOSConnectionAPI::UpdateConnectionAPIImpl() {
+  CHECK(connection_api_impl_getter_);
 
-BraveVpnAPIRequest* BraveVPNOSConnectionAPI::GetAPIRequest() {
-  if (!url_loader_factory_) {
-    CHECK_IS_TEST();
-    return nullptr;
+  // This could be called multiple times, so don't reset current connection
+  // if prefs is matched with current |connection_api_impl_|.
+  const bool wireguard_enabled =
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+      wireguard_enabled_.GetValue();
+#else
+      false;
+#endif
+
+  if (!connection_api_impl_) {
+    // Create new connection api impl.
+    VLOG(2) << __func__
+            << " : Create new connection api impl based on current prefs - "
+               "wireguard_enabled("
+            << wireguard_enabled << ">";
+    connection_api_impl_ = connection_api_impl_getter_.Run(
+        this, url_loader_factory_, wireguard_enabled);
+    return;
   }
 
-  if (!api_request_) {
-    api_request_ = std::make_unique<BraveVpnAPIRequest>(url_loader_factory_);
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  if (wireguard_enabled &&
+      connection_api_impl_->type() == ConnectionAPIImpl::Type::WIREGUARD) {
+    VLOG(2) << __func__ << " : Already have wireguard connection api impl.";
+    return;
   }
 
-  return api_request_.get();
+  if (!wireguard_enabled &&
+      connection_api_impl_->type() == ConnectionAPIImpl::Type::IKEV2) {
+    VLOG(2) << __func__ << " : Already have ikev2 connection api impl.";
+    return;
+  }
+#endif
+
+  VLOG(2) << __func__
+          << " : Create new connection api impl based on current prefs - "
+             "wireguard_enabled("
+          << wireguard_enabled << ">";
+  connection_api_impl_ = connection_api_impl_getter_.Run(
+      this, url_loader_factory_, wireguard_enabled);
 }
 
-void BraveVPNOSConnectionAPI::ResetHostname() {
-  hostname_.reset();
+mojom::ConnectionState BraveVPNOSConnectionAPI::GetConnectionState() const {
+  if (connection_api_impl_) {
+    return connection_api_impl_->GetConnectionState();
+  }
+
+  return mojom::ConnectionState::DISCONNECTED;
 }
 
 void BraveVPNOSConnectionAPI::ResetConnectionState() {
-  // Don't use UpdateAndNotifyConnectionStateChange() to update connection state
-  // and set state directly because we have a logic to ignore disconnected state
-  // when connect failed.
-  connection_state_ = mojom::ConnectionState::DISCONNECTED;
-  for (auto& obs : observers_) {
-    obs.OnConnectionStateChanged(connection_state_);
+  if (connection_api_impl_) {
+    connection_api_impl_->ResetConnectionState();
   }
 }
 
-void BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange(
-    mojom::ConnectionState state) {
-  // this is a simple state machine for handling connection state
-  if (connection_state_ == state) {
+void BraveVPNOSConnectionAPI::Connect() {
+  if (ScheduleConnectRequestIfNeeded()) {
     return;
   }
 
-  connection_state_ = state;
-  for (auto& obs : observers_) {
-    obs.OnConnectionStateChanged(connection_state_);
+  if (connection_api_impl_) {
+    connection_api_impl_->Connect();
   }
 }
 
-bool BraveVPNOSConnectionAPI::QuickCancelIfPossible() {
-  if (!api_request_) {
-    return false;
+void BraveVPNOSConnectionAPI::Disconnect() {
+  if (connection_api_impl_) {
+    connection_api_impl_->Disconnect();
   }
-
-  // We're waiting responce from vpn server.
-  // Can do quick cancel in this situation by cancel that request.
-  ResetAPIRequestInstance();
-  return true;
 }
+
+void BraveVPNOSConnectionAPI::CheckConnection() {
+  if (connection_api_impl_) {
+    connection_api_impl_->CheckConnection();
+  }
+}
+
+void BraveVPNOSConnectionAPI::SetSelectedRegion(const std::string& name) {
+  // TODO(simonhong): This method could be implemented here instead of impl
+  // class.
+  if (connection_api_impl_) {
+    connection_api_impl_->SetSelectedRegion(name);
+  }
+}
+
 std::string BraveVPNOSConnectionAPI::GetHostname() const {
-  return hostname_ ? hostname_->hostname : "";
-}
+  if (connection_api_impl_) {
+    return connection_api_impl_->GetHostname();
+  }
 
-void BraveVPNOSConnectionAPI::ResetAPIRequestInstance() {
-  api_request_.reset();
+  return {};
 }
 
 std::string BraveVPNOSConnectionAPI::GetLastConnectionError() const {
-  return last_connection_error_;
+  if (connection_api_impl_) {
+    return connection_api_impl_->GetLastConnectionError();
+  }
+
+  return {};
 }
 
-void BraveVPNOSConnectionAPI::SetLastConnectionError(const std::string& error) {
-  VLOG(2) << __func__ << " : " << error;
-  last_connection_error_ = error;
-}
-
-void BraveVPNOSConnectionAPI::FetchHostnamesForRegion(const std::string& name) {
-  // Hostname will be replaced with latest one.
-  hostname_.reset();
-
-  if (!GetAPIRequest()) {
-    CHECK_IS_TEST();
-    return;
+void BraveVPNOSConnectionAPI::ToggleConnection() {
+  if (connection_api_impl_) {
+    connection_api_impl_->ToggleConnection();
   }
-
-  // Unretained is safe here becasue this class owns request helper.
-  GetAPIRequest()->GetHostnamesForRegion(
-      base::BindOnce(&BraveVPNOSConnectionAPI::OnFetchHostnames,
-                     base::Unretained(this), name),
-      name);
-}
-
-void BraveVPNOSConnectionAPI::OnFetchHostnames(const std::string& region,
-                                               const std::string& hostnames,
-                                               bool success) {
-  if (!success) {
-    VLOG(2) << __func__ << " : failed to fetch hostnames for " << region;
-    UpdateAndNotifyConnectionStateChange(
-        mojom::ConnectionState::CONNECT_FAILED);
-    return;
-  }
-
-  ResetAPIRequestInstance();
-
-  std::optional<base::Value> value = base::JSONReader::Read(hostnames);
-  if (value && value->is_list()) {
-    ParseAndCacheHostnames(region, value->GetList());
-    return;
-  }
-
-  VLOG(2) << __func__ << " : failed to fetch hostnames for " << region;
-  UpdateAndNotifyConnectionStateChange(mojom::ConnectionState::CONNECT_FAILED);
-}
-
-void BraveVPNOSConnectionAPI::ParseAndCacheHostnames(
-    const std::string& region,
-    const base::Value::List& hostnames_value) {
-  std::vector<Hostname> hostnames = ParseHostnames(hostnames_value);
-
-  if (hostnames.empty()) {
-    VLOG(2) << __func__ << " : got empty hostnames list for " << region;
-    UpdateAndNotifyConnectionStateChange(
-        mojom::ConnectionState::CONNECT_FAILED);
-    return;
-  }
-
-  hostname_ = PickBestHostname(hostnames);
-  if (hostname_->hostname.empty()) {
-    VLOG(2) << __func__ << " : got empty hostnames list for " << region;
-    UpdateAndNotifyConnectionStateChange(
-        mojom::ConnectionState::CONNECT_FAILED);
-    return;
-  }
-
-  VLOG(2) << __func__ << " : Picked " << hostname_->hostname << ", "
-          << hostname_->display_name << ", " << hostname_->is_offline << ", "
-          << hostname_->capacity_score;
-
-  if (!GetAPIRequest()) {
-    CHECK_IS_TEST();
-    return;
-  }
-
-  // Get profile credentials it to create OS VPN entry.
-  VLOG(2) << __func__ << " : request profile credential:"
-          << GetBraveVPNPaymentsEnv(GetCurrentEnvironment());
-  FetchProfileCredentials();
 }
 
 std::string BraveVPNOSConnectionAPI::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
 
-void BraveVPNOSConnectionAPI::ToggleConnection() {
-  const bool can_disconnect =
-      (GetConnectionState() == mojom::ConnectionState::CONNECTED ||
-       GetConnectionState() == mojom::ConnectionState::CONNECTING);
-  can_disconnect ? Disconnect() : Connect();
-}
-
 void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
   if (!install_system_service_callback_) {
     VLOG(2) << __func__ << " : no install system service callback set";
+
+    UpdateConnectionAPIImpl();
     return;
   }
 
@@ -283,6 +237,10 @@ void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
     EnableWireguardIfPossible(local_prefs_);
 #endif
     system_service_installed_event_.Signal();
+  } else {
+    // On success, UpdateConnectionAPIImpl() will be called by prefs changing
+    // notification.
+    UpdateConnectionAPIImpl();
   }
   install_in_progress_ = false;
 }
@@ -296,6 +254,13 @@ bool BraveVPNOSConnectionAPI::ScheduleConnectRequestIfNeeded() {
       FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPI::Connect,
                                 weak_factory_.GetWeakPtr()));
   return true;
+}
+
+void BraveVPNOSConnectionAPI::NotifyConnectionStateChanged(
+    mojom::ConnectionState state) const {
+  for (auto& obs : observers_) {
+    obs.OnConnectionStateChanged(state);
+  }
 }
 
 }  // namespace brave_vpn

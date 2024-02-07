@@ -10,8 +10,8 @@ assert(!is_android)
 
 source_set("ikev2") {
   sources = [
-    "brave_vpn_ras_connection_api_base.cc",
-    "brave_vpn_ras_connection_api_base.h",
+    "ras_connection_api_impl_base.cc",
+    "ras_connection_api_impl_base.h",
   ]
   deps = [
     "//base",

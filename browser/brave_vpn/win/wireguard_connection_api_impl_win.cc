@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_connection_api_win.h"
+#include "brave/browser/brave_vpn/win/wireguard_connection_api_impl_win.h"
 
 #include <memory>
 #include <tuple>
 #include <utility>
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
 
@@ -23,27 +23,14 @@ constexpr int kWireguardServiceRestartTimeoutSec = 5;
 
 using ConnectionState = mojom::ConnectionState;
 
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    base::RepeatingCallback<bool()> service_installer) {
-  return std::make_unique<BraveVPNWireguardConnectionAPIWin>(
-      url_loader_factory, local_prefs, service_installer);
-}
+WireguardConnectionAPIImplWin::WireguardConnectionAPIImplWin(
+      BraveVPNOSConnectionAPI* api,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : WireguardConnectionAPIImplBase(api, url_loader_factory) {}
 
-BraveVPNWireguardConnectionAPIWin::BraveVPNWireguardConnectionAPIWin(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    base::RepeatingCallback<bool()> service_installer)
-    : BraveVPNWireguardConnectionAPIBase(url_loader_factory, local_prefs) {
-  if (service_installer) {
-    install_system_service_callback_ = std::move(service_installer);
-  }
-}
+WireguardConnectionAPIImplWin::~WireguardConnectionAPIImplWin() = default;
 
-BraveVPNWireguardConnectionAPIWin::~BraveVPNWireguardConnectionAPIWin() {}
-
-void BraveVPNWireguardConnectionAPIWin::Disconnect() {
+void WireguardConnectionAPIImplWin::Disconnect() {
   if (GetConnectionState() == ConnectionState::DISCONNECTED) {
     VLOG(2) << __func__ << " : already disconnected";
     return;
@@ -52,11 +39,11 @@ void BraveVPNWireguardConnectionAPIWin::Disconnect() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 
   brave_vpn::wireguard::DisableBraveVpnWireguardService(
-      base::BindOnce(&BraveVPNWireguardConnectionAPIWin::OnDisconnected,
+      base::BindOnce(&WireguardConnectionAPIImplWin::OnDisconnected,
                                 weak_factory_.GetWeakPtr()));
 }
 
-void BraveVPNWireguardConnectionAPIWin::CheckConnection() {
+void WireguardConnectionAPIImplWin::CheckConnection() {
   auto state = IsWindowsServiceRunning(
                    brave_vpn::GetBraveVpnWireguardTunnelServiceName())
                    ? ConnectionState::CONNECTED
@@ -64,7 +51,7 @@ void BraveVPNWireguardConnectionAPIWin::CheckConnection() {
   UpdateAndNotifyConnectionStateChange(state);
 }
 
-void BraveVPNWireguardConnectionAPIWin::PlatformConnectImpl(
+void WireguardConnectionAPIImplWin::PlatformConnectImpl(
     const wireguard::WireguardProfileCredentials& credentials) {
   auto vpn_server_hostname = GetHostname();
   auto config = brave_vpn::wireguard::CreateWireguardConfig(
@@ -78,22 +65,22 @@ void BraveVPNWireguardConnectionAPIWin::PlatformConnectImpl(
   brave_vpn::wireguard::EnableBraveVpnWireguardService(
       config.value(),
       base::BindOnce(
-          &BraveVPNWireguardConnectionAPIWin::OnWireguardServiceLaunched,
+          &WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
           weak_factory_.GetWeakPtr()));
 }
 
-void BraveVPNWireguardConnectionAPIWin::OnServiceStopped(int mask) {
+void WireguardConnectionAPIImplWin::OnServiceStopped(int mask) {
   // Postpone check because the service can be restarted by the system due to
   // configured failure actions.
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
-      base::BindOnce(&BraveVPNWireguardConnectionAPIWin::CheckConnection,
+      base::BindOnce(&WireguardConnectionAPIImplWin::CheckConnection,
                      weak_factory_.GetWeakPtr()),
       base::Seconds(kWireguardServiceRestartTimeoutSec));
   ResetServiceWatcher();
 }
 
-void BraveVPNWireguardConnectionAPIWin::RunServiceWatcher() {
+void WireguardConnectionAPIImplWin::RunServiceWatcher() {
   if (service_watcher_ && service_watcher_->IsWatching()) {
     return;
   }
@@ -102,27 +89,27 @@ void BraveVPNWireguardConnectionAPIWin::RunServiceWatcher() {
           brave_vpn::GetBraveVpnWireguardTunnelServiceName(),
           SERVICE_NOTIFY_STOPPED,
           base::BindRepeating(
-              &BraveVPNWireguardConnectionAPIWin::OnServiceStopped,
+              &WireguardConnectionAPIImplWin::OnServiceStopped,
               weak_factory_.GetWeakPtr()))) {
     VLOG(1) << "Unable to set service watcher";
   }
 }
 
-void BraveVPNWireguardConnectionAPIWin::ResetServiceWatcher() {
+void WireguardConnectionAPIImplWin::ResetServiceWatcher() {
   if (service_watcher_) {
     service_watcher_.reset();
   }
 }
 
-void BraveVPNWireguardConnectionAPIWin::OnWireguardServiceLaunched(
+void WireguardConnectionAPIImplWin::OnWireguardServiceLaunched(
     bool success) {
   UpdateAndNotifyConnectionStateChange(
       success ? ConnectionState::CONNECTED : ConnectionState::CONNECT_FAILED);
 }
 
-void BraveVPNWireguardConnectionAPIWin::OnConnectionStateChanged(
+void WireguardConnectionAPIImplWin::UpdateAndNotifyConnectionStateChange(
     mojom::ConnectionState state) {
-  BraveVPNWireguardConnectionAPIBase::OnConnectionStateChanged(state);
+  WireguardConnectionAPIImplBase::UpdateAndNotifyConnectionStateChange(state);
   if (state == ConnectionState::CONNECTED) {
     RunServiceWatcher();
     return;
