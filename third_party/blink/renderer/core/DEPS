@@ -1,3 +1,4 @@
 # Inline upstream rules.
 from brave_chromium_utils import inline_file
 inline_file('//third_party/blink/renderer/core/DEPS', globals(), locals())
+include_rules += [ "+third_party/blink/renderer/bindings/modules" ]
