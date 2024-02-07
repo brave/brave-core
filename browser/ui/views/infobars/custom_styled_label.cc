@@ -12,7 +12,7 @@
 
 CustomStyledLabel::~CustomStyledLabel() = default;
 
-void CustomStyledLabel::Layout() {
+void CustomStyledLabel::Layout(PassKey) {
   // Link click doesn't work when StyledLabel is multilined.
   // And there is upstream bug -
   // https://bugs.chromium.org/p/chromium/issues/detail?id=1371538 Below code is
@@ -32,7 +32,7 @@ void CustomStyledLabel::Layout() {
   }
 
   last_layout_size_ = size();
-  StyledLabel::Layout();
+  LayoutSuperclass<StyledLabel>(this);
 }
 
 std::unique_ptr<views::Label> CustomStyledLabel::CreateLabel(

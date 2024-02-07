@@ -281,9 +281,10 @@ void SidebarContainerView::AddChildViews() {
   sidebar_control_view_->SetVisible(false);
 }
 
-void SidebarContainerView::Layout() {
+void SidebarContainerView::Layout(PassKey) {
   if (!initialized_) {
-    return View::Layout();
+    LayoutSuperclass<views::View>(this);
+    return;
   }
 
   // As control view uses its own layer, we should set its size exactly.

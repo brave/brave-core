@@ -260,7 +260,7 @@ void BraveToolbarView::OnShowBookmarksButtonChanged() {
 void BraveToolbarView::OnLocationBarIsWideChanged() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 
@@ -370,8 +370,8 @@ void BraveToolbarView::ViewHierarchyChanged(
   }
 }
 
-void BraveToolbarView::Layout() {
-  ToolbarView::Layout();
+void BraveToolbarView::Layout(PassKey) {
+  LayoutSuperclass<ToolbarView>(this);
 
   if (!brave_initialized_)
     return;

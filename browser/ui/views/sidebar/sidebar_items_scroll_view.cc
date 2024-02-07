@@ -126,7 +126,7 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
 
 SidebarItemsScrollView::~SidebarItemsScrollView() = default;
 
-void SidebarItemsScrollView::Layout() {
+void SidebarItemsScrollView::Layout(PassKey) {
   // |contents_view_| always has it's preferred size. and this scroll view only
   // shows some parts of it if scroll view can't get enough rect.
   contents_view_->SizeToPreferredSize();
@@ -217,7 +217,7 @@ void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
 
   // Calculate and set this view's bounds to determine whether this view is
   // scroll mode or not.
-  parent()->Layout();
+  DeprecatedLayoutImmediately();
 
   // Only show item added feedback bubble on active browser window if this new
   // item is explicitely by user gesture.

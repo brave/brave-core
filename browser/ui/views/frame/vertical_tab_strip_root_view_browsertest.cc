@@ -51,7 +51,7 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
 
   void ToggleVerticalTabStrip() {
     brave::ToggleVerticalTabStrip(browser());
-    browser_non_client_frame_view()->Layout();
+    browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
   VerticalTabStripWidgetDelegateView* vtab_tab_strip_widget_delegate_view() {

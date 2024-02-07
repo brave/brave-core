@@ -109,7 +109,7 @@ void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
   host_->SetPreferredSize(region_view_->GetMinimumSize());
 
   // The position could be changed, so we should lay out again.
-  host_->parent()->Layout();
+  host_->parent()->DeprecatedLayoutImmediately();
 
   // Lay out the widget manually in case the host doesn't arrange it.
   UpdateWidgetBounds();
@@ -209,7 +209,7 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
   }
 
   if (need_to_call_layout) {
-    Layout();
+    DeprecatedLayoutImmediately();
   }
 
 #if BUILDFLAG(IS_MAC)

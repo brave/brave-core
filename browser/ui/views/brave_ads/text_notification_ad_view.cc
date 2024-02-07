@@ -87,7 +87,7 @@ void TextNotificationAdView::UpdateContents(
 
   UpdateBodyLabel();
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 

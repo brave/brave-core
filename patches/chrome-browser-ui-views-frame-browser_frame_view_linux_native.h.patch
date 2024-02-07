@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h b/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h
+index f980503b847d6f27885c06d296fc5cbffeca1143..7cdede7421379b6487f0c201c1accaa3b62e7a69 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h
++++ b/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h
+@@ -28,7 +28,6 @@ class BrowserFrameViewLinuxNative : public BrowserFrameViewLinux {
+ 
+   ~BrowserFrameViewLinuxNative() override;
+ 
+- protected:
+   // BrowserFrameViewLinux:
+   float GetRestoredCornerRadiusDip() const override;
+   int GetTranslucentTopAreaHeight() const override;

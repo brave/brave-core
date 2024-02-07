@@ -33,8 +33,8 @@ BraveWaybackMachineInfoBarView::BraveWaybackMachineInfoBarView(
 
 BraveWaybackMachineInfoBarView::~BraveWaybackMachineInfoBarView() = default;
 
-void BraveWaybackMachineInfoBarView::Layout() {
-  InfoBarView::Layout();
+void BraveWaybackMachineInfoBarView::Layout(PassKey) {
+  LayoutSuperclass<InfoBarView>(this);
   // |sub_views_| occupies from the beginning.
   // Don't adjust child view's height. Just use their preferred height.
   // It can cause infinite Layout loop because of infobar's height

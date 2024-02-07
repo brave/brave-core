@@ -40,7 +40,7 @@ class BraveToolbarView : public ToolbarView,
   void UpdateHorizontalPadding();
 
   void Init() override;
-  void Layout() override;
+  void Layout(PassKey) override;
   void Update(content::WebContents* tab) override;
   void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();

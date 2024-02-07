@@ -275,7 +275,7 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
 
   // Should force tabs to layout as they might not change bounds, which makes
   // insets not updated.
-  base::ranges::for_each(children(), &views::View::Layout);
+  base::ranges::for_each(children(), &views::View::DeprecatedLayoutImmediately);
 }
 
 void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {

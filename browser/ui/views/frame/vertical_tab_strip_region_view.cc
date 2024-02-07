@@ -358,8 +358,8 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
         cp->GetColor(kColorBraveVerticalTabNTBShortcutTextColor));
   }
 
-  void Layout() override {
-    BraveNewTabButton::Layout();
+  void Layout(PassKey) override {
+    LayoutSuperclass<BraveNewTabButton>(this);
 
     // FlexLayout could set the ink drop container invisible.
     if (!ink_drop_container()->GetVisible()) {
@@ -441,7 +441,7 @@ class VerticalTabStripScrollContentsView : public views::View {
     base::AutoReset<bool> in_preferred_size_change(&in_preferred_size_changed_,
                                                    true);
     container_->set_layout_dirty({});
-    container_->Layout();
+    container_->DeprecatedLayoutImmediately();
   }
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
@@ -879,7 +879,7 @@ gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
                                   /*ignore_animation=*/true);
 }
 
-void VerticalTabStripRegionView::Layout() {
+void VerticalTabStripRegionView::Layout(PassKey) {
   if (!layout_dirty_ && last_size_ == size()) {
     return;
   }
@@ -989,7 +989,7 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
   UpdateNewTabButtonVisibility();
 
   PreferredSizeChanged();
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void VerticalTabStripRegionView::OnThemeChanged() {

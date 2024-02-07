@@ -31,7 +31,7 @@ WebDiscoveryInfoBarDelegate* WebDiscoveryInfoBarView::GetDelegate() {
   return static_cast<WebDiscoveryInfoBarDelegate*>(delegate());
 }
 
-void WebDiscoveryInfoBarView::Layout() {
+void WebDiscoveryInfoBarView::Layout(PassKey) {
   // Don't need to layout base class's elements as our |content_view_| covers
   // all area except bottom separator.
   content_view_->SetBounds(0, OffsetY(content_view_), width(),

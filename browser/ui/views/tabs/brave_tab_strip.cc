@@ -408,7 +408,7 @@ TabContainer* BraveTabStrip::GetTabContainerForTesting() {
   return &tab_container_.get();  // IN-TEST
 }
 
-void BraveTabStrip::Layout() {
+void BraveTabStrip::Layout(PassKey) {
   if (ShouldShowVerticalTabs()) {
     // Chromium implementation limits the height of tab strip, which we don't
     // want.
@@ -417,13 +417,13 @@ void BraveTabStrip::Layout() {
       if (view->bounds() != bounds) {
         view->SetBoundsRect(GetLocalBounds());
       } else if (view == &tab_container_.get()) {
-        view->Layout();
+        view->DeprecatedLayoutImmediately();
       }
     }
     return;
   }
 
-  TabStrip::Layout();
+  LayoutSuperclass<TabStrip>(this);
 }
 
 void BraveTabStrip::OnPaintBackground(gfx::Canvas* canvas) {

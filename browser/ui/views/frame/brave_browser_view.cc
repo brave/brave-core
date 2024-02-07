@@ -307,7 +307,7 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
@@ -450,13 +450,13 @@ void BraveBrowserView::ShowReaderModeToolbar() {
     reader_mode_toolbar_view_->SetVisible(true);
   }
 
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveBrowserView::HideReaderModeToolbar() {
   if (reader_mode_toolbar_view_ && reader_mode_toolbar_view_->GetVisible()) {
     reader_mode_toolbar_view_->SetVisible(false);
-    Layout();
+    DeprecatedLayoutImmediately();
   }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
@@ -819,8 +819,8 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   }
 }
 
-void BraveBrowserView::Layout() {
-  BrowserView::Layout();
+void BraveBrowserView::Layout(PassKey) {
+  LayoutSuperclass<BrowserView>(this);
   UpdateWebViewRoundedCorners();
 }
 
