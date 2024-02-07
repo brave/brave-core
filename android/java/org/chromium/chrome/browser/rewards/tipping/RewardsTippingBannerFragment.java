@@ -178,7 +178,8 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
                 Button web3Button = mContentView.findViewById(R.id.use_web3_wallet_button);
                 if (mBannerInfo != null) {
                     String web3Url = mBannerInfo.getWeb3Url();
-                    if (!TextUtils.isEmpty(web3Url)) {
+                    if (!TextUtils.isEmpty(web3Url)
+                            && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity())) {
                         web3Button.setVisibility(View.VISIBLE);
                         web3Button.setOnClickListener(
                                 v -> {
@@ -371,6 +372,9 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
     }
 
     private void showWarningMessage(View view) {
+        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity())) {
+            return;
+        }
         View warningLayout = view.findViewById(R.id.tipping_warning_message_layout);
         warningLayout.setVisibility(View.VISIBLE);
         warningLayout.setBackground(

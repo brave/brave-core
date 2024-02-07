@@ -153,6 +153,12 @@ public class BraveRewardsPanel
 
     private static final int CLICK_DISABLE_INTERVAL = 1000; // In milliseconds
 
+    private static final String SELF_CUSTODY_AVAILABLE = "self_custody_available";
+    private static final String WALLET_DISCONNECTED = "wallet_disconnected";
+    private static final String UPHOLD_BAT_NOT_ALLOWED = "uphold_bat_not_allowed";
+    private static final String UPHOLD_INSUFFICIENT_CAPABILITIES =
+            "uphold_insufficient_capabilities";
+
     public enum NotificationClickAction {
         DO_NOTHING,
         RECONNECT,
@@ -504,7 +510,8 @@ public class BraveRewardsPanel
                 PorterDuff.Mode.SRC_IN));
 
         int rewardsSummaryVisibility = View.VISIBLE;
-        if (mExternalWallet != null && mExternalWallet.getType() != BraveWalletProvider.SOLANA) {
+        if (mExternalWallet != null
+                && BraveWalletProvider.SOLANA.equals(mExternalWallet.getType())) {
             rewardsSummaryVisibility = View.GONE;
         }
         mRewardsSummaryDetailLayout.setVisibility(rewardsSummaryVisibility);
@@ -581,9 +588,16 @@ public class BraveRewardsPanel
             return;
         }
 
-        if (mExternalWallet == null
-                || (mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
-                        && type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT)) {
+        if (mExternalWallet == null || mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED) {
+            return;
+        }
+
+        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GENERAL
+                && args.length > 0
+                && args[0].equals(SELF_CUSTODY_AVAILABLE)) {
+            if (mBraveRewardsNativeWorker != null) {
+                mBraveRewardsNativeWorker.DeleteNotification(mCurrentNotificationId);
+            }
             return;
         }
 
@@ -759,7 +773,7 @@ public class BraveRewardsPanel
                 notificationClaimSubText.setVisibility(View.GONE);
                 String errorType = args[0];
                 switch (errorType) {
-                    case "wallet_disconnected":
+                    case WALLET_DISCONNECTED:
                         actionNotificationButton.setText(mPopupView.getResources().getString(
                                 R.string.logged_out_notification_action_text));
                         notificationClickAction = NotificationClickAction.RECONNECT;
@@ -780,7 +794,7 @@ public class BraveRewardsPanel
 
                         btnVerifyWallet.setText(mPopupView.getResources().getString(textId));
                         break;
-                    case "uphold_bat_not_allowed":
+                    case UPHOLD_BAT_NOT_ALLOWED:
                         actionNotificationButton.setText(
                                 mPopupView.getResources().getString(R.string.ok));
                         notificationClickAction = NotificationClickAction.DO_NOTHING;
@@ -790,7 +804,7 @@ public class BraveRewardsPanel
                                 R.string.bat_unavailable_notification_text);
                         notificationIcon = R.drawable.ic_notification_error;
                         break;
-                    case "uphold_insufficient_capabilities":
+                    case UPHOLD_INSUFFICIENT_CAPABILITIES:
                         actionNotificationButton.setText(
                                 mPopupView.getResources().getString(R.string.ok));
                         notificationClickAction = NotificationClickAction.DO_NOTHING;
@@ -1866,8 +1880,7 @@ public class BraveRewardsPanel
                     && (walletType.equals(BraveWalletProvider.UPHOLD)
                             || walletType.equals(BraveWalletProvider.BITFLYER)
                             || walletType.equals(BraveWalletProvider.GEMINI)
-                            || walletType.equals(BraveWalletProvider.ZEBPAY)
-                            || walletType.equals(BraveWalletProvider.SOLANA))) {
+                            || walletType.equals(BraveWalletProvider.ZEBPAY))) {
                 mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
                         .setVisibility(View.GONE);
                 mPopupView.findViewById(R.id.rewards_from_ads_summary_layout)
