@@ -189,11 +189,12 @@
 - (void)sendFeedback:(NSString*)category
             feedback:(NSString*)feedback
             ratingId:(NSString*)ratingId
-            sendPageUrl:(bool)sendPageUrl
+         sendPageUrl:(bool)sendPageUrl
           completion:(void (^)(bool))completion {
-  driver_->SendFeedback(
-      base::SysNSStringToUTF8(category), base::SysNSStringToUTF8(feedback),
-      base::SysNSStringToUTF8(ratingId), sendPageUrl, base::BindOnce(completion));
+  driver_->SendFeedback(base::SysNSStringToUTF8(category),
+                        base::SysNSStringToUTF8(feedback),
+                        base::SysNSStringToUTF8(ratingId), sendPageUrl,
+                        base::BindOnce(completion));
 }
 
 - (bool)canShowPremiumPrompt {
