@@ -132,6 +132,7 @@ public class Utils {
     public static final String ENS_OFFCHAIN_LEARN_MORE_URL =
             "https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
     public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
+    public static final String BRAVE_TERMS_OF_USE_URL = "https://brave.com/terms-of-use/";
     public static final String NAME = "name";
     public static final String COIN_TYPE = "coinType";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
@@ -1355,22 +1356,26 @@ public class Utils {
     }
 
     /**
-     * This method should be used to make substring of a string clickable
-     * Example: This is <ph name="START">%1$s</ph>Clickable<ph name="END">%2$s</ph> text.
+     * This method should be used to make substring of a string clickable Example: This is <ph
+     * name="START">%1$s</ph>Clickable<ph name="END">%2$s</ph> text.
      *
-     * @param context         The context
-     * @param stringRes       The id of resource string
+     * @param context The context
+     * @param stringRes The id of resource string
      * @param onClickListener The callback when clickable substring is clicked.
      */
+    @NonNull
     public static SpannableString createSpanForSurroundedPhrase(
-            Context context, @StringRes int stringRes, View.OnClickListener onClickListener) {
+            @NonNull Context context,
+            @StringRes int stringRes,
+            @NonNull View.OnClickListener onClickListener) {
         String htmlString =
                 String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
         SpannableString spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
-            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(
-                    context, R.color.brave_link, (view) -> { onClickListener.onClick(view); });
+            NoUnderlineClickableSpan linkSpan =
+                    new NoUnderlineClickableSpan(
+                            context, R.color.brave_link, onClickListener::onClick);
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/setup_wallet_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
+    android:fillViewport="true"
+    android:theme="@style/BraveWalletOnboarding">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/before_we_begin"
+            style="@style/BraveWalletTextViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="18dp"
+            android:text="@string/before_we_begin"
+            android:textColor="@color/wallet_text_color"
+            android:lineSpacingExtra="2sp"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/wallet_accept_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="40dp"
+            android:layout_below="@+id/before_we_begin"
+            android:layout_alignParentStart="true"
+            android:text="@string/wallet_accept_items"
+            android:textColor="@color/wallet_onboarding_secondary_text_color"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp"/>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/self_custody_check_box"
+            style="@style/BraveWalletCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/wallet_accept_items"
+            android:paddingStart="8dp"
+            android:text="@string/understand_self_custody"
+            android:textColor="@color/wallet_text_color"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp"
+            android:gravity="top|start"/>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/terms_of_use_check_box"
+            style="@style/BraveWalletCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@+id/self_custody_check_box"
+            android:layout_alignParentStart="true"
+            android:paddingStart="8dp"
+            android:textColor="@color/wallet_text_color"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/continue_button"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="@string/continue_text"
+            android:enabled="false"
+            android:alpha="0.5"
+            android:layout_marginBottom="40dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            style="@style/BraveWalletOnboardingButton"/>
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

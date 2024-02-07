@@ -2001,13 +2001,16 @@ Are you sure you want to do this?
       Deposit
     </message>
     <message name="IDS_DEFI_SECURE_STORAGE" desc="Brave Wallet onboarding text">
-      Welcome to the new Brave Wallet
+      Browser native.\nSelf-custody.\nAnd multi-chain.
     </message>
     <message name="IDS_DEFI_SECURE_STORAGE_TEXT" desc="Brave Wallet onboarding text">
-      Hold crypto assets in your custody and track portfolio performance. All right from the Brave privacy browser.
+      Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana, Filecoin, and more.
     </message>
-    <message name="IDS_SETUP_CRYPTO" desc="Brave Wallet onboarding button text">
-      Get started
+    <message name="IDS_SETUP_CRYPTO" desc="Brave Wallet onboarding new wallet title">
+      Need a new wallet?
+    </message>
+    <message name="IDS_SETUP_CRYPTO_DESCRIPTION" desc="Brave Wallet onboarding new wallet description">
+      Get started with Brave Wallet within minutes
     </message>
     <message name="IDS_BACKUP_YOUR_WALLET" desc="Brave Wallet onboarding text">
       Backup your wallet now!
@@ -2023,6 +2026,15 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.
+    </message>
+    <message name="IDS_WALLET_ACCEPT_ITEMS" desc="Brave Wallet creation subtitle">
+      We require that you acknowledge the items below
+    </message>
+    <message name="IDS_UNDERSTAND_SELF_CUSTODY" desc="Brave Wallet self-custody explaination text">
+      I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.
+    </message>
+    <message name="IDS_ACCEPT_TERMS_OF_USE" desc="Brave Wallet terms of use text">
+      I have read and agree to the <ph name="CLICK_START">%1$s</ph>Terms of Use<ph name="CLICK_END">%2$s</ph>.
     </message>
     <message name="IDS_YOUR_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Your recovery phrase
@@ -2162,8 +2174,17 @@ Are you sure you want to do this?
     <message name="IDS_VERIFY" desc="Brave Wallet onboarding text">
       Verify
     </message>
-    <message name="IDS_RESTORE" desc="Brave Wallet onboarding text">
+    <message name="IDS_RESTORE" desc="Brave Wallet restore text">
       Restore
+    </message>
+    <message name="IDS_ALREADY_HAVE_A_WALLET" desc="Brave Wallet onboarding restore title">
+      Already have a wallet?
+    </message>
+    <message name="IDS_BEFORE_WE_BEGIN" desc="Brave Wallet term of use screen title">
+      Before we begin
+    </message>
+    <message name="IDS_ALREADY_HAVE_A_WALLET_DESCRIPTION" desc="Brave Wallet onboarding restore description">
+      Import your existing wallet
     </message>
     <message name="IDS_UNLOCK" desc="Brave Wallet onboarding text">
       Unlock

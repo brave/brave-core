@@ -5,22 +5,25 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 public class NavigationItem {
-    private final String title;
-    private final Fragment fragment;
+    @NonNull private final String mTitle;
+    @NonNull private final Fragment mFragment;
 
-    public NavigationItem(String title, Fragment fragment) {
-        this.title = title;
-        this.fragment = fragment;
+    public NavigationItem(@NonNull final String title, @NonNull final Fragment fragment) {
+        this.mTitle = title;
+        this.mFragment = fragment;
     }
 
+    @NonNull
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
+    @NonNull
     public Fragment getFragment() {
-        return fragment;
+        return mFragment;
     }
 }

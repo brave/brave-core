@@ -14,23 +14,28 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapter {
-    private List<NavigationItem> mNavigationItems = new ArrayList<>();
+    private final List<NavigationItem> mNavigationItems = new ArrayList<>();
 
-    public void setNavigationItems(List<NavigationItem> mNavigationItems) {
-        this.mNavigationItems = mNavigationItems;
+    public void setNavigationItems(@NonNull final List<NavigationItem> navigationItems) {
+        mNavigationItems.clear();
+        mNavigationItems.addAll(navigationItems);
     }
 
-    public void replaceWithNavigationItem(NavigationItem navigationItem, int index) {
-        replaceWithNavigationItems(Collections.singletonList(navigationItem), index);
-    }
-
-    public void replaceWithNavigationItems(List<NavigationItem> navigationItems, int index) {
-        this.mNavigationItems = this.mNavigationItems.subList(0, index);
-        this.mNavigationItems.addAll(navigationItems);
+    /**
+     * Replaces all navigation items starting from a given index.
+     *
+     * @param navigationItems Navigation items to add.
+     * @param index Index pointing to the first item that will be replaced.
+     */
+    public void replaceWithNavigationItems(
+            @NonNull final List<NavigationItem> navigationItems, final int index) {
+        // Clear the list from the index (included).
+        mNavigationItems.subList(index, mNavigationItems.size()).clear();
+        // Append new navigation items to the list.
+        mNavigationItems.addAll(navigationItems);
     }
 
     public CryptoWalletOnboardingPagerAdapter(FragmentManager fm) {

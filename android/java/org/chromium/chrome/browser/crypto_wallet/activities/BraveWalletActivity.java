@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -42,6 +43,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.Onboarding
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingRestoreWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingSecurePasswordFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingTermsOfUseFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
@@ -76,6 +78,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         // Unlock action type triggered when accessing the locked Wallet.
         UNLOCK,
         // Restore action part of the onboarding flow, triggered when restoring a Wallet.
+        ONBOARDING_RESTORE,
+        // Restore action triggered outside onboarding flow on a pre-existing wallet.
         RESTORE
     }
 
@@ -265,7 +269,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             UnlockWalletFragment unlockWalletFragment = new UnlockWalletFragment();
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.unlock_wallet_title), unlockWalletFragment));
-        } else if (walletAction == WalletAction.RESTORE) {
+        } else if (walletAction == WalletAction.ONBOARDING_RESTORE) {
             mShowBiometricPrompt = false;
             OnboardingRestoreWalletFragment onboardingRestoreWalletFragment =
                     OnboardingRestoreWalletFragment.newInstance();
@@ -285,38 +289,44 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private void replaceNavigationFragments(@NonNull final WalletAction walletAction) {
         if (mCryptoWalletOnboardingViewPager == null) return;
         if (mCryptoWalletOnboardingPagerAdapter == null) return;
-        if (walletAction == WalletAction.RESTORE) {
+
+        final List<NavigationItem> navigationItems = new ArrayList<>();
+        // Terms of use screen is shown only during onboarding actions.
+        if (walletAction != WalletAction.RESTORE) {
+            final OnboardingTermsOfUseFragment onboardingTermsOfUseFragment =
+                    OnboardingTermsOfUseFragment.newInstance();
+            navigationItems.add(
+                    new NavigationItem(
+                            getResources().getString(R.string.before_we_begin),
+                            onboardingTermsOfUseFragment));
+        }
+
+        if (walletAction == WalletAction.ONBOARDING_RESTORE
+                || walletAction == WalletAction.RESTORE) {
             mShowBiometricPrompt = false;
-            OnboardingRestoreWalletFragment onboardingRestoreWalletFragment =
+
+            final OnboardingRestoreWalletFragment onboardingRestoreWalletFragment =
                     OnboardingRestoreWalletFragment.newInstance();
-            mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
+            navigationItems.add(
                     new NavigationItem(
                             getResources().getString(R.string.restore_crypto_account),
-                            onboardingRestoreWalletFragment),
-                    mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+                            onboardingRestoreWalletFragment));
+            addWalletCreationPage(navigationItems, R.string.your_wallet_is_restoring_page_title);
 
-            OnboardingCreatingWalletFragment onboardingCreatingWalletFragment =
-                    new OnboardingCreatingWalletFragment();
-            mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItem(
-                    new NavigationItem(
-                            getResources().getString(R.string.your_wallet_is_restoring_page_title),
-                            onboardingCreatingWalletFragment),
-                    mCryptoWalletOnboardingPagerAdapter.getCount());
         } else if (walletAction == WalletAction.PASSWORD_CREATION) {
             mShowBiometricPrompt = true;
-            List<NavigationItem> navigationItems = new ArrayList<>();
-            OnboardingSecurePasswordFragment onboardingSecurePasswordFragment =
+
+            final OnboardingSecurePasswordFragment onboardingSecurePasswordFragment =
                     new OnboardingSecurePasswordFragment();
             navigationItems.add(
                     new NavigationItem(
                             getResources().getString(R.string.secure_your_crypto),
                             onboardingSecurePasswordFragment));
-            addWalletCreatingPage(navigationItems);
+            addWalletCreationPage(navigationItems, R.string.your_wallet_is_creating_page_title);
             addBackupWalletSequence(navigationItems, true);
-            mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
-                    navigationItems, mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
         }
-
+        mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
+                navigationItems, mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
         mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
 
         mCryptoWalletOnboardingViewPager.setCurrentItem(
@@ -346,7 +356,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     private void addBackupWalletSequence(
-            List<NavigationItem> navigationItems, boolean isOnboarding) {
+            @NonNull final List<NavigationItem> navigationItems, final boolean isOnboarding) {
         OnboardingBackupWalletFragment onboardingBackupWalletFragment =
                 OnboardingBackupWalletFragment.newInstance(isOnboarding);
         navigationItems.add(
@@ -367,13 +377,13 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         onboardingVerifyRecoveryPhraseFragment));
     }
 
-    private void addWalletCreatingPage(List<NavigationItem> navigationItems) {
+    private void addWalletCreationPage(
+            @NonNull final List<NavigationItem> navigationItems, @StringRes int stringId) {
         OnboardingCreatingWalletFragment onboardingCreatingWalletFragment =
                 new OnboardingCreatingWalletFragment();
         navigationItems.add(
                 new NavigationItem(
-                        getResources().getString(R.string.your_wallet_is_creating_page_title),
-                        onboardingCreatingWalletFragment));
+                        getResources().getString(stringId), onboardingCreatingWalletFragment));
     }
 
     public void showOnboardingLayout() {
@@ -455,7 +465,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     @Override
     public void gotoRestorePage(boolean isOnboarding) {
-        replaceNavigationFragments(WalletAction.RESTORE);
+        replaceNavigationFragments(
+                isOnboarding ? WalletAction.ONBOARDING_RESTORE : WalletAction.RESTORE);
         if (isOnboarding) {
             mBraveWalletP3A.reportOnboardingAction(OnboardingAction.START_RESTORE);
         }

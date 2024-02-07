@@ -6,16 +6,17 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import org.chromium.base.Log;
@@ -35,6 +36,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
 
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
+    private AnimationDrawable mAnimationDrawable;
 
     public OnboardingInitWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
         mRestartSetupAction = restartSetupAction;
@@ -59,30 +61,60 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button setupCryptoButton = view.findViewById(R.id.btn_setup_crypto);
-        setupCryptoButton.setOnClickListener(v -> {
-            checkOnBraveActivity(true, false);
-            if (mOnNextPage != null) {
-                mOnNextPage.gotoCreationPage();
-            }
-        });
+        mAnimationDrawable =
+                (AnimationDrawable)
+                        ContextCompat.getDrawable(
+                                requireContext(), R.drawable.onboarding_gradient_animation);
+        view.findViewById(R.id.setup_wallet_root).setBackground(mAnimationDrawable);
+        mAnimationDrawable.setEnterFadeDuration(10);
+        mAnimationDrawable.setExitFadeDuration(5000);
 
-        TextView restoreButton = view.findViewById(R.id.btn_restore);
-        restoreButton.setOnClickListener(v -> {
-            checkOnBraveActivity(false, true);
-            if (mOnNextPage != null) {
-                mOnNextPage.gotoRestorePage(true);
-            }
-        });
-        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
-            if (mRestartSetupAction) {
-                setupCryptoButton.performClick();
-            } else if (mRestartRestoreAction) {
-                restoreButton.performClick();
-            }
-            mRestartSetupAction = false;
-            mRestartRestoreAction = false;
-        });
+        CardView newWallet = view.findViewById(R.id.new_wallet_card_view);
+        newWallet.setOnClickListener(
+                v -> {
+                    checkOnBraveActivity(true, false);
+                    if (mOnNextPage != null) {
+                        // Add a little delay for a smooth ripple effect animation.
+                        PostTask.postDelayedTask(
+                                TaskTraits.UI_DEFAULT, () -> mOnNextPage.gotoCreationPage(), 200);
+                    }
+                });
+
+        CardView restoreWallet = view.findViewById(R.id.restore_wallet_card_view);
+        restoreWallet.setOnClickListener(
+                v -> {
+                    checkOnBraveActivity(false, true);
+                    if (mOnNextPage != null) {
+                        // Add a little delay for a smooth ripple effect animation.
+                        PostTask.postDelayedTask(
+                                TaskTraits.UI_DEFAULT,
+                                () -> mOnNextPage.gotoRestorePage(true),
+                                200);
+                    }
+                });
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    if (mRestartSetupAction) {
+                        newWallet.performClick();
+                    } else if (mRestartRestoreAction) {
+                        restoreWallet.performClick();
+                    }
+                    mRestartSetupAction = false;
+                    mRestartRestoreAction = false;
+                });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAnimationDrawable.start();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAnimationDrawable.stop();
     }
 
     @Override

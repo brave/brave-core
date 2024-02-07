@@ -2,11 +2,11 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/setup_wallet_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
-    android:background="@color/wallet_bg"
     android:fillViewport="true"
     android:theme="@style/BraveWalletOnboarding">
 
@@ -15,80 +15,178 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="162dp"
-            android:layout_height="162dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="32dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@null"
-                android:layout_gravity="center"
-                app:srcCompat="?attr/ic_onboarding_intro"
-                android:scaleType="centerInside"/>
-
-        </FrameLayout>
-
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
+            android:lineSpacingExtra="2sp"
             android:text="@string/defi_secure_storage"
+            android:lines="3"
             android:textColor="@color/wallet_text_color"
-            android:textSize="18sp"/>
+            android:textSize="36sp"
+            style="@style/BraveWalletTextViewTitle"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="120dp"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/defi_secure_storage_text"
-            android:textColor="@color/wallet_secondary_text_color"
+            android:textColor="@color/wallet_onboarding_secondary_text_color"
+            android:lineSpacingExtra="5sp"
             android:textSize="16sp"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_setup_crypto"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/new_wallet_card_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:background="@drawable/crypto_wallet_blue_button"
-            android:text="@string/setup_crypto"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:textColor="@android:color/white"
-            style="?android:attr/borderlessButtonStyle"/>
-
-        <TextView
-            android:id="@+id/btn_restore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_gravity="center_horizontal"
-            android:clickable="true"
-            android:focusable="true"
-            android:textAllCaps="false"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/restore"
-            android:textSize="16sp"
-            android:textColor="@color/wallet_text_color"/>
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            app:cardBackgroundColor="@color/brave_wallet_onboarding_card_view_background"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="32dp">
+                <ImageView
+                    android:id="@+id/add_new_wallet_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:src="@drawable/new_wallet"
+                    android:layout_marginEnd="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"/>
+
+                <TextView
+                    android:id="@+id/setup_crypto_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/setup_crypto"
+                    android:textColor="@color/wallet_text_color"
+                    android:textSize="22sp"
+                    android:lineSpacingExtra="2sp"
+                    android:layout_toEndOf="@+id/add_new_wallet_icon"
+                    style="@style/BraveWalletTextViewTitle"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setup_crypto_description"
+                    android:textColor="@color/wallet_onboarding_secondary_text_color"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4sp"
+                    android:layout_toEndOf="@+id/add_new_wallet_icon"
+                    android:layout_below="@+id/setup_crypto_text_view"
+                    />
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/restore_wallet_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="16dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            app:cardBackgroundColor="@color/brave_wallet_onboarding_card_view_background"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="32dp">
+                <ImageView
+                    android:id="@+id/restore_wallet_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:src="@drawable/restore_wallet"
+                    android:layout_marginEnd="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"/>
+
+                <TextView
+                    android:id="@+id/restore_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/already_have_a_wallet"
+                    android:textColor="@color/wallet_text_color"
+                    android:textSize="22sp"
+                    android:lineSpacingExtra="2sp"
+                    android:layout_toEndOf="@+id/restore_wallet_icon"
+                    style="@style/BraveWalletTextViewTitle"
+                    />
+
+                <TextView
+                    android:id="@+id/restore_description_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/already_have_a_wallet_description"
+                    android:textColor="@color/wallet_onboarding_secondary_text_color"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4sp"
+                    android:layout_toEndOf="@+id/restore_wallet_icon"
+                    android:layout_below="@+id/restore_text_view"
+                    />
+
+                <ImageView
+                    android:id="@+id/brave_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_brave"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toEndOf="@+id/restore_wallet_icon"
+                    android:layout_below="@+id/restore_description_text_view" />
+
+                <ImageView
+                    android:id="@+id/phantom_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_phantom"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toEndOf="@+id/brave_icon"
+                    android:layout_below="@+id/restore_description_text_view" />
+
+                <ImageView
+                    android:id="@+id/metamask_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_metamask"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toEndOf="@+id/phantom_icon"
+                    android:layout_below="@+id/restore_description_text_view" />
+
+                <ImageView
+                    android:id="@+id/coinbase_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_coinbase"
+                    android:layout_toEndOf="@+id/metamask_icon"
+                    android:layout_below="@+id/restore_description_text_view" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
