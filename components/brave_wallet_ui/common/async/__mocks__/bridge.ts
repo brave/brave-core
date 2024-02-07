@@ -391,6 +391,13 @@ export class MockedWalletApiProxy {
       return {
         success: true
       }
+    },
+    setUserAssetVisible: async (token, visible) => {
+      const tokenId = getAssetIdKey(token)
+      this.userAssets = this.userAssets.map((t) =>
+        getAssetIdKey(t) === tokenId ? { ...t, visible } : t
+      )
+      return { success: true }
     }
   }
 
