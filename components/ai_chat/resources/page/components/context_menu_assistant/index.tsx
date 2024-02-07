@@ -11,11 +11,11 @@ import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import { showAlert } from '@brave/leo/react/alertCenter'
-import { loadTimeData } from '$web-common/loadTimeData'
 
 import getPageHandlerInstance from '../../api/page_handler'
 import styles from './style.module.scss'
 import FeedbackForm from '../feedback_form'
+import DataContext from '../../state/context'
 
 interface ContextMenuAssistantProps {
   turnText: string
@@ -35,6 +35,7 @@ function ContextMenuAssistant_(
   props: ContextMenuAssistantProps,
   ref: React.RefObject<Map<number, Element>>
 ) {
+  const context = React.useContext(DataContext)
   const [feedbackId, setFeedbackId] = React.useState<string | null>()
   const [isFormVisible, setIsFormVisible] = React.useState(false)
   const [currentRatingStatus, setCurrentRatingStatus] =
@@ -143,10 +144,7 @@ function ContextMenuAssistant_(
   return (
     <>
       <ButtonMenu
-        className={classnames({
-          [styles.moreButton]: true,
-          [styles.moreButtonHide]: loadTimeData.getBoolean('isMobile')
-        })}
+        className={styles.buttonMenu}
         isOpen={props.isOpen}
         onClose={props.onClose}
       >
@@ -155,6 +153,10 @@ function ContextMenuAssistant_(
           size="small"
           kind="plain-faint"
           onClick={props.onClick}
+          className={classnames({
+            [styles.moreButton]: true,
+            [styles.moreButtonHide]: context.isMobile
+          })}
         >
           <Icon name='more-horizontal' />
         </Button>

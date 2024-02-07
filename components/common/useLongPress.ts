@@ -14,6 +14,10 @@ export interface LongPressProps {
    */
   onLongPress: (e: React.TouchEvent) => void
   /**
+   * Handler that is called when a press move interaction starts
+   */
+  onTouchMove?: (e: React.TouchEvent) => void
+  /**
    * The amount of time in milliseconds to wait before triggering a long press.
    * @default 500ms
    */
@@ -25,6 +29,10 @@ export default function useLongPress(props: LongPressProps) {
 
   const handleTouchStart = React.useCallback(
     (e: React.TouchEvent) => {
+      // The TouchEvent `e` gets nullified and is not available to the caller
+      // We must persist it
+      // https://legacy.reactjs.org/docs/legacy-event-pooling.html
+      e.persist()
       touchTimer.current = setTimeout(
         () => props.onLongPress(e),
         props.delay === undefined ? DEFAULT_THRESHOLD : props.delay
@@ -40,9 +48,14 @@ export default function useLongPress(props: LongPressProps) {
     }
   }, [])
 
+  const handleTouchMove = React.useCallback((e: React.TouchEvent) => {
+    handleTouchEnd()
+    props.onTouchMove?.(e)
+  }, [])
+
   return {
     onTouchStart: handleTouchStart,
     onTouchEnd: handleTouchEnd,
-    onTouchMove: handleTouchEnd
+    onTouchMove: handleTouchMove
   }
 }

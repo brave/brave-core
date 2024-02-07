@@ -7,7 +7,6 @@ import * as React from 'react'
 import classnames from 'classnames'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import { loadTimeData } from '$web-common/loadTimeData'
 import useLongPress from '$web-common/useLongPress'
 
 import styles from './style.module.scss'
@@ -102,10 +101,10 @@ function ConversationList(props: ConversationListProps) {
     onLongPress: (e: React.TouchEvent) => {
       const target = e.target as HTMLElement
       const id = target.getAttribute('data-id')
-      if (id !== null) {
-        showAssistantMenu(parseInt(id))
-      }
-     }
+      if (id === null) return
+      showAssistantMenu(parseInt(id))
+    },
+    onTouchMove: () => setActiveMenuId(null)
   })
 
   React.useEffect(() => {
@@ -125,7 +124,7 @@ function ConversationList(props: ConversationListProps) {
           const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
 
           const turnContainer = classnames({
-            [styles.turnContainerMobile]: loadTimeData.getBoolean('isMobile'),
+            [styles.turnContainerMobile]: context.isMobile,
             [styles.turnContainerHighlight]: isAIAssistant && activeMenuId === id
           })
 
@@ -142,13 +141,15 @@ function ConversationList(props: ConversationListProps) {
           return (
             <div
               key={id}
-              data-id={id}
               className={turnContainer}
               ref={isLastEntry ? lastEntryElementRef : null}
-              onMouseLeave={isAIAssistant ? () => setActiveMenuId(null) : undefined}
-              {...(isAIAssistant && longPressProps)}
             >
-              <div className={turnClass}>
+              <div
+                data-id={id}
+                className={turnClass}
+                onMouseLeave={isAIAssistant ? () => setActiveMenuId(null) : undefined}
+                {...(isAIAssistant ? longPressProps : {})}
+              >
                 {isAIAssistant && (
                   <div className={styles.asistantMenu}>
                     <ContextMenuAssistant
