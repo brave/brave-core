@@ -143,9 +143,7 @@ bool Prefs::SetSeed(const std::string& seed) {
     return false;
   }
   // String stored in prefs has to be UTF8 string so we use base64 to encode it.
-  std::string encoded_seed;
-  base::Base64Encode(encrypted_seed, &encoded_seed);
-  pref_service_->SetString(kSyncV2Seed, encoded_seed);
+  pref_service_->SetString(kSyncV2Seed, base::Base64Encode(encrypted_seed));
   SetSyncAccountDeletedNoticePending(false);
   return true;
 }

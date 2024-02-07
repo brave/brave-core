@@ -121,11 +121,10 @@ std::optional<std::string> PostOAuthZebPay::Url() const {
 std::optional<std::vector<std::string>> PostOAuthZebPay::Headers(
     const std::string&) const {
   auto& config = engine_->Get<EnvironmentConfig>();
-  std::string user;
-  base::Base64Encode(base::StrCat({config.zebpay_client_id(), ":",
-                                   config.zebpay_client_secret()}),
-                     &user);
-  return std::vector<std::string>{"Authorization: Basic " + user};
+  return std::vector<std::string>{
+      "Authorization: Basic " +
+      base::Base64Encode(base::StrCat(
+          {config.zebpay_client_id(), ":", config.zebpay_client_secret()}))};
 }
 
 std::optional<std::string> PostOAuthZebPay::Content() const {

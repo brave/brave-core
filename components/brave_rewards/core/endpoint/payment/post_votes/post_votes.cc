@@ -41,8 +41,7 @@ std::string PostVotes::GeneratePayload(
 
   std::string data_json;
   base::JSONWriter::Write(data, &data_json);
-  std::string data_encoded;
-  base::Base64Encode(data_json, &data_encoded);
+  std::string data_encoded = base::Base64Encode(data_json);
 
   base::Value::List credentials = credential::GenerateCredentials(
       *engine_, redeem.token_list, data_encoded);

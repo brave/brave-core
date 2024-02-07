@@ -96,7 +96,6 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // rule name to a known Brave domain and hash the result to create a
   // public key.
   char raw[crypto::kSHA256Length] = {0};
-  std::string key;
   std::string script_name = rule.name();
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -109,12 +108,12 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
     crypto::SHA256HashString(BUILDFLAG(UPDATER_PROD_ENDPOINT) + script_name,
                              raw, crypto::kSHA256Length);
   }
-  base::Base64Encode(std::string_view(raw, crypto::kSHA256Length), &key);
-
   root.SetByDottedPath(extensions::manifest_keys::kName, script_name);
   root.SetByDottedPath(extensions::manifest_keys::kVersion, "1.0");
   root.SetByDottedPath(extensions::manifest_keys::kDescription, "");
-  root.SetByDottedPath(extensions::manifest_keys::kPublicKey, key);
+  root.SetByDottedPath(
+      extensions::manifest_keys::kPublicKey,
+      base::Base64Encode(std::string_view(raw, crypto::kSHA256Length)));
   root.SetByDottedPath("incognito",
                        extensions::manifest_values::kIncognitoNotAllowed);
 

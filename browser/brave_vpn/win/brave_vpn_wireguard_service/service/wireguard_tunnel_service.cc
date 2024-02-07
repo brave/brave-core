@@ -11,6 +11,7 @@
 
 #include "base/base64.h"
 #include "base/command_line.h"
+#include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/logging.h"
@@ -390,9 +391,8 @@ bool WireguardGenerateKeypair(std::string* public_key,
     return false;
   }
 
-  *public_key = base::Base64Encode(base::span<const uint8_t>(public_key_bytes));
-  *private_key =
-      base::Base64Encode(base::span<const uint8_t>(private_key_bytes));
+  *public_key = base::Base64Encode(base::make_span(public_key_bytes));
+  *private_key = base::Base64Encode(base::make_span(private_key_bytes));
   return true;
 }
 

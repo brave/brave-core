@@ -84,11 +84,9 @@ std::optional<std::string> PostConnectUphold::Content() const {
     return std::nullopt;
   }
 
-  std::string signedLinkingRequest;
-  base::Base64Encode(std::move(json_request), &signedLinkingRequest);
-
   base::Value::Dict content;
-  content.Set("signedLinkingRequest", std::move(signedLinkingRequest));
+  content.Set("signedLinkingRequest",
+              base::Base64Encode(std::move(json_request)));
 
   std::string json;
   if (!base::JSONWriter::Write(std::move(content), &json)) {

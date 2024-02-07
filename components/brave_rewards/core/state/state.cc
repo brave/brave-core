@@ -416,10 +416,7 @@ bool State::SetEncryptedString(const std::string& key,
     return false;
   }
 
-  std::string base64_string;
-  base::Base64Encode(*encrypted, &base64_string);
-
-  engine_->SetState(key, std::move(base64_string));
+  engine_->SetState(key, base::Base64Encode(*encrypted));
   return true;
 }
 

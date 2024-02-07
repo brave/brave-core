@@ -190,9 +190,7 @@ std::optional<std::string> EncryptPrefString(
   if (!encrypted) {
     return {};
   }
-  std::string encoded;
-  base::Base64Encode(*encrypted, &encoded);
-  return encoded;
+  return base::Base64Encode(*encrypted);
 }
 
 std::optional<std::string> DecryptPrefString(

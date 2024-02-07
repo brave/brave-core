@@ -76,11 +76,9 @@ bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
-  std::string encoded_config;
-  base::Base64Encode(config, &encoded_config);
   DWORD error_code = 0;
-  if (FAILED(service->EnableVpn(base::UTF8ToWide(encoded_config).c_str(),
-                                &error_code))) {
+  if (FAILED(service->EnableVpn(
+          base::UTF8ToWide(base::Base64Encode(config)).c_str(), &error_code))) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
