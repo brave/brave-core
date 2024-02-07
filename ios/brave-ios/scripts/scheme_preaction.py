@@ -44,12 +44,12 @@ def main():
                                          == 'iphonesimulator') else None
 
     BuildCore(config, target_arch, target_environment)
-    UpdateSymlink(config, target_arch, target_environment)
     GenerateXCFrameworks(config, target_arch, target_environment)
     CleanupChromiumAssets(output_dir)
     FixMaterialComponentsVersionString(output_dir)
     GenerateXcodeConfig(output_dir)
     CallNpm(['npm', 'run', 'ios_pack_js'])
+    UpdateSymlink(config, target_arch, target_environment)
 
 
 def BuildOutputDirectory(config, platform_name):

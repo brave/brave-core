@@ -35,7 +35,11 @@ const createXCFrameworks = (buildConfig = config.defaultBuildConfig, options = {
 }
 
 const bootstrap = (options = {}) => {
-  util.run('vpython3', ['script/ios_bootstrap.py'], config)
+  const bootstrapArgs = ['script/ios_bootstrap.py']
+  if (options.force) {
+    bootstrapArgs.push('--force')
+  }
+  util.run('vpython3', bootstrapArgs, config)
   if (options.open_xcodeproj) {
     const args = [
       path.join(config.srcDir, 'brave', 'ios', 'brave-ios', 'App', 'Client.xcodeproj')
@@ -54,6 +58,7 @@ program
 program
   .command('ios_bootstrap')
   .option('--open_xcodeproj', 'Open the Xcode project after bootstrapping')
+  .option('--force', 'Always rewrite the symlink/directory entirely')
   .action(bootstrap)
 
 program
