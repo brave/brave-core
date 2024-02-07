@@ -188,12 +188,16 @@ program
 
 program
   .command('pull_l10n')
+  .option('--service <service>', 'Service to use: Transifex or Crowdin')
+  .option('--channel <channel>', 'Release|Beta|Nightly for Crowdin, Release for Transifex')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
   .option('--debug', `Dumps downloaded content for one language into TransifexCurrent.txt file in the temp directory.`)
   .action(pullL10n)
 
 program
   .command('push_l10n')
+  .option('--service <service>', 'Service to use: Transifex or Crowdin')
+  .option('--channel <channel>', 'Release|Beta|Nightly for Crowdin, Release for Transifex')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
   .option('--with_translations', 'Push local translations. WARNING: this will overwrite translations in Tansifex.')
   .option('--with_missing_translations', 'Push local translations for strings that do not have translations in Transifex.')
