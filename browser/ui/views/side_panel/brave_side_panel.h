@@ -65,7 +65,7 @@ class BraveSidePanel : public views::View,
   void OnThemeChanged() override;
   gfx::Size GetMinimumSize() const override;
   void AddedToWidget() override;
-  void Layout() override;
+  void Layout(PassKey) override;
 
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
 

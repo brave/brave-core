@@ -51,7 +51,7 @@ class SidebarItemsScrollView : public views::View,
   SidebarItemsScrollView operator=(const SidebarItemsScrollView&) = delete;
 
   // views::View overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   void OnMouseEvent(ui::MouseEvent* event) override;
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;

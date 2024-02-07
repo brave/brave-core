@@ -106,7 +106,7 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
   wayback_url_fetch_requested_ = false;
 
   fetch_url_button_->StopThrobber();
-  Layout();
+  DeprecatedLayoutImmediately();
 
   if (latest_wayback_url.is_empty()) {
     UpdateChildrenVisibility(false);
@@ -262,7 +262,7 @@ SkColor BraveWaybackMachineInfoBarContentsView::GetColor(int id) const {
 void BraveWaybackMachineInfoBarContentsView::FetchWaybackURL() {
   fetch_url_button_->StartThrobber();
   wayback_machine_url_fetcher_.Fetch(contents_->GetVisibleURL());
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveWaybackMachineInfoBarContentsView::LoadURL(const GURL& url) {

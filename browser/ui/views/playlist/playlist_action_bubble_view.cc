@@ -146,7 +146,7 @@ class Row : public views::LabelButton {
   ~Row() override = default;
 
   // views::LabelButton:
-  void Layout() override;
+  void Layout(PassKey) override;
 };
 
 BEGIN_METADATA(Row)
@@ -164,8 +164,8 @@ Row::Row(const std::u16string& text,
   label()->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 }
 
-void Row::Layout() {
-  LabelButton::Layout();
+void Row::Layout(PassKey) {
+  LayoutSuperclass<LabelButton>(this);
   // Extend |label|'s width so the this button's sub controls are justified.
   const auto contents_x = GetContentsBounds().x();
   label()->SetX(contents_x);

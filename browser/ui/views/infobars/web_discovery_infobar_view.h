@@ -27,7 +27,7 @@ class WebDiscoveryInfoBarView : public InfoBarView {
 
  private:
   // InfoBarView overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   void ChildPreferredSizeChanged(views::View* child) override;
 
   WebDiscoveryInfoBarDelegate* GetDelegate();

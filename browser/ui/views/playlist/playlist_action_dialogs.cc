@@ -154,8 +154,8 @@ class BoundedTextfield : public views::Textfield {
     Textfield::InsertChar(event);
   }
 
-  void Layout() override {
-    views::Textfield::Layout();
+  void Layout(PassKey) override {
+    LayoutSuperclass<views::Textfield>(this);
 
     length_label_->SetBoundsRect(GetContentsBounds());
   }

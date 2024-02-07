@@ -27,7 +27,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
   void AddedToWidget() override;
   void VisualsChanged() override;
   int GetDesiredWidth() const override;
-  void Layout() override;
+  void Layout(PassKey) override;
 
  private:
   bool ShouldShowVerticalTabs() const;

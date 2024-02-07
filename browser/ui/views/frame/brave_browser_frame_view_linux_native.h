@@ -29,7 +29,7 @@ class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
 
   // BrowserFrameViewLinuxNative:
   void MaybeUpdateCachedFrameButtonImages() override;
-  void Layout() override;
+  void Layout(PassKey) override;
 
  private:
   views::Button* FrameButtonToButton(views::FrameButton frame_button);

@@ -55,7 +55,7 @@ void NotificationAdControlButtonsView::UpdateContent() {
   UpdateInfoButton();
   UpdateCloseButton();
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 

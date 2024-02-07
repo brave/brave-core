@@ -16,9 +16,9 @@
 
 BraveTabStripRegionView::~BraveTabStripRegionView() = default;
 
-void BraveTabStripRegionView::Layout() {
+void BraveTabStripRegionView::Layout(PassKey) {
   UpdateBraveTabStripMargins();
-  TabStripRegionView::Layout();
+  LayoutSuperclass<TabStripRegionView>(this);
 }
 
 void BraveTabStripRegionView::UpdateBraveTabStripMargins() {

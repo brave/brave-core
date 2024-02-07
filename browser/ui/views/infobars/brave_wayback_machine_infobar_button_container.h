@@ -33,7 +33,7 @@ class BraveWaybackMachineInfoBarButtonContainer : public views::View {
   void StopThrobber();
 
   // views::View overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   gfx::Size CalculatePreferredSize() const override;
 
  private:

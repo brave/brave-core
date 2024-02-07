@@ -93,7 +93,7 @@ class SidebarContainerView
   void MenuClosed() override;
 
   // views::View overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
   void OnMouseEntered(const ui::MouseEvent& event) override;

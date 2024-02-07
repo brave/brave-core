@@ -105,8 +105,8 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   UpdateLeadingTrailingCaptionButtonWidth();
 }
 
-void BraveBrowserFrameViewLinuxNative::Layout() {
-  BrowserFrameViewLinuxNative::Layout();
+void BraveBrowserFrameViewLinuxNative::Layout(PassKey) {
+  LayoutSuperclass<BrowserFrameViewLinuxNative>(this);
 
   UpdateLeadingTrailingCaptionButtonWidth();
 }

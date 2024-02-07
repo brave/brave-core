@@ -36,7 +36,7 @@ class BraveTab : public Tab {
 
   void UpdateIconVisibility() override;
   bool ShouldRenderAsNormalTab() const override;
-  void Layout() override;
+  void Layout(PassKey) override;
   void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                    int visual_width) const override;
 

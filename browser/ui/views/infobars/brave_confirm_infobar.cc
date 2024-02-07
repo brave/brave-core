@@ -124,8 +124,8 @@ views::MdTextButton* BraveConfirmInfoBar::GetButtonById(int id) {
   }
 }
 
-void BraveConfirmInfoBar::Layout() {
-  InfoBarView::Layout();
+void BraveConfirmInfoBar::Layout(PassKey) {
+  LayoutSuperclass<InfoBarView>(this);
 
   if (ok_button_) {
     ok_button_->SizeToPreferredSize();

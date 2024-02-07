@@ -91,7 +91,7 @@ class CustomScrollView : public views::ScrollView {
       SetVerticalScrollBar(
           std::make_unique<views::OverlayScrollBar>(/* horizontal= */ false));
     }
-    Layout();
+    DeprecatedLayoutImmediately();
   }
 
   BooleanPrefMember should_show_scroll_bar_;
@@ -176,7 +176,7 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));
     contents_view->AddChildView(std::to_address(unpinned_tab_container_));
-    Layout();
+    DeprecatedLayoutImmediately();
   } else {
     unpinned_tab_container_->parent()->RemoveChildView(
         std::to_address(unpinned_tab_container_));
@@ -227,13 +227,13 @@ void BraveCompoundTabContainer::TransferTabBetweenContainers(
   }
 
   if (layout_dirty) {
-    Layout();
+    DeprecatedLayoutImmediately();
   }
 }
 
-void BraveCompoundTabContainer::Layout() {
+void BraveCompoundTabContainer::Layout(PassKey) {
   if (!ShouldShowVerticalTabs()) {
-    CompoundTabContainer::Layout();
+    LayoutSuperclass<CompoundTabContainer>(this);
     return;
   }
 

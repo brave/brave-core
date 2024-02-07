@@ -356,7 +356,7 @@ void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
   // does not listen to ChildVisibilityChanged events so we must make we Layout
   // and re-caculate trailing decorator positions when a child changes.
   if (base::Contains(GetTrailingViews(), child)) {
-    Layout();
+    DeprecatedLayoutImmediately();
     SchedulePaint();
   }
 }

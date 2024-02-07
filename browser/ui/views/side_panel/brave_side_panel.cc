@@ -99,7 +99,7 @@ void BraveSidePanel::AddedToWidget() {
       this, static_cast<BraveBrowserView*>(browser_view_), this);
 }
 
-void BraveSidePanel::Layout() {
+void BraveSidePanel::Layout(PassKey) {
   if (children().empty()) {
     return;
   }

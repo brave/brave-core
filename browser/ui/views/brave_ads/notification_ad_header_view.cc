@@ -78,7 +78,7 @@ void NotificationAdHeaderView::GetAccessibleNodeData(
 void NotificationAdHeaderView::UpdateContent() {
   UpdateTitleLabel();
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 
