@@ -12,6 +12,9 @@
 
 // If new main menu items are added, please consider adding a case for it
 // in the switch statement of BraveAppMenu::RecordMenuUsage for P3A purposes
+
+// PLEASE DO NOT CHANGE THE VALUE OF EXISTING VALUE.
+// That could break custom shortcut feature
 #define IDC_BRAVE_COMMANDS_START 56000
 #define IDC_SHOW_BRAVE_REWARDS 56000
 #define IDC_NEW_TOR_CONNECTION_FOR_SITE 56002
@@ -95,10 +98,12 @@
 
 #define IDC_BRAVE_SEND_TAB_TO_SELF 56225
 
+// Commands for AI chat --------------------------------------------------------
 #define IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT 56226
 #define IDC_AI_CHAT_CONTEXT_LEO_TOOLS 56227
 
-#define IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY 56228
+// Commands for bookmarks ------------------------------------------------------
+#define IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY 56300
 
 #define IDC_BRAVE_COMMANDS_LAST 57000
 
