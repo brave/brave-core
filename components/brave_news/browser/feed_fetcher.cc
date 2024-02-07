@@ -7,7 +7,9 @@
 
 #include <cstddef>
 #include <iterator>
-#include <memory>
+#include <string>
+#include <tuple>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -17,8 +19,9 @@
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
 #include "base/memory/weak_ptr.h"
-#include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
+#include "base/task/thread_pool.h"
+#include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
@@ -55,6 +58,51 @@ FeedFetcher::FeedSourceResult::FeedSourceResult(std::string key,
 FeedFetcher::FeedSourceResult::~FeedSourceResult() = default;
 FeedFetcher::FeedSourceResult::FeedSourceResult(
     FeedFetcher::FeedSourceResult&&) = default;
+
+// static
+std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
+    std::vector<FeedSourceResult> results) {
+  std::size_t total_size = 0;
+  for (const auto& result : results) {
+    total_size += result.items.size();
+  }
+  VLOG(1) << "All feed item fetches done with item count: " << total_size;
+
+  ETags etags;
+  FeedItems feed;
+  feed.reserve(total_size);
+
+  // We want to deduplicate the feed, as the feeds for different
+  // regions **may** have overlap.
+  std::unordered_set<std::string> seen;
+
+  // reserve |total_size| space in |seen|. This is more than we'll
+  // likely need but should be in the correct ballpark.
+  seen.reserve(total_size);
+
+  for (auto& result : results) {
+    etags[result.key] = result.etag;
+    for (auto& item : result.items) {
+      GURL url;
+      if (item->is_article()) {
+        url = item->get_article()->data->url;
+      } else if (item->is_promoted_article()) {
+        url = item->get_promoted_article()->data->url;
+      }
+
+      // Skip this, we've already seen it.
+      auto spec = url.spec();
+      if (!url.is_empty() && seen.contains(spec)) {
+        continue;
+      }
+      seen.insert(std::move(spec));
+
+      feed.push_back(std::move(item));
+    }
+  }
+
+  return std::make_tuple(std::move(feed), std::move(etags));
+}
 
 FeedFetcher::FeedFetcher(
     PublishersController& publishers_controller,
@@ -152,47 +200,40 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
     return;
   }
 
-  std::move(callback).Run({locale, etag, ParseFeedItems(result.value_body())});
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ParseFeedItems, std::move(result.value_body())),
+      base::BindOnce(
+          [](base::WeakPtr<FeedFetcher> fetcher, std::string locale,
+             std::string etag, FetchFeedSourceCallback callback,
+             std::vector<mojom::FeedItemPtr> items) {
+            // If the fetcher was destroyed, don't run the callback.
+            if (!fetcher) {
+              return;
+            }
+            std::move(callback).Run(
+                {std::move(locale), std::move(etag), std::move(items)});
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(locale), std::move(etag),
+          std::move(callback)));
 }
 
 void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
                                         Publishers publishers,
                                         std::vector<FeedSourceResult> results) {
-  std::size_t total_size = 0;
-  for (const auto& result : results) {
-    total_size += result.items.size();
-  }
-  VLOG(1) << "All feed item fetches done with item count: " << total_size;
-
-  ETags etags;
-  FeedItems feed;
-  feed.reserve(total_size);
-
-  // We want to deduplicate the feed, as the feeds for different regions **may**
-  // have overlap.
-  base::flat_set<GURL> seen;
-
-  for (auto& result : results) {
-    etags[result.key] = result.etag;
-    for (auto& item : result.items) {
-      GURL url;
-      if (item->is_article()) {
-        url = item->get_article()->data->url;
-      } else if (item->is_promoted_article()) {
-        url = item->get_promoted_article()->data->url;
-      }
-
-      // Skip this, we've already seen it.
-      if (!url.is_empty() && seen.contains(url)) {
-        continue;
-      }
-      seen.insert(url);
-
-      feed.push_back(std::move(item));
-    }
-  }
-
-  std::move(callback).Run(std::move(feed), std::move(etags));
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&CombineFeedSourceResults, std::move(results)),
+      base::BindOnce(
+          [](base::WeakPtr<FeedFetcher> fetcher, FetchFeedCallback callback,
+             std::tuple<FeedItems, ETags> result) {
+            // If we've been destroyed, don't run the callback.
+            if (!fetcher) {
+              return;
+            }
+            std::move(callback).Run(std::move(std::get<0>(result)),
+                                    std::move(std::get<1>(result)));
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void FeedFetcher::IsUpdateAvailable(ETags etags,
