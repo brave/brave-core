@@ -715,7 +715,7 @@ export interface NFTMetadataReturnType {
 }
 
 export interface TransactionProviderError {
-  code: BraveWallet.ProviderError | BraveWallet.SolanaProviderError
+  code: BraveWallet.ProviderErrorUnion
   message: string
 }
 

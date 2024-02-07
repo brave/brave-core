@@ -455,7 +455,7 @@ export const usePendingTransactions = () => {
     }
 
     try {
-      await dispatch(
+      const result = await dispatch(
         walletApi.endpoints.approveTransaction.initiate({
           chainId: transactionInfo.chainId,
           id: transactionInfo.id,
@@ -463,8 +463,17 @@ export const usePendingTransactions = () => {
           txType: transactionInfo.txType
         })
       ).unwrap()
-      dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
-      dispatch(PanelActions.navigateTo('transactionStatus'))
+      if (!result.status) {
+        dispatch(
+          UIActions.setTransactionProviderError({
+            providerError: {
+              code: result.errorUnion,
+              message: result.errorMessage
+            },
+            transactionId: transactionInfo.id
+          })
+        )
+      }
     } catch (error) {
       dispatch(
         UIActions.setTransactionProviderError({
@@ -472,6 +481,9 @@ export const usePendingTransactions = () => {
           transactionId: transactionInfo.id
         })
       )
+    } finally {
+      dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
+      dispatch(PanelActions.navigateTo('transactionStatus'))
     }
   }, [transactionInfo])
 

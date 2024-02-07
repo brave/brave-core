@@ -134,6 +134,8 @@ enum ZCashProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
   kUnknown = ProviderError.kUnknown,
   kInternalError = JsonRpcError.kInternalError,
+  // Fired when there are several outgoings transactions
+  kMultipleTransactionsNotSupported
 };
 
 union ProviderErrorUnion {
