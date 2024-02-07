@@ -6,8 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_
 
+#include <memory>
+#include <vector>
+
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
-#include "brave/components/playlist/browser/playlist_service.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 class Browser;
