@@ -205,11 +205,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
-          web_contents->GetBrowserContext())) {
-    playlist::PlaylistTabHelper::MaybeCreateForWebContents(web_contents,
-                                                           service);
-  }
+  playlist::PlaylistTabHelper::MaybeCreateForWebContents(
+      web_contents, playlist::PlaylistServiceFactory::GetForBrowserContext(
+                        web_contents->GetBrowserContext()));
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
