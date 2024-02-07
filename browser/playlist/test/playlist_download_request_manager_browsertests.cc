@@ -471,13 +471,16 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                    std::vector<playlist::mojom::PlaylistItemPtr> items) {
         EXPECT_TRUE(items.empty());
       });
+  // This returns cached items that are found so far. That Should be empty.
+  playlist_service->FindMediaFilesFromActiveTab(callback.Get());
 
   base::RunLoop run_loop;
-  EXPECT_CALL(observer, OnMediaFilesUpdated(url, _)).WillOnce([&]() {
-    run_loop.Quit();
-  });
+  EXPECT_CALL(observer, OnMediaFilesUpdated(url, _))
+      .WillOnce([&](const GURL& page_url,
+                    std::vector<playlist::mojom::PlaylistItemPtr> items) {
+        EXPECT_FALSE(items.empty());
+        run_loop.Quit();
+      });
 
-  playlist_service->FindMediaFilesFromContents(
-      chrome_test_utils::GetActiveWebContents(this), callback.Get());
   run_loop.Run();
 }

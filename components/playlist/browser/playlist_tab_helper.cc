@@ -178,7 +178,7 @@ void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
       base::BindOnce(
           &PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout,
           weak_ptr_factory_.GetWeakPtr()));
-  FindMediaFromCurrentContents();
+  ExtractMediaFromBackgroundContents();
 }
 
 void PlaylistTabHelper::RequestAsyncExecuteScript(
@@ -206,18 +206,6 @@ void PlaylistTabHelper::DidFinishNavigation(
   ResetData();
 
   UpdateSavedItemFromCurrentContents();
-
-  if (navigation_handle->IsSameDocument() ||
-      navigation_handle->IsServedFromBackForwardCache()) {
-    FindMediaFromCurrentContents();
-  }  // else DOMContentLoaded() will trigger FindMediaFromCurrentContents()
-}
-
-void PlaylistTabHelper::DOMContentLoaded(
-    content::RenderFrameHost* render_frame_host) {
-  DVLOG(2) << __FUNCTION__;
-
-  FindMediaFromCurrentContents();
 }
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
@@ -297,7 +285,7 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
 void PlaylistTabHelper::ResetData() {
   saved_items_.clear();
   found_items_.clear();
-  sent_find_media_request_ = false;
+  sent_extract_media_request_ = false;
   media_extracted_from_background_web_contents_callbacks_.clear();
   media_extraction_from_background_web_contents_timer_.Stop();
 
@@ -339,23 +327,23 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   }
 }
 
-void PlaylistTabHelper::FindMediaFromCurrentContents() {
+void PlaylistTabHelper::ExtractMediaFromBackgroundContents() {
   if (!*playlist_enabled_pref_) {
     return;
   }
 
-  if (sent_find_media_request_) {
+  if (sent_extract_media_request_) {
     return;
   }
 
   CHECK(service_);
 
-  service_->FindMediaFilesFromContents(
+  service_->ExtractMediaFromBackgroundWebContents(
       web_contents(),
       base::BindOnce(&PlaylistTabHelper::OnFoundMediaFromContents,
                      weak_ptr_factory_.GetWeakPtr()));
 
-  sent_find_media_request_ = true;
+  sent_extract_media_request_ = true;
 }
 
 void PlaylistTabHelper::OnFoundMediaFromContents(
@@ -423,7 +411,7 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     }
     media_extraction_from_background_web_contents_timer_.Stop();
   }
-  sent_find_media_request_ = false;
+  sent_extract_media_request_ = false;
 }
 
 void PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout() {

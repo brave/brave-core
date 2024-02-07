@@ -138,13 +138,15 @@ class PlaylistService : public KeyedService,
 
   base::WeakPtr<PlaylistService> GetWeakPtr();
 
-  using FindMediaFilesFromContentsCallback =
+  // Find media from |contents| using corresponding background web contents.
+  // The background web contents will load the same url as |contents| but
+  // does trick to get plain media urls that we can cache from.
+  using ExtractMediaFromBackgroundWebContentsCallback =
       base::OnceCallback<void(const GURL& target_url,
                               std::vector<mojom::PlaylistItemPtr> items)>;
-  void FindMediaFilesFromContents(
+  void ExtractMediaFromBackgroundWebContents(
       content::WebContents* contents,
-      FindMediaFilesFromContentsCallback callback,
-      bool allow_to_create_background_web_contents = true);
+      ExtractMediaFromBackgroundWebContentsCallback callback);
 
   // Synchronous versions of mojom::PlaylistService implementations
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();

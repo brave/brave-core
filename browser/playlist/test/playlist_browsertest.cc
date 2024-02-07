@@ -6,7 +6,6 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 
 #include <memory>
-#include "gtest/gtest.h"
 
 #include "base/path_service.h"
 #include "base/ranges/algorithm.h"

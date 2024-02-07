@@ -429,31 +429,18 @@ base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PlaylistService::FindMediaFilesFromContents(
-    content::WebContents* contents,
-    FindMediaFilesFromContentsCallback callback,
-    bool allow_to_create_background_web_contents) {
+void PlaylistService::ExtractMediaFromBackgroundWebContents(
+    content::WebContents* source_contents,
+    ExtractMediaFromBackgroundWebContentsCallback callback) {
   CHECK(*enabled_pref_) << "Playlist pref must be enabled";
-  CHECK(contents);
+  CHECK(source_contents);
 
-  auto current_url = contents->GetVisibleURL();
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(contents);
-  CHECK(tab_helper);
-
-  if (allow_to_create_background_web_contents &&
-      ShouldExtractMediaFromBackgroundWebContents(tab_helper->found_items())) {
-    PlaylistDownloadRequestManager::Request request;
-    request.url = current_url;
-    request.should_force_fake_ua = ShouldUseFakeUA(current_url);
-    request.callback = base::BindOnce(std::move(callback), current_url);
-    download_request_manager_->GetMediaFilesFromPage(std::move(request));
-    return;
-  }
-
-  std::vector<mojom::PlaylistItemPtr> items;
-  base::ranges::transform(tab_helper->found_items(), std::back_inserter(items),
-                          &mojom::PlaylistItemPtr::Clone);
-  std::move(callback).Run(current_url, std::move(items));
+  auto current_url = source_contents->GetVisibleURL();
+  PlaylistDownloadRequestManager::Request request;
+  request.url = current_url;
+  request.should_force_fake_ua = ShouldUseFakeUA(current_url);
+  request.callback = base::BindOnce(std::move(callback), current_url);
+  download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
 void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
@@ -576,8 +563,12 @@ void PlaylistService::FindMediaFilesFromActiveTab(
   // memory regression. So don't allow to create background contents.
   // Even though we don't allow that, we'll extract media from background web
   // contents when adding items.
-  FindMediaFilesFromContents(contents, std::move(callback),
-                             /*allow_to_create_background_web_contents=*/false);
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(contents);
+  CHECK(tab_helper);
+  std::vector<mojom::PlaylistItemPtr> items;
+  base::ranges::transform(tab_helper->found_items(), std::back_inserter(items),
+                          &mojom::PlaylistItemPtr::Clone);
+  std::move(callback).Run(contents->GetVisibleURL(), std::move(items));
 }
 
 void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
