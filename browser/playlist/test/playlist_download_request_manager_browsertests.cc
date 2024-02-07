@@ -471,7 +471,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                    std::vector<playlist::mojom::PlaylistItemPtr> items) {
         EXPECT_TRUE(items.empty());
       });
-  // This returns cached items that are found so far. That Should be empty.
+  // This returns cached items that are found so far. They should be empty.
   playlist_service->FindMediaFilesFromActiveTab(callback.Get());
 
   base::RunLoop run_loop;
