@@ -4,14 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/bookmarks/brave_bookmark_context_menu.h"
-#include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/toolbar/brave_bookmark_context_menu_controller.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
