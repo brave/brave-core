@@ -203,6 +203,6 @@ interface PlaylistStreamingObserver {
   OnDataCompleted();
 };
 
-interface OnLoadScriptInjector {
-  AddOnLoadScript(mojo_base.mojom.ReadOnlySharedMemoryRegion script);
+interface ScriptConfigurator {
+  AddMediaDetector(mojo_base.mojom.ReadOnlySharedMemoryRegion script);
 };

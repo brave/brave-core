@@ -14,7 +14,7 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
 #include "gin/arguments.h"
-#include "mojo/public/cpp/bindings/associated_receiver_set.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -23,42 +23,38 @@ namespace playlist {
 class PlaylistRenderFrameObserver final
     : public content::RenderFrameObserver,
       public content::RenderFrameObserverTracker<PlaylistRenderFrameObserver>,
-      public mojom::OnLoadScriptInjector {
+      public mojom::ScriptConfigurator {
  public:
-  PlaylistRenderFrameObserver(content::RenderFrame* render_frame,
+  PlaylistRenderFrameObserver(content::RenderFrame* frame,
                               int32_t isolated_world_id);
 
   PlaylistRenderFrameObserver(const PlaylistRenderFrameObserver&) = delete;
   PlaylistRenderFrameObserver& operator=(const PlaylistRenderFrameObserver&) = delete;
 
-  void BindToReceiver(
-      mojo::PendingAssociatedReceiver<mojom::OnLoadScriptInjector> receiver);
-
   void RunScriptsAtDocumentStart();
-
-  // RenderFrameObserver:
-  void OnDestruct() override;
-
-  // mojom::OnLoadScriptInjector
-  void AddOnLoadScript(base::ReadOnlySharedMemoryRegion script) override;
 
  private:
   ~PlaylistRenderFrameObserver() override;
+
+  // RenderFrameObserver:
+  void OnDestruct() override;
+  // mojom::ScriptConfigurator
+  void AddMediaDetector(base::ReadOnlySharedMemoryRegion script) override;
+
+  void BindScriptConfigurator(
+      mojo::PendingAssociatedReceiver<mojom::ScriptConfigurator> receiver);
 
   bool EnsureConnectedToMediaHandler();
   void OnMediaHandlerDisconnect();
 
   void HideMediaSourceAPI() const;
   void InstallMediaDetector();
-
   void OnMediaUpdated(gin::Arguments* args);
 
-  std::optional<std::string> media_detector_;
-
-  mojo::AssociatedReceiverSet<mojom::OnLoadScriptInjector> receivers_;
-
   int32_t isolated_world_id_;
+  mojo::AssociatedReceiver<mojom::ScriptConfigurator> script_configurator_receiver_{this};
   mojo::Remote<playlist::mojom::PlaylistMediaHandler> media_handler_;
+  std::optional<std::string> media_detector_script_;
   base::WeakPtrFactory<PlaylistRenderFrameObserver> weak_ptr_factory_{this};
 };
 

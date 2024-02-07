@@ -31,28 +31,29 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
       isolated_world_id_(isolated_world_id) {
   render_frame()
       ->GetAssociatedInterfaceRegistry()
-      ->AddInterface<mojom::OnLoadScriptInjector>(
-          base::BindRepeating(&PlaylistRenderFrameObserver::BindToReceiver,
+      ->AddInterface<mojom::ScriptConfigurator>(
+          base::BindRepeating(&PlaylistRenderFrameObserver::BindScriptConfigurator,
                               weak_ptr_factory_.GetWeakPtr()));
   EnsureConnectedToMediaHandler();
 }
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
 
-void PlaylistRenderFrameObserver::BindToReceiver(
-    mojo::PendingAssociatedReceiver<mojom::OnLoadScriptInjector> receiver) {
-  receivers_.Add(this, std::move(receiver));
-}
-
 void PlaylistRenderFrameObserver::OnDestruct() {
   delete this;
 }
 
-void PlaylistRenderFrameObserver::AddOnLoadScript(
+void PlaylistRenderFrameObserver::AddMediaDetector(
     base::ReadOnlySharedMemoryRegion script) {
   DVLOG(2) << __FUNCTION__;
-  media_detector_.emplace(script.Map().GetMemoryAs<char>(), script.GetSize());
-  CHECK(!media_detector_->empty());
+  media_detector_script_.emplace(script.Map().GetMemoryAs<char>(), script.GetSize());
+  CHECK(!media_detector_script_->empty());
+}
+
+void PlaylistRenderFrameObserver::BindScriptConfigurator(
+    mojo::PendingAssociatedReceiver<mojom::ScriptConfigurator> receiver) {
+  script_configurator_receiver_.reset();
+  script_configurator_receiver_.Bind(std::move(receiver));
 }
 
 bool PlaylistRenderFrameObserver::EnsureConnectedToMediaHandler() {
@@ -114,7 +115,7 @@ void PlaylistRenderFrameObserver::HideMediaSourceAPI() const {
 void PlaylistRenderFrameObserver::InstallMediaDetector() {
   DVLOG(2) << __FUNCTION__;
 
-  CHECK(media_detector_);
+  CHECK(media_detector_script_);
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::Isolate::Scope isolate_scope(isolate);
@@ -127,7 +128,7 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       context, v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Script> script =
-      v8::Script::Compile(context, gin::StringToV8(isolate, *media_detector_))
+      v8::Script::Compile(context, gin::StringToV8(isolate, *media_detector_script_))
           .ToLocalChecked();
   v8::Local<v8::Function> function =
       v8::Local<v8::Function>::Cast(script->Run(context).ToLocalChecked());

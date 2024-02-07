@@ -219,11 +219,12 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
           std::move(script_writable_shared_memory));
   CHECK(script_readonly_shared_memory.IsValid());
 
-  mojo::AssociatedRemote<mojom::OnLoadScriptInjector> injector;
+  mojo::AssociatedRemote<mojom::ScriptConfigurator> script_configurator;
   navigation_handle->GetRenderFrameHost()
       ->GetRemoteAssociatedInterfaces()
-      ->GetInterface(&injector);
-  injector->AddOnLoadScript(std::move(script_readonly_shared_memory));
+      ->GetInterface(&script_configurator);
+  script_configurator->AddMediaDetector(
+      std::move(script_readonly_shared_memory));
 }
 
 void PlaylistTabHelper::DidFinishNavigation(
