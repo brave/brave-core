@@ -79,6 +79,7 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             android:textAlignment="textStart"
+            android:drawablePadding="4dp"
             android:textAllCaps="false"
             android:textColor="@android:color/holo_blue_dark"
             android:padding="12dp"/>
