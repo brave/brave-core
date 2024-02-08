@@ -49,14 +49,7 @@ const LOCAL_STORAGE_KEYS_DEPRECATED = {
 }
 
 export const removeDeprecatedLocalStorageKeys = () => {
-  window.localStorage.removeItem(
-    LOCAL_STORAGE_KEYS_DEPRECATED.PORTFOLIO_ACCOUNT_FILTER_OPTION
-  )
-  window.localStorage.removeItem(LOCAL_STORAGE_KEYS_DEPRECATED.SESSION_ROUTE)
-  window.localStorage.removeItem(
-    LOCAL_STORAGE_KEYS_DEPRECATED.FILTERED_OUT_PORTFOLIO_ACCOUNT_ADDRESSES
-  )
-  window.localStorage.removeItem(
-    LOCAL_STORAGE_KEYS_DEPRECATED.COLLAPSED_PORTFOLIO_ACCOUNT_ADDRESSES
-  )
+  Object.keys(LOCAL_STORAGE_KEYS_DEPRECATED).forEach((key) => {
+    window.localStorage.removeItem(LOCAL_STORAGE_KEYS_DEPRECATED[key])
+  })
 }
