@@ -76,6 +76,8 @@ const char kTestTtsSimple[] = "/speedreader/article/simple.html";
 const char kTestTtsTags[] = "/speedreader/article/tags.html";
 const char kTestTtsStructure[] = "/speedreader/article/structure.html";
 const char kTestErrorPage[] = "/speedreader/article/page_not_reachable.html";
+const char kTestCSPHtmlPage[] = "/speedreader/article/csp_html.html";
+const char kTestCSPHttpPage[] = "/speedreader/article/csp_http.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -876,6 +878,29 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspHtml) {
+  ToggleSpeedreader();
+  content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+  console_observer.SetPattern(
+      "Refused to load the image 'https://a.test/should_fail.png' because it "
+      "violates the following Content Security Policy directive: \"img-src "
+      "'none'\".*");
+  NavigateToPageSynchronously(kTestCSPHtmlPage,
+                              WindowOpenDisposition::CURRENT_TAB);
+
+  EXPECT_TRUE(console_observer.Wait());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspHttp) {
+  ToggleSpeedreader();
+  content::DevToolsInspectorLogWatcher console_observer(ActiveWebContents());
+  NavigateToPageSynchronously(kTestCSPHttpPage,
+                              WindowOpenDisposition::CURRENT_TAB);
+  console_observer.FlushAndStopWatching();
+  EXPECT_EQ("Failed to load resource: net::ERR_CONNECTION_REFUSED",
+            console_observer.last_message());
 }
 
 class SpeedReaderWithDistillationServiceBrowserTest
