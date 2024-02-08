@@ -294,15 +294,17 @@ pub fn extract_dom(
     };
 
     for node in meta.preserved_meta.iter() {
-        let data = node.as_element().unwrap();
-        let attributes = data.attributes.borrow();
+        if let Some(data) = node.as_element() {
+            let attributes = data.attributes.borrow();
 
-        let mut val: String = String::from("<meta ");
-        for attr in attributes.map.iter() {
-            val = [val, format!(" {}=\"{}\" ", attr.0.local, attr.1.value.to_string())].concat();
+            let mut val: String = String::from("<meta ");
+            for attr in attributes.map.iter() {
+                val =
+                    [val, format!(" {}=\"{}\" ", attr.0.local, attr.1.value.to_string())].concat();
+            }
+            val += ">";
+            content = val + &content;
         }
-        val += ">";
-        content = val + &content;
     }
 
     if let Some(ref charset) = meta.charset {
