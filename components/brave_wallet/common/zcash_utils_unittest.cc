@@ -60,6 +60,32 @@ TEST(ZCashUtilsUnitTest, PubkeyHashToTransparentAddress) {
 }
 
 TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
+  // https://github.com/Electric-Coin-Company/zcash-android-wallet-sdk/blob/v2.0.6/sdk-incubator-lib/src/main/java/cash/z/ecc/android/sdk/fixture/WalletFixture.kt
+  {
+    auto transparent_part = ExtractTransparentPart(
+        "u1lmy8anuylj33arxh3sx7ysq54tuw7zehsv6pdeeaqlrhkjhm3uvl9egqxqfd7hcsp3ms"
+        "zp6jxxx0gsw0ldp5wyu95r4mfzlueh8h5xhrjqgz7xtxp3hvw45dn4gfrz5j54ryg6reyf"
+        "0",
+        false);
+    EXPECT_EQ("t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ", transparent_part);
+  }
+  {
+    auto transparent_part = ExtractTransparentPart(
+        "u1czzc8jcl50svfezmfc9xsxnh63p374nptqplt0yw2uekr7v9wprp84y6esys6derp6uv"
+        "dcq6x6ykjrkpdyhjzneq5ud78h6j68n63hewg7xp9fpneuh64wgzt3d7mh6zh3qpqapzlc"
+        "4",
+        false);
+    EXPECT_EQ("t1duiEGg7b39nfQee3XaTY4f5McqfyJKhBi", transparent_part);
+  }
+  {
+    auto transparent_part = ExtractTransparentPart(
+        "utest16zd8zfx6n6few7mjsjpn6qtn8tlg6law7qnq33257855mdqekk7vru8lettx3vud"
+        "4mh99elglddltmfjkduar69h7vy08h3xdq6zuls9pqq7quyuehjqwtthc3hfd8gshhw42d"
+        "fr96e",
+        true);
+    EXPECT_EQ("tmCxJG72RWN66xwPtNgu4iKHpyysGrc7rEg", transparent_part);
+  }
+
   // https://github.com/zcash/librustzcash/blob/zcash_primitives-0.13.0/components/zcash_address/src/kind/unified/address/test_vectors.rs#L17
   {
     auto transparent_part = ExtractTransparentPart(
