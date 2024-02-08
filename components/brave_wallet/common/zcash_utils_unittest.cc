@@ -48,6 +48,17 @@ TEST(ZCashUtilsUnitTest, PubkeyToTransparentAddress) {
                 false));
 }
 
+TEST(ZCashUtilsUnitTest, PubkeyHashToTransparentAddress) {
+  EXPECT_FALSE(
+      PubkeyHashToTransparentAddress(std::vector<uint8_t>(19, 0), false));
+  EXPECT_FALSE(
+      PubkeyHashToTransparentAddress(std::vector<uint8_t>(21, 0), false));
+  // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/encoding.rs#L243
+  EXPECT_EQ("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs",
+            PubkeyHashToTransparentAddress(std::vector<uint8_t>(20, 0), false)
+                .value());
+}
+
 TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
   // https://github.com/zcash/librustzcash/blob/zcash_primitives-0.13.0/components/zcash_address/src/kind/unified/address/test_vectors.rs#L17
   {
@@ -57,10 +68,27 @@ TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
         "f",
         false);
     EXPECT_EQ(
-        PubkeyToTransparentAddress(
+        PubkeyHashToTransparentAddress(
             std::vector<uint8_t>({0x7b, 0xb8, 0x35, 0x70, 0xb8, 0xfa, 0xe1,
                                   0x46, 0xe0, 0x3c, 0x53, 0x31, 0xa0, 0x20,
                                   0xb1, 0xe0, 0x89, 0x2f, 0x63, 0x1d}),
+            false),
+        transparent_part);
+  }
+
+  // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/kind/unified/address/test_vectors.rs#L981
+  {
+    auto transparent_part = ExtractTransparentPart(
+        "u1ap7zakdnuefrgdglr334cw62hnqjkhr65t7tketyym0amkhdvyedpucuyxwu9z2te5vp"
+        "0jf75jgsm36d7r09h6z3qe5rkgd8y28er6fz8z5rckspevxnx4y9wfk49njpcujh5gle7m"
+        "fan90m9tt9a2gltyh8hx27cwt7h6u8ndmzhtk8qrq8hjytnakjqm0n658llh4z0277cyl2"
+        "rcu",
+        false);
+    EXPECT_EQ(
+        PubkeyHashToTransparentAddress(
+            std::vector<uint8_t>({0xf1, 0xbc, 0x3d, 0x72, 0x61, 0xbf, 0x77,
+                                  0xfe, 0x80, 0x8e, 0x2b, 0x71, 0x78, 0x98,
+                                  0x1c, 0x7c, 0xfe, 0x55, 0x70, 0xfd}),
             false),
         transparent_part);
   }
@@ -72,7 +100,7 @@ TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
         "7fzy8fwet0r0pt4wkdfs794ycqrvhe2hc97tkevpjr8rh3uenj3kz3rdqy78hmsmsx69dw"
         "raxwgy42xuhjh249uckn2elfwwhg36t7f9ms",
         false);
-    EXPECT_EQ(PubkeyToTransparentAddress(
+    EXPECT_EQ(PubkeyHashToTransparentAddress(
                   std::vector<uint8_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
                   false),
@@ -98,7 +126,7 @@ TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
         "na7kx9nfn0637np9k6tagzss48l6u9kcjf6gadlcnfusm42klsmmxnwj80q40cfwe8dnj7"
         "373w0",
         true);
-    EXPECT_EQ(PubkeyToTransparentAddress(
+    EXPECT_EQ(PubkeyHashToTransparentAddress(
                   std::vector<uint8_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
                   true),

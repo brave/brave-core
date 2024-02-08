@@ -90,6 +90,11 @@ std::optional<std::vector<ParsedAddress>> ParseUnifiedAddress(
   return result;
 }
 
+std::vector<uint8_t> GetNetworkPrefix(bool is_testnet) {
+  return is_testnet ? std::vector<uint8_t>({0x1d, 0x25})
+                    : std::vector<uint8_t>({0x1c, 0xb8});
+}
+
 }  // namespace
 
 DecodedZCashAddress::DecodedZCashAddress() = default;
@@ -108,11 +113,22 @@ bool IsUnifiedAddress(const std::string& address) {
 
 std::string PubkeyToTransparentAddress(base::span<const uint8_t> pubkey,
                                        bool testnet) {
-  std::vector<uint8_t> result = testnet ? std::vector<uint8_t>({0x1d, 0x25})
-                                        : std::vector<uint8_t>({0x1c, 0xb8});
+  std::vector<uint8_t> result = GetNetworkPrefix(testnet);
 
   std::vector<uint8_t> data_part = Hash160(pubkey);
   result.insert(result.end(), data_part.begin(), data_part.end());
+  return Base58EncodeWithCheck(result);
+}
+
+std::optional<std::string> PubkeyHashToTransparentAddress(
+    base::span<const uint8_t> pubkey_hash,
+    bool testnet) {
+  // Hash160 output size is 20 bytes
+  if (pubkey_hash.size() != 20u) {
+    return std::nullopt;
+  }
+  std::vector<uint8_t> result = GetNetworkPrefix(testnet);
+  result.insert(result.end(), pubkey_hash.begin(), pubkey_hash.end());
   return Base58EncodeWithCheck(result);
 }
 
@@ -213,7 +229,7 @@ std::optional<std::string> ExtractTransparentPart(
 
   for (const auto& part : parts.value()) {
     if (part.first == AddrType::kP2PKH) {
-      return PubkeyToTransparentAddress(part.second, is_testnet);
+      return PubkeyHashToTransparentAddress(part.second, is_testnet);
     }
   }
 
