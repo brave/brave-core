@@ -81,6 +81,8 @@
     "CheckNoBannedFunctions": [
       // Use `ban_rule_excluded_paths` instead.
     ],
+    "CheckNoJsInIos": ["ios/brave-ios/"],
+    "CheckNoDeprecatedCss": ["ios/brave-ios/"],
 
     // Checks to be fixed.
     "CheckUnwantedDependencies": [".*\\.java"],
@@ -153,7 +155,6 @@
       "components/webpack/gen-webpack-grd\\.js",
       "test/data/speedreader/",
     ],
-    "CheckNoJsInIos": ["ios/brave-ios/"],
   },
 
   // Additional excludes to _BANRULE_* lists in //PRESUBMIT.py.
