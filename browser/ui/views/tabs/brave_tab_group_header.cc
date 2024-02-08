@@ -11,6 +11,7 @@
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
@@ -74,6 +75,12 @@ void BraveTabGroupHeader::VisualsChanged() {
 
   if (ShouldShowVerticalTabs()) {
     LayoutTitleChipForVerticalTabs();
+  }
+
+  if (ShouldShowSyncIcon()) {
+    sync_icon_->SetImage(ui::ImageModel::FromVectorIcon(
+        kLeoProductSyncIcon, SkColorSetA(GetGroupColor(), 0.6 * 255),
+        group_style_->GetSyncIconWidth()));
   }
 }
 
