@@ -122,13 +122,10 @@ export const AssetItemMenu = (props: Props) => {
   }, [setSelectedSellAsset, asset])
 
   const onOpenSellAssetLink = React.useCallback(() => {
-    if (account?.address) {
-      openSellAssetLink({
-        sellAddress: account.address,
-        sellAsset: selectedSellAsset
-      })
-    }
-  }, [account?.address, openSellAssetLink])
+    openSellAssetLink({
+      sellAsset: selectedSellAsset
+    })
+  }, [openSellAssetLink, selectedSellAsset])
 
   return (
     <StyledWrapper yPosition={42}>
