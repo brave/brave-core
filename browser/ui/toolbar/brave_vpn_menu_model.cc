@@ -17,7 +17,7 @@
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "brave/browser/brave_vpn/win/storage_utils.h"
 #endif
 
 BraveVPNMenuModel::BraveVPNMenuModel(Browser* browser,

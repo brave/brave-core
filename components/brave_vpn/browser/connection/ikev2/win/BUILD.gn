@@ -32,7 +32,6 @@ source_set("win") {
 
   deps = [
     ":ras_utils",
-    "brave_vpn_helper",
     "//base",
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/browser/connection:common",
@@ -56,6 +55,5 @@ executable("vpntool") {
     ":win",
     "//base",
     "//brave/components/brave_vpn/browser/connection:common",
-    "//brave/components/brave_vpn/browser/connection/wireguard/win",
   ]
 }

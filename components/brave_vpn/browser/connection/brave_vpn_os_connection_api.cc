@@ -27,38 +27,6 @@
 
 namespace brave_vpn {
 
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNIKEv2ConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel,
-    base::RepeatingCallback<bool()> service_installer);
-
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel,
-    base::RepeatingCallback<bool()> service_installer);
-
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel,
-    base::RepeatingCallback<bool()> service_installer) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
-  if (IsBraveVPNWireguardEnabled(local_prefs)) {
-    return CreateBraveVPNWireguardConnectionAPI(url_loader_factory, local_prefs,
-                                                channel, service_installer);
-  }
-#endif
-#if BUILDFLAG(IS_ANDROID)
-  // Android doesn't use connection api.
-  return nullptr;
-#else
-  return CreateBraveVPNIKEv2ConnectionAPI(url_loader_factory, local_prefs,
-                                          channel, service_installer);
-#endif
-}
-
 BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
@@ -312,7 +280,7 @@ void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
 #if BUILDFLAG(IS_WIN)
     // Update prefs first before signaling the event because the event could
     // check the prefs.
-    UpdateWireguardEnabledPrefsIfNeeded(local_prefs_);
+    EnableWireguardIfPossible(local_prefs_);
 #endif
     system_service_installed_event_.Signal();
   }

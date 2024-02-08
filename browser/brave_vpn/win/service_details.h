@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_DETAILS_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_DETAILS_H_
+#ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_SERVICE_DETAILS_H_
+#define BRAVE_BROWSER_BRAVE_VPN_WIN_SERVICE_DETAILS_H_
 
 #include <guiddef.h>
 #include <string>
@@ -24,4 +24,4 @@ base::FilePath GetBraveVPNWireguardServiceInstallationPath(
 base::FilePath GetBraveVPNWireguardServiceExecutablePath();
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_SERVICE_DETAILS_H_
+#endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_SERVICE_DETAILS_H_

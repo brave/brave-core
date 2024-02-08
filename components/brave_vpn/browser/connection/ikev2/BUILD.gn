@@ -60,6 +60,5 @@ source_set("unit_tests") {
     "//content/test:test_support",
     "//services/network:test_support",
     "//testing/gtest",
-    "//third_party/abseil-cpp:absl",
   ]
 }

@@ -342,6 +342,7 @@ test("brave_unit_tests") {
       deps += [
         "//brave/browser/brave_vpn/dns:unit_tests",
         "//brave/browser/brave_vpn/win:unit_tests",
+        "//brave/browser/brave_vpn/win/brave_vpn_helper:unit_tests",
         "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:unit_tests",
       ]
     }
