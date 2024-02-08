@@ -20,9 +20,11 @@ source_set("service") {
   public_deps = [ "//brave/components/brave_vpn/common/wireguard/win:brave_wireguard_manager_idl" ]
   deps = [
     "//base",
+    "//brave/browser/brave_vpn/win:wireguard_utils",
     "//brave/components/brave_vpn/common/win",
-    "//brave/components/brave_vpn/common/wireguard/win",
+    "//chrome/common:channel_info",
     "//chrome/installer/util:with_no_strings",
+    "//components/version_info:channel",
   ]
   libs = [ "runtimeobject.lib" ]
 }

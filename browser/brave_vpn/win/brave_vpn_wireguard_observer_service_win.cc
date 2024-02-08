@@ -5,8 +5,8 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 
+#include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 
 namespace brave_vpn {
 

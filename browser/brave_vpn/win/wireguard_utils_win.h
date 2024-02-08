@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_WIN_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_WIN_H_
+#ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_WIREGUARD_UTILS_WIN_H_
+#define BRAVE_BROWSER_BRAVE_VPN_WIN_WIREGUARD_UTILS_WIN_H_
 
 #include <optional>
 #include <string>
@@ -20,12 +20,6 @@ namespace wireguard {
 bool IsBraveVPNWireguardTunnelServiceRunning();
 bool IsWireguardServiceInstalled();
 void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback);
-std::optional<std::string> CreateWireguardConfig(
-    const std::string& client_private_key,
-    const std::string& server_public_key,
-    const std::string& vpn_server_hostname,
-    const std::string& mapped_ipv4_address,
-    const std::string& dns_servers);
 void EnableBraveVpnWireguardService(const std::string& config,
                                     BooleanCallback callback);
 void DisableBraveVpnWireguardService(BooleanCallback callback);
@@ -37,4 +31,4 @@ void ShowBraveVpnStatusTrayIcon();
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_WIREGUARD_UTILS_WIN_H_
+#endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_WIREGUARD_UTILS_WIN_H_

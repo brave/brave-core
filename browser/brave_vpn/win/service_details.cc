@@ -3,19 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
 
 #include <guiddef.h>
 
 #include <vector>
 
 #include "base/containers/cxx20_erase.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
 #include "build/build_config.h"
-#include "chrome/install_static/install_util.h"
-#include "components/version_info/version_info.h"
+#include "chrome/common/channel_info.h"
+#include "components/version_info/channel.h"
+
+using version_info::Channel;
 
 namespace brave_vpn {
 
@@ -32,60 +34,70 @@ constexpr IID kBraveWireguardServiceIID = {
     0x4e6c,
     {0xbb, 0xad, 0xf8, 0xda, 0x64, 0x36, 0xd9, 0x33}};
 
-#if BUILDFLAG(CHANNEL_NIGHTLY)
-constexpr wchar_t kBraveWireguardTunnelServiceName[] =
+constexpr wchar_t kBraveNightlyWireguardTunnelServiceName[] =
     L"BraveVpnNightlyWireguardTunnelService";
 // A8D57D90-7A29-4405-91D7-A712F347E426
-constexpr CLSID kBraveWireguardServiceCLSID = {
+constexpr CLSID kBraveNightlyWireguardServiceCLSID = {
     0xa8d57d90,
     0x7a29,
     0x4405,
     {0x91, 0xd7, 0xa7, 0x12, 0xf3, 0x47, 0xe4, 0x26}};
-#elif BUILDFLAG(CHANNEL_BETA)
-constexpr wchar_t kBraveWireguardTunnelServiceName[] =
+
+constexpr wchar_t kBraveBetaWireguardTunnelServiceName[] =
     L"BraveVpnBetaWireguardTunnelService";
 // 93175676-5FAC-4D73-B1E1-5485003C9427
-constexpr CLSID kBraveWireguardServiceCLSID = {
+constexpr CLSID kBraveBetaWireguardServiceCLSID = {
     0x93175676,
     0x5fac,
     0x4d73,
     {0xb1, 0xe1, 0x54, 0x85, 0x00, 0x3c, 0x94, 0x27}};
-#elif BUILDFLAG(CHANNEL_DEV)
-constexpr wchar_t kBraveWireguardTunnelServiceName[] =
+
+constexpr wchar_t kBraveDevWireguardTunnelServiceName[] =
     L"BraveVpnDevWireguardTunnelService";
 // 52C95DE1-D7D9-4C03-A275-8A4517AFAE08
-constexpr CLSID kBraveWireguardServiceCLSID = {
+constexpr CLSID kBraveDevWireguardServiceCLSID = {
     0x52c95de1,
     0xd7d9,
     0x4c03,
     {0xa2, 0x75, 0x8a, 0x45, 0x17, 0xaf, 0xae, 0x08}};
-#elif BUILDFLAG(CHANNEL_DEVELOPMENT)
-constexpr wchar_t kBraveWireguardTunnelServiceName[] =
+
+constexpr wchar_t kBraveDevelopmentWireguardTunnelServiceName[] =
     L"BraveVpnDevelopmentWireguardTunnelService";
 // 57B73EDD-CBE4-46CA-8ACB-11D90840AF6E
-constexpr CLSID kBraveWireguardServiceCLSID = {
+constexpr CLSID kBraveDevelopmentWireguardServiceCLSID = {
     0x57b73edd,
     0xcbe4,
     0x46ca,
     {0x8a, 0xcb, 0x11, 0xd9, 0x08, 0x40, 0xaf, 0x6e}};
-#else
+
 constexpr wchar_t kBraveWireguardTunnelServiceName[] =
     L"BraveVpnWireguardTunnelService";
-
 // 088C5F6E-B213-4A8E-98AD-9D64D8913968
 constexpr CLSID kBraveWireguardServiceCLSID = {
     0x088c5f6e,
     0xb213,
     0x4a8e,
     {0x98, 0xad, 0x9d, 0x64, 0xd8, 0x91, 0x39, 0x68}};
-#endif
 
 }  // namespace
 
 // Returns the Brave Vpn Service CLSID, IID, Name, and Display Name
 // respectively.
 const CLSID& GetBraveVpnWireguardServiceClsid() {
-  return kBraveWireguardServiceCLSID;
+  switch (chrome::GetChannel()) {
+    case Channel::CANARY:
+      return kBraveNightlyWireguardServiceCLSID;
+    case Channel::DEV:
+      return kBraveDevWireguardServiceCLSID;
+    case Channel::BETA:
+      return kBraveBetaWireguardServiceCLSID;
+    case Channel::STABLE:
+      return kBraveWireguardServiceCLSID;
+    case Channel::UNKNOWN:
+      return kBraveDevelopmentWireguardServiceCLSID;
+  }
+
+  NOTREACHED_NORETURN();
 }
 
 const IID& GetBraveVpnWireguardServiceIid() {
@@ -93,9 +105,20 @@ const IID& GetBraveVpnWireguardServiceIid() {
 }
 
 std::wstring GetBraveVpnWireguardServiceDisplayName() {
-  static constexpr wchar_t kBraveWireguardServiceDisplayName[] =
-      L" Vpn Wireguard Service";
-  return install_static::GetBaseAppName() + kBraveWireguardServiceDisplayName;
+  switch (chrome::GetChannel()) {
+    case Channel::CANARY:
+      return L"Brave Nightly Vpn Wireguard Service";
+    case Channel::DEV:
+      return L"Brave Dev Vpn Wireguard Service";
+    case Channel::BETA:
+      return L"Brave Beta Vpn Wireguard Service";
+    case Channel::STABLE:
+      return L"Brave Vpn Wireguard Service";
+    case Channel::UNKNOWN:
+      return L"Brave Development Vpn Wireguard Service";
+  }
+
+  NOTREACHED_NORETURN();
 }
 
 std::wstring GetBraveVpnWireguardServiceName() {
@@ -105,10 +128,22 @@ std::wstring GetBraveVpnWireguardServiceName() {
 }
 
 std::wstring GetBraveVpnWireguardTunnelServiceName() {
-  return kBraveWireguardTunnelServiceName;
+  switch (chrome::GetChannel()) {
+    case Channel::CANARY:
+      return kBraveNightlyWireguardTunnelServiceName;
+    case Channel::DEV:
+      return kBraveDevWireguardTunnelServiceName;
+    case Channel::BETA:
+      return kBraveBetaWireguardTunnelServiceName;
+    case Channel::STABLE:
+      return kBraveWireguardTunnelServiceName;
+    case Channel::UNKNOWN:
+      return kBraveDevelopmentWireguardTunnelServiceName;
+  }
+
+  NOTREACHED_NORETURN();
 }
 
-// only used by `chromium_src/chrome/installer/setup/install_worker.cc`
 base::FilePath GetBraveVPNWireguardServiceInstallationPath(
     const base::FilePath& target_path,
     const base::Version& version) {

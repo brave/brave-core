@@ -7,14 +7,19 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
 assert(enable_brave_vpn)
 
-source_set("wireguard") {
+source_set("brave_vpn") {
   sources = [
-    "wireguard_utils.cc",
-    "wireguard_utils.h",
+    "vpn_utils.cc",
+    "vpn_utils.h",
   ]
+
   deps = [
-    "//base",
-    "//crypto",
-    "//third_party/boringssl",
+    "//brave/browser/profiles",
+    "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//services/network/public/cpp",
   ]
 }

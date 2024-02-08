@@ -1,9 +1,9 @@
 include_rules = [
+  "+brave/browser/brave_vpn/win/brave_vpn_helper",
   "+brave/browser/brave_vpn/win/brave_vpn_wireguard_service",
+  "+brave/browser/brave_vpn/win/service_details.h",
   "+brave/components/brave_vpn/browser/connection/ikev2/win",
-  "+brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper",
   "+brave/components/brave_vpn/common/buildflags",
-  "+brave/components/brave_vpn/common/wireguard/win",
   "+brave/installer",
   "+chrome/common",
   "+chrome/install_static",

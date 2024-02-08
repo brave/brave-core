@@ -21,10 +21,8 @@ using ConnectionState = mojom::ConnectionState;
 
 BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel)
-    : BraveVPNOSConnectionAPI(url_loader_factory, local_prefs),
-      target_vpn_entry_name_(GetBraveVPNEntryName(channel)) {}
+    PrefService* local_prefs)
+    : BraveVPNOSConnectionAPI(url_loader_factory, local_prefs) {}
 
 BraveVPNOSConnectionAPIBase::~BraveVPNOSConnectionAPIBase() = default;
 
@@ -131,7 +129,7 @@ void BraveVPNOSConnectionAPIBase::Disconnect() {
   if (GetConnectionState() != ConnectionState::CONNECTING) {
     VLOG(2) << __func__ << " : start disconnecting!";
     UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
-    DisconnectImpl(target_vpn_entry_name_);
+    DisconnectImpl(target_vpn_entry_name());
     return;
   }
 
@@ -147,7 +145,7 @@ void BraveVPNOSConnectionAPIBase::Disconnect() {
 }
 
 void BraveVPNOSConnectionAPIBase::CheckConnection() {
-  CheckConnectionImpl(target_vpn_entry_name_);
+  CheckConnectionImpl(target_vpn_entry_name());
 }
 
 void BraveVPNOSConnectionAPIBase::ResetConnectionInfo() {
@@ -165,7 +163,7 @@ void BraveVPNOSConnectionAPIBase::OnCreated() {
   }
 
   // It's time to ask connecting to os after vpn entry is created.
-  ConnectImpl(target_vpn_entry_name_);
+  ConnectImpl(target_vpn_entry_name());
 }
 
 void BraveVPNOSConnectionAPIBase::OnCreateFailed() {
@@ -186,7 +184,7 @@ void BraveVPNOSConnectionAPIBase::OnConnected() {
     // As connect is done, we don't need more for cancelling.
     // Just start normal Disconenct() process.
     cancel_connecting_ = false;
-    DisconnectImpl(target_vpn_entry_name_);
+    DisconnectImpl(target_vpn_entry_name());
     return;
   }
 
@@ -321,7 +319,7 @@ void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
       return;
     }
 
-    connection_info_.SetConnectionInfo(target_vpn_entry_name_, GetHostname(),
+    connection_info_.SetConnectionInfo(target_vpn_entry_name(), GetHostname(),
                                        *username, *password);
     // Let's create os vpn entry with |connection_info_|.
     CreateVPNConnection();

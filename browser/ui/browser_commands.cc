@@ -40,6 +40,7 @@
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/browser/browser_thread.h"
@@ -72,15 +73,14 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
+#include "brave/browser/brave_vpn/win/storage_utils.h"
+#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "chrome/common/channel_info.h"
 #endif
 
 using content::WebContents;

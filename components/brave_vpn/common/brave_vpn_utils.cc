@@ -24,10 +24,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
 
-#if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
-#endif
-
 namespace brave_vpn {
 
 namespace {
@@ -68,17 +64,18 @@ bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
   return false;
 #endif
 }
+
 #if BUILDFLAG(IS_WIN)
-void UpdateWireguardEnabledPrefsIfNeeded(PrefService* local_prefs) {
+void EnableWireguardIfPossible(PrefService* local_prefs) {
   auto* wireguard_enabled_pref =
       local_prefs->FindPreference(prefs::kBraveVPNWireguardEnabled);
   if (wireguard_enabled_pref && wireguard_enabled_pref->IsDefaultValue()) {
     local_prefs->SetBoolean(
         prefs::kBraveVPNWireguardEnabled,
-        base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService) &&
-            brave_vpn::wireguard::IsWireguardServiceInstalled());
+        base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService));
   }
 }
+
 #endif  // BUILDFLAG(IS_WIN)
 void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   if (local_prefs->GetBoolean(prefs::kBraveVPNLocalStateMigrated)) {

@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
@@ -19,6 +20,7 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_delegate.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
@@ -46,6 +48,8 @@ class BraveBrowserCommandControllerTest;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_vpn {
+
+class BraveVPNServiceDelegate;
 
 inline constexpr char kNewUserReturningHistogramName[] =
     "Brave.VPN.NewUserReturning";
@@ -149,6 +153,10 @@ class BraveVpnService :
                            const std::string& bundle_id);
   void GetSubscriberCredentialV12(ResponseCallback callback);
 
+  void set_delegate(std::unique_ptr<BraveVPNServiceDelegate> delegate) {
+    delegate_ = std::move(delegate);
+  }
+
   // new_usage should be set to true if a new VPN connection was just
   // established.
   void RecordP3A(bool new_usage);
@@ -230,6 +238,7 @@ class BraveVpnService :
   std::optional<mojom::PurchasedInfo> purchased_state_;
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
+  std::unique_ptr<BraveVPNServiceDelegate> delegate_;
   base::RepeatingTimer p3a_timer_;
   base::OneShotTimer subs_cred_refresh_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};

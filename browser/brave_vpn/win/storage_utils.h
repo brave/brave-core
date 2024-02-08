@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_STORAGE_UTILS_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_STORAGE_UTILS_H_
+#ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_STORAGE_UTILS_H_
+#define BRAVE_BROWSER_BRAVE_VPN_WIN_STORAGE_UTILS_H_
 
 #include <optional>
 
@@ -31,7 +31,6 @@ void ResetWireguardTunnelUsageFlag();
 
 void WriteConnectionState(int state);
 std::optional<int32_t> GetConnectionState();
-
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_WIREGUARD_WIN_STORAGE_UTILS_H_
+#endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_STORAGE_UTILS_H_
