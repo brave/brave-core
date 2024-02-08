@@ -88,12 +88,13 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     walletServiceObserver = nil
   }
   
+  private var updateTask: Task<(), Never>?
   func update() {
-    Task { @MainActor in
+    updateTask?.cancel()
+    updateTask = Task { @MainActor in
       self.isLoading = true
       defer { self.isLoading = false }
 
-      let allAccounts = await keyringService.allAccounts()
       let allNetworks = await rpcService.allNetworksForSupportedCoins()
       let allTokensPerNetwork = userAssetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworks,
@@ -107,18 +108,21 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       }
       let tokens = allTokensPerNetwork.flatMap(\.tokens)
       
-      var accountDetails = buildAccountDetails(accounts: allAccounts.accounts, tokens: tokens)
+      var allAccounts = await keyringService.allAccounts().accounts
+      var accountDetails = buildAccountDetails(accounts: allAccounts, tokens: tokens)
       self.primaryAccounts = accountDetails
         .filter(\.account.isPrimary)
       self.importedAccounts = accountDetails
         .filter(\.account.isImported)
       
       await updateBalancesAndPrices(
-        for: allAccounts.accounts,
+        for: allAccounts,
         networkAssets: allTokensPerNetwork
       )
       
-      accountDetails = buildAccountDetails(accounts: allAccounts.accounts, tokens: tokens)
+      // if new accounts added while balances were being fetched.
+      allAccounts = await keyringService.allAccounts().accounts
+      accountDetails = buildAccountDetails(accounts: allAccounts, tokens: tokens)
       self.primaryAccounts = accountDetails
         .filter(\.account.isPrimary)
       self.importedAccounts = accountDetails
