@@ -167,6 +167,7 @@
 
 <activity
     android:name="org.chromium.chrome.browser.brave_leo.BraveLeoActivity"
+    android:configChanges="orientation|screenSize"
     android:theme="@style/Theme.Chromium.Activity.FakeTranslucent"
     android:exported="false"/>
 
