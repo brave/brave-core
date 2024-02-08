@@ -27,6 +27,7 @@ import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingController;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
@@ -328,6 +329,12 @@ public class BraveToolbarManager extends ToolbarManager {
                 && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             boolean isBottomToolbarVisible = newOrientation != Configuration.ORIENTATION_LANDSCAPE;
             setBottomToolbarVisible(isBottomToolbarVisible);
+        }
+
+        if (mActivity instanceof BraveLeoActivity) {
+            // When Leo panel is shown on rotated screen we don't care about
+            // the toolbar.
+            return;
         }
 
         assert mActivity instanceof BraveActivity;
