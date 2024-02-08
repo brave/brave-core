@@ -28,6 +28,7 @@ export const _TransactionFailed = () => {
               'braveWalletTransactionFailedModalSubtitle'
             )}
             errorDetailContent='[ethjs-query] while formatting outputs from RPC ‘{“value”: {“code”:-32603,”data”: {“code”-32603,”message”:”Internal error”}}}’'
+            customDescription={undefined}
             onClose={onClose}
             onClickPrimaryCTA={() => alert('Clicked primary CTA')}
           />

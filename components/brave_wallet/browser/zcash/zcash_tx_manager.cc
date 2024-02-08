@@ -108,6 +108,24 @@ void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
     return;
   }
 
+  // Only one transaction per account is allowed at one moment.
+  if (!GetZCashTxStateManager()
+           ->GetTransactionsByStatus(meta->chain_id(),
+                                     mojom::TransactionStatus::Submitted,
+                                     meta->from())
+           .empty()) {
+    meta->set_status(mojom::TransactionStatus::Error);
+    tx_state_manager_->AddOrUpdateTx(*meta);
+
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewZcashProviderError(
+            mojom::ZCashProviderError::kMultipleTransactionsNotSupported),
+        l10n_util::GetStringUTF8(
+            IDS_BRAVE_WALLET_ZCASH_TRANSACTION_ALREADY_EXISTS_DESCRIPTION));
+    return;
+  }
+
   zcash_wallet_service_->SignAndPostTransaction(
       meta->chain_id(), meta->from(), std::move(*meta->tx()),
       base::BindOnce(&ZCashTxManager::ContinueApproveTransaction,

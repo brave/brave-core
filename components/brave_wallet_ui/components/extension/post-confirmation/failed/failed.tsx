@@ -21,6 +21,7 @@ import { PopupModal } from '../../popup-modals'
 interface Props {
   headerTitle: string
   isPrimaryCTADisabled: boolean
+  customDescription: string | undefined
   errorDetailTitle: string
   errorDetailContent?: string | undefined
   onClose: () => void
@@ -33,12 +34,16 @@ export const TransactionFailed = (props: Props) => {
     errorDetailTitle,
     errorDetailContent,
     isPrimaryCTADisabled,
+    customDescription,
     onClose,
     onClickPrimaryCTA
   } = props
 
   const [showErrorCodeModal, setShowErrorCodeModal] =
     React.useState<boolean>(false)
+
+  const description = customDescription ||
+      getLocale('braveWalletTransactionFailedDescription')
 
   return (
     <Panel
@@ -49,7 +54,7 @@ export const TransactionFailed = (props: Props) => {
       <ErrorIcon />
       <Title>{getLocale('braveWalletTransactionFailedTitle')}</Title>
       <TransactionStatusDescription>
-        {getLocale('braveWalletTransactionFailedDescription')}
+        {description}
       </TransactionStatusDescription>
       <ButtonRow>
         {errorDetailContent && (
