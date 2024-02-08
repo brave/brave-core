@@ -29,9 +29,11 @@ RegisterPolymerTemplateModifications({
       if (!version) {
         console.error('[Brave Settings Overrides] Could not find version div')
       }
+      // Remove the class from the version, so we take the link styling.
+      version.removeAttribute('class')
+
       const parent = version.parentNode
       const wrapper = document.createElement('a')
-      version.setAttribute('style', 'color: var(--cr-link-color)')
       wrapper.setAttribute('id', 'release-notes')
       wrapper.setAttribute('target', '_blank')
       wrapper.setAttribute('rel', 'noopener noreferrer')
