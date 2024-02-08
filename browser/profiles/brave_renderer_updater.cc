@@ -173,7 +173,6 @@ void BraveRendererUpdater::UpdateRenderer(
 
   bool should_ignore_brave_wallet_for_eth =
       !is_wallet_created_ || has_installed_metamask;
-  bool should_ignore_brave_wallet_for_sol = !is_wallet_created_;
 
   auto default_ethereum_wallet =
       static_cast<brave_wallet::mojom::DefaultWallet>(
@@ -195,9 +194,8 @@ void BraveRendererUpdater::UpdateRenderer(
   auto default_solana_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
       brave_wallet_solana_provider_.GetValue());
   bool brave_use_native_solana_wallet =
-      ((default_solana_wallet ==
-            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
-        !should_ignore_brave_wallet_for_sol) ||
+      (default_solana_wallet ==
+           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
        default_solana_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_;
