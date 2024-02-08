@@ -390,7 +390,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [accounts, getTokensBySearchValue, isLoadingBalances])
 
     const tokensByAccount = React.useMemo(() => {
-      if (isLoadingBalances) {
+      if (isLoadingBalances && !showFullFlatTokenList) {
         return (
           <Column fullWidth={true}>
             <AccountSection
