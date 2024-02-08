@@ -142,6 +142,12 @@ SkPath BraveVerticalTabStyle::GetPath(
   float tab_bottom = aligned_bounds.bottom();
   int radius = tabs::GetTabCornerRadius(*tab());
 
+  // For hit testing, the tab shape should not be rounded, as that would leave
+  // small hit test gaps between adjacent tabs at their corners.
+  if (path_type == TabStyle::PathType::kHitTest) {
+    radius = 0;
+  }
+
   if (is_pinned) {
     // Only pinned tabs have border
     if (path_type == TabStyle::PathType::kBorder ||
