@@ -5,6 +5,7 @@
 
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -38,25 +39,31 @@ constexpr const char kSpeedreaderStylesheet[] = "speedreader-stylesheet";
 std::string WrapStylesheetWithCSP(const std::string& stylesheet,
                                   const std::string& atkinson,
                                   const std::string& open_dyslexic) {
-  auto get_sha256 = [](const std::string& v) {
-    const std::string& style_hash = crypto::SHA256HashString(v);
-    return base::Base64Encode(base::as_bytes(base::make_span(style_hash)));
-  };
-
   constexpr const char kCSP[] = R"html(
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="Content-Security-Policy"
-      content="script-src 'none';
-               style-src-elem 'sha256-%s' 'sha256-%s' 'sha256-%s'"
+      content="default-src 'none';
+               script-src 'none';
+               img-src *;
+               font-src 'none';
+               base-uri 'none';
+               form-action 'none';
+               upgrade-insecure-requests;"
     >)html";
 
-  return base::StrCat(
-      {base::StringPrintf(kCSP, get_sha256(stylesheet).c_str(),
-                          get_sha256(atkinson).c_str(),
-                          get_sha256(open_dyslexic).c_str()),
-       "<style id=\"brave_speedreader_style\">", stylesheet, "</style>",
-       "<style id=\"atkinson_hyperligible_font\">", atkinson, "</style>",
-       "<style id=\"open_dyslexic_font\">", open_dyslexic, "</style>"});
+  const auto make_style_data = [](std::string_view id, std::string_view data) {
+    const std::string& hash = crypto::SHA256HashString(data);
+    const std::string& sha256 =
+        base::Base64Encode(base::as_bytes(base::make_span(hash)));
+
+    return base::StrCat({"<script type=\"brave-style-data\" id=\"", id,
+                         "\" integrity=\"", sha256, "\">", data, "</script>"});
+  };
+
+  return base::StrCat({kCSP,
+                       make_style_data("brave_speedreader_style", stylesheet),
+                       make_style_data("atkinson_hyperligible_font", atkinson),
+                       make_style_data("open_dyslexic_font", open_dyslexic)});
 }
 
 std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {

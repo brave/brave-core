@@ -83,6 +83,7 @@ pub struct Meta {
     pub description: Option<String>,
     pub charset: Option<String>,
     pub last_modified: Option<OffsetDateTime>,
+    pub preserved_meta: Vec<Handle>,
 }
 
 impl Meta {
@@ -102,6 +103,7 @@ impl Meta {
         };
         self.charset = self.charset.or(other.charset);
         self.last_modified = self.last_modified.or(other.last_modified);
+        self.preserved_meta.extend(other.preserved_meta);
         self
     }
 }
@@ -188,14 +190,14 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
             }
         } else if let Some(charset) = attribute.get(local_name!("charset")) {
             meta_tags.charset = Some(charset.to_string());
-        } else if attribute
-            .get(local_name!("http-equiv"))
-            .map(|e| e.to_ascii_lowercase() == "content-type")
-            .unwrap_or(false)
-        {
-            if let Some(content) = attribute.get(local_name!("content")) {
-                if let Some(charset) = content.split("charset=").nth(1) {
-                    meta_tags.charset = Some(charset.trim().to_string());
+        } else if let Some(http_equiv) = attribute.get(local_name!("http-equiv")) {
+            meta_tags.preserved_meta.push(node.clone());
+
+            if http_equiv.to_ascii_lowercase() == "content-type" {
+                if let Some(content) = attribute.get(local_name!("content")) {
+                    if let Some(charset) = content.split("charset=").nth(1) {
+                        meta_tags.charset = Some(charset.trim().to_string());
+                    }
                 }
             }
         }
@@ -285,10 +287,23 @@ pub fn extract_dom(
 
             // Our CSS formats based on id="article".
             dom::set_attr("id", "article", body.clone(), true);
+            dom::set_attr("hidden", "true", body.clone(), true);
             body.to_string()
         }
         _ => top_candidate.to_string(),
     };
+
+    for node in meta.preserved_meta.iter() {
+        let data = node.as_element().unwrap();
+        let attributes = data.attributes.borrow();
+
+        let mut val: String = String::from("<meta ");
+        for attr in attributes.map.iter() {
+            val = [val, format!(" {}=\"{}\" ", attr.0.local, attr.1.value.to_string())].concat();
+        }
+        val += ">";
+        content = val + &content;
+    }
 
     if let Some(ref charset) = meta.charset {
         // Since we strip out the entire head, we need to include charset if one
