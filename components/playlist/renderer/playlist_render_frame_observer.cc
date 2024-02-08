@@ -42,19 +42,23 @@ void PlaylistRenderFrameObserver::OnDestruct() {
   delete this;
 }
 
-void PlaylistRenderFrameObserver::AddMediaSourceAPISuppressor(
-    base::ReadOnlySharedMemoryRegion script) {
+void PlaylistRenderFrameObserver::AddScripts(
+    base::ReadOnlySharedMemoryRegion media_source_api_suppressor,
+    base::ReadOnlySharedMemoryRegion media_detector) {
   DVLOG(2) << __FUNCTION__;
-  media_source_api_suppressor_script_.emplace(script.Map().GetMemoryAs<char>(),
-                                              script.GetSize());
-  CHECK(!media_source_api_suppressor_script_->empty());
-}
 
-void PlaylistRenderFrameObserver::AddMediaDetector(
-    base::ReadOnlySharedMemoryRegion script) {
-  DVLOG(2) << __FUNCTION__;
-  media_detector_script_.emplace(script.Map().GetMemoryAs<char>(),
-                                 script.GetSize());
+  // optional in playlist.mojom
+  if (media_source_api_suppressor.IsValid()) {
+    media_source_api_suppressor_script_.emplace(
+        media_source_api_suppressor.Map().GetMemoryAs<char>(),
+        media_source_api_suppressor.GetSize());
+    CHECK(!media_source_api_suppressor_script_->empty());
+  }
+
+  // non-optional in playlist.mojom
+  CHECK(media_detector.IsValid());
+  media_detector_script_.emplace(media_detector.Map().GetMemoryAs<char>(),
+                                 media_detector.GetSize());
   CHECK(!media_detector_script_->empty());
 }
 

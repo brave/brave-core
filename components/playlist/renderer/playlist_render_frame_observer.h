@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -40,8 +41,8 @@ class PlaylistRenderFrameObserver final
   // RenderFrameObserver:
   void OnDestruct() override;
   // mojom::ScriptConfigurator
-  void AddMediaSourceAPISuppressor(base::ReadOnlySharedMemoryRegion script) override;
-  void AddMediaDetector(base::ReadOnlySharedMemoryRegion script) override;
+  void AddScripts(base::ReadOnlySharedMemoryRegion media_source_api_suppressor,
+                  base::ReadOnlySharedMemoryRegion media_detector) override;
 
   void BindScriptConfigurator(
       mojo::PendingAssociatedReceiver<mojom::ScriptConfigurator> receiver);

@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/memory/read_only_shared_memory_region.h"
-#include "base/memory/writable_shared_memory_region.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -195,48 +194,16 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
   if (!navigation_handle->IsInPrimaryMainFrame()) {
     return;
   }
-  {
-    if (is_background_) {
-      const std::string script = service_->GetMediaSourceAPISuppressor();
-
-      base::WritableSharedMemoryRegion script_writable_shared_memory =
-          base::WritableSharedMemoryRegion::Create(script.size());
-      std::memcpy(script_writable_shared_memory.Map().memory(), script.data(),
-                  script.size());
-
-      base::ReadOnlySharedMemoryRegion script_readonly_shared_memory =
-          base::WritableSharedMemoryRegion::ConvertToReadOnly(
-              std::move(script_writable_shared_memory));
-      CHECK(script_readonly_shared_memory.IsValid());
-
-      mojo::AssociatedRemote<mojom::ScriptConfigurator> script_configurator;
-      navigation_handle->GetRenderFrameHost()
-          ->GetRemoteAssociatedInterfaces()
-          ->GetInterface(&script_configurator);
-      script_configurator->AddMediaSourceAPISuppressor(
-          std::move(script_readonly_shared_memory));
-    }
-  }
-
-  const std::string script = service_->GetMediaDetectorScript(
-      navigation_handle->GetWebContents()->GetVisibleURL());
-
-  base::WritableSharedMemoryRegion script_writable_shared_memory =
-      base::WritableSharedMemoryRegion::Create(script.size());
-  std::memcpy(script_writable_shared_memory.Map().memory(), script.data(),
-              script.size());
-
-  base::ReadOnlySharedMemoryRegion script_readonly_shared_memory =
-      base::WritableSharedMemoryRegion::ConvertToReadOnly(
-          std::move(script_writable_shared_memory));
-  CHECK(script_readonly_shared_memory.IsValid());
 
   mojo::AssociatedRemote<mojom::ScriptConfigurator> script_configurator;
   navigation_handle->GetRenderFrameHost()
       ->GetRemoteAssociatedInterfaces()
       ->GetInterface(&script_configurator);
-  script_configurator->AddMediaDetector(
-      std::move(script_readonly_shared_memory));
+  script_configurator->AddScripts(
+      is_background_ ? service_->GetMediaSourceAPISuppressorScript()
+                     : base::ReadOnlySharedMemoryRegion(),
+      service_->GetMediaDetectorScript(
+          navigation_handle->GetWebContents()->GetVisibleURL()));
 }
 
 void PlaylistTabHelper::DidFinishNavigation(

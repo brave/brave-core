@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
+#include "base/memory/read_only_shared_memory_region.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "net/base/schemeful_site.h"
@@ -45,11 +46,11 @@ class MediaDetectorComponentManager {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  std::string GetMediaSourceAPISuppressorScript();
+  base::ReadOnlySharedMemoryRegion GetMediaSourceAPISuppressorScript();
 
   // Returns a script to get media from page. If the script isn't fetched
   // from component yet, will return a local script.
-  std::string GetMediaDetectorScript(const GURL& url);
+  base::ReadOnlySharedMemoryRegion GetMediaDetectorScript(const GURL& url);
 
   void SetUseLocalScript();
 
@@ -70,10 +71,12 @@ class MediaDetectorComponentManager {
   void RegisterIfNeeded();
   void OnComponentReady(const base::FilePath& install_path);
   void OnGetScripts(const ScriptMap& script_map);
+  base::ReadOnlySharedMemoryRegion ShareScript(const std::string& script) const;
 
   bool register_requested_ = false;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
 
+  std::string media_source_api_suppressor_;
   std::string base_script_;
 
   std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;

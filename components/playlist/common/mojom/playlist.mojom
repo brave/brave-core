@@ -204,6 +204,7 @@ interface PlaylistStreamingObserver {
 };
 
 interface ScriptConfigurator {
-  AddMediaSourceAPISuppressor(mojo_base.mojom.ReadOnlySharedMemoryRegion script);
-  AddMediaDetector(mojo_base.mojom.ReadOnlySharedMemoryRegion script);
+  AddScripts(
+      mojo_base.mojom.ReadOnlySharedMemoryRegion? media_source_api_suppressor,
+      mojo_base.mojom.ReadOnlySharedMemoryRegion media_detector);
 };

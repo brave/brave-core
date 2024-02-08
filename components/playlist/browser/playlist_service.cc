@@ -532,12 +532,14 @@ bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
   });
 }
 
-std::string PlaylistService::GetMediaSourceAPISuppressor() const {
+base::ReadOnlySharedMemoryRegion
+PlaylistService::GetMediaSourceAPISuppressorScript() const {
   return download_request_manager_->media_detector_component_manager()
-      ->GetMediaSourceAPISuppressorScript();  
+      ->GetMediaSourceAPISuppressorScript();
 }
 
-std::string PlaylistService::GetMediaDetectorScript(const GURL& url) const {
+base::ReadOnlySharedMemoryRegion PlaylistService::GetMediaDetectorScript(
+    const GURL& url) const {
   return download_request_manager_->media_detector_component_manager()
       ->GetMediaDetectorScript(url);
 }
