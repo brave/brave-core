@@ -42,6 +42,7 @@ source_set("unit_tests") {
   deps = [
     ":api",
     "//base",
+    "//base/test:test_support",
     "//brave/components/brave_vpn/common",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",

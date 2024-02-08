@@ -201,8 +201,7 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&ParseFeedItems, std::move(result.value_body())),
+      FROM_HERE, base::BindOnce(&ParseFeedItems, result.TakeBody()),
       base::BindOnce(
           [](base::WeakPtr<FeedFetcher> fetcher, std::string locale,
              std::string etag, FetchFeedSourceCallback callback,

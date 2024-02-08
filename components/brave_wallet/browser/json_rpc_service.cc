@@ -335,7 +335,7 @@ void JsonRpcService::RequestInternal(
         base::NullCallback()) {
   if (!network_url.is_valid()) {
     std::move(callback).Run(
-        APIRequestResult(400, {}, {}, {}, net::ERR_UNEXPECTED, GURL()));
+        APIRequestResult(400, {}, {}, net::ERR_UNEXPECTED, GURL()));
     return;
   }
 

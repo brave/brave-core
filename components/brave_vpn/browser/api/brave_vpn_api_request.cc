@@ -256,7 +256,7 @@ void BraveVpnAPIRequest::OnGetResponse(
   // requests. |body| will be empty when the response from service is invalid
   // json.
   const bool success = result.response_code() == 200;
-  std::move(callback).Run(result.body(), success);
+  std::move(callback).Run(result.SerializeBodyToString(), success);
 }
 
 void BraveVpnAPIRequest::OnGetSubscriberCredential(
@@ -265,7 +265,7 @@ void BraveVpnAPIRequest::OnGetSubscriberCredential(
   bool success = api_request_result.response_code() == 200;
   std::string error;
   std::string subscriber_credential =
-      ParseSubscriberCredentialFromJson(api_request_result.body(), &error);
+      ParseSubscriberCredentialFromJson(api_request_result.TakeBody(), &error);
   if (!success) {
     subscriber_credential = error;
     VLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
@@ -280,7 +280,7 @@ void BraveVpnAPIRequest::OnCreateSupportTicket(
   bool success = api_request_result.response_code() == 200;
   VLOG(2) << "OnCreateSupportTicket success=" << success
           << "\nresponse_code=" << api_request_result.response_code();
-  std::move(callback).Run(api_request_result.body(), success);
+  std::move(callback).Run(api_request_result.SerializeBodyToString(), success);
 }
 
 }  // namespace brave_vpn
