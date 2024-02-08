@@ -4,6 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import os
+import subprocess
+
+BRAVE_SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 BRAVE_THIRD_PARTY_DIRS = [
     'vendor',
@@ -115,7 +118,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                 "musl/COPYRIGHT"
             ],
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'): {
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'):
+        {
             "Name": "GoogleTest",
             "URL": "https://github.com/google/googletest",
             "License": "BSD",
@@ -177,7 +181,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
     prune_list += [
         'chromium_src',  # Brave's overrides, covered by main notice.
         'node_modules',  # See brave/third_party/npm-* instead.
-        '.vscode',       # Automatically added by Visual Studio.
+        '.vscode',  # Automatically added by Visual Studio.
     ]
     prune_dirs = tuple(prune_list)
 
@@ -209,6 +213,16 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
 
 def CheckBraveMissingLicense(target_os, path, error):
     if path.startswith('brave'):
+        output = subprocess.check_output(
+            [
+                'git', 'status', '-z',
+                os.path.join(os.path.relpath(path, 'brave'), 'LICENSE')
+            ],
+            cwd=os.path.abspath(os.path.join(BRAVE_SCRIPT_PATH,
+                                             os.pardir))).decode("utf-8")
+        if output.startswith('??'):
+            return  # Ignore untracked files
+
         if target_os == 'android':
             if path in DESKTOP_ONLY_PATHS:
                 return  # Desktop failures are not relevant on Android.
