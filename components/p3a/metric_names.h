@@ -211,6 +211,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Wallet.SolTransactionSent",
     "Brave.Wallet.UsageWeekly",
     "Brave.WebTorrent.UsageWeekly",
+    "Brave.Webcompat.UISource",
     "Brave.Welcome.InteractionStatus.2",
 });
 
@@ -281,7 +282,7 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.Rewards.MobileConversion",
     "Brave.Rewards.MobilePanelCount",
     "Brave.Rewards.PageViewCount",
-    "Brave.Rewards.TipsSent",
+    "Brave.Rewards.TipsSent.2",
     "Brave.Rewards.ToolbarButtonTrigger",
     "Brave.Search.QueriesBeforeChurn",
     "Brave.Today.ChannelCount",
@@ -303,7 +304,8 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageMonthly",
     "Brave.Wallet.UsageWeekly",
-    "Brave.WebTorrent.UsageWeekly"
+    "Brave.WebTorrent.UsageWeekly",
+    "Brave.Webcompat.UISource",
 });
 
 // List of metrics that should only be via STAR/Constellation.

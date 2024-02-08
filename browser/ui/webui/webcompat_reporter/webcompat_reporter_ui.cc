@@ -9,10 +9,12 @@
 #include <utility>
 #include <vector>
 
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
@@ -40,6 +42,8 @@
 namespace webcompat_reporter {
 
 namespace {
+
+constexpr const char kUISourceHistogramName[] = "Brave.Webcompat.UISource";
 
 class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
  public:
@@ -130,6 +134,12 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   const base::Value* contact_arg = submission_args.Find(kContactField);
   bool shields_enabled =
       submission_args.FindBool(kShieldsEnabledField).value_or(false);
+
+  auto ui_source_int = submission_args.FindInt(kUISourceField);
+  if (ui_source_int) {
+    UISource ui_source = static_cast<UISource>(*ui_source_int);
+    UMA_HISTOGRAM_ENUMERATION(kUISourceHistogramName, ui_source);
+  }
 
   std::string url;
   std::string ad_block_setting;
