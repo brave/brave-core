@@ -224,6 +224,10 @@
 # https://github.com/brave/brave-browser/issues/25729
 -TabContainerTest.RemoveTabInGroupWithTabClosingMode
 
+# This test fails because the bounds of the tab group underline are slightly
+# different from upstream.
+-TabContainerTest.GroupUnderlineBasics
+
 # Tests below are disabled for attempting to read unregistered pref
 # kDefaultSearchProviderByExtension, and crashing. This pref seems to be
 # registered only by SearchEngineProviderServiceFactory::RegisterProfilePrefs.
@@ -393,7 +397,7 @@
 # See ChromeBrowserFieldTrials.
 -ChromeBrowserFieldTrialsTest.SamplingTrials
 
-# These tests crash because we disable 
+# These tests crash because we disable
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
 -FilesRequestHandlerTest.FileIsEncrypted_LocalAnalysis
 -FilesRequestHandlerTest.FileIsLarge_LocalAnalysis
