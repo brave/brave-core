@@ -1749,9 +1749,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       }));
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/33469): Unify Brave Ads
-// search result attribution.
-
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
                           completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
