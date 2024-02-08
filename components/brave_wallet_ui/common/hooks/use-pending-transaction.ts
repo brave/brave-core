@@ -401,17 +401,15 @@ export const usePendingTransactions = () => {
     dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
   }, [selectedPendingTransactionId, pendingTransactions])
 
-  const rejectAllTransactions = React.useCallback(
-    () =>
-      rejectTransactions(
-        pendingTransactions.map((tx) => ({
-          id: tx.id,
-          chainId: tx.chainId,
-          coinType: getCoinFromTxDataUnion(tx.txDataUnion)
-        }))
-      ),
-    [pendingTransactions, rejectTransactions]
-  )
+  const rejectAllTransactions = React.useCallback(async () => {
+    await rejectTransactions(
+      pendingTransactions.map((tx) => ({
+        id: tx.id,
+        chainId: tx.chainId,
+        coinType: getCoinFromTxDataUnion(tx.txDataUnion)
+      }))
+    ).unwrap()
+  }, [pendingTransactions, rejectTransactions])
 
   const updateUnapprovedTransactionGasFields = React.useCallback(
     (payload: UpdateUnapprovedTransactionGasFieldsType) => {
