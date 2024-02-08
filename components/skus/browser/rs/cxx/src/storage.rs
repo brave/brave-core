@@ -1,5 +1,7 @@
 use std::cell::RefMut;
 
+use async_trait::async_trait;
+
 use crate::{ffi, NativeClient, NativeClientContext};
 use skus::{errors, Environment, KVClient, KVStore};
 
@@ -12,19 +14,20 @@ impl KVClient for NativeClient {
     }
 }
 
+#[async_trait(?Send)]
 impl KVStore for NativeClientContext {
     fn env(&self) -> &Environment {
         &self.environment
     }
-    fn purge(&mut self) -> Result<(), errors::InternalError> {
+    async fn purge(&mut self) -> Result<(), errors::InternalError> {
         ffi::shim_purge(self.ctx.pin_mut());
         Ok(())
     }
-    fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
+    async fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
         ffi::shim_set(self.ctx.pin_mut(), key, value);
         Ok(())
     }
-    fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
+    async fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
         let ret = ffi::shim_get(self.ctx.pin_mut(), key);
         Ok(if !ret.is_empty() { Some(ret) } else { None })
     }
