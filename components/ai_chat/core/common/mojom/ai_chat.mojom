@@ -206,23 +206,3 @@ interface ChatUIPage {
   OnSiteInfoChanged(SiteInfo info);
   OnFaviconImageDataChanged(array<uint8> favicon_image_data);
 };
-
-[EnableIf=is_android]
-struct ModelWithSubtitle {
-  Model model;
-  string subtitle;
-};
-
-[EnableIf=is_android]
-interface AIChatAndroidHelper {
-  GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
-  CreateOrderId() => (string order_id);
-  FetchOrderCredentials(string order_id) => (string response);
-  RefreshOrder(string order_id) => (string response);
-  GetModelsWithSubtitles() => (array<ModelWithSubtitle> models);
-};
-
-[EnableIf=is_android]
-interface IAPSubscription {
-  GetPurchaseTokenOrderId() => (string token, string order_id);
-};

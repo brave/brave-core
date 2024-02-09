@@ -6,12 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SETTINGS_LEO_ASSISTANT_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SETTINGS_LEO_ASSISTANT_HANDLER_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ai_chat/ai_chat_settings_helper.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
-#include "components/prefs/pref_change_registrar.h"
 
 class Profile;
 
@@ -25,6 +26,9 @@ class BraveLeoAssistantHandler : public settings::SettingsPageUIHandler,
 
   BraveLeoAssistantHandler(const BraveLeoAssistantHandler&) = delete;
   BraveLeoAssistantHandler& operator=(const BraveLeoAssistantHandler&) = delete;
+
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
+                         pending_receiver);
 
  private:
   // SettingsPageUIHandler overrides:
@@ -41,12 +45,12 @@ class BraveLeoAssistantHandler : public settings::SettingsPageUIHandler,
   void HandleToggleLeoIcon(const base::Value::List& args);
   void HandleGetLeoIconVisibility(const base::Value::List& args);
   void HandleResetLeoData(const base::Value::List& args);
-  void HandleGetModels(const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<sidebar::SidebarService,
                           sidebar::SidebarService::Observer>
       sidebar_service_observer_{this};
+  std::unique_ptr<ai_chat::AIChatSettingsHelper> settings_helper_;
 };
 
 }  // namespace settings
