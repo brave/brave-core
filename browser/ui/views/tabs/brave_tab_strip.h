@@ -38,7 +38,6 @@ class BraveTabStrip : public TabStrip {
   FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);
 
   void UpdateTabContainer();
-  void UpdateTabStripMargins();
   bool ShouldShowVerticalTabs() const;
 
   // TabStrip overrides:
