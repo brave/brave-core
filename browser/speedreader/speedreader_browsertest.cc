@@ -880,27 +880,19 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
       tab_helper()->PageDistillState()));
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspHtml) {
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
   ToggleSpeedreader();
-  content::WebContentsConsoleObserver console_observer(ActiveWebContents());
-  console_observer.SetPattern(
-      "Refused to load the image 'https://a.test/should_fail.png' because it "
-      "violates the following Content Security Policy directive: \"img-src "
-      "'none'\".*");
-  NavigateToPageSynchronously(kTestCSPHtmlPage,
-                              WindowOpenDisposition::CURRENT_TAB);
 
-  EXPECT_TRUE(console_observer.Wait());
-}
+  for (const auto* page : {kTestCSPHtmlPage, kTestCSPHttpPage}) {
+    content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+    console_observer.SetPattern(
+        "Refused to load the image 'https://a.test/should_fail.png' because it "
+        "violates the following Content Security Policy directive: \"img-src "
+        "'none'\".*");
+    NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspHttp) {
-  ToggleSpeedreader();
-  content::DevToolsInspectorLogWatcher console_observer(ActiveWebContents());
-  NavigateToPageSynchronously(kTestCSPHttpPage,
-                              WindowOpenDisposition::CURRENT_TAB);
-  console_observer.FlushAndStopWatching();
-  EXPECT_EQ("Failed to load resource: net::ERR_CONNECTION_REFUSED",
-            console_observer.last_message());
+    EXPECT_TRUE(console_observer.Wait());
+  }
 }
 
 class SpeedReaderWithDistillationServiceBrowserTest
