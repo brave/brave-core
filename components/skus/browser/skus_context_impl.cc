@@ -91,7 +91,7 @@ void shim_logMessage(rust::cxxbridge1::Str file,
   }
 }
 
-void shim_purge(skus::SkusContext& ctx  // NOLINT
+void shim_purge(skus::SkusContext& ctx,  // NOLINT
                 rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
                                           bool success)> done,
                 rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {

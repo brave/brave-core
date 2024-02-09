@@ -24,6 +24,9 @@ struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
 struct WakeupContext;
+struct StoragePurgeContext;
+struct StorageSetContext;
+struct StorageGetContext;
 
 class FetchOrderCredentialsCallbackState {
  public:
@@ -114,7 +117,7 @@ void shim_logMessage(rust::cxxbridge1::Str file,
                      TracingLevel level,
                      rust::cxxbridge1::Str message);
 
-void shim_purge(skus::SkusContext& ctx  // NOLINT
+void shim_purge(skus::SkusContext& ctx,  // NOLINT
                 rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
                                           bool success)> done,
                 rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx);

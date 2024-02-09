@@ -209,7 +209,7 @@ mod ffi {
         fn shim_purge(
             ctx: Pin<&mut SkusContext>,
             done: fn(Box<StoragePurgeContext>, bool),
-            st_ctx: Box<StoragePurgeContext>
+            st_ctx: Box<StoragePurgeContext>,
         );
 
         fn shim_set(
@@ -217,7 +217,7 @@ mod ffi {
             key: &str,
             value: &str,
             done: fn(Box<StorageSetContext>, bool),
-            st_ctx: Box<StorageSetContext>
+            st_ctx: Box<StorageSetContext>,
         );
 
         fn shim_get(
