@@ -11,6 +11,7 @@ mod storage;
 use std::cell::RefCell;
 use std::fmt;
 use std::rc::Rc;
+use std::thread;
 
 use cxx::{type_id, ExternType, UniquePtr};
 use futures::executor::{LocalPool, LocalSpawner};
@@ -28,6 +29,7 @@ pub struct NativeClientExecutor {
     is_shutdown: bool,
     pool: Option<LocalPool>,
     spawner: LocalSpawner,
+    thread_id: thread::ThreadId,
 }
 
 #[derive(Clone)]
@@ -62,6 +64,17 @@ impl NativeClient {
 }
 
 impl NativeClientExecutor {
+    fn new() -> Self {
+        let pool = LocalPool::new();
+        let spawner = pool.spawner();
+        Self {
+            is_shutdown: false,
+            pool: Some(pool),
+            spawner,
+            thread_id: thread::current().id(),
+        }
+    }
+
     fn shutdown(&mut self) {
         // drop any existing futures
         drop(self.pool.take());
@@ -70,6 +83,7 @@ impl NativeClientExecutor {
     }
 
     fn try_run_until_stalled(&mut self) {
+        assert!(thread::current().id() == self.thread_id, "sdk called on a different thread!");
         if self.is_shutdown {
             debug!("sdk is shutdown, exiting");
             return;
@@ -276,17 +290,11 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
 
     let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
 
-    let pool = LocalPool::new();
-    let spawner = pool.spawner();
     let sdk = skus::sdk::SDK::new(
         NativeClient {
             inner: Rc::new(RefCell::new(NativeClientInner {
                 environment: env.clone(),
-                executor: Rc::new(RefCell::new(NativeClientExecutor {
-                    is_shutdown: false,
-                    pool: Some(pool),
-                    spawner: spawner.clone(),
-                })),
+                executor: Rc::new(RefCell::new(NativeClientExecutor::new())),
                 ctx: Rc::new(RefCell::new(ctx)),
             })),
         },
@@ -297,6 +305,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
     let sdk = Rc::new(sdk);
     {
         let sdk = sdk.clone();
+        let spawner = sdk.client.get_spawner();
         let init = async move { sdk.initialize().await };
         if spawner.spawn_local(init).is_err() {
             debug!("pool is shutdown");
