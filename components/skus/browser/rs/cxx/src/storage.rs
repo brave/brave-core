@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use std::cell::RefMut;
 
 use async_trait::async_trait;
@@ -22,7 +27,6 @@ pub struct StorageGetContext {
     client: NativeClientContext,
 }
 
-
 impl KVClient for NativeClient {
     type Store = NativeClientContext;
 
@@ -44,7 +48,10 @@ impl KVStore for NativeClientContext {
         ffi::shim_purge(
             self.ctx.try_borrow_mut().map_err(|_| InternalError::BorrowFailed)?.pin_mut(),
             |context, success| {
-                let _ = context.tx.send(success.then_some(()).ok_or(InternalError::StorageWriteFailed("prefs write failed".to_string())));
+                let _ =
+                    context.tx.send(success.then_some(()).ok_or(
+                        InternalError::StorageWriteFailed("prefs write failed".to_string()),
+                    ));
 
                 context.client.try_run_until_stalled();
             },
@@ -68,7 +75,10 @@ impl KVStore for NativeClientContext {
             key,
             value,
             |context, success| {
-                let _ = context.tx.send(success.then_some(()).ok_or(InternalError::StorageWriteFailed("prefs write failed".to_string())));
+                let _ =
+                    context.tx.send(success.then_some(()).ok_or(
+                        InternalError::StorageWriteFailed("prefs write failed".to_string()),
+                    ));
 
                 context.client.try_run_until_stalled();
             },
@@ -84,7 +94,6 @@ impl KVStore for NativeClientContext {
     }
 
     async fn get(&mut self, key: &str) -> Result<Option<String>, InternalError> {
-
         let (tx, rx) = oneshot::channel();
         let context = Box::new(StorageGetContext { tx, client: self.clone() });
 
@@ -92,7 +101,11 @@ impl KVStore for NativeClientContext {
             self.ctx.try_borrow_mut().map_err(|_| InternalError::BorrowFailed)?.pin_mut(),
             key,
             |context, resp, success| {
-                let _ = context.tx.send(success.then_some(if !resp.is_empty() { Some(resp) } else { None }).ok_or(InternalError::StorageReadFailed("prefs reead failed".to_string())));
+                let _ = context.tx.send(
+                    success
+                        .then_some(if !resp.is_empty() { Some(resp) } else { None })
+                        .ok_or(InternalError::StorageReadFailed("prefs read failed".to_string())),
+                );
 
                 context.client.try_run_until_stalled();
             },
