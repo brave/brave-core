@@ -949,8 +949,8 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
       contents_view_->AddChildView(original_region_view_.get());
     }
 
-    original_region_view_->layout_manager_->SetOrientation(
-        views::LayoutOrientation::kVertical);
+    static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
+        ->SetOrientation(views::LayoutOrientation::kVertical);
     if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
       auto* scroll_container = GetTabStripScrollContainer();
       scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>());
@@ -972,8 +972,8 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
           original_region_view_.get(), 0);
     }
 
-    original_region_view_->layout_manager_->SetOrientation(
-        views::LayoutOrientation::kHorizontal);
+    static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
+        ->SetOrientation(views::LayoutOrientation::kHorizontal);
     if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
       auto* scroll_container = GetTabStripScrollContainer();
       scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>())
