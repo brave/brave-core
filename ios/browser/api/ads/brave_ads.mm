@@ -207,6 +207,10 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   return brave_ads::ShouldAlwaysRunService();
 }
 
++ (BOOL)shouldSupportSearchResultAds {
+  return brave_ads::ShouldSupportSearchResultAds();
+}
+
 - (BOOL)isEnabled {
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
@@ -1724,6 +1728,22 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
+}
+
+- (void)triggerSearchResultAdEvent:
+            (BraveAdsSearchResultAdInfo*)searchResultAdInfo
+                         eventType:(BraveAdsSearchResultAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning] || !searchResultAdInfo) {
+    return;
+  }
+
+  ads->TriggerSearchResultAdEvent(
+      searchResultAdInfo.cppObjPtr,
+      static_cast<brave_ads::mojom::SearchResultAdEventType>(eventType),
       base::BindOnce(^(const bool success) {
         completion(success);
       }));
