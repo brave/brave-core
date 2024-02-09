@@ -225,7 +225,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
     historyAPI->history_service_->DeleteLocalAndRemoteHistoryBetween(
         historyAPI->web_history_service_, base::Time::Min(), base::Time::Max(),
-        base::BindOnce(callback), &historyAPI->tracker_);
+        /*app_id*/ std::nullopt, base::BindOnce(callback),
+        &historyAPI->tracker_);
   };
 
   web::GetUIThreadTaskRunner({})->PostTask(
