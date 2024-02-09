@@ -294,6 +294,10 @@ void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
 void PlaylistTabHelper::OnMediaFilesUpdated(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
+  if (items.empty()) {
+    return;
+  }
+
   OnFoundMediaFromContents(url, std::move(items));
 }
 

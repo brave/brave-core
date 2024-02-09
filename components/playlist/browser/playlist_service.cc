@@ -365,10 +365,6 @@ void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
 void PlaylistService::NotifyMediaFilesUpdated(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
-  if (items.empty()) {
-    return;
-  }
-
   DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
            << " were updated: count =>" << items.size();
 
