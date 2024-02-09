@@ -24,6 +24,25 @@ void OnScheduleWakeup(
   done(std::move(ctx));
 }
 
+void OnShimPurge(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> ctx) {
+  done(std::move(ctx), true);
+}
+
+void OnShimSet(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>, bool)> done,
+    rust::cxxbridge1::Box<skus::StorageSetContext> ctx) {
+  done(std::move(ctx), true);
+}
+
+void OnShimGet(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>, rust::String, bool)> done,
+    rust::String value,
+    rust::cxxbridge1::Box<skus::StorageGetContext> ctx) {
+  done(std::move(ctx), std::move(value), true);
+}
+
 logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
   switch (level) {
     case skus::TracingLevel::Trace:
@@ -97,7 +116,9 @@ void shim_purge(
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
   ctx.PurgeStore();
-  done(std::move(st_ctx), true);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
 }
 
 void shim_set(
@@ -109,7 +130,9 @@ void shim_set(
     rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) {
   ctx.UpdateStoreValue(static_cast<std::string>(key),
                        static_cast<std::string>(value));
-  done(std::move(st_ctx), true);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimSet, std::move(done), std::move(st_ctx)));
 }
 
 void shim_get(
@@ -119,11 +142,14 @@ void shim_get(
                               rust::String value,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) {
-  done(
-      std::move(st_ctx),
-      ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))),
-      true
-  );
+
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &OnShimGet,
+          std::move(done),
+          std::move(::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key)))),
+          std::move(st_ctx)));
 }
 
 void shim_scheduleWakeup(
