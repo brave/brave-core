@@ -24,18 +24,22 @@ use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 use crate::storage::{StorageGetContext, StoragePurgeContext, StorageSetContext};
 use errors::result_to_string;
 
-#[derive(Clone)]
-pub struct NativeClientContext {
-    environment: skus::Environment,
-    is_shutdown: Rc<RefCell<bool>>,
-    pool: Rc<RefCell<LocalPool>>,
+pub struct NativeClientExecutor {
+    is_shutdown: bool,
+    pool: Option<LocalPool>,
     spawner: LocalSpawner,
+}
+
+#[derive(Clone)]
+pub struct NativeClientInner {
+    environment: skus::Environment,
+    executor: Rc<RefCell<NativeClientExecutor>>,
     ctx: Rc<RefCell<UniquePtr<ffi::SkusContext>>>,
 }
 
 #[derive(Clone)]
 pub struct NativeClient {
-    ctx: Rc<RefCell<NativeClientContext>>,
+    inner: Rc<RefCell<NativeClientInner>>,
 }
 
 impl fmt::Debug for NativeClient {
@@ -46,17 +50,31 @@ impl fmt::Debug for NativeClient {
 
 impl NativeClient {
     fn try_run_until_stalled(&self) {
-        self.ctx.borrow().try_run_until_stalled()
+        let executor = self.inner.borrow().executor.clone();
+        if let Ok(mut executor) = executor.try_borrow_mut() {
+            executor.try_run_until_stalled()
+        };
+    }
+
+    fn get_spawner(&self) -> LocalSpawner {
+        self.inner.borrow().executor.borrow().spawner.clone()
     }
 }
 
-impl NativeClientContext {
-    fn try_run_until_stalled(&self) {
-        if *self.is_shutdown.borrow() {
+impl NativeClientExecutor {
+    fn shutdown(&mut self) {
+        // drop any existing futures
+        drop(self.pool.take());
+        // ensure lingering callbacks passed to c++ are short circuited
+        self.is_shutdown = true;
+    }
+
+    fn try_run_until_stalled(&mut self) {
+        if self.is_shutdown {
             debug!("sdk is shutdown, exiting");
             return;
         }
-        if let Ok(mut pool) = self.pool.try_borrow_mut() {
+        if let Some(pool) = &mut self.pool {
             pool.run_until_stalled();
         }
     }
@@ -262,11 +280,13 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
     let spawner = pool.spawner();
     let sdk = skus::sdk::SDK::new(
         NativeClient {
-            ctx: Rc::new(RefCell::new(NativeClientContext {
+            inner: Rc::new(RefCell::new(NativeClientInner {
                 environment: env.clone(),
-                is_shutdown: Rc::new(RefCell::new(false)),
-                pool: Rc::new(RefCell::new(pool)),
-                spawner: spawner.clone(),
+                executor: Rc::new(RefCell::new(NativeClientExecutor {
+                    is_shutdown: false,
+                    pool: Some(pool),
+                    spawner: spawner.clone(),
+                })),
                 ctx: Rc::new(RefCell::new(ctx)),
             })),
         },
@@ -283,17 +303,14 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
         }
     }
 
-    sdk.client.ctx.borrow().pool.borrow_mut().run_until_stalled();
+    sdk.client.try_run_until_stalled();
 
     Box::new(CppSDK { sdk })
 }
 
 impl CppSDK {
     fn shutdown(&self) {
-        // drop any existing futures
-        drop(self.sdk.client.ctx.borrow().pool.take());
-        // ensure lingering callbacks passed to c++ are short circuited
-        *self.sdk.client.ctx.borrow().is_shutdown.borrow_mut() = true;
+        self.sdk.client.inner.borrow().executor.borrow_mut().shutdown();
     }
 
     fn refresh_order(
@@ -302,7 +319,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
         order_id: String,
     ) {
-        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(refresh_order_task(self.sdk.clone(), callback, callback_state, order_id))
             .is_err()
@@ -319,7 +336,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
         order_id: String,
     ) {
-        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(fetch_order_credentials_task(
                 self.sdk.clone(),
@@ -342,7 +359,7 @@ impl CppSDK {
         domain: String,
         path: String,
     ) {
-        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(prepare_credentials_presentation_task(
                 self.sdk.clone(),
@@ -365,7 +382,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
         domain: String,
     ) {
-        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(credential_summary_task(
                 self.sdk.clone(),
@@ -388,7 +405,7 @@ impl CppSDK {
         order_id: String,
         receipt: String,
     ) {
-        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(submit_receipt_task(
                 self.sdk.clone(),
@@ -410,7 +427,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CreateOrderFromReceiptCallbackState>,
         receipt: String,
     ) {
-        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(create_order_from_receipt_task(
                 self.sdk.clone(),
