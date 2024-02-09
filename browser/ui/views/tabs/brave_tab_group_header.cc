@@ -126,7 +126,7 @@ void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
 
   title_->SetSize({title_width, title_->height()});
   plus_icon_->SetBoundsRect(
-      {title_->bounds().right() + 1, title_bounds.y(), kIconSize, kIconSize});
+      {title_->bounds().right(), title_bounds.y(), kIconSize, kIconSize});
 }
 
 SkColor BraveTabGroupHeader::GetGroupColor() const {

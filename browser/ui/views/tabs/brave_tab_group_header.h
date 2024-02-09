@@ -22,8 +22,8 @@ class BraveTabGroupHeader : public TabGroupHeader {
   constexpr static int kIconSize = 16;
 
   BraveTabGroupHeader(TabSlotController& tab_slot_controller,
-                 const tab_groups::TabGroupId& group,
-                 const TabGroupStyle& style);
+                      const tab_groups::TabGroupId& group,
+                      const TabGroupStyle& style);
   BraveTabGroupHeader(const BraveTabGroupHeader&) = delete;
   BraveTabGroupHeader& operator=(const BraveTabGroupHeader&) = delete;
 
