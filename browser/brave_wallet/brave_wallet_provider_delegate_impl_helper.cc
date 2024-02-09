@@ -33,7 +33,7 @@ void ShowPanel(content::WebContents* web_contents) {
   }
 }
 
-void ShowWalletBackup() { }
+void ShowWalletBackup() {}
 
 void ShowWalletOnboarding(content::WebContents* web_contents) {
   Browser* browser =

@@ -130,10 +130,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         final Intent intent = getIntent();
         if (intent != null) {
             mIsFromDapps = intent.getBooleanExtra(IS_FROM_DAPPS, false);
-            mRestartSetupAction =
-                    intent.getBooleanExtra(RESTART_WALLET_ACTIVITY_SETUP, false);
-            mRestartRestoreAction =
-                    intent.getBooleanExtra(RESTART_WALLET_ACTIVITY_RESTORE, false);
+            mRestartSetupAction = intent.getBooleanExtra(RESTART_WALLET_ACTIVITY_SETUP, false);
+            mRestartRestoreAction = intent.getBooleanExtra(RESTART_WALLET_ACTIVITY_RESTORE, false);
             mBackupWallet = intent.getBooleanExtra(SHOW_WALLET_ACTIVITY_BACKUP, false);
         }
         mShowBiometricPrompt = true;
