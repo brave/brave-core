@@ -29,14 +29,12 @@ window.__firefox__.includeOnce("BraveTalkScript", function($) {
     });
   });
   
-  if (document.location.host === "talk.brave.com") {
-    const postRoom = $((event) => {
-      if (event.target.tagName !== undefined && event.target.tagName.toLowerCase() == "iframe") {
-        launchNativeBraveTalk(event.target.src);
-        window.removeEventListener("DOMNodeInserted", postRoom)
-      }
-    });
-    window.addEventListener("DOMNodeInserted", postRoom);
-  }
+  const postRoom = $((event) => {
+    if (event.target.tagName !== undefined && event.target.tagName.toLowerCase() == "iframe") {
+      launchNativeBraveTalk(event.target.src);
+      window.removeEventListener("DOMNodeInserted", postRoom)
+    }
+  });
+  window.addEventListener("DOMNodeInserted", postRoom);
 });
 

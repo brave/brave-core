@@ -38,11 +38,7 @@ class DomainUserScriptTests: XCTestCase {
   func testBraveTalkAPIAvailability() throws {
     let goodURLs = [
       URL(string: "https://talk.brave.com"),
-      URL(string: "https://beta.talk.brave.com"),
       URL(string: "https://talk.bravesoftware.com"),
-      URL(string: "https://beta.talk.bravesoftware.com"),
-      URL(string: "https://dev.talk.brave.software"),
-      URL(string: "https://beta.talk.brave.software"),
       URL(string: "https://talk.brave.com/account"),
     ].compactMap { $0 }
 

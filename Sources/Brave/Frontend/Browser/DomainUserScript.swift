@@ -43,10 +43,9 @@ enum DomainUserScript: CaseIterable {
                   "search-dev-local.brave.com"])
 #if canImport(BraveTalk)
     case .braveTalkHelper:
-      return Set(["talk.brave.com", "beta.talk.brave.com",
-                 "talk.bravesoftware.com", "beta.talk.bravesoftware.com",
-                 "dev.talk.brave.software", "beta.talk.brave.software",
-                 "talk.brave.software"])
+      return Set(["talk.brave.com",
+                  "talk.bravesoftware.com",
+                  "talk.brave.software"])
 #endif
     case .bravePlaylistFolderSharingHelper:
       return Set(["playlist.bravesoftware.com", "playlist.brave.com"])
