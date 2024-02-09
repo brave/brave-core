@@ -28,6 +28,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
+import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -345,43 +346,66 @@ public class InAppPurchaseWrapper {
             MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
             LiveData<Boolean> billingConnectionState = _billingConnectionState;
             startBillingServiceConnection(_billingConnectionState);
-            LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
-                if (isConnected) {
-                    mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
-                        // End connection after getting the resposne of the purchase aknowledgment
-                        endConnection();
-                        BraveActivity activity = null;
-                        try {
-                            activity = BraveActivity.getBraveActivity();
-                        } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "acknowledgePurchase " + e.getMessage());
-                        }
-                        if (billingResult.getResponseCode()
-                                == BillingClient.BillingResponseCode.OK) {
-                            if (isVPNProduct) {
-                                BraveVpnPrefUtils.setSubscriptionPurchase(true);
-                                if (activity != null) {
-                                    BraveVpnUtils.openBraveVpnProfileActivity(activity);
-                                }
-                            } else if (isLeoProduct) {
-                                BraveLeoPrefUtils.setIsSubscriptionActive(true);
-                            }
-                            showToast(context.getResources().getString(
-                                    R.string.subscription_consumed));
-                        } else {
-                            showToast(
-                                    context.getResources().getString(R.string.fail_to_aknowledge));
+            LiveDataUtil.observeOnce(
+                    billingConnectionState,
+                    isConnected -> {
+                        if (isConnected) {
+                            mBillingClient.acknowledgePurchase(
+                                    acknowledgePurchaseParams,
+                                    billingResult -> {
+                                        // End connection after getting the response of the purchase
+                                        // acknowledgment
+                                        endConnection();
+                                        if (billingResult.getResponseCode()
+                                                == BillingClient.BillingResponseCode.OK) {
+                                            receiptAcknowledged(
+                                                    context, purchase, isVPNProduct, isLeoProduct);
+                                        } else {
+                                            showToast(
+                                                    context.getResources()
+                                                            .getString(
+                                                                    R.string.fail_to_aknowledge));
+                                        }
+                                    });
                         }
                     });
-                }
-            });
         } else {
             if (isVPNProduct) {
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
             } else if (isLeoProduct) {
-                BraveLeoPrefUtils.setIsSubscriptionActive(true);
+                receiptAcknowledged(context, purchase, false, true);
             }
         }
+    }
+
+    private void receiptAcknowledged(
+            Context context, Purchase purchase, boolean isVPNProduct, boolean isLeoProduct) {
+        BraveActivity activity = null;
+        try {
+            activity = BraveActivity.getBraveActivity();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "acknowledgePurchase " + e.getMessage());
+        }
+        if (isVPNProduct) {
+            BraveVpnPrefUtils.setSubscriptionPurchase(true);
+            if (activity != null) {
+                BraveVpnUtils.openBraveVpnProfileActivity(activity);
+            }
+        } else if (isLeoProduct && activity != null) {
+            activity.runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            BraveLeoPrefUtils.setIsSubscriptionActive(true);
+                            BraveLeoPrefUtils.setChatPackageName();
+                            BraveLeoPrefUtils.setChatProductId(
+                                    purchase.getProducts().get(0).toString());
+                            BraveLeoPrefUtils.setChatPurchaseToken(purchase.getPurchaseToken());
+                            BraveLeoUtils.bringMainActivityOnTop();
+                        }
+                    });
+        }
+        showToast(context.getResources().getString(R.string.subscription_consumed));
     }
 
     private boolean isVPNProduct(List<String> productIds) {

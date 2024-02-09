@@ -10,6 +10,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 
 public class BraveLeoPrefUtils {
@@ -56,7 +57,37 @@ public class BraveLeoPrefUtils {
             Log.e(TAG, "BraveLeoPrefUtils.setChatPurchaseToken profile is null");
             return;
         }
-        UserPrefs.get(profileToUse).setString(BravePref.BRAVE_CHAT_PURCHASE_TOKEN_ANDROID, token);
+        PrefService prefService = UserPrefs.get(profileToUse);
+        if (prefService.getString(BravePref.BRAVE_CHAT_PURCHASE_TOKEN_ANDROID).equals(token)
+                && !prefService.getString(BravePref.BRAVE_CHAT_ORDER_ID_ANDROID).isEmpty()) {
+            return;
+        }
+        prefService.setString(BravePref.BRAVE_CHAT_ORDER_ID_ANDROID, "");
+        prefService.setString(BravePref.BRAVE_CHAT_PURCHASE_TOKEN_ANDROID, token);
+        if (!token.isEmpty()) {
+            createFetchOrder(profileToUse);
+        }
+    }
+
+    private static void createFetchOrder(Profile profileToUse) {
+        BraveLeoMojomHelper.getInstance(profileToUse)
+                .createOrderId(
+                        orderId -> {
+                            fetchOrder(profileToUse, orderId);
+                        });
+    }
+
+    private static void fetchOrder(Profile profileToUse, String orderId) {
+        BraveLeoMojomHelper.getInstance(profileToUse)
+                .fetchOrderCredentials(
+                        orderId,
+                        response -> {
+                            if (!response.isEmpty()) {
+                                return;
+                            }
+                            UserPrefs.get(profileToUse)
+                                    .setString(BravePref.BRAVE_CHAT_ORDER_ID_ANDROID, orderId);
+                        });
     }
 
     public static void setChatPackageName() {

@@ -21,4 +21,9 @@ void GoPremium(content::WebContents* web_contents) {
       base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
 }
 
+void ManagePremium(content::WebContents* web_contents) {
+  Java_BraveLeoSettingsLauncherHelper_managePremium(
+      base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
+}
+
 }  // namespace ai_chat
