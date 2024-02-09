@@ -96,7 +96,6 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
         assetSymbol: string
         offRampProvider: BraveWallet.OffRampProvider
         chainId: string
-        address: string
         amount: string
         fiatCurrencyCode: string
       }
@@ -107,7 +106,6 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
           const { url, error } = await api.assetRatioService.getSellUrl(
             arg.offRampProvider,
             arg.chainId,
-            arg.address,
             arg.assetSymbol,
             arg.amount,
             arg.fiatCurrencyCode

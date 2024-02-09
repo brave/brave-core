@@ -30,9 +30,10 @@ constexpr int32_t kAssetDiscoveryMinutesPerRequest = 1;
 inline constexpr char kWalletBaseDirectory[] = "BraveWallet";
 inline constexpr char kImageSourceHost[] = "erc-token-images";
 inline constexpr char kRampBaseUrl[] = "https://app.ramp.network";
-inline constexpr char kOffRampEnabledFlows[] = "ONRAMP,OFFRAMP";
-inline constexpr char kOffRampDefaultFlow[] = "OFFRAMP";
-inline constexpr char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
+inline constexpr char kOffRampEnabledFlows[] = "OFFRAMP";
+inline constexpr char kOnRampEnabledFlows[] = "ONRAMP";
+inline constexpr char kOnRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
+inline constexpr char kOffRampID[] = "y57zqta99ohs7o2paf4ak6vpfb7wf8ubj9krwtwe";
 inline constexpr char kSardineStorefrontBaseURL[] = "https://crypto.sardine.ai";
 inline constexpr char kSardineClientTokensURL[] =
     "https://api.sardine.ai/v1/auth/client-tokens";

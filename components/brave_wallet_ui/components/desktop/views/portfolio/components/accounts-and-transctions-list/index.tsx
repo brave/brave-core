@@ -202,10 +202,9 @@ export const AccountsAndTransactionsList = ({
 
   const onOpenSellAssetLink = React.useCallback(() => {
     openSellAssetLink({
-      sellAddress: selectedSellAccount?.address ?? '',
       sellAsset: selectedAsset
     })
-  }, [selectedAsset, selectedSellAccount?.address, openSellAssetLink])
+  }, [selectedAsset, openSellAssetLink])
 
   const onToggleHideBalances = React.useCallback(() => {
     window.localStorage.setItem(

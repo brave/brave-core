@@ -64,10 +64,8 @@ export const useMultiChainSellAssets = () => {
 
   const openSellAssetLink = React.useCallback(
     async ({
-      sellAddress,
       sellAsset
     }: {
-      sellAddress: string
       sellAsset: BraveWallet.BlockchainToken | undefined
     }) => {
       if (!sellAsset || !defaultFiatCurrency) {
@@ -79,9 +77,8 @@ export const useMultiChainSellAssets = () => {
           assetSymbol: getRampAssetSymbol(sellAsset, true),
           offRampProvider: BraveWallet.OffRampProvider.kRamp,
           chainId: sellAsset.chainId,
-          address: sellAddress,
           amount: new Amount(sellAmount)
-            .multiplyByDecimals(sellAsset?.decimals ?? 18)
+            .multiplyByDecimals(sellAsset.decimals)
             .toNumber()
             .toString(),
           fiatCurrencyCode: defaultFiatCurrency
