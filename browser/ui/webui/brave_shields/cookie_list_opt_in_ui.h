@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_COOKIE_LIST_OPT_IN_UI_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -25,6 +26,10 @@ class CookieListOptInUI
 
   void BindInterface(
       mojo::PendingReceiver<CookieListOptInPageHandlerFactory> reciever);
+
+  static constexpr std::string GetWebUIName() {
+    return "CookieListOptInBubblePanel";
+  }
 
  private:
   // brave_shields::mojom::CookieListOptInPageHandlerFactory:

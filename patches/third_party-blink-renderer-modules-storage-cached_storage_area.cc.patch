@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/storage/cached_storage_area.cc b/third_party/blink/renderer/modules/storage/cached_storage_area.cc
+index cb7bf9e97a0138904c0d9f9522e335f4e493d79a..557cf4c91f832d56d13f3a7b7cb635cc8cd029fe 100644
+--- a/third_party/blink/renderer/modules/storage/cached_storage_area.cc
++++ b/third_party/blink/renderer/modules/storage/cached_storage_area.cc
+@@ -244,7 +244,7 @@ void CachedStorageArea::BindStorageArea(
+     remote_area_.Bind(std::move(new_area), task_runner);
+   } else if (storage_namespace_) {
+     storage_namespace_->BindStorageArea(
+-        storage_key_, local_dom_window->GetLocalFrameToken(),
++        IsSessionStorage() ? storage_key_ : local_dom_window->GetEphemeralStorageKeyOrStorageKey(), local_dom_window->GetLocalFrameToken(),
+         remote_area_.BindNewPipeAndPassReceiver(task_runner));
+   } else {
+     return;

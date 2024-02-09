@@ -1,8 +1,8 @@
 diff --git a/content/browser/browser_main_loop.h b/content/browser/browser_main_loop.h
-index 635b37760bc6c12eb65ef56dbe8805324aa8ff73..7b57f31ae11eaa7f0f473500c32010e53ee02d23 100644
+index ebed26f8966cfb0e78ac27b86988811f5c24b09a..6053e2fca90ec368ffb4b60ce500c294cd1d6154 100644
 --- a/content/browser/browser_main_loop.h
 +++ b/content/browser/browser_main_loop.h
-@@ -155,6 +155,7 @@ class CONTENT_EXPORT BrowserMainLoop {
+@@ -156,6 +156,7 @@ class CONTENT_EXPORT BrowserMainLoop {
    void RunMainMessageLoop();
  
    // Performs the pre-shutdown steps.

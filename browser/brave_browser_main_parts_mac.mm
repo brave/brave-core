@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_browser_main_parts_mac.h"
 
+#include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -18,4 +19,22 @@ void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
   // It would be no-op if udpate is disabled.
   [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
 #endif
+}
+
+void BraveBrowserMainPartsMac::PostProfileInit(Profile* profile,
+                                               bool is_initial_profile) {
+  ChromeBrowserMainPartsMac::PostProfileInit(profile, is_initial_profile);
+
+  if (!is_initial_profile) {
+    return;
+  }
+
+  // Activation of Keystone is not automatic but done in response to the
+  // counting and reporting of profiles.
+  KeystoneGlue* glue = [KeystoneGlue defaultKeystoneGlue];
+  if (glue && ![glue isRegisteredAndActive]) {
+    // If profile loading has failed, we still need to handle other tasks
+    // like marking of the product as active.
+    [glue setRegistrationActive];
+  }
 }

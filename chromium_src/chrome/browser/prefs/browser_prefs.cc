@@ -72,7 +72,8 @@
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
-void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
+void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+                                 const base::FilePath& profile_path) {
   DCHECK(profile_prefs);
   // BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -82,12 +83,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
   gcm::MigrateGCMPrefs(profile_prefs);
 #endif
 
-  MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs);
+  MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs, profile_path);
 
   brave_sync::MigrateBraveSyncPrefs(profile_prefs);
-
-  // Added 12/2019.
-  dark_mode::MigrateBraveDarkModePrefs(profile_prefs);
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 9/2020

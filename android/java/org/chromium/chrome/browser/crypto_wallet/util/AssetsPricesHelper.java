@@ -5,12 +5,12 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import org.chromium.base.Callbacks;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -197,18 +197,11 @@ namespace {
 
   // Check the Public Key Pins to see if the certificate chain is valid
   // For this, we use the verification result above
-  std::string failure_log;
-  net::NetworkAnonymizationKey network_anonymization_key =
-      net::NetworkAnonymizationKey::CreateTransient();
-
   net::TransportSecurityState::PKPStatus status =
       transport_security_state->CheckPublicKeyPins(
           net::HostPortPair(base::SysNSStringToUTF8(host), port),
           verify_result.is_issued_by_known_root,
-          verify_result.public_key_hashes, cert.get(),
-          verify_result.verified_cert.get(),
-          net::TransportSecurityState::ENABLE_PIN_REPORTS,
-          network_anonymization_key, &failure_log);
+          verify_result.public_key_hashes);
   switch (status) {
     case net::TransportSecurityState::PKPStatus::VIOLATED:
       return net::ERR_FAILED;

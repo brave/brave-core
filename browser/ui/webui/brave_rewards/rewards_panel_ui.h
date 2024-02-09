@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_REWARDS_PANEL_UI_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
@@ -29,6 +30,8 @@ class RewardsPanelUI : public ui::MojoBubbleWebUIController,
   RewardsPanelUI& operator=(const RewardsPanelUI&) = delete;
 
   void BindInterface(mojo::PendingReceiver<PanelHandlerFactory> receiver);
+
+  static constexpr std::string GetWebUIName() { return "RewardsPanel"; }
 
  private:
   // mojom::PanelHandlerFactory:

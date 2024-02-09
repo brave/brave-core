@@ -218,23 +218,31 @@ public class AssetDetailActivity
             mBtnSwap.setVisibility(View.GONE);
             mBtnBridgeToAurora = findViewById(R.id.btn_aurora_bridge);
             mBtnBridgeToAurora.setVisibility(View.VISIBLE);
-            SpannableString rainBowLearnMore = Utils.createSpanForSurroundedPhrase(this,
-                    R.string.brave_wallet_rainbow_bridge_learn_more,
-                    (v)
-                            -> TabUtils.openLinkWithFocus(
-                                    this, WalletConstants.URL_RAINBOW_BRIDGE_OVERVIEW));
+            SpannableString rainBowLearnMore =
+                    Utils.createSpanForSurroundedPhrase(
+                            this,
+                            R.string.brave_wallet_rainbow_bridge_learn_more,
+                            (v) ->
+                                    TabUtils.openLinkWithFocus(
+                                            this, WalletConstants.URL_RAINBOW_BRIDGE_OVERVIEW));
             rainBowLearnMore.setSpan(
-                    new BulletSpan(
-                            15, getResources().getColor(R.color.wallet_text_color)),
-                    0, rainBowLearnMore.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            SpannableString rainBowRisksLearnMore = Utils.createSpanForSurroundedPhrase(
-                    this, R.string.brave_wallet_rainbow_bridge_risks_learn_more, (v) -> {
-                        TabUtils.openLinkWithFocus(this, WalletConstants.URL_RAINBOW_BRIDGE_RISKS);
-                    });
+                    new BulletSpan(15, getColor(R.color.wallet_text_color)),
+                    0,
+                    rainBowLearnMore.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString rainBowRisksLearnMore =
+                    Utils.createSpanForSurroundedPhrase(
+                            this,
+                            R.string.brave_wallet_rainbow_bridge_risks_learn_more,
+                            (v) -> {
+                                TabUtils.openLinkWithFocus(
+                                        this, WalletConstants.URL_RAINBOW_BRIDGE_RISKS);
+                            });
             rainBowRisksLearnMore.setSpan(
-                    new BulletSpan(
-                            15, getResources().getColor(R.color.wallet_text_color)),
-                    0, rainBowRisksLearnMore.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    new BulletSpan(15, getColor(R.color.wallet_text_color)),
+                    0,
+                    rainBowRisksLearnMore.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             SpannableStringBuilder spannableStringBuilder =
                     new SpannableStringBuilder(rainBowLearnMore);
             spannableStringBuilder.append(System.getProperty(WalletConstants.LINE_SEPARATOR));
@@ -310,7 +318,7 @@ public class AssetDetailActivity
 
         final TextView assetPrice = findViewById(R.id.asset_price);
         chartES = findViewById(R.id.line_chart);
-        chartES.setColors(new int[] {getResources().getColor(R.color.wallet_asset_graph_color)});
+        chartES.setColors(new int[] {getColor(R.color.wallet_asset_graph_color)});
         chartES.drawLine(0, assetPrice);
         chartES.setNoDrawText(true);
         chartES.setOnTouchListener(new View.OnTouchListener() {

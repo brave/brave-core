@@ -889,10 +889,11 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     content::BrowserContext* browser_context,
     const content::WebContents::Getter& wc_getter,
     content::NavigationUIData* navigation_ui_data,
-    int frame_tree_node_id) {
+    int frame_tree_node_id,
+    std::optional<int64_t> navigation_id) {
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
-      frame_tree_node_id);
+      frame_tree_node_id, navigation_id);
   content::WebContents* contents = wc_getter.Run();
 
   if (contents) {

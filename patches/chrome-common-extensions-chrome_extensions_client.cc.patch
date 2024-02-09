@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 56e1198b3bd07badc97e3e494b9aa1e310f62e9b..0f190efec644237458139f118e2d7b1d2dc4d105 100644
+index c33dc6308e98a819b9ee2d9dbb02cb8532119786..6c2cdd56c0fa12c3bceabba98c726eec752f0ae0 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,7 @@

@@ -54,9 +54,11 @@ class BraveWalletPrefsUnitTest : public testing::Test {
 };
 
 TEST_F(BraveWalletPrefsUnitTest, MigrateAddChainIdToTransactionInfo) {
-  EXPECT_FALSE(
-      GetPrefs()->HasPrefPath(kBraveWalletTransactionsChainIdMigrated));
-  EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletTransactionsChainIdMigrated));
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
+  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletTransactionsChainIdMigrated));
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletTransactionsChainIdMigrated));
+  GetPrefs()->SetBoolean(kBraveWalletTransactionsChainIdMigrated, false);
 
   base::Value::Dict txs;
   const char ethTxId[] = "b1e8dda1";

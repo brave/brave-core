@@ -41,6 +41,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # Build dependencies which don't end up in the binaries.
         os.path.join('brave', 'vendor', 'depot_tools'),
         os.path.join('brave', 'vendor', 'gn-project-generators'),
+        os.path.join('brave', 'vendor', 'omaha', 'omaha', 'scons-out'),
     ])
 
     # Add the licensing info that would normally be in a README.chromium file.

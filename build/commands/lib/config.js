@@ -594,6 +594,10 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
+    // Temporarily disable PGO phase which started to fail on Android during
+    // cr122 possibly due to the is_high_end_android=true upstream experiment
+    args.chrome_pgo_phase = 0
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl

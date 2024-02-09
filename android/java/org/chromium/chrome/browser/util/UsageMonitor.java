@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.util;
 
+import android.annotation.SuppressLint;
+
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
@@ -35,6 +37,11 @@ public class UsageMonitor {
         mMiscAndroidMetrics = miscAndroidMetrics;
     }
 
+    // Warning: Use of scheduleAtFixedRate is strongly discouraged because it can lead to unexpected
+    // behavior when Android processes become cached (tasks may unexpectedly execute hundreds or
+    // thousands of times in quick succession when a process changes from cached to uncached);
+    // prefer using schedule [DiscouragedApi].
+    @SuppressLint("DiscouragedApi")
     public void start() {
         if (mTimer != null) {
             mTimer.cancel();

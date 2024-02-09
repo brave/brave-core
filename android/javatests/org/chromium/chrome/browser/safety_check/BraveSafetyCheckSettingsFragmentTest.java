@@ -23,11 +23,12 @@ import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 // appeared in this section .
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveSafetyCheckSettingsFragmentTest {
-    private static final String PASSWORDS = "passwords";
+    private static final String PASSWORDS_LOCAL = "passwords_local";
+    private static final String PASSWORDS_ACCOUNT = "passwords_account";
     private static final String SAFE_BROWSING = "safe_browsing";
     private static final String UPDATES = "updates";
     // Text description plus 3 items above.
-    private static final int NUMBER_OF_ITEMS = 4;
+    private static final int NUMBER_OF_ITEMS = 5;
 
     @Rule
     public SettingsActivityTestRule<SafetyCheckSettingsFragment> mSettingsActivityTestRule =
@@ -49,7 +50,8 @@ public class BraveSafetyCheckSettingsFragmentTest {
     @Test
     @SmallTest
     public void testExactSameItemsAreThere() {
-        assertNotEquals(null, mFragment.findPreference(PASSWORDS));
+        assertNotEquals(null, mFragment.findPreference(PASSWORDS_LOCAL));
+        assertNotEquals(null, mFragment.findPreference(PASSWORDS_ACCOUNT));
         assertNotEquals(null, mFragment.findPreference(SAFE_BROWSING));
         assertNotEquals(null, mFragment.findPreference(UPDATES));
     }

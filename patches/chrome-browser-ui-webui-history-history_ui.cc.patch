@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/history/history_ui.cc b/chrome/browser/ui/webui/history/history_ui.cc
-index 07a60cd066ef799d452bcd695a2b5ccf81def313..2d01ec8e3148ff289c44d3cdd169238abb6e6fa9 100644
+index 42c5c4c299ea292b299c71872506d351963157da..2b8f074ccecd6f3935c99a0be0b4143e1f191a5f 100644
 --- a/chrome/browser/ui/webui/history/history_ui.cc
 +++ b/chrome/browser/ui/webui/history/history_ui.cc
-@@ -72,6 +72,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
+@@ -73,6 +73,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
        profile, chrome::kChromeUIHistoryHost);
    webui::SetupChromeRefresh2023(source);
  

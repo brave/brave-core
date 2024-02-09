@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright 2016 The Chromium Authors. All rights reserved.
-     Use of this source code is governed by a BSD-style license that can be
-     found in the LICENSE file. -->
+<!--
+ * Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
 <org.chromium.chrome.browser.ntp.BraveNewTabPageLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,13 +29,6 @@
         android:id="@+id/logo_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <ViewStub
-            android:id="@+id/cryptid_holder"
-            android:layout="@layout/new_tab_page_cryptid_holder"
-            android:layout_width="@dimen/cryptid_width_in_logo_wrapper"
-            android:layout_height="@dimen/cryptid_height_in_logo_wrapper"
-            android:layout_gravity="bottom|start" />
 
         <org.chromium.chrome.browser.logo.LogoView
             android:id="@+id/search_provider_logo"
@@ -115,6 +112,13 @@
                 android:layout_marginTop="16dp"
                 android:visibility="gone"/>
 
+            <ViewStub
+                android:id="@+id/home_modules_recycler_view_stub"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/home_modules_recycler_view_layout"
+                android:visibility="gone" />
+
             <!-- Single tab card -->
             <ViewStub
                 android:id="@+id/tab_switcher_module_container_stub"
@@ -137,6 +141,15 @@
                 tools:ignore="NestedWeights"
                 android:layout_weight="0"
                 android:visibility="invisible" />
+
+            <ViewStub
+                android:id="@+id/tab_resumption_module_container_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mvt_container_top_margin_polish"
+                android:layout_marginLeft="@dimen/mvt_container_lateral_margin_polish"
+                android:layout_marginRight="@dimen/mvt_container_lateral_margin_polish"
+                android:layout="@layout/tab_resumption_module_layout" />
 
             <!-- Spacer for when there is no search provider logo. -->
             <View

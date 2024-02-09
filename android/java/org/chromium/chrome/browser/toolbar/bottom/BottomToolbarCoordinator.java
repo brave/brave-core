@@ -178,7 +178,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                         mThemeColorProvider,
                         newTabClickListener,
                         closeTabsClickListener,
-                        mMenuButtonHelperSupplier);
+                        mMenuButtonHelperSupplier,
+                        tabModelSelector.getModel(false).getProfile());
 
         ChromeActivity activity = null;
         try {
