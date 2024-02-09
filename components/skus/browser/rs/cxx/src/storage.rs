@@ -9,35 +9,35 @@ use async_trait::async_trait;
 use futures::channel::oneshot;
 use tracing::debug;
 
-use crate::{ffi, NativeClient, NativeClientContext};
+use crate::{ffi, NativeClient, NativeClientInner};
 use skus::{errors::InternalError, Environment, KVClient, KVStore};
 
 pub struct StoragePurgeContext {
     tx: oneshot::Sender<Result<(), InternalError>>,
-    client: NativeClientContext,
+    client: NativeClientInner,
 }
 
 pub struct StorageSetContext {
     tx: oneshot::Sender<Result<(), InternalError>>,
-    client: NativeClientContext,
+    client: NativeClientInner,
 }
 
 pub struct StorageGetContext {
     tx: oneshot::Sender<Result<Option<String>, InternalError>>,
-    client: NativeClientContext,
+    client: NativeClientInner,
 }
 
 impl KVClient for NativeClient {
-    type Store = NativeClientContext;
+    type Store = NativeClientInner;
 
     #[allow(clippy::needless_lifetimes)]
-    fn get_store<'a>(&'a self) -> Result<RefMut<'a, NativeClientContext>, InternalError> {
-        self.ctx.try_borrow_mut().or(Err(InternalError::BorrowFailed))
+    fn get_store<'a>(&'a self) -> Result<RefMut<'a, NativeClientInner>, InternalError> {
+        self.inner.try_borrow_mut().or(Err(InternalError::BorrowFailed))
     }
 }
 
 #[async_trait(?Send)]
-impl KVStore for NativeClientContext {
+impl KVStore for NativeClientInner {
     fn env(&self) -> &Environment {
         &self.environment
     }
@@ -53,7 +53,9 @@ impl KVStore for NativeClientContext {
                         InternalError::StorageWriteFailed("prefs write failed".to_string()),
                     ));
 
-                context.client.try_run_until_stalled();
+                if let Ok(mut executor) = context.client.executor.try_borrow_mut() {
+                    executor.try_run_until_stalled()
+                }
             },
             context,
         );
@@ -80,7 +82,9 @@ impl KVStore for NativeClientContext {
                         InternalError::StorageWriteFailed("prefs write failed".to_string()),
                     ));
 
-                context.client.try_run_until_stalled();
+                if let Ok(mut executor) = context.client.executor.try_borrow_mut() {
+                    executor.try_run_until_stalled()
+                }
             },
             context,
         );
@@ -107,7 +111,9 @@ impl KVStore for NativeClientContext {
                         .ok_or(InternalError::StorageReadFailed("prefs read failed".to_string())),
                 );
 
-                context.client.try_run_until_stalled();
+                if let Ok(mut executor) = context.client.executor.try_borrow_mut() {
+                    executor.try_run_until_stalled()
+                }
             },
             context,
         );
