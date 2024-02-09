@@ -222,7 +222,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
         region_view_(region_view) {
     // We're going to use flex layout for children of this class. Other children
     // from base classes should be handled out of flex layout.
-    for (auto* child : children()) {
+    for (views::View* child : children()) {
       child->SetProperty(views::kViewIgnoredByLayoutKey, true);
     }
 
@@ -542,7 +542,8 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
 
     // View::ReorderChildView() didn't work for us. So remove child views and
     // add them again.
-    base::ranges::for_each(children(), [&](auto* v) { RemoveChildView(v); });
+    base::ranges::for_each(children(),
+                           [&](views::View* v) { RemoveChildView(v); });
     base::ranges::for_each(new_children, [&](auto* v) { AddChildView(v); });
     layout_->SetFlexForView(spacer_,
                             1 /* resize |spacer| to fill the rest of space */);

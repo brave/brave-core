@@ -12,6 +12,7 @@
 #include "brave/browser/search_engines/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -23,9 +24,14 @@
 
 namespace brave {
 
-void SetBraveAsDefaultPrivateSearchProvider(PrefService* prefs) {
+void SetBraveAsDefaultPrivateSearchProvider(Profile* profile) {
+  auto* prefs = profile->GetPrefs();
+  search_engines::SearchEngineChoiceService* search_engine_choice_service =
+      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
+
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      prefs, TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+      prefs, search_engine_choice_service,
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   DCHECK(data);
   prefs->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
                    data->sync_guid);
@@ -34,8 +40,10 @@ void SetBraveAsDefaultPrivateSearchProvider(PrefService* prefs) {
 }
 
 bool IsRegionForQwant(Profile* profile) {
+  search_engines::SearchEngineChoiceService* search_engine_choice_service =
+      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
   return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-             profile->GetPrefs())
+             profile->GetPrefs(), search_engine_choice_service)
              ->prepopulate_id ==
          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
 }
@@ -71,7 +79,8 @@ void MigrateSearchEngineProviderPrefs(PrefService* prefs) {
 
   std::unique_ptr<TemplateURLData> data;
   for (const auto& id : alt_search_providers) {
-    data = TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, id);
+    data =
+        TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, nullptr, id);
     if (data)
       break;
   }
@@ -100,7 +109,7 @@ void UpdateDefaultPrivateSearchProviderData(Profile* profile) {
   if (private_provider_guid.empty()) {
     // This can happen while resetting whole settings.
     // In this case, set brave as a default search provider.
-    SetBraveAsDefaultPrivateSearchProvider(prefs);
+    SetBraveAsDefaultPrivateSearchProvider(profile);
     return;
   }
 
@@ -115,7 +124,7 @@ void UpdateDefaultPrivateSearchProviderData(Profile* profile) {
   // When user delete current private search provder from provider list in
   // settings page, |private_provider_guid| will not be existed in the list. Use
   // Brave.
-  SetBraveAsDefaultPrivateSearchProvider(prefs);
+  SetBraveAsDefaultPrivateSearchProvider(profile);
 }
 
 void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile) {
@@ -134,7 +143,7 @@ void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile) {
 
   // Set Brave as a private window's initial search provider.
   if (private_provider_guid.empty()) {
-    SetBraveAsDefaultPrivateSearchProvider(prefs);
+    SetBraveAsDefaultPrivateSearchProvider(profile);
     return;
   }
 
@@ -149,7 +158,7 @@ void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile) {
       // This could happen with update default provider list when brave is not
       // updated for longtime. So it doesn't have any chance to cache url data.
       // Set Brave as default private search provider.
-      SetBraveAsDefaultPrivateSearchProvider(prefs);
+      SetBraveAsDefaultPrivateSearchProvider(profile);
     }
     return;
   }

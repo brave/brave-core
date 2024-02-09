@@ -386,7 +386,7 @@ bool SidebarItemsScrollView::NeedScrollForItemAt(size_t index) const {
     return false;
   }
 
-  auto* item_view = contents_view_->children()[index];
+  views::View* item_view = contents_view_->children()[index];
   auto item_view_bounds_per_scroll_view = item_view->GetLocalBounds();
   item_view_bounds_per_scroll_view = views::View::ConvertRectToTarget(
       item_view, this, item_view_bounds_per_scroll_view);
@@ -402,7 +402,7 @@ gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectForItemAt(
     size_t index) const {
   DCHECK(NeedScrollForItemAt(index));
 
-  auto* item_view = contents_view_->children()[index];
+  views::View* item_view = contents_view_->children()[index];
   auto item_view_bounds_per_scroll_view = item_view->GetLocalBounds();
   item_view_bounds_per_scroll_view = views::View::ConvertRectToTarget(
       item_view, this, item_view_bounds_per_scroll_view);

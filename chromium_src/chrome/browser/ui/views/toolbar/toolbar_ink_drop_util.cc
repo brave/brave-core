@@ -11,10 +11,16 @@
 
 #undef ConfigureInkDropForToolbar
 
-void ConfigureInkDropForToolbar(views::Button* host) {
+void ConfigureInkDropForToolbar(
+    views::Button* host,
+    std::unique_ptr<views::HighlightPathGenerator> highlight_generator) {
+  if (!highlight_generator) {
+    highlight_generator =
+        std::make_unique<ToolbarButtonHighlightPathGenerator>();
+  }
+
   host->SetHasInkDropActionOnClick(true);
-  views::HighlightPathGenerator::Install(
-      host, std::make_unique<ToolbarButtonHighlightPathGenerator>());
+  views::HighlightPathGenerator::Install(host, std::move(highlight_generator));
   views::InkDrop::Get(host)->SetMode(views::InkDropHost::InkDropMode::ON);
 
   const auto* cp = host->GetColorProvider();

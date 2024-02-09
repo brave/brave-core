@@ -45,7 +45,7 @@ class SkusInternalsUI : public content::WebUIController,
                               CreateOrderFromReceiptCallback callback) override;
 
   // SelectFileDialog::Listener overrides:
-  void FileSelected(const base::FilePath& path,
+  void FileSelected(const ui::SelectedFileInfo& file,
                     int index,
                     void* params) override;
   void FileSelectionCanceled(void* params) override;

@@ -31,7 +31,7 @@ void RemoveInfobarsByIdentifier(
     infobars::InfoBarManager* infobar_manager,
     const infobars::InfoBarDelegate::InfoBarIdentifier& id,
     BraveGlobalInfoBarManager* observer) {
-  for (auto* current_infobar : infobar_manager->infobars()) {
+  for (infobars::InfoBar* current_infobar : infobar_manager->infobars()) {
     if (current_infobar->delegate()->GetIdentifier() == id) {
       static_cast<BraveGlobalConfirmInfobarDelegate*>(
           current_infobar->delegate())
@@ -44,7 +44,7 @@ void RemoveInfobarsByIdentifier(
 void RemoveAllInfobarsByIdentifier(
     const infobars::InfoBarDelegate::InfoBarIdentifier& id,
     BraveGlobalInfoBarManager* observer) {
-  for (const auto* browser : *BrowserList::GetInstance()) {
+  for (const Browser* browser : *BrowserList::GetInstance()) {
     const auto* tab_strip_model = browser->tab_strip_model();
     for (int i = 0; i < tab_strip_model->count(); ++i) {
       auto* web_contents = tab_strip_model->GetWebContentsAt(i);

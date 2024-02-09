@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-index 0e02b188ec18a7bbd47572298a271e19c51f36c9..1396e74f222d440cf08ad2def1a0c577bd3fa434 100644
+index 013d026804a6fcf7b1d55a86e1b1d12aab409b0d..a3ff5ea0ab1b0f7a6f2bf119b21f69dd9c2628ce 100644
 --- a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
 +++ b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-@@ -342,6 +342,7 @@ void CheckClientDownloadRequestBase::OnRequestBuilt(
+@@ -334,6 +334,7 @@ void CheckClientDownloadRequestBase::OnRequestBuilt(
  
    client_download_request_ = std::move(request);
    SanitizeRequest();

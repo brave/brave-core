@@ -99,10 +99,8 @@ class BravePrivacySandboxSettings
   bool IsCookieDeprecationLabelAllowedForContext(
       const url::Origin& top_frame_origin,
       const url::Origin& context_origin) const override;
-  bool IsPrivacySandboxEnabled() const override;
   void SetAllPrivacySandboxAllowedForTesting() override;
   void SetTopicsBlockedForTesting() override;
-  void SetPrivacySandboxEnabled(bool enabled) override;
   bool IsPrivacySandboxRestricted() const override;
   bool IsPrivacySandboxCurrentlyUnrestricted() const override;
   bool IsSubjectToM1NoticeRestricted() const override;

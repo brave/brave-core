@@ -23,7 +23,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -52,8 +51,7 @@ public class BraveWalletResetPreference
         super(context, attrs);
 
         Resources resources = getContext().getResources();
-        mPrefAccentColor =
-                ApiCompatibilityUtils.getColor(resources, R.color.wallet_error_text_color);
+        mPrefAccentColor = getContext().getColor(R.color.wallet_error_text_color);
         mConfirmationPhrase =
                 resources.getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         setOnPreferenceClickListener(this);

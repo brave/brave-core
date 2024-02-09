@@ -62,7 +62,7 @@ template <template <class T> class FromTo, typename CharT>
 std::optional<DWORD> PatchFilenameImpl(CharT* filename,
                                        DWORD length,
                                        DWORD size) {
-  if (!base::EndsWith(base::BasicStringPiece<CharT>(filename, length),
+  if (!base::EndsWith(std::basic_string_view<CharT>(filename, length),
                       FromTo<CharT>::kBrave,
                       base::CompareCase::INSENSITIVE_ASCII)) {
     return std::nullopt;

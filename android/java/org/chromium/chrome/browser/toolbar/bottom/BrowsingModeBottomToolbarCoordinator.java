@@ -142,14 +142,6 @@ public class BrowsingModeBottomToolbarCoordinator {
         }
 
         mMenuButton = mToolbarRoot.findViewById(R.id.menu_button_wrapper);
-        if (mMenuButton != null) {
-            Supplier<MenuButtonState> menuButtonStateSupplier =
-                    () -> UpdateMenuItemHelper.getInstance().getUiState().buttonState;
-            BraveMenuButtonCoordinator.setupPropertyModel(mMenuButton, menuButtonStateSupplier);
-            if (!BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-                mMenuButton.setVisibility(View.GONE);
-            }
-        }
     }
 
     /**
@@ -178,6 +170,18 @@ public class BrowsingModeBottomToolbarCoordinator {
             TabModelSelector tabModelSelector,
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider) {
+        if (mMenuButton != null) {
+            Supplier<MenuButtonState> menuButtonStateSupplier =
+                    () ->
+                            UpdateMenuItemHelper.getInstance(
+                                            tabModelSelector.getModel(false).getProfile())
+                                    .getUiState()
+                                    .buttonState;
+            BraveMenuButtonCoordinator.setupPropertyModel(mMenuButton, menuButtonStateSupplier);
+            if (!BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+                mMenuButton.setVisibility(View.GONE);
+            }
+        }
         mThemeColorProvider = themeColorProvider;
         mMediator.setThemeColorProvider(themeColorProvider);
         if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {

@@ -61,8 +61,8 @@
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;
-    *** mTabModelSelector;
     *** mBottomSheetController;
+    *** mTabStripHeightSupplier;
     *** updateSearchProviderHasLogo(...);
 }
 
@@ -295,14 +295,6 @@
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
     <init>(...);
-}
-
--keep class org.chromium.chrome.browser.query_tiles.QueryTileSection {
-    *** getMaxRowsForMostVisitedTiles(...);
-}
-
--keep class org.chromium.chrome.browser.query_tiles.BraveQueryTileSection {
-    *** getMaxRowsForMostVisitedTiles(...);
 }
 
 -keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
@@ -691,12 +683,12 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.flags.CachedFlag {
+-keep class org.chromium.base.cached_flags.CachedFlag {
     *** mDefaultValue;
     <init>(...);
 }
 
--keep class org.chromium.chrome.browser.flags.BraveCachedFlag {
+-keep class org.chromium.base.cached_flags.BraveCachedFlag {
     <init>(...);
 }
 

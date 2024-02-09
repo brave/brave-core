@@ -233,7 +233,7 @@ void MdTextButton::UpdateTextColor() {
   // Once we update the buttons across Brave to use the new style, we can remove
   // this branch.
   if (kind_ == kOld) {
-    if (GetProminent()) {
+    if (GetStyle() == ui::ButtonStyle::kProminent) {
       return;
     }
     const ui::NativeTheme* theme = GetNativeTheme();
@@ -257,7 +257,7 @@ void MdTextButton::UpdateBackgroundColor() {
     MdTextButtonBase::UpdateBackgroundColor();
 
     // We don't modify the Prominent button at all.
-    if (GetProminent()) {
+    if (GetStyle() == ui::ButtonStyle::kProminent) {
       return;
     }
 
@@ -309,7 +309,7 @@ void MdTextButton::UpdateColors() {
 void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
   // Set brave-style hover colors
   MdTextButtonBase::OnPaintBackground(canvas);
-  if (GetProminent() &&
+  if (GetStyle() == ui::ButtonStyle::kProminent &&
       (hover_animation().is_animating() || GetState() == STATE_HOVERED)) {
     constexpr SkColor normal_color = kBraveBrandColor;
     constexpr SkColor hover_color = SkColorSetRGB(0xff, 0x97, 0x7d);

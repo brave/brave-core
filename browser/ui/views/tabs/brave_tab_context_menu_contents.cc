@@ -118,7 +118,7 @@ bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
   if (command_id == BraveTabMenuModel::CommandBringAllTabsToThisWindow) {
     return base::ranges::any_of(
         *BrowserList::GetInstance(),
-        [&](const auto* from) { return CanTakeTabs(from, browser_); });
+        [&](const Browser* from) { return CanTakeTabs(from, browser_); });
   }
 
   return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
@@ -241,7 +241,7 @@ void BraveTabContextMenuContents::BringAllTabsToThisWindow() {
   std::vector<Browser*> browsers;
   base::ranges::copy_if(
       *BrowserList::GetInstance(), std::back_inserter(browsers),
-      [&](const auto* from) { return CanTakeTabs(from, browser_); });
+      [&](const Browser* from) { return CanTakeTabs(from, browser_); });
 
   // Detach all tabs from other browsers
   std::stack<std::unique_ptr<content::WebContents>> detached_pinned_tabs;

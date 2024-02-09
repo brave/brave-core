@@ -187,13 +187,8 @@ bool BravePrivacySandboxSettings::IsCookieDeprecationLabelAllowedForContext(
   return false;
 }
 
-bool BravePrivacySandboxSettings::IsPrivacySandboxEnabled() const {
-  return false;
-}
-
 void BravePrivacySandboxSettings::SetAllPrivacySandboxAllowedForTesting() {}
 void BravePrivacySandboxSettings::SetTopicsBlockedForTesting() {}
-void BravePrivacySandboxSettings::SetPrivacySandboxEnabled(bool enabled) {}
 
 bool BravePrivacySandboxSettings::IsPrivacySandboxRestricted() const {
   return true;

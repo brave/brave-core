@@ -41,7 +41,7 @@ class CommanderService : public CommanderFrontendDelegate, public KeyedService {
   void Hide() override;
   void AddObserver(Observer* observer) override;
   void RemoveObserver(Observer* observer) override;
-  void UpdateText(bool force = false) override;
+  void UpdateText(const std::u16string& text) override;
   void SelectCommand(uint32_t command_index, uint32_t result_set_id) override;
   std::vector<CommandItemModel> GetItems() override;
   int GetResultSetId() override;
@@ -51,6 +51,9 @@ class CommanderService : public CommanderFrontendDelegate, public KeyedService {
   void Shutdown() override;
 
  private:
+  void UpdateTextFromCurrentBrowserOmnibox();
+  void UpdateText(const std::u16string& text, bool force);
+
   OmniboxView* GetOmnibox() const;
   void UpdateCommands();
   void NotifyObservers();

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
-index 827d5f3f8650ccca7f9921dacd235dec02acd405..5b31fc0edaee6b6eb9c3bc7f412de618d62bb48d 100644
+index c450e6632c89bec11cdc79b057ad48140c2ec0db..ba17da25fdca397e7d876b415789d6747d2c1a60 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
-@@ -351,6 +351,7 @@ void RecentTabsSubMenuModel::Build() {
+@@ -333,6 +333,7 @@ void RecentTabsSubMenuModel::Build() {
    }
    AddSeparator(ui::NORMAL_SEPARATOR);
    history_separator_index_ = GetItemCount() - 1;
@@ -10,7 +10,7 @@ index 827d5f3f8650ccca7f9921dacd235dec02acd405..5b31fc0edaee6b6eb9c3bc7f412de618
    BuildLocalEntries();
    BuildTabsFromOtherDevices();
  }
-@@ -489,6 +490,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+@@ -472,6 +473,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
             ++k) {
          BuildOtherDevicesTabItem(this, session_tag, *tabs_in_session[k]);
        }  // for all tabs in one session

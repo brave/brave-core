@@ -798,10 +798,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                 // Creating new browser during drag-and-drop will create
                 // a nested run loop. So we should do things within callback.
                 auto* browser_list = BrowserList::GetInstance();
-                EXPECT_EQ(2,
-                          base::ranges::count_if(*browser_list, [&](auto* b) {
-                            return b->profile() == browser()->profile();
-                          }));
+                EXPECT_EQ(
+                    2, base::ranges::count_if(*browser_list, [&](Browser* b) {
+                      return b->profile() == browser()->profile();
+                    }));
                 ReleaseMouse();
                 auto* new_browser = browser_list->GetLastActive();
                 new_browser->window()->Close();

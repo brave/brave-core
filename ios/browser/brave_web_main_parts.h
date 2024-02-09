@@ -6,7 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_BRAVE_WEB_MAIN_PARTS_H_
 #define BRAVE_IOS_BROWSER_BRAVE_WEB_MAIN_PARTS_H_
 
-#include "ios/chrome/browser/web/chrome_main_parts.h"
+#include "ios/chrome/browser/web/model/chrome_main_parts.h"
 
 class BraveWebMainParts : public IOSChromeMainParts {
  public:

@@ -97,6 +97,7 @@
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE_INCOGNITO" desc="When users click the menu item 'Close all tabs' in Private tab switcher, a dialog will pop up and this text is the message of the dialog.">
         Your activity in these Private tabs will be removed from this device
       </message>
-    </messages>
+
+      </messages>
   </release>
 </grit>

@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/syn/v1/BUILD.gn b/third_party/rust/syn/v1/BUILD.gn
-index 3f4c55fe2f0c31f3876c8ca1d0884cdc146573bf..1549f70b28567c578eebb596e3283ab8cd4e1249 100644
+index ed85ddb4e128c933f37a3f22813dcf869299bd01..090744ac53829b0da7878b93401ceca8cd8d088c 100644
 --- a/third_party/rust/syn/v1/BUILD.gn
 +++ b/third_party/rust/syn/v1/BUILD.gn
-@@ -97,6 +97,7 @@ cargo_crate("lib") {
+@@ -99,6 +99,7 @@ cargo_crate("lib") {
      "visit",
      "visit-mut",
    ]
@@ -10,9 +10,9 @@ index 3f4c55fe2f0c31f3876c8ca1d0884cdc146573bf..1549f70b28567c578eebb596e3283ab8
    build_root =
        "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/build.rs"
    build_sources =
-@@ -105,5 +106,4 @@ cargo_crate("lib") {
-   # Only for usage from third-party crates. Add the crate to
-   # third_party.toml to use it from first-party code.
+@@ -108,5 +109,4 @@ cargo_crate("lib") {
+   # //third_party/rust/chromium_crates_io/Cargo.toml to use
+   # it from first-party code.
    visibility = [ "//third_party/rust/*" ]
 -  testonly = true
  }

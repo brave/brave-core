@@ -39,6 +39,8 @@ class AIChatUI : public ui::UntrustedWebUIController {
     embedder_ = embedder;
   }
 
+  static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
+
  private:
   std::unique_ptr<ai_chat::mojom::PageHandler> page_handler_;
 

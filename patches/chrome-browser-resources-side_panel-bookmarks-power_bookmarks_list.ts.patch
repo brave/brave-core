@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
-index 897919f0015c30e247d10872ae031dc059f413f0..f666f9b3adc9b2cec8ee5b784a967b3ef33690e1 100644
+index eecf0306f49a08f1133921ff0b6dfd86e20aa5eb..4013be8b5ad99caf0abcbf448999f5a6e68d023c 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
 +++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
 @@ -3,6 +3,7 @@

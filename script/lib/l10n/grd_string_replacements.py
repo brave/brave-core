@@ -54,7 +54,7 @@ fixup_replacements = [
     (r'Brave Safe Browsing', r'Google Safe Browsing'),
     (r'Safe Browsing \(protects you and your device from dangerous sites\)',
      r'Google Safe Browsing (protects you and your device from dangerous sites)'
-    ),
+     ),
     (r'Sends URLs of some pages you visit to Brave',
      r'Sends URLs of some pages you visit to Google'),
     (r'Google Google', r'Google'),
@@ -67,6 +67,7 @@ fixup_replacements = [
     (r'Brave Photos', r'Google Photos'),
     (r'Brave Projects', r'Chromium Projects'),
     (r'BraveVox', r'ChromeVox'),
+    (r'powered by Brave AI', r'powered by Google AI'),
 ]
 
 

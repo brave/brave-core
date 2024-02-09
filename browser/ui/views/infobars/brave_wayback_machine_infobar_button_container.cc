@@ -28,7 +28,7 @@ BraveWaybackMachineInfoBarButtonContainer::
       std::move(callback), brave_l10n::GetLocalizedResourceUTF16String(
                                IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
   button_ = button.get();
-  button->SetProminent(true);
+  button->SetStyle(ui::ButtonStyle::kProminent);
   button->SizeToPreferredSize();
   AddChildView(button.release());
 
