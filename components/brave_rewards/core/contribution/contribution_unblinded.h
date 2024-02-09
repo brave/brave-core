@@ -15,6 +15,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
@@ -24,12 +25,6 @@ class RewardsEngineImpl;
 
 namespace contribution {
 
-using GetContributionInfoAndUnblindedTokensCallback = std::function<void(
-    mojom::ContributionInfoPtr contribution,
-    const std::vector<mojom::UnblindedToken>& unblinded_tokens)>;
-
-using StatisticalVotingWinners = std::map<std::string, uint32_t>;
-
 class Unblinded {
  public:
   explicit Unblinded(RewardsEngineImpl& engine);
@@ -37,14 +32,18 @@ class Unblinded {
 
   void Start(const std::vector<mojom::CredsBatchType>& types,
              const std::string& contribution_id,
-             LegacyResultCallback callback);
+             ResultCallback callback);
 
   void Retry(const std::vector<mojom::CredsBatchType>& types,
              mojom::ContributionInfoPtr contribution,
-             LegacyResultCallback callback);
+             ResultCallback callback);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(UnblindedTest, GetStatisticalVotingWinner);
+
+  using GetContributionInfoAndUnblindedTokensCallback = base::OnceCallback<void(
+      mojom::ContributionInfoPtr contribution,
+      std::vector<mojom::UnblindedToken> unblinded_tokens)>;
 
   void GetContributionInfoAndUnblindedTokens(
       const std::vector<mojom::CredsBatchType>& types,
@@ -52,82 +51,80 @@ class Unblinded {
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnUnblindedTokens(
-      std::vector<mojom::UnblindedTokenPtr> unblinded_tokens,
       const std::string& contribution_id,
-      GetContributionInfoAndUnblindedTokensCallback callback);
+      GetContributionInfoAndUnblindedTokensCallback callback,
+      std::vector<mojom::UnblindedTokenPtr> unblinded_tokens);
 
   void GetContributionInfoAndReservedUnblindedTokens(
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnReservedUnblindedTokens(
-      std::vector<mojom::UnblindedTokenPtr> unblinded_tokens,
       const std::string& contribution_id,
-      GetContributionInfoAndUnblindedTokensCallback callback);
+      GetContributionInfoAndUnblindedTokensCallback callback,
+      std::vector<mojom::UnblindedTokenPtr> unblinded_tokens);
 
   void OnGetContributionInfo(
-      mojom::ContributionInfoPtr contribution,
-      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-      GetContributionInfoAndUnblindedTokensCallback callback);
+      std::vector<mojom::UnblindedToken> unblinded_tokens,
+      GetContributionInfoAndUnblindedTokensCallback callback,
+      mojom::ContributionInfoPtr contribution);
 
-  void PrepareTokens(mojom::ContributionInfoPtr contribution,
-                     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-                     const std::vector<mojom::CredsBatchType>& types,
-                     LegacyResultCallback callback);
+  void PrepareTokens(std::vector<mojom::CredsBatchType> types,
+                     ResultCallback callback,
+                     mojom::ContributionInfoPtr contribution,
+                     std::vector<mojom::UnblindedToken> unblinded_tokens);
 
   void PreparePublishers(
       const std::vector<mojom::UnblindedToken>& unblinded_tokens,
       mojom::ContributionInfoPtr contribution,
       const std::vector<mojom::CredsBatchType>& types,
-      LegacyResultCallback callback);
+      ResultCallback callback);
 
   std::vector<mojom::ContributionPublisherPtr> PrepareAutoContribution(
       const std::vector<mojom::UnblindedToken>& unblinded_tokens,
       mojom::ContributionInfoPtr contribution);
 
-  void OnPrepareAutoContribution(
-      mojom::Result result,
-      const std::vector<mojom::CredsBatchType>& types,
-      const std::string& contribution_id,
-      LegacyResultCallback callback);
+  void OnPrepareAutoContribution(std::vector<mojom::CredsBatchType> types,
+                                 const std::string& contribution_id,
+                                 ResultCallback callback,
+                                 mojom::Result result);
 
-  void PrepareStepSaved(mojom::Result result,
-                        const std::vector<mojom::CredsBatchType>& types,
+  void PrepareStepSaved(std::vector<mojom::CredsBatchType> types,
                         const std::string& contribution_id,
-                        LegacyResultCallback callback);
+                        ResultCallback callback,
+                        mojom::Result result);
 
   void ProcessTokens(const std::vector<mojom::CredsBatchType>& types,
                      const std::string& contribution_id,
-                     LegacyResultCallback callback);
+                     ResultCallback callback);
 
-  void OnProcessTokens(
-      mojom::ContributionInfoPtr contribution,
-      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-      LegacyResultCallback callback);
+  void OnProcessTokens(ResultCallback callback,
+                       mojom::ContributionInfoPtr contribution,
+                       std::vector<mojom::UnblindedToken> unblinded_tokens);
 
-  void TokenProcessed(mojom::Result result,
-                      const std::string& contribution_id,
+  void TokenProcessed(const std::string& contribution_id,
                       const std::string& publisher_key,
                       bool final_publisher,
-                      LegacyResultCallback callback);
+                      ResultCallback callback,
+                      mojom::Result result);
 
-  void ContributionAmountSaved(mojom::Result result,
-                               const std::string& contribution_id,
+  void ContributionAmountSaved(const std::string& contribution_id,
                                bool final_publisher,
-                               LegacyResultCallback callback);
+                               ResultCallback callback,
+                               mojom::Result result);
 
   void OnMarkUnblindedTokensAsReserved(
-      mojom::Result result,
-      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-      std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-      const std::vector<mojom::CredsBatchType>& types,
-      LegacyResultCallback callback);
+      std::vector<mojom::UnblindedToken> unblinded_tokens,
+      mojom::ContributionInfoPtr contribution,
+      std::vector<mojom::CredsBatchType> types,
+      ResultCallback callback,
+      mojom::Result result);
 
   void OnReservedUnblindedTokensForRetryAttempt(
-      const std::vector<mojom::UnblindedTokenPtr>& unblinded_tokens,
-      const std::vector<mojom::CredsBatchType>& types,
-      std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-      LegacyResultCallback callback);
+      std::vector<mojom::CredsBatchType> types,
+      mojom::ContributionInfoPtr contribution,
+      ResultCallback callback,
+      std::vector<mojom::UnblindedTokenPtr> unblinded_tokens);
 
   std::string GetStatisticalVotingWinnerForTesting(
       double dart,
@@ -137,8 +134,10 @@ class Unblinded {
   const raw_ref<RewardsEngineImpl> engine_;
   credential::CredentialsPromotion credentials_promotion_;
   credential::CredentialsSKU credentials_sku_;
+  base::WeakPtrFactory<Unblinded> weak_factory_{this};
 };
 
 }  // namespace contribution
 }  // namespace brave_rewards::internal
+
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_

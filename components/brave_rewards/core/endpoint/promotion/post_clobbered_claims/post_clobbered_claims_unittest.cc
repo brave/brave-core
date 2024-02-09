@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
@@ -17,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PostClobberedClaimsTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -44,9 +44,9 @@ TEST_F(PostClobberedClaimsTest, ServerOK) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  MockFunction<PostClobberedClaimsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::OK)).Times(1);
-  claims_.Request(std::move(corrupted_claims), callback.AsStdFunction());
+  base::MockCallback<PostClobberedClaimsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::OK)).Times(1);
+  claims_.Request(std::move(corrupted_claims), callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -65,9 +65,9 @@ TEST_F(PostClobberedClaimsTest, ServerError400) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  MockFunction<PostClobberedClaimsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  claims_.Request(std::move(corrupted_claims), callback.AsStdFunction());
+  base::MockCallback<PostClobberedClaimsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  claims_.Request(std::move(corrupted_claims), callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -86,9 +86,9 @@ TEST_F(PostClobberedClaimsTest, ServerError500) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  MockFunction<PostClobberedClaimsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  claims_.Request(std::move(corrupted_claims), callback.AsStdFunction());
+  base::MockCallback<PostClobberedClaimsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  claims_.Request(std::move(corrupted_claims), callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -107,9 +107,9 @@ TEST_F(PostClobberedClaimsTest, ServerErrorRandom) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  MockFunction<PostClobberedClaimsCallback> callback;
-  EXPECT_CALL(callback, Call(mojom::Result::FAILED)).Times(1);
-  claims_.Request(std::move(corrupted_claims), callback.AsStdFunction());
+  base::MockCallback<PostClobberedClaimsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::FAILED)).Times(1);
+  claims_.Request(std::move(corrupted_claims), callback.Get());
 
   task_environment_.RunUntilIdle();
 }

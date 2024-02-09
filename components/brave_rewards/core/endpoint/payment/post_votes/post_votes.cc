@@ -92,7 +92,7 @@ void PostVotes::Request(const credential::CredentialsRedeem& redeem,
 void PostVotes::OnRequest(PostVotesCallback callback,
                           mojom::UrlResponsePtr response) {
   DCHECK(response);
-  callback(CheckStatusCode(response->status_code));
+  std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
 }  // namespace payment

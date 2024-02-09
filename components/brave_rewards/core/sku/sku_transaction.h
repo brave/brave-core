@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
@@ -29,15 +30,15 @@ class SKUTransaction {
   void Run(mojom::SKUOrderPtr order,
            const std::string& destination,
            const std::string& wallet_type,
-           LegacyResultCallback callback);
+           ResultCallback callback);
 
-  void SendExternalTransaction(mojom::Result result,
-                               const mojom::SKUTransaction& transaction,
-                               LegacyResultCallback callback);
+  void SendExternalTransaction(const mojom::SKUTransaction& transaction,
+                               ResultCallback callback,
+                               mojom::Result result);
 
  private:
   using MaybeCreateTransactionCallback =
-      std::function<void(mojom::Result, const mojom::SKUTransaction&)>;
+      base::OnceCallback<void(mojom::Result, const mojom::SKUTransaction&)>;
 
   void MaybeCreateTransaction(mojom::SKUOrderPtr order,
                               const std::string& wallet_type,
@@ -51,34 +52,34 @@ class SKUTransaction {
       base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
           result);
 
-  void OnTransactionSaved(mojom::Result result,
-                          const mojom::SKUTransaction& transaction,
-                          const std::string& destination,
+  void OnTransactionSaved(const std::string& destination,
                           const std::string& wallet_type,
                           const std::string& contribution_id,
-                          LegacyResultCallback callback);
+                          ResultCallback callback,
+                          mojom::Result result,
+                          const mojom::SKUTransaction& transaction);
 
-  void OnTransfer(mojom::Result result,
-                  const mojom::SKUTransaction& transaction,
+  void OnTransfer(const mojom::SKUTransaction& transaction,
                   const std::string& contribution_id,
                   const std::string& destination,
-                  LegacyResultCallback callback);
+                  ResultCallback callback,
+                  mojom::Result result);
 
   void OnGetExternalTransaction(
-      LegacyResultCallback,
+      ResultCallback,
       mojom::SKUTransaction&&,
       base::expected<mojom::ExternalTransactionPtr,
                      database::GetExternalTransactionError>);
 
-  void OnSaveSKUExternalTransaction(mojom::Result result,
-                                    const mojom::SKUTransaction& transaction,
-                                    LegacyResultCallback callback);
+  void OnSaveSKUExternalTransaction(const mojom::SKUTransaction& transaction,
+                                    ResultCallback callback,
+                                    mojom::Result result);
 
-  void OnSendExternalTransaction(mojom::Result result,
-                                 LegacyResultCallback callback);
+  void OnSendExternalTransaction(ResultCallback callback, mojom::Result result);
 
   const raw_ref<RewardsEngineImpl> engine_;
   endpoint::PaymentServer payment_server_;
+  base::WeakPtrFactory<SKUTransaction> weak_factory_{this};
 };
 
 }  // namespace sku

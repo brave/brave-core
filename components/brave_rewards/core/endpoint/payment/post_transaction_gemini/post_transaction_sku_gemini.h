@@ -49,7 +49,7 @@ namespace endpoint {
 namespace payment {
 
 using PostTransactionGeminiCallback =
-    std::function<void(const mojom::Result result)>;
+    base::OnceCallback<void(const mojom::Result result)>;
 
 class PostTransactionGemini {
  public:

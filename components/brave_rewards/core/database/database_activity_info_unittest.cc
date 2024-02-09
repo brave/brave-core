@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
@@ -16,7 +17,6 @@
 // npm run test -- brave_unit_tests --filter=DatabaseActivityInfoTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace database {
@@ -32,9 +32,9 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
   EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
-  MockFunction<LegacyResultCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  activity_.InsertOrUpdate(nullptr, callback.AsStdFunction());
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  activity_.InsertOrUpdate(nullptr, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -64,9 +64,9 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
   info->reconcile_stamp = 0;
   info->visits = 1;
 
-  MockFunction<LegacyResultCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  activity_.InsertOrUpdate(std::move(info), callback.AsStdFunction());
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  activity_.InsertOrUpdate(std::move(info), callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -75,9 +75,9 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
   EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
-  MockFunction<GetActivityInfoListCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  activity_.GetRecordsList(0, 0, nullptr, callback.AsStdFunction());
+  base::MockCallback<GetActivityInfoListCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  activity_.GetRecordsList(0, 0, nullptr, callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -107,10 +107,10 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<GetActivityInfoListCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
+  base::MockCallback<GetActivityInfoListCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
   activity_.GetRecordsList(0, 0, mojom::ActivityInfoFilter::New(),
-                           callback.AsStdFunction());
+                           callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -143,9 +143,9 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
   auto filter = mojom::ActivityInfoFilter::New();
   filter->id = "publisher_key";
 
-  MockFunction<GetActivityInfoListCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  activity_.GetRecordsList(0, 0, std::move(filter), callback.AsStdFunction());
+  base::MockCallback<GetActivityInfoListCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  activity_.GetRecordsList(0, 0, std::move(filter), callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -154,9 +154,9 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
   EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
-  MockFunction<LegacyResultCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  activity_.DeleteRecord("", callback.AsStdFunction());
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  activity_.DeleteRecord("", callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -182,9 +182,9 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<LegacyResultCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  activity_.DeleteRecord("publisher_key", callback.AsStdFunction());
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  activity_.DeleteRecord("publisher_key", callback.Get());
 
   task_environment_.RunUntilIdle();
 }

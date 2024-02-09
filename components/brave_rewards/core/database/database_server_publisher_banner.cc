@@ -10,8 +10,6 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace {
 
 const char kTableName[] = "server_publisher_banner";
@@ -85,7 +83,7 @@ void DatabaseServerPublisherBanner::GetRecord(
     GetPublisherBannerCallback callback) {
   if (publisher_key.empty()) {
     engine_->Log(FROM_HERE) << "Publisher key is empty";
-    callback(nullptr);
+    std::move(callback).Run(nullptr);
     return;
   }
   auto transaction = mojom::DBTransaction::New();
@@ -123,13 +121,13 @@ void DatabaseServerPublisherBanner::OnGetRecord(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback(nullptr);
+    std::move(callback).Run(nullptr);
     return;
   }
 
   if (response->result->get_records().empty()) {
     engine_->Log(FROM_HERE) << "Server publisher banner not found";
-    callback(nullptr);
+    std::move(callback).Run(nullptr);
     return;
   }
 
@@ -149,23 +147,23 @@ void DatabaseServerPublisherBanner::OnGetRecord(
   banner.web3_url = GetStringColumn(record, 4);
 
   // Get links
-  auto links_callback =
-      std::bind(&DatabaseServerPublisherBanner::OnGetRecordLinks, this, _1,
-                banner, callback);
-  links_.GetRecord(publisher_key, links_callback);
+  links_.GetRecord(
+      publisher_key,
+      base::BindOnce(&DatabaseServerPublisherBanner::OnGetRecordLinks,
+                     weak_factory_.GetWeakPtr(), banner, std::move(callback)));
 }
 
 void DatabaseServerPublisherBanner::OnGetRecordLinks(
-    const std::map<std::string, std::string>& links,
     const mojom::PublisherBanner& banner,
-    GetPublisherBannerCallback callback) {
+    GetPublisherBannerCallback callback,
+    const std::map<std::string, std::string>& links) {
   auto banner_pointer = mojom::PublisherBanner::New(banner);
 
   for (const auto& link : links) {
     banner_pointer->links.insert(link);
   }
 
-  callback(std::move(banner_pointer));
+  std::move(callback).Run(std::move(banner_pointer));
 }
 
 }  // namespace database

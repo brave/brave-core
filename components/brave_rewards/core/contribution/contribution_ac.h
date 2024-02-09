@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
@@ -30,6 +31,7 @@ class ContributionAC {
   void QueueSaved(const mojom::Result result);
 
   const raw_ref<RewardsEngineImpl> engine_;
+  base::WeakPtrFactory<ContributionAC> weak_factory_{this};
 };
 
 }  // namespace contribution

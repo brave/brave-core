@@ -146,10 +146,7 @@
     ],
     // A temporary fix to silence a failing presubmit check on file renames.
     "CheckStableMojomChanges": [
-      "components/brave_rewards/common/mojom/.*",
       "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
-      "components/services/bat_ledger/public/interfaces/.*",
-      "components/services/bat_rewards/public/interfaces/.*",
     ],
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",
@@ -172,30 +169,17 @@
       "base/mac/conversions\\.h",
       "browser/mac/sparkle_glue\\.mm",
     ],
-    "/\\bstd::bind\\b": [
-      "components/brave_rewards/.*",
-    ],
     "/\\bstd::function\\b": [
       "chromium_src/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views\\.cc",
-      "components/brave_rewards/core/.*",
       "ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter\\.mm",
       "ios/browser/api/bookmarks/importer/brave_bookmarks_importer\\.mm",
     ],
     "/\\bstd::shared_ptr\\b": [
       "browser/net/.*",
-      "components/brave_rewards/core/.*",
       "ios/browser/api/certificate/brave_certificate\\.mm",
       "ios/browser/api/net/certificate_utility\\.mm",
     ],
-    "/\\bstd::sto(f|d|ld)\\b": [
-      "browser/ui/webui/brave_rewards_page_ui\\.cc",
-      "components/brave_rewards/core/legacy/bat_util\\.cc",
-      "components/brave_rewards/core/legacy/media/youtube\\.cc",
-    ],
     "/\\bstd::sto(i|l|ul|ll|ull)\\b": [
-      "components/brave_rewards/browser/test/rewards_state_browsertest\\.cc",
-      "components/brave_rewards/core/legacy/media/github\\.cc",
-      "components/brave_rewards/core/report/report\\.cc",
       "components/brave_wallet/browser/rlp_encode_unittest\\.cc",
       "components/brave_wallet/common/eth_address\\.cc",
       "components/ipfs/ipfs_json_parser\\.cc",

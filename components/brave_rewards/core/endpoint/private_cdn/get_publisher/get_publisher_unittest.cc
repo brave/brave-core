@@ -30,14 +30,15 @@ class GetPublisherTest : public RewardsEngineTest {
 
     GetPublisher endpoint(engine());
 
-    endpoint.Request(
-        id, prefix,
-        [&run_loop, &result, info](mojom::Result request_result,
-                                   mojom::ServerPublisherInfoPtr request_info) {
-          result = request_result;
-          *info = std::move(request_info);
-          run_loop.Quit();
-        });
+    endpoint.Request(id, prefix,
+                     base::BindLambdaForTesting(
+                         [&run_loop, &result, info](
+                             mojom::Result request_result,
+                             mojom::ServerPublisherInfoPtr request_info) {
+                           result = request_result;
+                           *info = std::move(request_info);
+                           run_loop.Quit();
+                         }));
 
     run_loop.Run();
     return result;

@@ -15,26 +15,25 @@
 namespace brave_rewards::internal {
 namespace database {
 
-using SearchPublisherPrefixListCallback = std::function<void(bool)>;
+using SearchPublisherPrefixListCallback = base::OnceCallback<void(bool)>;
 
 class DatabasePublisherPrefixList : public DatabaseTable {
  public:
   explicit DatabasePublisherPrefixList(RewardsEngineImpl& engine);
   ~DatabasePublisherPrefixList() override;
 
-  void Reset(publisher::PrefixListReader reader, LegacyResultCallback callback);
+  void Reset(publisher::PrefixListReader reader, ResultCallback callback);
 
   void Search(const std::string& publisher_key,
               SearchPublisherPrefixListCallback callback);
 
  private:
-  void InsertNext(publisher::PrefixIterator begin,
-                  LegacyResultCallback callback);
+  void InsertNext(publisher::PrefixIterator begin, ResultCallback callback);
 
   void OnSearch(SearchPublisherPrefixListCallback callback,
                 mojom::DBCommandResponsePtr response);
 
-  void OnInsertNext(LegacyResultCallback callback,
+  void OnInsertNext(ResultCallback callback,
                     publisher::PrefixIterator iter,
                     mojom::DBCommandResponsePtr response);
 

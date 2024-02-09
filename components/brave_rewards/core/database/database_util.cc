@@ -99,15 +99,15 @@ int32_t GetCompatibleVersion() {
   return kCompatibleVersionNumber;
 }
 
-void OnResultCallback(LegacyResultCallback callback,
+void OnResultCallback(ResultCallback callback,
                       mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 int GetIntColumn(mojom::DBRecord* record, const int index) {

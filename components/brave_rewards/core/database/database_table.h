@@ -26,19 +26,19 @@ using ContributionPublisherInfoPair =
     std::pair<std::string, mojom::PublisherInfoPtr>;
 
 using ServerPublisherLinksCallback =
-    std::function<void(const std::map<std::string, std::string>& links)>;
+    base::OnceCallback<void(const std::map<std::string, std::string>& links)>;
 
 using ServerPublisherAmountsCallback =
-    std::function<void(const std::vector<double>& amounts)>;
+    base::OnceCallback<void(const std::vector<double>& amounts)>;
 
 using ContributionQueuePublishersListCallback =
-    std::function<void(std::vector<mojom::ContributionQueuePublisherPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionQueuePublisherPtr>)>;
 
 using ContributionPublisherListCallback =
-    std::function<void(std::vector<mojom::ContributionPublisherPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::ContributionPublisherPtr>)>;
 
 using ContributionPublisherPairListCallback =
-    std::function<void(std::vector<ContributionPublisherInfoPair>)>;
+    base::OnceCallback<void(std::vector<ContributionPublisherInfoPair>)>;
 
 class DatabaseTable {
  public:

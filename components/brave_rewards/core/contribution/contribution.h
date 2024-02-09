@@ -17,6 +17,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_ac.h"
@@ -53,14 +54,14 @@ class Contribution {
                         bool set_monthly,
                         base::OnceCallback<void(bool)> callback);
 
-  void ContributionCompleted(const mojom::Result result,
+  void ContributionCompleted(mojom::Result result,
                              mojom::ContributionInfoPtr contribution);
 
   void ResetReconcileStamp();
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,
-                  LegacyResultCallback callback);
+                  ResultCallback callback);
 
   void CheckContributionQueue();
 
@@ -68,19 +69,19 @@ class Contribution {
                      const std::string& destination,
                      const std::string& wallet_type,
                      const std::string& contribution_id,
-                     LegacyResultCallback callback);
+                     ResultCallback callback);
 
   void SKUAutoContribution(const std::string& contribution_id,
                            const std::string& wallet_type,
-                           LegacyResultCallback callback);
+                           ResultCallback callback);
 
   void StartUnblinded(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
-                      LegacyResultCallback callback);
+                      ResultCallback callback);
 
   void RetryUnblinded(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
-                      LegacyResultCallback callback);
+                      ResultCallback callback);
 
   void GetRecurringTips(GetRecurringTipsCallback callback);
 
@@ -88,6 +89,9 @@ class Contribution {
   enum class MonthlyContributionOptions { kDefault, kSendAllContributions };
 
   void StartMonthlyContributions(MonthlyContributionOptions options);
+
+  void OnMonthlyContributionsFinished(MonthlyContributionOptions options,
+                                      mojom::Result result);
 
   void StartAutoContribute();
 
@@ -122,8 +126,8 @@ class Contribution {
   // In this step we get balance from the server
   void Start(mojom::ContributionQueuePtr info);
 
-  void ContributionCompletedSaved(const mojom::Result result,
-                                  const std::string& contribution_id);
+  void ContributionCompletedSaved(const std::string& contribution_id,
+                                  mojom::Result result);
 
   void OnProcessContributionQueue(mojom::ContributionQueuePtr info);
 
@@ -137,35 +141,34 @@ class Contribution {
                       mojom::BalancePtr balance,
                       mojom::ContributionQueuePtr queue);
 
-  void OnEntrySaved(const mojom::Result result,
-                    const std::string& contribution_id,
+  void OnEntrySaved(const std::string& contribution_id,
                     const std::string& wallet_type,
-                    const mojom::Balance& balance,
-                    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue);
+                    mojom::BalancePtr balance,
+                    mojom::ContributionQueuePtr queue,
+                    mojom::Result result);
 
-  void OnQueueSaved(const mojom::Result result,
-                    const std::string& wallet_type,
-                    const mojom::Balance& balance,
-                    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue);
+  void OnQueueSaved(const std::string& wallet_type,
+                    mojom::BalancePtr balance,
+                    mojom::ContributionQueuePtr queue,
+                    mojom::Result result);
 
   void Process(mojom::ContributionQueuePtr queue, mojom::BalancePtr balance);
 
   void MarkContributionQueueAsComplete(const std::string& id, bool success);
 
-  void OnMarkContributionQueueAsComplete(const mojom::Result result);
+  void OnMarkContributionQueueAsComplete(mojom::Result result);
 
-  void RetryUnblindedContribution(
-      mojom::ContributionInfoPtr contribution,
-      const std::vector<mojom::CredsBatchType>& types,
-      LegacyResultCallback callback);
+  void RetryUnblindedContribution(std::vector<mojom::CredsBatchType> types,
+                                  ResultCallback callback,
+                                  mojom::ContributionInfoPtr contribution);
 
-  void Result(const mojom::Result result,
-              const std::string& queue_id,
-              const std::string& contribution_id);
+  void Result(const std::string& queue_id,
+              const std::string& contribution_id,
+              mojom::Result result);
 
-  void OnResult(mojom::ContributionInfoPtr contribution,
-                const mojom::Result result,
-                const std::string& queue_id);
+  void OnResult(mojom::Result result,
+                const std::string& queue_id,
+                mojom::ContributionInfoPtr contribution);
 
   void SetRetryTimer(const std::string& contribution_id, base::TimeDelta delay);
 
@@ -173,11 +176,13 @@ class Contribution {
 
   void SetRetryCounter(mojom::ContributionInfoPtr contribution);
 
-  void Retry(const mojom::Result result,
-             std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution);
+  void Retry(mojom::ContributionInfoPtr contribution, mojom::Result result);
 
-  void OnMarkUnblindedTokensAsSpendable(const mojom::Result result,
-                                        const std::string& contribution_id);
+  void OnMarkUnblindedTokensAsSpendable(const std::string& contribution_id,
+                                        mojom::Result result);
+
+  void OnRecurringTipsRead(GetRecurringTipsCallback callback,
+                           std::vector<mojom::PublisherInfoPtr> list);
 
   const raw_ref<RewardsEngineImpl> engine_;
   Unblinded unblinded_;
@@ -193,8 +198,11 @@ class Contribution {
   base::OneShotTimer queue_timer_;
   bool queue_in_progress_ = false;
   bool monthly_contributions_processing_ = false;
+
+  base::WeakPtrFactory<Contribution> weak_factory_{this};
 };
 
 }  // namespace contribution
 }  // namespace brave_rewards::internal
+
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_H_

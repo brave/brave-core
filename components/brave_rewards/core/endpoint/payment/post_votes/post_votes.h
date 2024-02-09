@@ -42,7 +42,7 @@ class RewardsEngineImpl;
 namespace endpoint {
 namespace payment {
 
-using PostVotesCallback = std::function<void(const mojom::Result result)>;
+using PostVotesCallback = base::OnceCallback<void(const mojom::Result result)>;
 
 class PostVotes {
  public:

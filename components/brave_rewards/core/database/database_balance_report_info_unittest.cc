@@ -17,7 +17,6 @@
 // npm run test -- brave_unit_tests --filter=DatabaseBalanceReportTest.*
 
 using ::testing::_;
-using ::testing::MockFunction;
 
 namespace brave_rewards::internal {
 namespace database {
@@ -54,9 +53,9 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
   info->recurring_donation = 1.0;
   info->one_time_donation = 1.0;
 
-  MockFunction<LegacyResultCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  balance_report_.InsertOrUpdate(std::move(info), callback.AsStdFunction());
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  balance_report_.InsertOrUpdate(std::move(info), callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -78,9 +77,9 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<GetBalanceReportListCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  balance_report_.GetAllRecords(callback.AsStdFunction());
+  base::MockCallback<GetBalanceReportListCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  balance_report_.GetAllRecords(callback.Get());
 
   task_environment_.RunUntilIdle();
 }
@@ -125,9 +124,9 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  MockFunction<LegacyResultCallback> callback;
-  EXPECT_CALL(callback, Call).Times(1);
-  balance_report_.DeleteAllRecords(callback.AsStdFunction());
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run).Times(1);
+  balance_report_.DeleteAllRecords(callback.Get());
 
   task_environment_.RunUntilIdle();
 }

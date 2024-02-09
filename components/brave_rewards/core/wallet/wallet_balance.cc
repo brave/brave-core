@@ -22,16 +22,10 @@ WalletBalance::WalletBalance(RewardsEngineImpl& engine) : engine_(engine) {}
 WalletBalance::~WalletBalance() = default;
 
 void WalletBalance::Fetch(FetchBalanceCallback callback) {
-  auto tokens_callback =
-      base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
-                     base::Unretained(this), std::move(callback));
-
   engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
       {mojom::CredsBatchType::PROMOTION},
-      [callback = std::make_shared<decltype(tokens_callback)>(std::move(
-           tokens_callback))](std::vector<mojom::UnblindedTokenPtr> list) {
-        std::move(*callback).Run(std::move(list));
-      });
+      base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void WalletBalance::OnGetUnblindedTokens(

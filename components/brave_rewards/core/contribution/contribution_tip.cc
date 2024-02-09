@@ -12,7 +12,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
@@ -35,10 +34,9 @@ void ContributionTip::Process(const std::string& publisher_id,
   }
 
   engine_->publisher()->GetServerPublisherInfo(
-      publisher_id,
-      ToLegacyCallback(base::BindOnce(&ContributionTip::OnPublisherDataRead,
-                                      base::Unretained(this), publisher_id,
-                                      amount, std::move(callback))));
+      publisher_id, base::BindOnce(&ContributionTip::OnPublisherDataRead,
+                                   weak_factory_.GetWeakPtr(), publisher_id,
+                                   amount, std::move(callback)));
 }
 
 void ContributionTip::OnPublisherDataRead(
@@ -68,9 +66,8 @@ void ContributionTip::OnPublisherDataRead(
 
   engine_->database()->SaveContributionQueue(
       std::move(queue),
-      ToLegacyCallback(
-          base::BindOnce(&ContributionTip::OnQueueSaved, base::Unretained(this),
-                         std::move(queue_id), std::move(callback))));
+      base::BindOnce(&ContributionTip::OnQueueSaved, weak_factory_.GetWeakPtr(),
+                     queue_id, std::move(callback)));
 }
 
 void ContributionTip::OnQueueSaved(const std::string& queue_id,

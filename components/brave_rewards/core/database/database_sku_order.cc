@@ -11,8 +11,6 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace database {
 
@@ -28,10 +26,10 @@ DatabaseSKUOrder::DatabaseSKUOrder(RewardsEngineImpl& engine)
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
 void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
-                                      LegacyResultCallback callback) {
+                                      ResultCallback callback) {
   if (!order) {
     engine_->Log(FROM_HERE) << "Order is null";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -66,10 +64,10 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
 
 void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
                                     mojom::SKUOrderStatus status,
-                                    LegacyResultCallback callback) {
+                                    ResultCallback callback) {
   if (order_id.empty()) {
     engine_->Log(FROM_HERE) << "Order id is empty";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -96,7 +94,7 @@ void DatabaseSKUOrder::GetRecord(const std::string& order_id,
                                  GetSKUOrderCallback callback) {
   if (order_id.empty()) {
     engine_->Log(FROM_HERE) << "Order id is empty";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -134,14 +132,14 @@ void DatabaseSKUOrder::OnGetRecord(GetSKUOrderCallback callback,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     engine_->Log(FROM_HERE) << "Record size is not correct: "
                             << response->result->get_records().size();
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -155,24 +153,24 @@ void DatabaseSKUOrder::OnGetRecord(GetSKUOrderCallback callback,
   info->contribution_id = GetStringColumn(record, 5);
   info->created_at = GetInt64Column(record, 6);
 
-  auto items_callback =
-      std::bind(&DatabaseSKUOrder::OnGetRecordItems, this, _1,
-                std::make_shared<mojom::SKUOrderPtr>(info->Clone()), callback);
-  items_.GetRecordsByOrderId(info->order_id, items_callback);
+  items_.GetRecordsByOrderId(
+      info->order_id, base::BindOnce(&DatabaseSKUOrder::OnGetRecordItems,
+                                     weak_factory_.GetWeakPtr(), info->Clone(),
+                                     std::move(callback)));
 }
 
 void DatabaseSKUOrder::OnGetRecordItems(
-    std::vector<mojom::SKUOrderItemPtr> list,
-    std::shared_ptr<mojom::SKUOrderPtr> shared_order,
-    GetSKUOrderCallback callback) {
-  if (!shared_order) {
+    mojom::SKUOrderPtr order,
+    GetSKUOrderCallback callback,
+    std::vector<mojom::SKUOrderItemPtr> list) {
+  if (!order) {
     engine_->Log(FROM_HERE) << "Order is null";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
-  (*shared_order)->items = std::move(list);
-  callback(std::move(*shared_order));
+  order->items = std::move(list);
+  std::move(callback).Run(std::move(order));
 }
 
 void DatabaseSKUOrder::GetRecordByContributionId(
@@ -180,7 +178,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
     GetSKUOrderCallback callback) {
   if (contribution_id.empty()) {
     engine_->Log(FROM_HERE) << "Contribution id is empty";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
   auto transaction = mojom::DBTransaction::New();
@@ -215,11 +213,11 @@ void DatabaseSKUOrder::GetRecordByContributionId(
 void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
     const std::string& order_id,
     const std::string& contribution_id,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (order_id.empty() || contribution_id.empty()) {
     engine_->Log(FROM_HERE) << "Order/contribution id is empty " << order_id
                             << "/" << contribution_id;
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 

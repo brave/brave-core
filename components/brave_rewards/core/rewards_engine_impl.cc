@@ -10,7 +10,6 @@
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/brave_rewards/core/api/api.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
-#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
@@ -221,7 +220,7 @@ void RewardsEngineImpl::OnHide(uint32_t tab_id, uint64_t current_time) {
   }
 
   publisher()->SaveVisit(iter->second.domain, iter->second, duration, true, 0,
-                         [](mojom::Result, mojom::PublisherInfoPtr) {});
+                         base::DoNothing());
 }
 
 void RewardsEngineImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
@@ -375,8 +374,7 @@ void RewardsEngineImpl::GetAutoContributionAmount(
 void RewardsEngineImpl::GetPublisherBanner(
     const std::string& publisher_id,
     GetPublisherBannerCallback callback) {
-  WhenReady([this, publisher_id,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, publisher_id, callback = std::move(callback)]() mutable {
     publisher()->GetPublisherBanner(publisher_id, std::move(callback));
   });
 }
@@ -384,17 +382,16 @@ void RewardsEngineImpl::GetPublisherBanner(
 void RewardsEngineImpl::OneTimeTip(const std::string& publisher_key,
                                    double amount,
                                    OneTimeTipCallback callback) {
-  WhenReady([this, publisher_key, amount,
-             callback = ToLegacyCallback(std::move(callback))]() {
-    contribution()->OneTimeTip(publisher_key, amount, std::move(callback));
-  });
+  WhenReady(
+      [this, publisher_key, amount, callback = std::move(callback)]() mutable {
+        contribution()->OneTimeTip(publisher_key, amount, std::move(callback));
+      });
 }
 
 void RewardsEngineImpl::RemoveRecurringTip(
     const std::string& publisher_key,
     RemoveRecurringTipCallback callback) {
-  WhenReady([this, publisher_key,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, publisher_key, callback = std::move(callback)]() mutable {
     database()->RemoveRecurringTip(publisher_key, std::move(callback));
   });
 }
@@ -436,15 +433,19 @@ void RewardsEngineImpl::GetRewardsInternalsInfo(
 
 void RewardsEngineImpl::SaveRecurringTip(mojom::RecurringTipPtr info,
                                          SaveRecurringTipCallback callback) {
-  WhenReady([this, info = std::move(info),
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->SaveRecurringTip(
-        std::move(info),
-        [this, callback = std::move(callback)](mojom::Result result) {
-          contribution()->SetMonthlyContributionTimer();
-          callback(result);
-        });
-  });
+  WhenReady(
+      [this, info = std::move(info), callback = std::move(callback)]() mutable {
+        database()->SaveRecurringTip(
+            std::move(info),
+            base::BindOnce(&RewardsEngineImpl::OnRecurringTipSaved,
+                           weak_factory_.GetWeakPtr(), std::move(callback)));
+      });
+}
+
+void RewardsEngineImpl::OnRecurringTipSaved(SaveRecurringTipCallback callback,
+                                            mojom::Result result) {
+  contribution()->SetMonthlyContributionTimer();
+  std::move(callback).Run(result);
 }
 
 void RewardsEngineImpl::SendContribution(const std::string& publisher_id,
@@ -459,13 +460,13 @@ void RewardsEngineImpl::SendContribution(const std::string& publisher_id,
 }
 
 void RewardsEngineImpl::GetRecurringTips(GetRecurringTipsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     contribution()->GetRecurringTips(std::move(callback));
   });
 }
 
 void RewardsEngineImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetOneTimeTips(util::GetCurrentMonth(), util::GetCurrentYear(),
                                std::move(callback));
   });
@@ -477,7 +478,7 @@ void RewardsEngineImpl::GetActivityInfoList(
     mojom::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) {
   WhenReady([this, start, limit, filter = std::move(filter),
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+             callback = std::move(callback)]() mutable {
     database()->GetActivityInfoList(start, limit, std::move(filter),
                                     std::move(callback));
   });
@@ -491,15 +492,14 @@ void RewardsEngineImpl::GetPublishersVisitedCount(
 }
 
 void RewardsEngineImpl::GetExcludedList(GetExcludedListCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetExcludedList(std::move(callback));
   });
 }
 
 void RewardsEngineImpl::RefreshPublisher(const std::string& publisher_key,
                                          RefreshPublisherCallback callback) {
-  WhenReady([this, publisher_key,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, publisher_key, callback = std::move(callback)]() mutable {
     publisher()->RefreshPublisher(publisher_key, std::move(callback));
   });
 }
@@ -523,21 +523,22 @@ void RewardsEngineImpl::UpdateMediaDuration(uint64_t window_id,
 void RewardsEngineImpl::IsPublisherRegistered(
     const std::string& publisher_id,
     IsPublisherRegisteredCallback callback) {
-  WhenReady([this, publisher_id,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, publisher_id, callback = std::move(callback)]() mutable {
     publisher()->GetServerPublisherInfo(
         publisher_id, true /* use_prefix_list */,
-        [callback = std::move(callback)](mojom::ServerPublisherInfoPtr info) {
-          callback(info &&
-                   info->status != mojom::PublisherStatus::NOT_VERIFIED);
-        });
+        base::BindOnce(
+            [](IsPublisherRegisteredCallback callback,
+               mojom::ServerPublisherInfoPtr info) {
+              std::move(callback).Run(
+                  info && info->status != mojom::PublisherStatus::NOT_VERIFIED);
+            },
+            std::move(callback)));
   });
 }
 
 void RewardsEngineImpl::GetPublisherInfo(const std::string& publisher_key,
                                          GetPublisherInfoCallback callback) {
-  WhenReady([this, publisher_key,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, publisher_key, callback = std::move(callback)]() mutable {
     database()->GetPublisherInfo(publisher_key, std::move(callback));
   });
 }
@@ -545,8 +546,7 @@ void RewardsEngineImpl::GetPublisherInfo(const std::string& publisher_key,
 void RewardsEngineImpl::GetPublisherPanelInfo(
     const std::string& publisher_key,
     GetPublisherPanelInfoCallback callback) {
-  WhenReady([this, publisher_key,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, publisher_key, callback = std::move(callback)]() mutable {
     publisher()->GetPublisherPanelInfo(publisher_key, std::move(callback));
   });
 }
@@ -556,7 +556,7 @@ void RewardsEngineImpl::SavePublisherInfo(
     mojom::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   WhenReady([this, window_id, info = std::move(publisher_info),
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+             callback = std::move(callback)]() mutable {
     publisher()->SavePublisherInfo(window_id, std::move(info),
                                    std::move(callback));
   });
@@ -624,8 +624,7 @@ void RewardsEngineImpl::GetTransactionReport(
     mojom::ActivityMonth month,
     int year,
     GetTransactionReportCallback callback) {
-  WhenReady([this, month, year,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
     database()->GetTransactionReport(month, year, std::move(callback));
   });
 }
@@ -634,15 +633,14 @@ void RewardsEngineImpl::GetContributionReport(
     mojom::ActivityMonth month,
     int year,
     GetContributionReportCallback callback) {
-  WhenReady([this, month, year,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
     database()->GetContributionReport(month, year, std::move(callback));
   });
 }
 
 void RewardsEngineImpl::GetAllContributions(
     GetAllContributionsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetAllContributions(std::move(callback));
   });
 }
@@ -650,21 +648,20 @@ void RewardsEngineImpl::GetAllContributions(
 void RewardsEngineImpl::GetMonthlyReport(mojom::ActivityMonth month,
                                          int year,
                                          GetMonthlyReportCallback callback) {
-  WhenReady([this, month, year,
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
     report()->GetMonthly(month, year, std::move(callback));
   });
 }
 
 void RewardsEngineImpl::GetAllMonthlyReportIds(
     GetAllMonthlyReportIdsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     report()->GetAllMonthlyIds(std::move(callback));
   });
 }
 
 void RewardsEngineImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetAllPromotions(std::move(callback));
   });
 }
@@ -676,7 +673,7 @@ void RewardsEngineImpl::Shutdown(ShutdownCallback callback) {
 }
 
 void RewardsEngineImpl::GetEventLogs(GetEventLogsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetLastEventLogs(std::move(callback));
   });
 }

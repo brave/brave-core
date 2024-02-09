@@ -21,7 +21,7 @@ class DatabaseContributionQueuePublishers : public DatabaseTable {
 
   void InsertOrUpdate(const std::string& id,
                       std::vector<mojom::ContributionQueuePublisherPtr> list,
-                      LegacyResultCallback callback);
+                      ResultCallback callback);
 
   void GetRecordsByQueueId(const std::string& queue_id,
                            ContributionQueuePublishersListCallback callback);

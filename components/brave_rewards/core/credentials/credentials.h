@@ -22,7 +22,7 @@ class Credentials {
                      ResultCallback callback) = 0;
 
   virtual void RedeemTokens(const CredentialsRedeem& redeem,
-                            LegacyResultCallback callback) = 0;
+                            ResultCallback callback) = 0;
 
  protected:
   virtual void Blind(ResultCallback callback,

@@ -12,8 +12,6 @@
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace database {
 
@@ -26,17 +24,16 @@ void DatabaseMultiTables::GetTransactionReport(
     const mojom::ActivityMonth month,
     const int year,
     GetTransactionReportCallback callback) {
-  auto promotion_callback =
-      std::bind(&DatabaseMultiTables::OnGetTransactionReportPromotion, this, _1,
-                month, year, callback);
-  engine_->database()->GetAllPromotions(promotion_callback);
+  engine_->database()->GetAllPromotions(base::BindOnce(
+      &DatabaseMultiTables::OnGetTransactionReportPromotion,
+      weak_factory_.GetWeakPtr(), month, year, std::move(callback)));
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(
-    base::flat_map<std::string, mojom::PromotionPtr> promotions,
     const mojom::ActivityMonth month,
     const int year,
-    GetTransactionReportCallback callback) {
+    GetTransactionReportCallback callback,
+    base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   const auto converted_month = static_cast<int>(month);
   std::vector<mojom::TransactionReportInfoPtr> list;
 
@@ -63,7 +60,7 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
     list.push_back(std::move(report));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database

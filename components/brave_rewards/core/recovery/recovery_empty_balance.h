@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
@@ -30,8 +31,9 @@ class EmptyBalance {
 
   void GetPromotions(database::GetPromotionListCallback callback);
 
-  void OnPromotions(base::flat_map<std::string, mojom::PromotionPtr> promotions,
-                    database::GetPromotionListCallback callback);
+  void OnPromotions(
+      database::GetPromotionListCallback callback,
+      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void GetCredsByPromotions(std::vector<mojom::PromotionPtr> list);
 
@@ -39,17 +41,18 @@ class EmptyBalance {
 
   void OnSaveUnblindedCreds(const mojom::Result result);
 
-  void GetAllTokens(std::vector<mojom::PromotionPtr> list,
-                    const double contribution_sum);
+  void GetAllTokens(double contribution_sum,
+                    std::vector<mojom::PromotionPtr> list);
 
-  void ReportResults(std::vector<mojom::UnblindedTokenPtr> list,
-                     const double contribution_sum,
-                     const double promotion_sum);
+  void ReportResults(double contribution_sum,
+                     double promotion_sum,
+                     std::vector<mojom::UnblindedTokenPtr> list);
 
-  void Sent(const mojom::Result result);
+  void Sent(mojom::Result result);
 
   const raw_ref<RewardsEngineImpl> engine_;
   endpoint::PromotionServer promotion_server_;
+  base::WeakPtrFactory<EmptyBalance> weak_factory_{this};
 };
 
 }  // namespace recovery
