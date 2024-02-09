@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -42,7 +41,7 @@ import {
   SubDivider,
   AddButtonWrapper
 } from './add-custom-token-form-styles'
-import { HorizontalSpace } from '../style'
+import { HorizontalSpace, LeoSquaredButton } from '../style'
 
 interface Props {
   contractAddress: string
@@ -383,12 +382,12 @@ export const AddCustomTokenForm = (props: Props) => {
         )}
       </FormWrapper>
       <ButtonRow>
-        <Button
+        <LeoSquaredButton
           onClick={onClickCancel}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
-        </Button>
+        </LeoSquaredButton>
         <HorizontalSpace space='16px' />
         <Tooltip
           text={<FormErrorsList errors={formErrors} />}
@@ -397,12 +396,12 @@ export const AddCustomTokenForm = (props: Props) => {
           verticalPosition='above'
         >
           <AddButtonWrapper>
-            <Button
+            <LeoSquaredButton
               onClick={onClickAddCustomToken}
               isDisabled={buttonDisabled || tokenAlreadyExists}
             >
               {getLocale('braveWalletWatchListAdd')}
-            </Button>
+            </LeoSquaredButton>
           </AddButtonWrapper>
         </Tooltip>
       </ButtonRow>
