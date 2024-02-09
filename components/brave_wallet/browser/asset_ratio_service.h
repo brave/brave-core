@@ -51,7 +51,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   // Get sell URL for off-ramps
   void GetSellUrl(mojom::OffRampProvider provider,
                   const std::string& chain_id,
-                  const std::string& address,
                   const std::string& symbol,
                   const std::string& amount,
                   const std::string& currency_code,
