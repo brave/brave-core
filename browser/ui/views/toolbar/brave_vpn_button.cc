@@ -228,8 +228,9 @@ void BraveVPNButton::UpdateColorsAndInsets() {
                       cp->GetColor(kColorBraveVpnButtonIconError)));
 
     // Use background for inner color of error button image.
-    image()->SetBackground(std::make_unique<ConnectErrorIconBackground>(
-        cp->GetColor(kColorBraveVpnButtonIconErrorInner)));
+    image_container_view()->SetBackground(
+        std::make_unique<ConnectErrorIconBackground>(
+            cp->GetColor(kColorBraveVpnButtonIconErrorInner)));
   } else {
     SetImageModel(
         views::Button::STATE_NORMAL,
@@ -241,7 +242,7 @@ void BraveVPNButton::UpdateColorsAndInsets() {
 
     // Use background for inner color of button image.
     // Adjusted border thickness to make invisible to the outside of the icon.
-    image()->SetBackground(views::CreateRoundedRectBackground(
+    image_container_view()->SetBackground(views::CreateRoundedRectBackground(
         cp->GetColor(kColorBraveVpnButtonIconInner), 5 /*radi*/, 2 /*thick*/));
   }
 
