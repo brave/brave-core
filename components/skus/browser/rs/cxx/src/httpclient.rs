@@ -107,7 +107,7 @@ impl NativeClient {
         let context = Box::new(HttpRoundtripContext { tx, client: self.clone() });
 
         let fetcher = ffi::shim_executeRequest(
-            &self.ctx.try_borrow().map_err(|_| InternalError::BorrowFailed)?.ctx,
+            &*self.ctx.try_borrow().map_err(|_| InternalError::BorrowFailed)?.ctx.try_borrow().map_err(|_| InternalError::BorrowFailed)?,
             &req,
             |context, resp| {
                 let _ = context.tx.send(resp.into());
