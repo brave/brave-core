@@ -43,6 +43,7 @@ constexpr char kURLRefreshPremiumSession[] =
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kURLGoPremium[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
+constexpr char kURLManagePremium[] = "https://account.brave.com/";
 #endif
 }  // namespace
 
@@ -196,18 +197,12 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
-#if !BUILDFLAG(IS_ANDROID)
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
   contents_to_navigate->OpenURL({url, content::Referrer(),
                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                  ui::PAGE_TRANSITION_LINK, false});
-#else
-  // TODO(sergz): Disable subscriptions on Android until in store purchases
-  // are done.
-  return;
-#endif
 }
 
 void AIChatUIPageHandler::GoPremium() {
@@ -223,6 +218,17 @@ void AIChatUIPageHandler::GoPremium() {
 
 void AIChatUIPageHandler::RefreshPremiumSession() {
   OpenURL(GURL(kURLRefreshPremiumSession));
+}
+
+void AIChatUIPageHandler::ManagePremium() {
+#if !BUILDFLAG(IS_ANDROID)
+  OpenURL(GURL(kURLManagePremium));
+#else
+  auto* contents_to_navigate = (active_chat_tab_helper_)
+                                   ? active_chat_tab_helper_->web_contents()
+                                   : web_contents();
+  ai_chat::ManagePremium(contents_to_navigate);
+#endif
 }
 
 void AIChatUIPageHandler::SetShouldSendPageContents(bool should_send) {

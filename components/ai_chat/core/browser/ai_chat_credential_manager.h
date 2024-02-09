@@ -47,6 +47,19 @@ class AIChatCredentialManager {
 
   void PutCredentialInCache(CredentialCacheEntry credential);
 
+#if BUILDFLAG(IS_ANDROID)
+  void CreateOrderFromReceipt(
+      const std::string& purchase_token,
+      const std::string& package,
+      const std::string& subscription_id,
+      skus::mojom::SkusService::CreateOrderFromReceiptCallback callback);
+  void FetchOrderCredentials(
+      const std::string& order_id,
+      skus::mojom::SkusService::FetchOrderCredentialsCallback callback);
+  void RefreshOrder(const std::string& order_id,
+                    skus::mojom::SkusService::RefreshOrderCallback callback);
+#endif
+
  private:
   bool EnsureMojoConnected();
 
