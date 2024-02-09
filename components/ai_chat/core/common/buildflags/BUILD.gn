@@ -7,9 +7,20 @@ import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 
+declare_args() {
+  service_key_aichat = ""
+}
+
+if (is_official_build) {
+  assert(service_key_aichat != "")
+}
+
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [ "ENABLE_AI_CHAT=$enable_ai_chat" ]
+  flags = [
+    "ENABLE_AI_CHAT=$enable_ai_chat",
+    "SERVICE_KEY_AICHAT=\"$service_key_aichat\"",
+  ]
 
   # Enable for desktop (all channels) and android (only dev and
   # nightly channels).

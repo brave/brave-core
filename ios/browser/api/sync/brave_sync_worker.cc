@@ -313,6 +313,8 @@ void BraveSyncWorker::ResetSync() {
     return;
   }
 
+  sync_service->prefs().AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
   DCHECK(device_info_service);
@@ -357,6 +359,8 @@ void BraveSyncWorker::PermanentlyDeleteAccount(
   if (!sync_service) {
     return;
   }
+
+  sync_service->prefs().AddLeaveChainDetail(__FILE__, __LINE__, __func__);
 
   sync_service->PermanentlyDeleteAccount(std::move(callback));
 }

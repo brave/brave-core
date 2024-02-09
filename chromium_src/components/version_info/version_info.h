@@ -10,27 +10,16 @@
 
 #include "brave/components/version_info/version_info_values.h"
 
-#define GetChannelString GetChannelString_ChromiumImpl
 #define GetProductNameAndVersionForUserAgent \
   GetProductNameAndVersionForUserAgent_Unused
 
 #include "src/components/version_info/version_info.h"  // IWYU pragma: export
-#undef GetChannelString
 #undef GetProductNameAndVersionForUserAgent
 
 namespace version_info {
 
 constexpr std::string GetProductNameAndVersionForUserAgent() {
   return "Chrome/" + std::string(constants::kBraveChromiumVersion);
-}
-
-// We use |nightly| instead of |canary|.
-constexpr std::string_view GetChannelString(Channel channel) {
-  if (channel == Channel::CANARY) {
-    return "nightly";
-  }
-
-  return GetChannelString_ChromiumImpl(channel);
 }
 
 }  // namespace version_info

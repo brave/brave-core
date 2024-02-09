@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
+import { shouldShowSelfCustodyInvite } from '../lib/derived_state'
 import { TabOpenerContext } from '../../shared/components/new_tab_link'
 import { OnboardingResult, RewardsOptIn } from '../../shared/components/onboarding'
 import { WalletCard } from '../../shared/components/wallet_card'
@@ -14,6 +15,7 @@ import { LimitedView } from './limited_view'
 import { NavBar } from './navbar'
 import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
+import { SelfCustodyInvite } from './self_custody_invite'
 
 import * as urls from '../../shared/lib/rewards_urls'
 
@@ -55,6 +57,8 @@ export function Panel () {
     React.useState(host.state.rewardsEnabled)
   const [declaredCountry, setDeclaredCountry] =
     React.useState(host.state.declaredCountry)
+  const [showSelfCustodyInvite, setShowSelfCustodyInvite] =
+    React.useState(shouldShowSelfCustodyInvite(host.state))
 
   useHostListener(host, (state) => {
     setUserType(state.userType)
@@ -72,6 +76,7 @@ export function Panel () {
     setDeclaredCountry(state.declaredCountry)
     setAvailableCountries(state.availableCountries)
     setDefaultCountry(state.defaultCountry)
+    setShowSelfCustodyInvite(shouldShowSelfCustodyInvite(state))
   })
 
   const needsCountry = rewardsEnabled && !declaredCountry
@@ -144,6 +149,10 @@ export function Panel () {
 
   if (onboardingResult || !rewardsEnabled || needsCountry) {
     return renderOnboaring()
+  }
+
+  if (showSelfCustodyInvite) {
+    return <SelfCustodyInvite />
   }
 
   return (

@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/scroll_view.h"
@@ -57,13 +58,27 @@ class CustomScrollView : public views::ScrollView {
  public:
   METADATA_HEADER(CustomScrollView);
 
-  CustomScrollView()
+  explicit CustomScrollView(PrefService* prefs)
       : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
     SetDrawOverflowIndicator(false);
     SetHorizontalScrollBarMode(views::ScrollView::ScrollBarMode::kDisabled);
 
-    if (base::FeatureList::IsEnabled(
-            tabs::features::kBraveVerticalTabScrollBar)) {
+    should_show_scroll_bar_.Init(
+        brave_tabs::kVerticalTabsShowScrollbar, prefs,
+        base::BindRepeating(&CustomScrollView::UpdateScrollbarVisibility,
+                            base::Unretained(this)));
+    UpdateScrollbarVisibility();
+  }
+  ~CustomScrollView() override = default;
+
+  // views::ScrollView:
+  void OnScrollEvent(ui::ScrollEvent* event) override {
+    // DO NOTHING to avoid crash when layer is disabled.
+  }
+
+ private:
+  void UpdateScrollbarVisibility() {
+    if (*should_show_scroll_bar_) {
       SetVerticalScrollBarMode(views::ScrollView::ScrollBarMode::kEnabled);
       // We can't use ScrollBarViews on Mac
 #if !BUILDFLAG(IS_MAC)
@@ -76,13 +91,10 @@ class CustomScrollView : public views::ScrollView {
       SetVerticalScrollBar(
           std::make_unique<views::OverlayScrollBar>(/* horizontal= */ false));
     }
+    Layout();
   }
-  ~CustomScrollView() override = default;
 
-  // views::ScrollView:
-  void OnScrollEvent(ui::ScrollEvent* event) override {
-    // DO NOTHING to avoid crash when layer is disabled.
-  }
+  BooleanPrefMember should_show_scroll_bar_;
 };
 
 BEGIN_METADATA(CustomScrollView, views::ScrollView)
@@ -158,7 +170,8 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
   }
 
   if (enabled) {
-    scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
+    scroll_view_ = AddChildView(std::make_unique<CustomScrollView>(
+        tab_slot_controller_->GetBrowser()->profile()->GetPrefs()));
     scroll_view_->SetBackgroundThemeColorId(kColorToolbar);
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));

@@ -643,14 +643,10 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
   return true;
 }
 
-bool ParseWalletWatchAssetParams(const std::string& json,
-                                 const std::string& chain_id,
-                                 mojom::CoinType coin,
-                                 mojom::BlockchainTokenPtr* token,
-                                 std::string* error_message) {
-  if (!token || !error_message) {
-    return false;
-  }
+mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
+    const std::string& json,
+    const std::string& chain_id,
+    std::string* error_message) {
   *error_message = "";
 
   // Might be a list from legacy send method.
@@ -661,44 +657,44 @@ bool ParseWalletWatchAssetParams(const std::string& json,
 
   if (!params) {
     *error_message = "params parameter is required";
-    return false;
+    return nullptr;
   }
 
   const std::string* type = params->FindString("type");
   if (!type) {
     *error_message = "type parameter is required";
-    return false;
+    return nullptr;
   }
   // Only ERC20 is supported currently.
   if (*type != "ERC20") {
     *error_message =
         base::StringPrintf("Asset of type '%s' not supported", type->c_str());
-    return false;
+    return nullptr;
   }
 
   const auto* options_dict = params->FindDict("options");
   if (!options_dict) {
     *error_message = "options parameter is required";
-    return false;
+    return nullptr;
   }
 
   const std::string* address = options_dict->FindString("address");
   if (!address) {
     *error_message = "address parameter is required";
-    return false;
+    return nullptr;
   }
 
   const auto eth_addr = EthAddress::FromHex(*address);
   if (eth_addr.IsEmpty()) {
     *error_message =
         base::StringPrintf("Invalid address '%s'", address->c_str());
-    return false;
+    return nullptr;
   }
 
   const std::string* symbol = options_dict->FindString("symbol");
   if (!symbol) {
     *error_message = "symbol parameter is required";
-    return false;
+    return nullptr;
   }
 
   // EIP-747 limits the symbol length to 5, but metamask uses 11, so we use
@@ -708,17 +704,17 @@ bool ParseWalletWatchAssetParams(const std::string& json,
         "Invalid symbol '%s': symbol length should be greater than 0 and less "
         "than 12",
         symbol->c_str());
-    return false;
+    return nullptr;
   }
 
-  // Allow decimals in both number and string for compability.
+  // Allow decimals in both number and string for compatibility.
   // EIP747 specifies the type of decimals number, but websites like coingecko
   // uses string.
   const base::Value* decimals_value = options_dict->Find("decimals");
   if (!decimals_value ||
       (!decimals_value->is_int() && !decimals_value->is_string())) {
     *error_message = "decimals parameter is required.";
-    return false;
+    return nullptr;
   }
   int decimals = decimals_value->is_int() ? decimals_value->GetInt() : 0;
   if (decimals_value->is_string() &&
@@ -727,7 +723,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
         "Invalid decimals '%s': decimals should be a number greater than 0 and "
         "less than 36",
         decimals_value->GetString().c_str());
-    return false;
+    return nullptr;
   }
 
   if (decimals < 0 || decimals > 36) {
@@ -735,7 +731,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
         "Invalid decimals '%d': decimals should be greater than 0 and less "
         "than 36",
         decimals);
-    return false;
+    return nullptr;
   }
 
   std::string logo;
@@ -748,11 +744,11 @@ bool ParseWalletWatchAssetParams(const std::string& json,
     }
   }
 
-  *token = mojom::BlockchainToken::New(
-      eth_addr.ToChecksumAddress(), *symbol /* name */, logo, true, false,
-      false, false, /* is_spam */ false, *symbol, decimals, true, "", "",
-      base::ToLowerASCII(chain_id), coin);
-  return true;
+  return mojom::BlockchainToken::New(
+      eth_addr.ToChecksumAddress(), *symbol /* name */, logo,
+      true /* is_erc20 */, false /* is_erc721 */, false /* is_erc1155 */,
+      false /* is_nft */, false /* is_spam */, *symbol, decimals, true, "", "",
+      base::ToLowerASCII(chain_id), mojom::CoinType::ETH);
 }
 
 // Parses param request objects from

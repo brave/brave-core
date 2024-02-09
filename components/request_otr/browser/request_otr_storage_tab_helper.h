@@ -50,7 +50,7 @@ class RequestOTRStorageTabHelper
   void MaybeEnable1PESForUrl(
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       const GURL& url,
-      base::OnceCallback<void()> on_ready);
+      base::OnceCallback<void(bool)> on_ready);
 
  private:
   explicit RequestOTRStorageTabHelper(content::WebContents* contents);

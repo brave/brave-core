@@ -200,7 +200,7 @@ class BraveBrowserTypeImpl(BrowserType):
                                              'brave.exe')
     if target_os == 'android':
       if url is None:
-        url = _GetBraveDownloadUrl(tag, 'BraveMonoarm64.apk')
+        url = _GetBraveDownloadUrl(tag, 'Bravearm64Universal.apk')
       apk_filename = os.path.join(out_dir, os.pardir,
                                   f'brave-{version.to_string()}.apk')
       DownloadFile(url, apk_filename)

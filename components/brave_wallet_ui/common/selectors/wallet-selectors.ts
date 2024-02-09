@@ -17,8 +17,6 @@ export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked
 export const passwordAttempts = ({ wallet }: State) => wallet.passwordAttempts
 export const assetAutoDiscoveryCompleted = ({ wallet }: State) =>
   wallet.assetAutoDiscoveryCompleted
-export const hasFeeEstimatesError = ({ wallet }: State) =>
-  wallet.hasFeeEstimatesError
 export const isNftPinningFeatureEnabled = ({ wallet }: State) =>
   wallet.isNftPinningFeatureEnabled
 export const hidePortfolioGraph = ({ wallet }: State) =>
@@ -31,16 +29,14 @@ export const removedNonFungibleTokens = ({ wallet }: State) =>
   wallet.removedNonFungibleTokens
 export const filteredOutPortfolioNetworkKeys = ({ wallet }: State) =>
   wallet.filteredOutPortfolioNetworkKeys
-export const filteredOutPortfolioAccountAddresses = ({ wallet }: State) =>
-  wallet.filteredOutPortfolioAccountAddresses
+export const filteredOutPortfolioAccountIds = ({ wallet }: State) =>
+  wallet.filteredOutPortfolioAccountIds
 export const hidePortfolioSmallBalances = ({ wallet }: State) =>
   wallet.hidePortfolioSmallBalances
 export const showNetworkLogoOnNfts = ({ wallet }: State) =>
   wallet.showNetworkLogoOnNfts
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
-export const selectedOnRampAssetId = ({ wallet }: State) =>
-  wallet.selectedDepositAssetId
 export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
   wallet.allowedNewWalletAccountTypeNetworkIds
 
@@ -48,14 +44,12 @@ export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
 // and lists)
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
-export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
 export const selectedAssetFilter = ({ wallet }: State) =>
   wallet.selectedAssetFilter
 export const selectedGroupAssetsByItem = ({ wallet }: State) =>
   wallet.selectedGroupAssetsByItem
 export const selectedNetworkFilter = ({ wallet }: State) =>
   wallet.selectedNetworkFilter
-export const solFeeEstimates = ({ wallet }: State) => wallet.solFeeEstimates
 export const userVisibleTokensInfo = ({ wallet }: State) =>
   wallet.userVisibleTokensInfo
 export const selectedAccountFilter = ({ wallet }: State) =>

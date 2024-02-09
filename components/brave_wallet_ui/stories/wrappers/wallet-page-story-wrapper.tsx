@@ -28,10 +28,8 @@ import { LibContext } from '../../common/context/lib.context'
 // Mocks
 import * as Lib from '../../common/async/__mocks__/lib'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
-import {
-  WalletApiDataOverrides,
-  getMockedAPIProxy
-} from '../../common/async/__mocks__/bridge'
+import { WalletApiDataOverrides } from '../../constants/testing_types'
+import getAPIProxy from '../../common/async/bridge' // aut-mocked by complier
 
 export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>
@@ -42,7 +40,7 @@ export interface WalletPageStoryProps {
   initialRoute?: WalletRoutes
 }
 
-const mockedProxy = getMockedAPIProxy()
+const mockedProxy = getAPIProxy()
 
 export const WalletPageStory: React.FC<
   React.PropsWithChildren<WalletPageStoryProps>

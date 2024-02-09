@@ -16,6 +16,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "url/gurl.h"
 
 namespace brave_news {

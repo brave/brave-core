@@ -135,10 +135,17 @@ export const PortfolioAccountItem = (props: Props) => {
     return new Amount(assetBalance).isZero()
   }, [assetBalance])
 
+  const blockExplorerSupported = !!account.address
+
   // Methods
   const onSelectAccount = React.useCallback(() => {
     history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
   }, [history, account])
+
+  const onViewAccountOnBlockExplorer = React.useCallback(
+    onClickViewOnBlockExplorer('address', account.address),
+    [account]
+  )
 
   const onHideAccountMenu = React.useCallback(() => {
     setShowAccountMenu(false)
@@ -206,10 +213,11 @@ export const PortfolioAccountItem = (props: Props) => {
                 <RewardsMenu />
               ) : (
                 <PortfolioAccountMenu
-                  onClickViewOnExplorer={onClickViewOnBlockExplorer(
-                    'address',
-                    account.address
-                  )}
+                  onClickViewOnExplorer={
+                    blockExplorerSupported
+                      ? onViewAccountOnBlockExplorer
+                      : undefined
+                  }
                   onClickSell={
                     isSellSupported && !isAssetsBalanceZero
                       ? showSellModal

@@ -51,7 +51,8 @@ std::optional<brave_wallet::mojom::CoinType> ToCoinType(
   if (result != brave_wallet::mojom::CoinType::ETH &&
       result != brave_wallet::mojom::CoinType::FIL &&
       result != brave_wallet::mojom::CoinType::SOL &&
-      result != brave_wallet::mojom::CoinType::BTC) {
+      result != brave_wallet::mojom::CoinType::BTC &&
+      result != brave_wallet::mojom::CoinType::ZEC) {
     NOTREACHED();
     return std::nullopt;
   }
@@ -106,6 +107,9 @@ void BraveWalletHandler::RegisterMessages() {
       "isBitcoinEnabled",
       base::BindRepeating(&BraveWalletHandler::IsBitcoinEnabled,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isZCashEnabled", base::BindRepeating(&BraveWalletHandler::IsZCashEnabled,
+                                            base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getPinnedNftCount",
       base::BindRepeating(&BraveWalletHandler::GetPinnedNftCount,
@@ -345,6 +349,13 @@ void BraveWalletHandler::IsBitcoinEnabled(const base::Value::List& args) {
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsBitcoinEnabled()));
+}
+
+void BraveWalletHandler::IsZCashEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(::brave_wallet::IsZCashEnabled()));
 }
 
 void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {

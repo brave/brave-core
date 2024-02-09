@@ -8,6 +8,7 @@
 #import "ai_chat.mojom.objc+private.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
+#include "brave/components/ai_chat/core/browser/conversation_driver.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"
@@ -51,7 +52,8 @@ GURL ConversationDriverIOS::GetPageURL() const {
 }
 
 void ConversationDriverIOS::GetPageContent(
-    base::OnceCallback<void(std::string, bool is_video)> callback) const {
+    ConversationDriver::GetPageContentCallback callback,
+    std::string_view invalidation_token) {
   [bridge_
       getPageContentWithCompletion:[callback =
                                         std::make_shared<decltype(callback)>(
@@ -60,18 +62,9 @@ void ConversationDriverIOS::GetPageContent(
         if (callback) {
           std::move(*callback).Run(
               content ? base::SysNSStringToUTF8(content) : std::string(),
-              isVideo);
+              isVideo, std::string());
         }
       }];
-}
-
-bool ConversationDriverIOS::HasPrimaryMainFrame() const {
-  return true;
-}
-
-bool ConversationDriverIOS::IsDocumentOnLoadCompletedInPrimaryMainFrame()
-    const {
-  return [bridge_ isDocumentOnLoadCompletedInPrimaryFrame];
 }
 
 // MARK: - ConversationDriver::Observer
@@ -104,10 +97,6 @@ void ConversationDriverIOS::OnPageHasContent(
     ai_chat::mojom::SiteInfoPtr site_info) {
   [bridge_ onPageHasContent:[[AiChatSiteInfo alloc]
                                 initWithSiteInfoPtr:std::move(site_info)]];
-}
-
-void ConversationDriverIOS::OnConversationEntryPending() {
-  [bridge_ onConversationEntryPending];
 }
 
 }  // namespace ai_chat

@@ -12,12 +12,12 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_ads_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_advertisers_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/last_seen/creative_ad_model_based_predictor_last_seen_input_variable_info.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/priority/creative_ad_model_based_predictor_priority_input_variable_info.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/segment/creative_ad_model_based_predictor_segment_weight_info.h"
 
 namespace brave_ads {
 
 struct CreativeAdModelBasedPredictorSegmentInputVariablesInfo;
+struct CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo;
 struct UserModelInfo;
 
 CreativeAdModelBasedPredictorSegmentInputVariablesInfo
@@ -37,6 +37,11 @@ ComputeCreativeAdModelBasedPredictorInterestSegmentInputVariable(
     const UserModelInfo& user_model,
     const std::string& segment,
     const CreativeAdModelBasedPredictorSegmentWeightInfo& weights);
+
+CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo
+ComputeCreativeAdModelBasedPredictorUntargetedSegmentInputVariable(
+    const std::string& segment,
+    double weight);
 
 template <typename T>
 CreativeAdModelBasedPredictorLastSeenInputVariableInfo
@@ -77,20 +82,6 @@ ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
   last_seen_advertiser_input_variable.weight = weight;
 
   return last_seen_advertiser_input_variable;
-}
-
-template <typename T>
-CreativeAdModelBasedPredictorPriorityInputVariableInfo
-ComputeCreativeAdModelBasedPredictorPriorityInputVariable(const T& creative_ad,
-                                                          double weight) {
-  CreativeAdModelBasedPredictorPriorityInputVariableInfo
-      priority_input_variable;
-
-  priority_input_variable.value = creative_ad.priority;
-
-  priority_input_variable.weight = weight;
-
-  return priority_input_variable;
 }
 
 }  // namespace brave_ads

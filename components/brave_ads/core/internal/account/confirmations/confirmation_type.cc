@@ -28,7 +28,7 @@ constexpr char kLikedAdType[] = "upvote";
 constexpr char kDislikedAdType[] = "downvote";
 constexpr char kConversionType[] = "conversion";
 
-constexpr auto kParseConfirmationTypeMap =
+constexpr auto kToConfirmationTypeMap =
     base::MakeFixedFlatMap<std::string_view, ConfirmationType>(
         {{kUndefinedType, ConfirmationType::kUndefined},
          {kClickedType, ConfirmationType::kClicked},
@@ -58,9 +58,9 @@ constexpr auto kConfirmationTypeToStringMap =
 
 }  // namespace
 
-ConfirmationType ParseConfirmationType(const std::string_view value) {
-  const auto* iter = kParseConfirmationTypeMap.find(value);
-  if (iter != kParseConfirmationTypeMap.cend()) {
+ConfirmationType ToConfirmationType(const std::string_view value) {
+  const auto* iter = kToConfirmationTypeMap.find(value);
+  if (iter != kToConfirmationTypeMap.cend()) {
     return iter->second;
   }
 

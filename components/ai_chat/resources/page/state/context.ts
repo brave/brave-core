@@ -27,8 +27,9 @@ export interface AIChatContext {
   shouldShowLongConversationInfo: boolean
   showAgreementModal: boolean
   shouldSendPageContents: boolean
+  isMobile: boolean
   setCurrentModel: (model: mojom.Model) => void,
-  switchToDefaultModel: () => void,
+  switchToBasicModel: () => void,
   generateSuggestedQuestions: () => void
   goPremium: () => void
   managePremium: () => void
@@ -61,8 +62,9 @@ export const defaultContext: AIChatContext = {
   shouldShowLongConversationInfo: false,
   showAgreementModal: false,
   shouldSendPageContents: true,
+  isMobile: false,
   setCurrentModel: () => {},
-  switchToDefaultModel: () => {},
+  switchToBasicModel: () => {},
   generateSuggestedQuestions: () => {},
   goPremium: () => {},
   managePremium: () => {},

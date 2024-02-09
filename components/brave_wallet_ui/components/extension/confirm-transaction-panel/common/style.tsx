@@ -13,7 +13,7 @@ export const FooterContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 12px;
-  width: 90%;
+  width: 100%;
 `
 
 export const QueueStepRow = styled.div`
@@ -96,6 +96,7 @@ export const ButtonRow = styled.div`
   width: 100%;
   margin-bottom: 14px;
   margin-top: 12px;
+  gap: 16px;
 `
 
 export const FavIcon = styled.img`

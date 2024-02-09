@@ -2,6 +2,8 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="km">
 <translation id="1075622780330595106">ផ្ទាំង <ph name="NUMBER_OF_TABS"/> របស់អ្នក​មិនត្រូវបាន​ប្រើទេ​នាពេល​ថ្មីៗនេះ។ បិទផ្ទាំង​ទាំងនោះឬ?</translation>
+<translation id="1155815720264022949">ចង់បិទ​ផ្ទាំងចាស់ៗ​ឬ?</translation>
+<translation id="1215127405478249895">ពិនិត្យមើលផ្ទាំង</translation>
 <translation id="125153950246128346">ចុចដើម្បីមើល​ផ្ទាំងផ្សេងទៀត</translation>
 <translation id="3228718275011575753">បិទ​ផ្ទាំងឯកជន​ទាំងអស់ឬ?</translation>
 <translation id="1657719826150349398">ផ្លាស់ទី​ផ្ទាំង​ចុះក្រោម</translation>
@@ -45,9 +47,11 @@
 <translation id="5073204694187207510">លាក់ក្រឡា​ពេញ​អេក្រង់</translation>
 <translation id="5076161749301278626">មើលការវាយតម្លៃហាងឬ?</translation>
 <translation id="5082793167783849073">ប្រៀបធៀបទំព័រ​យ៉ាងរហ័សដោយ​ការបង្កើតក្រុម។ ដើម្បីចាប់ផ្ដើម សូមចុច​តំណឱ្យជាប់។</translation>
+<translation id="5303274951032363933">{TABS_COUNT,plural, =1{អ្នកមាន​ផ្ទាំង <ph name="TABS_COUNT_ONE"/> ដែលអ្នក​មិនបានប្រើ​នាពេលថ្មីៗនេះ}other{អ្នកមាន​ផ្ទាំង <ph name="TABS_COUNT_MANY"/> ដែលអ្នក​មិនបានប្រើ​នាពេលថ្មីៗនេះ}}</translation>
 <translation id="5339733443032484186">ផ្ទាំង​ចុងក្រោយ​របស់អ្នក</translation>
 <translation id="5490235265819901748">បានពង្រីក​ក្រុមផ្ទាំង</translation>
 <translation id="5494920125229734069">ជ្រើសរើសទាំងអស់</translation>
+<translation id="5545379293264651575">បិទ​ដោយមិន​ពិនិត្យមើល</translation>
 <translation id="5556417849629758491">មើលព័ត៌មានអំពីហាង ជម្រើសមាននៅជិតផ្នែកខាងលើអេក្រង់</translation>
 <translation id="5558362125926932819">បិទក្រុមផ្ទាំង​ដែលមាន <ph name="NUMBER_OF_TABS"/>ផ្ទាំង</translation>
 <translation id="5580090775658607195">បានដាក់ផ្ទាំង <ph name="TAB_COUNT"/> ជាក្រុម</translation>

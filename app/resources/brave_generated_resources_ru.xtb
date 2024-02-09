@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Это приватное окно для Tor</translation>
 <translation id="1037341607922068025">Открыть приватное окно с Tor</translation>
-<translation id="1725356094208762656">Открыть в Tor</translation>
-<translation id="3396347744975515056">Синхронизация Brave улучшена и требует настройки</translation>
-<translation id="7473245612074035141">Начать настройку</translation>
 <translation id="496896260395129787">Этот аккаунт Brave Синхронизации удален с другого устройства. Если вы не хотели отключать Синхронизацию,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>создайте аккаунт заново.</translation>
 <translation id="6965382102122355670">ОК</translation>
@@ -190,6 +187,10 @@
 <translation id="7109885938715976444">Только сейчас</translation>
 <translation id="7473891865547856676">Пропустить</translation>
 <translation id="2722425322672922644">Как это повлияет на конфиденциальность?</translation>
+<translation id="5551268135482191097">Произошла ошибка при загрузке URL-ссылки IPFS. Хотите перейти на изначальную URL-ссылку?</translation>
+<translation id="4756627014339714615">Перейти</translation>
+<translation id="1338274252864046652">Всегда запускать узел IPFS при запуске браузера?</translation>
+<translation id="3435896845095436175">Включить</translation>
 <translation id="4552520379838695057">Извините, этой страницы не существует.</translation>
 <translation id="2609895996619941644">Хотите проверить, доступна ли сохраненная версия на Wayback Machine?</translation>
 <translation id="8053093028263274061">К сожалению, сохраненной версии нет.</translation>
@@ -299,6 +300,10 @@
 <translation id="7544853251252956727">Перемешать</translation>
 <translation id="4330722796577425585">Воспроизвести заново</translation>
 <translation id="7481312909269577407">Вперед</translation>
+<translation id="2800828306627475693">Повторение выключено</translation>
+<translation id="1748244367114657861">Повторить один раз</translation>
+<translation id="6421906998825794164">Повторить все</translation>
+<translation id="1727684853006449697">Проигрыватель Brave</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="4472575034687746823">Начало работы</translation>
@@ -412,10 +417,6 @@
 <translation id="413570371620795359">Чтобы начать, откройте раздел «Награды»</translation>
 <translation id="1051600834033686945">Открыть все настройки Brave Наград</translation>
 <translation id="6333347122924254968">Показывать значок сервиса «Brave Награды» в адресной строке</translation>
-<translation id="7483857210736407752">Показывать кнопки чаевых на сайтах</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Блокировка социальных сетей</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
@@ -584,7 +585,9 @@
 <translation id="6936835573742749135">Не удалось запросить капчу. Повторите попытку позже.</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="1369311132025451972">Автоматически перенаправлять с сайтов .onion</translation>
-<translation id="1658670175365815312">Brave перейдет на версию сайта .onion, если она доступна, и автоматически откроет все домены .onion в окне с Tor.</translation>
+<translation id="6214393847480015759">В окнах Tor Brave автоматически переключается на версию .onion веб-сайта, если она доступна.</translation>
+<translation id="1294350054292274934">Только разрешить адрес .onion в окнах Tor</translation>
+<translation id="1258903596167452221">Сервисы Onion не будут доступны вне окон Tor.</translation>
 <translation id="2896916411183256228">WebTorrent позволит отображать информацию о торрентах прямо в браузере. Поддерживаются торрент-файлы и magnet-ссылки.</translation>
 <translation id="5249433283143453448">Использовать компонент управления цифровыми правами (DRM) Widevine для просмотра защищенного потокового видео- и другого контента в браузере.</translation>
 <translation id="1314131187310290315">Расширения Manifest V2</translation>
@@ -633,6 +636,7 @@
 <translation id="4226543734057230801">Сети Ethereum</translation>
 <translation id="3504157706952484145">Сети Filecoin</translation>
 <translation id="1561541094377237745">Сети Solana</translation>
+<translation id="7141438739990875547">Биткойн-сети</translation>
 <translation id="3159419679550543837">Показывать тестовые сети</translation>
 <translation id="3215569562674795548">Изменить или добавить новую сеть</translation>
 <translation id="4418993400653250511">Идентификатор цепочки</translation>
@@ -672,6 +676,7 @@
 <translation id="8425213833346101688">Изменить</translation>
 <translation id="585868419599255817">Откат к публичному IPFS-шлюзу</translation>
 <translation id="2618080188892567155">Автоматически возвращаться к общему шлюзу IPFS, если локальный узел Brave недоступен.</translation>
+<translation id="8956391206920485238">Всегда запускать узел IPFS при запуске браузера?</translation>
 <translation id="6789104345873307368">Автоматически перенаправляет запросы к IPFS-ресурсам через настроенный шлюз.</translation>
 <translation id="4138306018048329894">Запросы к IPFS-ресурсам в сторонних IPFS-шлюзах и ресурсы DNSLINK будут перенаправляться через выбранный локальный или удаленный шлюз.
     Примечание. Если выбран локальный узел, ресурсы будут запрашиваться напрямую с компьютера. При этом IPFS-сеть может на какое-то время получать данные кеша.</translation>
@@ -723,6 +728,9 @@
 История чата будет безвозвратно удалена.</translation>
 <translation id="8157373421434119674">История и данные чата</translation>
 <translation id="614530507403667291">Выбрать модель для всех новых бесед</translation>
+<translation id="349846214503465941">Включить плейлист</translation>
+<translation id="7903608716704052878">Автоматически добавлять файлы для просмотра, находясь не в сети</translation>
+<translation id="4193768184502613558">Этот вариант автоматически будет кэшировать медиафайлы, чтобы вы могли воспроизводить их, находясь не в сети.</translation>
 <translation id="6624718837376802990">Аватар резкие награды</translation>
 <translation id="6617313057407561765">Аватар резкий Brave</translation>
 <translation id="6754445808455578019">Аватар резкий океан</translation>

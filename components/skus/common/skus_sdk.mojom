@@ -11,4 +11,5 @@ interface SkusService {
   PrepareCredentialsPresentation(string domain, string path) => (string response);
   CredentialSummary(string domain) => (string response);
   SubmitReceipt(string domain, string order_id, string receipt) => (string response);
+  CreateOrderFromReceipt(string domain, string receipt) => (string response);
 };

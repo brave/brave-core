@@ -49,6 +49,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -119,6 +120,8 @@ BraveNewsController::BraveNewsController(
       publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
+  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
+
   // Set up preference listeners
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
@@ -142,7 +145,9 @@ BraveNewsController::BraveNewsController(
   ConditionallyStartOrStopTimer();
 }
 
-BraveNewsController::~BraveNewsController() = default;
+BraveNewsController::~BraveNewsController() {
+  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
+}
 
 void BraveNewsController::Bind(
     mojo::PendingReceiver<mojom::BraveNewsController> receiver) {
@@ -838,6 +843,17 @@ void BraveNewsController::OnPublishersUpdated(
   for (const auto& observer : publishers_listeners_) {
     observer->Changed(event->Clone());
   }
+}
+
+void BraveNewsController::OnNetworkChanged(
+    net::NetworkChangeNotifier::ConnectionType type) {
+  if (!GetIsEnabled(prefs_)) {
+    return;
+  }
+
+  // Ensure publishers are fetched (this won't do anything if they are). This
+  // handles the case where Brave News is started with no network.
+  publishers_controller_.GetOrFetchPublishers(base::DoNothing());
 }
 
 }  // namespace brave_news

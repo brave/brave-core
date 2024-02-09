@@ -68,6 +68,14 @@ module.exports = {
     '^\\$web-components\\/(.*)': '<rootDir>/components/web-components/$1',
     '^brave-ui$': '<rootDir>/node_modules/@brave/brave-ui',
     '^brave-ui\\/(.*)': '<rootDir>/node_modules/@brave/brave-ui/$1',
+
+    // mocks for brave-wallet and brave-rewards proxies
+    '\\/brave_rewards_api_proxy$':
+      '<rootDir>/components/brave_wallet_ui/' +
+      'common/async/__mocks__/brave_rewards_api_proxy.ts',
+    '\\/bridge$':
+      '<rootDir>/components/brave_wallet_ui/common/async/__mocks__/bridge.ts',
+
     // TODO(petemill): The ordering here can get problematic for devs
     // who have more than 1 build type at a time, since if the file exists
     // at the first path, it will be used for Type analysis instead of the second
@@ -79,7 +87,7 @@ module.exports = {
     'chrome://resources\\/(.*)': getBuildOutputPathList(
       'gen/ui/webui/resources/tsc/$1'
     ),
-    "chrome:\/\/interstitials\\/(.*)": getBuildOutputPathList(
+    'chrome://interstitials\\/(.*)': getBuildOutputPathList(
       'gen/components/security_interstitials/core/$1'
     )
   }

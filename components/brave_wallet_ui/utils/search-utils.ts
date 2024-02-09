@@ -51,6 +51,16 @@ export const makeSearchableTransaction = (
   networksRegistry: NetworksRegistry | undefined,
   accountInfosRegistry: EntityState<AccountInfoEntity>
 ): SearchableTransaction => {
+  const txNetwork =
+    networksRegistry?.entities[
+      networkEntityAdapter.selectId({
+        chainId: tx.chainId,
+        coin: getCoinFromTxDataUnion(tx.txDataUnion)
+      })
+    ]
+
+  const nativeAsset = makeNetworkAsset(txNetwork)
+
   const token = findTransactionToken(tx, combinedTokensListForSelectedChain)
 
   const erc721BlockchainToken = [
@@ -59,15 +69,6 @@ export const makeSearchableTransaction = (
   ].includes(tx.txType)
     ? token
     : undefined
-
-  const txNetwork =
-    networksRegistry?.entities[
-      networkEntityAdapter.selectId({
-        chainId: tx.chainId,
-        coin: getCoinFromTxDataUnion(tx.txDataUnion)
-      })
-    ]
-  const nativeAsset = makeNetworkAsset(txNetwork)
 
   const { buyToken, sellToken } = getETHSwapTransactionBuyAndSellTokens({
     nativeAsset,

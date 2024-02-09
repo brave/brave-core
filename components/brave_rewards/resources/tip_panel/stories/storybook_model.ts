@@ -37,7 +37,7 @@ export function createModel (): Model {
     rewardsUser: {
       balance: optional(8.25),
       walletAuthorized: true,
-      walletProvider: 'uphold',
+      walletProvider: 'solana',
       reconnectUrl: ''
     }
   })

@@ -6,8 +6,10 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
 
+#include <map>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "url/gurl.h"
 
@@ -31,5 +33,10 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
     const GURL& request_url,
     const std::string& request_method,
     const bool internal_redirect);
+
+bool IsScopedTrackerForTesting(
+    const std::string_view param_name,
+    const std::string& spec,
+    const std::map<std::string_view, std::vector<std::string_view>>& trackers);
 }  // namespace query_filter
 #endif  // BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_

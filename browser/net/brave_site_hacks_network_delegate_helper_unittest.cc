@@ -227,7 +227,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
   const std::vector<const std::pair<const std::string, const std::string>> urls(
-      {// { original url, expected url after filtering }
+      {// { original url, expected url after filtering ("" means unchanged) }
        {"https://example.com/?fbclid=1234", "https://example.com/"},
        {"https://example.com/?fbclid=1234&", "https://example.com/"},
        {"https://example.com/?&fbclid=1234", "https://example.com/"},
@@ -253,6 +253,9 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
        // Conditional query parameter stripping
        {"https://example.com/?igshid=1234", ""},
        {"https://www.instagram.com/?igshid=1234", "https://www.instagram.com/"},
+       {"https://brave.com/?ref_src=example.com", ""},
+       {"https://twitter.com/?ref_src=example.com", "https://twitter.com/"},
+       {"https://x.com/?ref_src=example.com", "https://x.com/"},
        {"https://example.com/?mkt_tok=123&foo=bar&mkt_unsubscribe=1", ""},
        {"https://example.com/index.php/email/emailWebview?mkt_tok=1234&foo=bar",
         ""},

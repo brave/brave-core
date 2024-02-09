@@ -17,8 +17,8 @@ namespace brave_wallet {
 namespace {
 const char kRequestJsonRPC[] = "2.0";
 
-base::Value GetProviderErrorDictionaryIternal(int code,
-                                              const std::string& message) {
+base::Value GetProviderErrorDictionaryInternal(int code,
+                                               const std::string& message) {
   std::string formed_response;
   base::Value::Dict result;
   result.Set("code", code);
@@ -30,12 +30,12 @@ base::Value GetProviderErrorDictionaryIternal(int code,
 
 base::Value GetProviderErrorDictionary(mojom::ProviderError code,
                                        const std::string& message) {
-  return GetProviderErrorDictionaryIternal(static_cast<int>(code), message);
+  return GetProviderErrorDictionaryInternal(static_cast<int>(code), message);
 }
 
 base::Value GetSolanaProviderErrorDictionary(mojom::SolanaProviderError code,
                                              const std::string& message) {
-  return GetProviderErrorDictionaryIternal(static_cast<int>(code), message);
+  return GetProviderErrorDictionaryInternal(static_cast<int>(code), message);
 }
 
 base::Value GetProviderRequestReturnFromEthJsonResponse(

@@ -56,7 +56,7 @@ void RequestOTRStorageTabHelper::RecordSessionStats() {
 void RequestOTRStorageTabHelper::MaybeEnable1PESForUrl(
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     const GURL& url,
-    base::OnceCallback<void()> on_ready) {
+    base::OnceCallback<void(bool)> on_ready) {
   DCHECK(ephemeral_storage_service);
   blocked_domain_1pes_lifetime_ =
       BlockedDomain1PESLifetime::GetOrCreate(ephemeral_storage_service, url);

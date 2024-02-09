@@ -1,0 +1,10 @@
+diff --git a/third_party/rust/regex_automata/v0_4/BUILD.gn b/third_party/rust/regex_automata/v0_4/BUILD.gn
+index 0e37984da22c5d49f21506a86619549a20bc61ce..ff02e580dc9d3f0a133f5358724ddf37a148ca78 100644
+--- a/third_party/rust/regex_automata/v0_4/BUILD.gn
++++ b/third_party/rust/regex_automata/v0_4/BUILD.gn
+@@ -132,5 +132,4 @@ cargo_crate("lib") {
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
+ }

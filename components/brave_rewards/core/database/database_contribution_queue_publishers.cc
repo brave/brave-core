@@ -33,7 +33,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
     std::vector<mojom::ContributionQueuePublisherPtr> list,
     LegacyResultCallback callback) {
   if (id.empty() || list.empty()) {
-    BLOG(1, "Empty data");
+    engine_->Log(FROM_HERE) << "Empty data";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -66,7 +66,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
     const std::string& queue_id,
     ContributionQueuePublishersListCallback callback) {
   if (queue_id.empty()) {
-    BLOG(1, "Queue id is empty");
+    engine_->Log(FROM_HERE) << "Queue id is empty";
     callback({});
     return;
   }
@@ -101,7 +101,7 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }

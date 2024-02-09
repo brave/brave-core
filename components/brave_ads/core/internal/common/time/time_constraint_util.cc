@@ -14,7 +14,7 @@ bool DoesHistoryRespectRollingTimeConstraint(
     const base::TimeDelta time_constraint,
     size_t cap) {
   if (cap == 0) {
-    // If the cap is zero, the limit has been reached.
+    // If the cap is 0, the limit has been reached.
     return false;
   }
 

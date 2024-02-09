@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">Enable/disable Brave Shields</translation>
 <translation id="6945863270524203017">Get weekly privacy updates on tracker &amp; ad blocking.</translation>
 <translation id="4324735664183300693">Turn on notifications</translation>
-<translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="6395059271589866759">Brave collects 5% of the sent amount as a processing fee.</translation>
 <translation id="6661699662755460155">exchange</translation>
 <translation id="6790981891677399838">I just contributed <ph name="AMOUNT"/> BATs using the Brave Browser. See how you can support your favourite creators and sites too: https://brave.com/rewards</translation>
-<translation id="2278950434998763147">Opens some sites using a secure HTTPS connection instead of plain HTTP.</translation>
 <translation id="5510493033031835532">Auto-redirect AMP pages</translation>
 <translation id="5197219128592971597">Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions</translation>
 <translation id="920638232916443453">Auto-redirect tracking URLs</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">Last updated <ph name="TIME"/></translation>
 <translation id="802154636333426148">Download failed</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> Update failed</translation>
+<translation id="8580328754808744073">Create custom filters</translation>
+<translation id="6532106788206463496">Save changes</translation>
+<translation id="5132969826889386652">Saved changes successfully</translation>
+<translation id="4335929145384293789">Add custom filters you've created, one per line, in the field above. Be sure to use the <ph name="ADBLOCK_FILTER_SYNTAX"/>.</translation>
+<translation id="5023212862780303376">Adblock filter syntax</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> Price (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">No content</translation>
 <translation id="7172792761509429092">Brave News has no content to show.</translation>
 <translation id="1771307734839364850">Choose content sources</translation>
-<translation id="5787084571334399599">Prevents browser from fingerprinting</translation>
+<translation id="6891769200437737956">Prevents websites from fingerprinting me</translation>
 <translation id="7459000603787995422">Close tabs on exit</translation>
 <translation id="4448697385961650078">Block trackers &amp; ads</translation>
 <translation id="2448893613530489637">Prevents trackers &amp; ads from loading and showing in webpages</translation>
 <translation id="1025207378813960343">Ensure the connections to websites are secure.</translation>
+<translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="6686219838158572786">Require all connections to use HTTPS (strict)</translation>
 <translation id="4221284400051835823">Upgrade to HTTPS whenever possible (default)</translation>
 <translation id="4690906712010847708">Don't upgrade connections to HTTPS (disabled)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">Help improve Brave\u2019s product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.</translation>
 <translation id="7977176350719484850">Est. Data\nSaved</translation>
 <translation id="9008534313521214777">Est. Time\nSaved</translation>
-<translation id="1842747674580016420">Video playback in Brave</translation>
-<translation id="5368992950177874750">If enabled, videos will be played in Brave instead of corresponding app</translation>
 <translation id="410351446219883937">Auto-play</translation>
 <translation id="7445411102860286510">Allow sites to automatically play muted videos (recommended)</translation>
 <translation id="7837721118676387834">Allow auto-play of muted videos for a specific site.</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">Background play</translation>
 <translation id="6332924730165919598">Closing all tabs closes Brave</translation>
 <translation id="8308305244351876417">Allows audio to play when you switch to another tab in Brave or another app, or your device screen is off.</translation>
+<translation id="49147335255967913">Open YouTube links in Brave</translation>
 <translation id="4150201353443180367">Display</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -376,13 +379,8 @@
 <translation id="4803910478683254032">Import failed</translation>
 <translation id="8325139248201792113">Bookmark import failed. Please try again.</translation>
 <translation id="2803313416453193357">Open folder</translation>
-<translation id="3396347744975515056">Brave Sync has been upgraded and requires setup</translation>
-<translation id="7473245612074035141">Begin Setup</translation>
 <translation id="8985635554450124959">Sync could not be set up</translation>
-<translation id="2514300153301737214">We detected that you have Brave Sync enabled, however your system sync is turned off and will not allow Brave to sync. Press to open settings</translation>
 <translation id="7173114856073700355">Open Settings</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="4450893287417543264">Don't show again</translation>
 <translation id="496896260395129787">This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>re-create the account</translation>
 <translation id="4094590686212463338">Could not join this sync chain. The sync chain was deleted.</translation>
@@ -479,7 +477,7 @@ Are you sure you want to do this?</translation>
 <translation id="7854108565842971747">These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.</translation>
 <translation id="218587021686734263">Prevent fingerprinting via language settings</translation>
 <translation id="1706099589708266367">Reduces how much websites can learn about you based on your browser's language settings.</translation>
-<translation id="184568144098869637">Prevents browser from recognising your device</translation>
+<translation id="4721088070859595932">Prevents websites from recognising your device</translation>
 <translation id="7445306466605902444">Fingerprinting blocked (strict, may break sites)</translation>
 <translation id="5582686930349810484">Fingerprinting blocked (standard)</translation>
 <translation id="769702552748212954">Allow all fingerprinting</translation>
@@ -623,8 +621,9 @@ Are you sure you want to do this?</translation>
 <translation id="1783600039044302171">Secure your crypto with a password</translation>
 <translation id="3726490322412361740">Enter password</translation>
 <translation id="3038243139480464605">Verify password</translation>
-<translation id="3717685683157254329">Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.</translation>
+<translation id="3043677904160378840">Passwords must be at least 8 characters.</translation>
 <translation id="7396672979287122068">Verified password did not match</translation>
+<translation id="7084181009966710506">Creating Wallet ...</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
@@ -777,7 +776,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1705662265912724430">Are you sure you want to reset VPN configuration?</translation>
 <translation id="604124094241169006">Automatic</translation>
 <translation id="7475580600756356589">Connecting to your server. Should only take a moment ...</translation>
-<translation id="1342728075788541348">Disconnecting from your server. Should only take a moment ...</translation>
 <translation id="669072536454692117">Subscription successfully consumed</translation>
 <translation id="1187506504156101449">Failed to acknowledge purchase:</translation>
 <translation id="8420522105268941892">You are already subscribed to the subscription. Try restoring the subscription.</translation>
@@ -810,7 +808,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8084782383392198011">Account name can't be empty.</translation>
 <translation id="5045550434625856497">Incorrect password</translation>
 <translation id="1367951781824006909">Choose a file</translation>
-<translation id="8648684608605749476">Block third-party cookies in Private</translation>
 <translation id="5932938770824268122">Private Key</translation>
 <translation id="2472882733835903303">Show private key</translation>
 <translation id="4391056902675005799">Hide private key</translation>
@@ -961,9 +958,12 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6044189892950611565">Notification channel for Brave browser</translation>
 <translation id="1173919438868967364">Select account</translation>
 <translation id="8922793255489232731">Couldn't get matching timezone for : <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Downloading wallet data file \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Connected to <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Trial</translation>
+<translation id="6458565248779152483">Disable Brave VPN</translation>
+<translation id="9080536793704001825">Pause for 15 minutes</translation>
+<translation id="803706420145725977">Pause for 1 hour</translation>
+<translation id="4394049700291259645">Disable</translation>
 <translation id="7733890291091968191">Display Web3 notifications</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN Hostname\n <ph name="VALUE"/></translation>
@@ -993,6 +993,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8219806187375413057"><ph name="CLICK_START"/>Learn how to reduce risk on Rainbow Bridge<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.</translation>
 <translation id="8423380132356660250">Open the <ph name="APP_NAME"/> app</translation>
+<translation id="4450893287417543264">Don't show again</translation>
 <translation id="168154537623654021">Updating VPN Profile ...</translation>
 <translation id="7457027586454688423">Enter your Brave Wallet password</translation>
 <translation id="4784306439879850873">Note that Brave can't verify what will happen if you sign. A signature could authorise nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action and trust the requesting site.</translation>

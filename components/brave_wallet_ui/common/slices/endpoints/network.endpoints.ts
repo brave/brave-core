@@ -21,7 +21,8 @@ import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED',
-  SWAP_SUPPORTED: 'SWAP_SUPPORTED'
+  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
+  CUSTOM_ASSET_SUPPORTED: 'CUSTOM_ASSET_SUPPORTED'
 } as const
 
 interface IsEip1559ChangedMutationArg {
@@ -41,7 +42,7 @@ export const networkEndpoints = ({
         try {
           const { data: api, cache } = baseQuery(undefined)
 
-          const { isBitcoinEnabled } =
+          const { isBitcoinEnabled, isZCashEnabled } =
             cache.walletInfo || (await cache.getWalletInfo())
 
           const { networks: ethNetworks } =
@@ -57,13 +58,19 @@ export const networkEndpoints = ({
                 )
               ).networks
             : []
-
+          const zecNetworks = isZCashEnabled
+            ? (
+                await api.jsonRpcService.getAllNetworks(
+                  BraveWallet.CoinType.ZEC
+                )
+          ).networks : []
           return {
             data: [
               ...ethNetworks,
               ...solNetworks,
               ...filNetworks,
-              ...btcNetworks
+              ...btcNetworks,
+              ...zecNetworks,
             ]
           }
         } catch (error) {
@@ -248,7 +255,12 @@ export const networkEndpoints = ({
           )
         }
       },
-      invalidatesTags: (result, error) => ['Network']
+      invalidatesTags: (result, error) => [
+        'Network',
+        'TokenBalances',
+        'TokenBalances',
+        'AccountTokenCurrentBalance'
+      ]
     }),
     setNetwork: mutation<
       {
@@ -334,7 +346,12 @@ export const networkEndpoints = ({
         }
       },
       // refresh networks & selected network
-      invalidatesTags: ['Network']
+      invalidatesTags: [
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
     })
   }
 }

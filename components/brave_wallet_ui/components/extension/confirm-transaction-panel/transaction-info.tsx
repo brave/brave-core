@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 // Types
+import { BraveWallet } from '../../../constants/types'
 import { ParsedTransaction } from '../../../utils/tx-utils'
 
 // utils
@@ -30,10 +31,6 @@ import {
 import { WarningBoxTitleRow } from '../shared-panel-styles'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 import { Column } from '../../shared/style'
-import {
-  BraveWallet,
-  SerializableSolanaTxDataSendOptions
-} from '../../../constants/types'
 
 interface TransactionInfoProps {
   onToggleEditGas?: () => void
@@ -43,7 +40,6 @@ interface TransactionInfoProps {
   isERC721SafeTransferFrom: boolean
   isERC721TransferFrom: boolean
   transactionsNetwork: BraveWallet.NetworkInfo | undefined
-  solanaSendOptions?: SerializableSolanaTxDataSendOptions
   hasFeeEstimatesError: boolean
   isLoadingGasFee: boolean
   gasFee: string
@@ -62,7 +58,6 @@ export const TransactionInfo = ({
   isERC721SafeTransferFrom,
   isERC721TransferFrom,
   transactionsNetwork,
-  solanaSendOptions,
   hasFeeEstimatesError,
   isLoadingGasFee,
   gasFee,
@@ -265,38 +260,6 @@ export const TransactionInfo = ({
                   undefined,
                   transactionDetails.symbol
                 )}
-          </TransactionTypeText>
-        </>
-      )}
-
-      {solanaSendOptions && <Divider />}
-      {!!Number(solanaSendOptions?.maxRetries?.maxRetries) && (
-        <>
-          <TransactionTitle>
-            {getLocale('braveWalletSolanaMaxRetries')}
-          </TransactionTitle>
-          <TransactionTypeText>
-            {Number(solanaSendOptions?.maxRetries?.maxRetries)}
-          </TransactionTypeText>
-        </>
-      )}
-      {solanaSendOptions?.preflightCommitment && (
-        <>
-          <TransactionTitle>
-            {getLocale('braveWalletSolanaPreflightCommitment')}
-          </TransactionTitle>
-          <TransactionTypeText>
-            {solanaSendOptions.preflightCommitment}
-          </TransactionTypeText>
-        </>
-      )}
-      {solanaSendOptions?.skipPreflight && (
-        <>
-          <TransactionTitle>
-            {getLocale('braveWalletSolanaSkipPreflight')}
-          </TransactionTitle>
-          <TransactionTypeText>
-            {solanaSendOptions.skipPreflight.skipPreflight.toString()}
           </TransactionTypeText>
         </>
       )}

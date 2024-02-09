@@ -9,15 +9,15 @@
 #include <optional>
 #include <string>
 
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 
 // The RoundedSeparator class is a view that shows a line used to visually
 // separate other views.
 class RoundedSeparator : public views::View {
- public:
-  // The separator's class name.
-  static const char kViewClassName[];
+  METADATA_HEADER(RoundedSeparator, views::View)
 
+ public:
   // The separator's thickness in dip.
   static const int kThickness;
 
@@ -34,7 +34,6 @@ class RoundedSeparator : public views::View {
   gfx::Size CalculatePreferredSize() const override;
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   void OnPaint(gfx::Canvas* canvas) override;
-  const char* GetClassName() const override;
 
  private:
   int preferred_height_ = kThickness;

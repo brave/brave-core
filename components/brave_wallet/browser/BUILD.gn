@@ -250,7 +250,6 @@ static_library("browser") {
     ":pref_names",
     ":transaction",
     ":utils",
-    ":zcash_proto",
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
@@ -267,6 +266,10 @@ static_library("browser") {
     "//brave/components/json/rs:rust_lib",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
+    "//brave/components/services/brave_wallet/public/cpp",
+    "//brave/components/services/brave_wallet/public/cpp/utils",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//brave/components/services/brave_wallet/public/proto:zcash_proto",
     "//brave/third_party/argon2",
     "//components/component_updater",
     "//components/content_settings/core/browser",
@@ -488,10 +491,6 @@ generated_types("generated_swap_responses") {
     ":browser",
     "test:brave_wallet_unit_tests",
   ]
-}
-
-proto_library("zcash_proto") {
-  sources = [ "zcash/protos/zcash_grpc_data.proto" ]
 }
 
 config("sardine_config") {

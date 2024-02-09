@@ -97,7 +97,8 @@ void EligibleNotificationAdsV3::GetEligibleAdsCallback(
   }
 
   CreativeNotificationAdList eligible_creative_ads = creative_ads;
-  FilterCreativeAds(eligible_creative_ads, ad_events, browsing_history);
+  FilterIneligibleCreativeAds(eligible_creative_ads, ad_events,
+                              browsing_history);
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
@@ -115,7 +116,7 @@ void EligibleNotificationAdsV3::GetEligibleAdsCallback(
   std::move(callback).Run({*creative_ad});
 }
 
-void EligibleNotificationAdsV3::FilterCreativeAds(
+void EligibleNotificationAdsV3::FilterIneligibleCreativeAds(
     CreativeNotificationAdList& creative_ads,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history) {

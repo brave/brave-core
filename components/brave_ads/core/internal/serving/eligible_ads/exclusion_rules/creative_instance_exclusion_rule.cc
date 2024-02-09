@@ -15,17 +15,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-bool DoesRespectCap(const AdEventList& ad_events,
-                    const CreativeAdInfo& creative_ad) {
-  return DoesRespectCreativeCap(
-      creative_ad, ad_events, ConfirmationType::kServed, base::Hours(1),
-      kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
-}
-
-}  // namespace
-
 CreativeInstanceExclusionRule::CreativeInstanceExclusionRule(
     AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
@@ -39,7 +28,10 @@ std::string CreativeInstanceExclusionRule::GetUuid(
 
 base::expected<void, std::string> CreativeInstanceExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
-  if (!DoesRespectCap(ad_events_, creative_ad)) {
+  if (!DoesRespectCreativeCap(
+          creative_ad, ad_events_, ConfirmationType::kServed,
+          kShouldExcludeAdIfCreativeInstanceWithinTimeWindow.Get(),
+          kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get())) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeInstanceId $1 has exceeded the creative instance frequency "
         "cap",

@@ -84,6 +84,9 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
     return false;
   }
 
+  // TODO(simonhong): We can return false always here as horizontal tab design
+  // doesn't need additional stroke.
+  // Delete all below code when horizontal tab feature flag is removed.
   if (tabs::features::HorizontalTabsUpdateEnabled()) {
     // We never automatically draw strokes around tabs. For pinned tabs, we draw
     // the stroke when generating the tab drawing path.
@@ -232,7 +235,7 @@ void BraveTabStrip::UpdateTabContainer() {
       base::FeatureList::IsEnabled(features::kSplitTabStrip);
   const bool is_using_compound_tab_container =
       views::IsViewClass<BraveCompoundTabContainer>(
-          base::to_address(tab_container_));
+          std::to_address(tab_container_));
 
   base::ScopedClosureRunner layout_lock;
   if (should_use_compound_tab_container != is_using_compound_tab_container) {
@@ -399,6 +402,10 @@ void BraveTabStrip::UpdateTabStripMargins() {
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
+}
+
+TabContainer* BraveTabStrip::GetTabContainerForTesting() {
+  return &tab_container_.get();  // IN-TEST
 }
 
 void BraveTabStrip::Layout() {

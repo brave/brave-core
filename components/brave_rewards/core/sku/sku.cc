@@ -5,11 +5,11 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
-#include "brave/components/brave_rewards/core/sku/sku_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -37,7 +37,7 @@ void SKU::OrderCreated(const mojom::Result result,
                        const std::string& contribution_id,
                        SKUOrderCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order was not successful");
+    engine_->LogError(FROM_HERE) << "Order was not successful";
     callback(result, "");
     return;
   }
@@ -54,7 +54,7 @@ void SKU::ContributionIdSaved(const mojom::Result result,
                               const std::string& wallet_type,
                               SKUOrderCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution id not saved");
+    engine_->LogError(FROM_HERE) << "Contribution id not saved";
     callback(result, "");
     return;
   }
@@ -69,12 +69,23 @@ void SKU::CreateTransaction(mojom::SKUOrderPtr order,
                             const std::string& wallet_type,
                             SKUOrderCallback callback) {
   if (!order) {
-    BLOG(0, "Order not found");
+    engine_->LogError(FROM_HERE) << "Order not found";
     callback(mojom::Result::FAILED, "");
     return;
   }
 
-  const std::string destination = GetBraveDestination(wallet_type);
+  std::string destination = [&]() -> std::string {
+    if (wallet_type == constant::kWalletUphold) {
+      return engine_->Get<EnvironmentConfig>().uphold_sku_destination();
+    }
+
+    if (wallet_type == constant::kWalletGemini) {
+      return engine_->Get<EnvironmentConfig>().gemini_sku_destination();
+    }
+
+    NOTREACHED();
+    return "";
+  }();
 
   common_.CreateTransaction(std::move(order), destination, wallet_type,
                             callback);
@@ -84,7 +95,7 @@ void SKU::Retry(const std::string& order_id,
                 const std::string& wallet_type,
                 SKUOrderCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
+    engine_->LogError(FROM_HERE) << "Order id is empty";
     callback(mojom::Result::FAILED, "");
     return;
   }
@@ -98,7 +109,7 @@ void SKU::OnOrder(mojom::SKUOrderPtr order,
                   const std::string& wallet_type,
                   SKUOrderCallback callback) {
   if (!order) {
-    BLOG(0, "Order is null");
+    engine_->LogError(FROM_HERE) << "Order is null";
     callback(mojom::Result::FAILED, "");
     return;
   }

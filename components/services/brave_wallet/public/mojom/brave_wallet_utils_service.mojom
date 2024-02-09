@@ -1,0 +1,15 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.mojom;
+
+import "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom";
+import "sandbox/policy/mojom/sandbox.mojom";
+
+[ServiceSandbox=sandbox.mojom.Sandbox.kService]
+interface BraveWalletUtilsService {
+  CreateZCashDecoderService(
+      pending_associated_receiver<ZCashDecoder> zcash_decoder_receiver);
+};

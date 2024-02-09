@@ -8,7 +8,13 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
-import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
+
+import {
+  ExternalWallet,
+  getExternalWalletProviderName,
+  isSelfCustodyProvider
+} from '../../lib/external_wallet'
+
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { UserType } from '../../lib/user_type'
 import { Optional } from '../../../shared/lib/optional'
@@ -62,6 +68,10 @@ export function WalletCard (props: Props) {
 
   const walletDisconnected =
     externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut
+
+  // The contribution summary is not currently shown for self-custody users.
+  const showSummary = props.showSummary &&
+    (!externalWallet || !isSelfCustodyProvider(externalWallet.provider))
 
   function renderBalance () {
     if (externalWallet && walletDisconnected) {
@@ -118,7 +128,7 @@ export function WalletCard (props: Props) {
   }
 
   return (
-    <style.root className={props.showSummary ? 'show-summary' : ''}>
+    <style.root className={showSummary ? 'show-summary' : ''}>
       <style.statusPanel>
         <style.statusIndicator>
           <ExternalWalletView
@@ -176,7 +186,7 @@ export function WalletCard (props: Props) {
       </style.statusPanel>
       {renderBalance()}
       {
-        props.showSummary
+        showSummary
           ? <style.summaryBox>
               <RewardsSummary
                 data={props.summaryData}

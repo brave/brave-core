@@ -17,6 +17,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -28,6 +29,7 @@
 #include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_provider_manager.h"
@@ -115,7 +117,7 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::Emphasis::kMaximum, rect.size());
+      views::Emphasis::kHigh, rect.size());
   SkPath path;
   path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
   return path;
@@ -142,7 +144,8 @@ BraveShieldsActionView::GetImageSource() {
   std::unique_ptr<IconWithBadgeImageSource> image_source(
       new brave::BraveIconWithBadgeImageSource(
           preferred_size, std::move(get_color_provider_callback),
-          kBraveActionGraphicSize, kBraveActionLeftMarginExtra));
+          GetLayoutConstant(LOCATION_BAR_TRAILING_ICON_SIZE),
+          kBraveActionLeftMarginExtra));
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
   bool is_enabled = false;
   std::string badge_text;
@@ -180,7 +183,8 @@ gfx::ImageSkia BraveShieldsActionView::GetIconImage(bool is_enabled) {
       rb.GetImageNamed(is_enabled ? IDR_BRAVE_SHIELDS_ICON_64
                                   : IDR_BRAVE_SHIELDS_ICON_64_DISABLED)
           .AsBitmap();
-  float scale = static_cast<float>(bitmap.width()) / kBraveActionGraphicSize;
+  float scale = static_cast<float>(bitmap.width()) /
+                GetLayoutConstant(LOCATION_BAR_TRAILING_ICON_SIZE);
   image.AddRepresentation(gfx::ImageSkiaRep(bitmap, scale));
   return image;
 }
@@ -295,3 +299,6 @@ void BraveShieldsActionView::OnTabStripModelChanged(
     UpdateIconState();
   }
 }
+
+BEGIN_METADATA(BraveShieldsActionView)
+END_METADATA

@@ -17,6 +17,7 @@ bool CookieSettings::IsEphemeralCookieAccessible(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const std::optional<url::Origin>& top_frame_origin,
+    const net::FirstPartySetMetadata& first_party_set_metadata,
     net::CookieSettingOverrides overrides,
     net::CookieInclusionStatus* cookie_inclusion_status) const {
   // Upstream now do single cookie-specific checks in some places to determine
@@ -30,7 +31,8 @@ bool CookieSettings::IsEphemeralCookieAccessible(
   }
 
   return IsCookieAccessible(cookie, url, site_for_cookies, top_frame_origin,
-                            overrides, cookie_inclusion_status);
+                            first_party_set_metadata, overrides,
+                            cookie_inclusion_status);
 }
 
 net::NetworkDelegate::PrivacySetting

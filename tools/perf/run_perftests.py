@@ -27,6 +27,10 @@ import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
 import components.perf_test_utils as perf_test_utils
 import components.path_util as path_util
+import components.profile_updater as profile_updater
+
+from components.common_options import CommonOptions, PerfMode
+
 
 with path_util.SysPath(path_util.GetPyJson5Dir()):
   # pylint: disable=import-error # pytype: disable=import-error
@@ -34,7 +38,7 @@ with path_util.SysPath(path_util.GetPyJson5Dir()):
   # pylint: enable=import-error # pytype: enable=import-error
 
 
-def load_config(config: str, options: perf_test_runner.CommonOptions) -> dict:
+def load_config(config: str, options: CommonOptions) -> dict:
   if config.startswith('https://'):  # URL to download the config
     _, config_path = tempfile.mkstemp(dir=options.working_directory,
                                       prefix='config-')
@@ -63,6 +67,32 @@ def load_config(config: str, options: perf_test_runner.CommonOptions) -> dict:
     return json5.load(config_file)
 
 
+def _RunUpdateProfile(config: perf_config.PerfConfig,
+                      options: CommonOptions) -> int:
+  if len(config.runners) != 1:
+    raise RuntimeError('Only one configuration should be specified.')
+  options.do_report = False
+  config.runners[0].profile_rebase = perf_config.ProfileRebaseType.NONE
+  config.benchmarks = [
+      perf_config.BenchmarkConfig({
+          'name': 'brave_utils.online',
+          'pageset-repeat': 5,
+          'stories': ['UpdateProfile']
+      })
+  ]
+
+  configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
+      options.targets, config.runners[0])
+  assert len(configurations) == 1
+  profile_updater.CleanupBeforeRun(configurations[0], options)
+  if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
+                                            options):
+    return 1
+
+  profile_updater.MakeUpdatedProfileArchive(configurations[0], options)
+  return 0
+
+
 def main():
   parser = argparse.ArgumentParser(
       formatter_class=argparse.RawTextHelpFormatter,
@@ -79,10 +109,10 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
      --variations-repo-dir=e:\work\brave-variations
      --ci-mode
 ''')
-  perf_test_runner.CommonOptions.add_parser_args(parser)
+  CommonOptions.add_parser_args(parser)
 
   args = parser.parse_args()
-  options = perf_test_runner.CommonOptions.from_args(args)
+  options = CommonOptions.from_args(args)
 
   log_level = logging.DEBUG if options.verbose else logging.INFO
   log_format = '%(asctime)s: %(message)s'
@@ -98,18 +128,23 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
   json_config = load_config(args.config, options)
   config = perf_config.PerfConfig(json_config)
 
-  if options.compare:  # compare mode
-    configurations = config.runners
-  else:
+  if options.mode == PerfMode.RUN:
     if len(config.runners) != 1:
       raise RuntimeError('Only one configuration should be specified.')
 
     configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
         options.targets, config.runners[0])
+    return 0 if perf_test_runner.RunConfigurations(
+        configurations, config.benchmarks, options) else 1
 
-  return 0 if perf_test_runner.RunConfigurations(
-      configurations, config.benchmarks, options) else 1
+  if options.mode == PerfMode.COMPARE:
+    return 0 if perf_test_runner.RunConfigurations(
+        config.runners, config.benchmarks, options) else 1
 
+  if options.mode == PerfMode.UPDATE_PROFILE:
+    return _RunUpdateProfile(config, options)
+
+  raise RuntimeError('Unknown mode')
 
 if __name__ == '__main__':
   sys.exit(main())

@@ -9,7 +9,7 @@ import { mockEthMainnet } from './mock-networks'
 import { mockOriginInfo } from './mock-origin-info'
 import { mockEthAccount } from './mock-wallet-accounts'
 
-export const mockSignMessageRequest = {
+export const mockSignMessageRequest: BraveWallet.SignMessageRequest = {
   originInfo: mockOriginInfo,
   id: -1,
   accountId: mockEthAccount.accountId,

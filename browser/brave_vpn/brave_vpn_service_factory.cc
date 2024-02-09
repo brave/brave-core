@@ -28,6 +28,7 @@
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_service_delegate_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 #endif
@@ -65,6 +66,7 @@ std::unique_ptr<KeyedService> BuildVpnService(
           shared_url_loader_factory, local_state,
           user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
+  vpn_service->set_delegate(std::make_unique<BraveVPNServiceDelegateWin>());
   if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
     auto* observer_service =
         brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
@@ -89,20 +91,12 @@ std::unique_ptr<KeyedService> BuildVpnService(
 
 // static
 BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
-  if (!IsBraveVPNFeatureEnabled()) {
-    return nullptr;
-  }
-
   static base::NoDestructor<BraveVpnServiceFactory> instance;
   return instance.get();
 }
 
 // static
 BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
-  if (!GetInstance()) {
-    return nullptr;
-  }
-
   return static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }

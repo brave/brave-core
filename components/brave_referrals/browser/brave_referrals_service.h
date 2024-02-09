@@ -9,18 +9,14 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/no_destructor.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
-#include "base/values.h"
 #include "build/build_config.h"
-#include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_referrals/browser/android_brave_referrer.h"
@@ -38,34 +34,6 @@ class SimpleURLLoader;
 }  // namespace network
 
 namespace brave {
-
-class BraveReferralsHeaders {
- public:
-  static BraveReferralsHeaders* GetInstance() {
-    static base::NoDestructor<BraveReferralsHeaders> instance;
-    return instance.get();
-  }
-
-  template <typename Iter>
-  bool GetMatchingReferralHeaders(
-      const Iter& referral_headers_list,
-      const base::Value::Dict** request_headers_dict,
-      const GURL& url);
-
-  bool GetMatchingReferralHeaders(
-      const base::Value::Dict** request_headers_dict,
-      const GURL& url);
-
-  BraveReferralsHeaders(const BraveReferralsHeaders&) = delete;
-  BraveReferralsHeaders& operator=(const BraveReferralsHeaders&) = delete;
-  ~BraveReferralsHeaders() = delete;
-
- private:
-  friend class base::NoDestructor<BraveReferralsHeaders>;
-  BraveReferralsHeaders();
-
-  std::vector<base::Value::Dict> referral_headers_;
-};
 
 class BraveReferralsService {
  public:

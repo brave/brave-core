@@ -43,10 +43,9 @@ TxManager::~TxManager() {
   tx_state_manager_->RemoveObserver(this);
 }
 
-void TxManager::GetTransactionInfo(const std::string& chain_id,
-                                   const std::string& tx_meta_id,
+void TxManager::GetTransactionInfo(const std::string& tx_meta_id,
                                    GetTransactionInfoCallback callback) {
-  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(chain_id, tx_meta_id);
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
     std::move(callback).Run(nullptr);
@@ -72,10 +71,9 @@ std::vector<mojom::TransactionInfoPtr> TxManager::GetAllTransactionInfo(
   return tis;
 }
 
-void TxManager::RejectTransaction(const std::string& chain_id,
-                                  const std::string& tx_meta_id,
+void TxManager::RejectTransaction(const std::string& tx_meta_id,
                                   RejectTransactionCallback callback) {
-  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(chain_id, tx_meta_id);
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
     std::move(callback).Run(false);

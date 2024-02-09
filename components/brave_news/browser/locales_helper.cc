@@ -33,21 +33,23 @@ namespace {
 // list of matches for enabling Brave News on the NTP and prompting the user
 // to opt-in.
 constexpr auto kEnabledLanguages =
-    base::MakeFixedFlatSetSorted<std::string_view>({
-        "en",
-        "ja",
-    });
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "en",
+                                                 "ja",
+                                             });
 // We can add to this list as new locales become available to have Brave News
 // show when it's ready for those users.
 constexpr auto kEnabledLocales =
-    base::MakeFixedFlatSetSorted<std::string_view>({
-        "de_DE"
-        "es_AR",
-        "es_ES",
-        "es_MX",
-        "fr_FR",
-        "pt_BR",
-    });
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "de_DE"
+                                                 "es_AR",
+                                                 "es_ES",
+                                                 "es_MX",
+                                                 "fr_FR",
+                                                 "pt_BR",
+                                             });
 
 bool HasAnyLocale(const base::flat_set<std::string>& locales,
                   const mojom::Publisher* publisher) {

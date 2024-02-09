@@ -298,6 +298,9 @@ void P3AService::HandleHistogramChange(
                                         only_update_for_constellation);
     return;
   }
+  if (kConstellationOnlyHistograms.contains(histogram_name)) {
+    only_update_for_constellation = true;
+  }
   message_manager_->UpdateMetricValue(std::string(histogram_name), bucket,
                                       only_update_for_constellation);
 }

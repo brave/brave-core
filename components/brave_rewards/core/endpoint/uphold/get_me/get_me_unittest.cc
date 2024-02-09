@@ -31,11 +31,11 @@ class GetMeTest : public testing::Test {
 };
 
 TEST_F(GetMeTest, ServerOK) {
+  int status_code = 0;
   EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+      .WillRepeatedly([&](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
-        response->status_code = 200;
+        response->status_code = status_code;
         response->url = request->url;
         response->body = R"({
              "address": {
@@ -128,19 +128,33 @@ TEST_F(GetMeTest, ServerOK) {
         std::move(callback).Run(std::move(response));
       });
 
-  base::MockCallback<GetMeCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .Times(1)
-      .WillOnce([](mojom::Result result, const internal::uphold::User& user) {
-        EXPECT_EQ(result, mojom::Result::OK);
-        EXPECT_EQ(user.name, "John");
-        EXPECT_EQ(user.member_id, "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
-        EXPECT_EQ(user.country_id, "US");
-        EXPECT_EQ(user.bat_not_allowed, false);
-      });
-  me_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+  {
+    status_code = 200;
+    base::MockCallback<GetMeCallback> callback;
+    EXPECT_CALL(callback, Run)
+        .Times(1)
+        .WillOnce([](mojom::Result result, const internal::uphold::User& user) {
+          EXPECT_EQ(result, mojom::Result::OK);
+          EXPECT_EQ(user.name, "John");
+          EXPECT_EQ(user.member_id, "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
+          EXPECT_EQ(user.country_id, "US");
+          EXPECT_EQ(user.bat_not_allowed, false);
+        });
+    me_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+    task_environment_.RunUntilIdle();
+  }
 
-  task_environment_.RunUntilIdle();
+  {
+    status_code = 206;
+    base::MockCallback<GetMeCallback> callback;
+    EXPECT_CALL(callback, Run)
+        .Times(1)
+        .WillOnce([](mojom::Result result, const internal::uphold::User& user) {
+          EXPECT_EQ(result, mojom::Result::OK);
+        });
+    me_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+    task_environment_.RunUntilIdle();
+  }
 }
 
 TEST_F(GetMeTest, ServerError401) {

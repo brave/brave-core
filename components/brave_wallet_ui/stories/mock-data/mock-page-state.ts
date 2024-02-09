@@ -14,7 +14,6 @@ export const mockPageState: PageState = {
     'Something went wrong when fetching NFT details. Please try again later.',
   hasInitialized: false,
   pinStatusOverview: undefined,
-  selectedCoinMarket: undefined,
   setupStillInProgress: false,
   showRecoveryPhrase: false,
   walletTermsAcknowledged: false,

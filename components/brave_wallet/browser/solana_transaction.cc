@@ -159,9 +159,9 @@ SolanaTransaction::SolanaTransaction(
     uint64_t last_valid_block_height,
     const std::string& fee_payer,
     const SolanaMessageHeader& message_header,
-    std::vector<SolanaAddress>&& static_account_keys,
-    std::vector<SolanaInstruction>&& instructions,
-    std::vector<SolanaMessageAddressTableLookup>&& addr_table_lookups)
+    std::vector<SolanaAddress> static_account_keys,
+    std::vector<SolanaInstruction> instructions,
+    std::vector<SolanaMessageAddressTableLookup> addr_table_lookups)
     : message_(version,
                recent_blockhash,
                last_valid_block_height,
@@ -171,15 +171,16 @@ SolanaTransaction::SolanaTransaction(
                std::move(instructions),
                std::move(addr_table_lookups)) {}
 
-SolanaTransaction::SolanaTransaction(SolanaMessage&& message)
+SolanaTransaction::SolanaTransaction(SolanaMessage message)
     : message_(std::move(message)) {}
 
-SolanaTransaction::SolanaTransaction(SolanaMessage&& message,
-                                     const std::vector<uint8_t>& raw_signatures)
-    : message_(std::move(message)), raw_signatures_(raw_signatures) {}
+SolanaTransaction::SolanaTransaction(SolanaMessage message,
+                                     std::vector<uint8_t> raw_signatures)
+    : message_(std::move(message)),
+      raw_signatures_(std::move(raw_signatures)) {}
 
 SolanaTransaction::SolanaTransaction(
-    SolanaMessage&& message,
+    SolanaMessage message,
     mojom::SolanaSignTransactionParamPtr sign_tx_param)
     : message_(std::move(message)), sign_tx_param_(std::move(sign_tx_param)) {}
 
@@ -560,7 +561,7 @@ SolanaTransaction::FromSignedTransactionBytes(
   if (index + num_of_signatures * kSolanaSignatureSize > bytes.size()) {
     return nullptr;
   }
-  const std::vector<uint8_t> signatures(
+  std::vector<uint8_t> signatures(
       bytes.begin() + index,
       bytes.begin() + index + num_of_signatures * kSolanaSignatureSize);
   index += num_of_signatures * kSolanaSignatureSize;
@@ -570,7 +571,8 @@ SolanaTransaction::FromSignedTransactionBytes(
     return nullptr;
   }
 
-  return std::make_unique<SolanaTransaction>(std::move(*message), signatures);
+  return std::make_unique<SolanaTransaction>(std::move(*message),
+                                             std::move(signatures));
 }
 
 }  // namespace brave_wallet

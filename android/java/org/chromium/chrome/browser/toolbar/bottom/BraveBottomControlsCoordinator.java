@@ -26,9 +26,9 @@ import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
-import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.resources.ResourceManager;
@@ -81,20 +81,40 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
         mLocationBarModel = locationBarModel;
     }
 
-    public void initializeWithNative(Activity activity, ResourceManager resourceManager,
-            LayoutManagerImpl layoutManager, OnClickListener tabSwitcherListener,
-            OnClickListener newTabClickListener, WindowAndroid windowAndroid,
-            TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
-            ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
+    public void initializeWithNative(
+            Activity activity,
+            ResourceManager resourceManager,
+            LayoutManagerImpl layoutManager,
+            OnClickListener tabSwitcherListener,
+            OnClickListener newTabClickListener,
+            WindowAndroid windowAndroid,
+            TabModelSelector tabModelSelector,
+            IncognitoStateProvider incognitoStateProvider,
+            ViewGroup topToolbarRoot,
+            Runnable closeAllTabsAction) {
         if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
-            mBottomToolbarCoordinator = new BottomToolbarCoordinator(mRoot,
-                    mRoot.findViewById(R.id.bottom_toolbar), mTabProvider,
-                    mTabSwitcherLongclickListener, mThemeColorProvider, mOpenHomepageAction,
-                    mSetUrlBarFocusAction, mLayoutStateProviderSupplier, mMenuButtonHelperSupplier,
-                    mMediator, mBookmarkModelSupplier, mLocationBarModel);
+            mBottomToolbarCoordinator =
+                    new BottomToolbarCoordinator(
+                            mRoot,
+                            mRoot.findViewById(R.id.bottom_toolbar),
+                            mTabProvider,
+                            mTabSwitcherLongclickListener,
+                            mThemeColorProvider,
+                            mOpenHomepageAction,
+                            mSetUrlBarFocusAction,
+                            mLayoutStateProviderSupplier,
+                            mMenuButtonHelperSupplier,
+                            mMediator,
+                            mBookmarkModelSupplier,
+                            mLocationBarModel);
 
-            mBottomToolbarCoordinator.initializeWithNative(tabSwitcherListener, newTabClickListener,
-                    tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
+            mBottomToolbarCoordinator.initializeWithNative(
+                    tabSwitcherListener,
+                    newTabClickListener,
+                    tabModelSelector,
+                    incognitoStateProvider,
+                    topToolbarRoot,
+                    closeAllTabsAction);
         }
     }
 

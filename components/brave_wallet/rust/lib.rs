@@ -14,6 +14,9 @@ use ed25519_dalek_bip32::ed25519_dalek::{
 };
 use ed25519_dalek_bip32::Error as Ed25519Bip32Error;
 use ed25519_dalek_bip32::{ChildIndex, ExtendedSecretKey};
+use bech32::FromBase32;
+use ffi::{Bech32DecodeVariant};
+use bech32::Error as Bech32Error;
 
 macro_rules! impl_result {
     ($t:ident, $r:ident, $f:ident) => {
@@ -61,13 +64,20 @@ macro_rules! impl_error {
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace =  brave_wallet)]
 mod ffi {
+    enum Bech32DecodeVariant {
+        Bech32,
+        Bech32m
+    }
+
     extern "Rust" {
         type Ed25519DalekExtendedSecretKey;
         type Ed25519DalekSignature;
+        type Bech32DecodeValue;
 
         type Ed25519DalekExtendedSecretKeyResult;
         type Ed25519DalekSignatureResult;
         type Ed25519DalekVerificationResult;
+        type Bech32DecodeResult;
 
         fn generate_ed25519_extended_secrect_key_from_seed(
             bytes: &[u8],
@@ -102,6 +112,12 @@ mod ffi {
 
         fn to_bytes(self: &Ed25519DalekSignature) -> [u8; 64];
 
+        fn data(self: &Bech32DecodeValue) -> Vec<u8>;
+        fn hrp(self: &Bech32DecodeValue) -> String;
+        fn variant(self: &Bech32DecodeValue) -> Bech32DecodeVariant;
+
+        fn decode_bech32(input: &str) -> Box<Bech32DecodeResult>;
+
         fn is_ok(self: &Ed25519DalekExtendedSecretKeyResult) -> bool;
         fn error_message(self: &Ed25519DalekExtendedSecretKeyResult) -> String;
         fn unwrap(self: &Ed25519DalekExtendedSecretKeyResult) -> &Ed25519DalekExtendedSecretKey;
@@ -112,6 +128,10 @@ mod ffi {
 
         fn is_ok(self: &Ed25519DalekVerificationResult) -> bool;
         fn error_message(self: &Ed25519DalekVerificationResult) -> String;
+
+        fn is_ok(self: &Bech32DecodeResult) -> bool;
+        fn error_message(self: &Bech32DecodeResult) -> String;
+        fn unwrap(self: &Bech32DecodeResult) -> &Bech32DecodeValue;
     }
 }
 
@@ -121,12 +141,14 @@ pub enum Error {
     DerivationPathParse(DerivationPathParseError),
     ChildIndex(ChildIndexError),
     Signature(SignatureError),
+    Bech32(Bech32Error),
 }
 
 impl_error!(Ed25519Bip32Error, Ed25519Bip32);
 impl_error!(DerivationPathParseError, DerivationPathParse);
 impl_error!(ChildIndexError, ChildIndex);
 impl_error!(SignatureError, Signature);
+impl_error!(Bech32Error, Bech32);
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -135,19 +157,38 @@ impl fmt::Display for Error {
             Error::DerivationPathParse(e) => write!(f, "Error: {}", e.to_string()),
             Error::ChildIndex(e) => write!(f, "Error: {}", e.to_string()),
             Error::Signature(e) => write!(f, "Error: {}", e.to_string()),
+            Error::Bech32(e) => write!(f, "Error: {}", e.to_string()),
         }
     }
 }
+pub struct Bech32Decoded {
+    hrp: String,
+    data: Vec<u8>,
+    variant: Bech32DecodeVariant,
+}
 
+pub struct Bech32DecodeValue(Bech32Decoded);
 pub struct Ed25519DalekExtendedSecretKey(ExtendedSecretKey);
 pub struct Ed25519DalekSignature(Signature);
 
 struct Ed25519DalekExtendedSecretKeyResult(Result<Ed25519DalekExtendedSecretKey, Error>);
 struct Ed25519DalekSignatureResult(Result<Ed25519DalekSignature, Error>);
 struct Ed25519DalekVerificationResult(Result<(), Error>);
+struct Bech32DecodeResult(Result<Bech32DecodeValue, Error>);
 
 impl_result!(Ed25519DalekExtendedSecretKey, Ed25519DalekExtendedSecretKeyResult, ExtendedSecretKey);
 impl_result!(Ed25519DalekSignature, Ed25519DalekSignatureResult, Signature);
+impl_result!(Bech32DecodeValue, Bech32DecodeResult, Bech32Decoded);
+
+impl From<bech32::Variant> for Bech32DecodeVariant {
+    fn from(v: bech32::Variant) -> Bech32DecodeVariant {
+        match v {
+            bech32::Variant::Bech32m => Bech32DecodeVariant::Bech32m,
+            bech32::Variant::Bech32 => Bech32DecodeVariant::Bech32,
+        }
+    }
+}
+
 impl Ed25519DalekVerificationResult {
     fn error_message(&self) -> String {
         match &self.0 {
@@ -196,6 +237,30 @@ fn generate_ed25519_extended_secrect_key_from_bytes(
 }
 fn bytes_are_curve25519_point(bytes: &[u8]) -> bool {
     curve25519_dalek::edwards::CompressedEdwardsY::from_slice(bytes).decompress().is_some()
+}
+
+fn decode_bech32(input: &str) -> Box<Bech32DecodeResult> {
+    let decoded = bech32::decode(&input);
+    match decoded {
+        Ok(decoded_value) => {
+            let (hrp, data, variant) = decoded_value;
+            Box::new(Bech32DecodeResult::from(
+                Vec::<u8>::from_base32(&data)
+                    .map_err(Error::from)
+                    .and_then(|as_u8| Ok(
+                        Bech32Decoded {
+                            hrp: hrp,
+                            data: as_u8,
+                            variant : Bech32DecodeVariant::from(variant)
+                        })
+                    )
+                )
+            )
+        },
+        Err(e) => {
+            Box::new(Bech32DecodeResult::from(Err(Error::from(e))))
+        }
+    }
 }
 
 impl Ed25519DalekExtendedSecretKey {
@@ -250,5 +315,17 @@ impl Ed25519DalekExtendedSecretKey {
 impl Ed25519DalekSignature {
     fn to_bytes(self: &Ed25519DalekSignature) -> [u8; SIGNATURE_LENGTH] {
         self.0.to_bytes()
+    }
+}
+
+impl Bech32DecodeValue {
+    fn hrp(self: &Bech32DecodeValue) -> String {
+       self.0.hrp.clone()
+    }
+    fn data(self: &Bech32DecodeValue) -> Vec<u8> {
+        self.0.data.clone()
+    }
+    fn variant(self: &Bech32DecodeValue) -> Bech32DecodeVariant {
+        self.0.variant.clone()
     }
 }

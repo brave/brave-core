@@ -14,7 +14,8 @@ import {
   SOLIconUrl,
   FILECOINIconUrl,
   BNBIconUrl,
-  BTCIconUrl
+  BTCIconUrl,
+  ZECIconUrl
 } from '../../assets/network_token_icons/network_token_icons'
 
 export const mockEthToken = {
@@ -32,6 +33,40 @@ export const mockEthToken = {
   coingeckoId: 'ethereum',
   chainId: '0x1',
   coin: BraveWallet.CoinType.ETH
+} as BraveWallet.BlockchainToken
+
+export const mockBtcToken = {
+  contractAddress: '',
+  name: 'Bitcoin',
+  symbol: 'BTC',
+  logo: BTCIconUrl,
+  isErc20: false,
+  isErc721: false,
+  isNft: false,
+  isSpam: false,
+  decimals: 8,
+  visible: true,
+  tokenId: '',
+  coingeckoId: 'bitcoin',
+  chainId: BraveWallet.BITCOIN_MAINNET,
+  coin: BraveWallet.CoinType.BTC
+} as BraveWallet.BlockchainToken
+
+export const mockZecToken = {
+  contractAddress: '',
+  name: 'ZCash',
+  symbol: 'ZEC',
+  logo: ZECIconUrl,
+  isErc20: false,
+  isErc721: false,
+  isNft: false,
+  isSpam: false,
+  decimals: 8,
+  visible: true,
+  tokenId: '',
+  coingeckoId: 'zcash',
+  chainId: BraveWallet.Z_CASH_MAINNET,
+  coin: BraveWallet.CoinType.ZEC
 } as BraveWallet.BlockchainToken
 
 export const mockSolToken = {
@@ -266,14 +301,18 @@ export const mockSplNft: BraveWallet.BlockchainToken = {
   chainId: BraveWallet.SOLANA_MAINNET
 }
 
-const mockSplBat = {
+export const mockSplBat = {
   ...mockBasicAttentionToken,
+  coin: BraveWallet.CoinType.SOL,
+  isErc20: false,
   contractAddress: 'splBat498tu349u498j',
   chainId: BraveWallet.SOLANA_MAINNET
 }
 
-const mockSplUSDC = {
+export const mockSplUSDC = {
   ...mockUSDCoin,
+  coin: BraveWallet.CoinType.SOL,
+  isErc20: false,
   contractAddress: 'splusd09856080378450y75',
   chainId: BraveWallet.SOLANA_MAINNET
 }

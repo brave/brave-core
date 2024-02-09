@@ -1,0 +1,9 @@
+Name: kuchikiki
+URL: https://github.com/brave/kuchikiki/tree/speedreader
+Description: (口利き) HTML tree manipulation library
+Version: 0.8.2
+Security Critical: yes
+Shipped: yes
+License: MIT
+License File: //brave/third_party/rust/kuchikiki/v0_8/crate/LICENSE
+Revision: 436b4e21274e64c5f9bc142ba6fa330fe9a8c97d

@@ -9,7 +9,6 @@
 
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
@@ -59,8 +58,8 @@ void GeminiTransfer::OnCommitTransaction(
             mojom::Result::RETRY_PENDING_TRANSACTION_LONG);
       case PostCommitTransactionGemini::Error::kAccessTokenExpired:
         if (!engine_->gemini()->LogOutWallet()) {
-          BLOG(0, "Failed to disconnect " << constant::kWalletGemini
-                                          << " wallet!");
+          engine_->LogError(FROM_HERE) << "Failed to disconnect "
+                                       << constant::kWalletGemini << " wallet";
         }
         ABSL_FALLTHROUGH_INTENDED;
       default:

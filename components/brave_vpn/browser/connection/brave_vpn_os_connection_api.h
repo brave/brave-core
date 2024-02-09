@@ -10,8 +10,11 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "base/one_shot_event.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
@@ -20,10 +23,6 @@
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
-
-namespace version_info {
-enum class Channel;
-}  // namespace version_info
 
 class PrefService;
 
@@ -62,6 +61,11 @@ class BraveVPNOSConnectionAPI
   std::string GetLastConnectionError() const;
   void ToggleConnection();
 
+  std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
+  void set_target_vpn_entry_name(const std::string& name) {
+    target_vpn_entry_name_ = name;
+  }
+
   // Connection dependent APIs.
   virtual void Connect() = 0;
   virtual void Disconnect() = 0;
@@ -70,6 +74,7 @@ class BraveVPNOSConnectionAPI
       mojom::ConnectionState state);
   virtual void SetSelectedRegion(const std::string& name) = 0;
   virtual void FetchProfileCredentials() = 0;
+  virtual void MaybeInstallSystemServices();
 
  protected:
   explicit BraveVPNOSConnectionAPI(
@@ -96,6 +101,17 @@ class BraveVPNOSConnectionAPI
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
+  void OnInstallSystemServicesCompleted(bool success);
+
+  // For now, this is called when Connect() is called.
+  // If system service installation is in-progress, connect request
+  // is queued and return true.
+  // Then, start connect after installation is done.
+  bool ScheduleConnectRequestIfNeeded();
+
+  // Installs system services (if neeeded) or is nullptr.
+  // Bound in brave_vpn::CreateBraveVPNConnectionAPI.
+  base::RepeatingCallback<bool()> install_system_service_callback_;
 
  private:
   friend class BraveVpnButtonUnitTest;
@@ -133,15 +149,18 @@ class BraveVPNOSConnectionAPI
       mojom::ConnectionState::DISCONNECTED;
   BraveVPNRegionDataManager region_data_manager_;
   base::ObserverList<Observer> observers_;
+  // Used for tracking if the VPN dependencies are being installed.
+  // Guard against calling install_system_service_callback_ while a call
+  // is already in progress.
+  bool install_in_progress_ = false;
+  // Used for tracking if the VPN dependencies have been installed.
+  // If the user has Brave VPN purchased and loaded with this profile
+  // AND they did a system level install, we should call
+  // install_system_service_callback_ once per browser open.
+  base::OneShotEvent system_service_installed_event_;
+  std::string target_vpn_entry_name_;
+  base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_factory_;
 };
-
-// Create platform specific api instance.
-// NOTE: Don't call this method directly.
-// Only BraveBrowserProcess need to use this method.
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel);
 
 }  // namespace brave_vpn
 

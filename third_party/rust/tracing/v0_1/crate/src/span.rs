@@ -22,7 +22,7 @@
 //!   override their default values.
 //! - The span's [verbosity level]
 //! - A string literal providing the span's name.
-//! - Finally, between zero and 32 arbitrary key/value fields.
+//! - Finally, zero or more arbitrary key/value fields.
 //!
 //! [`target`]: super::Metadata::target
 //!
@@ -824,7 +824,7 @@ impl Span {
     ///
     /// <pre class="ignore" style="white-space:normal;font:inherit;">
     ///     <strong>Note</strong>: The returned <a href="../struct.EnteredSpan.html">
-    ///     <code>EnteredSpan</a></code> guard does not implement <code>Send</code>.
+    ///     <code>EnteredSpan</code></a> guard does not implement <code>Send</code>.
     ///     Dropping the guard will exit <em>this</em> span, and if the guard is sent
     ///     to another thread and dropped there, that thread may never have entered
     ///     this span. Thus, <code>EnteredSpan</code>s should not be sent between threads.
@@ -1617,7 +1617,7 @@ mod test {
 
     #[test]
     fn test_record_backwards_compat() {
-        Span::current().record("some-key", &"some text");
-        Span::current().record("some-key", &false);
+        Span::current().record("some-key", "some text");
+        Span::current().record("some-key", false);
     }
 }

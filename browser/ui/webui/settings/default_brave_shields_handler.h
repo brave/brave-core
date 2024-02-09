@@ -10,12 +10,15 @@
 #include "base/scoped_observation.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
 class Profile;
 
-class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler,
-                                   public content_settings::Observer {
+class DefaultBraveShieldsHandler
+    : public settings::SettingsPageUIHandler,
+      public content_settings::Observer,
+      public content_settings::CookieSettings::Observer {
  public:
   DefaultBraveShieldsHandler();
   DefaultBraveShieldsHandler(const DefaultBraveShieldsHandler&) = delete;
@@ -34,6 +37,10 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler,
       const ContentSettingsPattern& primary_pattern,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
+
+  // content_settings::CookieSettings::Observer overrides:
+  void OnThirdPartyCookieBlockingChanged(
+      bool block_third_party_cookies) override;
 
   void SetAdControlType(const base::Value::List& args);
   void IsAdControlEnabled(const base::Value::List& args);
@@ -56,6 +63,9 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler,
 
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       content_settings_observation_{this};
+  base::ScopedObservation<content_settings::CookieSettings,
+                          content_settings::CookieSettings::Observer>
+      cookie_settings_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_

@@ -29,7 +29,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
     mojom::SKUTransactionPtr transaction,
     LegacyResultCallback callback) {
   if (!transaction) {
-    BLOG(1, "Transcation is null");
+    engine_->Log(FROM_HERE) << "Transcation is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -66,8 +66,8 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
     const std::string& external_transaction_id,
     LegacyResultCallback callback) {
   if (transaction_id.empty() || external_transaction_id.empty()) {
-    BLOG(1,
-         "Data is empty " << transaction_id << "/" << external_transaction_id);
+    engine_->Log(FROM_HERE)
+        << "Data is empty " << transaction_id << "/" << external_transaction_id;
     callback(mojom::Result::FAILED);
     return;
   }
@@ -98,7 +98,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
     const std::string& order_id,
     GetSKUTransactionCallback callback) {
   if (order_id.empty()) {
-    BLOG(1, "Order id is empty");
+    engine_->Log(FROM_HERE) << "Order id is empty";
     callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
@@ -134,7 +134,7 @@ void DatabaseSKUTransaction::OnGetRecord(GetSKUTransactionCallback callback,
                                          mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
@@ -145,8 +145,8 @@ void DatabaseSKUTransaction::OnGetRecord(GetSKUTransactionCallback callback,
   }
 
   if (response->result->get_records().size() > 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
     callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }

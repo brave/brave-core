@@ -4,13 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
+import type { VariableSizeList as List } from 'react-window'
 
 // Selectors
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../common/selectors'
+import { UISelectors } from '../../../common/selectors'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -42,8 +42,10 @@ import {
   useGetOnRampNetworksQuery,
   useLazyGetBuyUrlQuery
 } from '../../../common/slices/api.slice'
-import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
-import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
+import {
+  useAccountsQuery,
+  useReceiveAddressQuery
+} from '../../../common/slices/api.slice.extra'
 
 // style
 import {
@@ -93,11 +95,11 @@ import {
   NetworkFilterSelector //
 } from '../../../components/desktop/network-filter-selector'
 import { BuyOptions } from '../../../options/buy-with-options'
-import { WalletActions } from '../../../common/actions'
 import {
   makeFundWalletPurchaseOptionsRoute,
   makeFundWalletRoute
 } from '../../../utils/routes-utils'
+import { networkSupportsAccount } from '../../../utils/network-utils'
 
 const itemSize = 82
 
@@ -111,16 +113,11 @@ const getItemKey = (i: number, data: BraveWallet.BlockchainToken[]) =>
 interface Props {
   isAndroid?: boolean
 }
+interface Params {
+  assetId: string
+}
 
 export const FundWalletScreen = ({ isAndroid }: Props) => {
-  // redux
-  const dispatch = useDispatch()
-
-  // clear selected asset on page mount
-  React.useEffect(() => {
-    dispatch(WalletActions.selectOnRampAssetId(undefined))
-  }, [])
-
   // render
   return (
     <Switch>
@@ -131,31 +128,31 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
         <PurchaseOptionSelection isAndroid={isAndroid} />
       </Route>
 
-      <Route>
+      <Route
+        path={WalletRoutes.FundWalletPage}
+        exact
+      >
         <AssetSelection isAndroid={isAndroid} />
       </Route>
+
+      <Redirect to={WalletRoutes.FundWalletPage} />
     </Switch>
   )
 }
 
 function AssetSelection({ isAndroid }: Props) {
-  // router
-  const { currencyCode, buyAmount: buyAmountParam } = useParams<{
-    currencyCode?: string
-    buyAmount?: string
-  }>()
+  // routing
   const history = useHistory()
+  const { assetId: selectedOnRampAssetId } = useParams<Params>()
   const params = new URLSearchParams(history.location.search)
+  const currencyCode = params.get('currencyCode')
+  const buyAmountParam = params.get('buyAmount')
   const searchParam = params.get('search')
   const chainIdParam = params.get('chainId')
   const coinTypeParam = params.get('coinType')
 
   // redux
-  const dispatch = useDispatch()
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const selectedOnRampAssetId = useSelector(
-    WalletSelectors.selectedOnRampAssetId
-  )
 
   // state
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(
@@ -210,21 +207,7 @@ function AssetSelection({ isAndroid }: Props) {
   const allBuyAssetOptions = options?.allAssetOptions || []
 
   // refs
-  const listItemRefs = React.useRef<Map<string, HTMLButtonElement> | null>(null)
-
-  const getRefsMap = React.useCallback(
-    function () {
-      if (!listItemRefs.current) {
-        // Initialize the Map on first usage.
-        listItemRefs.current = new Map()
-      }
-      return listItemRefs.current
-    },
-    [listItemRefs]
-  )
-
-  // custom hooks
-  const scrollIntoView = useScrollIntoView()
+  const listRef = React.useRef<List<BraveWallet.BlockchainToken[]>>(null)
 
   // methods
   // This filters a list of assets when the user types in search bar
@@ -241,22 +224,14 @@ function AssetSelection({ isAndroid }: Props) {
         const assetId = getAssetIdKey(asset)
         return (
           <BuyAssetOptionItem
-            ref={(node) => {
-              const refs = getRefsMap()
-              if (node) {
-                refs.set(assetId, node)
-              } else {
-                refs.delete(assetId)
-              }
-            }}
             selectedCurrency={selectedCurrency}
             key={assetId}
             token={asset}
-            onClick={() => dispatch(WalletActions.selectOnRampAssetId(assetId))}
+            onClick={() => history.push(makeFundWalletRoute(assetId))}
           />
         )
       },
-      [selectedCurrency, getRefsMap, dispatch]
+      [selectedCurrency]
     )
 
   // memos & computed
@@ -292,6 +267,7 @@ function AssetSelection({ isAndroid }: Props) {
     () =>
       allBuyAssetOptions?.length ? (
         <VirtualizedTokensList
+          listRef={listRef}
           getItemKey={getItemKey}
           getItemSize={getItemSize}
           userAssetList={assetListSearchResults}
@@ -324,13 +300,15 @@ function AssetSelection({ isAndroid }: Props) {
   // effects
   React.useEffect(() => {
     // scroll selected item into view
-    if (selectedOnRampAssetId) {
-      const ref = getRefsMap().get(selectedOnRampAssetId)
-      if (ref) {
-        scrollIntoView(ref, true)
+    if (listRef.current && selectedOnRampAssetId) {
+      const itemIndex = assetListSearchResults.findIndex(
+        (asset) => getAssetIdKey(asset) === selectedOnRampAssetId
+      )
+      if (itemIndex > -1) {
+        listRef.current.scrollToItem(itemIndex)
       }
     }
-  }, [selectedOnRampAssetId, getRefsMap, scrollIntoView])
+  }, [selectedOnRampAssetId, assetListSearchResults, listRef])
 
   React.useEffect(() => {
     // initialize selected currency
@@ -432,45 +410,52 @@ function AssetSelection({ isAndroid }: Props) {
                 : getLocale('braveWalletBuySelectAsset')
             }
             onSubmit={() => {
+              if (!selectedOnRampAssetId) {
+                return
+              }
+
               const searchValueLower = searchValue.toLowerCase()
 
               // save latest form values in router history
               history.replace(
-                makeFundWalletRoute(
-                  selectedCurrency,
+                makeFundWalletRoute(selectedOnRampAssetId, {
+                  currencyCode: selectedCurrency,
                   buyAmount,
                   // save latest search-box value (if it matches selection name
                   // or symbol)
-                  searchValue &&
+                  searchText:
+                    searchValue &&
                     (selectedAsset?.name
                       .toLowerCase()
                       .startsWith(searchValueLower) ||
                       selectedAsset?.symbol
                         .toLowerCase()
                         .startsWith(searchValueLower))
-                    ? searchValue
-                    : undefined,
+                      ? searchValue
+                      : undefined,
                   // saving network filter (if it matches selection)
-                  selectedAsset?.chainId === selectedNetworkFilter.chainId
-                    ? selectedNetworkFilter.chainId || AllNetworksOption.chainId
-                    : AllNetworksOption.chainId,
-                  selectedAsset?.coin === selectedNetworkFilter.coin
-                    ? selectedNetworkFilter.coin.toString() ||
+                  chainId:
+                    selectedAsset?.chainId === selectedNetworkFilter.chainId
+                      ? selectedNetworkFilter.chainId ||
+                        AllNetworksOption.chainId
+                      : AllNetworksOption.chainId,
+                  coinType:
+                    selectedAsset?.coin === selectedNetworkFilter.coin
+                      ? selectedNetworkFilter.coin.toString() ||
                         AllNetworksOption.coin.toString()
-                    : AllNetworksOption.coin.toString()
-                )
+                      : AllNetworksOption.coin.toString()
+                })
               )
 
               // go to payment option selection
               history.push(
-                makeFundWalletPurchaseOptionsRoute(
-                  selectedCurrency,
-                  buyAmount || '0'
-                )
+                makeFundWalletPurchaseOptionsRoute(selectedOnRampAssetId, {
+                  buyAmount: buyAmount || '0',
+                  currencyCode: selectedCurrency
+                })
               )
             }}
             disabled={!isNextStepEnabled}
-            isV2={true}
             minWidth='360px'
           />
         </NextButtonRow>
@@ -481,20 +466,17 @@ function AssetSelection({ isAndroid }: Props) {
 
 function PurchaseOptionSelection({ isAndroid }: Props) {
   // routing
-  const params = useParams<{
-    currencyCode: string
-    buyAmount: string
-  }>()
-  // redux
-  const selectedOnRampAssetId = useSelector(
-    WalletSelectors.selectedOnRampAssetId
-  )
+  const history = useHistory()
+  const { assetId: selectedOnRampAssetId } = useParams<Params>()
+  const params = new URLSearchParams(history.location.search)
+  const currencyCodeParam = params.get('currencyCode')
+  const buyAmountParam = params.get('buyAmount')
 
   // queries
   const { accounts } = useAccountsQuery()
   const { data: fiatCurrencies = [] } = useGetOnRampFiatCurrenciesQuery()
   const selectedCurrency = fiatCurrencies.find(
-    (c) => c.currencyCode === params.currencyCode
+    (c) => c.currencyCode === currencyCodeParam
   )
   const currencyCode = selectedCurrency ? selectedCurrency.currencyCode : 'USD'
 
@@ -507,18 +489,14 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   const [getBuyUrl] = useLazyGetBuyUrlQuery()
 
-  const accountsForSelectedAssetCoinType = React.useMemo(() => {
-    return selectedAsset
-      ? selectedAsset.coin === BraveWallet.CoinType.FIL
-        ? accounts.filter((a) =>
-            a.accountId.coin === selectedAsset.coin &&
-            selectedAsset.chainId === BraveWallet.FILECOIN_TESTNET
-              ? a.accountId.address.startsWith('t')
-              : !a.accountId.address.startsWith('t')
-          )
-        : accounts.filter((a) => a.accountId.coin === selectedAsset.coin)
-      : []
-  }, [selectedAsset, accounts])
+  const accountsForSelectedAssetNetwork = React.useMemo(() => {
+    if (!assetNetwork) {
+      return []
+    }
+    return accounts.filter((a) =>
+      networkSupportsAccount(assetNetwork, a.accountId)
+    )
+  }, [assetNetwork, accounts])
 
   // state
   const [showAccountSearch, setShowAccountSearch] =
@@ -526,29 +504,25 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
-  >(accountsForSelectedAssetCoinType[0])
+  >(accountsForSelectedAssetNetwork[0])
 
   // state-dependant queries
+  const generatedAddress = useReceiveAddressQuery(selectedAccount?.accountId)
+
   const { data: buyWithStripeUrl } = useGetBuyUrlQuery(
-    selectedAsset && assetNetwork && selectedAccount
+    selectedAsset && assetNetwork && generatedAddress
       ? {
           assetSymbol: selectedAsset.symbol.toLowerCase(),
           onRampProvider: BraveWallet.OnRampProvider.kStripe,
           chainId: assetNetwork.chainId,
-          address: selectedAccount.address,
-          amount: params.buyAmount,
+          address: generatedAddress,
+          amount: buyAmountParam || '0',
           currencyCode: currencyCode.toLowerCase()
         }
       : skipToken
   )
 
   // memos
-  const accountsForSelectedAssetNetwork = React.useMemo(() => {
-    return assetNetwork
-      ? accounts.filter((a) => a.accountId.coin === assetNetwork.coin)
-      : []
-  }, [assetNetwork, accounts])
-
   const accountListSearchResults = React.useMemo(() => {
     if (accountSearchText === '') {
       return accountsForSelectedAssetNetwork
@@ -629,7 +603,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   const openBuyAssetLink = React.useCallback(
     async (buyOption: BraveWallet.OnRampProvider) => {
-      if (!selectedAsset || !assetNetwork || !selectedAccount) {
+      if (!selectedAsset || !assetNetwork || !generatedAddress) {
         return
       }
 
@@ -643,13 +617,14 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
               : selectedAsset.symbol,
           onRampProvider: buyOption,
           chainId: assetNetwork.chainId,
-          address: selectedAccount.address,
-          amount: params.buyAmount,
+          address: generatedAddress,
+          amount: buyAmountParam || '0',
           currencyCode:
             buyOption === BraveWallet.OnRampProvider.kStripe
               ? currencyCode.toLowerCase()
               : currencyCode
         }).unwrap()
+
         if (url && chrome.tabs !== undefined) {
           chrome.tabs.create({ url }, () => {
             if (chrome.runtime.lastError) {
@@ -667,20 +642,21 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
       }
     },
     [
+      buyAmountParam,
       selectedAsset,
       assetNetwork,
-      selectedAccount,
       getBuyUrl,
       params,
-      currencyCode
+      currencyCode,
+      generatedAddress
     ]
   )
 
   // effects
   React.useEffect(() => {
     // force selected account option state
-    setSelectedAccount(accountsForSelectedAssetCoinType[0])
-  }, [accountsForSelectedAssetCoinType[0]])
+    setSelectedAccount(accountsForSelectedAssetNetwork[0])
+  }, [accountsForSelectedAssetNetwork])
 
   // render
   if (!selectedOnRampAssetId) {
@@ -696,7 +672,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
         <PageTitleHeader
           title={pageTitle}
           showBackButton
-          onBack={() => history.back()}
+          onBack={history.goBack}
         />
       }
     >
@@ -708,7 +684,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
           // Creates wallet Account if needed
           <CreateAccountTab
             network={assetNetwork}
-            onCancel={() => history.back()}
+            onCancel={history.goBack}
             onCreated={setSelectedAccount}
           />
         ) : showAccountSearch || !selectedAccount ? (

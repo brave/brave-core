@@ -30,7 +30,7 @@ DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
                                       LegacyResultCallback callback) {
   if (!order) {
-    BLOG(1, "Order is null");
+    engine_->Log(FROM_HERE) << "Order is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -68,7 +68,7 @@ void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
                                     mojom::SKUOrderStatus status,
                                     LegacyResultCallback callback) {
   if (order_id.empty()) {
-    BLOG(1, "Order id is empty");
+    engine_->Log(FROM_HERE) << "Order id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -95,7 +95,7 @@ void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
 void DatabaseSKUOrder::GetRecord(const std::string& order_id,
                                  GetSKUOrderCallback callback) {
   if (order_id.empty()) {
-    BLOG(1, "Order id is empty");
+    engine_->Log(FROM_HERE) << "Order id is empty";
     callback({});
     return;
   }
@@ -133,14 +133,14 @@ void DatabaseSKUOrder::OnGetRecord(GetSKUOrderCallback callback,
                                    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
     callback({});
     return;
   }
@@ -166,7 +166,7 @@ void DatabaseSKUOrder::OnGetRecordItems(
     std::shared_ptr<mojom::SKUOrderPtr> shared_order,
     GetSKUOrderCallback callback) {
   if (!shared_order) {
-    BLOG(1, "Order is null");
+    engine_->Log(FROM_HERE) << "Order is null";
     callback({});
     return;
   }
@@ -179,7 +179,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
     const std::string& contribution_id,
     GetSKUOrderCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(1, "Contribution id is empty");
+    engine_->Log(FROM_HERE) << "Contribution id is empty";
     callback({});
     return;
   }
@@ -217,8 +217,8 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
     const std::string& contribution_id,
     LegacyResultCallback callback) {
   if (order_id.empty() || contribution_id.empty()) {
-    BLOG(1, "Order/contribution id is empty " << order_id << "/"
-                                              << contribution_id);
+    engine_->Log(FROM_HERE) << "Order/contribution id is empty " << order_id
+                            << "/" << contribution_id;
     callback(mojom::Result::FAILED);
     return;
   }

@@ -35,10 +35,18 @@ class BitcoinTestRpcServer {
   static bitcoin_rpc::AddressStats TransactedAddressStats(
       const std::string& address);
 
+  static bitcoin_rpc::AddressStats MempoolAddressStats(
+      const std::string& address,
+      uint64_t funded,
+      uint64_t spent);
+
   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
 
   void SetUpBitcoinRpc(const mojom::AccountIdPtr& account_id);
   void AddTransactedAddress(const std::string& address);
+  void AddMempoolBalance(const std::string& address,
+                         uint64_t funded,
+                         uint64_t spent);
 
   const std::string& Address0() const { return address_0_; }
   const std::string& Address6() const { return address_6_; }

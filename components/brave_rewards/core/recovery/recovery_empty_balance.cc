@@ -54,7 +54,7 @@ void EmptyBalance::OnAllContributions(
     }
   }
 
-  BLOG(1, "Contribution SUM: " << contribution_sum);
+  engine_->Log(FROM_HERE) << "Contribution SUM: " << contribution_sum;
 
   auto get_callback =
       std::bind(&EmptyBalance::GetAllTokens, this, _1, contribution_sum);
@@ -101,7 +101,7 @@ void EmptyBalance::GetCredsByPromotions(std::vector<mojom::PromotionPtr> list) {
 
 void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
   if (list.empty()) {
-    BLOG(1, "Creds batch list is emtpy");
+    engine_->Log(FROM_HERE) << "Creds batch list is emtpy";
     engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
@@ -114,7 +114,8 @@ void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
     auto unblinded_encoded_creds = credential::UnBlindCreds(*creds_batch);
 
     if (!unblinded_encoded_creds.has_value()) {
-      BLOG(0, "UnBlindTokens: " << std::move(unblinded_encoded_creds).error());
+      engine_->LogError(FROM_HERE)
+          << "UnBlindTokens: " << std::move(unblinded_encoded_creds).error();
       continue;
     }
 
@@ -130,7 +131,7 @@ void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
   }
 
   if (token_list.empty()) {
-    BLOG(1, "Unblinded token list is emtpy");
+    engine_->Log(FROM_HERE) << "Unblinded token list is emtpy";
     engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
@@ -142,7 +143,8 @@ void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
 }
 
 void EmptyBalance::OnSaveUnblindedCreds(const mojom::Result result) {
-  BLOG(1, "Finished empty balance migration with result: " << result);
+  engine_->Log(FROM_HERE) << "Finished empty balance migration with result: "
+                          << result;
   engine_->state()->SetEmptyBalanceChecked(true);
 }
 
@@ -155,7 +157,7 @@ void EmptyBalance::GetAllTokens(std::vector<mojom::PromotionPtr> list,
     promotion_sum += promotion->approximate_value;
   }
 
-  BLOG(1, "Promotion SUM: " << promotion_sum);
+  engine_->Log(FROM_HERE) << "Promotion SUM: " << promotion_sum;
 
   auto tokens_callback = std::bind(&EmptyBalance::ReportResults, this, _1,
                                    contribution_sum, promotion_sum);
@@ -171,17 +173,17 @@ void EmptyBalance::ReportResults(std::vector<mojom::UnblindedTokenPtr> list,
   for (auto& item : list) {
     tokens_sum += item->value;
   }
-  BLOG(1, "Token SUM: " << tokens_sum);
+  engine_->Log(FROM_HERE) << "Token SUM: " << tokens_sum;
 
   double total = promotion_sum - contribution_sum - tokens_sum;
 
   if (total <= 0) {
-    BLOG(1, "Unblinded token total is OK");
+    engine_->Log(FROM_HERE) << "Unblinded token total is OK";
     engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
-  BLOG(1, "Unblinded token total is " << total);
+  engine_->Log(FROM_HERE) << "Unblinded token total is " << total;
 
   auto url_callback = std::bind(&EmptyBalance::Sent, this, _1);
 
@@ -193,7 +195,7 @@ void EmptyBalance::Sent(const mojom::Result result) {
     return;
   }
 
-  BLOG(1, "Finished empty balance migration!");
+  engine_->Log(FROM_HERE) << "Finished empty balance migration";
   engine_->state()->SetEmptyBalanceChecked(true);
 }
 

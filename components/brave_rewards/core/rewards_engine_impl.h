@@ -18,49 +18,82 @@
 #include "base/one_shot_event.h"
 #include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
-#include "brave/components/brave_rewards/core/api/api.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
-#include "brave/components/brave_rewards/core/contribution/contribution.h"
-#include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/gemini/gemini.h"
-#include "brave/components/brave_rewards/core/legacy/media/media.h"
-#include "brave/components/brave_rewards/core/logging/logging.h"
-#include "brave/components/brave_rewards/core/promotion/promotion.h"
-#include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/recovery/recovery.h"
-#include "brave/components/brave_rewards/core/report/report.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "brave/components/brave_rewards/core/state/state.h"
-#include "brave/components/brave_rewards/core/uphold/uphold.h"
-#include "brave/components/brave_rewards/core/wallet/wallet.h"
-#include "brave/components/brave_rewards/core/zebpay/zebpay.h"
+#include "brave/components/brave_rewards/core/rewards_log_stream.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
 namespace brave_rewards::internal {
 
-inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
-inline bool is_debug = false;
-inline bool is_testing = false;
-inline int state_migration_target_version_for_testing = -1;
-inline int reconcile_interval = 0;  // minutes
-inline int retry_interval = 0;      // seconds
-
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-inline constexpr uint64_t kPublisherListRefreshInterval =
-    7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
-#else
-inline constexpr uint64_t kPublisherListRefreshInterval =
-    3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
-#endif
-
+class EnvironmentConfig;
 class InitializationManager;
+class URLLoader;
 class LinkageChecker;
+class SolanaWalletProvider;
+
+namespace promotion {
+class Promotion;
+}
+
+namespace publisher {
+class Publisher;
+}
+
+class Media;
+
+namespace contribution {
+class Contribution;
+}
+
+namespace wallet {
+class Wallet;
+}
+
+namespace database {
+class Database;
+}
+
+namespace report {
+class Report;
+}
+
+namespace state {
+class State;
+}
+
+namespace api {
+class API;
+}
+
+namespace recovery {
+class Recovery;
+}
+
+namespace bitflyer {
+class Bitflyer;
+}
+
+namespace gemini {
+class Gemini;
+}
+
+namespace uphold {
+class Uphold;
+}
+
+namespace zebpay {
+class ZebPay;
+}
+
+namespace wallet_provider {
+class WalletProvider;
+}
 
 class RewardsEngineImpl : public mojom::RewardsEngine {
  public:
-  explicit RewardsEngineImpl(
-      mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote);
+  RewardsEngineImpl(
+      mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
+      const mojom::RewardsEngineOptions& options);
 
   ~RewardsEngineImpl() override;
 
@@ -249,32 +282,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   // mojom::RewardsEngineClient helpers begin (in the order of appearance in
   // Mojom)
-  template <typename Callback>
-  void LoadURL(mojom::UrlRequestPtr request, Callback callback) {
-    DCHECK(request);
-    if (IsShuttingDown()) {
-      BLOG(1, request->url + " will not be executed as we are shutting down");
-      return;
-    }
-
-    if (!request->skip_log) {
-      BLOG(5,
-           UrlRequestToString(request->url, request->headers, request->content,
-                              request->content_type, request->method));
-    }
-
-    if constexpr (std::is_same_v<Callback, LoadURLCallback>) {
-      client_->LoadURL(std::move(request), std::move(callback));
-    } else {
-      client_->LoadURL(std::move(request),
-                       base::BindOnce(
-                           [](LegacyLoadURLCallback callback,
-                              mojom::UrlResponsePtr response) {
-                             callback(std::move(response));
-                           },
-                           std::move(callback)));
-    }
-  }
 
   template <typename T>
   T GetState(const std::string& name) {
@@ -339,10 +346,26 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   mojom::ClientInfoPtr GetClientInfo();
 
+  // Performs logging to the Rewards logging file as implemented by the client.
+  //
+  //   Log(FROM_HERE) << "This will appear in the log file when verbose logging"
+  //                     "is enabled.";
+  //
+  //   LogError(FROM_HERE) << "This will always appear in the log file."
+  //                          "Do not use with arbitrary strings or data!";
+  //
+  // NOTE: Do not use arbitrary strings when using `LogError`, as this can
+  // result in sensitive data being written to the Rewards log file.
+  RewardsLogStream Log(base::Location location);
+  RewardsLogStream LogError(base::Location location);
+
   std::optional<std::string> EncryptString(const std::string& value);
 
   std::optional<std::string> DecryptString(const std::string& value);
   // mojom::RewardsEngineClient helpers end
+
+  base::WeakPtr<RewardsEngineImpl> GetWeakPtr();
+  base::WeakPtr<const RewardsEngineImpl> GetWeakPtr() const;
 
   mojom::RewardsEngineClient* client();
 
@@ -353,39 +376,44 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
     return *helper;
   }
 
-  promotion::Promotion* promotion() { return &promotion_; }
+  promotion::Promotion* promotion() { return promotion_.get(); }
 
-  publisher::Publisher* publisher() { return &publisher_; }
+  publisher::Publisher* publisher() { return publisher_.get(); }
 
-  Media* media() { return &media_; }
+  Media* media() { return media_.get(); }
 
-  contribution::Contribution* contribution() { return &contribution_; }
+  contribution::Contribution* contribution() { return contribution_.get(); }
 
-  wallet::Wallet* wallet() { return &wallet_; }
+  wallet::Wallet* wallet() { return wallet_.get(); }
 
-  report::Report* report() { return &report_; }
+  report::Report* report() { return report_.get(); }
 
-  state::State* state() { return &state_; }
+  state::State* state() { return state_.get(); }
 
-  api::API* api() { return &api_; }
+  api::API* api() { return api_.get(); }
 
-  recovery::Recovery* recovery() { return &recovery_; }
+  recovery::Recovery* recovery() { return recovery_.get(); }
 
-  bitflyer::Bitflyer* bitflyer() { return &bitflyer_; }
+  bitflyer::Bitflyer* bitflyer() { return bitflyer_.get(); }
 
-  gemini::Gemini* gemini() { return &gemini_; }
+  gemini::Gemini* gemini() { return gemini_.get(); }
 
-  uphold::Uphold* uphold() { return &uphold_; }
+  uphold::Uphold* uphold() { return uphold_.get(); }
 
-  zebpay::ZebPay* zebpay() { return &zebpay_; }
+  zebpay::ZebPay* zebpay() { return zebpay_.get(); }
+
+  wallet_provider::WalletProvider* GetExternalWalletProvider(
+      const std::string& wallet_type);
 
   // This method is virtualised for test-only purposes.
   virtual database::Database* database();
 
+  const mojom::RewardsEngineOptions& options() const { return options_; }
+
+  mojom::RewardsEngineOptions& GetOptionsForTesting() { return options_; }
+
  private:
   bool IsReady() const;
-
-  bool IsShuttingDown() const;
 
   void OnInitializationComplete(InitializeCallback callback, bool success);
 
@@ -395,29 +423,34 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   void WhenReady(T callback);
 
   mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
+  mojom::RewardsEngineOptions options_;
 
-  std::tuple<std::unique_ptr<InitializationManager>,
-             std::unique_ptr<LinkageChecker>>
+  std::tuple<std::unique_ptr<EnvironmentConfig>,
+             std::unique_ptr<InitializationManager>,
+             std::unique_ptr<URLLoader>,
+             std::unique_ptr<LinkageChecker>,
+             std::unique_ptr<SolanaWalletProvider>>
       helpers_;
 
-  promotion::Promotion promotion_;
-  publisher::Publisher publisher_;
-  Media media_;
-  contribution::Contribution contribution_;
-  wallet::Wallet wallet_;
-  database::Database database_;
-  report::Report report_;
-  state::State state_;
-  api::API api_;
-  recovery::Recovery recovery_;
-  bitflyer::Bitflyer bitflyer_;
-  gemini::Gemini gemini_;
-  uphold::Uphold uphold_;
-  zebpay::ZebPay zebpay_;
+  std::unique_ptr<promotion::Promotion> promotion_;
+  std::unique_ptr<publisher::Publisher> publisher_;
+  std::unique_ptr<Media> media_;
+  std::unique_ptr<contribution::Contribution> contribution_;
+  std::unique_ptr<wallet::Wallet> wallet_;
+  std::unique_ptr<database::Database> database_;
+  std::unique_ptr<report::Report> report_;
+  std::unique_ptr<state::State> state_;
+  std::unique_ptr<api::API> api_;
+  std::unique_ptr<recovery::Recovery> recovery_;
+  std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
+  std::unique_ptr<gemini::Gemini> gemini_;
+  std::unique_ptr<uphold::Uphold> uphold_;
+  std::unique_ptr<zebpay::ZebPay> zebpay_;
 
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
+
   base::OneShotEvent ready_event_;
   base::WeakPtrFactory<RewardsEngineImpl> weak_factory_{this};
 };

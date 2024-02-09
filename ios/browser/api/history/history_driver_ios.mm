@@ -10,7 +10,7 @@
 #import "base/check.h"
 #import "base/strings/utf_string_conversions.h"
 #import "components/browsing_data/core/history_notice_utils.h"
-#import "ios/chrome/browser/history/history_utils.h"
+#import "ios/chrome/browser/history/model/history_utils.h"
 
 using history::BrowsingHistoryService;
 

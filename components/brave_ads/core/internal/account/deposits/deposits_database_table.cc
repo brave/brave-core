@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -14,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -105,13 +107,15 @@ void GetForCreativeInstanceIdCallback(
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  DropTable(transaction, "deposits");
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS deposits (creative_instance_id "
-      "TEXT NOT NULL, value DOUBLE NOT NULL, expire_at TIMESTAMP "
-      "NOT NULL, PRIMARY KEY (creative_instance_id), "
-      "UNIQUE(creative_instance_id) ON CONFLICT REPLACE);";
+      "CREATE TABLE deposits (creative_instance_id TEXT NOT NULL, value DOUBLE "
+      "NOT NULL, expire_at TIMESTAMP NOT NULL, PRIMARY KEY "
+      "(creative_instance_id), UNIQUE(creative_instance_id) ON CONFLICT "
+      "REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 

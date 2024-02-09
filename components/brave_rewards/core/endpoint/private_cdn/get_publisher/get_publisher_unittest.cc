@@ -7,8 +7,8 @@
 #include <utility>
 
 #include "base/big_endian.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
-#include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
@@ -28,7 +28,9 @@ class GetPublisherTest : public RewardsEngineTest {
     base::RunLoop run_loop;
     mojom::Result result;
 
-    GetPublisher(engine()).Request(
+    GetPublisher endpoint(engine());
+
+    endpoint.Request(
         id, prefix,
         [&run_loop, &result, info](mojom::Result request_result,
                                    mojom::ServerPublisherInfoPtr request_info) {
@@ -52,6 +54,14 @@ class GetPublisherTest : public RewardsEngineTest {
     base::WriteBigEndian(&out[0], length);
 
     return out;
+  }
+
+  std::string GetServerUrl(const std::string& path) {
+    return engine()
+        .Get<EnvironmentConfig>()
+        .brave_pcdn_url()
+        .Resolve(path)
+        .spec();
   }
 };
 

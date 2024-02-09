@@ -32,6 +32,7 @@
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
+#include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
@@ -50,14 +51,15 @@
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "components/password_manager/core/browser/password_store.h"
+#include "components/password_manager/core/browser/password_store/password_store.h"
 #include "components/prefs/pref_service.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
-#include "ios/chrome/browser/history/history_service_factory.h"
-#include "ios/chrome/browser/history/web_history_service_factory.h"
+#include "ios/chrome/browser/history/model/history_service_factory.h"
+#include "ios/chrome/browser/history/model/web_history_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
@@ -115,6 +117,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
+@property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @end
 
@@ -205,9 +208,13 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         browserStateManager->GetLastUsedBrowserState();
     _mainBrowserState = chromeBrowserState;
 
+    // Disable Safe-Browsing via Prefs
+    chromeBrowserState->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled,
+                                               false);
+
     // Setup main browser
     _browserList = BrowserListFactory::GetForBrowserState(_mainBrowserState);
-    _browser = Browser::Create(_mainBrowserState);
+    _browser = Browser::Create(_mainBrowserState, {});
     _browserList->AddBrowser(_browser.get());
 
     // Setup otr browser
@@ -215,7 +222,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         chromeBrowserState->GetOffTheRecordChromeBrowserState();
     _otr_browserList =
         BrowserListFactory::GetForBrowserState(otrChromeBrowserState);
-    _otr_browser = Browser::Create(otrChromeBrowserState);
+    _otr_browser = Browser::Create(otrChromeBrowserState, {});
     _otr_browserList->AddIncognitoBrowser(_otr_browser.get());
 
     // Initialize the provider UI global state.
@@ -477,6 +484,14 @@ static bool CustomLogHandler(int severity,
                 p3aService:_p3a_service];
   }
   return _p3aUtils;
+}
+
+- (DeAmpPrefs*)deAmpPrefs {
+  if (!_deAmpPrefs) {
+    _deAmpPrefs =
+        [[DeAmpPrefs alloc] initWithProfileState:_mainBrowserState->GetPrefs()];
+  }
+  return _deAmpPrefs;
 }
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {

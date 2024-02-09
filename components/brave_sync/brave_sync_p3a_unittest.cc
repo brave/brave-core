@@ -58,22 +58,22 @@ TEST(BraveSyncP3ATest, TestSyncedObjectsCount) {
   base::HistogramTester histogram_tester;
 
   RecordSyncedObjectsCount(0);
-  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramName, 0, 1);
+  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 0, 1);
   RecordSyncedObjectsCount(1000);
-  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramName, 0, 2);
+  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 0, 2);
 
   RecordSyncedObjectsCount(1001);
-  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramName, 1, 1);
+  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 1, 1);
   RecordSyncedObjectsCount(10000);
-  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramName, 1, 2);
+  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 1, 2);
 
   RecordSyncedObjectsCount(10001);
-  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramName, 2, 1);
+  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 2, 1);
   RecordSyncedObjectsCount(49000);
-  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramName, 2, 2);
+  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 2, 2);
 
   RecordSyncedObjectsCount(49001);
-  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramName, 3, 1);
+  histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 3, 1);
 }
 
 }  // namespace p3a

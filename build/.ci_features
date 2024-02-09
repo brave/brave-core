@@ -1,9 +1,6 @@
 # This file contains supported CI features in the current checkout to
 # conditionally enable them on CI. Use lower_snake_case naming.
 
-# Allow CI to use `--use_remoteexec` instead of `--use_goma`.
-reclient
-
 # Allow CI to set ignore_patch_version_number=true in .env. This feature is
 # added to speedup PR builders. When ignore_patch_version_number=true,
 # chrome/VERSION will always have PATCH=0. This will also generate dist files

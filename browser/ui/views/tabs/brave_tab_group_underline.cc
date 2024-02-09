@@ -14,6 +14,7 @@
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/view_utils.h"
@@ -121,3 +122,6 @@ int BraveTabGroupUnderline::GetStrokeInset() {
   }
   return brave_tabs::kHorizontalTabInset;
 }
+
+BEGIN_METADATA(BraveTabGroupUnderline)
+END_METADATA

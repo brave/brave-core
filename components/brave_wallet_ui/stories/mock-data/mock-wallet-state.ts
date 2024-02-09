@@ -14,7 +14,6 @@ import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options
 import { AccountsGroupByOption } from '../../options/group-assets-by-options'
 
 // mocks
-import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 import { networkEntityAdapter } from '../../common/slices/entities/network.entity'
 
@@ -25,14 +24,10 @@ export const mockWalletState: WalletState = {
   },
   addUserAssetError: false,
   fullTokenList: mockErc20TokensList,
-  gasEstimates: undefined,
   hasInitialized: true,
   isBitcoinEnabled: false,
   isZCashEnabled: false,
   isAnkrBalancesFeatureEnabled: false,
-  solFeeEstimates: {
-    fee: (0.000005 * LAMPORTS_PER_SOL) as unknown as bigint
-  },
   allowedNewWalletAccountTypeNetworkIds: [
     networkEntityAdapter.selectId({
       chainId: BraveWallet.FILECOIN_MAINNET,
@@ -155,7 +150,7 @@ export const mockWalletState: WalletState = {
   deletedNonFungibleTokens: [],
   hidePortfolioNFTsTab: false,
   filteredOutPortfolioNetworkKeys: [],
-  filteredOutPortfolioAccountAddresses: [],
+  filteredOutPortfolioAccountIds: [],
   hidePortfolioSmallBalances: false,
   selectedGroupAssetsByItem: AccountsGroupByOption.id,
   showNetworkLogoOnNfts: false,

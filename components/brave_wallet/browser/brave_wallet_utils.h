@@ -95,18 +95,6 @@ std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
 GURL AddInfuraProjectId(const GURL& url);
 GURL MaybeAddInfuraProjectId(const GURL& url);
 
-std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
-std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
-std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id);
-std::string GetKnownFilNetworkId(const std::string& chain_id);
-std::string GetKnownBtcNetworkId(const std::string& chain_id);
-std::string GetKnownSolNetworkId(const std::string& chain_id);
-std::string GetKnownZecNetworkId(const std::string& chain_id);
-std::string GetKnownNetworkId(mojom::CoinType coin,
-                              const std::string& chain_id);
-std::string GetNetworkId(PrefService* prefs,
-                         mojom::CoinType coin,
-                         const std::string& chain_id);
 void SetDefaultEthereumWallet(PrefService* prefs,
                               mojom::DefaultWallet default_wallet);
 void SetDefaultSolanaWallet(PrefService* prefs,
@@ -118,12 +106,6 @@ std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
-std::vector<std::string> GetAllKnownEthNetworkIds();
-std::vector<std::string> GetAllKnownSolNetworkIds();
-std::vector<std::string> GetAllKnownFilNetworkIds();
-std::vector<std::string> GetAllKnownBtcNetworkIds();
-std::vector<std::string> GetAllKnownZecNetworkIds();
-std::string GetKnownEthNetworkId(const std::string& chain_id);
 
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
@@ -149,7 +131,7 @@ void RemoveHiddenNetwork(PrefService* prefs,
                          const std::string& chain_id);
 
 // Get/Set the current chain ID for coin from kBraveWalletSelectedNetworks pref
-// when origin is not presetned. If origin is presented,
+// when origin is not presented. If origin is presented,
 // kBraveWalletSelectedNetworksPerOrigin will be used. In addition, if origin is
 // opaque, we will also fallback to kBraveWalletSelectedNetworks but it will be
 // read only, other non http/https scheme will fallback to r/w
@@ -165,17 +147,16 @@ bool SetCurrentChainId(PrefService* prefs,
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 
 // Converts string representation of CoinType to enum.
-std::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key);
-
-// Resolves chain_id from network_id.
-std::optional<std::string> GetChainId(PrefService* prefs,
-                                      const mojom::CoinType& coin,
-                                      const std::string& network_id);
+// DEPRECATED 01/2024. For migration only.
+std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
+    const std::string& key);
 
 // Resolves chain_id from network_id (including custom networks).
-std::optional<std::string> GetChainIdByNetworkId(PrefService* prefs,
-                                                 const mojom::CoinType& coin,
-                                                 const std::string& network_id);
+// DEPRECATED 01/2024. For migration only.
+std::optional<std::string> GetChainIdByNetworkId_DEPRECATED(
+    PrefService* prefs,
+    const mojom::CoinType& coin,
+    const std::string& network_id);
 
 // Returns a string used for web3_clientVersion in the form of
 // BraveWallet/v[chromium-version]. Note that we expose only the Chromium
@@ -192,6 +173,9 @@ mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 std::string GenerateRandomHexString();
 
 std::string WalletInternalErrorMessage();
+
+mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id);
+mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id);
 
 }  // namespace brave_wallet
 

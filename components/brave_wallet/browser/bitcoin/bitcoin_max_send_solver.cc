@@ -10,6 +10,8 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -37,7 +39,8 @@ base::expected<BitcoinTransaction, std::string> BitcoinMaxSendSolver::Solve() {
   uint64_t min_fee = ApplyFeeRate(
       fee_rate_, BitcoinSerializer::CalcTransactionVBytes(result, true));
   if (result.TotalInputsAmount() <= min_fee) {
-    return base::unexpected("Insufficient funds");
+    return base::unexpected(
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE));
   }
 
   result.TargetOutput()->amount = result.TotalInputsAmount() - min_fee;

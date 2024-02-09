@@ -17,7 +17,7 @@ import { DefaultPanelHeader } from './default-panel-header'
 import { Row } from '../../shared/style'
 import {
   ButtonIcon,
-  CircleButton,
+  MenuButton,
   HeaderTitle
 } from './shared-card-headers.style'
 
@@ -39,7 +39,7 @@ export const PageTitleHeader = ({ title, showBackButton, onBack }: Props) => {
       justifyContent='flex-start'
     >
       {showBackButton && (
-        <CircleButton
+        <MenuButton
           size={28}
           marginRight={16}
           onClick={onBack}
@@ -48,7 +48,7 @@ export const PageTitleHeader = ({ title, showBackButton, onBack }: Props) => {
             size={16}
             name='arrow-left'
           />
-        </CircleButton>
+        </MenuButton>
       )}
       <HeaderTitle isPanel={isPanel}>{title}</HeaderTitle>
     </Row>

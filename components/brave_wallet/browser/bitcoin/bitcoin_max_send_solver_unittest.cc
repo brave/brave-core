@@ -14,9 +14,11 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "crypto/sha2.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 using testing::UnorderedElementsAreArray;
 
@@ -82,7 +84,8 @@ TEST_F(BitcoinMaxSendSolverUnitTest, NoInputs) {
   BitcoinMaxSendSolver solver(base_tx, fee_rate(), {});
 
   // Can't send exactly what we have as we need to add some fee.
-  EXPECT_EQ("Insufficient funds", solver.Solve().error());
+  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
+            solver.Solve().error());
 }
 
 TEST_F(BitcoinMaxSendSolverUnitTest, NotEnoughInputsForFee) {
@@ -99,7 +102,8 @@ TEST_F(BitcoinMaxSendSolverUnitTest, NotEnoughInputsForFee) {
     BitcoinMaxSendSolver solver(base_tx, fee_rate(), input_groups);
 
     // We have nothing left after fee is taken from inputs.
-    EXPECT_EQ("Insufficient funds", solver.Solve().error());
+    EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
+              solver.Solve().error());
   }
 
   {

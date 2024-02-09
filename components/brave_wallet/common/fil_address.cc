@@ -123,7 +123,7 @@ FilAddress FilAddress::FromAddress(const std::string& address) {
     return FilAddress();
   }
 
-  std::string payload_decoded;
+  std::vector<uint8_t> payload_decoded;
   if (protocol == mojom::FilecoinAddressProtocol::DELEGATED) {
     if (address.substr(2, 3) != "10f") {
       return FilAddress();
@@ -135,14 +135,13 @@ FilAddress FilAddress::FromAddress(const std::string& address) {
         base32::Base32Decode(base::ToUpperASCII(address.substr(2)));
   }
 
-  if (payload_decoded.empty()) {
+  if (payload_decoded.size() < kChecksumSize) {
     return FilAddress();
   }
 
-  std::string payload_string{
-      payload_decoded.substr(0, payload_decoded.size() - kChecksumSize)};
-  std::vector<uint8_t> payload(payload_string.begin(), payload_string.end());
-  return FilAddress::FromPayload(payload, protocol.value(), network);
+  payload_decoded.erase(std::prev(payload_decoded.end(), kChecksumSize),
+                        payload_decoded.end());
+  return FilAddress::FromPayload(payload_decoded, protocol.value(), network);
 }
 
 // static
@@ -212,10 +211,8 @@ FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
 
   payload.insert(payload.end(), checksum.begin(), checksum.end());
 
-  std::string encoded = base32::Base32Encode(
-      std::string_view(reinterpret_cast<const char*>(payload.data()),
-                       payload.size()),
-      base32::Base32EncodePolicy::OMIT_PADDING);
+  std::string encoded =
+      base32::Base32Encode(payload, base32::Base32EncodePolicy::OMIT_PADDING);
   return FilAddress::FromAddress((is_mainnet ? "f410f" : "t410f") + encoded);
 }
 
@@ -293,12 +290,11 @@ std::string FilAddress::EncodeAsString() const {
   }
   payload_hash.insert(payload_hash.end(), checksum_hash->begin(),
                       checksum_hash->end());
-  std::string input(payload_hash.begin(), payload_hash.end());
   // Encoding as lower case base32 without padding according to
   // https://spec.filecoin.io/appendix/address/#section-appendix.address.payload
   // and https://github.com/multiformats/multibase/blob/master/multibase.csv
-  std::string encoded_output = base::ToLowerASCII(
-      base32::Base32Encode(input, base32::Base32EncodePolicy::OMIT_PADDING));
+  std::string encoded_output = base::ToLowerASCII(base32::Base32Encode(
+      payload_hash, base32::Base32EncodePolicy::OMIT_PADDING));
   if (protocol_ == mojom::FilecoinAddressProtocol::DELEGATED) {
     auto r = network_ + std::to_string(static_cast<int>(protocol_)) +
              // Agent id + delimiter

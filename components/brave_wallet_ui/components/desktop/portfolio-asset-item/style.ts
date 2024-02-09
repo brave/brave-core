@@ -5,13 +5,19 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
+
+// Shared Styles
 import {
   AssetIconProps,
   AssetIconFactory,
-  WalletButton
+  WalletButton,
+  Text,
+  Column,
+  Row
 } from '../../shared/style'
 
-export const StyledWrapper = styled.div<{ isPanel?: boolean }>`
+export const HoverArea = styled.div<{ isPanel?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,7 +30,7 @@ export const StyledWrapper = styled.div<{ isPanel?: boolean }>`
   }
 `
 
-export const ButtonArea = styled(WalletButton)<{
+export const Button = styled(WalletButton)<{
   disabled: boolean
   rightMargin?: number
 }>`
@@ -49,12 +55,9 @@ export const NameAndIcon = styled.div`
   text-align: left;
 `
 
-export const AssetName = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+export const AssetName = styled(Text)`
+  line-height: 22px;
+  color: ${leo.color.text.primary};
 `
 
 export const BalanceColumn = styled.div`
@@ -65,20 +68,14 @@ export const BalanceColumn = styled.div`
   text-align: right;
 `
 
-export const FiatBalanceText = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
+export const FiatBalanceText = styled(Text)`
   line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.secondary};
 `
 
-export const AssetBalanceText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+export const AssetBalanceText = styled(Text)`
+  line-height: 22px;
+  color: ${leo.color.text.primary};
 `
 
 // Construct styled-component using JS object instead of string, for editor
@@ -103,12 +100,9 @@ export const Spacer = styled.div`
   height: 4px;
 `
 
-export const NetworkDescriptionText = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
+export const NetworkDescriptionText = styled(Text)`
   line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.secondary};
 `
 
 export const AssetMenuWrapper = styled.div`
@@ -133,4 +127,27 @@ export const AssetMenuButtonIcon = styled(Icon).attrs({
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};
+`
+
+export const Wrapper = styled(Column)<{
+  showBorder?: boolean
+}>`
+  border-radius: ${(p) => (p.showBorder ? 16 : 0)}px;
+  border: ${(p) =>
+    p.showBorder ? `1px solid ${leo.color.divider.subtle}` : 'none'};
+`
+
+export const InfoBar = styled(Row)`
+  background-color: ${leo.color.systemfeedback.infoBackground};
+  border-radius: 12px;
+  padding: 8px 16px;
+`
+
+export const InfoText = styled(Text)`
+  line-height: 22px;
+  color: ${leo.color.systemfeedback.infoText};
+`
+
+export const LoadingRing = styled(ProgressRing)`
+  --leo-progressring-size: 20px;
 `

@@ -47,6 +47,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   label="$i18n{braveLeoAssistantShowIconOnToolbarLabel}"
   on-settings-boolean-control-change="onLeoAssistantShowOnToolbarChange_">
 </settings-toggle-button>
+<settings-toggle-button class="cr-row hr"
+  pref="{{prefs.brave.ai_chat.context_menu_enabled}}"
+  label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
+  sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
+</settings-toggle-button>
 <div class="settings-box">
   <div class="flex cr-padded-text">
     <div>$i18n{braveLeoAssistantModelSelectionLabel}</div>

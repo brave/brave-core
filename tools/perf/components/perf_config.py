@@ -9,10 +9,26 @@ import logging
 import re
 
 from typing import List, Optional, Dict, Tuple
+from enum import Enum
 
 from components.browser_type import BrowserType, ParseBrowserType
 from components.version import BraveVersion
 
+
+class ProfileRebaseType(Enum):
+  NONE = 1
+  OFFLINE = 2
+  ONLINE = 3
+
+
+def _ParseProfileRebaseType(rebase_type: str) -> ProfileRebaseType:
+  if rebase_type == 'none':
+    return ProfileRebaseType.NONE
+  if rebase_type == 'offline':
+    return ProfileRebaseType.OFFLINE
+  if rebase_type == 'online':
+    return ProfileRebaseType.ONLINE
+  raise RuntimeError(f'Unknown ProfileRebaseType {rebase_type}')
 
 class RunnerConfig:
   """A description of a browser configuration that is able to run tests."""
@@ -25,6 +41,7 @@ class RunnerConfig:
   browser_type: BrowserType
   dashboard_bot_name: Optional[str] = None
   save_artifacts = True
+  profile_rebase = ProfileRebaseType.OFFLINE
 
   def __init__(self, json: Dict[str, str]):
     assert isinstance(json, dict)
@@ -36,6 +53,9 @@ class RunnerConfig:
         continue
       if key == 'browser-type':
         self.browser_type = ParseBrowserType(json[key])
+        continue
+      if key == 'profile-rebase':
+        self.profile_rebase = _ParseProfileRebaseType(json[key])
         continue
       key_ = key.replace('-', '_')
       if not hasattr(self, key_):
@@ -74,12 +94,11 @@ class BenchmarkConfig:
       return
     assert isinstance(json, dict)
     self.name = json['name']
-    self.pageset_repeat = json['pageset-repeat']
+    if pageset_repeat := json.get('pageset-repeat'):
+      self.pageset_repeat = pageset_repeat
     self.stories = []
-    if 'stories' in json:
-      story_list: List[str] = json['stories']
-      for story in story_list:
-        self.stories.append(story)
+    if story_list := json.get('stories'):
+      self.stories.extend(story_list)
 
 
 class PerfConfig:

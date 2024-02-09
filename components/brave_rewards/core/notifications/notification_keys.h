@@ -13,6 +13,7 @@ const char kUpholdBATNotAllowed[] = "uphold_bat_not_allowed";
 const char kUpholdInsufficientCapabilities[] =
     "uphold_insufficient_capabilities";
 const char kWalletDisconnected[] = "wallet_disconnected";
+const char kSelfCustodyAvailable[] = "self_custody_available";
 
 }  // namespace notifications
 }  // namespace brave_rewards::internal

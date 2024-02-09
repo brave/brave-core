@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index 21df89b758b87ceb35802f284337e801a7a50ca3..f6b271eacbef3a69315c0d7d78d01cdbc148c1ae 100644
+index 5d86773082392d6945763658d5d3f719344d75b2..f6c0ff1ef9ea141bf263e4e8dcbc96ce933af43a 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 @@ -95,6 +95,7 @@ class ChromeBrowsingDataRemoverDelegate

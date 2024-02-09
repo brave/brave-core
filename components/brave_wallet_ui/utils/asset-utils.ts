@@ -4,13 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // Types
-import { BraveWallet, SupportedTestNetworks } from '../constants/types'
+import { BraveWallet } from '../constants/types'
 
 // utils
 import Amount from './amount'
 import { getRampNetworkPrefix } from './string-utils'
-
 import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
+import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
@@ -115,92 +115,40 @@ export const addChainIdToToken = (
   }
 }
 
-export const getNativeTokensFromList = (
-  tokenList: BraveWallet.BlockchainToken[]
-) => {
-  // separate Native (gas) assets from other tokens
-  const { nativeAssets, tokens } = tokenList.reduce(
-    (acc, t) => {
-      if (
-        (t.symbol.toLowerCase() === 'eth' &&
-          t.chainId === BraveWallet.MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'eth' &&
-          t.chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'eth' &&
-          t.chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'matic' &&
-          t.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'ftm' &&
-          t.chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'celo' &&
-          t.chainId === BraveWallet.CELO_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'bnb' &&
-          t.chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'sol' &&
-          t.chainId === BraveWallet.SOLANA_MAINNET) ||
-        (t.symbol.toLowerCase() === 'fil' &&
-          t.chainId === BraveWallet.FILECOIN_MAINNET) ||
-        (t.symbol.toLowerCase() === 'avax' &&
-          t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'avaxc' &&
-          t.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) ||
-        (t.symbol.toLowerCase() === 'neon' &&
-          t.chainId === BraveWallet.NEON_EVM_MAINNET_CHAIN_ID)
-      ) {
-        acc.nativeAssets.push(t)
-        return acc
-      }
+export const batSymbols = ['bat', 'wbat', 'bat.e'] as const
+export type BatSymbols = (typeof batSymbols)[number]
 
-      acc.tokens.push(t)
-      return acc
-    },
-    {
-      nativeAssets: [] as BraveWallet.BlockchainToken[],
-      tokens: [] as BraveWallet.BlockchainToken[]
-    }
-  )
-
-  return {
-    nativeAssets,
-    tokens
-  }
+export const isBat = ({
+  symbol
+}: Pick<BraveWallet.BlockchainToken, 'symbol'>) => {
+  return batSymbols.includes(symbol.toLowerCase() as BatSymbols)
 }
 
-export const getBatTokensFromList = (
+/**
+ * alphabetically sorts tokens in this order:
+ *  1. Gas
+ *  2. BAT
+ *  3. non-gas, non-BAT
+ */
+export const sortNativeAndAndBatAssetsToTop = (
   tokenList: BraveWallet.BlockchainToken[]
 ) => {
-  // separate BAT from other tokens in the list so they can be placed higher in
-  // the list
-  const { bat, nonBat, testnetAssets } = tokenList.reduce(
-    (acc, t) => {
-      if (SupportedTestNetworks.includes(t.chainId)) {
-        acc.testnetAssets.push(t)
-        return acc
-      } else {
-        if (
-          t.symbol.toLowerCase() === 'bat' ||
-          t.symbol.toLowerCase() === 'wbat' || // wormhole BAT
-          t.symbol.toLowerCase() === 'bat.e' // Avalanche C-Chain BAT
-        ) {
-          acc.bat.push(t)
-          return acc
-        }
-        acc.nonBat.push(t)
-        return acc
-      }
-    },
-    {
-      bat: [] as BraveWallet.BlockchainToken[],
-      nonBat: [] as BraveWallet.BlockchainToken[],
-      testnetAssets: [] as BraveWallet.BlockchainToken[]
+  return [...tokenList].sort((a, b) => {
+    // check if Gas/Fee token
+    const nativeSort = Number(isNativeAsset(b)) - Number(isNativeAsset(a))
+    if (nativeSort !== 0) {
+      return nativeSort
     }
-  )
 
-  return {
-    bat,
-    nonBat,
-    testnetAssets
-  }
+    // check if BAT
+    const batSort = Number(isBat(b)) - Number(isBat(a))
+    if (batSort !== 0) {
+      return batSort
+    }
+
+    // sort alphabetically
+    return a.name.localeCompare(b.name)
+  })
 }
 
 export type GetBlockchainTokenIdArg = Pick<
@@ -306,3 +254,42 @@ export const checkIfTokenNeedsNetworkIcon = (
  */
 export const isStripeSupported = () =>
   navigator.language.toLowerCase() === 'en-us'
+
+const idWithHashRegexp = new RegExp(/#(\d+)$/)
+const idWithSpaceRegexp = new RegExp(/ (\d+)$/)
+
+/** Attempts to remove the token-Id from the NFT name. Useful fro grouping NFTS
+ * into like-kinds */
+export function tokenNameToNftCollectionName(
+  token: BraveWallet.BlockchainToken
+) {
+  if (token.name.match(idWithHashRegexp)) {
+    return token.name.replace(idWithHashRegexp, '')
+  }
+
+  if (token.name.match(idWithSpaceRegexp)) {
+    return token.name.replace(idWithSpaceRegexp, '')
+  }
+
+  return token.name
+}
+
+export const getHiddenTokenIds = (): string[] => {
+  return JSON.parse(
+    localStorage.getItem(LOCAL_STORAGE_KEYS.USER_HIDDEN_TOKEN_IDS) || '[]'
+  )
+}
+
+export const getDeletedTokenIds = (): string[] => {
+  return JSON.parse(
+    localStorage.getItem(LOCAL_STORAGE_KEYS.USER_DELETED_TOKEN_IDS) || '[]'
+  )
+}
+
+export const getHiddenOrDeletedTokenIdsList = () => {
+  return getDeletedTokenIds().concat(getHiddenTokenIds())
+}
+
+export const isTokenIdRemoved = (tokenId: string, removedIds: string[]) => {
+  return removedIds.includes(tokenId)
+}

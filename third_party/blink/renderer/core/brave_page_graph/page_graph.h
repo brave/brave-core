@@ -141,7 +141,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                  const AtomicString& http_method,
                                  blink::EncodedFormData*);
   // Requests tracking:
-  void WillSendRequest(blink::DocumentLoader* loader,
+  void WillSendRequest(blink::ExecutionContext* execution_context,
+                       blink::DocumentLoader* loader,
                        const blink::KURL& fetch_context_url,
                        const blink::ResourceRequest& request,
                        const blink::ResourceResponse& redirect_response,

@@ -64,8 +64,8 @@
 
 namespace {
 
-constexpr gfx::Size kIconSize(SidebarButtonView::kIconSize,
-                              SidebarButtonView::kIconSize);
+constexpr gfx::Size kIconSize(SidebarButtonView::kExternalIconSize,
+                              SidebarButtonView::kExternalIconSize);
 
 std::string GetFirstCharFromURL(const GURL& url) {
   DCHECK(url.is_valid());
@@ -396,10 +396,11 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
   CHECK_LT(*index, children().size());
 
   SidebarItemView* item_view = GetItemViewAt(*index);
-  item_view->SetImage(
+  item_view->SetImageModel(
       views::Button::STATE_NORMAL,
-      gfx::ImageSkiaOperations::CreateResizedImage(
-          image, skia::ImageOperations::RESIZE_BEST, kIconSize));
+      ui::ImageModel::FromImageSkia(
+          gfx::ImageSkiaOperations::CreateResizedImage(
+              image, skia::ImageOperations::RESIZE_BEST, kIconSize)));
 }
 
 void SidebarItemsContentsView::ClearDragIndicator() {
@@ -552,7 +553,7 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
             : (state == views::Button::STATE_PRESSED
                    ? kColorSidebarButtonPressed
                    : kColorSidebarButtonBase),
-        SidebarButtonView::kIconSize);
+        SidebarButtonView::kDefaultIconSize);
   };
 
   switch (type) {

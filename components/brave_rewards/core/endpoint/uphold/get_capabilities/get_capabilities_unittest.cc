@@ -36,11 +36,11 @@ class GetCapabilitiesTest : public testing::Test {
 };
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
+  int status_code = 0;
   EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr, auto callback) {
+      .WillRepeatedly([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_OK;
+        response->status_code = status_code;
         response->body = R"(
 [
   {
@@ -64,18 +64,33 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
         std::move(callback).Run(std::move(response));
       });
 
-  base::MockCallback<GetCapabilitiesCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .Times(1)
-      .WillOnce([](mojom::Result result, Capabilities capabilities) {
-        EXPECT_EQ(result, mojom::Result::OK);
-        EXPECT_EQ(capabilities.can_receive, true);
-        EXPECT_EQ(capabilities.can_send, true);
-      });
-  get_capabilities_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-                            callback.Get());
+  {
+    status_code = 200;
+    base::MockCallback<GetCapabilitiesCallback> callback;
+    EXPECT_CALL(callback, Run)
+        .Times(1)
+        .WillOnce([](mojom::Result result, Capabilities capabilities) {
+          EXPECT_EQ(result, mojom::Result::OK);
+          EXPECT_EQ(capabilities.can_receive, true);
+          EXPECT_EQ(capabilities.can_send, true);
+        });
+    get_capabilities_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                              callback.Get());
+    task_environment_.RunUntilIdle();
+  }
 
-  task_environment_.RunUntilIdle();
+  {
+    status_code = 206;
+    base::MockCallback<GetCapabilitiesCallback> callback;
+    EXPECT_CALL(callback, Run)
+        .Times(1)
+        .WillOnce([](mojom::Result result, Capabilities capabilities) {
+          EXPECT_EQ(result, mojom::Result::OK);
+        });
+    get_capabilities_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                              callback.Get());
+    task_environment_.RunUntilIdle();
+  }
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {

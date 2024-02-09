@@ -54,44 +54,74 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
 
     private View mQRButton;
 
-    public BraveLocationBarCoordinator(View locationBarLayout, View autocompleteAnchorView,
+    public BraveLocationBarCoordinator(
+            View locationBarLayout,
+            View autocompleteAnchorView,
             ObservableSupplier<Profile> profileObservableSupplier,
             PrivacyPreferencesManager privacyPreferencesManager,
-            LocationBarDataProvider locationBarDataProvider, ActionMode.Callback actionModeCallback,
-            WindowDelegate windowDelegate, WindowAndroid windowAndroid,
+            LocationBarDataProvider locationBarDataProvider,
+            ActionMode.Callback actionModeCallback,
+            WindowDelegate windowDelegate,
+            WindowAndroid windowAndroid,
             @NonNull Supplier<Tab> activityTabSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
             Supplier<ShareDelegate> shareDelegateSupplier,
             IncognitoStateProvider incognitoStateProvider,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
-            BackKeyBehaviorDelegate backKeyBehavior, SearchEngineLogoUtils searchEngineLogoUtils,
-            @NonNull PageInfoAction pageInfoAction, @NonNull Callback<Tab> bringTabToFrontCallback,
-            @NonNull SaveOfflineButtonState saveOfflineButtonState, @NonNull OmniboxUma omniboxUma,
+            BackKeyBehaviorDelegate backKeyBehavior,
+            @NonNull PageInfoAction pageInfoAction,
+            @NonNull Callback<Tab> bringTabToFrontCallback,
+            @NonNull SaveOfflineButtonState saveOfflineButtonState,
+            @NonNull OmniboxUma omniboxUma,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState,
             @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
-            @Nullable Supplier<MerchantTrustSignalsCoordinator>
-                    merchantTrustSignalsCoordinatorSupplier,
+            @Nullable
+                    Supplier<MerchantTrustSignalsCoordinator>
+                            merchantTrustSignalsCoordinatorSupplier,
             @NonNull OmniboxActionDelegate omniboxActionDelegate,
             BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
             Callback<Throwable> reportExceptionCallback,
             @Nullable BackPressManager backPressManager,
-            @NonNull OmniboxSuggestionsDropdownScrollListener
-                    omniboxSuggestionsDropdownScrollListener,
+            @NonNull
+                    OmniboxSuggestionsDropdownScrollListener
+                            omniboxSuggestionsDropdownScrollListener,
             @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate,
-            @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
-        super(locationBarLayout, autocompleteAnchorView, profileObservableSupplier,
-                privacyPreferencesManager, locationBarDataProvider, actionModeCallback,
-                windowDelegate, windowAndroid, activityTabSupplier, modalDialogManagerSupplier,
-                shareDelegateSupplier, incognitoStateProvider, activityLifecycleDispatcher,
-                overrideUrlLoadingDelegate, backKeyBehavior, searchEngineLogoUtils, pageInfoAction,
-                bringTabToFrontCallback, saveOfflineButtonState, omniboxUma,
-                tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier,
-                merchantTrustSignalsCoordinatorSupplier, omniboxActionDelegate,
-                browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
-                omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate,
-                tabModelSelectorSupplier);
+            @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            boolean forcePhoneStyleOmnibox) {
+        super(
+                locationBarLayout,
+                autocompleteAnchorView,
+                profileObservableSupplier,
+                privacyPreferencesManager,
+                locationBarDataProvider,
+                actionModeCallback,
+                windowDelegate,
+                windowAndroid,
+                activityTabSupplier,
+                modalDialogManagerSupplier,
+                shareDelegateSupplier,
+                incognitoStateProvider,
+                activityLifecycleDispatcher,
+                overrideUrlLoadingDelegate,
+                backKeyBehavior,
+                pageInfoAction,
+                bringTabToFrontCallback,
+                saveOfflineButtonState,
+                omniboxUma,
+                tabWindowManagerSupplier,
+                bookmarkState,
+                isToolbarMicEnabledSupplier,
+                merchantTrustSignalsCoordinatorSupplier,
+                omniboxActionDelegate,
+                browserControlsVisibilityDelegate,
+                reportExceptionCallback,
+                backPressManager,
+                omniboxSuggestionsDropdownScrollListener,
+                openHistoryClustersDelegate,
+                tabModelSelectorSupplier,
+                forcePhoneStyleOmnibox);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);

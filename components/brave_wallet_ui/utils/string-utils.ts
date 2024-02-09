@@ -19,6 +19,21 @@ export const toProperCase = (value: string) =>
     (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   )
 
+export function getIsBraveWalletOrigin({
+  originSpec
+}: Pick<BraveWallet.OriginInfo, 'originSpec'>) {
+  try {
+    const url = new URL(originSpec)
+    return (
+      (url.protocol === 'chrome:' || url.protocol === 'brave:') &&
+      url.host === 'wallet'
+    )
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
 export const isRemoteImageURL = (url?: string) =>
   url?.startsWith('http://') ||
   url?.startsWith('https://') ||

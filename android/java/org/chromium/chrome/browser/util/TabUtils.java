@@ -195,7 +195,7 @@ public class TabUtils {
     private static void openNewTab(BraveActivity braveActivity, boolean isIncognito) {
         if (braveActivity == null) return;
         braveActivity.getTabModelSelector().getModel(isIncognito).commitAllTabClosures();
-        braveActivity.getTabCreator(isIncognito).launchNTP();
+        braveActivity.getTabCreator(isIncognito).launchNtp();
     }
 
     public static void openUrlInNewTab(boolean isIncognito, String url) {
@@ -305,5 +305,25 @@ public class TabUtils {
         IntentUtils.addTrustedIntentExtras(intent);
 
         context.startActivity(intent);
+    }
+
+    /**
+     * Returns transition for the given tab
+     *
+     * @param tab
+     */
+    public static int getTransition(Tab tab) {
+        if (tab != null
+                && tab.getWebContents() != null
+                && tab.getWebContents().getNavigationController() != null
+                && tab.getWebContents().getNavigationController().getVisibleEntry() != null) {
+            int transition =
+                    tab.getWebContents()
+                            .getNavigationController()
+                            .getVisibleEntry()
+                            .getTransition();
+            return transition;
+        }
+        return 0;
     }
 }

@@ -33,6 +33,9 @@ type VirtualizedTokensListProps<T extends any[]> = {
   getItemSize: (index: number) => number
   getItemKey: ListItemKeySelector<T[number]>
   maximumViewableTokens?: number
+  /** Allows control of the list from parent, use this to force scrolling of
+   * items into the viewport */
+  listRef?: React.LegacyRef<List<T>>
 }
 
 type ListItemProps<T> = {
@@ -69,7 +72,8 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
   estimatedItemSize,
   getItemSize,
   maximumViewableTokens,
-  getItemKey
+  getItemKey,
+  listRef
 }: VirtualizedTokensListProps<T>) {
   // computed
   // last item shown as 50% visible to indicate that scrolling is possible here
@@ -95,6 +99,7 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
   // render
   return (
     <List
+      ref={listRef}
       width={'100%'}
       height={listHeight}
       itemSize={getItemSize}

@@ -97,6 +97,8 @@
   <message name="IDS_BRAVE_WALLET_SEARCH_TOKENS" desc="Send tab search for tokens.">Search token by name</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_NFTS" desc="Send tab search for nfts.">Search NFT by name, id</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET" desc="Send tab choose asset button.">Choose Asset</message>
+  <message name="IDS_BRAVE_WALLET_ORDINALS_WARNING_MESSAGE" desc="Warning message when sending BTC.">Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.</message>
+  <message name="IDS_BRAVE_WALLET_USER_UNDERSTANDS_LABEL" desc="Message for use to acknowledge a decision">I understand</message>
   <message name="IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE" desc="Message shown when the selected network is not supported for buy transactions">Buy not supported for selected network</message>
   <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Message shown when searching for a UD or ENS domain">Searching for domain...</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_TITLE" desc="Message title shown when requesting to do an ENS off chain lookup.">Brave supports using off-chain gateways to resolve .eth domains.</message>
@@ -442,6 +444,7 @@
   <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain doesn't have a linked <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address</message>
   <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address</message>
   <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address</message>
+  <message name="IDS_BRAVE_WALLET_ZCASH_UNIFIED_ADDRESS_ERROR" desc="Send input trying to send zcash crypto to wrong unified address">Invalid unified address</message>
   <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_TITLE" desc="Send input failed checksum title">Address doesn’t look correct</message>
   <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_DESCRIPTION" desc="Send input failed checksum title">Check your address to make sure it’s the right address (e.g. letters with lower or upper case).</message>
   <message name="IDS_BRAVE_WALLET_HOW_TO_SOLVE" desc="How to solve button text">How can I solve it?</message>
@@ -592,7 +595,9 @@
   <message name="IDS_BRAVE_WALLET_FIL_ACCOUNT_DESCRIPTION" desc="Filecoin account description" translateable="false">Filecoin</message>
   <message name="IDS_BRAVE_WALLET_BTC_MAINNET_ACCOUNT_DESCRIPTION" desc="Bitcoin Mainnet account description" translateable="false">Bitcoin Mainnet</message>
   <message name="IDS_BRAVE_WALLET_BTC_TESTNET_ACCOUNT_DESCRIPTION" desc="Bitcoin Testnet account description" translateable="false">Bitcoin Testnet</message>
-  <message name="IDS_BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION" desc="ZCash account description" translateable="false">ZCash</message>
+  <message name="IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE" desc="Generic insufficient balance error">Insufficient balance</message>
+  <message name="IDS_BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION" desc="ZCash account description" translateable="false">Zcash Mainnet</message>
+  <message name="IDS_BRAVE_WALLET_ZEC_TESTNET_ACCOUNT_DESCRIPTION" desc="ZCash testnet account description" translateable="false">Zcash Testnet</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE" desc="Show network logo filter title">Network Logo</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_DESCRIPTION" desc="Show network logo filter description">Show network logo on NFTs</message>
   <message name="IDS_BRAVE_WALLET_SHOW_SPAM_NFTS_TITLE" desc="Show spam NFTs filter title">Spam NFTs</message>
@@ -605,6 +610,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_HEADER_TITLE" desc="Transaction failed header title"><ph name="VALUE">$1<ex>1 ETH</ex></ph> was returned to your wallet</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_TITLE" desc="Transaction failed title">Transaction failed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_DESCRIPTION" desc="Transaction failed description">Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.</message>
+  <message name="IDS_BRAVE_WALLET_ZCASH_TRANSACTION_ALREADY_EXISTS_DESCRIPTION" desc="Zcash transaction failed since there is already one in progress">There is already a Zcash transaction in progress. Please try again later.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_SWAP_NEXT_CTA" desc="Transaction failed CTA text for swap">New trade</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_NEXT_CTA" desc="Transaction failed CTA text">New transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_VIEW_ERROR_CTA" desc="Transaction failed view error CTA text">View Error</message>
@@ -1016,4 +1022,16 @@
   <message name="IDS_BRAVE_WALLET_BUTTON_ENABLE" desc="Button text for enabling a feature">Enable</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explaination of terms of service for transaction simulations">Brave works with a partner to provide this service. By enabling, you agree to share unsigned transactions and their DApp URLs with our partner.</message>
   <message name="IDS_BRAVE_WALLET_CHANGE_ANYTIME_IN_SETTINGS" desc="Explains that something can be changed from within settings">Change anytime in <ph name="TAG_BEFORE">$1</ph>Settings<ph name="TAG_AFTER">$2</ph>.</message>
+  <message name="IDS_BRAVE_WALLET_AVAILABLE" desc="Available balance label">Available</message>
+  <message name="IDS_BRAVE_WALLET_AVAILABLE_BALANCE_DESCRIPTION" desc="Available balance tooltip description">Funds available for you to use.</message>
+  <message name="IDS_BRAVE_WALLET_PENDING" desc="Pending balance label">Pending</message>
+  <message name="IDS_BRAVE_WALLET_PENDING_BALANCE_DESCRIPTION" desc="Available balance tooltip description">A pending change in your wallet balance.</message>
+  <message name="IDS_BRAVE_WALLET_TOTAL_BALANCE_DESCRIPTION" desc="Total balance tooltip description">Your available funds plus any not-yet-confirmed transactions.</message>
+  <message name="IDS_BRAVE_WALLET_UNAVAILABLE_BALANCES" desc="Some balances may be unavailable info bar">Some balances may be unavailable</message>
+  <message name="IDS_BRAVE_WALLET_FOUND_RISKS" desc="Notice that a number of risks were found">We found <ph name="VALUE">$1<ex>2</ex></ph> risks.</message>
+  <message name="IDS_BRAVE_WALLET_CONTRACT" desc="Labels the following text as a smart-contract address">Contract</message>
+  <message name="IDS_BRAVE_WALLET_RISK_OF_LOSS_ACTION" desc="Warning that the pending action may result in loss of funds">Unsafe action with risk of loss</message>
+  <message name="IDS_BRAVE_WALLET_UNTRUSTED_REQUEST_WARNING" desc="Warning that the pending request may be malicious">This request appears malicious, and may leave you vulnerable to theft. Do not continue unless you trust the app.</message>
+  <message name="IDS_BRAVE_WALLET_PROCEED_BUTTON" desc="Proceed action button text">Proceed</message>
+  <message name="IDS_BRAVE_WALLET_FOUND_ISSUES" desc="Notice that a number of issues were found">We found <ph name="VALUE">$1<ex>2</ex></ph> issues.</message>
 </grit-part>

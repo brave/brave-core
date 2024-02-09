@@ -42,7 +42,8 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
       registry()->Get(ContentSettingsType::BRAVE_COOKIES);
   ASSERT_TRUE(info);
 
-  EXPECT_THAT(info->allowlisted_schemes(), ElementsAre("chrome", "devtools"));
+  EXPECT_THAT(info->allowlisted_primary_schemes(),
+              ElementsAre("chrome", "devtools"));
 
   // Check the other properties are populated correctly.
   EXPECT_FALSE(info->IsSettingValid(CONTENT_SETTING_SESSION_ONLY));

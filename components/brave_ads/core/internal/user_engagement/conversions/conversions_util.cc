@@ -40,7 +40,7 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
     }
 
     case AdType::kUndefined: {
-      NOTREACHED_NORETURN();
+      break;
     }
   }
 

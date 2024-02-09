@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 
 #include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_constants.h"
 
 namespace brave_ads {
@@ -22,13 +23,16 @@ ConversionActionType ToConversionActionType(
     }
 
     default: {
-      NOTREACHED_NORETURN();
+      break;
     }
   }
+
+  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
+                        << base::to_underlying(confirmation_type);
 }
 
-ConversionActionType StringToConversionActionType(
-    const std::string& action_type) {
+ConversionActionType ToConversionActionType(
+    const std::string_view action_type) {
   if (action_type == kViewThroughConversionActionType) {
     return ConversionActionType::kViewThrough;
   }
@@ -37,11 +41,10 @@ ConversionActionType StringToConversionActionType(
     return ConversionActionType::kClickThrough;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED_NORETURN() << "Unexpected value for action_type: " << action_type;
 }
 
-std::string ConversionActionTypeToString(
-    const ConversionActionType action_type) {
+std::string ToString(const ConversionActionType action_type) {
   switch (action_type) {
     case ConversionActionType::kViewThrough: {
       return kViewThroughConversionActionType;
@@ -52,9 +55,12 @@ std::string ConversionActionTypeToString(
     }
 
     default: {
-      NOTREACHED_NORETURN();
+      break;
     }
   }
+
+  NOTREACHED_NORETURN() << "Unexpected value for ConversionActionType: "
+                        << base::to_underlying(action_type);
 }
 
 }  // namespace brave_ads

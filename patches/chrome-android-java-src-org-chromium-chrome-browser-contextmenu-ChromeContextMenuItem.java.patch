@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 4d58105af143bd482df2eacc500d50bb2c63d073..704109f6d83564ecb9bfeabbca4decab644547cd 100644
+index 792308443ad97f5acc61a84d62f33c43b42a5654..030c32e1e62a0e2d0c4d0db551a911f8d9f5fcce 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -40,7 +40,7 @@ class ChromeContextMenuItem {
-             Item.SHOP_IMAGE_WITH_GOOGLE_LENS, Item.SHARE_IMAGE, Item.DIRECT_SHARE_IMAGE, Item.CALL,
-             Item.SEND_MESSAGE, Item.ADD_TO_CONTACTS, Item.COPY, Item.SAVE_VIDEO,
-             Item.OPEN_IN_CHROME, Item.OPEN_IN_NEW_TAB_IN_GROUP, Item.SHARE_HIGHLIGHT,
--            Item.REMOVE_HIGHLIGHT, Item.LEARN_MORE})
-+            Item.REMOVE_HIGHLIGHT, Item.LEARN_MORE, Item.COPY_CLEAN_LINK})
+@@ -63,7 +63,7 @@ class ChromeContextMenuItem {
+         Item.OPEN_IN_NEW_TAB_IN_GROUP,
+         Item.SHARE_HIGHLIGHT,
+         Item.REMOVE_HIGHLIGHT,
+-        Item.LEARN_MORE
++        Item.LEARN_MORE, Item.COPY_CLEAN_LINK
+     })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-         // Values are numerated from 0 and can't have gaps.
-@@ -88,7 +88,7 @@ class ChromeContextMenuItem {
+@@ -112,7 +112,7 @@ class ChromeContextMenuItem {
          int REMOVE_HIGHLIGHT = 33;
          int LEARN_MORE = 34;
          // ALWAYS UPDATE!
@@ -19,16 +19,16 @@ index 4d58105af143bd482df2eacc500d50bb2c63d073..704109f6d83564ecb9bfeabbca4decab
 +        int COPY_CLEAN_LINK = 35;int NUM_ENTRIES = 36;
      }
  
-     /**
-@@ -130,6 +130,7 @@ class ChromeContextMenuItem {
-             R.id.contextmenu_share_highlight, // Item.SHARE_HIGHLIGHT
-             R.id.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
-             R.id.contextmenu_learn_more, // Item.LEARN_MORE
-+            R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
+     /** Mapping from {@link Item} to the ID found in the ids.xml. */
+@@ -152,6 +152,7 @@ class ChromeContextMenuItem {
+         R.id.contextmenu_share_highlight, // Item.SHARE_HIGHLIGHT
+         R.id.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
+         R.id.contextmenu_learn_more, // Item.LEARN_MORE
++        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -169,6 +170,7 @@ class ChromeContextMenuItem {
+@@ -191,6 +192,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_share_highlight, // Item.SHARE_HIGHLIGHT
          R.string.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
          R.string.contextmenu_learn_more, // Item.LEARN_MORE

@@ -104,6 +104,7 @@ export interface HostState {
   declaredCountry: string
   userType: UserType
   publishersVisitedCount: number
+  selfCustodyInviteDismissed: boolean
 }
 
 export type HostListener = (state: HostState) => void
@@ -120,6 +121,7 @@ export interface Host {
   handleExternalWalletAction: (action: ExternalWalletAction) => void
   handleNotificationAction: (action: NotificationAction) => void
   dismissNotification: (notification: Notification) => void
+  dismissSelfCustodyInvite: () => void
   solveGrantCaptcha: (solution: { x: number, y: number }) => void
   clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void

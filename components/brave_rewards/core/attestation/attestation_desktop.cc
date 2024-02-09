@@ -35,19 +35,19 @@ mojom::Result AttestationDesktop::ParseClaimSolution(
   const base::Value::Dict& dict = value->GetDict();
   const auto* id = dict.FindString("captchaId");
   if (!id) {
-    BLOG(0, "Captcha id is wrong");
+    engine_->LogError(FROM_HERE) << "Captcha id is wrong";
     return mojom::Result::FAILED;
   }
 
   const auto x_parse = dict.FindInt("x");
   if (!x_parse) {
-    BLOG(0, "X is wrong");
+    engine_->LogError(FROM_HERE) << "X is wrong";
     return mojom::Result::FAILED;
   }
 
   const auto y_parse = dict.FindInt("y");
   if (!y_parse) {
-    BLOG(0, "Y is wrong");
+    engine_->LogError(FROM_HERE) << "Y is wrong";
     return mojom::Result::FAILED;
   }
 
@@ -111,7 +111,7 @@ void AttestationDesktop::Confirm(const std::string& solution,
       ParseClaimSolution(solution, &x, &y, &captcha_id);
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to parse solution");
+    engine_->LogError(FROM_HERE) << "Failed to parse solution";
     std::move(callback).Run(result);
     return;
   }
@@ -127,7 +127,7 @@ void AttestationDesktop::Confirm(const std::string& solution,
 void AttestationDesktop::OnConfirm(ConfirmCallback callback,
                                    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to confirm attestation");
+    engine_->LogError(FROM_HERE) << "Failed to confirm attestation";
     std::move(callback).Run(result);
     return;
   }

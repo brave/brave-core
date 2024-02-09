@@ -21,6 +21,9 @@ using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::Token;
 
 namespace brave_rewards::internal {
+
+class RewardsEngineImpl;
+
 namespace credential {
 
 std::vector<Token> GenerateCreds(const int count);
@@ -42,6 +45,7 @@ std::vector<std::string> UnBlindCredsMock(const mojom::CredsBatch& creds);
 std::string ConvertRewardTypeToString(const mojom::RewardsType type);
 
 base::Value::List GenerateCredentials(
+    RewardsEngineImpl& engine,
     const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body);
 

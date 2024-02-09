@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 0a38dcddaf2b0bf50c3c2926b2e5dc29d5bae451..7ae50947074379fc80a45ea9ce349d250c50ec12 100644
+index 2f70778543a7dac8816db047860f7ffe7f231137..e4216c938653e12ec84e238a188df9ee3658ce81 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -369,6 +369,24 @@ enum class ContentSettingsType : int32_t {
-   // heuristics.
-   TPCD_HEURISTICS_GRANTS,
+@@ -371,6 +371,24 @@ enum class ContentSettingsType : int32_t {
+   // shown to the user, for a given origin.
+   FILE_SYSTEM_ACCESS_RESTORE_PERMISSION,
  
 +  // Note: This enum is annotated with GENERATED_JAVA_ENUM_PACKAGE, and cannot
 +  // be extended with an override.

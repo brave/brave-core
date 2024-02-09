@@ -45,7 +45,7 @@ NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& dict) {
   NotificationAdInfo ad;
 
   if (const auto* const value = dict.FindString(kTypeKey)) {
-    ad.type = ParseAdType(*value);
+    ad.type = ToAdType(*value);
   }
 
   if (const auto* const value =

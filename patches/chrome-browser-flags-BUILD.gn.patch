@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/flags/BUILD.gn b/chrome/browser/flags/BUILD.gn
-index db2876b8bd39788604343cf75333a458aa132f44..d86d6791c77ada82404354e44a61b41b980f9775 100644
+index aec877a34789bb5361bf44421de8c8c9c66f4be9..544a71dfd35c258ad1e9b457a40006139957e373 100644
 --- a/chrome/browser/flags/BUILD.gn
 +++ b/chrome/browser/flags/BUILD.gn
-@@ -34,6 +34,7 @@ android_library("java") {
+@@ -33,6 +33,7 @@ android_library("java") {
      "//third_party/androidx:androidx_annotation_annotation_java",
      "//third_party/jni_zero:jni_zero_java",
    ]

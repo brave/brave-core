@@ -20,6 +20,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -39,9 +40,24 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
+using base::test::ParseJsonDict;
 using testing::ElementsAreArray;
 
 namespace brave_wallet {
+
+// DEPRECATED 01/2024. For migration only.
+std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetZCashSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetKnownEthNetworkId(const std::string& chain_id);
+std::string GetKnownSolNetworkId(const std::string& chain_id);
+std::string GetKnownFilNetworkId(const std::string& chain_id);
+std::string GetKnownBtcNetworkId(const std::string& chain_id);
+std::string GetKnownZecNetworkId(const std::string& chain_id);
+std::string GetNetworkId(PrefService* prefs,
+                         mojom::CoinType coin,
+                         const std::string& chain_id);
 
 namespace {
 
@@ -548,6 +564,9 @@ TEST(BraveWalletUtilsUnitTest, KnownChainExists) {
   EXPECT_TRUE(KnownChainExists(mojom::kBitcoinMainnet, mojom::CoinType::BTC));
   EXPECT_TRUE(KnownChainExists(mojom::kBitcoinTestnet, mojom::CoinType::BTC));
 
+  EXPECT_TRUE(KnownChainExists(mojom::kZCashMainnet, mojom::CoinType::ZEC));
+  EXPECT_TRUE(KnownChainExists(mojom::kZCashTestnet, mojom::CoinType::ZEC));
+
   EXPECT_TRUE(AllCoinsTested());
 }
 
@@ -600,6 +619,15 @@ TEST(BraveWalletUtilsUnitTest, CustomChainExists) {
       mojom::CoinType::BTC);
   EXPECT_TRUE(
       CustomChainExists(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC));
+
+  EXPECT_FALSE(
+      CustomChainExists(&prefs, mojom::kZCashMainnet, mojom::CoinType::ZEC));
+  UpdateCustomNetworks(
+      &prefs,
+      NetworkInfoToValue(*GetAllKnownChains(&prefs, mojom::CoinType::ZEC)[0]),
+      mojom::CoinType::ZEC);
+  EXPECT_TRUE(
+      CustomChainExists(&prefs, mojom::kZCashMainnet, mojom::CoinType::ZEC));
 
   EXPECT_TRUE(AllCoinsTested());
 }
@@ -723,6 +751,22 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   EXPECT_THAT(btc_chains[1]->supported_keyrings,
               ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet}));
 
+  // ZCash
+  auto zec_main_custom = *GetAllKnownChains(&prefs, mojom::CoinType::ZEC)[0];
+  zec_main_custom.decimals = 123;
+  UpdateCustomNetworks(&prefs, NetworkInfoToValue(zec_main_custom),
+                       mojom::CoinType::ZEC);
+
+  auto zec_chains = GetAllChains(&prefs, mojom::CoinType::ZEC);
+  ASSERT_EQ(zec_chains.size(), 2u);
+  EXPECT_EQ(zec_chains[0]->chain_id, mojom::kZCashMainnet);
+  EXPECT_EQ(zec_chains[0]->decimals, 123);
+  EXPECT_EQ(zec_chains[1]->chain_id, mojom::kZCashTestnet);
+  EXPECT_THAT(zec_chains[0]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kZCashMainnet}));
+  EXPECT_THAT(zec_chains[1]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
+
   EXPECT_TRUE(AllCoinsTested());
 }
 
@@ -790,6 +834,17 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
       GURL("https://test-btc.com"),
       GetNetworkURL(&prefs, mojom::kBitcoinMainnet, mojom::CoinType::BTC));
 
+  EXPECT_EQ(GURL("https://mainnet.lightwalletd.com:9067/"),
+            GetNetworkURL(&prefs, mojom::kZCashMainnet, mojom::CoinType::ZEC));
+  auto custom_zec_network =
+      GetKnownChain(&prefs, mojom::kZCashMainnet, mojom::CoinType::ZEC);
+  custom_zec_network->rpc_endpoints.emplace_back("https://test-zec.com");
+  custom_zec_network->active_rpc_endpoint_index = 1;
+  UpdateCustomNetworks(&prefs, {NetworkInfoToValue(*custom_zec_network)},
+                       mojom::CoinType::ZEC);
+  EXPECT_EQ(GURL("https://test-zec.com"),
+            GetNetworkURL(&prefs, mojom::kZCashMainnet, mojom::CoinType::ZEC));
+
   EXPECT_TRUE(AllCoinsTested());
 }
 
@@ -835,6 +890,13 @@ TEST(BraveWalletUtilsUnitTest, GetFilecoinSubdomainForKnownChainId) {
 TEST(BraveWalletUtilsUnitTest, GetBitcoinSubdomainForKnownChainId) {
   for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::BTC)) {
     auto subdomain = GetBitcoinSubdomainForKnownChainId(chain->chain_id);
+    ASSERT_FALSE(subdomain.empty());
+  }
+}
+
+TEST(BraveWalletUtilsUnitTest, GetZCashSubdomainForKnownChainId) {
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ZEC)) {
+    auto subdomain = GetZCashSubdomainForKnownChainId(chain->chain_id);
     ASSERT_FALSE(subdomain.empty());
   }
 }
@@ -947,19 +1009,17 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   EXPECT_EQ(GetChain(&prefs, "bitcoin_mainnet", mojom::CoinType::BTC),
             btc_mainnet.Clone());
 
-  EXPECT_TRUE(AllCoinsTested());
-}
+  // Zcash
+  mojom::NetworkInfo zec_mainnet(
+      mojom::kZCashMainnet, "Zcash Mainnet",
+      {"https://zcashblockexplorer.com/transactions"}, {}, 0,
+      {GURL("https://mainnet.lightwalletd.com:9067/")}, "ZEC", "Zcash", 8,
+      mojom::CoinType::ZEC, {mojom::KeyringId::kZCashMainnet}, false);
+  EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::ZEC));
+  EXPECT_EQ(GetChain(&prefs, "zcash_mainnet", mojom::CoinType::ZEC),
+            zec_mainnet.Clone());
 
-TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
-  const std::vector<std::string> expected_network_ids(
-      {"mainnet", mojom::kAuroraMainnetChainId, mojom::kPolygonMainnetChainId,
-       mojom::kBinanceSmartChainMainnetChainId, mojom::kOptimismMainnetChainId,
-       mojom::kAvalancheMainnetChainId, mojom::kFilecoinEthereumMainnetChainId,
-       mojom::kNeonEVMMainnetChainId, "goerli", "sepolia",
-       mojom::kFilecoinEthereumTestnetChainId, "http://localhost:7545/"});
-  ASSERT_EQ(GetAllKnownChains(nullptr, mojom::CoinType::ETH).size(),
-            expected_network_ids.size());
-  EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST(BraveWalletUtilsUnitTest, GetKnownEthNetworkId) {
@@ -1026,7 +1086,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
-  prefs.registry()->RegisterDictionaryPref(kBraveWalletUserAssets);
+  prefs.registry()->RegisterListPref(kBraveWalletUserAssetsList);
 
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
@@ -1042,36 +1102,34 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
 
   // Asset list of new custom chains should have native asset in
   // kBraveWalletUserAssets.
-  const auto& assets_pref = prefs.GetDict(kBraveWalletUserAssets);
-  const base::Value* list1 = assets_pref.FindByDottedPath("ethereum.chain_id");
-  ASSERT_TRUE(list1->is_list());
-  const base::Value::List& asset_list1 = list1->GetList();
-  ASSERT_EQ(asset_list1.size(), 1u);
+  const auto& asset_list = prefs.GetList(kBraveWalletUserAssetsList);
+  ASSERT_EQ(asset_list.size(), 2u);
 
-  EXPECT_EQ(*asset_list1[0].GetDict().FindString("address"), "");
-  EXPECT_EQ(*asset_list1[0].GetDict().FindString("name"), "symbol_name");
-  EXPECT_EQ(*asset_list1[0].GetDict().FindString("symbol"), "symbol");
-  EXPECT_EQ(*asset_list1[0].GetDict().FindBool("is_erc20"), false);
-  EXPECT_EQ(*asset_list1[0].GetDict().FindBool("is_erc721"), false);
-  EXPECT_EQ(*asset_list1[0].GetDict().FindBool("is_erc1155"), false);
-  EXPECT_EQ(*asset_list1[0].GetDict().FindInt("decimals"), 11);
-  EXPECT_EQ(*asset_list1[0].GetDict().FindString("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list1[0].GetDict().FindBool("visible"), true);
+  EXPECT_EQ(*asset_list[0].GetDict().FindInt("coin"),
+            static_cast<int>(mojom::CoinType::ETH));
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("chain_id"), "chain_id");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("address"), "");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("name"), "symbol_name");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("symbol"), "symbol");
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc1155"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindInt("decimals"), 11);
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
 
-  const base::Value* list2 = assets_pref.FindByDottedPath("ethereum.chain_id2");
-  ASSERT_TRUE(list2->is_list());
-  const base::Value::List& asset_list2 = list2->GetList();
-  ASSERT_EQ(asset_list2.size(), 1u);
-
-  EXPECT_EQ(*asset_list2[0].GetDict().FindString("address"), "");
-  EXPECT_EQ(*asset_list2[0].GetDict().FindString("name"), "symbol_name2");
-  EXPECT_EQ(*asset_list2[0].GetDict().FindString("symbol"), "symbol2");
-  EXPECT_EQ(*asset_list2[0].GetDict().FindBool("is_erc20"), false);
-  EXPECT_EQ(*asset_list2[0].GetDict().FindBool("is_erc721"), false);
-  EXPECT_EQ(*asset_list2[0].GetDict().FindBool("is_erc1155"), false);
-  EXPECT_EQ(*asset_list2[0].GetDict().FindInt("decimals"), 22);
-  EXPECT_EQ(*asset_list2[0].GetDict().FindString("logo"), "");
-  EXPECT_EQ(*asset_list2[0].GetDict().FindBool("visible"), true);
+  EXPECT_EQ(*asset_list[1].GetDict().FindInt("coin"),
+            static_cast<int>(mojom::CoinType::ETH));
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("chain_id"), "chain_id2");
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("address"), "");
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("name"), "symbol_name2");
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("symbol"), "symbol2");
+  EXPECT_EQ(*asset_list[1].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*asset_list[1].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*asset_list[1].GetDict().FindBool("is_erc1155"), false);
+  EXPECT_EQ(*asset_list[1].GetDict().FindInt("decimals"), 22);
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("logo"), "");
+  EXPECT_EQ(*asset_list[1].GetDict().FindBool("visible"), true);
 
   {
     mojom::NetworkInfo chain_fil =
@@ -1097,6 +1155,14 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
     EXPECT_EQ(chain_btc, *GetAllCustomChains(&prefs, mojom::CoinType::BTC)[0]);
   }
 
+  {
+    mojom::NetworkInfo chain_zec =
+        GetTestNetworkInfo1(mojom::kZCashMainnet, mojom::CoinType::ZEC);
+    AddCustomNetwork(&prefs, chain_zec);
+    ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::ZEC).size());
+    EXPECT_EQ(chain_zec, *GetAllCustomChains(&prefs, mojom::CoinType::ZEC)[0]);
+  }
+
   EXPECT_TRUE(AllCoinsTested());
 }
 
@@ -1104,7 +1170,7 @@ TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
-  prefs.registry()->RegisterDictionaryPref(kBraveWalletUserAssets);
+  prefs.registry()->RegisterListPref(kBraveWalletUserAssetsList);
 
   auto get_polygon_from_all = [&] {
     for (const auto& chain : GetAllChains(&prefs, mojom::CoinType::ETH)) {
@@ -1149,7 +1215,7 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
-  prefs.registry()->RegisterDictionaryPref(kBraveWalletUserAssets);
+  prefs.registry()->RegisterListPref(kBraveWalletUserAssetsList);
 
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
 
@@ -1189,6 +1255,15 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
     ASSERT_EQ(0u, GetAllCustomChains(&prefs, mojom::CoinType::BTC).size());
   }
 
+  {
+    mojom::NetworkInfo chain_zec =
+        GetTestNetworkInfo1(mojom::kZCashMainnet, mojom::CoinType::ZEC);
+    AddCustomNetwork(&prefs, chain_zec);
+    ASSERT_EQ(1u, GetAllCustomChains(&prefs, mojom::CoinType::ZEC).size());
+    RemoveCustomNetwork(&prefs, mojom::kZCashMainnet, mojom::CoinType::ZEC);
+    ASSERT_EQ(0u, GetAllCustomChains(&prefs, mojom::CoinType::ZEC).size());
+  }
+
   EXPECT_TRUE(AllCoinsTested());
 }
 
@@ -1210,6 +1285,8 @@ TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
                                              mojom::kLocalhostChainId}));
   EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::BTC),
               ElementsAreArray<std::string>({mojom::kBitcoinTestnet}));
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::ZEC),
+              ElementsAreArray<std::string>({mojom::kZCashTestnet}));
   EXPECT_TRUE(AllCoinsTested());
 
   for (auto coin : kAllCoins) {
@@ -1250,6 +1327,8 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
   EXPECT_EQ(key, kSolanaPrefKey);
   key = GetPrefKeyForCoinType(mojom::CoinType::BTC);
   EXPECT_EQ(key, kBitcoinPrefKey);
+  key = GetPrefKeyForCoinType(mojom::CoinType::ZEC);
+  EXPECT_EQ(key, kZCashPrefKey);
 
   EXPECT_TRUE(AllCoinsTested());
 
@@ -1275,7 +1354,8 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
 
   for (const auto coin_type : kAllCoins) {
     // TODO(apaymyshev): make this test working for BTC which has no localhost
-    if (coin_type == mojom::CoinType::BTC) {
+    if (coin_type == mojom::CoinType::BTC ||
+        coin_type == mojom::CoinType::ZEC) {
       continue;
     }
 
@@ -1437,24 +1517,118 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
       if (chain->coin == mojom::CoinType::BTC) {
         nid = GetKnownBtcNetworkId(chain->chain_id);
       }
+      if (chain->coin == mojom::CoinType::ZEC) {
+        nid = GetKnownZecNetworkId(chain->chain_id);
+      }
       if (nid.empty()) {
         nid = chain->chain_id;
         // GetNetworkId supports only ETH for custom networks atm.
         if (chain->coin != mojom::CoinType::ETH) {
-          ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, nid));
+          ASSERT_FALSE(
+              GetChainIdByNetworkId_DEPRECATED(&prefs, coin_type, nid));
           continue;
         }
       }
-      auto chain_id = GetChainIdByNetworkId(&prefs, coin_type, nid);
+      auto chain_id = GetChainIdByNetworkId_DEPRECATED(&prefs, coin_type, nid);
       ASSERT_TRUE(chain_id.has_value());
       EXPECT_EQ(chain->chain_id, chain_id.value());
     }
-    ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, ""));
+    ASSERT_FALSE(GetChainIdByNetworkId_DEPRECATED(&prefs, coin_type, ""));
   };
 
   for (auto coin : kAllCoins) {
     getChainIdByNetworkIdCheck(coin);
   }
+}
+
+TEST(BraveWalletUtilsUnitTest, BitcoinNativeAssets) {
+  EXPECT_EQ(
+      BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinMainnet)),
+      ParseJsonDict(R"(
+      {
+        "address": "",
+        "chain_id": "bitcoin_mainnet",
+        "coin": 0,
+        "coingecko_id": "btc",
+        "decimals": 8,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "is_nft": false,
+        "is_spam": false,
+        "logo": "btc.png",
+        "name": "Bitcoin",
+        "symbol": "BTC",
+        "token_id": "",
+        "visible": true
+      }
+      )"));
+
+  EXPECT_EQ(
+      BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinTestnet)),
+      ParseJsonDict(R"(
+      {
+        "address": "",
+        "chain_id": "bitcoin_testnet",
+        "coin": 0,
+        "coingecko_id": "",
+        "decimals": 8,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "is_nft": false,
+        "is_spam": false,
+        "logo": "btc.png",
+        "name": "Bitcoin",
+        "symbol": "BTC",
+        "token_id": "",
+        "visible": true
+      }
+      )"));
+}
+
+TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
+  EXPECT_EQ(BlockchainTokenToValue(GetZcashNativeToken(mojom::kZCashMainnet)),
+            ParseJsonDict(R"(
+      {
+        "address": "",
+        "chain_id": "zcash_mainnet",
+        "coin": 133,
+        "coingecko_id": "zec",
+        "decimals": 8,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "is_nft": false,
+        "is_spam": false,
+        "logo": "zec.png",
+        "name": "Zcash",
+        "symbol": "ZEC",
+        "token_id": "",
+        "visible": true
+      }
+      )"));
+
+  EXPECT_EQ(BlockchainTokenToValue(GetZcashNativeToken(mojom::kZCashTestnet)),
+            ParseJsonDict(R"(
+      {
+        "address": "",
+        "chain_id": "zcash_testnet",
+        "coin": 133,
+        "coingecko_id": "zec",
+        "decimals": 8,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "is_nft": false,
+        "is_spam": false,
+        "logo": "zec.png",
+        "name": "Zcash",
+        "symbol": "ZEC",
+        "token_id": "",
+        "visible": true
+      }
+      )"));
 }
 
 }  // namespace brave_wallet

@@ -12,6 +12,7 @@ class Browser;
 class GURL;
 
 namespace brave {
+
 bool HasSelectedURL(Browser* browser);
 void CleanAndCopySelectedURL(Browser* browser);
 void NewOffTheRecordWindowTor(Browser*);
@@ -70,6 +71,8 @@ void UnmuteAllTabs(Browser* browser);
 
 void ScrollTabToTop(Browser* browser);
 void ScrollTabToBottom(Browser* browser);
+
+void ToggleAllBookmarksButtonVisibility(Browser* browser);
 
 }  // namespace brave
 

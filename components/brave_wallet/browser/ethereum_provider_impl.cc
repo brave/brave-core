@@ -312,7 +312,7 @@ void EthereumProviderImpl::IsLocked(IsLockedCallback callback) {
 }
 
 // AddUnapprovedTransaction is a different return type from
-// AddAndApproveTransaction so we need to use an adapter callback that passses
+// AddAndApproveTransaction so we need to use an adapter callback that passes
 // through.
 void EthereumProviderImpl::OnAddUnapprovedTransactionAdapter(
     RequestCallback callback,
@@ -1018,12 +1018,11 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     Decrypt(untrusted_encrypted_data_json, address, delegate_->GetOrigin(),
             std::move(callback), std::move(id));
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
-    mojom::BlockchainTokenPtr token;
     const auto chain_id = json_rpc_service_->GetChainIdSync(
         mojom::CoinType::ETH, delegate_->GetOrigin());
-    if (!ParseWalletWatchAssetParams(normalized_json_request, chain_id,
-                                     mojom::CoinType::ETH, &token,
-                                     &error_message)) {
+    mojom::BlockchainTokenPtr token = ParseWalletWatchAssetParams(
+        normalized_json_request, chain_id, &error_message);
+    if (!token) {
       if (!error_message.empty()) {
         error = mojom::ProviderError::kInvalidParams;
       }

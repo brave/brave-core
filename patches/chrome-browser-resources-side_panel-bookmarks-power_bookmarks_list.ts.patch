@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
+index 897919f0015c30e247d10872ae031dc059f413f0..f666f9b3adc9b2cec8ee5b784a967b3ef33690e1 100644
+--- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
++++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
+@@ -3,6 +3,7 @@
+ // found in the LICENSE file.
+ 
+ import '../strings.m.js';
++import './brave_overrides/index.js';
+ import './commerce/shopping_list.js';
+ import './icons.html.js';
+ import './power_bookmarks_context_menu.js';
+@@ -171,7 +172,8 @@ export class PowerBookmarksListElement extends PolymerElement {
+                sortOrder: SortOrder.kReverseAlphabetical,
+                label: loadTimeData.getString('sortReverseAlphabetically'),
+                lowerLabel: loadTimeData.getString('sortReverseAlphabetically'),
+-             }],
++             },
++             { sortOrder: SortOrder.kCustom, label: loadTimeData.getString('sortCustom'), lowerLabel: loadTimeData.getString('sortCustomLower'), }],
+       },
+ 
+       editing_: {

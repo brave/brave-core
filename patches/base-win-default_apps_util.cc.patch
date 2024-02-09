@@ -1,8 +1,8 @@
 diff --git a/base/win/default_apps_util.cc b/base/win/default_apps_util.cc
-index 08475da1f40e443f11a27c51e817589405a7a342..c80a4f6ef4d217da9dcef64a4eb2c9f16302949d 100644
+index 76ef576d3598737cdb1f0f305c6dcb4ac8f77358..c8cc7e406ff60910c136f2a066e4b0982fb604b2 100644
 --- a/base/win/default_apps_util.cc
 +++ b/base/win/default_apps_util.cc
-@@ -24,6 +24,7 @@ std::wstring GetTargetForDefaultAppsSettings(base::WStringPiece protocol) {
+@@ -26,6 +26,7 @@ std::wstring GetTargetForDefaultAppsSettings(std::wstring_view protocol) {
      return base::StrCat({kSystemSettingsDefaultAppsPrefix, L"Browser"});
    if (base::EqualsCaseInsensitiveASCII(protocol, L"mailto"))
      return base::StrCat({kSystemSettingsDefaultAppsPrefix, L"Email"});

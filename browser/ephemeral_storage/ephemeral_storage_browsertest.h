@@ -103,7 +103,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
 
   // Helper to load easy-to-use Indexed DB API.
   void LoadIndexedDbHelper(content::RenderFrameHost* host);
-  bool SetIDBValue(content::RenderFrameHost* host);
+  content::EvalJsResult SetIDBValue(content::RenderFrameHost* host);
 
   HostContentSettingsMap* content_settings();
   network::mojom::CookieManager* CookieManager();

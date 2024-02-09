@@ -251,21 +251,11 @@ bool ParseTokenList(const std::string& json,
       return false;
     }
 
-    std::optional<bool> is_erc20_opt =
-        blockchain_token_value->FindBool("erc20");
-    if (is_erc20_opt) {
-      blockchain_token->is_erc20 = *is_erc20_opt;
-    } else {
-      blockchain_token->is_erc20 = false;
-    }
+    blockchain_token->is_erc20 =
+        blockchain_token_value->FindBool("erc20").value_or(false);
 
-    std::optional<bool> is_erc721_opt =
-        blockchain_token_value->FindBool("erc721");
-    if (is_erc721_opt) {
-      blockchain_token->is_erc721 = *is_erc721_opt;
-    } else {
-      blockchain_token->is_erc721 = false;
-    }
+    blockchain_token->is_erc721 =
+        blockchain_token_value->FindBool("erc721").value_or(false);
 
     blockchain_token->is_nft = blockchain_token->is_erc721;
 
@@ -300,6 +290,7 @@ bool ParseTokenList(const std::string& json,
                         &blockchain_token->coingecko_id);
 
     blockchain_token->coin = coin;
+    blockchain_token->visible = true;
     (*token_list_map)[GetTokenListKey(coin, blockchain_token->chain_id)]
         .push_back(std::move(blockchain_token));
   }

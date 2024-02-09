@@ -83,17 +83,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CardBuilderFeedCard {
-    private final int CARD_LAYOUT = 7;
-    private final int BUTTON_LAYOUT = 8;
-    private final int ROUNDED_TOP_LAYOUT = 9;
+    private static final int CARD_LAYOUT = 7;
+    private static final int BUTTON_LAYOUT = 8;
+    private static final int ROUNDED_TOP_LAYOUT = 9;
 
-    private final int TITLE = 10;
-    private final int DESC = 11;
-    private final int URL = 12;
-    private final int PUBLISHER = 13;
-    private final int TIME = 14;
-    private final int CATEGORY = 15;
-    private final int DEALS = 16;
+    private static final int TITLE = 10;
+    private static final int DESC = 11;
+    private static final int PUBLISHER = 13;
+    private static final int TIME = 14;
+    private static final int CATEGORY = 15;
+    private static final int DEALS = 16;
 
     public static final int CARDTYPE_BRAVE_RATING = 100;
 
@@ -103,7 +102,6 @@ public class CardBuilderFeedCard {
     private BraveNewsController mBraveNewsController;
     private int mType;
     private int mPosition;
-    private View view;
     private int mHorizontalMargin;
     private int mDeviceWidth;
     private boolean mIsPromo;
@@ -113,8 +111,8 @@ public class CardBuilderFeedCard {
     private DisplayAdsTable mPosTabAd;
 
     private static final String TAG = "BN";
-    private final int MARGIN_VERTICAL = 10;
-    private final String BRAVE_OFFERS_URL = "offers.brave.com";
+    private static final int MARGIN_VERTICAL = 10;
+    private static final String BRAVE_OFFERS_URL = "offers.brave.com";
 
     public CardBuilderFeedCard(BraveNewsController braveNewsController, RequestManager glide,
             LinearLayout layout, Activity activity, int position, FeedItemsCard newsItem,
@@ -397,31 +395,35 @@ public class CardBuilderFeedCard {
                     break;
                 case CardType.DISPLAY_AD:
                     try {
+                        Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                        final int tabId = tab != null ? tab.getId() : -1;
                         ExecutorService executor = Executors.newSingleThreadExecutor();
                         Handler handler = new Handler(Looper.getMainLooper());
-                        executor.execute(() -> {
-                            try {
-                                Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-                                if (tab != null) {
-                                    int tabId = tab.getId();
-                                    DatabaseHelper dbHelper = DatabaseHelper.getInstance();
-                                    DisplayAdsTable posTabAd =
-                                            dbHelper.getDisplayAd(position, tabId);
-                                    handler.post(() -> {
-                                        if (posTabAd != null) {
-                                            createAdFromTable(posTabAd);
-                                        } else {
-                                            mBraveNewsController.getDisplayAd(adData -> {
-                                                BraveNewsUtils.putToDisplayAdsMap(position, adData);
-                                                createdDisplayAdCard(adData);
-                                            });
-                                        }
-                                    });
-                                }
-                            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                Log.e(TAG, "createCard DISPLAY_AD " + e);
-                            }
-                        });
+                        executor.execute(
+                                () -> {
+                                    if (tabId != -1) {
+                                        DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+                                        DisplayAdsTable posTabAd =
+                                                dbHelper.getDisplayAd(position, tabId);
+                                        handler.post(
+                                                () -> {
+                                                    if (posTabAd != null) {
+                                                        createAdFromTable(posTabAd);
+                                                    } else {
+                                                        mBraveNewsController.getDisplayAd(
+                                                                adData -> {
+                                                                    BraveNewsUtils
+                                                                            .putToDisplayAdsMap(
+                                                                                    position,
+                                                                                    adData);
+                                                                    createdDisplayAdCard(adData);
+                                                                });
+                                                    }
+                                                });
+                                    }
+                                });
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
+                        Log.e(TAG, "createCard DISPLAY_AD " + e);
                     } catch (Exception e) {
                         Log.e(TAG, "displayad Exception" + e.getMessage());
                     }

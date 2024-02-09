@@ -8,9 +8,9 @@
 
 #include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
@@ -33,6 +33,9 @@
 //   "walletProvider": {
 //     "id": "",
 //     "name": "brave"
+//   },
+//   "selfCustodyAvailable": {
+//     "solana": true
 //   }
 // }
 // clang-format on
@@ -42,18 +45,35 @@ class RewardsEngineImpl;
 
 namespace endpoints {
 
+struct GetWalletValue {
+  GetWalletValue();
+  ~GetWalletValue();
+
+  GetWalletValue(const GetWalletValue&) = delete;
+  GetWalletValue& operator=(const GetWalletValue&) = delete;
+
+  GetWalletValue(GetWalletValue&&);
+  GetWalletValue& operator=(GetWalletValue&&);
+
+  std::string wallet_provider;
+  std::string provider_id;
+  bool linked = false;
+  base::Value::Dict self_custody_available;
+};
+
 class GetWallet;
 
 template <>
 struct ResultFor<GetWallet> {
-  using Value = std::pair<std::string /* wallet provider */, bool /* linked */>;
+  using Value = GetWalletValue;
   using Error = mojom::GetWalletError;
 };
 
 class GetWallet final : public RequestBuilder,
                         public ResponseHandler<GetWallet> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse& response);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse& response);
 
   explicit GetWallet(RewardsEngineImpl& engine);
   ~GetWallet() override;

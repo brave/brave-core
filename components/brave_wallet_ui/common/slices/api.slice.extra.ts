@@ -7,10 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // constants
-import type {
-  BraveWallet,
-  SerializableTransactionInfo
-} from '../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 
 // hooks
 import {
@@ -19,7 +16,8 @@ import {
   useGetSelectedAccountIdQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
+  useGenerateReceiveAddressMutation
 } from './api.slice'
 
 // entities
@@ -30,8 +28,7 @@ import {
   selectAllUserAssetsFromQueryResult,
   selectAllBlockchainTokensFromQueryResult,
   selectCombinedTokensList,
-  selectCombinedTokensRegistry,
-  blockchainTokenEntityAdaptorInitialState
+  selectCombinedTokensRegistry
 } from '../slices/entities/blockchain-token.entity'
 import {
   findAccountByAccountId,
@@ -135,7 +132,7 @@ export const useGetCombinedTokensRegistryQuery = (
     ) {
       return {
         isLoading: true,
-        data: blockchainTokenEntityAdaptorInitialState
+        data: undefined
       }
     }
     const combinedRegistry = selectCombinedTokensRegistry(
@@ -152,28 +149,25 @@ export const useGetCombinedTokensRegistryQuery = (
 }
 
 export const useGetCombinedTokensListQuery = (
-  arg?: undefined,
-  opts?: { skip?: boolean }
+  arg?: undefined | typeof skipToken
 ) => {
   const { isLoadingUserTokens, userTokens } = useGetUserTokensRegistryQuery(
-    undefined,
+    arg || undefined,
     {
       selectFromResult: (res) => ({
         isLoadingUserTokens: res.isLoading,
         userTokens: selectAllUserAssetsFromQueryResult(res)
-      }),
-      skip: opts?.skip
+      })
     }
   )
 
   const { isLoadingKnownTokens, knownTokens } = useGetTokensRegistryQuery(
-    undefined,
+    arg || undefined,
     {
       selectFromResult: (res) => ({
         isLoadingKnownTokens: res.isLoading,
         knownTokens: selectAllBlockchainTokensFromQueryResult(res)
-      }),
-      skip: opts?.skip
+      })
     }
   )
 
@@ -253,5 +247,78 @@ export const usePendingTransactionsQuery = (
         ? selectPendingTransactions(res.data)
         : emptyPendingTxs
     })
+  })
+}
+
+export const useReceiveAddressQuery = (
+  accountId: BraveWallet.AccountId | undefined
+) => {
+  // state
+  const [receiveAddress, setReceiveAddress] = React.useState<string>(
+    accountId?.address || ''
+  )
+
+  // mutations
+  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
+
+  // effects
+  React.useEffect(() => {
+    // skip fetching/polling if not needed
+    if (accountId?.address) {
+      return
+    }
+
+    let ignore = false
+
+    const fetchAddress = async () => {
+      if (accountId) {
+        const address = await generateReceiveAddress(accountId).unwrap()
+        if (!ignore) {
+          setReceiveAddress(address)
+        }
+      }
+    }
+
+    fetchAddress()
+
+    // poll for new address every BTC block (10 minutes)
+    const intervalId = setInterval(fetchAddress, 1000 * 60 * 10)
+
+    // cleanup
+    return () => {
+      ignore = true
+      clearInterval(intervalId)
+    }
+  }, [accountId, generateReceiveAddress])
+
+  return receiveAddress
+}
+
+export const useGetIsRegistryTokenQuery = (
+  arg:
+    | {
+        chainId: string
+        address: string
+      }
+    | typeof skipToken
+) => {
+  return useGetTokensRegistryQuery(undefined, {
+    selectFromResult: (res) => {
+      if (arg === skipToken) {
+        return {
+          isLoading: res.isLoading
+        }
+      }
+
+      const assetId = res.data?.idsByChainId[arg.chainId].find((id) =>
+        id.toString().includes(arg?.address)
+      )
+      const asset = assetId ? res.data?.entities[assetId] : undefined
+
+      return {
+        isLoading: res.isLoading,
+        isVerified: res.isLoading ? undefined : Boolean(asset)
+      }
+    }
   })
 }

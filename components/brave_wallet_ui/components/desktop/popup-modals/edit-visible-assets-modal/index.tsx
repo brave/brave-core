@@ -31,7 +31,7 @@ import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
 import { AddAsset } from '../../add-asset/add-asset'
 import {
   SegmentedControl //
-} from '../../../shared/segmented-control/segmented-control'
+} from '../../../shared/segmented_control/segmented_control'
 import { SearchBar } from '../../../shared/search-bar'
 import { NetworkFilterSelector } from '../../network-filter-selector'
 
@@ -71,6 +71,9 @@ import {
 import {
   blockchainTokenEntityAdaptorInitialState //
 } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  useGetCustomAssetSupportedNetworks //
+} from '../../../../common/hooks/use_get_custom_asset_supported_networks'
 
 export interface Props {
   onClose: () => void
@@ -91,6 +94,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     data: tokenEntityState = blockchainTokenEntityAdaptorInitialState,
     isLoading
   } = useGetTokensRegistryQuery()
+  const networkList = useGetCustomAssetSupportedNetworks()
 
   // custom hooks
   const { onUpdateVisibleAssets } = useAssetManagement()
@@ -212,14 +216,15 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
   // Filtered token list based on user removed tokens
   const filteredOutRemovedTokens = React.useMemo(() => {
-    return tokenList.filter(
-      (token) =>
-        !removedTokensList.some(
-          (t) =>
-            t.contractAddress.toLowerCase() ===
-              token.contractAddress.toLowerCase() && t.tokenId === token.tokenId
-        )
-    )
+    return tokenList.filter((token) => {
+      const tokenContractLower = token.contractAddress.toLowerCase()
+      return !removedTokensList.some(
+        (t) =>
+          t.chainId === token.chainId &&
+          t.contractAddress.toLowerCase() === tokenContractLower &&
+          t.tokenId === token.tokenId
+      )
+    })
   }, [tokenList, removedTokensList])
 
   // Filtered token list based on search value
@@ -331,10 +336,12 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
   const onRemoveAsset = React.useCallback(
     (token: BraveWallet.BlockchainToken) => {
+      const tokenContractLower = token.contractAddress.toLowerCase()
       const filterFn = (t: BraveWallet.BlockchainToken) =>
         !(
-          t.contractAddress.toLowerCase() ===
-            token.contractAddress.toLowerCase() && t.tokenId === token.tokenId
+          t.chainId === token.chainId &&
+          t.contractAddress.toLowerCase() === tokenContractLower &&
+          t.tokenId === token.tokenId
         )
       const newUserList = updatedTokensList.filter(filterFn)
       setUpdatedTokensList(newUserList)
@@ -404,6 +411,11 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
             />
             <HorizontalSpace space='16px' />
             <NetworkFilterSelector
+              networkListSubset={
+                hash === WalletRoutes.AvailableAssetsHash
+                  ? networkList
+                  : undefined
+              }
               onSelectNetwork={onSelectAssetsNetwork}
               selectedNetwork={selectedNetworkFilter}
               isV2={true}

@@ -7,7 +7,7 @@
     The summarizer feature is currently available only for select articles and other long-form web pages.
   </message>
   <message name="IDS_CHAT_UI_ACCEPT_BUTTON_LABEL" desc="Label for button to accept agreement">
-    Accept and begin
+    I understand
   </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_BUTTON_LABEL" desc="Label for button to summarize the current page's content">
     Summarize
@@ -15,20 +15,17 @@
   <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat">
     About Leo
   </message>
-   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="Outlining the functioning of AIChat (paragraph 1 of 3)">
-    Brave Leo is an AI smart assistant that can summarize web pages, transcribe videos, and answer questions. Brave Leo Premium uses advanced <ph name="LINK_BEFORE">$1</ph>AI models<ph name="LINK_AFTER">$2</ph> for even more nuanced replies, and gives early access to new features.
+  <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="Outlining the functioning of AIChat (paragraph 1 of 3)">
+    Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the <ph name="LINK_BEFORE">$1</ph>Brave wiki<ph name="LINK_AFTER">$2</ph> for more details.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="Outlining the functioning of AIChat (paragraph 2 of 3)">
-    The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar.
+    By default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)">
-    Leo does not collect identifiers such as your IP Address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers.
+    Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE">$1</ph>privacy policy<ph name="LINK_AFTER">$2</ph> for more information.
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Enter a prompt here
-  </message>
-  <message name="IDS_CHAT_UI_SUGGESTIONS_TITLE" desc="Title for suggestions of what to ask the AI Chat">
-    Suggested follow-ups
   </message>
   <message name="IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL" desc="Button label to ask the AI Chat to suggest some related questions">
     Suggest questions…
@@ -38,6 +35,9 @@
   </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
     Summarize this page
+  </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_SELECTED_TEXT" desc="Text for summarizing selected text">
+    Summarize this excerpt
   </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
      Disconnect to stop sending this page content to Leo, and start a new conversation
@@ -51,17 +51,23 @@
   <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEFAULT" desc="AI Chat intro message for the default model">
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the default model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases.
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED" desc="AI Chat intro message for the expanded model">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 70B, a model created by Meta to handle more advanced tasks than 13B.
+    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks.
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model">
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks.
   </message>
   <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
     <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that a model is limited in functionality due to user's non-premium status">
+    Limited
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_PREMIUM" desc="Label indentifying that a model is not limited in functionality as the user is a premium subscriber">
+    Unlimited
   </message>
   <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
     Chat
@@ -81,21 +87,26 @@
   <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
     Language models
   </message>
-  <message name="IDS_CHAT_UI_PREMIUM_BUTTON_LABEL" desc="A button label to subscribe for premium model">
-     Go Premium
+  <message name="IDS_CHAT_UI_UPGRADE_BUTTON_LABEL" desc="A button label to upgrade to premium model">
+     Upgrade now
   </message>
    <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_TITLE" desc="An error message when the user has reached API limit">
      Response rate limit reached
   </message>
   <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC" desc="A description to unlock premium features">
-     Unlock a higher response rate by subscribing to Premium, or try again
-        later
+    Unlock a higher response rate by subscribing to Premium. You can also switch to our less powerful Llama2 13b free model to continue.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature">
-     Access to industry-leading LLMs
+    Explore different AI models
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2" desc="A premium feature">
-     Higher rate limits
+    Unlock your creativity
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_3" desc="A premium feature">
+    Stay on topic
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_4" desc="A premium feature">
+    Chat for longer
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products">
      Leo Premium
@@ -106,17 +117,23 @@
   <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
     Dismiss
   </message>
-  <message name="IDS_CHAT_UI_SWITCH_TO_DEFAULT_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
-    Switch to the default model
+  <message name="IDS_CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
+    Switch to the free model
   </message>
   <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
-    Unlock the full potential of Leo
+    Unleash Leo's full powers with Premium:
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
-    Anthropic Claude + more coming soon
+    Priority access to powerful models with different skills
   </message>
-  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature that allows priority access">
-    Priority access and increased response limits
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature to various AI models">
+    Access models better suited for creative tasks and content generation.
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_3_DESC" desc="A premium feature to stay scoped within a topic">
+    Get more accurate answers for more nuanced conversations.
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_4_DESC" desc="A premium feature that allows higher rate limits">
+    Get higher rate limits for longer conversations.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_DESCRIPTION" desc="Warning message when AI Chat Premium authentication is expired">
     Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.
@@ -202,7 +219,7 @@
   <message name="IDS_CHAT_UI_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting">
     This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.
   </message>
-  <message name="IDS_CHAT_UI_CHAT_DEFAULT_SUBTITLE" desc="A description for default chat model">
+  <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>
   <message name="IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE" desc="A description for llama-2-70b model">
@@ -236,12 +253,15 @@
     Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.
   </message>
   <message name="IDS_CHAT_UI_PRIVACY_TITLE" desc="Title for privacy agreement modal.">
-    Privacy agreement
+    Chat Privately with Brave Leo
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations.">
     Use page context for response
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
     Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.
+  </message>
+  <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices">
+    All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>
 </grit-part>

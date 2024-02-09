@@ -1,20 +1,11 @@
 diff --git a/components/policy/tools/generate_policy_source.py b/components/policy/tools/generate_policy_source.py
-index e9d31053cb2eae737463004be9cb66e44bcd1058..5fc988331d4abf8eca9d0f84e713ecef4cf3a20d 100755
+index a17b30c37e07a880ac6b588e08377394956e9b3a..77cfbaee88dff107d58ee782aecbb73ae5a9127c 100755
 --- a/components/policy/tools/generate_policy_source.py
 +++ b/components/policy/tools/generate_policy_source.py
-@@ -43,6 +43,7 @@ PLATFORM_STRINGS = {
-     'chrome.win7': ['win'],
- }
+@@ -1851,5 +1851,6 @@ def _WriteAppRestrictions(policies, policy_atomic_groups, target_platform, f,
+   f.write('</restrictions>')
  
-+from policy_source_helper import AddBravePolicies, CHROMIUM_POLICY_KEY
  
- class PolicyDetails:
-   """Parses a policy template and caches all its details."""
-@@ -356,6 +357,7 @@ def main():
-     chrome_major_version = ParseVersionFile(version_path)
- 
-   template_file_contents = _LoadJSONFile(template_file_name)
-+  AddBravePolicies(template_file_contents)
-   risk_tags = RiskTags(template_file_contents)
-   policy_details = [
-       PolicyDetails(policy, chrome_major_version, deprecation_milestone_buffer,
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   sys.exit(main())

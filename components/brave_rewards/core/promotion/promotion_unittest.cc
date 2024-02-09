@@ -11,7 +11,6 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
@@ -54,14 +53,13 @@ class PromotionTest : public testing::Test {
 };
 
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
-  EXPECT_CALL(
-      *mock_engine_impl_.mock_client(),
-      LoadURL(Pointee(Field(&mojom::UrlRequest::url,
-                            HasSubstr("/v1/promotions"
-                                      "?migrate=true&paymentId=fa5dea51-"
-                                      "6af4-44ca-801b-07b6df3dcfe4"
-                                      "&platform="))),
-              _))
+  EXPECT_CALL(*mock_engine_impl_.mock_client(),
+              LoadURL(Pointee(Field(&mojom::UrlRequest::url,
+                                    HasSubstr("/v1/promotions"
+                                              "?migrate=true&platform=windows&"
+                                              "paymentId=fa5dea51-"
+                                              "6af4-44ca-801b-07b6df3dcfe4"))),
+                      _))
       .Times(2)
       .WillRepeatedly([](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -122,14 +120,14 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   EXPECT_CALL(callback, Run).Times(2);
 
   // to avoid fulfilling the fetch request from database in Promotion::Fetch()
-  is_testing = true;
+  mock_engine_impl_.GetOptionsForTesting().is_testing = true;
   promotion_.Fetch(callback.Get());
   task_environment_.RunUntilIdle();
 
   inserted = true;
   promotion_.Fetch(callback.Get());
   task_environment_.RunUntilIdle();
-  is_testing = false;
+  mock_engine_impl_.GetOptionsForTesting().is_testing = false;
 }
 
 }  // namespace brave_rewards::internal::promotion

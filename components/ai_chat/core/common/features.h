@@ -14,7 +14,13 @@
 namespace ai_chat::features {
 
 BASE_DECLARE_FEATURE(kAIChat);
-extern const base::FeatureParam<std::string> kAIModelName;
+extern const base::FeatureParam<std::string> kAIModelsDefaultKey;
+extern const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey;
+
+// If true, certain freemium models are available to non-premium users. If
+// false, those models are premium-only.
+extern const base::FeatureParam<bool> kFreemiumAvailable;
+
 extern const base::FeatureParam<bool> kAIChatSSE;
 extern const base::FeatureParam<double> kAITemperature;
 

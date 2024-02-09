@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-// An enum with the codified ad types. These values must match mojom::AdType.
+// An enum with the codified ad types. These values must match `mojom::AdType`.
 enum class AdType {
   kUndefined,
   kNotificationAd,
@@ -21,11 +21,11 @@ enum class AdType {
   kSearchResultAd
 };
 
-// Returns a string constant for a given AdType value.
-const char* ToString(AdType type);
+// Returns an `AdType` value based on the string input.
+AdType ToAdType(std::string_view value);
 
-// Creates an AdType instance with a value corresponding the string provided.
-AdType ParseAdType(std::string_view value);
+// Returns a string constant for a given `AdType` value.
+const char* ToString(AdType type);
 
 std::ostream& operator<<(std::ostream& os, AdType type);
 

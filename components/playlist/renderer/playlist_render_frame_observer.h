@@ -6,41 +6,41 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_RENDERER_PLAYLIST_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_RENDERER_PLAYLIST_RENDER_FRAME_OBSERVER_H_
 
-#include <memory>
+#include <string>
 
+#include "base/memory/weak_ptr.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
-#include "url/gurl.h"
-#include "v8/include/v8.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace playlist {
 
-class PlaylistJSHandler;
-
-class PlaylistRenderFrameObserver
+class PlaylistRenderFrameObserver final
     : public content::RenderFrameObserver,
       public content::RenderFrameObserverTracker<PlaylistRenderFrameObserver> {
  public:
   PlaylistRenderFrameObserver(content::RenderFrame* render_frame,
-                              const int32_t isolated_world_id);
+                              int32_t isolated_world_id);
 
   void RunScriptsAtDocumentStart();
 
  private:
+  // RenderFrameObserver:
   ~PlaylistRenderFrameObserver() override;
+  void OnDestruct() override;
 
-  void HideMediaSourceAPI();
+  bool EnsureConnectedToMediaHandler();
+  void OnMediaHandlerDisconnect();
+
+  void HideMediaSourceAPI() const;
   void InstallMediaDetector();
 
-  // RenderFrameObserver:
-  void OnDestruct() override;
-  void DidCreateScriptContext(v8::Local<v8::Context> context,
-                              int32_t world_id) override;
+  void OnMediaUpdated(const std::string& page_url);
 
- private:
-  const int32_t isolated_world_id_ = 0;
-
-  std::unique_ptr<PlaylistJSHandler> javascript_handler_;
+  int32_t isolated_world_id_;
+  mojo::Remote<playlist::mojom::PlaylistMediaHandler> media_handler_;
+  base::WeakPtrFactory<PlaylistRenderFrameObserver> weak_ptr_factory_{this};
 };
 
 }  // namespace playlist

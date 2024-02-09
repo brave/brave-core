@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
@@ -24,36 +25,6 @@ using std::placeholders::_1;
 namespace brave_rewards::internal {
 
 namespace {
-
-bool IsPublicKeyValid(const std::string& public_key) {
-  if (public_key.empty()) {
-    return false;
-  }
-
-  std::vector<std::string> keys;
-  if (_environment == mojom::Environment::PRODUCTION) {
-    keys = {
-        "yr4w9Y0XZQISBOToATNEl5ADspDUgm7cBSOhfYgPWx4=",  // AC
-        "PGLvfpIn8QXuQJEtv2ViQSWw2PppkhexKr1mlvwCpnM="   // User funds
-    };
-  }
-
-  if (_environment == mojom::Environment::STAGING) {
-    keys = {
-        "mMMWZrWPlO5b9IB8vF5kUJW4f7ULH1wuEop3NOYqNW0=",  // AC
-        "CMezK92X5wmYHVYpr22QhNsTTq6trA/N9Alw+4cKyUY="   // User funds
-    };
-  }
-
-  if (_environment == mojom::Environment::DEVELOPMENT) {
-    keys = {
-        "RhfxGp4pT0Kqe2zx4+q+L6lwC3G9v3fIj1L+PbINNzw=",  // AC
-        "nsSoWgGMJpIiCGVdYrne03ldQ4zqZOMERVD5eSPhhxc="   // User funds
-    };
-  }
-
-  return base::Contains(keys, public_key);
-}
 
 std::string ConvertItemTypeToString(const std::string& type) {
   int type_int;
@@ -81,7 +52,7 @@ void CredentialsSKU::Start(const CredentialsTrigger& trigger,
                            ResultCallback callback) {
   DCHECK_EQ(trigger.data.size(), 2ul);
   if (trigger.data.empty()) {
-    BLOG(0, "Trigger data is missing");
+    engine_->LogError(FROM_HERE) << "Trigger data is missing";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -164,7 +135,7 @@ void CredentialsSKU::OnBlind(ResultCallback callback,
                              const CredentialsTrigger& trigger,
                              mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Claim failed");
+    engine_->LogError(FROM_HERE) << "Claim failed";
     std::move(callback).Run(result);
     return;
   }
@@ -184,7 +155,7 @@ void CredentialsSKU::OnBlind(ResultCallback callback,
 void CredentialsSKU::RetryPreviousStepSaved(ResultCallback callback,
                                             mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Previous step not saved");
+    engine_->LogError(FROM_HERE) << "Previous step not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -196,7 +167,7 @@ void CredentialsSKU::Claim(ResultCallback callback,
                            const CredentialsTrigger& trigger,
                            mojom::CredsBatchPtr creds) {
   if (!creds) {
-    BLOG(0, "Creds not found");
+    engine_->LogError(FROM_HERE) << "Creds not found";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -204,7 +175,8 @@ void CredentialsSKU::Claim(ResultCallback callback,
   auto blinded_creds = ParseStringToBaseList(creds->blinded_creds);
 
   if (!blinded_creds || blinded_creds->empty()) {
-    BLOG(0, "Blinded creds are corrupted, we will try to blind again");
+    engine_->LogError(FROM_HERE)
+        << "Blinded creds are corrupted, we will try to blind again";
     auto save_callback =
         base::BindOnce(&CredentialsSKU::RetryPreviousStepSaved,
                        base::Unretained(this), std::move(callback));
@@ -233,7 +205,7 @@ void CredentialsSKU::OnClaim(ResultCallback callback,
                              const CredentialsTrigger& trigger,
                              mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to claim SKU creds");
+    engine_->LogError(FROM_HERE) << "Failed to claim SKU creds";
     std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
@@ -253,7 +225,7 @@ void CredentialsSKU::ClaimStatusSaved(ResultCallback callback,
                                       const CredentialsTrigger& trigger,
                                       mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Claim status not saved: " << result);
+    engine_->LogError(FROM_HERE) << "Claim status not saved: " << result;
     std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
@@ -276,7 +248,7 @@ void CredentialsSKU::OnFetchSignedCreds(ResultCallback callback,
                                         mojom::Result result,
                                         mojom::CredsBatchPtr batch) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Couldn't fetch credentials: " << result);
+    engine_->LogError(FROM_HERE) << "Couldn't fetch credentials: " << result;
     std::move(callback).Run(result);
     return;
   }
@@ -299,7 +271,7 @@ void CredentialsSKU::SignedCredsSaved(ResultCallback callback,
                                       const CredentialsTrigger& trigger,
                                       mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Signed creds were not saved");
+    engine_->LogError(FROM_HERE) << "Signed creds were not saved";
     std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
@@ -320,24 +292,29 @@ void CredentialsSKU::Unblind(ResultCallback callback,
                              const CredentialsTrigger& trigger,
                              mojom::CredsBatchPtr creds) {
   if (!creds) {
-    BLOG(0, "Corrupted data");
+    engine_->LogError(FROM_HERE) << "Corrupted data";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  if (!IsPublicKeyValid(creds->public_key)) {
-    BLOG(0, "Public key is not valid");
+  std::vector valid_public_keys = {
+      engine_->Get<EnvironmentConfig>().auto_contribute_public_key(),
+      engine_->Get<EnvironmentConfig>().user_funds_public_key()};
+
+  if (!base::Contains(valid_public_keys, creds->public_key)) {
+    engine_->LogError(FROM_HERE) << "Public key is not valid";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   std::vector<std::string> unblinded_encoded_creds;
-  if (is_testing) {
+  if (engine_->options().is_testing) {
     unblinded_encoded_creds = UnBlindCredsMock(*creds);
   } else {
     auto result = UnBlindCreds(*creds);
     if (!result.has_value()) {
-      BLOG(0, "UnBlindTokens: " << result.error());
+      engine_->LogError(FROM_HERE) << "UnBlindTokens error";
+      engine_->Log(FROM_HERE) << result.error();
       std::move(callback).Run(mojom::Result::FAILED);
       return;
     }
@@ -359,7 +336,7 @@ void CredentialsSKU::Completed(ResultCallback callback,
                                const CredentialsTrigger& trigger,
                                mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Unblinded token save failed");
+    engine_->LogError(FROM_HERE) << "Unblinded token save failed";
     std::move(callback).Run(result);
     return;
   }
@@ -371,7 +348,7 @@ void CredentialsSKU::Completed(ResultCallback callback,
 void CredentialsSKU::RedeemTokens(const CredentialsRedeem& redeem,
                                   LegacyResultCallback callback) {
   if (redeem.publisher_key.empty() || redeem.token_list.empty()) {
-    BLOG(0, "Pub key / token list empty");
+    engine_->LogError(FROM_HERE) << "Pub key / token list empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -393,7 +370,7 @@ void CredentialsSKU::OnRedeemTokens(
     const CredentialsRedeem& redeem,
     LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to submit tokens");
+    engine_->LogError(FROM_HERE) << "Failed to submit tokens";
     callback(mojom::Result::FAILED);
     return;
   }

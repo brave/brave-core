@@ -1,8 +1,0 @@
-Name: http
-URL: https://crates.io/crates/http
-Description: A set of types for representing HTTP requests and responses.
-
-Version: 0.1.21
-Security Critical: yes
-License: Apache 2.0
-Revision: 6443bdb3079f80cf74a7eec3474a18daf797e5ad

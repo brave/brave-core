@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 
+#include <cstddef>
 #include <iterator>
 #include <utility>
 

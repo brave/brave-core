@@ -28,7 +28,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
-#include "brave/components/debounce/common/features.h"
+#include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -43,6 +43,7 @@
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
+#include "components/history//core/browser/features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
@@ -226,7 +227,7 @@
       {                                                                       \
           "brave-wallet-zcash",                                               \
           "Enable BraveWallet ZCash support",                                 \
-          "ZCash support for native Brave Wallet",                            \
+          "Zcash support for native Brave Wallet",                            \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletZCashFeature),              \
@@ -361,9 +362,18 @@
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
+#define BRAVE_ZERO_DAY_FLAG_ANDROID                                        \
+  EXPAND_FEATURE_ENTRIES({                                                 \
+      "brave-zero-day-flag-android",                                       \
+      "ZeroDayFlag flag for product test",                                 \
+      "This flag will be set through griffin to perform product testing",  \
+      kOsAndroid,                                                          \
+      FEATURE_VALUE_TYPE(preferences::features::kBraveZeroDayFlagAndroid), \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
+#define BRAVE_ZERO_DAY_FLAG_ANDROID
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -394,6 +404,19 @@
 #define BRAVE_TABS_FEATURE_ENTRIES
 #endif
 
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                      \
+  EXPAND_FEATURE_ENTRIES({                                               \
+      "middle-button-autoscroll",                                        \
+      "Middle button autoscroll",                                        \
+      "Enables autoscrolling when the middle mouse button is clicked",   \
+      kOsMac | kOsLinux,                                                 \
+      FEATURE_VALUE_TYPE(blink::features::kMiddleButtonClickAutoscroll), \
+  })
+#else
+#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
+#endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT                                          \
   EXPAND_FEATURE_ENTRIES({                                     \
@@ -416,15 +439,24 @@
 #define BRAVE_AI_CHAT_HISTORY
 #endif
 
-#define BRAVE_OMNIBOX_FEATURES                                              \
-  EXPAND_FEATURE_ENTRIES({                                                  \
-      "brave-omnibox-tab-switch-by-default",                                \
-      "Brave Tab Switch by Default",                                        \
-      "Prefer switching to already open tabs, rather than navigating in a " \
-      "new tab",                                                            \
-      kOsWin | kOsLinux | kOsMac,                                           \
-      FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),              \
-  })
+#define BRAVE_OMNIBOX_FEATURES                                                \
+  EXPAND_FEATURE_ENTRIES(                                                     \
+      {                                                                       \
+          "brave-omnibox-tab-switch-by-default",                              \
+          "Brave Tab Switch by Default",                                      \
+          "Prefer switching to already open tabs, rather than navigating in " \
+          "a "                                                                \
+          "new tab",                                                          \
+          kOsWin | kOsLinux | kOsMac,                                         \
+          FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),            \
+      },                                                                      \
+      {                                                                       \
+          "brave-history-more-search-results",                                \
+          "Brave More History",                                               \
+          "Include more history in the omnibox search results",               \
+          kOsWin | kOsLinux | kOsMac | kOsAndroid,                            \
+          FEATURE_VALUE_TYPE(history::kHistoryMoreSearchResults),             \
+      })
 
 #define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
   IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
@@ -448,14 +480,6 @@
           "testing only.",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl),      \
-      },                                                                       \
-      {                                                                        \
-          "allow-certain-client-hints",                                        \
-          "Allow certain request client hints",                                \
-          "Allows setting certain request client hints (sec-ch-ua, "           \
-          "sec-ch-ua-mobile, sec-ch-ua-platform)",                             \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(blink::features::kAllowCertainClientHints),       \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
@@ -704,6 +728,14 @@
                                  kAllowUnsupportedWalletProvidersFeature),     \
       },                                                                       \
       {                                                                        \
+          "brave-rewards-allow-self-custody-providers",                        \
+          "Enable Brave Rewards self-custody connection options",              \
+          "Enables self-custody options to be selected in Brave Rewards.",     \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_rewards::features::kAllowSelfCustodyProvidersFeature),     \
+      },                                                                       \
+      {                                                                        \
           "brave-ads-should-launch-brave-ads-as-an-in-process-service",        \
           "Launch Brave Ads as an in-process service",                         \
           "Launch Brave Ads as an in-process service removing the utility "    \
@@ -935,12 +967,14 @@
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
+  BRAVE_ZERO_DAY_FLAG_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
+  BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

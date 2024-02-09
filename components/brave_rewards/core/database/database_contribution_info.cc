@@ -53,7 +53,7 @@ DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 void DatabaseContributionInfo::InsertOrUpdate(mojom::ContributionInfoPtr info,
                                               LegacyResultCallback callback) {
   if (!info) {
-    BLOG(1, "Info is null");
+    engine_->Log(FROM_HERE) << "Info is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -131,14 +131,14 @@ void DatabaseContributionInfo::OnGetRecord(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
+    engine_->LogError(FROM_HERE) << "Response is not ok";
     callback(nullptr);
     return;
   }
 
   if (response->result->get_records().size() != 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
     callback(nullptr);
     return;
   }
@@ -169,7 +169,7 @@ void DatabaseContributionInfo::OnGetPublishers(
     GetContributionInfoCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
-    BLOG(1, "Contribution is null");
+    engine_->Log(FROM_HERE) << "Contribution is null";
     callback(nullptr);
     return;
   }
@@ -212,7 +212,7 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
                                               const int year,
                                               GetOneTimeTipsCallback callback) {
   if (year == 0) {
-    BLOG(1, "Year is 0");
+    engine_->Log(FROM_HERE) << "Year is 0";
     callback({});
     return;
   }
@@ -269,7 +269,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
+    engine_->LogError(FROM_HERE) << "Response is not ok";
     callback({});
     return;
   }
@@ -301,7 +301,7 @@ void DatabaseContributionInfo::GetContributionReport(
     const int year,
     GetContributionReportCallback callback) {
   if (year == 0) {
-    BLOG(1, "Year is 0");
+    engine_->Log(FROM_HERE) << "Year is 0";
     callback({});
     return;
   }
@@ -346,7 +346,7 @@ void DatabaseContributionInfo::OnGetContributionReport(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
+    engine_->LogError(FROM_HERE) << "Response is not ok";
     callback({});
     return;
   }
@@ -466,7 +466,7 @@ void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
                                          mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
+    engine_->LogError(FROM_HERE) << "Response is not ok";
     callback({});
     return;
   }
@@ -528,7 +528,7 @@ void DatabaseContributionInfo::UpdateStep(const std::string& contribution_id,
                                           mojom::ContributionStep step,
                                           LegacyResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(1, "Contribution id is empty");
+    engine_->Log(FROM_HERE) << "Contribution id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -559,7 +559,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
     int32_t retry_count,
     LegacyResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(1, "Contribution id is empty");
+    engine_->Log(FROM_HERE) << "Contribution id is empty";
     callback(mojom::Result::FAILED);
     return;
   }

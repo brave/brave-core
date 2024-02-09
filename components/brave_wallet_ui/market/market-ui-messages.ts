@@ -54,10 +54,6 @@ export type SelectDepositMessage = MarketCommandMessage & {
   payload: BraveWallet.CoinMarket
 }
 
-export type UpdateTradableAssetsMessage = MarketCommandMessage & {
-  payload: BraveWallet.BlockchainToken[]
-}
-
 export type UpdateBuyableAssetsMessage = MarketCommandMessage & {
   payload: BraveWallet.BlockchainToken[]
 }

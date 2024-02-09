@@ -9,9 +9,8 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import {
-  getBatTokensFromList,
-  getNativeTokensFromList,
-  getUniqueAssets
+  getUniqueAssets,
+  sortNativeAndAndBatAssetsToTop
 } from '../../../utils/asset-utils'
 import { addLogoToToken } from '../../async/lib'
 import { mapLimit } from 'async'
@@ -113,76 +112,18 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
                 await addLogoToToken(token)
             )
 
-          // separate native assets from tokens
-          const {
-            tokens: rampTokenOptions,
-            nativeAssets: rampNativeAssetOptions
-          } = getNativeTokensFromList(rampAssetOptions)
-
-          const {
-            tokens: sardineTokenOptions,
-            nativeAssets: sardineNativeAssetOptions
-          } = getNativeTokensFromList(sardineAssetOptions)
-
-          const {
-            tokens: transakTokenOptions,
-            nativeAssets: transakNativeAssetOptions
-          } = getNativeTokensFromList(transakAssetOptions)
-
-          const {
-            tokens: stripeTokenOptions,
-            nativeAssets: stripeNativeAssetOptions
-          } = getNativeTokensFromList(stripeAssetOptions)
-
-          const {
-            tokens: coinbaseTokenOptions,
-            nativeAssets: coinbaseNativeAssetOptions
-          } = getNativeTokensFromList(coinbaseAssetOptions)
-
-          // separate BAT from other tokens
-          const { bat: rampBatTokens, nonBat: rampNonBatTokens } =
-            getBatTokensFromList(rampTokenOptions)
-
-          const { bat: sardineBatTokens, nonBat: sardineNonBatTokens } =
-            getBatTokensFromList(sardineTokenOptions)
-
-          const { bat: transakBatTokens, nonBat: transakNonBatTokens } =
-            getBatTokensFromList(transakTokenOptions)
-
-          const { bat: stripeBatTokens, nonBat: stripeNonBatTokens } =
-            getBatTokensFromList(stripeTokenOptions)
-
-          const { bat: coinbaseBatTokens, nonBat: coinbaseNonBatTokens } =
-            getBatTokensFromList(coinbaseTokenOptions)
-
           // sort lists
           // Move Gas coins and BAT to front of list
-          const sortedRampOptions = [
-            ...rampNativeAssetOptions,
-            ...rampBatTokens,
-            ...rampNonBatTokens
-          ]
-          const sortedSardineOptions = [
-            ...sardineNativeAssetOptions,
-            ...sardineBatTokens,
-            ...sardineNonBatTokens
-          ]
-          const sortedTransakOptions = [
-            ...transakNativeAssetOptions,
-            ...transakBatTokens,
-            ...transakNonBatTokens
-          ]
-          const sortedStripeOptions = [
-            ...stripeNativeAssetOptions,
-            ...stripeBatTokens,
-            ...stripeNonBatTokens
-          ]
-
-          const sortedCoinbaseOptions = [
-            ...coinbaseNativeAssetOptions,
-            ...coinbaseBatTokens,
-            ...coinbaseNonBatTokens
-          ]
+          const sortedRampOptions =
+            sortNativeAndAndBatAssetsToTop(rampAssetOptions)
+          const sortedSardineOptions =
+            sortNativeAndAndBatAssetsToTop(sardineAssetOptions)
+          const sortedTransakOptions =
+            sortNativeAndAndBatAssetsToTop(transakAssetOptions)
+          const sortedStripeOptions =
+            sortNativeAndAndBatAssetsToTop(stripeAssetOptions)
+          const sortedCoinbaseOptions =
+            sortNativeAndAndBatAssetsToTop(coinbaseAssetOptions)
 
           const results = {
             rampAssetOptions: sortedRampOptions,
@@ -190,12 +131,15 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             transakAssetOptions: sortedTransakOptions,
             stripeAssetOptions: sortedStripeOptions,
             coinbaseAssetOptions: sortedCoinbaseOptions,
-            allAssetOptions: getUniqueAssets([
-              ...sortedRampOptions,
-              ...sortedSardineOptions,
-              ...sortedTransakOptions,
-              ...sortedStripeOptions
-            ])
+            allAssetOptions: sortNativeAndAndBatAssetsToTop(
+              getUniqueAssets(
+                sortedRampOptions.concat(
+                  sortedSardineOptions,
+                  sortedTransakOptions,
+                  sortedStripeOptions
+                )
+              )
+            )
           }
 
           return {
@@ -272,11 +216,20 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            `Failed to get buy URL for: ${JSON.stringify(arg, undefined, 2)}`,
+            `Failed to get ${getRampProviderName(
+              arg.onRampProvider
+            )} buy URL for: ${JSON.stringify(arg, undefined, 2)}`,
             error
           )
         }
       }
     })
   }
+}
+
+// internals
+function getRampProviderName(onRampProvider: BraveWallet.OnRampProvider) {
+  return Object.keys(BraveWallet.OnRampProvider)
+    .find((key) => BraveWallet.OnRampProvider[key] === onRampProvider)
+    ?.substring(1)
 }

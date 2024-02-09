@@ -5,14 +5,16 @@
 
 #include "brave/components/brave_wallet/common/test_utils.h"
 
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
 namespace brave_wallet {
 
 bool AllCoinsTested() {
-  // Change harcoded value here only when all failed callers have adequate
+  // Change hardcoded values here only when all failed callers have adequate
   // testing for newly added coin.
-  return 4 == std::size(kAllCoins);
+  return 5 == std::size(kAllCoins) && 8 == std::size(kAllKeyrings);
 }
 
 mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id,
@@ -46,5 +48,27 @@ mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id,
           GetSupportedKeyringsForNetwork(coin, chain_id),
           true};
 }
+
+namespace mojom {
+
+void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os) {
+  *os << base::StringPrintf("[%s %d/%d]", address->address_string.c_str(),
+                            address->key_id->change, address->key_id->index);
+}
+
+void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os) {
+  *os << BlockchainTokenToValue(token).DebugString();
+}
+
+void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os) {
+  *os << balance->total_balance << "/" << balance->available_balance << "/"
+      << balance->pending_balance;
+}
+
+void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os) {
+  *os << key_id.change << "/" << key_id.index;
+}
+
+}  // namespace mojom
 
 }  // namespace brave_wallet

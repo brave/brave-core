@@ -49,9 +49,15 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
       const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
 
-  void FilterCreativeAds(CreativeNewTabPageAdList& creative_ads,
-                         const AdEventList& ad_events,
-                         const BrowsingHistoryList& browsing_history);
+  void FilterAndMaybePredictCreativeAd(
+      const UserModelInfo& user_model,
+      const CreativeNewTabPageAdList& creative_ads,
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void FilterIneligibleCreativeAds(CreativeNewTabPageAdList& creative_ads,
+                                   const AdEventList& ad_events,
+                                   const BrowsingHistoryList& browsing_history);
 
   base::WeakPtrFactory<EligibleNewTabPageAdsV2> weak_factory_{this};
 };

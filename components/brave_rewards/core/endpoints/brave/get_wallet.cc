@@ -9,64 +9,81 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
+
 using Error = GetWallet::Error;
 using Result = GetWallet::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto* deposit_account_provider =
-      value->GetDict().FindDict("depositAccountProvider");
-  if (!deposit_account_provider) {
-    return std::pair{"" /* wallet provider */, false /* linked */};
+  GetWallet::Value result_value;
+
+  auto& dict = value->GetDict();
+
+  if (auto* provider_dict = dict.FindDict("depositAccountProvider")) {
+    const auto* name = provider_dict->FindString("name");
+    const auto* id = provider_dict->FindString("id");
+    const auto* linking_id = provider_dict->FindString("linkingId");
+
+    if (!name || !id || !linking_id) {
+      return base::unexpected(Error::kFailedToParseBody);
+    }
+
+    result_value.wallet_provider = *name;
+    result_value.provider_id = *id;
+    result_value.linked = !id->empty() && !linking_id->empty();
   }
 
-  auto* name = deposit_account_provider->FindString("name");
-  const auto* id = deposit_account_provider->FindString("id");
-  const auto* linking_id = deposit_account_provider->FindString("linkingId");
-
-  if (!name || !id || !linking_id) {
-    return base::unexpected(Error::kFailedToParseBody);
+  if (auto* self_custody_available = dict.FindDict("selfCustodyAvailable")) {
+    for (auto&& [provider_name, dict_value] : *self_custody_available) {
+      if (auto available = dict_value.GetIfBool()) {
+        result_value.self_custody_available.Set(provider_name, *available);
+      }
+    }
   }
 
-  return std::pair{
-      std::move(*name),                     // wallet provider
-      !id->empty() && !linking_id->empty()  // linked
-  };
+  return result_value;
 }
 
 }  // namespace
 
+GetWalletValue::GetWalletValue() = default;
+GetWalletValue::~GetWalletValue() = default;
+GetWalletValue::GetWalletValue(GetWalletValue&&) = default;
+GetWalletValue& GetWalletValue::operator=(GetWalletValue&&) = default;
+
 // static
-Result GetWallet::ProcessResponse(const mojom::UrlResponse& response) {
+Result GetWallet::ProcessResponse(RewardsEngineImpl& engine,
+                                  const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     case net::HTTP_BAD_REQUEST:  // HTTP 400
-      BLOG(0, "Invalid request!");
+      engine.LogError(FROM_HERE) << "Invalid request";
       return base::unexpected(Error::kInvalidRequest);
     case net::HTTP_FORBIDDEN:  // HTTP 403
-      BLOG(0, "Request signature verification failure!");
+      engine.LogError(FROM_HERE) << "Request signature verification failure";
       return base::unexpected(Error::kRequestSignatureVerificationFailure);
     case net::HTTP_NOT_FOUND:  // HTTP 404
-      BLOG(0, "Rewards payment ID not found!");
+      engine.LogError(FROM_HERE) << "Rewards payment ID not found";
       return base::unexpected(Error::kRewardsPaymentIDNotFound);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
@@ -82,11 +99,15 @@ std::string GetWallet::Path() const {
 std::optional<std::string> GetWallet::Url() const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::nullopt;
   }
 
-  return endpoint::promotion::GetServerUrl(Path() + wallet->payment_id);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
+                          {Path(), wallet->payment_id});
+
+  return url.spec();
 }
 
 mojom::UrlMethod GetWallet::Method() const {
@@ -97,15 +118,21 @@ std::optional<std::vector<std::string>> GetWallet::Headers(
     const std::string& content) const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::nullopt;
   }
 
   DCHECK(!wallet->payment_id.empty());
   DCHECK(!wallet->recovery_seed.empty());
 
-  return util::BuildSignHeaders("get " + Path() + wallet->payment_id, content,
-                                wallet->payment_id, wallet->recovery_seed);
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer) {
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
+    return std::nullopt;
+  }
+
+  return signer->GetSignedHeaders("get " + Path() + wallet->payment_id,
+                                  content);
 }
 
 }  // namespace brave_rewards::internal::endpoints

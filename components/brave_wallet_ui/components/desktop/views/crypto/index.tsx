@@ -44,7 +44,7 @@ import {
   EditVisibleAssetsModal //
 } from '../../popup-modals/edit-visible-assets-modal/index'
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
-import { PortfolioAsset } from '../portfolio/portfolio-asset'
+import { PortfolioFungibleAsset } from '../portfolio/portfolio-fungible-asset'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
 import { MarketView } from '../market'
 import { Accounts } from '../accounts/accounts'
@@ -62,6 +62,7 @@ import {
   PortfolioOverviewHeader //
 } from '../../card-headers/portfolio-overview-header'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
+import { MarketAsset } from '../market/market_asset'
 
 export interface Props {
   sessionRoute: string | undefined
@@ -168,6 +169,13 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         isMetaMaskInstalled)) &&
     !isDefaultWalletBannerDismissed
 
+  const noBannerPadding =
+    isPanel &&
+    (!showBanner ||
+      (!isCheckingWalletBackupStatus &&
+        !isWalletBackedUp &&
+        !isBackupWarningDismissed))
+
   // memos
   const banners = React.useMemo(
     () => (
@@ -222,11 +230,12 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
             useDarkBackground={isPanel}
+            hideDivider={true}
           >
             <StyledWrapper>
               <Column
                 fullWidth={true}
-                padding='20px 20px 0px 20px'
+                padding={noBannerPadding ? '0px' : '20px 20px 0px 20px'}
               >
                 {banners}
               </Column>
@@ -246,7 +255,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           path={WalletRoutes.PortfolioAsset}
           exact
         >
-          <PortfolioAsset />
+          <PortfolioFungibleAsset />
         </Route>
 
         <Route path={WalletRoutes.Portfolio}>
@@ -255,11 +264,12 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
             useDarkBackground={isPanel}
+            hideDivider={isPanel}
           >
             <StyledWrapper>
               <Column
                 fullWidth={true}
-                padding='20px 20px 0px 20px'
+                padding={noBannerPadding ? '0px' : '20px 20px 0px 20px'}
               >
                 {banners}
               </Column>
@@ -312,7 +322,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper wrapContentInBox={true}>
             <StyledWrapper>
               {banners}
-              <PortfolioAsset isShowingMarketData={true} />
+              <MarketAsset />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>

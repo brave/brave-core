@@ -10,6 +10,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "content/public/browser/browser_context.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "url/gurl.h"
@@ -69,3 +70,6 @@ void ReaderModeToolbarView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
 #endif
   toolbar_->SetBoundsRect(toolbar_bounds);
 }
+
+BEGIN_METADATA(ReaderModeToolbarView)
+END_METADATA

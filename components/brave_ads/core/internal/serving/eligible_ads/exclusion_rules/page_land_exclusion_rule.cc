@@ -16,17 +16,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-bool DoesRespectCap(const AdEventList& ad_events,
-                    const CreativeAdInfo& creative_ad) {
-  return DoesRespectCampaignCap(
-      creative_ad, ad_events, ConfirmationType::kLanded,
-      kShouldExcludeAdIfLandedOnPageWithinTimeWindow.Get(), kPageLandCap.Get());
-}
-
-}  // namespace
-
 PageLandExclusionRule::PageLandExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
@@ -39,7 +28,10 @@ std::string PageLandExclusionRule::GetUuid(
 
 base::expected<void, std::string> PageLandExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
-  if (!DoesRespectCap(ad_events_, creative_ad)) {
+  if (!DoesRespectCampaignCap(
+          creative_ad, ad_events_, ConfirmationType::kLanded,
+          kShouldExcludeAdIfLandedOnPageWithinTimeWindow.Get(),
+          kPageLandCap.Get())) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "campaignId $1 has exceeded the page land frequency cap",
         {creative_ad.campaign_id}, nullptr));

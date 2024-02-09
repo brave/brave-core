@@ -11,6 +11,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/time_period_storage/monthly_storage.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_rewards {
@@ -24,15 +25,13 @@ namespace {
 // enabling.
 constexpr base::TimeDelta kMaxEnabledCauseTriggerTime = base::Minutes(1);
 
-#if BUILDFLAG(IS_ANDROID)
 constexpr base::TimeDelta kReportInterval = base::Days(1);
-#endif
 
 const int kTipsSentBuckets[] = {0, 1, 3};
 
-#if BUILDFLAG(IS_ANDROID)
-const int kMobilePanelCountBuckets[] = {5, 10, 50};
-#endif
+const int kPanelCountBuckets[] = {5, 10, 50};
+
+const int kRewardsPageViewCountBuckets[] = {2, 5, 10, 50};
 
 }  // namespace
 
@@ -52,6 +51,22 @@ void RecordNoWalletCreatedForAllMetrics() {
   UMA_HISTOGRAM_EXACT_LINEAR(kTipsSentHistogramName, INT_MAX - 1, 3);
   UMA_HISTOGRAM_EXACT_LINEAR(kAutoContributionsStateHistogramName, INT_MAX - 1,
                              2);
+}
+
+void RecordRewardsPageViews(PrefService* prefs, bool new_view) {
+  if (!prefs->GetBoolean(prefs::kEnabled)) {
+    return;
+  }
+  MonthlyStorage storage(prefs, prefs::kRewardsPageViewCount);
+  if (new_view) {
+    storage.AddDelta(1);
+  }
+  auto sum = storage.GetMonthlySum();
+  if (sum == 0) {
+    return;
+  }
+  p3a_utils::RecordToHistogramBucket(kPageViewCountHistogramName,
+                                     kRewardsPageViewCountBuckets, sum);
 }
 
 void RecordAdTypesEnabled(PrefService* prefs) {
@@ -75,29 +90,29 @@ void RecordAdTypesEnabled(PrefService* prefs) {
   UMA_HISTOGRAM_ENUMERATION(kAdTypesEnabledHistogramName, answer);
 }
 
-#if BUILDFLAG(IS_ANDROID)
 ConversionMonitor::ConversionMonitor(PrefService* prefs)
-    : prefs_(prefs),
-      mobile_panel_trigger_count_(prefs, prefs::kP3APanelTriggerCount) {
+    : prefs_(prefs), panel_trigger_count_(prefs, prefs::kP3APanelTriggerCount) {
   ReportPeriodicMetrics();
 }
-#else
-ConversionMonitor::ConversionMonitor(PrefService* prefs) {}
-#endif
 
 ConversionMonitor::~ConversionMonitor() = default;
 
 void ConversionMonitor::RecordPanelTrigger(PanelTrigger trigger) {
 #if !BUILDFLAG(IS_ANDROID)
-  if (trigger == PanelTrigger::kToolbarButton) {
-    UMA_HISTOGRAM_EXACT_LINEAR(kToolbarButtonTriggerHistogramName, 1, 2);
+  if (prefs_->GetBoolean(prefs::kEnabled)) {
+    panel_trigger_count_.AddDelta(1u);
+    ReportPanelTriggerCount();
+  } else {
+    if (trigger == PanelTrigger::kToolbarButton) {
+      UMA_HISTOGRAM_EXACT_LINEAR(kToolbarButtonTriggerHistogramName, 1, 2);
+    }
+    last_trigger_ = trigger;
+    last_trigger_time_ = base::Time::Now();
   }
-  last_trigger_ = trigger;
-  last_trigger_time_ = base::Time::Now();
 #else
   if (prefs_->GetBoolean(prefs::kEnabled)) {
-    mobile_panel_trigger_count_.AddDelta(1u);
-    ReportMobilePanelTriggerCount();
+    panel_trigger_count_.AddDelta(1u);
+    ReportPanelTriggerCount();
   } else {
     mobile_trigger_timer_.Start(
         FROM_HERE, kMaxEnabledCauseTriggerTime,
@@ -130,28 +145,27 @@ void ConversionMonitor::RecordRewardsEnable() {
 }
 
 #if BUILDFLAG(IS_ANDROID)
+void ConversionMonitor::OnMobileTriggerTimer() {
+  UMA_HISTOGRAM_BOOLEAN(kMobileConversionHistogramName,
+                        prefs_->GetBoolean(prefs::kEnabled));
+}
+#endif
 
 void ConversionMonitor::ReportPeriodicMetrics() {
-  ReportMobilePanelTriggerCount();
+  ReportPanelTriggerCount();
   daily_timer_.Start(FROM_HERE, base::Time::Now() + kReportInterval,
                      base::BindOnce(&ConversionMonitor::ReportPeriodicMetrics,
                                     base::Unretained(this)));
 }
 
-void ConversionMonitor::OnMobileTriggerTimer() {
-  UMA_HISTOGRAM_BOOLEAN(kMobileConversionHistogramName,
-                        prefs_->GetBoolean(prefs::kEnabled));
-}
-
-void ConversionMonitor::ReportMobilePanelTriggerCount() {
-  uint64_t total = mobile_panel_trigger_count_.GetWeeklySum();
+void ConversionMonitor::ReportPanelTriggerCount() {
+  uint64_t total = panel_trigger_count_.GetWeeklySum();
   if (total == 0) {
     return;
   }
-  p3a_utils::RecordToHistogramBucket(kMobilePanelCountHistogramName,
-                                     kMobilePanelCountBuckets, total);
+  p3a_utils::RecordToHistogramBucket(kPanelCountHistogramName,
+                                     kPanelCountBuckets, total);
 }
-#endif
 
 }  // namespace p3a
 }  // namespace brave_rewards

@@ -226,8 +226,6 @@
 <translation id="4045581694057451126">8 sekunder</translation>
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="2807328214759298515">Upp till</translation>
-<translation id="7483857210736407752">Visa donationsknappar på webbplatser</translation>
-<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Klickat</translation>
 <translation id="7119308337584989771">Avfärdat</translation>
 <translation id="6805660603861526473">Sett</translation>
@@ -485,9 +483,9 @@
 <translation id="4047002754575891955">Fortsätt med sökning utanför kedja</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Aktivera stöd för Solana Name Service (SNS) i Brave?</translation>
-<translation id="3664848774480475984">Brave använder Syndica för att matcha .sol-domännamn. Brave döljer din IP-adress. Om du aktiverar detta kommer Syndica att se att någon försöker besöka dessa .sol-domäner men inget annat. Se Syndicas <ph name="BEGIN_SYNDICA_TOU_LINK"/>användarvillkor<ph name="END_SYNDICA_TOU_LINK"/> och <ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>integritetspolicy<ph name="END_SYNDICA_PRIVACY_LINK"/>.</translation>
+<translation id="1026480261052976838">Brave kommer att använda en tredje part för att matcha .sol-domännamn. Brave döljer din IP-adress. Om du aktiverar detta kommer den tredje parten att se att någon försöker besöka dessa .sol-domäner men inget annat. För mer information om vilka tredje parter vi använder och deras sekretesspolicyer, se vår <ph name="BEGIN_SNS_WIKI_LINK"/>hjälpsida<ph name="END_SNS_WIKI_LINK"/>.</translation>
 <translation id="7378412287463452336">Fortsätt med Infura-server</translation>
-<translation id="2824725477135051831">Fortsätt med Syndica-server</translation>
+<translation id="4388873516324656141">Fortsätt med en SNS-server</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="59174027418879706">Aktiverat</translation>
 <translation id="2468755552460246661">Blockerad domän</translation>
@@ -653,11 +651,11 @@
 <translation id="39734939514946950">Din belöningssumma</translation>
 <translation id="717952606991220586">Oj, något är fel. Vänligen försök igen senare.</translation>
 <translation id="7210234701206674260">Brave Rewards har problem. Försök igen senare.</translation>
-<translation id="579702532610384533">Återanslut</translation>
 <translation id="3358400027937159351">Du har bidragit med <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Du är utloggad</translation>
-<translation id="5142174225142816130">Detta kan hända för att hålla ditt konto säkert. Klicka nedan för att återansluta nu.</translation>
+<translation id="3035648636451344428">Detta sker då och då för att hålla ditt <ph name="PROVIDER"/>-konto säkert. När du är utloggad fortsätter du att ta emot utbetalningar, men du kan inte se ditt saldo eller skicka bidrag från ditt <ph name="PROVIDER"/>-konto.</translation>
 <translation id="1677961202754619328">Enligt Uphold finns det för närvarande vissa begränsningar i ditt Uphold-konto. Logga in på ditt Uphold-konto och kontrollera om det finns några meddelanden eller kvarstående kontokrav som behöver slutföras och försök sedan igen.</translation>
+<translation id="9029009481113741943">Logga in igen</translation>
 <translation id="2429828319207652823">Det gick inte att behandla ditt bidrag.</translation>
 <translation id="6390041270339783491">Månatligt bidrag misslyckades</translation>
 <translation id="7047578174221019462">Dina månatliga bidrag har behandlats.</translation>
@@ -755,27 +753,11 @@
 <translation id="5486744676117070166">Det gick inte att hämta nästa nonce-värde</translation>
 <translation id="6180576227145734714">Transaktionsdata "till" måste vara en giltig adress när den anges</translation>
 <translation id="6688162556547723415">Den begärda metoden och/eller kontot har inte godkänts av användaren.</translation>
-<translation id="4958950550253325418">Defi appar</translation>
-<translation id="735961408871282410">NFT marknadsplatser</translation>
-<translation id="7740287852186792672">Sökresultat</translation>
-<translation id="5140238928332244937">Bläddra bland fler Defi</translation>
-<translation id="6825869531314999449">Bläddra bland mer NFT</translation>
-<translation id="2744185997184360326">Sammansättning</translation>
-<translation id="7587986159645261196">Lås upp ett universum av öppna ekonomiska applikationer.</translation>
-<translation id="1614407808582616698">MakerDAO</translation>
-<translation id="8723680648033138705">Maker - stablecoin, lån och styrning...</translation>
-<translation id="1209155679734532646">Aave</translation>
-<translation id="348141691274391859">Protokoll att tjäna på insättningar &amp; låna tillgångar.</translation>
-<translation id="5074570831310922792">OpenSea</translation>
-<translation id="8246868867733222286">Den största NFT-marknaden. Köp, sälj och upptäck sällsynta digitala föremål</translation>
-<translation id="8375074247703832257">Rarible</translation>
-<translation id="7826627294887983832">Skapa och sälj digitala konstverk</translation>
 <translation id="1383876407941801731">Sök</translation>
 <translation id="8767749833522980474">Krypto</translation>
 <translation id="944736176598169208">Belöningar</translation>
 <translation id="6122742277607781713">Portfolio</translation>
 <translation id="7020503656406658141">Priser</translation>
-<translation id="2805756323405976993">Appar</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="3567988240819868195">Marknad</translation>
@@ -817,13 +799,11 @@
 <translation id="8530071505111489657">Inga tillgängliga tokens</translation>
 <translation id="615791330696335475">Sök tokens efter namn</translation>
 <translation id="5009335307032488349">Sök NFT efter namn, id</translation>
-<translation id="6295954645230084874">Stöd för köp är inte tillgängligt för <ph name="NETWORK"/></translation>
 <translation id="9209024278910716955">Köp stöds inte för det valda nätverket</translation>
 <translation id="4982630604810554641">Söker efter domän...</translation>
 <translation id="5467044307473123584">Brave stöder användning av off-chain-gateways för namnuppslag av .eth-domäner.</translation>
 <translation id="4896417414446851895">Det verkar som att du har angett en ENS-adress. Vi måste använda namnuppslag från tredje part för namnuppslag av denna begäran, vilket kan innebära att de kan se din IP-adress och domän.</translation>
 <translation id="8646078615727397565">Använd ENS-domän</translation>
-<translation id="4171338820961522154">Swap-stöd är inte tillgängligt för <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Transkationen kan vara frontrun</translation>
 <translation id="632241521608275119">Tolererade transaktionskostnader</translation>
 <translation id="4500473291496079954">Löper ut om</translation>
@@ -954,7 +934,7 @@
 <translation id="3842236145820483340">Coingecko-ID</translation>
 <translation id="7642841516562576649">Ikon-URL</translation>
 <translation id="2144247757675997850">Lägg till tillgång</translation>
-<translation id="2708402071160162126">VARNING: Dela aldrig din återställningsfras. Alla med denna fras kan ta dina tillgångar för alltid.</translation>
+<translation id="453788800165937690">VARNING: Dela aldrig med dig av din privata nyckel. Den som har den privata nyckeln kan ta dina tillgångar för alltid.</translation>
 <translation id="2416098547200943834">Obs! Den privata nyckeln är en hexkrypterad JSON med den privata nyckeln och protokolluppgifter. <ph name="LINK_START"/>Läs mer<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">Obs! Den privata nyckeln måste anges som hexkrypterad JSON med den privata nyckeln och protokolluppgifter. <ph name="LINK_START"/>Läs mer<ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">Exportera</translation>
@@ -1037,7 +1017,6 @@
 <translation id="1426320910664514906">Gasgräns</translation>
 <translation id="1229774280326250926">Gas för Premium</translation>
 <translation id="148169246131967347">Avgiftstak för gas</translation>
-<translation id="523862956770478816">Webbplatsbehörigheter</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> konton anslutna</translation>
 <translation id="4804818685124855865">Koppla från</translation>
 <translation id="4305817255990598646">Växla</translation>
@@ -1049,8 +1028,6 @@
 <translation id="8497650996740651467">Tillgängliga konton</translation>
 <translation id="5677928146339483299">Blockerade</translation>
 <translation id="3890989020011724401">Nytt konto</translation>
-<translation id="7257603403519636638">Visa kontotillgångar</translation>
-<translation id="2092132085082887098">Kontotillgångar</translation>
 <translation id="4612979983851181941">Använd den här panelen för säker åtkomst till Web3 och alla dina kryptotillgångar.</translation>
 <translation id="4460220693591349571">FUNKTIONSTYP</translation>
 <translation id="838933475572692615">HEX DATA</translation>
@@ -1100,8 +1077,6 @@
 <translation id="8214232307424031138">Signerat</translation>
 <translation id="5916664084637901428">På</translation>
 <translation id="9065572743819293042">Senaste transaktioner</translation>
-<translation id="4235538284468006757">Transaktionsdetaljer</translation>
-<translation id="7488671812634887146">Snabba på</translation>
 <translation id="1702356231547761669">Transaktionshash</translation>
 <translation id="8941851657764077659">Max prioritetsavgift</translation>
 <translation id="8047527352810290817">Redigera gas</translation>
@@ -1384,6 +1359,7 @@
 <translation id="8918368616587206671">Stark!</translation>
 <translation id="574392208103952083">Medium</translation>
 <translation id="8297006494302853456">Svag</translation>
+<translation id="7084181009966710506">Skapar plånbok ...</translation>
 <translation id="6782556046178425980">Innan du börjar säkerhetskopiera plånboken</translation>
 <translation id="7119749028647909394">Återställningsfrasen på 12–24 ord är en privat nyckel som du kan använda för att återfå åtkomst till din plånbok om du skulle förlora en eller flera anslutna enheter. Förvara den på ett säkert ställe och i exakt den ordning som den visas nedan.</translation>
 <translation id="3259018319025894691">Brave kan inte komma åt din hemliga återställningsfras. Håll det säkert och dela det aldrig med någon annan.</translation>
@@ -1447,7 +1423,6 @@
 <translation id="6885009592653876601">Köp, skicka och byt över 200 kryptotillgångar</translation>
 <translation id="8716223552348254401">Webbläsarbaserad, inga riskabla tillägg</translation>
 <translation id="4559901986238865734">Flerkedjiga &amp; NFT-stöd</translation>
-<translation id="8280970992918660431">Upplåsning krävs för att skapa ett konto</translation>
 <translation id="296101411136980896">Klicka för att byta</translation>
 <translation id="753655478253155745">Tolfte</translation>
 <translation id="2679592211386970368">Trettonde</translation>
@@ -1530,8 +1505,6 @@
 <translation id="2379187373676242615"><ph name="VALUE"/> % billigare än CoinGecko</translation>
 <translation id="5351867352310722022">Inom <ph name="VALUE"/> % CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/> % dyrare än CoinGecko</translation>
-<translation id="6065708195277841442">Anslut plånbok</translation>
-<translation id="4029551149873989025">Växla nätverk</translation>
 <translation id="7561262633951061138">Bästa</translation>
 <translation id="8060029310790625334">hjälpcenter</translation>
 <translation id="3143110700666266545">Den här appen använder följande API:er från tredje part:</translation>
@@ -1639,9 +1612,9 @@
 <translation id="7436846601026966360">Några källor du kanske gillar. Förslagen är anonyma och matchas bara på din enhet.</translation>
 <translation id="7950715913905993008">Hoppsan ...</translation>
 <translation id="7158100730468448581">Brave News kunde inte hämta innehåll.</translation>
-<translation id="254100925533869330">Inget innehåll</translation>
-<translation id="7172792761509429092">Brave News har inget innehåll att visa.</translation>
-<translation id="1771307734839364850">Välj innehållskällor</translation>
+<translation id="2665462122884195298">Ditt flöde är tomt</translation>
+<translation id="8461269982440806387">Följ publicister och kanaler för att se dem i ditt flöde.</translation>
+<translation id="1685574186123115251">Lägg till innehållskällor</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="6261915643960475695">Affärsliv</translation>
 <translation id="8265589281845759879">Bilar</translation>
@@ -1669,16 +1642,27 @@
 <translation id="1297570508541015874">USA nyheter</translation>
 <translation id="1459693405370120464">Väder</translation>
 <translation id="8366057325711477500">Världsnyheter</translation>
-<translation id="7625025537587898155">Lägg till ny profil</translation>
+<translation id="6709133671862442373">Nyheter</translation>
+<translation id="3553513561058684206">För dig</translation>
+<translation id="2217013723701900638">Utgivare</translation>
+<translation id="7751260505918304024">Visa alla</translation>
+<translation id="5138227688689900538">Visa färre</translation>
+<translation id="1041218419402648959">Dölj innehåll från <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3992393738853907417">Du kanske också gillar</translation>
+<translation id="7801706796402209986">Detta flöde är tomt</translation>
+<translation id="5385187102307010596">Det verkar inte finnas några artiklar i detta flöde just nu. Försök komma tillbaka senare eller uppdatera flödet.</translation>
+<translation id="667570357480376913">Du ser ut att vara offline</translation>
+<translation id="7587168765698889017">Kontrollera din internetanslutning och uppdatera</translation>
+<translation id="1164949492823956426">Öppna artiklar i</translation>
+<translation id="5233638681132016545">Ny flik</translation>
+<translation id="7948579849190819732">Aktuell flik</translation>
+<translation id="7056969230130642253">Du har kommit ikapp</translation>
+<translation id="7292242212818928219">Nytt innehåll tillgängligt. Ladda om?</translation>
 <translation id="7481312909269577407">Framåt</translation>
 <translation id="302781076327338683">Läs in sidan på nytt utan att använda cache</translation>
 <translation id="7211681214230730336">Läs in på nytt och rensa cache</translation>
-<translation id="4471385409549756595">Nytt inkognitofönster</translation>
 <translation id="1779766957982586368">Stäng fönstret</translation>
-<translation id="5233638681132016545">Ny flik</translation>
 <translation id="5210365745912300556">Stäng flik</translation>
-<translation id="7998918019931843664">Öppna en stängd flik på nytt</translation>
-<translation id="537986674347911358">Visa som flik</translation>
 <translation id="2291643155573394834">Nästa flik</translation>
 <translation id="7748528009589593815">Föregående flik</translation>
 <translation id="3738690686686515962">Välj flik 0</translation>
@@ -1694,33 +1678,14 @@
 <translation id="1137110118182796989">Flytta flik till nästa</translation>
 <translation id="229140155637338506">Flytta flik till föregående</translation>
 <translation id="4841735924729216702">Fönstermeny</translation>
-<translation id="1729431344896193035">Växla helskärmsläge</translation>
 <translation id="3649256019230929621">Minimera fönster</translation>
 <translation id="906458777597946297">Maximera fönster</translation>
 <translation id="2082612610620888017">Visa alla fönster</translation>
-<translation id="9148058034647219655">Avsluta</translation>
-<translation id="3770620323585347665">Namnge fönster</translation>
-<translation id="2154710561487035718">Kopiera webbadress</translation>
-<translation id="2722817840640790566">Öppna gästprofil</translation>
-<translation id="8445059357334030806">Öppna i Brave</translation>
 <translation id="1111843722790053332">Öppna i PWA-fönster</translation>
 <translation id="907981618023904259">Webbappinställningar</translation>
 <translation id="4138336125382947023">Webbappinfo</translation>
-<translation id="2743255659506168928">Bokmärk flik</translation>
-<translation id="5078638979202084724">Bokmärk alla flikar</translation>
 <translation id="2151038323652296625">Skicka sidans webbadress via e-post</translation>
 <translation id="2456347058080729750">Grundläggande utskrift</translation>
-<translation id="8715548065732069095">Spara sida som</translation>
-<translation id="7724603315864178912">Klipp ut</translation>
-<translation id="3943857333388298514">Klistra in</translation>
-<translation id="5546865291508181392">Sök</translation>
-<translation id="8151185429379586178">Utvecklarverktyg</translation>
-<translation id="6005726134413483363">Javascript-konsol</translation>
-<translation id="634208815998129842">Aktivitetshanteraren</translation>
-<translation id="7027293873729370359">Inspektera enheter</translation>
-<translation id="8981254605840444865">Visa inställningar</translation>
-<translation id="3105917916468784889">Ta skärmdump</translation>
-<translation id="1536390784834419204">Översätt sida</translation>
 <translation id="5973664933364241128">Dirigera media</translation>
 <translation id="1568067597247500137">Stäng av ljud på webbplats</translation>
 <translation id="6674128381307353306">Stäng av ljud på alla flikar</translation>
@@ -1755,7 +1720,6 @@
 <translation id="4882473678324857464">Fokusera bokmärken</translation>
 <translation id="5002047168347153398">Fokusera inaktiv popup för tillgänglighet</translation>
 <translation id="8215784091821791027">Fokusera webbinnehållspanel</translation>
-<translation id="4952628481830269193">Visa bokmärkesfältet</translation>
 <translation id="8652827551752428289">Visa historik</translation>
 <translation id="5030659775136592441">Visa bokmärkeshanterare</translation>
 <translation id="6919203766034706175">Importera inställningar</translation>
@@ -1771,15 +1735,12 @@
 <translation id="5835081019037947840">Växla apple-händelser med javascript</translation>
 <translation id="5825969867518399495">Installera PWA</translation>
 <translation id="7888244262238732644">Visa hanterarsida</translation>
-<translation id="1728549374069268714">Klistra in och öppna</translation>
 <translation id="8114712275882140856">Visa fullständiga webbadresser</translation>
 <translation id="7294510764127771956">Växla för cirkumflexbläddring</translation>
 <translation id="4186334830839439230">Visa prestandainställningar</translation>
 <translation id="1094277301241124207">Visa sidopanel för bokmärken</translation>
-<translation id="3277827709560246894">Bokmärkesfältet: Öppna alla</translation>
 <translation id="8283515796576236471">Bokmärkesfältet: Öppna alla i nytt fönster</translation>
 <translation id="5271773791943587595">Bokmärkesfältet: Öppna alla i privat fönster</translation>
-<translation id="3945518311492169884">Bokmärkesfältet: Öppna i privat</translation>
 <translation id="2748975346534113286">Bokmärkesfältet: Öppna alla nya flikgrupper</translation>
 <translation id="5829341068610264408">Bokmärkesfältet: Byt namn på mapp</translation>
 <translation id="5118326702207363004">Bokmärkesfältet: Redigera</translation>
@@ -1788,9 +1749,7 @@
 <translation id="7629040247832187331">Bokmärkesfältet: Gör om</translation>
 <translation id="6950544855362391649">Bokmärkesfältet: Lägg till nytt bokmärke</translation>
 <translation id="6528836090624940616">Bokmärkesfältet: Ny mapp</translation>
-<translation id="5469954281417596308">Bokmärkeshanteraren</translation>
 <translation id="7582036714669095991">Bokmärkesfältet: Visa alltid</translation>
-<translation id="2530696803812164674">Bokmärkesfältet: Visa appgenvägar</translation>
 <translation id="8446467844676974241">Bokmärkesfältet: Visa hanterade bokmärken</translation>
 <translation id="7371391600340880977">Bokmärkesfältet: Lägg till på bokmärkesfältet</translation>
 <translation id="8881741588924189283">Bokmärkesfältet: Ta bort från bokmärkesfältet</translation>
@@ -1881,23 +1840,19 @@
 <translation id="3055739528128372229">Riktigheten i svaren kan inte garanteras och de kan innehålla felaktig, vilseledande eller falsk information. Skicka inte in känslig eller privat information och var försiktig med svar som rör hälsa, ekonomi, personlig säkerhet eller liknande.</translation>
 <translation id="7297681068636289435">Leo samlar inte in identifierare som din IP-adress som kan kopplas till dig. Inga personuppgifter lagras av AI-modellen eller någon tredje parts modellleverantör.</translation>
 <translation id="7839853125981164613">Ange en uppmaning här</translation>
-<translation id="1171287413830401223">Aktivera förslag på frågor?</translation>
+<translation id="334325425115922031">Föreslagna uppföljningar</translation>
+<translation id="4524675003624341892">Föreslå frågor ...</translation>
 <translation id="4567071417854988869">Sammanfatta den här videon</translation>
 <translation id="7921782882718083488">Sammanfatta den här sidan</translation>
-<translation id="5431287032059464898">Leo kan automatiskt föreslå frågor baserat på innehållet på webbplatsen. För att göra detta kommer sidinnehållet i dina navigeringar att skickas till Leo för att generera dessa förslag medan Leo är öppet. Du kan inaktivera det senare i Inställningar.</translation>
-<translation id="3435896845095436175">Aktivera</translation>
-<translation id="7473891865547856676">Nej tack</translation>
 <translation id="7932221068776853847">Koppla från för att sluta skicka sidinnehåll till Leo och starta en ny konversation</translation>
 <translation id="1167803637855350748">Det uppstod ett nätverksproblem vid anslutning till Leo, kontrollera anslutningen och försök igen.</translation>
 <translation id="5095201428204952524">Leo är för upptagen just nu. Försök igen om några minuter.</translation>
 <translation id="7144878232160441200">Försök igen</translation>
-<translation id="2505565639170795978">Hej! Jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Llama 13B, en modell som skapats av Meta för att vara högpresterande och kunna användas på många olika sätt.</translation>
-<translation id="7202619923031933110">Hej! Jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Llama 70B, en modell som skapats av Meta för att hantera mer avancerade uppgifter än 13B.</translation>
+<translation id="7202619923031933110">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Mixtral 7B, en modell som skapats av Mistral AI för att hantera avancerade uppgifter.</translation>
 <translation id="2489317965865266353">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Instant, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> av <ph name="COMPANY_NAME"/></translation>
 <translation id="6187065185557150870">Chatt</translation>
 <translation id="2961040541145689181">Ny chatt</translation>
-<translation id="97095589689466044">Föreslagna frågor</translation>
 <translation id="7557539689487606886">Välj Premium</translation>
 <translation id="1691256669639196606">Hantera prenumeration</translation>
 <translation id="3037594989275592390">Språkmodeller</translation>
@@ -1906,7 +1861,6 @@
 <translation id="1239767708151339890">Tillgång till branschledande LLM:er</translation>
 <translation id="8021579987620496265">Högre frekvensgränser</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /månad</translation>
-<translation id="9221988663340523352">Byt till standardmodellen</translation>
 <translation id="377376641316998425">Frigör Leos fulla potential</translation>
 <translation id="8363148882096737034">Anthropic Claude + mer kommer snart</translation>
 <translation id="886527905046308697">Prioriterad åtkomst och högre svarsgränser</translation>
@@ -1918,7 +1872,7 @@
 <translation id="3521125531016408657">Gilla svaret</translation>
 <translation id="8202517001427388906">Gilla inte svaret</translation>
 <translation id="1379399209929302811">Ge feedback på Brave AI</translation>
-<translation id="2415950536410763575">Välj ämne för din feedback</translation>
+<translation id="8442999546461118871">Välj ämne för din feedback</translation>
 <translation id="9018766373792005944">Vad handlar din feedback om?</translation>
 <translation id="7355096922131918313">Ge feedback här</translation>
 <translation id="3027575440738035995">Leo Premium ger tillgång till en utökad uppsättning språkmodeller för ännu mer nyanserade svar. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
@@ -1933,10 +1887,19 @@
 <translation id="7494736170250048402">Skicka meddelande till Leo</translation>
 <translation id="4110772752544684964">Sidan är för lång för Leo. Viss kontext kan saknas i konversationen.</translation>
 <translation id="4370698775470316661">Den här konversationen är för lång och kan inte fortsätta. Det kan finnas andra modeller som Leo kan använda för att klara längre konversationer.</translation>
-<translation id="6291843235651817590">Allmän chatt</translation>
 <translation id="8193130769524604031">Avancerade chattuppgifter</translation>
 <translation id="3185367320601718531">Konversation och textgenerering</translation>
 <translation id="3965507912994218570">Leo-inställningar</translation>
+<translation id="1037324977127422019">Hej, jag är Leo!</translation>
+<translation id="8930348081963284873">En AI-driven intelligent assistent, inbyggd direkt i Brave.</translation>
+<translation id="3528849152231418380">Behöver du hjälp med en webbplats?</translation>
+<translation id="1558192229187362674">Jag kan hjälpa dig att sammanfatta artiklar, utveckla innehållet på en webbplats och mycket mer.</translation>
+<translation id="861953757568623294">Jag kan hjälpa dig att sammanfatta artiklar, utveckla innehållet på en webbplats och mycket mer. Är du osäker på var du ska börja? Prova det här:</translation>
+<translation id="5642775487085641191">Vill du bara prata?</translation>
+<translation id="8857222718794549840">Fråga mig vad som helst! Vi kan prata om vilket ämne du vill. Jag lär mig hela tiden och förbättrar mig för att kunna ge bättre svar.</translation>
+<translation id="989329677470075843">Sekretessavtal</translation>
+<translation id="1173570303649278801">Använd sidkontext för svar</translation>
+<translation id="8599503173207256429">Klicka vidare för att fråga om denna sida. Sidans innehåll kommer att skickas till Brave Leo tillsammans med dina meddelanden.</translation>
 <translation id="6303294677342628402">Sköldar</translation>
 <translation id="8458987127502506209">Aktivera Brave Sköld</translation>
 <translation id="7509914170164691086">Shields är UPP <ph name="LINK_BEFORE"/> för <ph name="LINK_AFTER"/></translation>

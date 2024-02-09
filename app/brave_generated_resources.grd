@@ -174,6 +174,16 @@
       <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
         Never
       </message>
+      <if expr="use_titlecase">
+        <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
+          Show All Bookmarks Button
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
+          Show all bookmarks button
+        </message>
+      </if>
       <message name="IDS_COPY_CLEAN_LINK_SHARING_HUB" desc="The name of the Sharing Hub's menu item to copy clean link">
         Copy clean link
       </message>
@@ -213,6 +223,12 @@
       </message>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
+      </message>
+      <message name="IDS_AI_CHAT_CONTEXT_LEO_TOOLS" desc="The text label of Leo tools submenu in the context menu">
+        Leo tools
+      </message>
+      <message name="IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT" desc="The text label of context menu item to summarize selected text">
+        Summarize
       </message>
 
       <!-- Widevine -->
@@ -898,6 +914,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_NO" desc="Ignore proposition">
         Cancel
       </message>
+      <!-- Brave Wallet -->
+      <message name="IDS_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The utility process running wallet utils">
+        Brave Wallet Utility Service
+      </message>
 
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
@@ -942,6 +962,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS" desc="The label of the 'Close Tabs below' Tab context menu item for vertical tabs.">
           Close tabs below
         </message>
+        <message name="IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW" desc="The label of the 'Bring all tabs to this window' tab context menu item">
+          Bring all tabs to this window
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -961,6 +984,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS" desc="The label of the 'Close Tabs below' Tab context menu item for vertical tabs.">
           Close Tabs Below
+        </message>
+        <message name="IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW" desc="The label of the 'Bring all tabs to this window' tab context menu item">
+          Bring All Tabs to This Window
         </message>
       </if>
 
@@ -1146,6 +1172,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
         </if>
       </if>
+
+      <message name="IDS_BOOKMARKS_SORT_CUSTOM" desc="Label for the custom order sort type">
+        Custom order
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_CUSTOM_LOWER" desc="Lowercase label for the custom order sort type">
+        custom order
+      </message>
 
       <!-- Playlist -->
       <if expr="enable_playlist_webui">

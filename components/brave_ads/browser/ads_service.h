@@ -73,6 +73,9 @@ class AdsService : public KeyedService {
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
+  // Returns true if a browser upgrade is required to serve ads.
+  virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
+
   // Should be called to serve an inline content ad for the specified
   // `dimensions`. The callback takes two arguments - `std::string` containing
   // the dimensions and `base::Value::Dict` containing the info for the ad.

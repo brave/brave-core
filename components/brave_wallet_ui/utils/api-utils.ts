@@ -8,9 +8,9 @@ import WalletApiProxy from '../common/wallet_api_proxy'
 import {
   BraveWallet,
   SupportedCoinTypes,
-  SupportedTestNetworks
+  SupportedTestNetworks,
+  externalWalletProviders
 } from '../constants/types'
-import { externalWalletProviders } from '../common/async/brave_rewards_api_proxy'
 
 export const getPriceIdForToken = (
   token: Pick<
@@ -59,10 +59,9 @@ export function handleEndpointError(
 }
 
 export async function getEnabledCoinTypes(api: WalletApiProxy) {
-  const {
-    isBitcoinEnabled,
-    isZCashEnabled
-  } = (await api.walletHandler.getWalletInfo()).walletInfo
+  const { isBitcoinEnabled, isZCashEnabled } = (
+    await api.walletHandler.getWalletInfo()
+  ).walletInfo
 
   // Get All Networks
   return SupportedCoinTypes.filter((coin) => {

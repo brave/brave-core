@@ -6,7 +6,8 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/creative_ad_model_based_predictor_scoring.h"
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_input_variable_info.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/creative_ad_model_based_predictor_scoring_util.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/last_seen/creative_ad_model_based_predictor_last_seen_scoring.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/segment/creative_ad_model_based_predictor_segment_scoring.h"
 
 namespace brave_ads {
 
@@ -15,9 +16,9 @@ double ComputeCreativeAdModelBasedPredictorScore(
   return ComputeSegmentScore(input_variable.intent_segment) +
          ComputeSegmentScore(input_variable.latent_interest_segment) +
          ComputeSegmentScore(input_variable.interest_segment) +
+         ComputeSegmentScore(input_variable.untargeted_segment) +
          ComputeLastSeenScore(input_variable.last_seen_ad) +
-         ComputeLastSeenScore(input_variable.last_seen_advertiser) +
-         ComputePriorityScore(input_variable.priority);
+         ComputeLastSeenScore(input_variable.last_seen_advertiser);
 }
 
 }  // namespace brave_ads

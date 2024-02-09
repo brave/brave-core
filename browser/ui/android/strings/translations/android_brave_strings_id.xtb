@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">Aktifkan/Nonaktifkan Brave Shields</translation>
 <translation id="6945863270524203017">Dapatkan pembaruan privasi mingguan pada pelacak &amp; pemblokir iklan.</translation>
 <translation id="4324735664183300693">Aktifkan notifikasi</translation>
-<translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
 <translation id="6395059271589866759">Brave mengambil 5% dari jumlah yang dikirimkan sebagai biaya pemrosesan.</translation>
 <translation id="6661699662755460155">tukar</translation>
 <translation id="6790981891677399838">Saya baru saja berkontribusi sebesar <ph name="AMOUNT"/> BAT dengan menggunakan Peramban Brave! Temukan cara agar Anda juga dapat mendukung kreator dan situs favorit Anda di: https://brave.com/rewards</translation>
-<translation id="2278950434998763147">Membuka sejumlah situs dengan menggunakan koneksi HTTPS aman ketimbang HTTP biasa.</translation>
 <translation id="5510493033031835532">Halaman AMP yang diarahkan otomatis</translation>
 <translation id="5197219128592971597">Selalu kunjungi hanya URL laman orisinal (non-AMP), dan bukan versi Laman Seluler Terakselerasi Google</translation>
 <translation id="920638232916443453">Arahkan ulang otomatis pelacakan URL</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">Terakhir diperbarui <ph name="TIME"/></translation>
 <translation id="802154636333426148">Download gagal</translation>
 <translation id="7824440849056209910">Pembaruan gagal <ph name="TIME"/></translation>
+<translation id="8580328754808744073">Buat filter khusus</translation>
+<translation id="6532106788206463496">Simpan perubahan</translation>
+<translation id="5132969826889386652">Perubahan telah berhasil disimpan</translation>
+<translation id="4335929145384293789">Tambahkan filter khusus yang telah Anda buat, satu filter per baris, pada bidang di atas. Pastikan Anda menggunakan <ph name="ADBLOCK_FILTER_SYNTAX"/>.</translation>
+<translation id="5023212862780303376">Sintaksis filter AdBlock</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> Harga (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">Tidak ada konten</translation>
 <translation id="7172792761509429092">Berita Brave tidak memiliki konten untuk ditampilkan.</translation>
 <translation id="1771307734839364850">Pilih sumber konten</translation>
-<translation id="5787084571334399599">Mencegah pencatatan sidik-jari-peramban</translation>
+<translation id="6891769200437737956">Mencegah situs web dari mencatat sidik-jari saya</translation>
 <translation id="7459000603787995422">Tutup tab saat keluar</translation>
 <translation id="4448697385961650078">Blokir pelacak &amp; iklan</translation>
 <translation id="2448893613530489637">Mencegah pelacak &amp; iklan agar tidak dimuat dan ditampilkan di halaman web</translation>
 <translation id="1025207378813960343">Pastikan koneksi yang aman ke situs web.</translation>
+<translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
 <translation id="6686219838158572786">Semua koneksi wajib menggunakan HTTPS (ketat)</translation>
 <translation id="4221284400051835823">Tingkatkan ke HTTPS kapan pun memungkinkan (bawaan)</translation>
 <translation id="4690906712010847708">Jangan tingkatkan koneksi ke HTTPS (dinonaktifkan)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">Membantu meningkatkan stabilitas produk Brave\u2019s dengan secara otomatis mengirim laporan diagnostik ketika Peramban Brave gagal atau macet.</translation>
 <translation id="7977176350719484850">Perkiraan Data\nDihemat</translation>
 <translation id="9008534313521214777">Est. Penghematan Waktu</translation>
-<translation id="1842747674580016420">Pemutaran video di Brave</translation>
-<translation id="5368992950177874750">Bila diaktifkan, video akan diputar di Brave alih-alih pada aplikasi yang terkait</translation>
 <translation id="410351446219883937">Putar otomatis</translation>
 <translation id="7445411102860286510">Izinkan situs untuk otomatis memutar video yang dibisukan (disarankan)</translation>
 <translation id="7837721118676387834">Izinkan pemutaran otomatis video yang dibisukan untuk situs tertentu.</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">Putaran latar belakang</translation>
 <translation id="6332924730165919598">Menutup semua tab akan menutup Brave</translation>
 <translation id="8308305244351876417">Memungkinkan video agar tetap berputar saat Anda beralih ke tab lain di Brave atau ke aplikasi lain, atau jika layar perangkat Anda non-aktif.</translation>
+<translation id="49147335255967913">Buka tautan YouTube di Brave</translation>
 <translation id="4150201353443180367">Tampilan</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -376,13 +379,8 @@ Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika A
 <translation id="4803910478683254032">Impor gagal</translation>
 <translation id="8325139248201792113">Impor markah gagal. Silakan coba lagi.</translation>
 <translation id="2803313416453193357">Buka folder</translation>
-<translation id="3396347744975515056">Brave Sync telah ditingkatkan dan memerlukan penataan</translation>
-<translation id="7473245612074035141">Mulai Tata</translation>
 <translation id="8985635554450124959">Sinkronisasi tidak dapat diatur</translation>
-<translation id="2514300153301737214">Kami mendeteksi bahwa Anda mengaktifkan Brave Sync, namun sinkronisasi sistem Anda dimatikan dan tidak memungkinkan Brave untuk melakukan sinkronisasi. Tekan untuk membuka pengaturan</translation>
 <translation id="7173114856073700355">Buka Setelan</translation>
-<translation id="6965382102122355670">Oke</translation>
-<translation id="4450893287417543264">Jangan tampilkan lagi</translation>
 <translation id="496896260395129787">Akun Sinkronisasi Brave ini dihapus dari perangkat lain. Jika Anda tidak bermaksud menonaktifkan Sinkronisasi, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>membuat ulang akun</translation>
 <translation id="4094590686212463338">Tidak dapat bergabung dengan rantai sinkronisasi ini. Rantai sinkronisasi telah dihapus.</translation>
@@ -479,7 +477,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7854108565842971747">Ini adalah pengaturan bawaan Perisai untuk situs baru. Mengubah hal ini tidak akan memengaruhi pengaturan per-situs Anda yang telah ada.</translation>
 <translation id="218587021686734263">Mencegah pengambilan sidik jari melalui pengaturan bahasa</translation>
 <translation id="1706099589708266367">Mengurangi seberapa banyak situs web dapat mempelajari tentang Anda berdasarkan pengaturan bahasa peramban Anda.</translation>
-<translation id="184568144098869637">Mencegah peramban mengenali perangkat Anda</translation>
+<translation id="4721088070859595932">Mencegah situs web dari mengenali perangkat Anda</translation>
 <translation id="7445306466605902444">Sidik jari diblokir (ketat, dapat merusak situs)</translation>
 <translation id="5582686930349810484">Sidik jari diblokir (standar)</translation>
 <translation id="769702552748212954">Izinkan semua pemindaian sidik jari</translation>
@@ -623,8 +621,9 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1783600039044302171">Amankan kripto Anda dengan kata sandi</translation>
 <translation id="3726490322412361740">Masukkan Kata Sandi</translation>
 <translation id="3038243139480464605">Verifikasi kata sandi</translation>
-<translation id="3717685683157254329">Kata sandi harus terdiri dari minimal 7 karakter, dan mencakup minimal satu huruf, satu angka, dan satu karakter khusus.</translation>
+<translation id="3043677904160378840">Kata sandi harus terdiri dari minimal 8 karakter.</translation>
 <translation id="7396672979287122068">Kata sandi yang diverifikasi tidak sesuai</translation>
+<translation id="7084181009966710506">Membuat Dompet...</translation>
 <translation id="3188963375823360044">1J</translation>
 <translation id="8163269366661594721">1H</translation>
 <translation id="7640956400175663828">1M</translation>
@@ -777,7 +776,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1705662265912724430">Anda yakin ingin mengatur ulang konfigurasi VPN?</translation>
 <translation id="604124094241169006">Otomatis</translation>
 <translation id="7475580600756356589">Menyambungkan ke peladen Anda. Harap menunggu...</translation>
-<translation id="1342728075788541348">Memutuskan sambungan dari peladen Anda. Harap menunggu...</translation>
 <translation id="669072536454692117">Langganan berhasil dilakukan</translation>
 <translation id="1187506504156101449">Gagal melakukan pembelian:</translation>
 <translation id="8420522105268941892">Anda sudah terdaftar sebagai langganan. Coba pulihkan langganan.</translation>
@@ -810,7 +808,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="8084782383392198011">Nama akun tidak dapat dibiarkan kosong.</translation>
 <translation id="5045550434625856497">Sandi salah</translation>
 <translation id="1367951781824006909">Pilih file</translation>
-<translation id="8648684608605749476">Blokir cookie pihak ketiga dalam mode Samaran</translation>
 <translation id="5932938770824268122">Kunci Pribadi</translation>
 <translation id="2472882733835903303">Tampilkan Kunci Privat</translation>
 <translation id="4391056902675005799">Sembunyikan Kunci Privat</translation>
@@ -961,9 +958,12 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6044189892950611565">Saluran notifikasi untuk Peramban Brave</translation>
 <translation id="1173919438868967364">Pilih Akun</translation>
 <translation id="8922793255489232731">Tidak bisa mendapatkan zona waktu yang sesuai untuk : <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Mengunduh file data dompet \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Tersambung ke <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Percobaan</translation>
+<translation id="6458565248779152483">Nonaktifkan VPN Brave</translation>
+<translation id="9080536793704001825">Jedakan selama 15 menit</translation>
+<translation id="803706420145725977">Jedakan selama 1 jam</translation>
+<translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="7733890291091968191">Tampilkan notifikasi Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave tidak melacak Anda atau mengetahui cara Anda menggunakan aplikasi kami, sehingga kami tidak tahu cara Anda menyiapkan VPN. Silakan bagikan info tentang masalah yang Anda alami dan kami akan melakukan yang terbaik unuk menyelesaikannya secepat mungkin. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNama Host VPN\n <ph name="VALUE"/></translation>
@@ -993,6 +993,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="8219806187375413057"><ph name="CLICK_START"/>Pelajari tentang cara mengurangi risiko pada Rainbow Bridge<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> adalah layanan independen yang membantu Anda menjembatani aset di seluruh jaringan, serta menggunakan kripto Anda pada jaringan dan ekosistem DApp lain. Menjembatani aset ke jaringan lain memiliki sejumlah risiko.</translation>
 <translation id="8423380132356660250">Buka aplikasi <ph name="APP_NAME"/></translation>
+<translation id="4450893287417543264">Jangan tampilkan lagi</translation>
 <translation id="168154537623654021">Memperbarui Profil VPN ...</translation>
 <translation id="7457027586454688423">Masukkan kata sandi Dompet Brave Anda</translation>
 <translation id="4784306439879850873">Perhatikanlah bahwa Brave tidak dapat memverifikasi hal yang akan terjadi jika Anda memberikan tanda tangan. Tanda tangan dapat mengotorisasi hampir setiap pengoperasian di akun Anda atau atas nama Anda, termasuk (namun tidak terbatas pada) memberikan kendali penuh atas akun dan aset kripto Anda ke situs yang mengajukan permintaan. Berikan tanda tangan hanya jika Anda yakin akan mengambil tindakan ini, dan jika Anda memercayai situs yang mengajukan permintaan ini.</translation>

@@ -226,8 +226,6 @@
 <translation id="4045581694057451126">8 sekundes</translation>
 <translation id="8610523985422563960">1 minūte</translation>
 <translation id="2807328214759298515">Līdz</translation>
-<translation id="7483857210736407752">Rādīt dzeramnaudas pogas vietnēs</translation>
-<translation id="8404935570206006581">Sūtiet dzeramnaudu ar Brave</translation>
 <translation id="3082557070674409251">Uzklikšķināts</translation>
 <translation id="7119308337584989771">Noraidīts</translation>
 <translation id="6805660603861526473">Aplūkots</translation>
@@ -485,9 +483,9 @@
 <translation id="4047002754575891955">Turpināt ar ārpus ķēdes meklēšanu</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Vai iespējot Solana nosaukumu pakalpojuma (SNS) atbalstu sistēmā Brave?</translation>
-<translation id="3664848774480475984">Brave izmantos Syndica, lai atrisinātu .sol domēna vārdus. Brave slēpj jūsu IP adresi. Ja to iespējosiet, Syndica redzēs, ka kāds cenšas apmeklēt .sol domēnus, taču nevarēs redzēt neko citu. Skatiet Syndica<ph name="BEGIN_SYNDICA_TOU_LINK"/>lietošanas noteikumus<ph name="END_SYNDICA_TOU_LINK"/> un<ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>privātuma politiku<ph name="END_SYNDICA_PRIVACY_LINK"/>.</translation>
+<translation id="1026480261052976838">Brave izmantos trešās puses, lai atrisinātu .sol domēna nosaukumus. Brave paslēpt jūsu IP adresi, ja to iespējojat; trešā puse redzēs, ka kāds mēģina apmeklēt šos .sol domženus, bet neko citu. Plašāku informāciju par to, kuras trešās puses mēs izmantojam, un viņu privātuma politikas skatiet mūsu <ph name="BEGIN_SNS_WIKI_LINK"/>palīdzības lapā<ph name="END_SNS_WIKI_LINK"/>.</translation>
 <translation id="7378412287463452336">Turpināt izmantot Infura serveri</translation>
-<translation id="2824725477135051831">Turpināt izmantot Syndica serveri</translation>
+<translation id="4388873516324656141">Turpināt izmantot SNS serveri</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
 <translation id="59174027418879706">Iespējots</translation>
 <translation id="2468755552460246661">Domēns bloķēts</translation>
@@ -653,11 +651,11 @@
 <translation id="39734939514946950">Jūsu atlīdzības summa</translation>
 <translation id="717952606991220586">Diemžēl radās kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
 <translation id="7210234701206674260">Brave dāvanās ir radusies kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
-<translation id="579702532610384533">Atkārtoti izveidot savienojumu</translation>
 <translation id="3358400027937159351">Jūs esat ziedojis <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Jūs esat izrakstījies</translation>
-<translation id="5142174225142816130">Tā var notikt, lai saglabātu jūsu konta drošību. Noklikšķiniet tālāk, lai tagad atkārtoti izveidotu savienojumu.</translation>
+<translation id="3035648636451344428">Tas laiku pa laikam notiek, lai uzturētu jūsu <ph name="PROVIDER"/> kontu drošu. Kamēr esat izrakstījies, jūs turpināsiet saņemt izmakas, bet nespēsiet redzēt savu bilanci vai nosūtīt ieguldījumus no jūsu <ph name="PROVIDER"/> konta.</translation>
 <translation id="1677961202754619328">Atbilstoši Uphold pašlaik tavam Uphold kontam ir piemēroti ierobežojumi. Lūdzu, piesakies savā Uphold kontā un pārbaudi, vai tajā ir kādi paziņojumi vai citas konta prasības, kas jāizpilda, tad mēģini vēlreiz.</translation>
+<translation id="9029009481113741943">Pierakstieties vēlreiz</translation>
 <translation id="2429828319207652823">Apstrādājot jūsu ieguldījumu, radās kļūda.</translation>
 <translation id="6390041270339783491">Ikmēneša ziedojumu veikt neizdevās</translation>
 <translation id="7047578174221019462">Jūsu ikmēneša ziedojumi ir apstrādāti.</translation>
@@ -755,27 +753,11 @@
 <translation id="5486744676117070166">Neizdevās iegūt nākamo šī brīža vērtību</translation>
 <translation id="6180576227145734714">Darījuma datiem “uz” ir jābūt derīgai adresei, ja norādīts</translation>
 <translation id="6688162556547723415">Lietotājs nav atļāvis pieprasīto metodi un/vai kontu.</translation>
-<translation id="4958950550253325418">DeFi lietotnes</translation>
-<translation id="735961408871282410">NFT tirgi</translation>
-<translation id="7740287852186792672">Meklēšanas rezultāti</translation>
-<translation id="5140238928332244937">Pārlūkot vairāk DeFi</translation>
-<translation id="6825869531314999449">Pārlūkot vairāk NFT</translation>
-<translation id="2744185997184360326">Compound</translation>
-<translation id="7587986159645261196">Atklājiet atvērtu finanšu lietojumprogrammu pasauli.</translation>
-<translation id="1614407808582616698">MakerDAO</translation>
-<translation id="8723680648033138705">Maker - stabilmonētas, aizdevumi un pārvaldība...</translation>
-<translation id="1209155679734532646">Aave</translation>
-<translation id="348141691274391859">Protokols par to, kā nopelnīt no noguldījumiem un aizņemties līdzekļus.</translation>
-<translation id="5074570831310922792">OpenSea</translation>
-<translation id="8246868867733222286">Lielākais NFT tirgus. Pērciet, pārdodiet un atklājiet retus digitālos vienumus.</translation>
-<translation id="8375074247703832257">Rarible</translation>
-<translation id="7826627294887983832">Izveidojiet un pārdodiet digitālos mākslas darbus.</translation>
 <translation id="1383876407941801731">Meklēt</translation>
 <translation id="8767749833522980474">Kriptovalūta</translation>
 <translation id="944736176598169208">Balvas</translation>
 <translation id="6122742277607781713">Portfelis</translation>
 <translation id="7020503656406658141">Cenas</translation>
-<translation id="2805756323405976993">Lietotnes</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="3567988240819868195">Tirgus</translation>
@@ -817,13 +799,11 @@
 <translation id="8530071505111489657">Nav pieejamu marķieru</translation>
 <translation id="615791330696335475">Meklēt marķieri pēc nosaukuma</translation>
 <translation id="5009335307032488349">Meklēt NFT pēc nosaukuma, id</translation>
-<translation id="6295954645230084874">Atbalsta iegāde nav pieejama <ph name="NETWORK"/></translation>
 <translation id="9209024278910716955">Pirkums nav atbalstīts izvēlētajā tīklā</translation>
 <translation id="4982630604810554641">Meklē domēnu...</translation>
 <translation id="5467044307473123584">Brave atbalsta ārpusķēžu vārteju izmantošanu .eth domēnu atrisināšanai.</translation>
 <translation id="4896417414446851895">Izskatās, ka esat ievadījis ENS adresi. Lai izpildītu šo pieprasījumu, mums vajadzēs izmantot trešas puses atrisinātāju, kas var redzēt jūsu IP adresi un domēnu.</translation>
 <translation id="8646078615727397565">Izmantot ENS domēnu</translation>
-<translation id="4171338820961522154">Atbalsta maiņa nav pieejama <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Darījums, iespējams, ir iepriekš zināms</translation>
 <translation id="632241521608275119">Pieļaujamā novirze</translation>
 <translation id="4500473291496079954">Derīgums beidzas pēc</translation>
@@ -954,7 +934,7 @@
 <translation id="3842236145820483340">Coingecko ID</translation>
 <translation id="7642841516562576649">Ikonas URL</translation>
 <translation id="2144247757675997850">Pievienot aktīvu</translation>
-<translation id="2708402071160162126">BRĪDINĀJUMS: Nekad neizpaudiet atkopšanas frāzi. Jebkurš, kam ir šī frāze, var neatgriezeniski atņemt jūsu līdzekļus.</translation>
+<translation id="453788800165937690">BRĪDINĀJUMS: nekad neizpaudiet savu privāto atslēgu. Jebkurš, kam ir šī privātā atslēga, var neatgriezeniski atņemt jūsu līdzekļus.</translation>
 <translation id="2416098547200943834">PIEZĪME. Privātā atslēga ir heksadecimālā kodējuma JSON un satur privāto atslēgu un protokola informāciju. <ph name="LINK_START"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">PIEZĪME. Privātajai atslēgai ir jābūt heksadecimāla kodējuma JSON un jāsatur privātā atslēga un protokola informācija. <ph name="LINK_START"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">Eksportēt</translation>
@@ -1037,7 +1017,6 @@
 <translation id="1426320910664514906">Gas robežvērtība</translation>
 <translation id="1229774280326250926">Darījumvienības piemaksa</translation>
 <translation id="148169246131967347">Darījumvienības maksas robežvērtība</translation>
-<translation id="523862956770478816">Vietnes atļaujas</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> savienoti konti</translation>
 <translation id="4804818685124855865">Atvienot</translation>
 <translation id="4305817255990598646">Pārslēgt</translation>
@@ -1049,8 +1028,6 @@
 <translation id="8497650996740651467">Pieejamie konti</translation>
 <translation id="5677928146339483299">Bloķēts</translation>
 <translation id="3890989020011724401">Jauns konts</translation>
-<translation id="7257603403519636638">Skatīt konta elementus</translation>
-<translation id="2092132085082887098">Konta elementi</translation>
 <translation id="4612979983851181941">Izmantojiet šo paneli, lai droši piekļūtu web3 un visiem kriptoaktīviem.</translation>
 <translation id="4460220693591349571">FUNKCIJAS VEIDS</translation>
 <translation id="838933475572692615">HEX DATI</translation>
@@ -1100,8 +1077,6 @@
 <translation id="8214232307424031138">Parakstīts</translation>
 <translation id="5916664084637901428">Iesl.</translation>
 <translation id="9065572743819293042">Pēdējie darījumi</translation>
-<translation id="4235538284468006757">Darījuma informācija</translation>
-<translation id="7488671812634887146">Paātrināt</translation>
 <translation id="1702356231547761669">Darījuma jaucējfunkcija</translation>
 <translation id="8941851657764077659">Maksimālā prioritātes maksa</translation>
 <translation id="8047527352810290817">Rediģēt Gas</translation>
@@ -1384,6 +1359,7 @@
 <translation id="8918368616587206671">Spēcīgi!</translation>
 <translation id="574392208103952083">Vidēja</translation>
 <translation id="8297006494302853456">Vājš</translation>
+<translation id="7084181009966710506">Izveido maku...</translation>
 <translation id="6782556046178425980">Pirms maka dublēšanas sākšanas</translation>
 <translation id="7119749028647909394">12–24 vārdu atkopšanas frāze ir privāta atslēga, ko varat izmantot, lai atgūtu piekļuvi savam makam, ja pazaudējat pievienoto(-ās) ierīci(-es). Glabājiet to drošā vietā un tieši tādā secībā, kādā tas parādīts tālāk.</translation>
 <translation id="3259018319025894691">Brave nevar piekļūt jūsu slepenajai atkopšanas frāzei. Glabājiet to drošā vietā un nekad nenododiet citām personām.</translation>
@@ -1447,7 +1423,6 @@
 <translation id="6885009592653876601">Pērciet, nosūtiet un apmainiet vairāk nekā 200 kriptovalūtas</translation>
 <translation id="8716223552348254401">Vietējā pārlūkprogramma, bez riskantiem paplašinājumiem</translation>
 <translation id="4559901986238865734">Daudzķēžu &amp; NFT atbalsts</translation>
-<translation id="8280970992918660431">Lai izveidotu kontu, nepieciešama atbloķēšana</translation>
 <translation id="296101411136980896">Noklikšķiniet, lai pārslēgtos</translation>
 <translation id="753655478253155745">Divpadsmitais</translation>
 <translation id="2679592211386970368">Trīspadsmitais</translation>
@@ -1530,8 +1505,6 @@
 <translation id="2379187373676242615"><ph name="VALUE"/>% lētāk nekā CoinGecko</translation>
 <translation id="5351867352310722022">Atbilst <ph name="VALUE"/>% CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% dārgāk nekā CoinGecko</translation>
-<translation id="6065708195277841442">Pievienot maku</translation>
-<translation id="4029551149873989025">Pārslēgt tīklu</translation>
 <translation id="7561262633951061138">Vislabākais</translation>
 <translation id="8060029310790625334">Palīdzības dienests</translation>
 <translation id="3143110700666266545">Šī lietotne izmanto šādas trešas puses API:</translation>
@@ -1639,9 +1612,9 @@
 <translation id="7436846601026966360">Jums varētu patikt daži avoti. Ieteikumi ir anonīmi un pielāgoti tikai jūsu ierīcei.</translation>
 <translation id="7950715913905993008">Ak vai...</translation>
 <translation id="7158100730468448581">Brave News neizdevās iegūt saturu.</translation>
-<translation id="254100925533869330">Nav satura</translation>
-<translation id="7172792761509429092">Brave News nav satura, ko rādīt.</translation>
-<translation id="1771307734839364850">Izvēlies satura avotus</translation>
+<translation id="2665462122884195298">Jūsu josla ir tukša</translation>
+<translation id="8461269982440806387">Sekojiet publicētājiem un kanāliem, lai redzētu tos savā joslā.</translation>
+<translation id="1685574186123115251">Pievienojiet satura avotus</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="6261915643960475695">Bizness</translation>
 <translation id="8265589281845759879">Auto</translation>
@@ -1669,16 +1642,27 @@
 <translation id="1297570508541015874">ASV ziņas</translation>
 <translation id="1459693405370120464">Laikapstākļi</translation>
 <translation id="8366057325711477500">Pasaules ziņas</translation>
-<translation id="7625025537587898155">Pievienot jaunu profilu</translation>
+<translation id="6709133671862442373">Ziņas</translation>
+<translation id="3553513561058684206">Jums</translation>
+<translation id="2217013723701900638">Publicētāji</translation>
+<translation id="7751260505918304024">Rādīt visu</translation>
+<translation id="5138227688689900538">Rādīt mazāk</translation>
+<translation id="1041218419402648959">Paslēpt saturu no <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3992393738853907417">Jums varētu patikt arī</translation>
+<translation id="7801706796402209986">Šī josla ir tukša</translation>
+<translation id="5385187102307010596">Izskatās, ka šajā joslā pašlaik nav neviena raksta. Mēģiniet atgriezties vēlāk vai atsvaidziniet joslu.</translation>
+<translation id="667570357480376913">Izskatās, ka esat bezsaistē</translation>
+<translation id="7587168765698889017">Pārbaudiet savu interneta savienojumu un atsvaidziniet</translation>
+<translation id="1164949492823956426">Atvērt rakstus</translation>
+<translation id="5233638681132016545">Jauna cilne</translation>
+<translation id="7948579849190819732">Pašreizējā cilne</translation>
+<translation id="7056969230130642253">East informēts par visu aktuālo</translation>
+<translation id="7292242212818928219">Ir pieejams jauns saturs. Ielādēt atkārtoti?</translation>
 <translation id="7481312909269577407">Pārsūtīt</translation>
 <translation id="302781076327338683">Ielādēt vēlreiz, neizmantojot kešatmiņu</translation>
 <translation id="7211681214230730336">Ielādēt vēlreiz, notīrot kešatmiņu</translation>
-<translation id="4471385409549756595">Jauns inkognito logs</translation>
 <translation id="1779766957982586368">Aizvērt logu</translation>
-<translation id="5233638681132016545">Jauna cilne</translation>
 <translation id="5210365745912300556">Aizvērt cilni</translation>
-<translation id="7998918019931843664">Vēlreiz atvērt aizvērto cilni</translation>
-<translation id="537986674347911358">Parādīt kā cilni</translation>
 <translation id="2291643155573394834">Nākamā cilne</translation>
 <translation id="7748528009589593815">Iepriekšējā cilne</translation>
 <translation id="3738690686686515962">Atlasīt 0. cilni</translation>
@@ -1694,33 +1678,14 @@
 <translation id="1137110118182796989">Pārcelt vienu cilni uz priekšu</translation>
 <translation id="229140155637338506">Pārcelt vienu cilni atpakaļ</translation>
 <translation id="4841735924729216702">Loga izvēlne</translation>
-<translation id="1729431344896193035">Pārslēgt pilnekrāna režīmā</translation>
 <translation id="3649256019230929621">Minimizēt logu</translation>
 <translation id="906458777597946297">Maksimizēt logu</translation>
 <translation id="2082612610620888017">Parādīt visus logus</translation>
-<translation id="9148058034647219655">Iziet</translation>
-<translation id="3770620323585347665">Nosaukt logu</translation>
-<translation id="2154710561487035718">Kopēt URL</translation>
-<translation id="2722817840640790566">Atvērt viesa profilu</translation>
-<translation id="8445059357334030806">Atvērt pārlūkā Brave</translation>
 <translation id="1111843722790053332">Atvērt PWA logā</translation>
 <translation id="907981618023904259">Tīmekļa lietotņu iestatījumi</translation>
 <translation id="4138336125382947023">Tīmekļa lietotņu informācija</translation>
-<translation id="2743255659506168928">Pielikt grāmatzīmi cilnei</translation>
-<translation id="5078638979202084724">Pielikt grāmatzīmi visām cilnēm</translation>
 <translation id="2151038323652296625">Nosūtīt lapas URL pa e-pastu</translation>
 <translation id="2456347058080729750">Parastā druka</translation>
-<translation id="8715548065732069095">Saglabāt lapu kā</translation>
-<translation id="7724603315864178912">Izgriezt</translation>
-<translation id="3943857333388298514">Ielīmēt</translation>
-<translation id="5546865291508181392">Atrast</translation>
-<translation id="8151185429379586178">Izstrādātāja rīki</translation>
-<translation id="6005726134413483363">Javascript konsole</translation>
-<translation id="634208815998129842">Uzdevumu pārvaldnieks</translation>
-<translation id="7027293873729370359">Pārbaudīt ierīces</translation>
-<translation id="8981254605840444865">Rādīt iestatījumus</translation>
-<translation id="3105917916468784889">Veikt ekrānuzņēmumu</translation>
-<translation id="1536390784834419204">Tulkot lapu</translation>
 <translation id="5973664933364241128">Novirzīt mediju</translation>
 <translation id="1568067597247500137">Izslēgt skaņu vietnē</translation>
 <translation id="6674128381307353306">Izslēgt visu ciļņu skaņu</translation>
@@ -1755,7 +1720,6 @@
 <translation id="4882473678324857464">Fokusēt grāmatzīmes</translation>
 <translation id="5002047168347153398">Fokusēt neaktīvu uznirstošo logu, lai tam piekļūtu</translation>
 <translation id="8215784091821791027">Fokusēt vietnes satura rūti</translation>
-<translation id="4952628481830269193">Rādīt grāmatzīmju joslu</translation>
 <translation id="8652827551752428289">Rādīt vēsturi</translation>
 <translation id="5030659775136592441">Rādīt grāmatzīmju pārvaldnieku</translation>
 <translation id="6919203766034706175">Importēt iestatījumus</translation>
@@ -1771,15 +1735,12 @@
 <translation id="5835081019037947840">Ieslēgt/izslēgt Javascript Apple notikumus</translation>
 <translation id="5825969867518399495">Instalēt PWA</translation>
 <translation id="7888244262238732644">Rādīt pārvaldības lapu</translation>
-<translation id="1728549374069268714">Ielīmēt un turpināt</translation>
 <translation id="8114712275882140856">Parādīt pilnu URL</translation>
 <translation id="7294510764127771956">Ieslēgt/izslēgt taustiņpārlūkošanu</translation>
 <translation id="4186334830839439230">Rādīt veiktspējas iestatījumus</translation>
 <translation id="1094277301241124207">Rādīt grāmatzīmju sānu paneli</translation>
-<translation id="3277827709560246894">Grāmatzīmju josla: atvērt visas</translation>
 <translation id="8283515796576236471">Grāmatzīmju josla: atvērt visas jaunā logā</translation>
 <translation id="5271773791943587595">Grāmatzīmju josla: atvērt visas inkognito logā</translation>
-<translation id="3945518311492169884">Grāmatzīmju josla: atvērt inkognito</translation>
 <translation id="2748975346534113286">Grāmatzīmju josla: atvērt visas jaunā ciļņu grupā</translation>
 <translation id="5829341068610264408">Grāmatzīmju josla: pārdēvēt mapi</translation>
 <translation id="5118326702207363004">Grāmatzīmju josla: rediģēt</translation>
@@ -1788,9 +1749,7 @@
 <translation id="7629040247832187331">Grāmatzīmju josla: atcelt atsaukšanu</translation>
 <translation id="6950544855362391649">Grāmatzīmju josla: pievienot jaunu grāmatzīmi</translation>
 <translation id="6528836090624940616">Grāmatzīmju josla: jauna mape</translation>
-<translation id="5469954281417596308">Grāmatzīmju pārvaldnieks</translation>
 <translation id="7582036714669095991">Grāmatzīmju josla: rādīt vienmēr</translation>
-<translation id="2530696803812164674">Grāmatzīmju josla: rādīt lietotņu saīsnes</translation>
 <translation id="8446467844676974241">Grāmatzīmju josla: rādīt pārvaldītās grāmatzīmes</translation>
 <translation id="7371391600340880977">Grāmatzīmju josla: pievienot grāmatzīmju joslai</translation>
 <translation id="8881741588924189283">Grāmatzīmju josla: izņemt no grāmatzīmju joslas</translation>
@@ -1881,23 +1840,19 @@
 <translation id="3055739528128372229">Atbilžu precizitāte nav garantēta, un tajās var būt iekļauta neprecīza, maldinoša vai nepatiesa informācija. Neiesniedziet sensitīvu vai privātu informāciju, kā arī piesardzīgi atbildiet uz jautājumiem, kas saistīti ar veselību, finansēm, personīgo drošību vai tamlīdzīgiem jautājumiem.</translation>
 <translation id="7297681068636289435">Leo neuzkrāj identifikatorus, piemēram, jūsu IP adresi, ko var saistīt ar jums. Mākslīgā intelekta modelis vai 3rd puses modeļu nodrošinātāji nesaglabā nekādus personas datus.</translation>
 <translation id="7839853125981164613">Ievadiet uzvedni šeit</translation>
-<translation id="1171287413830401223">Vai iespējot ieteiktos jautājumus?</translation>
+<translation id="334325425115922031">Ieteicamie turpmākie pasākumi</translation>
+<translation id="4524675003624341892">Ieteikt jautājumus...</translation>
 <translation id="4567071417854988869">Apkopot informāciju šajā video</translation>
 <translation id="7921782882718083488">Apkopot informāciju šajā lapā</translation>
-<translation id="5431287032059464898">Leo var automātiski ieteikt jautājumus, pamatojoties uz vietnes saturu. Lai to izdarītu, jūsu navigācijas lapu saturs tiks nosūtīts uz Leo, lai ģenerētu šos ieteikumus, kamēr Leo ir atvērts. Vēlāk to varat atspējot sadaļā Iestatījumi.</translation>
-<translation id="3435896845095436175">Iespējot</translation>
-<translation id="7473891865547856676">Nē, paldies!</translation>
 <translation id="7932221068776853847">Atvienoties, lai pārtrauktu sūtīt šīs lapas saturu Leo, un sākt jaunu sarunu</translation>
 <translation id="1167803637855350748">Pievienojoties Leo, radās tīkla problēma, pārbaudiet savu savienojumu un mēģiniet vēlreiz.</translation>
 <translation id="5095201428204952524">Leo šobrīd ir pārāk noslogots. Lūdzu, mēģiniet vēlreiz pēc dažām minūtēm.</translation>
 <translation id="7144878232160441200">Mēģināt vēlreiz</translation>
-<translation id="2505565639170795978">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Llama 13B, kas ir Meta radītais modelis, kas spēj darboties un kas ir piemērots dažādiem lietošanas veidiem.</translation>
-<translation id="7202619923031933110">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Llama 70B, kas ir Meta radītais modelis, kas spēj risināt sarežģītākus uzdevumus, salīdzinot ar 13B.</translation>
+<translation id="7202619923031933110">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Mixtral 7B, kas ir Mistral AI radītais modelis, kas spēj risināt sarežģītus uzdevumus.</translation>
 <translation id="2489317965865266353">Sveiki! Mani sauc Leo. Manu darbību nodrošina Brave un Claude Instant, kas ir Antropic radītais modelis, lai izpildītu sarunu un teksta apstrādes uzdevumus.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> no <ph name="COMPANY_NAME"/></translation>
 <translation id="6187065185557150870">Tērzēt</translation>
 <translation id="2961040541145689181">Jauna tērzēšana</translation>
-<translation id="97095589689466044">Ieteiktie jautājumi</translation>
 <translation id="7557539689487606886">Pāriet uz Premium</translation>
 <translation id="1691256669639196606">Pārvaldīt abonementu</translation>
 <translation id="3037594989275592390">Valodu modeļi</translation>
@@ -1907,7 +1862,6 @@
 <translation id="1239767708151339890">Piekļuve nozarē vadošajiem LLM</translation>
 <translation id="8021579987620496265">Augstāki biežuma limiti</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD $ /mēnesī</translation>
-<translation id="9221988663340523352">Pārslēgties uz noklusējuma modeli</translation>
 <translation id="377376641316998425">Atbloķēt pilnu Leo potenciālu</translation>
 <translation id="8363148882096737034">Anthropic Claude + un vairāk jau drīzumā</translation>
 <translation id="886527905046308697">Prioritāra piekļuve un paaugstināti atbilžu limiti</translation>
@@ -1919,7 +1873,7 @@
 <translation id="3521125531016408657">Atzīmēt atbildi ar "Patīk"</translation>
 <translation id="8202517001427388906">Atzīmēt atbildi ar "Nepatīk"</translation>
 <translation id="1379399209929302811">Sniegt Brave AI atsauksmi</translation>
-<translation id="2415950536410763575">Atlasīt jūsu atsauksmes tematu</translation>
+<translation id="8442999546461118871">Atlasiet savu atsauksmu tematu</translation>
 <translation id="9018766373792005944">Par ko ir jūsu atsauksme?</translation>
 <translation id="7355096922131918313">Sniegt atsauksmi šeit</translation>
 <translation id="3027575440738035995">Leo Premium sniedz piekļuvi vairāk valodu modeļiem vēl niansētākām atbildēm. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
@@ -1934,10 +1888,19 @@
 <translation id="7494736170250048402">Nosūtīt ziņojumu Leo</translation>
 <translation id="4110772752544684964">Šī lapa ir pārāk gara Leo. Sarunā, iespējams, trūkst konteksta.</translation>
 <translation id="4370698775470316661">Šī saruna ir pārāk gara, un tā nevar turpināties. Iespējams, ir citi modeļi, kuros Leo spēj nodrošināt precizitāti garākās sarunās.</translation>
-<translation id="6291843235651817590">Vispārīga tērzēšana</translation>
 <translation id="8193130769524604031">Papildu tērzēšanas uzdevumi</translation>
 <translation id="3185367320601718531">Sarunas un teksta ģenerēšana</translation>
 <translation id="3965507912994218570">Leo iestatījumi</translation>
+<translation id="1037324977127422019">Sveiki! Mani sauc Leo!</translation>
+<translation id="8930348081963284873">Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents.</translation>
+<translation id="3528849152231418380">Nepieciešama palīdzība tīmekļa vietnē?</translation>
+<translation id="1558192229187362674">Es jums varu palīdzēt apkopot rakstus, izvērst vietnes saturu un vēl daudz vairāk.</translation>
+<translation id="861953757568623294">Es jums varu palīdzēt apkopot rakstus, izvērst vietnes saturu un vēl daudz vairāk. Nezināt, ar ko sākt? Izmēģiniet šo:</translation>
+<translation id="5642775487085641191">Vēlaties tikai patērzēt?</translation>
+<translation id="8857222718794549840">Vaicājiet man jebko! Mēs varat parunāt par jebkuru tematu. Es nepārtraukti mācos un uzlaboju prasmes, lai sniegtu labākas atbildes.</translation>
+<translation id="989329677470075843">Privātuma līgums</translation>
+<translation id="1173570303649278801">Izmantot lapas kontekstu atbildes sniegšanai</translation>
+<translation id="8599503173207256429">Ieslēdziet, lai vaicātu par šo lapu. Tās saturs tiks nosūtīts Brave Leo kopā ar jūsu ziņojumiem.</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
 <translation id="8458987127502506209">Iespējot Brave aizsargus</translation>
 <translation id="7509914170164691086">Šo funkciju aizsargi ir <ph name="LINK_BEFORE"/>AKTIVIZĒTI<ph name="LINK_AFTER"/></translation>

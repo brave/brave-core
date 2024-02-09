@@ -51,7 +51,7 @@ class PostBatLoss {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response, PostBatLossCallback callback);
+  void OnRequest(PostBatLossCallback callback, mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

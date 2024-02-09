@@ -15,6 +15,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/display/display_observer.h"
 #include "ui/gfx/animation/animation_delegate.h"
+#include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/native_widget_types.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
@@ -112,12 +113,11 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   void CreatePopup(gfx::NativeWindow browser_native_window,
                    gfx::NativeView browser_native_view);
 
-  bool WasNotificationAdPopupShownBefore() const;
+  bool DidChangePopupPosition() const;
   gfx::Rect GetInitialWidgetBounds(gfx::NativeView browser_native_view);
   gfx::Rect GetWidgetBoundsForSize(const gfx::Size& size,
                                    gfx::NativeView browser_native_view);
-  void SaveWidgetOrigin(const gfx::Point& origin,
-                        gfx::NativeView native_view) const;
+  void SaveWidgetOrigin(const gfx::Point& origin, gfx::NativeView native_view);
 
   gfx::Size CalculateViewSize() const;
 
@@ -153,7 +153,7 @@ class NotificationAdPopup : public views::WidgetDelegateView,
 
   bool inside_adjust_bounds_ = false;
 
-  gfx::Point widget_origin_;
+  gfx::PointF last_normalized_coordinate_;
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};

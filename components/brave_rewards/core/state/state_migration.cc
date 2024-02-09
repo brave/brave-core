@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
@@ -43,7 +43,8 @@ void StateMigration::Start(ResultCallback callback) {
 }
 
 void StateMigration::FreshInstall(ResultCallback callback) {
-  BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
+  engine_->Log(FROM_HERE) << "Fresh install, state version set to "
+                          << kCurrentVersionNumber;
   engine_->state()->SetVersion(kCurrentVersionNumber);
   std::move(callback).Run(mojom::Result::OK);
 }
@@ -56,8 +57,10 @@ void StateMigration::Migrate(ResultCallback callback) {
     current_version = 0;
   }
 
-  if (is_testing &&
-      current_version == state_migration_target_version_for_testing) {
+  auto& options = engine_->options();
+
+  if (options.is_testing &&
+      current_version == options.state_migration_target_version_for_testing) {
     return std::move(callback).Run(mojom::Result::OK);
   }
 
@@ -131,7 +134,8 @@ void StateMigration::Migrate(ResultCallback callback) {
     }
   }
 
-  BLOG(0, "Migration version is not handled " << new_version);
+  engine_->LogError(FROM_HERE)
+      << "Migration version is not handled " << new_version;
   NOTREACHED();
 }
 
@@ -139,13 +143,13 @@ void StateMigration::OnMigration(ResultCallback callback,
                                  int version,
                                  mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "State: Error with migration from " << (version - 1) << " to "
-                                                << version);
+    engine_->LogError(FROM_HERE) << "State: Error with migration from "
+                                 << (version - 1) << " to " << version;
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  BLOG(1, "State: Migrated to version " << version);
+  engine_->Log(FROM_HERE) << "State: Migrated to version " << version;
   engine_->state()->SetVersion(version);
 
   // If the user did not previously have a state version and the initial

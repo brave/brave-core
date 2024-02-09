@@ -15,7 +15,6 @@ source_set("wireguard") {
   deps = [
     "//base",
     "//crypto",
-    "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
   ]
 }

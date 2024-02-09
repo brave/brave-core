@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -24,13 +23,38 @@
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/strings/grit/components_strings.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/ax_event_notification_details.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
+#include "pdf/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
+
+AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
+    content::WebContents* web_contents,
+    AIChatTabHelper* helper)
+    : content::WebContentsObserver(web_contents), helper_(helper) {}
+
+void AIChatTabHelper::PDFA11yInfoLoadObserver::AccessibilityEventReceived(
+    const content::AXEventNotificationDetails& details) {
+#if BUILDFLAG(ENABLE_PDF)
+  for (const auto& update : details.updates) {
+    for (const auto& node : update.nodes) {
+      if (node.GetStringAttribute(ax::mojom::StringAttribute::kName) ==
+          l10n_util::GetStringUTF8(IDS_PDF_LOADED_TO_A11Y_TREE)) {
+        helper_->OnPDFA11yInfoLoaded();
+        break;
+      }
+    }
+  }
+#endif
+}
+
+AIChatTabHelper::PDFA11yInfoLoadObserver::~PDFA11yInfoLoadObserver() = default;
 
 AIChatTabHelper::AIChatTabHelper(
     content::WebContents* web_contents,
@@ -49,65 +73,92 @@ AIChatTabHelper::AIChatTabHelper(
           web_contents->GetBrowserContext()
               ->GetDefaultStoragePartition()
               ->GetURLLoaderFactoryForBrowserProcess(),
-          channel_name) {
+          channel_name),
+      pdf_load_observer_(
+          std::make_unique<PDFA11yInfoLoadObserver>(nullptr, this)) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
 
-// content::WebContentsObserver
-
-void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  // We might have content here, so check.
-  // TODO(petemill): If there are other navigation events to also
-  // check if content is available at, then start a queue and make
-  // sure we don't have multiple async distills going on at the same time.
-  MaybeGeneratePageText();
+void AIChatTabHelper::SetOnPDFA11yInfoLoadedCallbackForTesting(
+    base::OnceClosure cb) {
+  on_pdf_a11y_info_loaded_cb_ = std::move(cb);
 }
 
+void AIChatTabHelper::OnPDFA11yInfoLoaded() {
+  DVLOG(3) << "PDF Loaded";
+  is_pdf_a11y_info_loaded_ = true;
+  if (pending_get_page_content_callback_) {
+    FetchPageContent(web_contents(), "",
+                     std::move(pending_get_page_content_callback_));
+  }
+  pdf_load_observer_.reset();
+  if (on_pdf_a11y_info_loaded_cb_) {
+    std::move(on_pdf_a11y_info_loaded_cb_).Run();
+  }
+}
+
+// content::WebContentsObserver
+
 void AIChatTabHelper::WebContentsDestroyed() {
-  CleanUp();
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
 }
 
 void AIChatTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  // Store current navigation ID of the main document
-  // so that we can ignore async responses against any navigated-away-from
-  // documents.
   if (!navigation_handle->IsInMainFrame()) {
-    DVLOG(3) << "FinishNavigation NOT in main frame";
     return;
   }
   DVLOG(2) << __func__ << navigation_handle->GetNavigationId()
            << " url: " << navigation_handle->GetURL().spec()
            << " same document? " << navigation_handle->IsSameDocument();
-  SetNavigationId(navigation_handle->GetNavigationId());
+
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
   // Content won't be retrieved immediately and we don't have a similar
   // "DOM Content Loaded" event, so let's wait for something else such as
-  // page title changing, or a timer completing before calling
-  // |MaybeGeneratePageText|.
-  SetSameDocumentNavigation(navigation_handle->IsSameDocument());
-  // Experimentally only call |CleanUp| _if_ a same-page navigation
-  // results in a page title change (see |TtileWasSet|).
-  if (!IsSameDocumentNavigation()) {
-    CleanUp();
+  // page title changing before committing to starting a new conversation
+  // and treating it as a "fresh page".
+  is_same_document_navigation_ = navigation_handle->IsSameDocument();
+  pending_navigation_id_ = navigation_handle->GetNavigationId();
+  // Experimentally only call |OnNewPage| for same-page navigations _if_
+  // it results in a page title change (see |TtileWasSet|).
+  if (!is_same_document_navigation_) {
+    OnNewPage(pending_navigation_id_);
   }
 }
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(3) << __func__ << entry->GetTitle();
   if (is_same_document_navigation_) {
-    // Seems as good a time as any to check for content after a same-document
-    // navigation.
-    // We only perform CleanUp here in case it was a minor pushState / fragment
-    // navigation and didn't result in new content.
-    CleanUp();
-    MaybeGeneratePageText();
+    DVLOG(3) << "Same document navigation detected new \"page\" - calling "
+                "OnNewPage()";
+    // Page title modification after same-document navigation seems as good a
+    // time as any to assume meaningful changes occured to the content.
+    OnNewPage(pending_navigation_id_);
+    // Don't respond to further TitleWasSet
+    is_same_document_navigation_ = false;
+  }
+}
+
+void AIChatTabHelper::InnerWebContentsAttached(
+    content::WebContents* inner_web_contents,
+    content::RenderFrameHost* render_frame_host,
+    bool is_full_page) {
+  // Setting a11y mode for PDF process which is dedicated for each
+  // PDF so we don't have to unset it.
+  if (content::WebContents::FromRenderFrameHost(render_frame_host)
+              ->GetContentsMimeType() == "application/pdf" &&
+      HasUserOptedIn()) {
+    // We need `AXMode::kNativeAPIs` for accessing pdf a11y info and
+    // `AXMode::kWebContents` for observing a11y events from WebContents.
+    inner_web_contents->SetAccessibilityMode(ui::AXMode(ui::kAXModeBasic));
+    pdf_load_observer_ =
+        std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents, this);
+    is_pdf_a11y_info_loaded_ = false;
   }
 }
 
@@ -128,17 +179,18 @@ GURL AIChatTabHelper::GetPageURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
-void AIChatTabHelper::GetPageContent(
-    base::OnceCallback<void(std::string, bool is_video)> callback) const {
-  FetchPageContent(web_contents(), std::move(callback));
-}
-
-bool AIChatTabHelper::HasPrimaryMainFrame() const {
-  return web_contents()->GetPrimaryMainFrame() != nullptr;
-}
-
-bool AIChatTabHelper::IsDocumentOnLoadCompletedInPrimaryMainFrame() const {
-  return web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
+void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
+                                     std::string_view invalidation_token) {
+  if (web_contents()->GetContentsMimeType() == "application/pdf" &&
+      !is_pdf_a11y_info_loaded_) {
+    if (pending_get_page_content_callback_) {
+      std::move(pending_get_page_content_callback_).Run("", false, "");
+    }
+    // invalidation_token doesn't matter for PDF extraction.
+    pending_get_page_content_callback_ = std::move(callback);
+  } else {
+    FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+  }
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {

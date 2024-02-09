@@ -36,7 +36,6 @@ bool IsTrialDisabledInBrave(std::string_view trial_name) {
       "SignedExchangeSubresourcePrefetch",
       "SubresourceWebBundles",
       "TrustTokens",
-      "WebEnvironmentIntegrity",
   };
 
   if (base::Contains(kBraveDisabledTrialNames, trial_name)) {
@@ -60,7 +59,6 @@ bool IsTrialDisabledInBrave(blink::mojom::OriginTrialFeature feature) {
           blink::mojom::OriginTrialFeature::kParakeet,
           blink::mojom::OriginTrialFeature::kPrivacySandboxAdsAPIs,
           blink::mojom::OriginTrialFeature::kPrivateStateTokens,
-          blink::mojom::OriginTrialFeature::kWebEnvironmentIntegrity,
       };
 
   return base::Contains(kBraveDisabledTrialFeatures, feature);

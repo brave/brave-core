@@ -11,52 +11,49 @@ import { lookupExternalWalletProviderName } from '../../shared/lib/external_wall
 import * as mojom from '../../shared/lib/mojom'
 
 interface Props {
-  info: RewardsInternals.ExternalWallet
+  info?: RewardsInternals.ExternalWallet
 }
 
-const getWalletStatus = (status: mojom.WalletStatus) => {
-  switch (status) {
+const getWalletStatus = (info?: RewardsInternals.ExternalWallet) => {
+  if (!info) {
+    return getLocale('walletStatusNotConnected')
+  }
+
+  switch (info.status) {
     case mojom.WalletStatus.kNotConnected:
       return getLocale('walletStatusNotConnected')
     case mojom.WalletStatus.kConnected:
-      return getLocale('walletStatusVerified')
+      return getLocale('walletStatusConnected')
     case mojom.WalletStatus.kLoggedOut:
-      return getLocale('walletStatusDisconnectedVerified')
+      return getLocale('walletStatusDisconnected')
   }
 
-  return getLocale('walletNotCreated')
+  return ''
 }
 export const ExternalWallet = (props: Props) => {
-  if (!props.info) {
-    return null
-  }
-
   return (
     <>
       <h3>{getLocale('externalWallet')}</h3>
       <div>
-        {getLocale('walletStatus')} {getWalletStatus(props.info.status)}
+        {getLocale('walletStatus')} {getWalletStatus(props.info)}
       </div>
       {
-        props.info.address && props.info.address.length > 0
-        ? <div>
-          {getLocale('walletAddress')} {props.info.address}
-        </div>
-        : null
+        props.info &&
+          <div>
+            {getLocale('walletAddress')} {props.info.address}
+          </div>
       }
       {
-        props.info.status !== 0 && props.info.type && props.info.type.length > 0
-        ? <div>
-          {getLocale('custodian')} {lookupExternalWalletProviderName(props.info.type)}
-        </div>
-        : null
+        props.info &&
+          <div>
+            {getLocale('externalWalletType')} {lookupExternalWalletProviderName(props.info.type)}
+          </div>
       }
       {
-        props.info.status !== 0 && props.info.memberId && props.info.memberId.length > 0
-        ? <div>
-          {getLocale('custodianMemberId')} {props.info.memberId}
-        </div>
-        : null
+        props.info &&
+          <div>
+            {getLocale('externalWalletAccount')} {props.info.memberId || props.info.address}
+          </div>
       }
     </>)
 }

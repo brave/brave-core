@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/priority/priority.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -91,29 +92,55 @@ void EligibleNotificationAdsV2::GetEligibleAdsCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
+  FilterAndMaybePredictCreativeAd(user_model, creative_ads, ad_events,
+                                  browsing_history, std::move(callback));
+}
+
+void EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd(
+    const UserModelInfo& user_model,
+    const CreativeNotificationAdList& creative_ads,
+    const AdEventList& ad_events,
+    const BrowsingHistoryList& browsing_history,
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
   CreativeNotificationAdList eligible_creative_ads = creative_ads;
-  FilterCreativeAds(eligible_creative_ads, ad_events, browsing_history);
-  if (eligible_creative_ads.empty()) {
-    BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-    return std::move(callback).Run(/*eligible_ads=*/{});
+  FilterIneligibleCreativeAds(eligible_creative_ads, ad_events,
+                              browsing_history);
+
+  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList> buckets =
+      SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
+
+  LogNumberOfCreativeAdsPerBucket(buckets);
+
+  // For each bucket of prioritized ads attempt to predict the most suitable ad
+  // for the user in priority order.
+  for (const auto& [priority, prioritized_eligible_creative_ads] : buckets) {
+    const std::optional<CreativeNotificationAdInfo> predicted_creative_ad =
+        MaybePredictCreativeAd(prioritized_eligible_creative_ads, user_model,
+                               ad_events);
+    if (!predicted_creative_ad) {
+      // Could not predict an ad for this bucket, so continue to the next
+      // bucket.
+      continue;
+    }
+
+    BLOG(1, "Predicted ad with creative instance id "
+                << predicted_creative_ad->creative_instance_id
+                << " and a priority of " << priority);
+
+    return std::move(callback).Run({*predicted_creative_ad});
   }
 
-  const std::optional<CreativeNotificationAdInfo> creative_ad =
-      MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events);
-  if (!creative_ad) {
-    BLOG(1, "No eligible ads");
-    return std::move(callback).Run(/*eligible_ads=*/{});
-  }
-
-  std::move(callback).Run({*creative_ad});
+  // Could not predict an ad for any of the buckets.
+  BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+  std::move(callback).Run(/*eligible_ads=*/{});
 }
 
-void EligibleNotificationAdsV2::FilterCreativeAds(
+void EligibleNotificationAdsV2::FilterIneligibleCreativeAds(
     CreativeNotificationAdList& creative_ads,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history) {

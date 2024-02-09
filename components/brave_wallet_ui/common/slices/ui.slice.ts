@@ -16,8 +16,8 @@ export const defaultUIState: UIState = {
   selectedPendingTransactionId: undefined,
   transactionProviderErrorRegistry: {},
   isPanel: false,
-  collapsedPortfolioAccountAddresses: parseJSONFromLocalStorage(
-    'COLLAPSED_PORTFOLIO_ACCOUNT_ADDRESSES',
+  collapsedPortfolioAccountIds: parseJSONFromLocalStorage(
+    'COLLAPSED_PORTFOLIO_ACCOUNT_IDS',
     []
   ),
   collapsedPortfolioNetworkKeys: parseJSONFromLocalStorage(
@@ -47,11 +47,11 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
           payload.providerError
       },
 
-      setCollapsedPortfolioAccountAddresses(
+      setCollapsedPortfolioAccountIds(
         state: UIState,
         { payload }: PayloadAction<string[]>
       ) {
-        state.collapsedPortfolioAccountAddresses = payload
+        state.collapsedPortfolioAccountIds = payload
       },
 
       setCollapsedPortfolioNetworkKeys(

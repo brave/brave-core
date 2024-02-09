@@ -6,10 +6,7 @@
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "chrome/browser/download/bubble/download_bubble_prefs.h"
 #include "chrome/browser/download/download_stats.h"
-
-namespace download {
-bool BraveIsDownloadBubbleV2Enabled(Profile* profile);
-}  // namespace download
+#include "chrome/common/pref_names.h"
 
 bool IsIpfsImportDownloadCreated(content::WebContents* web_contents,
                                  download::DownloadItem* item);
@@ -22,10 +19,12 @@ bool IsIpfsImportDownloadCreated(content::WebContents* web_contents,
 
 // Prevent DownloadBubbleUIControllerDelegate from overriding
 // prefs::kPromptForDownload value for OffTheRecord profiles
-#define IsDownloadBubbleV2Enabled BraveIsDownloadBubbleV2Enabled
+#define kPromptForDownload kPromptForDownload,                  \
+  profile_->GetPrefs()->GetBoolean(prefs::kPromptForDownload)); \
+  DCHECK_EQ(true
 
 #include "src/chrome/browser/download/download_ui_controller.cc"
-#undef IsDownloadBubbleV2Enabled
+#undef kPromptForDownload
 #undef RecordDownloadStartPerProfileType
 
 bool IsIpfsImportDownloadCreated(content::WebContents* web_contents,
@@ -34,11 +33,3 @@ bool IsIpfsImportDownloadCreated(content::WebContents* web_contents,
       ipfs::IPFSTabHelper::FromWebContents(web_contents);
   return (helper && helper->GetImportController()->HasInProgressDownload(item));
 }
-
-namespace download {
-
-bool BraveIsDownloadBubbleV2Enabled(Profile* profile) {
-  return false;
-}
-
-}  // namespace download

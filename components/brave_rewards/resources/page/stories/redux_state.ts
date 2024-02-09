@@ -19,7 +19,9 @@ export const reduxState: Rewards.ApplicationState = {
     reconcileStamp: 0,
     ui: {
       modalConnect: false,
+      modalConnectState: '',
       modalRedirect: 'hide',
+      modalRedirectProvider: '',
       modalReset: false,
       modalAdsHistory: false,
       adsSettings: false,

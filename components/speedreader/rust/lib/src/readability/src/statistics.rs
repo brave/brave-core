@@ -1,7 +1,12 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use crate::{dom, util};
-use kuchiki::iter::NodeIterator;
-use kuchiki::NodeRef as Handle;
-use kuchiki::{ElementData, Sink};
+use kuchikiki::iter::NodeIterator;
+use kuchikiki::NodeRef as Handle;
+use kuchikiki::{ElementData, Sink};
 use util::count_ignore_consecutive_whitespace;
 
 #[derive(Default)]
@@ -111,11 +116,7 @@ impl<'a> Iterator for NaiveInlineCSSStyleIterator<'a> {
             let mut splitter = n.splitn(2, ':');
             let property = splitter.next()?.trim();
             let value = splitter.next()?.trim();
-            if !property.is_empty() && !value.is_empty() {
-                Some((property, value))
-            } else {
-                None
-            }
+            if !property.is_empty() && !value.is_empty() { Some((property, value)) } else { None }
         })
     }
 
@@ -229,15 +230,13 @@ fn collect_scores(node: &Handle, paragraph_len_threshold: usize, features: &mut 
 
                 // Sqrt moz score with no paragraph subtraction
                 features.moz_score_all_sqrt += (len as f64).sqrt();
-                features.moz_score_all_sqrt = features
-                    .moz_score_all_sqrt
-                    .min(*MOZ_SCORE_ALL_SQRT_SATURATION);
+                features.moz_score_all_sqrt =
+                    features.moz_score_all_sqrt.min(*MOZ_SCORE_ALL_SQRT_SATURATION);
 
                 // Moz score with no paragraph subtraction, no sqrt
                 features.moz_score_all_linear += len;
-                features.moz_score_all_linear = features
-                    .moz_score_all_linear
-                    .min(*MOZ_SCORE_ALL_LINEAR_SATURATION);
+                features.moz_score_all_linear =
+                    features.moz_score_all_linear.min(*MOZ_SCORE_ALL_LINEAR_SATURATION);
             }
         }
         for child in node.children() {
@@ -266,9 +265,9 @@ fn is_open_graph_article(head: &Handle) -> bool {
     false
 }
 
-/// Does a quick pass over the dom and populates a feature struct. The caller can
-/// use these values to determine if the page is readable without doing expensive
-/// distilling.
+/// Does a quick pass over the dom and populates a feature struct. The caller
+/// can use these values to determine if the page is readable without doing
+/// expensive distilling.
 pub fn collect_statistics(dom: &Sink) -> Option<ReadableFeatures> {
     let mut features = ReadableFeatures::default();
     let head = dom::document_head(&dom)?;
@@ -291,9 +290,8 @@ mod tests {
     where
         R: Read,
     {
-        let dom: Sink = parse_document(Sink::default(), Default::default())
-            .from_utf8()
-            .read_from(input)?;
+        let dom: Sink =
+            parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
         collect_statistics(&dom).ok_or(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
@@ -313,10 +311,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let features = collect_statistics_for_test(&mut cursor).unwrap();
-        assert!(
-            features.is_open_graph_article,
-            "Article content not detected as opengraph"
-        );
+        assert!(features.is_open_graph_article, "Article content not detected as opengraph");
     }
 
     #[test]
@@ -408,21 +403,11 @@ this text is countedthis text is counted
             large_p_node.push_str("</p>");
             p_blob.push_str(&large_p_node);
         }
-        let input = format!(
-            r#"<html><body><div class="something">{}</div></body></html>"#,
-            p_blob
-        );
+        let input = format!(r#"<html><body><div class="something">{}</div></body></html>"#, p_blob);
         let mut cursor = Cursor::new(input);
         let features = collect_statistics_for_test(&mut cursor).unwrap();
-        assert_eq!(
-            *MOZ_SCORE_ALL_LINEAR_SATURATION,
-            features.moz_score_all_linear
-        );
-        assert_approx_eq!(
-            *MOZ_SCORE_ALL_SQRT_SATURATION,
-            features.moz_score_all_sqrt,
-            1e-4
-        );
+        assert_eq!(*MOZ_SCORE_ALL_LINEAR_SATURATION, features.moz_score_all_linear);
+        assert_approx_eq!(*MOZ_SCORE_ALL_SQRT_SATURATION, features.moz_score_all_sqrt, 1e-4);
         assert_approx_eq!(*MOZ_SCORE_SATURATION, features.moz_score, 1e-4);
     }
 
@@ -430,15 +415,9 @@ this text is countedthis text is counted
     fn test_style_iter() {
         let input = "display:none;visibility:hidden   ;      opacity:  0;";
         let mut style_iter = NaiveInlineCSSStyleIterator::new(input);
-        let expected = [
-            ("display", "none"),
-            ("visibility", "hidden"),
-            ("opacity", "0"),
-        ];
+        let expected = [("display", "none"), ("visibility", "hidden"), ("opacity", "0")];
         for t in expected.iter() {
-            let style = style_iter
-                .next()
-                .expect("iterator did not consume all styles");
+            let style = style_iter.next().expect("iterator did not consume all styles");
             assert_eq!(t.0, style.0, "inline-CSS property not equal");
             assert_eq!(t.1, style.1, "inline-CSS value not equal");
         }

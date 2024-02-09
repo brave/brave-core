@@ -7,6 +7,8 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
@@ -201,6 +203,16 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   }
   _providerScripts[@(coinType)] = [scripts copy];
   return scripts;
+}
+
+- (nullable id<BraveWalletBraveWalletP3A>)walletP3A {
+  auto* service = brave_wallet::BraveWalletServiceFactory::GetServiceForState(
+      _mainBrowserState);
+  if (!service) {
+    return nil;
+  }
+  return [[BraveWalletBraveWalletP3AMojoImpl alloc]
+      initWithBraveWalletP3A:service->GetBraveWalletP3A()->MakeRemote()];
 }
 
 @end

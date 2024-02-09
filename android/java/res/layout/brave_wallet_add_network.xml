@@ -13,14 +13,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
         android:orientation="vertical" >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:textColor="@color/wallet_text_color"
             android:text="@string/brave_wallet_add_network_chain_id"
             android:textSize="14sp" />
@@ -30,8 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:inputType="numberDecimal"
             android:textColor="@color/wallet_text_color"
             android:textSize="14sp"
@@ -44,8 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:textColor="@color/wallet_text_color"
             android:text="@string/brave_wallet_add_network_chain_name"
             android:textSize="14sp" />
@@ -55,8 +50,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
             android:textSize="14sp"
@@ -69,8 +62,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:textColor="@color/wallet_text_color"
             android:text="@string/brave_wallet_add_network_chain_currency_name"
             android:textSize="14sp" />
@@ -80,8 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
             android:textSize="14sp"
@@ -94,8 +83,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:textColor="@color/wallet_text_color"
             android:text="@string/brave_wallet_add_network_chain_currency_symbol"
             android:textSize="14sp" />
@@ -105,8 +92,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
             android:textSize="14sp"
@@ -119,8 +104,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:textColor="@color/wallet_text_color"
             android:text="@string/brave_wallet_add_network_chain_currency_decimals"
             android:textSize="14sp" />
@@ -130,8 +113,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:inputType="numberDecimal"
             android:textColor="@color/wallet_text_color"
             android:textSize="14sp"
@@ -144,8 +125,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:textColor="@color/wallet_text_color"
             android:text="@string/brave_wallet_add_network_rpc_urls"
             android:textSize="14sp" />
@@ -155,8 +134,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
             android:textSize="14sp"
@@ -169,8 +146,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:textColor="@color/wallet_text_color"
             android:text="@string/brave_wallet_add_network_icon_urls"
             android:textSize="14sp" />
@@ -180,8 +155,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
             android:textSize="14sp"
@@ -194,8 +167,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:textColor="@color/wallet_text_color"
             android:text="@string/brave_wallet_add_network_block_explorer_urls"
             android:textSize="14sp" />
@@ -205,8 +176,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
             android:textSize="14sp"
@@ -214,15 +183,23 @@
             android:textColorHint="@color/brave_theme_hint_text"
             tools:ignore="LabelFor, Autofill" />
 
+        <TextView
+            android:id="@+id/submit_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/wallet_error_text_color"
+            android:textSize="14sp"
+            android:visibility="invisible"/>
+
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/add"
+            android:id="@+id/submit"
             style="@style/BraveWalletButton"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:layout_weight = "1"
             android:text="@string/brave_wallet_add_network_add"
             android:layout_marginVertical="12dp" />
 

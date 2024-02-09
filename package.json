@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.63.88",
+  "version": "1.64.57",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,6 @@
     "push_l10n": "node ./build/commands/scripts/commands.js push_l10n",
     "pull_l10n": "node ./build/commands/scripts/commands.js pull_l10n",
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
-    "lint": "node ./build/commands/scripts/commands.js lint",
     "presubmit": "node ./build/commands/scripts/commands.js presubmit",
     "format": "node ./build/commands/scripts/commands.js format",
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
@@ -34,7 +33,6 @@
     "tslint": "npm run eslint",
     "eslint": "eslint ./components",
     "pep8": "pycodestyle --max-line-length 120 -r script",
-    "pylint": "node ./build/commands/scripts/commands.js pylint",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui-gen-tsconfig": "node components/webpack/gen-tsconfig",
     "web-ui": "webpack --config components/webpack/webpack.config.js",
@@ -57,208 +55,6 @@
   "author": {
     "name": "Brave Software <support@brave.com>"
   },
-  "contributors": [
-    {
-      "name": "Cezar Augusto",
-      "email": "cezar@brave.com"
-    },
-    {
-      "name": "Matt Bacchi",
-      "email": "mbacchi@gmail.com"
-    },
-    {
-      "name": "Alexey Barabash",
-      "email": "alexey@brave.com"
-    },
-    {
-      "name": "Brian R. Bondy",
-      "email": "bbondy@gmail.com"
-    },
-    {
-      "name": "Brian Clifton",
-      "email": "brian@clifton.me"
-    },
-    {
-      "name": "George Dregalo",
-      "email": "gdregalo@brave.com"
-    },
-    {
-      "name": "Rafael Ebron",
-      "email": "rebron@brave.com"
-    },
-    {
-      "name": "Brendan Eich",
-      "email": "brendan@brave.com"
-    },
-    {
-      "name": "Matt Evangelista",
-      "email": "mevangelista@brave.com"
-    },
-    {
-      "name": "Ryan Gerstenkorn"
-    },
-    {
-      "name": "Kyle Hickinson",
-      "email": "khickinson@brave.com"
-    },
-    {
-      "name": "Simon Hong",
-      "email": "shong@igalia.com"
-    },
-    {
-      "name": "Brian Johnson",
-      "email": "bjohnson@brave.com"
-    },
-    {
-      "name": "Kamil Jozwiak",
-      "email": "kamil@jozwiak.ch"
-    },
-    {
-      "name": "Pranjal Jumde",
-      "email": "pranjal@brave.com"
-    },
-    {
-      "name": "Max Karolinskiy",
-      "email": "max@brave.com"
-    },
-    {
-      "name": "Ben Kero",
-      "email": "bkero@brave.com"
-    },
-    {
-      "name": "Aubrey Keus",
-      "email": "aekeus@gmail.com"
-    },
-    {
-      "name": "Ryan Lanese",
-      "email": "ryanlanese@gmail.com"
-    },
-    {
-      "name": "Kevin Lawler",
-      "email": "kevin@brave.com"
-    },
-    {
-      "name": "Bartlomiej Lechowski",
-      "email": "btlechowski@gmail.com"
-    },
-    {
-      "name": "Brian Lee"
-    },
-    {
-      "name": "Ailin Liao"
-    },
-    {
-      "name": "Jocelyn Liu",
-      "email": "yrliou@gmail.com"
-    },
-    {
-      "name": "Karen Liu",
-      "email": "kliu@brave.com"
-    },
-    {
-      "name": "Tom Lowenthal",
-      "email": "me@tomlowenthal.com"
-    },
-    {
-      "name": "Terry Mancey",
-      "email": "tmancey@brave.com"
-    },
-    {
-      "name": "Pete Miller",
-      "email": "miller.pete@gmail.com"
-    },
-    {
-      "name": "Ross Moody",
-      "email": "fiftyfivehis@gmail.com"
-    },
-    {
-      "name": "Mark Pilgrim",
-      "email": "mpilgrim@brave.com"
-    },
-    {
-      "name": "Mihai Plesa",
-      "email": "mihai.plesa@gmail.com"
-    },
-    {
-      "name": "Brad Richter",
-      "email": "bradley.richter@gmail.com"
-    },
-    {
-      "name": "Jenn Rhim",
-      "email": "jennrhim@gmail.com"
-    },
-    {
-      "name": "Riastradh"
-    },
-    {
-      "name": "Garrett Robinson",
-      "email": "garrett.f.robinson@gmail.com"
-    },
-    {
-      "name": "Emerick Rogul",
-      "email": "erogul@brave.com"
-    },
-    {
-      "name": "Jason Sadler",
-      "email": "jsadler@brave.com"
-    },
-    {
-      "name": "Geeta Sarvadnya",
-      "email": "gsarvadnya@brave.com"
-    },
-    {
-      "name": "Mandar Shinde",
-      "email": "mandar@brave.com"
-    },
-    {
-      "name": "Peter Snyder",
-      "email": "psnyder@brave.com"
-    },
-    {
-      "name": "David Temkin",
-      "email": "temkin@gmail.com"
-    },
-    {
-      "name": "Anthony Tseng",
-      "email": "darkdh@gmail.com"
-    },
-    {
-      "name": "Sriram Bellur Venkataram",
-      "email": "srirambv@gmail.com"
-    },
-    {
-      "name": "Lauren Wagner",
-      "email": "lauren@brave.com"
-    },
-    {
-      "name": "Ryan Watson",
-      "email": "w0ts0n@gmail.com"
-    },
-    {
-      "name": "Nejc Zdovc",
-      "email": "nejc@brave.com"
-    },
-    {
-      "name": "Yan Zhu",
-      "email": "yan@mit.edu"
-    },
-    {
-      "name": "Sergey Zhukovsky",
-      "email": "serg@brave.com"
-    },
-    {
-      "name": "Szilard Szaloki",
-      "email": "szilardszaloki@gmail.com"
-    },
-    {
-      "name": "Wojciech Knapik",
-      "email": "wmknapik@gmail.com"
-    },
-    {
-      "name": "Michael Herrmann",
-      "email": "michael@herrmann.io"
-    }
-  ],
   "license": "MPL-2.0",
   "bugs": {
     "url": "https://github.com/brave/brave-browser/issues"
@@ -268,7 +64,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "120.0.6099.144",
+        "tag": "121.0.6167.164",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -292,6 +88,7 @@
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.18",
     "@types/react-redux": "7.1.25",
+    "@types/react-syntax-highlighter": "15.5.11",
     "@types/react-window": "1.8.5",
     "@types/recharts": "1.8.24",
     "@types/redux-logger": "3.0.9",
@@ -321,7 +118,7 @@
     "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",
     "ethereumjs-util": "7.0.9",
     "file-loader": "6.2.0",
-    "follow-redirects": "1.14.8",
+    "follow-redirects": "1.15.4",
     "font-awesome": "4.7.0",
     "fs-extra": "8.1.0",
     "https-browserify": "1.0.0",
@@ -366,7 +163,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.4",
-    "@brave/leo": "github:brave/leo#857181f3d314e1c55bb2e19e21924acb0b54c587",
+    "@brave/leo": "github:brave/leo#033a457665879461b5492edc66e11ceaf80e949d",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "0.0.12",
     "@dnd-kit/core": "6.0.5",
@@ -392,6 +189,7 @@
     "react-json-view-lite": "^0.9.5",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
+    "react-syntax-highlighter": "15.5.0",
     "react-window": "^1.8.5",
     "redux-act": "^1.8.0",
     "redux-logger": "^3.0.6",

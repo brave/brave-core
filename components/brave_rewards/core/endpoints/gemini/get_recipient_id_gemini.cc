@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
+#include "url/gurl.h"
 
 namespace brave_rewards::internal::endpoints {
 using Error = GetRecipientIDGemini::Error;
@@ -19,17 +21,17 @@ using Result = GetRecipientIDGemini::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   for (auto& item : value->GetList()) {
     auto* pair = item.GetIfDict();
     if (!pair) {
-      BLOG(0, "Failed to parse body!");
+      engine.LogError(FROM_HERE) << "Failed to parse body";
       return base::unexpected(Error::kFailedToParseBody);
     }
 
@@ -37,11 +39,11 @@ Result ParseBody(const std::string& body) {
     auto* recipient_id = pair->FindString("recipient_id");
 
     if (!label || !recipient_id) {
-      BLOG(0, "Failed to parse body!");
+      engine.LogError(FROM_HERE) << "Failed to parse body";
       return base::unexpected(Error::kFailedToParseBody);
     }
 
-    if (*label == gemini::kGeminiRecipientIDLabel) {
+    if (*label == endpoint::gemini::PostRecipientId::kRecipientLabel) {
       return std::move(*recipient_id);
     }
   }
@@ -53,12 +55,14 @@ Result ParseBody(const std::string& body) {
 
 // static
 Result GetRecipientIDGemini::ProcessResponse(
+    RewardsEngineImpl& engine,
     const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
@@ -70,7 +74,9 @@ GetRecipientIDGemini::GetRecipientIDGemini(RewardsEngineImpl& engine,
 GetRecipientIDGemini::~GetRecipientIDGemini() = default;
 
 std::optional<std::string> GetRecipientIDGemini::Url() const {
-  return endpoint::gemini::GetApiServerUrl("/v1/payments/recipientIds");
+  return GURL(engine_->Get<EnvironmentConfig>().gemini_api_url())
+      .Resolve("/v1/payments/recipientIds")
+      .spec();
 }
 
 mojom::UrlMethod GetRecipientIDGemini::Method() const {
@@ -79,7 +85,7 @@ mojom::UrlMethod GetRecipientIDGemini::Method() const {
 
 std::optional<std::vector<std::string>> GetRecipientIDGemini::Headers(
     const std::string&) const {
-  return endpoint::gemini::RequestAuthorization(token_);
+  return std::vector<std::string>{"Authorization: Bearer " + token_};
 }
 
 }  // namespace brave_rewards::internal::endpoints

@@ -9,7 +9,8 @@ export type ExternalWalletProvider =
   'uphold' |
   'bitflyer' |
   'gemini' |
-  'zebpay'
+  'zebpay' |
+  'solana'
 
 export interface ExternalWallet {
   provider: ExternalWalletProvider
@@ -29,6 +30,7 @@ export function getExternalWalletProviderName (
     case 'gemini': return 'Gemini'
     case 'uphold': return 'Uphold'
     case 'zebpay': return 'ZebPay'
+    case 'solana': return 'Solana'
   }
 }
 
@@ -44,6 +46,7 @@ export function externalWalletProviderFromString (
     case 'gemini':
     case 'uphold':
     case 'zebpay':
+    case 'solana':
       return key
     default:
       return null
@@ -101,6 +104,8 @@ export interface ExternalWalletProviderRegionInfo {
   block: string[]
 }
 
+// Returns a value indicating whether a wallet provider is allowed for the
+// specified country code, given the supplied allow/block list.
 export function isExternalWalletProviderAllowed (
   countryCode: string,
   regionInfo: ExternalWalletProviderRegionInfo | null
@@ -120,4 +125,15 @@ export function isExternalWalletProviderAllowed (
   // the user to attempt to connect a wallet. If the region is not allowed, the
   // process should fail on the server.
   return true
+}
+
+// Returns true if the specified wallet provider is a self-custody provider.
+export function isSelfCustodyProvider (provider: ExternalWalletProvider) {
+  switch (provider) {
+    case 'bitflyer': return false
+    case 'gemini': return false
+    case 'uphold': return false
+    case 'zebpay': return false
+    case 'solana': return true
+  }
 }

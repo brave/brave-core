@@ -500,8 +500,7 @@ GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash) {
     return GURL();
   if (code != kIpnsNSCodec && code != kIpfsNSCodec)
     return GURL();
-  std::string encoded = base32::Base32Encode(std::string_view(
-      reinterpret_cast<const char*>(contenthash.data()), contenthash.size()));
+  std::string encoded = base32::Base32Encode(contenthash);
   if (encoded.empty())
     return GURL();
   std::string trimmed;

@@ -15,6 +15,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
@@ -305,8 +306,16 @@ void GitHub::FetchDataFromUrl(const std::string& url,
                               LegacyLoadURLCallback callback) {
   auto request = mojom::UrlRequest::New();
   request->url = url;
-  request->skip_log = true;
-  engine_->LoadURL(std::move(request), callback);
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kNone,
+      base::BindOnce(&GitHub::OnUrlFetched, base::Unretained(this),
+                     std::move(callback)));
+}
+
+void GitHub::OnUrlFetched(LegacyLoadURLCallback callback,
+                          mojom::UrlResponsePtr response) {
+  callback(std::move(response));
 }
 
 void GitHub::OnUserPage(const uint64_t duration,
@@ -341,7 +350,7 @@ void GitHub::SavePublisherInfo(const uint64_t duration,
 
   if (publisher_key.empty()) {
     callback(mojom::Result::FAILED, nullptr);
-    BLOG(0, "Publisher key is missing");
+    engine_->LogError(FROM_HERE) << "Publisher key is missing";
     return;
   }
 
@@ -413,9 +422,6 @@ void GitHub::SaveMediaInfo(const base::flat_map<std::string, std::string>& data,
   auto url_callback =
       std::bind(&GitHub::OnMetaDataGet, this, std::move(callback), _1);
 
-  auto request = mojom::UrlRequest::New();
-  request->url = url;
-  request->skip_log = true;
-  engine_->LoadURL(std::move(request), url_callback);
+  FetchDataFromUrl(url, url_callback);
 }
 }  // namespace brave_rewards::internal

@@ -1014,10 +1014,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (0 != mHost.length()) {
+                        if (0 != mUrlSpec.length()) {
                             BraveShieldsContentSettings.setShieldsValue(
                                     mProfile,
-                                    mHost,
+                                    mUrlSpec,
                                     BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
                                     isChecked
                                             ? BraveShieldsContentSettings.DEFAULT
@@ -1039,14 +1039,14 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             // Prevents to fire an event when top shields changed
             braveShieldsFingerprintingSwitch.setOnCheckedChangeListener(null);
         }
-        if (0 != mHost.length()) {
+        if (0 != mUrlSpec.length()) {
             if (BraveShieldsContentSettings.getShields(
                     mProfile,
-                    mHost,
+                    mUrlSpec,
                     BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
                 if (!BraveShieldsContentSettings.getShieldsValue(
                                 mProfile,
-                                mHost,
+                                mUrlSpec,
                                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)
                         .equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
                     braveShieldsFingerprintingSwitch.setChecked(true);

@@ -11,6 +11,7 @@
 
 #include <wrl/client.h>
 #include <memory>
+#include <utility>
 
 #include "base/logging.h"
 #include "base/notreached.h"
@@ -43,16 +44,19 @@ RasOperationResult DisconnectEntry(const std::wstring& name) {
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNIKEv2ConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel) {
-  return std::make_unique<BraveVPNOSConnectionAPIWin>(url_loader_factory,
-                                                      local_prefs, channel);
+    base::RepeatingCallback<bool()> service_installer) {
+  return std::make_unique<BraveVPNOSConnectionAPIWin>(
+      url_loader_factory, local_prefs, service_installer);
 }
 
 BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel)
-    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs, channel) {
+    base::RepeatingCallback<bool()> service_installer)
+    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {
+  if (service_installer) {
+    install_system_service_callback_ = std::move(service_installer);
+  }
   StartRasConnectionChangeMonitoring();
 }
 

@@ -12,6 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
@@ -30,11 +31,13 @@ using database::DatabaseMigration;
 
 class RewardsDatabaseMigrationTest : public RewardsEngineTest {
  public:
-  RewardsDatabaseMigrationTest() { is_testing = true; }
+  RewardsDatabaseMigrationTest() {
+    engine().GetOptionsForTesting().is_testing = true;
+  }
 
   ~RewardsDatabaseMigrationTest() override {
     DatabaseMigration::SetTargetVersionForTesting(0);
-    is_testing = false;
+    engine().GetOptionsForTesting().is_testing = false;
   }
 
  protected:

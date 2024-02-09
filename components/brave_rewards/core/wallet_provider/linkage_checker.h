@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_LINKAGE_CHECKER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_LINKAGE_CHECKER_H_
 
-#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/get_wallet.h"
@@ -38,8 +37,10 @@ class LinkageChecker : public RewardsEngineHelper {
   bool ShouldPerformCheck();
   mojom::ExternalWalletPtr GetExternalWallet();
   void MaybeUpdateExternalWalletStatus(endpoints::GetWallet::Value& value);
+  void UpdateSelfCustodyAvailableDict(endpoints::GetWallet::Value& value);
   void CheckLinkageCallback(endpoints::GetWallet::Result&& result);
 
+  bool check_in_progress_ = false;
   base::RepeatingTimer timer_;
   base::WeakPtrFactory<LinkageChecker> weak_factory_{this};
 };

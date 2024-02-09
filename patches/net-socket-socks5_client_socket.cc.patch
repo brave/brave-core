@@ -1,8 +1,8 @@
 diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
-index 36a69f48c78e1eb6bce1b3f9b2a9974527a4a9bd..148642dc7a30c62ddb7b3010dceee39f5ce05039 100644
+index e6677d9c8a13a3be96ed0fc2bc9a69f47ffe530e..5985594663fa571596b1fdd5e788b5de1cc2e199 100644
 --- a/net/socket/socks5_client_socket.cc
 +++ b/net/socket/socks5_client_socket.cc
-@@ -229,6 +229,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
+@@ -222,6 +222,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
          net_log_.EndEventWithNetErrorCode(NetLogEventType::SOCKS5_GREET_READ,
                                            rv);
          break;
@@ -12,7 +12,7 @@ index 36a69f48c78e1eb6bce1b3f9b2a9974527a4a9bd..148642dc7a30c62ddb7b3010dceee39f
        case STATE_HANDSHAKE_WRITE:
          DCHECK_EQ(OK, rv);
          net_log_.BeginEvent(NetLogEventType::SOCKS5_HANDSHAKE_WRITE);
-@@ -258,8 +261,6 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
+@@ -251,8 +254,6 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
    return rv;
  }
  
@@ -21,7 +21,7 @@ index 36a69f48c78e1eb6bce1b3f9b2a9974527a4a9bd..148642dc7a30c62ddb7b3010dceee39f
  int SOCKS5ClientSocket::DoGreetWrite() {
    // Since we only have 1 byte to send the hostname length in, if the
    // URL has a hostname longer than 255 characters we can't send it.
-@@ -269,8 +270,12 @@ int SOCKS5ClientSocket::DoGreetWrite() {
+@@ -262,8 +263,12 @@ int SOCKS5ClientSocket::DoGreetWrite() {
    }
  
    if (buffer_.empty()) {
@@ -36,7 +36,7 @@ index 36a69f48c78e1eb6bce1b3f9b2a9974527a4a9bd..148642dc7a30c62ddb7b3010dceee39f
      bytes_sent_ = 0;
    }
  
-@@ -329,14 +334,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
+@@ -322,14 +327,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
                                     "version", buffer_[0]);
      return ERR_SOCKS_CONNECTION_FAILED;
    }

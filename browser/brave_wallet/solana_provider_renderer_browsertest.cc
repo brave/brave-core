@@ -647,7 +647,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
-                       DoNotAttachIfNoWalletCreated) {
+                       AttachEvenIfNoWalletCreated) {
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           browser()->profile());
@@ -658,10 +658,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop(browser());
 
-  std::string command = "window.solana.isBraveWallet";
-  EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
-                  .error.find("Cannot read properties of undefined") !=
-              std::string::npos);
+  constexpr char kEvalIsBraveWallet[] = "window.solana.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(web_contents(browser())->GetPrimaryMainFrame(),
+                              kEvalIsBraveWallet)
+                  .ExtractBool());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 

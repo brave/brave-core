@@ -6,11 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_UTIL_H_
 
+#include <cstddef>
+
 namespace brave_ads {
 
 bool ShouldRefillConfirmationTokens();
 
-int CalculateAmountOfConfirmationTokensToRefill();
+size_t CalculateAmountOfConfirmationTokensToRefill();
 
 }  // namespace brave_ads
 

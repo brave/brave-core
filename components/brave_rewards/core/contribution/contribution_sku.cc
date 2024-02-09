@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
@@ -21,39 +22,6 @@ using std::placeholders::_2;
 namespace brave_rewards::internal {
 
 namespace {
-
-const char kACSKUDev[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGINiB9dUmpqLyeSEdZ23E4dPXwI"
-    "BOUNJCFN9d5toIME2M";  // NOLINT
-const char kACSKUStaging[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGIOH4Li+"
-    "rduCtFOfV8Lfa2o8h4SQjN5CuIwxmeQFjOk4W";  // NOLINT
-const char kACSKUProduction[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGIOaNAUCBMKm0IaLqxefhvxOtAK"
-    "B0OfoiPn0NPVfI602J";  // NOLINT
-
-std::string GetACSKU() {
-  if (_environment == mojom::Environment::PRODUCTION) {
-    return kACSKUProduction;
-  }
-
-  if (_environment == mojom::Environment::STAGING) {
-    return kACSKUStaging;
-  }
-
-  if (_environment == mojom::Environment::DEVELOPMENT) {
-    return kACSKUDev;
-  }
-
-  NOTREACHED();
-  return kACSKUDev;
-}
 
 void GetCredentialTrigger(mojom::SKUOrderPtr order,
                           credential::CredentialsTrigger* trigger) {
@@ -86,7 +54,7 @@ void ContributionSKU::AutoContribution(const std::string& contribution_id,
                                        const std::string& wallet_type,
                                        LegacyResultCallback callback) {
   mojom::SKUOrderItem item;
-  item.sku = GetACSKU();
+  item.sku = engine_->Get<EnvironmentConfig>().auto_contribute_sku();
 
   Start(contribution_id, item, wallet_type, callback);
 }
@@ -107,7 +75,7 @@ void ContributionSKU::GetContributionInfo(
     const std::string& wallet_type,
     LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution not found");
+    engine_->LogError(FROM_HERE) << "Contribution not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -137,7 +105,7 @@ void ContributionSKU::GetOrder(mojom::Result result,
                                const std::string& contribution_id,
                                LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "SKU was not processed");
+    engine_->LogError(FROM_HERE) << "SKU was not processed";
     callback(result);
     return;
   }
@@ -151,7 +119,7 @@ void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
                                  const std::string& contribution_id,
                                  LegacyResultCallback callback) {
   if (!order) {
-    BLOG(0, "Order was not found");
+    engine_->LogError(FROM_HERE) << "Order was not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -171,7 +139,7 @@ void ContributionSKU::Completed(mojom::Result result,
                                 mojom::RewardsType type,
                                 LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order not completed");
+    engine_->LogError(FROM_HERE) << "Order not completed";
     callback(result);
     return;
   }
@@ -187,7 +155,7 @@ void ContributionSKU::CredsStepSaved(mojom::Result result,
                                      const std::string& contribution_id,
                                      LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Creds step not saved");
+    engine_->LogError(FROM_HERE) << "Creds step not saved";
     callback(result);
     return;
   }
@@ -210,7 +178,7 @@ void ContributionSKU::GetUnblindedTokens(
     const mojom::SKUTransaction& transaction,
     LegacyResultCallback callback) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
+    engine_->LogError(FROM_HERE) << "List is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -227,7 +195,7 @@ void ContributionSKU::GetUnblindedTokens(
   }
 
   if (current_amount < transaction.amount) {
-    BLOG(0, "Not enough funds");
+    engine_->LogError(FROM_HERE) << "Not enough funds";
     callback(mojom::Result::NOT_ENOUGH_FUNDS);
     return;
   }
@@ -249,7 +217,7 @@ void ContributionSKU::GetOrderMerchant(
     const credential::CredentialsRedeem& redeem,
     LegacyResultCallback callback) {
   if (!order) {
-    BLOG(0, "Order was not found");
+    engine_->LogError(FROM_HERE) << "Order was not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -266,7 +234,7 @@ void ContributionSKU::GetOrderMerchant(
 void ContributionSKU::OnRedeemTokens(mojom::Result result,
                                      LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Problem redeeming tokens");
+    engine_->LogError(FROM_HERE) << "Problem redeeming tokens";
     callback(result);
     return;
   }
@@ -277,7 +245,7 @@ void ContributionSKU::OnRedeemTokens(mojom::Result result,
 void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,
                             LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution was not found");
+    engine_->LogError(FROM_HERE) << "Contribution was not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -297,7 +265,7 @@ void ContributionSKU::OnOrder(
     LegacyResultCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -324,7 +292,7 @@ void ContributionSKU::OnOrder(
     case mojom::ContributionStep::STEP_FAILED:
     case mojom::ContributionStep::STEP_COMPLETED:
     case mojom::ContributionStep::STEP_NO: {
-      BLOG(0, "Step not correct " << contribution->step);
+      engine_->LogError(FROM_HERE) << "Step not correct " << contribution->step;
       NOTREACHED();
       return;
     }
@@ -335,7 +303,7 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
                                      mojom::SKUOrderPtr order,
                                      LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -355,7 +323,7 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
   }
 
   if (wallet_type.empty()) {
-    BLOG(0, "Invalid processor for SKU contribution");
+    engine_->LogError(FROM_HERE) << "Invalid processor for SKU contribution";
     callback(mojom::Result::FAILED);
     return;
   }

@@ -1,12 +1,12 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 9e481132f8f7dcb7be0c10821ac9a0dbec595010..592b0aff58ccb5c4ae126a1c0f00561be0908810 100644
+index 6705999966004e8a8334c7941924f354eb864986..27660587aabcb974dbace6988a0d6d57fe0d29d2 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
-@@ -39,6 +39,7 @@ config("compiler") {
-     # http://crbug.com/448386
-     "-Wl,--exclude-libs=libvpx_assembly_arm.a",
+@@ -50,6 +50,7 @@ config("compiler") {
+     # segments to be mapped adjacently, which breakpad relies on.
+     "-Wl,-z,max-page-size=$_max_page_size",
    ]
 +  ldflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
  
    if (current_cpu == "arm64") {
-     # Reduce the page size from 65536 in order to reduce binary size slightly
+     if (arm_control_flow_integrity == "standard") {

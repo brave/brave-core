@@ -14,6 +14,7 @@ const char kWalletUnBlinded[] = "blinded";
 const char kWalletBitflyer[] = "bitflyer";
 const char kWalletGemini[] = "gemini";
 const char kWalletZebPay[] = "zebpay";
+const char kWalletSolana[] = "solana";
 
 }  // namespace constant
 }  // namespace brave_rewards::internal

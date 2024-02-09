@@ -15,7 +15,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
     android:layout_height="match_parent"
     android:background="@color/brave_private_tabs_bg_color">
 
-    <org.chromium.components.browser_ui.widget.listmenu.ListMenuButton
+    <org.chromium.ui.listmenu.ListMenuButton
         android:id="@+id/incognito_reauth_menu_button"
         android:layout_marginTop="24dp"
         android:background="@null"

@@ -423,6 +423,17 @@
     Earnings so far
   </message>
 
+  <!-- Self-custody invitation -->
+  <message name="IDS_REWARDS_NOT_NOW" desc="">
+    Not now
+  </message>
+  <message name="IDS_REWARDS_SELF_CUSTODY_INVITE_HEADER" desc="">
+    Receive BAT directly to a self-custody crypto address
+  </message>
+  <message name="IDS_REWARDS_SELF_CUSTODY_INVITE_TEXT" desc="">
+    We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.
+  </message>
+
   <!-- Tip panel -->
   <message name="IDS_REWARDS_TIP_BALANCE_LABEL" desc="">
     Rewards balance
@@ -525,6 +536,21 @@
   </message>
   <message name="IDS_REWARDS_TIP_DEFAULT_CREATOR_DESCRIPTION" desc="">
     Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_TITLE" desc="">
+    Support your favorite creators
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_HEADER" desc="">
+    Show your love and send a token of your gratitude
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_TEXT" desc="">
+    Use your Web3 wallet to send a one time contribution to this creator and show them your appreciation
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_SEND_BUTTON_LABEL" desc="">
+    Send with Web3 wallet
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_NO_WEB3_LABEL" desc="">
+    It looks like this creator isn't set up to receive contributions via Web3 wallets yet.
   </message>
 
 </grit-part>

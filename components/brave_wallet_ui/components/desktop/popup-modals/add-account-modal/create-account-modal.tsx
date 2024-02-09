@@ -123,7 +123,7 @@ export const CreateAccountModal = () => {
       undefined
 
     return keyringIdForNewAccount(selectedAccountType.coin, network)
-  }, [selectedAccountType, filecoinNetwork, bitcoinNetwork])
+  }, [selectedAccountType, filecoinNetwork, bitcoinNetwork, zcashNetwork])
 
   // methods
   const onClickClose = React.useCallback(() => {

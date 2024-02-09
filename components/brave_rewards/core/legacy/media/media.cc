@@ -75,7 +75,7 @@ void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
   }
 
   if (url.empty()) {
-    BLOG(0, "Media activity error");
+    engine_->LogError(FROM_HERE) << "Media activity error";
     return;
   }
 

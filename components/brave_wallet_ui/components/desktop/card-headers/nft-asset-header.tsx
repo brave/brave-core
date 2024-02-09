@@ -19,7 +19,7 @@ import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
-  CircleButton,
+  MenuButton,
   HeaderTitle,
   ButtonIcon,
   SendButton
@@ -54,7 +54,7 @@ export const NftAssetHeader = ({
         justifyContent='flex-start'
         margin='0px 6px 0px 0px'
       >
-        <CircleButton
+        <MenuButton
           size={28}
           marginRight={16}
           onClick={onBack}
@@ -63,7 +63,7 @@ export const NftAssetHeader = ({
             size={16}
             name='arrow-left'
           />
-        </CircleButton>
+        </MenuButton>
         <HeaderTitle isPanel={isPanel}>
           {assetName}&nbsp;{tokenId ? `#${new Amount(tokenId).toNumber()}` : ''}
         </HeaderTitle>

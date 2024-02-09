@@ -8,8 +8,9 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -22,10 +23,10 @@ PostCredentials::PostCredentials(RewardsEngineImpl& engine) : engine_(engine) {}
 PostCredentials::~PostCredentials() = default;
 
 std::string PostCredentials::GetUrl(const std::string& order_id) {
-  const std::string path =
-      base::StringPrintf("/v1/orders/%s/credentials", order_id.c_str());
-
-  return GetServerUrl(path);
+  auto url = URLHelpers::Resolve(
+      engine_->Get<EnvironmentConfig>().rewards_payment_url(),
+      {"/v1/orders/", order_id, "/credentials"});
+  return url.spec();
 }
 
 std::string PostCredentials::GeneratePayload(
@@ -45,22 +46,22 @@ std::string PostCredentials::GeneratePayload(
 
 mojom::Result PostCredentials::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
-    BLOG(0, "Credentials already exist for this order");
+    engine_->LogError(FROM_HERE) << "Credentials already exist for this order";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
+    engine_->LogError(FROM_HERE) << "Internal server error";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -80,13 +81,15 @@ void PostCredentials::Request(const std::string& order_id,
   request->content = GeneratePayload(item_id, type, std::move(blinded_creds));
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void PostCredentials::OnRequest(PostCredentialsCallback callback,
                                 mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 

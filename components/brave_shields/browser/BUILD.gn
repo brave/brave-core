@@ -8,6 +8,8 @@ if (!is_ios) {
     sources = [
       "ad_block_component_filters_provider.cc",
       "ad_block_component_filters_provider.h",
+      "ad_block_component_service_manager.cc",
+      "ad_block_component_service_manager.h",
       "ad_block_custom_filters_provider.cc",
       "ad_block_custom_filters_provider.h",
       "ad_block_default_resource_provider.cc",
@@ -24,8 +26,6 @@ if (!is_ios) {
       "ad_block_localhost_filters_provider.h",
       "ad_block_pref_service.cc",
       "ad_block_pref_service.h",
-      "ad_block_regional_service_manager.cc",
-      "ad_block_regional_service_manager.h",
       "ad_block_resource_provider.cc",
       "ad_block_resource_provider.h",
       "ad_block_service.cc",
@@ -75,7 +75,7 @@ if (!is_ios) {
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/constants",
       "//brave/components/content_settings/core/common",
-      "//brave/components/debounce/common",
+      "//brave/components/debounce/core/common",
       "//brave/components/ephemeral_storage",
       "//brave/components/https_upgrade_exceptions/browser",
       "//brave/components/l10n/common",
@@ -121,4 +121,22 @@ source_set("component_installer") {
     "//components/component_updater:component_updater",
     "//crypto",
   ]
+}
+
+if (!is_ios) {
+  source_set("test_support") {
+    testonly = true
+    sources = [
+      "engine_test_observer.cc",
+      "engine_test_observer.h",
+      "test_filters_provider.cc",
+      "test_filters_provider.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/components/brave_component_updater/browser",
+      "//brave/components/brave_shields/browser:browser",
+    ]
+  }
 }

@@ -30,7 +30,7 @@ void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
                                   const std::string& wallet_type,
                                   SKUOrderCallback callback) {
   if (!order) {
-    BLOG(0, "Order not found");
+    engine_->LogError(FROM_HERE) << "Order not found";
     callback(mojom::Result::FAILED, "");
     return;
   }
@@ -45,7 +45,7 @@ void SKUCommon::OnTransactionCompleted(const mojom::Result result,
                                        const std::string& order_id,
                                        SKUOrderCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order status was not updated");
+    engine_->LogError(FROM_HERE) << "Order status was not updated";
     callback(result, "");
     return;
   }
@@ -56,7 +56,7 @@ void SKUCommon::OnTransactionCompleted(const mojom::Result result,
 void SKUCommon::SendExternalTransaction(const std::string& order_id,
                                         SKUOrderCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
+    engine_->LogError(FROM_HERE) << "Order id is empty";
     callback(mojom::Result::FAILED, "");
     return;
   }
@@ -73,9 +73,9 @@ void SKUCommon::GetSKUTransactionByOrderId(
     SKUOrderCallback callback) {
   const auto transaction = std::move(result).value_or(nullptr);
   if (!transaction) {
-    BLOG(0,
-         "Failed to get SKU transaction from database, or there's no "
-         "transaction with this order_id!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to get SKU transaction from database, or there's no "
+           "transaction with this order_id";
     return callback(mojom::Result::FAILED, "");
   }
 

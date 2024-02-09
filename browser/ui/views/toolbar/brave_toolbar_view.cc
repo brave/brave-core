@@ -31,6 +31,7 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
 #include "ui/views/window/hit_test_utils.h"
@@ -412,3 +413,6 @@ void BraveToolbarView::ResetButtonBounds() {
     bookmark_->SetX(bookmark_x);
   }
 }
+
+BEGIN_METADATA(BraveToolbarView)
+END_METADATA

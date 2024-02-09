@@ -54,30 +54,24 @@ class TxManager : public TxStateManager::Observer,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback) = 0;
-  virtual void ApproveTransaction(const std::string& chain_id,
-                                  const std::string& tx_meta_id,
+  virtual void ApproveTransaction(const std::string& tx_meta_id,
                                   ApproveTransactionCallback) = 0;
-  virtual void RejectTransaction(const std::string& chain_id,
-                                 const std::string& tx_meta_id,
+  virtual void RejectTransaction(const std::string& tx_meta_id,
                                  RejectTransactionCallback);
-  virtual void GetTransactionInfo(const std::string& chain_id,
-                                  const std::string& tx_meta_id,
+  virtual void GetTransactionInfo(const std::string& tx_meta_id,
                                   GetTransactionInfoCallback);
   std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo(
       const std::optional<std::string>& chain_id,
       const std::optional<mojom::AccountIdPtr>& from);
 
   virtual void SpeedupOrCancelTransaction(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) = 0;
-  virtual void RetryTransaction(const std::string& chain_id,
-                                const std::string& tx_meta_id,
+  virtual void RetryTransaction(const std::string& tx_meta_id,
                                 RetryTransactionCallback callback) = 0;
 
   virtual void GetTransactionMessageToSign(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) = 0;
 

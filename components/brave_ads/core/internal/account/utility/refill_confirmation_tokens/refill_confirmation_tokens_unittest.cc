@@ -68,7 +68,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillConfirmationTokens) {
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(50, ConfirmationTokenCount());
+  EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
@@ -101,7 +101,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
                   /*captcha_id=*/"daf85dc8-164e-4eb9-a4d4-1836055004b3"));
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(0, ConfirmationTokenCount());
+  EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest, IssuersPublicKeyMismatch) {
@@ -162,7 +162,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   refill_confirmation_tokens_->MaybeRefill(wallet);
   FastForwardClockToNextPendingTask();
 
-  EXPECT_EQ(50, ConfirmationTokenCount());
+  EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest, RequestSignedTokensMissingNonce) {
@@ -185,7 +185,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RequestSignedTokensMissingNonce) {
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(0, ConfirmationTokenCount());
+  EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
@@ -217,7 +217,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   refill_confirmation_tokens_->MaybeRefill(wallet);
   FastForwardClockToNextPendingTask();
 
-  EXPECT_EQ(50, ConfirmationTokenCount());
+  EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensInvalidResponse) {
@@ -242,7 +242,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensInvalidResponse) {
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(0, ConfirmationTokenCount());
+  EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensMissingPublicKey) {
@@ -322,7 +322,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensMissingPublicKey) {
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(0, ConfirmationTokenCount());
+  EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
@@ -402,7 +402,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(0, ConfirmationTokenCount());
+  EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
@@ -432,7 +432,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(0, ConfirmationTokenCount());
+  EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest, GetInvalidSignedTokens) {
@@ -514,7 +514,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetInvalidSignedTokens) {
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(0, ConfirmationTokenCount());
+  EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
@@ -533,7 +533,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(50, ConfirmationTokenCount());
+  EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
@@ -597,7 +597,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  EXPECT_EQ(50, ConfirmationTokenCount());
+  EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
 }  // namespace brave_ads

@@ -11,7 +11,7 @@
 namespace content_settings {
 
 void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
-    int32_t render_frame_id,
+    const blink::LocalFrameToken& frame_token,
     const url::Origin& origin,
     const net::SiteForCookies& site_for_cookies,
     const url::Origin& top_frame_origin,

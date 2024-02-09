@@ -72,7 +72,7 @@ std::optional<std::string> MaybeParseVerifiableConversionId(
     return MaybeParseDefaultVerifiableConversionId(html);
   }
 
-  if (std::optional<std::string> verifiable_conversion_id =
+  if (const std::optional<std::string> verifiable_conversion_id =
           MaybeParseResourceIdPatternSearchInTypeVerifiableConversionId(
               redirect_chain, html, *resource_id_pattern)) {
     return verifiable_conversion_id;

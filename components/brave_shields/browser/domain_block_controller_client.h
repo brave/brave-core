@@ -57,7 +57,7 @@ class DomainBlockControllerClient
 
  private:
   void ReloadPage();
-  void OnCanEnable1PESForUrl(bool can_enable_1pes);
+  void On1PESState(bool can_enable_1pes);
 
   const GURL request_url_;
   raw_ptr<AdBlockCustomFiltersProvider> ad_block_custom_filters_provider_ =

@@ -25,12 +25,17 @@ inline constexpr char kEnabledHistogramName[] = "Brave.AIChat.Enabled.2";
 inline constexpr char kUsageDailyHistogramName[] = "Brave.AIChat.UsageDaily.2";
 inline constexpr char kUsageMonthlyHistogramName[] =
     "Brave.AIChat.UsageMonthly";
+inline constexpr char kUsageWeeklyHistogramName[] = "Brave.AIChat.UsageWeekly";
 inline constexpr char kOmniboxWeekCompareHistogramName[] =
     "Brave.AIChat.OmniboxWeekCompare";
 inline constexpr char kOmniboxOpensHistogramName[] =
     "Brave.AIChat.OmniboxOpens";
 inline constexpr char kAcquisitionSourceHistogramName[] =
     "Brave.AIChat.AcquisitionSource";
+inline constexpr char kNewUserReturningHistogramName[] =
+    "Brave.AIChat.NewUserReturning";
+inline constexpr char kLastUsageTimeHistogramName[] =
+    "Brave.AIChat.LastUsageTime";
 
 enum class AcquisitionSource {
   kOmnibox = 0,
@@ -52,6 +57,7 @@ class AIChatMetrics {
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void RecordEnabled(
+      bool is_enabled,
       bool is_new_user,
       RetrievePremiumStatusCallback retrieve_premium_status_callback);
   void RecordReset();
@@ -70,6 +76,7 @@ class AIChatMetrics {
 
  private:
   void ReportAllMetrics();
+  void ReportFeatureUsageMetrics();
   void ReportChatCounts();
   void ReportOmniboxCounts();
 

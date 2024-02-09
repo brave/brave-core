@@ -134,8 +134,6 @@ export function refreshVisibleTokenInfo(
     const networkList = await getVisibleNetworksList(api)
 
     async function inner(network: BraveWallet.NetworkInfo) {
-      const nativeAsset = makeNetworkAsset(network)
-
       // Get a list of user tokens for each coinType and network.
       const getTokenList = await braveWalletService.getUserAssets(
         network.chainId,
@@ -147,7 +145,16 @@ export function refreshVisibleTokenInfo(
         ...token,
         logo: `chrome://erc-token-images/${token.logo}`
       })) as BraveWallet.BlockchainToken[]
-      return tokenList.length === 0 ? [nativeAsset] : tokenList
+
+      if (tokenList.length === 0) {
+        // user has hidden all tokens for the network
+        // we should still include the native asset, but as hidden
+        const nativeAsset = makeNetworkAsset(network)
+        nativeAsset.visible = false
+        return [nativeAsset]
+      }
+
+      return tokenList
     }
 
     const visibleAssets = targetNetwork

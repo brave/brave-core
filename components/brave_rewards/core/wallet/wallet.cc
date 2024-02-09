@@ -53,7 +53,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
 
   std::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Parsing of brave wallet failed");
+    engine_->LogError(FROM_HERE) << "Parsing of brave wallet failed";
     *corrupted = true;
     return nullptr;
   }
@@ -75,7 +75,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   }
   std::string decoded_seed;
   if (!base::Base64Decode(*seed, &decoded_seed)) {
-    BLOG(0, "Problem decoding recovery seed");
+    engine_->LogError(FROM_HERE) << "Problem decoding recovery seed";
     *corrupted = true;
     return nullptr;
   }
@@ -94,7 +94,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet() {
 
 bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return false;
   }
 

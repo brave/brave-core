@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index 4faabff80d9f0e7822f74841ebd0b980283ba3c9..e4d03901d615de52ecfbe935ccf10c1152694b78 100644
+index 877d78dfb777ecdbf1d944a89f96eeff830d5cfb..c25e380ce7ce733f30882db1e635e293030d6b3f 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
-@@ -65,6 +65,7 @@ build_webui("build") {
+@@ -66,6 +66,7 @@ build_webui("build") {
        web_component_files +=
            [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ]
      }

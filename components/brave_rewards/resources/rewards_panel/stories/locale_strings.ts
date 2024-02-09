@@ -81,6 +81,9 @@ export const localeStrings = {
   notificationPublisherVerifiedText: 'Creator $1 recently verified.',
 
   rewardsConnectAccount: 'Connect account',
+  rewardsNotNow: 'Not now',
+  rewardsSelfCustodyInviteHeader: 'Receive BAT directly to a self-custody crypto address',
+  rewardsSelfCustodyInviteText: 'We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.',
   rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
   rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
   rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',

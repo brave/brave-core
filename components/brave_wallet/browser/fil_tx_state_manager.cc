@@ -6,15 +6,11 @@
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
 #include <optional>
-#include <utility>
 
-#include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
-#include "brave/components/brave_wallet/common/fil_address.h"
 
 namespace brave_wallet {
 
@@ -26,21 +22,9 @@ FilTxStateManager::FilTxStateManager(
 
 FilTxStateManager::~FilTxStateManager() = default;
 
-std::unique_ptr<FilTxMeta> FilTxStateManager::GetFilTx(
-    const std::string& chain_id,
-    const std::string& id) {
+std::unique_ptr<FilTxMeta> FilTxStateManager::GetFilTx(const std::string& id) {
   return std::unique_ptr<FilTxMeta>{
-      static_cast<FilTxMeta*>(TxStateManager::GetTx(chain_id, id).release())};
-}
-
-std::string FilTxStateManager::GetTxPrefPathPrefix(
-    const std::optional<std::string>& chain_id) {
-  if (chain_id.has_value()) {
-    return base::StrCat(
-        {kFilecoinPrefKey, ".",
-         GetNetworkId(prefs_, mojom::CoinType::FIL, *chain_id)});
-  }
-  return kFilecoinPrefKey;
+      static_cast<FilTxMeta*>(TxStateManager::GetTx(id).release())};
 }
 
 mojom::CoinType FilTxStateManager::GetCoinType() const {

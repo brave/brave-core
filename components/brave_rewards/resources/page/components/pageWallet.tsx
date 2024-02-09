@@ -17,8 +17,9 @@ import { LayoutKind } from '../lib/layout_context'
 import {
   ExternalWallet,
   ExternalWalletProvider,
-  lookupExternalWalletProviderName,
-  isExternalWalletProviderAllowed
+  externalWalletProviderFromString,
+  isExternalWalletProviderAllowed,
+  isSelfCustodyProvider
 } from '../../shared/lib/external_wallet'
 
 import { Provider } from '../../ui/components/profile'
@@ -174,14 +175,7 @@ class PageWallet extends React.Component<Props, State> {
     if (!externalWallet) {
       return null
     }
-
-    switch (externalWallet.type) {
-      case 'bitflyer': return 'bitflyer'
-      case 'gemini': return 'gemini'
-      case 'uphold': return 'uphold'
-      case 'zebpay': return 'zebpay'
-      default: return null
-    }
+    return externalWalletProviderFromString(externalWallet.type)
   }
 
   goToExternalWallet = () => {
@@ -474,11 +468,17 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   generateExternalWalletProviderList = (walletProviders: string[]) => {
-    return walletProviders.map((type) => ({
-      type,
-      name: lookupExternalWalletProviderName(type),
-      enabled: this.isWalletProviderEnabled(type)
-    }))
+    const list: Array<{ provider: ExternalWalletProvider, enabled: boolean}> = []
+    for (const type of walletProviders) {
+      const provider = externalWalletProviderFromString(type)
+      if (provider) {
+        list.push({
+          provider,
+          enabled: this.isWalletProviderEnabled(type)
+        })
+      }
+    }
+    return list
   }
 
   onExternalWalletAction = (action: ExternalWalletAction) => {
@@ -507,10 +507,14 @@ class PageWallet extends React.Component<Props, State> {
     } = this.props.rewardsData
     const { modalReset, modalConnect } = ui
 
-    let externalWalletInfo: ExternalWallet | null = null
     const walletStatus = this.getExternalWalletStatus()
     const walletProvider = this.getExternalWalletProvider()
+
+    let selfCustody = false
+    let externalWalletInfo: ExternalWallet | null = null
+
     if (externalWallet && walletStatus && walletProvider) {
+      selfCustody = isSelfCustodyProvider(walletProvider)
       externalWalletInfo = {
         provider: walletProvider,
         status: walletStatus,
@@ -525,6 +529,10 @@ class PageWallet extends React.Component<Props, State> {
       oneTimeTips: balanceReport && balanceReport.tips || 0,
       monthlyTips: balanceReport && balanceReport.monthly || 0
     }
+
+    const onViewStatement = this.props.layout === 'wide' && !selfCustody
+      ? this.onModalActivityToggle
+      : undefined
 
     return (
       <>
@@ -546,7 +554,7 @@ class PageWallet extends React.Component<Props, State> {
               summaryData={summaryData}
               autoContributeEnabled={enabledContribute}
               onExternalWalletAction={this.onExternalWalletAction}
-              onViewStatement={this.props.layout === 'wide' ? this.onModalActivityToggle : undefined}
+              onViewStatement={onViewStatement}
             />
         }
         {
@@ -562,6 +570,7 @@ class PageWallet extends React.Component<Props, State> {
             ? <ConnectWalletModal
                 currentCountryCode={this.props.rewardsData.currentCountryCode}
                 providers={this.generateExternalWalletProviderList(externalWalletProviderList)}
+                connectState={this.props.rewardsData.ui.modalConnectState}
                 onContinue={this.onConnectWalletContinue}
                 onClose={this.toggleVerifyModal}
             />

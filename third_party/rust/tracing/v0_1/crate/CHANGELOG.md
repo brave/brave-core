@@ -1,3 +1,138 @@
+# 0.1.40
+
+This release fixes a potential stack use-after-free in the
+`Instrument::into_inner` method. Only uses of this method are affected by this
+bug.
+
+### Fixed
+
+- Use `mem::ManuallyDrop` instead of `mem::forget` in `Instrument::into_inner`
+  ([#2765])
+
+[#2765]: https://github.com/tokio-rs/tracing/pull/2765
+
+Thanks to @cramertj and @manishearth for finding and fixing this issue!
+
+# 0.1.39 (October 12, 2023)
+
+This release adds several additional features to the `tracing` macros. In
+addition, it updates the `tracing-core` dependency to [v0.1.32][core-0.1.32] and
+the `tracing-attributes` dependency to [v0.1.27][attrs-0.1.27].
+
+### Added
+
+- Allow constant field names in macros ([#2617])
+- Allow setting event names in macros ([#2699])
+- **core**: Allow `ValueSet`s of any length ([#2508])
+
+### Changed
+
+- `tracing-attributes`: updated to [0.1.27][attrs-0.1.27]
+- `tracing-core`: updated to [0.1.32][core-0.1.32]
+- **attributes**: Bump minimum version of proc-macro2 to 1.0.60 ([#2732])
+-  **attributes**: Generate less dead code for async block return type hint ([#2709])
+
+### Fixed
+
+- Use fully qualified names in macros for items exported from std prelude
+  ([#2621], [#2757])
+- **attributes**: Allow [`clippy::let_with_type_underscore`] in macro-generated
+  code ([#2609])
+- **attributes**: Allow `unknown_lints` in macro-generated code ([#2626])
+- **attributes**: Fix a compilation error in `#[instrument]` when the `"log"`
+  feature is enabled ([#2599])
+
+### Documented
+
+- Add `axum-insights` to relevant crates. ([#2713])
+- Fix link to RAI pattern crate documentation ([#2612])
+- Fix docs typos and warnings ([#2581])
+- Add `clippy-tracing` to related crates ([#2628])
+- Add `tracing-cloudwatch` to related crates ([#2667])
+- Fix deadlink to `tracing-etw` repo ([#2602])
+
+[#2617]: https://github.com/tokio-rs/tracing/pull/2617
+[#2699]: https://github.com/tokio-rs/tracing/pull/2699
+[#2508]: https://github.com/tokio-rs/tracing/pull/2508
+[#2621]: https://github.com/tokio-rs/tracing/pull/2621
+[#2713]: https://github.com/tokio-rs/tracing/pull/2713
+[#2581]: https://github.com/tokio-rs/tracing/pull/2581
+[#2628]: https://github.com/tokio-rs/tracing/pull/2628
+[#2667]: https://github.com/tokio-rs/tracing/pull/2667
+[#2602]: https://github.com/tokio-rs/tracing/pull/2602
+[#2626]: https://github.com/tokio-rs/tracing/pull/2626
+[#2757]: https://github.com/tokio-rs/tracing/pull/2757
+[#2732]: https://github.com/tokio-rs/tracing/pull/2732
+[#2709]: https://github.com/tokio-rs/tracing/pull/2709
+[#2599]: https://github.com/tokio-rs/tracing/pull/2599
+[`let_with_type_underscore`]: http://rust-lang.github.io/rust-clippy/rust-1.70.0/index.html#let_with_type_underscore
+[attrs-0.1.27]:
+    https://github.com/tokio-rs/tracing/releases/tag/tracing-attributes-0.1.27
+[core-0.1.32]:
+    https://github.com/tokio-rs/tracing/releases/tag/tracing-core-0.1.32
+
+# 0.1.38 (April 25th, 2023)
+
+This `tracing` release changes the `Drop` implementation for `Instrumented`
+`Future`s so that the attached `Span` is entered when dropping the `Future`. This
+means that events emitted by the `Future`'s `Drop` implementation will now be
+recorded within its `Span`. It also adds `#[inline]` hints to methods called in
+the `event!` macro's expansion, for an improvement in both binary size and
+performance.
+
+Additionally, this release updates the `tracing-attributes` dependency to
+[v0.1.24][attrs-0.1.24], which updates the [`syn`] dependency to v2.x.x.
+`tracing-attributes` v0.1.24 also includes improvements to the `#[instrument]`
+macro; see [the `tracing-attributes` 0.1.24 release notes][attrs-0.1.24] for
+details.
+
+### Added
+
+- `Instrumented` futures will now enter the attached `Span` in their `Drop`
+  implementation, allowing events emitted when dropping the future to occur
+  within the span ([#2562])
+- `#[inline]` attributes for methods called by the `event!` macros, making
+  generated code smaller ([#2555])
+- **attributes**: `level` argument to `#[instrument(err)]` and
+  `#[instrument(ret)]` to override the level of
+  the generated return value event ([#2335])
+- **attributes**: Improved compiler error message when `#[instrument]` is added to a `const fn`
+  ([#2418])
+
+### Changed
+
+- `tracing-attributes`: updated to [0.1.24][attrs-0.1.24]
+- Removed unneeded `cfg-if` dependency ([#2553])
+- **attributes**: Updated [`syn`] dependency to 2.0 ([#2516])
+
+### Fixed
+
+- **attributes**: Fix `clippy::unreachable` warnings in `#[instrument]`-generated code ([#2356])
+- **attributes**: Removed unused "visit" feature flag from `syn` dependency ([#2530])
+
+### Documented
+
+- **attributes**: Documented default level for `#[instrument(err)]` ([#2433])
+- **attributes**: Improved documentation for levels in `#[instrument]` ([#2350])
+
+Thanks to @nitnelave, @jsgf, @Abhicodes-crypto, @LukeMathWalker, @andrewpollack,
+@quad, @klensy, @davidpdrsn, @dbidwell94, @ldm0, @NobodyXu, @ilsv, and @daxpedda
+for contributing to this release!
+
+[`syn`]: https://crates.io/crates/syn
+[attrs-0.1.24]:
+    https://github.com/tokio-rs/tracing/releases/tag/tracing-attributes-0.1.24
+[#2565]: https://github.com/tokio-rs/tracing/pull/2565
+[#2555]: https://github.com/tokio-rs/tracing/pull/2555
+[#2553]: https://github.com/tokio-rs/tracing/pull/2553
+[#2335]: https://github.com/tokio-rs/tracing/pull/2335
+[#2418]: https://github.com/tokio-rs/tracing/pull/2418
+[#2516]: https://github.com/tokio-rs/tracing/pull/2516
+[#2356]: https://github.com/tokio-rs/tracing/pull/2356
+[#2530]: https://github.com/tokio-rs/tracing/pull/2530
+[#2433]: https://github.com/tokio-rs/tracing/pull/2433
+[#2350]: https://github.com/tokio-rs/tracing/pull/2350
+
 # 0.1.37 (October 6, 2022)
 
 This release of `tracing` incorporates changes from `tracing-core`

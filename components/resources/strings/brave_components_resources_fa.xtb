@@ -226,8 +226,6 @@
 <translation id="4045581694057451126">۸ ثانیه</translation>
 <translation id="8610523985422563960">۱ دقیقه</translation>
 <translation id="2807328214759298515">حداکثر تا</translation>
-<translation id="7483857210736407752">نمایش دکمه «انعام» در سایت‌ها</translation>
-<translation id="8404935570206006581">انعام با Brave</translation>
 <translation id="3082557070674409251">کلیک شده</translation>
 <translation id="7119308337584989771">نادیده گرفته شده</translation>
 <translation id="6805660603861526473">مشاهده شده</translation>
@@ -485,9 +483,9 @@
 <translation id="4047002754575891955">ادامه دادن با مراجعه برون زنجیره‌ای</translation>
 <translation id="531747189990625622">سرویس نام سولانا</translation>
 <translation id="1090584614351290462">پشتیبانی از «سرویس نام سولانا» (SNS) در Brave فعال شود؟</translation>
-<translation id="3664848774480475984">Barve از Syndica برای حل نام‌های دامنه ‎.sol‏ استفاده می‌کند. Brave آدرس IP شما را آشکار نخواهد کرد. اگر این قابلیت را فعال کنید، Syndica دامنه ‎.sol را که می‌خواهید از آن بازدید کنید می‌بیند، اما نمی‌تواند دامنه‌های دیگر را ببیند. به <ph name="BEGIN_SYNDICA_TOU_LINK"/>شرایط استفاده<ph name="END_SYNDICA_TOU_LINK"/> و <ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>خط مشی حریم خصوصی<ph name="END_SYNDICA_PRIVACY_LINK"/>Syndica مراجعه کنید.</translation>
+<translation id="1026480261052976838">Brave از یک شخص ثالث برای حل مشکل نام‌های دامنه .sol استفاده می‌کند. Brave آدرس IP شما را پنهان می‌کند. اگر این را فعال کنید، شخص ثالث می‌بیند که شخصی در تلاش است از این دامنه‌های .sol بازدید کند اما هیچ‌ چیز دیگری نمی‌بیند. برای کسب اطلاعات بیشتر در مورد اینکه ما از کدام شخص‌های ثالث استفاده می‌کنیم و سیاست‌های حفظ حریم خصوصی آن‌ها را بدانید، لطفاً به صفحه راهنمای<ph name="BEGIN_SNS_WIKI_LINK"/>ما<ph name="END_SNS_WIKI_LINK"/>مراجعه کنید.</translation>
 <translation id="7378412287463452336">ادامه با استفاده از سرور Infura</translation>
-<translation id="2824725477135051831">به استفاده از سرور Syndica ادامه دهید</translation>
+<translation id="4388873516324656141">با استفاده از یک سرور SNS ادامه دهید</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="59174027418879706">فعال شد</translation>
 <translation id="2468755552460246661">دامنه مسدود شد</translation>
@@ -653,11 +651,11 @@
 <translation id="39734939514946950">مقدار پاداش شما</translation>
 <translation id="717952606991220586">متأسفیم، مشکلی پیش آمد. لطفاً بعداً دوباره امتحان کنید.</translation>
 <translation id="7210234701206674260">«پاداش‌های Brave» با مشکل روبرو است. لطفاً بعداً دوباره امتحان کنید.</translation>
-<translation id="579702532610384533">اتصال مجدد</translation>
 <translation id="3358400027937159351">شما <ph name="AMOUNT"/> کمک کرده‌اید.</translation>
 <translation id="1619753851206150396">از سیستم خارج شدید</translation>
-<translation id="5142174225142816130">این اتفاق ممکن است برای امن نگه داشتن حساب شما بیفتد. روی قسمت زیر کلیک کنید تا اکنون دوباره متصل شوید.</translation>
+<translation id="3035648636451344428">هر از چند گاهی این اتفاق برای حفظ امنیت حساب شما <ph name="PROVIDER"/> می‌افتد. هنگامی که از سیستم خارج شدید، همچنان به دریافت مبالغ پرداختی ادامه می‌دهید، اما نمی‌توانید موجودی خود را ببینید یا از حساب خود اعانه‌هایی را <ph name="PROVIDER"/> ارسال کنید.</translation>
 <translation id="1677961202754619328">بر اساس Uphold، در حال حاضر محدودیت‌هایی در حساب Uphold شما وجود دارد. لطفاً وارد حساب Uphold خود شوید و وجود اعلان یا الزامات حساب تکمیل‌نشده را بررسی کنید، سپس دوباره امتحان کنید.</translation>
+<translation id="9029009481113741943">دوباره وارد سیستم شوید</translation>
 <translation id="2429828319207652823">مشکلی در پردازش کمکتان وجود داشت.</translation>
 <translation id="6390041270339783491">کمک ماهانه انجام نشد</translation>
 <translation id="7047578174221019462">کمک‌های ماهانه شما پردازش شده است!</translation>
@@ -755,27 +753,11 @@
 <translation id="5486744676117070166">دریافت مقدار فعلی بعدی انجام نشد</translation>
 <translation id="6180576227145734714">«to» داده‌های تراکنش باید هنگام مشخص شدن آدرسی معتبر باشد</translation>
 <translation id="6688162556547723415">کاربر حساب و/یا روش درخواست‌شده را مجاز نکرده است.</translation>
-<translation id="4958950550253325418">برنامه‌های دیفای</translation>
-<translation id="735961408871282410">بازارهای NFT</translation>
-<translation id="7740287852186792672">نتایج جستجو</translation>
-<translation id="5140238928332244937">مرور دیفای بیشتر</translation>
-<translation id="6825869531314999449">مرور NFT بیشتر</translation>
-<translation id="2744185997184360326">ترکیبی</translation>
-<translation id="7587986159645261196">به دنیایی از برنامه‌های مالی باز قدم بگذارید.</translation>
-<translation id="1614407808582616698">MakerDAO</translation>
-<translation id="8723680648033138705">ایجاکننده - استیبل کوین، وام‌ها، و حاکمیت...</translation>
-<translation id="1209155679734532646">Aave</translation>
-<translation id="348141691274391859">پروتکل درآمد سپرده و دارایی‌های قرض.</translation>
-<translation id="5074570831310922792">OpenSea</translation>
-<translation id="8246868867733222286">بزرگترین بازار NFT. خرید، فروش و کشف اقلام دیجیتالی کمیاب</translation>
-<translation id="8375074247703832257">Rarible</translation>
-<translation id="7826627294887983832">ایجاد و فروش آثار هنری دیجیتال</translation>
 <translation id="1383876407941801731">جستجو</translation>
 <translation id="8767749833522980474">مخفی</translation>
 <translation id="944736176598169208">پاداش‌ها</translation>
 <translation id="6122742277607781713">پرتفوی</translation>
 <translation id="7020503656406658141">قیمت‌ها</translation>
-<translation id="2805756323405976993">برنامه‌ها</translation>
 <translation id="3586775666459823714">NFTها</translation>
 <translation id="1987317783729300807">حساب‌ها</translation>
 <translation id="3567988240819868195">بازار</translation>
@@ -817,13 +799,11 @@
 <translation id="8530071505111489657">توکن‌های ناموجود</translation>
 <translation id="615791330696335475">جستجوی توکن بر اساس نام</translation>
 <translation id="5009335307032488349">جستجوی NFT بر اساس نام، شناسه</translation>
-<translation id="6295954645230084874">از خرید برای <ph name="NETWORK"/> پشتیبانی نمی‌شود</translation>
 <translation id="9209024278910716955">خرید برای شبکه انتخابی پشتیبانی نمی‌شود</translation>
 <translation id="4982630604810554641">جستجوی دامنه...</translation>
 <translation id="5467044307473123584">Brave استفاده از درگاه‌های خارج از زنجیره برای حل دامنه‌های ‎.eth را پشتیبانی می‌کند.</translation>
 <translation id="4896417414446851895">به نظر می‌رسد که یک آدرس ENS وارد کرده‌اید. ما برای حل این درخواست به یک حل‌کننده شخص ثالث نیاز داریم که ممکن است به آدرس IP و دامنه شما دسترسی پیدا کند.</translation>
 <translation id="8646078615727397565">از دامنه ENS استفاده کنید</translation>
-<translation id="4171338820961522154">از جابه‌جایی برای <ph name="NETWORK"/> پشتیبانی نمی‌شود</translation>
 <translation id="1191686659164947414">ممکن است تراکنش فرانت ران شده باشد</translation>
 <translation id="632241521608275119">نوسانات قیمت</translation>
 <translation id="4500473291496079954">انقضا در</translation>
@@ -954,7 +934,7 @@
 <translation id="3842236145820483340">شناسه Coingecko</translation>
 <translation id="7642841516562576649">نشانی وب نماد</translation>
 <translation id="2144247757675997850">افزودن دارایی</translation>
-<translation id="2708402071160162126">هشدار: هرگز عبارت بازیابی را با کسی به اشتراک نگذارید. هر کسی با داشتن این عبارت می‌تواند دارایی‌های شما را به‌صورت همیشگی تصاحب کند.</translation>
+<translation id="453788800165937690">هشدار: هرگز کلید خصوصی خود را به اشتراک نگذارید. هرکسی که این کلید خصوصی را داشته باشد، می‌تواند دارایی‌های شما را برای همیشه به دست آورد.</translation>
 <translation id="2416098547200943834">توجه: کلید خصوصی در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه می‌شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">توجه: کلید خصوصی باید در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">گرفتن خروجی</translation>
@@ -1037,7 +1017,6 @@
 <translation id="1426320910664514906">محدوده گاز</translation>
 <translation id="1229774280326250926">مبلغ گاز</translation>
 <translation id="148169246131967347">سقف هزینه گاز</translation>
-<translation id="523862956770478816">مجوزهای سایت</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> حساب متصل شد</translation>
 <translation id="4804818685124855865">قطع اتصال</translation>
 <translation id="4305817255990598646">جابجایی</translation>
@@ -1049,8 +1028,6 @@
 <translation id="8497650996740651467">حساب‌های در دسترس</translation>
 <translation id="5677928146339483299">مسدود است</translation>
 <translation id="3890989020011724401">حساب جدید</translation>
-<translation id="7257603403519636638">مشاهده دارایی‌های حساب</translation>
-<translation id="2092132085082887098">دارایی‌های حساب</translation>
 <translation id="4612979983851181941">از این پنجره برای دسترسی امن به Web3 و تمام دارایی‌های رمزارز خود استفاده کنید.</translation>
 <translation id="4460220693591349571">نوع عملکرد</translation>
 <translation id="838933475572692615">اطلاعات Hex</translation>
@@ -1100,8 +1077,6 @@
 <translation id="8214232307424031138">وارد شد</translation>
 <translation id="5916664084637901428">روشن</translation>
 <translation id="9065572743819293042">تراکنش‌های اخیر</translation>
-<translation id="4235538284468006757">جزئیات تراکنش</translation>
-<translation id="7488671812634887146">سرعت گرفتن</translation>
 <translation id="1702356231547761669">هش تراکنش</translation>
 <translation id="8941851657764077659">حداکثر کارمزد اولویت‌دار</translation>
 <translation id="8047527352810290817">ویرایش گس</translation>
@@ -1384,6 +1359,7 @@
 <translation id="8918368616587206671">قوی!</translation>
 <translation id="574392208103952083">متوسط</translation>
 <translation id="8297006494302853456">ضعیف</translation>
+<translation id="7084181009966710506">ایجاد کیف پول...</translation>
 <translation id="6782556046178425980">قبل از شروع پشتیبان گیری کیف پول</translation>
 <translation id="7119749028647909394">عبارت بازیابی ‎12-24 کلمه‌ای در واقع رمز خصوصی‌ای است که در صورت گم کردن دستگاه(های) متصل، به شما اجازه بازیابی دسترسی به کیف پولتان را می‌دهد. این کد را در جایی ایمن و دقیقاً به ترتیبی که در زیر آورده شده ذخیره کنید.</translation>
 <translation id="3259018319025894691">Brave نمی تواند به عبارت بازیابی مخفی شما دسترسی پیدا کند. آن را ایمن نگه دارید و هرگز آن را با دیگران به اشتراک نگذارید.</translation>
@@ -1447,7 +1423,6 @@
 <translation id="6885009592653876601">بیش از 200 دارایی رمزنگاری را خریداری، ارسال و مبادله کنید</translation>
 <translation id="8716223552348254401">بومی مرورگر، بدون برنامه افزودنی خطرناک</translation>
 <translation id="4559901986238865734">چند زنجیره ای &amp; پشتیبانی NFT</translation>
-<translation id="8280970992918660431">برای ایجاد حساب کاربری نیاز به باز کردن قفل است</translation>
 <translation id="296101411136980896">برای تعویض کلیک کنید</translation>
 <translation id="753655478253155745">دوازدهم</translation>
 <translation id="2679592211386970368">سیزدهم</translation>
@@ -1530,8 +1505,6 @@
 <translation id="2379187373676242615"><ph name="VALUE"/>% ارزان‌تر از CoinGecko</translation>
 <translation id="5351867352310722022">در حدود <ph name="VALUE"/>% CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% گران‌تر از CoinGecko</translation>
-<translation id="6065708195277841442">متصل کردن کیف پول</translation>
-<translation id="4029551149873989025">عوض کردن شبکه</translation>
 <translation id="7561262633951061138">بهترین</translation>
 <translation id="8060029310790625334">مرکز راهنمایی</translation>
 <translation id="3143110700666266545">این برنامه از APIهای شخص ثالث زیر استفاده می‌کند:</translation>
@@ -1601,6 +1574,7 @@
 <translation id="1554316484739382186">خرج‌کننده: <ph name="ADDRESS"/></translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> حساب</translation>
+<translation id="5360752485622434494">توکن توجه اولیه بر<ph name="PROVIDER"/></translation>
 <translation id="429061011725027672">در حال حاضر از <ph name="PROVIDER"/> خارج شده‌اید. لطفاً برای مشاهده موجودی خود وارد شوید.</translation>
 <translation id="4611292653554630842">ورود</translation>
 <translation id="1132794822159463424">مشاهده در <ph name="PROVIDER"/></translation>
@@ -1638,9 +1612,9 @@
 <translation id="7436846601026966360">ممکن است از برخی منابع خوشتان بیاید. پیشنهادها به‌صورت ناشناس هستند و فقط با دستگاه شما مطابقت دارند.</translation>
 <translation id="7950715913905993008">اوه...</translation>
 <translation id="7158100730468448581">اخبار Brave نتوانست محتوا را دریافت کند.</translation>
-<translation id="254100925533869330">محتوایی وجود ندارد</translation>
-<translation id="7172792761509429092">اخبار Brave محتوایی برای نمایش ندارد.</translation>
-<translation id="1771307734839364850">انتخاب منابع محتوا</translation>
+<translation id="2665462122884195298">فید شما خالی است</translation>
+<translation id="8461269982440806387">ناشران و کانال‌ها را دنبال کنید تا آن‌ها را در فید خود ببینید.</translation>
+<translation id="1685574186123115251">منابع محتوا را اضافه کنید</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="6261915643960475695">کسب‌وکار</translation>
 <translation id="8265589281845759879">خودروها</translation>
@@ -1668,16 +1642,27 @@
 <translation id="1297570508541015874">اخبار ایالات متحده</translation>
 <translation id="1459693405370120464">آب‌وهوا</translation>
 <translation id="8366057325711477500">اخبار جهان</translation>
-<translation id="7625025537587898155">افزودن پروفایل جدید</translation>
+<translation id="6709133671862442373">اخبار</translation>
+<translation id="3553513561058684206">برای شما</translation>
+<translation id="2217013723701900638">ناشران</translation>
+<translation id="7751260505918304024">نمایش همه</translation>
+<translation id="5138227688689900538">نمایش موارد کمتر</translation>
+<translation id="1041218419402648959">محتوا را از <ph name="PUBLISHER_NAME"/>پنهان کنید</translation>
+<translation id="3992393738853907417">همچنین ممکن است مایل باشید</translation>
+<translation id="7801706796402209986">این فید، خالی است</translation>
+<translation id="5385187102307010596">به نظر می‌رسد در حال حاضر هیچ مقاله‌ای در این فید وجود ندارد. سعی کنید بعداً دوباره مراجعه کنید یا فید را به‌روزرسانی کنید.</translation>
+<translation id="667570357480376913">به نظر می‌رسد آفلاین هستید</translation>
+<translation id="7587168765698889017">اتصال اینترنت خود را بررسی کنید و آن را به‌روزرسانی کنید</translation>
+<translation id="1164949492823956426">باز کردن مقالات در</translation>
+<translation id="5233638681132016545">برگه جدید</translation>
+<translation id="7948579849190819732">زبانه فعلی</translation>
+<translation id="7056969230130642253">شما همه اطلاعات را کسب کرده‌اید</translation>
+<translation id="7292242212818928219">محتوای جدید در دسترس است. مجدداً بارگیری شود؟</translation>
 <translation id="7481312909269577407">ارسال کردن</translation>
 <translation id="302781076327338683">بارگیری مجدد حافظه پنهان</translation>
 <translation id="7211681214230730336">بارگیری مجدد حافظه پنهان</translation>
-<translation id="4471385409549756595">پنجره خصوصی جدید</translation>
 <translation id="1779766957982586368">بستن پنجره</translation>
-<translation id="5233638681132016545">برگه جدید</translation>
 <translation id="5210365745912300556">بستن برگه</translation>
-<translation id="7998918019931843664">بازکردن مجدد برگه‌های بسته شده</translation>
-<translation id="537986674347911358">نمایش به عنوان زبانه</translation>
 <translation id="2291643155573394834">زبانه بعدی</translation>
 <translation id="7748528009589593815">زبانه قبلی</translation>
 <translation id="3738690686686515962">زبانه 0 را انتخاب کنید</translation>
@@ -1693,33 +1678,14 @@
 <translation id="1137110118182796989">برو به زبانه بعدی</translation>
 <translation id="229140155637338506">برو به زبانه قبلی</translation>
 <translation id="4841735924729216702">منوی پنجره</translation>
-<translation id="1729431344896193035">تغییر وضعیت به تمام صفحه</translation>
 <translation id="3649256019230929621">کوچک کردن پنجره</translation>
 <translation id="906458777597946297">بزرگ کردن پنجره</translation>
 <translation id="2082612610620888017">نمایش همه پنجره‌ها</translation>
-<translation id="9148058034647219655">خروج</translation>
-<translation id="3770620323585347665">پنجره نام</translation>
-<translation id="2154710561487035718">کپی نشانی وب</translation>
-<translation id="2722817840640790566">باز کردن پروفایل میهمان</translation>
-<translation id="8445059357334030806">‏باز کردن در Brave</translation>
 <translation id="1111843722790053332">باز کردن پنجره PWA</translation>
 <translation id="907981618023904259">تنظیمات برنامه وب</translation>
 <translation id="4138336125382947023">اطلاعات برنامه وب</translation>
-<translation id="2743255659506168928">نشانک‌گذاری زبان</translation>
-<translation id="5078638979202084724">نشانک‌گذاری همه زبانه‌ها</translation>
 <translation id="2151038323652296625">URL صفحه را ایمیل کنید</translation>
 <translation id="2456347058080729750">چاپ اولیه</translation>
-<translation id="8715548065732069095">ذخیره صفحه به‌صورت</translation>
-<translation id="7724603315864178912">برش</translation>
-<translation id="3943857333388298514">جاگذاری</translation>
-<translation id="5546865291508181392">یافتن</translation>
-<translation id="8151185429379586178">ابزارهای برنامه‌نویسی</translation>
-<translation id="6005726134413483363">کنسول جاوا اسکریپت</translation>
-<translation id="634208815998129842">مدیر وظیفه</translation>
-<translation id="7027293873729370359">بازرسی دستگاه‌ها</translation>
-<translation id="8981254605840444865">نمایش تنظیمات</translation>
-<translation id="3105917916468784889">گرفتن عکس صفحه</translation>
-<translation id="1536390784834419204">ترجمه کردن صفحه</translation>
 <translation id="5973664933364241128">رسانه مسیر</translation>
 <translation id="1568067597247500137">بی‌صدا کردن سایت</translation>
 <translation id="6674128381307353306">بی‌صدا کردن همه زبانه‌ها</translation>
@@ -1754,7 +1720,6 @@
 <translation id="4882473678324857464">تمرکز روی نشانک‌ها</translation>
 <translation id="5002047168347153398">برای دسترسی به پنجره غیرفعال تمرکز کنید</translation>
 <translation id="8215784091821791027">روی صفحه محتویات وب تمرکز کنید</translation>
-<translation id="4952628481830269193">نمایش نوار نشانک</translation>
 <translation id="8652827551752428289">نمایش تاریخچه</translation>
 <translation id="5030659775136592441">نمایش مدیر نشانک</translation>
 <translation id="6919203766034706175">تنظیمات وارد کنید</translation>
@@ -1770,15 +1735,12 @@
 <translation id="5835081019037947840">تغییر وضعیت رویدادهای اپل جاوا اسکریپت</translation>
 <translation id="5825969867518399495">نصب PWA</translation>
 <translation id="7888244262238732644">نمایش صفحه مدیریت</translation>
-<translation id="1728549374069268714">جایگذاری و رفتن</translation>
 <translation id="8114712275882140856">نمایش کامل آدرس‌های اینترنتی</translation>
 <translation id="7294510764127771956">تغییر وضعیت مرور هشتک</translation>
 <translation id="4186334830839439230">نمایش تنظیمات عملکرد</translation>
 <translation id="1094277301241124207">نمایش پانل کناری نشانک</translation>
-<translation id="3277827709560246894">باز کردن همه موارد نوار نشانک</translation>
 <translation id="8283515796576236471">باز کردن همه موارد نوار نشانک در پنجره جدید</translation>
 <translation id="5271773791943587595">باز کردن همه موارد نوار نشانک در پنجره خصوصی</translation>
-<translation id="3945518311492169884">باز کردن نوار نشانک به‌صورت خصوصی</translation>
 <translation id="2748975346534113286">باز کردن همه موارد نوار نشانک در گروه زبانه‌های جدید</translation>
 <translation id="5829341068610264408">تغییر نام پوشه نوار نشانک</translation>
 <translation id="5118326702207363004">ویرایش نوار نشانک</translation>
@@ -1787,9 +1749,7 @@
 <translation id="7629040247832187331">انجام مجدد نوار نشانک</translation>
 <translation id="6950544855362391649">نوار نشانک و نشانک جدید</translation>
 <translation id="6528836090624940616">پوشه جدید نوار نشانک</translation>
-<translation id="5469954281417596308">مدیر نشانک</translation>
 <translation id="7582036714669095991">نمایش همیشگی نوار نشانک</translation>
-<translation id="2530696803812164674">نمایش میانبر برنامه‌ها در نوار نشانک</translation>
 <translation id="8446467844676974241">نمایش نشانک‌های مدیریت‌شده در نوار نشانک</translation>
 <translation id="7371391600340880977">نوار نشانک به نوار نشانک ها اضافه شود</translation>
 <translation id="8881741588924189283">نوار نشانک از نوار نشانک ها حذف شود</translation>
@@ -1880,23 +1840,19 @@
 <translation id="3055739528128372229">دقت و صحت پاسخ‌ها را نمی‌توان تضمین کرد و ممکن است نادرست، گمراه‌کننده یا دارای اطلاعات غلط باشند. اطلاعات شخصی یا حیاتی را وارد نکنید و در رابطه با هرگونه جوابی که به مسائل مرتبط با سلامتی، امور مالی، امنیت شخصی یا موارد مشابه می‌گیرید، جانب احتیاط را رعایت کنید.</translation>
 <translation id="7297681068636289435">Leo اطلاعات هویتی مانند آدرس IP را که به شما مرتبط می‌شوند جمع‌آوری نمی‌کند. هیچ داده شخصی توسط مدل هوش مصنوعی یا ارائه‌دهندگان مدل شخص ثالث نگهداری نمی‌شود.</translation>
 <translation id="7839853125981164613">درخواستی اینجا وارد کنید</translation>
-<translation id="1171287413830401223">می‌خواهید پرسش‌های پیشنهادی را فعال کنید؟</translation>
+<translation id="334325425115922031">پیگیری‌های پیشنهادی</translation>
+<translation id="4524675003624341892">سؤالاتی را پیشنهاد کنید…</translation>
 <translation id="4567071417854988869">این ویدیو را خلاصه کن</translation>
 <translation id="7921782882718083488">این صفحه را خلاصه کن</translation>
-<translation id="5431287032059464898">Leo می‌تواند به‌طور خودکار سؤالات را بر اساس محتوای سایت پیشنهاد دهد. برای انجام این کار، محتواهای صفحه پیمایش‌های شما به Leo ارسال می‌شود تا وقتی Leo باز است، این پیشنهادها ایجاد شوند. می‌توانید آن را بعداً در «تنظیمات» غیرفعال کنید.</translation>
-<translation id="3435896845095436175">فعال کنید</translation>
-<translation id="7473891865547856676">نه متشکرم</translation>
 <translation id="7932221068776853847">برای توقف ارسال محتوای این صفحه به Leo و شروع مکالمه‌ای جدید، اتصال را قطع کنید</translation>
 <translation id="1167803637855350748">هنگام اتصال به Leo خطای شبکه رخ داد، اتصالتان را بررسی کنید و دوباره امتحان کنید.</translation>
 <translation id="5095201428204952524">Leo در حال حاضر خیلی مشغول است. لطفاً چند دقیقه دیگر دوباره امتحان کنید.</translation>
 <translation id="7144878232160441200">سعی مجدد</translation>
-<translation id="2505565639170795978">سلام، من Leo هستم. من یک دستیار هوش مصنوعی‌ام که کاملاً توسط Brave میزبانی می‌شوم. من تحت پشتیبانی Llama 13B قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Meta است و به‌صورت مؤثر و کاربردی در بسیاری از موارد استفاده می‌شود.</translation>
-<translation id="7202619923031933110">سلام، من Leo هستم. من یک دستیار هوش مصنوعی‌ام که کاملاً توسط Brave میزبانی می‌شوم. من تحت پشتیبانی Llama 70B قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Meta است و برای رسیدگی به وظایف پیشرفته‌تر از 13B کاربرد دارد.</translation>
+<translation id="7202619923031933110">سلام، من Leo هستم. من یک دستیار هوش مصنوعی‌ام که کاملاً توسط Brave میزبانی می‌شوم. من تحت پشتیبانی Mixtral 7B قرار دارم که نوعی مدل ساخته‌شده توسط Mistral AI است و برای رسیدگی به وظایف پیشرفته‌تر کاربرد دارد.</translation>
 <translation id="2489317965865266353">سلام، من Leo هستم. من توسط Brave پراکسی شده‌ام و تحت پشتیبانی Claude Instant قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Anthropic برای انجام وظایف مرتبط با مکالمه و پردازش متن است.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> توسط <ph name="COMPANY_NAME"/></translation>
 <translation id="6187065185557150870">چت</translation>
 <translation id="2961040541145689181">چت جدید</translation>
-<translation id="97095589689466044">سؤالات پیشنهادی</translation>
 <translation id="7557539689487606886">تبدیل عضویت به Premium</translation>
 <translation id="1691256669639196606">مدیریت اشتراک</translation>
 <translation id="3037594989275592390">مدل‌های زبانی</translation>
@@ -1906,7 +1862,6 @@
 <translation id="1239767708151339890">دسترسی به LLMهای برتر صنعتی</translation>
 <translation id="8021579987620496265">میزان محدوده بیشتر</translation>
 <translation id="8556044455877152001">‎USD $ <ph name="PRICE_VALUE"/>‎ /ماه</translation>
-<translation id="9221988663340523352">تغییر به مدل پیش‌فرض</translation>
 <translation id="377376641316998425">بازگشایی قفل توانایی‌های کامل Leo</translation>
 <translation id="8363148882096737034">Anthropic Claude + موارد بیشتر به زودی</translation>
 <translation id="886527905046308697">دسترسی اولویت‌دار و محدودیت‌های پاسخ‌دهی افزایش یافته</translation>
@@ -1918,7 +1873,7 @@
 <translation id="3521125531016408657">دوست داشتن پاسخ</translation>
 <translation id="8202517001427388906">دوست نداشتن پاسخ</translation>
 <translation id="1379399209929302811">بازخورد خود را درباره هوش مصنوعی Brave ارائه دهید</translation>
-<translation id="2415950536410763575">موضوع بازخورد خود را انتخاب کنید</translation>
+<translation id="8442999546461118871">موضوع بازخورد خود را انتخاب کنید</translation>
 <translation id="9018766373792005944">بازخورد شما درباره چیست؟</translation>
 <translation id="7355096922131918313">اینجا بازخورد خود را ارائه دهید</translation>
 <translation id="3027575440738035995">Leo Premium دسترسی به مجموعه‌ای گسترده‌تر از مدل‌های زبانی را برای پاسخ‌های دقیق‌تر به شما ارائه می‌کند. <ph name="LINK_BEFORE"/>بیشتر بدانید<ph name="LINK_AFTER"/></translation>
@@ -1933,10 +1888,19 @@
 <translation id="7494736170250048402">ارسال پیام به Leo</translation>
 <translation id="4110772752544684964">اندازه این صفحه برای Leo مقداری بزرگ است. اندکی از متن ممکن است در مکالمه نشان داده نشود.</translation>
 <translation id="4370698775470316661">این مکالمه طولانی است و قادر به ادامه دادن نیستید. ممکن است مدل‌های دیگری موجود باشد که Leo قادر است با آن‌ها دقت خود را در مکالمه‌های بلند حفظ کند.</translation>
-<translation id="6291843235651817590">چت عمومی</translation>
 <translation id="8193130769524604031">وظایف چت پیشرفته</translation>
 <translation id="3185367320601718531">مکالمه و تولید متن</translation>
 <translation id="3965507912994218570">تنظیمات Leo</translation>
+<translation id="1037324977127422019">سلام، من Leo هستم!</translation>
+<translation id="8930348081963284873">یک دستیار هوشمند مجهز به هوش مصنوعی که دقیقاً در Brave ساخته شده است.</translation>
+<translation id="3528849152231418380">در مورد یک وب‌سایت به کمک نیاز دارید؟</translation>
+<translation id="1558192229187362674">من می‌توانم به شما در خلاصه‌سازی مقالات، گسترش محتوای وب‌سایت و موارد دیگر کمک کنم.</translation>
+<translation id="861953757568623294">من می‌توانم به شما در خلاصه‌سازی مقالات، گسترش محتوای وب‌سایت و موارد دیگر کمک کنم. نمی‌دانید از کجا شروع کنید؟ این را امتحان کنید:</translation>
+<translation id="5642775487085641191">فقط می‌خواهید چت کنید؟</translation>
+<translation id="8857222718794549840">هر چیزی را از من بپرسید! ما می‌توانیم در مورد هر موضوعی که بخواهید صحبت کنیم. من همیشه در حال یادگیری و پیشرفت برای ارائه پاسخ‌های بهتر هستم.</translation>
+<translation id="989329677470075843">موافقت‌نامه حفظ حریم خصوصی</translation>
+<translation id="1173570303649278801">از زمینه صفحه برای پاسخ استفاده کنید</translation>
+<translation id="8599503173207256429">برای پرسیدن در مورد این صفحه آن را فعال کنید. محتوای آن به همراه پیام‌های شما برای Brave Leo ارسال می‌شود.</translation>
 <translation id="6303294677342628402">سپر ایمنی</translation>
 <translation id="8458987127502506209">فعال کردن Brave سپرها</translation>
 <translation id="7509914170164691086">سپرهای <ph name="LINK_BEFORE"/>برای<ph name="LINK_AFTER"/> روشن است</translation>

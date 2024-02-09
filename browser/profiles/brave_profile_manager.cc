@@ -16,7 +16,7 @@
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/misc_metrics/extension_metrics_service_factory.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/request_otr/request_otr_service_factory.h"
@@ -126,9 +126,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave_news::BraveNewsControllerFactory::GetForContext(profile);
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
   brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
-#if !BUILDFLAG(IS_ANDROID)
-  misc_metrics::ExtensionMetricsServiceFactory::GetServiceForContext(profile);
-#endif
+  misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
 #endif

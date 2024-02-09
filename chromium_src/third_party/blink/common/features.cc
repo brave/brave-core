@@ -25,7 +25,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kBrowsingTopicsXHR, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsFormFactor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsMetaEquivDelegateCH, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -51,15 +50,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kWebEnvironmentIntegrity, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
-
-// Allow certain client hints in request header.
-BASE_FEATURE(kAllowCertainClientHints,
-             "AllowCertainClientHints",
-             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kFileSystemAccessAPI,
              "FileSystemAccessAPI",
@@ -111,6 +103,12 @@ BASE_FEATURE(kRestrictEventSourcePool,
              base::FEATURE_ENABLED_BY_DEFAULT
 #endif
 );
+
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+BASE_FEATURE(kMiddleButtonClickAutoscroll,
+             "MiddelButtonClickAutoscroll",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 
 bool IsPrerender2Enabled() {
   return false;

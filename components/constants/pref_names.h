@@ -51,7 +51,6 @@ inline constexpr char kReferralAttemptTimestamp[] =
     "brave.referral.referral_attempt_timestamp";
 inline constexpr char kReferralAttemptCount[] =
     "brave.referral.referral_attempt_count";
-inline constexpr char kReferralHeaders[] = "brave.referral.headers";
 inline constexpr char kReferralAndroidFirstRunTimestamp[] =
     "brave.referral_android_first_run_timestamp";
 inline constexpr char kNoScriptControlType[] = "brave.no_script_default";

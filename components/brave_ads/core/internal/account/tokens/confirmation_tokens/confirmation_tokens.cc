@@ -18,7 +18,7 @@ ConfirmationTokens::ConfirmationTokens() = default;
 ConfirmationTokens::~ConfirmationTokens() = default;
 
 const ConfirmationTokenInfo& ConfirmationTokens::GetToken() const {
-  CHECK_NE(0, Count());
+  CHECK_NE(0U, Count());
 
   return confirmation_tokens_.front();
 }
@@ -75,8 +75,8 @@ bool ConfirmationTokens::TokenExists(
   return base::Contains(confirmation_tokens_, confirmation_token);
 }
 
-int ConfirmationTokens::Count() const {
-  return static_cast<int>(confirmation_tokens_.size());
+size_t ConfirmationTokens::Count() const {
+  return confirmation_tokens_.size();
 }
 
 bool ConfirmationTokens::IsEmpty() const {

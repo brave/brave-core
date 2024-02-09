@@ -40,8 +40,8 @@ class GetPrefixList {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 GetPrefixListCallback callback);
+  void OnRequest(GetPrefixListCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

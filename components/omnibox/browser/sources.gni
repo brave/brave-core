@@ -53,6 +53,7 @@ if (enable_ai_chat) {
   ]
 
   brave_components_omnibox_browser_deps += [
+    "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/buildflags",
   ]

@@ -11,8 +11,9 @@
 
 namespace {
 
-constexpr auto kLanguageComponentIds =
-    base::MakeFixedFlatSetSorted<std::string_view>({
+constexpr auto kLanguageComponentIds = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
         "aadlcogkfhaficfijoolhlajkngeecea", "acdmbpdfmekdichgebponnjloihkdejf",
         "adccmiokahgjhdbmhldbnkkplgcgfkpp", "aegokocmijocdgiddgjbjkdfiheijfpl",
         "alaghdpgppakjfjcipokbaempndnglfk", "amedpgedagedjlkgjajebgecfkldmdfa",

@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
-index 25ad1816d1f0051198987a144308c39f59b312fd..8ea09671123714b9430f72d0f9a0ff67c158a14a 100644
+index 9c30e0cb52aa1ea063f78520f9e78910c93d0da4..856733d20e3183e68d8af2a52549499d8b8d6573 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/ChosenObjectSettings.java
-@@ -139,7 +139,7 @@ public class ChosenObjectSettings
+@@ -148,7 +148,7 @@ public class ChosenObjectSettings extends BaseSiteSettingsFragment
              getSiteSettingsDelegate().launchSettingsHelpAndFeedbackActivity(getActivity());
              return true;
          }

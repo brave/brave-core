@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
+#include <cstddef>
 #include <utility>
 #include <vector>
 

@@ -20,7 +20,7 @@ import {
   NetworkText,
   StyledWrapper,
   TopRow,
-  ButtonRow,
+  SignPanelButtonRow,
   HeaderTitle
 } from './style'
 import { WalletButton } from '../../shared/style'
@@ -188,7 +188,7 @@ export function SignCowSwapOrder(props: Props) {
         </TextButton>
       </NetworkFeeAndDetailsContainer>
 
-      <ButtonRow>
+      <SignPanelButtonRow>
         <NavButton
           buttonType='secondary'
           text={getLocale('braveWalletButtonCancel')}
@@ -201,7 +201,7 @@ export function SignCowSwapOrder(props: Props) {
           onSubmit={onSignIn}
           disabled={isDisabled}
         />
-      </ButtonRow>
+      </SignPanelButtonRow>
     </StyledWrapper>
   )
 }

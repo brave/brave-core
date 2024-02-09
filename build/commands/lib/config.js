@@ -208,8 +208,6 @@ const Config = function () {
   this.channel = 'development'
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
-  this.gomaServerHost = getNPMConfig(['goma_server_host']) || ''
-  this.realGomaDir = process.env.GOMA_DIR || path.join(this.depotToolsDir, '.cipd_bin')
   this.rbeService = getNPMConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getNPMConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getNPMConfig(['rbe_tls_client_auth_key']) || ''
@@ -237,16 +235,14 @@ const Config = function () {
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
-  this.use_goma = getNPMConfig(['brave_use_goma']) || false
   this.useRemoteExec = getNPMConfig(['use_remoteexec']) || false
   this.offline = getNPMConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
   this.enable_dangling_raw_ptr_checks = false
-  this.useBraveHermeticToolchain =
-    this.gomaServerHost.endsWith('.brave.com') ||
-    this.rbeService.includes('.brave.com:') ||
-    this.rbeService.includes('.engflow.com:')
+  this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
+  this.brave_services_key_id = getNPMConfig(['brave_services_key_id']) || ''
+  this.service_key_aichat = getNPMConfig(['service_key_aichat']) || ''
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -412,7 +408,6 @@ Config.prototype.buildArgs = function () {
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
-    use_goma: this.use_goma,
     use_remoteexec: this.useRemoteExec,
     use_libfuzzer: this.use_libfuzzer,
     enable_updater: this.isOfficialBuild(),
@@ -421,6 +416,8 @@ Config.prototype.buildArgs = function () {
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
     enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
+    brave_services_key_id: this.brave_services_key_id,
+    service_key_aichat: this.service_key_aichat,
     ...this.extraGnArgs,
   }
 
@@ -433,9 +430,9 @@ Config.prototype.buildArgs = function () {
 
     if (process.platform === 'darwin' && args.is_official_build) {
       // Don't create dSYMs in non-true Release builds. dSYMs should be disabled
-      // in order to have relocatable compilation so Goma can share the cache
+      // in order to have relocatable compilation so RBE can share the cache
       // across multiple build directories. Enabled dSYMs enforce absolute
-      // paths, which makes Goma cache unusable.
+      // paths, which makes RBE cache unusable.
       args.enable_dsyms = false
     }
   }
@@ -466,10 +463,12 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (process.platform === 'win32' && this.build_omaha) {
+  if (this.build_omaha) {
     args.build_omaha = this.build_omaha
     args.tag_ap = this.tag_ap
-    args.tag_installdataindex = this.tag_installdataindex
+    if (this.tag_installdataindex) {
+      args.tag_installdataindex = this.tag_installdataindex
+    }
   }
 
   if ((process.platform === 'win32' || process.platform === 'darwin') && this.build_delta_installer) {
@@ -497,11 +496,7 @@ Config.prototype.buildArgs = function () {
     args.enable_precompiled_headers = false
   }
 
-  if (this.use_goma) {
-    // set goma_dir to the redirect cc output dir which then calls gomacc
-    // through env.CC_WRAPPER
-    args.goma_dir = path.join(this.nativeRedirectCCDir)
-  } else if (this.useRemoteExec) {
+  if (this.useRemoteExec) {
     args.rbe_exec_root = this.rbeExecRoot
     args.rbe_bin_dir = path.join(this.nativeRedirectCCDir)
   } else {
@@ -528,10 +523,6 @@ Config.prototype.buildArgs = function () {
       // https://github.com/brave/brave-browser/issues/1024#issuecomment-1175397914
       args.use_vaapi = true
 
-    }
-    if (this.targetArch === 'arm64') {
-      // We don't yet support Widevine on Arm64 Linux.
-      args.enable_widevine = false
     }
   }
 
@@ -630,8 +621,8 @@ Config.prototype.buildArgs = function () {
       // When building locally iOS needs dSYMs in order for Xcode to map source
       // files correctly since we are using a framework build
       args.enable_dsyms = true
-      if (args.use_goma || args.use_remoteexec) {
-        // Goma expects relative paths in dSYMs
+      if (args.use_remoteexec) {
+        // RBE expects relative paths in dSYMs
         args.strip_absolute_paths_from_debug_symbols = true
       }
     }
@@ -836,20 +827,11 @@ Config.prototype.update = function (options) {
     this.is_asan = false
   }
 
-  if (options.use_goma !== undefined) {
-    this.use_goma = options.use_goma
-  }
-
   if (options.use_remoteexec !== undefined) {
     this.useRemoteExec = options.use_remoteexec
   }
 
-  if (options.offline || options.goma_offline) {
-    if (options.goma_offline) {
-      Log.warn(
-        '--goma_offline is deprecated and will be removed, please use --offline'
-      )
-    }
+  if (options.offline) {
     this.offline = true
   }
 
@@ -1082,9 +1064,19 @@ Config.prototype.update = function (options) {
     this.channel = ''
   }
 
-  if (process.platform === 'win32' && options.build_omaha) {
+  if (options.build_omaha) {
+    assert(process.platform === 'win32')
     this.build_omaha = true
+    assert(options.tag_ap, "--tag_ap is required for --build_omaha")
+  }
+
+  if (options.tag_ap) {
+    assert(options.build_omaha, "--tag_ap requires --build_omaha")
     this.tag_ap = options.tag_ap
+  }
+
+  if (options.tag_installdataindex) {
+    assert(options.build_omaha, "--tag_installdataindex requires --build_omaha")
     this.tag_installdataindex = options.tag_installdataindex
   }
 
@@ -1142,9 +1134,9 @@ Config.prototype.update = function (options) {
     })
   }
 
-  if (this.offline || (!this.use_goma && !this.useRemoteExec)) {
-    // Pass '--offline' also when '--use_goma' is not set to disable goma detect in
-    // autoninja when doing local builds.
+  if (this.offline || !this.useRemoteExec) {
+    // Pass '--offline' also when '--use_remoteexec' is not set to disable RBE
+    // detect in autoninja when doing local builds.
     this.extraNinjaOpts.push('--offline')
   }
 
@@ -1226,7 +1218,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
-    if ((!this.use_goma && !this.useRemoteExec) && this.sccache) {
+    if (!this.useRemoteExec && this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))
       if (path.basename(this.sccache) === 'ccache') {
@@ -1237,18 +1229,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
-    if (this.gomaServerHost) {
-      env.GOMA_SERVER_HOST = this.gomaServerHost
-
-      // Disable HTTP2 proxy. According to EngFlow this has significant
-      // performance impact.
-      env.GOMACTL_USE_PROXY = 0
-
-      // Upload stats about Goma actions to the Goma backend.
-      env.GOMA_PROVIDE_INFO = true
-    }
-
     if (this.rbeService) {
+      // These env vars are required during `sync` stage.
       env.RBE_service = env.RBE_service || this.rbeService
       if (this.rbeTlsClientAuthCert && this.rbeTlsClientAuthKey) {
         env.RBE_tls_client_auth_cert =
@@ -1261,11 +1243,20 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
-    if (this.gomaServerHost || this.rbeService) {
-      // Vars used by autoninja to generate -j value when goma/rbe is enabled,
-      // adjusted for Brave-specific setup.
+    if (this.useRemoteExec) {
+      // These env vars are required during `build` stage.
+
+      // Autoninja generates -j value when RBE is enabled, adjust limits for
+      // Brave-specific setup.
       env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
       env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
+
+      if (this.offline) {
+        // Use all local resources in offline mode. RBE_local_resource_fraction
+        // can be set to a lower value for racing mode, but in offline mode we
+        // want to use all cores.
+        env.RBE_local_resource_fraction = '1.0'
+      }
     }
 
     if (this.isCI) {

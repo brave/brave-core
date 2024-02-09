@@ -1,12 +1,13 @@
-#!/usr/bin/env python
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from __future__ import print_function
 from builtins import range
 import os
-import requests
+import sys
+import urllib.request
 from .config import get_raw_version, get_env_var
 
 BRAVE_REPO = "brave/brave-browser"
@@ -24,38 +25,13 @@ def get_channel_display_name():
     return d[release_channel()]
 
 
-def call_github_api(url, headers):
-    try:
-        r = requests.get(url, headers=headers)
-    except requests.exceptions.ConnectionError:
-        print("Error: Received requests.exceptions.ConnectionError, Exiting...")
-        exit(1)
-    except Exception as e:
-        raise Exception(e)
-
-    if r.status_code == 200:
-        return r
-
-
 def get_releases_by_tag(repo, tag_name, include_drafts=False):
-
-    GITHUB_URL = 'https://api.github.com'
-
-    next_request = ""
-    headers = {
-        'Accept': 'application/vnd.github+json',
-        'Authorization': 'token ' + os.environ.get('GITHUB_TOKEN')
-    }
-    release_url = GITHUB_URL + "/repos/" + \
-        BRAVE_REPO + "/releases?page=1&per_page=100"
-    r = call_github_api(release_url, headers=headers)
-    next_request = ""
-    # The GitHub API returns paginated results of 100 items maximum per
-    # response. We will loop until there is no next link header returned
-    # in the response header. This is documented here:
-    # https://developer.github.com/v3/#pagination
-    while next_request is not None:
-        for item in r.json():
+    page = 1
+    while True:
+        releases = repo.releases().get(params={'page': page, 'per_page': 100})
+        if not releases:
+            break
+        for item in releases:
             # print("DEBUG: release: {}".format(item['name']))
             if include_drafts:
                 if item['tag_name'] == tag_name:
@@ -63,11 +39,7 @@ def get_releases_by_tag(repo, tag_name, include_drafts=False):
             else:
                 if item['tag_name'] == tag_name and not item['draft']:
                     return [item]
-        if r.links.get("next"):
-            next_request = r.links["next"]["url"]
-            r = call_github_api(next_request, headers=headers)
-        else:
-            next_request = None
+        page += 1
     return []
 
 

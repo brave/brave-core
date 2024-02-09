@@ -17,9 +17,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAppBoundEncryptionMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kBookmarkTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
-#if !BUILDFLAG(IS_ANDROID)
-    {kCopyLinkToText, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
     {kDestroyProfileOnBrowserClose, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCmWithoutThirdPartyCookies, base::FEATURE_DISABLED_BY_DEFAULT},
     // Google has asked embedders not to enforce these pins:

@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
+#include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave_base/random.h"
 
@@ -22,7 +23,7 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace brave_rewards::internal {
+namespace brave_rewards::internal::publisher {
 
 namespace {
 
@@ -32,12 +33,10 @@ int64_t GetCacheExpiryInSeconds() {
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
   // time we may want to introduce an additional option for this value.
-  return kPublisherListRefreshInterval;
+  return PublisherPrefixListUpdater::kRefreshInterval;
 }
 
 }  // namespace
-
-namespace publisher {
 
 ServerPublisherFetcher::ServerPublisherFetcher(RewardsEngineImpl& engine)
     : engine_(engine), private_cdn_server_(engine) {}
@@ -50,7 +49,7 @@ void ServerPublisherFetcher::Fetch(
   FetchCallbackVector& callbacks = callback_map_[publisher_key];
   callbacks.push_back(callback);
   if (callbacks.size() > 1) {
-    BLOG(1, "Fetch already in progress");
+    engine_->Log(FROM_HERE) << "Fetch already in progress";
     return;
   }
 
@@ -82,7 +81,8 @@ void ServerPublisherFetcher::OnFetchCompleted(
   engine_->database()->InsertServerPublisherInfo(
       **shared_info, [this, publisher_key, shared_info](mojom::Result result) {
         if (result != mojom::Result::OK) {
-          BLOG(0, "Error saving server publisher info record");
+          engine_->LogError(FROM_HERE)
+              << "Error saving server publisher info record";
         }
         RunCallbacks(publisher_key, std::move(*shared_info));
       });
@@ -104,14 +104,15 @@ bool ServerPublisherFetcher::IsExpired(
     // Pessimistically assume that we are incorrectly storing
     // the timestamp in order to avoid a case where we fetch
     // on every tab update.
-    BLOG(0, "Server publisher info has a future updated_at time.");
+    engine_->LogError(FROM_HERE)
+        << "Server publisher info has a future updated_at time.";
   }
 
   return age.InSeconds() > GetCacheExpiryInSeconds();
 }
 
 void ServerPublisherFetcher::PurgeExpiredRecords() {
-  BLOG(1, "Purging expired server publisher info records");
+  engine_->Log(FROM_HERE) << "Purging expired server publisher info records";
   int64_t max_age = GetCacheExpiryInSeconds() * 2;
   engine_->database()->DeleteExpiredServerPublisherInfo(max_age,
                                                         [](auto result) {});
@@ -139,5 +140,4 @@ void ServerPublisherFetcher::RunCallbacks(
   engine_->client()->OnPublisherUpdated(publisher_key);
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

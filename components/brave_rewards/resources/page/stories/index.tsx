@@ -8,6 +8,7 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import * as knobs from '@storybook/addon-knobs'
 
+import { ExternalWalletProvider } from '../../shared/lib/external_wallet'
 import { ConnectWalletModal } from '../components/connect_wallet_modal'
 import { ClaimGrantView } from '../components/claim_grant_view'
 import { Settings } from '../components/settings'
@@ -31,16 +32,18 @@ function actionLogger (name: string) {
 }
 
 export function ConnectWallet () {
-  const providers = [
+  const providers: Array<{ provider: ExternalWalletProvider, enabled: boolean }> = [
     {
-      type: 'uphold',
-      name: 'Uphold',
+      provider: 'uphold',
       enabled: true
     },
     {
-      type: 'gemini',
-      name: 'Gemini',
+      provider: 'gemini',
       enabled: false
+    },
+    {
+      provider: 'solana',
+      enabled: true
     }
   ]
 
@@ -53,6 +56,7 @@ export function ConnectWallet () {
           <ConnectWalletModal
             currentCountryCode='US'
             providers={providers}
+            connectState='error'
             onContinue={actionLogger('onContinue')}
             onClose={actionLogger('onClose')}
           />

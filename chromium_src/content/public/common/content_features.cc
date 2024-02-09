@@ -10,6 +10,13 @@
 
 namespace features {
 
+// This is intended as a kill switch for the Idle Detection feature. To enable
+// this feature, the experimental web platform features flag should be set,
+// or the site should obtain an Origin Trial token.
+BASE_FEATURE(kIdleDetection,
+             "IdleDetection",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAttributionFencedFrameReportingBeacon, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCookieDeprecationFacilitatedTesting, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -17,7 +24,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kDIPS, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT},
     {kLegacyTechReportEnableCookieIssueReports,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kLegacyTechReportTopLevelUrl, base::FEATURE_DISABLED_BY_DEFAULT},

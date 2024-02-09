@@ -179,8 +179,6 @@ static const auto kOneDay =
       self.prefs[walletProviderRegionsKey] = @"{}";
     }
 
-    [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
-
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
@@ -195,9 +193,11 @@ static const auto kOneDay =
         FROM_HERE, base::BindOnce(^{
           self->_rewardsClient =
               brave_rewards::internal::make_task_ptr<RewardsClientIOS>(self);
+          auto options = [self
+              handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
           self->_engine = brave_rewards::internal::make_task_ptr<
               brave_rewards::internal::RewardsEngineImpl>(
-              self->_rewardsClient->MakeRemote());
+              self->_rewardsClient->MakeRemote(), std::move(options));
         }));
 
     // Add notifications for standard app foreground/background
@@ -220,35 +220,32 @@ static const auto kOneDay =
   [self.notificationStartupTimer invalidate];
 }
 
-- (void)handleFlags:(const brave_rewards::RewardsFlags&)flags {
+- (brave_rewards::mojom::RewardsEngineOptions)handleFlags:
+    (const brave_rewards::RewardsFlags&)flags {
+  brave_rewards::mojom::RewardsEngineOptions options;
   if (flags.environment) {
     switch (*flags.environment) {
       case brave_rewards::RewardsFlags::Environment::kDevelopment:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::DEVELOPMENT;
+        options.environment = brave_rewards::mojom::Environment::kDevelopment;
         break;
       case brave_rewards::RewardsFlags::Environment::kStaging:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::STAGING;
+        options.environment = brave_rewards::mojom::Environment::kStaging;
         break;
       case brave_rewards::RewardsFlags::Environment::kProduction:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::PRODUCTION;
+        options.environment = brave_rewards::mojom::Environment::kProduction;
         break;
     }
   }
 
-  if (flags.debug) {
-    brave_rewards::internal::is_debug = true;
-  }
-
   if (flags.reconcile_interval) {
-    brave_rewards::internal::reconcile_interval = *flags.reconcile_interval;
+    options.reconcile_interval = *flags.reconcile_interval;
   }
 
   if (flags.retry_interval) {
-    brave_rewards::internal::retry_interval = *flags.retry_interval;
+    options.retry_interval = *flags.retry_interval;
   }
+
+  return options;
 }
 
 - (void)postEngineTask:

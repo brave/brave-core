@@ -14,22 +14,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-bool DoesRespectCap(const AdEventList& ad_events,
-                    const CreativeAdInfo& creative_ad) {
-  if (creative_ad.daily_cap == 0) {
-    // Always respect cap if set to 0.
-    return true;
-  }
-
-  return DoesRespectCampaignCap(creative_ad, ad_events,
-                                ConfirmationType::kServed, base::Days(1),
-                                creative_ad.daily_cap);
-}
-
-}  // namespace
-
 DailyCapExclusionRule::DailyCapExclusionRule(AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
@@ -42,7 +26,9 @@ std::string DailyCapExclusionRule::GetUuid(
 
 base::expected<void, std::string> DailyCapExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
-  if (!DoesRespectCap(ad_events_, creative_ad)) {
+  if (!DoesRespectCampaignCap(creative_ad, ad_events_,
+                              ConfirmationType::kServed, base::Days(1),
+                              creative_ad.daily_cap)) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "campaignId $1 has exceeded the dailyCap frequency cap",
         {creative_ad.campaign_id}, nullptr));

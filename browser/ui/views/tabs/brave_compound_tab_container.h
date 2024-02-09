@@ -63,6 +63,8 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
       const ui::DropTargetEvent& event) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
+
   bool ShouldShowVerticalTabs() const;
 
   void UpdateUnpinnedContainerSize();

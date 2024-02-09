@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <map>
 #include <utility>
 
@@ -216,10 +217,10 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE creative_ad_notifications (creative_instance_id "
-      "TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
-      "creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
-      "title TEXT NOT NULL, body TEXT NOT NULL);";
+      "CREATE TABLE creative_ad_notifications (creative_instance_id TEXT NOT "
+      "NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, creative_set_id TEXT NOT "
+      "NULL, campaign_id TEXT NOT NULL, title TEXT NOT NULL, body TEXT NOT "
+      "NULL);";
   transaction->commands.push_back(std::move(command));
 }
 

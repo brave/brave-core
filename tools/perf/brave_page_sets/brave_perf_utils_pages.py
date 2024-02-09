@@ -14,11 +14,29 @@
 import logging
 import shutil
 import os
+import time
+
+from typing import Optional
 
 from telemetry.page import shared_page_state
 from telemetry.page import page as page_module
 from telemetry import story
 from telemetry.core import android_platform
+
+
+def _CleanProfileCache(profile_dir: str):
+  shutil.rmtree(os.path.join(profile_dir, 'cache'), ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'GrShaderCache'), ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'GraphiteDawnCache'),
+                ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'Default', 'Cache'),
+                ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'Default', 'Code Cache'),
+                ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'Default', 'GPUCache'),
+                ignore_errors=True)
+  shutil.rmtree(os.path.join(profile_dir, 'component_crx_cache'),
+                ignore_errors=True)
 
 
 class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
@@ -31,6 +49,12 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
   Can be used with --use-live-sites or without.
   """
 
+  _profile_dir: Optional[str]
+
+  def __init__(self, test, finder_options, story_set, possible_browser):
+    super().__init__(test, finder_options, story_set, possible_browser)
+    self._profile_dir = self.browser_options().profile_dir
+
   def _StartBrowser(self, page):
     # Update the source profile for desktop (see desktop_browser_finder.py)
     self.browser_options().profile_type = 'exact'
@@ -42,12 +66,16 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
     if self.browser:
       self.browser.Close()
 
-    if self.browser_options().profile_dir:
+    if self._profile_dir is not None:
       if is_android:
         self._PullAndUpdateAndroidProfile()
       else:
         # profile_type = 'exact' is used to update the profile
         pass
+      time.sleep(5)
+      _CleanProfileCache(self._profile_dir)
+      self._profile_dir = None
+
     super()._StopBrowser()
 
   def browser_options(self):
@@ -74,18 +102,13 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
                  possible_browser.profile_directory, dest_profile)
     device.PullFile(possible_browser.profile_directory, dest_profile, True)
 
-    # Profile post processing: delete the cache.
-    shutil.rmtree(os.path.join(dest_profile, 'cache'))
-
-    # Remove .crx files
-    shutil.rmtree(os.path.join(dest_profile, 'component_crx_cache'),
-                  ignore_errors=True)
-
 
 class _UpdateProfilePage(page_module.Page):
+  _delay: int
 
-  def __init__(self, page_set):
+  def __init__(self, page_set, delay: int):
     EXTRA_BROWSER_ARGUMENTS = ['--enable-brave-features-for-perf-testing']
+    self._delay = delay
     super().__init__(url='chrome://components',
                      page_set=page_set,
                      shared_page_state_class=_UpdateProfileSharedPageState,
@@ -93,7 +116,7 @@ class _UpdateProfilePage(page_module.Page):
                      extra_browser_args=EXTRA_BROWSER_ARGUMENTS)
 
   def RunPageInteractions(self, action_runner):
-    action_runner.Wait(90)
+    action_runner.Wait(self._delay)
     if action_runner.tab.browser.platform.GetOSName() != 'android':
       # Disable session restore via settingsPrivate API.
       t = action_runner.tab
@@ -110,7 +133,6 @@ class BravePerfUtilsStorySet(story.StorySet):
   See loading_desktop.py for details.
   """
 
-  def __init__(self):
+  def __init__(self, delay=10):
     super().__init__(cloud_storage_bucket=story.PARTNER_BUCKET)
-
-    self.AddStory(_UpdateProfilePage(self))
+    self.AddStory(_UpdateProfilePage(self, delay))

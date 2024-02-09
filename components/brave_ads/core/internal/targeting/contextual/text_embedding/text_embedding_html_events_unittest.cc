@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events.h"
 
+#include <cstddef>
+
 #include "base/functional/callback_helpers.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"

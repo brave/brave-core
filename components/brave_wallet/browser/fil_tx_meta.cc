@@ -48,4 +48,8 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
       tx_->ToFilTxData()->to);
 }
 
+mojom::CoinType FilTxMeta::GetCoinType() const {
+  return mojom::CoinType::FIL;
+}
+
 }  // namespace brave_wallet

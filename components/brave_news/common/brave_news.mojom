@@ -208,11 +208,20 @@ union FeedV2Type {
   FeedV2ChannelType channel;
 };
 
+enum FeedV2Error {
+  NoArticles,
+  NoFeeds,
+  ConnectionError,
+};
+
 struct FeedV2 {
   mojo_base.mojom.Time construct_time;
   string source_hash;
   FeedV2Type? type;
   array<FeedItemV2> items;
+
+  // If |error| is set items will be empty.
+  FeedV2Error? error;
 };
 
 struct DisplayAd {

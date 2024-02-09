@@ -109,7 +109,7 @@ void TopicsFetcher::OnFetchedTopics(
     api_request_helper::APIRequestResult result) {
   if (!result.Is2XXResponseCode()) {
     LOG(ERROR) << "Failed to get topics: " << result.error_code() << ", "
-               << result.body();
+               << result.SerializeBodyToString();
     std::move(state.callback).Run({});
     return;
   }
@@ -135,15 +135,15 @@ void TopicsFetcher::OnFetchedTopicArticles(
     api_request_helper::APIRequestResult result) {
   if (!result.Is2XXResponseCode()) {
     LOG(ERROR) << "Failed to get topic articles: " << result.error_code()
-               << ", " << result.body();
+               << ", " << result.SerializeBodyToString();
     std::move(state.callback).Run({});
     return;
   }
 
   state.topic_articles_result = std::move(result);
 
-  auto topics = ParseTopics(state.topics_result.value_body(),
-                            state.topic_articles_result.value_body());
+  auto topics = ParseTopics(state.topics_result.TakeBody(),
+                            state.topic_articles_result.TakeBody());
   std::move(state.callback).Run(std::move(topics));
 }
 

@@ -16,6 +16,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
@@ -87,31 +88,23 @@ class BraveWalletService : public KeyedService,
   mojo::PendingRemote<mojom::BraveWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
-  static void MigrateUserAssetEthContractAddress(PrefService* profile_prefs);
-  static void MigrateMultichainUserAssets(PrefService* profile_prefs);
-  static void MigrateUserAssetsAddPreloadingNetworks(
-      PrefService* profile_prefs);
-  static void MigrateUserAssetsAddIsNFT(PrefService* profile_prefs);
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
-  static void MigrateUserAssetsAddIsERC1155(PrefService* profile_prefs);
-  static void MigrateUserAssetsAddIsSpam(PrefService* profile_prefs);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
-  static void MigrateCeloMainnetAsCustomNetwork(PrefService* prefs);
+  static void MigrateAssetsPrefToList(PrefService* prefs);
 
-  static bool AddUserAsset(mojom::BlockchainTokenPtr token,
-                           bool visible,
-                           PrefService* profile_prefs);
+  static mojom::BlockchainTokenPtr AddUserAsset(mojom::BlockchainTokenPtr token,
+                                                PrefService* profile_prefs);
   static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
       const std::string& chain_id,
       mojom::CoinType coin,
       PrefService* profile_prefs);
   static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
       PrefService* profile_prefs);
-  static base::Value::Dict GetDefaultEthereumAssets();
-  static base::Value::Dict GetDefaultSolanaAssets();
-  static base::Value::Dict GetDefaultFilecoinAssets();
-  static base::Value::Dict GetDefaultBitcoinAssets();
-  static base::Value::Dict GetDefaultZCashAssets();
+  static base::Value::List GetDefaultEthereumAssets();
+  static base::Value::List GetDefaultSolanaAssets();
+  static base::Value::List GetDefaultFilecoinAssets();
+  static base::Value::List GetDefaultBitcoinAssets();
+  static base::Value::List GetDefaultZCashAssets();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
@@ -347,8 +340,7 @@ class BraveWalletService : public KeyedService,
 
   void OnGenerateZecReceiveAddress(
       GenerateReceiveAddressCallback callback,
-      mojom::ZCashAddressPtr,
-      const std::optional<std::string>& error_message);
+      base::expected<mojom::ZCashAddressPtr, std::string> result);
 
   static std::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
@@ -357,6 +349,8 @@ class BraveWalletService : public KeyedService,
       const std::string& address,
       mojom::CoinType coin,
       const std::string& chain_id);
+  static bool ValidateAndFixAssetAddress(mojom::BlockchainTokenPtr& token);
+
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
 
   void OnGetImportInfo(
@@ -367,15 +361,10 @@ class BraveWalletService : public KeyedService,
       ImportInfo info,
       ImportError error);
 
-  bool AddUserAsset(mojom::BlockchainTokenPtr token, bool visible = true);
+  bool AddUserAssetInternal(mojom::BlockchainTokenPtr token);
   bool RemoveUserAsset(mojom::BlockchainTokenPtr token);
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
   bool SetAssetSpamStatus(mojom::BlockchainTokenPtr token, bool is_spam);
-  mojom::BlockchainTokenPtr GetUserAsset(const std::string& contract_address,
-                                         const std::string& token_id,
-                                         bool is_nft,
-                                         const std::string& chain_id,
-                                         mojom::CoinType coin);
   void OnNetworkChanged();
   void CancelAllSuggestedTokenCallbacks();
   void CancelAllSignMessageCallbacks();

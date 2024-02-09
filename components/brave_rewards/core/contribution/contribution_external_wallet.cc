@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_external_wallet.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -16,7 +15,6 @@
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -33,7 +31,7 @@ ContributionExternalWallet::~ContributionExternalWallet() = default;
 void ContributionExternalWallet::Process(const std::string& contribution_id,
                                          LegacyResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(0, "Contribution id is empty");
+    engine_->LogError(FROM_HERE) << "Contribution id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -47,7 +45,7 @@ void ContributionExternalWallet::ContributionInfo(
     mojom::ContributionInfoPtr contribution,
     LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -71,7 +69,7 @@ void ContributionExternalWallet::ContributionInfo(
   }
 
   if (!wallet) {
-    BLOG(0, "Unexpected wallet status!");
+    engine_->LogError(FROM_HERE) << "Unexpected wallet status";
     return callback(mojom::Result::FAILED);
   }
 
@@ -112,7 +110,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     bool single_publisher,
     LegacyResultCallback callback) {
   if (!info) {
-    BLOG(0, "Publisher not found");
+    engine_->LogError(FROM_HERE) << "Publisher not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -138,7 +136,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     // assume that the user cannot have two connected wallets at the same time.
     // We can then infer that no other external wallet will be able to service
     // this contribution item, and we can safely error out.
-    BLOG(1, "Publisher not verified");
+    engine_->Log(FROM_HERE) << "Publisher not verified";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -161,7 +159,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
       break;
     default:
       NOTREACHED();
-      BLOG(0, "Contribution processor not supported");
+      engine_->LogError(FROM_HERE) << "Contribution processor not supported";
       break;
   }
 }

@@ -8,10 +8,10 @@ use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText, TreeSink};
 use html5ever::QualName;
-use kuchiki::NodeRef as Handle;
-use kuchiki::Sink;
+use kuchikiki::NodeRef as Handle;
+use kuchikiki::Sink;
 use regex::Regex;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 use std::default::Default;
 use std::io::Read;
 use thiserror::Error;
@@ -73,7 +73,7 @@ where
     let mut dom: Sink =
         parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
-    extract_dom(&mut dom, &url, None, None, None, None, None, &HashMap::new())
+    extract_dom(&mut dom, &url, None, None, None, None, None, false)
 }
 
 #[derive(Default, Debug)]
@@ -226,7 +226,7 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
     meta
 }
 
-pub fn extract_dom<S: ::std::hash::BuildHasher>(
+pub fn extract_dom(
     mut dom: &mut Sink,
     url: &Url,
     min_out_length: Option<i32>,
@@ -234,7 +234,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     font_family: Option<String>,
     font_size: Option<String>,
     column_width: Option<String>,
-    features: &HashMap<String, u32, S>,
+    debug_view: bool,
 ) -> Result<Product, std::io::Error> {
     let handle = dom.document_node.clone();
 
@@ -259,7 +259,8 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         top_candidate.clone(),
         &meta.title.split_whitespace().collect::<HashSet<_>>(),
         url,
-        features,
+        true,
+        debug_view,
     );
 
     post_process(&mut dom, top_candidate.clone(), &meta);

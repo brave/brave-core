@@ -112,8 +112,12 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
   else
     vertical_tab_strip_host_->SetBorder(views::CreateEmptyBorder(insets));
 
-  vertical_tab_strip_bounds.set_width(
-      vertical_tab_strip_host_->GetPreferredSize().width() + insets.width());
+  const auto width =
+      vertical_tab_strip_host_->GetPreferredSize().width() + insets.width();
+  if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
+    vertical_tab_strip_bounds.set_x(vertical_tab_strip_bounds.right() - width);
+  }
+  vertical_tab_strip_bounds.set_width(width);
   vertical_tab_strip_host_->SetBoundsRect(vertical_tab_strip_bounds);
 }
 
@@ -245,11 +249,15 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // Control contents's margin with sidebar & vertical tab state.
   gfx::Insets contents_margins = GetContentsMargins();
 
-  // Don't need contents container's left margin with vertical tab as
+  // Don't need contents container's left or right margin with vertical tab as
   // vertical tab itself has sufficient padding.
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
       !IsFullscreenForBrowser()) {
-    contents_margins.set_left(0);
+    if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
+      contents_margins.set_right(0);
+    } else {
+      contents_margins.set_left(0);
+    }
   }
 
   // If side panel is shown, contents container should have margin
@@ -358,7 +366,11 @@ gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost() {
   CHECK(vertical_tab_strip_host_)
       << "This method is used only when vertical tab strip host is set";
   gfx::Insets insets;
-  insets.set_left(vertical_tab_strip_host_->GetPreferredSize().width());
+  if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
+    insets.set_right(vertical_tab_strip_host_->GetPreferredSize().width());
+  } else {
+    insets.set_left(vertical_tab_strip_host_->GetPreferredSize().width());
+  }
 #if BUILDFLAG(IS_MAC)
   insets = AdjustInsetsConsideringFrameBorder(insets);
 #endif
@@ -377,7 +389,11 @@ gfx::Insets BraveBrowserViewLayout::AdjustInsetsConsideringFrameBorder(
   // for frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
   // that line
   auto new_insets(insets);
-  new_insets.set_left(1 + insets.left());
+  if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
+    new_insets.set_right(1 + insets.right());
+  } else {
+    new_insets.set_left(1 + insets.left());
+  }
   return new_insets;
 }
 #endif

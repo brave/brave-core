@@ -10,9 +10,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -21,16 +22,16 @@ using Result = PostCreateTransactionUphold::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* id = value->GetDict().FindString("id");
   if (!id || id->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -41,27 +42,32 @@ Result ParseBody(const std::string& body) {
 
 // static
 Result PostCreateTransactionUphold::ProcessResponse(
+    RewardsEngineImpl& engine,
     const mojom::UrlResponse& response) {
+  if (URLLoader::IsSuccessCode(response.status_code)) {
+    return ParseBody(engine, response.body);
+  }
   switch (response.status_code) {
-    case net::HTTP_ACCEPTED:  // HTTP 202
-      return ParseBody(response.body);
     case net::HTTP_UNAUTHORIZED:  // HTTP 401
-      BLOG(0, "Access token expired!");
+      engine.LogError(FROM_HERE) << "Access token expired";
       return base::unexpected(Error::kAccessTokenExpired);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
 
 std::optional<std::string> PostCreateTransactionUphold::Url() const {
-  return endpoint::uphold::GetServerUrl(
-      base::StringPrintf("/v0/me/cards/%s/transactions", address_.c_str()));
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
+                          {"/v0/me/cards/", address_, "/transactions"});
+  return url.spec();
 }
 
 std::optional<std::vector<std::string>> PostCreateTransactionUphold::Headers(
     const std::string&) const {
-  return endpoint::uphold::RequestAuthorization(token_);
+  return std::vector<std::string>{"Authorization: Bearer " + token_};
 }
 
 std::optional<std::string> PostCreateTransactionUphold::Content() const {
@@ -72,7 +78,9 @@ std::optional<std::string> PostCreateTransactionUphold::Content() const {
   base::Value::Dict payload;
   payload.Set("destination", transaction_->destination);
   payload.Set("denomination", std::move(denomination));
-  if (transaction_->destination == uphold::GetFeeAddress()) {
+
+  auto& config = engine_->Get<EnvironmentConfig>();
+  if (transaction_->destination == config.uphold_fee_address()) {
     payload.Set("message", kFeeMessage);
   }
 

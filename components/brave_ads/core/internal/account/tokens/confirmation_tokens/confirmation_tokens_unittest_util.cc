@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <vector>

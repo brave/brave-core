@@ -14,16 +14,18 @@ import { WalletSelectors } from '../../../common/selectors'
 
 // Types
 import { DAppConnectionOptionsType } from './dapp-connection-settings'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, DAppSupportedCoinTypes } from '../../../constants/types'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetSelectedChainQuery,
   useRemoveSitePermissionMutation,
-  useRequestSitePermissionMutation
+  useRequestSitePermissionMutation,
+  useSetSelectedAccountMutation
 } from '../../../common/slices/api.slice'
 import {
+  useAccountsQuery,
   useSelectedAccountQuery //
 } from '../../../common/slices/api.slice.extra'
 
@@ -76,10 +78,12 @@ export const DAppConnectionMain = (props: Props) => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { accounts } = useAccountsQuery()
 
   // Mutations
   const [requestSitePermission] = useRequestSitePermissionMutation()
   const [removeSitePermission] = useRemoveSitePermissionMutation()
+  const [setSelectedAccount] = useSetSelectedAccountMutation()
 
   // Memos
   const connectionStatusText = React.useMemo((): string => {
@@ -110,6 +114,21 @@ export const DAppConnectionMain = (props: Props) => {
       await removeSitePermission(selectedAccount.accountId)
     }
   }, [selectedAccount, removeSitePermission])
+
+  React.useEffect(() => {
+    if (!selectedAccount) return
+
+    if (DAppSupportedCoinTypes.includes(selectedAccount.accountId.coin)) {
+      return
+    }
+
+    const dappAccount = accounts.find((acc) =>
+      DAppSupportedCoinTypes.includes(acc.accountId.coin)
+    )
+    if (dappAccount) {
+      setSelectedAccount(dappAccount.accountId)
+    }
+  }, [selectedAccount, accounts])
 
   return (
     <>

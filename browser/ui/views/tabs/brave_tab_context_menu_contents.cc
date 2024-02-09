@@ -7,10 +7,14 @@
 
 #include <algorithm>
 #include <iterator>
+#include <stack>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/notreached.h"
+#include "base/ranges/algorithm.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -22,6 +26,7 @@
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
@@ -29,6 +34,16 @@
 #include "components/sessions/core/tab_restore_service.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/controls/menu/menu_runner.h"
+
+namespace {
+
+bool CanTakeTabs(const Browser* from, const Browser* to) {
+  return from != to && !from->IsAttemptingToCloseBrowser() &&
+         !from->IsBrowserClosing() && !from->is_delete_scheduled() &&
+         to->profile() == from->profile();
+}
+
+}  // namespace
 
 BraveTabContextMenuContents::BraveTabContextMenuContents(
     Tab* tab,
@@ -38,8 +53,7 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
       tab_index_(index),
       browser_(const_cast<Browser*>(controller->browser())),
       controller_(controller) {
-  const bool is_vertical_tab =
-      tabs::utils::ShouldShowVerticalTabs(browser_);
+  const bool is_vertical_tab = tabs::utils::ShouldShowVerticalTabs(browser_);
 
   model_ = std::make_unique<BraveTabMenuModel>(
       this, controller->browser()->tab_menu_model_delegate(),
@@ -84,8 +98,9 @@ bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
     return false;
   }
 
-  if (IsBraveCommandId(command_id))
+  if (IsBraveCommandId(command_id)) {
     return IsBraveCommandIdEnabled(command_id);
+  }
 
   return controller_->IsCommandEnabledForTab(
       static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
@@ -100,6 +115,12 @@ bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
     return tabs::utils::SupportsVerticalTabs(browser_);
   }
 
+  if (command_id == BraveTabMenuModel::CommandBringAllTabsToThisWindow) {
+    return base::ranges::any_of(
+        *BrowserList::GetInstance(),
+        [&](const auto* from) { return CanTakeTabs(from, browser_); });
+  }
+
   return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 }
 
@@ -110,8 +131,9 @@ bool BraveTabContextMenuContents::GetAcceleratorForCommandId(
     return false;
   }
 
-  if (IsBraveCommandId(command_id))
+  if (IsBraveCommandId(command_id)) {
     return false;
+  }
 
   int browser_cmd;
   views::Widget* widget =
@@ -127,8 +149,9 @@ void BraveTabContextMenuContents::ExecuteCommand(int command_id,
     return;
   }
 
-  if (IsBraveCommandId(command_id))
+  if (IsBraveCommandId(command_id)) {
     return ExecuteBraveCommand(command_id);
+  }
 
   // Executing the command destroys |this|, and can also end up destroying
   // |controller_|. So stop the highlights before executing the command.
@@ -153,13 +176,17 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandToggleTabMuted: {
       auto* model = static_cast<BraveTabStripModel*>(controller_->model());
       for (const auto& index : model->GetTabIndicesForCommandAt(tab_index_)) {
-        if (!model->GetWebContentsAt(index)->GetLastCommittedURL().is_empty())
+        if (!model->GetWebContentsAt(index)->GetLastCommittedURL().is_empty()) {
           return true;
+        }
       }
       return false;
     }
     case BraveTabMenuModel::CommandShowVerticalTabs:
       return true;
+    case BraveTabMenuModel::CommandBringAllTabsToThisWindow: {
+      return true;
+    }
     default:
       NOTREACHED();
       break;
@@ -199,9 +226,57 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       }
       return;
     }
+    case BraveTabMenuModel::CommandBringAllTabsToThisWindow: {
+      BringAllTabsToThisWindow();
+      return;
+    }
     default:
       NOTREACHED();
       return;
+  }
+}
+
+void BraveTabContextMenuContents::BringAllTabsToThisWindow() {
+  // Find all browsers with the same profile
+  std::vector<Browser*> browsers;
+  base::ranges::copy_if(
+      *BrowserList::GetInstance(), std::back_inserter(browsers),
+      [&](const auto* from) { return CanTakeTabs(from, browser_); });
+
+  // Detach all tabs from other browsers
+  std::stack<std::unique_ptr<content::WebContents>> detached_pinned_tabs;
+  std::stack<std::unique_ptr<content::WebContents>> detached_unpinned_tabs;
+
+  base::ranges::for_each(browsers, [&detached_pinned_tabs,
+                                    &detached_unpinned_tabs](auto* other) {
+    auto* tab_strip_model = other->tab_strip_model();
+    const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
+    for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
+      auto contents = tab_strip_model->DetachWebContentsAtForInsertion(i);
+      const bool is_pinned = i < pinned_tab_count;
+      if (is_pinned) {
+        detached_pinned_tabs.push(std::move(contents));
+      } else {
+        detached_unpinned_tabs.push(std::move(contents));
+      }
+    }
+  });
+
+  // Insert pinned tabs
+  auto* tab_strip_model = browser_->tab_strip_model();
+  while (!detached_pinned_tabs.empty()) {
+    tab_strip_model->InsertWebContentsAt(
+        tab_strip_model->IndexOfFirstNonPinnedTab(),
+        std::move(detached_pinned_tabs.top()), AddTabTypes::ADD_PINNED);
+    detached_pinned_tabs.pop();
+  }
+
+  // Insert unpinned tabs
+  while (!detached_unpinned_tabs.empty()) {
+    tab_strip_model->InsertWebContentsAt(
+        tab_strip_model->count(), std::move(detached_unpinned_tabs.top()),
+        AddTabTypes::ADD_NONE);
+    detached_unpinned_tabs.pop();
   }
 }
 

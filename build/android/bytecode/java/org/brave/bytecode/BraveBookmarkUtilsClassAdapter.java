@@ -17,7 +17,12 @@ public class BraveBookmarkUtilsClassAdapter extends BraveClassVisitor {
 
         changeMethodOwner(
                 sBookmarkUtilsClassName, "addOrEditBookmark", sBraveBookmarkUtilsClassName);
-        changeMethodOwner(sBookmarkUtilsClassName, "showBookmarkManagerOnPhone",
+
+        changeMethodOwner(
+                sBookmarkUtilsClassName,
+                "showBookmarkManagerOnPhone",
                 sBraveBookmarkUtilsClassName);
+
+        changeMethodOwner(sBookmarkUtilsClassName, "isSpecialFolder", sBraveBookmarkUtilsClassName);
     }
 }

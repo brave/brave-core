@@ -21,3 +21,18 @@ static_library("common") {
     "//components/prefs",
   ]
 }
+
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [ "pref_names_unittest.cc" ]
+
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/ai_chat/core/common",
+      "//components/prefs:test_support",
+      "//content/test:test_support",
+      "//testing/gtest:gtest",
+    ]
+  }
+}

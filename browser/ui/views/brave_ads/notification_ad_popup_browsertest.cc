@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <tuple>
+
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"
@@ -22,7 +24,21 @@
 
 namespace brave_ads {
 
-class NotificationAdPopupBrowserTest : public InProcessBrowserTest {
+namespace {
+
+std::string TestParamToString(
+    const ::testing::TestParamInfo<
+        std::tuple<std::string, std::u16string, std::u16string>>& test_param) {
+  const auto& [test_name, title, body] = test_param.param;
+  return test_name;
+}
+
+}  // namespace
+
+class NotificationAdPopupBrowserTest
+    : public InProcessBrowserTest,
+      public testing::WithParamInterface<
+          std::tuple<std::string, std::u16string, std::u16string>> {
  public:
   NotificationAdPopupBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(kCustomNotificationAdFeature);
@@ -48,16 +64,16 @@ class NotificationAdPopupBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(NotificationAdPopupBrowserTest, CheckThemeChanged) {
+IN_PROC_BROWSER_TEST_P(NotificationAdPopupBrowserTest, CheckThemeChanged) {
   // Check appearance in light theme.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
 
   const std::string notification_id = "notification_id";
+  const auto& [_, notification_title, notification_body] = GetParam();
 
-  const NotificationAd ad(
-      notification_id, u"Lorem ipsum dolor ac amet elit",
-      u"Cras justo odio, dapibus ac facilisis in, egestas eget quam.", {});
+  const NotificationAd ad(notification_id, notification_title,
+                          notification_body, {});
 
   gfx::NativeWindow browser_native_window =
       browser()->window()->GetNativeWindow();
@@ -86,5 +102,19 @@ IN_PROC_BROWSER_TEST_F(NotificationAdPopupBrowserTest, CheckThemeChanged) {
 
   NotificationAdPopupHandler::Close(notification_id, false);
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    NotificationAdPopupBrowserTest,
+    testing::Values(
+        std::make_tuple("WithEmoji",
+                        u"🔥 Lorem ipsum dolor ac amet elit 🔥",
+                        u"🔥 Cras justo odio, dapibus ac facilisis "
+                        u"in, egestas eget quam. 🔥"),
+        std::make_tuple(
+            "WithoutEmoji",
+            u"Lorem ipsum dolor ac amet elit",
+            u"Cras justo odio, dapibus ac facilisis in, egestas eget quam.")),
+    &TestParamToString);
 
 }  // namespace brave_ads

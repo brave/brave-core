@@ -12,6 +12,8 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
@@ -26,6 +28,8 @@ namespace {
 
 // Renders icon and title.
 class ReadLaterSidePanelHeaderView : public views::View {
+  METADATA_HEADER(ReadLaterSidePanelHeaderView, views::View)
+
  public:
   ReadLaterSidePanelHeaderView() {
     constexpr int kHeaderInteriorMargin = 16;
@@ -66,6 +70,9 @@ class ReadLaterSidePanelHeaderView : public views::View {
       delete;
 };
 
+BEGIN_METADATA(ReadLaterSidePanelHeaderView)
+END_METADATA
+
 }  // namespace
 
 BraveReadLaterSidePanelView::BraveReadLaterSidePanelView(
@@ -87,3 +94,6 @@ BraveReadLaterSidePanelView::BraveReadLaterSidePanelView(
 }
 
 BraveReadLaterSidePanelView::~BraveReadLaterSidePanelView() = default;
+
+BEGIN_METADATA(BraveReadLaterSidePanelView)
+END_METADATA

@@ -11,7 +11,6 @@
 
 #include "base/files/file_path.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/core/common/request_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "url/gurl.h"

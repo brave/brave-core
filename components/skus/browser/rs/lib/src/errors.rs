@@ -133,6 +133,12 @@ impl From<serde_json::Error> for InternalError {
     }
 }
 
+impl From<http::Error> for InternalError {
+    fn from(e: http::Error) -> Self {
+        InternalError::InvalidCall(e.to_string())
+    }
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SkusError(pub(crate) InternalError);
 

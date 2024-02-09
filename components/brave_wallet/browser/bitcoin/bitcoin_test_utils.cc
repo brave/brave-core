@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -87,6 +88,17 @@ bitcoin_rpc::AddressStats BitcoinTestRpcServer::TransactedAddressStats(
   return stats;
 }
 
+bitcoin_rpc::AddressStats BitcoinTestRpcServer::MempoolAddressStats(
+    const std::string& address,
+    uint64_t funded,
+    uint64_t spent) {
+  bitcoin_rpc::AddressStats stats = EmptyAddressStats(address);
+  stats.mempool_stats.tx_count = "1";
+  stats.mempool_stats.funded_txo_sum = base::NumberToString(funded);
+  stats.mempool_stats.spent_txo_sum = base::NumberToString(spent);
+  return stats;
+}
+
 void BitcoinTestRpcServer::RequestInterceptor(
     const network::ResourceRequest& request) {
   url_loader_factory_.ClearResponses();
@@ -124,7 +136,17 @@ void BitcoinTestRpcServer::RequestInterceptor(
 
     if (account_id_) {
       auto addresses = keyring_service_->GetBitcoinAddresses(account_id_);
+      auto bitcoin_acc_info =
+          keyring_service_->GetBitcoinAccountInfo(account_id_);
+      ASSERT_TRUE(bitcoin_acc_info);
+
       for (const auto& item : *addresses) {
+        // Assume next change and receive addresses are not transacted.
+        if (item == bitcoin_acc_info->next_change_address ||
+            item == bitcoin_acc_info->next_receive_address) {
+          continue;
+        }
+
         if (item->address_string == *address) {
           url_loader_factory_.AddResponse(
               request.url.spec(),
@@ -176,10 +198,6 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
   account_id_ = account_id.Clone();
 
   if (account_id_) {
-    auto bitcoin_acc_info =
-        keyring_service_->GetBitcoinAccountInfo(account_id_);
-    ASSERT_TRUE(bitcoin_acc_info);
-
     address_0_ =
         keyring_service_
             ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(0, 0))
@@ -257,6 +275,12 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
 
 void BitcoinTestRpcServer::AddTransactedAddress(const std::string& address) {
   address_stats_map()[address] = TransactedAddressStats(address);
+}
+
+void BitcoinTestRpcServer::AddMempoolBalance(const std::string& address,
+                                             uint64_t funded,
+                                             uint64_t spent) {
+  address_stats_map()[address] = MempoolAddressStats(address, funded, spent);
 }
 
 }  // namespace brave_wallet

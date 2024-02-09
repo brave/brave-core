@@ -34,19 +34,21 @@ TEST(AccountConsistencyDisabledTest, NewProfile) {
   TestingProfile::Builder profile_builder;
   profile_builder.SetIsNewProfile(true);
   {
-    TestingPrefStore* user_prefs = new TestingPrefStore();
+    auto user_prefs = base::MakeRefCounted<TestingPrefStore>();
 
     // Set the read error so that Profile::IsNewProfile() returns true.
     user_prefs->set_read_error(PersistentPrefStore::PREF_READ_ERROR_NO_FILE);
 
     std::unique_ptr<sync_preferences::TestingPrefServiceSyncable> pref_service =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>(
-            /*managed_prefs=*/new TestingPrefStore(),
-            /*supervised_user_prefs=*/new TestingPrefStore(),
-            /*extension_prefs=*/new TestingPrefStore(),
-            /*standalone_browser_prefs=*/new TestingPrefStore(), user_prefs,
-            /*recommended_prefs=*/new TestingPrefStore(),
-            new user_prefs::PrefRegistrySyncable(), new PrefNotifierImpl());
+            /*managed_prefs=*/base::MakeRefCounted<TestingPrefStore>(),
+            /*supervised_user_prefs=*/base::MakeRefCounted<TestingPrefStore>(),
+            /*extension_prefs=*/base::MakeRefCounted<TestingPrefStore>(),
+            /*standalone_browser_prefs=*/
+            base::MakeRefCounted<TestingPrefStore>(), std::move(user_prefs),
+            /*recommended_prefs=*/base::MakeRefCounted<TestingPrefStore>(),
+            base::MakeRefCounted<user_prefs::PrefRegistrySyncable>(),
+            std::make_unique<PrefNotifierImpl>());
     RegisterUserProfilePrefs(pref_service->registry());
     profile_builder.SetPrefService(std::move(pref_service));
   }

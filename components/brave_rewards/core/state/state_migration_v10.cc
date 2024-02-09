@@ -12,7 +12,6 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -43,7 +42,7 @@ StateMigrationV10::~StateMigrationV10() = default;
 void StateMigrationV10::Migrate(LegacyResultCallback callback) {
   auto uphold_wallet = engine_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(1, "Uphold wallet is null.");
+    engine_->Log(FROM_HERE) << "Uphold wallet is null.";
     return callback(mojom::Result::OK);
   }
 
@@ -74,7 +73,7 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
           base::BindOnce(&StateMigrationV10::OnGetWallet,
                          base::Unretained(this), std::move(callback));
 
-      if (is_testing) {
+      if (engine_->options().is_testing) {
         return std::move(wallet_info_endpoint_callback)
             .Run(
                 base::unexpected(mojom::GetWalletError::kUnexpectedStatusCode));
@@ -104,7 +103,6 @@ void StateMigrationV10::Migrate(LegacyResultCallback callback) {
       NOTREACHED();
   }
 
-  uphold_wallet = uphold::GenerateLinks(std::move(uphold_wallet));
   callback(engine_->uphold()->SetWallet(std::move(uphold_wallet))
                ? mojom::Result::OK
                : mojom::Result::FAILED);
@@ -114,7 +112,7 @@ void StateMigrationV10::OnGetWallet(LegacyResultCallback callback,
                                     endpoints::GetWallet::Result&& result) {
   auto uphold_wallet = engine_->uphold()->GetWallet();
   if (!uphold_wallet) {
-    BLOG(0, "Uphold wallet is null!");
+    engine_->LogError(FROM_HERE) << "Uphold wallet is null";
     return callback(mojom::Result::FAILED);
   }
 
@@ -123,19 +121,17 @@ void StateMigrationV10::OnGetWallet(LegacyResultCallback callback,
   DCHECK(!uphold_wallet->token.empty());
   DCHECK(!uphold_wallet->address.empty());
 
-  const auto is_semi_verified = [](auto result) {
-    const auto [custodian, linked] = std::move(result);
-    return custodian != constant::kWalletUphold || !linked;
+  const auto is_semi_verified = [](auto& result) {
+    return result.wallet_provider != constant::kWalletUphold || !result.linked;
   };
 
   // deemed semi-VERIFIED || semi-VERIFIED
-  if (!result.has_value() || is_semi_verified(std::move(result.value()))) {
+  if (!result.has_value() || is_semi_verified(result.value())) {
     uphold_wallet->status =
         static_cast<mojom::WalletStatus>(5);  // mojom::WalletStatus::PENDING
     uphold_wallet->address = "";
   }
 
-  uphold_wallet = uphold::GenerateLinks(std::move(uphold_wallet));
   callback(engine_->uphold()->SetWallet(std::move(uphold_wallet))
                ? mojom::Result::OK
                : mojom::Result::FAILED);

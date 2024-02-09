@@ -112,6 +112,8 @@ export const beginExternalWalletLogin = (provider: string) => action(types.BEGIN
   provider
 })
 
+export const onExternalWalletLoginError = () => action(types.ON_EXTERNAL_WALLET_LOGIN_ERROR)
+
 export const getBalanceReport = (month: number, year: number) => action(types.GET_BALANCE_REPORT, {
   month,
   year

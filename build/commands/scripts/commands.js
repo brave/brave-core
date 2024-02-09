@@ -23,7 +23,6 @@ const createDist = require('../lib/createDist')
 const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
-const pylint = require('../lib/pylint')
 const perfTests = require('../lib/perfTests')
 
 const collect = (value, accumulator) => {
@@ -156,10 +155,8 @@ program
   .option('--ninja <opt>', 'Additional Ninja command-line options, in the form <key>:<value>', collect, [])
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
   .option('--is_asan', 'is asan enabled')
-  .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
-  .option('--goma_offline', 'use offline mode for goma [deprecated, use --offline]')
-  .option('--offline', 'use offline mode for goma/RBE')
+  .option('--offline', 'use offline mode for RBE')
   .option('--force_gn_gen', 'always run gn gen')
   .option('--target <target>', 'Custom target to build, instead of the default browser target')
   .option('--build_sparkle', 'Build the Sparkle macOS update framework from source')
@@ -246,10 +243,8 @@ program
   .option('--target_android_output_format <target_android_output_format>', 'target Android output format (apk, aab)', 'aab')
   .option('--universal', 'build a universal binary distribution')
   .option('--is_asan', 'is asan enabled')
-  .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
-  .option('--goma_offline', 'use offline mode for goma [deprecated, use --offline]')
-  .option('--offline', 'use offline mode for goma/RBE')
+  .option('--offline', 'use offline mode for RBE')
   .option('--force_gn_gen', 'always run gn gen')
   .option('--android_aab_to_apk',
     'applies an aab to apk conversion to the output aab')
@@ -345,17 +340,10 @@ program
   .option('--run_disabled_tests', 'run disabled tests')
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
   .option('--android_test_emulator_version <emulator_version>', 'set Android version for the emulator for tests', parseInteger, '30')
-  .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
-  .option('--goma_offline', 'use offline mode for goma')
-  .option('--offline', 'use offline mode for goma/RBE')
+  .option('--offline', 'use offline mode for RBE')
   .arguments('[build_config]')
   .action(test.bind(null, parsedArgs.unknown))
-
-program
-  .command('lint')
-  .option('--base <base branch>', 'set the destination branch for the PR')
-  .action(util.lint)
 
 program
   .command('presubmit')
@@ -366,13 +354,6 @@ program
   .option('--verbose [arg]', 'pass --verbose 2 for more debugging info', JSON.parse)
   .option('--fix', 'try to fix found issues automatically')
   .action(util.presubmit)
-
-program
-  .command('pylint')
-  .option('--base <base_branch>', 'only analyse files changed relative to base_branch')
-  .option('--all', 'run pylint on all files')
-  .option('--report', 'produce a parseable report file')
-  .action(pylint)
 
 program
   .command('format')
@@ -391,10 +372,8 @@ program
 
 program
   .command('build_fuzzer <fuzzer_test_target>')
-  .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
-  .option('--goma_offline', 'use offline mode for goma [deprecated, use --offline]')
-  .option('--offline', 'use offline mode for goma/RBE')
+  .option('--offline', 'use offline mode for RBE')
   .action(buildFuzzer)
 
 program

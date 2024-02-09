@@ -110,7 +110,7 @@ export const MessageText = styled.span`
   white-space: pre-wrap;
 `
 
-export const ButtonRow = styled.div`
+export const SignPanelButtonRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

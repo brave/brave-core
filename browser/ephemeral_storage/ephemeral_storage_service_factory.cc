@@ -70,7 +70,8 @@ KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
   return new ephemeral_storage::EphemeralStorageService(
       context, host_content_settings_map,
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
-          context, CookieSettingsFactory::GetForProfile(profile)));
+          context, host_content_settings_map,
+          CookieSettingsFactory::GetForProfile(profile)));
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(

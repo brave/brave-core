@@ -6,12 +6,16 @@
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
+#include "base/notreached.h"
+#include "components/browsing_topics/common/common_types.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
+#include "components/privacy_sandbox/tracking_protection_settings.h"
 
 BravePrivacySandboxSettings::BravePrivacySandboxSettings(
     std::unique_ptr<Delegate> delegate,
@@ -19,12 +23,7 @@ BravePrivacySandboxSettings::BravePrivacySandboxSettings(
     content_settings::CookieSettings* cookie_settings,
     privacy_sandbox::TrackingProtectionSettings* tracking_protection_settings,
     PrefService* pref_service)
-    : privacy_sandbox::PrivacySandboxSettingsImpl(std::move(delegate),
-                                                  host_content_settings_map,
-                                                  cookie_settings,
-                                                  tracking_protection_settings,
-                                                  pref_service),
-      pref_service_(pref_service) {
+    : pref_service_(pref_service) {
   // Register observers for the Privacy Sandbox.
   user_prefs_registrar_.Init(pref_service_);
   user_prefs_registrar_.Add(
@@ -34,6 +33,11 @@ BravePrivacySandboxSettings::BravePrivacySandboxSettings(
           base::Unretained(this)));
   user_prefs_registrar_.Add(
       prefs::kPrivacySandboxApisEnabledV2,
+      base::BindRepeating(
+          &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
+          base::Unretained(this)));
+  user_prefs_registrar_.Add(
+      prefs::kPrivacySandboxRelatedWebsiteSetsEnabled,
       base::BindRepeating(
           &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
           base::Unretained(this)));
@@ -50,4 +54,173 @@ void BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged() {
   if (pref_service_->GetBoolean(prefs::kPrivacySandboxApisEnabledV2)) {
     pref_service_->SetBoolean(prefs::kPrivacySandboxApisEnabledV2, false);
   }
+  if (pref_service_->GetBoolean(
+          prefs::kPrivacySandboxRelatedWebsiteSetsEnabled)) {
+    pref_service_->SetBoolean(prefs::kPrivacySandboxRelatedWebsiteSetsEnabled,
+                              false);
+  }
+}
+
+// PrivacySandboxSettings:
+
+bool BravePrivacySandboxSettings::IsTopicsAllowed() const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsTopicsAllowedForContext(
+    const url::Origin& top_frame_origin,
+    const GURL& url,
+    content::RenderFrameHost* console_frame) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsTopicAllowed(
+    const privacy_sandbox::CanonicalTopic& topic) {
+  return false;
+}
+
+void BravePrivacySandboxSettings::SetTopicAllowed(
+    const privacy_sandbox::CanonicalTopic& topic,
+    bool allowed) {}
+
+bool BravePrivacySandboxSettings::IsTopicPrioritized(
+    const privacy_sandbox::CanonicalTopic& topic) {
+  return false;
+}
+
+void BravePrivacySandboxSettings::ClearTopicSettings(base::Time start_time,
+                                                     base::Time end_time) {}
+
+base::Time BravePrivacySandboxSettings::TopicsDataAccessibleSince() const {
+  // Future time means topics data is never accessible
+  return base::Time::Max();
+}
+
+bool BravePrivacySandboxSettings::IsAttributionReportingEverAllowed() const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsAttributionReportingAllowed(
+    const url::Origin& top_frame_origin,
+    const url::Origin& reporting_origin,
+    content::RenderFrameHost* console_frame) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::MaySendAttributionReport(
+    const url::Origin& source_origin,
+    const url::Origin& destination_origin,
+    const url::Origin& reporting_origin,
+    content::RenderFrameHost* console_frame) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::
+    IsAttributionReportingTransitionalDebuggingAllowed(
+        const url::Origin& top_frame_origin,
+        const url::Origin& reporting_origin,
+        bool& can_bypass) const {
+  return false;
+}
+
+void BravePrivacySandboxSettings::SetFledgeJoiningAllowed(
+    const std::string& top_frame_etld_plus1,
+    bool allowed) {}
+
+void BravePrivacySandboxSettings::ClearFledgeJoiningAllowedSettings(
+    base::Time start_time,
+    base::Time end_time) {}
+
+bool BravePrivacySandboxSettings::IsFledgeAllowed(
+    const url::Origin& top_frame_origin,
+    const url::Origin& auction_party,
+    content::InterestGroupApiOperation interest_group_api_operation,
+    content::RenderFrameHost* console_frame) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsEventReportingDestinationAttested(
+    const url::Origin& destination_origin,
+    privacy_sandbox::PrivacySandboxAttestationsGatedAPI invoking_api) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsSharedStorageAllowed(
+    const url::Origin& top_frame_origin,
+    const url::Origin& accessing_origin,
+    content::RenderFrameHost* console_frame) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsSharedStorageSelectURLAllowed(
+    const url::Origin& top_frame_origin,
+    const url::Origin& accessing_origin) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsPrivateAggregationAllowed(
+    const url::Origin& top_frame_origin,
+    const url::Origin& reporting_origin) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsPrivateAggregationDebugModeAllowed(
+    const url::Origin& top_frame_origin,
+    const url::Origin& reporting_origin) const {
+  return false;
+}
+
+privacy_sandbox::TpcdExperimentEligibility
+BravePrivacySandboxSettings::GetCookieDeprecationExperimentCurrentEligibility()
+    const {
+  return privacy_sandbox::TpcdExperimentEligibility(
+      privacy_sandbox::TpcdExperimentEligibility::Reason::k3pCookiesBlocked);
+}
+
+bool BravePrivacySandboxSettings::IsCookieDeprecationLabelAllowed() const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsCookieDeprecationLabelAllowedForContext(
+    const url::Origin& top_frame_origin,
+    const url::Origin& context_origin) const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsPrivacySandboxEnabled() const {
+  return false;
+}
+
+void BravePrivacySandboxSettings::SetAllPrivacySandboxAllowedForTesting() {}
+void BravePrivacySandboxSettings::SetTopicsBlockedForTesting() {}
+void BravePrivacySandboxSettings::SetPrivacySandboxEnabled(bool enabled) {}
+
+bool BravePrivacySandboxSettings::IsPrivacySandboxRestricted() const {
+  return true;
+}
+
+bool BravePrivacySandboxSettings::IsPrivacySandboxCurrentlyUnrestricted()
+    const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsSubjectToM1NoticeRestricted() const {
+  return false;
+}
+
+bool BravePrivacySandboxSettings::IsRestrictedNoticeEnabled() const {
+  return false;
+}
+
+void BravePrivacySandboxSettings::OnCookiesCleared() {}
+void BravePrivacySandboxSettings::AddObserver(Observer* observer) {}
+void BravePrivacySandboxSettings::RemoveObserver(Observer* observer) {}
+
+void BravePrivacySandboxSettings::SetDelegateForTesting(
+    std::unique_ptr<Delegate> delegate) {
+  delegate_ = std::move(delegate);
+}
+
+bool BravePrivacySandboxSettings::AreRelatedWebsiteSetsEnabled() const {
+  return false;
 }

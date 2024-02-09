@@ -35,10 +35,22 @@ def _ProcessXML(root):
                                   parser=ET.XMLParser(encoding="utf-8"))
 
     parent = root.find('group/[@android:id="@+id/PAGE_MENU"]', namespaces=ns)
-    child = parent.find('item/[@android:id="@+id/brave_wallet_id"]',
-                        namespaces=ns)
-    idx = list(parent).index(child)
+    playlist_child = parent.find('item/[@android:id="@+id/brave_wallet_id"]',
+                                 namespaces=ns)
+    idx = list(parent).index(playlist_child)
     parent.insert(idx + 1, playlist_node)
+
+    add_playlist_node_str = '<item xmlns:android='\
+    '"http://schemas.android.com/apk/res/android" '\
+      'android:id="@+id/add_to_playlist_id" ' \
+      'android:title="@string/playlist_add_to_playlist" />'
+    add_to_playlist_node = ET.fromstring(add_playlist_node_str,
+                                         parser=ET.XMLParser(encoding="utf-8"))
+    parent = root.find('group/[@android:id="@+id/PAGE_MENU"]', namespaces=ns)
+    add_to_playlist_child = parent.find(
+        'item/[@android:id="@+id/brave_playlist_id"]', namespaces=ns)
+    idx = list(parent).index(add_to_playlist_child)
+    parent.insert(idx + 1, add_to_playlist_node)
 
     brave_leo_node_str = '<item xmlns:android='\
         '"http://schemas.android.com/apk/res/android" '\
@@ -48,9 +60,9 @@ def _ProcessXML(root):
                                    parser=ET.XMLParser(encoding="utf-8"))
 
     parent = root.find('group/[@android:id="@+id/PAGE_MENU"]', namespaces=ns)
-    child = parent.find('item/[@android:id="@+id/brave_playlist_id"]',
-                        namespaces=ns)
-    idx = list(parent).index(child)
+    leo_child = parent.find('item/[@android:id="@+id/add_to_playlist_id"]',
+                            namespaces=ns)
+    idx = list(parent).index(leo_child)
     parent.insert(idx + 1, brave_leo_node)
 
     set_as_default_node_str = '<item xmlns:android='\
@@ -83,6 +95,27 @@ def _ProcessXML(root):
                             namespaces=ns)
     vpn_idx = list(parent).index(vpn_child)
     parent.insert(vpn_idx + 1, vpn_node)
+
+    vpn_location_node_str = '<item xmlns:android='\
+    '"http://schemas.android.com/apk/res/android" '\
+      'android:id="@+id/request_vpn_location_row_menu_id" ' \
+      'android:title="@null"> '\
+            '<menu> '\
+                '<item android:id="@+id/request_vpn_location_id" '\
+                  'android:title="@string/change_location" '\
+                  'android:icon="@null" /> '\
+                '<item android:id="@+id/request_vpn_location_icon_id" '\
+                  'android:title="@null" '\
+                  'android:icon="@drawable/ic_chevron_right" /> '\
+            '</menu> '\
+            '</item>'
+    vpn_location_node = ET.fromstring(vpn_location_node_str,
+                                      parser=ET.XMLParser(encoding="utf-8"))
+    vpn_location_child = parent.find(
+        'item/[@android:id="@+id/request_brave_vpn_row_menu_id"]',
+        namespaces=ns)
+    vpn_location_idx = list(parent).index(vpn_location_child)
+    parent.insert(vpn_location_idx + 1, vpn_location_node)
 
     speedreader_node_str = '<item xmlns:android='\
             '"http://schemas.android.com/apk/res/android" '\

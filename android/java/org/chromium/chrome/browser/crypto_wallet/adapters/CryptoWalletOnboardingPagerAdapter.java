@@ -17,22 +17,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapter {
-    private List<NavigationItem> navigationItems = new ArrayList<>();
+    private final List<NavigationItem> mNavigationItems = new ArrayList<>();
 
-    public void setNavigationItems(List<NavigationItem> navigationItems) {
-        this.navigationItems = navigationItems;
+    public void setNavigationItems(@NonNull final List<NavigationItem> navigationItems) {
+        mNavigationItems.clear();
+        mNavigationItems.addAll(navigationItems);
     }
 
-    public void replaceWithNavigationItem(NavigationItem navigationItem, int index) {
-        this.navigationItems =
-                new ArrayList<NavigationItem>(this.navigationItems.subList(0, index));
-        this.navigationItems.add(navigationItem);
-    }
-
-    public void replaceWithNavigationItems(List<NavigationItem> navigationItems, int index) {
-        this.navigationItems =
-                new ArrayList<NavigationItem>(this.navigationItems.subList(0, index));
-        this.navigationItems.addAll(navigationItems);
+    /**
+     * Replaces all navigation items starting from a given index.
+     *
+     * @param navigationItems Navigation items to add.
+     * @param index Index pointing to the first item that will be replaced.
+     */
+    public void replaceWithNavigationItems(
+            @NonNull final List<NavigationItem> navigationItems, final int index) {
+        // Clear the list from the index (included).
+        mNavigationItems.subList(index, mNavigationItems.size()).clear();
+        // Append new navigation items to the list.
+        mNavigationItems.addAll(navigationItems);
     }
 
     public CryptoWalletOnboardingPagerAdapter(FragmentManager fm) {
@@ -47,17 +50,17 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapte
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return navigationItems.get(position).getFragment();
+        return mNavigationItems.get(position).getFragment();
     }
 
     @Override
     public int getCount() {
-        return navigationItems.size();
+        return mNavigationItems.size();
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return navigationItems.get(position).getTitle();
+        return mNavigationItems.get(position).getTitle();
     }
 }

@@ -41,6 +41,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class InAppPurchaseWrapper {
+    public static final String MANAGE_SUBSCRIPTION_PAGE =
+            "https://play.google.com/store/account/subscriptions";
     private static final String TAG = "InAppPurchaseWrapper";
     private static final String LEO_MONTHLY_SUBSCRIPTION = "brave.leo.monthly";
 
@@ -70,13 +72,28 @@ public class InAppPurchaseWrapper {
         LEO
     }
 
-    private MutableLiveData<ProductDetails> mMutableMonthlyProductDetails = new MutableLiveData();
-    private LiveData<ProductDetails> mMonthlyProductDetails = mMutableMonthlyProductDetails;
-    private void setMonthlyProductDetails(ProductDetails productDetails) {
-        mMutableMonthlyProductDetails.postValue(productDetails);
+    private MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsVPN =
+            new MutableLiveData();
+    private LiveData<ProductDetails> mMonthlyProductDetailsVPN = mMutableMonthlyProductDetailsVPN;
+    private MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsLeo =
+            new MutableLiveData();
+    private LiveData<ProductDetails> mMonthlyProductDetailsLeo = mMutableMonthlyProductDetailsLeo;
+
+    private void setMonthlyProductDetails(
+            ProductDetails productDetails, SubscriptionProduct product) {
+        if (product.equals(SubscriptionProduct.LEO)) {
+            mMutableMonthlyProductDetailsLeo.postValue(productDetails);
+        } else if (product.equals(SubscriptionProduct.VPN)) {
+            mMutableMonthlyProductDetailsVPN.postValue(productDetails);
+        }
     }
-    public LiveData<ProductDetails> getMonthlyProductDetails() {
-        return mMonthlyProductDetails;
+
+    public LiveData<ProductDetails> getMonthlyProductDetails(SubscriptionProduct product) {
+        if (product.equals(SubscriptionProduct.LEO)) {
+            return mMonthlyProductDetailsLeo;
+        }
+
+        return mMonthlyProductDetailsVPN;
     }
 
     private MutableLiveData<ProductDetails> mMutableYearlyProductDetails = new MutableLiveData();
@@ -202,37 +219,44 @@ public class InAppPurchaseWrapper {
         MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
-        LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
-            if (isConnected) {
-                mBillingClient.queryProductDetailsAsync(
-                        queryProductDetailsParams, (billingResult, productDetailsList) -> {
-                            // End connection after getting the product details
-                            endConnection();
+        LiveDataUtil.observeOnce(
+                billingConnectionState,
+                isConnected -> {
+                    if (isConnected) {
+                        mBillingClient.queryProductDetailsAsync(
+                                queryProductDetailsParams,
+                                (billingResult, productDetailsList) -> {
+                                    // End connection after getting the product details
+                                    endConnection();
 
-                            if (billingResult.getResponseCode()
-                                    == BillingClient.BillingResponseCode.OK) {
-                                for (ProductDetails productDetail : productDetailsList) {
-                                    productDetails.put(productDetail.getProductId(), productDetail);
-                                }
-                                setMonthlyProductDetails(
-                                        productDetails.get(getProductId(product,
-                                                SubscriptionType.MONTHLY)));
-                                if (!product.equals(SubscriptionProduct.LEO)) {
-                                    setYearlyProductDetails(
-                                            productDetails.get(
-                                                    getProductId(
-                                                            product,
-                                                            SubscriptionType.YEARLY)));
-                                }
-                            } else {
-                                Log.e(TAG,
-                                        "queryProductDetailsAsync failed"
-                                                + billingResult.getDebugMessage());
-                                showToast(billingResult.getDebugMessage());
-                            }
-                        });
-            }
-        });
+                                    if (billingResult.getResponseCode()
+                                            == BillingClient.BillingResponseCode.OK) {
+                                        for (ProductDetails productDetail : productDetailsList) {
+                                            productDetails.put(
+                                                    productDetail.getProductId(), productDetail);
+                                        }
+                                        setMonthlyProductDetails(
+                                                productDetails.get(
+                                                        getProductId(
+                                                                product, SubscriptionType.MONTHLY)),
+                                                product);
+                                        if (!product.equals(SubscriptionProduct.LEO)) {
+                                            setYearlyProductDetails(
+                                                    productDetails.get(
+                                                            getProductId(
+                                                                    product,
+                                                                    SubscriptionType.YEARLY)));
+                                        }
+                                    } else {
+                                        Log.e(
+                                                TAG,
+                                                "queryProductDetailsAsync failed"
+                                                        + billingResult.getDebugMessage());
+                                        showToast(billingResult.getDebugMessage());
+                                    }
+                                });
+                    }
+                });
     }
 
     public void queryPurchases(MutableLiveData<PurchaseModel> mutableActivePurchases,

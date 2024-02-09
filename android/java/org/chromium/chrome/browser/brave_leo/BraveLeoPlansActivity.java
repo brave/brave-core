@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.brave_leo;
 
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,16 +14,19 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.android.billingclient.api.ProductDetails;
 
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 
 /** Brave's Activity for AI Chat Plans */
 public class BraveLeoPlansActivity extends AsyncInitializationActivity {
     private ProgressBar mMonthlyPlanProgress;
-    private LinearLayout mMonthlySelectorLayout;
     private TextView mMonthlySubscriptionAmountText;
+    private TextView mUpgradeButton;
 
     @Override
     public boolean shouldStartGpuProcess() {
@@ -43,8 +45,8 @@ public class BraveLeoPlansActivity extends AsyncInitializationActivity {
         actionBar.setTitle(getResources().getString(R.string.brave_leo_premium));
 
         mMonthlyPlanProgress = findViewById(R.id.monthly_plan_progress);
-        mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
         mMonthlySubscriptionAmountText = findViewById(R.id.monthly_subscription_amount_text);
+        mUpgradeButton = findViewById(R.id.tv_upgrade_now);
 
         onInitialLayoutInflationComplete();
     }
@@ -54,7 +56,8 @@ public class BraveLeoPlansActivity extends AsyncInitializationActivity {
         super.finishNativeInitialization();
         mMonthlyPlanProgress.setVisibility(View.VISIBLE);
         LiveDataUtil.observeOnce(
-                InAppPurchaseWrapper.getInstance().getMonthlyProductDetails(),
+                InAppPurchaseWrapper.getInstance()
+                        .getMonthlyProductDetails(InAppPurchaseWrapper.SubscriptionProduct.LEO),
                 monthlyProductDetails -> {
                     workWithMonthlyPurchase(monthlyProductDetails);
                 });
@@ -70,7 +73,7 @@ public class BraveLeoPlansActivity extends AsyncInitializationActivity {
                 new Runnable() {
                     @Override
                     public void run() {
-                        mMonthlySelectorLayout.setOnClickListener(
+                        mUpgradeButton.setOnClickListener(
                                 v ->
                                         InAppPurchaseWrapper.getInstance()
                                                 .initiatePurchase(
@@ -90,5 +93,10 @@ public class BraveLeoPlansActivity extends AsyncInitializationActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
     }
 }

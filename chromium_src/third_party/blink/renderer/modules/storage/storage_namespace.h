@@ -6,10 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_STORAGE_STORAGE_NAMESPACE_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_STORAGE_STORAGE_NAMESPACE_H_
 
-#define BindStorageArea                                                       \
-  BindStorageArea(const LocalDOMWindow& local_dom_window,                     \
-                  mojo::PendingReceiver<mojom::blink::StorageArea> receiver); \
-  void BindStorageArea_Unused
+#define BindStorageArea(...)    \
+  BindStorageArea(__VA_ARGS__); \
+  void BindStorageArea_ChromiumImpl(__VA_ARGS__)
 
 #include "src/third_party/blink/renderer/modules/storage/storage_namespace.h"  // IWYU pragma: export
 

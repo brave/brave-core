@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use regex::{Regex, RegexSet};
 use std::cmp::max;
 use std::collections::HashSet;
@@ -28,8 +33,8 @@ lazy_static! {
     ]).unwrap();
 }
 
-/// Determines if a slice is an abbreviation by checking a list of common abbreviations and some
-/// simple heuristics.
+/// Determines if a slice is an abbreviation by checking a list of common
+/// abbreviations and some simple heuristics.
 #[inline]
 pub fn is_abbreviation(s: &str) -> bool {
     let len = s.chars().count();

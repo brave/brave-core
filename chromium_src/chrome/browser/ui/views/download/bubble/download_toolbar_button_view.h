@@ -10,6 +10,7 @@
 #include "chrome/browser/download/bubble/download_display_controller.h"
 #include "chrome/browser/download/download_ui_model.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 #define DownloadToolbarButtonView DownloadToolbarButtonViewChromium
 #define PaintButtonContents                                 \
@@ -27,6 +28,7 @@
 #undef DownloadToolbarButtonView
 
 class DownloadToolbarButtonView : public DownloadToolbarButtonViewChromium {
+  METADATA_HEADER(DownloadToolbarButtonView, DownloadToolbarButtonViewChromium)
  public:
   using DownloadToolbarButtonViewChromium::DownloadToolbarButtonViewChromium;
 

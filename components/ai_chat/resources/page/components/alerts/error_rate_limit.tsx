@@ -7,24 +7,37 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
-interface ErrorRateLimit {
-  onRetry?: () => void
-}
 
-function ErrorRateLimit(props: ErrorRateLimit) {
-  const { isPremiumUser } = React.useContext(DataContext)
+function ErrorRateLimit() {
+  const context = React.useContext(DataContext)
 
-  if (!isPremiumUser) {
+  if (!context.isPremiumUser) {
+    // Freemium model with non-premium user has stricter rate limits. Secondary
+    // action is to switch to completely free model.
+    if (context.currentModel?.access === mojom.ModelAccess.BASIC_AND_PREMIUM) {
+      return (
+        <PremiumSuggestion
+          title={getLocale('rateLimitReachedTitle')}
+          description={getLocale('rateLimitReachedDesc')}
+          secondaryActionButton={
+            <Button kind='plain-faint' onClick={context.switchToBasicModel}>
+              {getLocale('switchToBasicModelButtonLabel')}
+            </Button>
+          }
+        />
+      )
+    }
     return (
       <PremiumSuggestion
         title={getLocale('rateLimitReachedTitle')}
         description={getLocale('rateLimitReachedDesc')}
         secondaryActionButton={
-          <Button kind='plain-faint' onClick={props.onRetry}>
+          <Button kind='plain-faint' onClick={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}>
             {getLocale('retryButtonLabel')}
           </Button>
         }
@@ -42,7 +55,7 @@ function ErrorRateLimit(props: ErrorRateLimit) {
         <Button
           slot='actions'
           kind='filled'
-          onClick={props.onRetry}
+          onClick={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
         >
             {getLocale('retryButtonLabel')}
         </Button>

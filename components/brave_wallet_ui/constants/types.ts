@@ -8,6 +8,10 @@ import { EntityId } from '@reduxjs/toolkit'
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
+import {
+  ExternalWallet,
+  ExternalWalletProvider
+} from '../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -176,10 +180,6 @@ export interface ImportWalletError {
   errorMessage?: string
 }
 
-export interface SolFeeEstimates {
-  fee: bigint
-}
-
 export interface TokenRegistry {
   [chainID: string]: BraveWallet.BlockchainToken[]
 }
@@ -188,7 +188,7 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
-  collapsedPortfolioAccountAddresses: string[]
+  collapsedPortfolioAccountIds: string[]
   collapsedPortfolioNetworkKeys: string[]
 }
 
@@ -202,18 +202,11 @@ export interface WalletState {
   fullTokenList: BraveWallet.BlockchainToken[]
   addUserAssetError: boolean
   activeOrigin: BraveWallet.OriginInfo
-  solFeeEstimates?: SolFeeEstimates
-  hasFeeEstimatesError?: boolean
-  gasEstimates?: BraveWallet.GasEstimation1559
   selectedNetworkFilter: NetworkFilterType
   selectedAssetFilter: string
   selectedGroupAssetsByItem: string
   selectedAccountFilter: string
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
-  /**
-   * used for "buy" and "deposit" screens
-   */
-  selectedDepositAssetId?: string | undefined
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
@@ -227,7 +220,7 @@ export interface WalletState {
   removedNonFungibleTokens: BraveWallet.BlockchainToken[]
   deletedNonFungibleTokens: BraveWallet.BlockchainToken[]
   filteredOutPortfolioNetworkKeys: string[]
-  filteredOutPortfolioAccountAddresses: string[]
+  filteredOutPortfolioAccountIds: string[]
   hidePortfolioSmallBalances: boolean
   showNetworkLogoOnNfts: boolean
   isRefreshingNetworksAndTokens: boolean
@@ -264,7 +257,6 @@ export interface PageState {
   mnemonic?: string
   setupStillInProgress: boolean
   walletTermsAcknowledged: boolean
-  selectedCoinMarket: BraveWallet.CoinMarket | undefined
 }
 
 export interface WalletPageState {
@@ -597,16 +589,17 @@ export enum WalletRoutes {
 
   // fund wallet page
   FundWalletPageStart = '/crypto/fund-wallet',
-  FundWalletPage = '/crypto/fund-wallet/:currencyCode?/:buyAmount?',
-  FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/purchase/' +
-    ':currencyCode/:buyAmount',
+  FundWalletPage = '/crypto/fund-wallet/:assetId?',
+  FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/:assetId/purchase',
+
+  // deposit funds
   DepositFundsPageStart = '/crypto/deposit-funds',
-  DepositFundsPage = '/crypto/deposit-funds',
-  DepositFundsAccountPage = '/crypto/deposit-funds/account',
+  DepositFundsPage = '/crypto/deposit-funds/:assetId?',
+  DepositFundsAccountPage = '/crypto/deposit-funds/:assetId/account',
 
   // market
   Market = '/crypto/market',
-  MarketSub = '/crypto/market/:chainIdOrMarketSymbol?',
+  MarketSub = '/crypto/market/:coingeckoId?',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -642,15 +635,8 @@ export enum WalletRoutes {
   Portfolio = '/crypto/portfolio',
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
-  PortfolioNFTAsset = '/crypto/portfolio/nfts/' +
-    ':chainId/' +
-    ':contractAddress/' +
-    ':tokenId?',
-  PortfolioAsset = '/crypto/portfolio/assets/' +
-    ':chainIdOrMarketSymbol/' +
-    ':contractOrSymbol?/' +
-    ':tokenId?',
-  PortfolioSub = '/crypto/portfolio/:assetsOrNfts/:chainIdOrMarketSymbol?',
+  PortfolioNFTAsset = '/crypto/portfolio/nfts/' + ':assetId',
+  PortfolioAsset = '/crypto/portfolio/assets/' + ':assetId',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
@@ -729,8 +715,16 @@ export interface NFTMetadataReturnType {
 }
 
 export interface TransactionProviderError {
-  code: BraveWallet.ProviderError | BraveWallet.SolanaProviderError
+  code: BraveWallet.ProviderErrorUnion
   message: string
+}
+
+export const emptyProviderErrorCodeUnion: BraveWallet.ProviderErrorUnion = {
+  providerError: undefined,
+  zcashProviderError: undefined,
+  bitcoinProviderError: undefined,
+  filecoinProviderError: undefined,
+  solanaProviderError: undefined
 }
 
 export interface TransactionProviderErrorRegistry {
@@ -756,7 +750,8 @@ export const SupportedOnRampNetworks = [
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
   BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
-  BraveWallet.AURORA_MAINNET_CHAIN_ID
+  BraveWallet.AURORA_MAINNET_CHAIN_ID,
+  BraveWallet.BITCOIN_MAINNET
 ]
 
 export const SupportedOffRampNetworks = [
@@ -768,7 +763,8 @@ export const SupportedOffRampNetworks = [
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
-  BraveWallet.ARBITRUM_MAINNET_CHAIN_ID
+  BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
+  BraveWallet.BITCOIN_MAINNET
 ]
 
 export const SupportedTestNetworks = [
@@ -797,6 +793,21 @@ export const SupportedTestNetworkEntityIds: EntityId[] = [
   BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
   BraveWallet.BITCOIN_TESTNET,
   BraveWallet.Z_CASH_TESTNET
+]
+
+export const DAppSupportedCoinTypes = [
+  BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ETH
+]
+
+export const CustomAssetSupportedCoinTypes = [
+  BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ETH
+]
+
+export const DAppSupportedPrimaryChains = [
+  BraveWallet.MAINNET_CHAIN_ID,
+  BraveWallet.SOLANA_MAINNET
 ]
 
 /**
@@ -1045,211 +1056,6 @@ export type SwapAndSend = {
 
 export type TxSimulationOptInStatus = 'allowed' | 'denied' | 'unset'
 
-/**
- * A value specifying the suggested action for a wallet to take.
- * Possible values:
- * - BLOCK: Show the user a block screen instead of the signing UI,
- * since this is highly likely to be a malicious transaction.
- * Suggest still having a greyed out link allowing the user to proceed
- * if they really think they know better
- * - WARN: Show the user the supplied warnings.
- * - NONE: Show the signing UI without modification.
- */
-export type BlowfishWarningActionKind = 'BLOCK' | 'WARN' | 'NONE'
-
-/**
- * The error that caused us to be unable to run transaction simulation for this
- * request.
- * - SIMULATION_TIMED_OUT is returned if the simulation took too long and timed
- *   out.
- * - BAD_REQUEST is returned if the transaction(s) or user_account submitted
- *   were invalid (this is similar to a 400 bad request).
- * - TOO_MANY_TRANSACTIONS is returned if a request includes too many
- *   transactions (current max: 100 txs).
- * - SIMULATION_FAILED is returned if simulation failed because of a dependent
- *   RPC failure or internal server error during simulation execution.
- */
-export type BlowfishErrorKind =
-  | 'SIMULATION_FAILED'
-  | 'SIMULATION_TIMED_OUT'
-  | 'TOO_MANY_TRANSACTIONS'
-  | 'BAD_REQUEST'
-
-export type SafeBlowfishWarning = {
-  severity: BraveWallet.BlowfishWarningSeverity
-  kind: BraveWallet.BlowfishWarningKind
-  /**
-   * human-readable message to present to the end-user
-   */
-  message: string
-}
-
-/**
- * `ANY_NFT_FROM_COLLECTION_TRANSFER` is
- *  a "wildcard" NFT transfer representing the transfer
- *  of any NFT from a given collection (eg. Opensea collection offers)
- */
-type EvmTransferKind =
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kAnyNftFromCollectionTransfer
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc20Transfer
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc721Transfer
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc1155Transfer
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kNativeAssetTransfer
-
-type EvmApprovalKind =
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc20Approval
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc721Approval
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc721ApprovalForAll
-  | typeof BraveWallet.BlowfishEVMRawInfoKind.kErc1155ApprovalForAll
-
-type SolanaTransferKind =
-  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer
-  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kSplTransfer
-
-export type EvmStateChangeKind = EvmTransferKind | EvmApprovalKind
-
-export type SolanaStateChangeKind =
-  | SolanaTransferKind
-  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kSplApproval
-  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kSolStakeAuthorityChange
-  | typeof BraveWallet.BlowfishSolanaRawInfoKind.kUserAccountOwnerChange
-
-export type PriceSource = 'Simplehash' | 'Defillama' | 'Coingecko'
-
-export type BlowfishStateChangeKind = EvmStateChangeKind | SolanaStateChangeKind
-
-interface SafeBlowfishEVMError {
-  kind: BraveWallet.BlowfishEVMErrorKind
-  humanReadableError: string
-}
-
-interface SafeBlowfishSolanaError {
-  kind: BraveWallet.BlowfishSolanaErrorKind
-  humanReadableError: string
-}
-
-type EvmChangeRawInfoUnion = BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion
-
-export type SafeEVMStateChange<
-  UNION_KEY extends keyof EvmChangeRawInfoUnion = keyof EvmChangeRawInfoUnion
-> = {
-  humanReadableDiff: string
-  rawInfo: SafeEvmRawInfo<UNION_KEY>
-}
-
-export type SafeERC20ApprovalEvent = SafeEVMStateChange<'erc20ApprovalData'>
-
-export type SafeERC721ApprovalEvent = SafeEVMStateChange<'erc721ApprovalData'>
-
-export type SafeERC721ApprovalForAllEvent =
-  SafeEVMStateChange<'erc721ApprovalForAllData'>
-
-export type SafeERC1155ApprovalForAllEvent =
-  SafeEVMStateChange<'erc1155ApprovalForAllData'>
-
-export type SafeERC20TransferEvent = SafeEVMStateChange<'erc20TransferData'>
-
-export type SafeERC721TransferEvent = SafeEVMStateChange<'erc721TransferData'>
-
-export type SafeERC1155TransferEvent = SafeEVMStateChange<'erc1155TransferData'>
-
-export type SafeNativeTransferEvent =
-  SafeEVMStateChange<'nativeAssetTransferData'>
-
-export type SafeEvmTransferEvent =
-  | SafeERC20TransferEvent
-  | SafeERC721TransferEvent
-  | SafeERC1155TransferEvent
-  | SafeNativeTransferEvent
-
-export type SafeEvmApprovalEvent =
-  | SafeERC20ApprovalEvent
-  | SafeERC721ApprovalEvent
-  | SafeERC721ApprovalForAllEvent
-  | SafeERC1155ApprovalForAllEvent
-
-export type SafeEvmEvent = SafeEvmApprovalEvent | SafeEvmTransferEvent
-
-type SvmChangeRawInfoUnion =
-  BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion
-
-export type SafeSolanaStateChange<
-  UNION_KEY extends keyof SvmChangeRawInfoUnion = keyof SvmChangeRawInfoUnion
-> = {
-  humanReadableDiff: string
-  rawInfo: SafeSolanaRawInfo<UNION_KEY>
-  suggestedColor: BraveWallet.BlowfishSuggestedColor
-}
-
-export type SafeSplApprovalEvent = SafeSolanaStateChange<'splApprovalData'>
-
-export type SafeSolanaStakeChangeEvent =
-  SafeSolanaStateChange<'solStakeAuthorityChangeData'>
-
-/** TODO: not implemented in core */
-export type SafeSolanaAccountOwnerChangeEvent =
-  SafeSolanaStateChange<'solStakeAuthorityChangeData'>
-
-export type SafeSolTransferEvent = SafeSolanaStateChange<'solTransferData'>
-
-export type SafeSplTransferEvent = SafeSolanaStateChange<'splTransferData'>
-
-type SafeSolanaEvent =
-  | SafeSolTransferEvent
-  | SafeSplApprovalEvent
-  | SafeSplTransferEvent
-  | SafeSolanaStakeChangeEvent
-  | SafeSolanaAccountOwnerChangeEvent
-
-export interface SafeEVMSimulationResults {
-  error: SafeBlowfishEVMError | undefined
-  expectedStateChanges: SafeEvmEvent[]
-}
-
-export interface SafeSolanaSimulationResults {
-  error: SafeBlowfishSolanaError | undefined
-  expectedStateChanges: SafeSolanaEvent[]
-}
-
-type SafeEvmRawInfo<DATA_UNION_KEY extends keyof EvmChangeRawInfoUnion> = {
-  kind: BraveWallet.BlowfishEVMRawInfoKind
-  data: Record<
-    DATA_UNION_KEY,
-    Exclude<
-      BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion[DATA_UNION_KEY],
-      undefined
-    >
-  >
-}
-
-type SafeSolanaRawInfo<DATA_UNION_KEY extends keyof SvmChangeRawInfoUnion> = {
-  kind: BraveWallet.BlowfishSolanaRawInfoKind
-  data: Record<
-    DATA_UNION_KEY,
-    Exclude<
-      BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion[DATA_UNION_KEY],
-      undefined
-    >
-  >
-}
-
-type SafeBlowfishResponseBase = {
-  action: BraveWallet.BlowfishSuggestedAction
-  warnings: SafeBlowfishWarning[]
-}
-
-export type SafeBlowfishEvmResponse = SafeBlowfishResponseBase & {
-  simulationResults: SafeEVMSimulationResults
-}
-
-export type SafeBlowfishSolanaResponse = SafeBlowfishResponseBase & {
-  simulationResults: SafeSolanaSimulationResults
-}
-
-export type SafeBlowfishSimulationResponse =
-  | SafeBlowfishEvmResponse
-  | SafeBlowfishSolanaResponse
-
 export enum SignDataSteps {
   SignRisk = 0,
   SignData = 1
@@ -1263,3 +1069,43 @@ export interface LineChartIframeData {
 
 export type WalletCreationMode = 'new' | 'import' | 'hardware'
 export type WalletImportMode = 'seed' | 'metamask' | 'legacy'
+
+export interface BraveRewardsInfo {
+  isRewardsEnabled: boolean
+  balance: number | undefined
+  rewardsToken: BraveWallet.BlockchainToken | undefined
+  provider: ExternalWalletProvider | undefined
+  providerName: string
+  status: WalletStatus
+  rewardsAccount: BraveWallet.AccountInfo | undefined
+  rewardsNetwork: BraveWallet.NetworkInfo | undefined
+  accountLink: string | undefined
+}
+
+export type BitcoinBalances = {
+  availableBalance: string
+  pendingBalance: string
+  totalBalance: string
+}
+
+export const WalletStatus = {
+  kNotConnected: 0,
+  kConnected: 2,
+  kLoggedOut: 4
+} as const
+
+export const externalWalletProviders = [
+  'uphold',
+  'bitflyer',
+  'gemini',
+  'zebpay'
+]
+
+export type WalletStatus = (typeof WalletStatus)[keyof typeof WalletStatus]
+
+export type RewardsExternalWallet = Pick<
+  ExternalWallet,
+  'links' | 'provider' | 'username'
+> & {
+  status: WalletStatus
+}

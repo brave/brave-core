@@ -7,8 +7,9 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -21,10 +22,10 @@ PutCaptcha::PutCaptcha(RewardsEngineImpl& engine) : engine_(engine) {}
 PutCaptcha::~PutCaptcha() = default;
 
 std::string PutCaptcha::GetUrl(const std::string& captcha_id) {
-  const std::string path =
-      base::StringPrintf("/v1/captchas/%s", captcha_id.c_str());
-
-  return GetServerUrl(path);
+  auto url =
+      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
+                          {"/v1/captchas/", captcha_id});
+  return url.spec();
 }
 
 std::string PutCaptcha::GeneratePayload(const int x, const int y) {
@@ -41,22 +42,22 @@ std::string PutCaptcha::GeneratePayload(const int x, const int y) {
 
 mojom::Result PutCaptcha::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::CAPTCHA_FAILED;
   }
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
-    BLOG(0, "Invalid solution");
+    engine_->LogError(FROM_HERE) << "Invalid solution";
     return mojom::Result::CAPTCHA_FAILED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Failed to verify captcha solution");
+    engine_->LogError(FROM_HERE) << "Failed to verify captcha solution";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -75,13 +76,15 @@ void PutCaptcha::Request(const int x,
   request->content = GeneratePayload(x, y);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void PutCaptcha::OnRequest(PutCaptchaCallback callback,
                            mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 

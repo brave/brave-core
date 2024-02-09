@@ -19,7 +19,7 @@ import { getPriceIdForToken } from '../../utils/api-utils'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
-import { UISelectors, WalletSelectors } from '../selectors'
+import { UISelectors } from '../selectors'
 import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
@@ -35,8 +35,9 @@ import { makeNetworkAsset } from '../../options/asset-options'
 // Custom Hooks
 import useGetTokenInfo from './use-get-token-info'
 import { useAccountOrb, useAddressOrb } from './use-orb'
-import { useSafeUISelector, useSafeWalletSelector } from './use-safe-selector'
+import { useSafeUISelector } from './use-safe-selector'
 import {
+  useApproveTransactionMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetDefaultFiatCurrencyQuery,
@@ -59,7 +60,7 @@ import {
 } from '../slices/constants'
 
 // Constants
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, emptyProviderErrorCodeUnion } from '../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType
@@ -96,12 +97,10 @@ export const usePendingTransactions = () => {
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
-  const hasFeeEstimatesError = useSafeWalletSelector(
-    WalletSelectors.hasFeeEstimatesError
-  )
 
   // mutations
   const [rejectTransactions] = useRejectTransactionsMutation()
+  const [approveTransaction] = useApproveTransactionMutation();
 
   // queries
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
@@ -124,8 +123,6 @@ export const usePendingTransactions = () => {
     )
   }, [pendingTransactions, selectedPendingTransactionId])
 
-  const txToken = findTransactionToken(transactionInfo, combinedTokensList)
-
   const txCoinType = transactionInfo
     ? getCoinFromTxDataUnion(transactionInfo.txDataUnion)
     : undefined
@@ -143,6 +140,8 @@ export const usePendingTransactions = () => {
     return makeNetworkAsset(transactionsNetwork)
   }, [transactionsNetwork])
 
+  const txToken = findTransactionToken(transactionInfo, combinedTokensList)
+
   const tokenPriceIds = React.useMemo(
     () =>
       [txToken, networkAsset]
@@ -158,18 +157,22 @@ export const usePendingTransactions = () => {
     querySubscriptionOptions60s
   )
 
-  const { data: gasEstimates, isLoading: isLoadingGasEstimates } =
-    useGetGasEstimation1559Query(
-      transactionInfo && txCoinType === BraveWallet.CoinType.ETH
-        ? transactionInfo.chainId
-        : skipToken,
-      defaultQuerySubscriptionOptions
-    )
+  const {
+    data: gasEstimates,
+    isLoading: isLoadingGasEstimates,
+    isError: hasEvmFeeEstimatesError
+  } = useGetGasEstimation1559Query(
+    transactionInfo && txCoinType === BraveWallet.CoinType.ETH
+      ? transactionInfo.chainId
+      : skipToken,
+    defaultQuerySubscriptionOptions
+  )
 
   const {
     data: solFeeEstimate,
     isLoading: isLoadingSolFeeEstimates = txCoinType ===
-      BraveWallet.CoinType.SOL
+      BraveWallet.CoinType.SOL,
+    isError: hasSolFeeEstimatesError
   } = useGetSolanaEstimatedFeeQuery(
     txCoinType === BraveWallet.CoinType.SOL &&
       transactionInfo?.chainId &&
@@ -398,17 +401,15 @@ export const usePendingTransactions = () => {
     dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
   }, [selectedPendingTransactionId, pendingTransactions])
 
-  const rejectAllTransactions = React.useCallback(
-    () =>
-      rejectTransactions(
-        pendingTransactions.map((tx) => ({
-          id: tx.id,
-          chainId: tx.chainId,
-          coinType: getCoinFromTxDataUnion(tx.txDataUnion)
-        }))
-      ),
-    [pendingTransactions, rejectTransactions]
-  )
+  const rejectAllTransactions = React.useCallback(async () => {
+    await rejectTransactions(
+      pendingTransactions.map((tx) => ({
+        id: tx.id,
+        chainId: tx.chainId,
+        coinType: getCoinFromTxDataUnion(tx.txDataUnion)
+      }))
+    ).unwrap()
+  }, [pendingTransactions, rejectTransactions])
 
   const updateUnapprovedTransactionGasFields = React.useCallback(
     (payload: UpdateUnapprovedTransactionGasFieldsType) => {
@@ -454,23 +455,38 @@ export const usePendingTransactions = () => {
     }
 
     try {
-      await dispatch(
-        walletApi.endpoints.approveTransaction.initiate({
+      const result = await approveTransaction({
           chainId: transactionInfo.chainId,
           id: transactionInfo.id,
           coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
-          txType: transactionInfo.txType
-        })
-      ).unwrap()
-      dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
-      dispatch(PanelActions.navigateTo('transactionStatus'))
+          txType: transactionInfo.txType}).unwrap()
+      if (!result.success) {
+        dispatch(
+          UIActions.setTransactionProviderError({
+            providerError: {
+              code: result.errorUnion,
+              message: result.errorMessage
+            },
+            transactionId: transactionInfo.id
+          })
+        )
+      }
     } catch (error) {
       dispatch(
         UIActions.setTransactionProviderError({
-          providerError: error.toString(),
+          providerError: {
+            code: {
+              ...emptyProviderErrorCodeUnion,
+              providerError: BraveWallet.ProviderError.kUnknown
+            },
+            message: error.toString()
+          },
           transactionId: transactionInfo.id
         })
       )
+    } finally {
+      dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
+      dispatch(PanelActions.navigateTo('transactionStatus'))
     }
   }, [transactionInfo])
 
@@ -518,6 +534,11 @@ export const usePendingTransactions = () => {
 
     assertNotReached(`Unknown coin ${txCoinType}`)
   }, [txCoinType, isLoadingSolFeeEstimates, gasFee, isLoadingGasEstimates])
+
+  const hasFeeEstimatesError =
+    txCoinType === BraveWallet.CoinType.SOL
+      ? hasSolFeeEstimatesError
+      : hasEvmFeeEstimatesError
 
   const isConfirmButtonDisabled = React.useMemo(() => {
     if (hasFeeEstimatesError || isLoadingGasFee) {

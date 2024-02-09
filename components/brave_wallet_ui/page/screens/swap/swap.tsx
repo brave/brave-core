@@ -27,7 +27,6 @@ import { FromAsset } from '../composer_ui/from_asset/from_asset'
 import { ToAsset } from '../composer_ui/to_asset/to_asset'
 import { SelectTokenModal } from '../composer_ui/select_token_modal/select_token_modal'
 import { QuoteInfo } from './components/swap/quote-info/quote-info'
-import { QuoteOptions } from './components/swap/quote-options/quote-options'
 import {
   AdvancedSettingsModal //
 } from '../composer_ui/advanced_settings_modal.style.ts/advanced_settings_modal'
@@ -56,7 +55,6 @@ export const Swap = () => {
     gasEstimates,
     onSelectFromToken,
     onSelectToToken,
-    onSelectQuoteOption,
     onClickFlipSwapTokens,
     setSelectingFromOrTo,
     handleOnSetFromAmount,
@@ -157,17 +155,16 @@ export const Swap = () => {
           selectedSendOption='#token'
           isFetchingQuote={isFetchingQuote}
         >
-          <>
-            {selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
-              quoteOptions.length > 0 && (
-                <QuoteOptions
-                  options={quoteOptions}
-                  selectedQuoteOptionIndex={selectedQuoteOptionIndex}
-                  onSelectQuoteOption={onSelectQuoteOption}
-                  spotPrices={spotPrices}
-                />
-              )}
-          </>
+          {/* TODO: QuoteOptions is currently unused
+          selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
+            quoteOptions.length > 0 && (
+              <QuoteOptions
+                options={quoteOptions}
+                selectedQuoteOptionIndex={selectedQuoteOptionIndex}
+                onSelectQuoteOption={onSelectQuoteOption}
+                spotPrices={spotPrices}
+              />
+          ) */}
           {quoteOptions.length > 0 && (
             <>
               <QuoteInfo

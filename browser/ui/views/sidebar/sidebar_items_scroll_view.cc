@@ -274,18 +274,18 @@ void SidebarItemsScrollView::UpdateArrowViewsTheme() {
     const SkColor arrow_disabled =
         color_provider->GetColor(kColorSidebarArrowDisabled);
 
-    up_arrow_->SetImage(
+    up_arrow_->SetImageModel(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarItemsUpArrowIcon, arrow_normal));
-    up_arrow_->SetImage(
-        views::Button::STATE_DISABLED,
-        gfx::CreateVectorIcon(kSidebarItemsUpArrowIcon, arrow_disabled));
-    down_arrow_->SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarItemsDownArrowIcon, arrow_normal));
-    down_arrow_->SetImage(
-        views::Button::STATE_DISABLED,
-        gfx::CreateVectorIcon(kSidebarItemsDownArrowIcon, arrow_disabled));
+        ui::ImageModel::FromVectorIcon(kSidebarItemsUpArrowIcon, arrow_normal));
+    up_arrow_->SetImageModel(views::Button::STATE_DISABLED,
+                             ui::ImageModel::FromVectorIcon(
+                                 kSidebarItemsUpArrowIcon, arrow_disabled));
+    down_arrow_->SetImageModel(views::Button::STATE_NORMAL,
+                               ui::ImageModel::FromVectorIcon(
+                                   kSidebarItemsDownArrowIcon, arrow_normal));
+    down_arrow_->SetImageModel(views::Button::STATE_DISABLED,
+                               ui::ImageModel::FromVectorIcon(
+                                   kSidebarItemsDownArrowIcon, arrow_disabled));
   }
 }
 

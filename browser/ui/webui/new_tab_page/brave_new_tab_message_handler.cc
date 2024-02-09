@@ -110,8 +110,10 @@ base::Value::Dict GetPrivatePropertiesDictionary(PrefService* prefs) {
 
 enum class NTPCustomizeUsage { kNeverOpened, kOpened, kOpenedAndEdited, kSize };
 
-const char kNTPCustomizeUsageStatus[] =
+constexpr char kNTPCustomizeUsageStatus[] =
     "brave.new_tab_page.customize_p3a_usage";
+constexpr char kCustomizeUsageHistogramName[] =
+    "Brave.NTP.CustomizeUsageStatus.2";
 
 const char kNeedsBrowserUpgradeToServeAds[] = "needsBrowserUpgradeToServeAds";
 
@@ -126,7 +128,7 @@ void BraveNewTabMessageHandler::RegisterLocalStatePrefs(
 void BraveNewTabMessageHandler::RecordInitialP3AValues(
     PrefService* local_state) {
   p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-      NTPCustomizeUsage::kNeverOpened, "Brave.NTP.CustomizeUsageStatus",
+      NTPCustomizeUsage::kNeverOpened, kCustomizeUsageHistogramName,
       kNTPCustomizeUsageStatus, local_state);
 }
 
@@ -371,14 +373,22 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     LOG(ERROR) << "Invalid input";
     return;
   }
-  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-      NTPCustomizeUsage::kOpenedAndEdited, "Brave.NTP.CustomizeUsageStatus",
-      kNTPCustomizeUsageStatus, g_browser_process->local_state());
   PrefService* prefs = profile_->GetPrefs();
   // Collect args
   std::string settingsKeyInput = args[0].GetString();
   auto settingsValue = args[1].Clone();
   std::string settingsKey;
+
+  // Prevent News onboarding below NTP and sponsored NTP notification
+  // state from triggering the "shown & changed" answer for the
+  // customize dialog metric.
+  if (settingsKeyInput != "showToday" &&
+      settingsKeyInput != "isBraveNewsOptedIn" &&
+      settingsKeyInput != "isBrandedWallpaperNotificationDismissed") {
+    p3a::RecordValueIfGreater<NTPCustomizeUsage>(
+        NTPCustomizeUsage::kOpenedAndEdited, kCustomizeUsageHistogramName,
+        kNTPCustomizeUsageStatus, g_browser_process->local_state());
+  }
 
   // Handle string settings
   if (settingsValue.is_string()) {
@@ -534,7 +544,7 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
     const base::Value::List& args) {
   AllowJavascript();
   p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-      NTPCustomizeUsage::kOpened, "Brave.NTP.CustomizeUsageStatus",
+      NTPCustomizeUsage::kOpened, kCustomizeUsageHistogramName,
       kNTPCustomizeUsageStatus, g_browser_process->local_state());
 }
 
@@ -557,15 +567,15 @@ void BraveNewTabMessageHandler::OnPreferencesChanged() {
 }
 
 base::Value::Dict BraveNewTabMessageHandler::GetAdsDataDictionary() const {
-  base::Value::Dict ads_data;
+  if (!ads_service_) {
+    return {};
+  }
 
-  ads_data.Set(kNeedsBrowserUpgradeToServeAds,
-               browser_upgrade_required_to_serve_ads_);
-
-  return ads_data;
+  return base::Value::Dict().Set(
+      kNeedsBrowserUpgradeToServeAds,
+      ads_service_->IsBrowserUpgradeRequiredToServeAds());
 }
 
 void BraveNewTabMessageHandler::OnBrowserUpgradeRequiredToServeAds() {
-  browser_upgrade_required_to_serve_ads_ = true;
   FireWebUIListener("new-tab-ads-data-updated", GetAdsDataDictionary());
 }

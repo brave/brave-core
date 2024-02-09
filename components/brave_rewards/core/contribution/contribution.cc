@@ -134,11 +134,11 @@ void Contribution::Initialize() {
 }
 
 void Contribution::CheckContributionQueue() {
-  base::TimeDelta delay = is_testing
+  base::TimeDelta delay = engine_->options().is_testing
                               ? base::Seconds(1)
                               : util::GetRandomizedDelay(base::Seconds(15));
 
-  BLOG(1, "Queue timer set for " << delay);
+  engine_->Log(FROM_HERE) << "Queue timer set for " << delay;
 
   queue_timer_.Start(FROM_HERE, delay,
                      base::BindOnce(&Contribution::ProcessContributionQueue,
@@ -219,7 +219,7 @@ void Contribution::StartMonthlyContributions(
     cutoff_time = std::nullopt;
   }
 
-  BLOG(1, "Starting monthly contributions");
+  engine_->Log(FROM_HERE) << "Starting monthly contributions";
 
   monthly_.Process(cutoff_time, [this, options](mojom::Result result) {
     monthly_contributions_processing_ = false;
@@ -244,7 +244,7 @@ void Contribution::StartMonthlyContributions(
 void Contribution::StartAutoContribute() {
   uint64_t reconcile_stamp = engine_->state()->GetReconcileStamp();
   ResetReconcileStamp();
-  BLOG(1, "Starting auto-contribute");
+  engine_->Log(FROM_HERE) << "Starting auto-contribute";
   ac_.Process(reconcile_stamp);
 }
 
@@ -252,7 +252,7 @@ void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
                              mojom::BalancePtr balance) {
   if (!balance) {
     queue_in_progress_ = false;
-    BLOG(0, "We couldn't get balance from the server.");
+    engine_->LogError(FROM_HERE) << "We couldn't get balance from the server";
     if (queue->type == mojom::RewardsType::ONE_TIME_TIP) {
       MarkContributionQueueAsComplete(queue->id, false);
     }
@@ -281,7 +281,7 @@ void Contribution::SetAutoContributeTimer() {
     delay = base::Seconds(next_reconcile_stamp - now);
   }
 
-  BLOG(1, "Auto-contribute timer set for " << delay);
+  engine_->Log(FROM_HERE) << "Auto-contribute timer set for " << delay;
 
   auto_contribute_timer_.Start(
       FROM_HERE, delay,
@@ -302,7 +302,7 @@ void Contribution::OnNextMonthlyContributionTimeRead(
   monthly_contribution_timer_.Stop();
 
   if (!time) {
-    BLOG(1, "No monthly contributions found.");
+    engine_->Log(FROM_HERE) << "No monthly contributions found.";
     return;
   }
 
@@ -314,7 +314,7 @@ void Contribution::OnNextMonthlyContributionTimeRead(
                      base::Unretained(this),
                      MonthlyContributionOptions::kDefault));
 
-  BLOG(1, "Monthly contribution timer set for " << delay);
+  engine_->Log(FROM_HERE) << "Monthly contribution timer set for " << delay;
 }
 
 void Contribution::SendContribution(const std::string& publisher_id,
@@ -380,7 +380,7 @@ void Contribution::ContributionCompleted(
     const mojom::Result result,
     mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return;
   }
 
@@ -410,7 +410,7 @@ void Contribution::ContributionCompletedSaved(
     const mojom::Result result,
     const std::string& contribution_id) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution step and count failed");
+    engine_->LogError(FROM_HERE) << "Contribution step and count failed";
   }
 
   auto callback = std::bind(&Contribution::OnMarkUnblindedTokensAsSpendable,
@@ -440,7 +440,7 @@ void Contribution::OnMarkContributionQueueAsComplete(
 void Contribution::MarkContributionQueueAsComplete(const std::string& id,
                                                    bool success) {
   if (id.empty()) {
-    BLOG(0, "Queue id is empty");
+    engine_->LogError(FROM_HERE) << "Queue id is empty";
     return;
   }
 
@@ -460,12 +460,12 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
                                   mojom::BalancePtr balance,
                                   mojom::ContributionQueuePtr queue) {
   if (!queue) {
-    BLOG(1, "Queue is null");
+    engine_->Log(FROM_HERE) << "Queue is null";
     return;
   }
 
   if (queue->publishers.empty() || !balance || wallet_type.empty()) {
-    BLOG(0, "Queue data is wrong");
+    engine_->LogError(FROM_HERE) << "Queue data is wrong";
     MarkContributionQueueAsComplete(queue->id, false);
     return;
   }
@@ -474,7 +474,7 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
   const double wallet_balance =
       balance_it != balance->wallets.cend() ? balance_it->second : 0.0;
   if (wallet_balance == 0) {
-    BLOG(1, "Wallet balance is 0 for " << wallet_type);
+    engine_->Log(FROM_HERE) << "Wallet balance is 0 for " << wallet_type;
     CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
                    std::move(queue));
     return;
@@ -482,7 +482,7 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
 
   if (wallet_type == constant::kWalletBitflyer &&
       queue->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-    BLOG(1, "AC is not supported for bitFlyer wallets");
+    engine_->Log(FROM_HERE) << "AC is not supported for bitFlyer wallets";
     CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
                    std::move(queue));
     return;
@@ -513,9 +513,9 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
     queue->amount = 0;
   }
 
-  BLOG(1, "Creating contribution for wallet type "
-              << wallet_type << " (amount: " << contribution->amount
-              << ", type: " << queue->type << ")");
+  engine_->Log(FROM_HERE) << "Creating contribution for wallet type "
+                          << wallet_type << " (amount: " << contribution->amount
+                          << ", type: " << queue->type << ")";
 
   std::vector<mojom::ContributionPublisherPtr> publisher_list;
   for (const auto& item : queue_publishers) {
@@ -548,12 +548,12 @@ void Contribution::OnEntrySaved(
     const mojom::Balance& balance,
     std::shared_ptr<mojom::ContributionQueuePtr> shared_queue) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution was not saved correctly");
+    engine_->LogError(FROM_HERE) << "Contribution was not saved correctly";
     return;
   }
 
   if (!shared_queue) {
-    BLOG(0, "Queue is null");
+    engine_->LogError(FROM_HERE) << "Queue is null";
     return;
   }
 
@@ -591,12 +591,12 @@ void Contribution::OnQueueSaved(
     const mojom::Balance& balance,
     std::shared_ptr<mojom::ContributionQueuePtr> shared_queue) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Queue was not saved successfully");
+    engine_->LogError(FROM_HERE) << "Queue was not saved successfully";
     return;
   }
 
   if (!shared_queue) {
-    BLOG(0, "Queue was not converted successfully");
+    engine_->LogError(FROM_HERE) << "Queue was not converted successfully";
     return;
   }
 
@@ -607,17 +607,17 @@ void Contribution::OnQueueSaved(
 void Contribution::Process(mojom::ContributionQueuePtr queue,
                            mojom::BalancePtr balance) {
   if (!queue) {
-    BLOG(0, "Queue is null");
+    engine_->LogError(FROM_HERE) << "Queue is null";
     return;
   }
 
   if (!balance) {
-    BLOG(0, "Balance is null");
+    engine_->LogError(FROM_HERE) << "Balance is null";
     return;
   }
 
   if (queue->amount == 0 || queue->publishers.empty()) {
-    BLOG(0, "Amount/publisher is empty");
+    engine_->LogError(FROM_HERE) << "Amount/publisher is empty";
     MarkContributionQueueAsComplete(queue->id, false);
     return;
   }
@@ -626,13 +626,13 @@ void Contribution::Process(mojom::ContributionQueuePtr queue,
       &queue->amount, queue->partial, balance->total);
 
   if (!have_enough_balance) {
-    BLOG(1, "Not enough balance");
+    engine_->Log(FROM_HERE) << "Not enough balance";
     MarkContributionQueueAsComplete(queue->id, false);
     return;
   }
 
   if (queue->amount == 0) {
-    BLOG(0, "Amount is 0");
+    engine_->LogError(FROM_HERE) << "Amount is 0";
     MarkContributionQueueAsComplete(queue->id, false);
     return;
   }
@@ -669,7 +669,7 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
   }
 
   NOTREACHED();
-  BLOG(0, "Wallet type not supported: " << wallet_type);
+  engine_->LogError(FROM_HERE) << "Wallet type not supported";
 }
 
 void Contribution::SKUAutoContribution(const std::string& contribution_id,
@@ -727,7 +727,7 @@ void Contribution::OnResult(mojom::ContributionInfoPtr contribution,
                     result == mojom::Result::RETRY_PENDING_TRANSACTION_LONG);
 
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return;
   }
 
@@ -769,18 +769,18 @@ void Contribution::OnResult(mojom::ContributionInfoPtr contribution,
 void Contribution::SetRetryTimer(const std::string& contribution_id,
                                  base::TimeDelta delay) {
   if (contribution_id.empty()) {
-    BLOG(0, "Contribution id is empty");
+    engine_->LogError(FROM_HERE) << "Contribution id is empty";
     return;
   }
 
-  if (retry_interval) {
-    delay = base::Seconds(retry_interval);
+  if (engine_->options().retry_interval) {
+    delay = base::Seconds(engine_->options().retry_interval);
   }
 
-  BLOG(1, "Timer for contribution retry (" << contribution_id
-                                           << ") "
-                                              "set for "
-                                           << delay);
+  engine_->Log(FROM_HERE) << "Timer for contribution retry (" << contribution_id
+                          << ") "
+                             "set for "
+                          << delay;
 
   retry_timers_[contribution_id].Start(
       FROM_HERE, delay,
@@ -798,13 +798,13 @@ void Contribution::OnRetryTimerElapsed(const std::string& contribution_id) {
 
 void Contribution::SetRetryCounter(mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return;
   }
 
   if (contribution->retry_count == 5 &&
       contribution->step != mojom::ContributionStep::STEP_PREPARE) {
-    BLOG(0, "Contribution failed after 5 retries");
+    engine_->LogError(FROM_HERE) << "Contribution failed after 5 retries";
     ContributionCompleted(mojom::Result::TOO_MANY_RESULTS,
                           std::move(contribution));
     return;
@@ -822,21 +822,23 @@ void Contribution::SetRetryCounter(mojom::ContributionInfoPtr contribution) {
 void Contribution::OnMarkUnblindedTokensAsSpendable(
     const mojom::Result result,
     const std::string& contribution_id) {
-  BLOG_IF(1, result != mojom::Result::OK,
-          "Failed to mark unblinded tokens as unreserved for contribution "
-              << contribution_id);
+  if (result != mojom::Result::OK) {
+    engine_->Log(FROM_HERE)
+        << "Failed to mark unblinded tokens as unreserved for contribution "
+        << contribution_id;
+  }
 }
 
 void Contribution::Retry(
     const mojom::Result result,
     std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Retry count update failed");
+    engine_->LogError(FROM_HERE) << "Retry count update failed";
     return;
   }
 
   if (!shared_contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return;
   }
 
@@ -847,15 +849,15 @@ void Contribution::Retry(
 
   if ((*shared_contribution)->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
       !engine_->state()->GetAutoContributeEnabled()) {
-    BLOG(1, "AC is disabled, completing contribution");
+    engine_->Log(FROM_HERE) << "AC is disabled, completing contribution";
     ContributionCompleted(mojom::Result::AC_OFF,
                           std::move(*shared_contribution));
     return;
   }
 
-  BLOG(1, "Retrying contribution (" << (*shared_contribution)->contribution_id
-                                    << ") on step "
-                                    << (*shared_contribution)->step);
+  engine_->Log(FROM_HERE) << "Retrying contribution ("
+                          << (*shared_contribution)->contribution_id
+                          << ") on step " << (*shared_contribution)->step;
 
   auto result_callback = std::bind(&Contribution::Result, this, _1, "",
                                    (*shared_contribution)->contribution_id);

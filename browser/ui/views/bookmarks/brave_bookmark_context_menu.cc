@@ -39,3 +39,9 @@ BraveBookmarkContextMenu::BraveBookmarkContextMenu(
 }
 
 BraveBookmarkContextMenu::~BraveBookmarkContextMenu() = default;
+
+BraveBookmarkContextMenuController*
+BraveBookmarkContextMenu::GetControllerForTesting() {
+  return static_cast<BraveBookmarkContextMenuController*>(
+      controller_.get());  // IN-TEST
+}

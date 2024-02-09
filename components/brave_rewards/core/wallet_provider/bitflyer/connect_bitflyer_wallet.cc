@@ -10,8 +10,9 @@
 #include "base/containers/contains.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_server.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/post_connect_bitflyer.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
@@ -40,7 +41,21 @@ const char* ConnectBitFlyerWallet::WalletType() const {
 }
 
 std::string ConnectBitFlyerWallet::GetOAuthLoginURL() const {
-  return GetLoginUrl(oauth_info_.one_time_string, oauth_info_.code_verifier);
+  auto& config = engine_->Get<EnvironmentConfig>();
+
+  auto url = config.bitflyer_url().Resolve("/ex/OAuth/authorize");
+
+  url = URLHelpers::SetQueryParameters(
+      url, {{"client_id", config.bitflyer_client_id()},
+            {"scope", "assets create_deposit_id withdraw_to_deposit_id"},
+            {"redirect_uri", "rewards://bitflyer/authorization"},
+            {"state", oauth_info_.one_time_string},
+            {"response_type", "code"},
+            {"code_challenge_method", "S256"},
+            {"code_challenge",
+             util::GeneratePKCECodeChallenge(oauth_info_.code_verifier)}});
+
+  return url.spec();
 }
 
 void ConnectBitFlyerWallet::Authorize(ConnectExternalWalletCallback callback) {
@@ -49,7 +64,7 @@ void ConnectBitFlyerWallet::Authorize(ConnectExternalWalletCallback callback) {
 
   const auto rewards_wallet = engine_->wallet()->GetWallet();
   if (!rewards_wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -75,22 +90,22 @@ void ConnectBitFlyerWallet::OnAuthorize(ConnectExternalWalletCallback callback,
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Couldn't get token");
+    engine_->LogError(FROM_HERE) << "Couldn't get token";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (token.empty()) {
-    BLOG(0, "Token is empty");
+    engine_->LogError(FROM_HERE) << "Token is empty";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (address.empty()) {
-    BLOG(0, "Address is empty");
+    engine_->LogError(FROM_HERE) << "Address is empty";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (linking_info.empty()) {
-    BLOG(0, "Linking info is empty");
+    engine_->LogError(FROM_HERE) << "Linking info is empty";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 

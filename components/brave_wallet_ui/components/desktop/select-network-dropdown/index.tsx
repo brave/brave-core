@@ -35,8 +35,8 @@ interface Props {
   onClick: () => void
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
   useWithSearch?: boolean
-  useSwapNetworks?: boolean
   customNetwork?: BraveWallet.NetworkInfo | undefined
+  networkListSubset?: BraveWallet.NetworkInfo[]
   disabled?: boolean
   reduceDisplayName?: boolean
 }
@@ -48,8 +48,8 @@ export const SelectNetworkDropdown = (props: Props) => {
     showNetworkDropDown,
     onSelectCustomNetwork,
     useWithSearch,
-    useSwapNetworks,
     customNetwork,
+    networkListSubset,
     disabled,
     reduceDisplayName
   } = props
@@ -86,7 +86,7 @@ export const SelectNetworkDropdown = (props: Props) => {
             onSelectCustomNetwork={onSelectCustomNetwork}
             selectedNetwork={selectedNetwork}
             customNetwork={customNetwork}
-            useSwapNetworks={useSwapNetworks}
+            networkListSubset={networkListSubset}
           />
         </DropDown>
       )}

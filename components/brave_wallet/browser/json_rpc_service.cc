@@ -69,8 +69,11 @@ using decentralized_dns::ResolveMethodTypes;
 // The domain name should not start or end with hyphen (-).
 // The domain name can be a subdomain.
 // TLD & TLD-1 must be at least two characters.
-constexpr char kDomainPattern[] =
+constexpr char kEnsDomainPattern[] =
     "(?:[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9]\\.)+[A-Za-z]{2,}$";
+
+// Dot separated alpha-numeric-hyphen strings ending with sol
+constexpr char kSnsDomainPattern[] = R"(^(?:[a-z0-9-]+\.)+sol$)";
 
 // Non empty group of symbols of a-z | 0-9 | hyphen(-).
 // Then a dot.
@@ -307,88 +310,6 @@ void JsonRpcService::SetAPIRequestHelperForTesting(
 
 JsonRpcService::~JsonRpcService() = default;
 
-// static
-void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
-  // custom networks
-  if (prefs->HasPrefPath(kBraveWalletCustomNetworksDeprecated)) {
-    const auto& custom_networks =
-        prefs->GetList(kBraveWalletCustomNetworksDeprecated);
-
-    base::Value::Dict new_custom_networks;
-    new_custom_networks.Set(kEthereumPrefKey, custom_networks.Clone());
-
-    prefs->SetDict(kBraveWalletCustomNetworks, std::move(new_custom_networks));
-
-    prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
-  }
-  // selected networks
-  if (prefs->HasPrefPath(kBraveWalletCurrentChainId)) {
-    const std::string chain_id = prefs->GetString(kBraveWalletCurrentChainId);
-    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-    update->Set(kEthereumPrefKey, chain_id);
-    prefs->ClearPref(kBraveWalletCurrentChainId);
-  }
-}
-
-// static
-void JsonRpcService::MigrateDeprecatedEthereumTestnets(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated)) {
-    return;
-  }
-
-  if (prefs->HasPrefPath(kBraveWalletSelectedNetworks)) {
-    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-    base::Value::Dict& selected_networks_pref = update.Get();
-    const std::string* selected_eth_network =
-        selected_networks_pref.FindString(kEthereumPrefKey);
-    if (!selected_eth_network) {
-      return;
-    }
-    if ((*selected_eth_network == "0x3") || (*selected_eth_network == "0x4") ||
-        (*selected_eth_network == "0x2a")) {
-      selected_networks_pref.Set(kEthereumPrefKey, mojom::kMainnetChainId);
-    }
-  }
-
-  prefs->SetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated, true);
-}
-
-// static
-void JsonRpcService::MigrateShowTestNetworksToggle(PrefService* prefs) {
-  if (!prefs->HasPrefPath(kShowWalletTestNetworksDeprecated)) {
-    return;
-  }
-
-  bool show_test_networks =
-      prefs->GetBoolean(kShowWalletTestNetworksDeprecated);
-  prefs->ClearPref(kShowWalletTestNetworksDeprecated);
-
-  if (!show_test_networks) {
-    return;
-  }
-
-  // Show test networks toggle was explicitly enabled. Go through coins and
-  // remove all test networks from hidden lists.
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-  base::Value::Dict& dict = update.Get();
-
-  auto* eth_list = dict.EnsureList(kEthereumPrefKey);
-  eth_list->EraseValue(base::Value(mojom::kGoerliChainId));
-  eth_list->EraseValue(base::Value(mojom::kSepoliaChainId));
-  eth_list->EraseValue(base::Value(mojom::kLocalhostChainId));
-  eth_list->EraseValue(base::Value(mojom::kFilecoinEthereumTestnetChainId));
-
-  auto* fil_list = dict.EnsureList(kFilecoinPrefKey);
-  fil_list->EraseValue(base::Value(mojom::kFilecoinTestnet));
-  fil_list->EraseValue(base::Value(mojom::kLocalhostChainId));
-
-  auto* sol_list = dict.EnsureList(kSolanaPrefKey);
-  sol_list->EraseValue(base::Value(mojom::kSolanaDevnet));
-  sol_list->EraseValue(base::Value(mojom::kSolanaTestnet));
-  sol_list->EraseValue(base::Value(mojom::kLocalhostChainId));
-}
-
 mojo::PendingRemote<mojom::JsonRpcService> JsonRpcService::MakeRemote() {
   mojo::PendingRemote<mojom::JsonRpcService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
@@ -414,7 +335,7 @@ void JsonRpcService::RequestInternal(
         base::NullCallback()) {
   if (!network_url.is_valid()) {
     std::move(callback).Run(
-        APIRequestResult(400, {}, {}, {}, net::ERR_UNEXPECTED, GURL()));
+        APIRequestResult(400, {}, {}, net::ERR_UNEXPECTED, GURL()));
     return;
   }
 
@@ -1525,7 +1446,7 @@ void JsonRpcService::SetSnsResolveMethod(mojom::ResolveMethod method) {
 
 void JsonRpcService::EnsGetEthAddr(const std::string& domain,
                                    EnsGetEthAddrCallback callback) {
-  if (!IsValidDomain(domain)) {
+  if (!IsValidEnsDomain(domain)) {
     std::move(callback).Run(
         "", false, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1596,7 +1517,7 @@ void JsonRpcService::OnEnsGetEthAddrTaskDone(
 
 void JsonRpcService::SnsGetSolAddr(const std::string& domain,
                                    SnsGetSolAddrCallback callback) {
-  if (!IsValidDomain(domain)) {
+  if (!IsValidSnsDomain(domain)) {
     std::move(callback).Run(
         "", mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1649,7 +1570,7 @@ void JsonRpcService::OnSnsGetSolAddrTaskDone(
 
 void JsonRpcService::SnsResolveHost(const std::string& domain,
                                     SnsResolveHostCallback callback) {
-  if (!IsValidDomain(domain)) {
+  if (!IsValidSnsDomain(domain)) {
     std::move(callback).Run(
         std::nullopt, mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -2076,8 +1997,14 @@ void JsonRpcService::OnGetBlockByNumber(GetBlockByNumberCallback callback,
 }
 
 /*static*/
-bool JsonRpcService::IsValidDomain(const std::string& domain) {
-  static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);
+bool JsonRpcService::IsValidEnsDomain(const std::string& domain) {
+  static const base::NoDestructor<re2::RE2> kDomainRegex(kEnsDomainPattern);
+  return re2::RE2::FullMatch(domain, *kDomainRegex);
+}
+
+/*static*/
+bool JsonRpcService::IsValidSnsDomain(const std::string& domain) {
+  static const base::NoDestructor<re2::RE2> kDomainRegex(kSnsDomainPattern);
   return re2::RE2::FullMatch(domain, *kDomainRegex);
 }
 

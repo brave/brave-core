@@ -31,7 +31,8 @@ struct ResultFor<PostConnect> {
 
 class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
   static mojom::ConnectExternalWalletResult ToConnectExternalWalletResult(
       const Result&);
 

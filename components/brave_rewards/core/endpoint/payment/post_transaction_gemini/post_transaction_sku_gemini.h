@@ -66,8 +66,8 @@ class PostTransactionGemini {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 PostTransactionGeminiCallback callback);
+  void OnRequest(PostTransactionGeminiCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

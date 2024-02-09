@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -56,8 +55,8 @@ void BitFlyerTransfer::OnCommitTransaction(
     if (result.error() ==
         PostCommitTransactionBitFlyer::Error::kAccessTokenExpired) {
       if (!engine_->bitflyer()->LogOutWallet()) {
-        BLOG(0, "Failed to disconnect " << constant::kWalletBitflyer
-                                        << " wallet!");
+        engine_->LogError(FROM_HERE) << "Failed to disconnect "
+                                     << constant::kWalletBitflyer << " wallet";
       }
     }
 

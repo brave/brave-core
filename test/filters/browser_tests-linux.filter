@@ -15,11 +15,24 @@
 # These tests pass locally but fail on CI.
 -All/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/1
 -All/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/*
+-AllocationRecorderBrowserTest.VerifyCrashreportIncludesNoRecorder
+-EventPageAndFalse/ExtensionBackForwardCacheBrowserTest.*
+-EventPageAndTrue/ExtensionBackForwardCacheBrowserTest.*
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
+-ServiceWorkerAndFalse/ExtensionBackForwardCacheBrowserTest.*
+-ServiceWorkerAndTrue/ExtensionBackForwardCacheBrowserTest.*
+
+# This test fails because of the following CHECK in identity_test_utils.cc:
+# !primary_account_info.IsEmpty()
+-ManagedUserNoticeUIDialogPixelTest.InvokeUi_default/*
+-ManagedUserNoticeUIWindowPixelTest.InvokeUi_default/*
+
+# These tests fail because kPrerender2 feature is disabled.
+-MediaEngagementPreThirdPartyCookieDeprecationBrowserTest.Ignored
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*

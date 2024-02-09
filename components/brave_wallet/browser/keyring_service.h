@@ -57,7 +57,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void MaybeMigrateSelectedAccountPrefs();
   static std::optional<int>& GetPbkdf2IterationsForTesting();
-  static void MigrateObsoleteProfilePrefs(PrefService* profile_prefs);
 
   static bool HasPrefForKeyring(const PrefService& profile_prefs,
                                 const std::string& key,

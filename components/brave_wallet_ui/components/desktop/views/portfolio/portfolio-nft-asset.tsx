@@ -14,6 +14,7 @@ import { WalletRoutes } from '../../../../constants/types'
 import { getBalance } from '../../../../utils/balance-utils'
 import { makeSendRoute } from '../../../../utils/routes-utils'
 import Amount from '../../../../utils/amount'
+import { getAssetIdKey } from '../../../../utils/asset-utils'
 
 // selectors
 import { WalletSelectors } from '../../../../common/selectors'
@@ -47,9 +48,8 @@ import { StyledWrapper } from './style'
 export const PortfolioNftAsset = () => {
   // routing
   const history = useHistory()
-  const { contractAddress, tokenId } = useParams<{
-    contractAddress: string
-    tokenId?: string
+  const { assetId } = useParams<{
+    assetId?: string
   }>()
 
   // redux
@@ -71,25 +71,13 @@ export const PortfolioNftAsset = () => {
     })
 
   const selectedAssetFromParams = React.useMemo(() => {
-    const userToken = userVisibleTokensInfo
+    return userVisibleTokensInfo
       .concat(hiddenNfts)
       .concat(simpleHashNfts)
-      .find((token) =>
-        tokenId
-          ? token.tokenId === tokenId &&
-            token.contractAddress.toLowerCase() ===
-              contractAddress.toLowerCase()
-          : token.contractAddress.toLowerCase() ===
-            contractAddress.toLowerCase()
-      )
-    return userToken
-  }, [
-    userVisibleTokensInfo,
-    contractAddress,
-    tokenId,
-    hiddenNfts,
-    simpleHashNfts
-  ])
+      .find((token) => {
+        return getAssetIdKey(token) === assetId
+      })
+  }, [assetId, userVisibleTokensInfo, hiddenNfts, simpleHashNfts])
 
   const { accounts } = useAccountsQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(

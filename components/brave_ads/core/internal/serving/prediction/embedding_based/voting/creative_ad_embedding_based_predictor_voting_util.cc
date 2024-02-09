@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/voting/creative_ad_embedding_based_predictor_voting_util.h"
 
+#include <cstddef>
 #include <iterator>
 #include <limits>
 

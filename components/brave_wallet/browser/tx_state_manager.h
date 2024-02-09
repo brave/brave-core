@@ -39,10 +39,8 @@ class TxStateManager {
   TxStateManager(const TxStateManager&) = delete;
 
   bool AddOrUpdateTx(const TxMeta& meta);
-  std::unique_ptr<TxMeta> GetTx(const std::string& chain_id,
-                                const std::string& id);
-  bool DeleteTx(const std::string& chain_id, const std::string& id);
-  bool WipeTxs();
+  std::unique_ptr<TxMeta> GetTx(const std::string& meta_id);
+  bool DeleteTx(const std::string& meta_id);
 
   static void MigrateAddChainIdToTransactionInfo(PrefService* prefs);
   static void MigrateSolanaTransactionsForV0TransactionsSupport(
@@ -90,15 +88,6 @@ class TxStateManager {
   // properties can be filled via the protected ValueToTxMeta function above.
   virtual std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) = 0;
-
-  // Each derived class should provide transaction pref path prefix as
-  // coin_type.network_id. For example, ethereum.mainnet or solana.testnet.
-  // This will be used to get/set the transaction pref for a specific
-  // coin_type. When chain_id is not provided, prefix will be just coin_type,
-  // ex. ethereum and solana and it will be used to acess all the transactions
-  // across different network for the coin.
-  virtual std::string GetTxPrefPathPrefix(
-      const std::optional<std::string>& chain_id) = 0;
 
   raw_ptr<TxStorageDelegate> delegate_ = nullptr;
   raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;

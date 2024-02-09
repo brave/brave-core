@@ -25,8 +25,7 @@ const defaultState: PageState = {
   isAutoPinEnabled: false,
   pinStatusOverview: undefined,
   setupStillInProgress: false,
-  walletTermsAcknowledged: false,
-  selectedCoinMarket: undefined
+  walletTermsAcknowledged: false
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -45,13 +44,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         if (state.mnemonic !== payload.mnemonic) {
           state.mnemonic = payload.mnemonic
         }
-      },
-
-      selectCoinMarket(
-        state,
-        { payload }: PayloadAction<BraveWallet.CoinMarket | undefined>
-      ) {
-        state.selectedCoinMarket = payload
       },
 
       setIsFetchingNFTMetadata(state, { payload }: PayloadAction<boolean>) {

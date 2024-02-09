@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
+import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 
 import java.util.TimeZone;
 
@@ -34,6 +35,7 @@ public class BraveVpnApiResponseUtils {
         }
         BraveVpnUtils.showToast(
                 activity.getResources().getString(R.string.purchase_token_verification_failed));
+        BraveVpnUtils.dismissProgressDialog();
     }
 
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {
@@ -60,20 +62,23 @@ public class BraveVpnApiResponseUtils {
     public static void handleOnGetTimezonesForRegions(Activity activity,
             BraveVpnPrefModel braveVpnPrefModel, String jsonTimezones, boolean isSuccess) {
         if (isSuccess) {
-            String region = BraveVpnUtils.getRegionForTimeZone(
-                    jsonTimezones, TimeZone.getDefault().getID());
+            BraveVpnServerRegion braveVpnServerRegion =
+                    BraveVpnUtils.getServerRegionForTimeZone(
+                            jsonTimezones, TimeZone.getDefault().getID());
+            String region = braveVpnServerRegion.getName();
             if (TextUtils.isEmpty(region)) {
                 BraveVpnUtils.showToast(String.format(
                         activity.getResources().getString(R.string.couldnt_get_matching_timezone),
                         TimeZone.getDefault().getID()));
                 return;
             }
-            if (!TextUtils.isEmpty(BraveVpnUtils.selectedServerRegion)
-                    && BraveVpnUtils.selectedServerRegion != null) {
-                region = BraveVpnUtils.selectedServerRegion.equals(
-                                 BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)
-                        ? region
-                        : BraveVpnUtils.selectedServerRegion;
+            if (BraveVpnUtils.selectedServerRegion != null) {
+                if (!BraveVpnUtils.selectedServerRegion
+                        .getName()
+                        .equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
+                    region = BraveVpnUtils.selectedServerRegion.getName();
+                    braveVpnServerRegion = BraveVpnUtils.selectedServerRegion;
+                }
                 BraveVpnUtils.selectedServerRegion = null;
             } else {
                 String serverRegion = BraveVpnPrefUtils.getServerRegion();
@@ -83,7 +88,7 @@ public class BraveVpnApiResponseUtils {
             }
 
             BraveVpnNativeWorker.getInstance().getHostnamesForRegion(region);
-            braveVpnPrefModel.setServerRegion(region);
+            braveVpnPrefModel.setServerRegion(braveVpnServerRegion);
         } else {
             BraveVpnUtils.showToast(
                     activity.getResources().getString(R.string.vpn_profile_creation_failed));

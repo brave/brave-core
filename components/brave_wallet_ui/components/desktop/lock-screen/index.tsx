@@ -60,7 +60,7 @@ export const LockScreen = () => {
     setPassword('')
     if (success) {
       const sessionRoute = window.localStorage.getItem(
-        LOCAL_STORAGE_KEYS.SESSION_ROUTE
+        LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE
       )
       history.push(sessionRoute || WalletRoutes.PortfolioAssets)
     } else {

@@ -68,7 +68,7 @@ std::vector<std::string> BuildP2AAdOpportunityEvents(
   events.reserve(segments.size() + 1);
 
   for (const auto& segment : segments) {
-    if (std::optional<std::string> ad_opportunities_per_segment_event =
+    if (const std::optional<std::string> ad_opportunities_per_segment_event =
             BuildAdOpportunitiesPerSegmentEvent(ad_type, segment)) {
       events.push_back(*ad_opportunities_per_segment_event);
     }

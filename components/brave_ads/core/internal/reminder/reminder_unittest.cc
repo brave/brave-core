@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
 
+#include <cstddef>
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"

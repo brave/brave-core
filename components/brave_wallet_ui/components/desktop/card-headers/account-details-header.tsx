@@ -67,7 +67,7 @@ import {
   CopyIcon
 } from './account-details-header.style'
 import {
-  CircleButton,
+  MenuButton,
   ButtonIcon,
   MenuWrapper,
   HorizontalDivider
@@ -77,7 +77,7 @@ import { Row, Column, HorizontalSpace } from '../../shared/style'
 interface Props {
   account: BraveWallet.AccountInfo
   onClickMenuOption: (option: AccountModalTypes) => void
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 }
 
 export const AccountDetailsHeader = (props: Props) => {
@@ -199,7 +199,7 @@ export const AccountDetailsHeader = (props: Props) => {
       justifyContent='space-between'
     >
       <Row width='unset'>
-        <CircleButton
+        <MenuButton
           size={28}
           marginRight={16}
           onClick={goBack}
@@ -208,7 +208,7 @@ export const AccountDetailsHeader = (props: Props) => {
             size={16}
             name='arrow-left'
           />
-        </CircleButton>
+        </MenuButton>
         <CreateAccountIcon
           account={account}
           size='big'
@@ -263,11 +263,11 @@ export const AccountDetailsHeader = (props: Props) => {
           </>
         )}
         <MenuWrapper ref={accountDetailsMenuRef}>
-          <CircleButton
+          <MenuButton
             onClick={() => setShowAccountDetailsMenu((prev) => !prev)}
           >
             <ButtonIcon name='more-vertical' />
-          </CircleButton>
+          </MenuButton>
           {showAccountDetailsMenu && (
             <AccountDetailsMenu
               options={menuOptions}

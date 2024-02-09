@@ -15,7 +15,7 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
-#include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
+#include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
 namespace brave_wallet {
 
@@ -44,7 +44,7 @@ class ZCashBlockTracker : public BlockTracker {
   void GetBlockHeight(const std::string& chain_id);
   void OnGetLatestBlockForHeight(
       const std::string& chain_id,
-      base::expected<zcash::BlockID, std::string> latest_height);
+      base::expected<mojom::BlockIDPtr, std::string> latest_height);
 
   // <chain_id, block_height>
   std::map<std::string, uint32_t> latest_height_map_;

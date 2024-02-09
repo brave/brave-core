@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">הפעל / כבה את Brave Shields</translation>
 <translation id="6945863270524203017">קבל עדכוני פרטיות שבועיים על חסימות עוקבים ומודעות.</translation>
 <translation id="4324735664183300693">הפעל התראות.</translation>
-<translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="6395059271589866759">Brave גובה 5% מהסכום שנשלח כעמלת עיבוד.</translation>
 <translation id="6661699662755460155">המרה</translation>
 <translation id="6790981891677399838">זה עתה העברתי <ph name="AMOUNT"/> BAT באמצעות הBrave Browser. ראה כיצד תוכל לתמוך גם ביוצרים ובאתרים המועדפים עליך: https://brave.com/rewards</translation>
-<translation id="2278950434998763147">פותח אתרים נתמכים בצורה מאובטחת באמצעות HTTPS במקום HTTP</translation>
 <translation id="5510493033031835532">הפניה אוטומטית של דפי AMP</translation>
 <translation id="5197219128592971597">בקר תמיד בכתובות URL של דפים מקוריים (שאינם AMP), במקום בגרסאות דפי המוביל המואצים של גוגל.</translation>
 <translation id="920638232916443453">כתובות אתרים למעקב להפניה אוטומטית</translation>
@@ -128,6 +126,11 @@
 <translation id="3365863382631355729">עודכן לאחרונה: <ph name="TIME"/></translation>
 <translation id="802154636333426148">ההורדה נכשלה</translation>
 <translation id="7824440849056209910">העידכון נכשל <ph name="TIME"/></translation>
+<translation id="8580328754808744073">יצירת מסננים מותאמים אישית.</translation>
+<translation id="6532106788206463496">שמירת שינויים</translation>
+<translation id="5132969826889386652">השינויים נשמרו בהצלחה</translation>
+<translation id="4335929145384293789">יש להוסיף מסננים מותאמים אישית שיצרת, אחד בכל שורה, בשדה למעלה. נא להקפיד להשתמש ב-<ph name="ADBLOCK_FILTER_SYNTAX"/>.</translation>
+<translation id="5023212862780303376">תחביר מסנן Adblock</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> מחיר (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -170,11 +173,12 @@
 <translation id="254100925533869330">אין תוכן</translation>
 <translation id="7172792761509429092">אין ב-Brave News תוכן להציג.</translation>
 <translation id="1771307734839364850">בחרו מקורות תוכן</translation>
-<translation id="5787084571334399599">מונע מהדפדפן ליצור טביעת אצבע</translation>
+<translation id="6891769200437737956">מונע מאתרים לסמן אותי כטביעת אצבע</translation>
 <translation id="7459000603787995422">סגור כרטיסיות ביציאה</translation>
 <translation id="4448697385961650078">חסום עוקבים &amp; פרסומות</translation>
 <translation id="2448893613530489637">מניעת טעינת תוכנות מעקב ופרסומות</translation>
 <translation id="1025207378813960343">ודא שהחיבורים לאתרים מאובטחים.</translation>
+<translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="6686219838158572786">דרוש מכל החיבורים להשתמש ב-HTTPS (קפדנית)</translation>
 <translation id="4221284400051835823">שדרג ל-HTTPS במידת האפשר (ברירת מחדל)</translation>
 <translation id="4690906712010847708">אל תשדרג חיבורים ל-HTTPS (מושבת)</translation>
@@ -187,8 +191,6 @@
 <translation id="5987838417172370108">עזור לשפר את יציבות המוצר של Brave על ידי שליחת דוחות אבחון אוטומטית כאשר הדפדפן האמיץ קורס או קופא.</translation>
 <translation id="7977176350719484850">הערכת נתונים/n שנשמרו</translation>
 <translation id="9008534313521214777">זמן מוערך\n שנשמר</translation>
-<translation id="1842747674580016420">הפעלת וידאו ב-Brave</translation>
-<translation id="5368992950177874750">אם מופעל, סרטונים ינוגנו ב-Brave במקום באפליקציה המתאימה</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
 <translation id="7445411102860286510">אתרים יוכלו להפעיל באופן אוטומטי סרטונים מושתקים (מומלץ)</translation>
 <translation id="7837721118676387834">אפשר הפעלה אוטומטית של סרטונים מושתקים באתר ספציפי.</translation>
@@ -206,6 +208,7 @@
 <translation id="1690924763769415936">ניגון ברקע</translation>
 <translation id="6332924730165919598">סגירת כל הכרטיסיות סוגרת את Brave</translation>
 <translation id="8308305244351876417">מאפשר לשמע להמשיך להתנגן כשעוברים ללשונית אחרת ב-Brave, לאפליקציה אחרת או אם מסך המכשיר כבוי.</translation>
+<translation id="49147335255967913">פתיחת קישורי יוטיוב ב-Brave</translation>
 <translation id="4150201353443180367">תצוגה</translation>
 <translation id="4275663329226226506">מדיה</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -377,13 +380,8 @@
 <translation id="4803910478683254032">הייבוא נכשל</translation>
 <translation id="8325139248201792113">ייבוא הסימניות נכשל. בבקשה נסה שוב.</translation>
 <translation id="2803313416453193357">תיקייה פתוחה</translation>
-<translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
-<translation id="7473245612074035141">התחל התקנה</translation>
 <translation id="8985635554450124959">לא ניתן להגדיר סנכרון</translation>
-<translation id="2514300153301737214">זיהינו שה-Brave שלך זמין, אך סנכרון המערכת שלך מכובה ולא יאפשר ל-Brave להסתנכרן. נא ללחוץ לפתיחת ההגדרות</translation>
 <translation id="7173114856073700355">פתיחת ההגדרות</translation>
-<translation id="6965382102122355670">אישור</translation>
-<translation id="4450893287417543264">אל תציג שוב</translation>
 <translation id="496896260395129787">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>מחדש את החשבון</translation>
 <translation id="4094590686212463338">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. שרשרת הסנכרון נמחקה.</translation>
@@ -480,7 +478,7 @@
 <translation id="7854108565842971747">אלו הן הגדרות ברירת המחדל של Shields עבור אתרים חדשים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
 <translation id="218587021686734263">מנע טביעת אצבע באמצעות הגדרות שפה</translation>
 <translation id="1706099589708266367">מפחית את מידת האפשרויות של אתרים ללמוד עליך בהתבסס על הגדרות השפה של הדפדפן שלך.</translation>
-<translation id="184568144098869637">מונע מהדפדפן לזהות את המכשיר שלך</translation>
+<translation id="4721088070859595932">מונע מאתרים לזהות את המכשיר שלך</translation>
 <translation id="7445306466605902444">טביעות אצבע חסומות (מחמיר, עשוי לשבש פעולה תקינה של אתרים)</translation>
 <translation id="5582686930349810484">טביעות אצבע חסומות (סטנדרטי)</translation>
 <translation id="769702552748212954">אפשר כל לקיחת טביעות אצבע</translation>
@@ -624,8 +622,9 @@
 <translation id="1783600039044302171">אבטח את מטבע הקריפטו שלך עם סיסמה</translation>
 <translation id="3726490322412361740">יש להזין ססמה</translation>
 <translation id="3038243139480464605">אמת סיסמה</translation>
-<translation id="3717685683157254329">הסיסמה חייבת להיות באורך של 7 תווים לפחות ולהכיל לפחות אות אחת, מספר אחד ותו מיוחד אחד.</translation>
+<translation id="3043677904160378840">סיסמאות חייבות להיות באורך 8 תווים לפחות.</translation>
 <translation id="7396672979287122068">הסיסמה המאומתת אינה תואמת</translation>
+<translation id="7084181009966710506">יוצר ארנק...</translation>
 <translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">יום אחד</translation>
 <translation id="7640956400175663828">שבוע אחד</translation>
@@ -778,7 +777,6 @@
 <translation id="1705662265912724430">האם את/ה בטוח/ה שברצונך לאפס את תצורת ה-VPN?</translation>
 <translation id="604124094241169006">אוטומטי</translation>
 <translation id="7475580600756356589">מתחבר לשרת שלך. זה ייקח כמה רגעים ...</translation>
-<translation id="1342728075788541348">מנתנק מהשרת שלך. זה ייקח כמה רגעים ...</translation>
 <translation id="669072536454692117">המינוי הופעל בהצלחה</translation>
 <translation id="1187506504156101449">אישור הרכישה נכשל:</translation>
 <translation id="8420522105268941892">אתה כבר רשום כמנוי. נסה לשחזר את המנוי.</translation>
@@ -811,7 +809,6 @@
 <translation id="8084782383392198011">שם החשבון לא יכול להיות ריק.</translation>
 <translation id="5045550434625856497">סיסמה שגויה</translation>
 <translation id="1367951781824006909">בחר קובץ</translation>
-<translation id="8648684608605749476">‏חסימת קובצי cookie של צד שלישי במצב אנונימי</translation>
 <translation id="5932938770824268122">מפתח פרטי</translation>
 <translation id="2472882733835903303">הצג מפתח פרטי</translation>
 <translation id="4391056902675005799">הסתר מפתח פרטי</translation>
@@ -963,9 +960,12 @@
 <translation id="6044189892950611565">ערוץ התראות עבור Brave Browser</translation>
 <translation id="1173919438868967364">בחירת חשבון</translation>
 <translation id="8922793255489232731">לא ניתן היה להשיג אזור זמן תואם עבור: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">מוריד קובץ נתוני ארנק\u2022<ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">מחובר אל <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">ניסיון</translation>
+<translation id="6458565248779152483">השבת Brave VPN</translation>
+<translation id="9080536793704001825">השהה למשך 15 דקות</translation>
+<translation id="803706420145725977">השהה למשך שעה אחת</translation>
+<translation id="4394049700291259645">השבת</translation>
 <translation id="7733890291091968191">הצגת התראות Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave אינה עוקבת אחריך ואינה יודעת באיזה אופן החלטת לעשות שימוש באפליקציה שלנו, ולכן, אנו לא יודעים באיזה אופן הגדרת את ה-VPN. עליך לשתף מידע על הבעיה שחווית כדי שנוכל לעשות את מירב המאמצים לפתור אותה בהקדם האפשרי.####\n\n</translation>
 <translation id="3367162038532116157">\n\nשם מארח VPN\n <ph name="VALUE"/></translation>
@@ -995,6 +995,7 @@
 <translation id="8219806187375413057"><ph name="CLICK_START"/>למד כיצד להפחית את הסיכונים עם Rainbow Bridge<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/>הוא שירות עצמאי שעוזר לגשר נכסים בין רשתות, ולהשתמש בקריפטו שלך ברשתות אחרות ובמערכות אקולוגיות של DApp. כשמגשרים נכסים לרשתות אחרות ישנם כמה סיכונים.</translation>
 <translation id="8423380132356660250">פתח את אפליקציית <ph name="APP_NAME"/></translation>
+<translation id="4450893287417543264">אל תציג שוב</translation>
 <translation id="168154537623654021">מעדכן את פרופיל VPN...</translation>
 <translation id="7457027586454688423">הזן את סיסמת ה-Brave Wallet שלך</translation>
 <translation id="4784306439879850873">שים לב ש-Brave לא יכול לאמת מה יקרה אם תחתום. חתימה יכולה לאשר כמעט כל פעולה בחשבונך או בשמך, לרבות (אך לא רק) הענקת שליטה מלאה על חשבונך ונכסי הקריפטו לאתר המגיש את הבקשה. חתום רק אם אתה בטוח שאתה רוצה לבצע פעולה זו ולסמך על האתר המבקש.</translation>

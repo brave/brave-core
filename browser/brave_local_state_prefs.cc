@@ -30,7 +30,7 @@
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
-#include "brave/components/misc_metrics/page_metrics_service.h"
+#include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -75,10 +75,6 @@
 namespace brave {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  RegisterWidevineLocalstatePrefsForMigration(registry);
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
@@ -165,7 +161,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_wallet::RegisterLocalStatePrefs(registry);
 
   misc_metrics::ProcessMiscMetrics::RegisterPrefs(registry);
-  misc_metrics::PageMetricsService::RegisterPrefs(registry);
+  misc_metrics::PageMetrics::RegisterPrefs(registry);
   brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
 

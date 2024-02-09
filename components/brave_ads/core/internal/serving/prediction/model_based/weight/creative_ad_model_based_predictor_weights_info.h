@@ -18,10 +18,10 @@ struct CreativeAdModelBasedPredictorWeightsInfo final {
   CreativeAdModelBasedPredictorSegmentWeightInfo latent_interest_segment;
   CreativeAdModelBasedPredictorSegmentWeightInfo interest_segment;
 
+  double untargeted_segment = 0.0;
+
   double last_seen_ad = 0.0;
   double last_seen_advertiser = 0.0;
-
-  double priority = 0.0;
 };
 
 }  // namespace brave_ads

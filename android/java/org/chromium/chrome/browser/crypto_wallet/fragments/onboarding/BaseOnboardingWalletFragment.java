@@ -1,0 +1,38 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
+
+import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFragment;
+
+/**
+ * Base abstract class used by onboarding fragments holding a reference to next page interface and
+ * containing two abstract methods that define navigation behavior.
+ *
+ * @see org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage
+ */
+public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFragment {
+
+    /** Returns {@code true} if the fragment can be closed. */
+    protected boolean canBeClosed() {
+        return true;
+    }
+
+    /** Returns {@code true} if the fragment allows backward navigation. */
+    protected boolean canNavigateBack() {
+        return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mOnNextPage != null) {
+            // Show or hide close icon depending on the fragment configuration.
+            mOnNextPage.showCloseButton(canBeClosed());
+            // Show or hide back icon depending on the fragment configuration.
+            mOnNextPage.showBackButton(canNavigateBack());
+        }
+    }
+}

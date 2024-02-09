@@ -56,68 +56,6 @@ TEST_F(GeminiPostOauthTest, ServerOK) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(GeminiPostOauthTest, ServerError401) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_UNAUTHORIZED;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
-
-  base::MockCallback<PostOauthCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string()))
-      .Times(1);
-  oauth_.Request(
-      "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "1234567890", callback.Get());
-
-  task_environment_.RunUntilIdle();
-}
-
-TEST_F(GeminiPostOauthTest, ServerError403) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_FORBIDDEN;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
-
-  base::MockCallback<PostOauthCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string()))
-      .Times(1);
-  oauth_.Request(
-      "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "1234567890", callback.Get());
-
-  task_environment_.RunUntilIdle();
-}
-
-TEST_F(GeminiPostOauthTest, ServerError404) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_NOT_FOUND;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
-
-  base::MockCallback<PostOauthCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::NOT_FOUND, std::string())).Times(1);
-  oauth_.Request(
-      "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "1234567890", callback.Get());
-
-  task_environment_.RunUntilIdle();
-}
-
 TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
   EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
       .Times(1)

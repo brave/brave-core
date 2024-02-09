@@ -5,13 +5,19 @@
 
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 
-#include <string>
 #include <memory>
+#include <string>
+#include <utility>
 
+#include "base/location.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "net/base/proxy_server.h"
+#include "net/base/schemeful_site.h"
 #include "net/proxy_resolution/configured_proxy_resolution_service.h"
 #include "net/proxy_resolution/mock_proxy_resolver.h"
+#include "net/proxy_resolution/proxy_config_service.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/test/test_with_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -21,13 +27,44 @@ namespace net {
 
 class ProxyConfigServiceTorTest : public TestWithTaskEnvironment {
  public:
-  ProxyConfigServiceTorTest() = default;
+  ProxyConfigServiceTorTest()
+      : TestWithTaskEnvironment(
+            base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        proxy_uri_("socks5://127.0.0.1:5566") {}
   ProxyConfigServiceTorTest(const ProxyConfigServiceTorTest&) = delete;
   ProxyConfigServiceTorTest& operator=(const ProxyConfigServiceTorTest&) =
       delete;
   ~ProxyConfigServiceTorTest() override = default;
 
+  void SetUp() override {
+    auto config_service =
+        net::ProxyConfigService::CreateSystemProxyConfigService(
+            base::SingleThreadTaskRunner::GetCurrentDefault());
+
+    service_ = std::make_unique<ConfiguredProxyResolutionService>(
+        std::move(config_service),
+        std::make_unique<MockAsyncProxyResolverFactory>(false), nullptr,
+        /*quick_check_enabled=*/true);
+  }
+
+  ConfiguredProxyResolutionService* service() { return service_.get(); }
+
+  void CheckProxyServer(const base::Location& location,
+                        const net::ProxyServer& proxy_server,
+                        const std::string& expected_username) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    ASSERT_TRUE(proxy_server.scheme() == ProxyServer::SCHEME_SOCKS5);
+    ASSERT_EQ(proxy_server.host_port_pair().host(), "127.0.0.1");
+    ASSERT_EQ(proxy_server.host_port_pair().port(), 5566);
+    EXPECT_EQ(proxy_server.host_port_pair().username(), expected_username);
+    EXPECT_TRUE(!proxy_server.host_port_pair().password().empty());
+  }
+
+  std::string proxy_uri() const { return proxy_uri_; }
+
  private:
+  std::string proxy_uri_;
+  std::unique_ptr<net::ConfiguredProxyResolutionService> service_;
 };
 
 TEST_F(ProxyConfigServiceTorTest, CircuitAnonymizationKey) {
@@ -108,108 +145,157 @@ TEST_F(ProxyConfigServiceTorTest, CircuitAnonymizationKey) {
 }
 
 TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
-  const std::string proxy_uri("socks5://127.0.0.1:5566");
   const GURL site_url("https://check.torproject.org/");
-  const std::string anonymization_key =
+  const std::string circuit_anonymization_key =
       ProxyConfigServiceTor::CircuitAnonymizationKey(site_url);
 
-  ProxyConfigServiceTor proxy_config_service(proxy_uri);
+  ProxyConfigServiceTor proxy_config_service(proxy_uri());
   ProxyConfigWithAnnotation config;
 
   proxy_config_service.SetNewTorCircuit(site_url);
   proxy_config_service.GetLatestProxyConfig(&config);
-  auto single_proxy = config.value().proxy_rules().single_proxies.Get();
-  EXPECT_TRUE(!single_proxy.host_port_pair().password().empty());
-  EXPECT_TRUE(single_proxy.scheme() == ProxyServer::SCHEME_SOCKS5);
-  EXPECT_EQ(single_proxy.host_port_pair().username(), anonymization_key);
-  EXPECT_EQ(single_proxy.host_port_pair().host(), "127.0.0.1");
-  EXPECT_EQ(single_proxy.host_port_pair().port(), 5566);
+  auto single_proxy =
+      config.value().proxy_rules().single_proxies.First().GetProxyServer(
+          /*chain_index=*/0);
+  CheckProxyServer(FROM_HERE, single_proxy, circuit_anonymization_key);
 }
 
 TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
-  const std::string proxy_uri("socks5://127.0.0.1:5566");
   const GURL site_url("https://check.torproject.org/");
   const GURL site_url2("https://brave.com/");
-  const std::string anonymization_key =
+  const std::string circuit_anonymization_key =
       ProxyConfigServiceTor::CircuitAnonymizationKey(site_url);
-  const std::string anonymization_key2 =
+  const std::string circuit_anonymization_key2 =
       ProxyConfigServiceTor::CircuitAnonymizationKey(site_url2);
+  const net::SchemefulSite site(site_url);
+  const net::SchemefulSite site2(site_url2);
+  const auto network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site, site);
+  const auto network_anonymization_key2 =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site2, site2);
 
-  auto config_service = net::ProxyConfigService::CreateSystemProxyConfigService(
-      base::SingleThreadTaskRunner::GetCurrentDefault());
-
-  auto* service = new ConfiguredProxyResolutionService(
-      std::move(config_service),
-      std::make_unique<MockAsyncProxyResolverFactory>(false), nullptr,
-      /*quick_check_enabled=*/true);
-
-  ProxyConfigServiceTor proxy_config_service(proxy_uri);
+  ProxyConfigServiceTor proxy_config_service(proxy_uri());
   ProxyConfigWithAnnotation config;
   proxy_config_service.GetLatestProxyConfig(&config);
 
   ProxyInfo info;
   ProxyConfigServiceTor::SetProxyAuthorization(
-      config, site_url, service, &info);
-  auto host_port_pair = info.proxy_server().host_port_pair();
-
-  EXPECT_EQ(host_port_pair.username(), anonymization_key);
-  EXPECT_TRUE(info.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
-  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
-  EXPECT_EQ(host_port_pair.port(), 5566);
+      config, site_url, network_anonymization_key, service(), &info);
+  auto proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
   // everything should still be the same on subsequent calls
-  std::string password = host_port_pair.password();
-  ProxyInfo info2;
+  std::string password = proxy_server.host_port_pair().password();
   ProxyConfigServiceTor::SetProxyAuthorization(
-      config, site_url, service, &info2);
-  host_port_pair = info2.proxy_server().host_port_pair();
-
-  EXPECT_EQ(host_port_pair.username(), anonymization_key);
-  EXPECT_EQ(host_port_pair.password(), password);
-  EXPECT_TRUE(info2.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
-  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
-  EXPECT_EQ(host_port_pair.port(), 5566);
-
-  // TODO(darkdh): Test persistent circuit anonymization until timeout.
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
   // Test new tor circuit.
   proxy_config_service.SetNewTorCircuit(site_url);
   proxy_config_service.GetLatestProxyConfig(&config);
-  ProxyInfo info3;
   ProxyConfigServiceTor::SetProxyAuthorization(
-      config, site_url, service, &info3);
-  host_port_pair = info3.proxy_server().host_port_pair();
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
-  EXPECT_EQ(host_port_pair.username(), anonymization_key);
-  EXPECT_NE(host_port_pair.password(), password);
-  EXPECT_TRUE(info3.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
-  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
-  EXPECT_EQ(host_port_pair.port(), 5566);
+  EXPECT_NE(proxy_server.host_port_pair().password(), password);
 
   // everything should still be the same on subsequent calls
-  password = host_port_pair.password();
-  ProxyInfo info4;
+  password = proxy_server.host_port_pair().password();
   ProxyConfigServiceTor::SetProxyAuthorization(
-      config, site_url, service, &info4);
-  host_port_pair = info4.proxy_server().host_port_pair();
-
-  EXPECT_EQ(host_port_pair.username(), anonymization_key);
-  EXPECT_EQ(host_port_pair.password(), password);
-  EXPECT_TRUE(info4.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
-  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
-  EXPECT_EQ(host_port_pair.port(), 5566);
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
 
   // SetNewTorCircuit should not affect other urls
   proxy_config_service.GetLatestProxyConfig(&config);
-  ProxyInfo info5;
   ProxyConfigServiceTor::SetProxyAuthorization(
-      config, site_url2, service, &info5);
-  host_port_pair = info5.proxy_server().host_port_pair();
-  EXPECT_EQ(host_port_pair.username(), anonymization_key2);
-  EXPECT_NE(host_port_pair.password(), password);
-  EXPECT_TRUE(info5.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
-  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
-  EXPECT_EQ(host_port_pair.port(), 5566);
+      config, site_url2, network_anonymization_key2, service(), &info);
+  proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key2);
+  EXPECT_NE(proxy_server.host_port_pair().password(), password);
 }
 
+TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization_Subresources) {
+  const GURL site_url1("https://brave.com/");
+  const GURL site_url2("https://bravesoftware.com/");  // subresource
+  const GURL site_url3("https://brave.software.com/");
+  const net::SchemefulSite site1(site_url1);
+  const net::SchemefulSite site2(site_url2);
+  const net::SchemefulSite site3(site_url3);
+  const auto network_anonymization_key_1_2 =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site1, site2);
+  const std::string circuit_anonymization_key1 =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url1);
+  const auto network_anonymization_key_3_2 =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site3, site2);
+  const std::string circuit_anonymization_key3 =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url3);
+
+  ProxyConfigServiceTor proxy_config_service(proxy_uri());
+  ProxyConfigWithAnnotation config;
+  proxy_config_service.GetLatestProxyConfig(&config);
+
+  ProxyInfo info;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url2, network_anonymization_key_1_2, service(), &info);
+  auto proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key1);
+  const auto password1 = proxy_server.host_port_pair().password();
+
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url2, network_anonymization_key_3_2, service(), &info);
+  proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key3);
+  const auto password3 = proxy_server.host_port_pair().password();
+
+  EXPECT_NE(password1, password3);
+}
+
+TEST_F(ProxyConfigServiceTorTest, CircuitTimeout) {
+  const GURL site_url("https://brave.com/");
+  const std::string circuit_anonymization_key =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url);
+  const net::SchemefulSite site(site_url);
+  const auto network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site, site);
+
+  ProxyConfigServiceTor proxy_config_service(proxy_uri());
+  ProxyConfigWithAnnotation config;
+  proxy_config_service.GetLatestProxyConfig(&config);
+
+  ProxyInfo info;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  auto proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
+
+  auto password = proxy_server.host_port_pair().password();
+
+  // password is still the same
+  FastForwardBy(base::Minutes(9));
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
+  EXPECT_EQ(proxy_server.host_port_pair().password(), password);
+
+  // Exceeds 10 mins, new password is generated
+  FastForwardBy(base::Minutes(2));
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
+  EXPECT_NE(proxy_server.host_port_pair().password(), password);
+  password = proxy_server.host_port_pair().password();
+
+  // Another timeout
+  FastForwardBy(base::Minutes(11));
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().proxy_server();
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
+  EXPECT_NE(proxy_server.host_port_pair().password(), password);
+}
 }  // namespace net

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_UTIL_H_
 
+#include <cstddef>
 #include <optional>
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
@@ -24,7 +25,7 @@ bool ConfirmationTokenExists(const ConfirmationTokenInfo& confirmation_token);
 
 bool ConfirmationTokensIsEmpty();
 
-int ConfirmationTokenCount();
+size_t ConfirmationTokenCount();
 
 [[nodiscard]] bool IsValid(const ConfirmationTokenInfo& confirmation_token);
 

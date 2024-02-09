@@ -518,7 +518,8 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
     base::Value&& in_value,
-    const ContentSettingConstraints& constraints) {
+    const ContentSettingConstraints& constraints,
+    const PartitionKey& partition_key) {
   const auto cookie_is_found_in =
       [&primary_pattern = std::as_const(primary_pattern),
        &secondary_pattern = std::as_const(secondary_pattern),
@@ -569,7 +570,8 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
     base::Value&& in_value,
-    const ContentSettingConstraints& constraints) {
+    const ContentSettingConstraints& constraints,
+    const PartitionKey& partition_key) {
   // PrefProvider ignores default settings so handle them here for shields
   if (content_settings::IsShieldsContentSettingsType(content_type) &&
       primary_pattern == ContentSettingsPattern::Wildcard() &&
@@ -611,18 +613,19 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
                                          content_type, std::move(in_value),
-                                         constraints);
+                                         constraints, partition_key);
 }
 
 std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
     ContentSettingsType content_type,
-    bool incognito) const NO_THREAD_SAFETY_ANALYSIS {
+    bool incognito,
+    const PartitionKey& partition_key) const NO_THREAD_SAFETY_ANALYSIS {
   if (content_type == ContentSettingsType::COOKIES) {
     const auto& rules = cookie_rules_.at(incognito);
     return rules.GetRuleIterator(content_type);
   }
 
-  return PrefProvider::GetRuleIterator(content_type, incognito);
+  return PrefProvider::GetRuleIterator(content_type, incognito, partition_key);
 }
 
 void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,

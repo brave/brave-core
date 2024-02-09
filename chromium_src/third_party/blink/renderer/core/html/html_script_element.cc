@@ -12,12 +12,18 @@
 namespace blink {
 
 // static
-bool HTMLScriptElement::supports(ScriptState* script_state,
-                                 const AtomicString& type) {
+bool HTMLScriptElement::supports(const AtomicString& type) {
   if (type == script_type_names::kWebbundle)
     return false;
 
-  return supports_ChromiumImpl(script_state, type);
+  // There used to be a kSpeculationRulesPrefetchProxy feature flag to disable
+  // speculative prefetching in the upstream function, but with its removal, it
+  // was necessary to move the check here.
+  if (type == script_type_names::kSpeculationrules) {
+    return false;
+  }
+
+  return supports_ChromiumImpl(type);
 }
 
 }  // namespace blink

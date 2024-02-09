@@ -63,7 +63,7 @@ interface Props {
   account: BraveWallet.AccountInfo
   isSelected: boolean
   onSelectAccount: () => void
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 }
 
 export const SelectAccountItem = (props: Props) => {

@@ -176,6 +176,16 @@ declare namespace chrome.braveRewards {
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
 
+  const selfCustodyInviteDismissed: (
+    callback: (dismissed: boolean) => void
+  ) => void
+
+  const dismissSelfCustodyInvite: () => void
+
+  const onSelfCustodyInviteDismissed: {
+    addListener: (callback: () => void) => void
+  }
+
   const getScheduledCaptchaInfo: (
     callback: (scheduledCaptcha: RewardsExtension.ScheduledCaptcha) => void
   ) => void

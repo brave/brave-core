@@ -57,7 +57,6 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
     delegate_ = GetTxStorageDelegateForTest(GetPrefs(), factory_);
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
-    WaitForTxStorageDelegateInitialized(delegate_.get());
     tx_state_manager_ = std::make_unique<EthTxStateManager>(
         GetPrefs(), delegate_.get(), account_resolver_delegate_.get());
 
@@ -168,7 +167,7 @@ TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
 
   pending_tx_tracker.DropTransaction(&meta);
-  EXPECT_EQ(tx_state_manager_->GetTx(mojom::kMainnetChainId, "001"), nullptr);
+  EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
@@ -239,7 +238,7 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
     EXPECT_EQ(1UL, pending_chain_ids.size());
     WaitForResponse();
     auto meta_from_state =
-        tx_state_manager_->GetEthTx(chain_id, base::StrCat({chain_id, "001"}));
+        tx_state_manager_->GetEthTx(base::StrCat({chain_id, "001"}));
     ASSERT_NE(meta_from_state, nullptr);
     EXPECT_EQ(meta_from_state->status(), mojom::TransactionStatus::Confirmed);
     EXPECT_EQ(meta_from_state->from(), eth_account_id_);
@@ -247,13 +246,13 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
               "0xb60e8dd61c5d32be8058bb8eb970870f07233155");
 
     meta_from_state =
-        tx_state_manager_->GetEthTx(chain_id, base::StrCat({chain_id, "003"}));
+        tx_state_manager_->GetEthTx(base::StrCat({chain_id, "003"}));
     ASSERT_EQ(meta_from_state, nullptr);
     meta_from_state =
-        tx_state_manager_->GetEthTx(chain_id, base::StrCat({chain_id, "004"}));
+        tx_state_manager_->GetEthTx(base::StrCat({chain_id, "004"}));
     ASSERT_EQ(meta_from_state, nullptr);
     meta_from_state =
-        tx_state_manager_->GetEthTx(chain_id, base::StrCat({chain_id, "005"}));
+        tx_state_manager_->GetEthTx(base::StrCat({chain_id, "005"}));
     ASSERT_NE(meta_from_state, nullptr);
     EXPECT_EQ(meta_from_state->status(), mojom::TransactionStatus::Confirmed);
     EXPECT_EQ(meta_from_state->tx_receipt().contract_address,

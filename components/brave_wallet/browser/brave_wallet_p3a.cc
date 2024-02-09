@@ -31,8 +31,8 @@ const int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
 const char* kTimePrefsToMigrateToLocalState[] = {kBraveWalletLastUnlockTime,
                                                  kBraveWalletP3AFirstUnlockTime,
                                                  kBraveWalletP3ALastUnlockTime};
-const char* kTimePrefsToRemove[] = {kBraveWalletP3AFirstReportTime,
-                                    kBraveWalletP3ALastReportTime};
+const char* kTimePrefsToRemove[] = {kBraveWalletP3AFirstReportTimeDeprecated,
+                                    kBraveWalletP3ALastReportTimeDeprecated};
 const int kNFTCountBuckets[] = {0, 4, 20};
 constexpr base::TimeDelta kOnboardingRecordDelay = base::Seconds(120);
 
@@ -353,7 +353,7 @@ void BraveWalletP3A::ReportNftDiscoverySetting() {
   }
 }
 
-// TODO(djandries): remove pref migration around November 2023
+// TODO(djandries): remove pref migration around April 2024
 void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
   for (const char* pref_name : kTimePrefsToMigrateToLocalState) {
     if (local_state_->GetTime(pref_name).is_null()) {
@@ -376,8 +376,8 @@ void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
       profile_prefs_->ClearPref(kBraveWalletP3AUsedSecondDay);
     }
   }
-  local_state_->ClearPref(kBraveWalletP3AWeeklyStorage);
-  profile_prefs_->ClearPref(kBraveWalletP3AWeeklyStorage);
+  local_state_->ClearPref(kBraveWalletP3AWeeklyStorageDeprecated);
+  profile_prefs_->ClearPref(kBraveWalletP3AWeeklyStorageDeprecated);
 }
 
 void BraveWalletP3A::OnUpdateTimerFired() {

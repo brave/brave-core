@@ -20,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -98,20 +97,6 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
       solana_tx_state_manager_->ValueToSolanaTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);
   EXPECT_EQ(*meta_from_value, meta);
-}
-
-TEST_F(SolanaTxStateManagerUnitTest, GetTxPrefPathPrefix) {
-  EXPECT_EQ("solana.mainnet", solana_tx_state_manager_->GetTxPrefPathPrefix(
-                                  mojom::kSolanaMainnet));
-  EXPECT_EQ("solana.testnet", solana_tx_state_manager_->GetTxPrefPathPrefix(
-                                  mojom::kSolanaTestnet));
-  EXPECT_EQ("solana.devnet", solana_tx_state_manager_->GetTxPrefPathPrefix(
-                                 mojom::kSolanaDevnet));
-  EXPECT_EQ(
-      "solana.http://localhost:8899/",
-      solana_tx_state_manager_->GetTxPrefPathPrefix(mojom::kLocalhostChainId));
-  EXPECT_EQ("solana",
-            solana_tx_state_manager_->GetTxPrefPathPrefix(std::nullopt));
 }
 
 }  // namespace brave_wallet

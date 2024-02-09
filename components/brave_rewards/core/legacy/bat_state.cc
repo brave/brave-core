@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/time_util.h"
-#include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/legacy/bat_state.h"
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -36,8 +35,8 @@ void LegacyBatState::OnLoad(LegacyResultCallback callback,
 
   ClientProperties state;
   if (!state.FromJson(data)) {
-    BLOG(0, "Failed to load client state");
-    BLOG(6, "Client state contents: " << data);
+    engine_->LogError(FROM_HERE) << "Failed to load client state";
+    engine_->Log(FROM_HERE) << "Client state contents: " << data;
     callback(mojom::Result::FAILED);
     return;
   }

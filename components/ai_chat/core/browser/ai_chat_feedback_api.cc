@@ -76,6 +76,7 @@ AIChatFeedbackAPI::~AIChatFeedbackAPI() = default;
 
 void AIChatFeedbackAPI::SendRating(
     bool is_liked,
+    bool is_premium,
     const base::span<const mojom::ConversationTurn>& history,
     const std::string& model_name,
     api_request_helper::APIRequestHelper::ResultCallback on_complete_callback) {
@@ -104,6 +105,7 @@ void AIChatFeedbackAPI::SendRating(
   payload.Set("rating", static_cast<int>(is_liked));
   payload.Set("channel", channel_name_);
   payload.Set("platform", brave_stats::GetPlatformIdentifier());
+  payload.Set("is_premium", is_premium);
 
   base::flat_map<std::string, std::string> headers;
   headers.emplace("Accept", "application/json");
@@ -126,6 +128,9 @@ void AIChatFeedbackAPI::SendFeedback(
   dict.Set("category", category);
   dict.Set("feedback", feedback);
   dict.Set("rating_id", rating_id);
+  dict.Set("locale",
+           base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
+                         brave_l10n::GetDefaultISOCountryCodeString()}));
 
   GURL api_url = GetEndpointBaseUrl().Resolve(kFeedbackFormPath);
 

@@ -43,6 +43,7 @@ source_set("browser") {
     "//brave/components/time_period_storage",
     "//brave/extensions:common",
     "//components/prefs:prefs",
+    "//components/profile_metrics",
     "//components/security_interstitials/content:security_interstitial_page",
     "//components/security_interstitials/core:core",
     "//components/user_prefs:user_prefs",

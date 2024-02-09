@@ -36,6 +36,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/browser/event_router.h"
 #include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
@@ -1139,6 +1140,34 @@ ExtensionFunction::ResponseAction BraveRewardsIsInitializedFunction::Run() {
   return RespondNow(
       WithArguments(rewards_service && rewards_service->IsInitialized()));
 }
+
+BraveRewardsSelfCustodyInviteDismissedFunction::
+    ~BraveRewardsSelfCustodyInviteDismissedFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsSelfCustodyInviteDismissedFunction::Run() {
+  auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
+  return RespondNow(WithArguments(
+      prefs->GetBoolean(::brave_rewards::prefs::kSelfCustodyInviteDismissed)));
+}
+
+BraveRewardsDismissSelfCustodyInviteFunction::
+    ~BraveRewardsDismissSelfCustodyInviteFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsDismissSelfCustodyInviteFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  profile->GetPrefs()->SetBoolean(
+      ::brave_rewards::prefs::kSelfCustodyInviteDismissed, true);
+  if (auto* event_router = extensions::EventRouter::Get(profile)) {
+    event_router->BroadcastEvent(std::make_unique<Event>(
+        events::BRAVE_START,
+        brave_rewards::OnSelfCustodyInviteDismissed::kEventName,
+        base::Value::List()));
+  }
+  return RespondNow(NoArguments());
+}
+
 BraveRewardsGetScheduledCaptchaInfoFunction::
     ~BraveRewardsGetScheduledCaptchaInfoFunction() = default;
 

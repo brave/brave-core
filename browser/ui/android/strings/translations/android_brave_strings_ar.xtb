@@ -77,11 +77,9 @@
 <translation id="7307834434086582547">تمكين/تعطيل طرق حماية Brave</translation>
 <translation id="6945863270524203017">احصل على تحديثات الخصوصية الأسبوعية على حظر أدوات التعقب amp;amp، والإعلانات.</translation>
 <translation id="4324735664183300693">تشغيل الإشعارات</translation>
-<translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="6395059271589866759">يحصل Brave على نسبة 5٪ من المبلغ المرسل كرسم للمعالجة.</translation>
 <translation id="6661699662755460155">الصرف</translation>
 <translation id="6790981891677399838">أرسلت مساهمة بقيمة <ph name="AMOUNT"/>عملة BAT رقمية باستخدام متصفح Brave. تعرف على كيفية دعم منشئي المحتوى المفضلين لديك والمواقع أيضًا عبر: https://brave.com/rewards</translation>
-<translation id="2278950434998763147">فتح بعض مواقع الويب باستحدام اتصال  HTTPS آمن بدلاً من اتصال HTTP عادي.</translation>
 <translation id="5510493033031835532">إعادة توجيه صفحات AMP تلقائيًا</translation>
 <translation id="5197219128592971597">قم دائمًا بزيارة عناوين URL للصفحة الأصلية (التي ليست بتنسيق AMP)، بدلاً من إصدارات صفحات الجوال المسرَّعة من Google</translation>
 <translation id="920638232916443453">عناوين URL لتتبع إعادة التوجيه التلقائي</translation>
@@ -129,6 +127,11 @@
 <ph name="TIME"/></translation>
 <translation id="802154636333426148">تعذّر التنزيل</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> فشل التحديث</translation>
+<translation id="8580328754808744073">إنشاء عوامل تصفية مخصصة</translation>
+<translation id="6532106788206463496">حفظ التغييرات</translation>
+<translation id="5132969826889386652">تم حفظ التغييرات بنجاح</translation>
+<translation id="4335929145384293789">أضف عوامل تصفية مخصصة قمت بإنشائها، واحد لكل سطر، في الحقل أعلاه. تأكد من استخدام <ph name="ADBLOCK_FILTER_SYNTAX"/>.</translation>
+<translation id="5023212862780303376">بنية عامل تصفية حظر الإعلانات</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/>السعر (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">خدمة اسم إيثريوم</translation>
 <translation id="531747189990625622">خدمة اسم Solana</translation>
@@ -171,11 +174,12 @@
 <translation id="254100925533869330">لا يوجد مختوى</translation>
 <translation id="7172792761509429092">ليس لدي خدمة أخبار Brave محتوى لعرضه.</translation>
 <translation id="1771307734839364850">اختيار مصادر المحتوى</translation>
-<translation id="5787084571334399599">يمنع المتصفح من استخدام البصمة</translation>
+<translation id="6891769200437737956">تمنع مواقع الويب من تحديد هويتي بالبصمة الرقمية</translation>
 <translation id="7459000603787995422">غلق علامات التبويب عند الخروج</translation>
 <translation id="4448697385961650078">حجب المتتبعات والإعلانات</translation>
 <translation id="2448893613530489637">تحجب المتتبعات &amp; والإعلانات من تحميل صفحات الويب وعرضها</translation>
 <translation id="1025207378813960343">تأكد من أن الاتصالات بمواقع الويب آمنة.</translation>
+<translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="6686219838158572786">يلزم وجود جميع الاتصالات باستخدام HTTPS (مقيّد)</translation>
 <translation id="4221284400051835823">الترقية إلى HTTPS كلما أمكن ذلك (افتراضي)</translation>
 <translation id="4690906712010847708">عدم بترقية الاتصالات إلى HTTPS (معطل)</translation>
@@ -188,8 +192,6 @@
 <translation id="5987838417172370108">ساعد في تحسين استقرار منتج Brave\u2019s عن خلال إرسال التقارير التشخيصية تلقائيًا أثناء تعطل متصفح Brave أو توقفه عن العمل.</translation>
 <translation id="7977176350719484850">البيانات التقديرية المحفوظة</translation>
 <translation id="9008534313521214777">الوقت المقدر\nالذي تم توفيره</translation>
-<translation id="1842747674580016420">إعادة تشغيل الفيديو في متصفح Brave</translation>
-<translation id="5368992950177874750">في حالة التمكين، سيتم تشغيل مقاطع الفيديو في متصفح Brave بدلاً من التطبيق المقابل</translation>
 <translation id="410351446219883937">التشغيل التلقائي</translation>
 <translation id="7445411102860286510">السماح لمواقع الويب بتشغيل الفيديوهات المكتومة الصوت تلقائيًا (مُستحسن)</translation>
 <translation id="7837721118676387834">السماح لموقع ويب معيّن بالتشغيل التلقائي للفيديوهات المكتومة الصوت</translation>
@@ -207,6 +209,7 @@
 <translation id="1690924763769415936">تشغيل في الخلفية</translation>
 <translation id="6332924730165919598">يؤدي إغلاق جميع علامات التبويب إلى إغلاق Brave</translation>
 <translation id="8308305244351876417">يسمح بتشغيل الصوت عند التبديل إلى علامة تبويب أخرى في Brave أو تطبيق آخر أو عند إيقاف تشغيل شاشة جهازك.</translation>
+<translation id="49147335255967913">فتح روابط YouTube في متصفح Brave</translation>
 <translation id="4150201353443180367">عرض</translation>
 <translation id="4275663329226226506">الوسائط</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -377,13 +380,8 @@
 <translation id="4803910478683254032">فشل الاستيراد</translation>
 <translation id="8325139248201792113">فشل استيراد الإشارة المرجعية. يُرجى المحاولة مرة اخرى.</translation>
 <translation id="2803313416453193357">فتح المجلد</translation>
-<translation id="3396347744975515056">تمت ترقية Brave Sync وتتطلب الإعداد</translation>
-<translation id="7473245612074035141">بدء الإعداد</translation>
 <translation id="8985635554450124959">لا يمكن إعداد المزامنة</translation>
-<translation id="2514300153301737214">اكتشفنا أنه تم تمكين مزامنة Brave، ولكن تم إيقاف تشغيل مزامنة نظامك ولن تسمح لـ Brave بالمزامنة. اضغط لفتح الإعدادات</translation>
 <translation id="7173114856073700355">فتح الإعدادات</translation>
-<translation id="6965382102122355670">موافق</translation>
-<translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
 <translation id="496896260395129787">تم حذف حساب Brave Sync هذا من جهاز آخر. إذا كنت لا تقصد تعطيل المزامنة، <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> إعادة إنشاء الحساب</translation>
 <translation id="4094590686212463338">تعذر الانضمام إلى سلسلة المزامنة هذه. تم حذف سلسلة المزامنة.</translation>
@@ -476,7 +474,7 @@
 <translation id="7854108565842971747">هذه هي إعدادات طرق الحماية الافتراضية للمواقع الجديدة. لن يؤثر تغييرها على إعداداتك الحالية لكل موقع</translation>
 <translation id="218587021686734263">يمنع استخدام بصمات الأصابع عبر إعدادات اللغة</translation>
 <translation id="1706099589708266367">يقلل من عدد مواقع الويب التي يمكن أن تتعرف عليك استنادا إلى إعدادات اللغة في متصفحك.</translation>
-<translation id="184568144098869637">يمنع المتصفح من التعرف على جهازك</translation>
+<translation id="4721088070859595932">تمنع مواقع الويب من التعرُّف على جهازك</translation>
 <translation id="7445306466605902444">حظر بصمات الأصابع (صارم، قد يفصل المواقع)</translation>
 <translation id="5582686930349810484">حظر بصمات الأصابع (قياسي)</translation>
 <translation id="769702552748212954">السماح بجميع عمليات أخذ البصمات</translation>
@@ -620,8 +618,9 @@
 <translation id="1783600039044302171">تأمين تشفير crypto الخاص بك بكلمة مرور</translation>
 <translation id="3726490322412361740">أدخل كلمة المرور</translation>
 <translation id="3038243139480464605">تحقق من كلمة المرور</translation>
-<translation id="3717685683157254329">يجب أن تتألف كلمات المرور من 7 أحرف على الأقل، وأن تضم حرفًا واحدًا ورقمًا واحدًا وحرفًا خاصًا واحدًا على الأقل.</translation>
+<translation id="3043677904160378840">يجب أن تكون كلمات المرور 8 أحرف على الأقل.</translation>
 <translation id="7396672979287122068">كلمة المرور التي تم التحقق منها غير مطابقة</translation>
+<translation id="7084181009966710506">جارٍ إنشاء محفظة...</translation>
 <translation id="3188963375823360044">1 ساعة</translation>
 <translation id="8163269366661594721">1ي</translation>
 <translation id="7640956400175663828">1أ</translation>
@@ -774,7 +773,6 @@
 <translation id="1705662265912724430">هل أنت متأكد من أنك تريد إعادة تعيين تكوين VPN؟</translation>
 <translation id="604124094241169006">تلقائي</translation>
 <translation id="7475580600756356589">الاتصال بالخادم الخاص بك. يجب أن يستغرق لحظة فقط ...</translation>
-<translation id="1342728075788541348">قطع الاتصال من الخادم الخاص بك. يجب أن يستغرق لحظة فقط ...</translation>
 <translation id="669072536454692117">تم استهلاك الاشتراك بنجاح</translation>
 <translation id="1187506504156101449">تعذّر الإقرار بالشراء:</translation>
 <translation id="8420522105268941892">أنت مشترك بالفعل في الاشتراك. حاول استعادة الاشتراك.</translation>
@@ -807,7 +805,6 @@
 <translation id="8084782383392198011">لا يجوز أن يكون اسم الحساب فارغًا.</translation>
 <translation id="5045550434625856497">كلمة مرور غير صحيحة</translation>
 <translation id="1367951781824006909">اختيار ملف</translation>
-<translation id="8648684608605749476">حظر ملفات تعريف الارتباط التابعة لجهات خارجية في وضع التصفّح المتخفي</translation>
 <translation id="5932938770824268122">المفتاح الخاص</translation>
 <translation id="2472882733835903303">قم بإظهار المفتاح الخاص</translation>
 <translation id="4391056902675005799">قم بإخفاء المفتاح الخاص</translation>
@@ -958,9 +955,12 @@
 <translation id="6044189892950611565">قناة الإشعار لمتصفح Brave</translation>
 <translation id="1173919438868967364">تحديد حساب</translation>
 <translation id="8922793255489232731">تعذّر الحصول على المنطقة الزمنية المطابقة لـ: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">تحميل ملف بيانات المحفظة \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">متصل بـ <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">إصدار تجريبي</translation>
+<translation id="6458565248779152483">تعطيل VPN في متصفح Brave</translation>
+<translation id="9080536793704001825">إيقاف مؤقت لمدة 15 دقيقة</translation>
+<translation id="803706420145725977">إيقاف مؤقت لمدة ساعة ١</translation>
+<translation id="4394049700291259645">تعطيل</translation>
 <translation id="7733890291091968191">عرض إشعارات Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### لا يقوم Brave بتتبعك أو معرفة كيفية استخدامك لتطبيقنا، لذلك لا نعرف كيف قمت بإعداد VPN. يرجى مشاركة المعلومات حول المشكلة التي تواجهها وسنبذل قصارى جهدنا لحلها بأسرع ما يمكن. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nاسم مضيف VPN\n <ph name="VALUE"/></translation>
@@ -990,6 +990,7 @@
 <translation id="8219806187375413057"><ph name="CLICK_START"/>تعرّف على كيفية تقليل المخاطر على تطبيق Rainbow Bridge<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> هي خدمة مستقلة تساعدك على ربط الأصول عبر الشبكات، واستخدام العملة المشفرة الخاصة بك على الشبكات الأخرى ونُظم الاتصال المشترك الأخرى لـ DApp. ينطوي ربط الأصول عبر شبكات أخرى على بعض المخاطر.</translation>
 <translation id="8423380132356660250">فتح التطبيق <ph name="APP_NAME"/></translation>
+<translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
 <translation id="168154537623654021">جارٍ تحديث ملف تعريف VPN ...</translation>
 <translation id="7457027586454688423">أدخل كلمة مرور محفظة Brave الخاصة بك</translation>
 <translation id="4784306439879850873">لاحظ أن Brave لا يمكنه التحقق مما سيحدث إذا قمت بالتوقيع. يمكن أن يخول التوقيع تقريبًا أي عملية في حسابك أو نيابة عنك ، بما في ذلك (على سبيل المثال لا الحصر) منح التحكم الكامل في حسابك وأصول التشفير للموقع الذي يقدم الطلب. قم بالتوقيع فقط إذا كنت متأكدًا من رغبتك في اتخاذ هذا الإجراء، وتثق في الموقع الطالب.</translation>
@@ -1063,7 +1064,7 @@
 <translation id="4530494379350999373">الأصل</translation>
 <translation id="6736243959894955139">العنوان</translation>
 <translation id="3095940652251934233">البيان</translation>
-<translation id="308268297242056490">‏معرف موارد منتظم (URI)</translation>
+<translation id="308268297242056490">‏معرف الموارد الموحد (URI)</translation>
 <translation id="3798449238516105146">الإصدار</translation>
 <translation id="1313065465616456728">تم الإصدار في</translation>
 <translation id="7902225556763260253">وقت انتهاء الصلاحية</translation>
@@ -1200,7 +1201,7 @@
 <translation id="5494920125229734069">تحديد الكل</translation>
 <translation id="5972844218283131174">إلغاء تحديد الكل</translation>
 <translation id="6322030314101903925">لا توجد أصول متاحة</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="6129027151000961048">ليو</translation>
 <translation id="8613144770663526433">تسجيل الدخول إلى Brave Wallet</translation>
 <translation id="3696514931437952995">أنت الآن تقوم بتسجيل الدخول في <ph name="ORIGIN"/>. سوف تشارك Brave wallet عنوان محفظتك مع <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">عرض التفاصيل</translation>

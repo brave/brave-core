@@ -9,9 +9,8 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import {
-  getBatTokensFromList,
-  getNativeTokensFromList,
-  getUniqueAssets
+  getUniqueAssets,
+  sortNativeAndAndBatAssetsToTop
 } from '../../../utils/asset-utils'
 import { addLogoToToken } from '../../async/lib'
 import { mapLimit } from 'async'
@@ -49,26 +48,13 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
                 await addLogoToToken(token)
             )
 
-          // separate native assets from tokens
-          const {
-            tokens: rampTokenOptions,
-            nativeAssets: rampNativeAssetOptions
-          } = getNativeTokensFromList(rampAssetOptions)
-
-          // separate BAT from other tokens
-          const { bat: rampBatTokens, nonBat: rampNonBatTokens } =
-            getBatTokensFromList(rampTokenOptions)
-
           // moves Gas coins and BAT to front of list
-          const sortedRampOptions = [
-            ...rampNativeAssetOptions,
-            ...rampBatTokens,
-            ...rampNonBatTokens
-          ]
+          const sortedRampOptions =
+            sortNativeAndAndBatAssetsToTop(rampAssetOptions)
 
           const results = {
             rampAssetOptions: sortedRampOptions,
-            allAssetOptions: getUniqueAssets([...sortedRampOptions])
+            allAssetOptions: getUniqueAssets(sortedRampOptions)
           }
 
           return {

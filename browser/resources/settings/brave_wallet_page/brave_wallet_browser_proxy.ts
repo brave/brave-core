@@ -132,6 +132,10 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
     return sendWithPromise('isBitcoinEnabled')
   }
 
+  isZCashEnabled() {
+    return sendWithPromise('isZCashEnabled')
+  }
+
   getPinnedNftCount() {
     return sendWithPromise('getPinnedNftCount')
   }

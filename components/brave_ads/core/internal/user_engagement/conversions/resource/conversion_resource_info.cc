@@ -35,7 +35,7 @@ base::expected<ConversionResourceInfo, std::string>
 ConversionResourceInfo::CreateFromValue(const base::Value::Dict dict) {
   ConversionResourceInfo conversions;
 
-  if (std::optional<int> version = dict.FindInt("version")) {
+  if (const std::optional<int> version = dict.FindInt("version")) {
     if (kConversionResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }

@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -29,6 +30,29 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 }  // namespace
 
 class BraveAdsDismissedExclusionRuleTest : public UnitTestBase {};
+
+TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldAlwaysInclude) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "0h"}});
+
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds[0];
+
+  AdEventList ad_events;
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kDismissed, Now(),
+      /*should_use_random_uuids=*/true);
+  ad_events.push_back(ad_event);
+
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
+
+  // Act & Assert
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+}
 
 TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange

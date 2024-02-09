@@ -13,6 +13,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/ios/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -32,11 +33,6 @@ inline BraveApplicationContextImpl::~BraveApplicationContextImpl() = default;
 // MARK: - ApplicationContextImpl
 
 ukm::UkmRecorder* BraveApplicationContextImpl::GetUkmRecorder() {
-  return nullptr;
-}
-
-BrowserPolicyConnectorIOS*
-BraveApplicationContextImpl::GetBrowserPolicyConnector() {
   return nullptr;
 }
 
@@ -78,10 +74,21 @@ BraveApplicationContextImpl::url_sanitizer_component_installer() {
   return url_sanitizer_component_installer_.get();
 }
 
+debounce::DebounceComponentInstaller*
+BraveApplicationContextImpl::debounce_component_installer() {
+  if (!debounce_component_installer_) {
+    debounce_component_installer_ =
+        std::make_unique<debounce::DebounceComponentInstaller>(
+            local_data_files_service());
+  }
+  return debounce_component_installer_.get();
+}
+
 void BraveApplicationContextImpl::StartBraveServices() {
-  // We need to Initialize the component installer
+  // We need to Initialize the component installers
   // before calling Start on the local_data_files_service
   url_sanitizer_component_installer();
+  debounce_component_installer();
 
   // Start the local data file service
   local_data_files_service()->Start();

@@ -7,8 +7,10 @@
 
 #include "base/containers/contains.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_segment_input_variables_info.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_untargeted_segment_input_variable_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_user_model_segments.h"
 
 namespace brave_ads {
@@ -64,6 +66,14 @@ ComputeCreativeAdModelBasedPredictorInterestSegmentInputVariable(
   return ComputeSegmentInputVariable(GetTopChildInterestSegments(user_model),
                                      GetTopParentInterestSegments(user_model),
                                      segment, weights);
+}
+
+CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo
+ComputeCreativeAdModelBasedPredictorUntargetedSegmentInputVariable(
+    const std::string& segment,
+    const double weight) {
+  return CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo{
+      .value = segment == kUntargetedSegment, .weight = weight};
 }
 
 }  // namespace brave_ads

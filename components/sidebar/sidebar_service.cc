@@ -37,7 +37,7 @@
 #include "ui/base/resource/resource_bundle.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -644,7 +644,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
     }
     case SidebarItem::BuiltInItemType::kChatUI: {
 #if BUILDFLAG(ENABLE_AI_CHAT)
-      if (ai_chat::features::IsAIChatEnabled()) {
+      if (ai_chat::IsAIChatEnabled(prefs_)) {
         return SidebarItem::Create(
             brave_l10n::GetLocalizedResourceUTF16String(IDS_CHAT_UI_TITLE),
             SidebarItem::Type::kTypeBuiltIn,

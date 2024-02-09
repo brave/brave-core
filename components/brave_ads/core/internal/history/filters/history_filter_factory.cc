@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/history/filters/history_filter_factory.h"
 
 #include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/history/filters/confirmation_history_filter.h"
 
 namespace brave_ads {
@@ -23,7 +24,7 @@ std::unique_ptr<HistoryFilterInterface> HistoryFilterFactory::Build(
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for HistoryFilterType: "
-                        << static_cast<int>(type);
+                        << base::to_underlying(type);
 }
 
 }  // namespace brave_ads

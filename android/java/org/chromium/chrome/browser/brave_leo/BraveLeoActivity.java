@@ -13,7 +13,6 @@ import static org.chromium.chrome.browser.customtabs.CustomTabIntentDataProvider
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.Browser;
 import android.view.MotionEvent;
@@ -36,6 +35,8 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
     private static final int INITIAL_ACTIVITY_HEIGHT_PX = 300;
 
     private static final int DRAG_BAR_Y_DELTA_TOLERANCE = 300;
+    private int mLastMotionEventAction;
+    private boolean mDragInProgress;
 
     @Override
     public boolean supportsAppMenu() {
@@ -51,6 +52,8 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
     public void performPostInflationStartup() {
         super.performPostInflationStartup();
 
+        mLastMotionEventAction = -1;
+        mDragInProgress = false;
         View toolbarContainer = findViewById(R.id.toolbar_container);
         if (toolbarContainer != null) {
             toolbarContainer.setVisibility(View.GONE);
@@ -79,46 +82,35 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
         context.startActivity(intent);
     }
 
-    private boolean isPointInside(View view, int x, int y) {
-        int[] location = new int[2];
-        view.getLocationOnScreen(location);
-        Rect viewRect =
-                new Rect(
-                        (int) location[0],
-                        (int) location[1],
-                        (int) location[0] + view.getWidth(),
-                        (int) location[1] + view.getHeight());
-        return viewRect.contains(x, y);
-    }
-
-    private boolean maybePassthroughForDragHandle(MotionEvent ev) {
-        View dragHandle = findViewById(R.id.drag_handle);
-        assert dragHandle != null;
-
-        return isPointInside(dragHandle, (int) ev.getRawX(), (int) ev.getRawY());
-    }
-
-    private boolean maybeRedirectToDragBar(MotionEvent ev) {
+    private void maybeRedirectToDragBar(MotionEvent ev) {
         View dragBar = findViewById(R.id.drag_bar);
         assert dragBar != null;
 
         int dragBarLocation[] = new int[2];
         dragBar.getLocationOnScreen(dragBarLocation);
         int dragBarYDelta = (int) ev.getRawY() - dragBarLocation[1];
-        if (dragBarYDelta < DRAG_BAR_Y_DELTA_TOLERANCE) {
+        if (dragBarYDelta < DRAG_BAR_Y_DELTA_TOLERANCE || mDragInProgress) {
             dragBar.dispatchTouchEvent(ev);
-            return true;
+            mDragInProgress = true;
+        } else {
+            mDragInProgress = false;
         }
-
-        return false;
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (getActivityTab() != null
-                && !maybePassthroughForDragHandle(ev)
-                && maybeRedirectToDragBar(ev)) {
-            return true;
+        boolean skipDrag = false;
+        if (ev.getActionMasked() == MotionEvent.ACTION_DOWN
+                || mLastMotionEventAction == MotionEvent.ACTION_DOWN
+                        && ev.getActionMasked() == MotionEvent.ACTION_UP) {
+            skipDrag = true;
+        }
+        if (!skipDrag && getActivityTab() != null) {
+            maybeRedirectToDragBar(ev);
+        }
+        mLastMotionEventAction = ev.getActionMasked();
+        if (mLastMotionEventAction != MotionEvent.ACTION_MOVE) {
+            mDragInProgress = false;
         }
         return super.dispatchTouchEvent(ev);
     }

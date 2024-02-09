@@ -529,7 +529,7 @@ class BraveVPNServiceTest : public testing::Test {
 TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
   // Give invalid json data as a server response and check sanitized(empty
   // string) result is returned.
-  SetInterceptorResponse("{'a':'b',}");
+  SetInterceptorResponse("{'invalid json':");
   base::RunLoop loop;
   service_->GetAllServerRegions(base::BindOnce(
       [](base::OnceClosure callback, const std::string& region_list,

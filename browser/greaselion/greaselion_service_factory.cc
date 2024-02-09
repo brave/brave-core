@@ -58,7 +58,6 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   extensions::ExtensionSystem* extension_system =
       extensions::ExtensionSystem::Get(context);
-  extension_system->InitForRegularProfile(true /* extensions_enabled */);
   extensions::ExtensionRegistry* extension_registry =
       extensions::ExtensionRegistry::Get(context);
   scoped_refptr<base::SequencedTaskRunner> task_runner =

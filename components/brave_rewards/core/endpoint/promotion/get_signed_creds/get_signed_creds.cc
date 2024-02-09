@@ -2,6 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_signed_creds/get_signed_creds.h"
 
 #include <optional>
@@ -9,8 +10,9 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -24,10 +26,10 @@ GetSignedCreds::~GetSignedCreds() = default;
 
 std::string GetSignedCreds::GetUrl(const std::string& promotion_id,
                                    const std::string& claim_id) {
-  const std::string& path = base::StringPrintf(
-      "/v1/promotions/%s/claims/%s", promotion_id.c_str(), claim_id.c_str());
-
-  return GetServerUrl(path);
+  auto url = URLHelpers::Resolve(
+      engine_->Get<EnvironmentConfig>().rewards_grant_url(),
+      {"/v1/promotions/", promotion_id, "/claims/", claim_id});
+  return url.spec();
 }
 
 mojom::Result GetSignedCreds::CheckStatusCode(const int status_code) {
@@ -36,22 +38,22 @@ mojom::Result GetSignedCreds::CheckStatusCode(const int status_code) {
   }
 
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
-    BLOG(0, "Unrecognized claim id");
+    engine_->LogError(FROM_HERE) << "Unrecognized claim id";
     return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
+    engine_->LogError(FROM_HERE) << "Internal server error";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -64,26 +66,26 @@ mojom::Result GetSignedCreds::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* batch_proof = dict.FindString("batchProof");
   if (!batch_proof) {
-    BLOG(0, "Missing batch proof");
+    engine_->LogError(FROM_HERE) << "Missing batch proof";
     return mojom::Result::FAILED;
   }
 
   auto* signed_creds = dict.FindList("signedCreds");
   if (!signed_creds) {
-    BLOG(0, "Missing signed creds");
+    engine_->LogError(FROM_HERE) << "Missing signed creds";
     return mojom::Result::FAILED;
   }
 
   auto* public_key = dict.FindString("publicKey");
   if (!public_key) {
-    BLOG(0, "Missing public key");
+    engine_->LogError(FROM_HERE) << "Missing public key";
     return mojom::Result::FAILED;
   }
 
@@ -102,13 +104,15 @@ void GetSignedCreds::Request(const std::string& promotion_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(promotion_id, claim_id);
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
                                mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
 

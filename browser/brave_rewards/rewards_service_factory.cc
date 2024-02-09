@@ -10,6 +10,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
@@ -74,6 +75,7 @@ RewardsServiceFactory::RewardsServiceFactory()
 #if BUILDFLAG(ENABLE_GREASELION)
   DependsOn(greaselion::GreaselionServiceFactory::GetInstance());
 #endif
+  DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
 }
 
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
@@ -88,14 +90,17 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
       std::make_unique<ExtensionRewardsNotificationServiceObserver>(
           Profile::FromBrowserContext(context));
 #endif
+  auto* wallet_rpc_service =
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(context);
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionService* greaselion_service =
       greaselion::GreaselionServiceFactory::GetForBrowserContext(context);
-  std::unique_ptr<RewardsServiceImpl> rewards_service(new RewardsServiceImpl(
-      Profile::FromBrowserContext(context), greaselion_service));
-#else
   std::unique_ptr<RewardsServiceImpl> rewards_service(
-      new RewardsServiceImpl(Profile::FromBrowserContext(context)));
+      new RewardsServiceImpl(Profile::FromBrowserContext(context),
+                             greaselion_service, wallet_rpc_service));
+#else
+  std::unique_ptr<RewardsServiceImpl> rewards_service(new RewardsServiceImpl(
+      Profile::FromBrowserContext(context), wallet_rpc_service));
 #endif
   rewards_service->Init(std::move(extension_observer),
                         std::move(notification_observer));

@@ -64,11 +64,10 @@ bool ParseEthSignTypedDataParams(const std::string& json,
 bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);
 
-bool ParseWalletWatchAssetParams(const std::string& json,
-                                 const std::string& chain_id,
-                                 mojom::CoinType coin,
-                                 mojom::BlockchainTokenPtr* token,
-                                 std::string* error_message);
+mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
+    const std::string& json,
+    const std::string& chain_id,
+    std::string* error_message);
 bool ParseRequestPermissionsParams(
     const std::string& json,
     std::vector<std::string>* restricted_methods);

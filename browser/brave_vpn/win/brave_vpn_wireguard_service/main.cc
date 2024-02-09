@@ -17,12 +17,10 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/brave_wireguard_service_crash_reporter_client.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/notifications/notification_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/resources/resource_loader.h"
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/install_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/install_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_tray_runner.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
 #include "chrome/install_static/product_install_details.h"
 #include "components/crash/core/app/crash_switches.h"
 #include "components/crash/core/app/crashpad.h"
@@ -130,23 +128,6 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
     return brave_vpn::wireguard::RunWireguardTunnelService(
         command_line->GetSwitchValuePath(
             brave_vpn::kBraveVpnWireguardServiceConnectSwitchName));
-  }
-
-  // System level command line. Makes registeration and configuration for
-  // BraveVPNWireguardService windows service. Used by the installer.
-  if (command_line->HasSwitch(
-          brave_vpn::kBraveVpnWireguardServiceInstallSwitchName)) {
-    auto success = brave_vpn::InstallBraveWireguardService();
-    return success ? 0 : 1;
-  }
-
-  // System level command line. Unregisters BraveVPNWireguardService
-  // windows service and removes stored data. Used by the uninstaller.
-  if (command_line->HasSwitch(
-          brave_vpn::kBraveVpnWireguardServiceUnnstallSwitchName)) {
-    auto success = brave_vpn::UninstallBraveWireguardService() &&
-                   brave_vpn::UninstallStatusTrayIcon();
-    return success ? 0 : 1;
   }
 
   auto result = ProcessUserLevelCommands(*command_line);

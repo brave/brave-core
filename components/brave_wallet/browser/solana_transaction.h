@@ -51,7 +51,7 @@ class SolanaTransaction {
     std::optional<bool> skip_preflight;
   };
 
-  explicit SolanaTransaction(SolanaMessage&& message);
+  explicit SolanaTransaction(SolanaMessage message);
 
   SolanaTransaction(
       mojom::SolanaMessageVersion version,
@@ -59,13 +59,12 @@ class SolanaTransaction {
       uint64_t last_valid_block_height,
       const std::string& fee_payer,
       const SolanaMessageHeader& message_header,
-      std::vector<SolanaAddress>&& static_account_keys,
-      std::vector<SolanaInstruction>&& instructions,
-      std::vector<SolanaMessageAddressTableLookup>&& addr_table_lookups);
+      std::vector<SolanaAddress> static_account_keys,
+      std::vector<SolanaInstruction> instructions,
+      std::vector<SolanaMessageAddressTableLookup> addr_table_lookups);
 
-  SolanaTransaction(SolanaMessage&& message,
-                    const std::vector<uint8_t>& raw_signatures);
-  SolanaTransaction(SolanaMessage&& message,
+  SolanaTransaction(SolanaMessage message, std::vector<uint8_t> raw_signatures);
+  SolanaTransaction(SolanaMessage message,
                     mojom::SolanaSignTransactionParamPtr sign_tx_param);
   SolanaTransaction(const SolanaTransaction&) = delete;
   SolanaTransaction& operator=(const SolanaTransaction&) = delete;

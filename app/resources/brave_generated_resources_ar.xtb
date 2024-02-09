@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">فوري <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">هذه نافذة خاصة عبر متصفح تور</translation>
 <translation id="1037341607922068025">افتح نافذة خاصة من خلال متصفح تور</translation>
-<translation id="1725356094208762656">افتح في Tor</translation>
-<translation id="3396347744975515056">تمت ترقية Brave Sync وتتطلب الإعداد</translation>
-<translation id="7473245612074035141">بدء الإعداد</translation>
 <translation id="496896260395129787">تم حذف حساب Brave Sync هذا من جهاز آخر. إذا كنت لا تقصد تعطيل المزامنة،<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>إعادة إنشاء الحساب</translation>
 <translation id="6965382102122355670">موافق</translation>
@@ -190,6 +187,10 @@
 <translation id="7109885938715976444">هذه المرة فقط</translation>
 <translation id="7473891865547856676">لا، شكرًا</translation>
 <translation id="2722425322672922644">تعرّف على كيفية تأثير ذلك على خصوصيتي</translation>
+<translation id="5551268135482191097">كان هناك خطأ في أثناء تحميل عنوان URL لـ IPFS. هل ترغب في إعادة التوجيه إلى عنوان URL الأصلي؟</translation>
+<translation id="4756627014339714615">إعادة التوجيه</translation>
+<translation id="1338274252864046652">هل ترغب في بدء عقدة IPFS دائمًا عند بدء تشغيل المتصفح؟</translation>
+<translation id="3435896845095436175">تمكين</translation>
 <translation id="4552520379838695057">عذراً، هذه الصفحة مفقودة.</translation>
 <translation id="2609895996619941644">هل تريد التحقق مما إذا كان هناك إصدار محفوظ متاح على "واي باك مشين"؟</translation>
 <translation id="8053093028263274061">عذراً، لا توجد نسخة محفوظة متاحة.</translation>
@@ -299,6 +300,10 @@
 <translation id="7544853251252956727">ترتيب عشوائي</translation>
 <translation id="4330722796577425585">ترجيع</translation>
 <translation id="7481312909269577407">إلى الأمام</translation>
+<translation id="2800828306627475693">إيقاف التكرار</translation>
+<translation id="1748244367114657861">التكرر مرة واحدة</translation>
+<translation id="6421906998825794164">تكرار الكل</translation>
+<translation id="1727684853006449697">مشغّل Brave</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
@@ -412,10 +417,6 @@
 <translation id="413570371620795359">فتح لوحة المكافآت للتمكين والبدء</translation>
 <translation id="1051600834033686945">فتح إعدادات Brave Rewards بالكامل</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
-<translation id="7483857210736407752">عرض أزرار التلميح على المواقع</translation>
-<translation id="3905400818082450708">ريديت</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">جيت هاب</translation>
 <translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
@@ -584,7 +585,9 @@
 <translation id="6936835573742749135">لا يمكن طلب اختبار CAPTCHA. حاول مرة أخرى لاحقًا.</translation>
 <translation id="2653659639078652383">إرسال</translation>
 <translation id="1369311132025451972">إعادة توجيه مواقع نطاق أنيون تلقائياً</translation>
-<translation id="1658670175365815312">سيتحوّل Brave إلى إصدار .onion للموقع الإلكتروني في نافذة Tor عند يكون متاحًا ويفتح تلقائيًا جميع نطاقات .onion في نافذة Tor.</translation>
+<translation id="6214393847480015759">في نوافذ متصفح Tor، سيقوم متصفح Brave تلقائيًا بالتبديل إلى إصدار ‎.onion لموقع الويب عند التوافر.</translation>
+<translation id="1294350054292274934">حل عناوين ‎.onion فقط في نوافذ متصفح Tor</translation>
+<translation id="1258903596167452221">لن تتاح خدمات Onion خارج نوافذ متصفح Tor.</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="5249433283143453448">استخدم مكون Widevine لإدارة الحقوق الرقمية (DRM) لعرض دفق الفيديو المحمي والمحتويات الأخرى في المستعرض.</translation>
 <translation id="1314131187310290315">إضافات Manifest V2</translation>
@@ -633,6 +636,7 @@
 <translation id="4226543734057230801">شبكات الإيثيريوم</translation>
 <translation id="3504157706952484145">شبكات Filecoin</translation>
 <translation id="1561541094377237745">شبكات Solana</translation>
+<translation id="7141438739990875547">شبكات بيتكوين</translation>
 <translation id="3159419679550543837">عرض شبكات الاختبار</translation>
 <translation id="3215569562674795548">تحرير شبكة جديدة أو إضافتها</translation>
 <translation id="4418993400653250511">مُعرّف السلسلة</translation>
@@ -672,6 +676,7 @@
 <translation id="8425213833346101688">تغيير</translation>
 <translation id="585868419599255817">الرجوع لبوابة IPFS العامة</translation>
 <translation id="2618080188892567155">ارجع تلقائيًا إلى بوابة IPFS العامة إذا تعذر الوصول إلى عقدة IPFS المحلية لمتصفح Brave.</translation>
+<translation id="8956391206920485238">هل تريد بدء عقدة IPFS دومًا عند بدء تشغيل المتصفح؟</translation>
 <translation id="6789104345873307368">إعادة توجيه طلبات موارد شبكة IPFS تلقائيًا إلى البوابة التي تم تكوينها.</translation>
 <translation id="4138306018048329894">سيتم توجيه طلبات موارد IPFS المستضافة على بوابات IPFS التابعة لجهة خارجية أو موارد DNSLINK عبر عبر بوابة محددة محلية أو عن بُعد.
 ملاحظة: إذا تم تحديد العقدة المحلية، فسيتم طلب المورد مباشرة من جهاز الكمبيوتر الخاص بك وقد يتم توفير البيانات المخزنة مؤقتًا على شبكة IPFS لفترة من الزمن.</translation>
@@ -724,6 +729,9 @@ Leo في المستقبل وسيقوم أيضًا بمحو سجل الدردشة
 Leo. لا يمكن التراجع عن هذا الإجراء.</translation>
 <translation id="8157373421434119674">البيانات وتاريخ الدردشة</translation>
 <translation id="614530507403667291">النموذج التلقائي للمحادثات الجديدة</translation>
+<translation id="349846214503465941">تمكين قائمة التشغيل</translation>
+<translation id="7903608716704052878">إضافة الملفات تلقائيًا للعرض من دون الاتصال بالإنترنت</translation>
+<translation id="4193768184502613558">سيقوم هذا الخيار تلقائيًا بتخزين ملفات الوسائط مؤقتًا حتى تتمكن من تشغيلها من دون اتصال بالإنترنت.</translation>
 <translation id="6624718837376802990">الصورة الرمزية للمكافآت الهائجة</translation>
 <translation id="6617313057407561765">الصورة الرمزية للشجاع الهائج</translation>
 <translation id="6754445808455578019">الصورة الرمزية للمحيط الهائج</translation>

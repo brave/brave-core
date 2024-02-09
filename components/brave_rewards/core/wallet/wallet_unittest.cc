@@ -11,7 +11,7 @@
 
 #include "base/test/bind.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
@@ -29,9 +29,12 @@ class WalletTest : public RewardsEngineTest {
     response->body =
         "{\"paymentId\": \"37742974-3b80-461a-acfb-937e105e5af4\"}";
 
-    AddNetworkResultForTesting(
-        endpoint::promotion::GetServerUrl("/v3/wallet/brave"),
-        mojom::UrlMethod::POST, std::move(response));
+    AddNetworkResultForTesting(engine()
+                                   .Get<EnvironmentConfig>()
+                                   .rewards_grant_url()
+                                   .Resolve("/v3/wallet/brave")
+                                   .spec(),
+                               mojom::UrlMethod::POST, std::move(response));
 
     base::RunLoop run_loop;
     mojom::CreateRewardsWalletResult result;

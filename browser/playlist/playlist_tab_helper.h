@@ -73,8 +73,10 @@ class PlaylistTabHelper
                          const std::string& item_id) override;
   void OnItemRemovedFromList(const std::string& playlist_id,
                              const std::string& item_id) override;
-  void OnItemDeleted(const std::string& id) override;
+  void OnItemLocalDataDeleted(const std::string& id) override;
   void OnPlaylistUpdated(mojom::PlaylistPtr playlist) override {}
+  void OnItemCached(mojom::PlaylistItemPtr item) override {}
+  void OnItemUpdated(mojom::PlaylistItemPtr item) override {}
 
   void OnMediaFileDownloadProgressed(
       const std::string& id,

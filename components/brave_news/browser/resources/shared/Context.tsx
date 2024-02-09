@@ -41,7 +41,8 @@ interface BraveNewsContext {
   isShowOnNTPPrefEnabled: boolean | undefined
   toggleBraveNewsOnNTP: (enabled: boolean) => void
   openArticlesInNewTab: boolean,
-  setOpenArticlesInNewTab: (newTab: boolean) => void
+  setOpenArticlesInNewTab: (newTab: boolean) => void,
+  reportSessionStart: () => void
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -64,7 +65,8 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   isShowOnNTPPrefEnabled: undefined,
   toggleBraveNewsOnNTP: (enabled: boolean) => { },
   openArticlesInNewTab: true,
-  setOpenArticlesInNewTab: () => { }
+  setOpenArticlesInNewTab: () => { },
+  reportSessionStart: () => { }
 })
 
 export const publishersCache = new PublishersCachingWrapper()
@@ -146,6 +148,10 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     configurationCache.set({ openArticlesInNewTab: inNewTab })
   }, [])
 
+  const reportSessionStart = () => {
+    getBraveNewsController().onInteractionSessionStarted()
+  }
+
   const context = useMemo<BraveNewsContext>(() => ({
     locale,
     feedView,
@@ -166,7 +172,8 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     isShowOnNTPPrefEnabled: configuration.showOnNTP,
     toggleBraveNewsOnNTP,
     openArticlesInNewTab: configuration.openArticlesInNewTab,
-    setOpenArticlesInNewTab
+    setOpenArticlesInNewTab,
+    reportSessionStart
   }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP])
 
   return <BraveNewsContext.Provider value={context}>

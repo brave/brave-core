@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -25,6 +26,29 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 }  // namespace
 
 class BraveAdsPageLandExclusionRuleTest : public UnitTestBase {};
+
+TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldAlwaysInclude) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_landed_on_page_within_time_window", "0h"}});
+
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds[0];
+
+  AdEventList ad_events;
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kLanded, Now(),
+      /*should_use_random_uuids=*/true);
+  ad_events.push_back(ad_event);
+
+  const PageLandExclusionRule exclusion_rule(ad_events);
+
+  // Act & Assert
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+}
 
 TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange

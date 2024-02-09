@@ -41,9 +41,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Toto je Soukromé okno s Torem</translation>
 <translation id="1037341607922068025">Otevřít Soukromé okno s Torem</translation>
-<translation id="1725356094208762656">Otevřít v Toru</translation>
-<translation id="3396347744975515056">Brave synchronizace byla aktualizována a vyžaduje nové nastavení</translation>
-<translation id="7473245612074035141">Začít nastavení</translation>
 <translation id="496896260395129787">Tento účet synchronizace Brave byl odstraněn z jiného zařízení. Pokud jste synchronizaci nechtěli deaktivovat,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>účet znovu vytvořte</translation>
 <translation id="6965382102122355670">OK</translation>
@@ -190,6 +187,10 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7109885938715976444">Pouze tentokrát</translation>
 <translation id="7473891865547856676">Ne, děkuji</translation>
 <translation id="2722425322672922644">Zjistit, jaký to má vliv na moje soukromí</translation>
+<translation id="5551268135482191097">Došlo k chybě při načítání adresy URL systému IPFS. Chcete přesměrovat na původní adresu URL?</translation>
+<translation id="4756627014339714615">Přesměrování</translation>
+<translation id="1338274252864046652">Přejete si, aby se při spuštění prohlížeče vždy spustil uzel IPFS?</translation>
+<translation id="3435896845095436175">Aktivovat</translation>
 <translation id="4552520379838695057">Je nám líto, tato stránka chybí.</translation>
 <translation id="2609895996619941644">Chcete zkontrolovat, zda je na Wayback Machine k dispozici uložená verze?</translation>
 <translation id="8053093028263274061">Litujeme, není k dispozici žádná uložená verze.</translation>
@@ -299,6 +300,10 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7544853251252956727">Přehrávat náhodně</translation>
 <translation id="4330722796577425585">Převinout zpět</translation>
 <translation id="7481312909269577407">Vpřed</translation>
+<translation id="2800828306627475693">Opakování vypnuto</translation>
+<translation id="1748244367114657861">Opakovat jednu</translation>
+<translation id="6421906998825794164">Opakovat vše</translation>
+<translation id="1727684853006449697">Přehrávač Brave</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="4472575034687746823">Začít</translation>
@@ -412,10 +417,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="413570371620795359">Otevřete panel Odměny pro aktivaci a začněte</translation>
 <translation id="1051600834033686945">Otevřít kompletní nastavení odměn Brave</translation>
 <translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
-<translation id="7483857210736407752">Zobrazovat na stránkách tlačítka s příspěvky</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Blokování sociálních médií</translation>
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="5165042248369837294">Povolit sdílení zpráv z Twitteru</translation>
@@ -584,7 +585,9 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="6936835573742749135">Nelze požádat o CAPTCHA. Zkuste to znovu později.</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="1369311132025451972">Automaticky přesměrovávat weby .onion</translation>
-<translation id="1658670175365815312">Brave se přepne na verzi webu .onion, jakmile bude k dispozici, a automaticky otevře všechny domény .onion v okně Tor.</translation>
+<translation id="6214393847480015759">V oknech Tor Brave automaticky přepne na verzi webových stránek s koncovkou .onion, pokud je k dispozici.</translation>
+<translation id="1294350054292274934">Překládat adresy .onion pouze v oknech Tor</translation>
+<translation id="1258903596167452221">Služby Onion nebudou dostupné mimo okna Tor.</translation>
 <translation id="2896916411183256228">Používá WebTorrent k zobrazení torrentů přímo v prohlížeči. Podporuje torrentové soubory a odkazy magnet.</translation>
 <translation id="5249433283143453448">Používat k prohlížení chráněného streamovaného videa a dalšího obsahu v prohlížeči komponent Widevine pro správu digitálních práv (DRM).</translation>
 <translation id="1314131187310290315">Rozšíření Manifest V2</translation>
@@ -633,6 +636,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="4226543734057230801">Sítě Ethereum</translation>
 <translation id="3504157706952484145">Sítě Filecoin</translation>
 <translation id="1561541094377237745">Sítě Solana</translation>
+<translation id="7141438739990875547">Sítě Bitcoin</translation>
 <translation id="3159419679550543837">Zobrazit zkušební sítě</translation>
 <translation id="3215569562674795548">Upravit nebo přidat novou síť</translation>
 <translation id="4418993400653250511">ID řetězce</translation>
@@ -672,6 +676,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8425213833346101688">Změnit</translation>
 <translation id="585868419599255817">Náhradní připojení pomocí veřejné brány IPFS</translation>
 <translation id="2618080188892567155">Automaticky přejít zpět na veřejnou bránu IPFS, pokud nelze dosáhnout místního uzlu Brave IPFS.</translation>
+<translation id="8956391206920485238">Spouštět uzel IPFS vždy při spuštění prohlížeče?</translation>
 <translation id="6789104345873307368">Automaticky přesměrovat požadavky na síťové prostředky IPFS na nakonfigurovanou bránu.</translation>
 <translation id="4138306018048329894">Požadavky na prostředky IPFS hostované na bránách IPFS třetích stran nebo prostředky DNSLINK budou směrovány přes vybranou místní nebo vzdálenou bránu.
     Poznámka: Pokud je vybrán místní uzel, bude prostředek vyžádán přímo z vašeho počítače a po určitou dobu mohou být do sítě IPFS poskytována data z mezipaměti.</translation>
@@ -723,6 +728,9 @@ chatu odstraní všechny vaše předchozí konverzace s Brave
 Leo. Tuto akci nelze vrátit zpět.</translation>
 <translation id="8157373421434119674">Historie dat a chatu</translation>
 <translation id="614530507403667291">Výchozí model pro konverzace</translation>
+<translation id="349846214503465941">Aktivovat seznam stop</translation>
+<translation id="7903608716704052878">Automaticky přidávat soubory pro prohlížení offline</translation>
+<translation id="4193768184502613558">Tato možnost automaticky ukládá mediální soubory do mezipaměti, abyste je mohli přehrávat bez připojení k Internetu.</translation>
 <translation id="6624718837376802990">Profilový obrázek Edgy Rewards</translation>
 <translation id="6617313057407561765">Profilový obrázek Edgy Brave</translation>
 <translation id="6754445808455578019">Profilový obrázek Edgy Ocean</translation>

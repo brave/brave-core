@@ -40,9 +40,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Šis ir inkognito logs ar Tor</translation>
 <translation id="1037341607922068025">Atvērt inkognito logu ar Tor</translation>
-<translation id="1725356094208762656">Atvērt Tor</translation>
-<translation id="3396347744975515056">Brave sinhronizācijas pakalpojums ir atjaunināts, un to nepieciešams iestatīt</translation>
-<translation id="7473245612074035141">Sākt iestatīšanu</translation>
 <translation id="496896260395129787">Šis Brave sinhronizēšanas konts tika dzēsts no citas ierīces. Ja nevēlējāties atspējot sinhronizēšanu, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> izveidojiet kontu vēlreiz</translation>
 <translation id="6965382102122355670">Labi</translation>
@@ -189,6 +186,10 @@
 <translation id="7109885938715976444">Tikai Šoreiz</translation>
 <translation id="7473891865547856676">Nē, paldies!</translation>
 <translation id="2722425322672922644">Uzzināt, kā tas ietekmē manu privātumu</translation>
+<translation id="5551268135482191097">Ielādējot IPFS URL, radās kļūda. Vai vēlaties doties uz sākotnējo URL?</translation>
+<translation id="4756627014339714615">Pāriet</translation>
+<translation id="1338274252864046652">Vai vēlaties vienmēr palaist IPFS mezglu pārlūkprogrammas startēšanas laikā?</translation>
+<translation id="3435896845095436175">Iespējot</translation>
 <translation id="4552520379838695057">Diemžēl, šī lapa nav atrodama.</translation>
 <translation id="2609895996619941644">Vai vēlaties pārbaudīt, vai Wayback Machine nav pieejama tās saglabātā versija?</translation>
 <translation id="8053093028263274061">Diemžēl, saglabātā versija nav pieejama.</translation>
@@ -298,6 +299,10 @@
 <translation id="7544853251252956727">Sajaukt</translation>
 <translation id="4330722796577425585">Attīt atpakaļ</translation>
 <translation id="7481312909269577407">Pārsūtīt</translation>
+<translation id="2800828306627475693">Atkārtošana izslēgta</translation>
+<translation id="1748244367114657861">Atkārtot vienu</translation>
+<translation id="6421906998825794164">Atkārtot visu</translation>
+<translation id="1727684853006449697">Brave atskaņotājs</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="4472575034687746823">Sākt darbu</translation>
@@ -411,10 +416,6 @@
 <translation id="413570371620795359">Atveriet balvu paneli, lai to iespējotu, un sāciet lietot</translation>
 <translation id="1051600834033686945">Atvērt visus Brave balvu iestatījumus</translation>
 <translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
-<translation id="7483857210736407752">Rādīt dzeramnaudas pogas vietnēs</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
@@ -583,7 +584,9 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6936835573742749135">Nevar pieprasīt CAPTCHA. Mēģiniet vēlreiz vēlāk.</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
 <translation id="1369311132025451972">Automātiski novirzīt .onion vietnes</translation>
-<translation id="1658670175365815312">Brave pāries pie mājaslapas .onion versijas, kad tā būs pieejama, un automātiski atvērs visus .onion domēnus Tor logā.</translation>
+<translation id="6214393847480015759">Tor logos Brave automātiski pārslēgsies uz tīmekļa vietnes .onion versiju, kad tā ir pieejama.</translation>
+<translation id="1294350054292274934">Atrisināt tikai .onion adreses Tor logos</translation>
+<translation id="1258903596167452221">Onion pakalpojumi nebūs pieejami ārpus Tor logiem.</translation>
 <translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
 <translation id="5249433283143453448">Izmantojiet Widevine digitālā satura tiesību pārvaldības (DRM) komponentu, lai pārlūkā skatītu aizsargātu videostraumējumu un citu saturu.</translation>
 <translation id="1314131187310290315">Manifest V2 paplašinājumi</translation>
@@ -632,6 +635,7 @@ Jums šobrīd ir <ph name="NFT_COUNT"/> piesprausts(-i) NFT.</translation>
 <translation id="4226543734057230801">Ethereum tīkli</translation>
 <translation id="3504157706952484145">Filecoin tīkli</translation>
 <translation id="1561541094377237745">Solana tīkli</translation>
+<translation id="7141438739990875547">Bitcoin tīkli</translation>
 <translation id="3159419679550543837">Parādīt testa tīklus</translation>
 <translation id="3215569562674795548">Rediģēt vai pievienot jaunu tīklu</translation>
 <translation id="4418993400653250511">Ķēdes ID</translation>
@@ -671,6 +675,7 @@ Jums šobrīd ir <ph name="NFT_COUNT"/> piesprausts(-i) NFT.</translation>
 <translation id="8425213833346101688">Mainīt</translation>
 <translation id="585868419599255817">IPFS publiskās vārtejas izmantošana</translation>
 <translation id="2618080188892567155">Automātiski izmantot IPFS publisko vārteju, ja jūsu vietējam Brave IPFS mezglam nav iespējams piekļūt.</translation>
+<translation id="8956391206920485238">Vienmēr sākt IPFS mezglu, palaižot pārlūkprogrammu?</translation>
 <translation id="6789104345873307368">Automātiski novirzīt IPFS tīkla resursu pieprasījumus uz konfigurēto vārteju.</translation>
 <translation id="4138306018048329894">IPFS resursu pieprasījumi, kas tiek mitināti trešās puses IPFS vārtejās vai DNSLINK resursos, tiks maršrutēti, izmantojot atlasīto vietējo vai attālināto vārteju.
 Piezīme: Ja ir atlasīts lokālais mezgls, resurss tiks pieprasīts tieši no jūsu datora, un kešatmiņā saglabātie dati kādu laiku var tikt nodrošināti IPFS tīklā.</translation>
@@ -722,6 +727,9 @@ jūs izdzēsīsiet visas iepriekšējās sarunas ar Brave
 Leo. Šo darbību nevar atsaukt.</translation>
 <translation id="8157373421434119674">Dati un tērzēšanas vēsture</translation>
 <translation id="614530507403667291">Nosklusējuma modelis jaunām sarunām</translation>
+<translation id="349846214503465941">Iespējot atskaņošanas sarakstu</translation>
+<translation id="7903608716704052878">Automātiski pievienot failus, lai skatītu bezsaistē</translation>
+<translation id="4193768184502613558">Šī opcija automātiski saglabās multivides failus kešatmiņā, lai jūs varētu tos atskaņot bez interneta savienojuma.</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

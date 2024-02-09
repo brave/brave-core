@@ -71,41 +71,52 @@ mojom::SwapTransactionParamsUnionPtr GetCannedJupiterTransactionParams(
     const std::string& output_mint) {
   auto params = mojom::JupiterTransactionParams::New();
 
-  auto route = brave_wallet::mojom::JupiterRoute::New();
-  route->in_amount = 10000ULL;
-  route->out_amount = 261273ULL;
-  route->amount = 10000ULL;
-  route->other_amount_threshold = 258660ULL;
-  route->swap_mode = "ExactIn";
-  route->price_impact_pct = 0.008955716118219659;
+  auto quote = brave_wallet::mojom::JupiterQuote::New();
+  quote->input_mint = "So11111111111111111111111111111111111111112";
+  quote->in_amount = "100000000";
+  quote->output_mint = output_mint;
+  quote->out_amount = "10886298";
+  quote->other_amount_threshold = "10885210";
+  quote->swap_mode = "ExactIn";
+  quote->slippage_bps = "1";
+  quote->price_impact_pct = "0.008955716118219659";
 
-  auto market_info = brave_wallet::mojom::JupiterMarketInfo::New();
-  market_info->id = "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK";
-  market_info->label = "Orca";
-  market_info->input_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-  market_info->output_mint = "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey";
-  market_info->not_enough_liquidity = false;
-  market_info->in_amount = 10000ULL;
-  market_info->out_amount = 117001203ULL;
-  market_info->price_impact_pct = 1.196568750220778e-7;
+  auto platform_fee = brave_wallet::mojom::JupiterPlatformFee::New();
+  platform_fee->amount = "93326";
+  platform_fee->fee_bps = "85";
+  quote->platform_fee = std::move(platform_fee);
 
-  auto lp_fee = brave_wallet::mojom::JupiterFee::New();
-  lp_fee->amount = 30ULL;
-  lp_fee->mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-  lp_fee->pct = 0.003;
+  auto swap_info_1 = brave_wallet::mojom::JupiterSwapInfo::New();
+  swap_info_1->amm_key = "EiEAydLqSKFqRPpuwYoVxEJ6h9UZh9tsTaHgs4f8b8Z5";
+  swap_info_1->label = "Lifinity V2";
+  swap_info_1->input_mint = "So11111111111111111111111111111111111111112";
+  swap_info_1->output_mint = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
+  swap_info_1->in_amount = "100000000";
+  swap_info_1->out_amount = "10964919";
+  swap_info_1->fee_amount = "20000";
+  swap_info_1->fee_mint = "So11111111111111111111111111111111111111112";
+  auto step_1 = brave_wallet::mojom::JupiterRouteStep::New();
+  step_1->percent = "100";
+  step_1->swap_info = std::move(swap_info_1);
 
-  auto platform_fee = brave_wallet::mojom::JupiterFee::New();
-  platform_fee->amount = 0ULL;
-  platform_fee->mint = "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey";
-  platform_fee->pct = 0;
+  auto swap_info_2 = brave_wallet::mojom::JupiterSwapInfo::New();
+  swap_info_2->amm_key = "UXD3M3N6Hn1JjbxugKguhJVHbYm8zHvdF5pNf7dumd5";
+  swap_info_2->label = "Mercurial";
+  swap_info_2->input_mint = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
+  swap_info_2->output_mint = output_mint;
+  swap_info_2->in_amount = "10964919";
+  swap_info_2->out_amount = "10979624";
+  swap_info_2->fee_amount = "1098";
+  swap_info_2->fee_mint = output_mint;
+  auto step_2 = brave_wallet::mojom::JupiterRouteStep::New();
+  step_2->percent = "100";
+  step_2->swap_info = std::move(swap_info_2);
 
-  market_info->lp_fee = lp_fee.Clone();
-  market_info->platform_fee = platform_fee.Clone();
-  route->market_infos.push_back(market_info.Clone());
-  params->route = route.Clone();
+  quote->route_plan.push_back(step_1.Clone());
+  quote->route_plan.push_back(step_2.Clone());
+
+  params->quote = quote.Clone();
   params->user_public_key = "foo";
-  params->output_mint = output_mint;
-  params->input_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   params->chain_id = mojom::kSolanaMainnet;
 
   return mojom::SwapTransactionParamsUnion::NewJupiterTransactionParams(
@@ -177,24 +188,6 @@ class SwapServiceUnitTest : public testing::Test {
         GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet),
         callback.Get());
     base::RunLoop().RunUntilIdle();
-  }
-
-  void TestGetJupiterQuoteUint64Cases(const char* json_template) {
-    // KO: negative uint64 value
-    auto json = base::StringPrintf(json_template, "-10000");
-    TestGetJupiterQuoteCase(json, false);
-
-    // KO: non-integer uint64 value
-    json = base::StringPrintf(json_template, "\"foo\"");
-    TestGetJupiterQuoteCase(json, false);
-
-    // KO: uint64 value overflow (UINT64_MAX + 1)
-    json = base::StringPrintf(json_template, "18446744073709551616");
-    TestGetJupiterQuoteCase(json, false);
-
-    // OK: max uint64 amount value
-    json = base::StringPrintf(json_template, "18446744073709551615");
-    TestGetJupiterQuoteCase(json, true);
   }
 
   void TestGetJupiterTransaction(
@@ -745,20 +738,20 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
 
   // OK: output mint has Jupiter fees
   EXPECT_EQ(url,
-            "https://quote-api.jup.ag/v4/quote?"
+            "https://quote-api.jup.ag/v6/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
             "amount=10000&"
             "swapMode=ExactIn&"
             "slippageBps=300&"
-            "feeBps=85");
+            "platformFeeBps=85");
 
   params->to_token = "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y";
   url = swap_service_->GetJupiterQuoteURL(*params);
 
   // OK: output mint does not have Jupiter fees
   EXPECT_EQ(url,
-            "https://quote-api.jup.ag/v4/quote?"
+            "https://quote-api.jup.ag/v6/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y&"
             "amount=10000&"
@@ -768,85 +761,62 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
 
 TEST_F(SwapServiceUnitTest, GetJupiterTransactionURL) {
   auto url = swap_service_->GetJupiterTransactionURL(mojom::kSolanaMainnet);
-  EXPECT_EQ(url, "https://quote-api.jup.ag/v4/swap");
+  EXPECT_EQ(url, "https://quote-api.jup.ag/v6/swap");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
   SetInterceptor(R"(
     {
-      "data": [
+      "inputMint": "So11111111111111111111111111111111111111112",
+      "inAmount": "100000000",
+      "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outAmount": "10886298",
+      "otherAmountThreshold": "10885210",
+      "swapMode": "ExactIn",
+      "slippageBps": 1,
+      "platformFee": {
+        "amount": "93326",
+        "feeBps": 85
+      },
+      "priceImpactPct": "0.008955716118219659",
+      "routePlan": [
         {
-          "inAmount": 10000,
-          "outAmount": 261273,
-          "amount": 10000,
-          "otherAmountThreshold": 258660,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": [
-            {
-              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-              "label": "Orca",
-              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-              "notEnoughLiquidity": false,
-              "inAmount": 10000,
-              "outAmount": 117001203,
-              "priceImpactPct": 1.196568750220778e-7,
-              "lpFee": {
-                "amount": 30,
-                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": 0.003
-              },
-              "platformFee": {
-                "amount": 0,
-                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": 0
-              }
-            }
-          ]
+          "swapInfo": {
+            "ammKey": "EiEAydLqSKFqRPpuwYoVxEJ6h9UZh9tsTaHgs4f8b8Z5",
+            "label": "Lifinity V2",
+            "inputMint": "So11111111111111111111111111111111111111112",
+            "outputMint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "inAmount": "100000000",
+            "outAmount": "10964919",
+            "feeAmount": "20000",
+            "feeMint": "So11111111111111111111111111111111111111112"
+          },
+          "percent": 100
+        },
+        {
+          "swapInfo": {
+            "ammKey": "UXD3M3N6Hn1JjbxugKguhJVHbYm8zHvdF5pNf7dumd5",
+            "label": "Mercurial",
+            "inputMint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "inAmount": "10964919",
+            "outAmount": "10979624",
+            "feeAmount": "1098",
+            "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+          },
+          "percent": 100
         }
-      ],
-      "timeTaken": 0.044471802000089156
+      ]
     })");
   base::RunLoop run_loop;
 
-  auto jupiter_quote = mojom::JupiterQuote::New();
-  auto& expected_route =
-      jupiter_quote->routes.emplace_back(mojom::JupiterRoute::New());
-  expected_route->in_amount = 10000ULL;
-  expected_route->out_amount = 261273ULL;
-  expected_route->amount = 10000ULL;
-  expected_route->other_amount_threshold = 258660ULL;
-  expected_route->swap_mode = "ExactIn";
-  expected_route->price_impact_pct = 0.008955716118219659;
-  expected_route->slippage_bps = 50;
-  auto& expected_market_info = expected_route->market_infos.emplace_back(
-      mojom::JupiterMarketInfo::New());
-  expected_market_info->id = "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK";
-  expected_market_info->label = "Orca";
-  expected_market_info->input_mint =
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-  expected_market_info->output_mint =
-      "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey";
-  expected_market_info->not_enough_liquidity = false;
-  expected_market_info->in_amount = 10000ULL;
-  expected_market_info->out_amount = 117001203ULL;
-  expected_market_info->price_impact_pct = 1.196568750220778e-7;
-  expected_market_info->lp_fee = mojom::JupiterFee::New();
-  expected_market_info->lp_fee->amount = 30ULL;
-  expected_market_info->lp_fee->mint =
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-  expected_market_info->lp_fee->pct = 0.003;
-  expected_market_info->platform_fee = mojom::JupiterFee::New();
-  expected_market_info->platform_fee->amount = 0ULL;
-  expected_market_info->platform_fee->mint =
-      "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey";
-  expected_market_info->platform_fee->pct = 0;
+  const auto& params = GetCannedJupiterTransactionParams(
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  auto& expected_quote = params->get_jupiter_transaction_params()->quote;
 
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewJupiterQuote(
-                                std::move(jupiter_quote))),
+                                std::move(expected_quote))),
                             EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet),
@@ -859,234 +829,6 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
 
   // KO: invalid JSON
   TestGetJupiterQuoteCase(R"(foo)", false);
-
-  // Test inAmount uint64 value
-  TestGetJupiterQuoteUint64Cases(R"(
-    {
-      "data": [
-        {
-          "inAmount": %s,
-          "outAmount": 261273,
-          "amount": 10000,
-          "otherAmountThreshold": 258660,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": []
-        }
-      ],
-      "timeTaken": 0.044471802000089156
-    })");
-
-  // Test outAmount uint64 value
-  TestGetJupiterQuoteUint64Cases(R"(
-    {
-      "data": [
-        {
-          "inAmount": 10000,
-          "outAmount": %s,
-          "amount": 10000,
-          "otherAmountThreshold": 258660,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": []
-        }
-      ],
-      "timeTaken": 0.044471802000089156
-    })");
-
-  // Test amount uint64 value
-  TestGetJupiterQuoteUint64Cases(R"(
-    {
-      "data": [
-        {
-          "inAmount": 10000,
-          "outAmount": 261273,
-          "amount": %s,
-          "otherAmountThreshold": 258660,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": []
-        }
-      ],
-      "timeTaken": 0.044471802000089156
-    })");
-
-  // Test otherAmountThreshold uint64 value
-  TestGetJupiterQuoteUint64Cases(R"(
-    {
-      "data": [
-        {
-          "inAmount": 10000,
-          "outAmount": 261273,
-          "amount": 10000,
-          "otherAmountThreshold": %s,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": []
-        }
-      ],
-      "timeTaken": 0.044471802000089156
-    })");
-
-  // Test marketInfos->inAmount uint64 value
-  TestGetJupiterQuoteUint64Cases(R"(
-    {
-      "data": [
-        {
-          "inAmount": 10000,
-          "outAmount": 261273,
-          "amount": 10000,
-          "otherAmountThreshold": 258660,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": [
-            {
-              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-              "label": "Orca",
-              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-              "notEnoughLiquidity": false,
-              "inAmount": %s,
-              "outAmount": 117001203,
-              "priceImpactPct": 1.196568750220778e-7,
-              "lpFee": {
-                "amount": 30,
-                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": 0.003
-              },
-              "platformFee": {
-                "amount": 0,
-                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": 0
-              }
-            }
-          ]
-        }
-      ],
-      "timeTaken": 0.044471802000089156
-    })");
-
-  // Test marketInfos->outAmount uint64 value
-  TestGetJupiterQuoteUint64Cases(R"(
-    {
-      "data": [
-        {
-          "inAmount": 10000,
-          "outAmount": 261273,
-          "amount": 10000,
-          "otherAmountThreshold": 258660,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": [
-            {
-              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-              "label": "Orca",
-              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-              "notEnoughLiquidity": false,
-              "inAmount": 10000,
-              "outAmount": %s,
-              "priceImpactPct": 1.196568750220778e-7,
-              "lpFee": {
-                "amount": 30,
-                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": 0.003
-              },
-              "platformFee": {
-                "amount": 0,
-                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": 0
-              }
-            }
-          ]
-        }
-      ],
-      "timeTaken": 0.044471802000089156
-    })");
-
-  // Test lpFee->amount uint64 value
-  TestGetJupiterQuoteUint64Cases(R"(
-    {
-      "data": [
-        {
-          "inAmount": 10000,
-          "outAmount": 261273,
-          "amount": 10000,
-          "otherAmountThreshold": 258660,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": [
-            {
-              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-              "label": "Orca",
-              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-              "notEnoughLiquidity": false,
-              "inAmount": 10000,
-              "outAmount": 10000,
-              "priceImpactPct": 1.196568750220778e-7,
-              "lpFee": {
-                "amount": %s,
-                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": 0.003
-              },
-              "platformFee": {
-                "amount": 0,
-                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": 0
-              }
-            }
-          ]
-        }
-      ],
-      "timeTaken": 0.044471802000089156
-    })");
-
-  // Test platformFee->amount  uint64 value
-  TestGetJupiterQuoteUint64Cases(R"(
-    {
-      "data": [
-        {
-          "inAmount": 10000,
-          "outAmount": 261273,
-          "amount": 10000,
-          "otherAmountThreshold": 258660,
-          "swapMode": "ExactIn",
-          "priceImpactPct": 0.008955716118219659,
-          "slippageBps": 50,
-          "marketInfos": [
-            {
-              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-              "label": "Orca",
-              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-              "notEnoughLiquidity": false,
-              "inAmount": 10000,
-              "outAmount": 10000,
-              "priceImpactPct": 1.196568750220778e-7,
-              "lpFee": {
-                "amount": 30,
-                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": 0.003
-              },
-              "platformFee": {
-                "amount": %s,
-                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": 0
-              }
-            }
-          ]
-        }
-      ],
-      "timeTaken": 0.044471802000089156
-    })");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterTransaction) {

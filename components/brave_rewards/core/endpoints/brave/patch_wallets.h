@@ -41,7 +41,8 @@ struct ResultFor<PatchWallets> {
 class PatchWallets final : public RequestBuilder,
                            public ResponseHandler<PatchWallets> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
   PatchWallets(RewardsEngineImpl& engine, std::string&& geo_country);
   ~PatchWallets() override;

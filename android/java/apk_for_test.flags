@@ -132,7 +132,6 @@
     *** mOverlayPanelVisibilitySupplier;
     *** mTabModelSelector;
     *** mIncognitoStateProvider;
-    *** mTabCountProvider;
     *** mTabGroupUi;
     *** mBottomSheetController;
     *** mActivityLifecycleDispatcher;
@@ -203,11 +202,13 @@
 -keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils {
     *** addOrEditBookmark(...);
     *** showBookmarkManagerOnPhone(...);
+    *** isSpecialFolder(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** addOrEditBookmark(...);
     *** showBookmarkManagerOnPhone(...);
+    *** isSpecialFolder(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkToolbar {
@@ -474,14 +475,6 @@
 
 -keep class org.chromium.components.browser_ui.site_settings.BraveContentSettingsResources {
     *** getResourceItem(...);
-}
-
--keep class org.chromium.components.browser_ui.site_settings.FourStateCookieSettingsPreference {
-    public <init>(...);
-}
-
--keep class org.chromium.components.browser_ui.site_settings.BraveFourStateCookieSettingsPreferenceBase {
-    public <init>(...);
 }
 
 -keep class org.chromium.components.browser_ui.site_settings.SiteSettings {
@@ -818,5 +811,23 @@
 }
 
 -keep class org.chromium.chrome.browser.identity_disc.BraveIdentityDiscController {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUiPrefs {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabBottomSheetStrategy {
+    public <init>(...);
+    *** mStopShowingSpinner;
+    *** mTab;
+}
+
+-keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy {
     public <init>(...);
 }

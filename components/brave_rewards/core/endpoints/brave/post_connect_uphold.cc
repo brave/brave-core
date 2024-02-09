@@ -10,7 +10,7 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
@@ -24,13 +24,13 @@ PostConnectUphold::~PostConnectUphold() = default;
 
 std::optional<std::string> PostConnectUphold::Content() const {
   if (address_.empty()) {
-    BLOG(0, "address_ is empty!");
+    engine_->LogError(FROM_HERE) << "address_ is empty";
     return std::nullopt;
   }
 
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
     return std::nullopt;
   }
 
@@ -46,15 +46,26 @@ std::optional<std::string> PostConnectUphold::Content() const {
 
   std::string octets;
   if (!base::JSONWriter::Write(body, &octets)) {
-    BLOG(0, "Failed to write octets to JSON!");
+    engine_->LogError(FROM_HERE) << "Failed to write octets to JSON";
     return std::nullopt;
   }
 
-  std::string digest = util::Security::DigestValue(octets);
-  std::string signature = util::Security::Sign(
-      {{{"digest", digest}}}, "primary", wallet->recovery_seed);
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer) {
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
+    return std::nullopt;
+  }
+
+  std::string digest =
+      RequestSigner::GetDigest(base::as_bytes(base::make_span(octets)));
+
+  signer->set_key_id("primary");
+
+  std::string signature = signer->SignHeaders(
+      std::vector<std::pair<std::string, std::string>>{{"digest", digest}});
+
   if (signature.empty()) {
-    BLOG(0, "Failed to create signature!");
+    engine_->LogError(FROM_HERE) << "Failed to create signature";
     return std::nullopt;
   }
 
@@ -69,7 +80,7 @@ std::optional<std::string> PostConnectUphold::Content() const {
 
   std::string json_request;
   if (!base::JSONWriter::Write(std::move(request), &json_request)) {
-    BLOG(0, "Failed to write request to JSON!");
+    engine_->LogError(FROM_HERE) << "Failed to write request to JSON";
     return std::nullopt;
   }
 
@@ -81,7 +92,7 @@ std::optional<std::string> PostConnectUphold::Content() const {
 
   std::string json;
   if (!base::JSONWriter::Write(std::move(content), &json)) {
-    BLOG(0, "Failed to write content to JSON!");
+    engine_->LogError(FROM_HERE) << "Failed to write content to JSON";
     return std::nullopt;
   }
 

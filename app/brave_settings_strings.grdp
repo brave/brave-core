@@ -83,6 +83,18 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE" desc="The label for the settings select controlling what happens when a user hovers over a tab.">
     Tab hover mode
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_POSITION" desc="Title for radio group to set vertical tab position">
+    Position
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR" desc="Title for checkbox to show scrollbar on vertical tabs">
+    Show scrollbar
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_RIGHT" desc="The label for radio button to show vertical tab on right">
+    Show on the right
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_LEFT" desc="The label for radio button to show vertical tab on left">
+    Show on the left
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD" desc="The label name of the tab hover mode where a card with the title and origin of the site is shown.">
     Card
   </message>
@@ -160,6 +172,12 @@
     <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDEBAR_BUTTON" desc="The label for whether the side panel button should be shown or not">
       Show Sidebar button
     </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ALIGN_LEFT" desc="Label for the button that allows the side panel to appear on the left side of the browser. Translate this verbatim, do not localize for RTL languages.">
+      Show on the left
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ALIGN_RIGHT" desc="Label for the button that allows the side panel to appear on the right side of the browser. Translate this verbatim, do not localize for RTL languages.">
+      Show on the right
+    </message>
   </if>
 
   <!-- Settings / Autofill -->
@@ -227,7 +245,7 @@
     Shields status
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION" desc="Label for shields status on site settings.">
-    Sites can block trackers, ads, and fingerprinting using Shields
+    Shields can block trackers, ads, and fingerprinting
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
     Shields Up
@@ -1149,6 +1167,9 @@
   <message name="IDS_SETTINGS_WALLET_BTC_NETWORK_LIST_TITLE" desc="The title of the list with wallet bitcoin networks">
     Bitcoin networks
   </message>
+  <message name="IDS_SETTINGS_WALLET_ZEC_NETWORK_LIST_TITLE" desc="The title of the list with wallet Zcash networks">
+    Zcash networks
+  </message>
   <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS" desc="The description for showing the Brave wallet test networks">
     Show test networks
   </message>
@@ -1420,6 +1441,12 @@
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL" desc="The text for settings option">
     Show Leo icon in the sidebar
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_LABEL" desc="The text for settings option to show Leo in context menu">
+    Show Leo in the context menu on websites
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC" desc="The description for settings option to show Leo in context menu">
+    Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation

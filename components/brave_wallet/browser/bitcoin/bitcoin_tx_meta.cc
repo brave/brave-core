@@ -65,4 +65,8 @@ mojom::TransactionInfoPtr BitcoinTxMeta::ToTransactionInfo() const {
       tx_->to());
 }
 
+mojom::CoinType BitcoinTxMeta::GetCoinType() const {
+  return mojom::CoinType::BTC;
+}
+
 }  // namespace brave_wallet

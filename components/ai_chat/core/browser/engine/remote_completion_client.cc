@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -32,7 +33,8 @@
 namespace ai_chat {
 namespace {
 
-constexpr char kAIChatCompletionPath[] = "v1/complete";
+constexpr char kAIChatCompletionPath[] = "v2/complete";
+constexpr char kHttpMethod[] = "POST";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -100,7 +102,8 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
   DCHECK(!path.starts_with("/"));
 
   auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
-  auto hostname = brave_domains::GetServicesDomain(prefix);
+  auto hostname = brave_domains::GetServicesDomain(
+      prefix, brave_domains::ServicesEnvironment::DEV);
 
   GURL url{base::StrCat(
       {url::kHttpsScheme, url::kStandardSchemeSeparator, hostname, "/", path})};
@@ -128,9 +131,9 @@ RemoteCompletionClient::~RemoteCompletionClient() = default;
 
 void RemoteCompletionClient::QueryPrompt(
     const std::string& prompt,
-    const std::vector<std::string> extra_stop_sequences,
-    EngineConsumer::GenerationCompletedCallback data_completed_callback,
-    EngineConsumer::GenerationDataCallback
+    const std::vector<std::string>& extra_stop_sequences,
+    GenerationCompletedCallback data_completed_callback,
+    GenerationDataCallback
         data_received_callback /* = base::NullCallback() */) {
   auto callback = base::BindOnce(
       &RemoteCompletionClient::OnFetchPremiumCredential,
@@ -141,13 +144,29 @@ void RemoteCompletionClient::QueryPrompt(
 
 void RemoteCompletionClient::OnFetchPremiumCredential(
     const std::string& prompt,
-    const std::vector<std::string> extra_stop_sequences,
-    EngineConsumer::GenerationCompletedCallback data_completed_callback,
-    EngineConsumer::GenerationDataCallback data_received_callback,
+    const std::vector<std::string>& extra_stop_sequences,
+    GenerationCompletedCallback data_completed_callback,
+    GenerationDataCallback data_received_callback,
     std::optional<CredentialCacheEntry> credential) {
   bool premium_enabled = credential.has_value();
   const GURL api_url = GetEndpointUrl(premium_enabled, kAIChatCompletionPath);
+  const bool is_sse_enabled =
+      ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
+  const base::Value::Dict& dict =
+      CreateApiParametersDict(prompt, model_name_, stop_sequences_,
+                              std::move(extra_stop_sequences), is_sse_enabled);
+  const std::string request_body = CreateJSONRequestBody(dict);
+
   base::flat_map<std::string, std::string> headers;
+  const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
+  headers.emplace(digest_header.first, digest_header.second);
+  auto result = brave_service_keys::GetAuthorizationHeader(
+      BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url, kHttpMethod, {"digest"});
+  if (result) {
+    std::pair<std::string, std::string> authorization_header = result.value();
+    headers.emplace(authorization_header.first, authorization_header.second);
+  }
+
   if (premium_enabled) {
     // Add Leo premium SKU credential as a Cookie header.
     std::string cookie_header_value =
@@ -157,12 +176,6 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
 
-  const bool is_sse_enabled =
-      ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-
-  const base::Value::Dict& dict =
-      CreateApiParametersDict(prompt, model_name_, stop_sequences_,
-                              std::move(extra_stop_sequences), is_sse_enabled);
   if (is_sse_enabled) {
     VLOG(2) << "Making streaming AI Chat API Request";
     auto on_received = base::BindRepeating(
@@ -173,7 +186,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                        weak_ptr_factory_.GetWeakPtr(), credential,
                        std::move(data_completed_callback));
 
-    api_request_helper_.RequestSSE("POST", api_url, CreateJSONRequestBody(dict),
+    api_request_helper_.RequestSSE(kHttpMethod, api_url, request_body,
                                    "application/json", std::move(on_received),
                                    std::move(on_complete), headers, {});
   } else {
@@ -183,7 +196,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                        weak_ptr_factory_.GetWeakPtr(), credential,
                        std::move(data_completed_callback));
 
-    api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
+    api_request_helper_.Request(kHttpMethod, api_url, request_body,
                                 "application/json", std::move(on_complete),
                                 headers, {});
   }
@@ -196,7 +209,7 @@ void RemoteCompletionClient::ClearAllQueries() {
 }
 
 void RemoteCompletionClient::OnQueryDataReceived(
-    EngineConsumer::GenerationDataCallback callback,
+    GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
     return;
@@ -210,7 +223,7 @@ void RemoteCompletionClient::OnQueryDataReceived(
 
 void RemoteCompletionClient::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
-    EngineConsumer::GenerationCompletedCallback callback,
+    GenerationCompletedCallback callback,
     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request

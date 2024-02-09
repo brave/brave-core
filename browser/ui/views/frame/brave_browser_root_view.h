@@ -8,6 +8,7 @@
 
 #include "base/scoped_observation.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/native_theme/native_theme.h"
 
 class Browser;
@@ -19,6 +20,7 @@ class Browser;
 // provider always.
 class BraveBrowserRootView : public BrowserRootView,
                              public ui::NativeThemeObserver {
+  METADATA_HEADER(BraveBrowserRootView, BrowserRootView)
  public:
   BraveBrowserRootView(BrowserView* browser_view, views::Widget* widget);
   ~BraveBrowserRootView() override;

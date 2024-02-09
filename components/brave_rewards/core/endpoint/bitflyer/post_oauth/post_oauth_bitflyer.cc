@@ -8,11 +8,13 @@
 #include <optional>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -23,14 +25,17 @@ PostOauth::PostOauth(RewardsEngineImpl& engine) : engine_(engine) {}
 PostOauth::~PostOauth() = default;
 
 std::string PostOauth::GetUrl() {
-  return GetServerUrl("/api/link/v1/token");
+  return engine_->Get<EnvironmentConfig>()
+      .bitflyer_url()
+      .Resolve("/api/link/v1/token")
+      .spec();
 }
 
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code,
                                        const std::string& code_verifier) {
-  const std::string client_id = internal::bitflyer::GetClientId();
-  const std::string client_secret = internal::bitflyer::GetClientSecret();
+  auto& config = engine_->Get<EnvironmentConfig>();
+
   const std::string request_id =
       base::Uuid::GenerateRandomV4().AsLowercaseString();
 
@@ -38,8 +43,8 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   dict.Set("grant_type", "code");
   dict.Set("code", code);
   dict.Set("code_verifier", code_verifier);
-  dict.Set("client_id", client_id);
-  dict.Set("client_secret", client_secret);
+  dict.Set("client_id", config.bitflyer_client_id());
+  dict.Set("client_secret", config.bitflyer_client_secret());
   dict.Set("expires_in", 259002);
   dict.Set("external_account_id", external_account_id);
   dict.Set("request_id", request_id);
@@ -53,7 +58,7 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
 
 mojom::Result PostOauth::CheckStatusCode(int status_code) {
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -70,26 +75,26 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
 
   std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
-    BLOG(0, "Missing access token");
+    engine_->LogError(FROM_HERE) << "Missing access token";
     return mojom::Result::FAILED;
   }
 
   const auto* deposit_id = dict.FindString("deposit_id");
   if (!deposit_id) {
-    BLOG(0, "Missing deposit id");
+    engine_->LogError(FROM_HERE) << "Missing deposit id";
     return mojom::Result::FAILED;
   }
 
   const auto* linking_information = dict.FindString("linking_info");
   if (!linking_information) {
-    BLOG(0, "Missing linking info");
+    engine_->LogError(FROM_HERE) << "Missing linking info";
     return mojom::Result::FAILED;
   }
 
@@ -104,23 +109,31 @@ void PostOauth::Request(const std::string& external_account_id,
                         const std::string& code,
                         const std::string& code_verifier,
                         PostOauthCallback callback) {
+  auto get_auth_user = [&]() {
+    auto& config = engine_->Get<EnvironmentConfig>();
+    std::string user;
+    base::Base64Encode(base::StrCat({config.bitflyer_client_id(), ":",
+                                     config.bitflyer_client_secret()}),
+                       &user);
+    return user;
+  };
+
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(external_account_id, code, code_verifier);
-  request->headers = RequestAuthorization();
+  request->headers = {"Authorization: Basic " + get_auth_user()};
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
-  request->skip_log = true;
 
-  engine_->LoadURL(std::move(request),
-                   base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
-                                  std::move(callback)));
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kNone,
+      base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void PostOauth::OnRequest(PostOauthCallback callback,
                           mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response, true);
 
   mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::OK) {

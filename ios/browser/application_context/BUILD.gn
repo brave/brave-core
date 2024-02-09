@@ -15,6 +15,7 @@ source_set("application_context") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/debounce/core/browser",
     "//brave/components/url_sanitizer/browser",
     "//brave/ios/browser/brave_wallet",
     "//ios/chrome/browser/application_context/model",

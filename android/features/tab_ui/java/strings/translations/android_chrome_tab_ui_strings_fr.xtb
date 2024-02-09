@@ -2,6 +2,8 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr">
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> des onglets ouverts n'ont pas été utilisés récemment. Voulez-vous les fermer ?</translation>
+<translation id="1155815720264022949">Voulez-vous fermer les anciens onglets ?</translation>
+<translation id="1215127405478249895">Voir les onglets</translation>
 <translation id="125153950246128346">Appuyer pour afficher un autre onglet</translation>
 <translation id="1657719826150349398">Déplacer l'onglet vers le bas</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> onglet}one{<ph name="TABS_COUNT_MANY"/> onglet}other{<ph name="TABS_COUNT_MANY"/> onglets}}</translation>
@@ -44,9 +46,11 @@
 <translation id="5073204694187207510">Masquer la grille en plein écran</translation>
 <translation id="5076161749301278626">Afficher les avis sur le magasin ?</translation>
 <translation id="5082793167783849073">Comparez rapidement des pages en créant un groupe. Commencez par appuyer de manière prolongée sur un lien.</translation>
+<translation id="5303274951032363933">{TABS_COUNT,plural, =1{Il y a <ph name="TABS_COUNT_ONE"/> onglet que vous n'avez pas utilisé récemment}one{Il y a <ph name="TABS_COUNT_MANY"/> onglet que vous n'avez pas utilisé récemment}other{Il y a <ph name="TABS_COUNT_MANY"/> onglets que vous n'avez pas utilisés récemment}}</translation>
 <translation id="5339733443032484186">Votre dernier onglet</translation>
 <translation id="5490235265819901748">Groupe d'onglets développé</translation>
 <translation id="5494920125229734069">Tout sélectionner</translation>
+<translation id="5545379293264651575">Fermer sans examiner</translation>
 <translation id="5556417849629758491">Afficher les infos sur le magasin, option disponible en haut de l'écran</translation>
 <translation id="5558362125926932819">Fermez le groupe d'onglets qui contient <ph name="NUMBER_OF_TABS"/> onglets</translation>
 <translation id="5580090775658607195"><ph name="TAB_COUNT"/> onglets regroupés</translation>
@@ -66,10 +70,10 @@
 <translation id="6615455863669487791">Démonstration</translation>
 <translation id="6398241160085205003">Vous trouverez les onglets fermés dans le menu principal de Brave, sous "Onglets récents".</translation>
 <translation id="6840760312327750441">Pour regrouper des onglets, appuyez de manière prolongée sur un onglet, puis faites-le glisser vers un autre.</translation>
-<translation id="6856809498882026482">Masquer le mode de sélection multiple</translation>
+<translation id="6856809498882026482">Masquer le mode multi-sélection</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Partager l'onglet}one{Partager l'onglet}other{Partager les onglets}}</translation>
 <translation id="7129458170538955174">Fiche d'infos sur ce magasin ouverte à mi-hauteur</translation>
-<translation id="7204204600596740190">Mode de sélection multiple</translation>
+<translation id="7204204600596740190">Mode multi-sélection</translation>
 <translation id="7326879924029668159">Voir les conditions de retour et plus</translation>
 <translation id="7352298686197644113">Affichez l'article le moins cher parmi ceux présentés dans les onglets ouverts</translation>
 <translation id="753732157349120914">Sélecteur d'onglets</translation>

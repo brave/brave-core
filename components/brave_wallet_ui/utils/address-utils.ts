@@ -45,7 +45,9 @@ export function isValidSolanaAddress(value: string): boolean {
 }
 
 export function isValidZecAddress(value: string): boolean {
-  return /^t1[a-km-zA-HJ-NP-Z1-9]{33}$/.test(value)
+  return /^t1[a-km-zA-HJ-NP-Z1-9]{33}$/.test(value) ||
+         /^u1[a-z0-9]+$/.test(value) ||
+         /^utest1[a-z0-9]+$/.test(value)
 }
 
 export function isValidBtcAddress(value: string, testnet: boolean): boolean {

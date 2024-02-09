@@ -7,7 +7,10 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import {
   layoutSmallWidth,
-  layoutTopPosition
+  layoutTopPosition,
+  maxCardWidth,
+  navWidth,
+  navSpace
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Wrapper = styled.div<{
@@ -27,10 +30,20 @@ export const Wrapper = styled.div<{
   border-radius: 16px;
   position: absolute;
   top: ${layoutTopPosition}px;
-  left: 32px;
+  /*
+    (100vw / 2) - (${navWidth}px / 2) makes the nav perfectly centered
+    horizontally in the browser window.
+
+    - (${maxCardWidth}px / 2) - (${navSpace}px / 2) is to then adjust the
+    nav to the left to be centered with the layout card body.
+  */
+  left: calc(
+    (100vw / 2) - (${navWidth}px / 2) - (${maxCardWidth}px / 2) -
+      (${navSpace}px / 2)
+  );
   overflow: visible;
   z-index: 10;
-  width: 240px;
+  width: ${navWidth}px;
   padding: 12px 0px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
   @media screen and (max-width: ${layoutSmallWidth}px) {

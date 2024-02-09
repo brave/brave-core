@@ -11,6 +11,8 @@ group("prefs") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/de_amp/common",
+    "//brave/components/debounce/core/browser",
     "//brave/components/decentralized_dns/core",
     "//brave/components/ipfs/buildflags",
     "//brave/components/l10n/common",

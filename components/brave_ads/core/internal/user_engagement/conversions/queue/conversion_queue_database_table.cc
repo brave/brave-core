@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_database_table.h"
 
+#include <cstddef>
 #include <utility>
 #include <vector>
 
@@ -73,8 +74,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
                conversion_queue_item.conversion.advertiser_id);
     BindString(command, index++, conversion_queue_item.conversion.segment);
     BindString(command, index++,
-               ConversionActionTypeToString(
-                   conversion_queue_item.conversion.action_type));
+               ToString(conversion_queue_item.conversion.action_type));
     BindString(command, index++,
                conversion_queue_item.conversion.verifiable
                    ? conversion_queue_item.conversion.verifiable->id
@@ -99,8 +99,7 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   CHECK(record);
 
   ConversionQueueItemInfo conversion_queue_item;
-  conversion_queue_item.conversion.ad_type =
-      ParseAdType(ColumnString(record, 0));
+  conversion_queue_item.conversion.ad_type = ToAdType(ColumnString(record, 0));
   conversion_queue_item.conversion.campaign_id = ColumnString(record, 1);
   conversion_queue_item.conversion.creative_set_id = ColumnString(record, 2);
   conversion_queue_item.conversion.creative_instance_id =
@@ -108,7 +107,7 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   conversion_queue_item.conversion.advertiser_id = ColumnString(record, 4);
   conversion_queue_item.conversion.segment = ColumnString(record, 5);
   conversion_queue_item.conversion.action_type =
-      StringToConversionActionType(ColumnString(record, 6));
+      ToConversionActionType(ColumnString(record, 6));
 
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = ColumnString(record, 7);

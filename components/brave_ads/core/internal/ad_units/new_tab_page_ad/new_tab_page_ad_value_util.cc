@@ -50,7 +50,7 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict) {
   NewTabPageAdInfo ad;
 
   if (const auto* const value = dict.FindString(kTypeKey)) {
-    ad.type = ParseAdType(*value);
+    ad.type = ToAdType(*value);
   }
 
   if (const auto* const value = dict.FindString(kNewTabPageAdPlacementIdKey)) {

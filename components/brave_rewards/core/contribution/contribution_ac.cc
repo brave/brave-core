@@ -26,11 +26,11 @@ ContributionAC::~ContributionAC() = default;
 
 void ContributionAC::Process(const uint64_t reconcile_stamp) {
   if (!engine_->state()->GetAutoContributeEnabled()) {
-    BLOG(1, "Auto contribution is off");
+    engine_->Log(FROM_HERE) << "Auto contribution is off";
     return;
   }
 
-  BLOG(1, "Starting auto contribution");
+  engine_->Log(FROM_HERE) << "Starting auto contribution";
 
   auto filter = engine_->publisher()->CreateActivityFilter(
       "", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED, true,
@@ -50,7 +50,7 @@ void ContributionAC::PreparePublisherList(
   engine_->publisher()->NormalizeContributeWinners(&normalized_list, &list, 0);
 
   if (normalized_list.empty()) {
-    BLOG(1, "AC list is empty");
+    engine_->Log(FROM_HERE) << "AC list is empty";
     return;
   }
 
@@ -68,7 +68,7 @@ void ContributionAC::PreparePublisherList(
   }
 
   if (queue_list.empty()) {
-    BLOG(1, "AC queue list is empty");
+    engine_->Log(FROM_HERE) << "AC queue list is empty";
     return;
   }
 
@@ -89,7 +89,7 @@ void ContributionAC::PreparePublisherList(
 
 void ContributionAC::QueueSaved(const mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Queue was not saved");
+    engine_->LogError(FROM_HERE) << "Queue was not saved";
     return;
   }
 

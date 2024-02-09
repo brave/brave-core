@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <optional>
-#include <utility>
 
 #include "base/base64.h"
 #include "base/check_is_test.h"
@@ -24,7 +23,6 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/version_info/version_info.h"
@@ -36,10 +34,6 @@
 #include "net/cookies/parsed_cookie.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
-
-#if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
-#endif
 
 namespace brave_vpn {
 
@@ -137,7 +131,9 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " " << state;
 #if BUILDFLAG(IS_WIN)
-  WriteConnectionState(static_cast<int>(state));
+  if (delegate_) {
+    delegate_->WriteConnectionState(state);
+  }
 #endif
   // Ignore connection state change request for non purchased user.
   // This can be happened when user controls vpn via os settings.
@@ -154,7 +150,9 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
 #if BUILDFLAG(IS_WIN)
     // Run tray process each time we establish connection. System tray icon
     // manages self state to be visible/hidden due to settings.
-    wireguard::ShowBraveVpnStatusTrayIcon();
+    if (delegate_) {
+      delegate_->ShowBraveVpnStatusTrayIcon();
+    }
 #endif
     RecordP3A(true);
   }
@@ -774,8 +772,12 @@ void BraveVpnService::SetPurchasedState(
     obs->OnPurchasedStateChanged(state, description);
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (state == PurchasedState::PURCHASED)
+  if (state == PurchasedState::PURCHASED) {
     connection_api_->CheckConnection();
+
+    // Some platform needs to install services to run vpn.
+    connection_api_->MaybeInstallSystemServices();
+  }
 #endif
 }
 

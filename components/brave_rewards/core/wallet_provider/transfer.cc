@@ -94,7 +94,7 @@ void Transfer::OnSaveExternalTransaction(
     mojom::ExternalTransactionPtr transaction,
     mojom::Result result) const {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to save external transaction!");
+    engine_->LogError(FROM_HERE) << "Failed to save external transaction";
     return std::move(callback).Run(nullptr);
   }
 

@@ -14,8 +14,8 @@
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
+#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -103,7 +103,7 @@ void BraveAdBlockHandler::OnServiceUpdateEvent() {
 void BraveAdBlockHandler::GetRegionalLists(const base::Value::List& args) {
   AllowJavascript();
   auto regional_lists = g_brave_browser_process->ad_block_service()
-                            ->regional_service_manager()
+                            ->component_service_manager()
                             ->GetRegionalLists();
 
   ResolveJavascriptCallback(args[0], regional_lists);
@@ -119,7 +119,7 @@ void BraveAdBlockHandler::EnableFilterList(const base::Value::List& args) {
   bool enabled = args[1].GetBool();
 
   g_brave_browser_process->ad_block_service()
-      ->regional_service_manager()
+      ->component_service_manager()
       ->EnableFilterList(uuid, enabled);
 }
 

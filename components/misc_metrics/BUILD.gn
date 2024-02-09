@@ -5,12 +5,16 @@
 
 static_library("misc_metrics") {
   sources = [
+    "autofill_metrics.cc",
+    "autofill_metrics.h",
     "general_browser_usage.cc",
     "general_browser_usage.h",
+    "language_metrics.cc",
+    "language_metrics.h",
     "menu_metrics.cc",
     "menu_metrics.h",
-    "page_metrics_service.cc",
-    "page_metrics_service.h",
+    "page_metrics.cc",
+    "page_metrics.h",
     "pref_names.h",
     "privacy_hub_metrics.cc",
     "privacy_hub_metrics.h",
@@ -22,8 +26,11 @@ static_library("misc_metrics") {
     "//base",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
+    "//components/autofill/core/browser",
     "//components/history/core/browser",
     "//components/keyed_service/core",
+    "//components/language/core/browser",
+    "//components/language/core/common",
     "//components/prefs",
     "//url",
   ]
@@ -36,6 +43,7 @@ source_set("unit_tests") {
 
   sources = [
     "general_browser_usage_unittest.cc",
+    "language_metrics_unittest.cc",
     "menu_metrics_unittest.cc",
     "privacy_hub_metrics_unittest.cc",
     "tab_metrics_unittest.cc",
@@ -45,6 +53,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/misc_metrics",
+    "//components/language/core/browser",
     "//components/prefs:test_support",
     "//content/test:test_support",
     "//testing/gtest",

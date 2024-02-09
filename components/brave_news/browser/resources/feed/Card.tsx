@@ -6,7 +6,7 @@
 import * as React from 'react';
 import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
 import styled from "styled-components";
-import SecureLink, { SecureLinkProps, validateScheme } from '$web-common/SecureLink';
+import SecureLink, { SecureLinkProps, defaultAllowedSchemes, validateScheme } from '$web-common/SecureLink';
 import { configurationCache, useBraveNews } from '../shared/Context';
 
 export const Header = styled.h2`
@@ -89,8 +89,8 @@ export default styled.div`
   ${p => p.onClick && 'cursor: pointer'}
 `
 
-export const braveNewsCardClickHandler = (href: string | undefined) => (e: React.MouseEvent) => {
-  validateScheme(href)
+export const braveNewsCardClickHandler = (href: string | undefined, allowedSchemes: string[] = defaultAllowedSchemes) => (e: React.MouseEvent) => {
+  validateScheme(href, allowedSchemes)
 
   if (configurationCache.value.openArticlesInNewTab || e.ctrlKey || e.metaKey || e.buttons & 4) {
     window.open(href, '_blank', 'noopener noreferrer')

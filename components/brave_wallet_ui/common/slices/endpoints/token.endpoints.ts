@@ -107,7 +107,10 @@ export const tokenEndpoints = ({
       },
       invalidatesTags: (_, __, tokenArg) => [
         { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
+        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) },
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
       ]
     }),
     removeUserToken: mutation<boolean, BraveWallet.BlockchainToken>({
@@ -188,7 +191,10 @@ export const tokenEndpoints = ({
       },
       invalidatesTags: (_, __, tokenArg) => [
         { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
+        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) },
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
       ]
     }),
     updateUserAssetVisible: mutation<boolean, SetUserAssetVisiblePayloadType>({
@@ -210,6 +216,20 @@ export const tokenEndpoints = ({
             token,
             isVisible
           )
+
+          if (!success) {
+            // token is probably not in the core-side assets list,
+            // try adding it to the list
+            const { success: addTokenSuccess } = await addUserToken({
+              braveWalletService,
+              cache,
+              tokenArg: token
+            })
+            if (!addTokenSuccess) {
+              throw new Error('Token could not be updated or added')
+            }
+          }
+
           return { data: success }
         } catch (error) {
           return handleEndpointError(
@@ -255,7 +275,10 @@ export const tokenEndpoints = ({
               {
                 type: 'UserBlockchainTokens',
                 id: TOKEN_TAG_IDS.REGISTRY
-              }
+              },
+              'TokenBalances',
+              'TokenBalancesForChainId',
+              'AccountTokenCurrentBalance'
             ]
           : ['UNKNOWN_ERROR']
     }),

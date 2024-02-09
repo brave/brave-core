@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import LeoButton from '@brave/leo/react/button'
 
 // Options
 import { BraveWallet } from '../../../constants/types'
@@ -25,6 +26,7 @@ import {
 
 // Hooks
 import {
+  useGetBitcoinBalancesQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery
 } from '../../../common/slices/api.slice'
@@ -42,10 +44,13 @@ import {
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { AssetItemMenu } from '../wallet-menus/asset-item-menu'
 import { RewardsMenu } from '../wallet-menus/rewards_menu'
+import {
+  BalanceDetailsModal //
+} from '../popup-modals/balance_details_modal/balance_details_modal'
 
 // Styled Components
 import {
-  StyledWrapper,
+  HoverArea,
   AssetBalanceText,
   AssetName,
   BalanceColumn,
@@ -55,12 +60,16 @@ import {
   NameColumn,
   Spacer,
   NetworkDescriptionText,
-  ButtonArea,
+  Button,
   AssetMenuWrapper,
   AssetMenuButton,
-  AssetMenuButtonIcon
+  AssetMenuButtonIcon,
+  Wrapper,
+  InfoBar,
+  LoadingRing,
+  InfoText
 } from './style'
-import { IconsWrapper, NetworkIconWrapper } from '../../shared/style'
+import { IconsWrapper, NetworkIconWrapper, Row } from '../../shared/style'
 
 interface Props {
   action?: () => void
@@ -69,6 +78,7 @@ interface Props {
   account?: BraveWallet.AccountInfo
   hideBalances?: boolean
   isPanel?: boolean
+  isAccountDetails?: boolean
   spotPrice: string
 }
 
@@ -83,23 +93,38 @@ export const PortfolioAssetItem = ({
   hideBalances,
   isPanel,
   spotPrice,
-  account
+  account,
+  isAccountDetails
 }: Props) => {
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
+  const { data: bitcoinBalances, isLoading: isLoadingBitcoinBalances } =
+    useGetBitcoinBalancesQuery(
+      token?.coin === BraveWallet.CoinType.BTC && account?.accountId
+        ? account.accountId
+        : skipToken
+    )
 
   // state
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
   const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] =
     React.useState(0)
   const [showAssetMenu, setShowAssetMenu] = React.useState<boolean>(false)
+  const [showBalanceDetailsModal, setShowBalanceDetailsModal] =
+    React.useState<boolean>(false)
 
   // refs
   const assetMenuRef = React.useRef<HTMLDivElement>(null)
+  const balanceDetailsRef = React.useRef<HTMLDivElement>(null)
 
   // hooks
   useOnClickOutside(assetMenuRef, () => setShowAssetMenu(false), showAssetMenu)
+  useOnClickOutside(
+    balanceDetailsRef,
+    () => setShowBalanceDetailsModal(false),
+    showBalanceDetailsModal
+  )
 
   // memos & computed
   const isNonFungibleToken = token.isNft
@@ -149,9 +174,16 @@ export const PortfolioAssetItem = ({
     ? getNormalizedExternalRewardsNetwork(externalProvider)
     : tokensNetwork
 
+  const hasPendingBalance = !new Amount(
+    bitcoinBalances?.pendingBalance ?? '0'
+  ).isZero()
+
+  const showBalanceInfo =
+    hasPendingBalance && account && token.coin === BraveWallet.CoinType.BTC
+
   // effects
   React.useEffect(() => {
-    // Randow value between 100 & 250
+    // Random value between 100 & 250
     // Set value only once
     if (assetNameSkeletonWidth === 0) {
       setAssetNameSkeletonWidth(unbiasedRandom(100, 250))
@@ -165,118 +197,182 @@ export const PortfolioAssetItem = ({
   // render
   return (
     <>
-      {token.visible && (
-        <StyledWrapper isPanel={isPanel}>
-          <ButtonArea
-            disabled={isLoading}
-            rightMargin={10}
-            onClick={action}
-          >
-            <NameAndIcon>
-              <IconsWrapper>
-                {isNonFungibleToken ? (
-                  <NftIconWithPlaceholder
-                    asset={token}
-                    network={network}
-                  />
-                ) : (
-                  <AssetIconWithPlaceholder
-                    asset={token}
-                    network={network}
-                  />
-                )}
-                {!isPanel &&
-                  network &&
-                  checkIfTokenNeedsNetworkIcon(
-                    network,
-                    token.contractAddress
-                  ) && (
-                    <NetworkIconWrapper>
-                      <CreateNetworkIcon
-                        network={network}
-                        marginRight={0}
-                      />
-                    </NetworkIconWrapper>
+      <Wrapper
+        fullWidth={true}
+        showBorder={isAccountDetails && showBalanceInfo}
+      >
+        {token.visible && (
+          <HoverArea isPanel={isPanel}>
+            <Button
+              disabled={isLoading}
+              rightMargin={10}
+              onClick={action}
+            >
+              <NameAndIcon>
+                <IconsWrapper>
+                  {isNonFungibleToken ? (
+                    <NftIconWithPlaceholder
+                      asset={token}
+                      network={network}
+                    />
+                  ) : (
+                    <AssetIconWithPlaceholder
+                      asset={token}
+                      network={network}
+                    />
                   )}
-              </IconsWrapper>
-              <NameColumn>
-                {!token.name && !token.symbol ? (
-                  <>
-                    <LoadingSkeleton
-                      width={assetNameSkeletonWidth}
-                      height={18}
-                    />
-                    <Spacer />
-                    <LoadingSkeleton
-                      width={assetNetworkSkeletonWidth}
-                      height={18}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <AssetName>
-                      {token.name}{' '}
-                      {token.isErc721 && token.tokenId
-                        ? '#' + new Amount(token.tokenId).toNumber()
-                        : ''}
-                    </AssetName>
-                    <NetworkDescriptionText>
-                      {NetworkDescription}
-                    </NetworkDescriptionText>
-                  </>
-                )}
-              </NameColumn>
-            </NameAndIcon>
-            <BalanceColumn>
-              <WithHideBalancePlaceholder
-                size='small'
-                hideBalances={hideBalances ?? false}
-              >
-                {!isNonFungibleToken && (
-                  <>
-                    {formattedFiatBalance ? (
-                      <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>
-                    ) : (
-                      <>
+                  {!isPanel &&
+                    network &&
+                    checkIfTokenNeedsNetworkIcon(
+                      network,
+                      token.contractAddress
+                    ) && (
+                      <NetworkIconWrapper>
+                        <CreateNetworkIcon
+                          network={network}
+                          marginRight={0}
+                        />
+                      </NetworkIconWrapper>
+                    )}
+                </IconsWrapper>
+                <NameColumn>
+                  {!token.name && !token.symbol ? (
+                    <>
+                      <LoadingSkeleton
+                        width={assetNameSkeletonWidth}
+                        height={18}
+                      />
+                      <Spacer />
+                      <LoadingSkeleton
+                        width={assetNetworkSkeletonWidth}
+                        height={18}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <AssetName
+                        textSize='14px'
+                        isBold={true}
+                        textAlign='left'
+                      >
+                        {token.name}{' '}
+                        {token.isErc721 && token.tokenId
+                          ? '#' + new Amount(token.tokenId).toNumber()
+                          : ''}
+                      </AssetName>
+                      <NetworkDescriptionText
+                        textSize='12px'
+                        isBold={false}
+                        textAlign='left'
+                      >
+                        {NetworkDescription}
+                      </NetworkDescriptionText>
+                    </>
+                  )}
+                </NameColumn>
+              </NameAndIcon>
+              <BalanceColumn>
+                <WithHideBalancePlaceholder
+                  size='small'
+                  hideBalances={hideBalances ?? false}
+                >
+                  {formattedAssetBalance ? (
+                    <AssetBalanceText
+                      textSize='14px'
+                      isBold={true}
+                      textAlign='right'
+                    >
+                      {formattedAssetBalance}
+                    </AssetBalanceText>
+                  ) : (
+                    <>
+                      <LoadingSkeleton
+                        width={60}
+                        height={18}
+                      />
+                      <Spacer />
+                    </>
+                  )}
+                  {!isNonFungibleToken && (
+                    <>
+                      {formattedFiatBalance ? (
+                        <FiatBalanceText
+                          textSize='12px'
+                          isBold={false}
+                          textAlign='right'
+                        >
+                          {formattedFiatBalance}
+                        </FiatBalanceText>
+                      ) : (
                         <LoadingSkeleton
                           width={60}
                           height={18}
                         />
-                        <Spacer />
-                      </>
-                    )}
-                  </>
-                )}
-                {formattedAssetBalance ? (
-                  <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
-                ) : (
-                  <LoadingSkeleton
-                    width={60}
-                    height={18}
-                  />
-                )}
-              </WithHideBalancePlaceholder>
-            </BalanceColumn>
-          </ButtonArea>
-          <AssetMenuWrapper ref={assetMenuRef}>
-            <AssetMenuButton onClick={() => setShowAssetMenu((prev) => !prev)}>
-              <AssetMenuButtonIcon />
-            </AssetMenuButton>
-            {showAssetMenu && (
-              <>
-                {isRewardsToken ? (
-                  <RewardsMenu />
-                ) : (
-                  <AssetItemMenu
-                    assetBalance={assetBalance}
-                    asset={token}
-                    account={account}
-                  />
-                )}
-              </>
-            )}
-          </AssetMenuWrapper>
-        </StyledWrapper>
+                      )}
+                    </>
+                  )}
+                </WithHideBalancePlaceholder>
+              </BalanceColumn>
+            </Button>
+            <AssetMenuWrapper ref={assetMenuRef}>
+              <AssetMenuButton
+                onClick={() => setShowAssetMenu((prev) => !prev)}
+              >
+                <AssetMenuButtonIcon />
+              </AssetMenuButton>
+              {showAssetMenu && (
+                <>
+                  {isRewardsToken ? (
+                    <RewardsMenu />
+                  ) : (
+                    <AssetItemMenu
+                      assetBalance={assetBalance}
+                      asset={token}
+                      account={account}
+                    />
+                  )}
+                </>
+              )}
+            </AssetMenuWrapper>
+          </HoverArea>
+        )}
+        {showBalanceInfo && (
+          <Row padding='8px'>
+            <InfoBar justifyContent='space-between'>
+              <Row
+                width='unset'
+                gap='16px'
+              >
+                <LoadingRing />
+                <InfoText
+                  textSize='14px'
+                  isBold={false}
+                  textAlign='left'
+                >
+                  {getLocale('braveWalletUnavailableBalances')}
+                </InfoText>
+              </Row>
+              <div>
+                <LeoButton
+                  kind='plain'
+                  size='tiny'
+                  onClick={() => setShowBalanceDetailsModal(true)}
+                >
+                  {getLocale('braveWalletAllowSpendDetailsButton')}
+                </LeoButton>
+              </div>
+            </InfoBar>
+          </Row>
+        )}
+      </Wrapper>
+      {showBalanceDetailsModal && (
+        <BalanceDetailsModal
+          ref={balanceDetailsRef}
+          onClose={() => setShowBalanceDetailsModal(false)}
+          token={token}
+          isLoadingBalances={isLoadingBitcoinBalances}
+          balances={bitcoinBalances}
+        />
       )}
     </>
   )

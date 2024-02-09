@@ -168,9 +168,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       })
     })
 
-    const { data: fullTokenList } = useGetCombinedTokensListQuery(undefined, {
-      skip: !showFullFlatTokenList
-    })
+    const { data: fullTokenList } = useGetCombinedTokensListQuery(
+      showFullFlatTokenList ? undefined : skipToken
+    )
 
     const networks = modalType === 'swap' ? swapNetworks : visibleNetworks
 
@@ -390,7 +390,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [accounts, getTokensBySearchValue, isLoadingBalances])
 
     const tokensByAccount = React.useMemo(() => {
-      if (isLoadingBalances) {
+      if (isLoadingBalances && !showFullFlatTokenList) {
         return (
           <Column fullWidth={true}>
             <AccountSection
@@ -568,7 +568,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               showNetworkDropDown={showNetworkDropDown}
               onSelectNetwork={onSelectAssetsNetwork}
               networkSelectorDisabled={showFullFlatTokenList}
-              useSwapNetworks={modalType === 'swap'}
+              networkListSubset={
+                modalType === 'swap' ? swapNetworks : undefined
+              }
             />
           </SearchBarRow>
         )}

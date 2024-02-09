@@ -1,9 +1,9 @@
 diff --git a/components/sync/service/sync_service_impl.h b/components/sync/service/sync_service_impl.h
-index 534c3f50358bb8c79fc8f20bc4375ab06d6457dd..76b79e504ddc5f292f32d28e7cbafbf99b588776 100644
+index 1303e875eeea0f3f829fd8fb21864fa385f278ba..8e5d63ebbf0bff8cd1fe90e29c3e3d122d81be84 100644
 --- a/components/sync/service/sync_service_impl.h
 +++ b/components/sync/service/sync_service_impl.h
-@@ -254,6 +254,7 @@ class SyncServiceImpl : public SyncService,
-   bool IsSyncFeatureConsideredRequested() const override;
+@@ -259,6 +259,7 @@ class SyncServiceImpl : public SyncService,
+   SyncClient* GetSyncClientForTest();
  
   private:
 +  BRAVE_SYNC_SERVICE_IMPL_H_

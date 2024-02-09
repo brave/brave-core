@@ -4,6 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
+import ProgressRingReact from '@brave/leo/react/progressRing'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +18,6 @@ import {
 
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
-import { generateQRCode } from '../../../../utils/qr-code-utils'
 
 // constants
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
@@ -39,9 +40,12 @@ import { usePasswordAttempts } from '../../../../common/hooks/use-password-attem
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 import { useAccountOrb } from '../../../../common/hooks/use-orb'
 import {
-  useGenerateReceiveAddressMutation,
-  useUpdateAccountNameMutation
+  useGetQrCodeImageQuery,
+  useUpdateAccountNameMutation //
 } from '../../../../common/slices/api.slice'
+import {
+  useReceiveAddressQuery //
+} from '../../../../common/slices/api.slice.extra'
 
 // style
 import {
@@ -60,48 +64,54 @@ import {
   Line,
   NameAndIcon,
   AccountCircle,
-  AccountName
+  AccountName,
+  QRCodeImage
 } from './account-settings-modal.style'
 import { VerticalSpacer } from '../../../shared/style'
+import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
 interface DepositModalProps {
   selectedAccount: BraveWallet.AccountInfo
 }
 
 const DepositModal = ({ selectedAccount }: DepositModalProps) => {
-  const isMounted = useIsMounted()
   const orb = useAccountOrb(selectedAccount)
-  const [qrCode, setQRCode] = React.useState<string>('')
-  const [receiveAddress, setReceiveAddress] = React.useState<string>('')
-  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
 
-  // effects
-  React.useEffect(() => {
-    ;(async () => {
-      const address = await generateReceiveAddress(
-        selectedAccount.accountId
-      ).unwrap()
-      setReceiveAddress(address)
-      const qrCode = await generateQRCode(address)
-      if (isMounted) {
-        setQRCode(qrCode)
-      }
-    })()
-  }, [isMounted])
+  // queries
+  const receiveAddress = useReceiveAddressQuery(selectedAccount.accountId)
+  const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
+    receiveAddress || skipToken
+  )
 
+  // render
   return (
     <>
       <NameAndIcon>
         <AccountCircle orb={orb} />
         <AccountName>{selectedAccount.name}</AccountName>
       </NameAndIcon>
-      <QRCodeWrapper src={qrCode} />
-      <CopyTooltip text={receiveAddress}>
-        <AddressButton>
-          {receiveAddress}
-          <CopyIcon />
-        </AddressButton>
-      </CopyTooltip>
+
+      <QRCodeWrapper>
+        {isLoadingQrCode || !receiveAddress ? (
+          <ProgressRingReact mode='indeterminate' />
+        ) : (
+          <QRCodeImage src={qrCode} />
+        )}
+      </QRCodeWrapper>
+
+      {receiveAddress ? (
+        <CopyTooltip text={receiveAddress}>
+          <AddressButton>
+            {receiveAddress}
+            <CopyIcon />
+          </AddressButton>
+        </CopyTooltip>
+      ) : (
+        <Skeleton
+          height={'20px'}
+          width={'300px'}
+        />
+      )}
       <VerticalSpacer space={20} />
     </>
   )

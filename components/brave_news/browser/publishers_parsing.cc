@@ -10,9 +10,11 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
+#include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "url/gurl.h"
@@ -68,7 +70,18 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
         auto locale_info = mojom::LocaleInfo::New();
         locale_info->locale = locale.locale;
         locale_info->rank = locale.rank.value_or(0);
-        locale_info->channels = std::move(locale.channels);
+
+        // With migrations, it's possible we'll end up with duplicate channels,
+        // so filter them out with a set.
+        base::flat_set<std::string> seen;
+        for (const auto& channel : locale.channels) {
+          auto transformed = brave_news::GetMigratedChannel(channel);
+          if (seen.contains(transformed)) {
+            continue;
+          }
+          seen.insert(transformed);
+          locale_info->channels.push_back(std::move(transformed));
+        }
 
         publisher->locales.push_back(std::move(locale_info));
       }

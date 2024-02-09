@@ -23,13 +23,18 @@ using testing::WithParamInterface;
 
 namespace brave_rewards::internal::wallet {
 
-mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
+mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngineImpl& engine,
+                                                   std::string wallet_string,
                                                    std::string wallet_type);
 
-class WalletUtilTest : public Test {};
+class WalletUtilTest : public Test {
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  MockRewardsEngineImpl mock_engine_impl_;
+};
 
 TEST_F(WalletUtilTest, InvalidJSON) {
-  EXPECT_FALSE(ExternalWalletPtrFromJSON("", "uphold"));
+  EXPECT_FALSE(ExternalWalletPtrFromJSON(mock_engine_impl_, "", "uphold"));
 }
 
 TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
@@ -39,16 +44,15 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
       "  \"address\": \"6a752063-8958-44d5-b5db-71543f18567d\",\n"
       "  \"status\": 2,\n"
       "  \"user_name\": \"random_user\",\n"
-      "  \"account_url\": \"https://random.domain/account\","
       "  \"fees\": {\"brave\": 5.00}"
       "}\n";
 
-  mojom::ExternalWalletPtr wallet = ExternalWalletPtrFromJSON(data, "uphold");
+  mojom::ExternalWalletPtr wallet =
+      ExternalWalletPtrFromJSON(mock_engine_impl_, data, "uphold");
   EXPECT_EQ(wallet->token, "sI5rKiy6ijzbbJgE2MMFzAbTc6udYYXEi3wzS9iknP6n");
   EXPECT_EQ(wallet->address, "6a752063-8958-44d5-b5db-71543f18567d");
   EXPECT_EQ(wallet->status, mojom::WalletStatus::kConnected);
   EXPECT_EQ(wallet->user_name, "random_user");
-  EXPECT_EQ(wallet->account_url, "https://random.domain/account");
   EXPECT_NE(wallet->fees.find("brave"), wallet->fees.end());
   EXPECT_EQ(wallet->fees["brave"], 5.00);
 }
@@ -92,8 +96,9 @@ TEST_P(TransitionWalletCreate, Paths) {
   if (wallet) {
     EXPECT_EQ(wallet->type, constant::kWalletUphold);
     EXPECT_EQ(wallet->status, to);
-    EXPECT_FALSE(wallet->account_url.empty());
-    EXPECT_TRUE(wallet->activity_url.empty());
+    EXPECT_EQ(wallet->account_url.empty(),
+              to == mojom::WalletStatus::kNotConnected);
+    EXPECT_EQ(wallet->activity_url.empty(), wallet->address.empty());
 
     EXPECT_TRUE(wallet->token.empty());
     EXPECT_TRUE(wallet->address.empty());
@@ -168,11 +173,12 @@ TEST_P(TransitionWalletTransition, Paths) {
   if (to_wallet) {
     EXPECT_EQ(to_wallet->type, constant::kWalletUphold);
     EXPECT_EQ(to_wallet->status, to);
-    EXPECT_FALSE(to_wallet->account_url.empty());
 
-    if (to == mojom::WalletStatus::kConnected) {
-      EXPECT_FALSE(to_wallet->activity_url.empty());
-    } else {
+    EXPECT_EQ(to_wallet->account_url.empty(),
+              to == mojom::WalletStatus::kNotConnected);
+    EXPECT_EQ(to_wallet->activity_url.empty(), to_wallet->address.empty());
+
+    if (to != mojom::WalletStatus::kConnected) {
       EXPECT_TRUE(to == mojom::WalletStatus::kNotConnected ||
                   to == mojom::WalletStatus::kLoggedOut);
 

@@ -23,85 +23,65 @@ namespace brave_wallet {
 
 namespace {
 
-const char* GetJupiterQuoteTemplate() {
+const char* GetJupiterQuoteResponse() {
   return R"(
     {
-      "data": [
+      "inputMint": "So11111111111111111111111111111111111111112",
+      "inAmount": "1000000",
+      "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+      "outAmount": "781469842",
+      "otherAmountThreshold": "781391696",
+      "swapMode": "ExactIn",
+      "slippageBps": "1",
+      "platformFee": {
+        "amount": "6775397",
+        "feeBps": "85"
+      },
+      "priceImpactPct": "0",
+      "routePlan": [
         {
-          "inAmount": "%s",
-          "outAmount": "261273",
-          "amount": "10000",
-          "otherAmountThreshold": "258660",
-          "swapMode": "ExactIn",
-          "priceImpactPct": "0.008955716118219659",
-          "slippageBps": "50",
-          "marketInfos": [
-            {
-              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-              "label": "Orca",
-              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-              "notEnoughLiquidity": false,
-              "inAmount": "10000",
-              "outAmount": "117001203",
-              "priceImpactPct": "0.0000001196568750220778",
-              "lpFee": {
-                "amount": "%s",
-                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": "0.003"
-              },
-              "platformFee": {
-                "amount": "0",
-                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": "0"
-              }
-            }
-          ]
+          "swapInfo": {
+            "ammKey": "HCk6LA93xPVsF8g4v6gjkiCd88tLXwZq4eJwiYNHR8da",
+            "label": "Raydium",
+            "inputMint": "So11111111111111111111111111111111111111112",
+            "outputMint": "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4",
+            "inAmount": "997500",
+            "outAmount": "4052482154",
+            "feeAmount": "2500",
+            "feeMint": "So11111111111111111111111111111111111111112"
+          },
+          "percent": "100"
+        },
+        {
+          "swapInfo": {
+            "ammKey": "HqrRmb2MbEiTrJS5KXhDzUoKbSLbBXJvhNBGEyDNo9Tr",
+            "label": "Meteora",
+            "inputMint": "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4",
+            "outputMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS",
+            "inAmount": "4052482154",
+            "outAmount": "834185227",
+            "feeAmount": "10131205",
+            "feeMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS"
+          },
+          "percent": "100"
+        },
+        {
+          "swapInfo": {
+            "ammKey": "6shkv2VNBPWVABvShgcGmrv98Z1vR3EcdwND6XUwGoFq",
+            "label": "Meteora",
+            "inputMint": "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS",
+            "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+            "inAmount": "834185227",
+            "outAmount": "781469842",
+            "feeAmount": "2085463",
+            "feeMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
+          },
+          "percent": "100"
         }
-      ],
-      "timeTaken": "0.044471802000089156"
+      ]
     })";
 }
 
-const char* GetJupiterQuoteTemplateForPriceImpact() {
-  return R"(
-    {
-      "data": [
-        {
-          "inAmount": "10000",
-          "outAmount": "261273",
-          "amount": "10000",
-          "otherAmountThreshold": "258660",
-          "swapMode": "ExactIn",
-          "priceImpactPct": %s,
-          "slippageBps": "50",
-          "marketInfos": [
-            {
-              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
-              "label": "Orca",
-              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-              "notEnoughLiquidity": false,
-              "inAmount": "10000",
-              "outAmount": "117001203",
-              "priceImpactPct": %s,
-              "lpFee": {
-                "amount": "10000",
-                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                "pct": "0.003"
-              },
-              "platformFee": {
-                "amount": "0",
-                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-                "pct": "0"
-              }
-            }
-          ]
-        }
-      ],
-      "timeTaken": "0.044471802000089156"
-    })";
-}
 }  // namespace
 
 TEST(SwapResponseParserUnitTest, ParseZeroExQuoteResponse) {
@@ -398,141 +378,100 @@ TEST(SwapResponseParserUnitTest, ParseZeroExTransactionResponse) {
 }
 
 TEST(SwapResponseParserUnitTest, ParseJupiterQuoteResponse) {
-  auto* json_template = GetJupiterQuoteTemplate();
-  std::string json = base::StringPrintf(json_template, "10000", "30");
-
+  auto* json = GetJupiterQuoteResponse();
   mojom::JupiterQuotePtr swap_quote =
       ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_TRUE(swap_quote);
-  ASSERT_EQ(swap_quote->routes.size(), 1UL);
-  ASSERT_EQ(swap_quote->routes.at(0)->in_amount, 10000ULL);
-  ASSERT_EQ(swap_quote->routes.at(0)->out_amount, 261273ULL);
-  ASSERT_EQ(swap_quote->routes.at(0)->amount, 10000ULL);
-  ASSERT_EQ(swap_quote->routes.at(0)->other_amount_threshold, 258660ULL);
-  ASSERT_EQ(swap_quote->routes.at(0)->swap_mode, "ExactIn");
-  ASSERT_EQ(swap_quote->routes.at(0)->price_impact_pct, 0.008955716118219659);
-  ASSERT_EQ(swap_quote->routes.at(0)->slippage_bps, 50);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.size(), 1UL);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->id,
-            "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK");
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->label, "Orca");
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->input_mint,
-            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->output_mint,
-            "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey");
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->not_enough_liquidity,
-            false);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->in_amount, 10000ULL);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->out_amount,
-            117001203ULL);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->price_impact_pct,
-            1.196568750220778e-7);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->lp_fee->amount,
-            30ULL);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->lp_fee->mint,
-            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->lp_fee->pct, 0.003);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->platform_fee->amount,
-            0ULL);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->platform_fee->mint,
-            "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey");
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->platform_fee->pct, 0);
 
-  // OK: Max uint64 amount value
-  json = base::StringPrintf(json_template, "18446744073709551615", "30");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
   ASSERT_TRUE(swap_quote);
+  EXPECT_EQ(swap_quote->input_mint,
+            "So11111111111111111111111111111111111111112");
+  EXPECT_EQ(swap_quote->in_amount, "1000000");
+  EXPECT_EQ(swap_quote->output_mint,
+            "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263");
+  EXPECT_EQ(swap_quote->out_amount, "781469842");
+  EXPECT_EQ(swap_quote->other_amount_threshold, "781391696");
+  EXPECT_EQ(swap_quote->swap_mode, "ExactIn");
+  EXPECT_EQ(swap_quote->slippage_bps, "1");
+  EXPECT_EQ(swap_quote->price_impact_pct, "0");
 
-  // OK: Max uint64 for lpFee value
-  json = base::StringPrintf(json_template, "10000", "18446744073709551615");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_TRUE(swap_quote);
+  ASSERT_TRUE(swap_quote->platform_fee);
+  EXPECT_EQ(swap_quote->platform_fee->amount, "6775397");
+  EXPECT_EQ(swap_quote->platform_fee->fee_bps, "85");
+
+  ASSERT_EQ(swap_quote->route_plan.size(), 3UL);
+  EXPECT_EQ(swap_quote->route_plan.at(0)->percent, "100");
+  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->amm_key,
+            "HCk6LA93xPVsF8g4v6gjkiCd88tLXwZq4eJwiYNHR8da");
+  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->label, "Raydium");
+  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->input_mint,
+            "So11111111111111111111111111111111111111112");
+  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->output_mint,
+            "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4");
+  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->in_amount, "997500");
+  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->out_amount, "4052482154");
+  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->fee_amount, "2500");
+  EXPECT_EQ(swap_quote->route_plan.at(0)->swap_info->fee_mint,
+            "So11111111111111111111111111111111111111112");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->percent, "100");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->amm_key,
+            "HqrRmb2MbEiTrJS5KXhDzUoKbSLbBXJvhNBGEyDNo9Tr");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->label, "Meteora");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->input_mint,
+            "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->output_mint,
+            "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->in_amount, "4052482154");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->out_amount, "834185227");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->fee_amount, "10131205");
+  EXPECT_EQ(swap_quote->route_plan.at(1)->swap_info->fee_mint,
+            "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->percent, "100");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->amm_key,
+            "6shkv2VNBPWVABvShgcGmrv98Z1vR3EcdwND6XUwGoFq");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->label, "Meteora");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->input_mint,
+            "dipQRV1bWwJbZ3A2wHohXiTZC77CzFGigbFEcvsyMrS");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->output_mint,
+            "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->in_amount, "834185227");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->out_amount, "781469842");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->fee_amount, "2085463");
+  EXPECT_EQ(swap_quote->route_plan.at(2)->swap_info->fee_mint,
+            "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263");
+
+  // OK: null platformFee value
+  EXPECT_TRUE(ParseJupiterQuoteResponse(ParseJson(R"({
+    "inputMint": "So11111111111111111111111111111111111111112",
+      "inAmount": "1000000",
+      "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+      "outAmount": "781469842",
+      "otherAmountThreshold": "781391696",
+      "swapMode": "ExactIn",
+      "slippageBps": "1",
+      "platformFee": null,
+      "priceImpactPct": "0",
+      "routePlan": []
+  })")));
 
   // KO: Malformed quote
-  ASSERT_FALSE(ParseJupiterQuoteResponse(base::Value()));
+  EXPECT_FALSE(ParseJupiterQuoteResponse(base::Value()));
 
   // KO: Invalid quote
-  ASSERT_FALSE(ParseJupiterQuoteResponse(ParseJson(R"({"price": "3"})")));
+  EXPECT_FALSE(ParseJupiterQuoteResponse(ParseJson(R"({"price": "3"})")));
 
-  // KO: uint64 amount value underflow
-  json = base::StringPrintf(json_template, "-1", "30");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_FALSE(swap_quote);
-
-  // KO: uint64 amount value overflow (UINT64_MAX + 1)
-  json = base::StringPrintf(json_template, "18446744073709551616", "30");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_FALSE(swap_quote);
-
-  // KO: Integer lpFee value underflow
-  json = base::StringPrintf(json_template, "10000", "-1");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_FALSE(swap_quote);
-
-  // KO: Integer lpFee value overflow (UINT64_MAX + 1)
-  json = base::StringPrintf(json_template, "10000", "18446744073709551616");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_FALSE(swap_quote);
-}
-
-TEST(SwapResponseParserUnitTest, ParseJupiterQuoteSlippageBps) {
-  auto* json_fmt(R"(
-    {
-      "data": [
-        {
-          "inAmount": "10000",
-          "outAmount": "261273",
-          "amount": "10000",
-          "otherAmountThreshold": "258660",
-          "swapMode": "ExactIn",
-          "priceImpactPct": "1.1",
-          "slippageBps": %s,
-          "marketInfos": []
-        }
-      ],
-      "timeTaken": "0.044471802000089156"
-    })");
-
-  // OK: valid slippageBps value
-  std::string json = base::StringPrintf(json_fmt, "\"50\"");
-  mojom::JupiterQuotePtr swap_quote =
-      ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_TRUE(swap_quote);
-  EXPECT_EQ(swap_quote->routes.at(0)->slippage_bps, 50);
-
-  // KO: null slippageBps value
-  json = base::StringPrintf(json_fmt, "null");
-  EXPECT_FALSE(ParseJupiterQuoteResponse(ParseJson(json)));
-
-  // KO: non-integer slippageBps value
-  json = base::StringPrintf(json_fmt, "\"50.55\"");
-  EXPECT_FALSE(ParseJupiterQuoteResponse(ParseJson(json)));
-}
-
-TEST(SwapResponseParserUnitTest, ParseJupiterQuotePriceImpact) {
-  auto* json_template = GetJupiterQuoteTemplateForPriceImpact();
-  std::string json = base::StringPrintf(json_template, "\"1.1\"", "\"1.1\"");
-  mojom::JupiterQuotePtr swap_quote =
-      ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_TRUE(swap_quote);
-  ASSERT_EQ(swap_quote->routes.at(0)->price_impact_pct, 1.1);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->price_impact_pct,
-            1.1);
-
-  json = base::StringPrintf(json_template, "null", "null");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_TRUE(swap_quote);
-  ASSERT_EQ(swap_quote->routes.at(0)->price_impact_pct, 0.0);
-  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->price_impact_pct,
-            0.0);
-
-  json = base::StringPrintf(json_template, "123", "null");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_FALSE(swap_quote);
-
-  json = base::StringPrintf(json_template, "null", "123");
-  swap_quote = ParseJupiterQuoteResponse(ParseJson(json));
-  ASSERT_FALSE(swap_quote);
+  // KO: Invalid platformFee value
+  EXPECT_FALSE(ParseJupiterQuoteResponse(ParseJson(R"({
+    "inputMint": "So11111111111111111111111111111111111111112",
+      "inAmount": "1000000",
+      "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+      "outAmount": "781469842",
+      "otherAmountThreshold": "781391696",
+      "swapMode": "ExactIn",
+      "slippageBps": "1",
+      "platformFee": "foo",
+      "priceImpactPct": "0",
+      "routePlan": []
+  })")));
 }
 
 TEST(SwapResponseParserUnitTest, ParseJupiterTransactionResponse) {

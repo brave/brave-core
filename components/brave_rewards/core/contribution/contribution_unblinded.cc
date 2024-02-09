@@ -103,7 +103,7 @@ void Unblinded::Start(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
                       LegacyResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(0, "Contribution id is empty");
+    engine_->LogError(FROM_HERE) << "Contribution id is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -128,7 +128,9 @@ void Unblinded::OnUnblindedTokens(
     std::vector<mojom::UnblindedTokenPtr> unblinded_tokens,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  BLOG_IF(1, unblinded_tokens.empty(), "Token list is empty");
+  if (unblinded_tokens.empty()) {
+    engine_->Log(FROM_HERE) << "Token list is empty";
+  }
 
   std::vector<mojom::UnblindedToken> converted_list;
   for (const auto& item : unblinded_tokens) {
@@ -161,7 +163,9 @@ void Unblinded::OnReservedUnblindedTokens(
     std::vector<mojom::UnblindedTokenPtr> unblinded_tokens,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  BLOG_IF(1, unblinded_tokens.empty(), "Token list is empty");
+  if (unblinded_tokens.empty()) {
+    engine_->Log(FROM_HERE) << "Token list is empty";
+  }
 
   std::vector<mojom::UnblindedToken> converted_list;
   for (const auto& item : unblinded_tokens) {
@@ -194,13 +198,13 @@ void Unblinded::PrepareTokens(
     const std::vector<mojom::CredsBatchType>& types,
     LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution not found");
+    engine_->LogError(FROM_HERE) << "Contribution not found";
     callback(mojom::Result::FAILED);
     return;
   }
 
   if (unblinded_tokens.empty()) {
-    BLOG(0, "Not enough funds");
+    engine_->LogError(FROM_HERE) << "Not enough funds";
     callback(mojom::Result::NOT_ENOUGH_FUNDS);
     return;
   }
@@ -218,7 +222,7 @@ void Unblinded::PrepareTokens(
 
   if (current_amount < contribution->amount) {
     callback(mojom::Result::NOT_ENOUGH_FUNDS);
-    BLOG(0, "Not enough funds");
+    engine_->LogError(FROM_HERE) << "Not enough funds";
     return;
   }
 
@@ -246,13 +250,14 @@ void Unblinded::OnMarkUnblindedTokensAsReserved(
     const std::vector<mojom::CredsBatchType>& types,
     LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to reserve unblinded tokens");
+    engine_->LogError(FROM_HERE) << "Failed to reserve unblinded tokens";
     callback(mojom::Result::FAILED);
     return;
   }
 
   if (!shared_contribution) {
-    BLOG(0, "Contribution was not converted successfully");
+    engine_->LogError(FROM_HERE)
+        << "Contribution was not converted successfully";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -267,7 +272,7 @@ void Unblinded::PreparePublishers(
     const std::vector<mojom::CredsBatchType>& types,
     LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution not found");
+    engine_->LogError(FROM_HERE) << "Contribution not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -277,7 +282,7 @@ void Unblinded::PreparePublishers(
         PrepareAutoContribution(unblinded_tokens, contribution->Clone());
 
     if (publisher_list.empty()) {
-      BLOG(0, "Publisher list empty");
+      engine_->LogError(FROM_HERE) << "Publisher list empty";
       callback(mojom::Result::AC_TABLE_EMPTY);
       return;
     }
@@ -305,17 +310,17 @@ std::vector<mojom::ContributionPublisherPtr> Unblinded::PrepareAutoContribution(
     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
     mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return {};
   }
 
   if (unblinded_tokens.size() == 0) {
-    BLOG(0, "Token list is empty");
+    engine_->LogError(FROM_HERE) << "Token list is empty";
     return {};
   }
 
   if (contribution->publishers.empty()) {
-    BLOG(0, "Publisher list is empty");
+    engine_->LogError(FROM_HERE) << "Publisher list is empty";
     return {};
   }
 
@@ -345,7 +350,7 @@ void Unblinded::OnPrepareAutoContribution(
     const std::string& contribution_id,
     LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution not saved");
+    engine_->LogError(FROM_HERE) << "Contribution not saved";
     callback(mojom::Result::RETRY);
     return;
   }
@@ -363,7 +368,7 @@ void Unblinded::PrepareStepSaved(
     const std::string& contribution_id,
     LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Prepare step was not saved");
+    engine_->LogError(FROM_HERE) << "Prepare step was not saved";
     callback(mojom::Result::RETRY);
     return;
   }
@@ -384,7 +389,7 @@ void Unblinded::OnProcessTokens(
     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
     LegacyResultCallback callback) {
   if (!contribution || contribution->publishers.empty()) {
-    BLOG(0, "Contribution not found");
+    engine_->LogError(FROM_HERE) << "Contribution not found";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -442,7 +447,7 @@ void Unblinded::TokenProcessed(mojom::Result result,
                                bool final_publisher,
                                LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Tokens were not processed correctly");
+    engine_->LogError(FROM_HERE) << "Tokens were not processed correctly";
     callback(mojom::Result::RETRY);
     return;
   }
@@ -470,7 +475,7 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
                       mojom::ContributionInfoPtr contribution,
                       LegacyResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -483,7 +488,7 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
       contribution->type != mojom::RewardsType::AUTO_CONTRIBUTE;
 
   if (is_not_tokens && is_not_uphold_ac) {
-    BLOG(0, "Retry is not for this func");
+    engine_->LogError(FROM_HERE) << "Retry is not for this func";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -516,7 +521,7 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
     case mojom::ContributionStep::STEP_FAILED:
     case mojom::ContributionStep::STEP_COMPLETED:
     case mojom::ContributionStep::STEP_NO: {
-      BLOG(0, "Step not correct " << contribution->step);
+      engine_->LogError(FROM_HERE) << "Step not correct " << contribution->step;
       NOTREACHED();
       return;
     }
@@ -529,13 +534,14 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
     std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
     LegacyResultCallback callback) {
   if (unblinded_tokens.empty()) {
-    BLOG(0, "Token list is empty");
+    engine_->LogError(FROM_HERE) << "Token list is empty";
     callback(mojom::Result::FAILED);
     return;
   }
 
   if (!shared_contribution) {
-    BLOG(0, "Contribution was not converted successfully");
+    engine_->LogError(FROM_HERE)
+        << "Contribution was not converted successfully";
     callback(mojom::Result::FAILED);
     return;
   }

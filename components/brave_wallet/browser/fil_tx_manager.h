@@ -47,27 +47,22 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
                                 AddUnapprovedTransactionCallback) override;
-  void ApproveTransaction(const std::string& chain_id,
-                          const std::string& tx_meta_id,
+  void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
   void GetTransactionMessageToSign(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
   void SpeedupOrCancelTransaction(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
-  void RetryTransaction(const std::string& chain_id,
-                        const std::string& tx_meta_id,
+  void RetryTransaction(const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
 
   void Reset() override;
 
   void ProcessFilHardwareSignature(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& signed_message,
       ProcessFilHardwareSignatureCallback callback);
@@ -77,8 +72,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                        const std::optional<url::Origin>& origin,
                        std::unique_ptr<FilTransaction> tx,
                        AddUnapprovedTransactionCallback callback);
-  std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& chain_id,
-                                             const std::string& tx_meta_id);
+  std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
  private:
   friend class FilTxManagerUnitTest;
@@ -93,8 +87,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                  GetTransactionMessageToSignCallback callback,
                                  bool success,
                                  uint256_t nonce);
-  void OnSendFilecoinTransaction(const std::string& chain_id,
-                                 const std::string& tx_meta_id,
+  void OnSendFilecoinTransaction(const std::string& tx_meta_id,
                                  ApproveTransactionCallback callback,
                                  const std::string& tx_hash,
                                  mojom::FilecoinProviderError error,
@@ -111,8 +104,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       mojom::FilecoinProviderError error,
       const std::string& error_message);
 
-  void OnGetFilStateSearchMsgLimited(const std::string& chain_id,
-                                     const std::string& tx_meta_id,
+  void OnGetFilStateSearchMsgLimited(const std::string& tx_meta_id,
                                      int64_t exit_code,
                                      mojom::FilecoinProviderError error,
                                      const std::string& error_message);

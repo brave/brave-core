@@ -28,6 +28,7 @@
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
@@ -65,7 +66,7 @@
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
-#include "brave/components/debounce/browser/debounce_navigation_throttle.h"
+#include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
@@ -152,6 +153,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #if BUILDFLAG(IS_ANDROID)
@@ -633,6 +635,25 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif
 }
 
+std::optional<base::UnguessableToken>
+BraveContentBrowserClient::GetEphemeralStorageToken(
+    content::RenderFrameHost* render_frame_host,
+    const url::Origin& origin) {
+  DCHECK(render_frame_host);
+  auto* wc = content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!wc) {
+    return std::nullopt;
+  }
+
+  auto* es_tab_helper =
+      ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(wc);
+  if (!es_tab_helper) {
+    return std::nullopt;
+  }
+
+  return es_tab_helper->GetEphemeralStorageToken(origin);
+}
+
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
     content::BrowserContext* browser_context) {
@@ -789,13 +810,15 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled() &&
+  auto* prefs =
+      user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
+  if (ai_chat::IsAIChatEnabled(prefs) &&
       !render_frame_host->GetBrowserContext()->IsTor()) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }
 #if BUILDFLAG(IS_ANDROID)
-  if (ai_chat::features::IsAIChatEnabled()) {
+  if (ai_chat::IsAIChatEnabled(prefs)) {
     map->Add<ai_chat::mojom::IAPSubscription>(
         base::BindRepeating(&BindIAPSubscription));
   }

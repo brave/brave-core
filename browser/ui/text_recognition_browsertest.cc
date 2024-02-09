@@ -51,9 +51,11 @@ class TextRecognitionBrowserTest : public InProcessBrowserTest {
     image_html_url_ = embedded_test_server()->GetURL("a.com", "/image.html");
   }
 
-  void OnGetTextFromImage(const std::vector<std::string>& text) {
+  void OnGetTextFromImage(
+      const std::pair<bool, std::vector<std::string>>& supported_strs) {
     // Test image has "brave" text.
-    EXPECT_EQ("brave", text[0]);
+    EXPECT_TRUE(supported_strs.first);
+    EXPECT_EQ("brave", supported_strs.second[0]);
     run_loop_->Quit();
   }
 

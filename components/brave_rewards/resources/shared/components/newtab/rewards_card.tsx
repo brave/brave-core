@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GrantInfo } from '../../lib/grant_info'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
@@ -73,9 +75,11 @@ interface Props {
   externalWallet: ExternalWallet | null
   publishersVisited: number
   canConnectAccount: boolean
+  showSelfCustodyInvite: boolean
   onEnableRewards: () => void
   onSelectCountry: () => void
   onClaimGrant: () => void
+  onSelfCustodyInviteDismissed: () => void
 }
 
 export function RewardsCard (props: Props) {
@@ -90,6 +94,10 @@ export function RewardsCard (props: Props) {
       .then((value) => { active && setPublisherCountText(value) })
     return () => { active = false }
   }, [props.publishersVisited])
+
+  function onConnect () {
+    window.open(urls.connectURL, '_blank', 'noreferrer')
+  }
 
   function renderBalance () {
     if (props.grantInfo && props.grantInfo.amount > 0) {
@@ -304,7 +312,6 @@ export function RewardsCard (props: Props) {
   }
 
   function renderVBATNotice () {
-    const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
     const onClose = () => { setHideVBATNotice(true) }
     return (
       <style.root>
@@ -322,9 +329,42 @@ export function RewardsCard (props: Props) {
     )
   }
 
-  function renderLimited () {
-    const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
+  function renderSelfCustodyInvite () {
+    const onConnectSelfCustody = () => {
+      props.onSelfCustodyInviteDismissed()
+      onConnect()
+    }
+    return (
+      <style.root>
+        <RewardsCardHeader />
+        <style.selfCustodyInvite>
+          <style.selfCustodyInviteHeader>
+            <style.selfCustodyInviteClose>
+              <button onClick={props.onSelfCustodyInviteDismissed}>
+                <Icon name='close' />
+              </button>
+            </style.selfCustodyInviteClose>
+            {getString('rewardsSelfCustodyInviteHeader')}
+          </style.selfCustodyInviteHeader>
+          <style.selfCustodyInviteText>
+            {getString('rewardsSelfCustodyInviteText')}
+          </style.selfCustodyInviteText>
+          <style.connectAction>
+            <button onClick={onConnectSelfCustody}>
+              {getString('rewardsConnectAccount')}<ArrowNextIcon />
+            </button>
+          </style.connectAction>
+          <style.selfCustodyInviteDismiss>
+            <button onClick={props.onSelfCustodyInviteDismissed}>
+              {getString('rewardsNotNow')}
+            </button>
+          </style.selfCustodyInviteDismiss>
+        </style.selfCustodyInvite>
+      </style.root>
+    )
+  }
 
+  function renderLimited () {
     return (
       <style.root>
         <RewardsCardHeader />
@@ -384,6 +424,10 @@ export function RewardsCard (props: Props) {
     if (shouldShowVBATNotice(props.userType, props.vbatDeadline)) {
       return renderVBATNotice()
     }
+  }
+
+  if (props.showSelfCustodyInvite) {
+    return renderSelfCustodyInvite()
   }
 
   if (props.userType === 'unconnected') {

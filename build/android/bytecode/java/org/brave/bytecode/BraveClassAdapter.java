@@ -26,6 +26,7 @@ public class BraveClassAdapter {
         chain = new BraveBookmarkPageClassAdapter(chain);
         chain = new BraveBookmarkToolbarClassAdapter(chain);
         chain = new BraveBookmarkToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveBookmarkUiPrefsClassAdapter(chain);
         chain = new BraveBookmarkUtilsClassAdapter(chain);
         chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
         chain = new BraveBottomControlsMediatorClassAdapter(chain);
@@ -42,7 +43,6 @@ public class BraveClassAdapter {
         chain = new BraveExternalNavigationHandlerClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFeedSurfaceMediatorClassAdapter(chain);
-        chain = new BraveFourStateCookieSettingsPreferenceBaseClassAdapter(chain);
         chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHelpAndFeedbackLauncherImplClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
@@ -67,6 +67,7 @@ public class BraveClassAdapter {
         chain = new BraveNotificationBuilderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);
+        chain = new BravePartialCustomTabBottomSheetStrategyClassAdapter(chain);
         chain = new BravePasswordAccessReauthenticationHelperClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);

@@ -8,11 +8,12 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
-#include "brave/components/brave_rewards/core/logging/logging.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal::uphold {
 
-UpholdCard::UpholdCard(RewardsEngineImpl& engine) : uphold_server_(engine) {}
+UpholdCard::UpholdCard(RewardsEngineImpl& engine)
+    : engine_(engine), uphold_server_(engine) {}
 
 UpholdCard::~UpholdCard() = default;
 
@@ -36,7 +37,7 @@ void UpholdCard::OnGetBATCardId(CreateCardCallback callback,
     return std::move(callback).Run(mojom::Result::OK, std::move(id));
   }
 
-  BLOG(1, "Couldn't get BAT card ID!");
+  engine_->Log(FROM_HERE) << "Couldn't get BAT card ID";
 
   uphold_server_.post_cards().Request(
       access_token,
@@ -53,12 +54,12 @@ void UpholdCard::OnCreateBATCard(CreateCardCallback callback,
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Couldn't create BAT card!");
+    engine_->LogError(FROM_HERE) << "Couldn't create BAT card";
     return std::move(callback).Run(result, "");
   }
 
   if (id.empty()) {
-    BLOG(0, "BAT card ID is empty!");
+    engine_->LogError(FROM_HERE) << "BAT card ID is empty";
     return std::move(callback).Run(mojom::Result::FAILED, "");
   }
 
@@ -76,7 +77,7 @@ void UpholdCard::OnUpdateBATCardSettings(CreateCardCallback callback,
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Couldn't update BAT card settings!");
+    engine_->LogError(FROM_HERE) << "Couldn't update BAT card settings";
     return std::move(callback).Run(result, "");
   }
 

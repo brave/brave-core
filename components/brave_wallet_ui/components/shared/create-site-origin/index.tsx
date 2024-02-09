@@ -13,25 +13,24 @@ export interface Props {
 export const CreateSiteOrigin = (props: Props) => {
   const { originSpec, eTldPlusOne } = props
 
-  const url = React.useMemo(() => {
-    if (originSpec === 'chrome://wallet') {
-      return <span>{getLocale('braveWalletPanelTitle')}</span>
-    }
-    if (eTldPlusOne) {
-      const before = originSpec.split(eTldPlusOne)[0]
-      const after = originSpec.split(eTldPlusOne)[1]
-      // Will inherit styling from parent container
-      return (
-        <span>
-          {before}
-          <b>{eTldPlusOne}</b>
-          {after}
-        </span>
-      )
-    }
-    return <span>{originSpec}</span>
-  }, [eTldPlusOne, originSpec])
+  if (originSpec === 'chrome://wallet') {
+    return <span>{getLocale('braveWalletPanelTitle')}</span>
+  }
 
-  return <>{url}</>
+  if (eTldPlusOne) {
+    const [before, after] = originSpec.split(eTldPlusOne)
+    // Will inherit styling from parent container
+    return (
+      <span>
+        {before}
+        <b>{eTldPlusOne}</b>
+        {after}
+      </span>
+    )
+  }
+  return <span>{originSpec}</span>
 }
+
+export const SiteOrigin = CreateSiteOrigin
+
 export default CreateSiteOrigin

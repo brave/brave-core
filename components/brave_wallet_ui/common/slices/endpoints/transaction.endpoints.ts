@@ -771,14 +771,21 @@ export const transactionEndpoints = ({
                 ? ([
                     'UserBlockchainTokens', // refresh all user tokens
                     'AccountTokenCurrentBalance',
-                    'TokenSpotPrices'
+                    'TokenSpotPrices',
+                    'TokenBalances',
+                    'TokenBalancesForChainId',
+                    'AccountTokenCurrentBalance'
                   ] as const)
                 : [])
             ]
     }),
 
     approveTransaction: mutation<
-      { success: boolean },
+      {
+        success: boolean
+        errorUnion: BraveWallet.ProviderErrorUnion
+        errorMessage: string
+      },
       Pick<SerializableTransactionInfo, 'id' | 'chainId' | 'txType'> & {
         coinType: BraveWallet.CoinType
       }
@@ -797,20 +804,18 @@ export const transactionEndpoints = ({
             txInfo.id
           )
 
-          const error =
-            result.errorUnion.providerError ??
-            result.errorUnion.solanaProviderError
-
-          if (error && error !== BraveWallet.ProviderError.kSuccess) {
-            throw new Error(`${error}: ${result.errorMessage}`)
-          }
-
-          if (shouldReportTransactionP3A({ txInfo })) {
+          if (result.errorUnion.providerError ===
+                BraveWallet.ProviderError.kSuccess &&
+              shouldReportTransactionP3A({ txInfo })) {
             braveWalletP3A.reportTransactionSent(txInfo.coinType, true)
           }
 
           return {
-            data: { success: true }
+            data: {
+              success: result.status,
+              errorMessage: result.errorMessage,
+              errorUnion: result.errorUnion
+            }
           }
         } catch (error) {
           return handleEndpointError(
@@ -1114,7 +1119,9 @@ export const transactionEndpoints = ({
         }
       },
       invalidatesTags: (res, err, arg) =>
-        err ? [TX_CACHE_TAGS.TXS_LIST] : [TX_CACHE_TAGS.ID(arg.txMetaId)]
+        err
+          ? [TX_CACHE_TAGS.TXS_LIST]
+          : [TX_CACHE_TAGS.ID(arg.txMetaId), 'GasEstimation1559']
     }),
 
     updateUnapprovedTransactionSpendAllowance: mutation<

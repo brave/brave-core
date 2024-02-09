@@ -387,11 +387,10 @@ void EthTxManager::OnGetGasOracleForUnapprovedTransaction(
 }
 
 void EthTxManager::GetNonceForHardwareTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     GetNonceForHardwareTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
-      GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+      GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
     std::move(callback).Run(std::nullopt);
@@ -399,6 +398,7 @@ void EthTxManager::GetNonceForHardwareTransaction(
   }
   if (!meta->tx()->nonce()) {
     auto from = meta->from().Clone();
+    auto chain_id = meta->chain_id();
     nonce_tracker_->GetNextNonce(
         chain_id, from,
         base::BindOnce(&EthTxManager::OnGetNextNonceForHardware,
@@ -412,11 +412,10 @@ void EthTxManager::GetNonceForHardwareTransaction(
 }
 
 void EthTxManager::GetTransactionMessageToSign(
-    const std::string& chain_id_str,
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
-      GetEthTxStateManager()->GetEthTx(chain_id_str, tx_meta_id);
+      GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta) {
     VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
     std::move(callback).Run(nullptr);
@@ -458,14 +457,13 @@ void EthTxManager::OnGetNextNonceForHardware(
 }
 
 void EthTxManager::ProcessHardwareSignature(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& v,
     const std::string& r,
     const std::string& s,
     ProcessHardwareSignatureCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
-      GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+      GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta) {
     VLOG(1) << __FUNCTION__ << "No transaction found with id" << tx_meta_id;
     std::move(callback).Run(
@@ -512,11 +510,10 @@ void EthTxManager::ContinueProcessHardwareSignature(
                           error_message);
 }
 
-void EthTxManager::ApproveTransaction(const std::string& chain_id,
-                                      const std::string& tx_meta_id,
+void EthTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                       ApproveTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
-      GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+      GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
     std::move(callback).Run(
@@ -529,6 +526,7 @@ void EthTxManager::ApproveTransaction(const std::string& chain_id,
 
   if (!meta->tx()->nonce()) {
     auto from = meta->from().Clone();
+    auto chain_id = meta->chain_id();
     nonce_tracker_->GetNextNonce(
         chain_id, from,
         base::BindOnce(&EthTxManager::OnGetNextNonce,
@@ -629,7 +627,7 @@ void EthTxManager::OnPublishTransaction(const std::string& chain_id,
                                         const std::string& tx_hash,
                                         mojom::ProviderError error,
                                         const std::string& error_message) {
-  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(chain_id, tx_meta_id);
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -848,7 +846,6 @@ void EthTxManager::NotifyUnapprovedTxUpdated(TxMeta* meta) {
 }
 
 void EthTxManager::SetGasPriceAndLimitForUnapprovedTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& gas_price,
     const std::string& gas_limit,
@@ -858,7 +855,7 @@ void EthTxManager::SetGasPriceAndLimitForUnapprovedTransaction(
     return;
   }
 
-  auto tx_meta = GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+  auto tx_meta = GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!tx_meta || tx_meta->status() != mojom::TransactionStatus::Unapproved) {
     std::move(callback).Run(false);
     return;
@@ -886,7 +883,6 @@ void EthTxManager::SetGasPriceAndLimitForUnapprovedTransaction(
 }
 
 void EthTxManager::SetGasFeeAndLimitForUnapprovedTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& max_priority_fee_per_gas,
     const std::string& max_fee_per_gas,
@@ -898,7 +894,7 @@ void EthTxManager::SetGasFeeAndLimitForUnapprovedTransaction(
     return;
   }
 
-  auto tx_meta = GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+  auto tx_meta = GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!tx_meta || tx_meta->status() != mojom::TransactionStatus::Unapproved ||
       tx_meta->tx()->type() != 2 /* Eip1559 */) {
     std::move(callback).Run(false);
@@ -935,11 +931,10 @@ void EthTxManager::SetGasFeeAndLimitForUnapprovedTransaction(
 }
 
 void EthTxManager::SetDataForUnapprovedTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::vector<uint8_t>& data,
     SetDataForUnapprovedTransactionCallback callback) {
-  auto tx_meta = GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+  auto tx_meta = GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!tx_meta || tx_meta->status() != mojom::TransactionStatus::Unapproved) {
     std::move(callback).Run(false);
     return;
@@ -955,11 +950,10 @@ void EthTxManager::SetDataForUnapprovedTransaction(
 }
 
 void EthTxManager::SetNonceForUnapprovedTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& nonce,
     SetNonceForUnapprovedTransactionCallback callback) {
-  auto tx_meta = GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+  auto tx_meta = GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!tx_meta || tx_meta->status() != mojom::TransactionStatus::Unapproved) {
     std::move(callback).Run(false);
     return;
@@ -984,9 +978,8 @@ void EthTxManager::SetNonceForUnapprovedTransaction(
 }
 
 std::unique_ptr<EthTxMeta> EthTxManager::GetTxForTesting(
-    const std::string& chain_id,
     const std::string& tx_meta_id) {
-  return GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+  return GetEthTxStateManager()->GetEthTx(tx_meta_id);
 }
 
 void EthTxManager::OnNewBlock(const std::string& chain_id,
@@ -1004,12 +997,11 @@ void EthTxManager::UpdatePendingTransactions(
 }
 
 void EthTxManager::SpeedupOrCancelTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     bool cancel,
     SpeedupOrCancelTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
-      GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+      GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta || meta->status() != mojom::TransactionStatus::Submitted) {
     std::move(callback).Run(
         false, "",
@@ -1147,11 +1139,10 @@ void EthTxManager::ContinueSpeedupOrCancel1559Transaction(
                                    mojom::ProviderError::kSuccess, "");
 }
 
-void EthTxManager::RetryTransaction(const std::string& chain_id,
-                                    const std::string& tx_meta_id,
+void EthTxManager::RetryTransaction(const std::string& tx_meta_id,
                                     RetryTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
-      GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
+      GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta || meta->status() != mojom::TransactionStatus::Error) {
     std::move(callback).Run(
         false, "",

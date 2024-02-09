@@ -47,6 +47,7 @@ class SPEEDREADER_EXPORT Rewriter {
   void SetFontFamily(const std::string& font_family);
   void SetFontSize(const std::string& font_size);
   void SetColumnWidth(const std::string& column_width);
+  void SetDebugView(bool debug_view);
 
   /// Write a new chunk of data (byte array) to the rewriter instance. Does
   /// _not_ need to be a full document and can be called many times with ever

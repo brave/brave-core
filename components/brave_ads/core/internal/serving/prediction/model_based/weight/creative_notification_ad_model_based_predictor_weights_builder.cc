@@ -29,12 +29,13 @@ BuildCreativeNotificationAdModelBasedPredictorWeights() {
   weights.interest_segment.parent =
       kNotificationAdParentInterestSegmentPredictorWeight.Get();
 
+  weights.untargeted_segment =
+      kNotificationAdUntargetedSegmentPredictorWeight.Get();
+
   weights.last_seen_ad = kNotificationAdLastSeenPredictorWeight.Get();
 
   weights.last_seen_advertiser =
       kNotificationAdLastSeenAdvertiserPredictorWeight.Get();
-
-  weights.priority = kNotificationAdPriorityPredictorWeight.Get();
 
   return weights;
 }

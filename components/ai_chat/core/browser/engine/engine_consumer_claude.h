@@ -11,7 +11,6 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace api_request_helper {
@@ -47,6 +46,7 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
   void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
+      std::optional<std::string> selected_text,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
       GenerationDataCallback data_received_callback,
@@ -58,10 +58,6 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);
-
-  std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
-
-  int max_page_content_length_ = 0;
 
   base::WeakPtrFactory<EngineConsumerClaudeRemote> weak_ptr_factory_{this};
 };

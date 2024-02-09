@@ -10,7 +10,7 @@ import { ModelContext, useModelState } from '../lib/model_context'
 import { useScopedCallback } from '../lib/scoped_callback'
 import { formatMessage } from '../../shared/lib/locale_context'
 import { NewTabLink, TabOpenerContext } from '../../shared/components/new_tab_link'
-import { getExternalWalletProviderName } from '../../shared/lib/external_wallet'
+import { getExternalWalletProviderName, isSelfCustodyProvider } from '../../shared/lib/external_wallet'
 import { batAmountFormatter } from '../lib/formatters'
 import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 import { InfoBox } from './info_box'
@@ -37,6 +37,10 @@ export function TipForm () {
   const [monthlyChecked, setMonthlyChecked] = React.useState(false)
 
   const insufficientBalance = state.rewardsUser.balance.valueOr(0) < sendAmount
+
+  const isSelfCustodyUser =
+    state.rewardsUser.walletProvider &&
+    isSelfCustodyProvider(state.rewardsUser.walletProvider)
 
   function sendButtonDisabled () {
     return sendAmount <= 0 || insufficientBalance || sendStatus === 'pending'
@@ -118,6 +122,17 @@ export function TipForm () {
   let needsReconnect = false
 
   function renderInfo () {
+    if (isSelfCustodyUser && !state.creatorBanner.web3Url) {
+      showBalance = false
+      return (
+        <InfoBox title={getString('providerMismatchTitle')}>
+          <div>
+            {getString('selfCustodyNoWeb3Label')}
+          </div>
+        </InfoBox>
+      )
+    }
+
     // If the user does not have a wallet provider, then for simplicity assume
     // that this is a legacy "unconnected" user. A 2.5 or later user that is
     // unconnected should never be shown this UI, but if somehow they are it
@@ -227,6 +242,31 @@ export function TipForm () {
     )
   }
 
+  if (isSelfCustodyUser && state.creatorBanner.web3Url) {
+    return (
+      <style.root>
+        <style.card>
+          <style.selfCustody>
+            <style.selfCustodyTitle>
+              {getString('selfCustodyTitle')}
+            </style.selfCustodyTitle>
+            <style.selfCustodyHeader>
+            {getString('selfCustodyHeader')}
+            </style.selfCustodyHeader>
+            <style.selfCustodyText>
+              {getString('selfCustodyText')}
+            </style.selfCustodyText>
+          </style.selfCustody>
+          <style.buttons>
+            <button onClick={onWeb3Click}>
+              {getString('selfCustodySendButtonLabel')}
+            </button>
+          </style.buttons>
+        </style.card>
+      </style.root>
+    )
+  }
+
   const infoBox = renderInfo()
 
   return (
@@ -295,7 +335,7 @@ export function TipForm () {
         </style.buttons>
         <style.successBackgroundPreloader />
       </style.card>
-      <Terms />
+      {sendEnabled && <Terms />}
     </style.root>
   )
 }

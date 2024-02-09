@@ -3,11 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/prefs.h"
@@ -31,9 +35,12 @@ void BraveRegisterBrowserStatePrefs(
   brave_sync::Prefs::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefsForMigration(registry);
+  de_amp::RegisterProfilePrefs(registry);
+  debounce::DebounceService::RegisterProfilePrefs(registry);
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsService::RegisterProfilePrefs(registry);
 #endif
+  ai_chat::prefs::RegisterProfilePrefs(registry);
 }
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -49,6 +56,8 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
   brave_l10n::RegisterL10nLocalStatePrefs(registry);
+  ai_chat::prefs::RegisterLocalStatePrefs(registry);
+  ai_chat::AIChatMetrics::RegisterPrefs(registry);
 }
 
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \
@@ -69,10 +78,10 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #undef BRAVE_REGISTER_LOCAL_STATE_PREFS
 #undef BRAVE_REGISTER_BROWSER_STATE_PREFS
 
-void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
-  MigrateObsoleteBrowserStatePrefs_ChromiumImpl(prefs);
+void MigrateObsoleteBrowserStatePrefs(const base::FilePath& state_path,
+                                      PrefService* prefs) {
+  MigrateObsoleteBrowserStatePrefs_ChromiumImpl(state_path, prefs);
 
-  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(prefs);
   brave_wallet::MigrateObsoleteProfilePrefs(prefs);
 }
 

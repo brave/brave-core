@@ -79,7 +79,7 @@ public class CryptoModel {
         mSwapService = swapService;
         mCryptoSharedActions = cryptoSharedActions;
         mSharedData = new CryptoSharedDataImpl();
-        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true, null);
+        mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel = new NetworkModel(
                 mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions, context);
         mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,

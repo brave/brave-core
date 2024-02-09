@@ -32,7 +32,7 @@ DatabasePublisherInfo::~DatabasePublisherInfo() = default;
 void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
                                            LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
-    BLOG(1, "Info is empty");
+    engine_->Log(FROM_HERE) << "Info is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -88,7 +88,7 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
 void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
                                       GetPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(1, "Publisher key is empty");
+    engine_->Log(FROM_HERE) << "Publisher key is empty";
     callback(mojom::Result::FAILED, {});
     return;
   }
@@ -131,7 +131,7 @@ void DatabasePublisherInfo::OnGetRecord(GetPublisherInfoCallback callback,
                                         mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback(mojom::Result::FAILED, {});
     return;
   }
@@ -161,7 +161,7 @@ void DatabasePublisherInfo::GetPanelRecord(
     mojom::ActivityInfoFilterPtr filter,
     GetPublisherPanelInfoCallback callback) {
   if (!filter || filter->id.empty()) {
-    BLOG(1, "Filter is empty");
+    engine_->Log(FROM_HERE) << "Filter is empty";
     callback(mojom::Result::FAILED, {});
     return;
   }
@@ -211,7 +211,7 @@ void DatabasePublisherInfo::OnGetPanelRecord(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback(mojom::Result::FAILED, {});
     return;
   }
@@ -306,7 +306,7 @@ void DatabasePublisherInfo::OnGetExcludedList(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }

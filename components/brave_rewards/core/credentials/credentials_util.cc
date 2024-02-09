@@ -201,12 +201,13 @@ std::string ConvertRewardTypeToString(const mojom::RewardsType type) {
 }
 
 base::Value::List GenerateCredentials(
+    RewardsEngineImpl& engine,
     const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body) {
   base::Value::List credentials;
   for (auto& item : token_list) {
     std::optional<base::Value::Dict> token;
-    if (is_testing) {
+    if (engine.options().is_testing) {
       token = GenerateSuggestionMock(item.token_value, item.public_key, body);
     } else {
       token = GenerateSuggestion(item.token_value, item.public_key, body);

@@ -1,5 +1,5 @@
 <!-- Add brave-browser issue below that this PR will resolve -->
-Resolves 
+Resolves
 
 <!-- CI-related labels that can be applied to this PR:
 * CI/run-audit-deps (1) - check for known npm/cargo vulnerabilities (audit_deps)
@@ -25,7 +25,7 @@ Resolves
 - [ ] Added appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`; `OS/...`) to the associated issue
 - [ ] Checked the PR locally:
   * `npm run test -- brave_browser_tests`, `npm run test -- brave_unit_tests` [wiki](https://github.com/brave/brave-browser/wiki/Tests)
-  * `npm run lint`, `npm run presubmit` [wiki](https://github.com/brave/brave-browser/wiki/Presubmit-checks), `npm run gn_check`, `npm run tslint`
+  * `npm run presubmit` [wiki](https://github.com/brave/brave-browser/wiki/Presubmit-checks), `npm run gn_check`, `npm run tslint`
 - [ ] Ran `git rebase master` (if needed)
 
 ## Reviewer Checklist:
@@ -47,7 +47,6 @@ Resolves
   - [ ] https://github.com/brave/brave-browser/wiki/Proxy-redirected-URLs
   - [ ] https://github.com/brave/brave-browser/wiki/Fingerprinting-Protections
   - [ ] https://github.com/brave/brave-browser/wiki/Brave%E2%80%99s-Use-of-Referral-Codes
-  - [ ] https://github.com/brave/brave-browser/wiki/Custom-Headers
   - [ ] https://github.com/brave/brave-browser/wiki/Web-Compatibility-Exceptions-in-Brave
   - [ ] https://github.com/brave/brave-browser/wiki/QA-Guide
   - [ ] https://github.com/brave/brave-browser/wiki/P3A

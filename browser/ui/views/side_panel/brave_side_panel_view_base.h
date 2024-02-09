@@ -7,10 +7,12 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_VIEW_BASE_H_
 
 #include "base/scoped_observation.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
 
 class BraveSidePanelViewBase : public views::View, public views::ViewObserver {
+  METADATA_HEADER(BraveSidePanelViewBase, views::View)
  public:
   BraveSidePanelViewBase();
   ~BraveSidePanelViewBase() override;

@@ -33,7 +33,7 @@ void DatabaseContributionInfoPublishers::InsertOrUpdate(
   DCHECK(transaction);
 
   if (!info) {
-    BLOG(1, "Info is null");
+    engine_->Log(FROM_HERE) << "Info is null";
     return;
   }
 
@@ -60,7 +60,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
     const std::vector<std::string>& contribution_ids,
     ContributionPublisherListCallback callback) {
   if (contribution_ids.empty()) {
-    BLOG(1, "Contribution ids is empty");
+    engine_->Log(FROM_HERE) << "Contribution ids is empty";
     callback({});
     return;
   }
@@ -95,7 +95,7 @@ void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
+    engine_->LogError(FROM_HERE) << "Response is not ok";
     callback({});
     return;
   }
@@ -120,7 +120,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
     const std::vector<std::string>& contribution_ids,
     ContributionPublisherPairListCallback callback) {
   if (contribution_ids.empty()) {
-    BLOG(1, "Contribution ids is empty");
+    engine_->Log(FROM_HERE) << "Contribution ids is empty";
     callback({});
     return;
   }
@@ -165,7 +165,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
+    engine_->LogError(FROM_HERE) << "Response is not ok";
     callback({});
     return;
   }
@@ -197,7 +197,8 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
     const std::string& publisher_key,
     LegacyResultCallback callback) {
   if (contribution_id.empty() || publisher_key.empty()) {
-    BLOG(1, "Data is empty " << contribution_id << "/" << publisher_key);
+    engine_->Log(FROM_HERE)
+        << "Data is empty " << contribution_id << "/" << publisher_key;
     callback(mojom::Result::FAILED);
     return;
   }

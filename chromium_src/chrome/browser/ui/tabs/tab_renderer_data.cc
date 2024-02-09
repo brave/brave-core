@@ -15,12 +15,12 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "url/gurl.h"
 
-TabRendererData TabRendererData::FromTabInModel(TabStripModel* model,
+TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
                                                 int index) {
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
     if (index < model->IndexOfFirstNonPinnedTab()) {
       auto* shared_pinned_tab_service =
-          SharedPinnedTabServiceFactory::GetForProfile(model->GetProfile());
+          SharedPinnedTabServiceFactory::GetForProfile(model->profile());
       DCHECK(shared_pinned_tab_service);
 
       auto* contents = model->GetWebContentsAt(index);

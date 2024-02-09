@@ -12,6 +12,7 @@ members = ["cxxbridge_cmd/v1/crate"]
 anyhow = "1"
 async-trait = "0.1"
 base64 = "0.13"
+bech32 = "0.9.1"
 bitflags = "1"
 blake2b_simd = "1"
 cargo-platform = "0.1"
@@ -31,7 +32,7 @@ fvm_shared = "3"
 hex = "0.4"
 hex-literal = "0.4"
 hmac = "0.10"
-kuchiki = "0.8"
+kuchikiki = "0.8"
 lazy_static = "1"
 libc = "0.2"
 lifeguard = "0.6"
@@ -113,7 +114,7 @@ build-script-outputs = ["rules.rs"]
 gn-variables-lib = "cargo_manifest_dir =\n    rebase_path(\"//brave/third_party/rust/html5ever/v0_25/crate\")\nrustenv = [ \"CARGO_MANIFEST_DIR=$cargo_manifest_dir\" ]\n"
 
 [dependencies.http]
-version = "0.1"
+version = "1"
 
 [dependencies.iana-time-zone]
 version = "0.1"
@@ -308,8 +309,8 @@ package = "bls12_381"
 path = "byteorder/v1/crate"
 package = "byteorder"
 
-[patch.crates-io.bytes_v0_4]
-path = "bytes/v0_4/crate"
+[patch.crates-io.bytes_v1]
+path = "bytes/v1/crate"
 package = "bytes"
 
 [patch.crates-io.camino_v1]
@@ -656,8 +657,8 @@ package = "hmac"
 path = "html5ever/v0_25/crate"
 package = "html5ever"
 
-[patch.crates-io.http_v0_1]
-path = "http/v0_1/crate"
+[patch.crates-io.http_v1]
+path = "http/v1/crate"
 package = "http"
 
 [patch.crates-io.iana-time-zone_v0_1]
@@ -676,10 +677,6 @@ package = "idna"
 path = "indexmap/v1/crate"
 package = "indexmap"
 
-[patch.crates-io.iovec_v0_1]
-path = "iovec/v0_1/crate"
-package = "iovec"
-
 [patch.crates-io.itertools_v0_10]
 path = "itertools/v0_10/crate"
 package = "itertools"
@@ -696,9 +693,9 @@ package = "itoa"
 path = "keccak/v0_1/crate"
 package = "keccak"
 
-[patch.crates-io.kuchiki_v0_8]
-path = "kuchiki/v0_8/crate"
-package = "kuchiki"
+[patch.crates-io.kuchikiki_v0_8]
+path = "kuchikiki/v0_8/crate"
+package = "kuchikiki"
 
 [patch.crates-io.lazy_static_v1]
 path = "../../../third_party/rust/lazy_static/v1/crate"

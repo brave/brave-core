@@ -84,9 +84,8 @@ void DatabasePublisherPrefixList::OnSearch(
   if (!response || !response->result ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
       response->result->get_records().empty()) {
-    BLOG(0,
-         "Unexpected database result while searching "
-         "publisher prefix list.");
+    engine_->LogError(FROM_HERE)
+        << "Unexpected database result while searching publisher prefix list";
     callback(false);
     return;
   }
@@ -97,12 +96,13 @@ void DatabasePublisherPrefixList::OnSearch(
 void DatabasePublisherPrefixList::Reset(publisher::PrefixListReader reader,
                                         LegacyResultCallback callback) {
   if (reader_) {
-    BLOG(1, "Publisher prefix list batch insert in progress");
+    engine_->Log(FROM_HERE) << "Publisher prefix list batch insert in progress";
     callback(mojom::Result::FAILED);
     return;
   }
   if (reader.empty()) {
-    BLOG(0, "Cannot reset with an empty publisher prefix list");
+    engine_->LogError(FROM_HERE)
+        << "Cannot reset with an empty publisher prefix list";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -117,7 +117,7 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
   auto transaction = mojom::DBTransaction::New();
 
   if (begin == reader_->begin()) {
-    BLOG(1, "Clearing publisher prefixes table");
+    engine_->Log(FROM_HERE) << "Clearing publisher prefixes table";
     auto command = mojom::DBCommand::New();
     command->type = mojom::DBCommand::Type::RUN;
     command->command = base::StringPrintf("DELETE FROM %s", kTableName);
@@ -126,8 +126,8 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
 
   auto insert_tuple = GetPrefixInsertList(begin, reader_->end());
 
-  BLOG(1, "Inserting " << std::get<size_t>(insert_tuple)
-                       << " records into publisher prefix table");
+  engine_->Log(FROM_HERE) << "Inserting " << std::get<size_t>(insert_tuple)
+                          << " records into publisher prefix table";
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_user_model_segments.h"
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_segments.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_user_model_segments_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"

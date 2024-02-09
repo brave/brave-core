@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.8.3"
+version = "0.8.4"
 dependencies = [
  "base64",
  "bitflags",
@@ -212,11 +212,7 @@ version = "1.4.3"
 
 [[package]]
 name = "bytes"
-version = "0.4.12"
-dependencies = [
- "byteorder",
- "iovec",
-]
+version = "1.5.0"
 
 [[package]]
 name = "camino"
@@ -320,7 +316,7 @@ dependencies = [
  "http",
  "iana-time-zone",
  "keccak",
- "kuchiki",
+ "kuchikiki",
  "lazy_static",
  "libc",
  "libsecp256k1",
@@ -1051,11 +1047,11 @@ dependencies = [
 
 [[package]]
 name = "http"
-version = "0.1.21"
+version = "1.0.0"
 dependencies = [
  "bytes",
  "fnv",
- "itoa 0.4.8",
+ "itoa",
 ]
 
 [[package]]
@@ -1114,13 +1110,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "iovec"
-version = "0.1.4"
-dependencies = [
- "libc",
-]
-
-[[package]]
 name = "itertools"
 version = "0.10.5"
 dependencies = [
@@ -1152,7 +1141,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "kuchiki"
+name = "kuchikiki"
 version = "0.8.1"
 dependencies = [
  "cssparser 0.27.2",
@@ -2228,9 +2217,8 @@ dependencies = [
 
 [[package]]
 name = "tracing"
-version = "0.1.37"
+version = "0.1.40"
 dependencies = [
- "cfg-if",
  "pin-project-lite",
  "tracing-attributes",
  "tracing-core",
@@ -2238,16 +2226,16 @@ dependencies = [
 
 [[package]]
 name = "tracing-attributes"
-version = "0.1.23"
+version = "0.1.27"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 2.0.29",
 ]
 
 [[package]]
 name = "tracing-core"
-version = "0.1.30"
+version = "0.1.32"
 dependencies = [
  "once_cell",
  "valuable",

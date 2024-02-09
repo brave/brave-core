@@ -19,11 +19,11 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
-import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.BraveHomeButton;
-import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonView;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
@@ -79,8 +79,11 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final MenuButton mMenuButton;
     private ThemeColorProvider mThemeColorProvider;
 
-    BrowsingModeBottomToolbarCoordinator(View root, ActivityTabProvider tabProvider,
-            OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
+    BrowsingModeBottomToolbarCoordinator(
+            View root,
+            ActivityTabProvider tabProvider,
+            OnClickListener homeButtonListener,
+            OnClickListener searchAcceleratorListener,
             ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
             OnLongClickListener tabSwitcherLongClickListener) {
         mModel = new BrowsingModeBottomToolbarModel();
@@ -121,19 +124,20 @@ public class BrowsingModeBottomToolbarCoordinator {
         if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
             mBookmarkButton.setVisibility(View.VISIBLE);
             getNewTabButtonParent().setVisibility(View.GONE);
-            OnClickListener bookmarkClickHandler = v -> {
-                TabImpl tab = (TabImpl) mTabProvider.get();
-                try {
-                    BraveActivity activity = BraveActivity.getBraveActivity();
-                    if (tab == null || activity == null) {
-                        assert false;
-                        return;
-                    }
-                    activity.addOrEditBookmark(tab);
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "BookmarkButton click " + e);
-                }
-            };
+            OnClickListener bookmarkClickHandler =
+                    v -> {
+                        Tab tab = mTabProvider.get();
+                        try {
+                            BraveActivity activity = BraveActivity.getBraveActivity();
+                            if (tab == null || activity == null) {
+                                assert false;
+                                return;
+                            }
+                            activity.addOrEditBookmark(tab);
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "BookmarkButton click " + e);
+                        }
+                    };
             mBookmarkButton.setOnClickListener(bookmarkClickHandler);
         }
 
@@ -156,19 +160,23 @@ public class BrowsingModeBottomToolbarCoordinator {
     /**
      * Initialize the bottom toolbar with the components that had native initialization
      * dependencies.
-     * <p>
-     * Calling this must occur after the native library have completely loaded.
-     * @param tabSwitcherListener An {@link OnClickListener} that is triggered when the
-     *                            tab switcher button is clicked.
-     * @param menuButtonHelper An {@link AppMenuButtonHelper} that is triggered when the
-     *                         menu button is clicked.
-     * @param tabCountProvider Updates the tab count number in the tab switcher button.
+     *
+     * <p>Calling this must occur after the native library have completely loaded.
+     *
+     * @param tabSwitcherListener An {@link OnClickListener} that is triggered when the tab switcher
+     *     button is clicked.
+     * @param menuButtonHelper An {@link AppMenuButtonHelper} that is triggered when the menu button
+     *     is clicked.
+     * @param tabModelSelector Updates the tab count number in the tab switcher button.
      * @param themeColorProvider Notifies components when theme color changes.
      * @param incognitoStateProvider Notifies components when incognito state changes.
      */
-    void initializeWithNative(OnClickListener newTabListener, OnClickListener tabSwitcherListener,
+    void initializeWithNative(
+            OnClickListener newTabListener,
+            OnClickListener tabSwitcherListener,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
-            TabCountProvider tabCountProvider, ThemeColorProvider themeColorProvider,
+            TabModelSelector tabModelSelector,
+            ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider) {
         mThemeColorProvider = themeColorProvider;
         mMediator.setThemeColorProvider(themeColorProvider);
@@ -190,7 +198,8 @@ public class BrowsingModeBottomToolbarCoordinator {
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
             mTabSwitcherButtonCoordinator.setTabSwitcherListener(tabSwitcherListener);
             mTabSwitcherButtonCoordinator.setThemeColorProvider(themeColorProvider);
-            mTabSwitcherButtonCoordinator.setTabCountProvider(tabCountProvider);
+            mTabSwitcherButtonCoordinator.setTabCountSupplier(
+                    tabModelSelector.getCurrentModelTabCountSupplier());
         }
 
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
@@ -199,10 +208,12 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mThemeColorProvider.addTintObserver(mMenuButton);
 
-        new OneShotCallback<>(menuButtonHelperSupplier, (menuButtonHelper) -> {
-            assert menuButtonHelper != null;
-            mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
-        });
+        new OneShotCallback<>(
+                menuButtonHelperSupplier,
+                (menuButtonHelper) -> {
+                    assert menuButtonHelper != null;
+                    mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
+                });
     }
 
     /**

@@ -7,10 +7,11 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
@@ -24,6 +25,28 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace brave_rewards::internal {
+
+namespace {
+
+bool getJSONValue(const std::string& field_name,
+                  const std::string& json,
+                  std::string* value) {
+  auto result =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!result || !result->is_dict()) {
+    return false;
+  }
+
+  if (auto* field = result->GetDict().FindString(field_name)) {
+    *value = *field;
+    return true;
+  }
+
+  return false;
+}
+
+}  // namespace
 
 YouTube::YouTube(RewardsEngineImpl& engine) : engine_(engine) {}
 
@@ -284,7 +307,7 @@ void YouTube::OnMediaActivityError(const mojom::VisitData& visit_data,
     engine_->publisher()->GetPublisherActivityFromUrl(
         window_id, mojom::VisitData::New(new_visit_data), std::string());
   } else {
-    BLOG(0, "Media activity error");
+    engine_->LogError(FROM_HERE) << "Media activity error";
   }
 }
 
@@ -338,7 +361,7 @@ void YouTube::OnMediaPublisherInfo(const std::string& media_id,
                                    mojom::Result result,
                                    mojom::PublisherInfoPtr publisher_info) {
   if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
-    BLOG(0, "Failed to get publisher info");
+    engine_->LogError(FROM_HERE) << "Failed to get publisher info";
     return;
   }
 
@@ -436,7 +459,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
                                 const std::string& channel_id) {
   std::string url;
   if (channel_id.empty()) {
-    BLOG(0, "Channel id is missing");
+    engine_->LogError(FROM_HERE) << "Channel id is missing";
     return;
   }
 
@@ -444,7 +467,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   url = publisher_url + "/videos";
 
   if (publisher_id.empty()) {
-    BLOG(0, "Publisher id is missing");
+    engine_->LogError(FROM_HERE) << "Publisher id is missing";
     return;
   }
 
@@ -471,8 +494,16 @@ void YouTube::FetchDataFromUrl(const std::string& url,
                                LegacyLoadURLCallback callback) {
   auto request = mojom::UrlRequest::New();
   request->url = url;
-  request->skip_log = true;
-  engine_->LoadURL(std::move(request), callback);
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kNone,
+      base::BindOnce(&YouTube::OnUrlFetched, base::Unretained(this),
+                     std::move(callback)));
+}
+
+void YouTube::OnUrlFetched(LegacyLoadURLCallback callback,
+                           mojom::UrlResponsePtr response) {
+  callback(std::move(response));
 }
 
 void YouTube::WatchPath(uint64_t window_id,

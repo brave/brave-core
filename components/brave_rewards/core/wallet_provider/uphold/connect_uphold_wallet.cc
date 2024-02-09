@@ -7,7 +7,9 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/post_connect_uphold.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
@@ -15,7 +17,6 @@
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 namespace brave_rewards::internal {
 
@@ -37,7 +38,23 @@ const char* ConnectUpholdWallet::WalletType() const {
 }
 
 std::string ConnectUpholdWallet::GetOAuthLoginURL() const {
-  return GetLoginUrl(oauth_info_.one_time_string);
+  auto& config = engine_->Get<EnvironmentConfig>();
+
+  auto url = URLHelpers::Resolve(config.uphold_oauth_url(),
+                                 {"/authorize/", config.uphold_client_id()});
+
+  url = URLHelpers::SetQueryParameters(
+      url, {{"scope",
+             "cards:read "
+             "cards:write "
+             "user:read "
+             "transactions:read "
+             "transactions:transfer:application "
+             "transactions:transfer:others"},
+            {"intention", "login"},
+            {"state", oauth_info_.one_time_string}});
+
+  return url.spec();
 }
 
 void ConnectUpholdWallet::Authorize(ConnectExternalWalletCallback callback) {
@@ -56,7 +73,8 @@ void ConnectUpholdWallet::OnAuthorize(ConnectExternalWalletCallback callback,
   }
 
   if (!result.has_value()) {
-    BLOG(0, "Couldn't exchange code for the access token!");
+    engine_->LogError(FROM_HERE)
+        << "Couldn't exchange code for the access token";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -83,17 +101,18 @@ void ConnectUpholdWallet::OnGetUser(ConnectExternalWalletCallback callback,
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
+    engine_->LogError(FROM_HERE) << "Access token expired";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Couldn't get user object from " << constant::kWalletUphold << '!');
+    engine_->LogError(FROM_HERE)
+        << "Couldn't get user object from " << constant::kWalletUphold << '!';
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (user.bat_not_allowed) {
-    BLOG(0, "BAT is not allowed for the user!");
+    engine_->LogError(FROM_HERE) << "BAT is not allowed for the user";
 
     return std::move(callback).Run(
         ConnectExternalWalletResult::kUpholdBATNotAllowed);
@@ -102,7 +121,8 @@ void ConnectUpholdWallet::OnGetUser(ConnectExternalWalletCallback callback,
   wallet->user_name = user.name;
   wallet->member_id = user.member_id;
   if (!engine_->uphold()->SetWallet(std::move(wallet))) {
-    BLOG(0, "Failed to save " << constant::kWalletUphold << " wallet!");
+    engine_->LogError(FROM_HERE)
+        << "Failed to save " << constant::kWalletUphold << " wallet";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -131,20 +151,19 @@ void ConnectUpholdWallet::OnGetCapabilities(
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
+    engine_->LogError(FROM_HERE) << "Access token expired";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (result != mojom::Result::OK || !capabilities.can_receive ||
       !capabilities.can_send) {
-    BLOG(0,
-         "Couldn't get capabilities from " << constant::kWalletUphold << '!');
+    engine_->LogError(FROM_HERE) << "Couldn't get capabilities from uphold";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (!*capabilities.can_receive || !*capabilities.can_send) {
-    BLOG(0, "User doesn't have the required " << constant::kWalletUphold
-                                              << " capabilities!");
+    engine_->LogError(FROM_HERE) << "User doesn't have the required "
+                                 << constant::kWalletUphold << " capabilities";
 
     return std::move(callback).Run(
         ConnectExternalWalletResult::kUpholdInsufficientCapabilities);
@@ -167,7 +186,7 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
+    engine_->LogError(FROM_HERE) << "Access token expired";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -176,7 +195,7 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
   }
 
   if (id.empty()) {
-    BLOG(0, "Card ID is empty!");
+    engine_->LogError(FROM_HERE) << "Card ID is empty";
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -212,26 +231,28 @@ void ConnectUpholdWallet::OnGetUser(mojom::Result result,
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
+    engine_->LogError(FROM_HERE) << "Access token expired";
     // kConnected ==> kLoggedOut
     if (!engine_->uphold()->LogOutWallet()) {
-      BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
+      engine_->LogError(FROM_HERE)
+          << "Failed to disconnect " << constant::kWalletUphold << " wallet";
     }
 
     return;
   }
 
   if (result != mojom::Result::OK) {
-    return BLOG(
-        0, "Couldn't get user object from " << constant::kWalletUphold << '!');
+    engine_->LogError(FROM_HERE) << "Couldn't get user object from uphold";
+    return;
   }
 
   if (user.bat_not_allowed) {
-    BLOG(0, "BAT is not allowed for the user!");
+    engine_->LogError(FROM_HERE) << "BAT is not allowed for the user";
 
     // kConnected ==> kLoggedOut
     if (!engine_->uphold()->LogOutWallet(notifications::kUpholdBATNotAllowed)) {
-      BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
+      engine_->LogError(FROM_HERE)
+          << "Failed to disconnect " << constant::kWalletUphold << " wallet";
     }
 
     return;
@@ -253,10 +274,11 @@ void ConnectUpholdWallet::OnGetCapabilities(mojom::Result result,
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    BLOG(0, "Access token expired!");
+    engine_->LogError(FROM_HERE) << "Access token expired";
     // kConnected ==> kLoggedOut
     if (!engine_->uphold()->LogOutWallet()) {
-      BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
+      engine_->LogError(FROM_HERE)
+          << "Failed to disconnect " << constant::kWalletUphold << " wallet";
     }
 
     return;
@@ -264,18 +286,19 @@ void ConnectUpholdWallet::OnGetCapabilities(mojom::Result result,
 
   if (result != mojom::Result::OK || !capabilities.can_receive ||
       !capabilities.can_send) {
-    return BLOG(
-        0, "Couldn't get capabilities from " << constant::kWalletUphold << '!');
+    engine_->LogError(FROM_HERE) << "Couldn't get capabilities from uphold";
+    return;
   }
 
   if (!*capabilities.can_receive || !*capabilities.can_send) {
-    BLOG(0, "User doesn't have the required " << constant::kWalletUphold
-                                              << " capabilities!");
+    engine_->LogError(FROM_HERE) << "User doesn't have the required "
+                                 << constant::kWalletUphold << " capabilities";
 
     // kConnected ==> kLoggedOut
     if (!engine_->uphold()->LogOutWallet(
             notifications::kUpholdInsufficientCapabilities)) {
-      BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
+      engine_->LogError(FROM_HERE)
+          << "Failed to disconnect " << constant::kWalletUphold << " wallet";
     }
   }
 }

@@ -4,8 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_ICON_LABEL_BUBBLE_VIEW_GET_HIGHLIGHT_PATH                 \
-  highlight_bounds.Inset(                                               \
-      gfx::Insets::TLBR(2, 2, 2, ShouldShowSeparator() ? 0 : 2));       \
   const auto* layout_provider = GetLayoutProvider();                    \
   auto layout_radius = corner_radius;                                   \
   if (layout_provider) {                                                \

@@ -41,8 +41,12 @@ impl FixCommand {
 
 impl Runnable for FixCommand {
     fn run(&self) {
-        let report = self.auditor().audit_lockfile(self.cargo_lock_path());
+        let path = lockfile::locate_or_generate(self.cargo_lock_path()).unwrap_or_else(|e| {
+            status_err!("{}", e);
+            exit(2);
+        });
 
+        let report = self.auditor().audit_lockfile(&path);
         let report = match report {
             Ok(report) => {
                 if report.vulnerabilities.list.is_empty() {

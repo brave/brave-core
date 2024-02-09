@@ -12,18 +12,26 @@
   overflow: hidden;
 }
 
-.inputBox {
+.input {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 16px;
-  background-color: var(--leo-color-container-background);
+  padding: 0 8px 8px 8px;
 }
 
 .scroller {
   overflow: auto;
   height: 100%;
   padding-bottom: 16px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-gray-20);
+    border-radius: var(--leo-spacing-m);
+  }
 }
 
 .flushBottom {

@@ -76,7 +76,19 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.BEGIN_EXTERNAL_WALLET_LOGIN: {
-      chrome.send('brave_rewards.beginExternalWalletLogin', [action.payload.provider])
+      const { provider } = action.payload
+      chrome.send('brave_rewards.beginExternalWalletLogin', [provider])
+      state = {
+        ...state,
+        ui: { ...state.ui, modalConnectState: 'loading' }
+      }
+      break
+    }
+    case types.ON_EXTERNAL_WALLET_LOGIN_ERROR: {
+      state = {
+        ...state,
+        ui: { ...state.ui, modalConnectState: 'error' }
+      }
       break
     }
     case types.GET_EXTERNAL_WALLET: {

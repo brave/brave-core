@@ -18,7 +18,8 @@ import {
 import { useExplorer } from '../../../../common/hooks/explorer'
 
 // styles
-import { InlineAddressButton, LaunchIcon } from '../style'
+import { LaunchIcon } from '../../../shared/style'
+import { InlineAddressButton } from '../style'
 
 export type ChainInfo = Pick<
   BraveWallet.NetworkInfo,

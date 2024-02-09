@@ -8,6 +8,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/background.h"
 
 BraveSidePanelViewBase::BraveSidePanelViewBase() {
@@ -43,3 +44,6 @@ void BraveSidePanelViewBase::OnViewVisibilityChanged(
     view_observation_.Reset();
   }
 }
+
+BEGIN_METADATA(BraveSidePanelViewBase)
+END_METADATA

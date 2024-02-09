@@ -66,8 +66,8 @@ class PostTransactionUphold {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 PostTransactionUpholdCallback callback);
+  void OnRequest(PostTransactionUpholdCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/hats/hats_service.h"
+
 #include <optional>
 
 #include "base/metrics/field_trial_params.h"
@@ -12,7 +14,7 @@
 #include "chrome/browser/metrics/chrome_metrics_service_accessor.h"
 #include "chrome/browser/profiles/profile_impl.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/hats/hats_service.h"
+#include "chrome/browser/ui/hats/hats_service_desktop.h"
 #include "chrome/browser/ui/hats/hats_service_factory.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -64,10 +66,9 @@ class HatsServiceBrowserTestBase : public InProcessBrowserTest {
 
   ~HatsServiceBrowserTestBase() override = default;
 
-  HatsService* GetHatsService() {
-    HatsService* service =
-        HatsServiceFactory::GetForProfile(browser()->profile(), true);
-    return service;
+  HatsServiceDesktop* GetHatsService() {
+    return static_cast<HatsServiceDesktop*>(
+        HatsServiceFactory::GetForProfile(browser()->profile(), true));
   }
 
   void SetMetricsConsent(bool consent) {

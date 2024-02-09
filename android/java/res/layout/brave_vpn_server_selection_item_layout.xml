@@ -6,4 +6,5 @@
     android:layout_height="wrap_content"
     android:padding="16dp"
     android:textSize="16sp"
+    android:textColor="@color/vpn_timer_text_color"
     android:drawablePadding="8dp" />

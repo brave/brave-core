@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/button/label_button_border.h"
@@ -18,6 +19,7 @@ class WebContents;
 }  // namespace content
 
 class OnionLocationView : public views::View {
+  METADATA_HEADER(OnionLocationView, views::View)
  public:
   explicit OnionLocationView(Profile* profile);
   ~OnionLocationView() override;

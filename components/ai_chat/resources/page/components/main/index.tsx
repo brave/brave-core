@@ -27,6 +27,8 @@ import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
 
+const SCROLL_BOTTOM_THRESHOLD = 10.0
+
 function Main() {
   const context = React.useContext(DataContext)
   const {
@@ -40,12 +42,11 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-
   const shouldShowPremiumSuggestionForModel =
     hasAcceptedAgreement &&
     !context.isPremiumStatusFetching && // Avoid flash of content
     !context.isPremiumUser &&
-    context.currentModel?.isPremium
+    context.currentModel?.access === mojom.ModelAccess.PREMIUM
 
   const shouldShowPremiumSuggestionStandalone =
     hasAcceptedAgreement &&
@@ -61,6 +62,9 @@ function Main() {
 
   let currentErrorElement = null
 
+  let scrollerElement: HTMLDivElement | null = null
+  const scrollPos = React.useRef({ isAtBottom: true })
+
   if (hasAcceptedAgreement) {
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
@@ -72,9 +76,7 @@ function Main() {
 
     if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
       currentErrorElement = (
-        <ErrorRateLimit
-          onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
-        />
+        <ErrorRateLimit />
       )
     }
 
@@ -82,6 +84,23 @@ function Main() {
       currentErrorElement = (
         <ErrorConversationEnd />
       )
+    }
+  }
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    // Monitor scroll positions only when Assistant is generating
+    if (!context.isGenerating) return
+    const el = e.currentTarget
+    scrollPos.current.isAtBottom = Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < SCROLL_BOTTOM_THRESHOLD
+  }
+
+  const handleLastElementHeightChange = () => {
+    if (!scrollerElement) {
+      return
+    }
+
+    if (scrollPos.current.isAtBottom) {
+      scrollerElement.scrollTop = scrollerElement.scrollHeight - scrollerElement.clientHeight
     }
   }
 
@@ -117,10 +136,17 @@ function Main() {
       <div className={classnames({
         [styles.scroller]: true,
         [styles.flushBottom]: !hasAcceptedAgreement
-      })}>
+      })}
+        ref={node => (scrollerElement = node)}
+        onScroll={handleScroll}
+      >
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        {context.hasAcceptedAgreement && <ModelIntro />}
-        <ConversationList />
+        {context.hasAcceptedAgreement && <>
+          <ModelIntro />
+          <ConversationList
+            onLastElementHeightChange={handleLastElementHeightChange}
+          />
+        </>}
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
         )}
@@ -129,13 +155,12 @@ function Main() {
             <div className={styles.promptContainer}>
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
-                verbose={true}
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
-                    onClick={() => context.switchToDefaultModel()}
+                    onClick={() => context.switchToBasicModel()}
                   >
-                    {getLocale('switchToDefaultModelButtonLabel')}
+                    {getLocale('switchToBasicModelButtonLabel')}
                   </Button>
                 }
               />
@@ -147,7 +172,6 @@ function Main() {
             <div className={styles.promptContainer}>
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
-                verbose={true}
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
@@ -175,7 +199,7 @@ function Main() {
         </div>}
         {!hasAcceptedAgreement && <WelcomeGuide />}
       </div>
-      <div className={styles.inputBox}>
+      <div className={styles.input}>
         {showContextToggle && (
           <div className={styles.toggleContainer}>
             <PageContextToggle />

@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/canvas.h"
@@ -67,8 +68,8 @@ class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
     auto* layout_provider = ChromeLayoutProvider::Get();
     DCHECK(layout_provider);
 
-    int radius = layout_provider->GetCornerRadiusMetric(
-        views::Emphasis::kMaximum, rect.size());
+    int radius = layout_provider->GetCornerRadiusMetric(views::Emphasis::kHigh,
+                                                        rect.size());
 
     SkPath path;
     path.addRoundRect(gfx::RectToSkRect(rect), radius, radius);
@@ -91,10 +92,11 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
  public:
   RewardsBadgeImageSource(const gfx::Size& size,
                           GetColorProviderCallback get_color_provider_callback)
-      : BraveIconWithBadgeImageSource(size,
-                                      std::move(get_color_provider_callback),
-                                      kBraveActionGraphicSize,
-                                      kBraveActionLeftMarginExtra) {}
+      : BraveIconWithBadgeImageSource(
+            size,
+            std::move(get_color_provider_callback),
+            GetLayoutConstant(LOCATION_BAR_TRAILING_ICON_SIZE),
+            kBraveActionLeftMarginExtra) {}
 
   void UseVerifiedIcon(bool verified_icon) {
     verified_icon_ = verified_icon;
@@ -114,13 +116,12 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     // area. Expand the badge rectangle accordingly.
     gfx::Rect image_rect(badge_rect);
     gfx::Outsets outsets;
-    outsets.set_top(3);
     outsets.set_left(2);
-    outsets.set_right(1);
+    outsets.set_bottom(2);
     image_rect.Outset(outsets);
 
     gfx::RectF check_rect(image_rect);
-    check_rect.Inset(4);
+    check_rect.Inset(3);
     cc::PaintFlags check_flags;
     check_flags.setStyle(cc::PaintFlags::kFill_Style);
     check_flags.setColor(SK_ColorWHITE);
@@ -247,8 +248,9 @@ void BraveRewardsActionView::Update() {
       text, brave::kBadgeTextColor, background_color));
   image_source->UseVerifiedIcon(background_color == kBadgeVerifiedBG);
 
-  SetImage(views::Button::STATE_NORMAL,
-           gfx::ImageSkia(std::move(image_source), preferred_size));
+  SetImageModel(views::Button::STATE_NORMAL,
+                ui::ImageModel::FromImageSkia(
+                    gfx::ImageSkia(std::move(image_source), preferred_size)));
 }
 
 void BraveRewardsActionView::ClosePanelForTesting() {
@@ -351,11 +353,8 @@ void BraveRewardsActionView::OnNotificationDeleted(
 void BraveRewardsActionView::OnButtonPressed() {
   brave_rewards::RewardsService* rewards_service = GetRewardsService();
   if (rewards_service != nullptr) {
-    auto* prefs = browser_->profile()->GetPrefs();
-    if (!prefs->GetBoolean(brave_rewards::prefs::kEnabled)) {
-      rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
-          ::brave_rewards::p3a::PanelTrigger::kToolbarButton);
-    }
+    rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
+        ::brave_rewards::p3a::PanelTrigger::kToolbarButton);
   }
   // If we are opening the Rewards panel, use `RewardsPanelCoordinator` to open
   // it so that the panel arguments will be correctly set.
@@ -411,7 +410,8 @@ void BraveRewardsActionView::ToggleRewardsPanel() {
 gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   // Since the BAT icon has color the actual color value here is not relevant,
   // but |CreateVectorIcon| requires one.
-  return gfx::CreateVectorIcon(kBatIcon, kBraveActionGraphicSize, kIconColor);
+  return gfx::CreateVectorIcon(
+      kBatIcon, GetLayoutConstant(LOCATION_BAR_TRAILING_ICON_SIZE), kIconColor);
 }
 
 std::pair<std::string, SkColor>
@@ -503,3 +503,6 @@ void BraveRewardsActionView::UpdateTabHelper(
   OnPublisherForTabUpdated(tab_helper_ ? tab_helper_->GetPublisherIdForTab()
                                        : "");
 }
+
+BEGIN_METADATA(BraveRewardsActionView)
+END_METADATA

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/average_clickthrough_rate_predictor_variable.h"
 
+#include <cstddef>
+
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/predictor_variable_constants.h"

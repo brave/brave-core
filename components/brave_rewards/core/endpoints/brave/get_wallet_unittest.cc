@@ -4,183 +4,152 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
-#include <tuple>
 #include <utility>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/get_wallet.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=*GetWalletTest*
 
-using ::testing::_;
-using ::testing::TestWithParam;
-using ::testing::Values;
+namespace brave_rewards::internal::endpoints {
 
-namespace brave_rewards::internal::endpoints::test {
-using Error = GetWallet::Error;
-using Result = GetWallet::Result;
-
-// clang-format off
-using GetWalletParamType = std::tuple<
-    std::string,         // test name suffix
-    mojom::UrlResponse,  // Rewards Get Wallet response
-    Result               // expected result
->;
-
-class GetWalletTest : public TestWithParam<GetWalletParamType> {
+class GetWalletTest : public RewardsEngineTest {
  protected:
+  using Error = GetWallet::Error;
+
   void SetUp() override {
-    ON_CALL(*mock_engine_impl_.mock_client(),
-            GetStringState(state::kWalletBrave, _))
-        .WillByDefault([](const std::string&, auto callback) {
-          std::move(callback).Run(R"({
-            "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
-            "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-          })");
-        });
+    std::string json = R"({
+          "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+          "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+        })";
+    engine().SetState(state::kWalletBrave, std::move(json));
   }
 
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  GetWallet::Result SendRequest(mojom::UrlResponsePtr response) {
+    std::string url =
+        engine()
+            .Get<EnvironmentConfig>()
+            .rewards_grant_url()
+            .Resolve("/v4/wallets/fa5dea51-6af4-44ca-801b-07b6df3dcfe4")
+            .spec();
+
+    AddNetworkResultForTesting(url, mojom::UrlMethod::GET, std::move(response));
+
+    auto [result] = WaitFor<GetWallet::Result&&>([this](auto callback) {
+      RequestFor<GetWallet>(engine()).Send(std::move(callback));
+    });
+
+    return std::move(result);
+  }
 };
 
-INSTANTIATE_TEST_SUITE_P(
-  Endpoints,
-  GetWalletTest,
-  Values(
-    GetWalletParamType{
-      "ServerError400",
-      mojom::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_BAD_REQUEST,
-        {},
-        {}
-      },
-      base::unexpected(Error::kInvalidRequest)
-    },
-    GetWalletParamType{
-      "ServerError404",
-      mojom::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_NOT_FOUND,
-        {},
-        {}
-      },
-      base::unexpected(Error::kRewardsPaymentIDNotFound)
-    },
-    GetWalletParamType{
-      "ServerError403",
-      mojom::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_FORBIDDEN,
-        {},
-        {}
-      },
-      base::unexpected(Error::kRequestSignatureVerificationFailure)
-    },
-    GetWalletParamType{
-      "ServerOK_not_linked",
-      mojom::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"(
-        {
-            "paymentId": "368d87a3-7749-4ebb-9f3a-2882c99078c7",
-            "walletProvider": {
-                "id": "",
-                "name": "brave"
-            },
-            "altcurrency": "BAT",
-            "publicKey": "ae55f61fa5b2870c0ee3633004c6d7a40adb5694c73d05510d8179cec8a3403a"
-        }
-        )",
-        {}
-      },
-      {}
-    },
-    GetWalletParamType{
-      "ServerOK_was_linked_but_currently_disconnected",
-      mojom::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"(
-        {
-            "paymentId": "368d87a3-7749-4ebb-9f3a-2882c99078c7",
-            "depositAccountProvider": {
-                "name": "uphold",
-                "id": "",
-                "linkingId": "4668ba96-7129-5e85-abdc-0c144ab78834"
-            },
-            "walletProvider": {
-                "id": "",
-                "name": "brave"
-            },
-            "altcurrency": "BAT",
-            "publicKey": "ae55f61fa5b2870c0ee3633004c6d7a40adb5694c73d05510d8179cec8a3403a"
-        }
-        )",
-        {}
-      },
-      std::pair{constant::kWalletUphold, false}
-    },
-    GetWalletParamType{
-      "ServerOK_fully_linked",
-      mojom::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"(
-        {
-            "paymentId": "368d87a3-7749-4ebb-9f3a-2882c99078c7",
-            "depositAccountProvider": {
-                "name": "uphold",
-                "id": "962ef3b8-bc12-4619-a349-c8083931b795",
-                "linkingId": "4668ba96-7129-5e85-abdc-0c144ab78834"
-            },
-            "walletProvider": {
-                "id": "",
-                "name": "brave"
-            },
-            "altcurrency": "BAT",
-            "publicKey": "ae55f61fa5b2870c0ee3633004c6d7a40adb5694c73d05510d8179cec8a3403a"
-        }
-        )",
-        {}
-      },
-      std::pair{constant::kWalletUphold, true}
-    }),
-    [](const auto& info) {
-      return std::get<0>(info.param);
-    }
-);
-// clang-format on
-
-TEST_P(GetWalletTest, Paths) {
-  const auto& [ignore, response, result] = GetParam();
-
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
-        std::move(callback).Run(response.Clone());
-      });
-
-  base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
-  EXPECT_CALL(callback, Run(Result(result))).Times(1);
-  RequestFor<GetWallet>(mock_engine_impl_).Send(callback.Get());
-
-  task_environment_.RunUntilIdle();
+TEST_F(GetWalletTest, ServerError400) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HttpStatusCode::HTTP_BAD_REQUEST;
+  auto result = SendRequest(std::move(response));
+  EXPECT_EQ(result, base::unexpected(Error::kInvalidRequest));
 }
 
-}  // namespace brave_rewards::internal::endpoints::test
+TEST_F(GetWalletTest, ServerError404) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HttpStatusCode::HTTP_NOT_FOUND;
+  auto result = SendRequest(std::move(response));
+  EXPECT_EQ(result, base::unexpected(Error::kRewardsPaymentIDNotFound));
+}
+
+TEST_F(GetWalletTest, ServerError403) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HttpStatusCode::HTTP_FORBIDDEN;
+  auto result = SendRequest(std::move(response));
+  EXPECT_EQ(result,
+            base::unexpected(Error::kRequestSignatureVerificationFailure));
+}
+
+TEST_F(GetWalletTest, ServerOkNotLinked) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HttpStatusCode::HTTP_OK;
+  response->body =
+      R"(
+        {
+          "paymentId": "368d87a3-7749-4ebb-9f3a-2882c99078c7",
+          "walletProvider": {
+            "id": "",
+            "name": "brave"
+          },
+          "altcurrency": "BAT",
+          "publicKey": "ae55f61fa5b2870c0ee3633004c6d7a40adb5694c73d05510d8179cec8a3403a",
+          "selfCustodyAvailable": {
+            "solana": true,
+            "unrecongnized": true,
+            "invalid": "invalid"
+          }
+        }
+      )";
+  auto result = SendRequest(std::move(response));
+  EXPECT_EQ(result.value().wallet_provider, "");
+  EXPECT_EQ(result.value().provider_id, "");
+  EXPECT_FALSE(result.value().linked);
+  EXPECT_FALSE(result.value().self_custody_available.empty());
+  EXPECT_TRUE(*result.value().self_custody_available.FindBool("solana"));
+  EXPECT_TRUE(*result.value().self_custody_available.FindBool("unrecongnized"));
+  EXPECT_FALSE(result.value().self_custody_available.FindBool("invalid"));
+}
+
+TEST_F(GetWalletTest, ServerOKCurrentlyDisconnected) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HttpStatusCode::HTTP_OK;
+  response->body =
+      R"(
+        {
+          "paymentId": "368d87a3-7749-4ebb-9f3a-2882c99078c7",
+          "depositAccountProvider": {
+            "name": "uphold",
+            "id": "",
+            "linkingId": "4668ba96-7129-5e85-abdc-0c144ab78834"
+          },
+          "walletProvider": {
+            "id": "",
+            "name": "brave"
+          },
+          "altcurrency": "BAT",
+          "publicKey": "ae55f61fa5b2870c0ee3633004c6d7a40adb5694c73d05510d8179cec8a3403a"
+        }
+      )";
+  auto result = SendRequest(std::move(response));
+  EXPECT_EQ(result.value().wallet_provider, constant::kWalletUphold);
+  EXPECT_EQ(result.value().provider_id, "");
+  EXPECT_FALSE(result.value().linked);
+}
+
+TEST_F(GetWalletTest, ServerOkFullyLinked) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HttpStatusCode::HTTP_OK;
+  response->body =
+      R"(
+        {
+          "paymentId": "368d87a3-7749-4ebb-9f3a-2882c99078c7",
+          "depositAccountProvider": {
+            "name": "uphold",
+            "id": "962ef3b8-bc12-4619-a349-c8083931b795",
+            "linkingId": "4668ba96-7129-5e85-abdc-0c144ab78834"
+          },
+          "walletProvider": {
+            "id": "",
+            "name": "brave"
+          },
+          "altcurrency": "BAT",
+          "publicKey": "ae55f61fa5b2870c0ee3633004c6d7a40adb5694c73d05510d8179cec8a3403a"
+        }
+      )";
+  auto result = SendRequest(std::move(response));
+  EXPECT_EQ(result.value().wallet_provider, constant::kWalletUphold);
+  EXPECT_EQ(result.value().provider_id, "962ef3b8-bc12-4619-a349-c8083931b795");
+  EXPECT_TRUE(result.value().linked);
+}
+
+}  // namespace brave_rewards::internal::endpoints

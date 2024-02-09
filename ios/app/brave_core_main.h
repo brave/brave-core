@@ -24,6 +24,7 @@
 @class BraveTabGeneratorAPI;
 @class WebImageDownloader;
 @class NTPBackgroundImagesService;
+@class DeAmpPrefs;
 @class AIChat;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
@@ -93,6 +94,8 @@ OBJC_EXPORT
                          weekOfInstall:(NSString*)weekOfInstall;
 
 @property(readonly) BraveP3AUtils* p3aUtils;
+
+@property(readonly) DeAmpPrefs* deAmpPrefs;
 
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
 

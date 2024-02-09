@@ -486,8 +486,9 @@ class EphemeralStorageForgetByDefaultDisabledBrowserTest
       scoped_feature_list_.InitAndEnableFeature(
           net::features::kBraveForgetFirstPartyStorage);
     } else {
-      scoped_feature_list_.InitAndDisableFeature(
-          net::features::kBraveForgetFirstPartyStorage);
+      scoped_feature_list_.InitWithFeatures(
+          {}, {net::features::kBraveForgetFirstPartyStorage,
+               net::features::kThirdPartyStoragePartitioning});
     }
   }
   ~EphemeralStorageForgetByDefaultDisabledBrowserTest() override = default;

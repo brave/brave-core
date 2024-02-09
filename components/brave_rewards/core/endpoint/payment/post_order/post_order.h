@@ -86,9 +86,9 @@ class PostOrder {
                           const std::vector<mojom::SKUOrderItem>& order_items,
                           mojom::SKUOrder* order);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 const std::vector<mojom::SKUOrderItem>& items,
-                 PostOrderCallback callback);
+  void OnRequest(std::vector<mojom::SKUOrderItem> items,
+                 PostOrderCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

@@ -6,22 +6,28 @@
 #include "net/proxy_resolution/configured_proxy_resolution_service.h"
 
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
+#include "net/base/network_anonymization_key.h"
 
 namespace net {
 namespace {
 
 void SetTorCircuitIsolation(const ProxyConfigWithAnnotation& config,
                             const GURL& url,
+                            const NetworkAnonymizationKey& key,
                             ProxyInfo* result,
                             ProxyResolutionService* service) {
-  ProxyConfigServiceTor::SetProxyAuthorization(config, url, service, result);
+  ProxyConfigServiceTor::SetProxyAuthorization(config, url, key, service,
+                                               result);
 }
 
 }  // namespace
 }  // namespace net
 
-#define BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY \
-  SetTorCircuitIsolation(config_.value(), url, result, this);
+#define BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY      \
+  if (rv == OK) {                                                    \
+    SetTorCircuitIsolation(config_.value(), raw_url,                 \
+                           network_anonymization_key, result, this); \
+  }
 
 #include "src/net/proxy_resolution/configured_proxy_resolution_service.cc"
-#undef BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY
+#undef BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY

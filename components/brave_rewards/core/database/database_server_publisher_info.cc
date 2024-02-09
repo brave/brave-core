@@ -33,7 +33,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
     const mojom::ServerPublisherInfo& server_info,
     LegacyResultCallback callback) {
   if (server_info.publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
+    engine_->LogError(FROM_HERE) << "Publisher key is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -65,7 +65,7 @@ void DatabaseServerPublisherInfo::GetRecord(
     const std::string& publisher_key,
     GetServerPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(1, "Publisher key is empty");
+    engine_->Log(FROM_HERE) << "Publisher key is empty";
     callback(nullptr);
     return;
   }
@@ -120,7 +120,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback(nullptr);
     return;
   }
@@ -171,7 +171,7 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Unable to query for expired records");
+    engine_->LogError(FROM_HERE) << "Unable to query for expired records";
     callback(mojom::Result::FAILED);
     return;
   }

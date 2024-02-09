@@ -1,4 +1,4 @@
-build/commands/ @bridiver
+build/commands/ @brave/build-commands-reviewers
 patches/ @brave/patch-reviewers
 chromium_src/ @brave/chromium-src-reviewers
 script/audit_deps.py @brave/sec-team
@@ -71,6 +71,15 @@ brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
 # Network
 browser/net/ @iefremov
 chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
+
+# Tor
+browser/tor/ @brave/tor-reviewers
+browser/ui/webui/tor_internals_ui.* @brave/tor-reviewers
+browser/ui/webui/settings/brave_tor*.* @brave/tor-reviewers
+chromium_src/chrome/browser/net/proxy_config_monitor.* @brave/tor-reviewers
+chromium_src/net/proxy_resolution/configured_proxy_resolution_service.cc @brave/tor-reviewers
+components/tor/ @brave/tor-reviewers
+net/proxy_resolution/ @brave/tor-reviewers
 
 # Chromium Extension API modifications
 chromium_src/**/extensions/**/*_features.json @brave/sec-team

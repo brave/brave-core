@@ -1,5 +1,5 @@
 diff --git a/chrome/app/chrome_dll.rc b/chrome/app/chrome_dll.rc
-index 08452dac1c12d9cab80004d76bab0ff592c816d7..a58a4b133a4bbd84e4c4af68fa3cf10fdfd4e4b0 100644
+index fc761eab36d5ae1eed52892aaebbfb36e00da826..e6099f423dd8a0169218977bcea3083653ad0153 100644
 --- a/chrome/app/chrome_dll.rc
 +++ b/chrome/app/chrome_dll.rc
 @@ -166,6 +166,15 @@ END
@@ -18,7 +18,7 @@ index 08452dac1c12d9cab80004d76bab0ff592c816d7..a58a4b133a4bbd84e4c4af68fa3cf10f
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
  IDR_MAINFRAME       ICON                        "theme\google_chrome\win\chrome.ico"
  IDR_SXS             ICON                        "theme\google_chrome\win\chrome_sxs.ico"
-@@ -174,6 +183,7 @@ IDR_X005_BETA       ICON                        "theme\google_chrome\win\chrome_
+@@ -176,6 +185,7 @@ IDR_MAINFRAME       ICON                        "theme\google_chrome\google_chro
  #else
  IDR_MAINFRAME       ICON                        "theme\chromium\win\chromium.ico"
  #endif

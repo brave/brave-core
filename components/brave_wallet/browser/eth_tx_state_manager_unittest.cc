@@ -8,10 +8,9 @@
 #include <memory>
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -24,7 +23,6 @@
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -191,20 +189,6 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta_from_value3 = eth_tx_state_manager_->ValueToEthTxMeta(meta_value3);
   ASSERT_NE(meta_from_value3, nullptr);
   EXPECT_FALSE(meta_from_value3->sign_only());
-}
-
-TEST_F(EthTxStateManagerUnitTest, GetTxPrefPathPrefix) {
-  EXPECT_EQ("ethereum.mainnet",
-            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kMainnetChainId));
-  EXPECT_EQ("ethereum.goerli",
-            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kGoerliChainId));
-  EXPECT_EQ("ethereum.sepolia",
-            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kSepoliaChainId));
-  EXPECT_EQ(
-      "ethereum.http://localhost:7545/",
-      eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kLocalhostChainId));
-  EXPECT_EQ("ethereum",
-            eth_tx_state_manager_->GetTxPrefPathPrefix(std::nullopt));
 }
 
 }  // namespace brave_wallet

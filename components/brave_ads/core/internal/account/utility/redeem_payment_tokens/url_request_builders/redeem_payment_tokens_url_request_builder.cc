@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/json/json_writer.h"
-#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/credential_builder.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
@@ -101,9 +100,7 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
 
     const std::optional<std::string> public_key_base64 =
         payment_token.public_key.EncodeBase64();
-    if (!public_key_base64) {
-      NOTREACHED_NORETURN();
-    }
+    CHECK(public_key_base64);
 
     list.Append(
         base::Value::Dict()

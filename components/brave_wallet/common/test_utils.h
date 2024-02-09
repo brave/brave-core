@@ -31,6 +31,16 @@ auto EqualsMojo(const T& value) {
           const T& candidate) { return mojo::Equals(candidate, value->data); });
 }
 
+namespace mojom {
+
+// These are pretty printers for gmock expect/assert failures.
+void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os);
+void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os);
+void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os);
+void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os);
+
+}  // namespace mojom
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_TEST_UTILS_H_

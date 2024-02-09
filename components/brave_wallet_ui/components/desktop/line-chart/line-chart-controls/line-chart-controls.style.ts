@@ -25,7 +25,7 @@ export const SelectTimelinButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   background: none;
-  border-radius: 48px;
+  border-radius: 8px;
   padding: 6px 10px 6px 18px;
   border: 1px solid var(--button-border);
   font-family: Poppins;

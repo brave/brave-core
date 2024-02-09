@@ -41,7 +41,7 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_uuids) {
 
   creative_ad.value = 1.0;
 
-  creative_ad.segment = "untargeted";
+  creative_ad.segment = kSegment;
 
   creative_ad.split_test_group = "";
 

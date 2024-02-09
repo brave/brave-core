@@ -36,6 +36,12 @@ inline constexpr char kBraveChatP3ALastPremiumCheck[] =
     "brave.ai_chat.p3a_last_premium_check";
 inline constexpr char kBraveChatP3ALastPremiumStatus[] =
     "brave.ai_chat.p3a_last_premium_status";
+inline constexpr char kBraveChatP3AFirstUsageTime[] =
+    "brave.ai_chat.p3a_first_usage_time";
+inline constexpr char kBraveChatP3ALastUsageTime[] =
+    "brave.ai_chat.p3a_last_usage_time";
+inline constexpr char kBraveChatP3AUsedSecondDay[] =
+    "brave.ai_chat.p3a_used_second_day";
 #if BUILDFLAG(IS_ANDROID)
 inline constexpr char kBraveChatSubscriptionActiveAndroid[] =
     "brave.ai_chat.subscription_active_android";
@@ -46,6 +52,10 @@ inline constexpr char kBraveChatPackageNameAndroid[] =
 inline constexpr char kBraveChatProductIdAndroid[] =
     "brave.ai_chat.product_id_android";
 #endif
+inline constexpr char kBraveAIChatContextMenuEnabled[] =
+    "brave.ai_chat.context_menu_enabled";
+// Used to indicate whether the feature is enabled by group policy.
+inline constexpr char kEnabledByPolicy[] = "brave.ai_chat.enabled_by_policy";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 

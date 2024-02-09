@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
@@ -172,3 +173,6 @@ void OnionLocationView::Update(content::WebContents* web_contents,
         ->SetOnionLocation(helper->onion_location());
   }
 }
+
+BEGIN_METADATA(OnionLocationView)
+END_METADATA

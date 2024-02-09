@@ -38,7 +38,6 @@ export function AutoContributePanel () {
     contributionMinVisits: state.contributionMinVisits,
     contributionMonthly: state.contributionMonthly,
     parameters: state.parameters,
-    isAcSupported: state.isAcSupported,
     enabledContribute: state.enabledContribute,
     reconcileStamp: state.reconcileStamp,
     autoContributeList: state.autoContributeList,
@@ -368,11 +367,6 @@ export function AutoContributePanel () {
         onClose={toggleModal}
       />
     )
-  }
-
-  // Don't show AC panel if AC is not supported.
-  if (!data.isAcSupported) {
-    return null
   }
 
   return (

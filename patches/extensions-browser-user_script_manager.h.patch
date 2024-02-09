@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/user_script_manager.h b/extensions/browser/user_script_manager.h
-index 15614d29e85f9698f60602c2b97a698bd5fe3b80..63d5d133e76a4de80f9e0e7a22c960afd30b18d9 100644
+index 9e7c9b2129f240a05d62bcd584f8c18a8d7091c8..713e831ae4a3412f8d80db604218290ec9a129e3 100644
 --- a/extensions/browser/user_script_manager.h
 +++ b/extensions/browser/user_script_manager.h
-@@ -26,7 +26,7 @@
+@@ -25,7 +25,7 @@
  namespace content {
  class BrowserContext;
  }
@@ -11,7 +11,7 @@ index 15614d29e85f9698f60602c2b97a698bd5fe3b80..63d5d133e76a4de80f9e0e7a22c960af
  namespace extensions {
  class UserScriptLoader;
  
-@@ -55,6 +55,7 @@ class UserScriptManager : public ExtensionRegistryObserver {
+@@ -54,6 +54,7 @@ class UserScriptManager : public ExtensionRegistryObserver {
                                                 bool enabled);
  
   private:

@@ -6,23 +6,21 @@
 import { renderHook } from '@testing-library/react-hooks'
 
 // queries
-import {
-  useGetExternalRewardsWalletQuery,
-  useGetRewardsBalanceQuery,
-  useGetRewardsEnabledQuery
-} from '../api.slice'
+import { useGetRewardsInfoQuery } from '../api.slice'
+
+// constants
+import { WalletStatus } from '../../../constants/types'
 
 // utils
 import {
   createMockStore,
   renderHookOptionsWithMockStore
 } from '../../../utils/test-utils'
-import { BraveRewardsProxyOverrides } from '../../async/__mocks__/brave_rewards_api_proxy'
-import { WalletStatus } from '../../async/brave_rewards_api_proxy'
+import { BraveRewardsProxyOverrides } from '../../../constants/testing_types'
 
 const mockedRewardsData: BraveRewardsProxyOverrides = {
   externalWallet: {
-    links: { account: '', reconnect: '' },
+    links: { account: '' },
     provider: 'uphold',
     status: WalletStatus.kConnected,
     username: 'DeadBeef'
@@ -32,60 +30,57 @@ const mockedRewardsData: BraveRewardsProxyOverrides = {
 }
 
 describe('api slice Brave Rewards endpoints', () => {
-  describe('useGetExternalRewardsWalletQuery', () => {
+  describe('useGetRewardsInfoQuery', () => {
     it('should fetch & cache external rewards wallet data', async () => {
       const store = createMockStore({}, {}, mockedRewardsData)
 
       const { result, waitForValueToChange } = renderHook(
-        () => useGetExternalRewardsWalletQuery(),
+        () => useGetRewardsInfoQuery(),
         renderHookOptionsWithMockStore(store)
       )
 
       await waitForValueToChange(() => result.current.isLoading)
-      const { data: wallet, isLoading, error } = result.current
+      const { data: rewardsInfo, isLoading, error } = result.current
+      const { provider } = rewardsInfo || {}
 
       expect(isLoading).toBe(false)
       expect(error).not.toBeDefined()
-      expect(wallet).toBeDefined()
-      expect(wallet).toBe(mockedRewardsData.externalWallet)
+      expect(provider).toBeDefined()
+      expect(provider).toBe('uphold')
     })
-  })
-
-  describe('useGetRewardsBalanceQuery', () => {
     it('should fetch & cache rewards balances', async () => {
       const store = createMockStore({}, {}, mockedRewardsData)
 
       const { result, waitForValueToChange } = renderHook(
-        () => useGetRewardsBalanceQuery(),
+        () => useGetRewardsInfoQuery(),
         renderHookOptionsWithMockStore(store)
       )
 
       await waitForValueToChange(() => result.current.isLoading)
-      const { data: balance, isLoading, error } = result.current
+      const { data: rewardsInfo, isLoading, error } = result.current
+      const { balance } = rewardsInfo || {}
 
       expect(isLoading).toBe(false)
       expect(error).not.toBeDefined()
       expect(balance).toBeDefined()
       expect(balance).toBe(mockedRewardsData.balance)
     })
-  })
-
-  describe('useGetRewardsEnabledQuery', () => {
     it('should fetch & cache rewards enabled check', async () => {
       const store = createMockStore({}, {}, mockedRewardsData)
 
       const { result, waitForValueToChange } = renderHook(
-        () => useGetRewardsEnabledQuery(),
+        () => useGetRewardsInfoQuery(),
         renderHookOptionsWithMockStore(store)
       )
 
       await waitForValueToChange(() => result.current.isLoading)
-      const { data: isEnabled, isLoading, error } = result.current
+      const { data: rewardsInfo, isLoading, error } = result.current
+      const { isRewardsEnabled } = rewardsInfo || {}
 
       expect(isLoading).toBe(false)
       expect(error).not.toBeDefined()
-      expect(isEnabled).toBeDefined()
-      expect(isEnabled).toBe(mockedRewardsData.rewardsEnabled)
+      expect(isRewardsEnabled).toBeDefined()
+      expect(isRewardsEnabled).toBe(mockedRewardsData.rewardsEnabled)
     })
   })
 })

@@ -6,15 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_REQUEST_FOR_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_REQUEST_FOR_H_
 
+#include <memory>
 #include <optional>
 #include <type_traits>
 #include <utility>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
-#include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_rewards/core/common/callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
-#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -46,22 +47,35 @@ class RequestFor {
 
   void Send(base::OnceCallback<void(typename Endpoint::Result&&)> callback) && {
     if (!request_ || !*request_) {
-      BLOG(0, "Failed to create request!");
+      engine_->LogError(FROM_HERE) << "Failed to create request";
 
       static_assert(enumerator_check<typename Endpoint::Error>,
                     "Please make sure the error type of your endpoint has the "
                     "kFailedToCreateRequest enumerator!");
 
-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE,
-          base::BindOnce(
-              std::move(callback),
-              base::unexpected(Endpoint::Error::kFailedToCreateRequest)));
+      DeferCallback(FROM_HERE, std::move(callback),
+                    base::unexpected(Endpoint::Error::kFailedToCreateRequest));
       return;
     }
 
-    engine_->LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
-                                                          std::move(callback)));
+    URLLoader::LogLevel log_level = (*request_)->skip_log
+                                        ? URLLoader::LogLevel::kNone
+                                        : URLLoader::LogLevel::kDetailed;
+
+    auto on_response =
+        [](base::WeakPtr<RewardsEngineImpl> engine,
+           base::OnceCallback<void(typename Endpoint::Result&&)> callback,
+           mojom::UrlResponsePtr response) {
+          if (engine) {
+            Endpoint::OnResponse(*engine, std::move(callback),
+                                 std::move(response));
+          }
+        };
+
+    engine_->Get<URLLoader>().Load(
+        std::move(*request_), log_level,
+        base::BindOnce(on_response, engine_->GetWeakPtr(),
+                       std::move(callback)));
   }
 
  private:

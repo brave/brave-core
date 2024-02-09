@@ -36,12 +36,15 @@ const char kParametersVBatDeadline[] = "parameters.vbat_deadline";
 const char kParametersVBatExpired[] = "parameters.vbat_expired";
 const char kEmptyBalanceChecked[] = "empty_balance_checked";
 const char kExternalWalletType[] = "external_wallet_type";
+const char kSelfCustodyAvailable[] = "self_custody_available";
+const char kSelfCustodyInviteDismissed[] = "self_custody_invite_dismissed";
 const char kWalletBrave[] = "wallets.brave";
 const char kWalletUphold[] = "wallets.uphold";
 const char kWalletBitflyer[] = "wallets.bitflyer";
 const char kWalletGemini[] = "wallets.gemini";
 const char kDeclaredGeo[] = "declared_geo";
 const char kWalletZebPay[] = "wallets.zebpay";
+const char kWalletSolana[] = "wallets.solana";
 
 }  // namespace state
 }  // namespace brave_rewards::internal

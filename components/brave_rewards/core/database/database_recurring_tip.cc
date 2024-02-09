@@ -43,7 +43,7 @@ DatabaseRecurringTip::~DatabaseRecurringTip() = default;
 void DatabaseRecurringTip::InsertOrUpdate(mojom::RecurringTipPtr info,
                                           LegacyResultCallback callback) {
   if (!info || info->publisher_key.empty()) {
-    BLOG(1, "Publisher key is empty");
+    engine_->Log(FROM_HERE) << "Publisher key is empty";
     callback(mojom::Result::FAILED);
     return;
   }
@@ -76,13 +76,13 @@ void DatabaseRecurringTip::InsertOrUpdate(
     double amount,
     base::OnceCallback<void(bool)> callback) {
   if (publisher_id.empty()) {
-    BLOG(1, "Publisher ID is empty");
+    engine_->Log(FROM_HERE) << "Publisher ID is empty";
     std::move(callback).Run(false);
     return;
   }
 
   if (amount <= 0) {
-    BLOG(1, "Invalid contribution amount");
+    engine_->Log(FROM_HERE) << "Invalid contribution amount";
     std::move(callback).Run(false);
     return;
   }
@@ -233,7 +233,7 @@ void DatabaseRecurringTip::OnGetAllRecords(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }
@@ -269,7 +269,7 @@ void DatabaseRecurringTip::OnGetAllRecords(
 void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
                                         LegacyResultCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(1, "Publisher key is empty");
+    engine_->Log(FROM_HERE) << "Publisher key is empty";
     callback(mojom::Result::FAILED);
     return;
   }

@@ -1,0 +1,10 @@
+diff --git a/third_party/rust/rand_core/v0_6/BUILD.gn b/third_party/rust/rand_core/v0_6/BUILD.gn
+index a8cdd6f23561c62f1d883fd5f0613fa15f8e3d7e..348d32b81df73eff2442ff8f9154ef533352d090 100644
+--- a/third_party/rust/rand_core/v0_6/BUILD.gn
++++ b/third_party/rust/rand_core/v0_6/BUILD.gn
+@@ -45,5 +45,4 @@ cargo_crate("lib") {
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
+ }

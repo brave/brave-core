@@ -54,6 +54,7 @@ constexpr char kAIPrompt[] = "Assistant:";
 // (note the blank spaces intentionally added)
 constexpr char kHumanPromptPlaceholder[] = "\nH: ";
 constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
+constexpr char kSelectedTextPromptPlaceholder[] = "\nSelected text: ";
 
 static constexpr auto kStopSequences =
     base::MakeFixedFlatSet<std::string_view>({kHumanPromptSequence});
@@ -66,6 +67,12 @@ std::string GetConversationHistoryString(
                                 ? kHumanPromptPlaceholder
                                 : kAIPromptPlaceholder) +
                            turn.text);
+    if (turn.selected_text) {
+      DCHECK(turn.character_type == CharacterType::HUMAN);
+      turn_strings.back() =
+          base::StrCat({turn_strings.back(), kSelectedTextPromptPlaceholder,
+                        *turn.selected_text});
+    }
   }
 
   return base::JoinString(turn_strings, "");
@@ -74,6 +81,7 @@ std::string GetConversationHistoryString(
 std::string BuildClaudePrompt(
     const std::string& question_part,
     const std::string& page_content,
+    const std::optional<std::string>& selected_text,
     const bool& is_video,
     const std::vector<ConversationTurn>& conversation_history) {
   auto prompt_segment_article =
@@ -87,6 +95,16 @@ std::string BuildClaudePrompt(
                      {page_content}, nullptr),
                  "\n\n"});
 
+  auto prompt_segment_selected_text =
+      !selected_text.has_value()
+          ? ""
+          : base::StrCat(
+                {base::ReplaceStringPlaceholders(
+                     l10n_util::GetStringUTF8(
+                         IDS_AI_CHAT_CLAUDE_SELECTED_TEXT_PROMPT_SEGMENT),
+                     {*selected_text}, nullptr),
+                 "\n\n"});
+
   auto prompt_segment_history =
       (conversation_history.empty())
           ? ""
@@ -95,14 +113,24 @@ std::string BuildClaudePrompt(
                     IDS_AI_CHAT_CLAUDE_HISTORY_PROMPT_SEGMENT),
                 {GetConversationHistoryString(conversation_history)}, nullptr);
 
+  auto system_message_part2_template =
+      !selected_text.has_value()
+          ? l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART2)
+          : l10n_util::GetStringUTF8(
+                IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART2_WITH_EXCERPT);
+
   std::string date_and_time_string =
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
   std::string prompt = base::StrCat(
       {kHumanPromptSequence, prompt_segment_article,
        base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE),
-           {date_and_time_string, prompt_segment_history, question_part},
-           nullptr),
+           l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART1),
+           {date_and_time_string, prompt_segment_history}, nullptr),
+       "\n\n", prompt_segment_selected_text,
+       base::ReplaceStringPlaceholders(system_message_part2_template,
+                                       {question_part}, nullptr),
+       "\n\n",
+       l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART3),
        kAIPromptSequence, " <response>\n"});
 
   return prompt;
@@ -125,18 +153,11 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
     const mojom::Model& model,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager) {
-  // Allow specific model name to be overriden by feature flag
-  // TODO(petemill): verify premium status, or ensure server will verify even
-  // when given a model name override via cli flag param.
-  std::string model_name = ai_chat::features::kAIModelName.Get();
-  if (model_name.empty()) {
-    model_name = model.name;
-  }
-  DCHECK(!model_name.empty());
+  DCHECK(!model.name.empty());
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(
-      model_name, stop_sequences, url_loader_factory, credential_manager);
+      model.name, stop_sequences, url_loader_factory, credential_manager);
 
   max_page_content_length_ = model.max_page_content_length;
 }
@@ -194,14 +215,20 @@ void EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
+    std::optional<std::string> selected_text,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  const std::string& truncated_page_content =
-      page_content.substr(0, max_page_content_length_);
-  std::string prompt = BuildClaudePrompt(human_input, truncated_page_content,
-                                         is_video, conversation_history);
+  if (selected_text) {
+    selected_text = selected_text->substr(0, max_page_content_length_);
+  }
+  const std::string& truncated_page_content = page_content.substr(
+      0, selected_text ? max_page_content_length_ - selected_text->size()
+                       : max_page_content_length_);
+  std::string prompt =
+      BuildClaudePrompt(human_input, truncated_page_content, selected_text,
+                        is_video, conversation_history);
   CheckPrompt(prompt);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));
@@ -213,12 +240,16 @@ void EngineConsumerClaudeRemote::SanitizeInput(std::string& input) {
   // TODO(petemill): Do we need to strip the versions of these without newlines?
   base::ReplaceSubstringsAfterOffset(&input, 0, kHumanPromptPlaceholder, "");
   base::ReplaceSubstringsAfterOffset(&input, 0, kAIPromptPlaceholder, "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, kSelectedTextPromptPlaceholder,
+                                     "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<page>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "</page>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<history>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "</history>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<question>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "</question>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, "<excerpt>", "");
+  base::ReplaceSubstringsAfterOffset(&input, 0, "</excerpt>", "");
 }
 
 }  // namespace ai_chat

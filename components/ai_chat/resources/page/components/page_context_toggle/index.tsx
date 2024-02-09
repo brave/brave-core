@@ -21,6 +21,16 @@ function PageContextToggle() {
     context.updateShouldSendPageContents(e.detail.checked)
   }
 
+  const handleInfoIconTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setShowTooltip(true)
+  }
+
+  const handleInfoIconTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setShowTooltip(false)
+  }
+
   return (
     <div className={styles.box}>
       <Toggle
@@ -29,6 +39,7 @@ function PageContextToggle() {
         checked={context.shouldSendPageContents}
         className={styles.toggle}
       >
+        <span slot="on-icon"/>
         <div className={styles.label}>
           <span>{getLocale('contextToggleLabel')}</span>
           <Tooltip visible={showTooltip}>
@@ -46,8 +57,8 @@ function PageContextToggle() {
             <div
               onMouseOver={() => setShowTooltip(true)}
               onMouseOut={() => setShowTooltip(false)}
-              onTouchStart={() => setShowTooltip(true)}
-              onTouchEnd={() => setShowTooltip(false)}
+              onTouchStart={handleInfoIconTouchStart}
+              onTouchEnd={handleInfoIconTouchEnd}
               onFocus={() => setShowTooltip(true)}
               onBlur={() => setShowTooltip(false)}
             >

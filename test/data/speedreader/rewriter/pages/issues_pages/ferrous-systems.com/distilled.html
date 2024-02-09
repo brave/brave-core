@@ -312,7 +312,22 @@ We will populate the matrix with rows separately, here we only add the header ro
 </div>
 </div>
 <p>Things to note:</p>
-
+<div class="ulist">
+<ul>
+<li>
+<p>We set aside the special cell, <code>H</code>, to serve as a header cell of a header row.</p>
+</li>
+<li>
+<p><code>n_</code> is a nice naming convention to use to mean “number of things”.</p>
+</li>
+<li>
+<p><code>res</code> is a nice conventional name for the result variable.</p>
+</li>
+<li>
+<p>We use <code>assert</code>s to verify that parallel indices in two lists match.</p>
+</li>
+</ul>
+</div>
 <p>Now let’s add a function to populate the matrix with rows:</p>
 <div class="listingblock">
 <div class="content">
@@ -591,7 +606,7 @@ We also use <a href="https://en.wikipedia.org/wiki/Hamming_weight">popcount</a> 
 </ul>
 </div>
 <p>Running this test gives us much more confidence in the correctness of the implementation!
-Full source, including the code to restore the answer, can be found at <a class="bare" href="https://github.com/matklad/dlx">https://github.com/matklad/dlx</a>.</p>
+Full source, including the code to restore the answer, can be found at <a href="https://github.com/matklad/dlx" class="bare">https://github.com/matklad/dlx</a>.</p>
 <p>It’s also interesting to reflect on the unusual effectiveness of linked list for this problem.
 Remember that on the modern hardware, a <code>Vec</code> beats <code>LinkedList</code> for the overwhelming majority of the problems.
 While linked lists have a better theoretical complexity for the insertion and removal from the middle, most benchmarks are dominated by the traversal time to get to this middle.

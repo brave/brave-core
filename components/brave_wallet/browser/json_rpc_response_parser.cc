@@ -265,6 +265,7 @@ ParseGetAccountBalanceResponse(const base::Value& json_value) {
     asset->is_erc1155 = asset_value.token_type == "ERC1155";
     asset->is_nft = false;   // Reserved for Solana
     asset->is_spam = false;  // Reserved for NFTs
+    asset->visible = true;
     asset->symbol = asset_value.token_symbol;
     if (!base::StringToInt(asset_value.token_decimals, &asset->decimals) ||
         asset->decimals < 0) {

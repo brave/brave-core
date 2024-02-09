@@ -7,8 +7,10 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HIGHLIGHT_H_
 
 #include "chrome/browser/ui/views/tabs/tab_group_highlight.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveTabGroupHighlight : public TabGroupHighlight {
+  METADATA_HEADER(BraveTabGroupHighlight, TabGroupHighlight)
  public:
   using TabGroupHighlight::TabGroupHighlight;
   ~BraveTabGroupHighlight() override;

@@ -11,6 +11,8 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckChange(input_api, output_api):
+  # pylint: disable=W0101
+  return []  # https://github.com/brave/brave-browser/issues/35577
   tests = []
   results = []
   testing_env = dict(input_api.environ)

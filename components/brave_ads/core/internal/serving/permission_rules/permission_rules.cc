@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
+#include <cstddef>
 #include <optional>
 #include <vector>
 
@@ -37,7 +38,7 @@ namespace {
 
 // Ensure the user has at least `kMinimumConfirmationTokenThreshold` tokens
 // before an ad is served.
-constexpr int kMinimumConfirmationTokenThreshold = 10;
+constexpr size_t kMinimumConfirmationTokenThreshold = 10;
 
 // Set a required minimum time gap before the next ad can be displayed.
 constexpr int kMinimumWaitTimeCap = 1;

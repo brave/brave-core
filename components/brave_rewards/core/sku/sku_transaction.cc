@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku_transaction.h"
-#include "brave/components/brave_rewards/core/sku/sku_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -56,7 +55,7 @@ void SKUTransaction::Run(mojom::SKUOrderPtr order,
                          const std::string& wallet_type,
                          LegacyResultCallback callback) {
   if (!order) {
-    BLOG(0, "Order is null!");
+    engine_->LogError(FROM_HERE) << "Order is null";
     return callback(mojom::Result::FAILED);
   }
 
@@ -94,7 +93,8 @@ void SKUTransaction::OnGetSKUTransactionByOrderId(
 
   switch (result.error()) {
     case database::GetSKUTransactionError::kDatabaseError:
-      BLOG(0, "Failed to get SKU transaction from database!");
+      engine_->LogError(FROM_HERE)
+          << "Failed to get SKU transaction from database";
       return callback(mojom::Result::FAILED, {});
     case database::GetSKUTransactionError::kTransactionNotFound:
       break;
@@ -123,7 +123,7 @@ void SKUTransaction::OnTransactionSaved(
     const std::string& contribution_id,
     LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Transaction was not saved");
+    engine_->LogError(FROM_HERE) << "Transaction was not saved";
     callback(result);
     return;
   }
@@ -142,7 +142,8 @@ void SKUTransaction::OnTransfer(mojom::Result result,
                                 const std::string& destination,
                                 LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Transaction for order failed " << transaction.order_id);
+    engine_->LogError(FROM_HERE)
+        << "Transaction for order failed " << transaction.order_id;
     callback(result);
     return;
   }
@@ -182,7 +183,7 @@ void SKUTransaction::OnSaveSKUExternalTransaction(
     const mojom::SKUTransaction& transaction,
     LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "External transaction was not saved");
+    engine_->LogError(FROM_HERE) << "External transaction was not saved";
     callback(result);
     return;
   }
@@ -199,7 +200,7 @@ void SKUTransaction::SendExternalTransaction(
     const mojom::SKUTransaction& transaction,
     LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order status not updated");
+    engine_->LogError(FROM_HERE) << "Order status not updated";
     callback(mojom::Result::RETRY);
     return;
   }
@@ -207,8 +208,9 @@ void SKUTransaction::SendExternalTransaction(
   // we only want to report external transaction id when we have it
   // we don't have it for all transactions
   if (transaction.external_transaction_id.empty()) {
-    BLOG(0, "External transaction id is empty for transaction id "
-                << transaction.transaction_id);
+    engine_->LogError(FROM_HERE)
+        << "External transaction id is empty for transaction id "
+        << transaction.transaction_id;
     callback(mojom::Result::OK);
     return;
   }
@@ -238,7 +240,7 @@ void SKUTransaction::SendExternalTransaction(
 void SKUTransaction::OnSendExternalTransaction(mojom::Result result,
                                                LegacyResultCallback callback) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "External transaction not sent");
+    engine_->LogError(FROM_HERE) << "External transaction not sent";
     callback(mojom::Result::RETRY);
     return;
   }

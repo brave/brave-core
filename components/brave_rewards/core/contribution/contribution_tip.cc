@@ -12,7 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
@@ -28,7 +28,8 @@ void ContributionTip::Process(const std::string& publisher_id,
                               double amount,
                               ProcessCallback callback) {
   if (publisher_id.empty()) {
-    BLOG(0, "Failed to do tip due to missing publisher key");
+    engine_->LogError(FROM_HERE)
+        << "Failed to do tip due to missing publisher key";
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -79,7 +80,7 @@ void ContributionTip::OnQueueSaved(const std::string& queue_id,
     engine_->contribution()->ProcessContributionQueue();
     std::move(callback).Run(queue_id);
   } else {
-    BLOG(0, "Queue was not saved");
+    engine_->LogError(FROM_HERE) << "Queue was not saved";
     std::move(callback).Run(std::nullopt);
   }
 }

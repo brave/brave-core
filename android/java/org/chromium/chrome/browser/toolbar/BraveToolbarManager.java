@@ -27,11 +27,13 @@ import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingController;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
+import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -100,7 +102,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
     private IncognitoStateProvider mIncognitoStateProvider;
-    private TabCountProvider mTabCountProvider;
     private TabGroupUi mTabGroupUi;
     private BottomSheetController mBottomSheetController;
     private ActivityLifecycleDispatcher mActivityLifecycleDispatcher;
@@ -241,9 +242,13 @@ public class BraveToolbarManager extends ToolbarManager {
     }
 
     @Override
-    public void initializeWithNative(LayoutManagerImpl layoutManager,
-            OnClickListener tabSwitcherClickHandler, OnClickListener newTabClickHandler,
-            OnClickListener bookmarkClickHandler, OnClickListener customTabsBackClickHandler,
+    public void initializeWithNative(
+            @NonNull LayoutManagerImpl layoutManager,
+            @Nullable StripLayoutHelperManager stripLayoutHelperManager,
+            OnClickListener tabSwitcherClickHandler,
+            OnClickListener newTabClickHandler,
+            OnClickListener bookmarkClickHandler,
+            OnClickListener customTabsBackClickHandler,
             Supplier<Boolean> showStartSurfaceSupplier) {
         OnClickListener wrappedNewTabClickHandler =
                 v -> {
@@ -252,6 +257,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 };
         super.initializeWithNative(
                 layoutManager,
+                stripLayoutHelperManager,
                 tabSwitcherClickHandler,
                 wrappedNewTabClickHandler,
                 bookmarkClickHandler,
@@ -260,12 +266,14 @@ public class BraveToolbarManager extends ToolbarManager {
 
         if (isToolbarPhone() && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             enableBottomControls();
-            Runnable closeAllTabsAction = () -> {
-                mTabModelSelector.getModel(mIncognitoStateProvider.isIncognitoSelected())
-                        .closeAllTabs();
-            };
+            Runnable closeAllTabsAction =
+                    () -> {
+                        mTabModelSelector
+                                .getModel(mIncognitoStateProvider.isIncognitoSelected())
+                                .closeAllTabs();
+                    };
             assert (mBottomControlsCoordinatorSupplier.get()
-                            instanceof BraveBottomControlsCoordinator);
+                    instanceof BraveBottomControlsCoordinator);
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .initializeWithNative(
                             mActivity,
@@ -274,7 +282,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             tabSwitcherClickHandler,
                             wrappedNewTabClickHandler,
                             mWindowAndroid,
-                            mTabCountProvider,
+                            mTabModelSelector,
                             mIncognitoStateProvider,
                             mActivity.findViewById(R.id.control_container),
                             closeAllTabsAction);
@@ -321,6 +329,12 @@ public class BraveToolbarManager extends ToolbarManager {
                 && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             boolean isBottomToolbarVisible = newOrientation != Configuration.ORIENTATION_LANDSCAPE;
             setBottomToolbarVisible(isBottomToolbarVisible);
+        }
+
+        if (mActivity instanceof BraveLeoActivity) {
+            // When Leo panel is shown on rotated screen we don't care about
+            // the toolbar.
+            return;
         }
 
         assert mActivity instanceof BraveActivity;

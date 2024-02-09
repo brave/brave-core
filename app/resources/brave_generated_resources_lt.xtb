@@ -41,9 +41,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7897433216002294926">„Tor“ <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Tai yra inkognito langas su „Tor“</translation>
 <translation id="1037341607922068025">Atverti inkognito langą su „Tor“</translation>
-<translation id="1725356094208762656">Atverti „Tor“ lange</translation>
-<translation id="3396347744975515056">„Brave Sync“ buvo atnaujinta ir reikia atlikti sąranką</translation>
-<translation id="7473245612074035141">Pradėti sąranką</translation>
 <translation id="496896260395129787">Ši „Brave“ sinchronizavimo paskyra buvo ištrinta iš kito įrenginio. Jei nenorėjote išjungti sinchronizavimo, tuomet turite<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>iš naujo sukurti paskyrą</translation>
 <translation id="6965382102122355670">Gerai</translation>
@@ -190,6 +187,10 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7109885938715976444">Tik šį kartą</translation>
 <translation id="7473891865547856676">Ne, ačiū</translation>
 <translation id="2722425322672922644">Sužinoti, kaip tai veikia mano privatumą</translation>
+<translation id="5551268135482191097">Įkeliant IPFS URL įvyko klaida. Ar norite peradresuoti į pradinį URL?</translation>
+<translation id="4756627014339714615">Peradresuoti</translation>
+<translation id="1338274252864046652">Ar norite visada pradėti IPFS mazgą paleisdami naršyklę?</translation>
+<translation id="3435896845095436175">Įgalinti</translation>
 <translation id="4552520379838695057">Deja, šio puslapio nėra.</translation>
 <translation id="2609895996619941644">Gal norite patikrinti, ar per „Wayback Machine“ pasiekiama įrašyta versija?</translation>
 <translation id="8053093028263274061">Deja, nėra įrašytos versijos.</translation>
@@ -299,6 +300,10 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7544853251252956727">Maišyti</translation>
 <translation id="4330722796577425585">Atsukti</translation>
 <translation id="7481312909269577407">Persiųsti</translation>
+<translation id="2800828306627475693">Kartojimas išjungtas</translation>
+<translation id="1748244367114657861">Kartoti vieną</translation>
+<translation id="6421906998825794164">Kartoti viską</translation>
+<translation id="1727684853006449697">„Brave“ leistuvas</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
 <translation id="7179921470347911571">Paleisti iš naujo dabar</translation>
 <translation id="4472575034687746823">Pradėkite</translation>
@@ -412,10 +417,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="413570371620795359">Atverkite skyrių „Rewards“, kad įjungtumėte ir pradėtumėte naudoti</translation>
 <translation id="1051600834033686945">Atverti pilnas „Brave“ apdovanojimų nuostatas</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
-<translation id="7483857210736407752">Svetainėse rodyti nuorodas arbatpinigiams siųsti</translation>
-<translation id="3905400818082450708">„Reddit“</translation>
-<translation id="2635094637295383009">„Twitter“</translation>
-<translation id="6032511312767282174">„GitHub“</translation>
 <translation id="9185018653595759199">Socialinės žiniasklaidos blokavimas</translation>
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
@@ -584,7 +585,9 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="6936835573742749135">Nepavyko pateikti CAPTCHA užklausos. Bandykite dar kartą vėliau.</translation>
 <translation id="2653659639078652383">Pateikti</translation>
 <translation id="1369311132025451972">Automatiškai peradresuoti .onion svetaines</translation>
-<translation id="1658670175365815312">Kai bus galima, „Brave“ perjungs svetainę į .onion versiją ir visus .onion domenus automatiškai atvers lange „Tor“.</translation>
+<translation id="6214393847480015759">„Tor“ languose „Brave“ automatiškai perjungs į svetainės .onion versiją, jei ji bus pasiekiama.</translation>
+<translation id="1294350054292274934">Ieškoti .onion adresų tik „Tor“ languose</translation>
+<translation id="1258903596167452221">„Onion“ paslaugos nebus pasiekiamos už „Tor“ langų ribų.</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
 <translation id="5249433283143453448">Naudokite „Widevine“ skaitmeninių teisių valdymo (DRM) komponentą, jei norite naršyklėje peržiūrėti apsaugotus transliuojamus vaizdo įrašus ir kitą turinį.</translation>
 <translation id="1314131187310290315">Deklaracijos V2 plėtiniai</translation>
@@ -633,6 +636,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="4226543734057230801">„Ethereum“ tinklai</translation>
 <translation id="3504157706952484145">„Filecoin“ tinklai</translation>
 <translation id="1561541094377237745">„Solana“ tinklai</translation>
+<translation id="7141438739990875547">„Bitcoin“ tinklai</translation>
 <translation id="3159419679550543837">Rodyti bandomuosius tinklus</translation>
 <translation id="3215569562674795548">Pridėti arba redaguoti naują tinklą</translation>
 <translation id="4418993400653250511">Grandinės ID</translation>
@@ -672,6 +676,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="8425213833346101688">Keisti</translation>
 <translation id="585868419599255817">IPFS atsarginis viešasis tinklų sietuvas</translation>
 <translation id="2618080188892567155">Automatiškai grįžti prie viešojo IPFS tinklų sietuvo, jei „Brave“ vietinio IPFS mazgo pasiekti neįmanoma.</translation>
+<translation id="8956391206920485238">Visada pradėti IPFS mazgą paleidžiant naršyklę?</translation>
 <translation id="6789104345873307368">Automatiškai nukreipti IPFS tinklo išteklių užklausas į sukonfigūruotą tinklų sietuvą.</translation>
 <translation id="4138306018048329894">IPFS išteklių, esančių trečiųjų šalių IPFS tinklo sietuvuose arba DNSLINK ištekliuose, užklausos bus nukreipiamos per pasirinktą vietinį arba nuotolinį tinklų sietuvą.
 Pastaba. Jei pasirenkamas vietinis mazgas, užklausos dėl išteklių bus teikiamos tiesiogiai iš jūsų kompiuterio, o IPFS tinklui kurį laiką gali būti teikiami talpykloje saugomi duomenys.</translation>
@@ -720,6 +725,9 @@ Pastaba. Jei pasirenkamas vietinis mazgas, užklausos dėl išteklių bus teikia
 <translation id="8681157601856387010">Iš naujo nustatę „Leo“ asistentą, ateityje turėsite prisijungti prie „Brave Leo“, taip pat bus išvalyta jūsų pokalbių istorija. Kai pašalinsite savo pokalbių istoriją, bus pašalinti visi ankstesni jūsų pokalbiai su „Brave Leo“. Šio veiksmo atšaukti negalima.</translation>
 <translation id="8157373421434119674">Duomenų ir pokalbių istorija</translation>
 <translation id="614530507403667291">Numatytasis naujų pokalbių modelis</translation>
+<translation id="349846214503465941">Įjungti grojaraštį</translation>
+<translation id="7903608716704052878">Automatiškai pridėti failus, kad būtų galima peržiūrėti neprisijungus</translation>
+<translation id="4193768184502613558">Pasirinkus šią parinktį, medijos failai automatiškai padedami į atmintinę, tad galite juos leisti neprisijungę prie interneto.</translation>
 <translation id="6624718837376802990">Avataras „Edgy Rewards“</translation>
 <translation id="6617313057407561765">Avataras „Edgy Brave“</translation>
 <translation id="6754445808455578019">Avataras „Edgy Ocean“</translation>

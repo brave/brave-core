@@ -28,7 +28,6 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
@@ -36,8 +35,8 @@
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/debounce/browser/debounce_component_installer.h"
-#include "brave/components/debounce/common/features.h"
+#include "brave/components/debounce/core/browser/debounce_component_installer.h"
+#include "brave/components/debounce/core/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -96,7 +95,12 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/brave_vpn/win/vpn_utils_win.h"
+#endif
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -505,8 +509,22 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
     return brave_vpn_os_connection_api_.get();
   }
 
+  // Currently, service installer only used on Windows.
+  // Installs registers IKEv2 service (for DNS) and our WireGuard impl.
+  // NOTE: Install only happens if person has purchased the product.
+  auto service_installer =
+#if BUILDFLAG(IS_WIN)
+      base::BindRepeating(&brave_vpn::InstallVpnSystemServices);
+#else
+      base::NullCallback();
+#endif
+
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNConnectionAPI(
-      shared_url_loader_factory(), local_state(), chrome::GetChannel());
+      shared_url_loader_factory(), local_state(), service_installer);
+  if (brave_vpn_os_connection_api_) {
+    brave_vpn_os_connection_api_->set_target_vpn_entry_name(
+        brave_vpn::GetBraveVPNEntryName(chrome::GetChannel()));
+  }
   return brave_vpn_os_connection_api_.get();
 }
 #endif

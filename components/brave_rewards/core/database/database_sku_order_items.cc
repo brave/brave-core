@@ -30,7 +30,7 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
     std::vector<mojom::SKUOrderItemPtr> list) {
   DCHECK(transaction);
   if (list.empty()) {
-    BLOG(1, "List is empty");
+    engine_->Log(FROM_HERE) << "List is empty";
     return;
   }
 
@@ -64,7 +64,7 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
     const std::string& order_id,
     GetSKUOrderItemsCallback callback) {
   if (order_id.empty()) {
-    BLOG(1, "Order id is empty");
+    engine_->Log(FROM_HERE) << "Order id is empty";
     callback({});
     return;
   }
@@ -105,7 +105,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
+    engine_->LogError(FROM_HERE) << "Response is wrong";
     callback({});
     return;
   }

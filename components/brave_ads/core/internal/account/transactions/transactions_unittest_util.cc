@@ -34,7 +34,7 @@ TransactionInfo BuildTransaction(const double value,
   transaction.creative_instance_id =
       GetConstantId(should_use_random_uuids, kCreativeInstanceId);
   transaction.value = value;
-  transaction.segment = "untargeted";
+  transaction.segment = kSegment;
   transaction.ad_type = AdType::kNotificationAd;
   transaction.confirmation_type = confirmation_type;
   transaction.reconciled_at = reconciled_at;

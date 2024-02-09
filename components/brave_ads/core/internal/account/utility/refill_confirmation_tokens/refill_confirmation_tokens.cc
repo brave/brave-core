@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -89,7 +90,7 @@ void RefillConfirmationTokens::Refill() {
 }
 
 void RefillConfirmationTokens::GenerateTokens() {
-  const int count = CalculateAmountOfConfirmationTokensToRefill();
+  const size_t count = CalculateAmountOfConfirmationTokensToRefill();
   tokens_ = token_generator_->Generate(count);
   blinded_tokens_ = cbr::BlindTokens(*tokens_);
 }

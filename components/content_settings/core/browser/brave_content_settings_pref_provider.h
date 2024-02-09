@@ -42,10 +42,14 @@ class BravePrefProvider : public PrefProvider,
                          const ContentSettingsPattern& secondary_pattern,
                          ContentSettingsType content_type,
                          base::Value&& value,
-                         const ContentSettingConstraints& constraints) override;
+                         const ContentSettingConstraints& constraints,
+                         const PartitionKey& partition_key =
+                             PartitionKey::WipGetDefault()) override;
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
-      bool incognito) const override;
+      bool incognito,
+      const PartitionKey& partition_key =
+          PartitionKey::WipGetDefault()) const override;
 
   // calls superclass directly
   bool SetWebsiteSettingForTest(const ContentSettingsPattern& primary_pattern,
@@ -92,7 +96,8 @@ class BravePrefProvider : public PrefProvider,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsType content_type,
       base::Value&& value,
-      const ContentSettingConstraints& constraints);
+      const ContentSettingConstraints& constraints,
+      const PartitionKey& partition_key = PartitionKey::WipGetDefault());
 
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,

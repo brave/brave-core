@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">นี่เป็นหน้าต่างส่วนตัวที่เชื่อมต่อผ่าน Tor</translation>
 <translation id="1037341607922068025">เปิดหน้าต่างส่วนตัวด้วย Tor</translation>
-<translation id="1725356094208762656">เปิดใน Tor</translation>
-<translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
-<translation id="7473245612074035141">เริ่มติดตั้ง</translation>
 <translation id="496896260395129787">บัญชี Brave Sync นี้ถูกลบจากอุปกรณ์อื่น ถ้าคุณไม่ตั้งใจที่จะปิดการซิงค์ ให้<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>สร้างบัญชีใหม่อีกครั้ง</translation>
 <translation id="6965382102122355670">ตกลง</translation>
@@ -190,6 +187,10 @@
 <translation id="7109885938715976444">เฉพาะตอนนี้เท่านั้น</translation>
 <translation id="7473891865547856676">ไม่ ขอบคุณ</translation>
 <translation id="2722425322672922644">เรียนรู้ว่าสิ่งนี้ส่งผลต่อความเป็นส่วนตัวของฉันอย่างไร</translation>
+<translation id="5551268135482191097">มีข้อผิดพลาดในการโหลด URL IPFS คุณต้องการที่จะเปลี่ยนเส้นทางไปที่ URL ต้นทางหรือไม่</translation>
+<translation id="4756627014339714615">เปลี่ยนเส้นทาง</translation>
+<translation id="1338274252864046652">คุณต้องการเริ่มการทำงานของโหนด IPFS เมื่อเริ่มใช้เบราว์เซอร์ทุกครั้งหรือไม่</translation>
+<translation id="3435896845095436175">เปิดการใช้งาน</translation>
 <translation id="4552520379838695057">ขออภัย หน้านั้นหายไปแล้ว</translation>
 <translation id="2609895996619941644">คุณต้องการตรวจสอบไหมว่ามีเวอร์ชันที่บันทึกไว้ใน Wayback Machine หรือไม่</translation>
 <translation id="8053093028263274061">ขออภัย ไม่มีเวอร์ชันที่บันทึกไว้</translation>
@@ -299,6 +300,10 @@
 <translation id="7544853251252956727">สุ่มเพลง</translation>
 <translation id="4330722796577425585">กรอกลับ</translation>
 <translation id="7481312909269577407">ส่งต่อ</translation>
+<translation id="2800828306627475693">ปิดการเล่นซ้ำ</translation>
+<translation id="1748244367114657861">เล่นซ้ำหนึ่งครั้ง</translation>
+<translation id="6421906998825794164">เล่นซ้ำทั้งหมด</translation>
+<translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
@@ -412,10 +417,6 @@
 <translation id="413570371620795359">เปิดรายการ Rewards เพื่อเปิดใช้งานและเริ่มต้น</translation>
 <translation id="1051600834033686945">เปิดการตั้งค่า Brave Rewards ทั้งหมด</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
-<translation id="7483857210736407752">แสดงปุ่มทิปในเว็บไซต์</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">การบล็อกโซเชียลมีเดีย</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
@@ -584,7 +585,9 @@
 <translation id="6936835573742749135">ไม่สามารถขอ CAPTCHA ได้ โปรดลองอีกครั้งภายหลัง</translation>
 <translation id="2653659639078652383">ส่ง</translation>
 <translation id="1369311132025451972">ย้ายไปที่เว็บ .onion โดยอัตโนมัติ</translation>
-<translation id="1658670175365815312">Brave จะเปลี่ยนเป็นเวอร์ชันเว็บไซต์เป็น .onion เมื่อใช้งานได้ และจะเปิดโดเมน .onion ทั้งหมดอัตโนมัติในหน้าต่าง Tor</translation>
+<translation id="6214393847480015759">Brave จะเปลี่ยนเวอร์ชัน .onion ของเว็บไซต์โดยอัตโนมัติเมื่อใช้งานได้ในหน้าต่าง Tor</translation>
+<translation id="1294350054292274934">แปลงเฉพาะที่อยู่ .onion ในหน้าต่าง Tor</translation>
+<translation id="1258903596167452221">ไม่สามารถใช้บริการ Onion เมื่อไม่ได้อยู่ในหน้าต่าง Tor</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
 <translation id="5249433283143453448">ใช้องค์ประกอบการจัดการสิทธิ์ทางดิจิทัล Widevine (DRM) เพื่อดูสตรีมมิ่งวิดีโอที่มีการป้องกันและเนื้อหาอื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="1314131187310290315">ส่วนขยาย Manifest V2</translation>
@@ -633,6 +636,7 @@
 <translation id="4226543734057230801">เครือข่าย Ethereum</translation>
 <translation id="3504157706952484145">เครือข่าย Filecoin</translation>
 <translation id="1561541094377237745">เครือข่าย Solana</translation>
+<translation id="7141438739990875547">เครือข่าย Bitcoin</translation>
 <translation id="3159419679550543837">แสดงเครือข่ายทดสอบ</translation>
 <translation id="3215569562674795548">แก้ไขหรือเพิ่มเครือข่ายใหม่</translation>
 <translation id="4418993400653250511">หมายเลขของเชน</translation>
@@ -672,6 +676,7 @@
 <translation id="8425213833346101688">เปลี่ยน</translation>
 <translation id="585868419599255817">ถอยกลับไปที่เกตเวย์สาธารนะ IPFS</translation>
 <translation id="2618080188892567155">ย้อนกลับไปยังเกตเวย์ IPFS สาธารณะโดยอัตโนมัติเมื่อไม่สามารถเข้าถึงโหนด IPFS เฉพาะที่ของคุณได้</translation>
+<translation id="8956391206920485238">ต้องการเริ่มการทำงานของโหนด IPFS เมื่อเริ่มใช้เบราว์เซอร์ทุกครั้งหรือไม่</translation>
 <translation id="6789104345873307368">เปลี่ยนเส้นทางคำขอทรัพยากรเครือข่าย IPFS ไปยังเกตเวย์ที่กำหนดค่าโดยอัตโนมัติ</translation>
 <translation id="4138306018048329894">คำขอทรัพยากร IPFS ที่โฮสต์บนเกตเวย์ IPFS บุคคลที่สามหรือทรัพยากร DNSLINK จะถูกส่งผ่านเกตเวย์เฉพาะที่หรือระยะไกลที่เลือกไว้
     หมายเหตุ: ถ้าเลือกโหนดเฉพาะที่ ทรัพยากรจะถูกร้องขอโดยตรงจากคอมพิวเตอร์ และอาจส่งข้อมูลแคชไปยังเครือข่าย IPFS เป็นครั้งคราว</translation>
@@ -723,6 +728,9 @@ Leo ในอนาคต และจะล้างประวัติกา
 Leo การดำเนินการนี้ไม่สามารถยกเลิกได้</translation>
 <translation id="8157373421434119674">ข้อมูลและประวัติการแชท</translation>
 <translation id="614530507403667291">โมเดลเริ่มต้นสำหรับการสนทนาใหม่</translation>
+<translation id="349846214503465941">เปิดใช้งานเพลย์ลิสต์</translation>
+<translation id="7903608716704052878">เพิ่มไฟล์เพื่อการดูแบบออฟไลน์โดยอัตโนมัติ</translation>
+<translation id="4193768184502613558">ตัวเลือกนี้จะทำการแคชไฟล์สื่อแบบอัตโนมัติ เพื่อให้คุณสามารถดูไฟล์เหล่านั้นได้โดยไม่ต้องใช้การเชื่อมต่ออินเทอร์เน็ต</translation>
 <translation id="6624718837376802990">อวทาร์ Edgy Rewards</translation>
 <translation id="6617313057407561765">อวทาร์ Edgy Brave</translation>
 <translation id="6754445808455578019">อวทาร์ Edgy Ocean</translation>

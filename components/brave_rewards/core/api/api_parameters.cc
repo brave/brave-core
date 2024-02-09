@@ -33,7 +33,7 @@ void APIParameters::Fetch(GetRewardsParametersCallback callback) {
   bool first_request = callbacks_.empty();
   callbacks_.push_back(std::move(callback));
   if (!first_request) {
-    BLOG(1, "API parameters fetch in progress");
+    engine_->Log(FROM_HERE) << "API parameters fetch in progress";
     return;
   }
 
@@ -79,13 +79,13 @@ void APIParameters::RunCallbacks() {
 void APIParameters::SetRefreshTimer(base::TimeDelta delay,
                                     base::TimeDelta base_delay) {
   if (refresh_timer_.IsRunning()) {
-    BLOG(1, "Params timer in progress");
+    engine_->Log(FROM_HERE) << "Params timer in progress";
     return;
   }
 
   base::TimeDelta start_in = base_delay + util::GetRandomizedDelay(delay);
 
-  BLOG(1, "Params timer set for " << start_in);
+  engine_->Log(FROM_HERE) << "Params timer set for " << start_in;
 
   refresh_timer_.Start(
       FROM_HERE, start_in,
