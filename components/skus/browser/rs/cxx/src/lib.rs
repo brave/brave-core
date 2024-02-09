@@ -21,7 +21,7 @@ use tracing::debug;
 pub use skus;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
-use crate::storage::{StoragePurgeContext, StorageSetContext, StorageGetContext};
+use crate::storage::{StorageGetContext, StoragePurgeContext, StorageSetContext};
 use errors::result_to_string;
 
 #[derive(Clone)]
@@ -267,7 +267,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
                 is_shutdown: Rc::new(RefCell::new(false)),
                 pool: Rc::new(RefCell::new(pool)),
                 spawner: spawner.clone(),
-                ctx: Rc::new(RefCell::new(ctx))
+                ctx: Rc::new(RefCell::new(ctx)),
             })),
         },
         env,
@@ -594,11 +594,7 @@ async fn create_order_from_receipt_task(
     callback_state: UniquePtr<ffi::CreateOrderFromReceiptCallbackState>,
     receipt: String,
 ) {
-    match sdk
-        .create_order_from_receipt(&receipt)
-        .await
-        .map_err(|e| e.into())
-    {
+    match sdk.create_order_from_receipt(&receipt).await.map_err(|e| e.into()) {
         Ok(order_id) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order_id),
         Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
