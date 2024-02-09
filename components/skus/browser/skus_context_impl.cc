@@ -91,32 +91,39 @@ void shim_logMessage(rust::cxxbridge1::Str file,
   }
 }
 
-void shim_purge(skus::SkusContext& ctx,  // NOLINT
-                rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
-                                          bool success)> done,
-                rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
+void shim_purge(
+    skus::SkusContext& ctx,  // NOLINT
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
   ctx.PurgeStore();
   done(std::move(st_ctx), true);
 }
 
-void shim_set(skus::SkusContext& ctx,  // NOLINT
-              rust::cxxbridge1::Str key,
-              rust::cxxbridge1::Str value,
-              rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
-                                        bool success)> done,
-              rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) {
+void shim_set(
+    skus::SkusContext& ctx,  // NOLINT
+    rust::cxxbridge1::Str key,
+    rust::cxxbridge1::Str value,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) {
   ctx.UpdateStoreValue(static_cast<std::string>(key),
                        static_cast<std::string>(value));
   done(std::move(st_ctx), true);
 }
 
-void shim_get(skus::SkusContext& ctx,  // NOLINT
-                        rust::cxxbridge1::Str key,
-                        rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
-                                                  rust::String value,
-                                                  bool success)> done,
-                        rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) {
-  done(std::move(st_ctx), ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))), true);
+void shim_get(
+    skus::SkusContext& ctx,  // NOLINT
+    rust::cxxbridge1::Str key,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String value,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) {
+  done(
+      std::move(st_ctx), 
+      ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))), 
+      true
+  );
 }
 
 void shim_scheduleWakeup(
