@@ -36,37 +36,45 @@ public class BraveUpgradeJobIntentServiceImpl extends BraveUpgradeJobIntentServi
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        PostTask.runOrPostTask(TaskTraits.UI_DEFAULT, () -> {
-            BrowserStartupController.getInstance().addStartupCompletedObserver(
-                    new BrowserStartupController.StartupCallback() {
-                        @Override
-                        public void onSuccess() {
-                            BraveRewardsNativeWorker braveRewardsNativeWorker =
-                                    BraveRewardsNativeWorker.getInstance();
-                            if (braveRewardsNativeWorker != null
-                                    && braveRewardsNativeWorker.IsSupported()
-                                    && BravePrefServiceBridge.getInstance()
-                                               .getSafetynetCheckFailed()) {
-                                Callback<Boolean> callback = value -> {
-                                    if (value == null || !value.booleanValue()) {
-                                        return;
-                                    }
-                                    // Reset flag and update UI
-                                    BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(
-                                            false);
-                                    TabUtils.enableRewardsButton();
-                                };
-                                // Re-perform safetynet check
-                                SafetyNetCheck.updateSafetynetStatus(callback);
-                            }
-                        }
+        PostTask.runOrPostTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    BrowserStartupController.getInstance()
+                            .addStartupCompletedObserver(
+                                    new BrowserStartupController.StartupCallback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            BraveRewardsNativeWorker braveRewardsNativeWorker =
+                                                    BraveRewardsNativeWorker.getInstance();
+                                            if (braveRewardsNativeWorker != null
+                                                    && braveRewardsNativeWorker.isSupported()
+                                                    && BravePrefServiceBridge.getInstance()
+                                                            .getSafetynetCheckFailed()) {
+                                                Callback<Boolean> callback =
+                                                        value -> {
+                                                            if (value == null
+                                                                    || !value.booleanValue()) {
+                                                                return;
+                                                            }
+                                                            // Reset flag and update UI
+                                                            BravePrefServiceBridge.getInstance()
+                                                                    .setSafetynetCheckFailed(false);
+                                                            TabUtils.enableRewardsButton();
+                                                        };
+                                                // Re-perform safetynet check
+                                                SafetyNetCheck.updateSafetynetStatus(callback);
+                                            }
+                                        }
 
-                        @Override
-                        public void onFailure() {
-                            Log.e(TAG,
-                                    "Failed to perform upgrade tasks: BrowserStartupController.StartupCallback failed");
-                        }
-                    });
-        });
+                                        @Override
+                                        public void onFailure() {
+                                            Log.e(
+                                                    TAG,
+                                                    "Failed to perform upgrade tasks:"
+                                                        + " BrowserStartupController.StartupCallback"
+                                                        + " failed");
+                                        }
+                                    });
+                });
     }
 }

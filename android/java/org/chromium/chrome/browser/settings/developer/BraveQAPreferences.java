@@ -243,20 +243,20 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     @Override
     public void onStart() {
-        BraveRewardsNativeWorker.getInstance().AddObserver(this);
+        BraveRewardsNativeWorker.getInstance().addObserver(this);
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        BraveRewardsNativeWorker.getInstance().RemoveObserver(this);
+        BraveRewardsNativeWorker.getInstance().removeObserver(this);
         super.onStop();
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_USE_REWARDS_STAGING_SERVER.equals(preference.getKey())) {
-            BraveRewardsNativeWorker.getInstance().ResetTheWholeState();
+            BraveRewardsNativeWorker.getInstance().resetTheWholeState();
             mUseRewardsStagingServer = (boolean) newValue;
             mMaximizeAdsNumber.setEnabled((boolean) newValue);
             enableMaximumAdsNumber(((boolean) newValue) && mMaximizeAdsNumber.isChecked());
@@ -364,19 +364,19 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private void enableMaximumAdsNumber(boolean enable) {
         if (enable) {
             // Save current values
-            int adsPerHour = BraveRewardsNativeWorker.getInstance().GetAdsPerHour();
+            int adsPerHour = BraveRewardsNativeWorker.getInstance().getAdsPerHour();
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
             sharedPreferencesEditor.putInt(QA_ADS_PER_HOUR, adsPerHour);
             sharedPreferencesEditor.apply();
             // Set max value
-            BraveRewardsNativeWorker.getInstance().SetAdsPerHour(MAX_ADS);
+            BraveRewardsNativeWorker.getInstance().setAdsPerHour(MAX_ADS);
             return;
         }
         // Set saved values
         int adsPerHour = ContextUtils.getAppSharedPreferences().getInt(
                              QA_ADS_PER_HOUR, DEFAULT_ADS_PER_HOUR);
-        BraveRewardsNativeWorker.getInstance().SetAdsPerHour(adsPerHour);
+        BraveRewardsNativeWorker.getInstance().setAdsPerHour(adsPerHour);
     }
 
     @Override
