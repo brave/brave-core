@@ -263,6 +263,38 @@ void ZCashWalletService::SignAndPostTransaction(
           std::move(zcash_transaction), std::move(callback)));
 }
 
+void ZCashWalletService::ValidateZCashAddress(
+    const std::string& addr,
+    bool testnet,
+    ValidateZCashAddressCallback callback) {
+  if (IsUnifiedAddress(addr)) {
+    if (testnet != IsUnifiedTestnetAddress(addr)) {
+      std::move(callback).Run(
+          mojom::ZCashAddressValidationResult::NetworkMismatch);
+      return;
+    }
+    if (!ExtractTransparentPart(addr, testnet)) {
+      std::move(callback).Run(
+          mojom::ZCashAddressValidationResult::InvalidUnified);
+      return;
+    }
+  } else {
+    auto decoded = DecodeZCashAddress(addr);
+    if (!decoded) {
+      std::move(callback).Run(
+          mojom::ZCashAddressValidationResult::InvalidTransparent);
+      return;
+    }
+    if (decoded->testnet != testnet) {
+      std::move(callback).Run(
+          mojom::ZCashAddressValidationResult::NetworkMismatch);
+      return;
+    }
+  }
+
+  std::move(callback).Run(mojom::ZCashAddressValidationResult::Success);
+}
+
 void ZCashWalletService::OnResolveLastBlockHeightForSendTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& account_id,

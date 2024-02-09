@@ -753,6 +753,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR},
     {"braveWalletInvalidRecipientAddress",
      IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS},
+    {"braveWalletInvalidZcashUnifiedRecipientAddress",
+     IDS_BRAVE_WALLET_INVALID_ZCASH_UNIFIED_RECIPIENT_ADDRESS},
     {"braveWalletChecksumModalTitle", IDS_BRAVE_WALLET_CHECKSUM_MODAL_TITLE},
     {"braveWalletChecksumModalDescription",
      IDS_BRAVE_WALLET_CHECKSUM_MODAL_DESCRIPTION},
