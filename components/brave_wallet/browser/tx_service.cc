@@ -136,10 +136,13 @@ TxService::TxService(JsonRpcService* json_rpc_service,
   }
 
   if (IsZCashEnabled()) {
-    CHECK(zcash_wallet_service);
-    tx_manager_map_[mojom::CoinType::ZEC] = std::make_unique<ZCashTxManager>(
-        this, zcash_wallet_service, keyring_service, prefs, delegate_.get(),
-        account_resolver_delegate_.get());
+    if (!zcash_wallet_service) {
+      CHECK_IS_TEST();
+    } else {
+      tx_manager_map_[mojom::CoinType::ZEC] = std::make_unique<ZCashTxManager>(
+          this, zcash_wallet_service, keyring_service, prefs, delegate_.get(),
+          account_resolver_delegate_.get());
+    }
   }
 }
 
