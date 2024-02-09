@@ -21,6 +21,9 @@ namespace brave_wallet {
 // ...etc.
 void ShowPanel(content::WebContents* web_contents);
 
+// Show native Brave Wallet backup UI.
+void ShowWalletBackup();
+
 // Show wallet onboarding page.
 void ShowWalletOnboarding(content::WebContents* web_contents);
 

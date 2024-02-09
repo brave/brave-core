@@ -27,3 +27,5 @@ void WalletPageHandler::ShowApprovePanelUI() {
   }
 #endif
 }
+
+void WalletPageHandler::ShowWalletBackupUI() { }
