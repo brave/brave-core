@@ -25,19 +25,23 @@ void OnScheduleWakeup(
 }
 
 void OnShimPurge(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool)> done,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool)> done,
     rust::cxxbridge1::Box<skus::StoragePurgeContext> ctx) {
   done(std::move(ctx), true);
 }
 
 void OnShimSet(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>, bool)> done,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                              bool)> done,
     rust::cxxbridge1::Box<skus::StorageSetContext> ctx) {
   done(std::move(ctx), true);
 }
 
 void OnShimGet(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>, rust::String, bool)> done,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String,
+                              bool)> done,
     rust::String value,
     rust::cxxbridge1::Box<skus::StorageGetContext> ctx) {
   done(std::move(ctx), std::move(value), true);
@@ -142,12 +146,10 @@ void shim_get(
                               rust::String value,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) {
-
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
-          &OnShimGet,
-          std::move(done),
+          &OnShimGet, std::move(done),
           ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))),
           std::move(st_ctx)));
 }
