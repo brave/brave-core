@@ -11,6 +11,7 @@ static_library("browser") {
   sources = [
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
+    "brave_vpn_service_delegate.h",
     "brave_vpn_service_helper.cc",
     "brave_vpn_service_helper.h",
     "brave_vpn_service_observer.cc",
@@ -36,13 +37,9 @@ static_library("browser") {
     "//components/prefs",
     "//components/version_info",
     "//services/network/public/cpp",
-    "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
   ]
-  if (is_win) {
-    deps += [ "//brave/components/brave_vpn/common/wireguard/win" ]
-  }
 }
 
 source_set("unit_tests") {
@@ -70,15 +67,11 @@ source_set("unit_tests") {
     "//services/network:test_support",
     "//testing/gmock",
     "//testing/gtest",
-    "//third_party/abseil-cpp:absl",
   ]
   if (!is_android) {
     deps += [
       "connection:unit_tests",
       "//brave/components/brave_vpn/browser/connection/ikev2:sim",
     ]
-  }
-  if (is_win) {
-    deps += [ "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:unit_tests" ]
   }
 }

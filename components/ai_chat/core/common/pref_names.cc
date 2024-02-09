@@ -22,18 +22,22 @@ inline constexpr char kObseleteBraveChatAutoGenerateQuestions[] =
 }  // namespace
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
-  registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
-  registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
-  registry->RegisterStringPref(kDefaultModelKey,
-                               features::kAIModelsDefaultKey.Get());
+  if (ai_chat::features::IsAIChatEnabled()) {
+    registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
+    registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
+    registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
+    registry->RegisterStringPref(kDefaultModelKey,
+                                 features::kAIModelsDefaultKey.Get());
 #if BUILDFLAG(IS_ANDROID)
-  registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
-  registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");
-  registry->RegisterStringPref(kBraveChatPackageNameAndroid, "");
-  registry->RegisterStringPref(kBraveChatProductIdAndroid, "");
+    registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
+    registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");
+    registry->RegisterStringPref(kBraveChatPackageNameAndroid, "");
+    registry->RegisterStringPref(kBraveChatProductIdAndroid, "");
+    registry->RegisterStringPref(kBraveChatOrderIdAndroid, "");
 #endif
-  registry->RegisterBooleanPref(kBraveAIChatContextMenuEnabled, true);
+    registry->RegisterBooleanPref(kBraveAIChatContextMenuEnabled, true);
+  }
+  registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {

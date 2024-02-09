@@ -5,7 +5,6 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
-import { WalletButton } from '../../../shared/style'
 import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
@@ -57,43 +56,4 @@ export const ButtonRow = styled.div`
     justify-content: center;
     gap: ${leo.spacing.l};
   }
-`
-
-export const ConfirmButton = styled(WalletButton)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1 0 0;
-  padding: 12px 16px;
-  background-color: ${leo.color.button.background};
-  border-radius: 1000px;
-  font-family: Poppins;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
-  color: ${leo.color.white};
-  border: none;
-  cursor: pointer;
-  align-self: stretch;
-`
-
-export const CancelButton = styled(WalletButton)`
-  display: flex;
-  justify-content: center;
-  flex: 1 0 0;
-  align-items: center;
-  padding: 12px 16px;
-  background-color: transparent;
-  border-radius: 1000px;
-  font-family: Poppins;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
-  color: ${leo.color.text.interactive};
-  border: none;
-  cursor: pointer;
-  border: 1px solid ${leo.color.divider.interactive};
-  align-self: stretch;
 `

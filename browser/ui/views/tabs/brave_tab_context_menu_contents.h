@@ -59,6 +59,8 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
 
   bool IsBraveCommandIdEnabled(int command_id) const;
   void ExecuteBraveCommand(int command_id);
+  void BringAllTabsToThisWindow();
+
   bool IsBraveCommandId(int command_id) const;
   bool IsValidContextMenu() const;
   void OnMenuClosed();

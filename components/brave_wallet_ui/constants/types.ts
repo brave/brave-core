@@ -715,8 +715,16 @@ export interface NFTMetadataReturnType {
 }
 
 export interface TransactionProviderError {
-  code: BraveWallet.ProviderError | BraveWallet.SolanaProviderError
+  code: BraveWallet.ProviderErrorUnion
   message: string
+}
+
+export const emptyProviderErrorCodeUnion: BraveWallet.ProviderErrorUnion = {
+  providerError: undefined,
+  zcashProviderError: undefined,
+  bitcoinProviderError: undefined,
+  filecoinProviderError: undefined,
+  solanaProviderError: undefined
 }
 
 export interface TransactionProviderErrorRegistry {

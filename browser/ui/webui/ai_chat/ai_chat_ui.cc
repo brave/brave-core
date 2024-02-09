@@ -12,7 +12,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
@@ -83,9 +84,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
                                !last_accepted_disclaimer.is_null());
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  constexpr bool kIsMobile = false;
-#else
   constexpr bool kIsMobile = true;
+#else
+  constexpr bool kIsMobile = false;
 #endif
 
   untrusted_source->AddBoolean("isMobile", kIsMobile);
@@ -149,7 +150,8 @@ UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui,
 
 bool UntrustedChatUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return ai_chat::features::IsAIChatEnabled() &&
+  return ai_chat::IsAIChatEnabled(
+             user_prefs::UserPrefs::Get(browser_context)) &&
          brave::IsRegularProfile(browser_context);
 }
 

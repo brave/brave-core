@@ -36,7 +36,10 @@ static_library("sidebar") {
   ]
 
   if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/core/common" ]
+    deps += [
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+    ]
   }
 
   if (enable_playlist) {

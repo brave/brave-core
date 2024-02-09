@@ -34,7 +34,9 @@ import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
-import { Footer } from './common/footer'
+import {
+  PendingTransactionActionsFooter //
+} from './common/pending_tx_actions_footer'
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
@@ -129,7 +131,9 @@ export const ConfirmTransactionPanel = () => {
     isBitcoinTransaction,
     isZCashTransaction,
     hasFeeEstimatesError,
-    isLoadingGasFee
+    isLoadingGasFee,
+    rejectAllTransactions,
+    isConfirmButtonDisabled
   } = usePendingTransactions()
 
   // queries
@@ -159,6 +163,7 @@ export const ConfirmTransactionPanel = () => {
     React.useState<boolean>(false)
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
+  const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
 
   // methods
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
@@ -395,40 +400,50 @@ export const ConfirmTransactionPanel = () => {
         )}
       </TabRow>
 
-      <MessageBox isDetails={selectedTab === 'details'}>
-        {selectedTab === 'transaction' ? (
-          <TransactionInfo
-            onToggleEditGas={
-              isSolanaTransaction || isBitcoinTransaction
-                ? undefined
-                : onToggleEditGas
-            }
-            isZCashTransaction={isZCashTransaction}
-            isBitcoinTransaction={isBitcoinTransaction}
-            transactionDetails={transactionDetails}
-            isERC721SafeTransferFrom={isERC721SafeTransferFrom}
-            isERC721TransferFrom={isERC721TransferFrom}
-            transactionsNetwork={transactionsNetwork}
-            hasFeeEstimatesError={Boolean(hasFeeEstimatesError)}
-            isLoadingGasFee={isLoadingGasFee}
-            gasFee={gasFee}
-            insufficientFundsError={insufficientFundsError}
-            insufficientFundsForGasError={insufficientFundsForGasError}
-            isERC20Approve={isERC20Approve}
-            currentTokenAllowance={currentTokenAllowance}
-            isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
-          />
-        ) : (
-          <TransactionDetailBox
-            transactionInfo={selectedPendingTransaction}
-            instructions={transactionDetails.instructions}
-          />
-        )}
-      </MessageBox>
+      {isWarningCollapsed && (
+        <MessageBox isDetails={selectedTab === 'details'}>
+          {selectedTab === 'transaction' ? (
+            <TransactionInfo
+              onToggleEditGas={
+                isSolanaTransaction || isBitcoinTransaction
+                  ? undefined
+                  : onToggleEditGas
+              }
+              isZCashTransaction={isZCashTransaction}
+              isBitcoinTransaction={isBitcoinTransaction}
+              transactionDetails={transactionDetails}
+              isERC721SafeTransferFrom={isERC721SafeTransferFrom}
+              isERC721TransferFrom={isERC721TransferFrom}
+              transactionsNetwork={transactionsNetwork}
+              hasFeeEstimatesError={Boolean(hasFeeEstimatesError)}
+              isLoadingGasFee={isLoadingGasFee}
+              gasFee={gasFee}
+              insufficientFundsError={insufficientFundsError}
+              insufficientFundsForGasError={insufficientFundsForGasError}
+              isERC20Approve={isERC20Approve}
+              currentTokenAllowance={currentTokenAllowance}
+              isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
+            />
+          ) : (
+            <TransactionDetailBox
+              transactionInfo={selectedPendingTransaction}
+              instructions={transactionDetails.instructions}
+            />
+          )}
+        </MessageBox>
+      )}
 
-      <Footer
+      <PendingTransactionActionsFooter
         onConfirm={onConfirm}
         onReject={onReject}
+        rejectAllTransactions={rejectAllTransactions}
+        isConfirmButtonDisabled={isConfirmButtonDisabled}
+        transactionDetails={transactionDetails}
+        transactionsQueueLength={transactionsQueueLength}
+        insufficientFundsForGasError={insufficientFundsForGasError}
+        insufficientFundsError={insufficientFundsError}
+        isWarningCollapsed={isWarningCollapsed}
+        setIsWarningCollapsed={setIsWarningCollapsed}
       />
     </StyledWrapper>
   )

@@ -9,14 +9,12 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_banner.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
 namespace brave_rewards::internal {
 namespace database {
-
-using GetServerPublisherInfoCallback =
-    std::function<void(mojom::ServerPublisherInfoPtr)>;
 
 class DatabaseServerPublisherInfo : public DatabaseTable {
  public:
@@ -24,28 +22,28 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
   ~DatabaseServerPublisherInfo() override;
 
   void InsertOrUpdate(const mojom::ServerPublisherInfo& server_info,
-                      LegacyResultCallback callback);
+                      ResultCallback callback);
 
   void GetRecord(const std::string& publisher_key,
                  GetServerPublisherInfoCallback callback);
 
-  void DeleteExpiredRecords(int64_t max_age_seconds,
-                            LegacyResultCallback callback);
+  void DeleteExpiredRecords(int64_t max_age_seconds, ResultCallback callback);
 
  private:
-  void OnGetRecordBanner(mojom::PublisherBannerPtr banner,
-                         const std::string& publisher_key,
-                         GetServerPublisherInfoCallback callback);
+  void OnGetRecordBanner(const std::string& publisher_key,
+                         GetServerPublisherInfoCallback callback,
+                         mojom::PublisherBannerPtr banner);
 
   void OnGetRecord(GetServerPublisherInfoCallback callback,
                    const std::string& publisher_key,
                    mojom::PublisherBannerPtr banner,
                    mojom::DBCommandResponsePtr response);
 
-  void OnExpiredRecordsSelected(LegacyResultCallback callback,
+  void OnExpiredRecordsSelected(ResultCallback callback,
                                 mojom::DBCommandResponsePtr response);
 
   DatabaseServerPublisherBanner banner_;
+  base::WeakPtrFactory<DatabaseServerPublisherInfo> weak_factory_{this};
 };
 
 }  // namespace database

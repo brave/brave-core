@@ -37,6 +37,7 @@ import useGetTokenInfo from './use-get-token-info'
 import { useAccountOrb, useAddressOrb } from './use-orb'
 import { useSafeUISelector } from './use-safe-selector'
 import {
+  useApproveTransactionMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetDefaultFiatCurrencyQuery,
@@ -59,7 +60,7 @@ import {
 } from '../slices/constants'
 
 // Constants
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, emptyProviderErrorCodeUnion } from '../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType
@@ -99,6 +100,7 @@ export const usePendingTransactions = () => {
 
   // mutations
   const [rejectTransactions] = useRejectTransactionsMutation()
+  const [approveTransaction] = useApproveTransactionMutation();
 
   // queries
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
@@ -399,17 +401,15 @@ export const usePendingTransactions = () => {
     dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
   }, [selectedPendingTransactionId, pendingTransactions])
 
-  const rejectAllTransactions = React.useCallback(
-    () =>
-      rejectTransactions(
-        pendingTransactions.map((tx) => ({
-          id: tx.id,
-          chainId: tx.chainId,
-          coinType: getCoinFromTxDataUnion(tx.txDataUnion)
-        }))
-      ),
-    [pendingTransactions, rejectTransactions]
-  )
+  const rejectAllTransactions = React.useCallback(async () => {
+    await rejectTransactions(
+      pendingTransactions.map((tx) => ({
+        id: tx.id,
+        chainId: tx.chainId,
+        coinType: getCoinFromTxDataUnion(tx.txDataUnion)
+      }))
+    ).unwrap()
+  }, [pendingTransactions, rejectTransactions])
 
   const updateUnapprovedTransactionGasFields = React.useCallback(
     (payload: UpdateUnapprovedTransactionGasFieldsType) => {
@@ -455,23 +455,38 @@ export const usePendingTransactions = () => {
     }
 
     try {
-      await dispatch(
-        walletApi.endpoints.approveTransaction.initiate({
+      const result = await approveTransaction({
           chainId: transactionInfo.chainId,
           id: transactionInfo.id,
           coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
-          txType: transactionInfo.txType
-        })
-      ).unwrap()
-      dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
-      dispatch(PanelActions.navigateTo('transactionStatus'))
+          txType: transactionInfo.txType}).unwrap()
+      if (!result.success) {
+        dispatch(
+          UIActions.setTransactionProviderError({
+            providerError: {
+              code: result.errorUnion,
+              message: result.errorMessage
+            },
+            transactionId: transactionInfo.id
+          })
+        )
+      }
     } catch (error) {
       dispatch(
         UIActions.setTransactionProviderError({
-          providerError: error.toString(),
+          providerError: {
+            code: {
+              ...emptyProviderErrorCodeUnion,
+              providerError: BraveWallet.ProviderError.kUnknown
+            },
+            message: error.toString()
+          },
           transactionId: transactionInfo.id
         })
       )
+    } finally {
+      dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
+      dispatch(PanelActions.navigateTo('transactionStatus'))
     }
   }, [transactionInfo])
 

@@ -9,6 +9,7 @@ import android.content.Context;
 
 import org.jni_zero.CalledByNative;
 
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -16,6 +17,7 @@ import org.chromium.content_public.browser.WebContents;
 
 /** Launches Brave Leo settings page or subscription. */
 public class BraveLeoSettingsLauncherHelper {
+    private static final String ACCOUNT_PAGE_URL = "https://account.brave.com/";
     private static SettingsLauncher sLauncher;
 
     @CalledByNative
@@ -29,14 +31,16 @@ public class BraveLeoSettingsLauncherHelper {
 
     @CalledByNative
     private static void goPremium(WebContents webContents) {
-        // TODO(sergz): We need to uncomment that section when our backend can handle
-        // mobile subscription. It's commented to avoid Purchase happens on Google Play Store
+        BraveLeoUtils.goPremium(webContents.getTopLevelNativeWindow().getActivity().get());
+    }
 
-        // Activity activity = webContents.getTopLevelNativeWindow().getActivity().get();
-        // Intent braveLeoPlansIntent = new Intent(activity, BraveLeoPlansActivity.class);
-        // braveLeoPlansIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // braveLeoPlansIntent.setAction(Intent.ACTION_VIEW);
-        // activity.startActivity(braveLeoPlansIntent);
+    @CalledByNative
+    private static void managePremium(WebContents webContents) {
+        if (BraveLeoPrefUtils.getIsSubscriptionActive(Profile.fromWebContents(webContents))) {
+            BraveLeoUtils.openManageSubscription();
+        } else {
+            BraveLeoUtils.openURL(ACCOUNT_PAGE_URL);
+        }
     }
 
     private static SettingsLauncher getLauncher() {

@@ -25,7 +25,6 @@ import {
 
 // Components
 import PopupModal from '../../../desktop/popup-modals'
-import { NavButton } from '../../../extension/buttons/nav-button/index'
 import {
   withPlaceholderIcon //
 } from '../../../shared/create-placeholder-icon/index'
@@ -42,7 +41,12 @@ import {
   ErrorIcon
 } from './sell-asset-modal.style'
 
-import { VerticalSpacer, Row, Column } from '../../../shared/style'
+import {
+  VerticalSpacer,
+  Row,
+  Column,
+  LeoSquaredButton
+} from '../../../shared/style'
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
@@ -238,17 +242,12 @@ export const SellAssetModal = (props: Props) => {
           )}
         </Column>
         <VerticalSpacer space={8} />
-        <NavButton
-          disabled={isSellButtonDisabled}
-          buttonType='primary'
-          minHeight='52px'
-          text={
-            // Ramp is hardcoded for now, but we can update with
-            // selectedProvider.name once we add more offramp providers.
-            getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')
-          }
-          onSubmit={openSellAssetLink}
-        />
+        <LeoSquaredButton
+          isDisabled={isSellButtonDisabled}
+          onClick={openSellAssetLink}
+        >
+          {getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')}
+        </LeoSquaredButton>
       </StyledWrapper>
     </PopupModal>
   )

@@ -48,12 +48,12 @@ class WalletProvider {
   void StartContribution(const std::string& contribution_id,
                          mojom::ServerPublisherInfoPtr info,
                          double amount,
-                         LegacyResultCallback callback);
+                         ResultCallback callback);
 
   void TransferFunds(double amount,
                      const std::string& address,
                      const std::string& contribution_id,
-                     LegacyResultCallback callback);
+                     ResultCallback callback);
 
   virtual void BeginLogin(BeginExternalWalletLoginCallback callback);
 
@@ -75,7 +75,7 @@ class WalletProvider {
                       double available);
 
  private:
-  void ContributionCompleted(LegacyResultCallback callback,
+  void ContributionCompleted(ResultCallback callback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,

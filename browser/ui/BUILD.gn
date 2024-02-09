@@ -299,6 +299,8 @@ source_set("ui") {
     sources += [
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
+      "views/bookmarks/brave_bookmark_bar_view.cc",
+      "views/bookmarks/brave_bookmark_bar_view.h",
       "views/bookmarks/brave_bookmark_context_menu.cc",
       "views/bookmarks/brave_bookmark_context_menu.h",
       "views/brave_first_run_dialog.cc",
@@ -410,6 +412,9 @@ source_set("ui") {
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
     ]
+
+    deps += [ "//components/bookmarks/browser" ]
+
     if (enable_brave_vpn) {
       if (is_win) {
         sources += [
@@ -422,6 +427,8 @@ source_set("ui") {
           "webui/settings/brave_vpn/brave_vpn_handler.cc",
           "webui/settings/brave_vpn/brave_vpn_handler.h",
         ]
+
+        deps += [ "//brave/browser/brave_vpn/win:wireguard_utils" ]
       }
     }
     if (enable_ai_chat) {
@@ -618,6 +625,7 @@ source_set("ui") {
     "//components/strings:components_strings",
     "//components/tab_groups",
     "//components/update_client",
+    "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
     "//mojo/public/cpp/bindings",
@@ -638,6 +646,7 @@ source_set("ui") {
 
   if (enable_brave_vpn) {
     deps += [
+      "//brave/browser/brave_vpn",
       "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/browser/connection:api",
       "//brave/components/brave_vpn/common",
@@ -646,7 +655,6 @@ source_set("ui") {
       deps += [
         "//brave/components/brave_vpn/common/win",
         "//brave/components/brave_vpn/common/wireguard",
-        "//brave/components/brave_vpn/common/wireguard/win",
       ]
     }
   }

@@ -12,11 +12,9 @@
 
 namespace brave_vpn {
 
-std::unique_ptr<WireguardOSConnectionAPIMac>
-CreateBraveVPNWireguardConnectionAPI(
+std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel,
     base::RepeatingCallback<bool()> service_installer) {
   // service_installer not currently used on macOS.
   return std::make_unique<WireguardOSConnectionAPIMac>(url_loader_factory,

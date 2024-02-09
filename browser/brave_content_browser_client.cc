@@ -153,6 +153,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #if BUILDFLAG(IS_ANDROID)
@@ -809,13 +810,15 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled() &&
+  auto* prefs =
+      user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
+  if (ai_chat::IsAIChatEnabled(prefs) &&
       !render_frame_host->GetBrowserContext()->IsTor()) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }
 #if BUILDFLAG(IS_ANDROID)
-  if (ai_chat::features::IsAIChatEnabled()) {
+  if (ai_chat::IsAIChatEnabled(prefs)) {
     map->Add<ai_chat::mojom::IAPSubscription>(
         base::BindRepeating(&BindIAPSubscription));
   }

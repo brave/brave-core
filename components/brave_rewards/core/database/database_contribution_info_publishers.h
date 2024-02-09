@@ -32,7 +32,7 @@ class DatabaseContributionInfoPublishers : public DatabaseTable {
 
   void UpdateContributedAmount(const std::string& contribution_id,
                                const std::string& publisher_key,
-                               LegacyResultCallback callback);
+                               ResultCallback callback);
 
  private:
   void OnGetRecordByContributionList(ContributionPublisherListCallback callback,

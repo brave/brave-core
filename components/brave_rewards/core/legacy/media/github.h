@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
@@ -28,7 +29,7 @@ class GitHub {
   static std::string GetLinkType(const std::string& url);
 
   void SaveMediaInfo(const base::flat_map<std::string, std::string>& data,
-                     PublisherInfoCallback callback);
+                     GetPublisherInfoCallback callback);
 
   void ProcessActivityFromUrl(uint64_t window_id,
                               const mojom::VisitData& visit_data);
@@ -39,16 +40,13 @@ class GitHub {
   ~GitHub();
 
  private:
-  void OnMediaPublisherActivity(mojom::Result result,
-                                mojom::PublisherInfoPtr info,
-                                uint64_t window_id,
+  void OnMediaPublisherActivity(uint64_t window_id,
                                 const mojom::VisitData& visit_data,
-                                const std::string& media_key);
+                                const std::string& media_key,
+                                mojom::Result result,
+                                mojom::PublisherInfoPtr info);
 
-  void FetchDataFromUrl(const std::string& url, LegacyLoadURLCallback callback);
-
-  void OnUrlFetched(LegacyLoadURLCallback callback,
-                    mojom::UrlResponsePtr repsonse);
+  void FetchDataFromUrl(const std::string& url, LoadURLCallback callback);
 
   void OnUserPage(const uint64_t duration,
                   uint64_t window_id,
@@ -61,7 +59,7 @@ class GitHub {
                          const std::string& publisher_name,
                          const std::string& profile_picture,
                          const uint64_t window_id,
-                         PublisherInfoCallback callback);
+                         GetPublisherInfoCallback callback);
 
   void GetPublisherPanelInfo(uint64_t window_id,
                              const mojom::VisitData& visit_data,
@@ -75,7 +73,7 @@ class GitHub {
 
   void OnMediaActivityError(uint64_t window_id);
 
-  void OnMetaDataGet(PublisherInfoCallback callback,
+  void OnMetaDataGet(GetPublisherInfoCallback callback,
                      mojom::UrlResponsePtr response);
 
   void OnMediaPublisherInfo(uint64_t window_id,
@@ -83,7 +81,7 @@ class GitHub {
                             const std::string& screen_name,
                             const std::string& publisher_name,
                             const std::string& profile_picture,
-                            PublisherInfoCallback callback,
+                            GetPublisherInfoCallback callback,
                             mojom::Result result,
                             mojom::PublisherInfoPtr publisher_info);
 
@@ -131,6 +129,7 @@ class GitHub {
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONIntValue);
 
   const raw_ref<RewardsEngineImpl> engine_;
+  base::WeakPtrFactory<GitHub> weak_factory_{this};
 };
 }  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_GITHUB_H_

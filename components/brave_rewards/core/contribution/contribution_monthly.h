@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
@@ -24,21 +25,21 @@ class ContributionMonthly {
 
   ~ContributionMonthly();
 
-  void Process(std::optional<base::Time> cutoff_time,
-               LegacyResultCallback callback);
+  void Process(std::optional<base::Time> cutoff_time, ResultCallback callback);
 
  private:
   void AdvanceContributionDates(
       std::optional<base::Time> cutoff_time,
-      LegacyResultCallback callback,
+      ResultCallback callback,
       std::vector<mojom::PublisherInfoPtr> publishers);
 
   void OnNextContributionDateAdvanced(
       std::vector<mojom::PublisherInfoPtr> publishers,
-      LegacyResultCallback callback,
+      ResultCallback callback,
       bool success);
 
   const raw_ref<RewardsEngineImpl> engine_;
+  base::WeakPtrFactory<ContributionMonthly> weak_factory_{this};
 };
 
 }  // namespace contribution

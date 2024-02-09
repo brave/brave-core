@@ -191,6 +191,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CREATOR_UNABLE_RECEIVE_CONTRIBUTIONS" desc="Text for This creator is unable to receive contributions from CUSTODIAN">
         This creator is unable to receive contributions from <ph name="CUSTODIAN">%1$s</ph>.
       </message>
+      <message name="IDS_CREATOR_ISNT_SETUP_WEB3" desc="Text for This creator is unable to receive web3 contributions">
+        This creator isn't set up to receive Web3 or crypto contributions yet.
+      </message>
       <message name="IDS_NOT_ENOUGH_TOKENS" desc="Text for You don't have enough tokens">
         You don't have enough tokens
       </message>
@@ -1448,33 +1451,6 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_CONNECTED" desc="">
         Connected
       </message>
-      <message name="IDS_VERIFY_WALLET_HEADER">
-        Verifying your wallet is optional
-      </message>
-      <message name="IDS_VERIFY_WALLET_HEADER1">
-        But if you verify, you can...
-      </message>
-      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS1">
-        Withdraw BAT that you earn from viewing privacy-respecting ads
-      </message>
-      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS2">
-        Purchase additional BAT with credit cards and other sources
-      </message>
-      <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS3">
-        Withdraw BAT that you may have previously added to your Brave Rewards wallet
-      </message>
-      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS1">
-        Withdraw BAT that you earn from viewing privacy-respecting ads
-      </message>
-      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS2">
-        Purchase additional BAT with credit cards and other sources
-      </message>
-      <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS3">
-         Withdraw BAT that you may have previously added to your Brave Rewards wallet
-      </message>
-      <message name="IDS_VERIFY_WALLET_SERVICE_NOTE">
-        Our wallet service is provided by
-      </message>
       <message name="IDS_UPHOLD">
         Uphold
       </message>
@@ -1486,12 +1462,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_ZEBPAY">
         ZebPay
-      </message>
-      <message name="IDS_VERIFY_WALLET_PROVIDER_NOTE1">
-        Uphold may require you to verify your identity based on services requested.
-      </message>
-      <message name="IDS_VERIFY_WALLET_BRAVE_NOTE1">
-        Brave Software Inc. does not process, store, or access any of the personal information that you provide to <ph name="WALLET_PROVIDER">%1$s</ph> when you establish an account with them.
       </message>
       <message name="IDS_USER_WALLET_GOTO_PROVIDER">
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
@@ -4126,6 +4096,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_LEO_DEFAULT_MODEL_PREF_SCREEN" desc="Title for Leo Default Model settings screen.">
       Default model
+    </message>
+    <message name="IDS_LEO_GO_PREMIUM_PREF" desc="Title for Leo Go premium settings.">
+      Go Premium
     </message>
   </messages>
   </release>

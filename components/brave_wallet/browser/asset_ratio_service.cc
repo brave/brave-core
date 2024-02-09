@@ -242,12 +242,14 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
   std::string url;
   if (provider == mojom::OnRampProvider::kRamp) {
     GURL ramp_url = GURL(kRampBaseUrl);
+    ramp_url = net::AppendQueryParameter(ramp_url, "enabledFlows",
+                                         kOnRampEnabledFlows);
     ramp_url = net::AppendQueryParameter(ramp_url, "userAddress", address);
     ramp_url = net::AppendQueryParameter(ramp_url, "swapAsset", symbol);
     ramp_url = net::AppendQueryParameter(ramp_url, "fiatValue", amount);
     ramp_url =
         net::AppendQueryParameter(ramp_url, "fiatCurrency", currency_code);
-    ramp_url = net::AppendQueryParameter(ramp_url, "hostApiKey", kRampID);
+    ramp_url = net::AppendQueryParameter(ramp_url, "hostApiKey", kOnRampID);
     std::move(callback).Run(std::move(ramp_url.spec()), std::nullopt);
   } else if (provider == mojom::OnRampProvider::kSardine) {
     auto internal_callback =
@@ -348,7 +350,6 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
 
 void AssetRatioService::GetSellUrl(mojom::OffRampProvider provider,
                                    const std::string& chain_id,
-                                   const std::string& address,
                                    const std::string& symbol,
                                    const std::string& amount,
                                    const std::string& currency_code,
@@ -356,12 +357,8 @@ void AssetRatioService::GetSellUrl(mojom::OffRampProvider provider,
   std::string url;
   if (provider == mojom::OffRampProvider::kRamp) {
     GURL off_ramp_url = GURL(kRampBaseUrl);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "userAddress", address);
     off_ramp_url = net::AppendQueryParameter(off_ramp_url, "enabledFlows",
                                              kOffRampEnabledFlows);
-    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "defaultFlow",
-                                             kOffRampDefaultFlow);
     off_ramp_url = net::AppendQueryParameter(off_ramp_url, "swapAsset", symbol);
     off_ramp_url =
         net::AppendQueryParameter(off_ramp_url, "offrampAsset", symbol);
@@ -370,7 +367,7 @@ void AssetRatioService::GetSellUrl(mojom::OffRampProvider provider,
     off_ramp_url =
         net::AppendQueryParameter(off_ramp_url, "fiatCurrency", currency_code);
     off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "hostApiKey", kRampID);
+        net::AppendQueryParameter(off_ramp_url, "hostApiKey", kOffRampID);
     std::move(callback).Run(off_ramp_url.spec(), std::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_OFFRAMP_PROVIDER");

@@ -279,6 +279,48 @@ def CheckLicense(input_api, output_api):
     return result
 
 
+def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
+    """Checks newly added source files have corresponding GN changes."""
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )
+
+    source_file_filter = lambda f: input_api.FilterSourceFile(
+        f,
+        files_to_check=(r'.+\.cc$', r'.+\.c$', r'.+\.mm$', r'.+\.m$'),
+        files_to_skip=files_to_skip)
+
+    new_sources = []
+    for f in input_api.AffectedSourceFiles(source_file_filter):
+        if f.Action() != 'A':
+            continue
+        new_sources.append(f.LocalPath())
+
+    gn_file_filter = lambda f: input_api.FilterSourceFile(
+        f,
+        files_to_check=(r'.+\.gn$', r'.+\.gni$'),
+        files_to_skip=files_to_skip)
+
+    all_gn_changed_contents = ''
+    for f in input_api.AffectedSourceFiles(gn_file_filter):
+        for _, line in f.ChangedContents():
+            all_gn_changed_contents += line
+
+    problems = []
+    for source in new_sources:
+        basename = input_api.os_path.basename(source)
+        if basename not in all_gn_changed_contents:
+            problems.append(source)
+
+    if problems:
+        return [
+            output_api.PresubmitError(
+                'Missing GN changes for new .cc/.c/.mm/.m source files',
+                items=sorted(problems),
+                long_text=
+                'Please double check whether newly added source files need '
+                'corresponding changes in gn or gni files.')
+        ]
+    return []
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We

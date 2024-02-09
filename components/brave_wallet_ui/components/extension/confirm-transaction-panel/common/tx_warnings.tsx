@@ -83,8 +83,10 @@ export function TransactionWarnings({
   isWarningCollapsed,
   setIsWarningCollapsed,
   warnings,
-  onDismiss
+  onDismiss,
+  classifyAs
 }: {
+  classifyAs: 'risks' | 'issues'
   warnings: Array<Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>>
   isWarningCollapsed: boolean
   setIsWarningCollapsed?: React.Dispatch<React.SetStateAction<boolean>>
@@ -132,10 +134,11 @@ export function TransactionWarnings({
           isCritical={hasCriticalWarnings}
           isBold
         >
-          {getLocale('braveWalletFoundRisks').replace(
-            '$1',
-            warnings.length.toString()
-          )}
+          {getLocale(
+            classifyAs === 'risks'
+              ? 'braveWalletFoundRisks'
+              : 'braveWalletFoundIssues'
+          ).replace('$1', warnings.length.toString())}
         </WarningTitle>
 
         <div>

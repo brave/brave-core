@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/ras/ras_utils.h"
 
+#include <string>
+
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"

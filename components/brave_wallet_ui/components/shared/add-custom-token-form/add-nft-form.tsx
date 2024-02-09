@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Button from '@brave/leo/react/button'
 
 // utils
 import { BraveWallet } from '../../../constants/types'
@@ -46,7 +45,7 @@ import {
   InputLabel,
   AddButtonWrapper
 } from './add-custom-token-form-styles'
-import { HorizontalSpace } from '../style'
+import { HorizontalSpace, LeoSquaredButton } from '../style'
 
 interface Props {
   selectedAsset?: BraveWallet.BlockchainToken
@@ -354,12 +353,12 @@ export const AddNftForm = (props: Props) => {
         <ButtonRowSpacer />
       </FormWrapper>
       <ButtonRow>
-        <Button
+        <LeoSquaredButton
           onClick={onClickCancel}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
-        </Button>
+        </LeoSquaredButton>
         <HorizontalSpace space='16px' />
         <Tooltip
           text={<FormErrorsList errors={formErrors} />}
@@ -368,14 +367,14 @@ export const AddNftForm = (props: Props) => {
           maxWidth={120}
         >
           <AddButtonWrapper>
-            <Button
+            <LeoSquaredButton
               onClick={addOrUpdateToken}
               isDisabled={buttonDisabled}
             >
               {selectedAsset
                 ? getLocale('braveWalletButtonSaveChanges')
                 : getLocale('braveWalletWatchListAdd')}
-            </Button>
+            </LeoSquaredButton>
           </AddButtonWrapper>
         </Tooltip>
       </ButtonRow>

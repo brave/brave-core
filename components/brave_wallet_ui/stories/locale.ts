@@ -1109,6 +1109,7 @@ provideStrings({
   braveWalletNonAsciiCharactersInMessageWarning:
     'Non-ASCII characters detected!',
   braveWalletFoundRisks: 'We found $1 risks.',
+  braveWalletFoundIssues: 'We found $1 issues.',
 
   // ASCII toggles
   braveWalletViewEncodedMessage: 'View original message',

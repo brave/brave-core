@@ -14,8 +14,6 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace database {
 
@@ -51,10 +49,10 @@ DatabaseContributionInfo::DatabaseContributionInfo(RewardsEngineImpl& engine)
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
 void DatabaseContributionInfo::InsertOrUpdate(mojom::ContributionInfoPtr info,
-                                              LegacyResultCallback callback) {
+                                              ResultCallback callback) {
   if (!info) {
     engine_->Log(FROM_HERE) << "Info is null";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -123,7 +121,7 @@ void DatabaseContributionInfo::GetRecord(const std::string& contribution_id,
   engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseContributionInfo::OnGetRecord,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetRecord(
@@ -132,14 +130,14 @@ void DatabaseContributionInfo::OnGetRecord(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
-    callback(nullptr);
+    std::move(callback).Run(nullptr);
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     engine_->Log(FROM_HERE) << "Record size is not correct: "
                             << response->result->get_records().size();
-    callback(nullptr);
+    std::move(callback).Run(nullptr);
     return;
   }
 
@@ -155,27 +153,25 @@ void DatabaseContributionInfo::OnGetRecord(
       static_cast<mojom::ContributionProcessor>(GetIntColumn(record, 5));
   info->created_at = GetInt64Column(record, 6);
 
-  auto publishers_callback = std::bind(
-      &DatabaseContributionInfo::OnGetPublishers, this, _1,
-      std::make_shared<mojom::ContributionInfoPtr>(info->Clone()), callback);
-
-  publishers_.GetRecordByContributionList({info->contribution_id},
-                                          publishers_callback);
+  publishers_.GetRecordByContributionList(
+      {info->contribution_id},
+      base::BindOnce(&DatabaseContributionInfo::OnGetPublishers,
+                     weak_factory_.GetWeakPtr(), info->Clone(),
+                     std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetPublishers(
-    std::vector<mojom::ContributionPublisherPtr> list,
-    std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-    GetContributionInfoCallback callback) {
-  auto contribution = std::move(*shared_contribution);
+    mojom::ContributionInfoPtr contribution,
+    GetContributionInfoCallback callback,
+    std::vector<mojom::ContributionPublisherPtr> list) {
   if (!contribution) {
     engine_->Log(FROM_HERE) << "Contribution is null";
-    callback(nullptr);
+    std::move(callback).Run(nullptr);
     return;
   }
 
   contribution->publishers = std::move(list);
-  callback(std::move(contribution));
+  std::move(callback).Run(std::move(contribution));
 }
 
 void DatabaseContributionInfo::GetAllRecords(
@@ -205,7 +201,7 @@ void DatabaseContributionInfo::GetAllRecords(
   engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseContributionInfo::OnGetList,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
@@ -213,7 +209,7 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
                                               GetOneTimeTipsCallback callback) {
   if (year == 0) {
     engine_->Log(FROM_HERE) << "Year is 0";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -261,7 +257,7 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
   engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseContributionInfo::OnGetOneTimeTips,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
@@ -270,7 +266,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -293,7 +289,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void DatabaseContributionInfo::GetContributionReport(
@@ -302,7 +298,7 @@ void DatabaseContributionInfo::GetContributionReport(
     GetContributionReportCallback callback) {
   if (year == 0) {
     engine_->Log(FROM_HERE) << "Year is 0";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -338,7 +334,7 @@ void DatabaseContributionInfo::GetContributionReport(
   engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseContributionInfo::OnGetContributionReport,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetContributionReport(
@@ -347,7 +343,7 @@ void DatabaseContributionInfo::OnGetContributionReport(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -369,23 +365,19 @@ void DatabaseContributionInfo::OnGetContributionReport(
     list.push_back(std::move(info));
   }
 
-  auto publisher_callback = std::bind(
-      &DatabaseContributionInfo::OnGetContributionReportPublishers, this, _1,
-      std::make_shared<std::vector<mojom::ContributionInfoPtr>>(
-          std::move(list)),
-      callback);
-
-  publishers_.GetContributionPublisherPairList(contribution_ids,
-                                               publisher_callback);
+  publishers_.GetContributionPublisherPairList(
+      contribution_ids,
+      base::BindOnce(
+          &DatabaseContributionInfo::OnGetContributionReportPublishers,
+          weak_factory_.GetWeakPtr(), std::move(list), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetContributionReportPublishers(
-    std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-    std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
-        shared_contributions,
-    GetContributionReportCallback callback) {
+    std::vector<mojom::ContributionInfoPtr> contributions,
+    GetContributionReportCallback callback,
+    std::vector<ContributionPublisherInfoPair> publisher_pair_list) {
   std::vector<mojom::ContributionReportInfoPtr> report_list;
-  for (const auto& contribution : *shared_contributions) {
+  for (const auto& contribution : contributions) {
     auto report = mojom::ContributionReportInfo::New();
     report->contribution_id = contribution->contribution_id;
     report->amount = contribution->amount;
@@ -406,7 +398,7 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
     }
   }
 
-  callback(std::move(report_list));
+  std::move(callback).Run(std::move(report_list));
 }
 
 void DatabaseContributionInfo::GetNotCompletedRecords(
@@ -459,7 +451,7 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
   engine_->client()->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseContributionInfo::OnGetList,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
@@ -467,12 +459,12 @@ void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
   if (response->result->get_records().empty()) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -497,21 +489,18 @@ void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
     list.push_back(std::move(info));
   }
 
-  auto publisher_callback =
-      std::bind(&DatabaseContributionInfo::OnGetListPublishers, this, _1,
-                std::make_shared<std::vector<mojom::ContributionInfoPtr>>(
-                    std::move(list)),
-                callback);
-
-  publishers_.GetRecordByContributionList(contribution_ids, publisher_callback);
+  publishers_.GetRecordByContributionList(
+      contribution_ids,
+      base::BindOnce(&DatabaseContributionInfo::OnGetListPublishers,
+                     weak_factory_.GetWeakPtr(), std::move(list),
+                     std::move(callback)));
 }
 
 void DatabaseContributionInfo::OnGetListPublishers(
-    std::vector<mojom::ContributionPublisherPtr> list,
-    std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
-        shared_contributions,
-    ContributionInfoListCallback callback) {
-  for (const auto& contribution : *shared_contributions) {
+    std::vector<mojom::ContributionInfoPtr> contributions,
+    ContributionInfoListCallback callback,
+    std::vector<mojom::ContributionPublisherPtr> list) {
+  for (const auto& contribution : contributions) {
     for (const auto& item : list) {
       if (item->contribution_id != contribution->contribution_id) {
         continue;
@@ -521,15 +510,15 @@ void DatabaseContributionInfo::OnGetListPublishers(
     }
   }
 
-  callback(std::move(*shared_contributions));
+  std::move(callback).Run(std::move(contributions));
 }
 
 void DatabaseContributionInfo::UpdateStep(const std::string& contribution_id,
                                           mojom::ContributionStep step,
-                                          LegacyResultCallback callback) {
+                                          ResultCallback callback) {
   if (contribution_id.empty()) {
     engine_->Log(FROM_HERE) << "Contribution id is empty";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -557,10 +546,10 @@ void DatabaseContributionInfo::UpdateStepAndCount(
     const std::string& contribution_id,
     mojom::ContributionStep step,
     int32_t retry_count,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (contribution_id.empty()) {
     engine_->Log(FROM_HERE) << "Contribution id is empty";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -588,12 +577,13 @@ void DatabaseContributionInfo::UpdateStepAndCount(
 void DatabaseContributionInfo::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    LegacyResultCallback callback) {
-  publishers_.UpdateContributedAmount(contribution_id, publisher_key, callback);
+    ResultCallback callback) {
+  publishers_.UpdateContributedAmount(contribution_id, publisher_key,
+                                      std::move(callback));
 }
 
 void DatabaseContributionInfo::FinishAllInProgressRecords(
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0", kTableName);

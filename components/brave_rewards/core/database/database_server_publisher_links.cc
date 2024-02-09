@@ -76,7 +76,7 @@ void DatabaseServerPublisherLinks::GetRecord(
     ServerPublisherLinksCallback callback) {
   if (publisher_key.empty()) {
     engine_->Log(FROM_HERE) << "Publisher key is empty";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -107,7 +107,7 @@ void DatabaseServerPublisherLinks::OnGetRecord(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -119,7 +119,7 @@ void DatabaseServerPublisherLinks::OnGetRecord(
     links.insert(pair);
   }
 
-  callback(links);
+  std::move(callback).Run(links);
 }
 
 }  // namespace database

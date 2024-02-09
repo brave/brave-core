@@ -972,7 +972,12 @@ void RewardsDOMHandler::SaveSetting(const base::Value::List& args) {
     const std::string value = args[1].GetString();
 
     if (key == "contributionMonthly") {
-      rewards_service_->SetAutoContributionAmount(std::stod(value));
+      double double_value = 0;
+      if (!base::StringToDouble(value, &double_value)) {
+        LOG(ERROR) << "Auto contribution amount not a double";
+        return;
+      }
+      rewards_service_->SetAutoContributionAmount(double_value);
     }
 
     if (key == "contributionMinTime") {

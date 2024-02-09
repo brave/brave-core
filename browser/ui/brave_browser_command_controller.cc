@@ -254,6 +254,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandsForMute();
   UpdateCommandsForSend();
   UpdateCommandsForPin();
+
+  UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -512,6 +514,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_BRAVE_SEND_TAB_TO_SELF:
       chrome::SendTabToSelfFromPageAction(&*browser_);
+      break;
+    case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
+      brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

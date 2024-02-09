@@ -610,6 +610,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_HEADER_TITLE" desc="Transaction failed header title"><ph name="VALUE">$1<ex>1 ETH</ex></ph> was returned to your wallet</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_TITLE" desc="Transaction failed title">Transaction failed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_DESCRIPTION" desc="Transaction failed description">Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.</message>
+  <message name="IDS_BRAVE_WALLET_ZCASH_TRANSACTION_ALREADY_EXISTS_DESCRIPTION" desc="Zcash transaction failed since there is already one in progress">There is already a Zcash transaction in progress. Please try again later.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_SWAP_NEXT_CTA" desc="Transaction failed CTA text for swap">New trade</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_NEXT_CTA" desc="Transaction failed CTA text">New transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_VIEW_ERROR_CTA" desc="Transaction failed view error CTA text">View Error</message>
@@ -1032,4 +1033,5 @@
   <message name="IDS_BRAVE_WALLET_RISK_OF_LOSS_ACTION" desc="Warning that the pending action may result in loss of funds">Unsafe action with risk of loss</message>
   <message name="IDS_BRAVE_WALLET_UNTRUSTED_REQUEST_WARNING" desc="Warning that the pending request may be malicious">This request appears malicious, and may leave you vulnerable to theft. Do not continue unless you trust the app.</message>
   <message name="IDS_BRAVE_WALLET_PROCEED_BUTTON" desc="Proceed action button text">Proceed</message>
+  <message name="IDS_BRAVE_WALLET_FOUND_ISSUES" desc="Notice that a number of issues were found">We found <ph name="VALUE">$1<ex>2</ex></ph> issues.</message>
 </grit-part>

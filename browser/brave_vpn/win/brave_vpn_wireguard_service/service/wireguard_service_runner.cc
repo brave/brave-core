@@ -26,8 +26,8 @@
 #include "base/threading/thread_restrictions.h"
 #include "base/win/scoped_com_initializer.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/brave_wireguard_manager.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
+#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 
 namespace brave_vpn {
 

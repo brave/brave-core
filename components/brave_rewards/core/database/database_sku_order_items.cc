@@ -65,7 +65,7 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
     GetSKUOrderItemsCallback callback) {
   if (order_id.empty()) {
     engine_->Log(FROM_HERE) << "Order id is empty";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -106,7 +106,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -130,7 +130,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database

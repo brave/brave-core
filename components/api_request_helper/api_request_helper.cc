@@ -13,8 +13,13 @@
 #include "base/check_op.h"
 #include "base/containers/cxx20_erase_vector.h"
 #include "base/json/json_writer.h"
+#include "base/memory/raw_ptr.h"
+#include "base/metrics/histogram_functions.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
+#include "base/time/time.h"
+#include "base/timer/elapsed_timer.h"
+#include "base/trace_event/trace_event.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
@@ -50,22 +55,36 @@ APIRequestResult ToAPIRequestResult(
     }
   }
 
-  return APIRequestResult(response_code, "", base::Value(), std::move(headers),
+  return APIRequestResult(response_code, base::Value(), std::move(headers),
                           error_code, final_url);
 }
+
+// A helper class to measure performance of the callback.
+class ScopedPerfTracker {
+ public:
+  explicit ScopedPerfTracker(const char* uma_name) : uma_name_(uma_name) {}
+
+  ~ScopedPerfTracker() {
+    if (timer_.is_supported()) {
+      base::UmaHistogramMediumTimes(uma_name_, timer_.Elapsed());
+    }
+  }
+
+ private:
+  raw_ptr<const char> uma_name_;
+  base::ElapsedThreadTimer timer_;
+};
 
 }  // namespace
 
 APIRequestResult::APIRequestResult() = default;
 APIRequestResult::APIRequestResult(
     int response_code,
-    std::string body,
     base::Value value_body,
     base::flat_map<std::string, std::string> headers,
     int error_code,
     GURL final_url)
     : response_code_(response_code),
-      body_(std::move(body)),
       value_body_(std::move(value_body)),
       headers_(std::move(headers)),
       error_code_(error_code),
@@ -76,8 +95,8 @@ APIRequestResult::~APIRequestResult() = default;
 
 bool APIRequestResult::operator==(const APIRequestResult& other) const {
   auto tied = [](auto& v) {
-    return std::tie(v.response_code_, v.body_, v.value_body_, v.headers_,
-                    v.error_code_, v.final_url_);
+    return std::tie(v.response_code_, v.value_body_, v.headers_, v.error_code_,
+                    v.final_url_);
   };
   return tied(*this) == tied(other);
 }
@@ -92,6 +111,24 @@ bool APIRequestResult::Is2XXResponseCode() const {
 
 bool APIRequestResult::IsResponseCodeValid() const {
   return response_code_ >= 100 && response_code_ <= 599;
+}
+
+base::Value APIRequestResult::TakeBody() {
+  CHECK(!body_consumed_);
+  body_consumed_ = true;
+  return std::move(value_body_);
+}
+
+std::string APIRequestResult::SerializeBodyToString() const {
+  if (value_body_.is_none()) {
+    return std::string();
+  }
+  std::string safe_json;
+  if (!base::JSONWriter::Write(value_body_, &safe_json)) {
+    VLOG(1) << "Response validation error: Encoding error";
+  }
+
+  return safe_json;
 }
 
 APIRequestHelper::APIRequestHelper(
@@ -302,6 +339,8 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
   if (is_sse_) {
     ParseSSE(string_piece);
   } else {
+    TRACE_EVENT0("brave", "APIRequestHelper_OnDataReceivedNoSSE");
+    ScopedPerfTracker tracker("Brave.APIRequestHelper.OnDataReceivedNoSSE");
     data_received_callback_.Run(base::Value(string_piece));
   }
   // Get next chunk
@@ -370,6 +409,9 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
 void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
     APIRequestResult result,
     data_decoder::DataDecoder::ValueOrError result_value) {
+  TRACE_EVENT1("brave", "APIRequestHelper_ProcessResultOnUI", "url",
+               result.final_url().spec());
+  ScopedPerfTracker tracker("Brave.APIRequestHelper.ProcessResultOnUI");
   // TODO(petemill): Simplify by combining OnParseJsonResponse with the Json
   // response handler in ParseSSE.
   if (!result_value.has_value()) {
@@ -382,14 +424,8 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
     std::move(result_callback_).Run(std::move(result));
     return;
   }
-  std::string safe_json;
-  if (!base::JSONWriter::Write(result_value.value(), &safe_json)) {
-    VLOG(1) << "Response validation error: Encoding error";
-    std::move(result_callback_).Run(std::move(result));
-    return;
-  }
-  VLOG(2) << "Reponse validation successful";
-  result.body_ = std::move(safe_json);
+
+  VLOG(2) << "Response validation successful";
   result.value_body_ = std::move(result_value.value());
   std::move(result_callback_).Run(std::move(result));
 }
@@ -454,6 +490,8 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
           if (!handler) {
             return;
           }
+          TRACE_EVENT0("brave", "APIRequestHelper_ParseSSECallback");
+          ScopedPerfTracker tracker("Brave.APIRequestHelper.ParseSSECallback");
           handler->current_decoding_operation_count_--;
           DCHECK(handler->data_received_callback_);
           handler->data_received_callback_.Run(std::move(result));

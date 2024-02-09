@@ -36,9 +36,9 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 
 namespace {
 
@@ -60,7 +60,7 @@ void AddUninstallVpnServiceWorkItems() {
   // delete `BraveVpnService` from services
   if (!installer::InstallServiceWorkItem::DeleteService(
           brave_vpn::GetBraveVpnHelperServiceName(),
-          brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {})) {
+          brave_vpn::GetBraveVpnHelperRegistryStoragePath(), {}, {})) {
     VLOG(1) << "Failed to delete " << brave_vpn::GetBraveVpnHelperServiceName();
   }
 }
@@ -95,19 +95,20 @@ bool OneTimeVpnServiceCleanup(const base::FilePath& target_path,
   // Check registry for `ran` value.
   // Only run the clean up logic if this hasn't ran yet.
   base::win::RegKey key;
-  LONG rv = key.Create(HKEY_LOCAL_MACHINE,
-                       brave_vpn::kBraveVpnOneTimeServiceCleanupStoragePath,
-                       KEY_ALL_ACCESS);
+  LONG rv = key.Create(
+      HKEY_LOCAL_MACHINE,
+      brave_vpn::GetBraveVpnOneTimeServiceCleanupStoragePath().c_str(),
+      KEY_ALL_ACCESS);
   if (rv != ERROR_SUCCESS) {
     VLOG(1) << "Failed to open registry key:"
-            << brave_vpn::kBraveVpnOneTimeServiceCleanupStoragePath << "\n"
+            << brave_vpn::GetBraveVpnOneTimeServiceCleanupStoragePath() << "\n"
             << logging::SystemErrorCodeToString(rv);
     return false;
   }
 
   if (!key.Valid()) {
     VLOG(1) << "Registry key not valid:"
-            << brave_vpn::kBraveVpnOneTimeServiceCleanupStoragePath;
+            << brave_vpn::GetBraveVpnOneTimeServiceCleanupStoragePath();
     return false;
   }
 
@@ -133,7 +134,7 @@ bool OneTimeVpnServiceCleanup(const base::FilePath& target_path,
                       &cleanup_ran, REG_DWORD, sizeof(DWORD));
   if (rv != ERROR_SUCCESS) {
     VLOG(1) << "Failed to write registry key value: "
-            << brave_vpn::kBraveVpnOneTimeServiceCleanupStoragePath << ":"
+            << brave_vpn::GetBraveVpnOneTimeServiceCleanupStoragePath() << ":"
             << brave_vpn::kBraveVpnOneTimeServiceCleanupValue << "\n"
             << logging::SystemErrorCodeToString(rv);
   }

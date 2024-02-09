@@ -224,7 +224,8 @@ void GetAvailable::OnRequest(GetAvailableCallback callback,
   }
 
   result = ParseBody(response->body, &list, &corrupted_promotions);
-  std::move(callback).Run(result, std::move(list), corrupted_promotions);
+  std::move(callback).Run(result, std::move(list),
+                          std::move(corrupted_promotions));
 }
 
 }  // namespace promotion

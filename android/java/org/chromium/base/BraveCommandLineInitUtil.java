@@ -20,7 +20,7 @@ import java.io.IOException;
 public abstract class BraveCommandLineInitUtil {
     private static final String TAG = "BraveCommandLineInitUtil";
 
-    // Duplicate constant to avoid pull dependancy into base
+    // Duplicate constant to avoid pull dependency into base
     private static final String PREF_QA_VLOG_REWARDS = "qa_vlog_rewards";
     private static final String PREF_QA_COMMAND_LINE = "qa_command_line";
     private static final String TEST_VARIATIONS_SERVER_URL_FILE =

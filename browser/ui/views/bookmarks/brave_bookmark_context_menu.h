@@ -27,6 +27,11 @@ class BraveBookmarkContextMenu : public BookmarkContextMenu {
   BraveBookmarkContextMenu& operator=(const BraveBookmarkContextMenu&) = delete;
 
   ~BraveBookmarkContextMenu() override;
+
+ private:
+  friend class BraveBookmarkContextMenuTest;
+
+  BraveBookmarkContextMenuController* GetControllerForTesting();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BRAVE_BOOKMARK_CONTEXT_MENU_H_

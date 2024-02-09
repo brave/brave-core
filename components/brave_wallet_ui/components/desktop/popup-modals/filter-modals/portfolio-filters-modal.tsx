@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 
@@ -60,7 +59,8 @@ import {
   VerticalDivider,
   VerticalSpacer,
   ScrollableColumn,
-  HorizontalSpace
+  HorizontalSpace,
+  LeoSquaredButton
 } from '../../../shared/style'
 import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
 
@@ -313,16 +313,16 @@ export const PortfolioFiltersModal = (props: Props) => {
       </ScrollableColumn>
 
       <ButtonRow>
-        <Button
+        <LeoSquaredButton
           onClick={onClose}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
-        </Button>
+        </LeoSquaredButton>
         <HorizontalSpace space='16px' />
-        <Button onClick={onSaveChanges}>
+        <LeoSquaredButton onClick={onSaveChanges}>
           {getLocale('braveWalletButtonSaveChanges')}
-        </Button>
+        </LeoSquaredButton>
       </ButtonRow>
     </PopupModal>
   )

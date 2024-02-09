@@ -159,6 +159,7 @@ interface PageHandler {
   GetShouldSendPageContents() => (bool should_send);
   GoPremium();
   RefreshPremiumSession();
+  ManagePremium();
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
@@ -202,6 +203,9 @@ struct ModelWithSubtitle {
 [EnableIf=is_android]
 interface AIChatAndroidHelper {
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
+  CreateOrderId() => (string order_id);
+  FetchOrderCredentials(string order_id) => (string response);
+  RefreshOrder(string order_id) => (string response);
   GetModelsWithSubtitles() => (array<ModelWithSubtitle> models);
 };
 

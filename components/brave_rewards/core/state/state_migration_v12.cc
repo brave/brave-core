@@ -91,15 +91,16 @@ bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
   return true;
 }
 
-void StateMigrationV12::Migrate(LegacyResultCallback callback) {
-  callback(base::ranges::all_of(
-               std::vector{constant::kWalletBitflyer, constant::kWalletGemini,
-                           constant::kWalletUphold},
-               [this](const std::string& wallet_type) {
-                 return MigrateExternalWallet(wallet_type);
-               })
-               ? mojom::Result::OK
-               : mojom::Result::FAILED);
+void StateMigrationV12::Migrate(ResultCallback callback) {
+  std::move(callback).Run(
+      base::ranges::all_of(
+          std::vector{constant::kWalletBitflyer, constant::kWalletGemini,
+                      constant::kWalletUphold},
+          [this](const std::string& wallet_type) {
+            return MigrateExternalWallet(wallet_type);
+          })
+          ? mojom::Result::OK
+          : mojom::Result::FAILED);
 }
 
 }  // namespace brave_rewards::internal::state

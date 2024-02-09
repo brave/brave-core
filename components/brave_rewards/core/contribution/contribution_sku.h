@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
@@ -27,63 +28,63 @@ class ContributionSKU {
 
   void AutoContribution(const std::string& contribution_id,
                         const std::string& wallet_type,
-                        LegacyResultCallback callback);
+                        ResultCallback callback);
 
-  void Merchant(const mojom::SKUTransaction&, LegacyResultCallback callback);
+  void Merchant(const mojom::SKUTransaction&, ResultCallback callback);
 
-  void Retry(mojom::ContributionInfoPtr contribution,
-             LegacyResultCallback callback);
+  void Retry(mojom::ContributionInfoPtr contribution, ResultCallback callback);
 
  private:
   void Start(const std::string& contribution_id,
              const mojom::SKUOrderItem& item,
              const std::string& wallet_type,
-             LegacyResultCallback callback);
+             ResultCallback callback);
 
-  void GetContributionInfo(mojom::ContributionInfoPtr contribution,
-                           const mojom::SKUOrderItem& item,
+  void GetContributionInfo(const mojom::SKUOrderItem& item,
                            const std::string& wallet_type,
-                           LegacyResultCallback callback);
+                           ResultCallback callback,
+                           mojom::ContributionInfoPtr contribution);
 
-  void GetOrder(mojom::Result result,
-                const std::string& order_id,
-                const std::string& contribution_id,
-                LegacyResultCallback callback);
+  void GetOrder(const std::string& contribution_id,
+                ResultCallback callback,
+                mojom::Result result,
+                const std::string& order_id);
 
-  void OnGetOrder(mojom::SKUOrderPtr order,
-                  const std::string& contribution_id,
-                  LegacyResultCallback callback);
+  void OnGetOrder(const std::string& contribution_id,
+                  ResultCallback callback,
+                  mojom::SKUOrderPtr order);
 
-  void Completed(mojom::Result result,
-                 const std::string& contribution_id,
+  void Completed(const std::string& contribution_id,
                  mojom::RewardsType type,
-                 LegacyResultCallback callback);
+                 ResultCallback callback,
+                 mojom::Result result);
 
-  void CredsStepSaved(mojom::Result result,
-                      const std::string& contribution_id,
-                      LegacyResultCallback callback);
+  void CredsStepSaved(const std::string& contribution_id,
+                      ResultCallback callback,
+                      mojom::Result result);
 
-  void GetUnblindedTokens(std::vector<mojom::UnblindedTokenPtr> list,
-                          const mojom::SKUTransaction&,
-                          LegacyResultCallback);
+  void GetUnblindedTokens(const mojom::SKUTransaction&,
+                          ResultCallback,
+                          std::vector<mojom::UnblindedTokenPtr> list);
 
-  void GetOrderMerchant(mojom::SKUOrderPtr,
-                        const credential::CredentialsRedeem&,
-                        LegacyResultCallback);
+  void GetOrderMerchant(const credential::CredentialsRedeem&,
+                        ResultCallback,
+                        mojom::SKUOrderPtr);
 
-  void OnRedeemTokens(mojom::Result, LegacyResultCallback);
+  void OnRedeemTokens(ResultCallback, mojom::Result);
 
-  void OnOrder(mojom::SKUOrderPtr order,
-               std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-               LegacyResultCallback callback);
+  void OnOrder(mojom::ContributionInfoPtr contribution,
+               ResultCallback callback,
+               mojom::SKUOrderPtr order);
 
   void RetryStartStep(mojom::ContributionInfoPtr contribution,
                       mojom::SKUOrderPtr order,
-                      LegacyResultCallback callback);
+                      ResultCallback callback);
 
   const raw_ref<RewardsEngineImpl> engine_;
   credential::CredentialsSKU credentials_;
   sku::SKU sku_;
+  base::WeakPtrFactory<ContributionSKU> weak_factory_{this};
 };
 
 }  // namespace contribution
