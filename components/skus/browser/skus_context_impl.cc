@@ -148,7 +148,7 @@ void shim_get(
       base::BindOnce(
           &OnShimGet,
           std::move(done),
-          std::move(::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key)))),
+          ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))),
           std::move(st_ctx)));
 }
 
