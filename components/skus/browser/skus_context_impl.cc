@@ -110,7 +110,7 @@ void shim_set(skus::SkusContext& ctx,  // NOLINT
   done(std::move(st_ctx), true);
 }
 
-::rust::String shim_get(skus::SkusContext& ctx,  // NOLINT
+void shim_get(skus::SkusContext& ctx,  // NOLINT
                         rust::cxxbridge1::Str key,
                         rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
                                                   rust::String value,
