@@ -3482,7 +3482,7 @@
 "today.rateBraveCardSubtitle" = "ご意見をお聞かせください！";
 
 /* Title shown on the Rate Brave Card */
-"today.rateBraveCardTitle" = "Braveをリンクしますか？";
+"today.rateBraveCardTitle" = "Braveを気に入っていますか？";
 
 /* No comment provided by engineer. */
 "today.refresh" = "更新";
