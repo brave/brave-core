@@ -179,6 +179,31 @@ bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                         account_id.keyring_id);
 }
 
+// Ensure token list contains native tokens when appears empty. Only for BTC
+// and ZEC by now.
+std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
+    const std::string& chain_id,
+    mojom::CoinType coin,
+    std::vector<mojom::BlockchainTokenPtr> tokens) {
+  if (coin != mojom::CoinType::BTC && coin != mojom::CoinType::ZEC) {
+    return tokens;
+  }
+
+  if (!tokens.empty()) {
+    return tokens;
+  }
+
+  if (coin == mojom::CoinType::BTC && IsBitcoinNetwork(chain_id)) {
+    tokens.push_back(GetBitcoinNativeToken(chain_id));
+  }
+
+  if (coin == mojom::CoinType::ZEC && IsZCashNetwork(chain_id)) {
+    tokens.push_back(GetZcashNativeToken(chain_id));
+  }
+
+  return tokens;
+}
+
 }  // namespace
 
 struct PendingDecryptRequest {
@@ -481,7 +506,8 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        GetUserAssetsCallback callback) {
   std::vector<mojom::BlockchainTokenPtr> result =
       GetUserAssets(chain_id, coin, profile_prefs_);
-  std::move(callback).Run(std::move(result));
+  std::move(callback).Run(
+      EnsureNativeTokens(chain_id, coin, std::move(result)));
 }
 
 void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {

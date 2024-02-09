@@ -743,6 +743,19 @@ std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
   return base::ToLowerASCII(*chain_id);
 }
 
+mojom::BlockchainTokenPtr NetworkToNativeToken(
+    const mojom::NetworkInfo& network) {
+  auto result = mojom::BlockchainToken::New();
+
+  result->chain_id = network.chain_id;
+  result->coin = network.coin;
+  result->name = network.symbol_name;
+  result->symbol = network.symbol;
+  result->decimals = network.decimals;
+
+  return result;
+}
+
 }  // namespace
 
 GURL AddInfuraProjectId(const GURL& url) {
@@ -1911,6 +1924,41 @@ std::string GetWeb3ClientVersion() {
 
 std::string WalletInternalErrorMessage() {
   return l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+}
+
+mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id) {
+  mojom::BlockchainTokenPtr result;
+  if (chain_id == GetBitcoinMainnet()->chain_id) {
+    result = NetworkToNativeToken(*GetBitcoinMainnet());
+    result->logo = "btc.png";
+    result->coingecko_id = "btc";
+  } else if (chain_id == GetBitcoinTestnet()->chain_id) {
+    result = NetworkToNativeToken(*GetBitcoinTestnet());
+    // TODO(apaymyshev): testnet has different logo.
+    result->logo = "btc.png";
+    result->coingecko_id = "";
+  } else {
+    NOTREACHED() << chain_id;
+  }
+
+  return result;
+}
+
+mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
+  mojom::BlockchainTokenPtr result;
+  if (chain_id == GetZCashMainnet()->chain_id) {
+    result = NetworkToNativeToken(*GetZCashMainnet());
+    result->logo = "zec.png";
+    result->coingecko_id = "zec";
+  } else if (chain_id == GetZCashTestnet()->chain_id) {
+    result = NetworkToNativeToken(*GetZCashTestnet());
+    result->logo = "zec.png";
+    result->coingecko_id = "zec";
+  } else {
+    NOTREACHED() << chain_id;
+  }
+
+  return result;
 }
 
 }  // namespace brave_wallet

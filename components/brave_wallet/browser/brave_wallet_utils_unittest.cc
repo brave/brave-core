@@ -20,6 +20,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -39,6 +40,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
+using base::test::ParseJsonDict;
 using testing::ElementsAreArray;
 
 namespace brave_wallet {
