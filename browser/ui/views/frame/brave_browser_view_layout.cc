@@ -9,6 +9,8 @@
 #include <limits>
 
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -20,6 +22,7 @@
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout_delegate.h"
+#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "ui/views/border.h"
@@ -137,7 +140,28 @@ int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
     return top;
   }
 
-  return BrowserViewLayout::LayoutTabStripRegion(top);
+  top = BrowserViewLayout::LayoutTabStripRegion(top);
+
+  if (tabs::features::HorizontalTabsUpdateEnabled()) {
+    // If we are not maximized or fullscreen, then insert a medium sized space
+    // between the tab strip and the left (or right, depending upon RTL) edge of
+    // the browser. In maximized or fullscreen mode, we don't want a margin
+    // because the user should be able to select the first tab by clicking the
+    // edge of the screen.
+    if (!browser_view_->IsFullscreen() && !browser_view_->IsMaximized()) {
+      constexpr int kTabStripMargin =
+          brave_tabs::kHorizontalTabStripLeftMargin -
+          brave_tabs::kHorizontalTabInset;
+      static_assert(kTabStripMargin >= 0,
+                    "The tabstrip margin cannot be less than 0.");
+      auto tab_strip_region_view_bounds = tab_strip_region_view_->bounds();
+      tab_strip_region_view_bounds.Inset(
+          gfx::Insets::TLBR(0, kTabStripMargin, 0, 0));
+      tab_strip_region_view_->SetBoundsRect(tab_strip_region_view_bounds);
+    }
+  }
+
+  return top;
 }
 
 int BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(int top,
