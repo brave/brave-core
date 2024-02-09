@@ -22,6 +22,7 @@ class PrefService;
 
 namespace network {
 class SharedURLLoaderFactory;
+class PendingSharedURLLoaderFactory;
 }  // namespace network
 
 namespace skus {
@@ -59,7 +60,8 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
  public:
   explicit SkusServiceImpl(
       PrefService* prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      scoped_refptr<base::SequencedTaskRunner> task_runner);
   ~SkusServiceImpl() override;
 
   SkusServiceImpl(const SkusServiceImpl&) = delete;
@@ -101,8 +103,19 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
       override;
 
   ::rust::Box<skus::CppSDK>& GetOrCreateSDK(const std::string& domain);
+  ::rust::Box<skus::CppSDK>& GetOrCreateSDK(
+      const std::string& domain,
+      std::unique_ptr<network::PendingSharedURLLoaderFactory>
+          pending_url_loader_factory);
 
  private:
+  void PostRefreshOrderTask(
+      const std::string& domain,
+      const std::string& order_id,
+      std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
+      std::unique_ptr<network::PendingSharedURLLoaderFactory>
+          pending_url_loader_factory);
+
   void OnCredentialSummary(
       const std::string& domain,
       mojom::SkusService::CredentialSummaryCallback callback,
@@ -114,6 +127,7 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
 
   raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
   std::unordered_map<std::string, ::rust::Box<skus::CppSDK>> sdk_;
   mojo::ReceiverSet<mojom::SkusService> receivers_;
   base::WeakPtrFactory<SkusServiceImpl> weak_factory_{this};

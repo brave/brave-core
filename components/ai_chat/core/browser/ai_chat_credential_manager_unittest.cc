@@ -13,6 +13,7 @@
 #include "base/i18n/time_formatting.h"
 #include "base/json/values_util.h"
 #include "base/strings/stringprintf.h"
+#include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
@@ -163,7 +164,8 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
-        &prefs_service_, url_loader_factory_.GetSafeWeakWrapper());
+        &prefs_service_, url_loader_factory_.GetSafeWeakWrapper(),
+        base::ThreadPool::CreateSequencedTaskRunner({}));
 
     ai_chat_credential_manager_ = std::make_unique<AIChatCredentialManager>(
         base::BindRepeating(&AIChatCredentialManagerUnitTest::GetSkusService,

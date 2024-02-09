@@ -21,11 +21,13 @@ namespace {
 void OnRefreshOrder(skus::RefreshOrderCallbackState* callback_state,
                     skus::SkusResult result,
                     rust::cxxbridge1::Str order) {
+  LOG(ERROR) << "OnRefreshOrder 0";
   std::string order_str = static_cast<std::string>(order);
   if (callback_state->cb) {
     std::move(callback_state->cb).Run(order_str);
   }
   delete callback_state;
+  LOG(ERROR) << "OnRefreshOrder 2";
 }
 
 void OnFetchOrderCredentials(
@@ -86,8 +88,11 @@ namespace skus {
 
 SkusServiceImpl::SkusServiceImpl(
     PrefService* prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    : prefs_(prefs),
+      url_loader_factory_(url_loader_factory),
+      task_runner_(task_runner) {}
 
 SkusServiceImpl::~SkusServiceImpl() = default;
 
@@ -107,11 +112,27 @@ void SkusServiceImpl::RefreshOrder(
     const std::string& domain,
     const std::string& order_id,
     mojom::SkusService::RefreshOrderCallback callback) {
+  LOG(ERROR) << "SkusServiceImpl::RefreshOrder 0";
   std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
       new skus::RefreshOrderCallbackState);
   cbs->cb = std::move(callback);
-  GetOrCreateSDK(domain)->refresh_order(OnRefreshOrder, std::move(cbs),
-                                        order_id);
+  task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&SkusServiceImpl::PostRefreshOrderTask,
+                                base::Unretained(this), domain, order_id,
+                                std::move(cbs), url_loader_factory_->Clone()));
+  LOG(ERROR) << "SkusServiceImpl::RefreshOrder 1";
+}
+
+void SkusServiceImpl::PostRefreshOrderTask(
+    const std::string& domain,
+    const std::string& order_id,
+    std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
+    std::unique_ptr<network::PendingSharedURLLoaderFactory>
+        pending_url_loader_factory) {
+  LOG(ERROR) << "SkusServiceImpl::PostRefreshOrderTask 0";
+  GetOrCreateSDK(domain, std::move(pending_url_loader_factory))
+      ->refresh_order(OnRefreshOrder, std::move(cbs), order_id);
+  LOG(ERROR) << "SkusServiceImpl::PostRefreshOrderTask 1";
 }
 
 void SkusServiceImpl::FetchOrderCredentials(
@@ -134,6 +155,24 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
   cbs->cb = std::move(callback);
   GetOrCreateSDK(domain)->prepare_credentials_presentation(
       OnPrepareCredentialsPresentation, std::move(cbs), domain, path);
+}
+
+::rust::Box<skus::CppSDK>& SkusServiceImpl::GetOrCreateSDK(
+    const std::string& domain,
+    std::unique_ptr<network::PendingSharedURLLoaderFactory>
+        pending_url_loader_factory) {
+  auto env = GetEnvironmentForDomain(domain);
+  if (sdk_.count(env)) {
+    return sdk_.at(env);
+  }
+
+  auto sdk =
+      initialize_sdk(std::make_unique<skus::SkusContextImpl>(
+                         prefs_, network::SharedURLLoaderFactory::Create(
+                                     std::move(pending_url_loader_factory))),
+                     env);
+  sdk_.insert_or_assign(env, std::move(sdk));
+  return sdk_.at(env);
 }
 
 ::rust::Box<skus::CppSDK>& SkusServiceImpl::GetOrCreateSDK(

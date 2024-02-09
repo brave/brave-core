@@ -186,6 +186,7 @@ SkusContextImpl::SkusContextImpl(
 SkusContextImpl::~SkusContextImpl() = default;
 
 std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
+  LOG(ERROR) << "SkusContextImpl::CreateFetcher 0";
   return std::make_unique<SkusUrlLoaderImpl>(url_loader_factory_);
 }
 
