@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_AI_CHAT_ANDROID_AI_CHAT_MOJOM_HELPER_ANDROID_H_
 
 #include <memory>
+#include <string>
 
 #include "base/android/jni_android.h"
 #include "base/android/scoped_java_ref.h"
@@ -14,6 +15,8 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+
+class PrefService;
 
 namespace ai_chat {
 
@@ -27,6 +30,11 @@ class AIChatMojomHelperAndroid : public mojom::AIChatAndroidHelper {
 
   // mojom::AIChatAndroidHelper methods
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
+  void CreateOrderId(CreateOrderIdCallback callback) override;
+  void FetchOrderCredentials(const std::string& order_id,
+                             FetchOrderCredentialsCallback callback) override;
+  void RefreshOrder(const std::string& order_id,
+                    RefreshOrderCallback callback) override;
   void GetModelsWithSubtitles(GetModelsWithSubtitlesCallback callback) override;
   //
   jlong GetInterfaceToAndroidHelper(JNIEnv* env);
@@ -36,8 +44,17 @@ class AIChatMojomHelperAndroid : public mojom::AIChatAndroidHelper {
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status,
       mojom::PremiumInfoPtr premium_info);
+  void OnCreateOrderId(CreateOrderIdCallback callback,
+                       const std::string& response);
+  void OnFetchOrderCredentials(FetchOrderCredentialsCallback callback,
+                               const std::string& order_id,
+                               const std::string& response);
+  void OnRefreshOrder(RefreshOrderCallback callback,
+                      const std::string& order_id,
+                      const std::string& response);
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
   mojo::ReceiverSet<mojom::AIChatAndroidHelper> receivers_;
+  raw_ptr<PrefService> pref_service_ = nullptr;
   base::WeakPtrFactory<AIChatMojomHelperAndroid> weak_ptr_factory_{this};
 };
 

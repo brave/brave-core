@@ -9,8 +9,6 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
 import DataContext, { AIChatContext } from './context'
 
-const URL_MANAGE_PREMIUM = 'https://account.brave.com/'
-
 function toBlobURL(data: number[] | null) {
   if (!data) return undefined
 
@@ -208,9 +206,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const managePremium = () => {
-    getPageHandlerInstance().pageHandler.openURL({
-      url: URL_MANAGE_PREMIUM
-    })
+    getPageHandlerInstance().pageHandler.managePremium()
   }
 
   const initialiseForTargetTab = async () => {
