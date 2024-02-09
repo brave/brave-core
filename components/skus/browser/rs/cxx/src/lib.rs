@@ -21,18 +21,20 @@ use tracing::debug;
 pub use skus;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
+use crate::storage::{StoragePurgeContext, StorageSetContext, StorageGetContext};
 use errors::result_to_string;
 
+#[derive(Clone)]
 pub struct NativeClientContext {
     environment: skus::Environment,
-    ctx: UniquePtr<ffi::SkusContext>,
+    is_shutdown: Rc<RefCell<bool>>,
+    pool: Rc<RefCell<LocalPool>>,
+    spawner: LocalSpawner,
+    ctx: Rc<RefCell<UniquePtr<ffi::SkusContext>>>,
 }
 
 #[derive(Clone)]
 pub struct NativeClient {
-    is_shutdown: Rc<RefCell<bool>>,
-    pool: Rc<RefCell<LocalPool>>,
-    spawner: LocalSpawner,
     ctx: Rc<RefCell<NativeClientContext>>,
 }
 
@@ -43,6 +45,12 @@ impl fmt::Debug for NativeClient {
 }
 
 impl NativeClient {
+    fn try_run_until_stalled(&self) {
+        self.ctx.borrow().try_run_until_stalled()
+    }
+}
+
+impl NativeClientContext {
     fn try_run_until_stalled(&self) {
         if *self.is_shutdown.borrow() {
             debug!("sdk is shutdown, exiting");
@@ -128,6 +136,9 @@ mod ffi {
     extern "Rust" {
         type HttpRoundtripContext;
         type WakeupContext;
+        type StoragePurgeContext;
+        type StorageSetContext;
+        type StorageGetContext;
 
         type CppSDK;
         fn initialize_sdk(ctx: UniquePtr<SkusContext>, env: String) -> Box<CppSDK>;
@@ -195,9 +206,26 @@ mod ffi {
             ctx: Box<WakeupContext>,
         );
 
-        fn shim_purge(ctx: Pin<&mut SkusContext>);
-        fn shim_set(ctx: Pin<&mut SkusContext>, key: &str, value: &str);
-        fn shim_get(ctx: Pin<&mut SkusContext>, key: &str) -> String;
+        fn shim_purge(
+            ctx: Pin<&mut SkusContext>,
+            done: fn(Box<StoragePurgeContext>, bool),
+            st_ctx: Box<StoragePurgeContext>
+        );
+
+        fn shim_set(
+            ctx: Pin<&mut SkusContext>,
+            key: &str,
+            value: &str,
+            done: fn(Box<StorageSetContext>, bool),
+            st_ctx: Box<StorageSetContext>
+        );
+
+        fn shim_get(
+            ctx: Pin<&mut SkusContext>,
+            key: &str,
+            done: fn(Box<StorageGetContext>, String, bool),
+            st_ctx: Box<StorageGetContext>,
+        );
 
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
@@ -234,10 +262,13 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
     let spawner = pool.spawner();
     let sdk = skus::sdk::SDK::new(
         NativeClient {
-            is_shutdown: Rc::new(RefCell::new(false)),
-            pool: Rc::new(RefCell::new(pool)),
-            spawner: spawner.clone(),
-            ctx: Rc::new(RefCell::new(NativeClientContext { environment: env.clone(), ctx })),
+            ctx: Rc::new(RefCell::new(NativeClientContext {
+                environment: env.clone(),
+                is_shutdown: Rc::new(RefCell::new(false)),
+                pool: Rc::new(RefCell::new(pool)),
+                spawner: spawner.clone(),
+                ctx: Rc::new(RefCell::new(ctx))
+            })),
         },
         env,
         None,
@@ -252,7 +283,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
         }
     }
 
-    sdk.client.pool.borrow_mut().run_until_stalled();
+    sdk.client.ctx.borrow().pool.borrow_mut().run_until_stalled();
 
     Box::new(CppSDK { sdk })
 }
@@ -260,9 +291,9 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
 impl CppSDK {
     fn shutdown(&self) {
         // drop any existing futures
-        drop(self.sdk.client.pool.take());
+        drop(self.sdk.client.ctx.borrow().pool.take());
         // ensure lingering callbacks passed to c++ are short circuited
-        *self.sdk.client.is_shutdown.borrow_mut() = true;
+        *self.sdk.client.ctx.borrow().is_shutdown.borrow_mut() = true;
     }
 
     fn refresh_order(
@@ -271,7 +302,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
         order_id: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
         if spawner
             .spawn_local(refresh_order_task(self.sdk.clone(), callback, callback_state, order_id))
             .is_err()
@@ -288,7 +319,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
         order_id: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
         if spawner
             .spawn_local(fetch_order_credentials_task(
                 self.sdk.clone(),
@@ -311,7 +342,7 @@ impl CppSDK {
         domain: String,
         path: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
         if spawner
             .spawn_local(prepare_credentials_presentation_task(
                 self.sdk.clone(),
@@ -334,7 +365,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
         domain: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
         if spawner
             .spawn_local(credential_summary_task(
                 self.sdk.clone(),
@@ -357,7 +388,7 @@ impl CppSDK {
         order_id: String,
         receipt: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
         if spawner
             .spawn_local(submit_receipt_task(
                 self.sdk.clone(),
@@ -379,7 +410,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CreateOrderFromReceiptCallbackState>,
         receipt: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.ctx.borrow().spawner.clone();
         if spawner
             .spawn_local(create_order_from_receipt_task(
                 self.sdk.clone(),
