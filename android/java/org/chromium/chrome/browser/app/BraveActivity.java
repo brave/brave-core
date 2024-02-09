@@ -795,8 +795,8 @@ public abstract class BraveActivity extends ChromeActivity
 
             // has onBrowsingDataCleared() as an @Override callback from implementing
             // BrowsingDataBridge.OnClearBrowsingDataListener
-            BrowsingDataBridge.getInstance().clearBrowsingData(
-                    this, dataTypesArray, TimePeriod.ALL_TIME);
+            BrowsingDataBridge.getForProfile(getCurrentProfile())
+                    .clearBrowsingData(this, dataTypesArray, TimePeriod.ALL_TIME);
         }
 
         setLoadedFeed(false);
