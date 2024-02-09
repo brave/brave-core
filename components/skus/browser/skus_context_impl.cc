@@ -120,8 +120,8 @@ void shim_get(
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) {
   done(
-      std::move(st_ctx), 
-      ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))), 
+      std::move(st_ctx),
+      ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))),
       true
   );
 }
