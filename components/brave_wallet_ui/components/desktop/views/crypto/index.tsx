@@ -14,6 +14,7 @@ import {
 import { useSelector } from 'react-redux'
 
 // utils
+import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
 import {
   useSafeWalletSelector,
@@ -39,6 +40,7 @@ import { StyledWrapper } from './style'
 import { Column } from '../../../shared/style'
 
 // components
+import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
 import { WalletBanner } from '../../wallet-banner/index'
 import {
   EditVisibleAssetsModal //
@@ -69,6 +71,8 @@ export interface Props {
 }
 
 export const CryptoView = ({ sessionRoute }: Props) => {
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
@@ -150,6 +154,8 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     }
   }, [location.key])
 
+  const { pageHandler } = getWalletPageApiProxy()
+
   // computed
   const isCheckingWallets =
     isCheckingInstalledExtensions ||
@@ -198,7 +204,13 @@ export const CryptoView = ({ sessionRoute }: Props) => {
               onDismiss={() => {
                 setDismissBackupWarning(true)
               }}
-              onClick={onShowBackup}
+              onClick={() => {
+                if (isAndroid) {
+                  pageHandler.showApprovePanelUI()
+                } else {
+                  onShowBackup()
+                }
+              }}
               bannerType='danger'
               buttonText={getLocale('braveWalletBackupButton')}
               description={getLocale('braveWalletBackupWarningText')}
