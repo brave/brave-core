@@ -185,12 +185,12 @@ export default function Component({ feed, onSessionStart }: Props) {
       }
 
       const key = getKey(item, index)
-      return <>
+      return <div key={`${key}-container`}>
         <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} ref={index === count - 1 ? setLastCardRef : undefined}>
           {el}
         </div>
         <div key={`${key}-counter`} {...{ [CARD_COUNT_ATTRIBUTE]: currentCardCount }} ref={registerViewDepthObservation} />
-      </>
+      </div>
     })
   }, [cardCount, feed?.items])
 
