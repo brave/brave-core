@@ -97,8 +97,12 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
 
   if (media_detector_script_) {
     v8::Local<v8::Context> context =
+#if !BUILDFLAG(IS_ANDROID)
         render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
             isolate, isolated_world_id_);
+#else
+        render_frame()->GetWebFrame()->MainWorldScriptContext();
+#endif
     v8::Local<v8::Function> on_media_detected =
         gin::CreateFunctionTemplate(
             isolate,

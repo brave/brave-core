@@ -31,19 +31,6 @@
 
 namespace playlist {
 
-namespace {
-
-constexpr int32_t kInvalidWorldID = -1;
-
-int32_t g_playlist_javascript_world_id = kInvalidWorldID;
-bool g_run_script_on_main_world = false;
-
-bool PlaylistJavaScriptWorldIdIsSet() {
-  return g_playlist_javascript_world_id != kInvalidWorldID;
-}
-
-}  // namespace
-
 PlaylistDownloadRequestManager::Request::Request() = default;
 PlaylistDownloadRequestManager::Request&
 PlaylistDownloadRequestManager::Request::operator=(
@@ -51,24 +38,6 @@ PlaylistDownloadRequestManager::Request::operator=(
 PlaylistDownloadRequestManager::Request::Request(
     PlaylistDownloadRequestManager::Request&&) noexcept = default;
 PlaylistDownloadRequestManager::Request::~Request() = default;
-
-// static
-void PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
-    const int32_t id) {
-  // Never allow running in main world (0).
-  CHECK(id > content::ISOLATED_WORLD_ID_CONTENT_END);
-  // Only allow ID to be set once.
-  if (PlaylistJavaScriptWorldIdIsSet()) {
-    CHECK_IS_TEST();
-  }
-  g_playlist_javascript_world_id = id;
-}
-
-// static
-void PlaylistDownloadRequestManager::SetRunScriptOnMainWorldForTest() {
-  CHECK_IS_TEST();
-  g_run_script_on_main_world = true;
-}
 
 PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
     PlaylistService* service,
@@ -136,7 +105,6 @@ void PlaylistDownloadRequestManager::FetchPendingRequest() {
 
 void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
   DVLOG(2) << __func__;
-  CHECK(PlaylistJavaScriptWorldIdIsSet());
 
   DCHECK_GE(in_progress_urls_count_, 0);
   in_progress_urls_count_++;
@@ -205,25 +173,6 @@ PlaylistDownloadRequestManager::GetPlaylistItems(
   FetchPendingRequest();
 
   return items;
-
-// TODO(sszaloki):
-#if BUILDFLAG(IS_ANDROID)
-  // content::RenderFrameHost::AllowInjectingJavaScript();
-  // PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-  //     content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
-  //     base::UTF8ToUTF16(media_detector_script), std::move(callback));
-#else
-  // if (g_run_script_on_main_world) {
-  //   PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-  //       content::ISOLATED_WORLD_ID_GLOBAL /* main_world*/,
-  //       base::UTF8ToUTF16(media_detector_script), std::move(callback));
-  // } else {
-  //   CHECK(PlaylistJavaScriptWorldIdIsSet());
-  //   PlaylistTabHelper::FromWebContents(contents)->RequestAsyncExecuteScript(
-  //       g_playlist_javascript_world_id,
-  //       base::UTF8ToUTF16(media_detector_script), std::move(callback));
-  // }
-#endif
 }
 
 std::vector<mojom::PlaylistItemPtr>

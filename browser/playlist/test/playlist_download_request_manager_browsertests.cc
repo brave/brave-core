@@ -41,8 +41,6 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   };
 
   PlaylistDownloadRequestManagerBrowserTest() {
-    playlist::PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
     scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
   }
 

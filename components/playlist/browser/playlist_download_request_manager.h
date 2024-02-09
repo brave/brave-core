@@ -39,9 +39,6 @@ class PlaylistService;
 // by injecting media detector script to dedicated WebContents.
 class PlaylistDownloadRequestManager {
  public:
-  static void SetRunScriptOnMainWorldForTest();
-  static void SetPlaylistJavaScriptWorldId(const int32_t id);
-
   struct Request {
     using Callback =
         base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)>;
