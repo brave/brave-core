@@ -299,11 +299,9 @@ pub fn extract_dom(
 
             let mut val: String = String::from("<meta ");
             for attr in attributes.map.iter() {
-                val =
-                    [val, format!(" {}=\"{}\" ", attr.0.local, attr.1.value.to_string())].concat();
+                val += &format!(" {}=\"{}\" ", attr.0.local, attr.1.value.to_string());
             }
-            val += ">";
-            content = val + &content;
+            content = val + ">" + &content;
         }
     }
 
@@ -322,18 +320,18 @@ pub fn extract_dom(
     if theme.is_some() || font_family.is_some() || font_size.is_some() || column_width.is_some() {
         let mut header: String = String::from("<html");
         if let Some(theme) = theme {
-            header = [header, format!(" data-theme=\"{}\"", theme)].concat();
+            header += &format!(" data-theme=\"{}\"", theme);
         }
         if let Some(font_family) = font_family {
-            header = [header, format!(" data-font-family=\"{}\"", font_family)].concat();
+            header += &format!(" data-font-family=\"{}\"", font_family);
         }
         if let Some(font_size) = font_size {
-            header = [header, format!(" data-font-size=\"{}\"", font_size)].concat();
+            header += &format!(" data-font-size=\"{}\"", font_size);
         }
         if let Some(column_width) = column_width {
-            header = [header, format!(" data-column-width=\"{}\"", column_width)].concat();
+            header += &format!(" data-column-width=\"{}\"", column_width);
         }
-        content = [header, ">".to_string(), content, "</html>".to_string()].concat();
+        content = header + ">" + &content + "</html>";
     }
 
     Ok(Product { meta, content })
