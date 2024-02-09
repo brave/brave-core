@@ -863,7 +863,6 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         ButtonDataProvider.class,
-                        Callback.class,
                         Supplier.class,
                         Supplier.class,
                         BooleanSupplier.class,
