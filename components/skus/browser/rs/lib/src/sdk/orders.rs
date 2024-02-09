@@ -244,7 +244,7 @@ where
         Ok(order)
     }
 
-    #[instrument(err(level = Level::WARN), ret)]
+    #[instrument]
     // create_order_from_receipt allows for order creation with a vendor receipt, returning the
     // order id of the created order
     pub async fn create_order_from_receipt(&self, receipt: &str) -> Result<String, InternalError> {
