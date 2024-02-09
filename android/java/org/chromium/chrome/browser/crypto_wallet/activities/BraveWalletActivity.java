@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +55,13 @@ import java.util.List;
  * Main Brave Wallet activity
  */
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
+
+    public static final String IS_FROM_DAPPS = "isFromDapps";
+    public static final String RESTART_WALLET_ACTIVITY = "restartWalletActivity";
+    public static final String RESTART_WALLET_ACTIVITY_SETUP = "restartWalletActivitySetup";
+    public static final String RESTART_WALLET_ACTIVITY_RESTORE = "restartWalletActivityRestore";
+    public static final String SHOW_WALLET_ACTIVITY_BACKUP = "showWalletActivityBackup";
+
     private static final String TAG = "BWalletBaseActivity";
 
     /**
@@ -87,6 +95,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private WalletModel mWalletModel;
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
+    private boolean mBackupWallet;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,12 +127,14 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet);
         mIsFromDapps = false;
-        if (getIntent() != null) {
-            mIsFromDapps = getIntent().getBooleanExtra(Utils.IS_FROM_DAPPS, false);
+        final Intent intent = getIntent();
+        if (intent != null) {
+            mIsFromDapps = intent.getBooleanExtra(IS_FROM_DAPPS, false);
             mRestartSetupAction =
-                    getIntent().getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, false);
+                    intent.getBooleanExtra(RESTART_WALLET_ACTIVITY_SETUP, false);
             mRestartRestoreAction =
-                    getIntent().getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, false);
+                    intent.getBooleanExtra(RESTART_WALLET_ACTIVITY_RESTORE, false);
+            mBackupWallet = intent.getBooleanExtra(SHOW_WALLET_ACTIVITY_BACKUP, false);
         }
         mShowBiometricPrompt = true;
 
@@ -173,6 +184,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     isLocked -> {
                         if (isLocked) {
                             setNavigationFragments(WalletAction.UNLOCK);
+                        } else if (mBackupWallet) {
+                            showOnboardingLayout();
                         } else {
                             showMainLayout();
                         }

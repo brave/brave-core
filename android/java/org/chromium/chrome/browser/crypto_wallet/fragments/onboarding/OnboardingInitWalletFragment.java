@@ -26,7 +26,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 
 /**
  * Initial onboarding fragment to setup Brave Wallet.
@@ -136,9 +136,9 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "checkOnBraveActivity " + e);
             Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
-            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY, true);
-            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
-            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
+            intent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY, true);
+            intent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
+            intent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             intent.setAction(Intent.ACTION_VIEW);
             startActivity(intent);
