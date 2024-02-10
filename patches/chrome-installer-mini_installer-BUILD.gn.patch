@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index b94944f6d55272924a363109bd5507c4628ee399..0e01e22416ec1bb9502d5c83c583dc8800bd4980 100644
+index b94944f6d55272924a363109bd5507c4628ee399..38dac84718877f8764ac67da34be31542375cdcb 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -137,7 +137,7 @@ if (enable_uncompressed_archive) {
@@ -11,12 +11,11 @@ index b94944f6d55272924a363109bd5507c4628ee399..0e01e22416ec1bb9502d5c83c583dc88
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -323,7 +323,7 @@ if (enable_uncompressed_archive) {
-   generate_mini_installer("mini_installer_uncompressed") {
-     rc_file = packed_files_rc_file_uncompressed
+@@ -312,6 +312,7 @@ template("generate_mini_installer") {
+       no_default_deps = true
+       ldflags += [ "/ENTRY:MainEntryPoint" ]
+     }
++if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} generate_mini_installer("delta_installer_unsigned") { rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] if (false) {
    }
--}
-+sources -= [packed_files_rc_file] sources += [invoker.packed_files_rc_file] if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} mini_installer("mini_installer") { packed_files_rc_file = packed_files_rc_file } mini_installer("delta_installer_unsigned") { packed_files_rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] }
+ }
  
- # previous_version_mini_installer.exe can't be generated in an x86 Debug
- # component build because it requires too much memory.
