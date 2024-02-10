@@ -299,7 +299,7 @@ pub fn extract_dom(
 
             let mut val: String = String::from("<meta ");
             for attr in attributes.map.iter() {
-                val += &format!(" {}=\"{}\" ", attr.0.local, attr.1.value.to_string());
+                val += &format!(" {}=\"{}\" ", attr.0.local, attr.1.value);
             }
             content = val + ">" + &content;
         }
