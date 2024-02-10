@@ -14,6 +14,8 @@
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
+#include "components/bookmarks/browser/bookmark_model.h"
+#include "components/browsing_data/core/counters/bookmark_counter.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -28,6 +30,8 @@ namespace {
 constexpr const int kPagesLoadedBuckets[] = {0, 10, 50, 100, 500, 1000};
 constexpr const int kDomainsLoadedBuckets[] = {0, 4, 10, 30, 50, 100};
 constexpr const int kFailedHTTPSUpgradeBuckets[] = {0, 25, 50, 100, 300, 700};
+constexpr const int kBookmarkCountBuckets[] = {0,   5,    20,   100,
+                                               500, 1000, 5000, 10000};
 
 constexpr base::TimeDelta kReportInterval = base::Minutes(30);
 constexpr base::TimeDelta kInitReportDelay = base::Seconds(30);
@@ -43,7 +47,8 @@ using HttpsEvent = security_interstitials::https_only_mode::Event;
 
 PageMetrics::PageMetrics(PrefService* local_state,
                          HostContentSettingsMap* host_content_settings_map,
-                         history::HistoryService* history_service)
+                         history::HistoryService* history_service,
+                         bookmarks::BookmarkModel* bookmark_model)
     : local_state_(local_state),
       host_content_settings_map_(host_content_settings_map),
       history_service_(history_service) {
@@ -67,6 +72,14 @@ PageMetrics::PageMetrics(PrefService* local_state,
           kMiscMetricsFailedHTTPSUpgradeMetricAddedTime)) {
     local_state_->SetTime(kMiscMetricsFailedHTTPSUpgradeMetricAddedTime,
                           base::Time::Now().LocalMidnight());
+  }
+
+  if (bookmark_model) {
+    bookmark_counter_ =
+        std::make_unique<browsing_data::BookmarkCounter>(bookmark_model);
+    bookmark_counter_->InitWithoutPref(
+        {}, base::BindRepeating(&PageMetrics::OnBookmarkCountResult,
+                                base::Unretained(this)));
   }
 }
 
@@ -149,6 +162,7 @@ void PageMetrics::ReportAllMetrics() {
   ReportDomainsLoaded();
   ReportPagesLoaded();
   ReportFailedHTTPSUpgrades();
+  ReportBookmarkCount();
   periodic_report_timer_.Start(
       FROM_HERE, base::Time::Now() + kReportInterval,
       base::BindOnce(&PageMetrics::ReportAllMetrics, base::Unretained(this)));
@@ -264,6 +278,26 @@ void PageMetrics::OnDomainDiversityResult(
   p3a_utils::RecordToHistogramBucket(kDomainsLoadedHistogramName,
                                      kDomainsLoadedBuckets, count);
   VLOG(2) << "PageMetrics: domains loaded report, count = " << count;
+}
+
+void PageMetrics::OnBookmarkCountResult(
+    std::unique_ptr<browsing_data::BrowsingDataCounter::Result> result) {
+  if (!result || !result->Finished()) {
+    return;
+  }
+  auto* finished_result =
+      static_cast<browsing_data::BrowsingDataCounter::FinishedResult*>(
+          result.get());
+  p3a_utils::RecordToHistogramBucket(kBookmarkCountHistogramName,
+                                     kBookmarkCountBuckets,
+                                     finished_result->Value());
+}
+
+void PageMetrics::ReportBookmarkCount() {
+  if (!bookmark_counter_) {
+    return;
+  }
+  bookmark_counter_->Restart();
 }
 
 }  // namespace misc_metrics

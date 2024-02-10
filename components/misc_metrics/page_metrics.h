@@ -14,12 +14,21 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
+#include "components/browsing_data/core/counters/browsing_data_counter.h"
 #include "components/history/core/browser/history_types.h"
 
 class HostContentSettingsMap;
 class PrefRegistrySimple;
 class PrefService;
 class WeeklyStorage;
+
+namespace browsing_data {
+class BookmarkCounter;
+}  // namespace browsing_data
+
+namespace bookmarks {
+class BookmarkModel;
+}  // namespace bookmarks
 
 namespace history {
 class HistoryService;
@@ -34,12 +43,17 @@ inline constexpr char kDomainsLoadedHistogramName[] =
     "Brave.Core.DomainsLoaded";
 inline constexpr char kFailedHTTPSUpgradesHistogramName[] =
     "Brave.Core.FailedHTTPSUpgrades";
+inline constexpr char kBookmarkCountHistogramName[] =
+    "Brave.Core.BookmarkCount";
 
+// Manages browser page loading metrics, including page load counts,
+// failed HTTPS upgrades, and bookmarks.
 class PageMetrics {
  public:
   PageMetrics(PrefService* local_state,
               HostContentSettingsMap* host_content_settings_map,
-              history::HistoryService* history_service);
+              history::HistoryService* history_service,
+              bookmarks::BookmarkModel* bookmark_model);
   ~PageMetrics();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
@@ -53,6 +67,7 @@ class PageMetrics {
   void ReportDomainsLoaded();
   void ReportPagesLoaded();
   void ReportFailedHTTPSUpgrades();
+  void ReportBookmarkCount();
 
   void OnHttpsNavigationEvent(const char* histogram_name,
                               uint64_t name_hash,
@@ -64,6 +79,9 @@ class PageMetrics {
   void OnDomainDiversityResult(
       std::pair<history::DomainDiversityResults,
                 history::DomainDiversityResults> result);
+
+  void OnBookmarkCountResult(
+      std::unique_ptr<browsing_data::BrowsingDataCounter::Result> result);
 
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
   std::unique_ptr<WeeklyStorage> pages_reloaded_storage_;
@@ -79,6 +97,8 @@ class PageMetrics {
       https_navigation_event_observer_;
   std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>
       interstitial_decision_observer_;
+
+  std::unique_ptr<browsing_data::BookmarkCounter> bookmark_counter_;
 
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
