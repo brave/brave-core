@@ -34,6 +34,7 @@ class PlaylistRenderFrameObserver final
       delete;
 
   void RunScriptsAtDocumentStart();
+  void RunScriptsAtDocumentEnd();
 
  private:
   ~PlaylistRenderFrameObserver() override;

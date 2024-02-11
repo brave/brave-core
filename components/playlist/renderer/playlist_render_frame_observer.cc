@@ -94,8 +94,14 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
     Inject(*media_source_api_suppressor_script_,
            render_frame()->GetWebFrame()->MainWorldScriptContext());
   }
+}
 
+void PlaylistRenderFrameObserver::RunScriptsAtDocumentEnd() {
   if (media_detector_script_) {
+    v8::Isolate* isolate = blink::MainThreadIsolate();
+    v8::Isolate::Scope isolate_scope(isolate);
+    v8::HandleScope handle_scope(isolate);
+
     v8::Local<v8::Context> context =
 #if !BUILDFLAG(IS_ANDROID)
         render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
