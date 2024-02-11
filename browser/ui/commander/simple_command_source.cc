@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/commander/brave_simple_command_source.h"
+#include "brave/browser/ui/commander/simple_command_source.h"
 
 #include <memory>
 #include <string>
@@ -16,16 +16,16 @@
 #include "chrome/browser/ui/accelerator_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/commander/command_source.h"
-#include "chrome/browser/ui/commander/fuzzy_finder.h"
+#include "brave/browser/ui/commander/command_source.h"
+#include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "ui/base/accelerators/accelerator.h"
 
 namespace commander {
 
-BraveSimpleCommandSource::BraveSimpleCommandSource() = default;
-BraveSimpleCommandSource::~BraveSimpleCommandSource() = default;
+SimpleCommandSource::SimpleCommandSource() = default;
+SimpleCommandSource::~SimpleCommandSource() = default;
 
-CommandSource::CommandResults BraveSimpleCommandSource::GetCommands(
+CommandSource::CommandResults SimpleCommandSource::GetCommands(
     const std::u16string& input,
     Browser* browser) const {
   auto commands = commands::GetCommands();

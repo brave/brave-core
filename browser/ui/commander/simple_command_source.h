@@ -6,17 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_COMMANDER_BRAVE_SIMPLE_COMMAND_SOURCE_H_
 #define BRAVE_BROWSER_UI_COMMANDER_BRAVE_SIMPLE_COMMAND_SOURCE_H_
 
-#include "chrome/browser/ui/commander/command_source.h"
+#include "brave/browser/ui/commander/command_source.h"
 
 namespace commander {
 
-class BraveSimpleCommandSource : public CommandSource {
+class SimpleCommandSource : public CommandSource {
  public:
-  BraveSimpleCommandSource();
-  ~BraveSimpleCommandSource() override;
+  SimpleCommandSource();
+  ~SimpleCommandSource() override;
 
-  BraveSimpleCommandSource(const BraveSimpleCommandSource& other) = delete;
-  BraveSimpleCommandSource& operator=(const BraveSimpleCommandSource& other) =
+  SimpleCommandSource(const SimpleCommandSource& other) = delete;
+  SimpleCommandSource& operator=(const SimpleCommandSource& other) =
       delete;
 
   // CommandSource:
