@@ -11,7 +11,9 @@
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/toolbar/app_menu_icons.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -21,6 +23,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/ui_base_features.h"
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -44,6 +47,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/toolbar/brave_vpn_menu_model.h"
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/browser/ui/commander/commander_service.h"
 #endif
 
 namespace {
@@ -145,8 +152,9 @@ ipfs::IpnsKeysManager* GetIpnsKeysManager(
     content::BrowserContext* browser_context) {
   DCHECK(browser_context);
   auto* service = ipfs::IpfsServiceFactory::GetForContext(browser_context);
-  if (!service)
+  if (!service) {
     return nullptr;
+  }
   return service->GetIpnsKeysManager();
 }
 
@@ -375,6 +383,16 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
     need_separator = false;
   }
 
+#if BUILDFLAG(ENABLE_COMMANDER)
+  if (auto index =
+          more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
+    if (commander::IsEnabled()) {
+      more_tools_menu_model->InsertItemWithStringIdAt(*index + 1, IDC_COMMANDER,
+                                                      IDS_IDC_COMMANDER);
+    }
+  }
+#endif
+
   if (auto index =
           more_tools_menu_model->GetIndexOfCommandId(IDC_TASK_MANAGER)) {
     more_tools_menu_model->InsertItemWithStringIdAt(*index, IDC_DEV_TOOLS,
@@ -456,12 +474,14 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
   if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
       id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
     int ipfs_command = GetSelectedIPFSCommandId(id);
-    if (ipfs_command == -1)
+    if (ipfs_command == -1) {
       return;
+    }
     auto* submenu = ipns_keys_submenu_models_[ipfs_command].get();
     std::optional<size_t> command_index = submenu->GetIndexOfCommandId(id);
-    if (!command_index.has_value())
+    if (!command_index.has_value()) {
       return;
+    }
     auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index.value()));
     auto key_name = (command_index.value() > 0) ? label : std::string();
     ExecuteIPFSCommand(ipfs_command, key_name);
@@ -483,8 +503,9 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
       static_cast<content::BrowserContext*>(browser()->profile());
   if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
       id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
-    if (!IpnsKeysAvailable(browser_context))
+    if (!IpnsKeysAvailable(browser_context)) {
       return false;
+    }
     return true;
   }
   switch (id) {
@@ -511,8 +532,9 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
 int BraveAppMenuModel::AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
                                             ipfs::IpnsKeysManager* manager,
                                             int key_command_id) {
-  if (!manager)
+  if (!manager) {
     return 0;
+  }
   int command_id = key_command_id;
 
   for (const auto& it : manager->GetKeys()) {
@@ -532,8 +554,9 @@ void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
   auto* active_content = browser()->tab_strip_model()->GetActiveWebContents();
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_content);
-  if (!helper)
+  if (!helper) {
     return;
+  }
   switch (id) {
     case IDC_APP_MENU_IPFS_SHARE_LOCAL_FILE:
     case IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FILE:
@@ -550,8 +573,9 @@ void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
 int BraveAppMenuModel::GetSelectedIPFSCommandId(int id) const {
   for (const auto& it : ipns_keys_submenu_models_) {
     std::optional<size_t> index = it.second->GetIndexOfCommandId(id);
-    if (!index.has_value())
+    if (!index.has_value()) {
       continue;
+    }
     return it.first;
   }
   return -1;
@@ -562,8 +586,9 @@ int BraveAppMenuModel::AddIpfsImportMenuItem(int action_command_id,
                                              int keys_command_id) {
   content::BrowserContext* browser_context =
       static_cast<content::BrowserContext*>(browser()->profile());
-  if (!IpnsKeysAvailable(browser_context))
+  if (!IpnsKeysAvailable(browser_context)) {
     return 0;
+  }
   DCHECK(!ipns_keys_submenu_models_.count(action_command_id));
   ipns_keys_submenu_models_[action_command_id] =
       std::make_unique<ui::SimpleMenuModel>(this);
@@ -613,8 +638,9 @@ std::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
   for (size_t i = 0; i < commands_size; i++) {
     std::optional<size_t> item_index =
         GetIndexOfCommandId(commands_to_check[i]);
-    if (item_index.has_value())
+    if (item_index.has_value()) {
       return insert_next ? item_index.value() + 1 : item_index;
+    }
   }
 
   NOTREACHED() << "At least, a menu item for this command should exist: "

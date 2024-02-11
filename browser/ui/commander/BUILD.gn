@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//testing/libfuzzer/fuzzer_test.gni")
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -12,6 +14,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//brave/components/commander/browser",
+    "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
@@ -26,13 +29,43 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "ranker_unittest.cc" ]
+  sources = [
+    "entity_match_unittest.cc",
+    "fuzzy_finder_unittest.cc",
+    "ranker_unittest.cc",
+  ]
+
   deps = [
+    ":fuzzy_finder",
     "//base",
     "//brave/components/commander/browser",
     "//chrome/browser/ui",
+    "//chrome/test:test_support",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//testing/gtest",
+  ]
+}
+
+source_set("fuzzy_finder") {
+  sources = [
+    "fuzzy_finder.cc",
+    "fuzzy_finder.h",
+  ]
+
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
+
+  deps = [
+    "//base:base",
+    "//base:i18n",
+    "//ui/gfx/range",
+  ]
+}
+
+fuzzer_test("fuzzy_finder_fuzzer") {
+  sources = [ "fuzzy_finder_fuzzer.cc" ]
+  deps = [
+    ":fuzzy_finder",
+    "//base:base",
   ]
 }

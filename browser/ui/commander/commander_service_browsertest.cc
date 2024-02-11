@@ -25,9 +25,11 @@
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/omnibox_view.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/base/l10n/l10n_util.h"
 
 class CommanderServiceBrowserTest : public InProcessBrowserTest {
  public:
@@ -194,15 +196,17 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
                        MAYBE_CompositeCommandsCanBeSelected) {
   omnibox()->SetUserText(
-      base::StrCat({commander::kCommandPrefix, u" Pin tab"}));
+      base::StrCat({commander::kCommandPrefix, u" ",
+                    l10n_util::GetStringUTF16(IDS_IDC_WINDOW_PIN_TAB)}));
 
   EXPECT_LE(1, commander()->GetResultSetId());
 
   auto items = commander()->GetItems();
   ASSERT_EQ(3u, items.size());
-  EXPECT_EQ(u"Pin tab", items[0].title);
-  EXPECT_EQ(u"Pin tab…", items[1].title);
-  EXPECT_EQ(u"Close unpinned tabs", items[2].title);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_WINDOW_PIN_TAB), items[0].title);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_COMMANDER_PIN_TAB), items[1].title);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_WINDOW_CLOSE_UNPINNED_TABS),
+            items[2].title);
 
   commander()->SelectCommand(1, 1);
   EXPECT_LE(2, commander()->GetResultSetId());

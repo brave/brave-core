@@ -37,6 +37,8 @@ IDS_MUTE_TAB_MAC).command_id(IDC_TOGGLE_TAB_MUTE), \
 IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS).command_id(IDC_CLOSE_DUPLICATE_TABS), \
               Item(kCloseOtherTabsResourceId
 
+// TODO(fallaciousreasoning): Add menu item for COMMANDER
+
 #include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"
 #undef IDS_MUTE_SITE_MAC
 #define IDS_MUTE_SITE_MAC kMuteSiteResourceId

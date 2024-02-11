@@ -501,10 +501,6 @@
 # was not initialized in test.
 -RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
 
-# This test fails because we changed the behavior of the fuzzy finder to match
-# the empty string.
--CommanderFuzzyFinder.EmptyStringDoesNotMatch
-
 # Flaky upstream test.
 -EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
 
