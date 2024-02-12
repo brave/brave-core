@@ -45,7 +45,18 @@ class SkusContextImpl : public SkusContext {
   ~SkusContextImpl() override;
 
   std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const override;
-  std::string GetValueFromStore(std::string key) const override;
+  void ScheduleGetValueFromStore(
+      std::string key,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                                rust::String value,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const override;
+  void GetValueFromStore(
+      std::string key,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                                rust::String value,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const override;
   void SchedulePurgeStore(
       rust::cxxbridge1::Fn<
           void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>

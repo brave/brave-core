@@ -141,12 +141,8 @@ void shim_get(
                               rust::String value,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &OnShimGet, std::move(done),
-          ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))),
-          std::move(st_ctx)));
+  ctx.ScheduleGetValueFromStore(static_cast<std::string>(key), std::move(done),
+                                std::move(st_ctx));
 }
 
 void shim_scheduleWakeup(
@@ -190,14 +186,37 @@ std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
   return std::make_unique<SkusUrlLoaderImpl>(url_loader_factory_);
 }
 
-std::string SkusContextImpl::GetValueFromStore(std::string key) const {
+void SkusContextImpl::ScheduleGetValueFromStore(
+    std::string key,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String value,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const {
+  VLOG(1) << "shim_get: `" << key << "`";
+  ui_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&SkusContextImpl::GetValueFromStore,
+                                base::Unretained(this), key, std::move(done),
+                                std::move(st_ctx)));
+}
+
+void SkusContextImpl::GetValueFromStore(
+    std::string key,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String value,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const {
   VLOG(1) << "shim_get: `" << key << "`";
   const auto& state = prefs_->GetDict(prefs::kSkusState);
   const base::Value* value = state.Find(key);
+
+  std::string result;
   if (value) {
-    return value->GetString();
+    result = value->GetString();
   }
-  return "";
+
+  sdk_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimGet, std::move(done), result, std::move(st_ctx)));
 }
 
 void SkusContextImpl::SchedulePurgeStore(
