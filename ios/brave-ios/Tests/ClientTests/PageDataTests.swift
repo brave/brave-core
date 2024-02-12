@@ -16,7 +16,19 @@ final class PageDataTests: XCTestCase {
     let mainFrameURL = URL(string: "http://example.com")!
     let subFrameURL = URL(string: "http://example.com/1p/subframe")!
     let upgradedMainFrameURL = URL(string: "https://example.com")!
-    var pageData = PageData(mainFrameURL: mainFrameURL, adBlockStats: AdBlockStats())
+    var pageData = PageData(
+      mainFrameURL: mainFrameURL,
+      groupsManager: AdBlockGroupsManager(
+        standardManager: AdBlockEngineManager(
+          engineType: .standard,
+          cacheFolderName: "test_standard"
+        ),
+        aggressiveManager: AdBlockEngineManager(
+          engineType: .standard,
+          cacheFolderName: "test_aggressive"
+        )
+      )
+    )
     let expectation = expectation(description: "")
 
     Task { @MainActor in

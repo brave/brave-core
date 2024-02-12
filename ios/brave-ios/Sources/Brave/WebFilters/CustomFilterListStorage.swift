@@ -67,7 +67,7 @@ import Foundation
 
 extension CustomFilterListStorage {
   /// Gives us source representations of all the enabled custom filter lists
-  @MainActor var enabledSources: [CachedAdBlockEngine.Source] {
+  @MainActor var enabledSources: [GroupedAdBlockEngine.Source] {
     return
       filterListsURLs
       .filter(\.setting.isEnabled)

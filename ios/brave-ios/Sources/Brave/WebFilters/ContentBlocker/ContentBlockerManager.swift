@@ -435,7 +435,7 @@ actor ContentBlockerManager {
       guard filterList.isEnabled else { return nil }
       return .filterList(
         componentId: filterList.entry.componentId,
-        isAlwaysAggressive: filterList.isAlwaysAggressive
+        isAlwaysAggressive: filterList.engineType.isAlwaysAggressive
       )
     }
 
