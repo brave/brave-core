@@ -176,12 +176,12 @@ void SequentialUpdateChecker::UpdateResultAvailable(
 
 void SequentialUpdateChecker::SetPersistedFlag(const std::string& extension_id,
                                                const std::string& key) {
-  update_context_->persisted_data->SetString(extension_id, key, "true");
+  update_context_->persisted_data->BraveSetBool(extension_id, key);
 }
 
 bool SequentialUpdateChecker::GetPersistedFlag(const std::string& extension_id,
                                                const std::string& key) {
-  return !update_context_->persisted_data->GetString(extension_id, key).empty();
+  return update_context_->persisted_data->BraveGetBool(extension_id, key);
 }
 
 #endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
