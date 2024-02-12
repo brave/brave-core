@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdap
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.omnibox.GroupsProto.GroupConfig;
+import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.Arrays;
@@ -105,6 +106,15 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         mBraveLeoSuggestionProcessor.onNativeInitialized();
     }
 
+    private int getTileNavSuggestPosition(List<DropdownItemViewInfo> viewInfoList) {
+        for (int i = 0; i < viewInfoList.size(); ++i) {
+            if (viewInfoList.get(i).type == OmniboxSuggestionUiType.TILE_NAVSUGGEST) {
+                return i;
+            }
+        }
+        return viewInfoList.size();
+    }
+
     @Override
     @NonNull
     List<DropdownItemViewInfo> buildDropdownViewInfoList(AutocompleteResult autocompleteResult) {
@@ -127,7 +137,9 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                                 .getGroupConfigsOrDefault(
                                         currentGroupId, GroupConfig.getDefaultInstance());
             }
+
             viewInfoList.add(
+                    getTileNavSuggestPosition(viewInfoList),
                     new DropdownItemViewInfo(mBraveLeoSuggestionProcessor, leoModel, config));
         }
         if (isBraveSearchPromoBanner()) {
