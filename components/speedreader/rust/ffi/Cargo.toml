@@ -15,6 +15,3 @@ panic = "abort"
 name = "speedreader_ffi"
 path = "lib.rs"
 crate-type = ["rlib"]
-
-[patch.crates-io.kuchikiki]
-path = "../../../../third_party/rust/kuchikiki/v0_8/crate"
