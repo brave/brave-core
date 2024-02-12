@@ -39,7 +39,7 @@ const bootstrap = (options = {}) => {
   if (options.force) {
     bootstrapArgs.push('--force')
   }
-  util.run('vpython3', bootstrapArgs, config)
+  util.run('python3', bootstrapArgs, config.defaultOptions)
   if (options.open_xcodeproj) {
     const args = [
       path.join(config.srcDir, 'brave', 'ios', 'brave-ios', 'App', 'Client.xcodeproj')
