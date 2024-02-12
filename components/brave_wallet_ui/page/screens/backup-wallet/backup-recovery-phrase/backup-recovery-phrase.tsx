@@ -63,12 +63,8 @@ export const BackupRecoveryPhrase = () => {
   // mutations
   const [report] = useReportOnboardingActionMutation()
 
-  // state
-  const [isPhraseShown, setIsPhraseShown] = React.useState(false)
-
   // custom hooks
   const { isCopied, temporaryCopyToClipboard } = useTemporaryCopyToClipboard()
-  console.log(isCopied)
 
   // methods
   const skipBackup = () => {
@@ -80,15 +76,6 @@ export const BackupRecoveryPhrase = () => {
     }
     history.push(WalletRoutes.PortfolioAssets)
   }
-  console.log(skipBackup)
-
-  const revealPhrase = React.useCallback(() => {
-    setIsPhraseShown(true)
-  }, [])
-
-  // const toggleShowPhrase = () => {
-  //   setIsPhraseShown((prev) => !prev)
-  // }
 
   const onCopyPhrase = async () => {
     await temporaryCopyToClipboard(mnemonic || '')
@@ -120,8 +107,6 @@ export const BackupRecoveryPhrase = () => {
         <PhraseCard>
           <PhraseCardBody>
             <RecoveryPhrase
-              hidden={!isPhraseShown}
-              onClickReveal={revealPhrase}
               recoveryPhrase={recoveryPhrase}
             />
           </PhraseCardBody>
@@ -156,8 +141,8 @@ export const BackupRecoveryPhrase = () => {
             onClick={() =>
               history.push(
                 isOnboarding
-                  ? WalletRoutes.OnboardingBackupRecoveryPhrase
-                  : WalletRoutes.BackupRecoveryPhrase
+                  ? WalletRoutes.OnboardingVerifyRecoveryPhrase
+                  : WalletRoutes.BackupVerifyRecoveryPhrase
               )
             }
           >

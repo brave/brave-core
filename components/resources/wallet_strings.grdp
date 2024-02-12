@@ -791,8 +791,8 @@
   <message name="IDS_BRAVE_WALLET_ORDINAL_SUFFIX_TWO" desc="Second ordinal suffix">nd</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_SUFFIX_FEW" desc="Suffix for 'few' ordinal">rd</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_SUFFIX_OTHER" desc="Suffix for 'other' ordinal">th</message>
-  <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE" desc="Wallet is ready for use message">Congratulations! Your Brave Wallet is ready to go!</message>
-  <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION" desc="Wallet access description">To access your wallet, just click the wallet icon at the top right of any Brave browser window.</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE" desc="Wallet is ready for use message">You’re all set!</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION" desc="Wallet access description">Your Brave Wallet is now set up and ready for use.</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_HOW_TO_USE_A_WALLET" desc="Title of article link 'How to use a crypto wallet?'">How to use a crypto wallet?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_THE_BEST_WALLET" desc="Title of article link 'What’s the best crypto wallet?'">What’s the best crypto wallet?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_CRYPTO_BROWSER" desc="Title of article link 'What’s a crypto browser?'">What’s a crypto browser?</message>

@@ -304,11 +304,9 @@ provideStrings({
   braveWalletPasswordStrengthTooltipIsLongEnough: 'At least 8 characters',
 
   // Onboarding Success
-  braveWalletOnboardingSuccessTitle:
-    'Congratulations! Your Brave Wallet is ready to go!',
+  braveWalletOnboardingSuccessTitle: 'You’re all set!',
   braveWalletOnboardingSuccessDescription:
-    'To access your wallet, just click the wallet icon at the top right ' +
-    'of any Brave browser window.',
+    'Your Brave Wallet is now set up and ready for use.',
   braveWalletBuyCryptoButton: 'Buy crypto',
   braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',

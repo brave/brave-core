@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
-import { VerifyRecoveryPhrase } from './verify-recovery-phrase'
+import { VerifyRecoveryPhrase } from './verify-recovery-phrase-v3'
 
 export const _VerifyRecoveryPhrase = () => {
   return (

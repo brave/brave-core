@@ -15,32 +15,15 @@ import {
   useReportOnboardingActionMutation //
 } from '../../../../common/slices/api.slice'
 
-// images
-import WalletAccessSvg from './images/wallet-access.svg'
-
 // constants
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // components
-import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
+import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 
 // styles
-import { LinkText } from '../../../../components/shared/style'
-import {
-  Description,
-  Title,
-  StyledWrapper,
-  MainWrapper
-} from '../onboarding.style'
-import {
-  ArticleLinksContainer,
-  ButtonContainer,
-  IntroContainer,
-  IntroImg,
-  CloseButtonContainer,
-  DepositIcon
-} from './onboarding-success.style'
+import { VerticalSpace } from '../../../../components/shared/style'
+import { IntroImg, Title, SubTitle } from './onboarding-success.style'
 
 export const OnboardingSuccess = () => {
   // routing
@@ -79,52 +62,14 @@ export const OnboardingSuccess = () => {
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          <CloseButtonContainer>
-            <LinkText onClick={onComplete}>
-              {getLocale('braveWalletButtonDone')}
-            </LinkText>
-          </CloseButtonContainer>
-        </StyledWrapper>
-
-        <IntroContainer>
-          <Title>{getLocale('braveWalletOnboardingSuccessTitle')}</Title>
-
-          <Description>
-            {getLocale('braveWalletOnboardingSuccessDescription')}
-          </Description>
-
-          <IntroImg
-            src={WalletAccessSvg}
-            height={138}
-          />
-        </IntroContainer>
-
-        <ArticleLinksContainer>
-          <LinkText
-            rel='noreferrer'
-            target='_blank'
-            href='https://brave.com/learn/what-is-crypto-wallet/#how-to-use-a-crypto-wallet'
-          >
-            {getLocale('braveWalletLearnAboutMyWallet')}
-          </LinkText>
-        </ArticleLinksContainer>
-
-        <ButtonContainer>
-          <NavButton
-            buttonType='primary'
-            text={getLocale('braveWalletBuyCryptoButton')}
-            onSubmit={onClickBuyCrypto}
-          />
-
-          <LinkText onClick={onClickDepositCrypto}>
-            <DepositIcon />
-            {getLocale('braveWalletDepositCryptoButton')}
-          </LinkText>
-        </ButtonContainer>
-      </MainWrapper>
-    </CenteredPageLayout>
+    <OnboardingContentLayout>
+      <IntroImg />
+      <VerticalSpace space='36px' />
+      <Title>{getLocale('braveWalletOnboardingSuccessTitle')}</Title>
+      <VerticalSpace space='16px' />
+      <SubTitle>
+        {getLocale('braveWalletOnboardingSuccessDescription')}
+      </SubTitle>
+    </OnboardingContentLayout>
   )
 }

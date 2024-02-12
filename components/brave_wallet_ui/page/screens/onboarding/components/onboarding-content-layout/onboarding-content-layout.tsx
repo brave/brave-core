@@ -27,14 +27,16 @@ import {
 } from './onboarding-content-layout.style'
 
 interface Props {
-  title: string
-  subTitle: string
+  title?: string | React.ReactNode
+  subTitle?: string
+  showBackButton?: boolean
   children: React.ReactNode
 }
 
 export const OnboardingContentLayout = ({
   title,
   subTitle,
+  showBackButton = true,
   children
 }: Props) => {
   // routing
@@ -56,15 +58,25 @@ export const OnboardingContentLayout = ({
       </TitleSection>
       <ContentWrapper>
         <Row justifyContent='flex-start'>
-          <BackButton onClick={() => history.goBack()}>
-            <BackButtonIcon />
-          </BackButton>
+          {showBackButton ? (
+            <BackButton onClick={() => history.goBack()}>
+              <BackButtonIcon />
+            </BackButton>
+          ) : (
+            <VerticalSpace space='36px' />
+          )}
         </Row>
         <VerticalSpace space='7px' />
         <Content>
-          <Title>{title}</Title>
-          <VerticalSpace space='19px' />
-          <Subtitle>{subTitle}</Subtitle>
+          {typeof title === 'string' ? <Title>{title}</Title> : title}
+
+          {subTitle ? (
+            <>
+              <VerticalSpace space='16px' />
+              <Subtitle>{subTitle}</Subtitle>
+              <VerticalSpace space='19px' />
+            </>
+          ) : null}
           {children}
         </Content>
       </ContentWrapper>

@@ -11,7 +11,7 @@ import { useHistory, useLocation } from 'react-router'
 import { getLocale, getLocaleWithTags } from '../../../../../common/locale'
 import {
   formatOrdinals,
-  getWordIndicesToVerfy,
+  getWordIndicesToVerify,
   ORDINALS
 } from '../../../../utils/ordinal-utils'
 import {
@@ -21,7 +21,6 @@ import {
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
-import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -30,26 +29,20 @@ import { WalletPageActions } from '../../../actions'
 import { ErrorText, ErrorXIcon } from '../../../../components/shared/style'
 import {
   Description,
-  MainWrapper,
   NextButtonRow,
-  StyledWrapper,
   Title,
   TitleAndDescriptionContainer,
   PhraseCard,
   PhraseCardBody
 } from '../../onboarding/onboarding.style'
-import { ErrorTextRow } from './verify-backup-recovery-phrase.style'
+import { ErrorTextRow } from './verify-recovery-phrase.style'
 
 // components
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../selectors'
-import {
-  OnboardingStepsNavigation //
-} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import RecoveryPhrase from '../../../../components/desktop/recovery-phrase/recovery-phrase'
-import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
+import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
 
 export const VerifyRecoveryPhrase = () => {
   // mutations
@@ -107,100 +100,82 @@ export const VerifyRecoveryPhrase = () => {
 
   // memos
   const verificationIndices = React.useMemo(
-    () => getWordIndicesToVerfy(recoveryPhrase.length),
+    () => getWordIndicesToVerify(recoveryPhrase.length),
     [recoveryPhrase.length]
   )
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          {isOnboarding ? (
-            <OnboardingStepsNavigation
-              onSkip={onSkipBackup}
-              preventSkipAhead
-            />
-          ) : (
-            <StepsNavigation
-              steps={WALLET_BACKUP_STEPS}
-              currentStep={WalletRoutes.BackupVerifyRecoveryPhrase}
-              preventSkipAhead
-              onSkip={onSkipBackup}
-            />
-          )}
+    <OnboardingContentLayout
+      title={"Let's check"}
+      subTitle={''}
+    >
+      <TitleAndDescriptionContainer>
+        <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
+        <Description>
+          <span>
+            {getLocaleWithTags(
+              'braveWalletVerifyRecoveryPhraseInstructions',
+              3
+            ).map((text, i) => {
+              return (
+                <span key={text.duringTag || i}>
+                  {text.beforeTag}
+                  <strong>
+                    {text.duringTag
+                      ?.replace('$7', ORDINALS[verificationIndices[0]])
+                      ?.replace(
+                        '$8',
+                        formatOrdinals(verificationIndices[0] + 1)
+                      )
+                      ?.replace('$9', ORDINALS[verificationIndices[1]])
+                      ?.replace(
+                        '$10',
+                        formatOrdinals(verificationIndices[1] + 1)
+                      )
+                      ?.replace('$11', ORDINALS[verificationIndices[2]])
+                      ?.replace(
+                        '$12',
+                        formatOrdinals(verificationIndices[2] + 1)
+                      )}
+                  </strong>
+                  {text.afterTag}
+                </span>
+              )
+            })}
+          </span>
+        </Description>
+      </TitleAndDescriptionContainer>
 
-          <TitleAndDescriptionContainer>
-            <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
-            <Description>
-              <span>
-                {getLocaleWithTags(
-                  'braveWalletVerifyRecoveryPhraseInstructions',
-                  3
-                ).map((text, i) => {
-                  return (
-                    <span key={text.duringTag || i}>
-                      {text.beforeTag}
-                      <strong>
-                        {text.duringTag
-                          ?.replace('$7', ORDINALS[verificationIndices[0]])
-                          ?.replace(
-                            '$8',
-                            formatOrdinals(verificationIndices[0] + 1)
-                          )
-                          ?.replace('$9', ORDINALS[verificationIndices[1]])
-                          ?.replace(
-                            '$10',
-                            formatOrdinals(verificationIndices[1] + 1)
-                          )
-                          ?.replace('$11', ORDINALS[verificationIndices[2]])
-                          ?.replace(
-                            '$12',
-                            formatOrdinals(verificationIndices[2] + 1)
-                          )}
-                      </strong>
-                      {text.afterTag}
-                    </span>
-                  )
-                })}
-              </span>
-            </Description>
-          </TitleAndDescriptionContainer>
+      <PhraseCard>
+        <PhraseCardBody>
+          <RecoveryPhrase
+            verificationIndices={verificationIndices}
+            verificationModeEnabled={true}
+            recoveryPhrase={recoveryPhrase}
+            onSelectedWordListChange={onSelectedWordsUpdated}
+          />
+        </PhraseCardBody>
+      </PhraseCard>
 
-          <PhraseCard>
-            <PhraseCardBody>
-              <RecoveryPhrase
-                verificationIndices={verificationIndices}
-                verificationModeEnabled={true}
-                hidden={false}
-                recoveryPhrase={recoveryPhrase}
-                onSelectedWordListChange={onSelectedWordsUpdated}
-              />
-            </PhraseCardBody>
-          </PhraseCard>
+      <ErrorTextRow hasError={!nextStepEnabled && hasSelectedWords}>
+        {!nextStepEnabled && hasSelectedWords && (
+          <>
+            <ErrorXIcon />
+            <ErrorText>{getLocale('braveWalletVerifyPhraseError')}</ErrorText>
+          </>
+        )}
+      </ErrorTextRow>
 
-          <ErrorTextRow hasError={!nextStepEnabled && hasSelectedWords}>
-            {!nextStepEnabled && hasSelectedWords && (
-              <>
-                <ErrorXIcon />
-                <ErrorText>
-                  {getLocale('braveWalletVerifyPhraseError')}
-                </ErrorText>
-              </>
-            )}
-          </ErrorTextRow>
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonNext')}
-              disabled={!nextStepEnabled}
-              onSubmit={onNextStep}
-            />
-          </NextButtonRow>
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+      <NextButtonRow>
+        <NavButton
+          buttonType='primary'
+          text={getLocale('braveWalletButtonNext')}
+          disabled={!nextStepEnabled}
+          onSubmit={onNextStep}
+        />
+      </NextButtonRow>
+    </OnboardingContentLayout>
   )
 }
 

@@ -30,7 +30,7 @@ import {
 } from '../backup-wallet/explain-recovery-phrase/explain-recovery-phrase'
 import {
   VerifyRecoveryPhrase //
-} from '../backup-wallet/verify-recovery-phrase/verify-recovery-phrase'
+} from '../backup-wallet/verify-recovery-phrase/verify-recovery-phrase-v3'
 import {
   ProtectedRoute //
 } from '../../../components/shared/protected-routing/protected-route'

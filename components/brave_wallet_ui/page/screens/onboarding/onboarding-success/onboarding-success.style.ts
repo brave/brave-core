@@ -4,67 +4,41 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
-// icons
-import DownloadIcon from '../../../../assets/svg-icons/download-icon.svg'
+// images
+import CompleteGraphicLight from './images/light.svg'
+import CompleteGraphicDark from './images/dark.svg'
 
-export const IntroImg = styled.img`
-  margin-top: 16px;
-  margin-bottom: 40px;
+export const IntroImg = styled.img.attrs({
+  src: window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? CompleteGraphicDark
+    : CompleteGraphicLight
+})`
+  width: 336px;
+  height: 264px;
+  margin: 0 auto;
 `
 
-export const CloseButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 44px;
-`
-
-export const IntroContainer = styled.div`
-  width: 365px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`
-
-export const ArticleLinksContainer = styled.div`
-  width: 80%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 24px;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 60px;
-`
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 24px;
-
+export const Title = styled.h2`
+  color: ${leo.color.text.primary};
   text-align: center;
-
-  & > * {
-    width: 100%;
-  }
-
-  margin-bottom: 80px;
+  font-family: Poppins;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 42px;
+  margin: 0;
+  padding: 0;
 `
 
-export const DepositIcon = styled.div`
-  cursor: pointer;
-  outline: none;
-  border: none;
-  mask-image: url(${DownloadIcon});
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: 14px;
-  background-color: ${(p) => p.theme.color.interactive05};
-  height: 14px;
-  width: 14px;
+export const SubTitle = styled.h5`
+  color: ${leo.color.text.secondary};
+  text-align: center;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  margin: 0;
 `

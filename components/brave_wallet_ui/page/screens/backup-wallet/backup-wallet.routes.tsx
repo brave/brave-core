@@ -15,7 +15,7 @@ import { PageSelectors } from '../../selectors'
 import { BackupEnterPassword } from './backup-enter-password/backup-enter-password'
 import { BackupRecoveryPhrase } from './backup-recovery-phrase/backup-recovery-phrase'
 import { RecoveryPhraseExplainer } from './explain-recovery-phrase/explain-recovery-phrase'
-import { VerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
+import { VerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase-v3'
 
 export const WALLET_BACKUP_STEPS = [
   WalletRoutes.Backup,

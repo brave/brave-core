@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css'
 import { layoutSmallWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const RecoveryPhraseContainer = styled.div`
+export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px 29px;
@@ -17,7 +17,7 @@ export const RecoveryPhraseContainer = styled.div`
   padding: 16px;
   width: 100%;
   height: 208px;
-  overflow-y: auto;
+  overflow-y: ${p => p.phraseLength > 12 ? 'auto' : 'hidden'};
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -38,11 +38,7 @@ export const RecoveryPhraseContainer = styled.div`
   }
 `
 
-export const RecoveryBubble = styled.div<{
-  verificationModeEnabled?: boolean
-  selected?: boolean
-}>`
-  position: ${(p) => (p.verificationModeEnabled ? 'relative' : 'unset')};
+export const RecoveryBubble = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -50,7 +46,6 @@ export const RecoveryBubble = styled.div<{
   padding: 8px;
   border-radius: 4px;
   border: 1px solid ${leo.color.divider.subtle};
-  cursor: ${(p) => (p.verificationModeEnabled ? 'pointer' : 'unset')};
 
   font-family: Poppins;
   font-size: 12px;
@@ -59,15 +54,7 @@ export const RecoveryBubble = styled.div<{
   line-height: 16px;
 
   color: ${leo.color.text.primary};
-  background-color: ${(p) =>
-    p.selected ? p.theme.palette.blurple200 : leo.color.container.background};
-
-  @media (prefers-color-scheme: dark) {
-    color: ${(p) =>
-      p.selected ? p.theme.palette.black : p.theme.color.text01};
-    background-color: ${(p) =>
-      p.selected ? p.theme.palette.blurple200 : p.theme.color.background01};
-  }
+  background-color: ${leo.color.container.background};
 `
 
 export const RecoveryBubbleBadge = styled.p`
