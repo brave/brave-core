@@ -1,2 +1,0 @@
-[{"trigger":{"url-filter":"trackers-currently-included-with-ads-file", "if-domain": ["ignore.all.domains"]},"action":{"type":"block"}}]
-

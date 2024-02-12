@@ -1,5 +1,0 @@
-Files in this directory should NOT be edited. They are tracked, and used to populate the
-parallel `Local` directory
-
-Files in the `Local` directory _should_ be edited, as they are not tracked but used for
-configuring the project dynamically.
