@@ -122,9 +122,7 @@ export default function Component({ feed, onSessionStart }: Props) {
   const lastViewedCardCount = React.useRef(0);
   const viewDepthIntersectionObserver = React.useRef(new IntersectionObserver(entries => {
     const inViewCounts = entries
-      // Check greater than 0 intersection, as when the top of the next card
-      // shows, we've seen the current one.
-      .filter(e => e.intersectionRatio > 0)
+      .filter(e => e.intersectionRatio === 1)
       .map(e => Number(e.target.getAttribute(CARD_COUNT_ATTRIBUTE)));
     if (!inViewCounts.length) {
       return;
@@ -140,6 +138,8 @@ export default function Component({ feed, onSessionStart }: Props) {
       onSessionStart();
     }
     lastViewedCardCount.current = largestCardCount;
+  }, {
+    threshold: 1
   }));
 
   const registerViewDepthObservation = React.useCallback((element: HTMLElement | null) => {
@@ -186,9 +186,6 @@ export default function Component({ feed, onSessionStart }: Props) {
         throw new Error("Invalid item!" + JSON.stringify(item))
       }
 
-      // Store the card count from before this element - it is the number of
-      // cards we've had to look at to reach this one.
-      const seenBeforeCard = currentCardCount;
       if (item.cluster) {
         currentCardCount += item.cluster.articles.length;
       } else if (!item.advert) {
@@ -196,7 +193,7 @@ export default function Component({ feed, onSessionStart }: Props) {
       }
 
       const key = getKey(item, index)
-      return <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} {...{ [CARD_COUNT_ATTRIBUTE]: seenBeforeCard }} ref={setRefAtIndex(index)}>
+      return <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} {...{ [CARD_COUNT_ATTRIBUTE]: currentCardCount }} ref={setRefAtIndex(index)}>
         {el}
       </div>
     })
