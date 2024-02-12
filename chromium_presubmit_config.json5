@@ -58,10 +58,10 @@
   "default_files_to_skip": [
     "\\.storybook/",
     "components/brave_wallet/resources/solana_web3_script\\.js",
-    "ios/browser/api/brave_rewards/legacy_database/core_data_models/",
     "third_party/rust/",
     "tools/crates/",
     "win_build_output/",
+    "third_party/ios_deps/",
   ],
 
   // Regex to match function names in the current presubmit stack trace. Matched
@@ -81,6 +81,8 @@
     "CheckNoBannedFunctions": [
       // Use `ban_rule_excluded_paths` instead.
     ],
+    "CheckNoJsInIos": ["ios/brave-ios/"],
+    "CheckNoDeprecatedCss": ["ios/brave-ios/"],
 
     // Checks to be fixed.
     "CheckUnwantedDependencies": [".*\\.java"],
@@ -92,7 +94,6 @@
       "components/permissions/permission_lifetime_utils\\.cc",
       "components/tor/tor_launcher_factory\\.cc",
       "components/webcompat_reporter/browser/webcompat_report_uploader\\.cc",
-      "ios/browser/api/brave_rewards/legacy_database/legacy_ledger_database\\.mm",
       "ios/browser/api/brave_rewards/promotion_solution\\.mm",
     ],
     "CheckUniquePtrOnUpload": [
@@ -153,7 +154,7 @@
       "components/speedreader/resources/third_party/",
       "components/webpack/gen-webpack-grd\\.js",
       "test/data/speedreader/",
-    ]
+    ],
   },
 
   // Additional excludes to _BANRULE_* lists in //PRESUBMIT.py.

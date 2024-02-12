@@ -19,9 +19,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(BRAVE_VERSION)</string>
+	<string>$(brave_ios_marketing_version)</string>
 	<key>CFBundleVersion</key>
-	<string>$(BRAVE_BUILD_ID)</string>
+	<string>$(brave_version_build)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>

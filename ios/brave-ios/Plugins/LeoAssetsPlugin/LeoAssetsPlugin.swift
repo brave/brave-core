@@ -13,9 +13,10 @@ struct LeoAssetsPlugin: BuildToolPlugin {
   func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
     // Check to make sure we have pulled down the icons correctly
     let fileManager = FileManager.default
-    let leoSymbolsDirectory = context.package.directory.appending("node_modules/leo-sf-symbols")
-    let leoColorsDirectory = context.package.directory.appending("node_modules/leo")
-    
+    let braveCoreRootDirectory = context.package.directory.removingLastComponent().removingLastComponent()
+    let leoSymbolsDirectory = braveCoreRootDirectory.appending("node_modules/@brave/leo-sf-symbols")
+    let leoColorsDirectory = braveCoreRootDirectory.appending("node_modules/@brave/leo")
+
     if !fileManager.fileExists(atPath: leoSymbolsDirectory.string) ||
         !fileManager.fileExists(atPath: leoColorsDirectory.string) {
       Diagnostics.error("Required Leo assets not found: \(FileManager.default.currentDirectoryPath)")

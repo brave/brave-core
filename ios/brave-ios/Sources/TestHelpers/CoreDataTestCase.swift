@@ -11,28 +11,12 @@ open class CoreDataTestCase: XCTestCase {
 
   override open func setUp() {
     super.setUp()
-
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(contextSaved),
-      name: NSNotification.Name.NSManagedObjectContextDidSave,
-      object: nil)
-
     DataController.shared = InMemoryDataController()
   }
 
   override open func tearDown() {
-    NotificationCenter.default.removeObserver(self)
     DataController.viewContext.reset()
-    contextSaveCompletion = nil
     super.tearDown()
-  }
-
-  // MARK: - Handling background context reads/writes
-
-  open var contextSaveCompletion: (() -> Void)?
-
-  @objc func contextSaved() {
-    contextSaveCompletion?()
   }
 
   /// Waits for core data context save notification. Use this for single background context saves
@@ -41,20 +25,23 @@ open class CoreDataTestCase: XCTestCase {
   /// Use `inverted` property if you want to verify that DB save did not happen.
   /// This is useful for early return database checks.
   open func backgroundSaveAndWaitForExpectation(name: String? = nil, inverted: Bool = false, code: () -> Void) {
-    let saveExpectation: XCTestExpectation? = expectation(description: name ?? UUID().uuidString)
-    saveExpectation?.isInverted = inverted
-
-    contextSaveCompletion = {
-      saveExpectation?.fulfill()
+    let mergeExpectation = expectation(description: "merge")
+    let saveExpectation = expectation(
+      forNotification: .NSManagedObjectContextDidSave,
+      object: nil
+    ) { notification in
+      DispatchQueue.main.async {
+        DataController.viewContext.mergeChanges(fromContextDidSave: notification)
+        mergeExpectation.fulfill()
+      }
+      return true
     }
+    saveExpectation.isInverted = inverted
 
     code()
 
     // Long timeouts for inverted expectation increases test duration significantly, reducing it to 1 second.
     let timeout: TimeInterval = inverted ? 1 : 5
-
-    if let saveExpectation = saveExpectation {
-      wait(for: [saveExpectation], timeout: timeout)
-    }
+    wait(for: [saveExpectation, mergeExpectation], timeout: timeout)
   }
 }

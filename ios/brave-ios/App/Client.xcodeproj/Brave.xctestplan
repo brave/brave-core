@@ -123,6 +123,13 @@
         "identifier" : "BraveVPNTests",
         "name" : "BraveVPNTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "UserAgentTests",
+        "name" : "UserAgentTests"
+      }
     }
   ],
   "version" : 1

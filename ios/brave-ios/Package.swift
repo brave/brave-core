@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -61,7 +61,7 @@ var package = Package(
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.0.0"),
     .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.8.5"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
-    .package(name: "Static", path: "ThirdParty/Static"),
+    .package(name: "Static", path: "../../third_party/ios_deps/Static"),
   ],
   targets: [
     .target(
@@ -118,9 +118,9 @@ var package = Package(
     ),
     .target(name: "BraveShields", dependencies: ["Strings", "Preferences"], plugins: ["LoggerPlugin"]),
     .target(name: "DesignSystem", plugins: ["LeoAssetsPlugin"]),
-    .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
-    .binaryTarget(name: "MaterialComponents", path: "node_modules/brave-core-ios/MaterialComponents.xcframework"),
-    .binaryTarget(name: "GRDWireGuardKit", path: "ThirdParty/GRDWireGuardKit/GRDWireGuardKit.xcframework"),
+    .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
+    .binaryTarget(name: "MaterialComponents", path: "../../../out/ios_current_link/MaterialComponents.xcframework"),
+    .binaryTarget(name: "GRDWireGuardKit", path: "../../third_party/ios_deps/GRDWireGuardKit/GRDWireGuardKit.xcframework"),
     .target(
       name: "Storage",
       dependencies: ["Shared"],
@@ -428,7 +428,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SelectorsPollerScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SiteStateListenerScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/WindowRenderScript.js"),
-    .copy("WebFilters/ContentBlocker/build-disconnect.py"),
     .copy("WebFilters/ContentBlocker/Lists/block-ads.json"),
     .copy("WebFilters/ContentBlocker/Lists/block-cookies.json"),
     .copy("WebFilters/ContentBlocker/Lists/block-trackers.json"),
@@ -448,7 +447,7 @@ if isNativeTalkEnabled {
   braveTarget.resources?.append(
     PackageDescription.Resource.copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveTalkScript.js")
   )
-  package.dependencies.append(.package(name: "JitsiMeet", path: "ThirdParty/JitsiMeet"))
+  package.dependencies.append(.package(name: "JitsiMeet", path: "../../third_party/ios_deps/JitsiMeet"))
   package.products.append(.library(name: "BraveTalk", targets: ["BraveTalk"]))
   package.targets.append(contentsOf: [
     .target(name: "BraveTalk", dependencies: ["Shared", "JitsiMeet"], plugins: ["LoggerPlugin"]),
@@ -457,3 +456,25 @@ if isNativeTalkEnabled {
 }
 
 package.targets.append(braveTarget)
+
+let iosRootDirectory = URL(string: #file)!.deletingLastPathComponent().absoluteString.dropLast()
+let isStripAbsolutePathsFromDebugSymbolsEnabled = {
+  do {
+    let env = try String(contentsOfFile: "\(iosRootDirectory)/../../.env")
+      .split(separator: "\n")
+      .map { $0.split(separator: "=").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) } }
+    return env.contains(where: { $0.first == "use_remoteexec" && $0.last == "true" })
+  } catch {
+    fatalError("Didn't find .env file.")
+  }
+}()
+
+if isStripAbsolutePathsFromDebugSymbolsEnabled {
+  for target in package.targets where target.type == .regular {
+    var settings = target.swiftSettings ?? []
+    settings.append(.unsafeFlags([
+      "-debug-prefix-map", "\(iosRootDirectory)=../../brave/ios/brave-ios"
+    ], .when(configuration: .debug)))
+    target.swiftSettings = settings
+  }
+}

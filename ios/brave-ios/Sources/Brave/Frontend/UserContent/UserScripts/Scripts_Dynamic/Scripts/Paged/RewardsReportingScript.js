@@ -1,7 +1,7 @@
-// Copyright 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 "use strict";
 
@@ -11,7 +11,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
     'https://www.youtube.com', 'https://m.youtube.com',
     'https://vimeo.com',
   ]
-  
+
   const install = () => {
     const sendMessage = $(function(method, url, data, referrerUrl) {
       $.postNativeMessage('$<message_handler>', {"securityToken": SECURITY_TOKEN, "data": {
@@ -21,7 +21,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
         referrerUrl: referrerUrl === undefined ? null : referrerUrl,
       }});
     })
-    
+
     const originalOpen = XMLHttpRequest.prototype.open;
     const originalSend = XMLHttpRequest.prototype.send;
     const originalFetch = window.fetch;
@@ -31,7 +31,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
     const localMethodProp = Symbol('method')
     const localRefProp = Symbol('ref')
     const localDataProp = Symbol('data')
-    
+
     XMLHttpRequest.prototype.open = $(function(method, url) {
         const listener = function() {
             sendMessage(this[localMethodProp], this.responseURL === null ? this[localURLProp] : this.responseURL, this[localDataProp], this[localRefProp]);
@@ -42,7 +42,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
         this.addEventListener('error', listener, true);
         return originalOpen.apply(this, arguments);
     }, /*overrideToString=*/false);
-    
+
     XMLHttpRequest.prototype.send = $(function(body) {
         this[localRefProp] = null;
         this[localDataProp] = body;
@@ -77,7 +77,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
       sendMessage("POST", url, data);
       return originalSendBeacon.apply(this, arguments);
     });
-    
+
     delete Image.prototype.src;
     Object.defineProperty(Image.prototype, "src", {
       get: $(function() {
@@ -87,7 +87,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
         const listener = $(function() {
           sendMessage("GET", this.src);
         });
-        
+
         this.addEventListener('load', listener, true);
         this.addEventListener('error', listener, true);
         originalImageSrc.set.call(this, value);
@@ -96,7 +96,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
       configurable: true
     });
   }
-  
+
   if (mediaPublisherOrigins.includes(document.location.origin) && webkit.messageHandlers.$<message_handler>) {
     install();
   }

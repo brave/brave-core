@@ -1,7 +1,7 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 "use strict";
 
@@ -20,7 +20,7 @@ window.__firefox__.includeOnce("LoginsScript", function() {
       return;
     alert(pieces);
   }
-  
+
   // Secure replacement for Math.random()
   // Float = Mantissa * (2^Exponent)
   function secure_random_float() {
@@ -30,7 +30,7 @@ window.__firefox__.includeOnce("LoginsScript", function() {
     crypto.getRandomValues(intView);
     intView[7] = 63; // Sign Bit = 0.
     intView[6] |= 0xF0; //Set exponent to all 1's except the highest bit.
-    
+
     // View buffer as Float64, and minus 1 for the range [0, 1).
     // [0 Inclusive, 1 Exclusive).
     return new DataView(buffer).getFloat64(0, true) - 1;
@@ -43,7 +43,7 @@ window.__firefox__.includeOnce("LoginsScript", function() {
       if (crypto.randomUUID) {
         return crypto.randomUUID().replaceAll("-", "");
       }
-      
+
       return Math.round(secure_random_float() * (Number.MAX_VALUE - Number.MIN_VALUE) + Number.MIN_VALUE).toString()
     },
 
@@ -77,7 +77,7 @@ window.__firefox__.includeOnce("LoginsScript", function() {
         log("Invalid Request");
         return;
       }
-        
+
       switch (msg.name) {
         case "RemoteLogins:loginsFound": {
           request.promise.resolve({ form: request.form,
@@ -677,40 +677,40 @@ window.__firefox__.includeOnce("LoginsScript", function() {
       for (var i = 0; i < document.forms.length; i++) {
         findLogins(document.forms[i]);
       }
-      
+
       LoginManagerContent._onFormSubmit(event.target);
     } catch(ex) {
       // Eat errors to avoid leaking them to the page
       log(ex);
     }
   });
-    
+
   window.addEventListener("pagehide", function(event) {
     if (event.persisted) {
       return;
     }
-    
+
     var isSubmittedForm = (form) => {
       var fields = LoginManagerContent._getFormFields(form, false);
       if (!fields[0] || !fields[1]) {
         return false;
       }
-      
+
       var formOrigin = LoginUtils._getPasswordOrigin();
       var actionOrigin = LoginUtils._getActionOrigin(form);
       if (actionOrigin == null) {
         return false;
       }
-      
+
       for (var field of fields) {
         if (field && (!field.value || field.value.length == 0)) {
           return false;
         }
       }
-      
+
       return true;
     };
-    
+
     for (var form of document.forms) {
       if (isSubmittedForm(form)) {
         try {

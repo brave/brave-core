@@ -1,7 +1,7 @@
-/* vim: set ts=2 sts=2 sw=2 et tw=80: */
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 "use strict";
 
@@ -51,7 +51,7 @@ function MetadataWrapper() {
       processors: customRuleSets.icon.processors
     };
     const data = metadataparser(window.document, document.URL, customRuleSets);
-    // Since we want to obtain multiple feeds, we are doing a separate query. 
+    // Since we want to obtain multiple feeds, we are doing a separate query.
     // `page-metadata-parser` only allows a single result from rules passed into `getMetadata`
     data.feeds = function() {
       const rules = 'link[type="application/rss+xml"], link[type="application/atom+xml"], link[rel="alternate"][type="application/json"]';

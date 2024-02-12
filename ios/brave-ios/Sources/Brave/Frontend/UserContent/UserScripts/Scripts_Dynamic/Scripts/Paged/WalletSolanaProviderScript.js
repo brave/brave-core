@@ -1,7 +1,7 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 window.__firefox__.execute(function($, $Object, $Function, $Array) {
   if (window.isSecureContext) {
@@ -9,22 +9,22 @@ window.__firefox__.execute(function($, $Object, $Function, $Array) {
     if (typeof $<walletSolanaNameSpace> === 'undefined') {
       return;
     }
-    
+
     // Access solanaWeb3 from the hidden namespace
     let solanaWeb3 = $($($<walletSolanaNameSpace>).solanaWeb3);
     if (!solanaWeb3) {
       return;
     }
-    
+
     // From this point on, do not access the namespace!
     // If the code throws an exception, the namespace will not be in the stacktrace.
     // SolanaWeb3 is the only variable declared above that should be accessed from this point forward.
-    
+
     // ---- Wallet Code ---- //
-    
+
     // List of classes that should not be Frozen completely.
     const freezeExceptions = $Array.of("BN");
-    
+
     let post = $(function(method, payload, completion) {
       let postMessage = $(function(message) {
         return $.postNativeMessage('$<message_handler>', message);
@@ -128,7 +128,7 @@ window.__firefox__.execute(function($, $Object, $Function, $Array) {
     let createTransaction = $(function(serializedTxDict) {
       const version = serializedTxDict["version"];
       const serializedTx = serializedTxDict["serializedTx"];
-      
+
       if (version == 0) { // Transaction (legacy)
         return $.extensiveFreeze(solanaWeb3.Transaction.from(new Uint8Array(serializedTx)), freezeExceptions)
       } else if (version == 1) { // VersionedTransaction (v0)
@@ -191,7 +191,7 @@ window.__firefox__.execute(function($, $Object, $Function, $Array) {
         signTransaction: $(function(transaction) { /* -> Promise<solanaWeb3.Transaction> */
           const object = convertTransaction(transaction);
           $.extensiveFreeze(object, freezeExceptions);
-          
+
           function completion(serializedTx, resolve) {
             /* Convert `[UInt8]` -> `solanaWeb3.Transaction` */
             const result = createTransaction(serializedTx);
@@ -203,7 +203,7 @@ window.__firefox__.execute(function($, $Object, $Function, $Array) {
         signAllTransactions: $(function(transactions) { /* -> Promise<[solanaWeb3.Transaction]> */
           const objects = $Array.of(...transactions).map(convertTransaction);
           $.extensiveFreeze(objects, freezeExceptions);
-          
+
           function completion(serializedTxs, resolve) {
             /* Convert `[[UInt8]]` -> `[solanaWeb3.Transaction]` */
             const result = $Array.of(...serializedTxs).map(createTransaction);

@@ -1,2 +1,0 @@
-# Script to find all the files and line numbers where a string has been Localized. This script is execued from the cleanup-nslocalizedstring.py or cleanup-nslocalizedstring2.py. If executed independently do so from brave-ios root. It excludes ThirdParty,Carthage,fastlane,L10nSnapshotTests,l10n from the search.
-egrep --exclude-dir={ThirdParty,Carthage,fastlane,L10nSnapshotTests,l10n} --include=\*.swift -nR "NSLocalizedString(.*[\n]*)" . > localizedStringLocations.txt

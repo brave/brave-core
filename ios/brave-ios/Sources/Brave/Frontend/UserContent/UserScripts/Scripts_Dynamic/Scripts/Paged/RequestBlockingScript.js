@@ -1,7 +1,7 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 "use strict";
 
@@ -20,15 +20,15 @@ window.__firefox__.execute(function($) {
       if (blocked) {
         console.info(`Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href}`)
       }
-      
+
       return blocked
     });
   });
-  
+
   const { fetch: originalFetch } = window
   window.fetch = $(function() {
     const [resource] = arguments
-    
+
     // Extract the url
     let urlString
     if (typeof resource === 'string') {
@@ -50,7 +50,7 @@ window.__firefox__.execute(function($) {
       }
     })
   }, /*overrideToString=*/false);
-  
+
   const localURLProp = Symbol('url')
   const originalOpen = XMLHttpRequest.prototype.open
   XMLHttpRequest.prototype.open = $(function() {
@@ -72,10 +72,10 @@ window.__firefox__.execute(function($) {
     if (this[localURLProp] === undefined) {
       return originalSend.apply(this, arguments)
     }
-    
+
     // Extract the URL object by combining it with window.location
     let resourceURL
-    
+
     try {
       // We do this in a try/catch block to not fail the request in case we can't
       // create a URL

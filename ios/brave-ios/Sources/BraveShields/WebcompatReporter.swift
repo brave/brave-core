@@ -111,7 +111,7 @@ public class WebcompatReporter {
     }
   }
 
-  private static let apiKeyPlistKey = "API_KEY"
+  private static let apiKeyPlistKey = "STATS_KEY"
   private static let version = "1"
 
   /// A custom user agent to send along with reports
