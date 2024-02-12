@@ -75,7 +75,12 @@ public class WalletStore {
     ipfsApi: IpfsAPI,
     walletP3A: BraveWalletBraveWalletP3A
   ) {
-    self.keyringStore = .init(keyringService: keyringService, walletService: walletService, rpcService: rpcService)
+    self.keyringStore = .init(
+      keyringService: keyringService,
+      walletService: walletService,
+      rpcService: rpcService,
+      walletP3A: walletP3A
+    )
     self.setUp(
       keyringService: keyringService,
       rpcService: rpcService,

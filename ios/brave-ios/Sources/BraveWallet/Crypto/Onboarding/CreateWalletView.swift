@@ -236,6 +236,7 @@ struct CreateWalletView: View {
     })
     .onAppear {
       isFieldFocused = true
+      keyringStore.reportP3AOnboarding(action: .legalAndPassword)
     }
     .transparentNavigationBar(
       backButtonTitle: Strings.Wallet.createWalletBackButtonTitle,
