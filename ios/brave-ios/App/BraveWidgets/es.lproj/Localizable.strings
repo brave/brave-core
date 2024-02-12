@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Marcadores";
+
+/* The name of the feature */
+"widgets.braveNews" = "Noticias de Brave";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Descargas";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Accede rápidamente a tus sitios web favoritos.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Favoritos";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "Historial";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Inténtalo de nuevo más tarde";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Leer más";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Obtén las últimas noticias";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Noticias destacadas";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Abre Brave para ver tus favoritos aquí";
+
+/* QR Code section title */
+"widgets.QRCode" = "Código QR";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Búsqueda";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Un resumen de cómo te protege y te ayuda a ganar tiempo Brave mientras navegas por Internet.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Estadísticas privadas";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Estadísticas privadas";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Busca o escribe una URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Nueva pestaña";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Lista de reproducción";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Pestaña privada";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Accede rápidamente a las búsquedas por Internet o abre páginas web en Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Accesos directos";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Un resumen de cómo te ha protegido Brave mientras navegabas por Internet.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Estadística privada";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Cartera de Brave";
+

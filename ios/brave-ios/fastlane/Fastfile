@@ -1,0 +1,229 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+fastlane_version "2.86.0"
+
+default_platform :ios
+
+CONFIG_PATH = "../App/Configuration"
+LOCAL_PATH = "#{CONFIG_PATH}/Local"
+
+platform :ios do
+  before_all do |lane, options|
+    unless lane == :test || options[:skip_bootstrap]
+      sh("pushd .. && ./bootstrap.sh --ci && popd")
+    end
+    # Verify clean repo by default
+    unless options[:ignore_git_status]
+      UI.message "Running git status check"
+      ensure_git_status_clean(show_uncommitted_changes: true, show_diff: true)
+    end
+  end
+
+  after_all do |lane, options|
+    # If no uncommitted changes existed before running `lane`, reset any potential fastlane changes
+    reset_git_repo(skip_clean: true) unless options[:ignore_git_status]
+
+    clean_icons()
+  end
+
+  error do
+    clean_icons()
+  end
+
+  desc "Run Unit Tests"
+  lane :test do |options|
+    run_tests(
+      project: "App/Client.xcodeproj",
+      scheme: "Debug",
+      devices: options[:test_all] ? ["iPhone 14 (16.4)", "iPhone 14 (17.0)"] : ["iPhone 14 (16.4)"],
+      code_coverage: true,
+      ensure_devices_found: true,
+      skip_testing: [
+	"CertificateUtilitiesTests/CertificatePinningTest/testSelfSignedRootAllowed",
+        "CertificateUtilitiesTests/CertificatePinningTest/testSelfSignedRootAllowed2",
+        "ClientTests/TabManagerTests/testQueryAddedTabs",
+        "ClientTests/TabManagerTests/testQueryAddedPrivateTabs",
+        "ClientTests/TabManagerTests/testQueryAddedMixedTabs",
+        "ClientTests/TestFavicons",
+        "ClientTests/FingerprintProtectionTest/testFingerprintProtection",
+        "ClientTests/TabSessionTests",
+        "ClientTests/ContentBlockerTests",
+        "ClientTests/HttpCookieExtensionTest/testSaveAndLoadCookie",
+        "ClientTests/UserAgentTests",
+        "ClientTests/CachedAdBlockEngineTests/testPerformance",
+        "DataTests",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
+        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
+        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
+        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
+        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork",
+      ]
+    )
+
+    run_tests(
+      project: "App/Client.xcodeproj",
+      scheme: "Debug",
+      devices: options[:test_all] ? ["iPad (10th generation) (16.4)", "iPad (10th generation) (17.0)"] : ["iPad (10th generation) (16.4)"],
+      code_coverage: true,
+      ensure_devices_found: true,
+      skip_testing: [
+        "ClientTests/UserAgentTests"
+      ],
+      xcargs: "-testPlan Brave_iPad"
+    )
+  end
+
+  desc "Creates a Brave Beta Release build for TestFlight."
+  lane :beta do |options|
+    overrideParams = {
+      scheme: "Beta",
+      export_method: "app-store",
+      export_options: {
+        manageAppVersionAndBuildNumber: false
+      }
+    }
+    testflight_build({overrideParams: overrideParams, skip_upload: options[:skip_upload]})
+  end
+
+  desc "Creates a Brave Internal Beta Release build for TestFlight."
+  lane :internal do |options|
+
+    overrideParams = {
+      scheme: "Dev",
+      export_method: "app-store",
+      export_options: {
+        manageAppVersionAndBuildNumber: false
+      }
+    }
+    testflight_build({overrideParams: overrideParams, skip_upload: options[:skip_upload]})
+  end
+
+  desc "Create an archive to be uploaded to the App Store"
+  lane :release do |options|
+    ENV["BRAVE_APPSTORE_BUILD"] = "1"
+    overrideParams = {
+      scheme: "Release (AppStore)",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: { 
+          "com.brave.ios.browser" => "Brave iOS",
+          "com.brave.ios.browser.ShareExtension" => "Brave iOS Share Extension",
+          "com.brave.ios.browser.BrowserIntents" => "Brave iOS Intents Extension",
+          "com.brave.ios.browser.BraveWidgetsExtension" => "Brave iOS Widgets Extension",
+          "com.brave.ios.browser.BraveWireGuard" => "Brave iOS WireGuard Extension",
+        },
+        manageAppVersionAndBuildNumber: false
+      },
+    }
+    testflight_build({overrideParams: overrideParams, skip_upload: options[:skip_upload]})
+  end
+
+  desc "All Testflight releases use this as the foundation. Pass in `gym` override params."
+  private_lane :testflight_build do |options|
+    set_build_number(options)
+
+    defaultParams = gym_params()
+    gym(defaultParams.merge!(options[:overrideParams]))
+    unless options[:skip_upload]
+      api_key = app_store_connect_api_key()
+      pilot(
+        api_key: api_key,
+        skip_submission: true,
+        skip_waiting_for_build_processing: true
+      )
+    end
+  end
+  
+  desc "All enterprise releases use this as the foundation"
+  lane :enterprise do |options|
+    build_app(
+      project: "App/Client.xcodeproj",
+      scheme: "Enterprise",
+      clean: true,
+      output_directory: "build",
+      export_options: {
+        method: "enterprise",
+        provisioningProfiles: { 
+          "com.brave.ios.enterprise.Browser" => "BraveEnt",
+          "com.brave.ios.enterprise.Browser.ShareExtension" => "Ent-ShareTo",
+          "com.brave.ios.enterprise.Browser.BrowserIntents" => "BraveEnt Browser Intents",
+          "com.brave.ios.enterprise.Browser.BraveWidgetsExtension" => "BraveEntWidgets"
+        },
+        manageAppVersionAndBuildNumber: false
+      },
+      xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{ENV['BRAVE_STATS_API_KEY']}\" BRAVE_VERSION=\"#{git_branch}\" GENERATED_BUILD_ID=\"#{get_build_number_repository}\" BRAVE_SERVICES_KEY=\"#{ENV['BRAVE_SERVICES_KEY']}\""
+    )
+
+    unless options[:skip_upload]
+      appcenter_upload(
+        owner_type: "organization",
+        file: "./build/Client.ipa",
+        dsym: "./build/Client.app.dSYM.zip",
+        notify_testers: false
+      )
+    end
+  end
+
+  # Private helper methods ---------------------------------------
+
+  desc "Returns the parameters that should be used in any fastlane build"
+  lane :gym_params do
+    {
+      project: "App/Client.xcodeproj",
+      sdk: "iphoneos",
+      clean: true,
+      output_directory: "build",
+      xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{ENV['BRAVE_STATS_API_KEY']}\" BRAVE_SERVICES_KEY=\"#{ENV['BRAVE_SERVICES_KEY']}\""
+    }
+  end
+
+  desc "Updates the project's build number to be the next number acceptable by TestFlight. Takes the following arguments:"
+  lane :set_build_number do |options|
+    dateFormat = "%y.%-m.%-d.%-H"
+    # Allows minute override in case two betas within same hour are required
+    dateFormat += ".%-M" if options[:minutes_in_build_number]
+    formattedBuildNumber = Time.now.getutc.strftime(dateFormat)
+    sh("echo GENERATED_BUILD_ID=#{formattedBuildNumber} > #{LOCAL_PATH}/BuildId.xcconfig")
+  end
+
+  # TODO: Attempt action override on same name
+  private_lane :get_client_version_number do
+    buildIdFile = Xcodeproj::Config.new("#{CONFIG_PATH}/Base.xcconfig")
+    buildId = buildIdFile.attributes['BRAVE_VERSION']
+
+    # Traditionally, would pull version number via:
+    # get_version_number(target: "Client")
+    # This however does not work since we use xcconfigq variables and Fastlane does not seem to parse
+    #   these very well (e.g. this returns the literal value: "$(BRAVE_VERSION)")
+  end
+
+  private_lane :get_client_build_number do
+    buildIdFile = Xcodeproj::Config.new("#{LOCAL_PATH}/BuildId.xcconfig")
+    buildId = buildIdFile.attributes['GENERATED_BUILD_ID']
+  end
+
+  private_lane :clean_icons do
+    # Regardless of git flags, always want to forcefully reset icon changes
+    reset_git_repo(files: ["App/iOS/Icons.xcassets/AppIcon*"], force: true)
+  end
+
+  override_lane :get_build_number do
+    get_client_build_number()
+  end
+
+  lane :logtest do |options|
+    UI.message "1: #{options[:one]}"
+
+    foo = sh("cat", "#{LOCAL_PATH}/AppleId")
+    UI.message foo
+  end
+
+end

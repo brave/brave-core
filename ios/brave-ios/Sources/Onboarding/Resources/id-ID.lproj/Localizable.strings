@@ -1,0 +1,57 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Temukan Caranya";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Cobalah!";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Masuk ke Daftar Putar saya";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Kini lihatlah Daftar Putar Anda.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Konten ditambahkan ke %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Kerja Bagus";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Tutup";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Mungkin Nanti";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Tutup";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Memperkenalkan Daftar Putar Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Buat daftar putar dari konten favorit Anda. Hemat data seluler. Dan putar ulang dengan bebas iklan.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Gambar dalam gambar. Pemutaran latar belakang. Kontrol dari layar kunci. Dan banyak lagi...";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Tetaplah menikmati video: Tambahkan video sementara Anda menjelajah, dan tonton di lain waktu.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Menambahkan video ke Daftar Putar Brave. Putar ulang kapan saja. Bahkan saat offline";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Putar Ulang lebih baik di Daftar Putar";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Cukup ketuk tombol untuk menambahkan video ke daftar putar";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Membuat daftar putar dengan konten yang Anda sukai. Tambahkan media dari halaman mana pun.\nPutar kapan saja. Bahkan saat offline!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Ketuk %@ untuk menambah item pertama Anda";
+
+/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+"userActionPromptFill" = "Tambahkan ke Daftar Putar";
+

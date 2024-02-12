@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "網址已複製到剪貼簿";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "要求存取桌面版網站";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "要求存取行動版網站";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "顯示最近瀏覽的書籤";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "取消";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "確定要取消這項下載？";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "恢復";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "取消下載";
+
+/* Cancel button */
+"CancelString" = "取消";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "切換";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "已開啟新分頁";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "已取消下載";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "下載失敗";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 個檔案，共 %d 個";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "下載";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "使用 App Store 應用程式開啟此連結？";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "立即前往";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "不要儲存";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "不要更新";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "儲存登入資訊";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "更新";
+
+/* OK button */
+"OKString" = "好";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "有可用的閱讀模式";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "重設字體大小";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "儲存 %@ 的密碼？";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "儲存 %2$@ 的登入資訊 %1$@？";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "好";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "將 QR 碼對齊方框即可掃瞄";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "資料無效";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "請前往「設定」->「隱私」->「相機」，允許 Brave 存取您裝置的相機。";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "掃描 QR 碼";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "一般";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "完成";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "復原";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "已關閉 %d 個分頁";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "好";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "將票卡放入錢包時發生錯誤，請稍後再試。";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "新增票卡失敗";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "該頁面的網址無效，Brave 無法開啟頁面。";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "無法開啟頁面";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "更新 %2$@ 的登入資訊 %1$@？";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "更新 %2$@ 的登入資訊 %1$@？";
+

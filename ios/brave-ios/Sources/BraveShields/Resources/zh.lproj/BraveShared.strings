@@ -1,0 +1,57 @@
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** 是您获得无广告、不间断视频体验的入场券。";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "为我调整 Shields";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "该网站已开始阻止某些广告拦截器，这意味着其网站可能无法正常运行。";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "为了解决这个问题，Brave 可以为你调整 shields 设置。调整后，你可以尝试在 Brave Player 中观看这些内容。";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "保持当前设置";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "调整本网站的广告屏蔽设置";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "積極";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "防止加载广告、弹出窗口和跟踪器。";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "已阻止";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "標準";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "始终使用 Brave Player 打开本网站的视频";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "了解详情";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "现在不";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave Player 可让你不受干扰地观看视频。";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "改为在 Brave Player 中观看";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "启用全球隐私控制 JS API";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "启用全局隐私控制";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "跟踪器和广告屏蔽";
+

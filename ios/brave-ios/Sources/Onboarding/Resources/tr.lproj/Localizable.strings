@@ -1,0 +1,57 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Nasıl Yapılacağını Keşfedin";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Deneyin!";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Beni Oynatma Listeme götür";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Şimdi, Oynatma Listenize bir göz atalım.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "İçerik, %@ dizinine eklendi";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Tebrikler";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Dismiss";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Belki Daha Sonra";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Kapat";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Karşınızda Brave Oynatma Listesi";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "En sevdiğiniz içeriklerden oynatma listesi oluşturun. Mobil veriden tasarruf edin. Reklamsız bir şekilde tekrar oynatın.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Görüntü içinde görüntü. Arka planda oynatma. Kilit ekranından kontrol. Ve daha fazlası...";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Akışta kalın: Gezinirken videolar ekleyin, sonra izleyin.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Brave Oynatma Listesine videolar ekleyin. İstediğiniz zaman tekrar oynatın. Çevrimdışıyken bile";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Oynatma Listesinde tekrar oynatma daha güzel";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Oynatma listesine videolar eklemek için düğmeye dokunun";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Sevdiğiniz içeriklerle oynatma listeleri oluşturun. İstediğiniz sayfadan medya ekleyin.\nİstediğiniz zaman oynatın. Çevrimdışıyken bile!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "İlk ögenizi eklemek için %@ simgesine dokunun";
+
+/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+"userActionPromptFill" = "Oynatma Listesine ekle";
+

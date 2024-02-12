@@ -1,0 +1,19 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+<ShortName>Ecosia</ShortName>
+<InputEncoding>UTF-8</InputEncoding>
+<Image width="16" height="16">data:image/jpeg;base64,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</Image>
+  <Url type="text/html" method="get" template="https://www.ecosia.org/search" >
+  <Param name="q" value="{searchTerms}"/>
+  <Param name="tt" value="d188c5da"/>
+  <Param name="addon" value="brave"/>
+  </Url>
+  <Url type="application/x-suggestions+json" template="https://ac.ecosia.org/autocomplete" >
+   <Param name="q" value="{searchTerms}"/>
+  <Param name="type" value="list"/>
+  </Url>
+ <SearchForm>https://www.ecosia.org</SearchForm>
+</SearchPlugin>

@@ -1,0 +1,57 @@
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Reproductor de Brave** es tu pase de oro para disfrutar de vídeos de forma ininterrumpida y sin anuncios.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Ajustar Protecciones";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Este sitio ha comenzado a bloquear algunos bloqueadores de anuncios, lo que significa que es posible que no funcione como debería.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Para corregir este problema, Brave puede ajustar la configuración de tus protecciones. Una vez que lo haga, prueba a ver este contenido en Reproductor de Brave.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Mantener la configuración actual";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Ajusta la configuración del bloqueador de anuncios en este sitio";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agresivo";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Impide que salten anuncios, ventanas emergentes y rastreadores.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Deshabilitado";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Estándar";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Reproductor de Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Abrir siempre los vídeos de este sitio con Reproductor de Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Probar";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Ahora No";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Reproductor de Brave te permite ver vídeos sin interrupciones.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Utiliza Reproductor de Brave";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Habilitar la API de JS de control global de la privacidad";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Habilitar control global de la privacidad";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Bloqueo de rastreadores y anuncios";
+

@@ -1,0 +1,27 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "1Password 填寫瀏覽器操作";
+
+/* Privacy - NFC Scan Usage Description */
+"NFCReaderUsageDescription" = "此應用程式需要存取 NFC 讀數以與您的 Yubikey  通訊。";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "這可讓您拍攝並上傳相片。";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "這會驗證您對 Brave 的存取權限";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "您造訪的網站可能會要求取得您的位置資訊。";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "這會允許您在使用 Brave 期間使用麥克風。";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "這可讓您儲存相片。";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "此權限是用於啟用 Apple 進階語音辨識。如果未允許，將使用「裝置上」辨識，並且搜尋將為完全隱私。Brave 不會儲存或分享您的語音搜尋。";
+
+/* (No Comment) */
+"OPML File" = "OPML 檔案";
+
