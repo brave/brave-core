@@ -77,6 +77,7 @@ program
   .option('--symlink_dir <symlink_dir>', 'symlink that points to the actual build directory')
   .option('--target_os <target_os_type>', 'target OS type', /^(host_os|ios|android)$/i)
   .option('--target_arch <target_arch>', 'target architecture', /^(host_cpu|x64|arm64|x86)$/i)
+  .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)', /^(device|catalyst|simulator)$/i)
   .arguments('[build_config]')
   .action((buildConfig = config.defaultBuildConfig, options = {}) => {
     config.buildConfig = buildConfig

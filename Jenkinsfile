@@ -93,6 +93,7 @@ pipeline {
 
                     params = [
                         string(name: 'CHANNEL', value: params.CHANNEL),
+                        // TODO: mihai could pass Debug for migrated iOS
                         string(name: 'BUILD_TYPE', value: PLATFORM == 'android' ? 'Release' : params.BUILD_TYPE),
                         booleanParam(name: 'WIPE_WORKSPACE', value: params.WIPE_WORKSPACE),
                         booleanParam(name: 'USE_RBE', value: params.USE_RBE),

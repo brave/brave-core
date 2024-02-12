@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2015 All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 @font-face {
     font-family: FiraSans;
@@ -148,7 +149,7 @@ body {
 
 .light > .header > .domain {
   color: #ee7600;
-  border-bottom-color: #d0d0d0; 
+  border-bottom-color: #d0d0d0;
 }
 
 .light > .header > h1 {
@@ -161,7 +162,7 @@ body {
 
 .dark > .header > .domain {
   color: #ff9400;
-  border-bottom-color: #777777; 
+  border-bottom-color: #777777;
 }
 
 .dark > .header > h1 {
@@ -366,7 +367,7 @@ body {
   margin-bottom: 20px !important;
 }
 
-/* Covers all images showing edge-to-edge using a 
+/* Covers all images showing edge-to-edge using a
    an optional caption text */
 .content .wp-caption,
 .content figure {

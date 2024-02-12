@@ -1,7 +1,7 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // MARK: - Media Detection
 
@@ -9,22 +9,22 @@ window.__firefox__.includeOnce("Playlist", function($) {
   function is_nan(value) {
     return typeof value === "number" && value !== value;
   }
-  
+
   function is_infinite(value) {
     return typeof value === "number" && (value === Infinity || value === -Infinity);
   }
-  
+
   function clamp_duration(value) {
     if (is_nan(value)) {
       return 0.0;
     }
-    
+
     if (is_infinite(value)) {
       return Number.MAX_VALUE;
     }
     return value;
   }
-  
+
   // Algorithm:
   // Generate a random number from 0 to 256
   // Roll-Over clamp to the range [0, 15]
@@ -33,11 +33,11 @@ window.__firefox__.includeOnce("Playlist", function($) {
   // Subtract that number from 15 (XOR) and convert the result to hex.
   function uuid_v4() {
     // X >> 2 = X / 4 (integer division)
-    
+
     // AND-ing (15 >> 0) roll-over clamps to 15
     // AND-ing (15 >> 2) roll-over clamps to 3
     // So '8' digit is clamped to 3 (inclusive) and all others clamped to 15 (inclusive).
-    
+
     // 0 XOR 15 = 15
     // 1 XOR 15 = 14
     // 8 XOR 15 = 7
@@ -49,13 +49,13 @@ window.__firefox__.includeOnce("Playlist", function($) {
       return (X ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (X >> 2)))).toString(16);
     });
   }
-  
+
   function tagNode(node) {
     if (node) {
       if (!node.$<tagUUID>) {
         node.addEventListener('webkitpresentationmodechanged', (e) => e.stopPropagation(), true);
       }
-      
+
       // This is awful on dynamic websites.
       // Some websites are now using the re-using video tag even if the page itself, and the history changes.
       // I no longer have a proper way to detect if a video was already detected.
@@ -64,12 +64,12 @@ window.__firefox__.includeOnce("Playlist", function($) {
       node.$<tagUUID> = uuid_v4();
     }
   }
-  
+
   let sendMessage = $(function(name, node, target, type, detected) {
     $(function() {
       var location = "";
       var pageTitle = "";
-      
+
       try {
         location = window.top.location.href;
         pageTitle = window.top.document.title;
@@ -77,7 +77,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         location = window.location.href;
         pageTitle = document.title;
       }
-      
+
       $.postNativeMessage('$<message_handler>', {
         "securityToken": SECURITY_TOKEN,
         "name": name,
@@ -92,19 +92,19 @@ window.__firefox__.includeOnce("Playlist", function($) {
       });
     })();
   });
-  
+
   function isVideoNode(node) {
     return node.constructor.name === 'HTMLVideoElement' || node.tagName === 'VIDEO';
   }
-  
+
   function isAudioNode(node) {
     return node.constructor.name === 'HTMLAudioElement' || node.tagName === 'AUDIO';
   }
-  
+
   function isSourceNode(node) {
     return node.constructor.name === 'HTMLSourceElement' || node.tagName === "SOURCE";
   }
-  
+
   function notifyNode(target, type, detected, ignoreSource) {
     if (target) {
       var name = target.title;
@@ -115,7 +115,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
           name = document.title;
         }
       }
-    
+
       if (!type || type == "") {
         if (isVideoNode(target)) {
           type = 'video';
@@ -124,7 +124,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         if (isAudioNode(target)) {
           type = 'audio';
         }
-        
+
         if (isSourceNode(target)) {
           if (isVideoNode(target.parentNode)) {
             type = 'video'
@@ -133,7 +133,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
           }
         }
       }
-      
+
       if (ignoreSource || (target.src && target.src !== "")) {
         tagNode(target);
         sendMessage(name, target, target, type, detected);
@@ -150,12 +150,12 @@ window.__firefox__.includeOnce("Playlist", function($) {
       }
     }
   }
-  
+
   function isElementVisible(e) {
     if (!!(e.offsetWidth && e.offsetHeight && e.getClientRects().length)) {
       return true;
     }
-    
+
     var style = page.getComputedStyle(e);
     return style.width != 0 &&
            style.height !== 0 &&
@@ -163,7 +163,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
            style.display !== 'none' &&
            style.visibility !== 'hidden';
   }
-  
+
   function getAllVideoElements() {
     return [...document.querySelectorAll('video')].reverse();
   }
@@ -171,7 +171,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
   function getAllAudioElements() {
     return [...document.querySelectorAll('audio')].reverse();
   }
-  
+
   function setupLongPress() {
     Object.defineProperty(window.__firefox__, '$<playlistLongPressed>', {
       enumerable: false,
@@ -182,15 +182,15 @@ window.__firefox__.includeOnce("Playlist", function($) {
         if (token != SECURITY_TOKEN) {
           return;
         }
-      
+
         function execute(page, offsetX, offsetY) {
           var targets = page.document.elementsFromPoint(localX - offsetX, localY - offsetY).filter((e) => {
             return isVideoNode(e) || isAudioNode(e);
           }).filter((e) => {
             return isElementVisible(e);
           });
-          
-          
+
+
           if (targets.length == 0) {
             var targetAudio = page.document.querySelector('audio');
             if (targetAudio) {
@@ -199,18 +199,18 @@ window.__firefox__.includeOnce("Playlist", function($) {
             }
             return;
           }
-          
+
           var targetVideo = targets[0];
           if (targetVideo) {
             tagNode(targetVideo);
             notifyNode(targetVideo, 'video', false, false);
           }
         }
-        
+
         // Any videos in the current `window.document`
         // will have an offset of (0, 0) relative to the window.
         execute(window, 0, 0);
-        
+
         // Any videos in a `iframe.contentWindow.document`
         // will have an offset of (0, 0) relative to its contentWindow.
         // However, it will have an offset of (X, Y) relative to the current window.
@@ -224,9 +224,9 @@ window.__firefox__.includeOnce("Playlist", function($) {
       }
     });
   }
-  
+
   // MARK: ---------------------------------------
-  
+
   function setupDetector() {
     function requestWhenIdleShim(fn) {
       var start = Date.now()
@@ -247,17 +247,17 @@ window.__firefox__.includeOnce("Playlist", function($) {
         document.addEventListener("DOMContentLoaded", fn);
       }
     }
-    
+
     function observePage() {
       let useObservers = false;
-      
+
       Object.defineProperty(HTMLMediaElement.prototype, '$<tagUUID>', {
         enumerable: false,
         configurable: false,
         writable: true,
         value: null
       });
-    
+
       if (useObservers) {
         let observeNode = function(node) {
           function processNode(node) {
@@ -269,23 +269,23 @@ window.__firefox__.includeOnce("Playlist", function($) {
               node.observer = new MutationObserver(function (mutations) {
                 notifyNode(node, type, true, false);
               });
-              
+
               node.observer.observe(node, { attributes: true, attributeFilter: ["src"] });
               node.addEventListener('loadedmetadata', function() {
                 notifyNode(node, type, true, false);
               });
-              
+
               notifyNode(node, type, true, false);
             }
           }
-          
+
           for (const child of node.childNodes) {
             processNode(child);
           }
-          
+
           processNode(node);
         };
-        
+
         // Observe elements added to a Node
         let documentObserver = new MutationObserver(function (mutations) {
           mutations.forEach(function (mutation) {
@@ -294,7 +294,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
             });
           });
         });
-        
+
         documentObserver.observe(document, { subtree: true, childList: true });
       } else {
         Object.defineProperty(HTMLMediaElement.prototype, '$<tagUUID>', {
@@ -332,7 +332,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
           }
         });
       }
-    
+
       /*var document_createElement = document.createElement;
       document.createElement = function (tag) {
           if (tag === 'audio' || tag === 'video') {
@@ -343,12 +343,12 @@ window.__firefox__.includeOnce("Playlist", function($) {
           }
           return document_createElement.call(this, tag);
       };*/
-      
+
       function checkPageForVideos(ignoreSource) {
         onReady(function() {
           let videos = getAllVideoElements();
           let audios = getAllAudioElements();
-          
+
           if (videos.length == 0 && audios.length == 0) {
             setTimeout(function() {
               $.postNativeMessage('$<message_handler>', {
@@ -358,7 +358,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
             }, 10000);
             return;
           }
-          
+
           videos.forEach(function(node) {
             if (useObservers) {
               observeNode(node);
@@ -372,7 +372,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
             }
             notifyNode(node, 'audio', true, ignoreSource);
           });
-          
+
           $(function() {
             $.postNativeMessage('$<message_handler>', {
               "securityToken": SECURITY_TOKEN,
@@ -380,7 +380,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
             });
           })();
         });
-        
+
         // Timeinterval is needed for DailyMotion as their DOM is bad
         let interval = setInterval(function() {
           getAllVideoElements().forEach(function(node) {
@@ -402,7 +402,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
           clearInterval(interval);
         }, 10000);
       }
-      
+
       // Needed for Japanese videos like tver.jp which literally never loads automatically
       Object.defineProperty(window.__firefox__, '$<playlistProcessDocumentLoad>', {
         enumerable: false,
@@ -413,7 +413,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
           checkPageForVideos(true);
         }
       });
-      
+
       // Needed for pages like Bichute and Soundcloud and Youtube that do NOT reload the page
       // They instead alter the history or document and update the href that way
       window.addEventListener("load", () => {
@@ -427,13 +427,13 @@ window.__firefox__.includeOnce("Playlist", function($) {
         });
         observer.observe(body, { childList: true, subtree: true });
       });
-      
+
       checkPageForVideos(false);
     }
 
     observePage();
   }
-  
+
   function setupTagNode() {
       Object.defineProperty(window.__firefox__, '$<mediaCurrentTimeFromTag>', {
         enumerable: false,
@@ -444,23 +444,23 @@ window.__firefox__.includeOnce("Playlist", function($) {
           if (token != SECURITY_TOKEN) {
             return;
           }
-        
+
           for (const element of getAllVideoElements()) {
             if (element.$<tagUUID> == tag) {
               return clamp_duration(element.currentTime);
             }
           }
-          
+
           for (const element of getAllAudioElements()) {
             if (element.$<tagUUID> == tag) {
               return clamp_duration(element.currentTime);
             }
           }
-          
+
           return 0.0;
         }
       });
-      
+
       Object.defineProperty(window.__firefox__, '$<stopMediaPlayback>', {
           enumerable: false,
           configurable: false,
@@ -470,22 +470,22 @@ window.__firefox__.includeOnce("Playlist", function($) {
             if (token != SECURITY_TOKEN) {
               return;
             }
-          
+
             for (element of getAllVideoElements()) {
               element.pause();
             }
-            
+
             for (element of getAllAudioElements()) {
               element.pause();
             }
-            
+
             return 0.0;
           }
       });
   }
-  
+
   // MARK: -----------------------------
-  
+
   setupLongPress();
   setupDetector();
   setupTagNode();

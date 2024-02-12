@@ -2,17 +2,17 @@ const glob = require("glob");
 const path = require("path");
 const TerserPlugin = require('terser-webpack-plugin');
 
-const __firefox__ = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/__firefox__.js")[0];
+const __firefox__ = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/__firefox__.js")[0];
 
-const AllFramesAtDocumentStart = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/AllFrames/AtDocumentStart/*.js");
-const AllFramesAtDocumentStartSandboxed = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/AllFrames/AtDocumentStart/*.js");
-const AllFramesAtDocumentEnd = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/AllFrames/AtDocumentEnd/*.js");
-const AllFramesAtDocumentEndSandboxed = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/AllFrames/AtDocumentEnd/*.js");
+const AllFramesAtDocumentStart = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/AllFrames/AtDocumentStart/*.js");
+const AllFramesAtDocumentStartSandboxed = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/AllFrames/AtDocumentStart/*.js");
+const AllFramesAtDocumentEnd = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/AllFrames/AtDocumentEnd/*.js");
+const AllFramesAtDocumentEndSandboxed = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/AllFrames/AtDocumentEnd/*.js");
 
-const MainFrameAtDocumentStart = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/MainFrame/AtDocumentStart/*.js");
-const MainFrameAtDocumentEnd = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/MainFrame/AtDocumentEnd/*.js");
-const MainFrameAtDocumentStartSandboxed = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/MainFrame/AtDocumentStart/*.js");
-const MainFrameAtDocumentEndSandboxed = glob.sync("./Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/MainFrame/AtDocumentEnd/*.js");
+const MainFrameAtDocumentStart = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/MainFrame/AtDocumentStart/*.js");
+const MainFrameAtDocumentEnd = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/MainFrame/AtDocumentEnd/*.js");
+const MainFrameAtDocumentStartSandboxed = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/MainFrame/AtDocumentStart/*.js");
+const MainFrameAtDocumentEndSandboxed = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/MainFrame/AtDocumentEnd/*.js");
 
 module.exports = {
   mode: "production",

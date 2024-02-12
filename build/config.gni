@@ -28,7 +28,7 @@ declare_args() {
   brave_version_major = ""
   brave_version_minor = ""
   brave_version_build = ""
-  brave_version_patch = 0
+  brave_ios_marketing_version_patch = 0
   chrome_version_string = ""
   build_omaha = false
   tag_ap = ""

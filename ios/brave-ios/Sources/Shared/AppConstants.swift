@@ -7,8 +7,7 @@ import UIKit
 public enum AppBuildChannel: String {
   case release
   case beta
-  case dev
-  case enterprise
+  case nightly
   case debug
 
   /// Whether this release channel is used/seen by external users (app store or testers)
@@ -19,7 +18,7 @@ public enum AppBuildChannel: String {
     switch self {
     case .release, .beta:
       return true
-    case .dev, .debug, .enterprise:
+    case .nightly, .debug:
       return false
     }
   }
@@ -30,10 +29,10 @@ public enum AppBuildChannel: String {
       return "release"
     case .beta:
       return "beta"
-    case .dev:
+    case .nightly:
       // This is designed to follow desktop platform
-      return "developer"
-    case .debug, .enterprise:
+      return "nightly"
+    case .debug:
       return "invalid"
     }
   }
@@ -44,10 +43,8 @@ public enum AppBuildChannel: String {
       return "release"
     case .beta:
       return "beta"
-    case .dev, .debug:
-      return "developer"
-    case .enterprise:
-      return "invalid"
+    case .nightly, .debug:
+      return "nightly"
     }
   }
 }

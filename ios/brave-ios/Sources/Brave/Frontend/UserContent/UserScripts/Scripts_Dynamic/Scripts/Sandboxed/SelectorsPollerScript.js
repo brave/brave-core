@@ -1,13 +1,13 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 window.__firefox__.execute(function($) {
   const args = $<args>
   const messageHandler = '$<message_handler>';
   const partinessMessageHandler = '$<partiness_message_handler>';
-  
+
   /**
    * Send ids and classes to iOS and await new hide selectors
    * @param {Array} ids The ids found on this page
@@ -24,7 +24,7 @@ window.__firefox__.execute(function($) {
       }
     })
   })
-  
+
   /**
    * Send new urls found on the page and return their partiness
    * @param {Array} urls The urls found on this page
@@ -168,13 +168,13 @@ window.__firefox__.execute(function($) {
       sendPendingSelectorsIfNeeded()
       return
     }
-    
+
     // Ensure we are not already waiting on a timer
     if (sendPendingSelectorsTimerId) {
       // Each time this is called cancel the timer and allow a new one to start
       window.clearTimeout(sendPendingSelectorsTimerId)
     }
-    
+
     sendPendingSelectorsTimerId = window.setTimeout(() => {
       sendPendingSelectorsIfNeeded()
       delete sendPendingSelectorsTimerId
@@ -795,7 +795,7 @@ window.__firefox__.execute(function($) {
         // Remove the culprit from everywhere so it doesn't cause errors
         CC.hiddenSelectors.delete(selector)
         CC.unhiddenSelectors.add(selector)
-        
+
         for (let queueIndex = 0; queueIndex < CC.runQueues.length; queueIndex += 1) {
           CC.runQueues[queueIndex]
           CC.runQueues[queueIndex].delete(selector)
@@ -1031,7 +1031,7 @@ window.__firefox__.execute(function($) {
    * The timer id for throttling setRulesOnStylesheet
    */
   let setRulesTimerId
-  
+
   /**
    * This method only allows a single setRulesOnStylesheet to be applied.
    * This is an optimaization so we don't constantly re-apply rules
@@ -1042,7 +1042,7 @@ window.__firefox__.execute(function($) {
       // Each time this is called cancell the timer and allow a new one to start
       window.clearTimeout(setRulesTimerId)
     }
-    
+
     setRulesTimerId = window.setTimeout(() => {
       setRulesOnStylesheet()
       delete setRulesTimerId

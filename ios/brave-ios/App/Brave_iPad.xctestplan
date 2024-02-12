@@ -20,8 +20,8 @@
       ],
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "ClientTests",
-        "name" : "ClientTests"
+        "identifier" : "UserAgentTests",
+        "name" : "UserAgentTests"
       }
     }
   ],

@@ -13,12 +13,13 @@ import CryptoKit
     // Same random manager
     let sessionKey = SymmetricKey(size: .bits256)
     let randomConfiguration = RandomConfiguration(etld: "example.com", sessionKey: sessionKey)
-
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .sortedKeys // To ensure stable comparisons
     // Then
     // Same results
     XCTAssertEqual(
-      try FarblingProtectionHelper.makeFarblingParams(from: randomConfiguration),
-      try FarblingProtectionHelper.makeFarblingParams(from: randomConfiguration)
+      try FarblingProtectionHelper.makeFarblingParams(from: randomConfiguration, encoder: encoder),
+      try FarblingProtectionHelper.makeFarblingParams(from: randomConfiguration, encoder: encoder)
     )
   }
 
@@ -28,12 +29,14 @@ import CryptoKit
     let sessionKey = SymmetricKey(size: .bits256)
     let firstRandomConfiguration = RandomConfiguration(etld: "example.com", sessionKey: sessionKey)
     let secondRandomConfiguration = RandomConfiguration(etld: "brave.com", sessionKey: sessionKey)
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .sortedKeys // To ensure stable comparisons
 
     // Then
     // Different results
     XCTAssertNotEqual(
-      try FarblingProtectionHelper.makeFarblingParams(from: firstRandomConfiguration),
-      try FarblingProtectionHelper.makeFarblingParams(from: secondRandomConfiguration)
+      try FarblingProtectionHelper.makeFarblingParams(from: firstRandomConfiguration, encoder: encoder),
+      try FarblingProtectionHelper.makeFarblingParams(from: secondRandomConfiguration, encoder: encoder)
     )
   }
 }

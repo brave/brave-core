@@ -13,10 +13,12 @@ import XCTest
 
 @MainActor class URLFormatTests: XCTestCase {
   
+  // Only init once
+  private static let icuInitialized = BraveCoreMain.initializeICUForTesting()
+  
   override func setUp() {
     super.setUp()
-    
-    assert(BraveCoreMain.initializeICUForTesting(), "ICU should load for test")
+    assert(Self.icuInitialized, "ICU should load for test")
   }
   
   func testURIFixup() {

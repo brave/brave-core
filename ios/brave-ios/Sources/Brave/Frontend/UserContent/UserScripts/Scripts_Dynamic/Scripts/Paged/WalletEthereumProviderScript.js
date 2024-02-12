@@ -1,16 +1,16 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 window.__firefox__.execute(function($, $Object) {
-  
+
 if (window.isSecureContext) {
   function post(method, payload) {
     let postMessage = $(function(message) {
       return $.postNativeMessage('$<message_handler>', message);
     });
-    
+
     return new Promise($((resolve, reject) => {
       postMessage({
         "securityToken": SECURITY_TOKEN,
@@ -29,7 +29,7 @@ if (window.isSecureContext) {
       })
     }));
   }
-  
+
   const provider = {value: {}};
   $Object.defineProperty(window, 'ethereum', provider);
   $Object.defineProperty(window, 'braveEthereum', provider);
@@ -126,7 +126,7 @@ if (window.isSecureContext) {
       writable: true, // https://github.com/brave/brave-browser/issues/25078
     },
   });
-  
+
   let uuid = crypto.randomUUID();
   if (!uuid) {
     return
@@ -154,5 +154,5 @@ if (window.isSecureContext) {
 
   announceProvider();
 }
-  
+
 });

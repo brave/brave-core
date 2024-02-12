@@ -1,7 +1,7 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 "use strict";
 
@@ -13,7 +13,7 @@ if (!window.__firefox__) {
     const toStringString = function() {
       return 'function toString() {\n    [native code]\n}';
     };
-    
+
     const toString = function() {
       let functionDescription = `function ${ typeof target.name !== 'undefined' ? target.name : "" }() {\n    [native code]\n}`;
       if (usingObjectDescriptor) {
@@ -21,24 +21,24 @@ if (!window.__firefox__) {
       }
       return functionDescription;
     };
-    
+
     $Object.defineProperty(toString, 'name', {
       enumerable: false,
       configurable: true,
       writable: false,
       value: 'toString'
     });
-    
+
     $Object.defineProperty(toStringString, 'name', {
       enumerable: false,
       configurable: true,
       writable: false,
       value: 'toString'
     });
-    
+
     return [toString, toStringString];
   }
-  
+
   /*
    *  Secure calls to `toString`
    */
@@ -47,7 +47,7 @@ if (!window.__firefox__) {
     if ((target === toString || target === toStringString) && fnOverrides['toString']) {
       fnOverrides['toString'] = toStringString;
     }
-    
+
     for (const [name, property] of $Object.entries(fnOverrides)) {
       let descriptor = $Object.getOwnPropertyDescriptor(target, name);
       if (!descriptor || descriptor.configurable) {
@@ -58,12 +58,12 @@ if (!window.__firefox__) {
           value: property
         });
       }
-      
+
       descriptor = $Object.getOwnPropertyDescriptor(target, name);
       if (!descriptor || descriptor.writable) {
         fn[name] = property;
       }
-      
+
       if (name !== 'toString') {
         $.deepFreeze(target[name]);
       }
@@ -71,49 +71,49 @@ if (!window.__firefox__) {
 
     //$.deepFreeze(toString);
   }
-  
+
   /*
    *  Copies an object's signature to an object with no prototype to prevent prototype polution attacks
    */
   function secureCopy(value) {
     let prototypeProperties = Object.create(null, value.prototype ? Object.getOwnPropertyDescriptors(value.prototype) : undefined);
     delete prototypeProperties['prototype'];
-    
+
     let properties = Object.assign(Object.create(null, undefined),
                                    Object.getOwnPropertyDescriptors(value),
                                    value.prototype ? Object.getOwnPropertyDescriptors(value.prototype) : undefined);
-    
+
     // Do not copy the prototype.
     delete properties['prototype'];
-    
+
     /// Making object not inherit from Object.prototype prevents prototype pollution attacks.
     //return Object.create(null, properties);
-    
+
     // Create a Proxy so we can add an Object.prototype that has a null prototype and is read-only.
     return new Proxy(Object.create(null, properties), {
       get(target, property, receiver) {
         if (property == 'prototype') {
           return prototypeProperties;
         }
-        
+
         if (property == 'toString') {
           let descriptor = $Object.getOwnPropertyDescriptor(target, property);
           if (descriptor && !descriptor.configurable && !descriptor.writable) {
             return Reflect.get(target, property);
           }
-          
+
           const [toString, toStringString] = generateToString(target, false);
-          
+
           const overrides = {
             'toString': toString,
             'call': $Function.call,
             'apply': $Function.apply,
             'bind': $Function.bind
           };
-          
+
           secureToString(toStringString, toString, toStringString, overrides);
           $.deepFreeze(toStringString);
-          
+
           secureToString(toString, toString, toStringString, overrides);
           $.deepFreeze(toString);
           return toString;
@@ -123,7 +123,7 @@ if (!window.__firefox__) {
       }
     });
   }
-  
+
   /*
    *  Any objects that need to be secured must be done now
    */
@@ -133,10 +133,10 @@ if (!window.__firefox__) {
   let $Array = secureCopy(Array);
   let $webkit = window.webkit;
   let $MessageHandlers = $webkit.messageHandlers;
-  
+
   secureCopy = undefined;
   let secureObjects = [$Object, $Function, $Reflect, $Array, $MessageHandlers];
-  
+
   /*
    *  Prevent recursive calls if a page overrides these.
    *  These functions can be frozen, without freezing the Function.prototype functions.
@@ -153,26 +153,26 @@ if (!window.__firefox__) {
 
   bind.call = call;
   bind.apply = apply;
-  
-  
+
+
   /*
    *  Secures an object's attributes
    */
   let $ = function(value, overrideToString = true) {
     if ($Object.isExtensible(value)) {
       const [toString, toStringString] = generateToString(value, true);
-      
+
       const overrides = overrideToString ? {
         'toString': toString
       } : {};
-      
+
       if (typeof value === 'function') {
         const functionOverrides = {
           'call': $Function.call,
           'apply': $Function.apply,
           'bind': $Function.bind
         };
-        
+
         for (const [key, value] of $Object.entries(functionOverrides)) {
           overrides[key] = value;
         }
@@ -182,7 +182,7 @@ if (!window.__firefox__) {
       // Freeze our custom `toString`
       secureToString(toStringString, toString, toStringString, overrides);
       $.deepFreeze(toStringString);
-      
+
       secureToString(toString, toString, toStringString, overrides);
       $.deepFreeze(toString);
 
@@ -203,7 +203,7 @@ if (!window.__firefox__) {
             }
             continue;
           }
-          
+
           // Object.prototype.toString != Object.toString
           // They are two different functions, so we should check for both before overriding them
           let descriptor = $Object.getOwnPropertyDescriptor(value, name);
@@ -220,7 +220,7 @@ if (!window.__firefox__) {
             }
             continue;
           }
-          
+
           // Object.prototype.toString != Object.toString
           // They are two different functions, so we should check for both before overriding them
           if (typeof value.toString !== 'undefined') {
@@ -228,12 +228,12 @@ if (!window.__firefox__) {
               if (value.toString !== toString) {
                 secureToString(value.toString);
               }
-              
+
               continue;
             }
           }
         }
-        
+
         // Override all of the functions in the overrides array
         let descriptor = $Object.getOwnPropertyDescriptor(value, name);
         if (!descriptor || descriptor.configurable) {
@@ -244,7 +244,7 @@ if (!window.__firefox__) {
             value: property
           });
         }
-        
+
         descriptor = $Object.getOwnPropertyDescriptor(value, name);
         if (!descriptor || descriptor.writable) {
           value[name] = property;
@@ -254,7 +254,7 @@ if (!window.__firefox__) {
     }
     return value;
   };
-  
+
   /*
    *  Freeze an object and its prototype
    */
@@ -262,15 +262,15 @@ if (!window.__firefox__) {
     if (!value) {
       return value;
     }
-    
+
     $Object.freeze(value);
-    
+
     if (value.prototype) {
       $Object.freeze(value.prototype);
     }
     return value;
   };
-  
+
   /*
    *  Freeze an object recursively
    */
@@ -279,12 +279,12 @@ if (!window.__firefox__) {
     const isIgnoredClass = function(instance) {
       return instance.constructor && exceptions.includes(instance.constructor.name);
     };
-    
+
     // Do nothing to primitive types
     if (primitiveTypes.includes(typeof obj)) {
       return obj;
     }
-    
+
     if (!obj || (obj.constructor && obj.constructor.name == "Object")) {
       return obj;
     }
@@ -293,7 +293,7 @@ if (!window.__firefox__) {
     if (obj == Object.prototype || obj == Function.prototype) {
       return obj;
     }
-    
+
     // Do nothing for typed arrays as they only contains primitives
     if (obj instanceof Object.getPrototypeOf(Uint8Array)) {
       return obj;
@@ -308,27 +308,27 @@ if (!window.__firefox__) {
         if (value instanceof Object.getPrototypeOf(Uint8Array)) {
           continue;
         }
-        
+
         $.extensiveFreeze(value, exceptions);
-        
+
         if (!isIgnoredClass(value)) {
           $Object.freeze($(value));
         }
       }
-      
+
       return isIgnoredClass(obj) ? $(obj) : $Object.freeze($(obj));
     } else if (obj instanceof Map) {
       for (const value of obj.values()) {
         if (!value || primitiveTypes.includes(typeof value)) {
           continue;
         }
-        
+
         if (value instanceof Object.getPrototypeOf(Uint8Array)) {
           continue;
         }
 
         $.extensiveFreeze(value, exceptions);
-        
+
         if (!isIgnoredClass(value)) {
           $Object.freeze($(value));
         }
@@ -341,7 +341,7 @@ if (!window.__firefox__) {
       let prototype = $Object.getPrototypeOf(obj);
       if (prototype && prototype != Object.prototype && prototype != Function.prototype) {
         $.extensiveFreeze(prototype, exceptions);
-        
+
         if (!isIgnoredClass(prototype)) {
           $Object.freeze($(prototype));
         }
@@ -351,13 +351,13 @@ if (!window.__firefox__) {
         if (!value || primitiveTypes.includes(typeof value)) {
           continue;
         }
-        
+
         if (value instanceof Object.getPrototypeOf(Uint8Array)) {
           continue;
         }
 
         $.extensiveFreeze(value, exceptions);
-        
+
         if (!isIgnoredClass(value)) {
           $Object.freeze($(value));
         }
@@ -373,31 +373,31 @@ if (!window.__firefox__) {
             if (!value || primitiveTypes.includes(typeof value) || value instanceof Object.getPrototypeOf(Uint8Array)) {
               continue;
             }
-            
+
             $.extensiveFreeze(value, exceptions);
-            
+
             if (!isIgnoredClass(value)) {
               $Object.freeze($(value));
             }
           }
-          
+
           descriptor.enumerable = false;
           descriptor.writable = false;
           descriptor.configurable = false;
           continue;
         }
-        
+
         let value = obj[name];
         if (!value || primitiveTypes.includes(typeof value)) {
           continue;
         }
-        
+
         if (value instanceof Object.getPrototypeOf(Uint8Array)) {
           continue;
         }
-        
+
         $.extensiveFreeze(value, exceptions);
-        
+
         if (!isIgnoredClass(value)) {
           $Object.freeze($(value));
         }
@@ -406,12 +406,12 @@ if (!window.__firefox__) {
       return isIgnoredClass(obj) ? $(obj) : $Object.freeze($(obj));
     }
   };
-    
+
   $.postNativeMessage = function(messageHandlerName, message) {
     if (!window.webkit || !window.webkit.messageHandlers) {
       return Promise.reject(new TypeError("undefined is not an object (evaluating 'webkit.messageHandlers')"));
     }
-    
+
     let webkit = window.webkit;
     delete window.webkit.messageHandlers[messageHandlerName].postMessage;
     delete window.webkit.messageHandlers[messageHandlerName];
@@ -421,7 +421,7 @@ if (!window.__firefox__) {
     window.webkit = webkit;
     return result;
   };
-  
+
   $.dispatchEvent = function(event) {
     delete window.dispatchEvent;
     let originalDispatchEvent = window.dispatchEvent(event);
@@ -433,7 +433,7 @@ if (!window.__firefox__) {
     let originalAddEventListener = window.addEventListener(type, listener, optionsOrUseCapture);
     return originalAddEventListener;
   }
-  
+
   // Start securing functions before any other code can use them
   $($.deepFreeze);
   $($.extensiveFreeze);
@@ -448,12 +448,12 @@ if (!window.__firefox__) {
   $.deepFreeze($.dispatchEvent);
   $.deepFreeze($.addEventListener);
   $.deepFreeze($);
-  
+
   for (const value of secureObjects) {
     $(value);
     $.deepFreeze(value);
   }
-  
+
   /*
    *  Creates a Proxy object that does the following to all objects using it:
    *  - Symbols are not printable or accessible via `toString`
@@ -469,30 +469,30 @@ if (!window.__firefox__) {
       apply(target, thisArg, argumentsList) {
         return $Reflect.apply(target, thisArg, argumentsList);
       },
-      
+
       deleteProperty(target, property) {
         if (property in target) {
           delete target[property];
         }
-        
+
         if (property in values) {
           delete target[property];
         }
       },
-      
+
       get(target, property, receiver) {
         if (hiddenProperties && hiddenProperties[property]) {
           return hiddenProperties[property];
         }
-        
+
         const descriptor = $Reflect.getOwnPropertyDescriptor(target, property);
         if (descriptor && !descriptor.configurable && !descriptor.writable) {
           return $Reflect.get(target, property, receiver);
         }
-        
+
         return $Reflect.get(values, property, receiver);
       },
-      
+
       set(target, name, value, receiver) {
         if (hiddenProperties && hiddenProperties[name]) {
           return false;
@@ -502,20 +502,20 @@ if (!window.__firefox__) {
         if (descriptor && !descriptor.configurable && !descriptor.writable) {
           return false;
         }
-      
+
         if (value) {
           value = $(value);
         }
-        
+
         return $Reflect.set(values, name, value, receiver);
       },
-      
+
       defineProperty(target, property, descriptor) {
         if (descriptor && !descriptor.configurable) {
           if (descriptor.set && !descriptor.get) {
             return false;
           }
-        
+
           if (descriptor.value) {
             descriptor.value = $(descriptor.value);
           }
@@ -524,14 +524,14 @@ if (!window.__firefox__) {
             return $Reflect.defineProperty(target, property, descriptor);
           }
         }
-      
+
         if (descriptor.value) {
           descriptor.value = $(descriptor.value);
         }
 
         return $Reflect.defineProperty(values, property, descriptor);
       },
-      
+
       getOwnPropertyDescriptor(target, property) {
         const descriptor = $Reflect.getOwnPropertyDescriptor(target, property);
         if (descriptor && !descriptor.configurable && !descriptor.writable) {
@@ -540,7 +540,7 @@ if (!window.__firefox__) {
 
         return $Reflect.getOwnPropertyDescriptor(values, property);
       },
-      
+
       ownKeys(target) {
         let keys = [];
         /*keys = keys.concat(Object.keys(target));
@@ -550,7 +550,7 @@ if (!window.__firefox__) {
       }
     });
   });
-  
+
   /*
    *  Creates window.__firefox__ with a `Proxy` object as defined above
    */
@@ -560,7 +560,7 @@ if (!window.__firefox__) {
     writable: false,
     value: ($(function() {
       'use strict';
-      
+
       let userScripts = $({});
       let includeOnce = $(function(name, fn) {
         if (!userScripts[name]) {
@@ -573,7 +573,7 @@ if (!window.__firefox__) {
 
         return false;
       });
-    
+
       let execute = $(function(fn) {
         if (typeof fn === 'function') {
           $(fn)($, $Object, $Function, $Array);
@@ -581,11 +581,11 @@ if (!window.__firefox__) {
         }
         return false;
       });
-    
+
       return createProxy({'includeOnce': $.deepFreeze(includeOnce), 'execute': $.deepFreeze(execute)});
     }))()
   });
-    
+
   $.deepFreeze(UserMessageHandler);
   $.deepFreeze(webkit.messageHandlers);
 }

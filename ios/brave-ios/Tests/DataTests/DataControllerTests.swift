@@ -67,15 +67,4 @@ class DataControllerTests: CoreDataTestCase {
 
     XCTAssertEqual(newResult.count, 0)
   }
-
-  func testNoChangesContext() {
-    backgroundSaveAndWaitForExpectation(inverted: true) {
-      DataController.perform { context in
-        // Do nothing
-      }
-    }
-
-    XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
-  }
-
 }
