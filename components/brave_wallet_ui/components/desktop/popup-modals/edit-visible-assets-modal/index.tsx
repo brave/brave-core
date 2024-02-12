@@ -212,14 +212,15 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
   // Filtered token list based on user removed tokens
   const filteredOutRemovedTokens = React.useMemo(() => {
-    return tokenList.filter(
-      (token) =>
-        !removedTokensList.some(
-          (t) =>
-            t.contractAddress.toLowerCase() ===
-              token.contractAddress.toLowerCase() && t.tokenId === token.tokenId
-        )
-    )
+    return tokenList.filter((token) => {
+      const tokenContractLower = token.contractAddress.toLowerCase()
+      return !removedTokensList.some(
+        (t) =>
+          t.chainId === token.chainId &&
+          t.contractAddress.toLowerCase() === tokenContractLower &&
+          t.tokenId === token.tokenId
+      )
+    })
   }, [tokenList, removedTokensList])
 
   // Filtered token list based on search value
@@ -331,10 +332,12 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
   const onRemoveAsset = React.useCallback(
     (token: BraveWallet.BlockchainToken) => {
+      const tokenContractLower = token.contractAddress.toLowerCase()
       const filterFn = (t: BraveWallet.BlockchainToken) =>
         !(
-          t.contractAddress.toLowerCase() ===
-            token.contractAddress.toLowerCase() && t.tokenId === token.tokenId
+          t.chainId === token.chainId &&
+          t.contractAddress.toLowerCase() === tokenContractLower &&
+          t.tokenId === token.tokenId
         )
       const newUserList = updatedTokensList.filter(filterFn)
       setUpdatedTokensList(newUserList)

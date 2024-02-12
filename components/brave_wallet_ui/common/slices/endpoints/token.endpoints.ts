@@ -292,6 +292,20 @@ export const tokenEndpoints = ({
             token,
             isVisible
           )
+
+          if (!success) {
+            // token is probably not in the core-side assets list,
+            // try adding it to the list
+            const { success: addTokenSuccess } = await addUserToken({
+              braveWalletService,
+              cache,
+              tokenArg: token
+            })
+            if (!addTokenSuccess) {
+              throw new Error('Token could not be updated or added')
+            }
+          }
+
           return { data: success }
         } catch (error) {
           return handleEndpointError(
