@@ -59,6 +59,8 @@ class SubscriptionRenderFrameObserver : public content::RenderFrameObserver {
 
   bool EnsureConnected();
   void OnGetPurchaseToken(const std::string& purchase_token);
+  void OnGetPurchaseTokenOrderId(const std::string& purchase_token,
+                                 const std::string& order_id);
   std::string ExtractParam(const GURL& url, const std::string& name) const;
   bool IsValueAllowed(const std::string& purchase_token) const;
 
@@ -66,6 +68,8 @@ class SubscriptionRenderFrameObserver : public content::RenderFrameObserver {
   void OnDestruct() override;
 
   bool IsAllowed();
+
+  std::string GetPurchaseTokenJSString(const std::string& purchase_token);
 
   const int32_t world_id_;
   std::optional<Product> product_ = std::nullopt;
