@@ -22,6 +22,11 @@ extension ContentBlockerHelper: TabContentScript {
     let data: [ContentblockerDTOData]
   }
 
+  enum BlockedType: Hashable {
+    case image
+    case ad
+  }
+
   static let scriptName = "TrackingProtectionStats"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -94,12 +99,12 @@ extension ContentBlockerHelper: TabContentScript {
           guard let domainURLString = domain.url else { return }
           let genericTypes = ContentBlockerManager.shared.validGenericTypes(for: domain)
 
-          let blockedType = await TPStatsBlocklistChecker.shared.blockedTypes(
+          let blockedType = await blockedTypes(
             requestURL: requestURL,
             sourceURL: sourceURL,
             enabledRuleTypes: genericTypes,
             resourceType: dto.resourceType,
-            isAggressiveMode: domain.blockAdsAndTrackingLevel.isAggressive
+            domain: domain
           )
 
           guard let blockedType = blockedType else { return }
@@ -147,5 +152,35 @@ extension ContentBlockerHelper: TabContentScript {
     } catch {
       Logger.module.error("\(error.localizedDescription)")
     }
+  }
+
+  @MainActor func blockedTypes(
+    requestURL: URL,
+    sourceURL: URL,
+    enabledRuleTypes: Set<ContentBlockerManager.GenericBlocklistType>,
+    resourceType: AdblockEngine.ResourceType,
+    domain: Domain
+  ) async -> BlockedType? {
+    guard let host = requestURL.host, !host.isEmpty else {
+      // TP Stats init isn't complete yet
+      return nil
+    }
+
+    if resourceType == .image && Preferences.Shields.blockImages.value {
+      return .image
+    }
+
+    if enabledRuleTypes.contains(.blockAds) || enabledRuleTypes.contains(.blockTrackers) {
+      if await AdBlockGroupsManager.shared.shouldBlock(
+        requestURL: requestURL,
+        sourceURL: sourceURL,
+        resourceType: resourceType,
+        domain: domain
+      ) {
+        return .ad
+      }
+    }
+
+    return nil
   }
 }

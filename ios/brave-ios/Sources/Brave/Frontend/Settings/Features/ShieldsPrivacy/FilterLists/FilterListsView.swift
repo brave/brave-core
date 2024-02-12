@@ -16,9 +16,6 @@ struct FilterListsView: View {
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
   @Environment(\.editMode) private var editMode
   @State private var showingAddSheet = false
-  @State private var expectedEnabledSources: Set<CachedAdBlockEngine.Source> = Set(
-    AdBlockStats.shared.enabledSources
-  )
   private let dateFormatter = RelativeDateTimeFormatter()
 
   var body: some View {
@@ -68,8 +65,7 @@ struct FilterListsView: View {
     }
     .onDisappear {
       Task.detached {
-        await AdBlockStats.shared.removeDisabledEngines()
-        await AdBlockStats.shared.ensureEnabledEngines()
+        await AdBlockGroupsManager.shared.ensureEnabledEngines()
       }
     }
   }
@@ -84,13 +80,6 @@ struct FilterListsView: View {
             Text(filterList.entry.desc)
               .font(.caption)
               .foregroundColor(Color(.secondaryBraveLabel))
-          }
-        }
-        .onChange(of: filterList.isEnabled) { isEnabled in
-          if isEnabled {
-            expectedEnabledSources.insert(filterList.engineSource)
-          } else {
-            expectedEnabledSources.remove(filterList.engineSource)
           }
         }
       }
@@ -129,12 +118,6 @@ struct FilterListsView: View {
           }
         }
         .onChange(of: filterListURL.setting.isEnabled) { isEnabled in
-          if isEnabled {
-            expectedEnabledSources.insert(filterListURL.setting.engineSource)
-          } else {
-            expectedEnabledSources.remove(filterListURL.setting.engineSource)
-          }
-
           Task {
             CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
           }

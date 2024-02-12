@@ -153,9 +153,7 @@ extension FilterListStorage {
       // If we don't have filter lists yet loaded, use the settings
       return Set(
         allFilterListSettings.compactMap { setting -> ContentBlockerManager.BlocklistType? in
-          guard let componentId = setting.componentId else { return nil }
-          return .filterList(
-            componentId: componentId,
+          return setting.engineSource?.blocklistType(
             isAlwaysAggressive: setting.isAlwaysAggressive
           )
         }
@@ -163,10 +161,9 @@ extension FilterListStorage {
     } else {
       // If we do have filter lists yet loaded, use them as they are always the most up to date and accurate
       return Set(
-        filterLists.map { filterList in
-          return .filterList(
-            componentId: filterList.entry.componentId,
-            isAlwaysAggressive: filterList.isAlwaysAggressive
+        filterLists.compactMap { filterList in
+          return filterList.engineSource.blocklistType(
+            isAlwaysAggressive: filterList.engineType.isAlwaysAggressive
           )
         }
       )

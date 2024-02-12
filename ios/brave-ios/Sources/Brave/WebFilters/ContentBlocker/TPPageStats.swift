@@ -1,15 +1,9 @@
+// Copyright 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// This file is largely verbatim from Focus iOS (Blockzilla/Lib/TrackingProtection).
-// The preload and postload js files are unmodified from Focus.
-
-import BraveCore
-import Data
 import Foundation
-import Preferences
-import Shared
 
 struct TPPageStats {
   let adCount: Int
@@ -48,44 +42,5 @@ struct TPPageStats {
       fingerprintingCount: self.fingerprintingCount + fingerprintingCount,
       httpsCount: self.httpsCount + httpsCount
     )
-  }
-}
-
-class TPStatsBlocklistChecker {
-  static let shared = TPStatsBlocklistChecker()
-
-  enum BlockedType: Hashable {
-    case image
-    case ad
-  }
-
-  @MainActor func blockedTypes(
-    requestURL: URL,
-    sourceURL: URL,
-    enabledRuleTypes: Set<ContentBlockerManager.GenericBlocklistType>,
-    resourceType: AdblockEngine.ResourceType,
-    isAggressiveMode: Bool
-  ) async -> BlockedType? {
-    guard let host = requestURL.host, !host.isEmpty else {
-      // TP Stats init isn't complete yet
-      return nil
-    }
-
-    if resourceType == .image && Preferences.Shields.blockImages.value {
-      return .image
-    }
-
-    if enabledRuleTypes.contains(.blockAds) || enabledRuleTypes.contains(.blockTrackers) {
-      if await AdBlockStats.shared.shouldBlock(
-        requestURL: requestURL,
-        sourceURL: sourceURL,
-        resourceType: resourceType,
-        isAggressiveMode: isAggressiveMode
-      ) {
-        return .ad
-      }
-    }
-
-    return nil
   }
 }
