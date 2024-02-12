@@ -205,6 +205,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )
@@ -387,6 +388,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )
@@ -461,6 +463,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )
@@ -530,6 +533,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )
@@ -603,6 +607,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )
@@ -662,6 +667,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )
@@ -744,6 +750,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )
@@ -829,6 +836,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )
@@ -908,6 +916,7 @@ class NFTStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager,
       txService: txService
     )

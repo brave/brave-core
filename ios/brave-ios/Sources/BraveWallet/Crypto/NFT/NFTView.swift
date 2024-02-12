@@ -400,6 +400,7 @@ struct NFTView: View {
         if !isNFTDiscoveryEnabled && Preferences.Wallet.shouldShowNFTDiscoveryPermissionCallout.value {
           self.isShowingNFTDiscoveryAlert = true
         }
+        nftStore.recordNFTGalleryView()
       }
     }
   }
