@@ -116,7 +116,7 @@ class ConversationDriver {
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
                     const std::string& rating_id,
-                    bool send_page_url,
+                    bool send_hostname,
                     mojom::PageHandler::SendFeedbackCallback callback);
 
   // Used to determine whether the page content should be unlinked when
