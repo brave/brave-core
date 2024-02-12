@@ -122,7 +122,9 @@ export default function Component({ feed, onSessionStart }: Props) {
   const lastViewedCardCount = React.useRef(0);
   const viewDepthIntersectionObserver = React.useRef(new IntersectionObserver(entries => {
     const inViewCounts = entries
-      .filter(e => e.intersectionRatio === 1)
+      // Check greater than 0 intersection, as when the top of the next card
+      // shows, we've seen the current one.
+      .filter(e => e.intersectionRatio > 0)
       .map(e => Number(e.target.getAttribute(CARD_COUNT_ATTRIBUTE)));
     if (!inViewCounts.length) {
       return;
