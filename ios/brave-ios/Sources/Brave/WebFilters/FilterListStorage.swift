@@ -154,7 +154,7 @@ import Preferences
       componentId: filterList.entry.componentId,
       allowCreation: true,
       order: filterList.order,
-      isAlwaysAggressive: filterList.isAlwaysAggressive,
+      isAlwaysAggressive: filterList.engineType.isAlwaysAggressive,
       isDefaultEnabled: filterList.entry.defaultEnabled
     )
   }
@@ -295,7 +295,7 @@ extension AdblockFilterListCatalogEntry {
 
 extension FilterListStorage {
   /// Gives us source representations of all the enabled filter lists
-  @MainActor var enabledSources: [CachedAdBlockEngine.Source] {
+  @MainActor var enabledSources: [GroupedAdBlockEngine.Source] {
     return filterLists.isEmpty
       ? allFilterListSettings
         .filter(\.isEnabled)
@@ -303,5 +303,25 @@ extension FilterListStorage {
       : filterLists
         .filter(\.isEnabled)
         .map(\.engineSource)
+  }
+
+  /// Gives us source representations of all the enabled filter lists
+  @MainActor func enabledSources(
+    engineType: GroupedAdBlockEngine.EngineType
+  ) -> [GroupedAdBlockEngine.Source] {
+    if !filterLists.isEmpty {
+      return filterLists.compactMap { filterList -> GroupedAdBlockEngine.Source? in
+        guard filterList.engineType == engineType else { return nil }
+        guard filterList.isEnabled else { return nil }
+        return filterList.engineSource
+      }
+    } else {
+      // We may not have the filter lists loaded yet. In which case we load the settings
+      return allFilterListSettings.compactMap { setting -> GroupedAdBlockEngine.Source? in
+        guard setting.isAlwaysAggressive == engineType.isAlwaysAggressive else { return nil }
+        guard setting.isEnabled else { return nil }
+        return setting.engineSource
+      }
+    }
   }
 }

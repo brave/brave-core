@@ -433,11 +433,11 @@ extension BrowserViewController: WKNavigationDelegate {
         {
           let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
 
-          let shouldBlock = await AdBlockStats.shared.shouldBlock(
+          let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
             requestURL: requestURL,
             sourceURL: requestURL,
             resourceType: .document,
-            isAggressiveMode: domain.blockAdsAndTrackingLevel.isAggressive
+            domain: domain
           )
 
           if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {

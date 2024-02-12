@@ -61,13 +61,13 @@ class CosmeticFiltersScriptHandler: TabContentScript {
           forUrl: frameURL,
           persistent: self.tab?.isPrivate == true ? false : true
         )
-        let cachedEngines = await AdBlockStats.shared.cachedEngines(for: domain)
+        let cachedEngines = await AdBlockGroupsManager.shared.cachedEngines(for: domain)
 
-        let selectorArrays = await cachedEngines.asyncConcurrentCompactMap {
+        let selectorArrays = cachedEngines.compactMap {
           cachedEngine -> (selectors: Set<String>, isAlwaysAggressive: Bool)? in
           do {
             guard
-              let selectors = try await cachedEngine.selectorsForCosmeticRules(
+              let selectors = try cachedEngine.selectorsForCosmeticRules(
                 frameURL: frameURL,
                 ids: dto.data.ids,
                 classes: dto.data.classes
@@ -76,7 +76,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
               return nil
             }
 
-            return (selectors, cachedEngine.isAlwaysAggressive)
+            return (selectors, cachedEngine.type.isAlwaysAggressive)
           } catch {
             Logger.module.error("\(error.localizedDescription)")
             return nil

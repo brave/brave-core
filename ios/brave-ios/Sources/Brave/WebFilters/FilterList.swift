@@ -33,8 +33,8 @@ struct FilterList: Identifiable {
 
   /// Lets us know if this filter list is always aggressive.
   /// This value comes from `list_catalog.json` in brave core
-  var isAlwaysAggressive: Bool {
-    return entry.firstPartyProtections
+  var engineType: GroupedAdBlockEngine.EngineType {
+    return entry.firstPartyProtections ? .standard : .aggressive
   }
 
   init(from entry: AdblockFilterListCatalogEntry, order: Int, isEnabled: Bool?) {

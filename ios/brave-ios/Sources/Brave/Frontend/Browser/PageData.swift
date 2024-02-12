@@ -22,11 +22,11 @@ struct PageData {
   /// These are loaded dyncamically as the user scrolls through the page
   private(set) var allSubframeURLs: Set<URL> = []
   /// The stats class to get the engine data from
-  private var adBlockStats: AdBlockStats
+  private var groupsManager: AdBlockGroupsManager
 
-  init(mainFrameURL: URL, adBlockStats: AdBlockStats = AdBlockStats.shared) {
+  init(mainFrameURL: URL, groupsManager: AdBlockGroupsManager = AdBlockGroupsManager.shared) {
     self.mainFrameURL = mainFrameURL
-    self.adBlockStats = adBlockStats
+    self.groupsManager = groupsManager
   }
 
   /// This method builds all the user scripts that should be included for this page
@@ -111,7 +111,7 @@ struct PageData {
   }
 
   func makeMainFrameEngineScriptTypes(domain: Domain) async -> Set<UserScriptType> {
-    return await adBlockStats.makeEngineScriptTypes(
+    return await groupsManager.makeEngineScriptTypes(
       frameURL: mainFrameURL,
       isMainFrame: true,
       domain: domain
@@ -120,7 +120,7 @@ struct PageData {
 
   func makeAllEngineScripts(for domain: Domain) async -> Set<UserScriptType> {
     // Add engine scripts for the main frame
-    async let engineScripts = adBlockStats.makeEngineScriptTypes(
+    async let engineScripts = groupsManager.makeEngineScriptTypes(
       frameURL: mainFrameURL,
       isMainFrame: true,
       domain: domain
@@ -128,7 +128,7 @@ struct PageData {
 
     // Add engine scripts for all of the known sub-frames
     async let additionalScriptTypes = allSubframeURLs.asyncConcurrentCompactMap({ frameURL in
-      return await self.adBlockStats.makeEngineScriptTypes(
+      return await self.groupsManager.makeEngineScriptTypes(
         frameURL: frameURL,
         isMainFrame: false,
         domain: domain
