@@ -31,6 +31,8 @@ extension BraveCoreSwitchKey {
       return "Json Upload Server URL"
     case .enableFeatures:
       return "Enable Features"
+    case .p3aWalletCountTestNetworks:
+      return "Brave Wallet Count Test Networks"
     default:
       return ""
     }
@@ -38,7 +40,9 @@ extension BraveCoreSwitchKey {
   /// Whether or not the key is passed in without a value
   public var isValueless: Bool {
     switch self {
-    case .p3aDoNotRandomizeUploadInterval, .p3aIgnoreServerErrors:
+    case .p3aDoNotRandomizeUploadInterval,
+        .p3aIgnoreServerErrors,
+        .p3aWalletCountTestNetworks:
       return true
     default:
       return false
@@ -46,6 +50,7 @@ extension BraveCoreSwitchKey {
   }
   
   static let enableFeatures: Self = .init(rawValue: "enable-features")
+  static let p3aWalletCountTestNetworks: Self = .init(rawValue: BraveWallet.P3aCountTestNetworksSwitch)
 }
 
 private enum SkusEnvironment: String, CaseIterable {
@@ -283,6 +288,7 @@ struct BraveCoreDebugSwitchesView: View {
           } label: {
             SwitchContainer(.p3aExpressRotationIntervalSeconds)
           }
+          SwitchContainer(.p3aWalletCountTestNetworks)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {

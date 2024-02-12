@@ -528,6 +528,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       keyringService: keyringService,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
+      walletP3A: walletP3A,
       userAssetManager: userAssetManager
     )
     confirmationStore = store

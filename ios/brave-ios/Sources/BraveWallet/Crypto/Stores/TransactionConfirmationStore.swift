@@ -8,6 +8,7 @@ import BraveCore
 import BigNumber
 import Strings
 import Combine
+import Preferences
 
 public class TransactionConfirmationStore: ObservableObject, WalletObserverStore {
   /// The value that are being sent/swapped/approved in this transaction
@@ -137,6 +138,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private let keyringService: BraveWalletKeyringService
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
+  private let walletP3A: BraveWalletBraveWalletP3A
   private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
   private var txServiceObserver: TxServiceObserver?
@@ -156,6 +158,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     keyringService: BraveWalletKeyringService,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
+    walletP3A: BraveWalletBraveWalletP3A,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.assetRatioService = assetRatioService
@@ -167,6 +170,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.keyringService = keyringService
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
+    self.walletP3A = walletP3A
     self.assetManager = userAssetManager
 
     self.setupObservers()
@@ -699,6 +703,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       } else if error.tag == .solanaProviderError {
         self?.transactionProviderErrorRegistry[transaction.id] = TransactionProviderError(code: error.solanaProviderError.rawValue, message: message)
       }
+      
+      if success {
+        self?.reportTransactionSent(for: transaction)
+      }
       completion(success ? nil : message)
     }
   }
@@ -799,6 +807,19 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let indexOfChangedTx = unapprovedTxs.firstIndex(where: { $0.id == activeTransactionId }) ?? 0
     let newIndex = indexOfChangedTx > 0 ? indexOfChangedTx - 1 : 0
     activeTransactionId = unapprovedTxs[safe: newIndex]?.id ?? unapprovedTxs.first?.id ?? ""
+  }
+  
+  private func reportTransactionSent(for transaction: BraveWallet.TransactionInfo) {
+    guard WalletConstants.sendTransactionTypes.contains(transaction.txType)
+            || (transaction.coin == .fil && transaction.txType == .other) else {
+      return
+    }
+    let shouldCountTestNetworks = Preferences.BraveCore.activeSwitches.value.contains(BraveWallet.P3aCountTestNetworksSwitch)
+    guard shouldCountTestNetworks
+            || !WalletConstants.supportedTestNetworkChainIds.contains(transaction.chainId) else {
+      return
+    }
+    walletP3A.reportTransactionSent(transaction.coin, newSend: true)
   }
 }
 

@@ -109,6 +109,13 @@ public struct WalletConstants {
   /// The supported IPFS schemes
   static let supportedIPFSSchemes = ["ipfs", "ipns"]
   
+  /// The supported send transaction types, used for P3A reporting.
+  static let sendTransactionTypes: [BraveWallet.TransactionType] = [
+    .ethSend, .erc20Transfer,
+    .solanaSystemTransfer, .solanaSplTokenTransfer,
+    .solanaSplTokenTransferWithAssociatedTokenAccountCreation
+  ]
+  
   /// The link for users to learn more about Solana SPL token account creation in transaction confirmation screen
   static let splTokenAccountCreationLink = URL(string: "https://support.brave.com/hc/en-us/articles/5546517853325")!
   
