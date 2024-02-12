@@ -1,0 +1,55 @@
+<!--
+Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<head>
+  <meta name='viewport' content='initial-scale=1, maximum-scale=1, viewport-fit=cover'>
+  <meta name="referrer" content="no-referrer">
+  <title>%page_title%</title>
+  <link rel="stylesheet" href="internal://local/interstitial-style/InterstitialStyles.css">
+  <link rel="stylesheet" href="internal://local/interstitial-style/IPFSPreference.css">
+</head>
+
+<body dir="&locale.dir;" class="background">
+  <div class="container post">
+    <div class="header-logo">
+      <img src="internal://local/interstitial-icon/BraveIPFS.svg" alt="Icon" class="icon" />
+    </div>
+    <div>
+      <span class="title">%interstitial_ipfs_title%</span>
+      <p class="description">%interstitial_ipfs_privacy%
+      </p>
+    </div>
+    <div class="control-box">
+      <p class="option">%interstitial_ipfs_public_gateway%
+      </p>
+      <button id="disableIPFSButton" class="disableButton disableButtonTitle">%button_disable%</button>
+      <button id="proceedIPFSButton" class="proceedButton proceedButtonTitle">%button_procced%</button>
+    </div>
+    
+    <div class="footer-container">
+      <div class="ipfs-footer"></div>
+    </div>
+    
+    <script type="text/javascript">
+      var disableButton = document.getElementById("disableIPFSButton")
+      disableButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        webkit.messageHandlers["%message_handler%"].postMessage({
+          "type": "IPFSDisable",
+        });
+      });
+      var proceedButton = document.getElementById("proceedIPFSButton")
+      proceedButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        webkit.messageHandlers["%message_handler%"].postMessage({
+          "type": "IPFSProceed",
+        });
+      });
+      
+    </script>
+  </div>
+</body>

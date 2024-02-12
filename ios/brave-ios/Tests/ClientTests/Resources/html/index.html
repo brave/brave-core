@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Test</title>
+  </head>
+
+  <body>
+    <h1>Test Ads</h1>
+    
+    <div>
+      <div id="test-ad-aggressive">
+        <img src="http://1st_party.localhost/image.gif">
+        This element should be hidden (standard or aggressive mode) even though it's a 1st party ad.
+        This is because it comes back as part of the aggressive selectors list.
+        The aggressive selectors list are ones that come from 
+        non-default and non-regional filter lists such as the cookie consent blocking list
+        and are ignored when unhiding 1st party content on standard mode.
+      </div>
+      
+      <div id="test-ad-1st-party">
+        <img src="http://1st_party.localhost/image.gif">
+        This element should be unhidden (after the pump) only on standard mode because it is a 1st party ad.
+        Standard selectors are ones that come from the the default filter list or any regional filter lists.
+        These can be unhidden on standard mode if they are 1st party ads.
+      </div>
+      
+      <div id="test-ad-3rd-party">
+        <img src="http://3rd_party.localhost/image.gif">
+        This element should be always hidden (standard or aggressive mode) because it's a 3rd party ad.
+      </div>
+      
+      <div id="test-ad-simple">
+        Hide b/c little txt
+      </div>
+    </div>
+
+    <div>
+      <div class="test-ads-primary-standard">
+        The elements below all belong to the ".test-ads-primary-standard div" selector.
+        This selector is returned as part of the standard selector list 
+        which is given to the CF script during its initialization.
+        Because they all share the same selector, 
+        one unhidden means all are unhidden regardless of 1st or 3rd party.
+        And as the first element is a 1st party ad, all are unhidden.
+        Finally, because this selector is fed into the script right away,
+        the unhiding doesn't need to wait for the pump.
+
+        <div id="test-ad-primary-standard-1st-party">
+          <img src="http://1st_party.localhost/image.gif">
+          This element should be unhidden on standard mode because it is a 1st party ad.
+          Because of this element. All of its div siblings will be unhidden because they all belong to the 
+          .test-ads-primary-standard div selector.
+        </div>
+
+        <div id="test-ad-primary-standard-3rd-party">
+          <img src="http://3rd_party.localhost/image.gif">
+          Even though it's a 3rd party ad, this element should be unhidden on standard mode.
+          This is because it belongs to the .test-ads-primary-standard div selector which is unhidden 
+          due to the 1st party element above
+        </div>
+      </div>
+
+      <div class="test-ads-primary-aggressive">
+        These div children below should be hidden because they belong to an aggressive selector
+        regardless of mode or 1st/3rd party status.
+        Because this selector is fed into the script right away, 
+        the unhiding doesn't need to wait for the pump.
+        
+        <div id="test-ad-primary-aggressive-1st-party">
+          <img src="http://1st_party.localhost/image.gif">
+          This element should be hidden always regardless of aggressive or standard mode 
+          because it is a div child of the .test-ads-primary-aggressive class
+        </div>
+
+        <div id="test-ad-primary-aggressive-3rd-party">
+          <img src="http://3rd_party.localhost/image.gif">
+          This element should be hidden always regardless of aggressive or standard mode 
+          because it is a div child of the .test-ads-primary-aggressive class
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

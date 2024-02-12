@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Закладки";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Завантаження";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Швидкий доступ до улюблених вебсайтів.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Вибране";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "Історія";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Повторіть спробу пізніше";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Більше";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Дізнавайтеся найсвіжіші новини";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Популярні новини";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Відкрийте Brave, щоб переглянути свій перелік вибраного";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR код";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Пошук";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Короткий опис того, як Brave заощаджує ваш час і захищає вас в Інтернеті.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Звіти про конфіденційність";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Звіти про конфіденційність";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Шукати або ввести URL-адресу";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Нова вкладка";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Список відтворення";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Приватна вкладка";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Швидкий доступ до пошуку в Інтернеті або відкривання вебсторінок у Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Ярлики швидкого доступу";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Короткий опис того, як Brave захищає вас в Інтернеті.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Звіт про конфіденційність";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Гаманець Brave";
+

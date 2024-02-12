@@ -1,0 +1,11 @@
+framework module GRDWireGuardKit {
+  umbrella header "GRDWireGuardKit.h"
+
+  export *
+  module * { export * }
+}
+
+module GRDWireGuardKit.Swift {
+  header "GRDWireGuardKit-Swift.h"
+  requires objc
+}

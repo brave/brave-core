@@ -1,0 +1,5 @@
+// Stats API key
+BRAVE_API_KEY = key
+
+// Needed for access to many Brave services
+BRAVE_SERVICES_KEY = key

@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<title>Licenses</title>
+<meta name="referrer" content="no-referrer">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<style type="text/css">
+@font-face {
+    font-family: sans-serif;
+    src: url('/reader-mode/fonts/FiraSans-Regular.ttf');
+}
+body,p,h1,h2,h3 {
+    font-family: sans-serif;
+}
+h2 {
+    padding: 0;
+    margin: 0;
+}
+.link {
+  margin: 0;
+}
+.center {
+    text-align: center;
+}
+
+/* accordion behavior */
+
+/* hide checkboxes */
+.ac-container input { 
+	display: none;
+}
+/* default to 'closed' */
+.ac-container article {
+	margin-top: -1px;
+	overflow: hidden;
+	height: 0px;
+	position: relative;
+	z-index: 10;
+}
+/* 'open' when checked */
+.ac-container input:checked ~ article {
+	height: auto;
+}
+/* '+/-' indicator styles/spacing */
+.ac-container label {
+	display: block;
+	padding-right: 21px
+}
+.ac-container h4,
+.ac-container h2 {
+	display: inline-block;
+	padding-right: 17px;
+}
+.ac-container label h4:after,
+.ac-container label h2:after {
+	content: '\02795';
+	font-size: 1rem;
+	display: inline-block;
+	position: absolute;
+	right: 17px;	
+}
+.ac-container input:checked + label h4:after,
+.ac-container input:checked + label h2:after {
+	content: "\2796";	
+}
+</style>
+</head>
+
+<h1>Licenses</h1>
+
+<h2>Brave iOS</h2>
+<p class="link"><a href="https://github.com/brave/brave-ios">github.com/brave/brave-ios</a></p>
+<div class="text">
+
+
+
+<h3 id="mozilla-public-license-version-2.0">Mozilla Public License<br>Version 2.0</h3>
+<div class="ac-container">
+<div>
+<input id="ac-1" name="accordion-1" type="checkbox" />
+<label for="ac-1"><h4 id="definitions">1. Definitions</h4></label>
+<article>
+<dl>
+<dt>1.1. “Contributor”</dt>
+<dd><p>means each individual or legal entity that creates, contributes to the creation of, or owns Covered Software.</p>
+</dd>
+<dt>1.2. “Contributor Version”</dt>
+<dd><p>means the combination of the Contributions of others (if any) used by a Contributor and that particular Contributor’s Contribution.</p>
+</dd>
+<dt>1.3. “Contribution”</dt>
+<dd><p>means Covered Software of a particular Contributor.</p>
+</dd>
+<dt>1.4. “Covered Software”</dt>
+<dd><p>means Source Code Form to which the initial Contributor has attached the notice in Exhibit A, the Executable Form of such Source Code Form, and Modifications of such Source Code Form, in each case including portions thereof.</p>
+</dd>
+<dt>1.5. “Incompatible With Secondary Licenses”</dt>
+<dd><p>means</p>
+<ol type="a">
+<li><p>that the initial Contributor has attached the notice described in Exhibit B to the Covered Software; or</p></li>
+<li><p>that the Covered Software was made available under the terms of version 1.1 or earlier of the License, but not also under the terms of a Secondary License.</p></li>
+</ol>
+</dd>
+<dt>1.6. “Executable Form”</dt>
+<dd><p>means any form of the work other than Source Code Form.</p>
+</dd>
+<dt>1.7. “Larger Work”</dt>
+<dd><p>means a work that combines Covered Software with other material, in a separate file or files, that is not Covered Software.</p>
+</dd>
+<dt>1.8. “License”</dt>
+<dd><p>means this document.</p>
+</dd>
+<dt>1.9. “Licensable”</dt>
+<dd><p>means having the right to grant, to the maximum extent possible, whether at the time of the initial grant or subsequently, any and all of the rights conveyed by this License.</p>
+</dd>
+<dt>1.10. “Modifications”</dt>
+<dd><p>means any of the following:</p>
+<ol type="a">
+<li><p>any file in Source Code Form that results from an addition to, deletion from, or modification of the contents of Covered Software; or</p></li>
+<li><p>any new file in Source Code Form that contains any Covered Software.</p></li>
+</ol>
+</dd>
+<dt>1.11. “Patent Claims” of a Contributor</dt>
+<dd><p>means any patent claim(s), including without limitation, method, process, and apparatus claims, in any patent Licensable by such Contributor that would be infringed, but for the grant of the License, by the making, using, selling, offering for sale, having made, import, or transfer of either its Contributions or its Contributor Version.</p>
+</dd>
+<dt>1.12. “Secondary License”</dt>
+<dd><p>means either the GNU General Public License, Version 2.0, the GNU Lesser General Public License, Version 2.1, the GNU Affero General Public License, Version 3.0, or any later versions of those licenses.</p>
+</dd>
+<dt>1.13. “Source Code Form”</dt>
+<dd><p>means the form of the work preferred for making modifications.</p>
+</dd>
+<dt>1.14. “You” (or “Your”)</dt>
+<dd><p>means an individual or a legal entity exercising rights under this License. For legal entities, “You” includes any entity that controls, is controlled by, or is under common control with You. For purposes of this definition, “control” means (a) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (b) ownership of more than fifty percent (50%) of the outstanding shares or beneficial ownership of such entity.</p>
+</dd>
+</dl>
+</article>
+</div>
+<div>
+<input id="ac-2" name="accordion-1" type="checkbox" />
+<label for="ac-2"><h4 id="license-grants-and-conditions">2. License Grants and Conditions</h4></label>
+<article>
+<h3 id="grants">2.1. Grants</h3>
+<p>Each Contributor hereby grants You a world-wide, royalty-free, non-exclusive license:</p>
+<ol type="a">
+<li><p>under intellectual property rights (other than patent or trademark) Licensable by such Contributor to use, reproduce, make available, modify, display, perform, distribute, and otherwise exploit its Contributions, either on an unmodified basis, with Modifications, or as part of a Larger Work; and</p></li>
+<li><p>under Patent Claims of such Contributor to make, use, sell, offer for sale, have made, import, and otherwise transfer either its Contributions or its Contributor Version.</p></li>
+</ol>
+<h3 id="effective-date">2.2. Effective Date</h3>
+<p>The licenses granted in Section&nbsp;2.1 with respect to any Contribution become effective for each Contribution on the date the Contributor first distributes such Contribution.</p>
+<h3 id="limitations-on-grant-scope">2.3. Limitations on Grant Scope</h3>
+<p>The licenses granted in this Section&nbsp;2 are the only rights granted under this License. No additional rights or licenses will be implied from the distribution or licensing of Covered Software under this License. Notwithstanding Section&nbsp;2.1(b) above, no patent license is granted by a Contributor:</p>
+<ol type="a">
+<li><p>for any code that a Contributor has removed from Covered Software; or</p></li>
+<li><p>for infringements caused by: (i) Your and any other third party’s modifications of Covered Software, or (ii) the combination of its Contributions with other software (except as part of its Contributor Version); or</p></li>
+<li><p>under Patent Claims infringed by Covered Software in the absence of its Contributions.</p></li>
+</ol>
+<p>This License does not grant any rights in the trademarks, service marks, or logos of any Contributor (except as may be necessary to comply with the notice requirements in Section&nbsp;3.4).</p>
+<h3 id="subsequent-licenses">2.4. Subsequent Licenses</h3>
+<p>No Contributor makes additional grants as a result of Your choice to distribute the Covered Software under a subsequent version of this License (see Section&nbsp;10.2) or under the terms of a Secondary License (if permitted under the terms of Section&nbsp;3.3).</p>
+<h3 id="representation">2.5. Representation</h3>
+<p>Each Contributor represents that the Contributor believes its Contributions are its original creation(s) or it has sufficient rights to grant the rights to its Contributions conveyed by this License.</p>
+<h3 id="fair-use">2.6. Fair Use</h3>
+<p>This License is not intended to limit any rights You have under applicable copyright doctrines of fair use, fair dealing, or other equivalents.</p>
+<h3 id="conditions">2.7. Conditions</h3>
+<p>Sections 3.1, 3.2, 3.3, and 3.4 are conditions of the licenses granted in Section&nbsp;2.1.</p>
+</article>
+</div>
+<div>
+<input id="ac-3" name="accordion-1" type="checkbox" />
+<label for="ac-3"><h4 id="responsibilities">3. Responsibilities</h4></label>
+<article>
+<h3 id="distribution-of-source-form">3.1. Distribution of Source Form</h3>
+<p>All distribution of Covered Software in Source Code Form, including any Modifications that You create or to which You contribute, must be under the terms of this License. You must inform recipients that the Source Code Form of the Covered Software is governed by the terms of this License, and how they can obtain a copy of this License. You may not attempt to alter or restrict the recipients’ rights in the Source Code Form.</p>
+<h3 id="distribution-of-executable-form">3.2. Distribution of Executable Form</h3>
+<p>If You distribute Covered Software in Executable Form then:</p>
+<ol type="a">
+<li><p>such Covered Software must also be made available in Source Code Form, as described in Section&nbsp;3.1, and You must inform recipients of the Executable Form how they can obtain a copy of such Source Code Form by reasonable means in a timely manner, at a charge no more than the cost of distribution to the recipient; and</p></li>
+<li><p>You may distribute such Executable Form under the terms of this License, or sublicense it under different terms, provided that the license for the Executable Form does not attempt to limit or alter the recipients’ rights in the Source Code Form under this License.</p></li>
+</ol>
+<h3 id="distribution-of-a-larger-work">3.3. Distribution of a Larger Work</h3>
+<p>You may create and distribute a Larger Work under terms of Your choice, provided that You also comply with the requirements of this License for the Covered Software. If the Larger Work is a combination of Covered Software with a work governed by one or more Secondary Licenses, and the Covered Software is not Incompatible With Secondary Licenses, this License permits You to additionally distribute such Covered Software under the terms of such Secondary License(s), so that the recipient of the Larger Work may, at their option, further distribute the Covered Software under the terms of either this License or such Secondary License(s).</p>
+<h3 id="notices">3.4. Notices</h3>
+<p>You may not remove or alter the substance of any license notices (including copyright notices, patent notices, disclaimers of warranty, or limitations of liability) contained within the Source Code Form of the Covered Software, except that You may alter any license notices to the extent required to remedy known factual inaccuracies.</p>
+<h3 id="application-of-additional-terms">3.5. Application of Additional Terms</h3>
+<p>You may choose to offer, and to charge a fee for, warranty, support, indemnity or liability obligations to one or more recipients of Covered Software. However, You may do so only on Your own behalf, and not on behalf of any Contributor. You must make it absolutely clear that any such warranty, support, indemnity, or liability obligation is offered by You alone, and You hereby agree to indemnify every Contributor for any liability incurred by such Contributor as a result of warranty, support, indemnity or liability terms You offer. You may include additional disclaimers of warranty and limitations of liability specific to any jurisdiction.</p>
+</article>
+<div>
+<div>
+<input id="ac-4" name="accordion-1" type="checkbox" />
+<label for="ac-4"><h4 id="inability-to-comply-due-to-statute-or-regulation">4. Inability to Comply Due to Statute or Regulation</h4></label>
+<article>
+<p>If it is impossible for You to comply with any of the terms of this License with respect to some or all of the Covered Software due to statute, judicial order, or regulation then You must: (a) comply with the terms of this License to the maximum extent possible; and (b) describe the limitations and the code they affect. Such description must be placed in a text file included with all distributions of the Covered Software under this License. Except to the extent prohibited by statute or regulation, such description must be sufficiently detailed for a recipient of ordinary skill to be able to understand it.</p>
+</article>
+</div>
+<div>
+<input id="ac-5" name="accordion-1" type="checkbox" />
+<label for="ac-5"><h4 id="termination">5. Termination</h4></label>
+<article>
+<p>5.1. The rights granted under this License will terminate automatically if You fail to comply with any of its terms. However, if You become compliant, then the rights granted under this License from a particular Contributor are reinstated (a) provisionally, unless and until such Contributor explicitly and finally terminates Your grants, and (b) on an ongoing basis, if such Contributor fails to notify You of the non-compliance by some reasonable means prior to 60 days after You have come back into compliance. Moreover, Your grants from a particular Contributor are reinstated on an ongoing basis if such Contributor notifies You of the non-compliance by some reasonable means, this is the first time You have received notice of non-compliance with this License from such Contributor, and You become compliant prior to 30 days after Your receipt of the notice.</p>
+<p>5.2. If You initiate litigation against any entity by asserting a patent infringement claim (excluding declaratory judgment actions, counter-claims, and cross-claims) alleging that a Contributor Version directly or indirectly infringes any patent, then the rights granted to You by any and all Contributors for the Covered Software under Section&nbsp;2.1 of this License shall terminate.</p>
+<p>5.3. In the event of termination under Sections&nbsp;5.1 or 5.2 above, all end user license agreements (excluding distributors and resellers) which have been validly granted by You or Your distributors under this License prior to termination shall survive termination.</p>
+</article>
+</div>
+<div>
+<input id="ac-6" name="accordion-1" type="checkbox" />
+<label for="ac-6"><h4 id="disclaimer-of-warranty">6. Disclaimer of Warranty</h4></label>
+<article>
+<p><em>Covered Software is provided under this License on an “as is” basis, without warranty of any kind, either expressed, implied, or statutory, including, without limitation, warranties that the Covered Software is free of defects, merchantable, fit for a particular purpose or non-infringing. The entire risk as to the quality and performance of the Covered Software is with You. Should any Covered Software prove defective in any respect, You (not any Contributor) assume the cost of any necessary servicing, repair, or correction. This disclaimer of warranty constitutes an essential part of this License. No use of any Covered Software is authorized under this License except under this disclaimer.</em></p>
+<article>
+</div>
+<div>
+<input id="ac-7" name="accordion-1" type="checkbox" />
+<label for="ac-7"><h4 id="limitation-of-liability">7. Limitation of Liability</h4></label>
+<article>
+<p><em>Under no circumstances and under no legal theory, whether tort (including negligence), contract, or otherwise, shall any Contributor, or anyone who distributes Covered Software as permitted above, be liable to You for any direct, indirect, special, incidental, or consequential damages of any character including, without limitation, damages for lost profits, loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses, even if such party shall have been informed of the possibility of such damages. This limitation of liability shall not apply to liability for death or personal injury resulting from such party’s negligence to the extent applicable law prohibits such limitation. Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so this exclusion and limitation may not apply to You.</em></p>
+</article>
+</div>
+<div>
+<input id="ac-8" name="accordion-1" type="checkbox" />
+<label for="ac-8"><h4 id="litigation">8. Litigation</h4></label>
+<article>
+<p>Any litigation relating to this License may be brought only in the courts of a jurisdiction where the defendant maintains its principal place of business and such litigation shall be governed by laws of that jurisdiction, without reference to its conflict-of-law provisions. Nothing in this Section shall prevent a party’s ability to bring cross-claims or counter-claims.</p>
+</article>
+</div>
+<div>
+<input id="ac-9" name="accordion-1" type="checkbox" />
+<label for="ac-9"><h4 id="miscellaneous">9. Miscellaneous</h4></label>
+<article>
+<p>This License represents the complete agreement concerning the subject matter hereof. If any provision of this License is held to be unenforceable, such provision shall be reformed only to the extent necessary to make it enforceable. Any law or regulation which provides that the language of a contract shall be construed against the drafter shall not be used to construe this License against a Contributor.</p>
+</article>
+</div>
+<div>
+<input id="ac-10" name="accordion-1" type="checkbox" />
+<label for="ac-10"><h4 id="versions-of-the-license">10. Versions of the License</h4></label>
+<article>
+<h3 id="new-versions">10.1. New Versions</h3>
+<p>Mozilla Foundation is the license steward. Except as provided in Section&nbsp;10.3, no one other than the license steward has the right to modify or publish new versions of this License. Each version will be given a distinguishing version number.</p>
+<h3 id="effect-of-new-versions">10.2. Effect of New Versions</h3>
+<p>You may distribute the Covered Software under the terms of the version of the License under which You originally received the Covered Software, or under the terms of any subsequent version published by the license steward.</p>
+<h3 id="modified-versions">10.3. Modified Versions</h3>
+<p>If you create software not governed by this License, and you want to create a new license for such software, you may create and use a modified version of this License if you rename the license and remove any references to the name of the license steward (except to note that such modified license differs from this License).</p>
+<h3 id="distributing-source-code-form-that-is-incompatible-with-secondary-licenses">10.4. Distributing Source Code Form that is Incompatible With Secondary Licenses</h3>
+<p>If You choose to distribute Source Code Form that is Incompatible With Secondary Licenses under the terms of this version of the License, the notice described in Exhibit B of this License must be attached.</p>
+<h4 id="exhibit-a---source-code-form-license-notice">Exhibit A - Source Code Form License Notice</h4>
+<blockquote>
+<p>This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</p>
+</blockquote>
+<p>If it is not possible or desirable to put the notice in a particular file, then You may include the notice in a location (such as a LICENSE file in a relevant directory) where a recipient would be likely to look for such a notice.</p>
+<p>You may add additional accurate notices of copyright ownership.</p>
+<h4 id="exhibit-b---incompatible-with-secondary-licenses-notice">Exhibit B - “Incompatible With Secondary Licenses” Notice</h4>
+<blockquote>
+<p>This Source Code Form is “Incompatible With Secondary Licenses”, as defined by the Mozilla Public License, v. 2.0.</p>
+</blockquote>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-Firefox" name="accordion-1" type="checkbox" />
+<label for="ac-Firefox"><h2>Firefox</h2></label>
+<article>
+<p class="link"><a href="https://github.com/mozilla-mobile/firefox-ios">https://github.com/mozilla-mobile/firefox-ios</a></p>
+<div class="text">
+<p>This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at https://mozilla.org/MPL/2.0/</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-Snapkit" name="accordion-1" type="checkbox" />
+<label for="ac-Snapkit"><h2>Snapkit</h2></label>
+<article>
+<p class="link"><a href="https://github.com/SnapKit/SnapKit">https://github.com/SnapKit/SnapKit</a></p>
+<div class="text">
+<p>Copyright (c) 2011-Present SnapKit Team - https://github.com/SnapKit</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-SDWebImage" name="accordion-1" type="checkbox" />
+<label for="ac-SDWebImage"><h2>SDWebImage</h2></label>
+<article>
+<p class="link"><a href="https://github.com/rs/SDWebImage">github.com/rs/SDWebImage</a></p>
+<div class="text">
+<p>Copyright (c) 2009-2018 Olivier Poitrey &lt;rs@dailymotion.com&gt;</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-Fuzi" name="accordion-1" type="checkbox" />
+<label for="ac-Fuzi"><h2>Fuzi</h2></label>
+<article>
+<p class="link"><a href="https://github.com/cezheng/Fuzi">github.com/cezheng/Fuzi</a></p>
+<div class="text">
+<p>Copyright (c) 2015 Ce Zheng</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-SwiftyJSON" name="accordion-1" type="checkbox" />
+<label for="ac-SwiftyJSON"><h2>SwiftyJSON</h2></label>
+<article>
+<p class="link"><a href="https://github.com/SwiftyJSON/SwiftyJSON">https://github.com/SwiftyJSON/SwiftyJSON</a></p>
+<div class="text">
+<p>The MIT License (MIT)</p>
+
+<p>Copyright (c) 2017 Ruoyu Fu</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-static" name="accordion-1" type="checkbox" />
+<label for="ac-static"><h2>Static</h2></label>
+<article>
+<p class="link"><a href="https://github.com/venmo/Static">github.com/venmo/Static</a></p>
+<div class="text">
+<p>Copyright (c) 2015 Venmo</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-lottie" name="accordion-1" type="checkbox" />
+<label for="ac-lottie"><h2>Lottie iOS</h2></label>
+<article>
+<p class="link"><a href="https://github.com/airbnb/lottie-ios">github.com/airbnb/lottie-ios</a></p>
+<div class="text">
+
+<p style="text-align:center">
+<strong>Apache License<br><br>Version 2.0, January 2004<br><br></strong>
+<strong><a href="http://www.apache.org/licenses/">http://www.apache.org/licenses/</a></strong>
+</p>
+
+<p>TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION</p>
+
+<p><strong><a name="definitions">1. Definitions</a></strong>.</p>
+
+<div style="margin-left: 1em;">
+
+  <p>"<strong>License</strong>" shall mean the terms and conditions for use, reproduction, and
+distribution as defined by Sections 1 through 9 of this document.</p>
+
+  <p>"<strong>Licensor</strong>" shall mean the copyright owner or entity authorized by the
+copyright owner that is granting the License.</p>
+
+  <p>"<strong>Legal Entity</strong>" shall mean the union of the acting entity and all other
+entities that control, are controlled by, or are under common control with
+that entity. For the purposes of this definition, "<strong>control</strong>" means (i) the
+power, direct or indirect, to cause the direction or management of such
+entity, whether by contract or otherwise, or (ii) ownership of fifty
+percent (50%) or more of the outstanding shares, or (iii) beneficial
+ownership of such entity.</p>
+
+  <p>"<strong>You</strong>" (or "<strong>Your</strong>") shall mean an individual or Legal Entity exercising
+permissions granted by this License.</p>
+
+  <p>"<strong>Source</strong>" form shall mean the preferred form for making modifications,
+including but not limited to software source code, documentation source,
+and configuration files.</p>
+
+  <p>"<strong>Object</strong>" form shall mean any form resulting from mechanical transformation
+or translation of a Source form, including but not limited to compiled
+object code, generated documentation, and conversions to other media types.</p>
+
+  <p>"<strong>Work</strong>" shall mean the work of authorship, whether in Source or Object form,
+made available under the License, as indicated by a copyright notice that
+is included in or attached to the work (an example is provided in the
+Appendix below).</p>
+
+  <p>"<strong>Derivative Works</strong>" shall mean any work, whether in Source or Object form,
+that is based on (or derived from) the Work and for which the editorial
+revisions, annotations, elaborations, or other modifications represent, as
+a whole, an original work of authorship. For the purposes of this License,
+Derivative Works shall not include works that remain separable from, or
+merely link (or bind by name) to the interfaces of, the Work and Derivative
+Works thereof.</p>
+
+  <p>"<strong>Contribution</strong>" shall mean any work of authorship, including the original
+version of the Work and any modifications or additions to that Work or
+Derivative Works thereof, that is intentionally submitted to Licensor for
+inclusion in the Work by the copyright owner or by an individual or Legal
+Entity authorized to submit on behalf of the copyright owner. For the
+purposes of this definition, "<strong>submitted</strong>" means any form of electronic,
+verbal, or written communication sent to the Licensor or its
+representatives, including but not limited to communication on electronic
+mailing lists, source code control systems, and issue tracking systems that
+are managed by, or on behalf of, the Licensor for the purpose of discussing
+and improving the Work, but excluding communication that is conspicuously
+marked or otherwise designated in writing by the copyright owner as "<strong>Not a
+Contribution.</strong>"</p>
+
+  <p>"<strong>Contributor</strong>" shall mean Licensor and any individual or Legal Entity on
+behalf of whom a Contribution has been received by Licensor and
+subsequently incorporated within the Work.</p>
+
+</div>
+
+<p><strong><a name="copyright">2. Grant of Copyright License</a></strong>. Subject to the
+terms and conditions of this License, each Contributor hereby grants to You
+a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+copyright license to reproduce, prepare Derivative Works of, publicly
+display, publicly perform, sublicense, and distribute the Work and such
+Derivative Works in Source or Object form.</p>
+
+<p><strong><a name="patent">3. Grant of Patent License</a></strong>. Subject to the terms
+and conditions of this License, each Contributor hereby grants to You a
+perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+(except as stated in this section) patent license to make, have made, use,
+offer to sell, sell, import, and otherwise transfer the Work, where such
+license applies only to those patent claims licensable by such Contributor
+that are necessarily infringed by their Contribution(s) alone or by
+combination of their Contribution(s) with the Work to which such
+Contribution(s) was submitted. If You institute patent litigation against
+any entity (including a cross-claim or counterclaim in a lawsuit) alleging
+that the Work or a Contribution incorporated within the Work constitutes
+direct or contributory patent infringement, then any patent licenses
+granted to You under this License for that Work shall terminate as of the
+date such litigation is filed.</p>
+
+<p><strong><a name="redistribution">4. Redistribution</a></strong>. You may reproduce and
+distribute copies of the Work or Derivative Works thereof in any medium,
+with or without modifications, and in Source or Object form, provided that
+You meet the following conditions:</p>
+
+<ol style="list-style: lower-latin;">
+<li>You must give any other recipients of the Work or Derivative Works a
+copy of this License; and</li>
+
+<li>You must cause any modified files to carry prominent notices stating
+that You changed the files; and</li>
+
+<li>You must retain, in the Source form of any Derivative Works that You
+distribute, all copyright, patent, trademark, and attribution notices from
+the Source form of the Work, excluding those notices that do not pertain to
+any part of the Derivative Works; and</li>
+
+<li>If the Work includes a "<strong>NOTICE</strong>" text file as part of its distribution,
+then any Derivative Works that You distribute must include a readable copy
+of the attribution notices contained within such NOTICE file, excluding
+those notices that do not pertain to any part of the Derivative Works, in
+at least one of the following places: within a NOTICE text file distributed
+as part of the Derivative Works; within the Source form or documentation,
+if provided along with the Derivative Works; or, within a display generated
+by the Derivative Works, if and wherever such third-party notices normally
+appear. The contents of the NOTICE file are for informational purposes only
+and do not modify the License. You may add Your own attribution notices
+within Derivative Works that You distribute, alongside or as an addendum to
+the NOTICE text from the Work, provided that such additional attribution
+notices cannot be construed as modifying the License.
+<br>
+<br>
+You may add Your own copyright statement to Your modifications and may
+provide additional or different license terms and conditions for use,
+reproduction, or distribution of Your modifications, or for any such
+Derivative Works as a whole, provided Your use, reproduction, and
+distribution of the Work otherwise complies with the conditions stated in
+this License.
+</li>
+
+</ol>
+
+<p><strong><a name="contributions">5. Submission of Contributions</a></strong>. Unless You
+explicitly state otherwise, any Contribution intentionally submitted for
+inclusion in the Work by You to the Licensor shall be under the terms and
+conditions of this License, without any additional terms or conditions.
+Notwithstanding the above, nothing herein shall supersede or modify the
+terms of any separate license agreement you may have executed with Licensor
+regarding such Contributions.</p>
+
+<p><strong><a name="trademarks">6. Trademarks</a></strong>. This License does not grant
+permission to use the trade names, trademarks, service marks, or product
+names of the Licensor, except as required for reasonable and customary use
+in describing the origin of the Work and reproducing the content of the
+NOTICE file.</p>
+
+<p><strong><a name="no-warranty">7. Disclaimer of Warranty</a></strong>. Unless required by
+applicable law or agreed to in writing, Licensor provides the Work (and
+each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including,
+without limitation, any warranties or conditions of TITLE,
+NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You
+are solely responsible for determining the appropriateness of using or
+redistributing the Work and assume any risks associated with Your exercise
+of permissions under this License.</p>
+
+<p><strong><a name="no-liability">8. Limitation of Liability</a></strong>. In no event and
+under no legal theory, whether in tort (including negligence), contract, or
+otherwise, unless required by applicable law (such as deliberate and
+grossly negligent acts) or agreed to in writing, shall any Contributor be
+liable to You for damages, including any direct, indirect, special,
+incidental, or consequential damages of any character arising as a result
+of this License or out of the use or inability to use the Work (including
+but not limited to damages for loss of goodwill, work stoppage, computer
+failure or malfunction, or any and all other commercial damages or losses),
+even if such Contributor has been advised of the possibility of such
+damages.</p>
+
+<p><strong><a name="additional">9. Accepting Warranty or Additional Liability</a></strong>.
+While redistributing the Work or Derivative Works thereof, You may choose
+to offer, and charge a fee for, acceptance of support, warranty, indemnity,
+or other liability obligations and/or rights consistent with this License.
+However, in accepting such obligations, You may act only on Your own behalf
+and on Your sole responsibility, not on behalf of any other Contributor,
+and only if You agree to indemnify, defend, and hold each Contributor
+harmless for any liability incurred by, or claims asserted against, such
+Contributor by reason of your accepting any such warranty or additional
+liability.</p>
+
+<p>END OF TERMS AND CONDITIONS</p>
+
+<p>APPENDIX: How to apply the Apache License to your work.</p>
+
+<p>To apply the Apache License to your work, attach the following
+boilerplate notice, with the fields enclosed by brackets "{}"
+replaced with your own identifying information. (Don't include
+the brackets!)  The text should be enclosed in the appropriate
+comment syntax for the file format. We also recommend that a
+file or class name and description of purpose be included on the
+same "printed page" as the copyright notice for easier
+identification within third-party archives.</p>
+
+<p>Copyright 2018 Airbnb, Inc.</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<p class="link"><a href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<!-- Third party -->
+
+<div>
+<input id="ac-Then" name="accordion-1" type="checkbox" />
+<label for="ac-Then"><h2>Then</h2></label>
+<article>
+<p class="link"><a href="https://github.com/devxoul/Then">github.com/devxoul/Then</a></p>
+<div class="text">
+<p>The MIT License (MIT)</p>
+<p>Copyright (c) 2015 Suyeol Jeon (xoul.kr)</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-Result" name="accordion-1" type="checkbox" />
+<label for="ac-Result"><h2>Result</h2></label>
+<article>
+<p class="link"><a href="https://github.com/bignerdranch/Result">github.com/bignerdranch/Result</a></p>
+<div class="text">
+<p>Copyright (c) 2014 John Gallagher &lt;jgallagher@bignerdranch.com&gt;</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+</div>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-UIImageColors" name="accordion-1" type="checkbox" />
+<label for="ac-UIImageColors"><h2>UIImageColors</h2></label>
+<article>
+<p class="link"><a href="https://github.com/jathu/UIImageColors">github.com/jathu/UIImageColors</a></p>
+
+<p>Created by Jathu Satkunarajah (@jathu) on 2015-06-11 - Toronto</p>
+<p>Original Cocoa version by Panic Inc. - Portland</p>
+
+<p>MIT License</p>
+
+<p>Copyright (c) 2015 Jathu Satkunarajah</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+</article>
+</div>
+
+<p class="center">-</p>
+
+<div>
+<input id="ac-Readability" name="accordion-1" type="checkbox" />
+<label for="ac-Readability"><h2>Readability</h2></label>
+<article>
+<p class="link"><a href="https://github.com/mozilla/readability">github.com/mozilla/readability</a></p>
+<div class="text">
+<p>Copyright (c) 2010 Arc90 Inc</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<p>http://www.apache.org/licenses/LICENSE-2.0</p>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+</div>
+</article>
+</div>
+<p class="center">-</p>
+
+<div>
+    <input id="ac-FeedKit" name="accordion-1" type="checkbox" />
+    <label for="ac-FeedKit"><h2>FeedKit</h2></label>
+    <article>
+        <p class="link"><a href="https://github.com/nmdias/FeedKit">github.com/nmdias/FeedKit</a></p>
+        <div class="text">
+            <p>MIT License</p>
+            
+            <p>Copyright (c) 2016 - 2018 Nuno Manuel Dias</p>
+            
+            <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+            of this software and associated documentation files (the "Software"), to deal
+            in the Software without restriction, including without limitation the rights
+            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the Software is
+            furnished to do so, subject to the following conditions:</p>
+            
+            <p>The above copyright notice and this permission notice shall be included in all
+            copies or substantial portions of the Software.</p>
+            
+            <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+            SOFTWARE.</p>
+        </div>
+    </article>
+</div>
+<p class="center">-</p>
