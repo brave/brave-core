@@ -1,0 +1,63 @@
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "戻る";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "すべてのタブを閉じる";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "選択したタブを閉じる";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "タブを閉じる";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "進む";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "新しいプライベートタブ";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "新しいタブ";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "新しくタブを開く";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "選択したタブを開く";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
+"RecentlyClosedTabTitle" = "閉じたタブを再度開く";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "ページを再読み込み";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "ロケーションバーの選択";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "ブックマークを表示";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "次のタブを表示";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "前のタブを表示";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Brave Shieldを開く";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "すべてのタブを表示";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "標準ブラウジングモード";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "プライベートブラウジングモード";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomInTitle" = "ズームイン";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomOutTitle" = "ズームアウト";
+

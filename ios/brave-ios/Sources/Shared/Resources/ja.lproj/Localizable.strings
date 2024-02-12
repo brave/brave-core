@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URLをクリップボードにコピーしました";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "デスクトップ版サイトをリクエスト";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "モバイルサイトをリクエスト";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "最後に閲覧したブックマークを表示する";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "キャンセル";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "このダウンロードをキャンセルしてよろしいですか？";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "再開";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "ダウンロードをキャンセル";
+
+/* Cancel button */
+"CancelString" = "キャンセル";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "切り替える";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "新しいタブを開きました";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "ダウンロードをキャンセルしました";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "ダウンロードに失敗しました";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 / %d 個のファイル";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "ダウンロード";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "このリンクをApp Storeアプリで開きますか？";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "開く";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "保存しない";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "更新しない";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "ログイン情報を保存";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "更新";
+
+/* OK button */
+"OKString" = "OK";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "リーダーモードを利用できます";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "テキストサイズをリセット";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "%@のパスワードを保存しますか？";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "%1$@のログイン情報を%2$@に保存しますか？";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "OK";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "QRコードを枠内に合わせてスキャンします";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "データが無効です";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "「設定」->「プライバシー」->「カメラ」でBraveによるデバイスのカメラへのアクセスを許可してください。";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "QRコードをスキャン";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "一般";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "完了";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "元に戻す";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d 個のタブを閉じました";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "OK";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "パスをWalletに追加する際にエラーが発生しました。後でもう一度お試しください。";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "パスを追加できませんでした";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "アドレスが無効なためBraveでページを開けません。";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "ページを開けません";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "%2$@の%1$@のログイン情報を更新しますか？";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "%2$@の%1$@のログイン情報を更新しますか？";
+

@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "İzleyiciler ve reklamlar engellendi";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Reklam \nEngellendi";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Tah. Veri \nMiktarı";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Tah. Zaman \nMiktarı";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "G";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "s";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "dk";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "sn";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "İzleyiciler \nEngellenmiş";
+

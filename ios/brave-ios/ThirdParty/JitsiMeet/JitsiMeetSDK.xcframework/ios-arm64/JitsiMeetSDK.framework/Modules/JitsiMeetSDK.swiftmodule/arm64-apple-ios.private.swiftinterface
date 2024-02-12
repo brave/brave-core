@@ -1,0 +1,46 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)
+// swift-module-flags: -target arm64-apple-ios12.4 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name JitsiMeetSDK
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+@_exported import JitsiMeetSDK
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+public typealias AnimationCompletion = (Swift.Bool) -> Swift.Void
+public protocol PiPViewCoordinatorDelegate : AnyObject {
+  func exitPictureInPicture()
+}
+public class PiPViewCoordinator {
+  public enum Position {
+    case lowerRightCorner
+    case upperRightCorner
+    case lowerLeftCorner
+    case upperLeftCorner
+    public static func == (a: JitsiMeetSDK.PiPViewCoordinator.Position, b: JitsiMeetSDK.PiPViewCoordinator.Position) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var dragBoundInsets: UIKit.UIEdgeInsets {
+    get
+    set
+  }
+  public var initialPositionInSuperView: JitsiMeetSDK.PiPViewCoordinator.Position
+  @available(*, deprecated, message: "The PiP window size is now fixed to 150px.")
+  public var c: CoreFoundation.CGFloat
+  weak public var delegate: JitsiMeetSDK.PiPViewCoordinatorDelegate?
+  public init(withView view: UIKit.UIView)
+  public func configureAsStickyView(withParentView parentView: UIKit.UIView? = nil)
+  public func show(completion: JitsiMeetSDK.AnimationCompletion? = nil)
+  public func hide(completion: JitsiMeetSDK.AnimationCompletion? = nil)
+  public func enterPictureInPicture()
+  @objc public func exitPictureInPicture()
+  public func resetBounds(bounds: CoreFoundation.CGRect)
+  public func stopDragGesture()
+  open func configureExitPiPButton(target: Any, action: ObjectiveC.Selector) -> UIKit.UIButton
+  @objc deinit
+}
+extension JitsiMeetSDK.PiPViewCoordinator.Position : Swift.Equatable {}
+extension JitsiMeetSDK.PiPViewCoordinator.Position : Swift.Hashable {}

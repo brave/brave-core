@@ -1,0 +1,57 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Dowiedz się, jak";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Wypróbuj tę funkcję!";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Przejdź do listy odtwarzania";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Poznajmy Twoją listę odtwarzania.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Treści dodano do %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Dobra robota";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Zamknij";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Może później";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Zamknij ";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Wprowadzamy Listę odtwarzania Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Utwórz listy odtwarzania z ulubionymi treściami. Oszczędzaj przesył danych mobilnych. Odtwarzaj bez reklam.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Funkcja Picture-in-picture. Odtwarzaj w tle. Możliwość sterowania z poziomu ekranu blokady i nie tylko…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Bądź na bieżąco: dodawaj filmy podczas przeglądania i oglądaj je później.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Dodaj filmy do Listy odtwarzania Brave. Obejrzyj je w dowolnym momencie. Nawet w trybie offline";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Odtwarzanie działa lepiej w listach odtwarzania";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Kliknij przycisk, żeby dodać filmy do listy odtwarzania";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Twórz listy odtwarzania z treściami, które uwielbiasz. Dodawaj multimedia z dowolnej strony.\nOdtwarzaj w każdej chwili. Nawet w trybie offline!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Kliknij %@, żeby dodać pierwszy element";
+
+/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+"userActionPromptFill" = "Dodaj do listy odtwarzania";
+
