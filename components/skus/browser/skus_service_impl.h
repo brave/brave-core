@@ -94,6 +94,11 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
       const std::string& order_id,
       const std::string& receipt,
       skus::mojom::SkusService::SubmitReceiptCallback callback) override;
+  void CreateOrderFromReceipt(
+      const std::string& domain,
+      const std::string& receipt,
+      skus::mojom::SkusService::CreateOrderFromReceiptCallback callback)
+      override;
 
   ::rust::Box<skus::CppSDK>& GetOrCreateSDK(const std::string& domain);
 
@@ -102,6 +107,10 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
       const std::string& domain,
       mojom::SkusService::CredentialSummaryCallback callback,
       const std::string& summary_string);
+
+  void OnCreateOrderFromReceipt(
+      mojom::SkusService::CredentialSummaryCallback callback,
+      const std::string& order_id_string);
 
   raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
