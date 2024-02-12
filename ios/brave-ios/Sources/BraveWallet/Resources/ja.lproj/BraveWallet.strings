@@ -1,0 +1,2055 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "バックアップ";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "アカウント名を入力";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "アカウント名";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "アカウント詳細";
+
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
+"wallet.accountNameLengthError" = "アカウント名は30文字以内で入力してください";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "プライベートキー";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "警告：プライベートキーを絶対に公開しないでください。このキーを持っている人はだれでもあなたの資産を奪うことができ、取り戻すことはできません。";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "このアカウントを削除しますか？";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "アカウントを削除する";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "アカウント";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "トークン %@ をアクティベートする";
+
+/* The description when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyDescription" = "実行したトランザクションはこちらで確認できます。";
+
+/* The title when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyTitle" = "表示可能なトランザクションがまだありません";
+
+/* The title of the tab that will display user's transaction activity for all accounts. */
+"wallet.activityPageTitle" = "アクティビティ";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "追加する";
+
+/* The title of the add account screen. */
+"wallet.addAccountTitle" = "アカウントを追加する";
+
+/* The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. */
+"wallet.addAccountWithCoinTypeTitle" = "%@アカウントを追加";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "カスタムアセットを追加する";
+
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "ネットワークを追加";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "ネットワークを追加…";
+
+/* A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token. */
+"wallet.addCustomNFTTitle" = "NFT";
+
+/* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
+"wallet.addCustomTokenAdvanced" = "詳細";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's coingecko ID. */
+"wallet.addCustomTokenCoingeckoId" = "CoinGecko ID";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "カスタムトークンを追加できませんでした。もう一度お試しください。";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "カスタムトークンを追加できません";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
+"wallet.addCustomTokenIconURL" = "アイコンURL";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's ID. */
+"wallet.addCustomTokenId" = "トークンID (ERC721のみ)";
+
+/* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
+"wallet.addCustomTokenTitle" = "トークン";
+
+/* The description of the view shown over a dapps website that describes what adding a new network will do. */
+"wallet.addNetworkDescription" = "このネットワークがBrave Walletで使用されます。";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
+"wallet.addNetworkSubtitle" = "このサイトにネットワークの追加を許可しますか？";
+
+/* The title of the view shown over a dapps website that requests the user add a new network. */
+"wallet.addNetworkTitle" = "ネットワークを追加";
+
+/* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
+"wallet.addSuggestedTokenSubtitle" = "このトークンをインポートしますか？";
+
+/* The title of the view shown over a dapps website that requests the user add / approve a new token. */
+"wallet.addSuggestedTokenTitle" = "推奨トークンを追加";
+
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "詳細設定";
+
+/* The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allAccountsLabel" = "すべてのアカウント";
+
+/* The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allNetworksLabel" = "すべてのネットワーク";
+
+/* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
+"wallet.amountAndFee" = "金額 + 手数料";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "数量 + Gas";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "%@ の量";
+
+/* The title of the button to approve adding a new network on a add new network request from a dapps website. */
+"wallet.approveNetworkButtonTitle" = "承認";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "%1$@ (%2$@) の価格";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "アセットが見つかりません";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "アセット";
+
+/* The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings. */
+"wallet.aToZSortOption" = "昇順";
+
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "Rainbow Bridgeは、ネットワーク間でアセットをブリッジし、他のネットワークやDAppエコシステムで暗号を使用することを支援する独立したサービスです。他のネットワークにアセットを橋渡しすることは、いくつかのリスクを伴います。";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "Rainbow Bridgeアプリを開きますか？";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "Auroraにブリッジ";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "Rainbow Bridgeの詳細について";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "Rainbow Bridgeでのリスク低減方法について";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "次回から表示しない";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "Braveウォレットが自動的にロックされるまでの待機時間";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "次の時間が経過したら自動的にロック：";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "リカバリーフレーズ";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "リカバリーフレーズは、パスワードを忘れたり、デバイスを紛失した場合にウォレットにアクセスするために重要です。\n\n他の人がアクセスできない安全な場所に保管し、誰とも共有しないようにしてください。";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "リカバリーフレーズを保存";
+
+/* The title of the button that user will tap to skip the verifying recovery phrases step. */
+"wallet.backupSkipButtonTitle" = "後でバックアップ";
+
+/* The sub-title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptSubTitle" = "アカウントを安全に保つために、リカバリーフレーズをバックアップしてください。";
+
+/* The title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptTitle" = "この手順はスキップできますが、アカウントの安全を保つためにリカバリーフレーズを必ずバックアップしてください。";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "ウォレットをバックアップする";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "リカバリーフレーズを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。";
+
+/* The placeholder for the password entry field when a user tries to backup their wallet. */
+"wallet.backupWalletPasswordPlaceholder" = "パスワードを入力してウォレットをバックアップ";
+
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "次のステップで、12個の単語で構成されるリカバリーフレーズが表示されます。リカバリーフレーズは安全な場所に保存してください。あなたはこれを、プライマリー暗号資産アカウントを回復するために利用することができます。リカバリーフレーズは、パスワードを忘れたり、デバイスを盗難されたり、ウォレットを切り替えたいときにアカウントへのアクセスを取り戻すための唯一の方法です。";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "暗号資産ウォレットをバックアップする";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "あなたの暗号資産を保護し、アクセスを失わないことを確実にするために、今すぐウォレットをバックアップしてください。";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.balances" = "残高";
+
+/* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupEnableButtonTitle" = "%@を使用";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "生体認証を有効にする過程でエラーが生じました。後で再試行してください。";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "生体認証の有効化に失敗しました。";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupFaceId" = "Face ID";
+
+/* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupSubTitle" = "%@を使用してBraveウォレットをアンロックしますか？";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupTitle" = "%@でBraveウォレットをアンロック";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupTouchId" = "Touch ID";
+
+/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.braveFeeLabel" = "Brave手数料: %@";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+"wallet.braveSwapFeeDisclaimer" = "相場価格は %@ のBrave手数料を含んでいます。";
+
+/* The text beside the striked-through percentage Brave would normally charge for a swap. */
+"wallet.braveSwapFree" = "無料";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "購入する";
+
+/* The description of a buy button on the buy/send/swap modal */
+"wallet.buyDescription" = "Wyreを通じて暗号資産をApple Pay、クレジットカード、デビットカードで購入します。";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "日";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "価格";
+
+/* The description of one of the 'Coinbase Pay' provider. */
+"wallet.coinbaseNetworkProviderDescription" = "最も信頼されている企業で暗号資産を購入しましょう。";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "価格データはCoinGeckoから提供されています";
+
+/* The title of the 24h volume of this coin from market. */
+"wallet.coinMarket24HVolume" = "24時間のボリューム";
+
+/* The message will be displayed when there is no coin market loaded or having an error. */
+"wallet.coinMarketEmptyMsg" = "市場情報はまだありません";
+
+/* The header title of the section that display coin market information. */
+"wallet.coinMarketInformation" = "情報";
+
+/* The title of the market cap of this coin from market. */
+"wallet.coinMarketMarketCap" = "マーケットキャップ";
+
+/* The title of the rank of this coin from market. */
+"wallet.coinMarketRank" = "ランク";
+
+/* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "イーサリアム";
+
+/* A description for Ethereum coin type. */
+"wallet.coinTypeEthereumDescription" = "イーサリアムブロックチェーン上のEVM対応アセット（ERC-20、ERC-721、ERC-1551、ERC-1155）をサポートしています";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "Filecoin";
+
+/* A description for Filecoin coin type. */
+"wallet.coinTypeFilecoinDescription" = "FILアセットを保管";
+
+/* A header displayed above coin types selection. */
+"wallet.coinTypeSelectionHeader" = "以下のアカウントタイプのいずれかを選択";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
+
+/* A description for Solana coin type. */
+"wallet.coinTypeSolanaDescription" = "Solanaブロックチェーン上のSPL対応アセットをサポート";
+
+/* A placeholder for unknown coin type. */
+"wallet.coinTypeUnknown" = "不明";
+
+/* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
+"wallet.confirm" = "確認する";
+
+/* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\" */
+"wallet.confirmationViewAllowSpendSubtitle" = "この許可を付与することにより、このアプリがお客様の%@を引き出しトランザクションを自動化することを許可するものとします。";
+
+/* The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\" */
+"wallet.confirmationViewAllowSpendTitle" = "このアプリに%@の支出を許可しますか？";
+
+/* The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\". */
+"wallet.confirmationViewCurrentAllowance" = "現在の引当額";
+
+/* The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction. */
+"wallet.confirmationViewEditPermissions" = "権限の編集";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "詳細";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "トランザクション";
+
+/* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "関連するトークンアカウントはまだ存在しません。作成と資金調達のために少量のSOLを消費します。";
+
+/* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
+"wallet.confirmationViewUnlimitedWarning" = "無制限承認がリクエストされました";
+
+/* A title of a button which will close this transaction status view. */
+"wallet.confirmedTransactionCloseButtonTitle" = "閉じる";
+
+/* A description explains confirmed transaction has been included in a block. */
+"wallet.confirmedTransactionDescription" = "トランザクションは正常にブロックに含まれています。二重支出のリスクを回避するため、ブロックの確認を待つことをおすすめします。";
+
+/* A title of a button which can open a confirmed transaction details screen. */
+"wallet.confirmedTransactionReceiptButtonTitle" = "領収書";
+
+/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
+"wallet.confirmedTransactionTitle" = "トランザクションが完了しました";
+
+/* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
+"wallet.confirmPasswordTitle" = "パスワードを確認";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "トランザクションを確認する";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "トランザクションを確認する";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "続ける";
+
+/* The accessibility label for the contract address of a token / asset. */
+"wallet.contractAddressAccessibilityLabel" = "コントラクトアドレス";
+
+/* A button title that user has clicked to copy some data to the users clipboard */
+"wallet.copiedToPasteboard" = "コピー完了";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "アドレスをコピーする";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "タップしてコピー";
+
+/* The message of the alert shown when a user switches to a network they do not have an account for yet. */
+"wallet.createAccountAlertMessage" = "新規作成しますか？";
+
+/* The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'. */
+"wallet.createAccountAlertTitle" = "%@アカウントが存在しません";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "パスワードを作成する";
+
+/* The sub-title of the create wallet screen */
+"wallet.createWalletSubTitle" = "このパスワードを使用してウォレットにアクセスします。";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "パスワードを作成";
+
+/* The title of the creating wallet screen, shown after user enters their password while the wallet is being set up. */
+"wallet.creatingWallet" = "ウォレットを作成中です...";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Braveウォレット";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
+"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "NFT用にIPFSゲートウェイをカスタマイズ";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address. */
+"wallet.customizeIPFSPublicGatewayNavTitle" = "IPFSゲートウェイをカスタマイズ";
+
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "ブロックエクスプローラーURL";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "無効な形式です。チェーンIDは正数である必要があります。";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "チェーンIDを入力";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "チェーンのID";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "チェーン名を入力";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "チェーンの名前";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "無効な形式です。通貨の小数部分は正数である必要があります。";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "通貨の小数部分を入力";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "チェーンの通貨小数部分";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "新しいネットワークを追加";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "このフィールドは空白にできません。";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "アイコンのURL";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "無効なアドレスです。";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "RPCのURL";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "カスタムネットワーク";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "通貨名を入力";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "チェーンの通貨名";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "通貨シンボルを入力";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "チェーンの通貨シンボル";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "URLを入力";
+
+/* A title for the btton that users can click to choose the network they are willing to add custom asset in. */
+"wallet.customTokenNetworkButtonTitle" = "ネットワークを選択";
+
+/* A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in. */
+"wallet.customTokenNetworkHeader" = "ネットワークを選択";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "カスタムアセットを追加";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@がBraveウォレットとの接続を求めています";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
+"wallet.dappsConnectionNotificationTitle" = "このページがBraveウォレットとの接続を求めています";
+
+/* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Braveウォレットを接続するDAppsがここに表示されます";
+
+/* The title of the section that will list all the permitted dapp connections */
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "接続済みのDApps";
+
+/* The title of the section that will display settings for default wallet and dapp provider api access permission */
+"wallet.dappsSettingsGeneralSectionTitle" = "一般";
+
+/* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
+"wallet.dappsSettingsNavTitle" = "%@の設定";
+
+/* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
+"wallet.dappsSettingsRemoveAllWarning" = "この操作により、%1$d%2$@ですべてのWalletの接続許可が削除されます";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsitePlural" = "ウェブサイト";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsiteSingular" = "ウェブサイト";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "全て";
+
+/* An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1D";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1日";
+
+/* An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1H";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1時間";
+
+/* An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1M";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1ヶ月";
+
+/* An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3M";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3ヶ月";
+
+/* An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1W";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1週間";
+
+/* An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1Y";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1年";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "小数点桁数";
+
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "警告: メッセージのスクリーンショットは、クラウドファイルサービスにバックアップされ、写真にアクセスできるアプリケーションから読み取ることができる場合があります。Braveでは、このスクリーンショットを保存せず、できるだけ早く削除することを推奨しています。";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "許可する";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "表示";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "このDAppは、このメッセージを読みリクエストを完了しようとしています";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "復号化要求";
+
+/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
+"wallet.defaultEthAccountName" = "イーサリアムアカウント %lld";
+
+/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
+"wallet.defaultFilAccountName" = "Filecoinアカウント %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
+"wallet.defaultSecondaryEthAccountName" = "セカンダリーイーサリアムアカウント %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
+"wallet.defaultSecondaryFilAccountName" = "セカンダリーFilecoinアカウント %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
+"wallet.defaultSecondarySolAccountName" = "セカンダリーSolanaアカウント %lld";
+
+/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
+"wallet.defaultSolAccountName" = "Solanaアカウント %lld";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "削除する";
+
+/* The title of a button that Deselects all visible options. */
+"wallet.deselectAllButtonTitle" = "すべて選択解除";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "詳細";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "ネットワークを編集";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "Gasを編集する";
+
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "カスタムノンス値が非連続的であるか、その他のエラーがある場合、トランザクションがネットワークに伝搬されないことがあります。";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "ノンス";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "カスタムノンス値を入力";
+
+/* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\" */
+"wallet.editPermissionsAllowanceHeader" = "支出制限許可により、%@には最大で次の額までの引き出しおよび支出が許可されています。";
+
+/* The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount. */
+"wallet.editPermissionsApproveUnlimited" = "無制限";
+
+/* The header text above the field to input a custom allowance value. */
+"wallet.editPermissionsCustomAllowanceHeader" = "カスタム引当額を設定";
+
+/* The header text shown in the row that displays the proposed allowance value. */
+"wallet.editPermissionsProposedAllowanceHeader" = "提案額";
+
+/* The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\". */
+"wallet.editPermissionsSetUnlimited" = "無制限に設定";
+
+/* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
+"wallet.editPermissionsTitle" = "権限の編集";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "接続";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "接続を切断する";
+
+/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
+"wallet.editSiteConnectionAccountActionRevoke" = "取り消し";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "切り替える";
+
+/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionTrust" = "信頼";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "アカウント";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "アカウント";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
+"wallet.editSiteConnectionConnectedAccount" = "%1$lld件の%2$@を接続済み";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "接続";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
+"wallet.editTransactionError" = "入力内容を確認して再度お試しください。";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "戻る";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "表示されているアセットを変更する";
+
+/* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
+"wallet.ensDomainInterstitialPageButtonProceed" = "Infuraサーバーを使用して続行する";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Braveは、Ethereum Name Service (ENS) 上にある.ethドメイン名の解決にInfuraを使用する予定です。BraveではIPアドレスが非表示になるため、これを有効にすると、Infura側で分かるのはあるユーザーがこれらの.ethドメインを訪問しようとしていることのみです。Infuraの<a href=%1$@>%2$@</a>と<a href=%3$@>%4$@</a>もご覧ください。";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
+"wallet.ensDomainInterstitialPageTitle" = "Braveでイーサリアムネームサービス（ENS）のサポートを有効にしますか？";
+
+/* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
+"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "オフチェーン検索を続行";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+"wallet.ensOffchainDomainInterstitialPageDescription" = "この.ethドメイン名はオフチェーンで保存され、サードパーティゲートウェイによって解決されます。ENSオフチェーン検索を有効にすると、サードパーティゲートウェイには、お客様が.ethドメインにアクセスしようとしていることが伝わります。<a href=%1$@>%2$@</a>。";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Braveでイーサリアムネームサービス (ENS) オフチェーン検索のサポートを有効にしますか？";
+
+/* Button title when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayButton" = "ENSドメインを使用する";
+
+/* Description shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayDesc" = "ENSアドレスを入力されたようです。このリクエストを解決するために、サードパーティのリゾルバを使用する必要があります。これにより、お客様の.ethドメインが流出することなく、安全に取引できるようになります。";
+
+/* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayTitle" = "Braveではオフチェーンゲートウェイを使用して.ethドメインを解決できます。";
+
+/* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
+"wallet.ensOffchainResolveMethodDescription" = "ENSオフチェーンルックアップのプライバシーに関する配慮については[こちら](%@)をご覧ください。";
+
+/* The title for the options to allow Ethereum Name service domain names offchain. */
+"wallet.ensOffchainResolveMethodTitle" = "ENSオフチェーン検索を許可する";
+
+/* The title for the options to resolve Ethereum Name service domain names. */
+"wallet.ensResolveMethodTitle" = "イーサリアムネームサービス（ENS）のドメイン名を解決";
+
+/* A placeholder for the text field that users will input the custom token address */
+"wallet.enterAddress" = "アドレスを入力";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "量を入力";
+
+/* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsNavTitle" = "生体認証を有効にする";
+
+/* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsTitle" = "ウォレットの生体認証を有効にするには、ウォレットのパスワードを入力（今後は入力する必要はありません）";
+
+/* A placeholder for the text field that users will input the custom token Coingecko ID. */
+"wallet.enterTokenCoingeckoId" = "トークンのCoingecko IDを入力";
+
+/* A placeholder for the text field that users will input the custom token icon URL */
+"wallet.enterTokenIconURL" = "トークンのアイコンURLを入力";
+
+/* A placeholder for the text field that users will input the custom token's ID. */
+"wallet.enterTokenId" = "トークンのIDを入力";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "トークン名を入力する";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "トークンシンボルを入力する";
+
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "このネットワークを追加できませんでした。";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "もう一度試してみてください。";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "アカウントのインポートに失敗しました。";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "ネットワークを削除できませんでした。\nもう一度お試しください。";
+
+/* A description explains transaction is failed. */
+"wallet.failedTransactionDescription" = "値動きが大きいためにトランザクションが失敗しました。より大きな値動きで取引ができるよう、価格変動の許容値を上げてください。";
+
+/* A description of the view that will display the error message. */
+"wallet.failedTransactionErrorViewDescription" = "後に参照できるよう、エラーメッセージを保存してください。";
+
+/* A title of the view that will display the error message. */
+"wallet.failedTransactionErrorViewTitle" = "エラーメッセージ";
+
+/* A title of transaction failed status view indicating this transaction has not been included in a block. */
+"wallet.failedTransactionTitle" = "トランザクションが失敗しました";
+
+/* A title of a button which will a new view to display the error. */
+"wallet.failedTransactionViewErrorButtonTitle" = "エラーを表示";
+
+/* The title of the modal for filtering Portfolio and NFT views. */
+"wallet.filtersAndDisplaySettings" = "フィルター・表示設定";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "Gasの上限量";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "現在の基本手数料";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "Gas 手数料";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "カスタム";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "保証されてはいませんが、あなたがより高い手数料を支払うと、マイナーがあなたのトランザクションを優先する可能性があります。";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "高";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "低";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "最適値";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "提供";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "がウォレットの公開暗号化キーを要求しています。このキーを提供することに同意すると、暗号化されたメッセージがサイトで作成されます。";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "DAppがあなたの公開暗号鍵を要求しています。";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "公開暗号化キーの要求";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.graph" = "グラフ";
+
+/* The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByAccountsOptionTitle" = "アカウント";
+
+/* The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByDescription" = "次の値でアセットをグループ化:";
+
+/* The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNetworksOptionTitle" = "ネットワーク";
+
+/* The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNoneOptionTitle" = "なし";
+
+/* The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByTitle" = "指定値でグループ化";
+
+/* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
+"wallet.helpCenter" = "ヘルプセンター";
+
+/* A button title which when pressed hides the details screen. */
+"wallet.hideDetailsButtonTitle" = "詳細を非表示";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "プライベートキーを隠す";
+
+/* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesDescription" = "0.05ドル未満のアセット";
+
+/* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesTitle" = "少額の残高を非表示";
+
+/* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsDescription" = "残高のないNFTを非表示";
+
+/* The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsTitle" = "未所有のものを非表示";
+
+/* The title of a button that updates the filter to hide tokens with zero balances. */
+"wallet.hideZeroBalances" = "残高ゼロのものを非表示";
+
+/* The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.highToLowSortOption" = "価格が高い順";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "オリジン・パスワード";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "プライベートキー文字列ファイルもしくはJSONを入力するか、貼り付けるか、インポートしてください。";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "プライベートキーをインポートすることで、セカンダリーアカウントを作成することができます。";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "インポート...";
+
+/* A placeholder on a text box for entering the users private key to import accounts */
+"wallet.importNonEthAccountPlaceholder" = "秘密鍵を入力または貼り付けます。";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "パスワードが間違っています";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "情報";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "データがありません";
+
+/* A label shown inside of a box when there is no input data for a given Solana transaction */
+"wallet.inputDataPlaceholderSolana" = "機能タイプ: %d";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "残高が不足しています";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "資金が不足しています";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "gasのための資金が不足しています";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "流動性が不足しています";
+
+/* The title of a button that Deselects all visible options. */
+"wallet.internalErrorMessage" = "内部エラーが発生しました";
+
+/* A title will displayed in the IPFS error page when IPFS is disabled. */
+"wallet.ipfsErrorTitle" = "このサイトにアクセスできません";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.ipfsPublicGatewayAddressNFTTitle" = "NFT用IPFSパブリックゲートウェイアドレス";
+
+/* The navigation title of the screen for users to customize IPFS public gateway. */
+"wallet.ipfsPublicGatewayAddressTitle" = "IPFSパブリックゲートウェイアドレス";
+
+/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
+"wallet.ipfsResolveMethodDescription" = "IPFSゲートウェイのプライバシーに関する配慮については[こちら](%@)をご覧ください。";
+
+/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
+"wallet.ipfsResourcesOptionsTitle" = "IPFSリソースを解決";
+
+/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsHeader" = "IPFS";
+
+/* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
+"wallet.learnMoreButton" = "詳しく";
+
+/* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalDescription" = "以下の事項をご確認ください";
+
+/* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
+"wallet.legalTermOfUse" = "[Terms of Use](%@) を読み、同意します";
+
+/* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalTitle" = "はじめに";
+
+/* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
+"wallet.legalUserResponsibility" = "私は、このウォレットが自己管理のウォレットであり、関連する資金、資産、またはアカウントに対して私一人が責任を負い、私のウォレットを安全に保護し、バックアップするために適切な行動を取ることを理解しています。私は、Braveが私に代わって私のウォレットにアクセスしたり、取引を取り消すことはできないこと、およびパスワードの紛失、デバイスの盗難、または同様の状況の場合にアクセスを回復する唯一の方法は、私のリカバリフレーズであることを理解しています。";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "ロックする";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lockWallet" = "ウォレットをロック";
+
+/* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.lowToHighSortOption" = "価格が低い順";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld個の%2$@";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "アカウント";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "アカウント";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "この操作により、すべてのウェブサイトですべてのWalletの接続許可が削除されます。";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "削除";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "すべての許可を削除しますか？";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "この操作により、このウェブサイトですべてのWalletの接続許可が削除されます。";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
+"wallet.manageSiteConnectionsDetailHeader" = "接続済みの%@アカウント";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "接続済みのDAppsをフィルター";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "すべてを削除";
+
+/* The page title that will display the top 250 tokens from the market via CoinGecko */
+"wallet.marketPageTitle" = "マーケット";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "最大手数料";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "優先手数料上限";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Braveウォレット";
+
+/* A button title for user to open more option in asset details screen other than buy/send/swap. */
+"wallet.more" = "もっと見る";
+
+/* The title displayed on the view to filter by a network / all networks. */
+"wallet.networkFilterTitle" = "ネットワークを選択";
+
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "ウォレットネットワークのカスタマイズ";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "チェーンIDはすでに存在します";
+
+/* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkNameTitle" = "ネットワーク名";
+
+/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
+"wallet.networkNotSupportedForBuyToken" = "選択したネットワークでは購入はサポートされていません";
+
+/* The title of the section for primary networks in the network selection view. */
+"wallet.networkSelectionPrimaryNetworks" = "プライマリネットワーク";
+
+/* The title of the section for secondary networks in the network selection view. */
+"wallet.networkSelectionSecondaryNetworks" = "セカンダリネットワーク";
+
+/* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\" */
+"wallet.networkSelectionTestnetAccessibilityLabel" = "%@テストネットワークを表示";
+
+/* The title of the section for test networks in the network selection view. */
+"wallet.networkSelectionTestNetworks" = "テストネットワーク";
+
+/* The title of the to select a network from the available networks */
+"wallet.networkSelectionTitle" = "ネットワークを選択";
+
+/* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkURLTitle" = "ネットワークURL";
+
+/* A placeholder string that will be used on password text fields to create a new wallet */
+"wallet.newPasswordPlaceholder" = "新しいパスワードを入力する";
+
+/* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
+"wallet.newSiteConnectConfirmationMessage" = "許可済みのアカウントのアドレスを表示 (必須)";
+
+/* The footer message displayed above the Next button in new site connection screen. */
+"wallet.newSiteConnectFooter" = "信頼できるサイトのみを接続してください。";
+
+/* The message displayed below the dapp's origin url in new site connection screen. */
+"wallet.newSiteConnectMessage" = "Brave Walletに接続";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.newSiteConnectScreenTitle" = "接続";
+
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+"wallet.next" = "次へ";
+
+/* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
+"wallet.nftCollected" = "収集済み";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
+"wallet.nftDetailBlockchain" = "ブロックチェーン";
+
+/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
+"wallet.nftDetailDescription" = "説明";
+
+/* This is one type of token standard. And most likey this does not need to be translated */
+"wallet.nftDetailERC721" = "ERC 721";
+
+/* A placeholder text, indicates this NFT image was not able to be loaded. */
+"wallet.nftDetailImageNotAvailable" = "画像は使用できません";
+
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "概要";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "所有者";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "プロパティ";
+
+/* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
+"wallet.nftDetailSendNFTButtonTitle" = "送信する";
+
+/* This is one type of NFT standard. And most likey this does not need to be translated */
+"wallet.nftDetailSPL" = "SPL";
+
+/* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
+"wallet.nftDetailSVGImageDisclaimer" = "上記レンダリング画像は、NFTと完全に一致するものではありません";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
+"wallet.nftDetailTokenID" = "トークンID";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
+"wallet.nftDetailTokenStandard" = "トークン規格";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "Braveウォレットは、サードパーティーのサービスを利用してお客様のNFTを自動的に表示します。Braveはこのサービスを提供するために、お客様のウォレットアドレスをSimpleHashと共有します。詳細はこちらをご覧ください。";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "詳細はこちら";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "いいえ、手動で設定します";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "はい、続行します";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "NFTを自動で表示しますか？";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "NFTをインポート";
+
+/* Description of the NFT Gateway setting */
+"wallet.nftGatewayLongDescription" = "有効なIPFSゲートウェイを提供してください。提供されたゲートウェイについては、IPFSリソースの読み込みが可能かどうかの確認が行われます。";
+
+/* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
+"wallet.nftHidden" = "非表示";
+
+/* The title of the empty state inside NFT tab under Hidden group. */
+"wallet.nftInvisiblePageEmptyTitle" = "表示されていないNFTはありません。";
+
+/* The description of the empty state inside NFT tab. */
+"wallet.nftPageEmptyDescription" = "追加する準備はできていますか？下のボタンをタップしてインポートしてください。";
+
+/* The title of the empty state inside NFT tab. */
+"wallet.nftPageEmptyTitle" = "ここにはまだNFTはありません。";
+
+/* The title of the tab that will display user's visible NFT assets. */
+"wallet.nftPageTitle" = "NFT";
+
+/* The title of context button for user to do not show a NFT in wallet at all. */
+"wallet.nftRemoveFromWallet" = "ウォレットに表示しない";
+
+/* The description of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertDescription" = "NFTはBraveウォレットから削除されますが、ブロックチェーン上には残ります。削除してからもう一度戻したい場合は、再度手動でインポートする必要があります。";
+
+/* The title of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertTitle" = "Braveウォレットから削除しますか？";
+
+/* The title of an overlay on top left of the junk NFT grid. */
+"wallet.nftSpam" = "ジャンク";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.nftsTab" = "NFTタブ";
+
+/* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
+"wallet.nftsTitle" = "NFT";
+
+/* The title of context button for user to unhide visible NFT. */
+"wallet.nftUnhide" = "表示";
+
+/* The title of context button for user to unspam a NFT. */
+"wallet.nftUnspam" = "迷惑メールではない";
+
+/* The empty state description displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccountDescription" = "残高のあるアカウントはここに表示されます。";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "アカウントがありません";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "アセットがありません";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "ネットワークが追加されていません";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "セカンダリーアカウントがありません";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "トランザクションがありません";
+
+/* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
+"wallet.onboardingCompletedButtonTitle" = "ポートフォリオを見る";
+
+/* The subtitle of the last step of creating a new wallet. */
+"wallet.onbordingCompletedSubTitle" = "Braveウォレットの使用準備ができました。";
+
+/* The title of the last step of creating a new wallet. */
+"wallet.onbordingCompletedTitle" = "準備完了です！";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "その他のウォレット操作";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "パスワードは8文字以上で入力してください";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "Enter password";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "パスワードが違います";
+
+/* A label will be displayed beside input password when it is considered as a medium password */
+"wallet.passwordStatusMedium" = "中";
+
+/* A label will be displayed beside input password when it is considered as a strong password */
+"wallet.passwordStatusStrong" = "強い";
+
+/* A label will be displayed beside input password when it is considered as a weak password */
+"wallet.passwordStatusWeak" = "弱い";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "貼り付け";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "Gasあたりの価格上限（Gwei）";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "Gasあたりの価格（Gwei）";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "Gasあたりのチップ上限（Gwei）";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateDescription" = "トークンを入金または購入して開始します。インポートしたアカウントのトークンが表示されない場合は、フィルターと表示設定を確認してください。不明なトークンはカスタムアセットとしての追加が必要な場合があります。";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateTitle" = "利用可能なアセットはありません";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "ポートフォリオ";
+
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "警告: 秘密鍵のスクリーンショットは、クラウドファイルサービスにバックアップされ、写真にアクセスできるアプリケーションから読み取ることができる場合があります。Braveでは、このスクリーンショットを保存せず、できるだけ早く削除することを推奨しています。";
+
+/* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.protocolFeeLabel" = "プロトコル手数料: %@";
+
+/* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
+"wallet.providerSelectionButtonTitle" = "%@で購入する";
+
+/* The title of the screen for users to select a purchase method. For example, 'Ramp.Network'. */
+"wallet.providerSelectionScreenTitle" = "購入方法を選択";
+
+/* The section header for the list of available purchse methods. */
+"wallet.providerSelectionSectionHeader" = "以下のオプションのいずれかを選択";
+
+/* The title of the button for users to click to select a purchase method. */
+"wallet.purchaseMethodButtonTitle" = "購入方法を選択";
+
+/* The description of one of the 'Ramp.Network' provider. */
+"wallet.rampNetworkProviderDescription" = "VisaまたはMastercardで暗号資産を購入。";
+
+/* The name of one of the on ramp provider. */
+"wallet.rampNetworkProviderName" = "Ramp.Network";
+
+/* The short name of one of the on ramp provider. */
+"wallet.rampNetworkProviderShortName" = "Ramp";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "警告: リカバリーフレーズのスクリーンショットは、クラウドファイルサービスにバックアップされ、写真にアクセスできるアプリケーションから読み取ることができる場合があります。Braveでは、このスクリーンショットを保存せず、できるだけ早く削除することを推奨しています。";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "市場価格を再読み込みする";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "%d トランザクションを拒否する";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "拒否する";
+
+/* A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name */
+"wallet.removeAccountConfirmationMessage" = "「%@」を削除してもよろしいですか？";
+
+/* A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed. */
+"wallet.removeAccountErrorMessage" = "パスワードが無効です";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "これが新しいカスタムアセットであることを確認し、インターネット接続を確認し、再試行をお願いします。";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "カスタムトークンを削除できません。";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "名前を変える";
+
+/* A label will be displayed when the repeat password field input is matched with the password field. */
+"wallet.repeatedPasswordMatch" = "一致！";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "パスワードを再入力";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "ウォレットを復元する";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+"wallet.restoreWalletButtonTitle" = "復元";
+
+/* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "24語のリカバリーフレーズをお持ちの方";
+
+/* A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet. */
+"wallet.restoreWalletImportFromRegularBraveWallet" = "12語のリカバリーフレーズをお持ちの方";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "新しいパスワード";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "リカバリーフレーズが正しくありません";
+
+/* The placeholder on the mneomic/recovery phrase text field of each grid. */
+"wallet.restoreWalletPhrasePlaceholder" = "単語 #%d";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "リカバリーフレーズを表示する";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "リカバリーフレーズ全体をどのフィールドにも貼り付けできます。";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "既存のウォレットをインポート";
+
+/* The description of one of the 'Sardine' provider. */
+"wallet.sardineProviderDescription" = "銀行口座で即座に購入。手数料を抑えられます。";
+
+/* The name of one of the on ramp provider. */
+"wallet.sardineProviderName" = "Sardine";
+
+/* The short name of one of the on ramp provider. */
+"wallet.sardineProviderShortName" = "Sardine";
+
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "保存する";
+
+/* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
+"wallet.saveChangesButtonTitle" = "変更を保存";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "QRコードをスキャンする";
+
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "スクリーンショットが検出されました";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "検索";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "アセットを検索する";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "別のシードフレーズを使って、外部のウォレットアカウントをインポートする";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.securityRiskDetectedTitle" = "セキュリティリスクを検知しました";
+
+/* The title of the button to show details. */
+"wallet.seeDetailsButtonTitle" = "詳細を見る";
+
+/* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsDescription" = "アカウントを選択してフィルター";
+
+/* The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsTitle" = "アカウントを選択";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "アカウントを選択する";
+
+/* The title of a button that Selects all visible options. */
+"wallet.selectAllButtonTitle" = "すべて選択";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "選択されたアカウント";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "選択されたネットワーク";
+
+/* The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksDescription" = "ネットワークを選択してフィルター";
+
+/* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksTitle" = "ネットワークを選択";
+
+/* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
+"wallet.selectTokenToSendNoTokens" = "利用可能なトークンがありません";
+
+/* The title of the view that lets the user select a token & account at the same time in the Send crypto view. */
+"wallet.selectTokenToSendTitle" = "送信するトークンを選択";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "送信する";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "送信する %@ の量を入力";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "スワップ元";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "送信する";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "現在あなたのトランザクションを実行することができません。";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "スワップ先";
+
+/* The description of a send button on the buy/send/swap modal */
+"wallet.sendDescription" = "暗号資産をあるアカウントから別のアカウントに送信もしくは移動します。";
+
+/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
+"wallet.sendErrorDomainNotRegistered" = "ドメインがリンクされた%@アドレスを持っていない";
+
+/* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
+"wallet.sendErrorInvalidRecipientAddress" = "受取人のアドレスが無効です";
+
+/* A placeholder of the address text field. */
+"wallet.sendToCryptoAddressPlaceholder" = "アドレスを入力";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
+"wallet.sendWarningAddressInvalidChecksum" = "アドレス認証にパスしませんでした（無効なチェックサム）。小文字/大文字を入れ替えてもう一度お試しください。";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "受信アドレスはトークンの契約アドレスです";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "受信アドレスはあなた自身のアドレスです";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
+"wallet.sendWarningAddressMissingChecksumInfo" = "このアドレスは認証できませんでした（チェックサムの不足）。続行しますか？";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "有効なETHアドレスではありません";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
+"wallet.sendWarningSolAddressNotValid" = "有効なSOLアドレスではありません";
+
+/* As in sent cryptocurrency from one asset to another */
+"wallet.sent" = "送信済";
+
+/* Title of the set IPFS gateway button */
+"wallet.setGatewayButtonTitle" = "設定";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "設定";
+
+/* The title that appears before the current default base currency code. Example: \"Default base currency: USD\" */
+"wallet.settingsDefaultBaseCurrencyTitle" = "デフォルトのベース通貨";
+
+/* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsFooter" = "ウォレットのブロック解除に生体認証（Face ID / Touch ID）を使用するには、トグルボタンをオンにします";
+
+/* A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsTitle" = "生体認証のブロック解除を許可";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "ネットワーク";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "ウォレットのデータをリセット＆クリア";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "リセット";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "このオプションは、主にローカルでテストサーバーを運用している開発者に向けたものです。";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "トランザクションやノンス情報をリセットしてよろしいですか？";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利な機能です。";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "トランザクションとノンス情報をクリア";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "ウォレットをリセットする";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "この操作は取り消すことができません。リカバリーフレーズがあなたの暗号資産へのアクセスを再び得るための唯一の方法となります。";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "本当にBraveウォレットをリセットしてよろしいですか？";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "ようこそ";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "始める";
+
+/* The subtitle displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewSubTitle" = "Braveウォレットはすぐにお使いいただけます。";
+
+/* The title displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewTitle" = "新しいウォレットが必要ですか？";
+
+/* The disclaimer text at the bottom of the first step of onboarding flow. */
+"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. BraveおよびBraveロゴはBraveの登録商標です。その他の製品名およびロゴは、各社の商標である場合があります。無断複写・転載を禁じます。";
+
+/* The subtitle displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreSubTitle" = "既存のウォレットをインポートします。";
+
+/* The title displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreTitle" = "ウォレットを既にお持ちですか？";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "暗号通貨とNFTの管理がこの上なく快適に。Braveウォレットはイーサリアム、EVMチェーン、Solanaなどをサポートしています。";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "- ブラウザネイティブ\n- セルフカストディ\n- マルチチェーン";
+
+/* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoDescription" = "NFTにネットワークのロゴを表示";
+
+/* The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoTitle" = "ネットワークのロゴ";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "プライベートキーを表示する";
+
+/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
+"wallet.showTestNetworksTitle" = "テストネットワークを表示";
+
+/* The title of a button that updates the filter to show tokens with zero balances. */
+"wallet.showZeroBalances" = "残高ゼロのものを表示";
+
+/* The title of the button used to sign a message request on the signature request view. */
+"wallet.sign" = "署名";
+
+/* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
+"wallet.signAllTransactionsTitle" = "すべてのトランザクションに署名";
+
+/* A title displayed inside the text view in Signature Request View above the request's domain information. */
+"wallet.signatureRequestDomainTitle" = "ドメイン:";
+
+/* A title displayed inside the text view in Signature Request View above the request's message. */
+"wallet.signatureRequestMessageTitle" = "メッセージ:";
+
+/* A subtitle of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestSubtitle" = "署名が要求されています";
+
+/* A title of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestTitle" = "署名が必要です";
+
+/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
+"wallet.signedTransactionDescription" = "トランザクションが署名されました。DAppによってネットワークに送信予定で、確認待ちの状態です。";
+
+/* A title of transaction signed status view indicating this transaction has been signed. */
+"wallet.signedTransactionTitle" = "トランザクション署名済み";
+
+/* The title of the view shown above a Sign In With Ethereum request. */
+"wallet.signInWithBraveWallet" = "Braveウォレットにサインイン";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.signInWithBraveWalletMessage" = "%1$@にサインインしています。Braveウォレットは%2$@にウォレットのアドレスを共有します。";
+
+/* A warning message to tell users that the sign request message contains consecutive new-line characters. */
+"wallet.signMessageConsecutiveNewlineWarning" = "改行文字が連続して入力されています！";
+
+/* A warning message to tell users that the sign request message contains non-ascii characters. */
+"wallet.signMessageRequestUnknownUnicodeWarning" = "ASCII以外の文字を検出しました！";
+
+/* The title of the button that users can click to display the sign request message as its original content. */
+"wallet.signMessageShowOriginalMessage" = "元のメッセージを表示";
+
+/* The title of the button that users can click to display the sign request message in ASCII encoding. */
+"wallet.signMessageShowUnknownUnicode" = "エンコードされたメッセージを表示";
+
+/* A title of a warning message that warns users the risk of signing a transaction. */
+"wallet.signTransactionSignRisk" = "ご自身の責任で署名してください";
+
+/* The title of the view shown over a dapps website that requests the user sign a transaction. */
+"wallet.signTransactionTitle" = "トランザクションに署名";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+"wallet.siweAddressLabel" = "住所";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+"wallet.siweChainIDLabel" = "Chain ID";
+
+/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweDetailsTitle" = "詳細";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+"wallet.siweExpirationTimeLabel" = "有効期限";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+"wallet.siweIssuedAtLabel" = "発行日";
+
+/* The label displayed above the Sign In With Ethereum message. */
+"wallet.siweMessageLabel" = "メッセージ";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+"wallet.siweNonceLabel" = "ノンス";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+"wallet.siweOriginLabel" = "Origin";
+
+/* The label displayed above the Sign In With Ethereum resources. */
+"wallet.siweResourcesLabel" = "リソース";
+
+/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweSignInButtonTitle" = "ログイン";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+"wallet.siweStatementLabel" = "ステートメント";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+"wallet.siweURILabel" = "URI";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+"wallet.siweVersionLabel" = "バージョン";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "スキップ";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"wallet.snsDomainInterstitialPageButtonProceed" = "SNSサーバーを使用して続行する";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Braveは、.solドメイン名の解決にサードパーティを使用します。ユーザーのIPアドレスはBraveには表示されません。これを有効にすると、サードパーティは、他のユーザーがこれらの.solドメインを訪問しようとしているかどうかの確認のみを行います。当社が使用するサードパーティとそのプライバシーポリシーの詳細については、<a href=%@>ヘルプページ</a>をご覧ください。";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"wallet.snsDomainInterstitialPageTitle" = "Braveでソラナネームサービス（SNS）のサポートを有効にしますか？";
+
+/* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaAdvanceNonceAccountInstructionName" = "ノンスアカウントで続行";
+
+/* The title displayed above the System Program Allocate instruction type for Solana Instruction details. */
+"wallet.solanaAllocateInstructionName" = "配分";
+
+/* The title displayed above the System Program AllocateWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaAllocateWithSeedInstructionName" = "シードで配分";
+
+/* The label displayed beside the formatted amount of an instruction type. Ex. \"Amount: 0.1 SOL\" */
+"wallet.solanaAmount" = "総額";
+
+/* The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details. */
+"wallet.solanaApproveCheckedInstructionName" = "承認の確認";
+
+/* The title displayed above the Token Program Approve instruction type for Solana Instruction details. */
+"wallet.solanaApproveInstructionName" = "承認";
+
+/* The title displayed above the System Program Assign instruction type for Solana Instruction details. */
+"wallet.solanaAssignInstructionName" = "割り当て";
+
+/* The title displayed above the System Program AssignWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaAssignWithSeedInstructionName" = "シードで割り当て";
+
+/* The title displayed above the System Program AuthorizeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaAuthorizeNonceAccountInstructionName" = "ノンスアカウントの認証";
+
+/* The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details. */
+"wallet.solanaBurnCheckedInstructionName" = "バーンの確認";
+
+/* The title displayed above the Token Program Burn instruction type for Solana Instruction details. */
+"wallet.solanaBurnInstructionName" = "バーン";
+
+/* The title displayed above the Token Program Close Account instruction type for Solana Instruction details. */
+"wallet.solanaCloseAccountInstructionName" = "アカウントを閉鎖";
+
+/* The title displayed above the System Program CreateAccount instruction type for Solana Instruction details. */
+"wallet.solanaCreateAccountInstructionName" = "アカウント作成";
+
+/* The title displayed above the System Program CreateAccountWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaCreateAccountWithSeedInstructionName" = "シードでアカウントを作成";
+
+/* The title displayed above the value of a Solana dapp transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaDappTransactionTitle" = "トランザクションを承認";
+
+/* The title displayed above the Token Program Freeze Account instruction type for Solana Instruction details. */
+"wallet.solanaFreezeAccountInstructionName" = "アカウントを凍結";
+
+/* The title displayed above the Token Program InitializeAccount2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccount2InstructionName" = "アカウントを初期化 (2)";
+
+/* The title displayed above the Token Program InitializeAccount3 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccount3InstructionName" = "アカウントを初期化 (3)";
+
+/* The title displayed above the Token Program InitializeAccount instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccountInstructionName" = "アカウントを初期化";
+
+/* The title displayed above the Token Program InitializeMint2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMint2InstructionName" = "ミントを初期化 (2)";
+
+/* The title displayed above the Token Program InitializeMint instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMintInstructionName" = "ミントを初期化";
+
+/* The title displayed above the Token Program InitializeMultisig2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMultisig2InstructionName" = "マルチシグを初期化 (2)";
+
+/* The title displayed above the Token Program InitializeMultisig instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMultisigInstructionName" = "マルチシグを初期化";
+
+/* The title displayed above the System Program InitializeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaInitializeNonceAccountInstructionName" = "ノンスアカウントの初期化";
+
+/* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
+"wallet.solanaInstructionAccounts" = "アカウント";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\" */
+"wallet.solanaInstructionAddressLookupAcc" = "アドレス検索テーブルのアカウント";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\" */
+"wallet.solanaInstructionAddressLookupIndex" = "アドレス検索テーブルのインデックス";
+
+/* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
+"wallet.solanaInstructionData" = "データ";
+
+/* The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. \"Program Id: 1111223344aabbccd\" */
+"wallet.solanaInstructionProgramId" = "プログラムID";
+
+/* The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details. */
+"wallet.solanaMintToCheckedInstructionName" = "ミントの確認";
+
+/* The title displayed above the Token Program Mint To instruction type for Solana Instruction details. */
+"wallet.solanaMintToInstructionName" = "ミント先";
+
+/* The title displayed above the Token Program Revoke instruction type for Solana Instruction details. */
+"wallet.solanaRevokeInstructionName" = "取り消し";
+
+/* The title displayed above the Token Program Set Authority instruction type for Solana Instruction details. */
+"wallet.solanaSetAuthorityInstructionName" = "権限を設定";
+
+/* The title on top of a separater, and the transaction details will be displayed below the separater. */
+"wallet.solanaSignTransactionDetails" = "詳細";
+
+/* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
+"wallet.solanaSignTransactionWarning" = "Braveは、署名した場合に何が起こるかを確認できないことに注意してください。署名は、あなたのアカウントまたはあなたに代わって、リクエストを行うサイトにアカウントと暗号資産の完全な制御を与えることを含む  (ただしこれに限定されない) ほぼすべての操作を許可することができます。このアクションを実行することを望み、要求元のサイトを信頼する場合にのみ署名してください。";
+
+/* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaSwapTransactionTitle" = "スワップトランザクション";
+
+/* The title displayed above the Token Program Sync Native instruction type for Solana Instruction details. */
+"wallet.solanaSyncNativeInstructionName" = "ネイティブアカウントを同期";
+
+/* The title displayed beside the name of any Solana System Program instruction type. '%@' will be replaced with the instruction's name, ex. \"System Program - Transfer\" */
+"wallet.solanaSystemProgramName" = "システムプログラム - %@";
+
+/* The title displayed above the Token Program Thaw Account instruction type for Solana Instruction details. */
+"wallet.solanaThawAccountInstructionName" = "アカウントを解凍";
+
+/* The title displayed beside the name of any Solana Token Program instruction type. '%@' will be replaced with the instruction's name, ex. \"Token Program - Initialize Mint\" */
+"wallet.solanaTokenProgramName" = "トークンプログラム - %@";
+
+/* The title displayed above the Token Program Transfer Checked instruction type for Solana Instruction details. */
+"wallet.solanaTransferCheckedInstructionName" = "移行の確認";
+
+/* The title displayed above the System Program & Token Program Transfer instruction type for Solana Instruction details. */
+"wallet.solanaTransferInstructionName" = "移行";
+
+/* The title displayed above the System Program TransferWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaTransferWithSeedInstructionName" = "シードで移行";
+
+/* The title displayed above an unknown instruction type for Solana Instruction details. */
+"wallet.solanaUnknownInstructionName" = "命令のタイプが不明です";
+
+/* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaUpgradeNonceAccountInstructionName" = "ノンスアカウントをアップグレード";
+
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "ノンスアカウントの引き出し";
+
+/* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsDescription" = "法定通貨の価値または名前で並べ替え";
+
+/* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsTitle" = "アセットを並べ替え";
+
+/* The description of one of the 'Stripe' provider. */
+"wallet.stripeNetworkProviderDescription" = "クレジットカード、デビットカード、銀行口座で支払い。";
+
+/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
+"wallet.stripeNetworkProviderName" = "%2$@の%1$@";
+
+/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
+"wallet.submittedTransactionDescription" = "トランザクションをネットワークに送信し、確認を待っています。";
+
+/* A title of transaction signed status view indicating this transaction has been submitted to the network. */
+"wallet.submittedTransactionTitle" = "トランザクション送信済み";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "スワップ";
+
+/* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
+"wallet.swapConfirmationNetworkDesc" = "on %@";
+
+/* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
+"wallet.swapConfirmationNetworkFee" = "ネットワーク費用";
+
+/* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
+"wallet.swapConfirmationTitle" = "注文を確認";
+
+/* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
+"wallet.swapConfirmationYoullReceive" = "獲得";
+
+/* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
+"wallet.swapConfirmationYouSpend" = "支出";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "受け取る %@ の量（推定）";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "スワップする %@ の量を入力してください";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "スワップ元";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "%@ の市場価格";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "価格変動許容値";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "スワップ";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "スワップ先";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "Braveは現在、 %@ でのスワップをサポートしておりません。サポートされているチェーンに切り替えてください。";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "チェーンがサポートされていません";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "トークンとアセットをスワップします。";
+
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "%1$@が%2$@アドレスとIPアドレスをトランザクション（クォートの入手を含む）を実行するために処理します。%3$@はこのデータをトランザクションの処理のためだけに用います。";
+
+/* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "BraveはDEXアグリゲーターとして%@を利用します。";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "リミット";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "マーケット";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "オーダータイプ";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "選択したトークンをスワップ";
+
+/* The title of the button to approve switching the network on a switch network request from a dapps website. */
+"wallet.switchNetworkButtonTitle" = "切り替える";
+
+/* The description of the view shown over a dapps website that describes what switching the network will do. */
+"wallet.switchNetworkDescription" = "ネットワークを、以前に追加されたネットワークに変更します";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
+"wallet.switchNetworkSubtitle" = "このサイトにネットワークの変更を許可しますか？";
+
+/* The title of the view shown over a dapps website that requests the user change the current network. */
+"wallet.switchNetworkTitle" = "ネットワークを変更";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "（本日）";
+
+/* A title that will be displayed on top of the text field for users to input the custom token address */
+"wallet.tokenAddress" = "トークンアドレス";
+
+/* A title that will be displayed on top of the text field for users to input the custom token mint address */
+"wallet.tokenMintAddress" = "ミントアドレス";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "トークンネーム";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "トークンシンボル";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "合計";
+
+/* A title label that will display total balance of all none-zero balance accounts */
+"wallet.totalBalance" = "残高総額";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "承認済";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ が承認されました";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "未完了のトランザクションをクリアして置換";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "現時点では他に必要な操作はありません。未確認トランザクションがクリアされるまでお待ちください。";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "以前送信されたトランザクションが未確認のまま、新しいトランザクションを開始しようとしています。新しいトランザクションの送信は、ブロックされます。";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "トランザクションのバックログ";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "%1$lld / %2$lld";
+
+/* The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022' */
+"wallet.transactionDetailsDateTitle" = "日";
+
+/* The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50 */
+"wallet.transactionDetailsMarketPriceTitle" = "市場価格";
+
+/* The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. */
+"wallet.transactionDetailsNetworkTitle" = "ネットワーク";
+
+/* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
+"wallet.transactionDetailsStatusTitle" = "ステータス";
+
+/* The title for the view displaying the details of a cryptocurrency transaction. */
+"wallet.transactionDetailsTitle" = "トランザクション詳細";
+
+/* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
+"wallet.transactionDetailsTransactionHashTitle" = "トランザクションのハッシュ";
+
+/* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
+"wallet.transactionDetailsTxFeeTitle" = "トランザクション手数料";
+
+/* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
+"wallet.transactionFee" = "Transaction Fee";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "送信元: %1$@. 送信先: %2$@";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "%1$@ %2$@ (%3$@) が送信されました";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "承認済";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "確認済";
+
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "失敗";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "エラー";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "拒否済";
+
+/* A status that explains that the transaction has been signed. */
+"wallet.transactionStatusSigned" = "Signed";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "送信済";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "未承認";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "不明";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "トランザクション";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "手数料: %1$@ %2$@ (%3$@)";
+
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ :";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "Solanaスワップ";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "スワップ";
+
+/* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
+"wallet.transactionSwappedTitle" = "%1$@ %2$@ を %3$@ %4$@ にスワップしました";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "承認";
+
+/* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "%@ が送信されました";
+
+/* The description of one of the 'Transak' provider. */
+"wallet.transakProviderDescription" = "銀行口座で即座に購入。手数料を抑えられます。";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
+
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Braveは、Unstoppable Domainsに登録されている.crypto (および%1$@) ドメイン名の解決にInfuraを使用する予定です。BraveではIPアドレスが非表示になるため、これを有効にすると、Infura側で分かるのはあるユーザーがこれらのドメインを訪問しようとしていることのみです。Infuraの<a href=%2$@>%3$@</a>と<a href=%4$@>%5$@</a>もご覧ください。";
+
+/* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+"wallet.udDomainInterstitialPageTitle" = "Braveで「Unstoppable Domains」のサポートを有効にしますか？";
+
+/* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
+"wallet.udResolveMethodDescription" = "Unstoppable Domainsのプライバシーに関する配慮については[こちら](%@)をご覧ください。";
+
+/* The title for the options to resolve Unstoppable Domains domain names. */
+"wallet.udResolveMethodTitle" = "Unstoppable Domainsのドメイン名を解決";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "不明なエラー";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "ウォレットのロックを解除";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "ロック解除";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "パスワードを入力してウォレットのロックを解除";
+
+/* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
+"wallet.userAssetSymbolNetwork" = "%2$@の%1$@";
+
+/* The error message when input phrase does not match the correct one. */
+"wallet.verifyRecoveryPhraseError" = "リカバリーフレーズが一致しません。";
+
+/* The sub-title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseSubTitle" = "リカバリーフレーズの**%d番目**の単語を入力してください。";
+
+/* The title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseTitle" = "ご確認ください";
+
+/* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
+"wallet.viewDetails" = "詳細を表示";
+
+/* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
+"wallet.viewNetworkDetailsTitle" = "ネットワークの詳細";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "ブロックエクスプローラーで確認する";
+
+/* A button title when a user will tap to reveal the recovery phrases. */
+"wallet.viewRecoveryPhraseButtonTitle" = "リカバリーフレーズを確認";
+
+/* The title shown on the menu to access Brave Wallet */
+"wallet.wallet" = "ウォレット";
+
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "ウォレットを全画面で開く";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
+"wallet.walletPanelBlocked" = "ブロック済み";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "接続";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "接続済み";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp. */
+"wallet.walletPanelDisconnected" = "接続が解除された";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "このパネルを使用して、Web3とすべての暗号資産に安全にアクセスできます";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.walletSettings" = "ウォレット設定";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+"wallet.walletTypeNone" = "なし";
+
+/* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
+"wallet.warningAlertConfirmation" = "本当によろしいですか？";
+
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
+
+/* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
+"wallet.web3DomainInterstitialPageButtonDisable" = "無効にする";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPagePrivacyPolicy" = "プライバシーポリシー";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPageTAndU" = "利用規約";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionAsk" = "確認する";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionDisabled" = "無効";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionEnabled" = "有効";
+
+/* The header for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsHeader" = "Web3ドメイン";
+
+/* The title for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsTitle" = "ソラナネームサービス（SNS）のドメイン名を解決";
+
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (惑星間ファイルシステム) はP2Pデータストレージおよびデータ配信用のパブリックネットワークです。このプロトコルはHTTP（S）とは異なる仕方でプライバシーが考慮されています。<a href=%1$@>%2$@</a>";
+
+/* A brief explaination of resolving IPFS scheme url using a public gateway. */
+"wallet.web3IPFSInterstitialIPFSPublicGateway" = "お客様のIPアドレスとお客様がリクエストしているコンテンツを、サードパーティの潜在的なオブザーバーから保護しますが、パブリックゲートウェイ事業者からは保護しません。 ゲートウェイ事業者は、ゲートウェイを介して提供されるコンテンツが、お客様が要求したコンテンツであることを保証する責任を負います。また、お客様のデバイスは、パブリックIPFSネットワークに寄与しません。";
+
+/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
+"wallet.web3IPFSInterstitialIPFSTitle" = "IPFSプリファレンスを設定";
+
+/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
+"wallet.web3IPFSInterstitialProceedButton" = "パブリックゲートウェイを使用";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
+"wallet.web3PreferencesAllowEthProviderAccess" = "サイトからEthereumウォレットへのアクセス要求が可能";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
+"wallet.web3PreferencesAllowSolProviderAccess" = "サイトからSolanaウォレットへのアクセス要求が可能";
+
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "デフォルトのイーサリアムウォレット";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "デフォルトの Solana ウォレット";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Web3通知の表示";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "サイトの接続管理";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Web3環境設定";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "NFTディスカバリーを有効にする";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "サードパーティーのAPIを使用して、所有するNFTを自動的にウォレットに追加します。[詳細はこちら](%@)";
+
+/* Description of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertDescription" = "無効なURLが渡されました。ゲートウェイはIPFSリソースを解決できるものでなければいけません。";
+
+/* Title of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertTitle" = "ゲートウェイの設定に失敗しました";
+
+/* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
+"wallet.zToASortOption" = "降順";
+

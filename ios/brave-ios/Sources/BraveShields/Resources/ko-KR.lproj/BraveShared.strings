@@ -1,0 +1,57 @@
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave 플레이어**를 이용하면 광고나 끊김 없이 동영상을 재생할 수 있습니다.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "나에게 맞게 Shields 조정하기";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "이 사이트는 일부 광고 차단 프로그램을 차단하기 시작했으므로 사이트가 제대로 작동하지 않을 수 있습니다.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "이 문제를 해결하려면 Brave의 Shield 설정을 조정하세요. 조정한 후 Brave 플레이어에서 이 콘텐츠를 시청하면 됩니다.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "현재 설정 유지";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "이 사이트의 광고 차단 설정 조정";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "강력";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "광고, 팝업, 트래커가 로드되지 않도록 차단합니다.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "비활성화됨";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "표준";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave 플레이어";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "이 사이트의 동영상을 항상 Brave 플레이어로 열기";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "사용해보기";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "나중에";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave 플레이어를 이용하면 끊김 없이 동영상을 시청할 수 있습니다.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "대신 Brave 플레이어에서 시청";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "글로벌 프라이버시 컨트롤 JS API 활성화";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "글로벌 프라이버시 컨트롤 활성화";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "트래커 및 광고 차단";
+

@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "ブックマーク";
+
+/* The name of the feature */
+"widgets.braveNews" = "Braveニュース";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "ダウンロード";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "お気にいりのウェブサイトに素早くアクセス";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "お気に入り";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "履歴";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "後でもう一度お試しください";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "もっと読む";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "最新ニュースを入手";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "人気のニュース";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Braveを開いてお気に入りのサイトを追加してください";
+
+/* QR Code section title */
+"widgets.QRCode" = "QRコード";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "検索";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Braveによって時間がどれだけ節約され、オンライン上でプライバシーが保護されたかのまとめです。";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "プライバシー統計";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "プライバシー統計";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "検索するか、URLを入力";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "新しいタブ";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Playlist";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "プライベートタブ";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "簡単に素早くBraveでウェブを検索したりウェブページを開く";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "ショートカット";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Braveがオンライン上でどれくらいプライバシーを保護したかのまとめです。";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "プライバシー統計";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Braveウォレット";
+

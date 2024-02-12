@@ -1,0 +1,3667 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A1DF486244A2ECB00541FE4 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */; };
+		0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */; };
+		0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */; };
+		270ECFC82838210F0089B8B7 /* Brave in Frameworks */ = {isa = PBXBuildFile; productRef = 270ECFC72838210F0089B8B7 /* Brave */; };
+		2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713FCD72A96429100398A57 /* WidgetBackground.swift */; };
+		272947DE29C8DB2000BF2FDC /* topics_news.en_US.json in Resources */ = {isa = PBXBuildFile; fileRef = 27444B6A29831BBE002E1EBE /* topics_news.en_US.json */; };
+		272947E329C8F86A00BF2FDC /* NewsTopicsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */; };
+		272FC5AF2979EA700027C53D /* TopNewsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272FC5AE2979E9D60027C53D /* TopNewsWidget.swift */; };
+		27462BEA29DF39EE00715268 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 27462BE929DF39EE00715268 /* OrderedCollections */; };
+		27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */ = {isa = PBXBuildFile; productRef = 27466BB0288EDB9C00584C90 /* RuntimeWarnings */; };
+		2759468D29CCB62F0094BDDE /* GRDWireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2759468C29CCB62F0094BDDE /* GRDWireGuardKit */; };
+		2759468F29CCB6350094BDDE /* GRDWireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2759468E29CCB6350094BDDE /* GRDWireGuardKit */; };
+		278852E42ACDC26B005395CF /* Playlist in Frameworks */ = {isa = PBXBuildFile; productRef = 278852E32ACDC26B005395CF /* Playlist */; };
+		278852E62ACDE795005395CF /* UserAgent in Frameworks */ = {isa = PBXBuildFile; productRef = 278852E52ACDE795005395CF /* UserAgent */; };
+		278BB9FF297B0A1E00690BE3 /* TopNewsListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278BB9FE297B0A1E00690BE3 /* TopNewsListWidget.swift */; };
+		279A828E28FEF01E00F55A5E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		279A829228FEF0BF00F55A5E /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 279A829128FEF0BF00F55A5E /* BraveShared */; };
+		279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 279C432D2853E51E00A9F708 /* DesignSystem */; };
+		27A28ED528C00C1D001466A4 /* LockScreenShortcutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */; };
+		27BEDCCC28AD37CE0073425E /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		27C1C5EB29B6A46300739BE5 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 27C1C5EA29B6A46300739BE5 /* Preferences */; };
+		27C1C5ED29B6AA8800739BE5 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 27C1C5EC29B6AA8800739BE5 /* Preferences */; };
+		27D5906F29B7BA1000AE9989 /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 27D5906E29B7BA1000AE9989 /* BraveShared */; };
+		27D5907129B7BA1B00AE9989 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 27D5907029B7BA1B00AE9989 /* Preferences */; };
+		27D6761A282DA10700BCE16E /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27D67619282DA10700BCE16E /* Icons.xcassets */; };
+		27D67623282DAD3700BCE16E /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		27D7FF4A29B7BF030096DD93 /* CodableHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 272FC5B02979F3AD0027C53D /* CodableHelpers */; };
+		27D7FF5329BA69330096DD93 /* BraveShields in Frameworks */ = {isa = PBXBuildFile; productRef = 27D7FF5229BA69330096DD93 /* BraveShields */; };
+		27D7FF5529BA69E50096DD93 /* BraveShields in Frameworks */ = {isa = PBXBuildFile; productRef = 27D7FF5429BA69E50096DD93 /* BraveShields */; };
+		27D7FF5B29BA75FB0096DD93 /* WidgetStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D7FF5A29BA75AD0096DD93 /* WidgetStrings.swift */; };
+		27D7FF5E29BA784C0096DD93 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27D7FF6029BA784C0096DD93 /* Localizable.strings */; };
+		27D7FF7329BB816E0096DD93 /* PrivateCDN in Frameworks */ = {isa = PBXBuildFile; productRef = 27D7FF7229BB816E0096DD93 /* PrivateCDN */; };
+		27D972E628BD4D9900DDCF79 /* BraveNews in Frameworks */ = {isa = PBXBuildFile; productRef = 27D972E528BD4D9900DDCF79 /* BraveNews */; };
+		27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */; };
+		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
+		27FA21752837F8EA00FA2C45 /* BrowserIntentsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */; };
+		27FA217B2837F95400FA2C45 /* Strings in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA217A2837F95400FA2C45 /* Strings */; };
+		27FA217F2837FB0100FA2C45 /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA217E2837FB0100FA2C45 /* BraveShared */; };
+		27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21802837FB0100FA2C45 /* BraveWallet */; };
+		27FA21832837FB0100FA2C45 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21822837FB0100FA2C45 /* Data */; };
+		27FA21892837FB0100FA2C45 /* Shared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21882837FB0100FA2C45 /* Shared */; };
+		27FA218B2837FB0100FA2C45 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA218A2837FB0100FA2C45 /* Storage */; };
+		27FA21A42838019000FA2C45 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27FA21902838018E00FA2C45 /* InfoPlist.strings */; };
+		2F4A572429E608C8003454F8 /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		2F4A572529E608CC003454F8 /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		2F6931B7260CFB3700ECEB38 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6931B6260CFB3700ECEB38 /* IntentHandler.swift */; };
+		2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2FC7DF7B2B5AE98E0092553B /* ActionExtensionIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FC7DF7A2B5AE98E0092553B /* ActionExtensionIcons.xcassets */; };
+		2FD860C229C3D677005AADD1 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */; };
+		2FD860C529C3D686005AADD1 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD860C429C3D686005AADD1 /* PacketTunnelProvider.swift */; };
+		2FD860CA29C3D686005AADD1 /* BraveWireGuard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2FD860C129C3D677005AADD1 /* BraveWireGuard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2FE7D51D2B509DA40039FBA4 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FE7D51C2B509DA40039FBA4 /* UniformTypeIdentifiers.framework */; };
+		2FE7D5222B509DA50039FBA4 /* ActionToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE7D5212B509DA50039FBA4 /* ActionToBraveViewController.swift */; };
+		2FE7D5292B509DA50039FBA4 /* ActionExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2FE7D51B2B509DA40039FBA4 /* ActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		441A6360272445F9001492C3 /* StatDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441A635F272444DE001492C3 /* StatDataModel.swift */; };
+		5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */; };
+		5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F926647A234D4EF400359492 /* CoreNFC.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7DDE6308292FEC9500B8B585 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7DDE6307292FEC9500B8B585 /* SDWebImage */; };
+		CA0391B4271E1023000EB13C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0391B3271E1023000EB13C /* WidgetKit.framework */; };
+		CA0391B6271E1023000EB13C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0391B5271E1023000EB13C /* SwiftUI.framework */; };
+		CA0391B9271E1023000EB13C /* BraveWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391B8271E1023000EB13C /* BraveWidgets.swift */; };
+		CA0391BC271E1026000EB13C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA0391BB271E1026000EB13C /* Assets.xcassets */; };
+		CA0391E3271E1382000EB13C /* BraveWidgets.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		CA0391F8271E143F000EB13C /* ShortcutsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391F3271E143F000EB13C /* ShortcutsWidget.swift */; };
+		CA0391F9271E143F000EB13C /* FavoritesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391F4271E143F000EB13C /* FavoritesWidget.swift */; };
+		CA0391FB271E143F000EB13C /* StatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391F6271E143F000EB13C /* StatsWidget.swift */; };
+		CA0391FC271E143F000EB13C /* SingleStatWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0391F7271E143F000EB13C /* SingleStatWidget.swift */; };
+		CA8B4AF0276A8339002120F7 /* BraveWidgetsExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CA986FB2298C1249000C6DD8 /* BraveWidgetsModels in Frameworks */ = {isa = PBXBuildFile; productRef = CA986FB1298C1249000C6DD8 /* BraveWidgetsModels */; };
+		CA986FB4298C1254000C6DD8 /* BraveWidgetsModels in Frameworks */ = {isa = PBXBuildFile; productRef = CA986FB3298C1254000C6DD8 /* BraveWidgetsModels */; };
+		CAADEFE026E2707F0020DC4C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAADEFDF26E2707F0020DC4C /* SceneDelegate.swift */; };
+		CAAE653D287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE653C287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift */; };
+		CABDE77F2A55DD1C00A388A4 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDE77E2A55DD1C00A388A4 /* AppState.swift */; };
+		E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6231C001B90A44F005ABB0D /* libz.tbd */; };
+		E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6231C041B90A472005ABB0D /* libxml2.2.tbd */; };
+		F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21E51A0910F600AAB793 /* AppDelegate.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		27F4439D2135E11200296C58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 27F443942135E11200296C58;
+			remoteInfo = BraveShareTo;
+		};
+		2F6931B9260CFB3700ECEB38 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2F6931B3260CFB3700ECEB38;
+			remoteInfo = BrowserIntents;
+		};
+		2FD860C829C3D686005AADD1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2FD860C029C3D676005AADD1;
+			remoteInfo = BraveWireGuard;
+		};
+		2FE7D5272B509DA50039FBA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2FE7D51A2B509DA40039FBA4;
+			remoteInfo = ActionExtension;
+		};
+		CA8B4AE3276A830F002120F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA0391B1271E1023000EB13C;
+			remoteInfo = BraveWidgetsExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2F93A98729C8EB3300C7C158 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F84B22531A0920C600AAB793 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CA8B4AF0276A8339002120F7 /* BraveWidgetsExtension.appex in Embed App Extensions */,
+				27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */,
+				2FD860CA29C3D686005AADD1 /* BraveWireGuard.appex in Embed App Extensions */,
+				2FE7D5292B509DA50039FBA4 /* ActionExtension.appex in Embed App Extensions */,
+				2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		0A24F7E2233E8F0F004D2F3A /* package-lock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "package-lock.json"; path = "../package-lock.json"; sourceTree = "<group>"; };
+		0A24F7E3233E8F0F004D2F3A /* package.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = package.json; path = ../package.json; sourceTree = "<group>"; };
+		0A24F7E4233E8F0F004D2F3A /* bootstrap.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = bootstrap.sh; path = ../bootstrap.sh; sourceTree = "<group>"; };
+		0A24F7EE233E9129004D2F3A /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Fastfile; path = ../fastlane/Fastfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		0A24F837233EB5B4004D2F3A /* Release-AppStore.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Release-AppStore.xcconfig"; sourceTree = "<group>"; };
+		0A24F838233EB5B4004D2F3A /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		0A24F839233EB5B4004D2F3A /* Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Beta.xcconfig; sourceTree = "<group>"; };
+		0A24F83A233EB5B4004D2F3A /* Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig; sourceTree = "<group>"; };
+		0A24F83C233EB5B4004D2F3A /* BuildId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildId.xcconfig; sourceTree = "<group>"; };
+		0A24F83D233EB5B4004D2F3A /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
+		0A24F83E233EB5B4004D2F3A /* DevTeam.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevTeam.xcconfig; sourceTree = "<group>"; };
+		0A24F83F233EB5B4004D2F3A /* BundleId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BundleId.xcconfig; sourceTree = "<group>"; };
+		0A24F841233EB5B5004D2F3A /* BuildId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildId.xcconfig; sourceTree = "<group>"; };
+		0A24F842233EB5B5004D2F3A /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		0A24F843233EB5B5004D2F3A /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
+		0A24F844233EB5B5004D2F3A /* DevTeam.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevTeam.xcconfig; sourceTree = "<group>"; };
+		0A24F845233EB5B5004D2F3A /* BundleId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BundleId.xcconfig; sourceTree = "<group>"; };
+		0A24F846233EB5B5004D2F3A /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
+		0A24F847233EB5B5004D2F3A /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = LaunchScreen.xcassets; sourceTree = "<group>"; };
+		0A60A1882358AF9E00953CA8 /* Brave.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Brave.xctestplan; path = Client.xcodeproj/Brave.xctestplan; sourceTree = "<group>"; };
+		0A66550D23E9EA540047EF2A /* Brave_iPad.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Brave_iPad.xctestplan; sourceTree = "<group>"; };
+		0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		2703FC14284FDB6300970FD2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Shortcuts/ru.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		270ECFC628381E270089B8B7 /* brave-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "brave-ios"; path = ..; sourceTree = "<group>"; };
+		2713FCD72A96429100398A57 /* WidgetBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBackground.swift; sourceTree = "<group>"; };
+		271D0F3A284FDB12002BCF91 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = Shortcuts/it.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		27262B4C28BEB3D800A2E526 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTopicsModel.swift; sourceTree = "<group>"; };
+		272FC5AE2979E9D60027C53D /* TopNewsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNewsWidget.swift; sourceTree = "<group>"; };
+		273ACA2128492ECB008A58BB /* JitsiMeetSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = JitsiMeetSDK.xcframework; path = ../ThirdParty/JitsiMeet/JitsiMeetSDK.xcframework; sourceTree = "<group>"; };
+		273ACA2228492ECB008A58BB /* WebRTC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = WebRTC.xcframework; path = ../ThirdParty/JitsiMeet/WebRTC.xcframework; sourceTree = "<group>"; };
+		273DFB18284FDB1D007781AF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Shortcuts/ja.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		27444B6A29831BBE002E1EBE /* topics_news.en_US.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = topics_news.en_US.json; sourceTree = "<group>"; };
+		27465DC3284FDB6F0056FDB2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Shortcuts/sv.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		274831D629C10EB700B96AAD /* Keys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Keys.xcconfig; sourceTree = "<group>"; };
+		275A4C39284FDB290016F5A8 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "Shortcuts/ko-KR.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
+		276FEA8B284FDB7A001A0718 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Shortcuts/tr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		277CA004284FDB34002E8470 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = Shortcuts/ms.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		278BB9FE297B0A1E00690BE3 /* TopNewsListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNewsListWidget.swift; sourceTree = "<group>"; };
+		27995074284FDAE400BC2054 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Shortcuts/de.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		279AC848284FDB8600238C32 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = Shortcuts/uk.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		279DC775284FDB4000F4134D /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = Shortcuts/nb.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		27A1AC1424884EB300344503 /* Enterprise.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Enterprise.xcconfig; sourceTree = "<group>"; };
+		27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenShortcutWidget.swift; sourceTree = "<group>"; };
+		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		27AC7CF724C759BE00441317 /* Enterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Enterprise.entitlements; sourceTree = "<group>"; };
+		27AD20C226851C5400889AA7 /* BraveCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraveCore.xcframework; path = "../node_modules/brave-core-ios/BraveCore.xcframework"; sourceTree = "<group>"; };
+		27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MaterialComponents.xcframework; path = "../node_modules/brave-core-ios/MaterialComponents.xcframework"; sourceTree = "<group>"; };
+		27BFC5AB284FDAEF003F428E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Shortcuts/es.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		27C3AF2C284FDB4C0079BFBE /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = Shortcuts/pl.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		27C601AC284FDB91002BAF19 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = Shortcuts/zh.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		27D67619282DA10700BCE16E /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
+		27D67622282DAD3700BCE16E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Shortcuts/Base.lproj/BrowserIntents.intentdefinition; sourceTree = "<group>"; };
+		27D7FF5A29BA75AD0096DD93 /* WidgetStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetStrings.swift; sourceTree = "<group>"; };
+		27D7FF6129BA78640096DD93 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6229BA78640096DD93 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		27D7FF6329BA786E0096DD93 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6429BA78720096DD93 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6529BA78730096DD93 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		27D7FF6629BA78790096DD93 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6729BA787A0096DD93 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6829BA787B0096DD93 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		27D7FF6929BA787C0096DD93 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6A29BA787D0096DD93 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6B29BA787E0096DD93 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6C29BA787F0096DD93 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		27D7FF6D29BA787F0096DD93 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6E29BA78800096DD93 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF6F29BA78810096DD93 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF7029BA78810096DD93 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27D7FF7129BA78820096DD93 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFavoriteWidget.swift; sourceTree = "<group>"; };
+		27DD1330284FDAFB004E1E1F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Shortcuts/fr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		27E30417284FDB57009A07F2 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "Shortcuts/pt-BR.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
+		27EDE18129A7D98000F34870 /* Debug (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Debug (AppStore).entitlements"; sourceTree = "<group>"; };
+		27EDE18229A7DA0E00F34870 /* Debug-AppStore.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Debug-AppStore.xcconfig"; sourceTree = "<group>"; };
+		27EEEDB52507CE1C00024038 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		27EEEDB72507D51E00024038 /* Release (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Release (AppStore).entitlements"; sourceTree = "<group>"; };
+		27F443952135E11200296C58 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		27F4439C2135E11200296C58 /* ShareExtension.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ShareExtension.plist; sourceTree = "<group>"; };
+		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
+		27FA21912838018E00FA2C45 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "Supporting Files/fr.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21922838018E00FA2C45 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "Supporting Files/es.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21932838018E00FA2C45 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = "Supporting Files/nb.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21942838018E00FA2C45 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "Supporting Files/ko-KR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21952838018E00FA2C45 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "Supporting Files/pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21962838018E00FA2C45 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = "Supporting Files/uk.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21982838018E00FA2C45 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "Supporting Files/sv.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21992838018E00FA2C45 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = "Supporting Files/ms.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA219A2838018F00FA2C45 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "Supporting Files/ru.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA219B2838018F00FA2C45 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "Supporting Files/de.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA219C2838018F00FA2C45 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "Supporting Files/en.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA219D2838018F00FA2C45 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "Supporting Files/tr.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA219E2838018F00FA2C45 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = "Supporting Files/it.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA219F2838018F00FA2C45 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "Supporting Files/pl.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21A02838018F00FA2C45 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "Supporting Files/id-ID.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21A12838018F00FA2C45 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = "Supporting Files/ja.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21A22838018F00FA2C45 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "Supporting Files/zh-TW.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FA21A32838019000FA2C45 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = "Supporting Files/zh.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		27FD0AFD284FDB06002A0789 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "Shortcuts/id-ID.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
+		27FDB77C284FDB9D00ACEB16 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "Shortcuts/zh-TW.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
+		2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrowserIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F6931B6260CFB3700ECEB38 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		2F6931B8260CFB3700ECEB38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2F6931CD260CFB5300ECEB38 /* BrowserIntents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntents.entitlements; sourceTree = "<group>"; };
+		2F69320A260D021D00ECEB38 /* BrowserIntentsDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntentsDebug.entitlements; sourceTree = "<group>"; };
+		2F69320B260D032700ECEB38 /* BrowserIntentsEnterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntentsEnterprise.entitlements; sourceTree = "<group>"; };
+		2F69320C260D03B000ECEB38 /* BrowserIntentsRelease (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "BrowserIntentsRelease (AppStore).entitlements"; sourceTree = "<group>"; };
+		2F69320D260D048400ECEB38 /* BrowserIntentsRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntentsRelease.entitlements; sourceTree = "<group>"; };
+		2F69320E260D056100ECEB38 /* BrowserIntentsBeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrowserIntentsBeta.entitlements; sourceTree = "<group>"; };
+		2F93A97B29C8CD6C00C7C158 /* BraveWireGuardBeta.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardBeta.entitlements; sourceTree = "<group>"; };
+		2F93A97C29C8CDB200C7C158 /* BraveWireGuardDebug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardDebug.entitlements; sourceTree = "<group>"; };
+		2F93A97D29C8CDE600C7C158 /* BraveWireGuardEnterprise.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardEnterprise.entitlements; sourceTree = "<group>"; };
+		2F93A97E29C8CF1300C7C158 /* BraveWireGuardDev.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardDev.entitlements; sourceTree = "<group>"; };
+		2F93A98029C8CFAF00C7C158 /* BraveWireGuardRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BraveWireGuardRelease.entitlements; sourceTree = "<group>"; };
+		2FC7DF7A2B5AE98E0092553B /* ActionExtensionIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ActionExtensionIcons.xcassets; sourceTree = "<group>"; };
+		2FD860C129C3D677005AADD1 /* BraveWireGuard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveWireGuard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FD860C429C3D686005AADD1 /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketTunnelProvider.swift; sourceTree = "<group>"; };
+		2FD860C629C3D686005AADD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2FE7D51B2B509DA40039FBA4 /* ActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FE7D51C2B509DA40039FBA4 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		2FE7D5212B509DA50039FBA4 /* ActionToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionToBraveViewController.swift; sourceTree = "<group>"; };
+		2FE7D5262B509DA50039FBA4 /* ActionExtension.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ActionExtension.plist; sourceTree = "<group>"; };
+		2FE7D54A2B50A11A0039FBA4 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D54C2B50A12E0039FBA4 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D54D2B50A1860039FBA4 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D54E2B50A1950039FBA4 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2FE7D54F2B50A1AC0039FBA4 /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2FE7D5502B50A1BC0039FBA4 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D5512B50A1DF0039FBA4 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D5522B50A22D0039FBA4 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D5532B50A23B0039FBA4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D5542B50A2470039FBA4 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D5552B50A2560039FBA4 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D5562B50A2610039FBA4 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D5572B50A2990039FBA4 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D5582B50A2B00039FBA4 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2FE7D5592B50A2C00039FBA4 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2FE7D55A2B50A2CD0039FBA4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D55B2B50A2DF0039FBA4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2FE7D55C2B50A2EA0039FBA4 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		441A635F272444DE001492C3 /* StatDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatDataModel.swift; sourceTree = "<group>"; };
+		445ABC0527319C000089710D /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC0727319C030089710D /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
+		445ABC0927319C060089710D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC0B27319C090089710D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC0D27319C0E0089710D /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
+		445ABC0F27319C110089710D /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC1127319C130089710D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC1327319C170089710D /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
+		445ABC1527319C190089710D /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC1727319C1C0089710D /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC1927319C1E0089710D /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC1B27319C200089710D /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
+		445ABC1D27319C210089710D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC1F27319C240089710D /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC2127319C260089710D /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC2327319C270089710D /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		445ABC2527319C290089710D /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		4484BAF02654227A0099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5929A9F121B6AEF7005ECF8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B6912221B695A400E9388E /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B6914221B695C200E9388E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B6915021B695CB00E9388E /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B6915A21B695D300E9388E /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		59B6916A21B695DC00E9388E /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		59B6917221B695E400E9388E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B6917E21B695EC00E9388E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B6918E21B695F500E9388E /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B6919921B695FE00E9388E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B691A721B6960600E9388E /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B691B121B6960E00E9388E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B691BE21B6961A00E9388E /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B691CB21B6964200E9388E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59B691D621B6964D00E9388E /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		59B691DE21B6965C00E9388E /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		59B691E921B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.2.tbd; path = usr/lib/libarchive.2.tbd; sourceTree = SDKROOT; };
+		CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA0391B3271E1023000EB13C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		CA0391B5271E1023000EB13C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		CA0391B8271E1023000EB13C /* BraveWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWidgets.swift; sourceTree = "<group>"; };
+		CA0391BB271E1026000EB13C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CA0391BD271E1026000EB13C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA0391BE271E1026000EB13C /* BraveWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BraveWidgets.entitlements; sourceTree = "<group>"; };
+		CA0391DB271E12F7000EB13C /* WidgetDev.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetDev.entitlements; sourceTree = "<group>"; };
+		CA0391DC271E12F7000EB13C /* WidgetRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetRelease.entitlements; sourceTree = "<group>"; };
+		CA0391DD271E12F7000EB13C /* WidgetBeta.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetBeta.entitlements; sourceTree = "<group>"; };
+		CA0391DE271E12F8000EB13C /* WidgetDebug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetDebug.entitlements; sourceTree = "<group>"; };
+		CA0391DF271E12F8000EB13C /* WidgetEnterprise.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = WidgetEnterprise.entitlements; sourceTree = "<group>"; };
+		CA0391E4271E1382000EB13C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/BraveWidgets.intentdefinition; sourceTree = "<group>"; };
+		CA0391F3271E143F000EB13C /* ShortcutsWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsWidget.swift; sourceTree = "<group>"; };
+		CA0391F4271E143F000EB13C /* FavoritesWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesWidget.swift; sourceTree = "<group>"; };
+		CA0391F6271E143F000EB13C /* StatsWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsWidget.swift; sourceTree = "<group>"; };
+		CA0391F7271E143F000EB13C /* SingleStatWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleStatWidget.swift; sourceTree = "<group>"; };
+		CAADEFDF26E2707F0020DC4C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		CAAE653C287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPTemplateApplicationSceneDelegate.swift; sourceTree = "<group>"; };
+		CABDE77E2A55DD1C00A388A4 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		E6231C001B90A44F005ABB0D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		E6231C041B90A472005ABB0D /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
+		E62AC15F1E956AFC00843532 /* Dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dev.entitlements; sourceTree = "<group>"; };
+		E6F738741EB7A8D300B50143 /* Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Debug.entitlements; sourceTree = "<group>"; };
+		E6F738751EB7A97100B50143 /* Beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Beta.entitlements; sourceTree = "<group>"; };
+		E6F738761EB7A97500B50143 /* Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
+		F84B21BE1A090F8100AAB793 /* Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F84B21E51A0910F600AAB793 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F84B22431A09165600AAB793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Supporting Files/Info.plist"; sourceTree = "<group>"; };
+		F926647A234D4EF400359492 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		27F443922135E11200296C58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28CE83DE1A1D1E7C00576538 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				270ECFC82838210F0089B8B7 /* Brave in Frameworks */,
+				7DDE6308292FEC9500B8B585 /* SDWebImage in Frameworks */,
+				27FA218B2837FB0100FA2C45 /* Storage in Frameworks */,
+				27FA21832837FB0100FA2C45 /* Data in Frameworks */,
+				27FA21892837FB0100FA2C45 /* Shared in Frameworks */,
+				27C1C5ED29B6AA8800739BE5 /* Preferences in Frameworks */,
+				5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */,
+				5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */,
+				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
+				E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */,
+				2759468F29CCB6350094BDDE /* GRDWireGuardKit in Frameworks */,
+				27D972E628BD4D9900DDCF79 /* BraveNews in Frameworks */,
+				27D7FF5329BA69330096DD93 /* BraveShields in Frameworks */,
+				27FA217F2837FB0100FA2C45 /* BraveShared in Frameworks */,
+				27D7FF7329BB816E0096DD93 /* PrivateCDN in Frameworks */,
+				278852E62ACDE795005395CF /* UserAgent in Frameworks */,
+				27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */,
+				278852E42ACDC26B005395CF /* Playlist in Frameworks */,
+				0A1DF486244A2ECB00541FE4 /* NetworkExtension.framework in Frameworks */,
+				27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2F6931B1260CFB3700ECEB38 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				279A829228FEF0BF00F55A5E /* BraveShared in Frameworks */,
+				27C1C5EB29B6A46300739BE5 /* Preferences in Frameworks */,
+				CA986FB4298C1254000C6DD8 /* BraveWidgetsModels in Frameworks */,
+				27FA21752837F8EA00FA2C45 /* BrowserIntentsModels in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FD860BE29C3D676005AADD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2759468D29CCB62F0094BDDE /* GRDWireGuardKit in Frameworks */,
+				2FD860C229C3D677005AADD1 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FE7D5182B509DA40039FBA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FE7D51D2B509DA40039FBA4 /* UniformTypeIdentifiers.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0391AF271E1023000EB13C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27462BEA29DF39EE00715268 /* OrderedCollections in Frameworks */,
+				27D7FF4A29B7BF030096DD93 /* CodableHelpers in Frameworks */,
+				27FA217B2837F95400FA2C45 /* Strings in Frameworks */,
+				27D5906F29B7BA1000AE9989 /* BraveShared in Frameworks */,
+				27D7FF5529BA69E50096DD93 /* BraveShields in Frameworks */,
+				279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */,
+				CA0391B6271E1023000EB13C /* SwiftUI.framework in Frameworks */,
+				CA986FB2298C1249000C6DD8 /* BraveWidgetsModels in Frameworks */,
+				27D5907129B7BA1B00AE9989 /* Preferences in Frameworks */,
+				CA0391B4271E1023000EB13C /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A24F7DE233E8EF2004D2F3A /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				0A24F7E4233E8F0F004D2F3A /* bootstrap.sh */,
+				0A24F7E2233E8F0F004D2F3A /* package-lock.json */,
+				0A24F7E3233E8F0F004D2F3A /* package.json */,
+				0A24F7EE233E9129004D2F3A /* Fastfile */,
+				0A24F836233EB5B4004D2F3A /* Configuration */,
+			);
+			name = Config;
+			sourceTree = "<group>";
+		};
+		0A24F836233EB5B4004D2F3A /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				0A24F847233EB5B5004D2F3A /* Base.xcconfig */,
+				0A24F838233EB5B4004D2F3A /* Debug.xcconfig */,
+				27EDE18229A7DA0E00F34870 /* Debug-AppStore.xcconfig */,
+				0A24F846233EB5B5004D2F3A /* Dev.xcconfig */,
+				0A24F839233EB5B4004D2F3A /* Beta.xcconfig */,
+				27EEEDB52507CE1C00024038 /* Release.xcconfig */,
+				0A24F837233EB5B4004D2F3A /* Release-AppStore.xcconfig */,
+				27A1AC1424884EB300344503 /* Enterprise.xcconfig */,
+				0A24F83A233EB5B4004D2F3A /* Local.xcconfig */,
+				0A24F83B233EB5B4004D2F3A /* Local */,
+				0A24F840233EB5B4004D2F3A /* Local.templates */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		0A24F83B233EB5B4004D2F3A /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				274831D629C10EB700B96AAD /* Keys.xcconfig */,
+				0A24F83C233EB5B4004D2F3A /* BuildId.xcconfig */,
+				0A24F83D233EB5B4004D2F3A /* Version.xcconfig */,
+				0A24F83E233EB5B4004D2F3A /* DevTeam.xcconfig */,
+				0A24F83F233EB5B4004D2F3A /* BundleId.xcconfig */,
+			);
+			name = Local;
+			path = Configuration/Local;
+			sourceTree = SOURCE_ROOT;
+		};
+		0A24F840233EB5B4004D2F3A /* Local.templates */ = {
+			isa = PBXGroup;
+			children = (
+				0A24F841233EB5B5004D2F3A /* BuildId.xcconfig */,
+				0A24F842233EB5B5004D2F3A /* README */,
+				0A24F843233EB5B5004D2F3A /* Version.xcconfig */,
+				0A24F844233EB5B5004D2F3A /* DevTeam.xcconfig */,
+				0A24F845233EB5B5004D2F3A /* BundleId.xcconfig */,
+			);
+			path = Local.templates;
+			sourceTree = "<group>";
+		};
+		270ECFC9283824F00089B8B7 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				27D67619282DA10700BCE16E /* Icons.xcassets */,
+				F84B22431A09165600AAB793 /* Info.plist */,
+				27FA21902838018E00FA2C45 /* InfoPlist.strings */,
+				E652F6F91BF66A79007FFDD6 /* Delegates */,
+				0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */,
+				0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */,
+				E689C6FF1E0C716F008BAADB /* Entitlements */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		272947DF29C8DE4300BF2FDC /* News Topics */ = {
+			isa = PBXGroup;
+			children = (
+				272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */,
+			);
+			path = "News Topics";
+			sourceTree = "<group>";
+		};
+		27444B6929831B9E002E1EBE /* Development Assets */ = {
+			isa = PBXGroup;
+			children = (
+				27444B6A29831BBE002E1EBE /* topics_news.en_US.json */,
+			);
+			path = "Development Assets";
+			sourceTree = "<group>";
+		};
+		27F443962135E11200296C58 /* ShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */,
+				27F4439C2135E11200296C58 /* ShareExtension.plist */,
+				59B6912121B695A400E9388E /* InfoPlist.strings */,
+			);
+			path = ShareExtension;
+			sourceTree = "<group>";
+		};
+		2F4A572629E73D1C003454F8 /* Entitlements */ = {
+			isa = PBXGroup;
+			children = (
+				2F69320E260D056100ECEB38 /* BrowserIntentsBeta.entitlements */,
+				2F69320D260D048400ECEB38 /* BrowserIntentsRelease.entitlements */,
+				2F69320C260D03B000ECEB38 /* BrowserIntentsRelease (AppStore).entitlements */,
+				2F69320B260D032700ECEB38 /* BrowserIntentsEnterprise.entitlements */,
+				2F69320A260D021D00ECEB38 /* BrowserIntentsDebug.entitlements */,
+				2F6931CD260CFB5300ECEB38 /* BrowserIntents.entitlements */,
+			);
+			path = Entitlements;
+			sourceTree = "<group>";
+		};
+		2F6931B5260CFB3700ECEB38 /* BrowserIntents */ = {
+			isa = PBXGroup;
+			children = (
+				2F4A572629E73D1C003454F8 /* Entitlements */,
+				2F6931B6260CFB3700ECEB38 /* IntentHandler.swift */,
+				2F6931B8260CFB3700ECEB38 /* Info.plist */,
+			);
+			path = BrowserIntents;
+			sourceTree = "<group>";
+		};
+		2F93A98129C8D0FD00C7C158 /* Entitlements */ = {
+			isa = PBXGroup;
+			children = (
+				2F93A97B29C8CD6C00C7C158 /* BraveWireGuardBeta.entitlements */,
+				2F93A97C29C8CDB200C7C158 /* BraveWireGuardDebug.entitlements */,
+				2F93A97E29C8CF1300C7C158 /* BraveWireGuardDev.entitlements */,
+				2F93A97D29C8CDE600C7C158 /* BraveWireGuardEnterprise.entitlements */,
+				2F93A98029C8CFAF00C7C158 /* BraveWireGuardRelease.entitlements */,
+			);
+			path = Entitlements;
+			sourceTree = "<group>";
+		};
+		2FD860C329C3D686005AADD1 /* BraveWireGuard */ = {
+			isa = PBXGroup;
+			children = (
+				2F93A98129C8D0FD00C7C158 /* Entitlements */,
+				2FD860C429C3D686005AADD1 /* PacketTunnelProvider.swift */,
+				2FD860C629C3D686005AADD1 /* Info.plist */,
+			);
+			path = BraveWireGuard;
+			sourceTree = "<group>";
+		};
+		2FE7D51E2B509DA50039FBA4 /* ActionExtension */ = {
+			isa = PBXGroup;
+			children = (
+				2FE7D5212B509DA50039FBA4 /* ActionToBraveViewController.swift */,
+				2FE7D5262B509DA50039FBA4 /* ActionExtension.plist */,
+				2FE7D54B2B50A11A0039FBA4 /* InfoPlist.strings */,
+				2FC7DF7A2B5AE98E0092553B /* ActionExtensionIcons.xcassets */,
+			);
+			path = ActionExtension;
+			sourceTree = "<group>";
+		};
+		7B604FC11C496005006EEEC3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				27AD20C226851C5400889AA7 /* BraveCore.xcframework */,
+				27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */,
+				0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */,
+				0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */,
+				5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */,
+				27AC169623834510004BE19C /* UserNotifications.framework */,
+				F926647A234D4EF400359492 /* CoreNFC.framework */,
+				E6231C041B90A472005ABB0D /* libxml2.2.tbd */,
+				E6231C001B90A44F005ABB0D /* libz.tbd */,
+				CA0391B3271E1023000EB13C /* WidgetKit.framework */,
+				CA0391B5271E1023000EB13C /* SwiftUI.framework */,
+				27262B4C28BEB3D800A2E526 /* Intents.framework */,
+				273ACA2128492ECB008A58BB /* JitsiMeetSDK.xcframework */,
+				273ACA2228492ECB008A58BB /* WebRTC.xcframework */,
+				2FE7D51C2B509DA40039FBA4 /* UniformTypeIdentifiers.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA0391B7271E1023000EB13C /* BraveWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				272947DF29C8DE4300BF2FDC /* News Topics */,
+				27444B6929831B9E002E1EBE /* Development Assets */,
+				CA0391DA271E12D9000EB13C /* Entitlements */,
+				2713FCD72A96429100398A57 /* WidgetBackground.swift */,
+				27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */,
+				27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */,
+				CA0391F4271E143F000EB13C /* FavoritesWidget.swift */,
+				CA0391F3271E143F000EB13C /* ShortcutsWidget.swift */,
+				CA0391F6271E143F000EB13C /* StatsWidget.swift */,
+				CA0391F7271E143F000EB13C /* SingleStatWidget.swift */,
+				441A635F272444DE001492C3 /* StatDataModel.swift */,
+				272FC5AE2979E9D60027C53D /* TopNewsWidget.swift */,
+				278BB9FE297B0A1E00690BE3 /* TopNewsListWidget.swift */,
+				CA0391B8271E1023000EB13C /* BraveWidgets.swift */,
+				27D7FF5A29BA75AD0096DD93 /* WidgetStrings.swift */,
+				CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */,
+				CA0391BB271E1026000EB13C /* Assets.xcassets */,
+				CA0391BD271E1026000EB13C /* Info.plist */,
+				CA0391BE271E1026000EB13C /* BraveWidgets.entitlements */,
+				27D7FF6029BA784C0096DD93 /* Localizable.strings */,
+			);
+			path = BraveWidgets;
+			sourceTree = "<group>";
+		};
+		CA0391DA271E12D9000EB13C /* Entitlements */ = {
+			isa = PBXGroup;
+			children = (
+				CA0391DD271E12F7000EB13C /* WidgetBeta.entitlements */,
+				CA0391DE271E12F8000EB13C /* WidgetDebug.entitlements */,
+				CA0391DB271E12F7000EB13C /* WidgetDev.entitlements */,
+				CA0391DF271E12F8000EB13C /* WidgetEnterprise.entitlements */,
+				CA0391DC271E12F7000EB13C /* WidgetRelease.entitlements */,
+			);
+			path = Entitlements;
+			sourceTree = "<group>";
+		};
+		E652F6F91BF66A79007FFDD6 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				CAAE653C287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift */,
+				F84B21E51A0910F600AAB793 /* AppDelegate.swift */,
+				CABDE77E2A55DD1C00A388A4 /* AppState.swift */,
+				CAADEFDF26E2707F0020DC4C /* SceneDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		E689C6FF1E0C716F008BAADB /* Entitlements */ = {
+			isa = PBXGroup;
+			children = (
+				E6F738761EB7A97500B50143 /* Release.entitlements */,
+				27EEEDB72507D51E00024038 /* Release (AppStore).entitlements */,
+				E6F738751EB7A97100B50143 /* Beta.entitlements */,
+				E6F738741EB7A8D300B50143 /* Debug.entitlements */,
+				27EDE18129A7D98000F34870 /* Debug (AppStore).entitlements */,
+				E62AC15F1E956AFC00843532 /* Dev.entitlements */,
+				27AC7CF724C759BE00441317 /* Enterprise.entitlements */,
+			);
+			path = Entitlements;
+			sourceTree = "<group>";
+		};
+		F84B21B51A090F8100AAB793 = {
+			isa = PBXGroup;
+			children = (
+				270ECFC628381E270089B8B7 /* brave-ios */,
+				27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */,
+				0A60A1882358AF9E00953CA8 /* Brave.xctestplan */,
+				0A66550D23E9EA540047EF2A /* Brave_iPad.xctestplan */,
+				0A24F7DE233E8EF2004D2F3A /* Config */,
+				270ECFC9283824F00089B8B7 /* iOS */,
+				2FE7D51E2B509DA50039FBA4 /* ActionExtension */,
+				27F443962135E11200296C58 /* ShareExtension */,
+				2F6931B5260CFB3700ECEB38 /* BrowserIntents */,
+				CA0391B7271E1023000EB13C /* BraveWidgets */,
+				2FD860C329C3D686005AADD1 /* BraveWireGuard */,
+				7B604FC11C496005006EEEC3 /* Frameworks */,
+				F84B21BF1A090F8100AAB793 /* Products */,
+			);
+			indentWidth = 2;
+			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
+		};
+		F84B21BF1A090F8100AAB793 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F84B21BE1A090F8100AAB793 /* Client.app */,
+				27F443952135E11200296C58 /* ShareExtension.appex */,
+				2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */,
+				CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */,
+				2FD860C129C3D677005AADD1 /* BraveWireGuard.appex */,
+				2FE7D51B2B509DA40039FBA4 /* ActionExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		0A43293F21B1CB810041625B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		27F443942135E11200296C58 /* ShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */;
+			buildPhases = (
+				27F443912135E11200296C58 /* Sources */,
+				27F443922135E11200296C58 /* Frameworks */,
+				27F443932135E11200296C58 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareExtension;
+			packageProductDependencies = (
+			);
+			productName = BraveShareTo;
+			productReference = 27F443952135E11200296C58 /* ShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		2F6931B3260CFB3700ECEB38 /* BrowserIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2F6931BC260CFB3800ECEB38 /* Build configuration list for PBXNativeTarget "BrowserIntents" */;
+			buildPhases = (
+				2F6931B0260CFB3700ECEB38 /* Sources */,
+				2F6931B1260CFB3700ECEB38 /* Frameworks */,
+				2F6931B2260CFB3700ECEB38 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BrowserIntents;
+			packageProductDependencies = (
+				27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */,
+				279A829128FEF0BF00F55A5E /* BraveShared */,
+				CA986FB3298C1254000C6DD8 /* BraveWidgetsModels */,
+				27C1C5EA29B6A46300739BE5 /* Preferences */,
+			);
+			productName = BrowserIntents;
+			productReference = 2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		2FD860C029C3D676005AADD1 /* BraveWireGuard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2FD860D229C3D68F005AADD1 /* Build configuration list for PBXNativeTarget "BraveWireGuard" */;
+			buildPhases = (
+				2FD860BD29C3D676005AADD1 /* Sources */,
+				2FD860BE29C3D676005AADD1 /* Frameworks */,
+				2FD860BF29C3D676005AADD1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BraveWireGuard;
+			packageProductDependencies = (
+				2759468C29CCB62F0094BDDE /* GRDWireGuardKit */,
+			);
+			productName = BraveWireGuard;
+			productReference = 2FD860C129C3D677005AADD1 /* BraveWireGuard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		2FE7D51A2B509DA40039FBA4 /* ActionExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2FE7D5312B509DA50039FBA4 /* Build configuration list for PBXNativeTarget "ActionExtension" */;
+			buildPhases = (
+				2FE7D5172B509DA40039FBA4 /* Sources */,
+				2FE7D5182B509DA40039FBA4 /* Frameworks */,
+				2FE7D5192B509DA40039FBA4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ActionExtension;
+			productName = ActionExtension;
+			productReference = 2FE7D51B2B509DA40039FBA4 /* ActionExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		CA0391B1271E1023000EB13C /* BraveWidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA0391D1271E1026000EB13C /* Build configuration list for PBXNativeTarget "BraveWidgetsExtension" */;
+			buildPhases = (
+				CA0391AE271E1023000EB13C /* Sources */,
+				CA0391AF271E1023000EB13C /* Frameworks */,
+				CA0391B0271E1023000EB13C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BraveWidgetsExtension;
+			packageProductDependencies = (
+				27FA217A2837F95400FA2C45 /* Strings */,
+				279C432D2853E51E00A9F708 /* DesignSystem */,
+				CA986FB1298C1249000C6DD8 /* BraveWidgetsModels */,
+				272FC5B02979F3AD0027C53D /* CodableHelpers */,
+				27D5906E29B7BA1000AE9989 /* BraveShared */,
+				27D5907029B7BA1B00AE9989 /* Preferences */,
+				27D7FF5429BA69E50096DD93 /* BraveShields */,
+				27462BE929DF39EE00715268 /* OrderedCollections */,
+			);
+			productName = BraveWidgetsExtension;
+			productReference = CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		F84B21BD1A090F8100AAB793 /* Client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F84B21DD1A090F8100AAB793 /* Build configuration list for PBXNativeTarget "Client" */;
+			buildPhases = (
+				2779B7052159297D0044A102 /* Run SwiftLint */,
+				0A43293F21B1CB810041625B /* Headers */,
+				F84B21BA1A090F8100AAB793 /* Sources */,
+				F84B21BC1A090F8100AAB793 /* Resources */,
+				28CE83DE1A1D1E7C00576538 /* Frameworks */,
+				F84B22531A0920C600AAB793 /* Embed App Extensions */,
+				272FC6BF25DC19A0000F2EFC /* Fix Embedded Frameworks Signing */,
+				2F93A98729C8EB3300C7C158 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA8B4AE4276A830F002120F7 /* PBXTargetDependency */,
+				27F4439E2135E11200296C58 /* PBXTargetDependency */,
+				2F6931BA260CFB3700ECEB38 /* PBXTargetDependency */,
+				2FD860C929C3D686005AADD1 /* PBXTargetDependency */,
+				2FE7D5282B509DA50039FBA4 /* PBXTargetDependency */,
+			);
+			name = Client;
+			packageProductDependencies = (
+				27FA217E2837FB0100FA2C45 /* BraveShared */,
+				27FA21802837FB0100FA2C45 /* BraveWallet */,
+				27FA21822837FB0100FA2C45 /* Data */,
+				27FA21882837FB0100FA2C45 /* Shared */,
+				27FA218A2837FB0100FA2C45 /* Storage */,
+				270ECFC72838210F0089B8B7 /* Brave */,
+				27466BB0288EDB9C00584C90 /* RuntimeWarnings */,
+				27D972E528BD4D9900DDCF79 /* BraveNews */,
+				7DDE6307292FEC9500B8B585 /* SDWebImage */,
+				2759468E29CCB6350094BDDE /* GRDWireGuardKit */,
+				27C1C5EC29B6AA8800739BE5 /* Preferences */,
+				27D7FF5229BA69330096DD93 /* BraveShields */,
+				27D7FF7229BB816E0096DD93 /* PrivateCDN */,
+				278852E32ACDC26B005395CF /* Playlist */,
+				278852E52ACDE795005395CF /* UserAgent */,
+			);
+			productName = Client;
+			productReference = F84B21BE1A090F8100AAB793 /* Client.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F84B21B61A090F8100AAB793 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				DefaultBuildSystemTypeForWorkspace = Latest;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1250;
+				ORGANIZATIONNAME = Mozilla;
+				TargetAttributes = {
+					27F443942135E11200296C58 = {
+						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1010;
+					};
+					2F6931B3260CFB3700ECEB38 = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					2FD860C029C3D676005AADD1 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					2FE7D51A2B509DA40039FBA4 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					CA0391B1271E1023000EB13C = {
+						CreatedOnToolsVersion = 13.1;
+					};
+					F84B21BD1A090F8100AAB793 = {
+						CreatedOnToolsVersion = 6.1;
+						LastSwiftMigration = 1010;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = F84B21B91A090F8100AAB793 /* Build configuration list for PBXProject "Client" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				en,
+				Base,
+				de,
+				ja,
+				"zh-TW",
+				uk,
+				es,
+				it,
+				ms,
+				sv,
+				"ko-KR",
+				"id-ID",
+				pl,
+				"pt-BR",
+				ru,
+				fr,
+				id,
+				zh,
+				nb,
+				tr,
+			);
+			mainGroup = F84B21B51A090F8100AAB793;
+			packageReferences = (
+				7DDE6306292FEC9500B8B585 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				272FC5B22979F3DF0027C53D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				27F344A429847EEC00933B31 /* XCRemoteSwiftPackageReference "swift-collections" */,
+			);
+			productRefGroup = F84B21BF1A090F8100AAB793 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F84B21BD1A090F8100AAB793 /* Client */,
+				27F443942135E11200296C58 /* ShareExtension */,
+				2FE7D51A2B509DA40039FBA4 /* ActionExtension */,
+				2F6931B3260CFB3700ECEB38 /* BrowserIntents */,
+				CA0391B1271E1023000EB13C /* BraveWidgetsExtension */,
+				2FD860C029C3D676005AADD1 /* BraveWireGuard */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		27F443932135E11200296C58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2F6931B2260CFB3700ECEB38 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FD860BF29C3D676005AADD1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FE7D5192B509DA40039FBA4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FC7DF7B2B5AE98E0092553B /* ActionExtensionIcons.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0391B0271E1023000EB13C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA0391BC271E1026000EB13C /* Assets.xcassets in Resources */,
+				272947DE29C8DB2000BF2FDC /* topics_news.en_US.json in Resources */,
+				27D7FF5E29BA784C0096DD93 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F84B21BC1A090F8100AAB793 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */,
+				27FA21A42838019000FA2C45 /* InfoPlist.strings in Resources */,
+				0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */,
+				27D6761A282DA10700BCE16E /* Icons.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		272FC6BF25DC19A0000F2EFC /* Fix Embedded Frameworks Signing */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Fix Embedded Frameworks Signing";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Thanks to folks at PSPDFKit for this workaround:\n# https://pspdfkit.com/guides/ios/current/knowledge-base/library-not-found-swiftpm/\n#\n# Required because of some XCFrameorks not codesigning properly when building for Device\nfind \"${CODESIGNING_FOLDER_PATH}\" -name '*.framework' -print0 | while read -d $'\\0' framework \ndo \n    codesign --force --deep --sign \"${EXPANDED_CODE_SIGN_IDENTITY}\" --preserve-metadata=identifier,entitlements --timestamp=none \"${framework}\" \ndone\n\n";
+		};
+		2779B7052159297D0044A102 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${SRCROOT}/..\"\nsh swiftlint.sh\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		27F443912135E11200296C58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2F6931B0260CFB3700ECEB38 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27D67623282DAD3700BCE16E /* BrowserIntents.intentdefinition in Sources */,
+				2F6931B7260CFB3700ECEB38 /* IntentHandler.swift in Sources */,
+				279A828E28FEF01E00F55A5E /* BraveWidgets.intentdefinition in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FD860BD29C3D676005AADD1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FD860C529C3D686005AADD1 /* PacketTunnelProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FE7D5172B509DA40039FBA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FE7D5222B509DA50039FBA4 /* ActionToBraveViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0391AE271E1023000EB13C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				272947E329C8F86A00BF2FDC /* NewsTopicsModel.swift in Sources */,
+				278BB9FF297B0A1E00690BE3 /* TopNewsListWidget.swift in Sources */,
+				CA0391FC271E143F000EB13C /* SingleStatWidget.swift in Sources */,
+				27A28ED528C00C1D001466A4 /* LockScreenShortcutWidget.swift in Sources */,
+				CA0391FB271E143F000EB13C /* StatsWidget.swift in Sources */,
+				2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */,
+				CA0391F8271E143F000EB13C /* ShortcutsWidget.swift in Sources */,
+				27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */,
+				441A6360272445F9001492C3 /* StatDataModel.swift in Sources */,
+				2F4A572529E608CC003454F8 /* BrowserIntents.intentdefinition in Sources */,
+				27D7FF5B29BA75FB0096DD93 /* WidgetStrings.swift in Sources */,
+				CA0391B9271E1023000EB13C /* BraveWidgets.swift in Sources */,
+				CA0391E3271E1382000EB13C /* BraveWidgets.intentdefinition in Sources */,
+				272FC5AF2979EA700027C53D /* TopNewsWidget.swift in Sources */,
+				CA0391F9271E143F000EB13C /* FavoritesWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F84B21BA1A090F8100AAB793 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F4A572429E608C8003454F8 /* BrowserIntents.intentdefinition in Sources */,
+				F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */,
+				27BEDCCC28AD37CE0073425E /* BraveWidgets.intentdefinition in Sources */,
+				CABDE77F2A55DD1C00A388A4 /* AppState.swift in Sources */,
+				CAADEFE026E2707F0020DC4C /* SceneDelegate.swift in Sources */,
+				CAAE653D287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		27F4439E2135E11200296C58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 27F443942135E11200296C58 /* ShareExtension */;
+			targetProxy = 27F4439D2135E11200296C58 /* PBXContainerItemProxy */;
+		};
+		2F6931BA260CFB3700ECEB38 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2F6931B3260CFB3700ECEB38 /* BrowserIntents */;
+			targetProxy = 2F6931B9260CFB3700ECEB38 /* PBXContainerItemProxy */;
+		};
+		2FD860C929C3D686005AADD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2FD860C029C3D676005AADD1 /* BraveWireGuard */;
+			targetProxy = 2FD860C829C3D686005AADD1 /* PBXContainerItemProxy */;
+		};
+		2FE7D5282B509DA50039FBA4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2FE7D51A2B509DA40039FBA4 /* ActionExtension */;
+			targetProxy = 2FE7D5272B509DA50039FBA4 /* PBXContainerItemProxy */;
+		};
+		CA8B4AE4276A830F002120F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA0391B1271E1023000EB13C /* BraveWidgetsExtension */;
+			targetProxy = CA8B4AE3276A830F002120F7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27D67622282DAD3700BCE16E /* Base */,
+				27995074284FDAE400BC2054 /* de */,
+				27BFC5AB284FDAEF003F428E /* es */,
+				27DD1330284FDAFB004E1E1F /* fr */,
+				27FD0AFD284FDB06002A0789 /* id-ID */,
+				271D0F3A284FDB12002BCF91 /* it */,
+				273DFB18284FDB1D007781AF /* ja */,
+				275A4C39284FDB290016F5A8 /* ko-KR */,
+				277CA004284FDB34002E8470 /* ms */,
+				279DC775284FDB4000F4134D /* nb */,
+				27C3AF2C284FDB4C0079BFBE /* pl */,
+				27E30417284FDB57009A07F2 /* pt-BR */,
+				2703FC14284FDB6300970FD2 /* ru */,
+				27465DC3284FDB6F0056FDB2 /* sv */,
+				276FEA8B284FDB7A001A0718 /* tr */,
+				279AC848284FDB8600238C32 /* uk */,
+				27C601AC284FDB91002BAF19 /* zh */,
+				27FDB77C284FDB9D00ACEB16 /* zh-TW */,
+			);
+			name = BrowserIntents.intentdefinition;
+			sourceTree = "<group>";
+		};
+		27D7FF6029BA784C0096DD93 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27D7FF6129BA78640096DD93 /* zh */,
+				27D7FF6229BA78640096DD93 /* zh-TW */,
+				27D7FF6329BA786E0096DD93 /* fr */,
+				27D7FF6429BA78720096DD93 /* de */,
+				27D7FF6529BA78730096DD93 /* id-ID */,
+				27D7FF6629BA78790096DD93 /* it */,
+				27D7FF6729BA787A0096DD93 /* ja */,
+				27D7FF6829BA787B0096DD93 /* ko-KR */,
+				27D7FF6929BA787C0096DD93 /* ms */,
+				27D7FF6A29BA787D0096DD93 /* nb */,
+				27D7FF6B29BA787E0096DD93 /* pl */,
+				27D7FF6C29BA787F0096DD93 /* pt-BR */,
+				27D7FF6D29BA787F0096DD93 /* ru */,
+				27D7FF6E29BA78800096DD93 /* es */,
+				27D7FF6F29BA78810096DD93 /* sv */,
+				27D7FF7029BA78810096DD93 /* tr */,
+				27D7FF7129BA78820096DD93 /* uk */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		27FA21902838018E00FA2C45 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27FA21912838018E00FA2C45 /* fr */,
+				27FA21922838018E00FA2C45 /* es */,
+				27FA21932838018E00FA2C45 /* nb */,
+				27FA21942838018E00FA2C45 /* ko-KR */,
+				27FA21952838018E00FA2C45 /* pt-BR */,
+				27FA21962838018E00FA2C45 /* uk */,
+				27FA21982838018E00FA2C45 /* sv */,
+				27FA21992838018E00FA2C45 /* ms */,
+				27FA219A2838018F00FA2C45 /* ru */,
+				27FA219B2838018F00FA2C45 /* de */,
+				27FA219C2838018F00FA2C45 /* en */,
+				27FA219D2838018F00FA2C45 /* tr */,
+				27FA219E2838018F00FA2C45 /* it */,
+				27FA219F2838018F00FA2C45 /* pl */,
+				27FA21A02838018F00FA2C45 /* id-ID */,
+				27FA21A12838018F00FA2C45 /* ja */,
+				27FA21A22838018F00FA2C45 /* zh-TW */,
+				27FA21A32838019000FA2C45 /* zh */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2FE7D54B2B50A11A0039FBA4 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2FE7D54A2B50A11A0039FBA4 /* ms */,
+				2FE7D54C2B50A12E0039FBA4 /* ja */,
+				2FE7D54D2B50A1860039FBA4 /* it */,
+				2FE7D54E2B50A1950039FBA4 /* zh-TW */,
+				2FE7D54F2B50A1AC0039FBA4 /* id-ID */,
+				2FE7D5502B50A1BC0039FBA4 /* pl */,
+				2FE7D5512B50A1DF0039FBA4 /* nb */,
+				2FE7D5522B50A22D0039FBA4 /* uk */,
+				2FE7D5532B50A23B0039FBA4 /* es */,
+				2FE7D5542B50A2470039FBA4 /* zh */,
+				2FE7D5552B50A2560039FBA4 /* de */,
+				2FE7D5562B50A2610039FBA4 /* sv */,
+				2FE7D5572B50A2990039FBA4 /* ru */,
+				2FE7D5582B50A2B00039FBA4 /* pt-BR */,
+				2FE7D5592B50A2C00039FBA4 /* ko-KR */,
+				2FE7D55A2B50A2CD0039FBA4 /* fr */,
+				2FE7D55B2B50A2DF0039FBA4 /* en */,
+				2FE7D55C2B50A2EA0039FBA4 /* tr */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		59B6912121B695A400E9388E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				59B6912221B695A400E9388E /* ms */,
+				59B6914221B695C200E9388E /* ja */,
+				59B6915021B695CB00E9388E /* it */,
+				59B6915A21B695D300E9388E /* zh-TW */,
+				59B6916A21B695DC00E9388E /* id-ID */,
+				59B6917221B695E400E9388E /* pl */,
+				59B6917E21B695EC00E9388E /* nb */,
+				59B6918E21B695F500E9388E /* uk */,
+				59B6919921B695FE00E9388E /* es */,
+				59B691A721B6960600E9388E /* zh */,
+				59B691B121B6960E00E9388E /* de */,
+				59B691BE21B6961A00E9388E /* sv */,
+				59B691CB21B6964200E9388E /* ru */,
+				59B691D621B6964D00E9388E /* pt-BR */,
+				59B691DE21B6965C00E9388E /* ko-KR */,
+				59B691E921B6966C00E9388E /* fr */,
+				5929A9F121B6AEF7005ECF8D /* en */,
+				4484BAF02654227A0099A205 /* tr */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		CA0391E5271E1382000EB13C /* BraveWidgets.intentdefinition */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA0391E4271E1382000EB13C /* Base */,
+				445ABC0527319C000089710D /* zh */,
+				445ABC0727319C030089710D /* zh-TW */,
+				445ABC0927319C060089710D /* fr */,
+				445ABC0B27319C090089710D /* de */,
+				445ABC0D27319C0E0089710D /* id-ID */,
+				445ABC0F27319C110089710D /* it */,
+				445ABC1127319C130089710D /* ja */,
+				445ABC1327319C170089710D /* ko-KR */,
+				445ABC1527319C190089710D /* ms */,
+				445ABC1727319C1C0089710D /* nb */,
+				445ABC1927319C1E0089710D /* pl */,
+				445ABC1B27319C200089710D /* pt-BR */,
+				445ABC1D27319C210089710D /* ru */,
+				445ABC1F27319C240089710D /* es */,
+				445ABC2127319C260089710D /* sv */,
+				445ABC2327319C270089710D /* tr */,
+				445ABC2527319C290089710D /* uk */,
+			);
+			name = BraveWidgets.intentdefinition;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		27A1AC1624884F7A00344503 /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27A1AC1424884EB300344503 /* Enterprise.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Enterprise;
+		};
+		27A1AC1724884F7A00344503 /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Enterprise;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Enterprise.entitlements";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_MODULE_NAME = Client;
+				PRODUCT_NAME = Client;
+				PROVISIONING_PROFILE_SPECIFIER = BraveEnt;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Enterprise;
+		};
+		27A1AC1824884F7A00344503 /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Ent-ShareTo";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Enterprise;
+		};
+		27EDE17C29A7D93900F34870 /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27EDE18229A7DA0E00F34870 /* Debug-AppStore.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Debug (AppStore)";
+		};
+		27EDE17D29A7D93900F34870 /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Local;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Debug (AppStore).entitlements";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_MODULE_NAME = Client;
+				PRODUCT_NAME = Client;
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS - Development";
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Debug (AppStore)";
+		};
+		27EDE17E29A7D93900F34870 /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS - Development Share Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug (AppStore)";
+		};
+		27EDE17F29A7D93900F34870 /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "BrowserIntents/Entitlements/BrowserIntentsRelease (AppStore).entitlements";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BrowserIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS - Development Intents Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug (AppStore)";
+		};
+		27EDE18029A7D93900F34870 /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetRelease.entitlements";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BraveWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS - Development Widgets Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Debug (AppStore)";
+		};
+		27EEEDA52507CDF900024038 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27EEEDB52507CE1C00024038 /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		27EEEDA62507CDF900024038 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Release.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_MODULE_NAME = Client;
+				PRODUCT_NAME = Client;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		27EEEDA72507CDF900024038 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		27F443A02135E11200296C58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		27F443A12135E11200296C58 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Dev;
+		};
+		27F443A22135E11200296C58 /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Share Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release (AppStore)";
+		};
+		27F443A32135E11200296C58 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
+		2F6931BD260CFB3800ECEB38 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsDebug.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BrowserIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2F6931BE260CFB3800ECEB38 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntents.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BrowserIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Dev;
+		};
+		2F6931BF260CFB3800ECEB38 /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsEnterprise.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L6556KQ6XT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BrowserIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "BraveEnt Browser Intents";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Enterprise;
+		};
+		2F6931C0260CFB3800ECEB38 /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "BrowserIntents/Entitlements/BrowserIntentsRelease (AppStore).entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BrowserIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Intents Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release (AppStore)";
+		};
+		2F6931C1260CFB3800ECEB38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsRelease.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BrowserIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2F6931C2260CFB3800ECEB38 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsBeta.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BrowserIntents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
+		2FD860CB29C3D68F005AADD1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardDebug.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BraveWireGuard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BraveWireGuard;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2FD860CC29C3D68F005AADD1 /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardRelease.entitlements";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BraveWireGuard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BraveWireGuard;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS - Development WireGuard Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug (AppStore)";
+		};
+		2FD860CD29C3D68F005AADD1 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardDev.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BraveWireGuard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BraveWireGuard;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Dev;
+		};
+		2FD860CE29C3D68F005AADD1 /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardEnterprise.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: BRAVE SOFTWARE, INC.";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BraveWireGuard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BraveWireGuard;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Enterprise;
+		};
+		2FD860CF29C3D68F005AADD1 /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardRelease.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Distribution: Brave Software, Inc.";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BraveWireGuard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BraveWireGuard;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS WireGuard Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release (AppStore)";
+		};
+		2FD860D029C3D68F005AADD1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardRelease.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BraveWireGuard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BraveWireGuard;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2FD860D129C3D68F005AADD1 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWireGuard/Entitlements/BraveWireGuardBeta.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BraveWireGuard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BraveWireGuard;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
+		2FE7D52A2B509DA50039FBA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcons;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ActionExtension/ActionExtension.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2FE7D52B2B509DA50039FBA4 /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcons;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KL8N8XSYF4;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ActionExtension/ActionExtension.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Brave iOS - Development Action Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug (AppStore)";
+		};
+		2FE7D52C2B509DA50039FBA4 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcons;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ActionExtension/ActionExtension.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Dev;
+		};
+		2FE7D52D2B509DA50039FBA4 /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcons;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L6556KQ6XT;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ActionExtension/ActionExtension.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Enterprise;
+		};
+		2FE7D52E2B509DA50039FBA4 /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcons;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KL8N8XSYF4;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ActionExtension/ActionExtension.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Brave iOS Action Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release (AppStore)";
+		};
+		2FE7D52F2B509DA50039FBA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcons;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ActionExtension/ActionExtension.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2FE7D5302B509DA50039FBA4 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionExtensionIcons;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ActionExtension/ActionExtension.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
+		CA0391C0271E1026000EB13C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetDebug.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BraveWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CA0391C1271E1026000EB13C /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetDev.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BraveWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Dev;
+		};
+		CA0391C2271E1026000EB13C /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetEnterprise.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: BRAVE SOFTWARE, INC.";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BraveWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = BraveEntWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Enterprise;
+		};
+		CA0391C3271E1026000EB13C /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetRelease.entitlements";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BraveWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Widgets Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Release (AppStore)";
+		};
+		CA0391C4271E1026000EB13C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetRelease.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BraveWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CA0391C5271E1026000EB13C /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BraveWidgets/Entitlements/WidgetBeta.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "$(SRCROOT)/BraveWidgets/Development\\ Assets";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BraveWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Beta;
+		};
+		E448FC9D1AEE7A6000869B6C /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A24F837233EB5B4004D2F3A /* Release-AppStore.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Release (AppStore)";
+		};
+		E448FC9E1AEE7A6000869B6C /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Release (AppStore).entitlements";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_MODULE_NAME = Client;
+				PRODUCT_NAME = Client;
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS";
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Release (AppStore)";
+		};
+		E6DCC2051DCBB6F100CEC4B7 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A24F846233EB5B5004D2F3A /* Dev.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Dev;
+		};
+		E6DCC2061DCBB6F100CEC4B7 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Dev;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Dev.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_MODULE_NAME = Client;
+				PRODUCT_NAME = Client;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Dev;
+		};
+		E6FCC4291C40562400DF6113 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A24F839233EB5B4004D2F3A /* Beta.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Beta;
+		};
+		E6FCC42A1C40562400DF6113 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Beta;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Beta.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_MODULE_NAME = Client;
+				PRODUCT_NAME = Client;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Beta;
+		};
+		F84B21DB1A090F8100AAB793 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A24F838233EB5B4004D2F3A /* Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CURRENT_PROJECT_VERSION = "";
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		F84B21DE1A090F8100AAB793 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Local;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Debug.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_MODULE_NAME = Client;
+				PRODUCT_NAME = Client;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27F443A02135E11200296C58 /* Debug */,
+				27EDE17E29A7D93900F34870 /* Debug (AppStore) */,
+				27F443A12135E11200296C58 /* Dev */,
+				27A1AC1824884F7A00344503 /* Enterprise */,
+				27F443A22135E11200296C58 /* Release (AppStore) */,
+				27EEEDA72507CDF900024038 /* Release */,
+				27F443A32135E11200296C58 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2F6931BC260CFB3800ECEB38 /* Build configuration list for PBXNativeTarget "BrowserIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2F6931BD260CFB3800ECEB38 /* Debug */,
+				27EDE17F29A7D93900F34870 /* Debug (AppStore) */,
+				2F6931BE260CFB3800ECEB38 /* Dev */,
+				2F6931BF260CFB3800ECEB38 /* Enterprise */,
+				2F6931C0260CFB3800ECEB38 /* Release (AppStore) */,
+				2F6931C1260CFB3800ECEB38 /* Release */,
+				2F6931C2260CFB3800ECEB38 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2FD860D229C3D68F005AADD1 /* Build configuration list for PBXNativeTarget "BraveWireGuard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FD860CB29C3D68F005AADD1 /* Debug */,
+				2FD860CC29C3D68F005AADD1 /* Debug (AppStore) */,
+				2FD860CD29C3D68F005AADD1 /* Dev */,
+				2FD860CE29C3D68F005AADD1 /* Enterprise */,
+				2FD860CF29C3D68F005AADD1 /* Release (AppStore) */,
+				2FD860D029C3D68F005AADD1 /* Release */,
+				2FD860D129C3D68F005AADD1 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2FE7D5312B509DA50039FBA4 /* Build configuration list for PBXNativeTarget "ActionExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FE7D52A2B509DA50039FBA4 /* Debug */,
+				2FE7D52B2B509DA50039FBA4 /* Debug (AppStore) */,
+				2FE7D52C2B509DA50039FBA4 /* Dev */,
+				2FE7D52D2B509DA50039FBA4 /* Enterprise */,
+				2FE7D52E2B509DA50039FBA4 /* Release (AppStore) */,
+				2FE7D52F2B509DA50039FBA4 /* Release */,
+				2FE7D5302B509DA50039FBA4 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CA0391D1271E1026000EB13C /* Build configuration list for PBXNativeTarget "BraveWidgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA0391C0271E1026000EB13C /* Debug */,
+				27EDE18029A7D93900F34870 /* Debug (AppStore) */,
+				CA0391C1271E1026000EB13C /* Dev */,
+				CA0391C2271E1026000EB13C /* Enterprise */,
+				CA0391C3271E1026000EB13C /* Release (AppStore) */,
+				CA0391C4271E1026000EB13C /* Release */,
+				CA0391C5271E1026000EB13C /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F84B21B91A090F8100AAB793 /* Build configuration list for PBXProject "Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F84B21DB1A090F8100AAB793 /* Debug */,
+				27EDE17C29A7D93900F34870 /* Debug (AppStore) */,
+				E6DCC2051DCBB6F100CEC4B7 /* Dev */,
+				27A1AC1624884F7A00344503 /* Enterprise */,
+				E448FC9D1AEE7A6000869B6C /* Release (AppStore) */,
+				27EEEDA52507CDF900024038 /* Release */,
+				E6FCC4291C40562400DF6113 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F84B21DD1A090F8100AAB793 /* Build configuration list for PBXNativeTarget "Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F84B21DE1A090F8100AAB793 /* Debug */,
+				27EDE17D29A7D93900F34870 /* Debug (AppStore) */,
+				E6DCC2061DCBB6F100CEC4B7 /* Dev */,
+				27A1AC1724884F7A00344503 /* Enterprise */,
+				E448FC9E1AEE7A6000869B6C /* Release (AppStore) */,
+				27EEEDA62507CDF900024038 /* Release */,
+				E6FCC42A1C40562400DF6113 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		272FC5B22979F3DF0027C53D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+		27F344A429847EEC00933B31 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		7DDE6306292FEC9500B8B585 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.10.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		270ECFC72838210F0089B8B7 /* Brave */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Brave;
+		};
+		272FC5B02979F3AD0027C53D /* CodableHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodableHelpers;
+		};
+		27462BE929DF39EE00715268 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 27F344A429847EEC00933B31 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		27466BB0288EDB9C00584C90 /* RuntimeWarnings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RuntimeWarnings;
+		};
+		2759468C29CCB62F0094BDDE /* GRDWireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GRDWireGuardKit;
+		};
+		2759468E29CCB6350094BDDE /* GRDWireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GRDWireGuardKit;
+		};
+		278852E32ACDC26B005395CF /* Playlist */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Playlist;
+		};
+		278852E52ACDE795005395CF /* UserAgent */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UserAgent;
+		};
+		279A829128FEF0BF00F55A5E /* BraveShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveShared;
+		};
+		279C432D2853E51E00A9F708 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		27C1C5EA29B6A46300739BE5 /* Preferences */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Preferences;
+		};
+		27C1C5EC29B6AA8800739BE5 /* Preferences */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Preferences;
+		};
+		27D5906E29B7BA1000AE9989 /* BraveShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveShared;
+		};
+		27D5907029B7BA1B00AE9989 /* Preferences */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Preferences;
+		};
+		27D7FF5229BA69330096DD93 /* BraveShields */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveShields;
+		};
+		27D7FF5429BA69E50096DD93 /* BraveShields */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveShields;
+		};
+		27D7FF7229BB816E0096DD93 /* PrivateCDN */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PrivateCDN;
+		};
+		27D972E528BD4D9900DDCF79 /* BraveNews */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveNews;
+		};
+		27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BrowserIntentsModels;
+		};
+		27FA217A2837F95400FA2C45 /* Strings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Strings;
+		};
+		27FA217E2837FB0100FA2C45 /* BraveShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveShared;
+		};
+		27FA21802837FB0100FA2C45 /* BraveWallet */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveWallet;
+		};
+		27FA21822837FB0100FA2C45 /* Data */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Data;
+		};
+		27FA21882837FB0100FA2C45 /* Shared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Shared;
+		};
+		27FA218A2837FB0100FA2C45 /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Storage;
+		};
+		7DDE6307292FEC9500B8B585 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7DDE6306292FEC9500B8B585 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		CA986FB1298C1249000C6DD8 /* BraveWidgetsModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveWidgetsModels;
+		};
+		CA986FB3298C1254000C6DD8 /* BraveWidgetsModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveWidgetsModels;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F84B21B61A090F8100AAB793 /* Project object */;
+}

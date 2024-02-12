@@ -1,0 +1,23 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// This is for EXTERNAL beta testing
+
+#include "Base.xcconfig"
+
+MOZ_BUNDLE_DISPLAY_NAME = BraveBeta
+
+BRAVE_API_KEY = key
+BRAVE_SERVICES_KEY = key
+BRAVE_URL_SCHEME = brave-beta
+
+// Bundle Identifier
+MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser.beta
+
+// Flag to indicate if we want to include the debug settings bundle or not
+INCLUDE_SETTINGS_BUNDLE = NO
+
+// Defines Swift Flags, (used as #if/#endif) inside *Swift* code
+// BASE 'inheritence' at end, due to dynamic nature of those flags
+OTHER_SWIFT_FLAGS=-DMOZ_CHANNEL_BETA $(OTHER_SWIFT_FLAGS_BASE)

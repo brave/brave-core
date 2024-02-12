@@ -1,0 +1,129 @@
+{
+  "configurations" : [
+    {
+      "id" : "BAC87EDD-E63E-4DAA-ADE5-F432C92DE8F4",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-com.apple.CoreData.ConcurrencyDebug 1"
+      },
+      {
+        "argument" : "-com.apple.CoreData.SQLDebug 1",
+        "enabled" : false
+      }
+    ],
+    "language" : "en",
+    "region" : "US",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Client.xcodeproj",
+      "identifier" : "F84B21BD1A090F8100AAB793",
+      "name" : "Client"
+    }
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "CertificatePinningTest\/testSelfSignedRootAllowed2()"
+      ],
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveSharedTests",
+        "name" : "BraveSharedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveWalletTests",
+        "name" : "BraveWalletTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "NavigationRouterTests",
+        "PlaylistTests\/testVideoPlayerTrackBarTimeManualFormatter()",
+        "SyncTests",
+        "TabSessionTests",
+        "TestFavicons"
+      ],
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "ClientTests",
+        "name" : "ClientTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "DataTests",
+        "name" : "DataTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "SharedTests",
+        "name" : "SharedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "StorageTests",
+        "name" : "StorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveNewsTests",
+        "name" : "BraveNewsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveTalkTests",
+        "name" : "BraveTalkTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "CertificatePinningTest\/testSelfSignedRootAllowed2()"
+      ],
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "CertificateUtilitiesTests",
+        "name" : "CertificateUtilitiesTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "GrowthTests",
+        "name" : "GrowthTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "PrivateCDNTests",
+        "name" : "PrivateCDNTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveVPNTests",
+        "name" : "BraveVPNTests"
+      }
+    }
+  ],
+  "version" : 1
+}

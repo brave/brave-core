@@ -1,0 +1,55 @@
+<!--
+Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<head>
+  <meta name='viewport' content='initial-scale=1, maximum-scale=1, viewport-fit=cover'>
+  <meta name="referrer" content="no-referrer">
+  <title>%page_title%</title>
+  <link rel="stylesheet" href="internal://local/interstitial-style/InterstitialStyles.css">
+  <link rel="stylesheet" href="internal://local/interstitial-style/Web3Domain.css">
+</head>
+
+<body dir="&locale.dir;" class="background content">
+  <div class="container post">
+    <img src="internal://local/interstitial-icon/Info.svg" alt="Icon" class="icon" />
+    
+    <p class="title">
+    %error_title%
+    </p>
+    
+    <p class="description">
+    %error_description%
+    </p>
+    
+    <br />
+    
+    <div id="navigationButtons" class="navigationButtons">
+      <button id="disableWeb3Button" class="disableButton disableButtonTitle">%button_disable%</button>
+      <button id="proceedWeb3Button" class="proceedButton proceedButtonTitle">%button_procced%</button>
+    </div>
+    
+    <script type="text/javascript">
+      var disableButton = document.getElementById("disableWeb3Button")
+      disableButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        webkit.messageHandlers["%message_handler%"].postMessage({
+          "button_type": "disable",
+          "service_id": "%service_id%"
+        });
+      });
+      var proceedButton = document.getElementById("proceedWeb3Button")
+      proceedButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        webkit.messageHandlers["%message_handler%"].postMessage({
+          "button_type": "proceed",
+          "service_id": "%service_id%"
+        });
+      });
+      
+    </script>
+  </div>
+</body>

@@ -1,0 +1,197 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.7.1 (swiftlang-5.7.1.135.3 clang-1400.0.29.51)
+// swift-module-flags: -target arm64-apple-macos10.15 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name GRDWireGuardKit
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import Foundation
+@_exported import GRDWireGuardKit
+import Network
+import NetworkExtension
+import Security
+import Swift
+import _Concurrency
+import _StringProcessing
+import os.log
+import os
+@_hasMissingDesignatedInitializers public class Logger {
+  @objc deinit
+}
+final public class TunnelConfiguration {
+  final public var name: Swift.String?
+  final public var interface: GRDWireGuardKit.InterfaceConfiguration
+  final public let peers: [GRDWireGuardKit.PeerConfiguration]
+  public init(name: Swift.String?, interface: GRDWireGuardKit.InterfaceConfiguration, peers: [GRDWireGuardKit.PeerConfiguration])
+  @objc deinit
+}
+extension GRDWireGuardKit.TunnelConfiguration : Swift.Equatable {
+  public static func == (lhs: GRDWireGuardKit.TunnelConfiguration, rhs: GRDWireGuardKit.TunnelConfiguration) -> Swift.Bool
+}
+public enum WireGuardAdapterError : Swift.Error {
+  case cannotLocateTunnelFileDescriptor
+  case invalidState
+  case dnsResolution([GRDWireGuardKit.DNSResolutionError])
+  case setNetworkSettings(Swift.Error)
+  case startWireGuardBackend(Swift.Int32)
+}
+public class WireGuardAdapter {
+  public typealias LogHandler = (GRDWireGuardKit.WireGuardLogLevel, Swift.String) -> Swift.Void
+  public var interfaceName: Swift.String? {
+    get
+  }
+  public init(with packetTunnelProvider: NetworkExtension.NEPacketTunnelProvider, logHandler: @escaping GRDWireGuardKit.WireGuardAdapter.LogHandler)
+  @objc deinit
+  public func getRuntimeConfiguration(completionHandler: @escaping (Swift.String?) -> Swift.Void)
+  public func start(tunnelConfiguration: GRDWireGuardKit.TunnelConfiguration, completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+  public func stop(completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+  public func update(tunnelConfiguration: GRDWireGuardKit.TunnelConfiguration, completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+}
+public enum WireGuardLogLevel : Swift.Int32 {
+  case verbose
+  case error
+  public init?(rawValue: Swift.Int32)
+  public typealias RawValue = Swift.Int32
+  public var rawValue: Swift.Int32 {
+    get
+  }
+}
+public struct DNSServer {
+  public let address: Network.IPAddress
+  public init(address: Network.IPAddress)
+}
+extension GRDWireGuardKit.DNSServer : Swift.Equatable {
+  public static func == (lhs: GRDWireGuardKit.DNSServer, rhs: GRDWireGuardKit.DNSServer) -> Swift.Bool
+}
+extension GRDWireGuardKit.DNSServer {
+  public var stringRepresentation: Swift.String {
+    get
+  }
+  public init?(from addressString: Swift.String)
+}
+@_inheritsConvenienceInitializers @objc open class GRDPacketTunnelProvider : NetworkExtension.NEPacketTunnelProvider {
+  @objc override dynamic public func startTunnel(options: [Swift.String : ObjectiveC.NSObject]?, completionHandler: @escaping (Swift.Error?) -> Swift.Void)
+  public func grdTunnelConfig(config: Swift.String? = nil, named: Swift.String? = nil) -> GRDWireGuardKit.TunnelConfiguration?
+  @objc override dynamic public func stopTunnel(with reason: NetworkExtension.NEProviderStopReason, completionHandler: @escaping () -> Swift.Void)
+  public struct PTPMessage : Swift.Decodable {
+    public init(from decoder: Swift.Decoder) throws
+  }
+  @objc override dynamic public func handleAppMessage(_ messageData: Foundation.Data, completionHandler: ((Foundation.Data?) -> Swift.Void)? = nil)
+  @objc override dynamic public init()
+  @objc deinit
+}
+public struct PeerConfiguration {
+  public var publicKey: GRDWireGuardKit.PublicKey
+  public var preSharedKey: GRDWireGuardKit.PreSharedKey?
+  public var allowedIPs: [GRDWireGuardKit.IPAddressRange]
+  public var endpoint: GRDWireGuardKit.Endpoint?
+  public var persistentKeepAlive: Swift.UInt16?
+  public var rxBytes: Swift.UInt64?
+  public var txBytes: Swift.UInt64?
+  public var lastHandshakeTime: Foundation.Date?
+  public init(publicKey: GRDWireGuardKit.PublicKey)
+}
+extension GRDWireGuardKit.PeerConfiguration : Swift.Equatable {
+  public static func == (lhs: GRDWireGuardKit.PeerConfiguration, rhs: GRDWireGuardKit.PeerConfiguration) -> Swift.Bool
+}
+extension GRDWireGuardKit.PeerConfiguration : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct InterfaceConfiguration {
+  public var privateKey: GRDWireGuardKit.PrivateKey
+  public var addresses: [GRDWireGuardKit.IPAddressRange]
+  public var listenPort: Swift.UInt16?
+  public var mtu: Swift.UInt16?
+  public var dns: [GRDWireGuardKit.DNSServer]
+  public var dnsSearch: [Swift.String]
+  public init(privateKey: GRDWireGuardKit.PrivateKey)
+}
+extension GRDWireGuardKit.InterfaceConfiguration : Swift.Equatable {
+  public static func == (lhs: GRDWireGuardKit.InterfaceConfiguration, rhs: GRDWireGuardKit.InterfaceConfiguration) -> Swift.Bool
+}
+public struct DNSResolutionError : Foundation.LocalizedError {
+  public let errorCode: Swift.Int32
+  public let address: Swift.String
+  public var errorDescription: Swift.String? {
+    get
+  }
+}
+public struct Endpoint {
+  public let host: Network.NWEndpoint.Host
+  public let port: Network.NWEndpoint.Port
+  public init(host: Network.NWEndpoint.Host, port: Network.NWEndpoint.Port)
+}
+extension GRDWireGuardKit.Endpoint : Swift.Equatable {
+  public static func == (lhs: GRDWireGuardKit.Endpoint, rhs: GRDWireGuardKit.Endpoint) -> Swift.Bool
+}
+extension GRDWireGuardKit.Endpoint : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension GRDWireGuardKit.Endpoint {
+  public var stringRepresentation: Swift.String {
+    get
+  }
+  public init?(from string: Swift.String)
+}
+extension GRDWireGuardKit.Endpoint {
+  public func hasHostAsIPAddress() -> Swift.Bool
+  public func hostname() -> Swift.String?
+}
+public struct IPAddressRange {
+  public let address: Network.IPAddress
+  public let networkPrefixLength: Swift.UInt8
+}
+extension GRDWireGuardKit.IPAddressRange : Swift.Equatable {
+  public static func == (lhs: GRDWireGuardKit.IPAddressRange, rhs: GRDWireGuardKit.IPAddressRange) -> Swift.Bool
+}
+extension GRDWireGuardKit.IPAddressRange : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension GRDWireGuardKit.IPAddressRange {
+  public var stringRepresentation: Swift.String {
+    get
+  }
+  public init?(from string: Swift.String)
+  public func subnetMask() -> Network.IPAddress
+  public func maskedAddress() -> Network.IPAddress
+}
+@_inheritsConvenienceInitializers public class PrivateKey : GRDWireGuardKit.BaseKey {
+  public var publicKey: GRDWireGuardKit.PublicKey {
+    get
+  }
+  convenience public init()
+  required public init?(rawValue: Foundation.Data)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers public class PublicKey : GRDWireGuardKit.BaseKey {
+  required public init?(rawValue: Foundation.Data)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers public class PreSharedKey : GRDWireGuardKit.BaseKey {
+  required public init?(rawValue: Foundation.Data)
+  @objc deinit
+}
+public class BaseKey : Swift.RawRepresentable, Swift.Equatable, Swift.Hashable {
+  final public let rawValue: Foundation.Data
+  public var hexKey: Swift.String {
+    get
+  }
+  public var base64Key: Swift.String {
+    get
+  }
+  required public init?(rawValue: Foundation.Data)
+  convenience public init?(hexKey: Swift.String)
+  convenience public init?(base64Key: Swift.String)
+  public static func == (lhs: GRDWireGuardKit.BaseKey, rhs: GRDWireGuardKit.BaseKey) -> Swift.Bool
+  public typealias RawValue = Foundation.Data
+  @objc deinit
+}
+extension GRDWireGuardKit.WireGuardLogLevel : Swift.Equatable {}
+extension GRDWireGuardKit.WireGuardLogLevel : Swift.Hashable {}
+extension GRDWireGuardKit.WireGuardLogLevel : Swift.RawRepresentable {}

@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Bokmärken";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Nedladdningar";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Kom åt dina favoritwebblatser snabbt.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Favoriter";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "Historik";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Försök igen senare";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Läs mer";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Få de senaste nyheterna";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Toppnyheter";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Öppna Brave för att se dina favoriter här";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR-kod";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Sök";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "En sammanfattning av hur Brave gör att du sparar tid och skyddar dig online.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Integritetsstatistik";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Integritetsstatistik";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Sök efter eller skriv in en webbadress";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Ny flik";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Spellista";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Privat flik";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Snabbåtkomst till webbsökningar och webbsidor i Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Genvägar";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "En sammanfattning av hur Brave har skyddat dig online.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Integritetsstatistik";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Brave-plånbok";
+
