@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "B360D002-AA9A-450B-99E4-F48566469CC5",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "UserAgentTests\/testDesktopUserAgent()",
+        "UserAgentTests\/testFirstUAPart()",
+        "UserAgentTests\/testIpadMobileUserAgent()"
+      ],
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "ClientTests",
+        "name" : "ClientTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -1,0 +1,137 @@
+/*
+ Copyright (c) 2023 The Brave Authors. All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.background {
+  background-color: rgb(250, 249, 254);
+}
+
+.icon {
+  width: 128px;
+  height: 128px;
+}
+
+.footer-container {
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1440 / 136;
+  bottom: 0;
+  position: fixed;
+}
+
+.ipfs-footer {
+  box-sizing: border-box;
+  background: url('internal://local/interstitial-icon/IPFSBackground.svg');
+  width: 100%;
+  aspect-ratio: 1440 / 136;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.header-logo {
+  margin: 20px 0 20px 0;
+}
+
+.disableButton {
+  background: rgb(255, 255, 255);
+  border-radius: 100px;
+  background-repeat: no-repeat;
+  border: 1px solid rgb(76, 84, 210);
+  height: 44px;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+
+.disableButtonTitle {
+  color: rgb(76, 84, 210);
+  font-size: 16px;
+  font-family: SFProText-Semibold, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  line-height: 16px;
+  
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+}
+
+.proceedButton {
+  background: rgb(76, 84, 210);
+  border-radius: 100px;
+  background-repeat: no-repeat;
+  border: none;
+  height: 44px;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+}
+
+.proceedButtonTitle {
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  font-family: SFProText-Semibold, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  text-align: center;
+  line-height: 16px;
+  
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.control-box {
+  display: block;
+}
+
+.description {
+  color: rgb(0, 0, 0);
+}
+
+.option {
+  color: rgb(82, 82, 82);
+  font-size: 14px;
+  font-family: SFProText-Regular, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: normal;
+  letter-spacing: 0px;
+  line-height: 19px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .background {
+    background: #17171F;
+  }
+  
+  .title {
+    color: white;
+  }
+  
+  .description {
+    color: white;
+  }
+  
+  .option {
+    color: white;
+  }
+  
+  a {
+    color: white;
+  }
+}

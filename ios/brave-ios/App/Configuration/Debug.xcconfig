@@ -1,0 +1,24 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "Base.xcconfig"
+#include "Local.xcconfig"
+
+MOZ_BUNDLE_DISPLAY_NAME = Brave ($(USER))
+
+BRAVE_URL_SCHEME = brave-debug
+
+// Bundle Identifier
+// MOZ_BUNDLE_ID = set in Local.xconfig
+
+// Flag to indicate if we want to include the debug settings bundle or not
+INCLUDE_SETTINGS_BUNDLE = YES
+
+// Defines Swift Flags, (used as #if/#endif) inside *Swift* code
+// BASE 'inheritence' at end, due to dynamic nature of those flags
+OTHER_SWIFT_FLAGS=-DMOZ_CHANNEL_DEBUG $(OTHER_SWIFT_FLAGS_BASE)
+
+ENABLE_TESTABILITY = YES
+
+GCC_PREPROCESSOR_DEFINITIONS= DEBUG=1
