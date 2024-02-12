@@ -12,7 +12,6 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
@@ -166,8 +165,6 @@ void BraveTabStrip::MaybeStartDrag(
 
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
-
-  UpdateTabStripMargins();
 
   if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
     UpdateTabContainer();
@@ -379,25 +376,6 @@ void BraveTabStrip::UpdateTabContainer() {
     // In order to update shadow state, call ActiveStateChanged().
     tab_at(active_index.value())->ActiveStateChanged();
   }
-}
-
-void BraveTabStrip::UpdateTabStripMargins() {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
-    return;
-  }
-
-  gfx::Insets margins;
-
-  if (!ShouldShowVerticalTabs()) {
-    // There should be a medium size gap between the left edge of the tabstrip
-    // and the visual left edge of the first tab. Set a left margin that takes
-    // into account the visual tab inset.
-    margins.set_left(brave_tabs::kHorizontalTabStripLeftMargin -
-                     brave_tabs::kHorizontalTabInset);
-    DCHECK_GE(margins.left(), 0);
-  }
-
-  SetProperty(views::kMarginsKey, margins);
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
