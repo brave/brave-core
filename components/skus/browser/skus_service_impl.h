@@ -61,7 +61,8 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
   explicit SkusServiceImpl(
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      scoped_refptr<base::SequencedTaskRunner> task_runner);
+      scoped_refptr<base::SequencedTaskRunner> sdk_task_runner,
+      scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
   ~SkusServiceImpl() override;
 
   SkusServiceImpl(const SkusServiceImpl&) = delete;
@@ -127,7 +128,8 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
 
   raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> sdk_task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
   std::unordered_map<std::string, ::rust::Box<skus::CppSDK>> sdk_;
   mojo::ReceiverSet<mojom::SkusService> receivers_;
   base::WeakPtrFactory<SkusServiceImpl> weak_factory_{this};

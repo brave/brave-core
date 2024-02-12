@@ -86,7 +86,16 @@ class SkusContext {
   virtual ~SkusContext() = default;
   virtual std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const = 0;
   virtual std::string GetValueFromStore(std::string key) const = 0;
-  virtual void PurgeStore() const = 0;
+  virtual void SchedulePurgeStore(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
+          done,
+      rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const = 0;
+  virtual void PurgeStore(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
+          done,
+      rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const = 0;
   virtual void UpdateStoreValue(std::string key, std::string value) const = 0;
 };
 

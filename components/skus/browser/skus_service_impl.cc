@@ -89,10 +89,12 @@ namespace skus {
 SkusServiceImpl::SkusServiceImpl(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    scoped_refptr<base::SequencedTaskRunner> sdk_task_runner,
+    scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
     : prefs_(prefs),
       url_loader_factory_(url_loader_factory),
-      task_runner_(task_runner) {}
+      sdk_task_runner_(sdk_task_runner),
+      ui_task_runner_(ui_task_runner) {}
 
 SkusServiceImpl::~SkusServiceImpl() = default;
 
@@ -116,7 +118,7 @@ void SkusServiceImpl::RefreshOrder(
   std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
       new skus::RefreshOrderCallbackState);
   cbs->cb = std::move(callback);
-  task_runner_->PostTask(
+  sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::PostRefreshOrderTask,
                                 base::Unretained(this), domain, order_id,
                                 std::move(cbs), url_loader_factory_->Clone()));
@@ -166,11 +168,12 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
     return sdk_.at(env);
   }
 
-  auto sdk =
-      initialize_sdk(std::make_unique<skus::SkusContextImpl>(
-                         prefs_, network::SharedURLLoaderFactory::Create(
-                                     std::move(pending_url_loader_factory))),
-                     env);
+  auto sdk = initialize_sdk(std::make_unique<skus::SkusContextImpl>(
+                                prefs_,
+                                network::SharedURLLoaderFactory::Create(
+                                    std::move(pending_url_loader_factory)),
+                                sdk_task_runner_, ui_task_runner_),
+                            env);
   sdk_.insert_or_assign(env, std::move(sdk));
   return sdk_.at(env);
 }
@@ -183,7 +186,8 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
   }
 
   auto sdk = initialize_sdk(
-      std::make_unique<skus::SkusContextImpl>(prefs_, url_loader_factory_),
+      std::make_unique<skus::SkusContextImpl>(
+          prefs_, url_loader_factory_, sdk_task_runner_, ui_task_runner_),
       env);
   sdk_.insert_or_assign(env, std::move(sdk));
   return sdk_.at(env);

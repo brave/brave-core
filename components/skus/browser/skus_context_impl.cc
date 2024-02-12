@@ -119,10 +119,7 @@ void shim_purge(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
-  ctx.PurgeStore();
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
+  ctx.SchedulePurgeStore(std::move(done), std::move(st_ctx));
 }
 
 void shim_set(
@@ -180,8 +177,13 @@ std::unique_ptr<SkusUrlLoader> shim_executeRequest(
 
 SkusContextImpl::SkusContextImpl(
     PrefService* prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(*prefs), url_loader_factory_(url_loader_factory) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    scoped_refptr<base::SequencedTaskRunner> sdk_task_runner,
+    scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
+    : prefs_(*prefs),
+      sdk_task_runner_(sdk_task_runner),
+      ui_task_runner_(ui_task_runner),
+      url_loader_factory_(url_loader_factory) {}
 
 SkusContextImpl::~SkusContextImpl() = default;
 
@@ -200,10 +202,25 @@ std::string SkusContextImpl::GetValueFromStore(std::string key) const {
   return "";
 }
 
-void SkusContextImpl::PurgeStore() const {
-  VLOG(1) << "shim_purge";
+void SkusContextImpl::SchedulePurgeStore(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const {
+  ui_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&SkusContextImpl::PurgeStore, base::Unretained(this),
+                     std::move(done), std::move(st_ctx)));
+}
+
+void SkusContextImpl::PurgeStore(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const {
   ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->clear();
+  sdk_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
 }
 
 void SkusContextImpl::UpdateStoreValue(std::string key,
