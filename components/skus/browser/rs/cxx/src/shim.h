@@ -96,7 +96,18 @@ class SkusContext {
           void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
           done,
       rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const = 0;
-  virtual void UpdateStoreValue(std::string key, std::string value) const = 0;
+  virtual void ScheduleUpdateStoreValue(
+      std::string key,
+      std::string value,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const = 0;
+  virtual void UpdateStoreValue(
+      std::string key,
+      std::string value,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const = 0;
 };
 
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
