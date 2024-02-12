@@ -20,15 +20,11 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "gmock/gmock.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "net/base/schemeful_site.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-
-// clang-format off
-// npm run test -- brave_browser_tests --filter="*PlaylistDownloadRequestManagerBrowserTest*"
-// npm run test -- brave_browser_tests --filter="*PlaylistDownloadRequestManagerWithFakeUABrowserTest*"
-// clang-format on
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
@@ -302,6 +298,14 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
   ASSERT_NE(net::SchemefulSite(GURL("http://m.youtube.com")),
             net::SchemefulSite(GURL("https://m.youtube.com")));
 
+  auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
+  mojo::AssociatedRemote<playlist::mojom::ScriptConfigurator>
+      script_configurator;
+  active_web_contents->GetPrimaryMainFrame()
+      ->GetRemoteAssociatedInterfaces()
+      ->GetInterface(&script_configurator);
+  script_configurator->SetTesting();
+
   // Check if we can retrieve metadata from youtube specific script.
   LoadHTMLAndCheckResult(
       R"html(
@@ -445,8 +449,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
           });
         </script>
         </html>
-      )html"
-  );
+      )html");
 
   base::RunLoop run_loop;
   InSequence in_sequence;

@@ -207,4 +207,5 @@ interface ScriptConfigurator {
   AddScripts(
       mojo_base.mojom.ReadOnlySharedMemoryRegion? media_source_api_suppressor,
       mojo_base.mojom.ReadOnlySharedMemoryRegion media_detector);
+  SetTesting();
 };

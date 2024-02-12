@@ -27,6 +27,7 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     int32_t isolated_world_id)
     : RenderFrameObserver(frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(frame),
+      testing_(false),
       isolated_world_id_(isolated_world_id) {
   render_frame()
       ->GetAssociatedInterfaceRegistry()
@@ -60,6 +61,10 @@ void PlaylistRenderFrameObserver::AddScripts(
   media_detector_script_.emplace(media_detector.Map().GetMemoryAs<char>(),
                                  media_detector.GetSize());
   CHECK(!media_detector_script_->empty());
+}
+
+void PlaylistRenderFrameObserver::SetTesting() {
+  testing_ = true;
 }
 
 void PlaylistRenderFrameObserver::BindScriptConfigurator(
@@ -126,6 +131,10 @@ void PlaylistRenderFrameObserver::Inject(
     v8::Local<v8::Context> context,
     std::vector<v8::Local<v8::Value>> args) const {
   DVLOG(2) << __FUNCTION__;
+
+  if (testing_) {
+    context = render_frame()->GetWebFrame()->MainWorldScriptContext();
+  }
 
   v8::Context::Scope context_scope(context);
   v8::MicrotasksScope microtasks_scope(

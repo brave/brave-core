@@ -44,6 +44,7 @@ class PlaylistRenderFrameObserver final
   // mojom::ScriptConfigurator
   void AddScripts(base::ReadOnlySharedMemoryRegion media_source_api_suppressor,
                   base::ReadOnlySharedMemoryRegion media_detector) override;
+  void SetTesting() override;
 
   void BindScriptConfigurator(
       mojo::PendingAssociatedReceiver<mojom::ScriptConfigurator> receiver);
@@ -56,6 +57,7 @@ class PlaylistRenderFrameObserver final
               std::vector<v8::Local<v8::Value>> args = {}) const;
   void OnMediaDetected(gin::Arguments* args);
 
+  bool testing_;
   int32_t isolated_world_id_;
   mojo::AssociatedReceiver<mojom::ScriptConfigurator>
       script_configurator_receiver_{this};
