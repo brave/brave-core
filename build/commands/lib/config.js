@@ -59,6 +59,27 @@ const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
+
+    // Show deprecation warning if any brave-related variable is found in .npmrc.
+    for (const key in NpmConfig) {
+      if (typeof key !== 'string') {
+        continue;
+      }
+      if (key.startsWith('bitflyer') ||
+          key.startsWith('brave') ||
+          key.startsWith('gemini') ||
+          key.startsWith('rewards') ||
+          key.startsWith('p3a') ||
+          key.startsWith('rbe') ||
+          key.startsWith('updater') ||
+          key.startsWith('zebpay')) {
+        Log.warn(
+          `Warning: found ${key} in .npmrc. Continued use of .npmrc for Brave-core configuration is highly discouraged and will soon be unsupported. Migrate all configuration to src/brave/.env immediately to avoid potential issues.`
+        )
+        break
+      }
+    }
+
     // Merge in config from `.env` file
     dotenv.config({ processEnv: NpmConfig, override: true })
     for (const [key, value] of Object.entries(NpmConfig)) {
