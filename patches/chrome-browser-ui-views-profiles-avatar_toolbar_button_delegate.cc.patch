@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc
+index 751dfc34fa09ee0b80e37b0d17192cc32b71f1d4..97814a7dd4d37b0743fa3b6e11a97220ddfdd8bd 100644
+--- a/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc
++++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc
+@@ -642,9 +642,10 @@ ui::ImageModel AvatarToolbarButtonDelegate::GetAvatarIcon(
+     // should be different.
+     case ButtonState::kSyncPaused:
+     case ButtonState::kNormal:
+-      return ui::ImageModel::FromImage(profiles::GetSizedAvatarIcon(
+-          GetProfileAvatarImage(icon_size), icon_size, icon_size,
+-          profiles::SHAPE_CIRCLE));
++      return ui::ImageModel::FromVectorIcon(features::IsChromeRefresh2023()
++                                                ? kIncognitoRefreshMenuIcon
++                                                : kIncognitoIcon,
++                                            icon_color, icon_size);
+   }
+ }
+ 
