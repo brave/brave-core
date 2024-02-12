@@ -177,7 +177,11 @@ extension BrowserViewController {
         
         var cryptoStore: CryptoStore? = walletStore?.cryptoStore
         if cryptoStore == nil {
-          cryptoStore = CryptoStore.from(ipfsApi: braveCore.ipfsAPI, privateMode: isPrivateMode)
+          cryptoStore = CryptoStore.from(
+            ipfsApi: braveCore.ipfsAPI,
+            walletP3A: braveCore.braveWalletAPI.walletP3A(),
+            privateMode: isPrivateMode
+          )
         }
 
         let vc = SettingsViewController(
