@@ -57,6 +57,8 @@ export const getRampNetworkPrefix = (chainId: string, isOfframp?: boolean) => {
       return 'FANTOM'
     case BraveWallet.FILECOIN_MAINNET:
       return 'FILECOIN'
+    case BraveWallet.BITCOIN_MAINNET:
+      return isOfframp ? 'BTC' : ''
     default:
       return ''
   }
