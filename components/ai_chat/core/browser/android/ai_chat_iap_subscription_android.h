@@ -24,7 +24,8 @@ class AIChatIAPSubscription final : public ai_chat::mojom::IAPSubscription {
   ~AIChatIAPSubscription() override;
 
   // ai_chat::mojom::IAPSubscription
-  void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
+  void GetPurchaseTokenOrderId(
+      GetPurchaseTokenOrderIdCallback callback) override;
 
  private:
   raw_ptr<PrefService> prefs_ = nullptr;
