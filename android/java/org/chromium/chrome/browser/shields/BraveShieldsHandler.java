@@ -811,8 +811,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     private void setUpReportBrokenSiteLayout() {
         TextView mReportSiteUrlText = mReportBrokenSiteLayout.findViewById(R.id.report_site_url);
-        Uri reportUri = Uri.parse(mUrlSpec).buildUpon().clearQuery().build();
-        String host = mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", "");
+        final Uri reportUri = Uri.parse(mUrlSpec).buildUpon().clearQuery().build();
+        final String host = mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", "");
         final String siteUrl = mUrlSpec.startsWith(CHROME_ERROR) ? host : reportUri.toString();
         mReportSiteUrlText.setText(siteUrl);
         mReportSiteUrlText.setMovementMethod(new ScrollingMovementMethod());
