@@ -52,11 +52,14 @@ constexpr int kHorizontalGroupUnderlineInset = 2;
 constexpr int kTabBorderRadius = 8;
 
 // The size of the group header slot when the title is empty.
-constexpr int kEmptyGroupTitleSize = 22;
+constexpr int kEmptyGroupTitleSize = 32;
+
+// The line height of the tab group header text.
+constexpr int kTabGroupLineHeight = 24;
 
 // The amount of padding at the top and bottom of tab group header "chips"
 // (i.e. the rectangle enclosing the tab group title).
-constexpr int kTabGroupTitleVerticalInset = 6;
+constexpr int kTabGroupTitleVerticalInset = 4;
 
 }  // namespace brave_tabs
 

@@ -33,7 +33,8 @@ class RewardsEngineImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostBatLossCallback = std::function<void(const mojom::Result result)>;
+using PostBatLossCallback =
+    base::OnceCallback<void(const mojom::Result result)>;
 
 class PostBatLoss {
  public:

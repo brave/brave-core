@@ -1,0 +1,104 @@
+disabled_rules: # rule identifiers to exclude from running
+  - identifier_name
+  - todo
+  - trailing_newline
+  - type_name
+  - function_body_length
+  - missing_docs
+  - cyclomatic_complexity
+  - type_body_length
+  - function_parameter_count
+  - file_length
+  - mark
+  - unused_closure_parameter
+  - empty_parentheses_with_trailing_closure
+  - redundant_string_enum_value
+  - large_tuple
+  - class_delegate_protocol
+  - syntactic_sugar
+  - implicit_getter
+  - weak_delegate
+  - shorthand_operator
+  - trailing_comma
+  - unused_optional_binding
+  - private_over_fileprivate
+  - empty_enum_arguments
+  - discarded_notification_center_observer
+  - block_based_kvo
+  - nesting
+  - is_disjoint
+  - multiple_closures_with_trailing_closure
+  - fallthrough
+  - switch_case_alignment
+  - trailing_whitespace
+  - leading_whitespace
+  - operator_whitespace
+  - legacy_cggeometry_functions
+  - unneeded_break_in_switch
+  - closure_parameter_position
+  - inclusive_language
+opt_in_rules: # some rules are only opt-in
+  - closing_brace
+  - opening_brace
+  - return_arrow_whitespace
+  - trailing_semicolon
+  - statement_position
+  - explicit_init
+  - shorthand_operator
+  # Find all the available rules by running:
+  # swiftlint rules
+included: # paths to include during linting. `--path` is ignored if present.
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Carthage
+  - Pods
+  - Source/ExcludedFolder
+  - Source/ExcludedFile.swift
+  - ThirdParty
+  - FxA
+  - FxAClient
+  - build
+  - UITests/EarlGrey.swift
+  - Tests/
+  - Sources/Storage/
+  - UITests/
+  - XCUITests/
+  - Sources/BraveSharedTestUtils/
+  - Sources/DataTestsUtils/
+  - fastlane/
+  - Client/Assets/Search/get_supported_locales.swift
+  - .build
+
+# configurable rules can be customized from this configuration file
+# binary rules can set their severity level
+trailing_semicolon: error
+closing_brace: error
+opening_brace: error
+return_arrow_whitespace: error
+statement_position:
+  severity: error
+colon:
+  severity: error
+comma: error
+force_try: warning
+force_cast: warning
+line_length: 1000
+
+custom_rules:
+  safe_javascript:
+    included: ".*\\.swift"
+    excluded: ".*Test\\.swift"
+    name: "Safe JavaScript"
+    regex: "(evaluateJavaScript)\\("
+    capture_group: 0
+    message: "Using `evaluateJavaScript` directly is not allowed. Use `evaluateSafeJavaScript` instead."
+    severity: error
+  swiftui_previews_guard:
+    included: ".*\\.swift"
+    excluded: ".*Test\\.swift"
+    name: "SwiftUI Previews Guard"
+    regex: "(?<!#if DEBUG\n)(^struct [^\n:]+: PreviewProvider)"
+    capture_group: 1
+    message: "SwiftUI Previews should be enclosed within an #if DEBUG…#endif guard"
+    severity: error
+
+reporter: "xcode" # reporter type (xcode, json, csv, checkstyle)

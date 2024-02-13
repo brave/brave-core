@@ -16,7 +16,7 @@ class StateMigrationV3 {
   StateMigrationV3();
   ~StateMigrationV3();
 
-  void Migrate(LegacyResultCallback callback);
+  void Migrate(ResultCallback callback);
 };
 
 }  // namespace state

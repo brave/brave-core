@@ -11,9 +11,9 @@ import {
   HDNodeResponse,
   EthereumSignedTx,
   EthereumSignMessage,
-  EthereumSignTypedHash
+  EthereumSignTypedHash,
+  MessageSignature
 } from './trezor-connect-types'
-import { MessageSignature } from 'trezor-connect/lib/typescript/trezor/protobuf'
 export const kTrezorBridgeUrl = loadTimeData.getString(
   'braveWalletTrezorBridgeUrl'
 )

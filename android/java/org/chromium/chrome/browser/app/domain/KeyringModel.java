@@ -11,6 +11,7 @@ import androidx.annotation.StringDef;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AllAccountsInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -23,7 +24,6 @@ import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserve
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 
 import java.util.Arrays;

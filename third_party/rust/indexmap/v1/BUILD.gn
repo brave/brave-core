@@ -14,7 +14,7 @@ cargo_crate("lib") {
 
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
-  visibility = [ "//third_party/rust/*" ]
+  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/indexmap/v1/crate/benches/bench.rs",
@@ -59,9 +59,7 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/hashbrown/v0_12:lib" ]
   build_deps = [ "//third_party/rust/autocfg/v1:buildrs_support" ]
+  features = [ "std" ]
   build_root = "crate/build.rs"
   build_sources = [ "crate/build.rs" ]
-
-  # Explicitly enable `std` to avoid autocfg issues on android.
-  features = [ "std" ]
 }

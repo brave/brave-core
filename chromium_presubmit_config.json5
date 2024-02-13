@@ -58,10 +58,10 @@
   "default_files_to_skip": [
     "\\.storybook/",
     "components/brave_wallet/resources/solana_web3_script\\.js",
-    "ios/browser/api/brave_rewards/legacy_database/core_data_models/",
     "third_party/rust/",
     "tools/crates/",
     "win_build_output/",
+    "third_party/ios_deps/",
   ],
 
   // Regex to match function names in the current presubmit stack trace. Matched
@@ -81,6 +81,8 @@
     "CheckNoBannedFunctions": [
       // Use `ban_rule_excluded_paths` instead.
     ],
+    "CheckNoJsInIos": ["ios/brave-ios/"],
+    "CheckNoDeprecatedCss": ["ios/brave-ios/"],
 
     // Checks to be fixed.
     "CheckUnwantedDependencies": [".*\\.java"],
@@ -92,7 +94,6 @@
       "components/permissions/permission_lifetime_utils\\.cc",
       "components/tor/tor_launcher_factory\\.cc",
       "components/webcompat_reporter/browser/webcompat_report_uploader\\.cc",
-      "ios/browser/api/brave_rewards/legacy_database/legacy_ledger_database\\.mm",
       "ios/browser/api/brave_rewards/promotion_solution\\.mm",
     ],
     "CheckUniquePtrOnUpload": [
@@ -146,17 +147,14 @@
     ],
     // A temporary fix to silence a failing presubmit check on file renames.
     "CheckStableMojomChanges": [
-      "components/brave_rewards/common/mojom/.*",
       "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
-      "components/services/bat_ledger/public/interfaces/.*",
-      "components/services/bat_rewards/public/interfaces/.*",
     ],
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",
       "components/speedreader/resources/third_party/",
       "components/webpack/gen-webpack-grd\\.js",
       "test/data/speedreader/",
-    ]
+    ],
   },
 
   // Additional excludes to _BANRULE_* lists in //PRESUBMIT.py.
@@ -172,30 +170,17 @@
       "base/mac/conversions\\.h",
       "browser/mac/sparkle_glue\\.mm",
     ],
-    "/\\bstd::bind\\b": [
-      "components/brave_rewards/.*",
-    ],
     "/\\bstd::function\\b": [
       "chromium_src/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views\\.cc",
-      "components/brave_rewards/core/.*",
       "ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter\\.mm",
       "ios/browser/api/bookmarks/importer/brave_bookmarks_importer\\.mm",
     ],
     "/\\bstd::shared_ptr\\b": [
       "browser/net/.*",
-      "components/brave_rewards/core/.*",
       "ios/browser/api/certificate/brave_certificate\\.mm",
       "ios/browser/api/net/certificate_utility\\.mm",
     ],
-    "/\\bstd::sto(f|d|ld)\\b": [
-      "browser/ui/webui/brave_rewards_page_ui\\.cc",
-      "components/brave_rewards/core/legacy/bat_util\\.cc",
-      "components/brave_rewards/core/legacy/media/youtube\\.cc",
-    ],
     "/\\bstd::sto(i|l|ul|ll|ull)\\b": [
-      "components/brave_rewards/browser/test/rewards_state_browsertest\\.cc",
-      "components/brave_rewards/core/legacy/media/github\\.cc",
-      "components/brave_rewards/core/report/report\\.cc",
       "components/brave_wallet/browser/rlp_encode_unittest\\.cc",
       "components/brave_wallet/common/eth_address\\.cc",
       "components/ipfs/ipfs_json_parser\\.cc",

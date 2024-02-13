@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/api/api.h"
-#include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
@@ -52,9 +51,9 @@ void InitializationManager::Shutdown(ShutdownCallback callback) {
 
   client().ClearAllNotifications();
 
-  engine().database()->FinishAllInProgressContributions(ToLegacyCallback(
+  engine().database()->FinishAllInProgressContributions(
       base::BindOnce(&InitializationManager::OnContributionsFinished,
-                     weak_factory_.GetWeakPtr(), std::move(callback))));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void InitializationManager::OnDatabaseInitialized(InitializeCallback callback,
@@ -108,9 +107,9 @@ void InitializationManager::OnContributionsFinished(ShutdownCallback callback,
     LogError(FROM_HERE) << "Error finalizing contributions";
   }
 
-  engine().database()->Close(ToLegacyCallback(
+  engine().database()->Close(
       base::BindOnce(&InitializationManager::OnDatabaseClosed,
-                     weak_factory_.GetWeakPtr(), std::move(callback))));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void InitializationManager::OnDatabaseClosed(ShutdownCallback callback,

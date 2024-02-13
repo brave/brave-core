@@ -18,7 +18,21 @@ import AIChatDataContext, {
   defaultContext
 } from '../state/context'
 
-const HISTORY = [
+const HISTORY: mojom.ConversationTurn[] = [
+  {
+    text: 'hello',
+    characterType: mojom.CharacterType.HUMAN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    selectedText: ''
+  },
+  {
+    text: 'Hi, How are you?',
+    characterType: mojom.CharacterType.ASSISTANT,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    selectedText: ''
+  },
   {
     text: 'What is pointer compression?',
     characterType: mojom.CharacterType.HUMAN,

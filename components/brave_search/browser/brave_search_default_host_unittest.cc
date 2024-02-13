@@ -56,7 +56,10 @@ class BraveSearchDefaultHostTest : public ::testing::Test {
   using MockGetCanSetCallback = base::MockCallback<
       BraveSearchDefaultHost::GetCanSetDefaultSearchProviderCallback>;
 
-  BraveSearchDefaultHostTest() : template_url_service_(nullptr, 0) {
+  BraveSearchDefaultHostTest()
+      : template_url_service_(
+            static_cast<TemplateURLService::Initializer*>(nullptr),
+            0u) {
     feature_list_.InitAndEnableFeatureWithParameters(
         brave_search::features::kBraveSearchDefaultAPIFeature,
         {{brave_search::features::kBraveSearchDefaultAPIDailyLimitName, "3"},

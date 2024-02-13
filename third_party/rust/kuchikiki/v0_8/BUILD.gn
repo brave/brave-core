@@ -28,7 +28,7 @@ cargo_crate("lib") {
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.8.2"
+  cargo_pkg_version = "0.8.4-speedreader"
   cargo_pkg_authors = "Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "kuchikiki"
   cargo_pkg_description = "(口利き) HTML tree manipulation library"

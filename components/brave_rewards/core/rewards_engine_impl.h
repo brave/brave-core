@@ -419,6 +419,9 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   void OnShutdownComplete(ShutdownCallback callback, bool success);
 
+  void OnRecurringTipSaved(SaveRecurringTipCallback callback,
+                           mojom::Result result);
+
   template <typename T>
   void WhenReady(T callback);
 

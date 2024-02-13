@@ -39,6 +39,7 @@ inline constexpr char kIntentParamTestValue[] = "connect-receipt-test";
 inline constexpr char kProductParamName[] = "product";
 inline constexpr char kProductVPNParamValue[] = "vpn";
 inline constexpr char kProductLeoParamValue[] = "leo";
+inline constexpr char kIntentParamValueLeo[] = "link-order";
 
 }  // namespace
 
@@ -61,8 +62,7 @@ bool SubscriptionRenderFrameObserver::EnsureConnected() {
   }
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatHistoryEnabled() &&
-      product_ == Product::kLeo) {
+  if (ai_chat::features::IsAIChatEnabled() && product_ == Product::kLeo) {
     if (!ai_chat_subscription_.is_bound()) {
       render_frame()->GetBrowserInterfaceBroker()->GetInterface(
           ai_chat_subscription_.BindNewPipeAndPassReceiver());
@@ -105,12 +105,29 @@ void SubscriptionRenderFrameObserver::DidCreateScriptContext(
   } else if (product_ == Product::kLeo) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
     if (ai_chat_subscription_.is_bound()) {
-      ai_chat_subscription_->GetPurchaseToken(
-          base::BindOnce(&SubscriptionRenderFrameObserver::OnGetPurchaseToken,
-                         weak_factory_.GetWeakPtr()));
+      ai_chat_subscription_->GetPurchaseTokenOrderId(base::BindOnce(
+          &SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId,
+          weak_factory_.GetWeakPtr()));
     }
 #endif
   }
+}
+
+std::string SubscriptionRenderFrameObserver::GetPurchaseTokenJSString(
+    const std::string& purchase_token) {
+  if (!IsValueAllowed(purchase_token)) {
+    return "";
+  }
+
+  std::string_view receipt_var_name;
+  if (product_ == Product::kVPN) {
+    receipt_var_name = "braveVpn.receipt";
+  } else if (product_ == Product::kLeo) {
+    receipt_var_name = "braveLeo.receipt";
+  }
+
+  return base::StrCat({"window.localStorage.setItem(\"", receipt_var_name,
+                       "\", \"", purchase_token, "\");"});
 }
 
 void SubscriptionRenderFrameObserver::OnGetPurchaseToken(
@@ -120,18 +137,24 @@ void SubscriptionRenderFrameObserver::OnGetPurchaseToken(
   }
   auto* frame = render_frame();
   if (frame) {
-    if (IsValueAllowed(purchase_token)) {
-      std::string_view receipt_var_name;
-      if (product_ == Product::kVPN) {
-        receipt_var_name = "braveVpn.receipt";
-      } else if (product_ == Product::kLeo) {
-        receipt_var_name = "braveLeo.receipt";
-      }
-      std::u16string set_local_storage = base::UTF8ToUTF16(
-          base::StrCat({"window.localStorage.setItem(\"", receipt_var_name,
-                        "\", \"", purchase_token, "\");"}));
-      frame->ExecuteJavaScript(set_local_storage);
+    std::string set_local_storage = GetPurchaseTokenJSString(purchase_token);
+    if (!set_local_storage.empty()) {
+      frame->ExecuteJavaScript(base::UTF8ToUTF16(set_local_storage));
     }
+  }
+}
+
+void SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId(
+    const std::string& purchase_token,
+    const std::string& order_id) {
+  if (!IsAllowed()) {
+    return;
+  }
+  auto* frame = render_frame();
+  if (frame && !order_id.empty() && !purchase_token.empty()) {
+    frame->ExecuteJavaScript(base::UTF8ToUTF16(base::StrCat(
+        {"window.localStorage.setItem(\"braveLeo.orderId\", \"", order_id,
+         "\");", GetPurchaseTokenJSString(purchase_token)})));
   }
 }
 
@@ -182,7 +205,8 @@ bool SubscriptionRenderFrameObserver::IsAllowed() {
   } else {
     product_ = std::nullopt;
   }
-  return (intent == kIntentParamValue || intent == kIntentParamTestValue) &&
+  return (intent == kIntentParamValue || intent == kIntentParamTestValue ||
+          intent == kIntentParamValueLeo) &&
          product_.has_value();
 }
 

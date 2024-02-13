@@ -12,7 +12,6 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
@@ -166,8 +165,6 @@ void BraveTabStrip::MaybeStartDrag(
 
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
-
-  UpdateTabStripMargins();
 
   if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
     UpdateTabContainer();
@@ -381,25 +378,6 @@ void BraveTabStrip::UpdateTabContainer() {
   }
 }
 
-void BraveTabStrip::UpdateTabStripMargins() {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
-    return;
-  }
-
-  gfx::Insets margins;
-
-  if (!ShouldShowVerticalTabs()) {
-    // There should be a medium size gap between the left edge of the tabstrip
-    // and the visual left edge of the first tab. Set a left margin that takes
-    // into account the visual tab inset.
-    margins.set_left(brave_tabs::kHorizontalTabStripLeftMargin -
-                     brave_tabs::kHorizontalTabInset);
-    DCHECK_GE(margins.left(), 0);
-  }
-
-  SetProperty(views::kMarginsKey, margins);
-}
-
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
 }
@@ -413,7 +391,7 @@ void BraveTabStrip::Layout() {
     // Chromium implementation limits the height of tab strip, which we don't
     // want.
     auto bounds = GetLocalBounds();
-    for (auto* view : children()) {
+    for (views::View* view : children()) {
       if (view->bounds() != bounds) {
         view->SetBoundsRect(GetLocalBounds());
       } else if (view == &tab_container_.get()) {
@@ -430,12 +408,12 @@ void BraveTabStrip::OnPaintBackground(gfx::Canvas* canvas) {
   // Unlike upstream, we are painting this view to an opaque layer in order to
   // support layer-based shadows under the active tab. Paint a background so
   // that all pixels are painted appropriately.
-  ui::ColorId color_id = ShouldShowVerticalTabs() ? kColorToolbar
-                         : GetWidget()->ShouldPaintAsActive()
-                             ? kColorTabBackgroundInactiveFrameActive
-                             : kColorTabBackgroundInactiveFrameInactive;
+  SkColor background_color =
+      ShouldShowVerticalTabs()
+          ? GetColorProvider()->GetColor(kColorToolbar)
+          : controller_->GetFrameColor(BrowserFrameActiveState::kUseCurrent);
 
-  canvas->DrawColor(GetColorProvider()->GetColor(color_id));
+  canvas->DrawColor(background_color);
 }
 
 BEGIN_METADATA(BraveTabStrip, TabStrip)

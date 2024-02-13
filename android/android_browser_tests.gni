@@ -47,7 +47,6 @@ android_test_exception_sources = [
   "//brave/browser/search_engines/search_engine_provider_service_browsertest.cc",
   "//brave/browser/search_engines/search_engine_tracker_browsertest.cc",
   "//brave/browser/speedreader/speedreader_browsertest.cc",
-  "//brave/browser/themes/brave_dark_mode_prefs_migration_browsertest.cc",
   "//brave/browser/themes/brave_theme_service_browsertest.cc",
   "//brave/browser/translate/brave_translate_browsertest.cc",
   "//brave/browser/ui/bookmark/bookmark_tab_helper_browsertest.cc",

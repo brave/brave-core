@@ -202,6 +202,7 @@ source_set("unit_tests") {
     "//brave/components/resources:strings_grit",
     "//brave/components/version_info",
     "//chrome/browser",
+    "//chrome/browser/permissions",
     "//chrome/test:test_support",
     "//testing/gtest",
   ]

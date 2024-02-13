@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_rewards/core/state/state_migration_v11.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
@@ -18,7 +20,7 @@ StateMigrationV11::StateMigrationV11(RewardsEngineImpl& engine)
 
 StateMigrationV11::~StateMigrationV11() = default;
 
-void StateMigrationV11::Migrate(LegacyResultCallback callback) {
+void StateMigrationV11::Migrate(ResultCallback callback) {
   // In version 7 encryption was added for |kWalletBrave|. However due to wallet
   // corruption, users copying their profiles to new computers or reinstalling
   // their operating system we are reverting this change
@@ -29,7 +31,7 @@ void StateMigrationV11::Migrate(LegacyResultCallback callback) {
     engine_->SetState(kWalletBrave, decrypted_wallet.value());
   }
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace state

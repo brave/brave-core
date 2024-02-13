@@ -313,6 +313,22 @@ void OnScreenshot(FetchPageContentCallback callback, const SkBitmap& image) {
 }
 #endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 
+ui::AXNode* FindPdfRoot(const ui::AXNode* start_node) {
+  if (!start_node) {
+    return nullptr;
+  }
+  for (const auto& node : start_node->GetAllChildren()) {
+    if (node->GetRole() == ax::mojom::Role::kPdfRoot) {
+      return node;
+    }
+    ui::AXNode* result = FindPdfRoot(node);
+    if (result) {
+      return result;
+    }
+  }
+  return nullptr;
+}
+
 }  // namespace
 
 void FetchPageContent(content::WebContents* web_contents,
@@ -344,11 +360,18 @@ void FetchPageContent(content::WebContents* web_contents,
     if (ax_tree_id.type() != ax::mojom::AXTreeIDType::kUnknown) {
       auto* ax_tree_manager = ui::AXTreeManager::FromID(ax_tree_id);
       if (ax_tree_manager) {
-        auto* ax_node = ax_tree_manager->GetRoot();
-        auto pdf_content = ax_node->GetTextContentUTF8();
-        if (!pdf_content.empty()) {
-          std::move(callback).Run(pdf_content, false, "");
-          return;
+        auto* pdf_root = FindPdfRoot(ax_tree_manager->GetRoot());
+        // Skip status subtree and get text from region sibling
+        if (pdf_root && pdf_root->GetChildCount() == 2 &&
+            pdf_root->GetChildAtIndex(0)->GetRole() ==
+                ax::mojom::Role::kBanner &&
+            pdf_root->GetChildAtIndex(1)->GetRole() ==
+                ax::mojom::Role::kRegion) {
+          auto pdf_content = pdf_root->GetChildAtIndex(1)->GetTextContentUTF8();
+          if (!pdf_content.empty()) {
+            std::move(callback).Run(pdf_content, false, "");
+            return;
+          }
         }
       }
     }

@@ -17,6 +17,7 @@ import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
@@ -65,7 +66,8 @@ public class TabSwitcherBottomToolbarCoordinator {
             ThemeColorProvider themeColorProvider,
             OnClickListener newTabClickListener,
             OnClickListener closeTabsClickListener,
-            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier) {
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            Profile profile) {
         final ViewGroup root = (ViewGroup) stub.inflate();
 
         View toolbar = root.findViewById(R.id.bottom_toolbar_buttons);
@@ -94,7 +96,7 @@ public class TabSwitcherBottomToolbarCoordinator {
         mMenuButton = root.findViewById(R.id.menu_button_wrapper);
         if (mMenuButton != null) {
             Supplier<MenuButtonState> menuButtonStateSupplier =
-                    () -> UpdateMenuItemHelper.getInstance().getUiState().buttonState;
+                    () -> UpdateMenuItemHelper.getInstance(profile).getUiState().buttonState;
             BraveMenuButtonCoordinator.setupPropertyModel(mMenuButton, menuButtonStateSupplier);
         }
 

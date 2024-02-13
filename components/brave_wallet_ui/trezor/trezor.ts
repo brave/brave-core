@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import TrezorConnect from 'trezor-connect'
+import TrezorConnect from '@trezor/connect-web'
 import {
   Unsuccessful,
   Success
 } from '../common/hardware/trezor/trezor-connect-types'
-import { EthereumSignedTx } from 'trezor-connect/lib/typescript/networks/ethereum'
+import { EthereumSignedTx } from '@trezor/connect/lib/types/api/ethereum'
 import {
   TrezorCommand,
   UnlockCommand,
@@ -58,7 +58,7 @@ addTrezorCommandHandler(
   (command: UnlockCommand): Promise<UnlockResponsePayload> => {
     return new Promise(async (resolve) => {
       TrezorConnect.init({
-        connectSrc: 'https://connect.trezor.io/8/',
+        connectSrc: 'https://connect.trezor.io/9/',
         lazyLoad: false,
         manifest: {
           email: 'support@brave.com',

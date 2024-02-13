@@ -63,7 +63,7 @@ skrifa = "0.4"
 libc = "0.2.107"
 
 # speedreader
-kuchikiki = "0.8.2"
+kuchikiki = "0.8.4-speedreader"
 lol_html = "0.3.0"
 # regex = "1"
 # serde_json = "1.0.70"
@@ -74,7 +74,7 @@ lazy_static = "1.4"
 
 # readability
 bitflags         = "1.2"
-kuchikiki        = "0.8.2"
+kuchikiki        = "0.8.4-speedreader"
 lazy_static      = "1.4"
 # regex            = "1"
 # serde_json       = "1.0"

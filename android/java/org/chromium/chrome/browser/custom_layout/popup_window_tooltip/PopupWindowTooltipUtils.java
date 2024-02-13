@@ -77,7 +77,7 @@ public final class PopupWindowTooltipUtils {
             return context.getColor(colorRes);
         } else {
             // noinspection deprecation
-            return context.getResources().getColor(colorRes);
+            return context.getColor(colorRes);
         }
     }
 

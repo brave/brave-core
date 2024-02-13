@@ -59,6 +59,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "services/network/public/cpp/network_switches.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
@@ -133,7 +134,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
-  void TearDownOnMainThread() override { DisableSpeedreader(); }
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        "MAP *:443 " + https_server_.host_port_pair().ToString());
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+  }
 
   content::WebContents* ActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
@@ -223,7 +229,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
       std::string_view path,
       WindowOpenDisposition disposition =
           WindowOpenDisposition::NEW_FOREGROUND_TAB) {
-    const GURL url = https_server_.GetURL(kTestHost, path);
+    const GURL url = GURL("https://a.test").Resolve(path);
     ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, disposition,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
@@ -234,24 +240,17 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, PRE_RestoreSpeedreaderPage) {
   ToggleSpeedreader();
-  NavigateToPageSynchronously(kTestPageReadable);
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
+}
 
-  Profile* profile = browser()->profile();
-
-  ScopedKeepAlive test_keep_alive(KeepAliveOrigin::PANEL_VIEW,
-                                  KeepAliveRestartOption::DISABLED);
-  ScopedProfileKeepAlive test_profile_keep_alive(
-      profile, ProfileKeepAliveOrigin::kBrowserWindow);
-  CloseBrowserSynchronously(browser());
-
-  EXPECT_EQ(0u, BrowserList::GetInstance()->size());
-  chrome::OpenWindowWithRestoredTabs(profile);
-  EXPECT_EQ(1u, BrowserList::GetInstance()->size());
-  SelectFirstBrowser();
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  WaitDistilled();
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
 }

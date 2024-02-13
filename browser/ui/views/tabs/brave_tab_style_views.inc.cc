@@ -129,6 +129,17 @@ SkPath BraveVerticalTabStyle::GetPath(
         hit_test_outsets.set_top(0);
       }
 
+      // We also want the first tab (taking RTL into account) to be selectable
+      // in maximized or fullscreen mode by clicking at the very edge of the
+      // screen.
+      if (ShouldExtendHitTest() && tab()->controller()->IsTabFirst(tab())) {
+        if (tab()->GetMirrored()) {
+          hit_test_outsets.set_right(brave_tabs::kHorizontalTabInset * scale);
+        } else {
+          hit_test_outsets.set_left(brave_tabs::kHorizontalTabInset * scale);
+        }
+      }
+
       aligned_bounds.Outset(hit_test_outsets);
     }
   }
@@ -141,6 +152,12 @@ SkPath BraveVerticalTabStyle::GetPath(
   float tab_right = aligned_bounds.right();
   float tab_bottom = aligned_bounds.bottom();
   int radius = tabs::GetTabCornerRadius(*tab());
+
+  // For hit testing, the tab shape should not be rounded, as that would leave
+  // small hit test gaps between adjacent tabs at their corners.
+  if (path_type == TabStyle::PathType::kHitTest) {
+    radius = 0;
+  }
 
   if (is_pinned) {
     // Only pinned tabs have border

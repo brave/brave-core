@@ -62,7 +62,7 @@ void PostBatLoss::Request(const double amount,
                           PostBatLossCallback callback) {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -77,7 +77,7 @@ void PostBatLoss::Request(const double amount,
   auto signer = RequestSigner::FromRewardsWallet(*wallet);
   if (!signer || !signer->SignRequest(*request)) {
     engine_->LogError(FROM_HERE) << "Unable to sign request";
-    callback(mojom::Result::FAILED);
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -90,7 +90,7 @@ void PostBatLoss::Request(const double amount,
 void PostBatLoss::OnRequest(PostBatLossCallback callback,
                             mojom::UrlResponsePtr response) {
   DCHECK(response);
-  callback(CheckStatusCode(response->status_code));
+  std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
 }  // namespace promotion

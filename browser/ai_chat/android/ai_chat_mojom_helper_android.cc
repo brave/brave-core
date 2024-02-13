@@ -11,8 +11,11 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/build/android/jni_headers/BraveLeoMojomHelper_jni.h"
 #include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/android/browser_context_handle.h"
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -37,6 +40,7 @@ AIChatMojomHelperAndroid::AIChatMojomHelperAndroid(
         return skus::SkusServiceFactory::GetForContext(context);
       },
       context);
+  pref_service_ = Profile::FromBrowserContext(context)->GetPrefs();
   credential_manager_ = std::make_unique<ai_chat::AIChatCredentialManager>(
       skus_service_getter, g_browser_process->local_state());
 }
@@ -66,6 +70,75 @@ void AIChatMojomHelperAndroid::OnPremiumStatusReceived(
     mojom::PremiumStatus premium_status,
     mojom::PremiumInfoPtr premium_info) {
   std::move(parent_callback).Run(premium_status, std::move(premium_info));
+}
+
+void AIChatMojomHelperAndroid::CreateOrderId(CreateOrderIdCallback callback) {
+  std::string purchase_token_string;
+  auto* purchase_token =
+      pref_service_->FindPreference(prefs::kBraveChatPurchaseTokenAndroid);
+  if (purchase_token && !purchase_token->IsDefaultValue()) {
+    purchase_token_string =
+        pref_service_->GetString(prefs::kBraveChatPurchaseTokenAndroid);
+  }
+  std::string package_string;
+  auto* package =
+      pref_service_->FindPreference(prefs::kBraveChatPackageNameAndroid);
+  if (package && !package->IsDefaultValue()) {
+    package_string =
+        pref_service_->GetString(prefs::kBraveChatPackageNameAndroid);
+  }
+  std::string subscription_id_string;
+  auto* subscription_id =
+      pref_service_->FindPreference(prefs::kBraveChatProductIdAndroid);
+  if (subscription_id && !subscription_id->IsDefaultValue()) {
+    subscription_id_string =
+        pref_service_->GetString(prefs::kBraveChatProductIdAndroid);
+  }
+  if (purchase_token_string.empty() || package_string.empty() ||
+      subscription_id_string.empty()) {
+    std::move(callback).Run("");
+    return;
+  }
+  credential_manager_->CreateOrderFromReceipt(
+      purchase_token_string, package_string, subscription_id_string,
+      base::BindOnce(&AIChatMojomHelperAndroid::OnCreateOrderId,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatMojomHelperAndroid::OnCreateOrderId(CreateOrderIdCallback callback,
+                                               const std::string& response) {
+  std::move(callback).Run(response);
+}
+
+void AIChatMojomHelperAndroid::FetchOrderCredentials(
+    const std::string& order_id,
+    FetchOrderCredentialsCallback callback) {
+  credential_manager_->FetchOrderCredentials(
+      order_id,
+      base::BindOnce(&AIChatMojomHelperAndroid::OnFetchOrderCredentials,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     order_id));
+}
+
+void AIChatMojomHelperAndroid::OnFetchOrderCredentials(
+    FetchOrderCredentialsCallback callback,
+    const std::string& order_id,
+    const std::string& response) {
+  std::move(callback).Run(response);
+}
+
+void AIChatMojomHelperAndroid::RefreshOrder(const std::string& order_id,
+                                            RefreshOrderCallback callback) {
+  credential_manager_->RefreshOrder(
+      order_id, base::BindOnce(&AIChatMojomHelperAndroid::OnRefreshOrder,
+                               weak_ptr_factory_.GetWeakPtr(),
+                               std::move(callback), order_id));
+}
+
+void AIChatMojomHelperAndroid::OnRefreshOrder(RefreshOrderCallback callback,
+                                              const std::string& order_id,
+                                              const std::string& response) {
+  std::move(callback).Run(response);
 }
 
 void AIChatMojomHelperAndroid::GetModelsWithSubtitles(

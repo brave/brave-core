@@ -56,7 +56,10 @@ class BraveBookmarkContextMenuTest : public testing::Test {
   std::unique_ptr<BraveBookmarkContextMenu> CreateBookmarkContextMenu() {
     auto menu = std::make_unique<BraveBookmarkContextMenu>(
         nullptr, nullptr, profile_.get(), BookmarkLaunchLocation::kNone,
-        nullptr, std::vector<const BookmarkNode*>(), false);
+        nullptr,
+        std::vector<
+            raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>(),
+        false);
     menu->GetControllerForTesting()->SetPrefsForTesting(prefs_.get());
     return menu;
   }

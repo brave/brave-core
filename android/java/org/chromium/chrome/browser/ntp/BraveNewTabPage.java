@@ -45,8 +45,8 @@ public class BraveNewTabPage extends NewTabPage {
     private NewTabPageLayout mNewTabPageLayout;
     private FeedSurfaceProvider mFeedSurfaceProvider;
     private Supplier<Toolbar> mToolbarSupplier;
-    private TabModelSelector mTabModelSelector;
     private BottomSheetController mBottomSheetController;
+    private ObservableSupplier<Integer> mTabStripHeightSupplier;
 
     public BraveNewTabPage(
             Activity activity,
@@ -67,7 +67,8 @@ public class BraveNewTabPage extends NewTabPage {
             JankTracker jankTracker,
             Supplier<Toolbar> toolbarSupplier,
             HomeSurfaceTracker homeSurfaceTracker,
-            ObservableSupplier<TabContentManager> tabContentManagerSupplier) {
+            ObservableSupplier<TabContentManager> tabContentManagerSupplier,
+            ObservableSupplier<Integer> tabStripHeightSupplier) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -87,7 +88,8 @@ public class BraveNewTabPage extends NewTabPage {
                 jankTracker,
                 toolbarSupplier,
                 homeSurfaceTracker,
-                tabContentManagerSupplier);
+                tabContentManagerSupplier,
+                tabStripHeightSupplier);
 
         mJankTracker = jankTracker;
 
@@ -116,16 +118,21 @@ public class BraveNewTabPage extends NewTabPage {
     }
 
     @Override
-    protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
-            SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
-            Supplier<ShareDelegate> shareDelegateSupplier, String url) {
+    protected void initializeMainView(
+            Activity activity,
+            WindowAndroid windowAndroid,
+            SnackbarManager snackbarManager,
+            NewTabPageUma uma,
+            boolean isInNightMode,
+            Supplier<ShareDelegate> shareDelegateSupplier,
+            String url) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
         LayoutInflater inflater = LayoutInflater.from(activity);
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
-        assert !FeedFeatures.isFeedEnabled();
+        assert !FeedFeatures.isFeedEnabled(profile);
         FeedSurfaceCoordinator feedSurfaceCoordinator =
                 new BraveFeedSurfaceCoordinator(
                         activity,
@@ -152,7 +159,7 @@ public class BraveNewTabPage extends NewTabPage {
                         /* viewportView= */ null,
                         /* actionDelegate= */ null,
                         HelpAndFeedbackLauncherImpl.getForProfile(profile),
-                        mTabModelSelector);
+                        mTabStripHeightSupplier);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }

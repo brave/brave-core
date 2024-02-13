@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/legacy/bat_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 
 namespace brave_rewards::internal {
@@ -37,7 +38,9 @@ double ProbiToDouble(const std::string& probi) {
     amount.insert(size - 18, ".");
   }
 
-  return std::stod(amount);
+  double value = 0;
+  base::StringToDouble(amount, &value);
+  return value;
 }
 
 }  // namespace brave_rewards::internal

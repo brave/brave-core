@@ -405,9 +405,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         if (BraveWalletProvider.SOLANA.equals(mWalletType)) {
             view.findViewById(R.id.tipping_warning_icon).setVisibility(View.VISIBLE);
             warningTitle.setTextColor(
-                    getResources().getColor(R.color.tipping_web3_error_text_color));
+                    getActivity().getColor(R.color.tipping_web3_error_text_color));
             warningDescription.setTextColor(
-                    getResources().getColor(R.color.tipping_web3_error_text_color));
+                    getActivity().getColor(R.color.tipping_web3_error_text_color));
         }
     }
 

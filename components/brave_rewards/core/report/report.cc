@@ -8,87 +8,80 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/report/report.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
-namespace brave_rewards::internal {
-namespace report {
+namespace brave_rewards::internal::report {
 
 Report::Report(RewardsEngineImpl& engine) : engine_(engine) {}
 
 Report::~Report() = default;
 
-void Report::GetMonthly(const mojom::ActivityMonth month,
-                        const int year,
+void Report::GetMonthly(mojom::ActivityMonth month,
+                        int year,
                         GetMonthlyReportCallback callback) {
-  auto balance_callback =
-      base::BindOnce(&Report::OnBalance, base::Unretained(this), month, year,
-                     std::move(callback));
-
-  engine_->database()->GetBalanceReportInfo(month, year,
-                                            std::move(balance_callback));
+  engine_->database()->GetBalanceReportInfo(
+      month, year,
+      base::BindOnce(&Report::OnBalance, weak_factory_.GetWeakPtr(), month,
+                     year, std::move(callback)));
 }
 
-void Report::OnBalance(const mojom::ActivityMonth month,
-                       const uint32_t year,
+void Report::OnBalance(mojom::ActivityMonth month,
+                       uint32_t year,
                        GetMonthlyReportCallback callback,
-                       const mojom::Result result,
+                       mojom::Result result,
                        mojom::BalanceReportInfoPtr balance_report) {
   if (result != mojom::Result::OK || !balance_report) {
     engine_->LogError(FROM_HERE) << "Could not get balance report";
-    callback(result, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
   auto monthly_report = mojom::MonthlyReportInfo::New();
   monthly_report->balance = std::move(balance_report);
 
-  auto transaction_callback = std::bind(
-      &Report::OnTransactions, this, _1, month, year,
-      std::make_shared<mojom::MonthlyReportInfoPtr>(std::move(monthly_report)),
-      callback);
-
-  engine_->database()->GetTransactionReport(month, year, transaction_callback);
+  engine_->database()->GetTransactionReport(
+      month, year,
+      base::BindOnce(&Report::OnTransactions, weak_factory_.GetWeakPtr(), month,
+                     year, std::move(monthly_report), std::move(callback)));
 }
 
 void Report::OnTransactions(
-    std::vector<mojom::TransactionReportInfoPtr> transaction_report,
-    const mojom::ActivityMonth month,
-    const uint32_t year,
-    std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-    GetMonthlyReportCallback callback) {
-  if (!shared_report) {
+    mojom::ActivityMonth month,
+    uint32_t year,
+    mojom::MonthlyReportInfoPtr report,
+    GetMonthlyReportCallback callback,
+    std::vector<mojom::TransactionReportInfoPtr> transaction_report) {
+  if (!report) {
     engine_->LogError(FROM_HERE) << "Could not parse monthly report";
-    callback(mojom::Result::FAILED, nullptr);
+    std::move(callback).Run(mojom::Result::FAILED, nullptr);
     return;
   }
 
-  (*shared_report)->transactions = std::move(transaction_report);
+  report->transactions = std::move(transaction_report);
 
-  auto contribution_callback =
-      std::bind(&Report::OnContributions, this, _1, shared_report, callback);
-
-  engine_->database()->GetContributionReport(month, year,
-                                             contribution_callback);
+  engine_->database()->GetContributionReport(
+      month, year,
+      base::BindOnce(&Report::OnContributions, weak_factory_.GetWeakPtr(),
+                     std::move(report), std::move(callback)));
 }
 
 void Report::OnContributions(
-    std::vector<mojom::ContributionReportInfoPtr> contribution_report,
-    std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-    GetMonthlyReportCallback callback) {
-  if (!shared_report) {
+    mojom::MonthlyReportInfoPtr report,
+    GetMonthlyReportCallback callback,
+    std::vector<mojom::ContributionReportInfoPtr> contribution_report) {
+  if (!report) {
     engine_->LogError(FROM_HERE) << "Could not parse monthly report";
-    callback(mojom::Result::FAILED, nullptr);
+    std::move(callback).Run(mojom::Result::FAILED, nullptr);
     return;
   }
 
-  (*shared_report)->contributions = std::move(contribution_report);
+  report->contributions = std::move(contribution_report);
 
-  callback(mojom::Result::OK, std::move(*shared_report));
+  std::move(callback).Run(mojom::Result::OK, std::move(report));
 }
 
 // This will be removed when we move reports in database and just order in db
@@ -101,10 +94,14 @@ bool CompareReportIds(const std::string& id_1, const std::string& id_2) {
 
   DCHECK(id_1_parts.size() == 2 && id_2_parts.size() == 2);
 
-  const int id_1_year = std::stoi(id_1_parts[0]);
-  const int id_2_year = std::stoi(id_2_parts[0]);
-  const int id_1_month = std::stoi(id_1_parts[1]);
-  const int id_2_month = std::stoi(id_2_parts[1]);
+  int id_1_year = 0;
+  base::StringToInt(id_1_parts[0], &id_1_year);
+  int id_2_year = 0;
+  base::StringToInt(id_2_parts[0], &id_2_year);
+  int id_1_month = 0;
+  base::StringToInt(id_1_parts[1], &id_1_month);
+  int id_2_month = 0;
+  base::StringToInt(id_2_parts[1], &id_2_month);
 
   if (id_1_year == id_2_year) {
     return id_1_month > id_2_month;
@@ -114,17 +111,16 @@ bool CompareReportIds(const std::string& id_1, const std::string& id_2) {
 }
 
 void Report::GetAllMonthlyIds(GetAllMonthlyReportIdsCallback callback) {
-  auto balance_reports_callback =
-      std::bind(&Report::OnGetAllBalanceReports, this, _1, callback);
-
-  engine_->database()->GetAllBalanceReports(balance_reports_callback);
+  engine_->database()->GetAllBalanceReports(
+      base::BindOnce(&Report::OnGetAllBalanceReports,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void Report::OnGetAllBalanceReports(
-    std::vector<mojom::BalanceReportInfoPtr> reports,
-    GetAllMonthlyReportIdsCallback callback) {
+    GetAllMonthlyReportIdsCallback callback,
+    std::vector<mojom::BalanceReportInfoPtr> reports) {
   if (reports.empty()) {
-    callback({});
+    std::move(callback).Run({});
     return;
   }
 
@@ -136,8 +132,7 @@ void Report::OnGetAllBalanceReports(
 
   std::sort(ids.begin(), ids.end(), CompareReportIds);
 
-  callback(ids);
+  std::move(callback).Run(ids);
 }
 
-}  // namespace report
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::report

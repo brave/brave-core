@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 1b0f509a0abba184bd1321cb6603d57683ca5ff1..30c45b2da9b5971f292c288fe3f812905c4cb9d9 100644
+index 9545f229fb0d1796cc5c713e960cfe14be0037e0..f446267396d386414206fbe1835e2081762f54a3 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -343,6 +343,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -376,6 +376,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
  #endif  // !BUILDFLAG(IS_ANDROID)
  #endif  // !BUILDFLAG(IS_IOS)
    prefs_->ClearPref(kObsoleteFederatedIdentityDefaultPref);

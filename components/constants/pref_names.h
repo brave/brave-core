@@ -129,9 +129,6 @@ inline constexpr char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
 
 // deprecated
-inline constexpr char kBraveThemeType[] = "brave.theme.type";
-inline constexpr char kUseOverriddenBraveThemeType[] =
-    "brave.theme.use_overridden_brave_theme_type";
 inline constexpr char kNewTabPageShowTopSites[] =
     "brave.new_tab_page.show_top_sites";
 inline constexpr char kOtherBookmarksMigrated[] =

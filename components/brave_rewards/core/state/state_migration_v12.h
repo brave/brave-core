@@ -21,7 +21,7 @@ class StateMigrationV12 {
   explicit StateMigrationV12(RewardsEngineImpl& engine);
   ~StateMigrationV12();
 
-  void Migrate(LegacyResultCallback);
+  void Migrate(ResultCallback);
 
  private:
   bool MigrateExternalWallet(const std::string& wallet_type);

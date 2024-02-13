@@ -1,8 +1,8 @@
 diff --git a/chrome/tools/build/mac/infoplist_strings_util.cc b/chrome/tools/build/mac/infoplist_strings_util.cc
-index 1b5d070769ae24538f2e9427b7eda96d78952e2b..ef1ba86f73fe51081814040b6ea7ad4457ba18ff 100644
+index e1309ba1589bd0a8eb0712c109a42d8820affcf2..d5db7a62242416ee4365119671fc6eb41297160d 100644
 --- a/chrome/tools/build/mac/infoplist_strings_util.cc
 +++ b/chrome/tools/build/mac/infoplist_strings_util.cc
-@@ -153,6 +153,7 @@ int main(int argc, char* const argv[]) {
+@@ -151,6 +151,7 @@ int main(int argc, char* const argv[]) {
      // Fetch the strings.
      std::string name = LoadStringFromDataPack(branded_data_pack.get(), cur_lang,
                                                name_id, name_id_str);

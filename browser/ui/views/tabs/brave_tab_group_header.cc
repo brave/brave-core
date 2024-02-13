@@ -78,6 +78,10 @@ void BraveTabGroupHeader::VisualsChanged() {
   title_->SetEnabledColor(GetGroupColor());
   title_->SetSubpixelRenderingEnabled(false);
 
+  if (!ShouldShowVerticalTabs()) {
+    title_->SetLineHeight(brave_tabs::kTabGroupLineHeight);
+  }
+
   auto font_list = title_->font_list();
   title_->SetFontList(font_list.DeriveWithWeight(gfx::Font::Weight::MEDIUM)
                           .DeriveWithSizeDelta(13 - font_list.GetFontSize()));

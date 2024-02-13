@@ -95,7 +95,7 @@ void PostSuggestions::Request(const credential::CredentialsRedeem& redeem,
 void PostSuggestions::OnRequest(PostSuggestionsCallback callback,
                                 mojom::UrlResponsePtr response) {
   DCHECK(response);
-  callback(CheckStatusCode(response->status_code));
+  std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
 }  // namespace promotion

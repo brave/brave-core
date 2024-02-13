@@ -51,6 +51,8 @@ inline constexpr char kBraveChatPackageNameAndroid[] =
     "brave.ai_chat.package_name_android";
 inline constexpr char kBraveChatProductIdAndroid[] =
     "brave.ai_chat.product_id_android";
+inline constexpr char kBraveChatOrderIdAndroid[] =
+    "brave.ai_chat.order_id_android";
 #endif
 inline constexpr char kBraveAIChatContextMenuEnabled[] =
     "brave.ai_chat.context_menu_enabled";

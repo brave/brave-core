@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/user_script_manager.h b/extensions/browser/user_script_manager.h
-index 9e7c9b2129f240a05d62bcd584f8c18a8d7091c8..713e831ae4a3412f8d80db604218290ec9a129e3 100644
+index c4e2908d85e41a717462c6377ceb58a4624846d6..693afcacfa02d813995048224b31c3cf21043ad6 100644
 --- a/extensions/browser/user_script_manager.h
 +++ b/extensions/browser/user_script_manager.h
 @@ -25,7 +25,7 @@
@@ -11,7 +11,7 @@ index 9e7c9b2129f240a05d62bcd584f8c18a8d7091c8..713e831ae4a3412f8d80db604218290e
  namespace extensions {
  class UserScriptLoader;
  
-@@ -54,6 +54,7 @@ class UserScriptManager : public ExtensionRegistryObserver {
+@@ -55,6 +55,7 @@ class UserScriptManager : public ExtensionRegistryObserver {
                                                 bool enabled);
  
   private:

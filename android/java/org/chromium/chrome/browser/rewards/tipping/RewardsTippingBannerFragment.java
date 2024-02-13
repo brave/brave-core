@@ -199,7 +199,7 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
                                     getResources(),
                                     R.drawable.tipping_send_button_background,
                                     null));
-                    web3Button.setTextColor(getResources().getColor(android.R.color.white));
+                    web3Button.setTextColor(getActivity().getColor(android.R.color.white));
                 }
             } catch (JSONException e) {
                 Log.e(TAG, "TippingBanner -> OnGetExternalWallet " + e.getMessage());
@@ -386,10 +386,10 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
         tippingWarningIcon.setVisibility(View.VISIBLE);
         TextView warningTitle = view.findViewById(R.id.tipping_warning_title_text);
         warningTitle.setText(getResources().getString(R.string.can_not_send_your_contribution));
-        warningTitle.setTextColor(getResources().getColor(R.color.tipping_web3_error_text_color));
+        warningTitle.setTextColor(getActivity().getColor(R.color.tipping_web3_error_text_color));
         TextView warningDescription = view.findViewById(R.id.tipping_warning_description_text);
         warningDescription.setText(getResources().getString(R.string.creator_isnt_setup_web3));
         warningDescription.setTextColor(
-                getResources().getColor(R.color.tipping_web3_error_text_color));
+                getActivity().getColor(R.color.tipping_web3_error_text_color));
     }
 }

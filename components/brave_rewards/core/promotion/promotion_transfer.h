@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
@@ -37,6 +38,7 @@ class PromotionTransfer {
 
   const raw_ref<RewardsEngineImpl> engine_;
   credential::CredentialsPromotion credentials_;
+  base::WeakPtrFactory<PromotionTransfer> weak_factory_{this};
 };
 
 }  // namespace promotion

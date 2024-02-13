@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "kuchikiki"
-version = "0.8.2"
+version = "0.8.4-speedreader"
 authors = [
     "Brave Authors",
     "Ralph Giles <rgiles@brave.com>",
@@ -31,10 +31,11 @@ doctest = false
 version = "0.27"
 
 [dependencies.html5ever]
-version = "0.26.0"
+version = "0.25.1"
 
 [dependencies.indexmap]
-version = "1.6.0"
+version = "1.9.3"
+features = ["std"]
 
 [dependencies.matches]
 version = "0.1.4"

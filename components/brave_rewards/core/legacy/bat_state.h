@@ -24,7 +24,7 @@ class LegacyBatState {
   explicit LegacyBatState(RewardsEngineImpl& engine);
   ~LegacyBatState();
 
-  void Load(LegacyResultCallback callback);
+  void Load(ResultCallback callback);
 
   bool GetRewardsMainEnabled() const;
 
@@ -45,7 +45,7 @@ class LegacyBatState {
   uint64_t GetCreationStamp() const;
 
  private:
-  void OnLoad(LegacyResultCallback callback,
+  void OnLoad(ResultCallback callback,
               mojom::Result result,
               const std::string& data);
 

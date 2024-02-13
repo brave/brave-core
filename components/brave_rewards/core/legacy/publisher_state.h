@@ -33,14 +33,14 @@ class LegacyPublisherState {
 
   bool GetPublisherAllowNonVerified() const;
 
-  void Load(LegacyResultCallback callback);
+  void Load(ResultCallback callback);
 
   std::vector<std::string> GetAlreadyProcessedPublishers() const;
 
   void GetAllBalanceReports(std::vector<mojom::BalanceReportInfoPtr>* reports);
 
  private:
-  void OnLoad(LegacyResultCallback callback,
+  void OnLoad(ResultCallback callback,
               mojom::Result result,
               const std::string& data);
 

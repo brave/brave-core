@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/credentials/credentials.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
@@ -46,6 +47,7 @@ class CredentialsCommon {
                             mojom::Result result);
 
   const raw_ref<RewardsEngineImpl> engine_;
+  base::WeakPtrFactory<CredentialsCommon> weak_factory_{this};
 };
 
 }  // namespace credential
