@@ -6,14 +6,17 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_BLINK_PROBE_TYPES_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_BLINK_PROBE_TYPES_H_
 
-#include "third_party/blink/renderer/platform/wtf/hash_map.h"
-#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "third_party/blink/renderer/platform/wtf/vector.h"
+#include <string>
+#include <utility>
+
+#include "base/values.h"
+#include "third_party/blink/renderer/core/core_export.h"
 
 namespace blink {
 
-using PageGraphBlinkArgs = Vector<String>;
-using PageGraphBlinkReceiverData = HashMap<String, String>;
+using PageGraphValue = base::Value;
+using PageGraphValues = base::Value::List;
+using PageGraphObject = base::Value::Dict;
 
 enum class PageGraphBindingType {
   kAttribute,
@@ -29,6 +32,16 @@ enum class PageGraphBindingEvent {
   kConstructorCall,
   kMethodCall,
 };
+
+template <typename... Args>
+base::Value::List CreatePageGraphValues(Args&&... args) {
+  base::Value::List list;
+  list.reserve(sizeof...(Args));
+  (list.Append(std::forward<Args>(args)), ...);
+  return list;
+}
+
+CORE_EXPORT std::string PageGraphValueToString(base::ValueView args);
 
 }  // namespace blink
 

@@ -19,6 +19,7 @@ if (enable_brave_page_graph) {
   brave_page_graph_core_sources += [
     "//brave/third_party/blink/renderer/core/brave_page_graph/blink_converters.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/blink_converters.h",
+    "//brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute.h",
@@ -168,7 +169,6 @@ if (enable_brave_page_graph) {
     "//brave/third_party/blink/renderer/core/brave_page_graph/requests/tracked_request.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h",
-    "//brave/third_party/blink/renderer/core/brave_page_graph/type_name_to_string.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/types.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/types.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.cc",

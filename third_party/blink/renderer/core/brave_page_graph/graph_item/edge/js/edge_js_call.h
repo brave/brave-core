@@ -6,10 +6,10 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_JS_EDGE_JS_CALL_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_JS_EDGE_JS_CALL_H_
 
+#include <string>
+
+#include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/js/edge_js.h"
-#include "third_party/blink/renderer/platform/wtf/casting.h"
-#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace brave_page_graph {
 
@@ -21,14 +21,14 @@ class EdgeJSCall final : public EdgeJS {
   EdgeJSCall(GraphItemContext* context,
              NodeScript* out_node,
              NodeJS* in_node,
-             Vector<String> arguments,
+             const blink::PageGraphValues& arguments,
              const int script_position);
 
   ~EdgeJSCall() override;
 
   const MethodName& GetMethodName() const override;
 
-  const Vector<String>& GetArguments() const { return arguments_; }
+  const std::string& GetArguments() const { return arguments_; }
 
   int GetScriptPosition() const { return script_position_; }
 
@@ -41,7 +41,7 @@ class EdgeJSCall final : public EdgeJS {
   bool IsEdgeJSCall() const override;
 
  private:
-  const Vector<String> arguments_;
+  const std::string arguments_;
   const int script_position_;
 };
 

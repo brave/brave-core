@@ -8,7 +8,7 @@ import re
 import brave_chromium_utils
 import override_utils
 
-# pylint: disable=relative-beyond-top-level
+# pylint: disable=relative-beyond-top-level,line-too-long
 from .code_node import SymbolNode, TextNode
 from .codegen_accumulator import CodeGenAccumulator
 from .codegen_context import CodeGenContext
@@ -40,7 +40,9 @@ _PAGE_GRAPH_TRACKED_ITEMS = {
         "toBlob",
         "toDataURL",
     },
+    "Geolocation": {"*"},
     "Location": {"*"},
+    "MediaDevices": {"*"},
     "Navigator": {"*"},
     "Performance": {"*"},
     "PerformanceObserver": {"*"},
@@ -92,12 +94,12 @@ def _should_track_in_page_graph(cg_context):
     return cg_context.property_.identifier in tracked_class_items
 
 
-def _to_page_graph_blink_receiver_data(arg):
-    return "ToPageGraphBlinkReceiverData({})".format(arg)
+def _to_page_graph_object(arg):
+    return "ToPageGraphObject({})".format(arg)
 
 
-def _to_page_graph_blink_arg(arg):
-    return "ToPageGraphBlinkArg({})".format(arg)
+def _to_page_graph_value(arg):
+    return "ToPageGraphValue(${{current_script_state}}, {})".format(arg)
 
 
 ### Helpers end.
@@ -194,7 +196,7 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
     # Extract blink_receiver and args from a string like:
     # ${blink_receiver}->getExtension(${script_state}, ${arg1_name})
     if expr.startswith("${blink_receiver}"):
-        receiver_data = _to_page_graph_blink_receiver_data("${blink_receiver}")
+        receiver_data = _to_page_graph_object("${blink_receiver}")
     else:
         receiver_data = "{}"
 
@@ -202,7 +204,7 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
     args = re.findall((r"(\${(?:"
                        r"arg\d+\w+|blink_property_name|blink_property_value"
                        r")})"), expr)
-    args = ", ".join(map(_to_page_graph_blink_arg, args))
+    args = ", ".join(map(_to_page_graph_value, args))
 
     # Extract exception state.
     if cg_context.may_throw_exception:
@@ -219,14 +221,19 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
                                            _IS_OBSERVABLE_ARRAY_SETTER):
         return_value = "std::nullopt"
     else:
-        return_value = _to_page_graph_blink_arg("return_value")
+        return_value = _to_page_graph_value("return_value")
 
-    pattern = (";\n"
-               "if (UNLIKELY(${page_graph_enabled})) {{\n"
-               "  probe::RegisterPageGraphWebAPICallWithResult("
-               "${current_execution_context}, \n"
-               "${page_graph_binding_name}, {_1}, {{{_2}}}, {_3}, {_4});\n"
-               "}}")
+    pattern = (
+        ";\n"
+        "if (UNLIKELY(${page_graph_enabled})) {{\n"
+        "  if (auto pg_scope = ScopedPageGraphCall(); pg_scope.has_value()) {{\n"
+        "    probe::RegisterPageGraphWebAPICallWithResult("
+        "      ${current_execution_context}, \n"
+        "      ${page_graph_binding_name}, {_1}, \n"
+        "      CreatePageGraphValues({_2}), \n"
+        "      {_3}, {_4});\n"
+        "  }}"
+        "}}")
     _1 = receiver_data
     _2 = args
     _3 = exception_state

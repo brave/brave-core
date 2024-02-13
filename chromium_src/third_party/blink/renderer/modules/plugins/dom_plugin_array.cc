@@ -155,28 +155,3 @@ void FarblePlugins(DOMPluginArray* owner,
 
 #undef BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__FARBLE_PLUGIN_DATA
 #undef BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA
-
-namespace blink {
-
-String ToPageGraphBlinkArg(DOMPluginArray* plugins) {
-  std::stringstream result_builder;
-  for (unsigned i = 0; i < plugins->length(); i++) {
-    result_builder << i << ": ";
-    result_builder << "plugin name: " << plugins->item(i)->name() << ", ";
-    result_builder << "plugin filename: " << plugins->item(i)->filename()
-                   << ", ";
-    result_builder << "plugin description: " << plugins->item(i)->description()
-                   << ", ";
-    DOMMimeType* mime_type = plugins->item(i)->item(i);
-    if (mime_type != nullptr) {
-      result_builder << "mimetype type: " << mime_type->type() << ", ";
-      result_builder << "mimetype suffixes: " << mime_type->suffixes() << ", ";
-      result_builder << "mimetype description: " << mime_type->description()
-                     << ";";
-    }
-  }
-
-  return String(result_builder.str());
-}
-
-}  // namespace blink
