@@ -3,6 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+.buttonMenu {
+  leo-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
 .moreButton {
   --leo-icon-size: 18px;
   background-color: var(--leo-color-container-background);
@@ -13,12 +21,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  leo-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+.moreButtonHide {
+  display: none;
 }
 
 .liked {
