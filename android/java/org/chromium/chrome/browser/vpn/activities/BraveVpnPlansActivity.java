@@ -5,7 +5,11 @@
 
 package org.chromium.chrome.browser.vpn.activities;
 
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
+
 import android.graphics.Paint;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -97,6 +101,24 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                 String.format(getResources().getString(R.string.monthly_subscription), ""));
         mMonthlySubscriptionAmountText = findViewById(R.id.monthly_subscription_amount_text);
         mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
+
+        TextView trialText = findViewById(R.id.trial_text);
+        String trialString = getResources().getString(R.string.trial_text);
+        String day7TrialString = getResources().getString(R.string.day_7_trial_text);
+        String trialFullString = String.format(trialString, day7TrialString);
+        SpannableString trialTextSpan = new SpannableString(trialFullString);
+        int trialTextIndex = trialFullString.indexOf(day7TrialString);
+        trialTextSpan.setSpan(
+                new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                trialTextIndex,
+                trialFullString.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+        trialTextSpan.setSpan(
+                new UnderlineSpan(),
+                trialTextIndex,
+                trialFullString.length(),
+                SPAN_EXCLUSIVE_EXCLUSIVE);
+        trialText.setText(trialTextSpan);
 
         mYearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
