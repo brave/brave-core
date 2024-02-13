@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
@@ -54,6 +55,8 @@ class AdBlockComponentServiceManager
   bool IsFilterListEnabled(const std::string& uuid) const;
   void EnableFilterList(const std::string& uuid, bool enabled);
 
+  void CheckAdBlockComponentsUpdate();
+
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
 
@@ -83,6 +86,8 @@ class AdBlockComponentServiceManager
       GUARDED_BY_CONTEXT(sequence_checker_);
   raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
+
+  base::RepeatingTimer update_check_timer_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

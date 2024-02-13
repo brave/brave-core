@@ -20,7 +20,6 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/prefs/pref_registry_simple.h"

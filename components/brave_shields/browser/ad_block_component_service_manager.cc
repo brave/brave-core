@@ -12,9 +12,12 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/rand_util.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -22,12 +25,20 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
+using brave_component_updater::BraveOnDemandUpdater;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
 
 namespace brave_shields {
 
 namespace {
+
+BASE_DECLARE_FEATURE(kAdBlockDefaultResourceUpdateInterval);
+constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
+    &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
+BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
+             "AdBlockDefaultResourceUpdateInterval",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 typedef struct ListDefaultOverrideConstants {
   const raw_ref<const base::Feature> feature;
@@ -251,6 +262,37 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
   UpdateFilterListPrefs(uuid, enabled);
 }
 
+void AdBlockComponentServiceManager::CheckAdBlockComponentsUpdate() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  auto runner = base::SequencedTaskRunner::GetCurrentDefault();
+
+  runner->PostDelayedTask(FROM_HERE, base::BindOnce([]() {
+                            BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+                                kAdBlockFilterListCatalogComponentId);
+                          }),
+                          base::Seconds(base::RandInt(0, 10)));
+
+  runner->PostDelayedTask(FROM_HERE, base::BindOnce([]() {
+                            BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+                                kAdBlockResourceComponentId);
+                          }),
+                          base::Seconds(base::RandInt(0, 10)));
+
+  for (const auto& entry : filter_list_catalog_) {
+    if (IsFilterListEnabled(entry.uuid)) {
+      runner->PostDelayedTask(
+          FROM_HERE,
+          base::BindOnce(
+              [](const std::string& uuid) {
+                BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(uuid);
+              },
+              entry.uuid),
+          base::Seconds(base::RandInt(0, 10)));
+    }
+  }
+}
+
 void AdBlockComponentServiceManager::SetFilterListCatalog(
     std::vector<FilterListCatalogEntry> catalog) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -297,6 +339,14 @@ void AdBlockComponentServiceManager::OnFilterListCatalogLoaded(
     const std::string& catalog_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   SetFilterListCatalog(FilterListCatalogFromJSON(catalog_json));
+
+  update_check_timer_.Start(
+      FROM_HERE, base::Minutes(kComponentUpdateCheckIntervalMins.Get()),
+      base::BindRepeating(
+          [](base::WeakPtr<AdBlockComponentServiceManager> component_manager) {
+            component_manager->CheckAdBlockComponentsUpdate();
+          },
+          weak_factory_.GetWeakPtr()));
 }
 
 }  // namespace brave_shields
