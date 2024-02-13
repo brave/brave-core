@@ -87,11 +87,12 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
 void MaybeAddLeoProvider(AutocompleteController::Providers& providers,
                          AutocompleteController* controller) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
+  auto* provider_client = controller->autocomplete_provider_client();
   // TestOmniboxClient has null prefs getter
-  auto* prefs = controller->autocomplete_provider_client()->GetPrefs();
-  if (prefs && ai_chat::IsAIChatEnabled(prefs)) {
-    providers.push_back(base::MakeRefCounted<LeoProvider>(
-        controller->autocomplete_provider_client()));
+  auto* prefs = provider_client->GetPrefs();
+  if (prefs && ai_chat::IsAIChatEnabled(prefs) &&
+      !provider_client->IsOffTheRecord()) {
+    providers.push_back(base::MakeRefCounted<LeoProvider>(provider_client));
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }

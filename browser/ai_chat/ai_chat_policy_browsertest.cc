@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
@@ -21,6 +22,7 @@
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
@@ -32,6 +34,7 @@
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
@@ -157,6 +160,31 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, ContextMenu) {
     EXPECT_TRUE(ai_chat_index.has_value());
   } else {
     EXPECT_FALSE(ai_chat_index.has_value());
+  }
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SidePanelRegistry) {
+  auto* registry = SidePanelRegistry::Get(web_contents());
+  auto* entry = registry->GetEntryForKey(
+      SidePanelEntry::Key(SidePanelEntry::Id::kChatUI));
+  if (IsAIChatEnabledTest()) {
+    EXPECT_TRUE(entry);
+  } else {
+    EXPECT_FALSE(entry);
+  }
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SpeedreaderToolbar) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), GURL(base::StrCat({content::kChromeUIScheme, "://",
+                                    kSpeedreaderPanelHost}))));
+  auto result =
+      content::EvalJs(web_contents(), "loadTimeData.data_.aiChatFeatureEnabled")
+          .ExtractBool();
+  if (IsAIChatEnabledTest()) {
+    EXPECT_EQ(result, true);
+  } else {
+    EXPECT_EQ(result, false);
   }
 }
 
