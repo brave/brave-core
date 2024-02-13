@@ -9,14 +9,10 @@
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 #include "brave/components/widevine/constants.h"
+#include "components/update_client/persisted_data.h"
 #endif
 
 namespace update_client {
-
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-constexpr char kUpstreamHasArm64WidevineKey[] =
-    "brave_upstream_has_arm64_widevine";
-#endif
 
 SequentialUpdateChecker::SequentialUpdateChecker(
     scoped_refptr<Configurator> config,
@@ -125,9 +121,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     CHECK(!results->list.empty());
     auto r = results->list.begin();
     if (r->extension_id == kWidevineComponentId && fake_architecture.empty()) {
-      bool upstream_has_arm64 =
-          GetPersistedFlag(r->extension_id, kUpstreamHasArm64WidevineKey);
-      if (upstream_has_arm64) {
+      if (UpstreamHasArm64Widevine(config_->GetPrefService())) {
         VLOG(1) << "Skipping WIDEVINE_ARM64_DLL_FIX because we already saw "
                    "once that upstream offers Arm64 binaries for Widevine. "
                    "Consider removing our WIDEVINE_ARM64_DLL_FIX.";
@@ -145,7 +139,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
           // us not fall back to x64 in the benign case where we are on the
           // latest version of Arm64 Widevine and are getting a "noupdate"
           // response.
-          SetPersistedFlag(r->extension_id, kUpstreamHasArm64WidevineKey);
+          SetUpstreamHasArm64Widevine(config_->GetPrefService());
         }
       }
     }
@@ -171,20 +165,6 @@ void SequentialUpdateChecker::UpdateResultAvailable(
   }
   VLOG(3) << "> UpdateResultAvailable(" << error << ")";
 }
-
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-
-void SequentialUpdateChecker::SetPersistedFlag(const std::string& extension_id,
-                                               const std::string& key) {
-  update_context_->persisted_data->SetString(extension_id, key, "true");
-}
-
-bool SequentialUpdateChecker::GetPersistedFlag(const std::string& extension_id,
-                                               const std::string& key) {
-  return !update_context_->persisted_data->GetString(extension_id, key).empty();
-}
-
-#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
 std::unique_ptr<UpdateChecker> SequentialUpdateChecker::Create(
     scoped_refptr<Configurator> config,
