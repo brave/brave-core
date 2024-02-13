@@ -312,8 +312,8 @@ void AIChatCredentialManager::CreateOrderFromReceipt(
     std::move(callback).Run("");
     return;
   }
-  const std::string leo_sku_domain = brave_domains::GetServicesDomain(
-      kLeoSkuHostnamePart, brave_domains::ServicesEnvironment::STAGING);
+  const std::string leo_sku_domain =
+      brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
 
   base::Value::Dict request;
   request.Set("type", "android");
@@ -338,8 +338,8 @@ void AIChatCredentialManager::FetchOrderCredentials(
     return;
   }
 
-  const std::string leo_sku_domain = brave_domains::GetServicesDomain(
-      kLeoSkuHostnamePart, brave_domains::ServicesEnvironment::STAGING);
+  const std::string leo_sku_domain =
+      brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
 
   skus_service_->FetchOrderCredentials(leo_sku_domain, order_id,
                                        std::move(callback));
@@ -353,8 +353,8 @@ void AIChatCredentialManager::RefreshOrder(
     return;
   }
 
-  const std::string leo_sku_domain = brave_domains::GetServicesDomain(
-      kLeoSkuHostnamePart, brave_domains::ServicesEnvironment::STAGING);
+  const std::string leo_sku_domain =
+      brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
 
   skus_service_->RefreshOrder(leo_sku_domain, order_id, std::move(callback));
 }
