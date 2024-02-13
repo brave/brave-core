@@ -813,7 +813,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   auto* prefs =
       user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
   if (ai_chat::IsAIChatEnabled(prefs) &&
-      !render_frame_host->GetBrowserContext()->IsTor()) {
+      brave::IsRegularProfile(render_frame_host->GetBrowserContext())) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }
@@ -1253,9 +1253,11 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (auto ai_chat_throttle =
-          ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
-    throttles.push_back(std::move(ai_chat_throttle));
+  if (brave::IsRegularProfile(context)) {
+    if (auto ai_chat_throttle =
+            ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
+      throttles.push_back(std::move(ai_chat_throttle));
+    }
   }
 #endif  // ENABLE_AI_CHAT
 
