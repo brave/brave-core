@@ -129,17 +129,6 @@ SkPath BraveVerticalTabStyle::GetPath(
         hit_test_outsets.set_top(0);
       }
 
-      // We also want the first tab (taking RTL into account) to be selectable
-      // in maximized or fullscreen mode by clicking at the very edge of the
-      // screen.
-      if (ShouldExtendHitTest() && tab()->controller()->IsTabFirst(tab())) {
-        if (tab()->GetMirrored()) {
-          hit_test_outsets.set_right(brave_tabs::kHorizontalTabInset * scale);
-        } else {
-          hit_test_outsets.set_left(brave_tabs::kHorizontalTabInset * scale);
-        }
-      }
-
       aligned_bounds.Outset(hit_test_outsets);
     }
   }
