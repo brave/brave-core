@@ -5,7 +5,6 @@
 
 module playlist.mojom;
 
-import "mojo/public/mojom/base/shared_memory.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
@@ -204,8 +203,7 @@ interface PlaylistStreamingObserver {
 };
 
 interface PlaylistRenderFrameObserverConfigurator {
-  AddScripts(
-      mojo_base.mojom.ReadOnlySharedMemoryRegion? media_source_api_suppressor,
-      mojo_base.mojom.ReadOnlySharedMemoryRegion media_detector);
+  AddMediaSourceAPISuppressor(string media_source_api_suppressor);
+  AddMediaDetector(string media_detector);
   SetUpForTesting();
 };

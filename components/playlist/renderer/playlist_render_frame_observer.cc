@@ -42,24 +42,20 @@ void PlaylistRenderFrameObserver::OnDestruct() {
   delete this;
 }
 
-void PlaylistRenderFrameObserver::AddScripts(
-    base::ReadOnlySharedMemoryRegion media_source_api_suppressor,
-    base::ReadOnlySharedMemoryRegion media_detector) {
+void PlaylistRenderFrameObserver::AddMediaSourceAPISuppressor(
+    const std::string& media_source_api_suppressor) {
   DVLOG(2) << __FUNCTION__;
 
-  // optional in playlist.mojom
-  if (media_source_api_suppressor.IsValid()) {
-    media_source_api_suppressor_script_.emplace(
-        media_source_api_suppressor.Map().GetMemoryAs<char>(),
-        media_source_api_suppressor.GetSize());
-    CHECK(!media_source_api_suppressor_script_->empty());
-  }
+  media_source_api_suppressor_ = media_source_api_suppressor;
+  CHECK(!media_source_api_suppressor_->empty());
+}
 
-  // non-optional in playlist.mojom
-  CHECK(media_detector.IsValid());
-  media_detector_script_.emplace(media_detector.Map().GetMemoryAs<char>(),
-                                 media_detector.GetSize());
-  CHECK(!media_detector_script_->empty());
+void PlaylistRenderFrameObserver::AddMediaDetector(
+    const std::string& media_detector) {
+  DVLOG(2) << __FUNCTION__;
+
+  media_detector_ = media_detector;
+  CHECK(!media_detector_->empty());
 }
 
 void PlaylistRenderFrameObserver::SetUpForTesting() {
@@ -91,18 +87,18 @@ void PlaylistRenderFrameObserver::OnMediaHandlerDisconnect() {
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  if (media_source_api_suppressor_script_) {
+  if (media_source_api_suppressor_) {
     v8::Isolate* isolate = blink::MainThreadIsolate();
     v8::Isolate::Scope isolate_scope(isolate);
     v8::HandleScope handle_scope(isolate);
 
-    Inject(*media_source_api_suppressor_script_,
+    Inject(*media_source_api_suppressor_,
            render_frame()->GetWebFrame()->MainWorldScriptContext());
   }
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentEnd() {
-  if (media_detector_script_) {
+  if (media_detector_) {
     v8::Isolate* isolate = blink::MainThreadIsolate();
     v8::Isolate::Scope isolate_scope(isolate);
     v8::HandleScope handle_scope(isolate);
@@ -121,8 +117,7 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentEnd() {
                                 weak_ptr_factory_.GetWeakPtr()))
             ->GetFunction(context)
             .ToLocalChecked();
-    Inject(*media_detector_script_, context,
-           {on_media_detected.As<v8::Value>()});
+    Inject(*media_detector_, context, {on_media_detected.As<v8::Value>()});
   }
 }
 

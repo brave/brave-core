@@ -14,6 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/common/features.h"
@@ -49,15 +50,16 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
-void PlaylistDownloadRequestManager::CreateWebContents(
-    bool should_force_fake_ua) {
+void PlaylistDownloadRequestManager::CreateWebContents(const Request& request) {
   content::WebContents::CreateParams create_params(context_, nullptr);
   create_params.is_never_visible = true;
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetAudioMuted(true);
-  PlaylistTabHelper::MaybeCreateForWebContents(
-      web_contents_.get(), service_.get(), /* is_background = */ true);
-  if (should_force_fake_ua ||
+  PlaylistBackgroundWebContentsHelper::CreateForWebContents(
+      web_contents_.get(),
+      media_detector_component_manager_->GetMediaSourceAPISuppressorScript(),
+      media_detector_component_manager_->GetMediaDetectorScript(request.url));
+  if (request.should_force_fake_ua ||
       base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
     DVLOG(2) << __func__ << " Faked UA to detect media files";
     blink::UserAgentOverride user_agent(
@@ -118,7 +120,7 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
 
   // Start to request on clean slate, so that result won't be affected by
   // previous page.
-  CreateWebContents(request.should_force_fake_ua);
+  CreateWebContents(request);
 
   DCHECK(request.url.is_valid());
   DCHECK(web_contents_);
@@ -326,19 +328,6 @@ bool PlaylistDownloadRequestManager::
       << "CanCacheMedia() should be true when this method is called";
 }
 
-void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
-    content::WebContents* web_contents,
-    blink::web_pref::WebPreferences* web_prefs) {
-  if (!service_->playlist_enabled()) {
-    return;
-  }
-
-  if (web_contents_ && web_contents_.get() == web_contents) {
-    // Background web contents.
-    web_prefs->force_cosmetic_filtering = true;
-  }
-}
-
 void PlaylistDownloadRequestManager::ResetRequests() {
   if (web_contents_) {
     web_contents_.reset();
@@ -353,7 +342,7 @@ void PlaylistDownloadRequestManager::ResetRequests() {
 content::WebContents*
 PlaylistDownloadRequestManager::GetBackgroundWebContentsForTesting() {
   if (!web_contents_) {
-    CreateWebContents(false);
+    CreateWebContents();
   }
 
   return web_contents_.get();

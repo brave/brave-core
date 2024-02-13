@@ -17,6 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
@@ -27,6 +28,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/filename_util.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 namespace playlist {
 namespace {
@@ -413,12 +415,11 @@ void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
     return;
   }
 
-  if (!PlaylistTabHelper::FromWebContents(web_contents)) {
+  if (!PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents)) {
     return;
   }
 
-  download_request_manager_->ConfigureWebPrefsForBackgroundWebContents(
-      web_contents, web_prefs);
+  web_prefs->force_cosmetic_filtering = true;
 }
 
 base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
@@ -528,14 +529,7 @@ bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
   });
 }
 
-base::ReadOnlySharedMemoryRegion
-PlaylistService::GetMediaSourceAPISuppressorScript() const {
-  return download_request_manager_->media_detector_component_manager()
-      ->GetMediaSourceAPISuppressorScript();
-}
-
-base::ReadOnlySharedMemoryRegion PlaylistService::GetMediaDetectorScript(
-    const GURL& url) const {
+std::string PlaylistService::GetMediaDetectorScript(const GURL& url) const {
   return download_request_manager_->media_detector_component_manager()
       ->GetMediaDetectorScript(url);
 }
