@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/lint.py b/build/android/gyp/lint.py
+index f3d85f78ec1298c4e57e5811a3faede44edbc5f0..b7a0de5074e11681ee970c9b768c6e4b797585ee 100755
+--- a/build/android/gyp/lint.py
++++ b/build/android/gyp/lint.py
+@@ -237,6 +237,7 @@ def _RunLint(custom_lint_jar_path,
+   else:
+     creating_baseline = False
+     lint_xmx = '2G'
++    lint_xmx = '4G'
+ 
+   # All paths in lint are based off of relative paths from root with root as the
+   # prefix. Path variable substitution is based off of prefix matching so custom
