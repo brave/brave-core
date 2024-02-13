@@ -20,7 +20,14 @@ _CLANG_WRAPPER_CMD_LINE_RE = re.compile(
 
 
 @override_utils.override_function(globals())
-def ProcessCompileDatabase(original_function, compile_db, filtered_args, target_os=None):
+def ProcessCompileDatabase(original_function,
+                           compile_db,
+                           filtered_args,
+                           target_os=None):
+    # Handle multiple flags passed as a single comma-separated value.
+    if filtered_args and len(filtered_args) == 1 and ',' in filtered_args[0]:
+        filtered_args = filtered_args[0].split(',')
+
     ext_filtered_flags = [
         # Remove clangd-indexer unsupported flags.
         '-gno-codeview-command-line',
