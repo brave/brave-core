@@ -21,7 +21,8 @@ const PRIVACY_URL = "https://brave.com/privacy/browser/#brave-leo"
 function PrivacyMessage () {
   const context = React.useContext(DataContext)
 
-  const handleLinkClick = (url: string) => {
+  const handleLinkClick = (e: React.MouseEvent, url: string) => {
+    e.preventDefault()
     const mojomUrl = new Url()
     mojomUrl.url = url
 
@@ -29,7 +30,7 @@ function PrivacyMessage () {
   }
 
   const createLinkWithClickHandler = (content: string, url: string) => (
-      <a onClick={() => handleLinkClick(url)} href={url} target='_blank'>
+      <a onClick={(e) => handleLinkClick(e, url)} href={url} target='_blank'>
         {content}
       </a>
   )
