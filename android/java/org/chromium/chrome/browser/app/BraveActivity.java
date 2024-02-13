@@ -178,7 +178,6 @@ import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
-import org.chromium.chrome.browser.vpn.fragments.BraveVpnCalloutDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
@@ -1202,21 +1201,6 @@ public abstract class BraveActivity extends ChromeActivity
 
         if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
                 && BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
-            if (BraveVpnPrefUtils.shouldShowCallout()
-                            && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                            && (ChromeSharedPreferences.getInstance()
-                                                    .readInt(
-                                                            BravePreferenceKeys
-                                                                    .BRAVE_APP_OPEN_COUNT)
-                                            == 1
-                                    && !isFirstInstall)
-                    || (ChromeSharedPreferences.getInstance()
-                                            .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                                    == 7
-                            && isFirstInstall)) {
-                showVpnCalloutDialog();
-            }
-
             if (!TextUtils.isEmpty(BraveVpnPrefUtils.getPurchaseToken())
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getProductId())) {
                 mIsVerification = true;
@@ -1342,17 +1326,6 @@ public abstract class BraveActivity extends ChromeActivity
         playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         playlistActivityIntent.setAction(Intent.ACTION_VIEW);
         context.startActivity(playlistActivityIntent);
-    }
-
-    private void showVpnCalloutDialog() {
-        try {
-            BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
-                    new BraveVpnCalloutDialogFragment();
-            braveVpnCalloutDialogFragment.show(
-                    getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
-        } catch (IllegalStateException e) {
-            Log.e("showVpnCalloutDialog", e.getMessage());
-        }
     }
 
     private void showLinkVpnSubscriptionDialog() {
