@@ -6,8 +6,12 @@
 #include "brave/components/widevine/static_buildflags.h"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+
+#include "components/prefs/pref_service.h"
+
 #define RegisterPersistedDataPrefs RegisterPersistedDataPrefs_ChromiumImpl
-#endif
+
+#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
 #include "src/components/update_client/persisted_data.cc"
 
@@ -15,11 +19,24 @@
 
 #undef RegisterPersistedDataPrefs
 
+namespace {
+constexpr char kUpstreamHasArm64WidevineKey[] =
+    "brave_upstream_has_arm64_widevine";
+}
+
 namespace update_client {
 
 void RegisterPersistedDataPrefs(PrefRegistrySimple* registry) {
   RegisterPersistedDataPrefs_ChromiumImpl(registry);
   registry->RegisterBooleanPref(kUpstreamHasArm64WidevineKey, false);
+}
+
+bool UpstreamHasArm64Widevine(PrefService* prefService) {
+  return prefService->GetBoolean(kUpstreamHasArm64WidevineKey);
+}
+
+void SetUpstreamHasArm64Widevine(PrefService* prefService) {
+  prefService->SetBoolean(kUpstreamHasArm64WidevineKey, true);
 }
 
 }  // namespace update_client

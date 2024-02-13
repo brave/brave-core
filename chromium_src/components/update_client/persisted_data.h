@@ -9,11 +9,18 @@
 #include "brave/components/widevine/static_buildflags.h"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+
+class PrefService;
+
 namespace update_client {
-constexpr char kUpstreamHasArm64WidevineKey[] =
-    "brave_upstream_has_arm64_widevine";
+
+bool UpstreamHasArm64Widevine(PrefService* prefService);
+
+void SetUpstreamHasArm64Widevine(PrefService* prefService);
+
 }
-#endif
+
+#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
 #include "src/components/update_client/persisted_data.h"  // IWYU pragma: export
 

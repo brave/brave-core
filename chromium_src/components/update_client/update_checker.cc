@@ -9,7 +9,6 @@
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 #include "brave/components/widevine/constants.h"
-#include "components/prefs/pref_service.h"
 #include "components/update_client/persisted_data.h"
 #endif
 
@@ -122,9 +121,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     CHECK(!results->list.empty());
     auto r = results->list.begin();
     if (r->extension_id == kWidevineComponentId && fake_architecture.empty()) {
-      bool upstream_has_arm64 =
-          GetPersistedFlag(r->extension_id, kUpstreamHasArm64WidevineKey);
-      if (upstream_has_arm64) {
+      if (update_client::UpstreamHasArm64Widevine(config_->GetPrefService())) {
         VLOG(1) << "Skipping WIDEVINE_ARM64_DLL_FIX because we already saw "
                    "once that upstream offers Arm64 binaries for Widevine. "
                    "Consider removing our WIDEVINE_ARM64_DLL_FIX.";
@@ -142,7 +139,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
           // us not fall back to x64 in the benign case where we are on the
           // latest version of Arm64 Widevine and are getting a "noupdate"
           // response.
-          SetPersistedFlag(r->extension_id, kUpstreamHasArm64WidevineKey);
+          update_client::SetUpstreamHasArm64Widevine(config_->GetPrefService());
         }
       }
     }
@@ -168,20 +165,6 @@ void SequentialUpdateChecker::UpdateResultAvailable(
   }
   VLOG(3) << "> UpdateResultAvailable(" << error << ")";
 }
-
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-
-void SequentialUpdateChecker::SetPersistedFlag(const std::string& extension_id,
-                                               const std::string& key) {
-  update_context_->config->GetPrefService()->SetBoolean(extension_id + key, true);
-}
-
-bool SequentialUpdateChecker::GetPersistedFlag(const std::string& extension_id,
-                                               const std::string& key) {
-  return update_context_->config->GetPrefService()->GetBoolean(extension_id + key);
-}
-
-#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
 std::unique_ptr<UpdateChecker> SequentialUpdateChecker::Create(
     scoped_refptr<Configurator> config,
