@@ -167,6 +167,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
+import org.chromium.chrome.browser.ui.RootUiCoordinator;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
@@ -2211,5 +2212,9 @@ public abstract class BraveActivity extends ChromeActivity
                         "maybeHandleUrlIntent",
                         Intent.class,
                         intent);
+    }
+
+    public RootUiCoordinator getRootUiCoordinator() {
+        return mRootUiCoordinator;
     }
 }

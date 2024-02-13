@@ -392,4 +392,8 @@ public class BraveToolbarManager extends ToolbarManager {
         assert false : "Wrong top toolbar type!";
         return null;
     }
+
+    public LocationBar getLocationBar() {
+        return mLocationBar;
+    }
 }
