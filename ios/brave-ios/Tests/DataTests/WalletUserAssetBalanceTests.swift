@@ -28,9 +28,9 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     createAndWait(asset: asset2, balance: "5.6789", account: account3)
     
     DataController.viewContext.refreshAllObjects()
-    let assetBalance = WalletUserAssetBalance.getBalance(for: asset, account: account1)
-    let asset2Balance = WalletUserAssetBalance.getBalance(for: asset2, account: account3)
-    let assetBalances = WalletUserAssetBalance.getBalance(for: asset)
+    let assetBalance = WalletUserAssetBalance.getBalances(for: asset, account: account1)
+    let asset2Balance = WalletUserAssetBalance.getBalances(for: asset2, account: account3)
+    let assetBalances = WalletUserAssetBalance.getBalances(for: asset)
     let allAssetBalance = assetBalances?.reduce(0.0, { partialResult, assetBalance in
       partialResult + (Double(assetBalance.balance) ?? 0.0)
     })
@@ -95,13 +95,13 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     }
     
     DataController.viewContext.refreshAllObjects()
-    let assetBalance1 = WalletUserAssetBalance.getBalance(for: asset, account: account1)
+    let assetBalance1 = WalletUserAssetBalance.getBalances(for: asset, account: account1)
     XCTAssertEqual(assetBalance1?.count, 1)
     XCTAssertEqual(assetBalance1!.first!.balance, "9.8765")
-    let assetBalance2 = WalletUserAssetBalance.getBalance(for: asset, account: account2)
+    let assetBalance2 = WalletUserAssetBalance.getBalances(for: asset, account: account2)
     XCTAssertEqual(assetBalance2?.count, 1)
     XCTAssertEqual(assetBalance2!.first!.balance, "0.8766")
-    let assetBalance3 = WalletUserAssetBalance.getBalance(for: asset2, account: account3)
+    let assetBalance3 = WalletUserAssetBalance.getBalances(for: asset2, account: account3)
     XCTAssertEqual(assetBalance3?.count, 1)
     XCTAssertEqual(assetBalance3!.first!.balance, "5.6789")
   }
