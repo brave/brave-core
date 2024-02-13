@@ -146,11 +146,6 @@ TEST_F(BraveTemplateURLServiceUtilTest,
       nullptr);
 
   // Verify count and order.
-#if BUILDFLAG(IS_WIN)
   TestDefaultOrder(template_urls, {":d", ":q", ":g", ":b", ":sp", ":ya",
                                    "@bookmarks", "@history", "@tabs"});
-#else
-  TestDefaultOrder(template_urls, {":br", ":d", ":q", ":g", ":b", ":sp", ":e",
-                                   ":ya", "@bookmarks", "@history", "@tabs"});
-#endif
 }
