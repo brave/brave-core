@@ -23,7 +23,7 @@ jobs:
     name: rustfmt
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
     - name: Install Rust
       run: rustup update stable && rustup default stable
     - name: Check formatting
@@ -48,7 +48,7 @@ jobs:
     name: minrust
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Install Rust
         run: rustup update 1.39.0 && rustup default 1.39.0
       - name: Check
@@ -65,7 +65,7 @@ jobs:
           - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Install Rust
         # --no-self-update is necessary because the windows environment cannot self-update rustup.exe.
         run: rustup update stable --no-self-update && rustup default stable
@@ -77,7 +77,7 @@ jobs:
     name: nightly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Install Rust
         run: rustup update $nightly && rustup default $nightly
       - name: Test
@@ -96,7 +96,7 @@ jobs:
           - wasm32-unknown-unknown
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Install Rust
         run: rustup update stable && rustup default stable
       - name: cross build --target ${{ matrix.target }}
@@ -116,7 +116,7 @@ jobs:
     name: tsan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Install Rust
         run: rustup update $nightly && rustup default $nightly
       - name: Install rust-src
@@ -127,7 +127,7 @@ jobs:
     name: miri
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Miri
         run: ci/miri.sh
 
@@ -136,7 +136,7 @@ jobs:
     name: loom
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Install Rust
         run: rustup update $nightly && rustup default $nightly
       - name: Loom tests
@@ -155,7 +155,7 @@ jobs:
       - loom
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       - name: Install Rust
         run: rustup update $nightly && rustup default $nightly
       - name: Build documentation

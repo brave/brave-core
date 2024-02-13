@@ -16,32 +16,32 @@ jobs:
         - beta
         - nightly
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: ${{ matrix.rust }}
         default: true
     - name: Build the crate on minimal version.
-      uses: actions-rs/cargo@v1
+      uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: build
     - name: Build the crate on 1.36 with features.
       if: matrix.rust != '1.34.0'
-      uses: actions-rs/cargo@v1
+      uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: build
         # Using `extern crate alloc` is only possible after 1.36
         args: --features=alloc,std,grab_spare_slice
     - name: Test on Stable/Beta
       if: matrix.rust != '1.34.0' && matrix.rust != '1.36.0'
-      uses: actions-rs/cargo@v1
+      uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: test
         args: --features=alloc --features=grab_spare_slice --features=rustc_1_40
     - name: Test on Nightly with All Features
       if: matrix.rust == 'nightly'
-      uses: actions-rs/cargo@v1
+      uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: test
         args: --all-features

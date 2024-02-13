@@ -14,13 +14,13 @@ jobs:
     name: Test u32 backend
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: stable
         override: true
-    - uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: test
         args: --no-default-features --features "std u32_backend"
@@ -29,13 +29,13 @@ jobs:
     name: Test u64 backend
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: stable
         override: true
-    - uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: test
         args: --no-default-features --features "std u64_backend"
@@ -44,13 +44,13 @@ jobs:
     name: Test simd backend (nightly)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: nightly
         override: true
-    - uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: test
         args: --no-default-features --features "std simd_backend"
@@ -59,13 +59,13 @@ jobs:
     name: Test default feature selection and serde
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: stable
         override: true
-    - uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: test
         args: --features "serde"
@@ -74,13 +74,13 @@ jobs:
     name: Test no_std+alloc with u32 backend
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: stable
         override: true
-    - uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: test
         args: --lib --no-default-features --features "alloc u32_backend"
@@ -89,13 +89,13 @@ jobs:
     name: Test nightly compiler
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: nightly
         override: true
-    - uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: test
         args: --features "nightly"
@@ -104,13 +104,13 @@ jobs:
     name: Current MSRV is 1.41
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: 1.41
         override: true
-    - uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: build
 
@@ -118,13 +118,13 @@ jobs:
     name: Check that benchmarks compile
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
         profile: minimal
         toolchain: stable
         override: true
-    - uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1
       with:
         command: bench
         # This filter selects no benchmarks, so we don't run any, only build them.

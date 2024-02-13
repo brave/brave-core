@@ -11,15 +11,15 @@ jobs:
     env:
       NIX_BUILD_ARGS: -v --print-build-logs --fallback --show-trace
     steps:
-    - uses: actions/checkout@v3
-    - uses: cachix/install-nix-action@v13
+    - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+    - uses: cachix/install-nix-action@8d6d5e949675fbadb765c6b1a975047fa5f09b27 # v13
       with:
         install_url: https://nixos-nix-install-tests.cachix.org/serve/i6laym9jw3wg9mw6ncyrk6gjx4l34vvx/install
         install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
         extra_nix_config: |
           experimental-features = nix-command flakes
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-    - uses: cachix/cachix-action@v10
+    - uses: cachix/cachix-action@73e75d1a0cd4330597a571e8f9dedb41faa2fc4e # v10
       with:
         name: yatima
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'

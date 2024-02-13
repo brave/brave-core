@@ -31,7 +31,7 @@ jobs:
             os: ubuntu
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
     - run: rustup default ${{ matrix.channel }}
     - run: cargo build --all
     - run: cargo test --all
@@ -48,20 +48,20 @@ jobs:
           #- x86_64-unknown-redox
           #- x86_64-linux-android
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
     - run: rustup default nightly
     - run: rustup target add ${{ matrix.target }}
     - run: cargo build --workspace --target ${{ matrix.target }} --features nightly
   build_docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       - run: rustup default nightly
       - run: cargo doc --workspace --features arc_lock,serde,deadlock_detection --no-deps -p parking_lot -p parking_lot_core -p lock_api
   benchmark:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       - run: rustup default nightly
       - run: |
           cd benchmark

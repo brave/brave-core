@@ -17,7 +17,7 @@ jobs:
     outputs:
       msrv: ${{ steps.msrv.outputs.msrv }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       - id: msrv
         run: echo "::set-output name=msrv::$(echo $MSRV)"
 
@@ -79,8 +79,8 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           profile: minimal
           toolchain: ${{ matrix.rust }}
@@ -108,8 +108,8 @@ jobs:
 
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           profile: minimal
           toolchain: ${{ matrix.toolchain }}
@@ -134,14 +134,14 @@ jobs:
 
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           profile: minimal
           toolchain: ${{ matrix.toolchain }}
           target: ${{ matrix.target }}
           override: true
-      - uses: msys2/setup-msys2@v2
+      - uses: msys2/setup-msys2@cc11e9188b693c2b100158c3322424c4cc1dadea # v2
       - run: cargo test --target ${{ matrix.target }} --no-default-features --features pairing,multicore
       - run: cargo test --target ${{ matrix.target }} --no-default-features --features pairing
       - run: cargo test --target ${{ matrix.target }} --no-default-features --features blst
@@ -154,7 +154,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: rustup component add clippy
-      - uses: actions-rs/clippy-check@v1
+      - uses: actions-rs/clippy-check@b5b5f21f4797c02da247df37026fcd0a5024aa4d # v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --no-default-features --features blst,multicore
@@ -164,7 +164,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: rustup component add clippy
-      - uses: actions-rs/clippy-check@v1
+      - uses: actions-rs/clippy-check@b5b5f21f4797c02da247df37026fcd0a5024aa4d # v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -174,7 +174,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
       with:
           profile: minimal
           toolchain: nightly

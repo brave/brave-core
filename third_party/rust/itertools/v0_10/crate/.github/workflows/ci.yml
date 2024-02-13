@@ -12,7 +12,7 @@ jobs:
     name: Rust MSRV
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       - uses: dtolnay/rust-toolchain@1.36.0
       - run: cargo check --no-default-features
       - run: cargo check --no-default-features --features "use_alloc"
@@ -22,7 +22,7 @@ jobs:
     name: Rust Stable
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo check --no-default-features
       - run: cargo check --no-default-features --features "use_alloc"
