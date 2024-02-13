@@ -1,37 +1,37 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_sim.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/connection_api_impl_sim.h"
 
 #include <memory>
 
 #include "base/logging.h"
-#include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
 
-BraveVPNOSConnectionAPISim::BraveVPNOSConnectionAPISim(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs)
-    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {}
+ConnectionAPIImplSim::ConnectionAPIImplSim(
+    BraveVPNOSConnectionAPI* api,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : RasConnectionAPIImplBase(api, url_loader_factory) {}
 
-BraveVPNOSConnectionAPISim::~BraveVPNOSConnectionAPISim() = default;
+ConnectionAPIImplSim::~ConnectionAPIImplSim() = default;
 
-void BraveVPNOSConnectionAPISim::CreateVPNConnectionImpl(
+void ConnectionAPIImplSim::CreateVPNConnectionImpl(
     const BraveVPNConnectionInfo& info) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
-      base::BindOnce(&BraveVPNOSConnectionAPISim::OnCreated,
+      base::BindOnce(&ConnectionAPIImplSim::OnCreated,
                      weak_factory_.GetWeakPtr(), info.connection_name(), true));
 }
 
-void BraveVPNOSConnectionAPISim::ConnectImpl(const std::string& name) {
+void ConnectionAPIImplSim::ConnectImpl(const std::string& name) {
   disconnect_requested_ = false;
 
   // Determine connection success randomly.
@@ -39,12 +39,12 @@ void BraveVPNOSConnectionAPISim::ConnectImpl(const std::string& name) {
   // Simulate connection success
   if (success) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnIsConnecting,
+        FROM_HERE, base::BindOnce(&ConnectionAPIImplSim::OnIsConnecting,
                                   weak_factory_.GetWeakPtr(), name));
 
     base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
-        base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
+        base::BindOnce(&ConnectionAPIImplSim::OnConnected,
                        weak_factory_.GetWeakPtr(), name, true),
         base::Seconds(1));
     return;
@@ -52,61 +52,61 @@ void BraveVPNOSConnectionAPISim::ConnectImpl(const std::string& name) {
 
   // Simulate connection failure
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnIsConnecting,
+      FROM_HERE, base::BindOnce(&ConnectionAPIImplSim::OnIsConnecting,
                                 weak_factory_.GetWeakPtr(), name));
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
-      base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
+      base::BindOnce(&ConnectionAPIImplSim::OnConnected,
                      weak_factory_.GetWeakPtr(), name, false),
       base::Seconds(1));
 }
 
-void BraveVPNOSConnectionAPISim::DisconnectImpl(const std::string& name) {
+void ConnectionAPIImplSim::DisconnectImpl(const std::string& name) {
   disconnect_requested_ = true;
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnIsDisconnecting,
+      FROM_HERE, base::BindOnce(&ConnectionAPIImplSim::OnIsDisconnecting,
                                 weak_factory_.GetWeakPtr(), name));
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnDisconnected,
+      FROM_HERE, base::BindOnce(&ConnectionAPIImplSim::OnDisconnected,
                                 weak_factory_.GetWeakPtr(), name, true));
 }
 
-void BraveVPNOSConnectionAPISim::Connect() {
-  BraveVPNOSConnectionAPIBase::Connect();
+void ConnectionAPIImplSim::Connect() {
+  RasConnectionAPIImplBase::Connect();
 }
 
-void BraveVPNOSConnectionAPISim::CheckConnectionImpl(const std::string& name) {
+void ConnectionAPIImplSim::CheckConnectionImpl(const std::string& name) {
   check_connection_called_ = true;
 }
 
-void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
+void ConnectionAPIImplSim::OnCreated(const std::string& name,
                                            bool success) {
   if (!success) {
     return;
   }
   connection_created_ = true;
-  BraveVPNOSConnectionAPIBase::OnCreated();
+  RasConnectionAPIImplBase::OnCreated();
 }
 
-void BraveVPNOSConnectionAPISim::Disconnect() {
-  BraveVPNOSConnectionAPIBase::Disconnect();
+void ConnectionAPIImplSim::Disconnect() {
+  RasConnectionAPIImplBase::Disconnect();
 }
 
-void BraveVPNOSConnectionAPISim::CheckConnection() {
-  BraveVPNOSConnectionAPIBase::CheckConnection();
+void ConnectionAPIImplSim::CheckConnection() {
+  RasConnectionAPIImplBase::CheckConnection();
 }
 
-bool BraveVPNOSConnectionAPISim::IsConnectionCreated() const {
+bool ConnectionAPIImplSim::IsConnectionCreated() const {
   return connection_created_;
 }
 
-bool BraveVPNOSConnectionAPISim::IsConnectionChecked() const {
+bool ConnectionAPIImplSim::IsConnectionChecked() const {
   return check_connection_called_;
 }
 
-void BraveVPNOSConnectionAPISim::OnConnected(const std::string& name,
+void ConnectionAPIImplSim::OnConnected(const std::string& name,
                                              bool success) {
   // Cancelling connecting request simulation.
   if (disconnect_requested_) {
@@ -114,36 +114,40 @@ void BraveVPNOSConnectionAPISim::OnConnected(const std::string& name,
     return;
   }
 
-  success ? BraveVPNOSConnectionAPIBase::OnConnected()
-          : BraveVPNOSConnectionAPIBase::OnConnectFailed();
+  success ? RasConnectionAPIImplBase::OnConnected()
+          : RasConnectionAPIImplBase::OnConnectFailed();
 }
 
-void BraveVPNOSConnectionAPISim::OnIsConnecting(const std::string& name) {
-  BraveVPNOSConnectionAPIBase::OnIsConnecting();
+void ConnectionAPIImplSim::OnIsConnecting(const std::string& name) {
+  RasConnectionAPIImplBase::OnIsConnecting();
 }
 
-void BraveVPNOSConnectionAPISim::OnDisconnected(const std::string& name,
+void ConnectionAPIImplSim::OnDisconnected(const std::string& name,
                                                 bool success) {
   if (!success) {
     return;
   }
 
-  BraveVPNOSConnectionAPIBase::OnDisconnected();
+  RasConnectionAPIImplBase::OnDisconnected();
 }
 
-void BraveVPNOSConnectionAPISim::OnIsDisconnecting(const std::string& name) {
-  BraveVPNOSConnectionAPIBase::OnIsDisconnecting();
+void ConnectionAPIImplSim::OnIsDisconnecting(const std::string& name) {
+  RasConnectionAPIImplBase::OnIsDisconnecting();
 }
 
-void BraveVPNOSConnectionAPISim::SetNetworkAvailableForTesting(bool value) {
+void ConnectionAPIImplSim::SetNetworkAvailableForTesting(bool value) {
   network_available_ = value;
 }
 
-bool BraveVPNOSConnectionAPISim::IsPlatformNetworkAvailable() {
+bool ConnectionAPIImplSim::IsPlatformNetworkAvailable() {
   if (network_available_.has_value()) {
     return network_available_.value();
   }
   return true;
+}
+
+ConnectionAPIImpl::Type ConnectionAPIImplSim::type() const {
+  return Type::IKEV2;
 }
 
 }  // namespace brave_vpn

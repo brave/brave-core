@@ -43,6 +43,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
 
   void SetUp() override {
     RegisterLocalState(local_state_.registry());
+    TestingBrowserProcess::GetGlobal()->SetLocalState(&local_state_);
     BraveVpnDnsObserverFactory::GetInstance()->RegisterProfilePrefs(
         profile_pref_service_.registry());
     stub_resolver_config_reader_ =
@@ -68,6 +69,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     // BraveVpnDnsObserverService destructor must be called before the task
     // runner is destroyed.
     ResetDnsObserverService();
+    TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
   }
   void EnableParentalControl(bool value) {
     StubResolverConfigReader* config_reader =

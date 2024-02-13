@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"
@@ -78,7 +79,10 @@ void BraveVPNOSConnectionAPI::NotifySelectedRegionChanged(
 }
 
 void BraveVPNOSConnectionAPI::UpdateConnectionAPIImpl() {
-  CHECK(connection_api_impl_getter_);
+  if (!connection_api_impl_getter_) {
+    CHECK_IS_TEST();
+    return;
+  }
 
   // This could be called multiple times, so don't reset current connection
   // if prefs is matched with current |connection_api_impl_|.

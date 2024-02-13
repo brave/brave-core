@@ -34,6 +34,20 @@ class RasConnectionAPIImplBase : public ConnectionAPIImpl {
   Type type() const override;
 
  protected:
+  friend class BraveVPNOSConnectionAPIUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           NeedsConnectTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           ConnectionInfoTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           CancelConnectingTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           ClearLastConnectionErrorWhenNewConnectionStart);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           CreateOSVPNEntryWithValidInfoWhenConnectTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           CreateOSVPNEntryWithInvalidInfoTest);
+
   // Subclass should add platform dependent impls.
   virtual void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) = 0;
   virtual void ConnectImpl(const std::string& name) = 0;

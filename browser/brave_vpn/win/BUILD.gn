@@ -18,6 +18,7 @@ source_set("unit_tests") {
   deps = [
     ":wireguard_utils",
     "//base",
+    "//brave/components/brave_vpn/common",
     "//chrome/test:test_support",
     "//components/version_info:channel",
     "//testing/gtest",

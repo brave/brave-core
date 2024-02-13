@@ -52,9 +52,9 @@ class ConnectionAPIImpl
   virtual void CheckConnection() = 0;
   virtual void SetSelectedRegion(const std::string& name) = 0;
   virtual void FetchProfileCredentials() = 0;
+  virtual Type type() const = 0;
   virtual void UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState state);
-  virtual Type type() const = 0;
 
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(
@@ -77,6 +77,24 @@ class ConnectionAPIImpl
   const raw_ref<BraveVPNOSConnectionAPI> api_;  // owner
 
  private:
+  friend class BraveVpnButtonUnitTest;
+  friend class BraveVPNServiceTest;
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, HostnamesTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           CancelConnectingTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           IgnoreDisconnectedStateWhileConnecting);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           ClearLastConnectionErrorWhenNewConnectionStart);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           CreateOSVPNEntryWithValidInfoWhenConnectTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           CreateOSVPNEntryWithInvalidInfoTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
+                           SetSelectedRegion);
+
   void SetConnectionStateForTesting(mojom::ConnectionState state);
 
   std::unique_ptr<Hostname> hostname_;

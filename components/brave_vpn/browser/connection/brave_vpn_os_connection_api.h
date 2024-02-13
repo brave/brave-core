@@ -18,6 +18,7 @@
 #include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
+#include "brave/components/brave_vpn/browser/connection/connection_api_impl.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "components/prefs/pref_member.h"
@@ -31,7 +32,6 @@ class PrefService;
 namespace brave_vpn {
 
 class BraveVPNRegionDataManager;
-class ConnectionAPIImpl;
 
 // Interface for managing vpn connection & region data managing.
 //   * BraveVPNRegionDataManager: Manages region data.
@@ -103,21 +103,15 @@ class BraveVPNOSConnectionAPI {
 
  private:
   friend class BraveVpnButtonUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
-                           CancelConnectingTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, ResetConnectionStateTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
-                           ConnectionStateUpdateWithPurchasedStateTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
-                           IsConnectedWithPurchasedStateTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
-                           IgnoreDisconnectedStateWhileConnecting);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, HostnamesTest);
+  friend class BraveVPNOSConnectionAPIUnitTest;
+  friend class BraveVPNServiceTest;
+  friend class BraveVPNWireguardConnectionAPIUnitTest;
   FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
                            SetSelectedRegion);
+
+  void SetConnectionAPIImplForTesting(std::unique_ptr<ConnectionAPIImpl> impl) {
+    connection_api_impl_ = std::move(impl);
+  }
 
   std::string GetCurrentEnvironment() const;
 

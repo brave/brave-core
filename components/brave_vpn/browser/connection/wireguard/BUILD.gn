@@ -33,6 +33,7 @@ source_set("unit_tests") {
 
   deps = [
     ":wireguard",
+    "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",

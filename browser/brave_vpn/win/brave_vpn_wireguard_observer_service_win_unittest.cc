@@ -9,6 +9,9 @@
 
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -18,7 +21,12 @@ class BraveVpnWireguardObserverServiceUnitTest : public testing::Test {
  public:
   BraveVpnWireguardObserverServiceUnitTest() {}
 
-  void SetUp() override { CreateWireguardObserverService(); }
+  void SetUp() override {
+    brave_vpn::RegisterLocalStatePrefs(local_state_.registry());
+    TestingBrowserProcess::GetGlobal()->SetLocalState(&local_state_);
+    EnableWireguardIfPossible(&local_state_);
+    CreateWireguardObserverService();
+  }
 
   void CreateWireguardObserverService() {
     wireguard_observer_service_.reset(new BraveVpnWireguardObserverService());
@@ -31,6 +39,7 @@ class BraveVpnWireguardObserverServiceUnitTest : public testing::Test {
     // BraveVpnWireguardObserverService destructor must be called before
     // the task runner is destroyed.
     ResetWireguardObserverService();
+    TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
   }
 
   void FireBraveVPNStateChange(mojom::ConnectionState state) {
@@ -49,6 +58,7 @@ class BraveVpnWireguardObserverServiceUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
+  TestingPrefServiceSimple local_state_;
   std::unique_ptr<BraveVpnWireguardObserverService> wireguard_observer_service_;
 };
 
