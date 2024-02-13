@@ -40,8 +40,7 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.url.GURL;
 
-public class DAppsWalletController
-        implements ConnectionErrorHandler {
+public class DAppsWalletController implements ConnectionErrorHandler {
     private static final String TAG = DAppsWalletController.class.getSimpleName();
     private FullscreenManager mFullscreenManager;
     private final Context mContext;
