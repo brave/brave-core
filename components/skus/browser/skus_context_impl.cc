@@ -10,6 +10,7 @@
 
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
@@ -119,10 +120,7 @@ void shim_purge(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
-  ctx.PurgeStore();
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
+  ctx.SchedulePurgeStore(std::move(done), std::move(st_ctx));
 }
 
 void shim_set(
@@ -132,11 +130,9 @@ void shim_set(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) {
-  ctx.UpdateStoreValue(static_cast<std::string>(key),
-                       static_cast<std::string>(value));
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&OnShimSet, std::move(done), std::move(st_ctx)));
+  ctx.ScheduleUpdateStoreValue(static_cast<std::string>(key),
+                               static_cast<std::string>(value), std::move(done),
+                               std::move(st_ctx));
 }
 
 void shim_get(
@@ -146,12 +142,8 @@ void shim_get(
                               rust::String value,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &OnShimGet, std::move(done),
-          ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))),
-          std::move(st_ctx)));
+  ctx.ScheduleGetValueFromStore(static_cast<std::string>(key), std::move(done),
+                                std::move(st_ctx));
 }
 
 void shim_scheduleWakeup(
@@ -180,8 +172,13 @@ std::unique_ptr<SkusUrlLoader> shim_executeRequest(
 
 SkusContextImpl::SkusContextImpl(
     PrefService* prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(*prefs), url_loader_factory_(url_loader_factory) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    scoped_refptr<base::SingleThreadTaskRunner> sdk_task_runner,
+    scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
+    : prefs_(*prefs),
+      sdk_task_runner_(sdk_task_runner),
+      ui_task_runner_(ui_task_runner),
+      url_loader_factory_(url_loader_factory) {}
 
 SkusContextImpl::~SkusContextImpl() = default;
 
@@ -189,27 +186,85 @@ std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
   return std::make_unique<SkusUrlLoaderImpl>(url_loader_factory_);
 }
 
-std::string SkusContextImpl::GetValueFromStore(std::string key) const {
+void SkusContextImpl::ScheduleGetValueFromStore(
+    std::string key,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String value,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const {
+  VLOG(1) << "shim_get: `" << key << "`";
+  ui_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&SkusContextImpl::GetValueFromStore,
+                                base::Unretained(this), key, std::move(done),
+                                std::move(st_ctx)));
+}
+
+void SkusContextImpl::GetValueFromStore(
+    std::string key,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String value,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const {
   VLOG(1) << "shim_get: `" << key << "`";
   const auto& state = prefs_->GetDict(prefs::kSkusState);
   const base::Value* value = state.Find(key);
+
+  std::string result;
   if (value) {
-    return value->GetString();
+    result = value->GetString();
   }
-  return "";
+
+  sdk_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimGet, std::move(done), result, std::move(st_ctx)));
 }
 
-void SkusContextImpl::PurgeStore() const {
-  VLOG(1) << "shim_purge";
+void SkusContextImpl::SchedulePurgeStore(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const {
+  ui_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&SkusContextImpl::PurgeStore, base::Unretained(this),
+                     std::move(done), std::move(st_ctx)));
+}
+
+void SkusContextImpl::PurgeStore(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const {
   ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->clear();
+
+  sdk_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
 }
 
-void SkusContextImpl::UpdateStoreValue(std::string key,
-                                       std::string value) const {
+void SkusContextImpl::ScheduleUpdateStoreValue(
+    std::string key,
+    std::string value,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const {
   VLOG(1) << "shim_set: `" << key << "` = `" << value << "`";
+  ui_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&SkusContextImpl::UpdateStoreValue, base::Unretained(this),
+                     key, value, std::move(done), std::move(st_ctx)));
+}
+
+void SkusContextImpl::UpdateStoreValue(
+    std::string key,
+    std::string value,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const {
   ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->Set(key, value);
+  sdk_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimSet, std::move(done), std::move(st_ctx)));
 }
 
 }  // namespace skus

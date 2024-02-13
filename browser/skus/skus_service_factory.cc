@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -73,7 +74,10 @@ KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
   return new skus::SkusServiceImpl(
       g_browser_process->local_state(),
       context->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess());
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      base::ThreadPool::CreateSingleThreadTaskRunner(
+          {base::TaskPriority::USER_BLOCKING}),
+      base::SequencedTaskRunner::GetCurrentDefault());
 }
 
 void SkusServiceFactory::RegisterProfilePrefs(

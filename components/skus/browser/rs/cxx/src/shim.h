@@ -85,9 +85,40 @@ class SkusContext {
  public:
   virtual ~SkusContext() = default;
   virtual std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const = 0;
-  virtual std::string GetValueFromStore(std::string key) const = 0;
-  virtual void PurgeStore() const = 0;
-  virtual void UpdateStoreValue(std::string key, std::string value) const = 0;
+  virtual void ScheduleGetValueFromStore(
+      std::string key,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                                rust::String value,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const = 0;
+  virtual void GetValueFromStore(
+      std::string key,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                                rust::String value,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const = 0;
+  virtual void SchedulePurgeStore(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
+          done,
+      rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const = 0;
+  virtual void PurgeStore(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
+          done,
+      rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const = 0;
+  virtual void ScheduleUpdateStoreValue(
+      std::string key,
+      std::string value,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const = 0;
+  virtual void UpdateStoreValue(
+      std::string key,
+      std::string value,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const = 0;
 };
 
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
