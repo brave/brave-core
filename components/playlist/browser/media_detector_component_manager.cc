@@ -12,7 +12,6 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/memory/writable_shared_memory_region.h"
 #include "base/no_destructor.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/browser/media_detector_component_installer.h"
@@ -174,21 +173,6 @@ void MediaDetectorComponentManager::OnGetScripts(
   }
 }
 
-base::ReadOnlySharedMemoryRegion
-MediaDetectorComponentManager::GetReadOnlySharedMemoryForScript(
-    const std::string& script) const {
-  base::WritableSharedMemoryRegion writable_shared_memory =
-      base::WritableSharedMemoryRegion::Create(script.size());
-  std::memcpy(writable_shared_memory.Map().memory(), script.data(),
-              script.size());
-  base::ReadOnlySharedMemoryRegion readonly_shared_memory =
-      base::WritableSharedMemoryRegion::ConvertToReadOnly(
-          std::move(writable_shared_memory));
-  CHECK(readonly_shared_memory.IsValid());
-
-  return readonly_shared_memory;
-}
-
 void MediaDetectorComponentManager::SetUseLocalScript() {
   register_requested_ = true;
 
@@ -204,15 +188,15 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
                               });
 }
 
-base::ReadOnlySharedMemoryRegion
+const std::string&
 MediaDetectorComponentManager::GetMediaSourceAPISuppressorScript() {
   MaybeInitScripts();
   CHECK(!media_source_api_suppressor_.empty());
-  return GetReadOnlySharedMemoryForScript(media_source_api_suppressor_);
+  return media_source_api_suppressor_;
 }
 
-base::ReadOnlySharedMemoryRegion
-MediaDetectorComponentManager::GetMediaDetectorScript(const GURL& url) {
+std::string MediaDetectorComponentManager::GetMediaDetectorScript(
+    const GURL& url) {
   MaybeInitScripts();
 
   net::SchemefulSite site(url);
@@ -242,7 +226,7 @@ MediaDetectorComponentManager::GetMediaDetectorScript(const GURL& url) {
     }
   }
 
-  return GetReadOnlySharedMemoryForScript(detector_script);
+  return detector_script;
 }
 
 void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {
