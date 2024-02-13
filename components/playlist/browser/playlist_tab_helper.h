@@ -74,8 +74,7 @@ class PlaylistTabHelper
                                  base::OnceCallback<void(base::Value)> cb);
 
   // content::WebContentsObserver:
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override;
+  void PrimaryPageChanged(content::Page& page) override;
 
   // mojom::PlaylistServiceObserver:
   void OnEvent(mojom::PlaylistEvent event,
@@ -130,8 +129,8 @@ class PlaylistTabHelper
 
   bool is_adding_items_ = false;
 
-  std::vector<base::OnceCallback<void(bool)>>
-      media_extracted_from_background_web_contents_callbacks_;
+  base::OnceCallback<void(bool)>
+      media_extracted_from_background_web_contents_callback_;
   base::OneShotTimer media_extraction_from_background_web_contents_timer_;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;

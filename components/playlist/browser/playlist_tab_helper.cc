@@ -161,7 +161,7 @@ bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
 }
 
 bool PlaylistTabHelper::IsExtractingMediaFromBackgroundWebContents() const {
-  return media_extracted_from_background_web_contents_callbacks_.size();
+  return !!media_extracted_from_background_web_contents_callback_;
 }
 
 void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
@@ -171,8 +171,8 @@ void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
     return;
   }
 
-  media_extracted_from_background_web_contents_callbacks_.push_back(
-      std::move(extracted_callback));
+  media_extracted_from_background_web_contents_callback_ =
+      std::move(extracted_callback);
   media_extraction_from_background_web_contents_timer_.Start(
       FROM_HERE, base::Seconds(10),
       base::BindOnce(
@@ -191,8 +191,7 @@ void PlaylistTabHelper::RequestAsyncExecuteScript(
           blink::mojom::PromiseResultOption::kAwait, std::move(cb));
 }
 
-void PlaylistTabHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
+void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
   DVLOG(2) << __FUNCTION__;
 
   if (auto old_url =
@@ -286,7 +285,7 @@ void PlaylistTabHelper::ResetData() {
   saved_items_.clear();
   found_items_.clear();
   sent_extract_media_request_ = false;
-  media_extracted_from_background_web_contents_callbacks_.clear();
+  media_extracted_from_background_web_contents_callback_.Reset();
   media_extraction_from_background_web_contents_timer_.Stop();
 
   for (auto& observer : observers_) {
@@ -404,10 +403,9 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
       !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
     // Wait until we find media or timeout. Some pages might not have media
     // initially but update media later.
-    auto callbacks =
-        std::move(media_extracted_from_background_web_contents_callbacks_);
-    for (auto& callback : callbacks) {
-      std::move(callback).Run(true);
+    if (media_extracted_from_background_web_contents_callback_) {
+      std::move(media_extracted_from_background_web_contents_callback_)
+          .Run(true);
     }
     media_extraction_from_background_web_contents_timer_.Stop();
   }
@@ -417,13 +415,9 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
 void PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout() {
   // Media extraction failed. Found items is blob: that we can't cache from.
   // Thus, clear them.
-  CHECK(service_->ShouldExtractMediaFromBackgroundWebContents(found_items_));
   found_items_.clear();
-  auto callbacks =
-      std::move(media_extracted_from_background_web_contents_callbacks_);
-  for (auto& callback : callbacks) {
-    std::move(callback).Run(false);
-  }
+  CHECK(media_extracted_from_background_web_contents_callback_);
+  std::move(media_extracted_from_background_web_contents_callback_).Run(false);
 
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
