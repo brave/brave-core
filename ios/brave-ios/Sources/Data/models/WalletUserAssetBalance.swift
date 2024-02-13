@@ -123,7 +123,7 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
   ///     - asset: An optional value of `BraveWallet.BlockchainToken` to be removed from CD, nil value will remove the restriction of asset matching
   ///     - account: An optional value of `String`. It is the account's address value. nil value will remove the restriction of account address matching
   ///     - completion: An optional completion block
-  public static func removeBalance(
+  public static func removeBalances(
     for asset: BraveWallet.BlockchainToken? = nil,
     account: String? = nil,
     completion: (() -> Void)? = nil
@@ -157,7 +157,7 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
   ///     - network: `BraveWallet.NetworkInfo`, any user asset balance that matches this network's chainId
   ///     will be removed
   ///     - completion: An optional completion block
-  public static func removeBalance(
+  public static func removeBalances(
     for network: BraveWallet.NetworkInfo,
     completion: (() -> Void)? = nil
   ) {

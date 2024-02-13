@@ -45,10 +45,10 @@ public protocol WalletUserAssetManagerType: AnyObject {
   func updateBalance(for asset: BraveWallet.BlockchainToken, account: String, balance: String, completion: (() -> Void)?)
   /// Remove a `WalletUserAssetBalance` representation of the given
   /// `BraveWallet.BlockchainToken` from CoreData
-  func removeBalance(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?)
+  func removeBalances(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?)
   /// Remove a `WalletUserAssetBalance` representation of the given
   /// `BraveWallet.NetworkInfo` from CoreData
-  func removeBalance(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?)
+  func removeBalances(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?)
   /// Add a user asset data observer
   func addUserAssetDataObserver(_ observer: WalletUserAssetDataObserver)
   /// Remove user assets and their cached balance that belongs to given network
@@ -187,7 +187,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
       if existedAsset.isDeletedByUser { // this asset was added before but user marked as deleted after
         WalletUserAsset.updateUserAsset(for: asset, visible: true, isSpam: false, isDeletedByUser: false, completion: { [weak self] in
           self?.refreshBalance(for: asset)
-          self?.retriveAllDataObserver().forEach { $0.userAssetUpdated() }
+          self?.retrieveAllDataObserver().forEach { $0.userAssetUpdated() }
           completion?()
         })
       } else { // this asset already exists
@@ -199,7 +199,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         asset: asset,
         completion: { [weak self] in
           self?.refreshBalance(for: asset)
-          self?.retriveAllDataObserver().forEach { $0.userAssetUpdated() }
+          self?.retrieveAllDataObserver().forEach { $0.userAssetUpdated() }
           completion?()
         }
       )
@@ -208,8 +208,8 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
   
   public func removeUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
     WalletUserAsset.removeUserAsset(asset: asset, completion: { [weak self] in
-      self?.removeBalance(for: asset, completion: nil)
-      self?.retriveAllDataObserver().forEach { $0.userAssetUpdated() }
+      self?.removeBalances(for: asset, completion: nil)
+      self?.retrieveAllDataObserver().forEach { $0.userAssetUpdated() }
       completion?()
     })
   }
@@ -230,7 +230,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         if visible {
           self?.refreshBalance(for: asset)
         }
-        self?.retriveAllDataObserver().forEach { observer in
+        self?.retrieveAllDataObserver().forEach { observer in
           observer.userAssetUpdated()
         }
         completion?()
@@ -242,7 +242,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     WalletUserAssetGroup.removeGroup(
       groupId,
       completion: { [weak self] in
-        self?.retriveAllDataObserver().forEach { $0.userAssetUpdated() }
+        self?.retrieveAllDataObserver().forEach { $0.userAssetUpdated() }
         completion?()
       })
   }
@@ -289,21 +289,21 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     )
   }
   
-  public func removeBalance(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
-    WalletUserAssetBalance.removeBalance(
+  public func removeBalances(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
+    WalletUserAssetBalance.removeBalances(
       for: asset,
       completion: { [weak self] in
-        self?.retriveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+        self?.retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
         completion?()
       }
     )
   }
   
-  public func removeBalance(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?) {
-    WalletUserAssetBalance.removeBalance(
+  public func removeBalances(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?) {
+    WalletUserAssetBalance.removeBalances(
       for: network,
       completion: { [weak self] in
-        self?.retriveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+        self?.retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
         completion?()
       })
   }
@@ -326,9 +326,11 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         of: Void.self,
         body: { @MainActor [rpcService] group in
           for account in accounts {
+            guard !Task.isCancelled else { return }
             group.addTask { @MainActor in
               let allTokenBalanceForAccount = await rpcService.fetchBalancesForTokens(account: account, networkAssets: allUserAssets)
               for tokenBalanceForAccount in allTokenBalanceForAccount {
+                guard !Task.isCancelled else { return }
                 let networkAssets = allUserAssets.first { oneNetworkAssets in
                   oneNetworkAssets.tokens.contains { asset in
                     asset.id == tokenBalanceForAccount.key
@@ -342,7 +344,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
           }
         }
       )
-      retriveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+      retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
       completion?()
     }
   }
@@ -355,7 +357,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         group.leave()
       }
       group.enter()
-      WalletUserAssetBalance.removeBalance(for: network) {
+      WalletUserAssetBalance.removeBalances(for: network) {
         group.leave()
       }
     } else {
@@ -364,7 +366,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         group.leave()
       }
       group.enter()
-      WalletUserAssetBalance.removeBalance {
+      WalletUserAssetBalance.removeBalances {
         group.leave()
       }
     }
@@ -394,7 +396,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
           }
         }
       )
-      retriveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+      retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
       completion?()
     }
   }
@@ -425,7 +427,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     }
   }
   
-  private func retriveAllDataObserver() -> [WalletUserAssetDataObserver] {
+  private func retrieveAllDataObserver() -> [WalletUserAssetDataObserver] {
     return dataObservers.allObjects as? [WalletUserAssetDataObserver] ?? []
   }
 }
@@ -434,7 +436,7 @@ extension WalletUserAssetManager: PreferencesObserver {
   public func preferencesDidChange(for key: String) {
     if key == Preferences.Wallet.showTestNetworks.key {
       refreshBalances { [weak self] in
-        self?.retriveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+        self?.retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
       }
     }
   }
@@ -503,11 +505,11 @@ public class TestableWalletUserAssetManager: WalletUserAssetManagerType {
     completion?()
   }
   
-  public func removeBalance(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
+  public func removeBalances(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
     completion?()
   }
   
-  public func removeBalance(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?) {
+  public func removeBalances(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?) {
     completion?()
   }
   

@@ -52,7 +52,7 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
     
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetBalance.removeBalance(for: asset)
+      WalletUserAssetBalance.removeBalances(for: asset)
     }
     
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 0)
@@ -64,7 +64,7 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
     
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetBalance.removeBalance(for: asset, account: account1)
+      WalletUserAssetBalance.removeBalances(for: asset, account: account1)
     }
     
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 1)
@@ -77,7 +77,7 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 3)
     
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetBalance.removeBalance(for: mockSolNetwork)
+      WalletUserAssetBalance.removeBalances(for: mockSolNetwork)
     }
     
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 2)
