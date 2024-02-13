@@ -86,7 +86,7 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   observers_.Clear();
-  streaming_observers_.Clear();
+  download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
   task_runner_.reset();
@@ -1198,15 +1198,6 @@ void PlaylistService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void PlaylistService::AddObserverForStreaming(
-    mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) {
-  streaming_observers_.Add(std::move(observer));
-}
-
-void PlaylistService::ClearObserverForStreaming() {
-  streaming_observers_.Clear();
-}
-
 void PlaylistService::OnMediaUpdatedFromContents(
     content::WebContents* contents) {
   if (!*enabled_pref_) {
@@ -1349,9 +1340,18 @@ base::SequencedTaskRunner* PlaylistService::GetTaskRunner() {
   return task_runner_.get();
 }
 
-void PlaylistService::RequestStreamingQuery(const std::string& query_id,
-                                            const std::string& url,
-                                            const std::string& method) {
+void PlaylistService::RequestStreamingQuery(
+    const std::string& query_id,
+    const std::string& url,
+    const std::string& method,
+    mojo::PendingRemote<mojom::PlaylistStreamingObserver> streaming_observer) {
+  if (streaming_observer_.is_bound()) {
+    streaming_observer_.reset();
+  }
+
+  streaming_observer_.Bind(std::move(streaming_observer));
+  mojo::Remote<mojom::PlaylistStreamingObserver> observer;
+  observer.Bind(std::move(streaming_observer));
   playlist_streaming_->RequestStreamingQuery(
       query_id, url, method,
       base::BindOnce(&PlaylistService::OnResponseStarted,
@@ -1372,9 +1372,7 @@ void PlaylistService::CancelQuery(const std::string& query_id) {
 
 void PlaylistService::OnResponseStarted(const std::string& url,
                                         const int64_t content_length) {
-  for (auto& observer : streaming_observers_) {
-    observer->OnResponseStarted(url, content_length);
-  }
+  streaming_observer_->OnResponseStarted(url, content_length);
 }
 
 void PlaylistService::OnDataReceived(
@@ -1385,18 +1383,13 @@ void PlaylistService::OnDataReceived(
 
   std::vector<uint8_t> data_received(result.value().GetString().begin(),
                                      result.value().GetString().end());
-
-  for (auto& observer : streaming_observers_) {
-    observer->OnDataReceived(data_received);
-  }
+  streaming_observer_->OnDataReceived(data_received);
 }
 
 void PlaylistService::OnDataComplete(
     api_request_helper::APIRequestResult result) {
   if (result.Is2XXResponseCode()) {
-    for (auto& observer : streaming_observers_) {
-      observer->OnDataCompleted();
-    }
+    streaming_observer_->OnDataCompleted();
   }
 }
 

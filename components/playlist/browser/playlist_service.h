@@ -216,17 +216,16 @@ class PlaylistService : public KeyedService,
   // it could be notified much later than callback from each operation.
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
-  void AddObserverForStreaming(
-      mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
-  void ClearObserverForStreaming() override;
 
   void OnMediaUpdatedFromContents(content::WebContents* contents);
 
   bool HasPlaylistItem(const std::string& id) const;
 
-  void RequestStreamingQuery(const std::string& query_id,
-                             const std::string& url,
-                             const std::string& method) override;
+  void RequestStreamingQuery(
+      const std::string& query_id,
+      const std::string& url,
+      const std::string& methodm,
+      mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
   void ClearAllQueries() override;
   void CancelQuery(const std::string& query_id) override;
   void OnResponseStarted(const std::string& url, const int64_t content_length);
@@ -402,7 +401,7 @@ class PlaylistService : public KeyedService,
   const base::FilePath base_dir_;
 
   mojo::RemoteSet<mojom::PlaylistServiceObserver> observers_;
-  mojo::RemoteSet<mojom::PlaylistStreamingObserver> streaming_observers_;
+  mojo::Remote<mojom::PlaylistStreamingObserver> streaming_observer_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;

@@ -329,7 +329,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                 playlistId,
                 playlist -> {
                     if (playlist == null) {
-                        Log.e(TAG, "PlaylistHostActivity.loadPlaylist is null from service");
+                        Log.d(TAG, "PlaylistHostActivity.loadPlaylist is null from service");
+                        return;
                     }
                     List<PlaylistItemModel> playlistItems = new ArrayList();
                     for (PlaylistItem playlistItem : playlist.items) {
@@ -350,7 +351,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                         playlistItem.cached,
                                         false);
                         playlistItems.add(playlistItemModel);
-                        Log.e(TAG, "playlistItemModel : " + playlistItemModel.toString());
                     }
                     PlaylistModel playlistModel =
                             new PlaylistModel(playlist.id, playlist.name, playlistItems);
@@ -461,7 +461,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                     }
                     if (HlsServiceImpl.currentDownloadingPlaylistItemId.equals(playlistItemId)) {
                         HlsServiceImpl.currentDownloadingPlaylistItemId = "";
-                        mPlaylistService.clearObserverForStreaming();
                         mPlaylistService.cancelQuery(playlistItemId);
                         stopService(new Intent(PlaylistHostActivity.this, HlsService.class));
                         PlaylistUtils.checkAndStartHlsDownload(PlaylistHostActivity.this);

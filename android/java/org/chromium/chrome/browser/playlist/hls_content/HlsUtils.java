@@ -40,7 +40,6 @@ public class HlsUtils {
     }
 
     private static int sSofar;
-    private static PlaylistStreamingObserverImpl sPlaylistStreamingObserverImpl;
 
     public static void getManifestFile(
             Context context,
@@ -56,7 +55,8 @@ public class HlsUtils {
         if (TextUtils.isEmpty(manifestUrl)) {
             return;
         }
-        playlistService.requestStreamingQuery(playlistItem.id, manifestUrl, GET_METHOD);
+        PlaylistStreamingObserverImpl playlistStreamingObserverImpl =
+                new PlaylistStreamingObserverImpl();
         PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate
                 playlistStreamingObserverImplDelegate =
                         new PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate() {
@@ -81,11 +81,12 @@ public class HlsUtils {
                             @Override
                             public void onDataCompleted() {
                                 try {
-                                    if (sPlaylistStreamingObserverImpl != null) {
-                                        sPlaylistStreamingObserverImpl.close();
-                                        sPlaylistStreamingObserverImpl.destroy();
+                                    if (playlistStreamingObserverImpl != null
+                                            && playlistStreamingObserverImpl.getDelegate()
+                                                    != null) {
+                                        playlistStreamingObserverImpl.close();
+                                        playlistStreamingObserverImpl.destroy();
                                     }
-                                    playlistService.clearObserverForStreaming();
                                     Queue<Segment> segmentsQueue =
                                             HLSParsingUtil.getContentSegments(
                                                     hlsManifestFilePath, manifestUrl);
@@ -96,10 +97,9 @@ public class HlsUtils {
                                 }
                             }
                         };
-        sPlaylistStreamingObserverImpl =
-                new PlaylistStreamingObserverImpl(playlistStreamingObserverImplDelegate);
-        playlistService.clearObserverForStreaming();
-        playlistService.addObserverForStreaming(sPlaylistStreamingObserverImpl);
+        playlistStreamingObserverImpl.setDelegate(playlistStreamingObserverImplDelegate);
+        playlistService.requestStreamingQuery(
+                playlistItem.id, manifestUrl, GET_METHOD, playlistStreamingObserverImpl);
     }
 
     public static void getHLSFile(
@@ -117,8 +117,8 @@ public class HlsUtils {
         }
         String mediaPath = getHlsMediaFilePath(playlistItem);
         final String manifestUrl = getHlsResolutionManifestUrl(context, playlistItem);
-        playlistService.requestStreamingQuery(
-                playlistItem.id, UriUtil.resolve(manifestUrl, segment.url), GET_METHOD);
+        PlaylistStreamingObserverImpl playlistStreamingObserverImpl =
+                new PlaylistStreamingObserverImpl();
         PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate
                 playlistStreamingObserverImplDelegate =
                         new PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate() {
@@ -139,11 +139,12 @@ public class HlsUtils {
                             @Override
                             public void onDataCompleted() {
                                 try {
-                                    if (sPlaylistStreamingObserverImpl != null) {
-                                        sPlaylistStreamingObserverImpl.close();
-                                        sPlaylistStreamingObserverImpl.destroy();
+                                    if (playlistStreamingObserverImpl != null
+                                            && playlistStreamingObserverImpl.getDelegate()
+                                                    != null) {
+                                        playlistStreamingObserverImpl.close();
+                                        playlistStreamingObserverImpl.destroy();
                                     }
-                                    playlistService.clearObserverForStreaming();
                                     sSofar++;
                                     Segment newSegment = segmentsQueue.peek();
                                     if (newSegment != null) {
@@ -166,10 +167,12 @@ public class HlsUtils {
                                 }
                             }
                         };
-        sPlaylistStreamingObserverImpl =
-                new PlaylistStreamingObserverImpl(playlistStreamingObserverImplDelegate);
-        playlistService.clearObserverForStreaming();
-        playlistService.addObserverForStreaming(sPlaylistStreamingObserverImpl);
+        playlistStreamingObserverImpl.setDelegate(playlistStreamingObserverImplDelegate);
+        playlistService.requestStreamingQuery(
+                playlistItem.id,
+                UriUtil.resolve(manifestUrl, segment.url),
+                GET_METHOD,
+                playlistStreamingObserverImpl);
     }
 
     private static String getPlaylistIdFromFile(PlaylistItem playlistItem) {
