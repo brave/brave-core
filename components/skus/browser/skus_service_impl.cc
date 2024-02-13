@@ -163,6 +163,7 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
     const std::string& domain,
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_url_loader_factory) {
+  LOG(ERROR) << "GetOrCreateSDK 0";
   auto env = GetEnvironmentForDomain(domain);
   if (sdk_.count(env)) {
     return sdk_.at(env);
@@ -175,6 +176,7 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
                                 sdk_task_runner_, ui_task_runner_),
                             env);
   sdk_.insert_or_assign(env, std::move(sdk));
+  LOG(ERROR) << "GetOrCreateSDK 1";
   return sdk_.at(env);
 }
 

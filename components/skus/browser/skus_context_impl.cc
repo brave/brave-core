@@ -15,6 +15,7 @@
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "content/public/browser/browser_thread.h"
 
 namespace {
 
@@ -164,8 +165,10 @@ std::unique_ptr<SkusUrlLoader> shim_executeRequest(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
                               skus::HttpResponse)> done,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> rt_ctx) {
+  LOG(ERROR) << "shim_executeRequest 0";
   auto fetcher = ctx.CreateFetcher();
   fetcher->BeginFetch(req, std::move(done), std::move(rt_ctx));
+  LOG(ERROR) << "shim_executeRequest 1";
   return fetcher;
 }
 
@@ -205,6 +208,7 @@ void SkusContextImpl::GetValueFromStore(
                               rust::String value,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const {
+  // DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   VLOG(1) << "shim_get: `" << key << "`";
   const auto& state = prefs_->GetDict(prefs::kSkusState);
   const base::Value* value = state.Find(key);
@@ -214,7 +218,7 @@ void SkusContextImpl::GetValueFromStore(
     result = value->GetString();
   }
 
-  sdk_task_runner_->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&OnShimGet, std::move(done), result, std::move(st_ctx)));
 }
@@ -233,9 +237,10 @@ void SkusContextImpl::PurgeStore(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const {
+  // DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->clear();
-  sdk_task_runner_->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
 }
@@ -259,9 +264,10 @@ void SkusContextImpl::UpdateStoreValue(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const {
+  // DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->Set(key, value);
-  sdk_task_runner_->PostTask(
+   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&OnShimSet, std::move(done), std::move(st_ctx)));
 }

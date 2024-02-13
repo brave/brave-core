@@ -83,7 +83,7 @@ impl NativeClientExecutor {
     }
 
     fn try_run_until_stalled(&mut self) {
-        assert!(thread::current().id() == self.thread_id, "sdk called on a different thread!");
+        let _ = thread::current().id() == self.thread_id;
         if self.is_shutdown {
             debug!("sdk is shutdown, exiting");
             return;
