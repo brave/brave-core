@@ -26,6 +26,7 @@ def ProcessCompileDatabase(original_function, compile_db, filtered_args, target_
         '-gno-codeview-command-line',
         '-Wno-delayed-template-parsing-in-cxx20',
         '-Wno-thread-safety-reference-return',
+        '-Wno-c++11-narrowing-const-reference',
     ]
 
     if filtered_args:
