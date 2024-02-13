@@ -206,10 +206,6 @@ package = "adblock"
 path = "addchain/v0_2/crate"
 package = "addchain"
 
-[patch.crates-io.adler_v1]
-path = "adler/v1/crate"
-package = "adler"
-
 [patch.crates-io.adss_v0_2]
 path = "adss/v0_2/crate"
 package = "adss"
