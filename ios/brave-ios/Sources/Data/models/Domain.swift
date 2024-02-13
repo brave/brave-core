@@ -288,6 +288,8 @@ public final class Domain: NSManagedObject, CRUD {
             break
           case .btc:
             break
+          case .zec:
+            break
           @unknown default:
             break
           }

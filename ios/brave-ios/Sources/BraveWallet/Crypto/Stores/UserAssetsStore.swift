@@ -13,6 +13,8 @@ public class AssetStore: ObservableObject, Equatable, WalletObserverStore {
   @Published var token: BraveWallet.BlockchainToken
   @Published var isVisible: Bool {
     didSet {
+      // update user asset's visibility. `assetManager` will broadcast to all its user assets data
+      // observers to update views. `assetManager` will also fetch user asset's balance
       assetManager.updateUserAsset(for: token, visible: isVisible, isSpam: false, isDeletedByUser: false, completion: nil)
     }
   }

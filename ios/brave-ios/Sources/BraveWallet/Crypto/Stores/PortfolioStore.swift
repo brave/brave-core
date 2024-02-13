@@ -89,7 +89,7 @@ public struct AssetViewModel: Identifiable, Equatable {
   var totalBalance: Double {
     balanceForAccounts.values.reduce(0, +)
   }
-
+  
   public var id: String {
     "\(groupType.id)\(token.id)\(network.chainId)"
   }
@@ -193,7 +193,7 @@ struct BalanceTimePrice: DataPoint, Equatable {
   var date: Date
   var price: Double
   var formattedPrice: String
-
+  
   var value: CGFloat {
     price
   }
@@ -284,7 +284,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   /// Flag indicating when we are saving filters. Since we are observing multiple `Preference.Option`s,
   /// we should avoid calling `update()` in `preferencesDidChange()` unless another view changed.
   private var isSavingFilters: Bool = false
-
+  
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     blockchainRegistry: self.blockchainRegistry,
     rpcService: self.rpcService,
@@ -305,7 +305,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   private var pricesCache: [String: String] = [:]
   /// Cache of priceHistories. The key is the token's `assetRatioId`.
   private var priceHistoriesCache: [String: [BraveWallet.AssetTimePrice]] = [:]
-
+  
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
@@ -320,7 +320,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   var isObserving: Bool {
     rpcServiceObserver != nil && keyringServiceObserver != nil && walletServiceObserver != nil
   }
-
+  
   public init(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
@@ -337,9 +337,12 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     self.blockchainRegistry = blockchainRegistry
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
-
+    
+    // cache balance update observer
+    self.assetManager.addUserAssetDataObserver(self)
+    
     self.setupObservers()
-
+    
     keyringService.isLocked { [self] isLocked in
       if !isLocked {
         update()
@@ -412,6 +415,9 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   func update() {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
+      let isLocked = await keyringService.isLocked()
+      guard !isLocked else { return } // `update() will be called after unlock`
+      
       self.isLoadingBalances = true
       self.allAccounts = await keyringService.allAccounts().accounts
         .filter { account in
@@ -456,30 +462,46 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         }
       }
       
-      /// Fetch balance for each token, for all accounts applicable to that token
-      tokenBalancesCache = await withTaskGroup(
-        of: [String: [String: Double]].self,
-        body: { @MainActor [tokenBalancesCache, rpcService] group in
-          for tokenNetworkAccounts in allTokenNetworkAccounts { // for each token
-            group.addTask { @MainActor in
-              let token = tokenNetworkAccounts.token
-              var tokenBalances = tokenBalancesCache[token.id] ?? [:]
-              for account in tokenNetworkAccounts.accounts { // fetch balance for this token for each account
-                let balanceForToken = await rpcService.balance(
-                  for: token,
-                  in: account,
-                  network: tokenNetworkAccounts.network
-                )
-                tokenBalances.merge(with: [account.address: balanceForToken ?? 0])
-              }
-              return [token.id: tokenBalances]
-            }
+      // Looping through `allTokenNetworkAccounts` to get token's cached balance
+      for tokenNetworkAccounts in allTokenNetworkAccounts {
+        if let tokenBalances = assetManager.getBalances(for: tokenNetworkAccounts.token, account: nil) {
+          var result: [String: Double] = [:]
+          for balancePerAccount in tokenBalances {
+            result.merge(with: [balancePerAccount.accountAddress: Double(balancePerAccount.balance) ?? 0])
           }
-          return await group.reduce(into: [String: [String: Double]](), { partialResult, new in
-            partialResult.merge(with: new)
-          })
-        })
-
+          tokenBalancesCache.merge(with: [tokenNetworkAccounts.token.id: result])
+        } else {
+          // 1. We have a user asset from CD but wallet has never
+          // fetched it's balance. Should never happen. But we will fetch its
+          // balance and cache it in CD.
+          // 2. Test Cases will come here, we will fetch balance using
+          // a mock `rpcService`
+          let fetchedTokenBalances = await withTaskGroup(
+            of: [String: [String: Double]].self,
+            body: { @MainActor [tokenBalancesCache, rpcService, assetManager] group in
+              group.addTask { @MainActor in
+                let token = tokenNetworkAccounts.token
+                var tokenBalances = tokenBalancesCache[token.id] ?? [:]
+                for account in tokenNetworkAccounts.accounts { // fetch balance for this token for each account
+                  let balanceForToken = await rpcService.balance(
+                    for: token,
+                    in: account,
+                    network: tokenNetworkAccounts.network
+                  )
+                  tokenBalances.merge(with: [account.address: balanceForToken ?? 0])
+                  assetManager.updateBalance(for: token, account: account.address, balance: "\(balanceForToken ?? 0)", completion: nil)
+                }
+                return [token.id: tokenBalances]
+              }
+              return await group.reduce(into: [String: [String: Double]](), { partialResult, new in
+                partialResult.merge(with: new)
+              })
+            }
+          )
+          tokenBalancesCache.merge(with: fetchedTokenBalances)
+        }
+      }
+      
       // fetch price for every token
       let allTokens = allVisibleUserAssets.flatMap(\.tokens)
       let allAssetRatioIds = allTokens.map(\.assetRatioId)
@@ -491,7 +513,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       for (key, value) in prices { // update cached values
         self.pricesCache[key] = value
       }
-
+      
       // fetch price history for every non-zero balance token
       let nonZeroBalanceAssetRatioIds: [String] = allTokens
         .filter { (tokenBalancesCache[$0.id] ?? [:]).values.reduce(0, +) > 0 }
@@ -600,7 +622,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         )
       }
     }
-
+    
     return groups
       .sorted(by: { $0.totalFiatValue > $1.totalFiatValue })
       .optionallyFilter( // when grouping assets & hiding small balances
@@ -750,6 +772,16 @@ extension PortfolioStore: PreferencesObserver {
   }
   public func preferencesDidChange(for key: String) {
     guard !isSavingFilters else { return }
+    update()
+  }
+}
+
+extension PortfolioStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    update()
+  }
+  
+  public func userAssetUpdated() {
     update()
   }
 }

@@ -310,8 +310,8 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
         if network.id.lowercased() == defaultSelectedChainId.lowercased() {
           rpcService.setNetwork(BraveWallet.MainnetChainId, coin: .eth, origin: nil, completion: { _ in })
         }
-        // delete local stored user assets that in this custom network
-        assetManager.removeGroup(for: network.walletUserAssetGroupId, completion: nil)
+        // delete local stored user assets' balances that in this custom network
+        assetManager.removeUserAssetsAndBalance(for: network, completion: nil)
         Task {
           await updateChainList()
         }

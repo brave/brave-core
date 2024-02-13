@@ -128,7 +128,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       }
     }
   }
-
+  
   /// Current group to display
   @Published var displayType: NFTDisplayType = .visible
   /// View model for all NFT include visible, hidden and spams
@@ -193,6 +193,9 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
     self.txService = txService
+    
+    // user asset data update observer
+    self.assetManager.addUserAssetDataObserver(self)
     
     self.setupObservers()
     
@@ -267,6 +270,9 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   func update(forceUpdateNFTBalances: Bool = false) {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
+      let isLocked = await keyringService.isLocked()
+      guard !isLocked else { return } // `update() will be called after unlock`
+      
       self.allAccounts = await keyringService.allAccounts().accounts
         .filter { account in
           WalletConstants.supportedCoinTypes().contains(account.coin)
@@ -544,7 +550,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     )
     
     let allUserNFTs = (userVisibleNFTs + userHiddenNFTs + spams).flatMap(\.tokens)
-
+    
     let groups: [NFTGroupViewModel]
     switch filters.groupBy {
     case .none:
@@ -623,7 +629,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       guard let self else { return }
       let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = self.filters.networks.filter(\.isSelected).map(\.model)
-
+      
       let unionedSpamNFTs = computeSpamNFTs(
         selectedNetworks: selectedNetworks,
         selectedAccounts: selectedAccounts,
@@ -658,6 +664,16 @@ extension NFTStore: PreferencesObserver {
   }
   public func preferencesDidChange(for key: String) {
     guard !isSavingFilters else { return }
+    update()
+  }
+}
+
+extension NFTStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    update()
+  }
+  
+  public func userAssetUpdated() {
     update()
   }
 }

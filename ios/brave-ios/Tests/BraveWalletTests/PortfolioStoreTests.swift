@@ -10,15 +10,18 @@ import Preferences
 @testable import BraveWallet
 
 @MainActor class PortfolioStoreTests: XCTestCase {
-
+  
   private var cancellables: Set<AnyCancellable> = .init()
   private let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
+  private var isLocked = true
   
   override func setUp() {
     resetFilters()
+    isLocked = true
   }
   override func tearDown() {
     resetFilters()
+    isLocked = true
   }
   private func resetFilters() {
     Preferences.Wallet.showTestNetworks.reset()
@@ -46,7 +49,7 @@ import Preferences
     $0.name = "Filecoin Account 2"
   }
   let filTestnetAccount: BraveWallet.AccountInfo = .mockFilTestnetAccount
-
+  
   // Networks
   let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
   let goerliNetwork: BraveWallet.NetworkInfo = .mockGoerli
@@ -172,9 +175,9 @@ import Preferences
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
-    keyringService._isLocked = { completion in
+    keyringService._isLocked = { [weak self] completion in
       // unlocked would cause `update()` from call in `init` to be called prior to test being setup.g
-      completion(true)
+      completion(self?.isLocked ?? true)
     }
     keyringService._allAccounts = {
       $0(.init(
@@ -201,6 +204,8 @@ import Preferences
         completion([self.filMainnet, self.filTestnet])
       case .btc:
         XCTFail("Should not fetch bitcoin network")
+      case .zec:
+        XCTFail("Should not fetch zcash network")
       @unknown default:
         XCTFail("Should not fetch unknown network")
       }
@@ -360,7 +365,7 @@ import Preferences
         XCTAssertNil(group.assets[safe: 4])
       }
       .store(in: &cancellables)
-
+    
     
     // test that `update()` will assign new value to `balance` publisher
     let balanceExpectation = expectation(description: "update-balance")
@@ -384,6 +389,7 @@ import Preferences
         XCTAssertFalse(isLoadingUpdates[1])
       }
       .store(in: &cancellables)
+    isLocked = false
     store.update()
     await fulfillment(of: [assetGroupsExpectation, balanceExpectation, isLoadingBalancesExpectation], timeout: 1)
     cancellables.removeAll()
@@ -441,7 +447,8 @@ import Preferences
         XCTAssertEqual(group.assets[safe: 5]?.quantity,
                        String(format: "%.04f", self.mockETHBalanceAccount1))
       }.store(in: &cancellables)
-
+    
+    isLocked = false
     // change sort to ascending
     store.saveFilters(.init(
       groupBy: store.filters.groupBy,
@@ -505,6 +512,7 @@ import Preferences
         // USDC (value = $0.04), hidden
         XCTAssertNil(group.assets[safe: 4])
       }.store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: store.filters.groupBy,
       sortOrder: .valueDesc,
@@ -574,6 +582,7 @@ import Preferences
                        self.goerliNetwork.nativeToken.symbol)
         XCTAssertEqual(group.assets[safe: 5]?.quantity, String(format: "%.04f", 0))
       }.store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: store.filters.groupBy,
       sortOrder: .valueDesc,
@@ -646,6 +655,7 @@ import Preferences
         })
         XCTAssertTrue(noAssetsAreNFTs)
       }.store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: store.filters.groupBy,
       sortOrder: .valueDesc,
@@ -769,6 +779,7 @@ import Preferences
         XCTAssertTrue(noAssetsAreNFTs)
       }
       .store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: .accounts,
       sortOrder: store.filters.sortOrder,
@@ -939,6 +950,7 @@ import Preferences
         XCTAssertTrue(noAssetsAreNFTs)
       }
       .store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: .networks,
       sortOrder: store.filters.sortOrder,

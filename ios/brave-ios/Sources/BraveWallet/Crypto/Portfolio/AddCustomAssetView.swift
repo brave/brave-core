@@ -15,7 +15,6 @@ struct AddCustomAssetView: View {
   @ObservedObject var userAssetStore: UserAssetsStore
   var tokenNeedsTokenId: BraveWallet.BlockchainToken?
   var supportedTokenTypes: [TokenType] = [.token, .nft]
-  var onNewAssetAdded: (() -> Void)?
   
   @Environment(\.presentationMode) @Binding private var presentationMode
 
@@ -377,7 +376,6 @@ struct AddCustomAssetView: View {
     }
     userAssetStore.addUserAsset(token) { [self] success in
       if success {
-        onNewAssetAdded?()
         presentationMode.dismiss()
       } else {
         showError = true
