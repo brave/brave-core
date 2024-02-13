@@ -12,6 +12,7 @@ BRAVE_URL_SCHEME = brave-beta
 
 // Bundle Identifier
 MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser.beta
+BRAVE_GROUP_ID = group.$(MOZ_BUNDLE_ID)
 
 // Flag to indicate if we want to include the debug settings bundle or not
 INCLUDE_SETTINGS_BUNDLE = NO

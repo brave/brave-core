@@ -97,6 +97,9 @@ class SettingsViewController: TableViewController {
     self.ipfsAPI = braveCore.ipfsAPI
 
     super.init(style: .insetGrouped)
+
+    UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor =
+      .braveLabel
   }
 
   deinit {

@@ -42,6 +42,7 @@ var package = Package(
     .library(name: "CertificateUtilities", targets: ["CertificateUtilities"]),
     .library(name: "Playlist", targets: ["Playlist"]),
     .library(name: "UserAgent", targets: ["UserAgent"]),
+    .library(name: "CredentialProviderUI", targets: ["CredentialProviderUI"]),
     .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
@@ -136,7 +137,7 @@ var package = Package(
       dependencies: ["Strings", "Preferences", "BraveCore"],
       plugins: ["LoggerPlugin"]
     ),
-    .target(name: "DesignSystem", plugins: ["LeoAssetsPlugin"]),
+    .target(name: "DesignSystem", dependencies: ["Then"], plugins: ["LeoAssetsPlugin"]),
     .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
     .binaryTarget(
       name: "MaterialComponents",
@@ -322,6 +323,10 @@ var package = Package(
       plugins: ["LoggerPlugin"]
     ),
     .target(name: "UserAgent", dependencies: ["Preferences"]),
+    .target(
+      name: "CredentialProviderUI",
+      dependencies: ["BraveCore", "DesignSystem", "BraveShared", "Strings", "BraveUI"]
+    ),
     .testTarget(name: "UserAgentTests", dependencies: ["UserAgent", "Brave"]),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(

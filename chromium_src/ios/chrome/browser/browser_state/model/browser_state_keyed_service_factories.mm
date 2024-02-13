@@ -11,6 +11,7 @@
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/consent_auditor/model/consent_auditor_factory.h"
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
+#include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/favicon/model/ios_chrome_favicon_loader_factory.h"
 #include "ios/chrome/browser/favicon/model/ios_chrome_large_icon_cache_factory.h"
@@ -30,6 +31,10 @@
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_setup_service_factory.h"
 #include "ios/chrome/browser/webdata_services/model/web_data_service_factory.h"
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+#import "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
+#endif
 
 void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   autofill::PersonalDataManagerFactory::GetInstance();
@@ -56,6 +61,10 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   SessionRestorationServiceFactory::GetInstance();
   SessionSyncServiceFactory::GetInstance();
   SyncSetupServiceFactory::GetInstance();
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+  CredentialProviderServiceFactory::GetInstance();
+#endif
 
   brave::EnsureBrowserStateKeyedServiceFactoriesBuilt();
 }
