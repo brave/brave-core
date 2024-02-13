@@ -41,7 +41,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.url.GURL;
 
 public class DAppsWalletController
-        implements ConnectionErrorHandler, BraveWalletPanel.BraveWalletPanelServices {
+        implements ConnectionErrorHandler {
     private static final String TAG = DAppsWalletController.class.getSimpleName();
     private FullscreenManager mFullscreenManager;
     private final Context mContext;
@@ -143,7 +143,7 @@ public class DAppsWalletController
                 mVisibleUrl != null && !mVisibleUrl.getHost().equals(BRAVE_WALLET_HOST);
         mBraveWalletPanel =
                 new BraveWalletPanel(
-                        mAnchorViewHost, mDialogOrPanelDismissListener, this, showExpandButton);
+                        mAnchorViewHost, mDialogOrPanelDismissListener, showExpandButton);
         mBraveWalletPanel.showLikePopDownMenu();
         setupLifeCycleUpdater();
     }
@@ -161,30 +161,6 @@ public class DAppsWalletController
         mDAppsDialog =
                 DAppsDialog.newInstance(mContext, mDialogOrPanelDismissListener, dialogStyle);
         mDAppsDialog.showOnboarding(Utils.shouldShowCryptoOnboarding());
-    }
-
-    @Override
-    public AssetRatioService getAssetRatioService() {
-        assert mAssetRatioService != null;
-        return mAssetRatioService;
-    }
-
-    @Override
-    public BraveWalletService getBraveWalletService() {
-        assert mBraveWalletService != null;
-        return mBraveWalletService;
-    }
-
-    @Override
-    public KeyringService getKeyringService() {
-        assert mKeyringService != null;
-        return mKeyringService;
-    }
-
-    @Override
-    public JsonRpcService getJsonRpcService() {
-        assert mJsonRpcService != null;
-        return mJsonRpcService;
     }
 
     @Override
