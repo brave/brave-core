@@ -9,14 +9,11 @@
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 #include "brave/components/widevine/constants.h"
+#include "components/prefs/pref_service.h"
+#include "components/update_client/persisted_data.h"
 #endif
 
 namespace update_client {
-
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-constexpr char kUpstreamHasArm64WidevineKey[] =
-    "brave_upstream_has_arm64_widevine";
-#endif
 
 SequentialUpdateChecker::SequentialUpdateChecker(
     scoped_refptr<Configurator> config,
@@ -176,12 +173,12 @@ void SequentialUpdateChecker::UpdateResultAvailable(
 
 void SequentialUpdateChecker::SetPersistedFlag(const std::string& extension_id,
                                                const std::string& key) {
-  update_context_->persisted_data->BraveSetBool(extension_id, key);
+  update_context_->config->GetPrefService()->SetBoolean(extension_id + key, true);
 }
 
 bool SequentialUpdateChecker::GetPersistedFlag(const std::string& extension_id,
                                                const std::string& key) {
-  return update_context_->persisted_data->BraveGetBool(extension_id, key);
+  return update_context_->config->GetPrefService()->GetBoolean(extension_id + key);
 }
 
 #endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)

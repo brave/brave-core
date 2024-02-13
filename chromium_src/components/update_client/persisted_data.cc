@@ -3,17 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/widevine/static_buildflags.h"
+
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+#define RegisterPersistedDataPrefs RegisterPersistedDataPrefs_ChromiumImpl
+#endif
+
 #include "src/components/update_client/persisted_data.cc"
+
+#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
+
+#undef RegisterPersistedDataPrefs
 
 namespace update_client {
 
-bool PersistedDataImpl::BraveGetBool(const std::string& id,
-                                     const std::string& key){
-    return !GetString(id, key).empty()}
-
-void PersistedDataImpl::BraveSetBool(const std::string& id,
-                                     const std::string& key) {
-  SetString(id, key, "true");
+void RegisterPersistedDataPrefs(PrefRegistrySimple* registry) {
+  RegisterPersistedDataPrefs_ChromiumImpl(registry);
+  registry->RegisterBooleanPref(kUpstreamHasArm64WidevineKey, false);
 }
 
 }  // namespace update_client
+
+#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
