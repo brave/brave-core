@@ -252,8 +252,8 @@ EXISTING_TRANSLATIONS = {
     "IDC_OPEN_IN_CHROME": "IDS_OPEN_IN_CHROME", # &amp;Open in Brave
     "IDC_OPTIONS": "IDS_OPTIONS", # &amp;Options
     "IDC_PASTE_AND_GO": \
-         # Pa&amp;ste and go to
-         # <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
+        # Pa&amp;ste and go to
+        # <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
         "IDS_PASTE_AND_GO",
     "IDC_PASTE": "IDS_PASTE", # &amp;Paste
     "IDC_RESTORE_TAB": "IDS_RESTORE_TAB", # R&amp;eopen closed tab
@@ -279,6 +279,8 @@ EXISTING_TRANSLATIONS = {
         "IDS_BOOKMARK_BAR_OPEN_ALL", # &amp;Open all bookmarks
     "IDC_BOOKMARK_ALL_TABS": "IDS_BOOKMARK_ALL_TABS", # Bookmark all tabs...
     "IDC_ADD_NEW_PROFILE": "IDS_ADD_NEW_PROFILE", # &amp;Add new profile
+    "IDC_CLOSE_DUPLICATE_TABS": \
+        "IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS", # Close duplicate tabs
 }
 
 

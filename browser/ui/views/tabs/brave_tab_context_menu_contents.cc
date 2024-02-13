@@ -187,6 +187,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandBringAllTabsToThisWindow: {
       return true;
     }
+    case BraveTabMenuModel::CommandCloseDuplicateTabs:
+      return brave::HasDuplicateTabs(browser_);
     default:
       NOTREACHED();
       break;
@@ -230,6 +232,9 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       BringAllTabsToThisWindow();
       return;
     }
+    case BraveTabMenuModel::CommandCloseDuplicateTabs:
+      brave::CloseDuplicateTabs(browser_);
+      return;
     default:
       NOTREACHED();
       return;

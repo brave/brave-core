@@ -105,4 +105,10 @@ void BraveTabMenuModel::Build(int selected_tab_count) {
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddCheckItemWithStringId(CommandShowVerticalTabs,
                            IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
+
+  auto close_other_tabs_index =
+      GetIndexOfCommandId(TabStripModel::CommandCloseOtherTabs);
+  InsertItemWithStringIdAt(close_other_tabs_index.value_or(GetItemCount()),
+                           CommandCloseDuplicateTabs,
+                           IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS);
 }
