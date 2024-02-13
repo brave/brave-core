@@ -232,6 +232,9 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
       url.SchemeIs(kChromeExtensionScheme)) {
     return true;
   }
+  if (url == GURL("chrome://player")) {
+    return true;
+  }
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return false;
 
