@@ -2428,7 +2428,7 @@ Are you sure you want to do this?
       Try for FREE
     </message>
     <message name="IDS_TRY_7_DAYS_FOR_FREE" desc="Brave VPN plan action text">
-      Try for Free for 7 Days
+      Try 7 Days Free
     </message>
     <message name="IDS_INSTALL_VPN" desc="Brave VPN plan text">
       Install VPN
