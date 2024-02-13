@@ -197,5 +197,5 @@ interface AIChatAndroidHelper {
 
 [EnableIf=is_android]
 interface IAPSubscription {
-  GetPurchaseToken() => (string token);
+  GetPurchaseTokenOrderId() => (string token, string order_id);
 };
