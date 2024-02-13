@@ -7,6 +7,8 @@
 #include <string>
 #include <string_view>
 
+#include <memory>
+
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "brave/browser/brave_ads/ad_units/search_result_ad/search_result_ad_tab_helper.h"
@@ -20,6 +22,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
+#include "brave/browser/psst/psst_consent_tab_helper_delegate_impl.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -161,7 +164,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
   brave_ads::SearchResultAdTabHelper::MaybeCreateForWebContents(web_contents);
   psst::PsstTabHelper::MaybeCreateForWebContents(
-      web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+      web_contents, std::make_unique<PsstConsentTabHelperDelegateImpl>(),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif

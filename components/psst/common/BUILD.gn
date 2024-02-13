@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//mojo/public/tools/bindings/mojom.gni")
+
 component("common") {
   output_name = "psst_common"
   defines = [ "IS_PSST_COMMON_IMPL" ]
@@ -10,7 +12,24 @@ component("common") {
   sources = [
     "features.cc",
     "features.h",
+    "psst_prefs.cc",
+    "psst_prefs.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/user_prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "psst_prefs_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/psst/common",
+    "//components/sync_preferences:test_support",
+  ]
 }

@@ -31,9 +31,11 @@ namespace {
 //  |_ psst.json
 //  |_ scripts/
 //    |_ twitter/
+//        |_ user.js
 //        |_ test.js
 //        |_ policy.js
 //    |_ linkedin/
+//        |_ user.js
 //        |_ test.js
 //        |_ policy.js
 // See psst_rule.cc for the format of psst.json.

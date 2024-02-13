@@ -12,6 +12,9 @@
 #include "brave/components/psst/common/features.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/javascript_dialogs/app_modal_dialog_controller.h"
+#include "components/javascript_dialogs/app_modal_dialog_view.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -66,6 +69,10 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
     PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
+  void LoadRulesForTest(const std::string& contents) {
+    psst::PsstRuleRegistry::GetInstance()->OnLoadRules(contents);
+  }
+
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
   }
@@ -92,18 +99,25 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue) {
             ],
             "exclude": [
             ],
+            "name": "a",
             "version": 1,
-            "test_script": "a/test.js",
-            "policy_script": "a/policy.js"
+            "user_script": "user.js",
+            "test_script": "test.js",
+            "policy_script": "policy.js"
         }
       ]
       )";
-  psst::PsstRuleRegistry::GetInstance()->OnLoadRules(rules);
+  LoadRulesForTest(rules);
 
-  std::u16string expected_title(u"testpolicy");
+  // The title is built up by the 3 scripts.
+  std::u16string expected_title(u"user-test-policy");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  javascript_dialogs::AppModalDialogController* dialog =
+      ui_test_utils::WaitForAppModalDialog();
+  dialog->view()->AcceptAppModalDialog();
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  // TODO(ssahib): check for pref state update.
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse) {
@@ -118,15 +132,18 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse) {
             ],
             "exclude": [
             ],
+            "name": "b",
             "version": 1,
-            "test_script": "b/test.js",
-            "policy_script": "b/policy.js"
+            "user_script": "user.js",
+            "test_script": "test.js",
+            "policy_script": "policy.js"
         }
       ]
       )";
-  psst::PsstRuleRegistry::GetInstance()->OnLoadRules(rules);
+  LoadRulesForTest(rules);
 
-  std::u16string expected_title(u"test");
+  // The policy script does not run but user and test do.
+  std::u16string expected_title(u"user-test-");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
@@ -144,13 +161,70 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NoMatch) {
             ],
             "exclude": [
             ],
+            "name" : "c",
             "version": 1,
-            "test_script": "a/test.js",
-            "policy_script": "a/policy.js"
+            "user_script": "user.js",
+            "test_script": "test.js",
+            "policy_script": "policy.js"
         }
       ]
       )";
-  psst::PsstRuleRegistry::GetInstance()->OnLoadRules(rules);
+  LoadRulesForTest(rules);
+
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, UserNotFound) {
+  const GURL url = https_server_.GetURL("d.com", "/simple.html");
+
+  const char rules[] =
+      R"(
+      [
+        {
+            "include": [
+                "https://d.com/*"
+            ],
+            "exclude": [
+            ],
+            "name": "d",
+            "version": 1,
+            "user_script": "user.js",
+            "test_script": "test.js",
+            "policy_script": "policy.js"
+        }
+      ]
+      )";
+  LoadRulesForTest(rules);
+
+  // The policy script does not run but user and test do.
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NoInsertIfNoName) {
+  const GURL url = https_server_.GetURL("c.com", "/simple.html");
+
+  const char rules[] =
+      R"(
+      [
+        {
+            "include": [
+                "https://c.com/*"
+            ],
+            "exclude": [
+            ],
+            "version": 1,
+            "test_script": "test.js",
+            "policy_script": "policy.js"
+        }
+      ]
+      )";
+  LoadRulesForTest(rules);
 
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
