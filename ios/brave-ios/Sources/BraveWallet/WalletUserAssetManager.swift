@@ -277,7 +277,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
   }
   
   public func getBalances(for asset: BraveWallet.BlockchainToken?, account: String?) -> [WalletUserAssetBalance]? {
-    WalletUserAssetBalance.getBalance(for: asset, account: account)
+    WalletUserAssetBalance.getBalances(for: asset, account: account)
   }
   
   public func updateBalance(for asset: BraveWallet.BlockchainToken, account: String, balance: String, completion: (() -> Void)?) {

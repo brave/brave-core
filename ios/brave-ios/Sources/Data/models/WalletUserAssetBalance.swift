@@ -49,7 +49,7 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
   ///     - context: An optional value of `NSManagedObjectContext`
   ///
   /// - Returns: An optional of list of `WalletUserAssetBalance` that matches given parameters.
-  public static func getBalance(
+  public static func getBalances(
     for asset: BraveWallet.BlockchainToken? = nil,
     account: String? = nil,
     context: NSManagedObjectContext? = nil
