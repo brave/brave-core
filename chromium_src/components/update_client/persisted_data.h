@@ -18,7 +18,7 @@ bool UpstreamHasArm64Widevine(PrefService* prefService);
 
 void SetUpstreamHasArm64Widevine(PrefService* prefService);
 
-}
+}  // namespace update_client
 
 #endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
