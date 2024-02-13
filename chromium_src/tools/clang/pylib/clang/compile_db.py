@@ -20,16 +20,24 @@ _CLANG_WRAPPER_CMD_LINE_RE = re.compile(
 
 
 @override_utils.override_function(globals())
-def _FilterFlags(original_function, command, additional_filtered_flags):
-    filtered_flags = [
-        # Remove clangd-indexer unsupported flag.
-        '-gno-codeview-command-line'
+def ProcessCompileDatabase(original_function, compile_db, filtered_args, target_os=None):
+    ext_filtered_flags = [
+        # Remove clangd-indexer unsupported flags.
+        '-gno-codeview-command-line',
+        '-Wno-delayed-template-parsing-in-cxx20',
+        '-Wno-thread-safety-reference-return',
     ]
-    if additional_filtered_flags:
-        additional_filtered_flags.extend(filtered_flags)
-    else:
-        additional_filtered_flags = filtered_flags
 
+    if filtered_args:
+        filtered_args.extend(ext_filtered_flags)
+    else:
+        filtered_args = ext_filtered_flags
+
+    return original_function(compile_db, filtered_args, target_os=target_os)
+
+
+@override_utils.override_function(globals())
+def _FilterFlags(original_function, command, additional_filtered_flags):
     flags = original_function(command, additional_filtered_flags)
     flags_to_restore = [
         # Clangd 15+ is required, VSCode extension includes it.
