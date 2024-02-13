@@ -38,6 +38,7 @@ class BraveTabStrip : public TabStrip {
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
 
   void UpdateTabContainer();
+  void UpdateTabStripMargins();
   bool ShouldShowVerticalTabs() const;
 
   TabContainer* GetTabContainerForTesting();
