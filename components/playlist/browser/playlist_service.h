@@ -12,7 +12,6 @@
 
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/read_only_shared_memory_region.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -241,9 +240,7 @@ class PlaylistService : public KeyedService,
 
   bool playlist_enabled() const { return *enabled_pref_; }
 
-  base::ReadOnlySharedMemoryRegion GetMediaSourceAPISuppressorScript() const;
-  base::ReadOnlySharedMemoryRegion GetMediaDetectorScript(
-      const GURL& url) const;
+  std::string GetMediaDetectorScript(const GURL& url) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;

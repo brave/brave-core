@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/memory/read_only_shared_memory_region.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -28,8 +27,7 @@ namespace playlist {
 // static
 void PlaylistTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents,
-    playlist::PlaylistService* service,
-    bool is_background /* = false */) {
+    playlist::PlaylistService* service) {
   if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     return;
   }
@@ -41,15 +39,12 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
   }
 
   content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-      contents, service, is_background);
+      contents, service);
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
-                                     PlaylistService* service,
-                                     bool is_background)
-    : WebContentsUserData(*contents),
-      service_(service),
-      is_background_(is_background) {
+                                     PlaylistService* service)
+    : WebContentsUserData(*contents), service_(service) {
   Observe(contents);
   CHECK(service_);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
@@ -200,11 +195,8 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
   navigation_handle->GetRenderFrameHost()
       ->GetRemoteAssociatedInterfaces()
       ->GetInterface(&frame_observer_config);
-  frame_observer_config->AddScripts(
-      is_background_ ? service_->GetMediaSourceAPISuppressorScript()
-                     : base::ReadOnlySharedMemoryRegion(),
-      service_->GetMediaDetectorScript(
-          navigation_handle->GetWebContents()->GetVisibleURL()));
+  frame_observer_config->AddMediaDetector(service_->GetMediaDetectorScript(
+      navigation_handle->GetWebContents()->GetVisibleURL()));
 }
 
 void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {

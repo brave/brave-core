@@ -23,10 +23,6 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace blink::web_pref {
-struct WebPreferences;
-}  // namespace blink::web_pref
-
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -69,10 +65,6 @@ class PlaylistDownloadRequestManager {
   // Request::callback will be called with generated param.
   virtual void GetMediaFilesFromPage(Request request);
 
-  // Update |web_prefs| if we want for |web_contents|.
-  void ConfigureWebPrefsForBackgroundWebContents(
-      content::WebContents* web_contents,
-      blink::web_pref::WebPreferences* web_prefs);
   void ResetRequests();
 
   const content::WebContents* background_contents() const {
@@ -107,7 +99,7 @@ class PlaylistDownloadRequestManager {
   void RunMediaDetector(Request request);
 
   bool ReadyToRunMediaDetectorScript() const;
-  void CreateWebContents(bool should_force_fake_ua);
+  void CreateWebContents(const Request& request = {});
   std::vector<mojom::PlaylistItemPtr> ProcessFoundMedia(base::Value value,
                                                         GURL page_url);
 
