@@ -465,7 +465,7 @@ let isStripAbsolutePathsFromDebugSymbolsEnabled = {
       .map { $0.split(separator: "=").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) } }
     return env.contains(where: { $0.first == "use_remoteexec" && $0.last == "true" })
   } catch {
-    fatalError("Didn't find .env file.")
+    return false
   }
 }()
 

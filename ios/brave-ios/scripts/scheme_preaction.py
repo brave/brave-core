@@ -36,7 +36,7 @@ def main():
 
     # Passed in configuration is going to be based on Xcode configurations which
     # is based on channels, so use Release for all non-Debug configs.
-    config = 'Debug' if options.configuration == 'Debug' else 'Release'
+    config = 'Release' if 'Debug' not in options.configuration else 'Debug'
     output_dir = BuildOutputDirectory(config, options.platform_name)
     target_arch = 'arm64' if platform.processor(
     ) == 'arm' or options.platform_name == 'iphoneos' else 'x64'
