@@ -234,6 +234,7 @@ test("brave_unit_tests") {
     "//brave/components/de_amp/browser/test:unit_tests",
     "//brave/components/debounce/browser/test:unit_tests",
     "//brave/components/embedder_support:unit_tests",
+    "//brave/components/history/core/browser:unit_tests",
     "//brave/components/history/core/browser/sync:unit_tests",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",

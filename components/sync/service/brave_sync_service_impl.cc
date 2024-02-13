@@ -323,13 +323,17 @@ void BraveSyncServiceImpl::LocalDeviceAppeared() {
 }
 
 namespace {
-const int kCyclesBeforeUpdateP3AObjects = 10;
+// Typical cycle takes 30 sec, let's send P3A updates each ~30 minutes
+const int kCyclesBeforeUpdateP3AObjects = 60;
+// And Let's do the first update in ~5 minutes after sync start
+const int kCyclesBeforeFirstUpdatesP3A = 10;
 }  // namespace
 
 void BraveSyncServiceImpl::OnSyncCycleCompleted(
     const SyncCycleSnapshot& snapshot) {
   SyncServiceImpl::OnSyncCycleCompleted(snapshot);
-  if (completed_cycles_count_ % kCyclesBeforeUpdateP3AObjects == 0) {
+  if (completed_cycles_count_ == kCyclesBeforeFirstUpdatesP3A ||
+      completed_cycles_count_ % kCyclesBeforeUpdateP3AObjects == 0) {
     UpdateP3AObjectsNumber();
   }
   ++completed_cycles_count_;
@@ -347,7 +351,19 @@ void BraveSyncServiceImpl::OnGotEntityCounts(
     total_entities += count.non_tombstone_entities;
   }
 
-  brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
+  if (GetUserSettings()->GetSelectedTypes().Has(
+          syncer::UserSelectableType::kHistory)) {
+    // History stores info about synced objects in a different way than the
+    // others types. Issue a separate request to achieve this info
+    sync_service_impl_delegate_->GetKnownToSyncHistoryCount(base::BindOnce(
+        [](int total_entities, std::pair<bool, int> known_to_sync_count) {
+          brave_sync::p3a::RecordSyncedObjectsCount(total_entities +
+                                                    known_to_sync_count.second);
+        },
+        total_entities));
+  } else {
+    brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
+  }
 }
 
 void BraveSyncServiceImpl::OnPreferredDataTypesPrefChange(

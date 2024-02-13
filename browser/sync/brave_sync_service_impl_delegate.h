@@ -6,14 +6,17 @@
 #ifndef BRAVE_BROWSER_SYNC_BRAVE_SYNC_SERVICE_IMPL_DELEGATE_H_
 #define BRAVE_BROWSER_SYNC_BRAVE_SYNC_SERVICE_IMPL_DELEGATE_H_
 
-#include "brave/components/sync/service/sync_service_impl_delegate.h"
+#include <utility>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
-class Profile;
+namespace history {
+class HistoryService;
+}  // namespace history
 
 namespace syncer {
 
@@ -29,7 +32,8 @@ class BraveSyncServiceImplDelegate
       public syncer::DeviceInfoTracker::Observer {
  public:
   explicit BraveSyncServiceImplDelegate(
-      DeviceInfoSyncService* device_info_sync_service);
+      DeviceInfoSyncService* device_info_sync_service,
+      history::HistoryService* history_service);
   ~BraveSyncServiceImplDelegate() override;
 
   void SuspendDeviceObserverForOwnReset() override;
@@ -37,6 +41,9 @@ class BraveSyncServiceImplDelegate
 
   void SetLocalDeviceAppearedCallback(
       base::OnceCallback<void()> local_device_appeared_callback) override;
+
+  void GetKnownToSyncHistoryCount(
+      base::OnceCallback<void(std::pair<bool, int>)> callback) override;
 
  private:
   // syncer::DeviceInfoTracker::Observer:
@@ -54,6 +61,7 @@ class BraveSyncServiceImplDelegate
       device_info_observer_{this};
 
   raw_ptr<DeviceInfoSyncService> device_info_sync_service_ = nullptr;
+  raw_ptr<history::HistoryService> history_service_ = nullptr;
 
   // This is triggered once after SetLocalDeviceAppearedCallback
   // when the local device first appears in the changed synced devices list

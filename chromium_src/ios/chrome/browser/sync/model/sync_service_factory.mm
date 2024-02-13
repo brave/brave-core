@@ -5,13 +5,16 @@
 
 #include "brave/browser/sync/brave_sync_service_impl_delegate.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
+#include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
 
-#define BRAVE_BUILD_SERVICE_INSTANCE_FOR                      \
-  std::make_unique<syncer::BraveSyncServiceImpl>(             \
-      std::move(init_params),                                 \
-      std::make_unique<syncer::BraveSyncServiceImplDelegate>( \
-          DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state)));
+#define BRAVE_BUILD_SERVICE_INSTANCE_FOR                                   \
+  std::make_unique<syncer::BraveSyncServiceImpl>(                          \
+      std::move(init_params),                                              \
+      std::make_unique<syncer::BraveSyncServiceImplDelegate>(              \
+          DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state), \
+          ios::HistoryServiceFactory::GetForBrowserState(                  \
+              browser_state, ServiceAccessType::IMPLICIT_ACCESS)));
 
 #include "src/ios/chrome/browser/sync/model/sync_service_factory.mm"
 
