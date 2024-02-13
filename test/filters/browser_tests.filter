@@ -1256,6 +1256,9 @@
 # (the component loads but does nothing)
 -ThirdPartyCookieDeprecationObserverCookieReadBrowserTest.*
 
+# This test fails because we disable some child views in the page info bubble.
+-All/PageInfoBubbleViewBrowserTestCookiesSubpage.ClickingCookieDialogButton/0
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
