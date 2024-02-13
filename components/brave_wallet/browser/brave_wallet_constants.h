@@ -1091,6 +1091,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE},
     {"braveWalletOnboardingSuccessDescription",
      IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION},
+     {"braveWalletOnboardingSuccessGoToPortfolio", IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_GO_TO_PORTFOLIO},
     {"braveWalletArticleLinkWhatsARecoveryPhrase",
      IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_RECOVERY_PHRASE},
     {"braveWalletImportOrRestoreWalletTitle",

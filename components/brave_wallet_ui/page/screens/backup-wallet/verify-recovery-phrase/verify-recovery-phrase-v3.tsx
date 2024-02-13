@@ -48,8 +48,6 @@ export const VerifyRecoveryPhrase = () => {
   const [currentStep, setCurrentStep] = React.useState(0)
   const [enteredPhrase, setEnteredPhrase] = React.useState('')
   const [showError, setShowError] = React.useState(false)
-  const [doesWordMatch, setDoesWordMatch] = React.useState(true)
-  console.log(doesWordMatch)
 
   // mutations
   const [report] = useReportOnboardingActionMutation()
@@ -91,7 +89,6 @@ export const VerifyRecoveryPhrase = () => {
     if (showError) setShowError(false)
     // check if the word matches
     if (enteredPhrase === verificationWord) {
-      setDoesWordMatch(true)
       setEnteredPhrase('')
 
       if (currentStep === numberOfVerificationSteps - 1) {
@@ -100,7 +97,6 @@ export const VerifyRecoveryPhrase = () => {
         setCurrentStep(currentStep + 1)
       }
     } else {
-      setDoesWordMatch(false)
       setShowError(true)
     }
   }

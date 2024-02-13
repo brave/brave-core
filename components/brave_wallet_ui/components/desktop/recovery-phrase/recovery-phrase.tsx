@@ -56,8 +56,6 @@ export const RecoveryPhrase: React.FC<Props> = ({
     )
   }, [verificationModeEnabled, shuffledPhrase, recoveryPhrase])
 
-  console.log(phraseWordsToDisplay)
-
   // render
   if (hidden) {
     return (
@@ -85,16 +83,13 @@ export const RecoveryPhrase: React.FC<Props> = ({
       phraseLength={recoveryPhrase.length}
       onMouseLeave={() => setHidden(true)}
     >
-      {phraseWordsToDisplay.map((word) => {
-        console.log(word)
-        return (
-          <RecoveryBubble key={`${word.index}-${word.value}`}>
-            <span>
-              {word.index + 1}. {word.value}
-            </span>
-          </RecoveryBubble>
-        )
-      })}
+      {phraseWordsToDisplay.map((word) => (
+        <RecoveryBubble key={`${word.index}-${word.value}`}>
+          <span>
+            {word.index + 1}. {word.value}
+          </span>
+        </RecoveryBubble>
+      ))}
     </RecoveryPhraseContainer>
   )
 }

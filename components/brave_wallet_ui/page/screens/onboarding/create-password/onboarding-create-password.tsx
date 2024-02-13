@@ -12,7 +12,8 @@ import { BraveWallet } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import {
   useCreateWalletMutation,
-  useReportOnboardingActionMutation
+  useReportOnboardingActionMutation,
+  useSetAutoLockMinutesMutation
 } from '../../../../common/slices/api.slice'
 import {
   useSafeWalletSelector //
@@ -54,6 +55,7 @@ export const OnboardingCreatePassword = ({
   const [createWallet, { isLoading: isCreatingWallet }] =
     useCreateWalletMutation()
   const [report] = useReportOnboardingActionMutation()
+  const [setAutoLockMinutes] = useSetAutoLockMinutesMutation()
 
   // methods
   const nextStep = React.useCallback(async () => {
@@ -63,7 +65,10 @@ export const OnboardingCreatePassword = ({
     // Note: intentionally not using unwrapped value
     // results are returned before other redux actions complete
     await createWallet({ password }).unwrap()
-  }, [isValid, createWallet, password])
+
+    // Set auto lock duration
+    await setAutoLockMinutes(autoLockDuration)
+  }, [isValid, createWallet, password, setAutoLockMinutes, autoLockDuration])
 
   const handlePasswordChange = React.useCallback(
     ({ isValid, password }: NewPasswordValues) => {
