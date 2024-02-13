@@ -501,7 +501,9 @@ function DepositAccount() {
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
-  const receiveAddress = useReceiveAddressQuery(selectedAccount?.accountId)
+  const { receiveAddress, isFetchingAddress } = useReceiveAddressQuery(
+    selectedAccount?.accountId
+  )
   const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
     receiveAddress || skipToken
   )
@@ -670,7 +672,7 @@ function DepositAccount() {
 
       <Row>
         <QRCodeContainer>
-          {isLoadingQrCode || !receiveAddress ? (
+          {isLoadingQrCode || !receiveAddress || isFetchingAddress ? (
             <LoadingRing />
           ) : (
             <QRCodeImage src={qrCode} />
@@ -681,7 +683,7 @@ function DepositAccount() {
       <Column gap={'4px'}>
         <AddressTextLabel>Address:</AddressTextLabel>
 
-        {receiveAddress ? (
+        {receiveAddress && !isFetchingAddress ? (
           <>
             <Row gap={'12px'}>
               <AddressText>{receiveAddress}</AddressText>
