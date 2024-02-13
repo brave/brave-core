@@ -39,19 +39,23 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"menuSettings", IDS_CHAT_UI_MENU_SETTINGS},
       {"menuTitleModels", IDS_CHAT_UI_MENU_TITLE_MODELS},
       {"suggestQuestionsLabel", IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL},
-      {"premiumButtonLabel", IDS_CHAT_UI_PREMIUM_BUTTON_LABEL},
+      {"upgradeButtonLabel", IDS_CHAT_UI_UPGRADE_BUTTON_LABEL},
       {"rateLimitReachedTitle", IDS_CHAT_UI_RATE_LIMIT_REACHED_TITLE},
       {"rateLimitReachedDesc", IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC},
       {"premiumFeature_1", IDS_CHAT_UI_PREMIUM_FEATURE_1},
       {"premiumFeature_2", IDS_CHAT_UI_PREMIUM_FEATURE_2},
+      {"premiumFeature_3", IDS_CHAT_UI_PREMIUM_FEATURE_3},
+      {"premiumFeature_4", IDS_CHAT_UI_PREMIUM_FEATURE_4},
+      {"premiumFeature_1_desc", IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC},
+      {"premiumFeature_2_desc", IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC},
+      {"premiumFeature_3_desc", IDS_CHAT_UI_PREMIUM_FEATURE_3_DESC},
+      {"premiumFeature_4_desc", IDS_CHAT_UI_PREMIUM_FEATURE_4_DESC},
       {"premiumLabel", IDS_CHAT_UI_PREMIUM_LABEL},
       {"premiumPricing", IDS_CHAT_UI_PREMIUM_PRICING},
       {"switchToBasicModelButtonLabel",
        IDS_CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL},
       {"dismissButtonLabel", IDS_CHAT_UI_DISMISS_BUTTON_LABEL},
       {"unlockPremiumTitle", IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE},
-      {"premiumFeature_1_desc", IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC},
-      {"premiumFeature_2_desc", IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC},
       {"premiumRefreshWarningDescription",
        IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_DESCRIPTION},
       {"premiumRefreshWarningAction",
@@ -101,7 +105,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"welcomeGuideShatCardDesc", IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_DESC},
       {"privacyTitle", IDS_CHAT_UI_PRIVACY_TITLE},
       {"contextToggleLabel", IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL},
-      {"contextToggleTooltipInfo", IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO}};
+      {"contextToggleTooltipInfo", IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO},
+      {"subscriptionPolicyInfo", IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO}};
 
   return kLocalizedStrings;
 }
