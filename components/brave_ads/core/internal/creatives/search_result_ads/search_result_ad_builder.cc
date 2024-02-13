@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_builder.h"
 
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

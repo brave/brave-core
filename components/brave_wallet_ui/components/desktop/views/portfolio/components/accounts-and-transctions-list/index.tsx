@@ -12,6 +12,9 @@ import { useLocation } from 'react-router-dom'
 import {
   LOCAL_STORAGE_KEYS //
 } from '../../../../../../common/constants/local-storage-keys'
+import {
+  emptyRewardsInfo //
+} from '../../../../../../common/async/base-query-cache'
 
 // Actions
 import { WalletActions } from '../../../../../../common/actions'
@@ -30,13 +33,7 @@ import Amount from '../../../../../../utils/amount'
 import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
-import {
-  getIsRewardsToken,
-  getNormalizedExternalRewardsWallet
-} from '../../../../../../utils/rewards_utils'
-import {
-  externalWalletProviderFromString //
-} from '../../../../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { getIsRewardsToken } from '../../../../../../utils/rewards_utils'
 
 // Options
 import { PortfolioAssetOptions } from '../../../../../../options/nav-options'
@@ -48,22 +45,22 @@ import {
 import { PortfolioAccountItem } from '../../../../portfolio-account-item/index'
 import {
   SegmentedControl //
-} from '../../../../../shared/segmented-control/segmented-control'
+} from '../../../../../shared/segmented_control/segmented_control'
 import {
   SellAssetModal //
 } from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
 
 // Hooks
 import {
-  useUnsafeWalletSelector,
-  useSafeWalletSelector
+  useSafeWalletSelector //
 } from '../../../../../../common/hooks/use-safe-selector'
 import {
   useMultiChainSellAssets //
 } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
+  useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
-  useGetRewardsBalanceQuery,
+  useGetRewardsInfoQuery,
   useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
 import {
@@ -92,7 +89,7 @@ interface Props {
   formattedFullAssetBalance: string
   selectedAssetTransactions: SerializableTransactionInfo[]
   accounts: BraveWallet.AccountInfo[]
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
   spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
@@ -112,19 +109,19 @@ export const AccountsAndTransactionsList = ({
   const dispatch = useDispatch()
 
   // unsafe selectors
-  const defaultCurrencies = useUnsafeWalletSelector(
-    WalletSelectors.defaultCurrencies
-  )
   const hidePortfolioBalances = useSafeWalletSelector(
     WalletSelectors.hidePortfolioBalances
   )
 
   // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken
   )
-  const { data: rewardsBalance } = useGetRewardsBalanceQuery()
+  const {
+    data: { balance: rewardsBalance, rewardsAccount } = emptyRewardsInfo
+  } = useGetRewardsInfoQuery()
 
   // hooks
   const {
@@ -142,11 +139,7 @@ export const AccountsAndTransactionsList = ({
   // Memos & Computed
   const isRewardsToken = getIsRewardsToken(selectedAsset)
 
-  const externalRewardsAccount = isRewardsToken
-    ? getNormalizedExternalRewardsWallet(
-        externalWalletProviderFromString(selectedAsset?.chainId ?? '')
-      )
-    : undefined
+  const externalRewardsAccount = isRewardsToken ? rewardsAccount : undefined
 
   const filteredAccountsByCoinType = React.useMemo(() => {
     if (!selectedAsset) {
@@ -209,10 +202,9 @@ export const AccountsAndTransactionsList = ({
 
   const onOpenSellAssetLink = React.useCallback(() => {
     openSellAssetLink({
-      sellAddress: selectedSellAccount?.address ?? '',
       sellAsset: selectedAsset
     })
-  }, [selectedAsset, selectedSellAccount?.address, openSellAssetLink])
+  }, [selectedAsset, openSellAssetLink])
 
   const onToggleHideBalances = React.useCallback(() => {
     window.localStorage.setItem(
@@ -274,7 +266,7 @@ export const AccountsAndTransactionsList = ({
                             >
                               {'(' +
                                 fullAssetFiatBalance.formatAsFiat(
-                                  defaultCurrencies.fiat
+                                  defaultFiatCurrency
                                 ) +
                                 ')'}
                             </Text>
@@ -303,7 +295,6 @@ export const AccountsAndTransactionsList = ({
                     <PortfolioAccountItem
                       key={account.accountId.uniqueKey}
                       asset={selectedAsset}
-                      defaultCurrencies={defaultCurrencies}
                       account={account}
                       assetBalance={
                         isRewardsToken && rewardsBalance

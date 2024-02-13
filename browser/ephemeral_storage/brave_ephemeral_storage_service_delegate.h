@@ -17,6 +17,8 @@ namespace content {
 class BrowserContext;
 }
 
+class HostContentSettingsMap;
+
 namespace ephemeral_storage {
 
 class BraveEphemeralStorageServiceDelegate
@@ -24,6 +26,7 @@ class BraveEphemeralStorageServiceDelegate
  public:
   BraveEphemeralStorageServiceDelegate(
       content::BrowserContext* context,
+      HostContentSettingsMap* host_content_settings_map,
       scoped_refptr<content_settings::CookieSettings> cookie_settings);
   ~BraveEphemeralStorageServiceDelegate() override;
 
@@ -33,6 +36,7 @@ class BraveEphemeralStorageServiceDelegate
 
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 };
 

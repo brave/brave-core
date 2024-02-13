@@ -1,20 +1,20 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 07387a69ada91e01b08043dfdc2029228890f937..dafa83866f9d4305ec2fa5173a5007c73bbe7cc4 100755
+index 01e75f7d3b5e0ffcf016315ecd2a4cebaadff7c5..dff126854b81f95c82c5e0233c32fc353ec137cc 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -645,6 +645,7 @@ def _ParseOptions():
-            'with the installer archive {x86|x64}.')
-   parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
-                     default=False)
-+  parser.add_option('--skip_signing', action='store_true', default=False)
+@@ -756,6 +756,7 @@ def _ParseOptions():
+                       action='store_true',
+                       dest='verbose',
+                       default=False)
++    parser.add_option('--skip_signing', action='store_true', default=False)
  
-   options, _ = parser.parse_args()
-   if not options.build_dir:
-@@ -673,6 +674,7 @@ def _ParseOptions():
+     options, _ = parser.parse_args()
+     if not options.build_dir:
+@@ -786,6 +787,7 @@ def _ParseOptions():
  
-   return options
+     return options
  
-+from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/chrome/tools/build/win/create_installer_archive.py", globals(), locals())
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
  
  if '__main__' == __name__:
-   options = _ParseOptions()
+     options = _ParseOptions()

@@ -1,0 +1,549 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { useDispatch } from 'react-redux'
+import { Redirect, useHistory, useParams } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// types
+import {
+  BraveWallet,
+  WalletRoutes,
+  TokenPriceHistory,
+  LineChartIframeData
+} from '../../../../constants/types'
+
+// constants
+import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
+
+// Utils
+import Amount from '../../../../utils/amount'
+import {
+  findTransactionToken,
+  getETHSwapTransactionBuyAndSellTokens,
+  sortTransactionByDate
+} from '../../../../utils/tx-utils'
+import { getBalance } from '../../../../utils/balance-utils'
+import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { networkSupportsAccount } from '../../../../utils/network-utils'
+import {
+  auroraSupportedContractAddresses,
+  getAssetIdKey
+} from '../../../../utils/asset-utils'
+import { getLocale } from '../../../../../common/locale'
+import { makeNetworkAsset } from '../../../../options/asset-options'
+import { isRewardsAssetId } from '../../../../utils/rewards_utils'
+import {
+  makeDepositFundsRoute,
+  makeFundWalletRoute
+} from '../../../../utils/routes-utils'
+import {
+  getStoredPortfolioTimeframe //
+} from '../../../../utils/local-storage-utils'
+
+// actions
+import { WalletPageActions } from '../../../../page/actions'
+
+// selectors
+import { WalletSelectors } from '../../../../common/selectors'
+
+// Components
+import {
+  LineChartControls //
+} from '../../line-chart/line-chart-controls/line-chart-controls'
+import {
+  AccountsAndTransactionsList //
+} from './components/accounts-and-transctions-list'
+import {
+  BridgeToAuroraModal //
+} from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
+
+// Hooks
+import {
+  useScopedBalanceUpdater //
+} from '../../../../common/hooks/use-scoped-balance-updater'
+import {
+  useIsBuySupported //
+} from '../../../../common/hooks/use-multi-chain-buy-assets'
+import {
+  useSafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
+import {
+  useGetNetworkQuery,
+  useGetTransactionsQuery,
+  useGetTokenSpotPricesQuery,
+  useGetPriceHistoryQuery,
+  useGetDefaultFiatCurrencyQuery,
+  useGetRewardsInfoQuery,
+  useGetUserTokensRegistryQuery
+} from '../../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../common/slices/constants'
+
+// Styled Components
+import { BuySellBridgeButton, StyledWrapper, ButtonRow } from './style'
+import { Row, Column } from '../../../shared/style'
+import {
+  TokenDetailsModal //
+} from './components/token-details-modal/token-details-modal'
+import {
+  WalletActions //
+} from '../../../../common/actions'
+import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
+import {
+  WalletPageWrapper //
+} from '../../wallet-page-wrapper/wallet-page-wrapper'
+import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
+
+const rainbowbridgeLink = 'https://rainbowbridge.app'
+const bridgeToAuroraDontShowAgainKey = 'bridgeToAuroraDontShowAgain'
+
+const emptyPriceList: TokenPriceHistory[] = []
+
+export const PortfolioFungibleAsset = () => {
+  // state
+  const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] =
+    React.useState<boolean>(false)
+  const [dontShowAuroraWarning, setDontShowAuroraWarning] =
+    React.useState<boolean>(false)
+  const [showTokenDetailsModal, setShowTokenDetailsModal] =
+    React.useState<boolean>(false)
+  const [showHideTokenModel, setShowHideTokenModal] =
+    React.useState<boolean>(false)
+  const [selectedTimeline, setSelectedTimeline] = React.useState<number>(
+    getStoredPortfolioTimeframe
+  )
+
+  // routing
+  const history = useHistory()
+  const { assetId } = useParams<{
+    assetId?: string
+  }>()
+  const isRewardsToken = assetId ? isRewardsAssetId(assetId) : false
+
+  // redux
+  const dispatch = useDispatch()
+  const hidePortfolioBalances = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioBalances
+  )
+
+  // Queries
+  const { data: userTokensRegistry, isLoading: isLoadingTokens } =
+    useGetUserTokensRegistryQuery()
+  const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
+  const {
+    data: { rewardsToken } = emptyRewardsInfo,
+    isLoading: isLoadingRewards
+  } = useGetRewardsInfoQuery(isRewardsToken ? undefined : skipToken)
+
+  // params
+  const selectedAssetFromParams = React.useMemo(() => {
+    if (isRewardsToken) {
+      return rewardsToken
+    }
+    return assetId ? userTokensRegistry?.entities[assetId] : undefined
+  }, [isRewardsToken, rewardsToken, assetId, userTokensRegistry])
+
+  // queries
+  const { accounts } = useAccountsQuery()
+
+  const { data: selectedAssetsNetwork } = useGetNetworkQuery(
+    selectedAssetFromParams ?? skipToken
+  )
+
+  const { data: transactionsByNetwork = [] } = useGetTransactionsQuery(
+    selectedAssetFromParams && !isRewardsToken
+      ? {
+          accountId: null,
+          chainId: selectedAssetFromParams.chainId,
+          coinType: selectedAssetFromParams.coin
+        }
+      : skipToken
+  )
+
+  const candidateAccounts = React.useMemo(() => {
+    if (!selectedAssetsNetwork) {
+      return []
+    }
+
+    return accounts.filter((account) =>
+      networkSupportsAccount(selectedAssetsNetwork, account.accountId)
+    )
+  }, [selectedAssetsNetwork, accounts])
+
+  const { data: tokenBalancesRegistry } = useScopedBalanceUpdater(
+    selectedAssetFromParams && candidateAccounts && selectedAssetsNetwork
+      ? {
+          network: selectedAssetsNetwork,
+          accounts: candidateAccounts,
+          tokens: [selectedAssetFromParams]
+        }
+      : skipToken
+  )
+
+  const tokenPriceIds = React.useMemo(
+    () =>
+      selectedAssetFromParams
+        ? [getPriceIdForToken(selectedAssetFromParams)]
+        : [],
+    [selectedAssetFromParams]
+  )
+
+  const {
+    data: selectedAssetPriceHistory,
+    isFetching: isFetchingPortfolioPriceHistory
+  } = useGetPriceHistoryQuery(
+    selectedAssetFromParams && defaultFiat
+      ? {
+          tokenParam: tokenPriceIds[0],
+          timeFrame: selectedTimeline,
+          vsAsset: defaultFiat
+        }
+      : skipToken
+  )
+
+  // custom hooks
+  const isAssetBuySupported =
+    useIsBuySupported(selectedAssetFromParams) && !isRewardsToken
+
+  // memos
+  /**
+   * This will scrape all the user's accounts and combine the asset balances for
+   * a single asset
+   */
+  const fullAssetBalance = React.useMemo(() => {
+    const amounts = candidateAccounts.map((account: BraveWallet.AccountInfo) =>
+      getBalance(
+        account.accountId,
+        selectedAssetFromParams,
+        tokenBalancesRegistry
+      )
+    )
+
+    // If a user has not yet created a FIL or SOL account,
+    // we return 0 until they create an account
+    if (amounts.length === 0) {
+      return '0'
+    }
+
+    return amounts.reduce(function (a, b) {
+      return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
+    })
+  }, [candidateAccounts, selectedAssetFromParams, tokenBalancesRegistry])
+
+  // memos / computed
+  const isLoadingGraphData =
+    !selectedAssetFromParams || isFetchingPortfolioPriceHistory
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    tokenPriceIds.length && defaultFiat
+      ? { ids: tokenPriceIds, toCurrency: defaultFiat }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
+
+  const isSelectedAssetBridgeSupported = React.useMemo(() => {
+    if (!selectedAssetFromParams) return false
+    const isBridgeAddress = auroraSupportedContractAddresses.includes(
+      selectedAssetFromParams.contractAddress.toLowerCase()
+    )
+    const isNativeAsset = selectedAssetFromParams.contractAddress === ''
+
+    return (
+      (isBridgeAddress || isNativeAsset) &&
+      selectedAssetFromParams.chainId === BraveWallet.MAINNET_CHAIN_ID
+    )
+  }, [selectedAssetFromParams])
+
+  const selectedAssetTransactions = React.useMemo(() => {
+    const nativeAsset = makeNetworkAsset(selectedAssetsNetwork)
+
+    if (selectedAssetFromParams) {
+      const filteredTransactions = transactionsByNetwork.filter((tx) => {
+        const token = findTransactionToken(tx, [selectedAssetFromParams])
+
+        const selectedAssetIdKey = getAssetIdKey(selectedAssetFromParams)
+        const tokenId = token ? getAssetIdKey(token) : undefined
+
+        if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
+          const { sellToken, buyToken } = getETHSwapTransactionBuyAndSellTokens(
+            {
+              nativeAsset,
+              tokensList: [selectedAssetFromParams],
+              tx
+            }
+          )
+          const buyTokenId = buyToken ? getAssetIdKey(buyToken) : undefined
+          const sellTokenId = sellToken ? getAssetIdKey(sellToken) : undefined
+          return (
+            selectedAssetIdKey === tokenId ||
+            selectedAssetIdKey === buyTokenId ||
+            selectedAssetIdKey === sellTokenId
+          )
+        }
+
+        return selectedAssetIdKey === tokenId
+      })
+      return sortTransactionByDate(filteredTransactions, 'descending')
+    }
+    return []
+  }, [selectedAssetFromParams, transactionsByNetwork, selectedAssetsNetwork])
+
+  const fullAssetFiatBalance = React.useMemo(
+    () =>
+      selectedAssetFromParams && fullAssetBalance
+        ? computeFiatAmount({
+            spotPriceRegistry,
+            value: fullAssetBalance,
+            token: selectedAssetFromParams
+          })
+        : Amount.empty(),
+    [fullAssetBalance, selectedAssetFromParams, spotPriceRegistry]
+  )
+
+  const formattedFullAssetBalance = React.useMemo(
+    () =>
+      selectedAssetFromParams && fullAssetBalance
+        ? new Amount(fullAssetBalance)
+            .divideByDecimals(selectedAssetFromParams.decimals)
+            .formatAsAsset(6, selectedAssetFromParams.symbol)
+        : '',
+    [selectedAssetFromParams, fullAssetBalance]
+  )
+
+  const formattedAssetBalance = React.useMemo(
+    () =>
+      selectedAssetFromParams && fullAssetBalance
+        ? new Amount(fullAssetBalance)
+            .divideByDecimals(selectedAssetFromParams.decimals)
+            .formatAsAsset(8)
+        : '',
+    [selectedAssetFromParams, fullAssetBalance]
+  )
+
+  const isSelectedAssetDepositSupported =
+    !isRewardsToken && Boolean(selectedAssetFromParams)
+
+  const goBack = React.useCallback(() => {
+    dispatch(WalletPageActions.updateNFTMetadata(undefined))
+    dispatch(WalletPageActions.updateNftMetadataError(undefined))
+    history.push(WalletRoutes.PortfolioAssets)
+  }, [])
+
+  const onOpenRainbowAppClick = React.useCallback(() => {
+    chrome.tabs.create({ url: rainbowbridgeLink }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+    setShowBridgeToAuroraModal(false)
+  }, [])
+
+  const onBridgeToAuroraButton = React.useCallback(() => {
+    if (dontShowAuroraWarning) {
+      onOpenRainbowAppClick()
+    } else {
+      setShowBridgeToAuroraModal(true)
+    }
+  }, [dontShowAuroraWarning, onOpenRainbowAppClick])
+
+  const onDontShowAgain = React.useCallback((selected: boolean) => {
+    setDontShowAuroraWarning(selected)
+    localStorage.setItem(
+      bridgeToAuroraDontShowAgainKey,
+      JSON.stringify(selected)
+    )
+  }, [])
+
+  const onCloseAuroraModal = React.useCallback(() => {
+    setShowBridgeToAuroraModal(false)
+  }, [])
+
+  const onCloseTokenDetailsModal = React.useCallback(
+    () => setShowTokenDetailsModal(false),
+    []
+  )
+
+  const onCloseHideTokenModal = React.useCallback(
+    () => setShowHideTokenModal(false),
+    []
+  )
+
+  const onHideAsset = React.useCallback(() => {
+    if (!selectedAssetFromParams) return
+    dispatch(
+      WalletActions.setUserAssetVisible({
+        token: selectedAssetFromParams,
+        isVisible: false
+      })
+    )
+    dispatch(WalletActions.refreshBalancesAndPriceHistory())
+    if (showHideTokenModel) setShowHideTokenModal(false)
+    if (showTokenDetailsModal) setShowTokenDetailsModal(false)
+    history.push(WalletRoutes.PortfolioAssets)
+  }, [selectedAssetFromParams, showTokenDetailsModal])
+
+  const onSelectBuy = React.useCallback(() => {
+    if (selectedAssetFromParams) {
+      history.push(makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams)))
+    }
+  }, [selectedAssetFromParams])
+
+  const onSelectDeposit = React.useCallback(() => {
+    if (selectedAssetFromParams) {
+      history.push(
+        makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams))
+      )
+    }
+  }, [selectedAssetFromParams])
+
+  React.useEffect(() => {
+    setDontShowAuroraWarning(
+      JSON.parse(
+        localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'
+      )
+    )
+  }, [])
+
+  // asset not found
+  if (!selectedAssetFromParams && !isLoadingRewards && !isLoadingTokens) {
+    return <Redirect to={WalletRoutes.PortfolioAssets} />
+  }
+
+  const priceData =
+    selectedAssetFromParams && selectedAssetPriceHistory
+      ? selectedAssetPriceHistory
+      : emptyPriceList
+
+  const iframeData: LineChartIframeData = {
+    priceData,
+    hidePortfolioBalances,
+    defaultFiatCurrency: defaultFiat || 'USD'
+  }
+
+  const encodedPriceData = encodeURIComponent(JSON.stringify(iframeData))
+
+  // render
+  return (
+    <WalletPageWrapper
+      wrapContentInBox={true}
+      noCardPadding={true}
+      hideDivider={true}
+      cardHeader={
+        <AssetDetailsHeader
+          selectedTimeline={selectedTimeline}
+          selectedAsset={selectedAssetFromParams}
+          isShowingMarketData={false}
+          onBack={goBack}
+          onClickTokenDetails={() => setShowTokenDetailsModal(true)}
+          onClickHideToken={() => setShowHideTokenModal(true)}
+        />
+      }
+    >
+      <StyledWrapper>
+        <Row margin='20px 0px 8px 0px'>
+          <LineChartControls
+            onSelectTimeline={setSelectedTimeline}
+            selectedTimeline={selectedTimeline}
+          />
+        </Row>
+
+        <iframe
+          width={'100%'}
+          height={'130px'}
+          frameBorder={0}
+          src={`chrome-untrusted://line-chart-display${
+            isLoadingGraphData ? '' : `?${encodedPriceData}`
+          }`}
+          sandbox='allow-scripts'
+        />
+        <Row padding='0px 20px'>
+          <ButtonRow>
+            {isAssetBuySupported && (
+              <BuySellBridgeButton
+                onClick={onSelectBuy}
+                noBottomMargin={true}
+              >
+                {getLocale('braveWalletBuy')}
+              </BuySellBridgeButton>
+            )}
+            {isSelectedAssetDepositSupported && (
+              <BuySellBridgeButton
+                onClick={onSelectDeposit}
+                noBottomMargin={true}
+              >
+                {getLocale('braveWalletAccountsDeposit')}
+              </BuySellBridgeButton>
+            )}
+            {isSelectedAssetBridgeSupported && (
+              <BuySellBridgeButton
+                onClick={onBridgeToAuroraButton}
+                noBottomMargin={true}
+              >
+                {getLocale('braveWalletBridgeToAuroraButton')}
+              </BuySellBridgeButton>
+            )}
+          </ButtonRow>
+        </Row>
+
+        {showBridgeToAuroraModal && (
+          <BridgeToAuroraModal
+            dontShowWarningAgain={dontShowAuroraWarning}
+            onClose={onCloseAuroraModal}
+            onOpenRainbowAppClick={onOpenRainbowAppClick}
+            onDontShowAgain={onDontShowAgain}
+          />
+        )}
+
+        {showTokenDetailsModal &&
+          selectedAssetFromParams &&
+          selectedAssetsNetwork && (
+            <TokenDetailsModal
+              onClose={onCloseTokenDetailsModal}
+              selectedAsset={selectedAssetFromParams}
+              selectedAssetNetwork={selectedAssetsNetwork}
+              assetBalance={formattedAssetBalance}
+              formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(
+                defaultFiat
+              )}
+              onShowHideTokenModal={() => setShowHideTokenModal(true)}
+            />
+          )}
+
+        {showHideTokenModel &&
+          selectedAssetFromParams &&
+          selectedAssetsNetwork && (
+            <HideTokenModal
+              selectedAsset={selectedAssetFromParams}
+              selectedAssetNetwork={selectedAssetsNetwork}
+              onClose={onCloseHideTokenModal}
+              onHideAsset={onHideAsset}
+            />
+          )}
+
+        <Column
+          padding='0px 24px 24px 24px'
+          fullWidth={true}
+        >
+          <AccountsAndTransactionsList
+            formattedFullAssetBalance={formattedFullAssetBalance}
+            fullAssetFiatBalance={fullAssetFiatBalance}
+            selectedAsset={selectedAssetFromParams}
+            selectedAssetTransactions={selectedAssetTransactions}
+            tokenBalancesRegistry={tokenBalancesRegistry}
+            accounts={candidateAccounts}
+            spotPriceRegistry={spotPriceRegistry}
+          />
+        </Column>
+      </StyledWrapper>
+    </WalletPageWrapper>
+  )
+}
+
+export default PortfolioFungibleAsset

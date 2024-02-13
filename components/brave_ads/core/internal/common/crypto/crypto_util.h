@@ -7,10 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CRYPTO_CRYPTO_UTIL_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::crypto {
 
@@ -18,14 +18,14 @@ struct KeyPairInfo;
 
 std::vector<uint8_t> Sha256(const std::string& value);
 
-absl::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
+std::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
     const std::vector<uint8_t>& seed);
 KeyPairInfo GenerateBoxKeyPair();
 
 std::vector<uint8_t> GenerateRandomNonce();
 
-absl::optional<std::string> Sign(const std::string& message,
-                                 const std::string& secret_key);
+std::optional<std::string> Sign(const std::string& message,
+                                const std::string& secret_key);
 [[nodiscard]] bool Verify(const std::string& message,
                           const std::string& public_key,
                           const std::string& signature);

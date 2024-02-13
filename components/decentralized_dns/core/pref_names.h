@@ -33,6 +33,10 @@ inline constexpr char kEnsOffchainResolveMethod[] =
 // Enabled: Resolve domain name using Solana JSON-RPC server.
 inline constexpr char kSnsResolveMethod[] = "brave.sns.resolve_method";
 
+// Added 12/2023.
+inline constexpr char kSnsResolveMethodMigrated[] =
+    "brave.sns.resolve_method_migrated";
+
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_CORE_PREF_NAMES_H_

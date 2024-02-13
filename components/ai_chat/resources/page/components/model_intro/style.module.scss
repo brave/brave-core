@@ -21,23 +21,19 @@
 
   .category {
     margin: 0;
-    font: var(--leo-font-primary-heading-h4);
+    font: var(--leo-font-heading-h4);
     color: var(--leo-color-text-primary);
   }
 
   .name {
     margin: 0;
-    font: var(--leo-font-primary-small-regular);
+    font: var(--leo-font-small-regular);
     color: var(--leo-color-text-tertiary);
-
-    .maker {
-      color: var(--leo-color-text-primary);
-    }
   }
 
   .modelIntro {
     margin: 14px 0 0 0;
-    font: var(--leo-font-secondary-default-regular);
+    font: var(--leo-font-default-regular);
     color: var(--leo-color-text-primary);
   }
 }

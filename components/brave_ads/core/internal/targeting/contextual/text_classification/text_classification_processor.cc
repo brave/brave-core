@@ -55,7 +55,7 @@ void TextClassificationProcessor::Process(const std::string& text) {
 }
 
 void TextClassificationProcessor::ClassifyPageCallback(
-    const absl::optional<TextClassificationProbabilityMap> probabilities) {
+    const std::optional<TextClassificationProbabilityMap>& probabilities) {
   if (!probabilities) {
     return BLOG(0, "Text classification failed due to an invalid model");
   }
@@ -76,7 +76,7 @@ void TextClassificationProcessor::ClassifyPageCallback(
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextClassificationProcessor::OnTextContentDidChange(
-    const int32_t /*tab_id=*/,
+    const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   if (redirect_chain.empty()) {

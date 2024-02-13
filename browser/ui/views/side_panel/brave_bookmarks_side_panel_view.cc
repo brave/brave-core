@@ -18,6 +18,8 @@
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/font_list.h"
@@ -34,6 +36,8 @@ namespace {
 
 // Renders icon, title and launch button.
 class BookmarksSidePanelHeaderView : public views::View {
+  METADATA_HEADER(BookmarksSidePanelHeaderView, views::View)
+
  public:
   explicit BookmarksSidePanelHeaderView(Browser* browser) {
     constexpr int kHeaderInteriorMargin = 16;
@@ -101,6 +105,9 @@ class BookmarksSidePanelHeaderView : public views::View {
     ShowSingletonTab(browser, GURL(chrome::kChromeUIBookmarksURL));
   }
 };
+
+BEGIN_METADATA(BookmarksSidePanelHeaderView)
+END_METADATA
 
 }  // namespace
 

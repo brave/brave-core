@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_UTIL_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -14,11 +15,10 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -58,9 +58,11 @@ void Save(const std::string& name,
           const std::string& value,
           SaveCallback callback);
 void Load(const std::string& name, LoadCallback callback);
-void LoadFileResource(const std::string& id,
-                      int version,
-                      LoadFileCallback callback);
+
+void LoadComponentResource(const std::string& id,
+                           int version,
+                           LoadFileCallback callback);
+
 std::string LoadDataResource(const std::string& name);
 
 void GetScheduledCaptcha(const std::string& payment_id,
@@ -76,7 +78,7 @@ void RecordP2AEvents(const std::vector<std::string>& events);
 void AddFederatedLearningPredictorTrainingSample(
     std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample);
 
-absl::optional<base::Value> GetProfilePref(const std::string& path);
+std::optional<base::Value> GetProfilePref(const std::string& path);
 bool GetProfileBooleanPref(const std::string& path);
 int GetProfileIntegerPref(const std::string& path);
 double GetProfileDoublePref(const std::string& path);
@@ -101,7 +103,7 @@ void SetProfileTimeDeltaPref(const std::string& path, base::TimeDelta value);
 void ClearProfilePref(const std::string& path);
 bool HasProfilePrefPath(const std::string& path);
 
-absl::optional<base::Value> GetLocalStatePref(const std::string& path);
+std::optional<base::Value> GetLocalStatePref(const std::string& path);
 bool GetLocalStateBooleanPref(const std::string& path);
 int GetLocalStateIntegerPref(const std::string& path);
 double GetLocalStateDoublePref(const std::string& path);

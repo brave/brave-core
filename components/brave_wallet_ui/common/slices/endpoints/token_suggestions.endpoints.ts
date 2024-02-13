@@ -28,7 +28,15 @@ export const tokenSuggestionsEndpoints = ({
           for (const request of requests) {
             const logo = request.token.logo
             if (logo !== '' && !isRemoteImageURL(logo)) {
-              request.token.logo = `chrome://erc-token-images/${logo}`
+              try {
+                // attempt property reassignment
+                request.token.logo = `chrome://erc-token-images/${logo}`
+              } catch {
+                request.token = {
+                  ...request.token,
+                  logo: `chrome://erc-token-images/${logo}`
+                }
+              }
             }
           }
           return {
@@ -78,11 +86,17 @@ export const tokenSuggestionsEndpoints = ({
           )
         }
       },
-      invalidatesTags: [
-        'TokenSuggestionRequests',
-        'KnownBlockchainTokens',
-        'UserBlockchainTokens'
-      ]
+      invalidatesTags: (res, err, arg) =>
+        res && arg.approved
+          ? [
+              'TokenSuggestionRequests',
+              'KnownBlockchainTokens',
+              'UserBlockchainTokens',
+              'TokenBalances',
+              'TokenBalancesForChainId',
+              'AccountTokenCurrentBalance'
+            ]
+          : ['TokenSuggestionRequests']
     })
   }
 }

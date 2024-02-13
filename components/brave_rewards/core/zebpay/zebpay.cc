@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -26,6 +27,12 @@ ZebPay::ZebPay(RewardsEngineImpl& engine)
 
 const char* ZebPay::WalletType() const {
   return constant::kWalletZebPay;
+}
+
+void ZebPay::AssignWalletLinks(mojom::ExternalWallet& external_wallet) {
+  auto url = engine_->Get<EnvironmentConfig>().zebpay_api_url();
+  external_wallet.account_url = url.Resolve("/dashboard").spec();
+  external_wallet.activity_url = url.Resolve("/activity").spec();
 }
 
 void ZebPay::FetchBalance(
@@ -54,8 +61,7 @@ void ZebPay::OnFetchBalance(
           return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, 0.0);
         }
 
-        BLOG(0,
-             "Failed to disconnect " << constant::kWalletZebPay << " wallet!");
+        engine_->LogError(FROM_HERE) << "Failed to disconnect zebpay wallet";
         ABSL_FALLTHROUGH_INTENDED;
       default:
         return std::move(callback).Run(mojom::Result::FAILED, 0.0);

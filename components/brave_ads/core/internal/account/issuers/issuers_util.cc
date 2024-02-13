@@ -24,16 +24,16 @@ void SetIssuers(const IssuersInfo& issuers) {
   SetProfileListPref(prefs::kIssuers, IssuersToValue(issuers.issuers));
 }
 
-absl::optional<IssuersInfo> GetIssuers() {
-  const absl::optional<base::Value::List> list =
+std::optional<IssuersInfo> GetIssuers() {
+  const std::optional<base::Value::List> list =
       GetProfileListPref(prefs::kIssuers);
   if (!list || list->empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<IssuerList> issuer = ValueToIssuers(*list);
+  const std::optional<IssuerList> issuer = ValueToIssuers(*list);
   if (!issuer) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   IssuersInfo issuers;
@@ -58,7 +58,7 @@ bool HasIssuers() {
 }
 
 bool HasIssuersChanged(const IssuersInfo& other) {
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  const std::optional<IssuersInfo> issuers = GetIssuers();
   if (!issuers) {
     return true;
   }
@@ -67,7 +67,7 @@ bool HasIssuersChanged(const IssuersInfo& other) {
 }
 
 bool IssuerExistsForType(const IssuerType issuer_type) {
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  const std::optional<IssuersInfo> issuers = GetIssuers();
   if (!issuers) {
     return false;
   }
@@ -75,12 +75,12 @@ bool IssuerExistsForType(const IssuerType issuer_type) {
   return !!GetIssuerForType(*issuers, issuer_type);
 }
 
-absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
-                                            const IssuerType issuer_type) {
+std::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
+                                           const IssuerType issuer_type) {
   const auto iter =
       base::ranges::find(issuers.issuers, issuer_type, &IssuerInfo::type);
   if (iter == issuers.issuers.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *iter;
@@ -88,12 +88,12 @@ absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
 
 bool PublicKeyExistsForIssuerType(const IssuerType issuer_type,
                                   const cbr::PublicKey& public_key) {
-  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  const std::optional<IssuersInfo> issuers = GetIssuers();
   if (!issuers) {
     return false;
   }
 
-  const absl::optional<IssuerInfo> issuer =
+  const std::optional<IssuerInfo> issuer =
       GetIssuerForType(*issuers, issuer_type);
   if (!issuer) {
     return false;

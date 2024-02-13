@@ -9,6 +9,7 @@
 #include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
 #include "brave/browser/ipfs/ipfs_dns_resolver_impl.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ipfs/ipfs_service_impl_delegate.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -37,13 +38,15 @@ class FakeIpfsService : public ipfs::IpfsService {
       ipfs::BraveIpfsClientUpdater* updater,
       const base::FilePath& user_dir,
       version_info::Channel channel)
-      : ipfs::IpfsService(prefs,
-                          url_loader_factory,
-                          std::move(blob_context_getter_factory),
-                          updater,
-                          user_dir,
-                          channel,
-                          std::make_unique<ipfs::IpfsDnsResolverImpl>()) {}
+      : ipfs::IpfsService(
+            prefs,
+            url_loader_factory,
+            std::move(blob_context_getter_factory),
+            updater,
+            user_dir,
+            channel,
+            std::make_unique<ipfs::IpfsDnsResolverImpl>(),
+            std::make_unique<ipfs::IpfsServiceImplDelegate>(prefs, nullptr)) {}
   ~FakeIpfsService() override = default;
   void ImportTextToIpfs(const std::string& text,
                         const std::string& host,

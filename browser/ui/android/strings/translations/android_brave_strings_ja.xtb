@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">広告を管理</translation>
 <translation id="7630214457764713113">クリーンリンクをコピー</translation>
 <translation id="885805571521218129">これは、今月のBrave広告の推定収益範囲を反映しています。</translation>
-<translation id="818003031290137834">ZebPayに接続すると、次回の支払い時に以前の残高がZebPayアカウントに振り込まれます。入金されると、リワード残高にBATが反映されます。</translation>
 <translation id="3478449063771497234">通知は無効です</translation>
 <translation id="2862978891748913252">国を選択</translation>
 <translation id="3970520675790340955">お住まいの国を選択すると、その地域に合ったオプションや広告が表示されます。</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">Braveリワードの残高を使用して送信できるのは<ph name="AMOUNT"/>BATまでです。</translation>
 <translation id="5012991400231464322">毎月の寄付額</translation>
 <translation id="5907051927340164207">このクリエイターにはすでに毎月支援を送信しています</translation>
-<translation id="307555373157330047">今からでも支援を送信できます。「<ph name="MONTHLY_CONTRIBUTION"/>」から削除することで、このクリエイターへの毎月の支援をキャンセルすることができます。</translation>
+<translation id="4848906651275579475">今すぐ寄付を送ることができ、<ph name="MONTHLY_CONTRIBUTION"/>からこのクリエイターを削除することで月間寄付をキャンセルできます。</translation>
 <translation id="5379685283876547860">支援を送信しました！</translation>
 <translation id="1041398280582063935">サポートの内容を共有する</translation>
 <translation id="8855543392451028706">ようこそ！支援を送信することで、このコンテンツクリエイターをサポートすることができます。素晴らしいコンテンツの作成に対する謝意を示すひとつの方法です。</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637"><ph name="CUSTODIAN"/>にログイン</translation>
 <translation id="7063168612616047608">お気に入りのクリエイターをサポートしていただきありがとうございます</translation>
 <translation id="3796032246917966749">Braveリワードの<ph name="CUSTODIAN"/>からログアウトしています。続行するには再度ログインしてください。</translation>
-<translation id="594652923071049606">このクリエイターは、まだBraveクリエイターで認証されていません。認証されると、支援を送ることができるようになります。<ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">このクリエイターはまだBrave Creatorsで認証されていません。認証完了後、寄付を送れるようになります。<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">支援を送る</translation>
 <translation id="1899434873745933492">支援を送信できません</translation>
 <translation id="1794046983410841192">Braveリワードを使用</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">カスタム</translation>
 <translation id="4827581232860040208">支援の送信中に問題が発生しました</translation>
 <translation id="3259723213051400722">もう一度お試しください。</translation>
-<translation id="8899147737996487517">このクリエイターはBraveに登録済みで、Braveリワードユーザーからの支援を受け取ることができます。<ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">このクリエイターはBraveに登録しており、Brave Rewardsユーザーから寄付を受け取れます。<ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">通知が無効な状態では、Brave Rewardsが機能しない場合があります。</translation>
 <translation id="4259212006412783790">有効にする</translation>
 <translation id="6112331814131703370">「アプリに切り替える」通知をブロック</translation>
@@ -78,11 +77,9 @@
 <translation id="7307834434086582547">Brave Shieldsを有効/無効にします</translation>
 <translation id="6945863270524203017">トラッカーおよび広告のブロックに関するプライバシー最新情報を毎週受信できます。</translation>
 <translation id="4324735664183300693">通知を有効にする</translation>
-<translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="6395059271589866759">Braveは送信された金額の5%を処理手数料として徴収します。</translation>
 <translation id="6661699662755460155">交換</translation>
 <translation id="6790981891677399838">Braveブラウザで<ph name="AMOUNT"/>BATを支援しました！お気に入りのクリエイターやサイトをサポートする方法はこちら: https://brave.com/rewards</translation>
-<translation id="2278950434998763147">HTTPではなく、安全なHTTPSを使用してサイトを開きます。</translation>
 <translation id="5510493033031835532">AMPページを自動でリダイレクト</translation>
 <translation id="5197219128592971597">GoogleのAccelerated Mobile Pageバージョンではなく、常にオリジナルの (AMPでない) ページURLにアクセスする</translation>
 <translation id="920638232916443453">自動リダイレクト追跡URL</translation>
@@ -129,6 +126,11 @@
 <translation id="3365863382631355729">最終更新: <ph name="TIME"/></translation>
 <translation id="802154636333426148">ダウンロード エラー</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> 更新できませんでした</translation>
+<translation id="8580328754808744073">カスタムフィルターの作成</translation>
+<translation id="6532106788206463496">変更を保存</translation>
+<translation id="5132969826889386652">変更内容を保存しました</translation>
+<translation id="4335929145384293789">上記のフィールドに、作成したカスタムフィルターを1行ごとに追加します。<ph name="ADBLOCK_FILTER_SYNTAX"/>を必ず使用してください。</translation>
+<translation id="5023212862780303376">Adblockフィルター構文</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> 価格 (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">イーサリアムネームサービス</translation>
 <translation id="531747189990625622">ソラナネームサービス</translation>
@@ -171,11 +173,12 @@
 <translation id="254100925533869330">コンテンツがありません</translation>
 <translation id="7172792761509429092">Braveニュースには、表示するコンテンツがありません</translation>
 <translation id="1771307734839364850">コンテンツのソースを選択</translation>
-<translation id="5787084571334399599">フィンガープリントを防止します</translation>
+<translation id="6891769200437737956">ウェブサイトによるフィンガープリントを防止します</translation>
 <translation id="7459000603787995422">終了時にタブを閉じる</translation>
 <translation id="4448697385961650078">トラッカーと広告をブロック</translation>
 <translation id="2448893613530489637">トラッカーや広告の読み込みやウェブページでの表示を防ぎます</translation>
 <translation id="1025207378813960343">ウェブサイトへの接続が安全であることを確認してください。</translation>
+<translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="6686219838158572786">すべての接続に HTTPS を使用することを要求する（厳格）</translation>
 <translation id="4221284400051835823">可能な限りHTTPSにアップグレードする（デフォルト）</translation>
 <translation id="4690906712010847708">接続をHTTPSにアップグレードしない（無効）</translation>
@@ -188,8 +191,6 @@
 <translation id="5987838417172370108">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
-<translation id="1842747674580016420">Braveで動画を再生</translation>
-<translation id="5368992950177874750">有効にすると動画は、対応するアプリではなくBraveで再生されます</translation>
 <translation id="410351446219883937">自動再生</translation>
 <translation id="7445411102860286510">ミュートされた動画の自動再生をサイトに許可する（推奨）</translation>
 <translation id="7837721118676387834">特定のサイトに対し、ミュートされた動画の自動再生を許可します。</translation>
@@ -207,6 +208,7 @@
 <translation id="1690924763769415936">バックグラウンド再生</translation>
 <translation id="6332924730165919598">すべてのタブが閉じられた際に、Braveも閉じる</translation>
 <translation id="8308305244351876417">Braveの他のタブや他のアプリに切り替えたり、デバイスの画面がオフの状態でもオーディオを再生できるようにします。</translation>
+<translation id="49147335255967913">BraveでYouTubeリンクを開く</translation>
 <translation id="4150201353443180367">表示</translation>
 <translation id="4275663329226226506">メディア</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -368,17 +370,17 @@
 <translation id="8457451314607652708">ブックマークをインポート</translation>
 <translation id="1008186147501209563">ブックマークをエクスポート</translation>
 <translation id="6680516947641001448">ファイルを選択してブックマークをインポート</translation>
+<translation id="2353910600995338714">エクスポート成功</translation>
+<translation id="229319993704311844">ブックマークは<ph name="EXPORT_FILE_PATH"/>にエクスポートされました。</translation>
+<translation id="8050098462121217351">エクスポート失敗</translation>
+<translation id="1166543535974380311">ブックマークのエクスポートに失敗しました。再試行してください。</translation>
+<translation id="6154243540085290880">インポート成功</translation>
 <translation id="7028125942261647795">ブックマークをインポートしました。</translation>
-<translation id="444953779119381206">ブックマークのインポートに失敗しました。</translation>
-<translation id="6606836200439368332">ブックマークのエクスポートに失敗しました。</translation>
-<translation id="1395297034387418032">ブックマークをエクスポートしました。</translation>
-<translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
-<translation id="7473245612074035141">セットアップ開始</translation>
+<translation id="4803910478683254032">インポート失敗</translation>
+<translation id="8325139248201792113">ブックマークのインポートに失敗しました。再試行してください。</translation>
+<translation id="2803313416453193357">フォルダを開く</translation>
 <translation id="8985635554450124959">同期を設定できませんでした</translation>
-<translation id="2514300153301737214">Braveの同期が有効になっていることが検出されましたが、お使いのシステムの同期がオフになっており、Braveの同期が許可されません。押して設定を開きます。</translation>
 <translation id="7173114856073700355">設定を開く</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="496896260395129787">このBrave同期アカウントは、同期先のデバイスから削除されました。同期を無効にする必要がない場合は、<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>アカウントを作成し直してください</translation>
 <translation id="4094590686212463338">この同期チェーンに参加できません。同期チェーンが削除されています。</translation>
@@ -392,6 +394,10 @@
 これらのコード単語があなたの所有するデバイスによって生成されたものであることを再確認してください。
 続行してよろしいですか？</translation>
 <translation id="4550208292810542331">カメラの使用が許可されませんでした</translation>
+<translation id="6470233139461745039">デバイスの画面ロックを設定してからパスワードの同期を有効にしてください</translation>
+<translation id="3063783274005996079">ロックを解除してパスワードの同期を有効にします</translation>
+<translation id="7551563084530025179">パスワードを同期するには、デバイスの生体認証/パスコードで認証する必要があります。これはパスワードを安全に保つための追加のセキュリティ対策です。</translation>
+<translation id="6925081665778864449">パスワードを同期するには、Androidデバイスで生体認証/パスコード認証を有効にしてください。これはパスワードを安全に保つための追加のセキュリティ対策です。</translation>
 <translation id="597993392929850353">Braveライセンス</translation>
 <translation id="6336451774241870485">新しいプライベートタブ</translation>
 <translation id="6199596294742117349">これはプライベートタブです</translation>
@@ -428,7 +434,7 @@
 <translation id="9096003370755878766">過去にBrave Rewardsウォレットに追加した可能性のあるBATを引き出す</translation>
 <translation id="1554282356558968486">Braveのウォレットサービスは以下の企業のご協力を得てご提供しています</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を必要とする場合があります。</translation>
@@ -471,7 +477,7 @@
 <translation id="7854108565842971747">新しいサイトに対するShieldsのデフォルト設定です。この設定を変更しても、既存のサイト設定には影響しません。</translation>
 <translation id="218587021686734263">言語設定によるフィンガープリントの防止</translation>
 <translation id="1706099589708266367">ブラウザの言語設定に基づき、ウェブサイトがお客様について学習する度合いを低減します。</translation>
-<translation id="184568144098869637">ブラウザがお使いのデバイスを認識しないようにする</translation>
+<translation id="4721088070859595932">ウェブサイトがお使いのデバイスを認識しないようにします</translation>
 <translation id="7445306466605902444">フィンガープリントがブロックされました（強、サイトの表示が崩れる可能性）</translation>
 <translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
 <translation id="769702552748212954">すべてのフィンガープリントを許可する</translation>
@@ -615,8 +621,9 @@
 <translation id="1783600039044302171">暗号資産をパスワードで保護</translation>
 <translation id="3726490322412361740">パスワードを入力してください</translation>
 <translation id="3038243139480464605">パスワードを確認</translation>
-<translation id="3717685683157254329">パスワードは、7 文字以上で、少なくとも 1 つの文字、1つの数字、 1 つの特殊文字を含む必要があります。</translation>
+<translation id="3043677904160378840">パスワードは8文字以上で入力してください</translation>
 <translation id="7396672979287122068">確認済みのパスワードが一致しませんでした</translation>
+<translation id="7084181009966710506">ウォレットを作成中です...</translation>
 <translation id="3188963375823360044">1 時間</translation>
 <translation id="8163269366661594721">1日</translation>
 <translation id="7640956400175663828">1週間</translation>
@@ -769,7 +776,6 @@
 <translation id="1705662265912724430">VPN構成をリセットしますか？</translation>
 <translation id="604124094241169006">自動設定</translation>
 <translation id="7475580600756356589">サーバーに接続しています。少々お待ちください...</translation>
-<translation id="1342728075788541348">サーバーから切断しています。少々お待ちください...</translation>
 <translation id="669072536454692117">サブスクリプションが正常に購入されました</translation>
 <translation id="1187506504156101449">購入の確認に失敗しました:</translation>
 <translation id="8420522105268941892">すでにサブスクリプションに登録しています。サブスクリプションの復元を試してみてください。</translation>
@@ -802,7 +808,6 @@
 <translation id="8084782383392198011">アカウント名を空にすることはできません。</translation>
 <translation id="5045550434625856497">パスワードが正しくありません</translation>
 <translation id="1367951781824006909">ファイルを選択</translation>
-<translation id="8648684608605749476">プライベートモードでサードパーティの Cookie をブロックします</translation>
 <translation id="5932938770824268122">秘密鍵</translation>
 <translation id="2472882733835903303">秘密鍵を表示</translation>
 <translation id="4391056902675005799">秘密鍵を非表示</translation>
@@ -953,9 +958,12 @@
 <translation id="6044189892950611565">Braveブラウザへの通知チャンネル</translation>
 <translation id="1173919438868967364">アカウントを選択</translation>
 <translation id="8922793255489232731">以下に一致するタイムゾーンを取得できません : <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">ウォレットのデータファイルをダウンロードしています \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>に接続済み</translation>
 <translation id="1968852757206592413">トライアル</translation>
+<translation id="6458565248779152483">Brave VPNを無効化</translation>
+<translation id="9080536793704001825">15分停止する</translation>
+<translation id="803706420145725977">1時間停止する</translation>
+<translation id="4394049700291259645">無効にする</translation>
 <translation id="7733890291091968191">Web3の通知を表示</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Braveはお客様を追跡したり、お客様がどのようにアプリを使用したかを把握していないため、現在のVPN設定についてお答えすることはできません。できるだけ早く解決できるよう、最善を尽くします。 ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPNホスト名\n <ph name="VALUE"/></translation>
@@ -985,6 +993,7 @@
 <translation id="8219806187375413057"><ph name="CLICK_START"/>Rainbow Bridgeでのリスクを軽減する方法<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/>は、ネットワーク間でアセットをブリッジし、他のネットワークやDAppエコシステムで暗号を使用することを支援する独立したサービスです。他のネットワークにアセットを橋渡しすることは、いくつかのリスクを伴います。</translation>
 <translation id="8423380132356660250"><ph name="APP_NAME"/>アプリを開く</translation>
+<translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="168154537623654021">VPNプロファイルを更新する ...</translation>
 <translation id="7457027586454688423">Brave Walletのパスワードを入力</translation>
 <translation id="4784306439879850873">Braveは、署名した場合に何が起こるかを確認できないことに注意してください。署名は、あなたのアカウントまたはあなたに代わって、リクエストを行うサイトにアカウントと暗号資産の完全な制御を与えることを含む  (ただしこれに限定されない) ほぼすべての操作を許可することができます。このアクションを実行することを望み、要求元のサイトを信頼する場合にのみ署名してください。</translation>
@@ -1202,4 +1211,7 @@
 <translation id="6759710362319508545">リソース</translation>
 <translation id="2471230424465522689">利用開始日時</translation>
 <translation id="4841860051609590575">リクエストID</translation>
+<translation id="1179407411385015942">Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです</translation>
+<translation id="1250335737108905610">Leoデータのリセットとクリア</translation>
+<translation id="6165101586663336913">Leoアシスタントのリセットは、将来的にLeoを使用するためのオプトインが必要になり、チャット履歴も消去されます。チャット履歴の消去は以前のLeoとの会話をすべて削除します。この操作は取り消せません。</translation>
 </translationbundle>

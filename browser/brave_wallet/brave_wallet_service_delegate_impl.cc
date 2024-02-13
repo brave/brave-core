@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -175,14 +176,14 @@ void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
   }
 }
 
-absl::optional<url::Origin>
+std::optional<url::Origin>
 BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
   content::WebContents* contents = GetActiveWebContents();
   return contents ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()
-                  : absl::optional<url::Origin>();
+                  : std::optional<url::Origin>();
 }
 
-absl::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
+std::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
   return GetActiveOriginInternal();
 }
 

@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# pylint: disable=too-many-arguments,undefined-variable,unused-argument
-# pylint: disable=no-value-for-parameter
 
 import os
 import re
@@ -15,7 +13,7 @@ from os.path import join
 
 import override_utils
 
-from import_inline import get_src_dir
+from brave_chromium_utils import get_src_dir
 from sign_binaries import sign_binaries
 
 
@@ -36,7 +34,7 @@ def CopyAllFilesToStagingDir(original_function, config, distribution,
 
 
 @override_utils.override_function(globals())
-def GetPrevVersion(_, build_dir, temp_dir, last_chrome_installer, output_name):
+def GetPrevVersion(_, build_dir, _temp_dir, last_chrome_installer, output_name):
     # We override GetPrevVersion because it has an unwanted side effect. The
     # `temp_dir` it gets passed is actually the staging directory. The original
     # GetPrevVersion places the previous version's chrome.dll inside this
@@ -58,6 +56,7 @@ def GetPrevVersion(_, build_dir, temp_dir, last_chrome_installer, output_name):
                                          stderr=subprocess.STDOUT,
                                          text=True)
     except subprocess.CalledProcessError as e:
+        # pylint: disable=raise-missing-from
         raise Exception("Error while running cmd: %s\n"
                         "Exit code: %s\n"
                         "Command output:\n%s" % (e.cmd, e.returncode, e.output))

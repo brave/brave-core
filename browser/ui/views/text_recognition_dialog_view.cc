@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/text_recognition_dialog_view.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -56,7 +57,7 @@ class TargetLanguageComboboxModel : public ui::ComboboxModel {
     return base::UTF8ToUTF16(languages_[index]);
   }
 
-  absl::optional<size_t> GetDefaultIndex() const override { return 0; }
+  std::optional<size_t> GetDefaultIndex() const override { return 0; }
 
  private:
   const std::vector<std::string> languages_;
@@ -151,12 +152,12 @@ void TextRecognitionDialogView::StartExtractingText(
     const std::string& language_code) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  result_ = absl::nullopt;
+  result_ = std::nullopt;
   show_result_timer_.Reset();
 
   if (image_.empty()) {
     show_result_timer_.Stop();
-    OnGetTextFromImage({});
+    OnGetTextFromImage({false, {}});
     return;
   }
 
@@ -185,21 +186,20 @@ void TextRecognitionDialogView::StartExtractingText(
     combobox_->SetEnabled(false);
   }
 
-  com_task_runner_->PostTaskAndReplyWithResult(
+  com_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&text_recognition::GetTextFromImage, language_code, image_,
                      base::BindPostTaskToCurrentDefault(base::BindOnce(
                          &TextRecognitionDialogView::OnGetTextFromImage,
-                         weak_factory_.GetWeakPtr()))),
-      base::BindOnce(&TextRecognitionDialogView::TextRecognizationSupported,
-                     weak_factory_.GetWeakPtr()));
+                         weak_factory_.GetWeakPtr()))));
 #endif
 }
 
 void TextRecognitionDialogView::OnGetTextFromImage(
-    const std::vector<std::string>& text) {
+    const std::pair<bool, std::vector<std::string>>& supported_text) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  auto& text = supported_text.second;
   if (show_result_timer_.IsRunning()) {
     result_ = text;
     return;
@@ -216,7 +216,7 @@ void TextRecognitionDialogView::OnGetTextFromImage(
   AdjustWidgetSize();
 
   if (on_get_text_callback_for_test_) {
-    std::move(on_get_text_callback_for_test_).Run(text);
+    std::move(on_get_text_callback_for_test_).Run(supported_text);
   }
 }
 
@@ -267,7 +267,7 @@ void TextRecognitionDialogView::OnShowResultTimerFired() {
 
   // Fired after getting text from image.
   // Show the result now.
-  OnGetTextFromImage(*result_);
+  OnGetTextFromImage({true, *result_});
 }
 
 #if BUILDFLAG(IS_WIN)
@@ -303,14 +303,6 @@ bool TextRecognitionDialogView::OnLanguageOptionchanged(size_t index) {
   return false;
 }
 
-void TextRecognitionDialogView::TextRecognizationSupported(bool supported) {
-  // If supported, we can get result via OnGetTextFromImage().
-  if (supported) {
-    return;
-  }
-
-  OnGetTextFromImage({});
-}
 #endif
 
 BEGIN_METADATA(TextRecognitionDialogView, views::DialogDelegateView)

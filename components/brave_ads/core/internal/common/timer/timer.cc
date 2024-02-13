@@ -5,16 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 namespace {
-absl::optional<base::TimeDelta> g_timer_delay_for_testing;
+std::optional<base::TimeDelta> g_timer_delay_for_testing;
 }  // namespace
 
 Timer::Timer() = default;
@@ -50,13 +50,9 @@ bool Timer::IsRunning() const {
 }
 
 bool Timer::Stop() {
-  if (!IsRunning()) {
-    return false;
-  }
-
+  const bool was_running = IsRunning();
   timer_.Stop();
-
-  return true;
+  return was_running;
 }
 
 ScopedTimerDelaySetterForTesting::ScopedTimerDelaySetterForTesting(
@@ -65,7 +61,7 @@ ScopedTimerDelaySetterForTesting::ScopedTimerDelaySetterForTesting(
 }
 
 ScopedTimerDelaySetterForTesting::~ScopedTimerDelaySetterForTesting() {
-  g_timer_delay_for_testing = absl::nullopt;
+  g_timer_delay_for_testing = std::nullopt;
 }
 
 }  // namespace brave_ads

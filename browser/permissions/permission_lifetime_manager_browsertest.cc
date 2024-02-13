@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-
 #include "brave/components/permissions/permission_lifetime_manager.h"
+
+#include <memory>
+#include <optional>
 
 #include "base/command_line.h"
 #include "base/json/json_file_value_serializer.h"
@@ -56,11 +57,11 @@ namespace {
 struct TestCase {
   const char* address;
   ContentSettingsType type;
-  absl::optional<blink::PermissionType> permission;
+  std::optional<blink::PermissionType> permission;
 };
 
 constexpr TestCase kTestCases[] = {
-    {nullptr, ContentSettingsType::GEOLOCATION, absl::nullopt},
+    {nullptr, ContentSettingsType::GEOLOCATION, std::nullopt},
     {"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
      ContentSettingsType::BRAVE_ETHEREUM,
      blink::PermissionType::BRAVE_ETHEREUM},

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -14,7 +15,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -40,7 +40,7 @@ class TextClassificationProcessor final : public TabManagerObserver {
 
  private:
   void ClassifyPageCallback(
-      absl::optional<TextClassificationProbabilityMap> probabilities);
+      const std::optional<TextClassificationProbabilityMap>& probabilities);
 
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,

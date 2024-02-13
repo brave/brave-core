@@ -4,32 +4,25 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
+  createAction,
+  createSlice,
+  PayloadAction,
+  EntityId
+} from '@reduxjs/toolkit'
+
+import {
   BraveWallet,
   WalletState,
   WalletInitializedPayload,
-  DefaultCurrencies,
-  SolFeeEstimates,
   NetworkFilterType,
-  RefreshOpts,
-  UpdateAccountNamePayloadType,
-  ImportAccountErrorType
+  RefreshOpts
 } from '../../constants/types'
 import {
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged,
-  DefaultEthereumWalletChanged,
-  DefaultSolanaWalletChanged,
-  RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
-  SitePermissionsPayloadType,
-  UnlockWalletPayloadType,
   UpdateUsetAssetType
 } from '../constants/action_types'
-import {
-  ImportAccountFromJsonPayloadType,
-  ImportAccountPayloadType,
-  RemoveAccountPayloadType
-} from '../../page/constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 // Utils
@@ -43,41 +36,20 @@ import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { NoneGroupByOption } from '../../options/group-assets-by-options'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: WalletState = {
   hasInitialized: false,
+  allowedNewWalletAccountTypeNetworkIds: [],
   isBitcoinEnabled: false,
   isZCashEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
-  isWalletBackedUp: false,
-  hasIncorrectPassword: false,
   userVisibleTokensInfo: [],
   fullTokenList: [],
-  selectedPortfolioTimeline:
-    window.localStorage.getItem(
-      LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
-    ) !== undefined
-      ? Number(
-          window.localStorage.getItem(
-            LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
-          )
-        )
-      : BraveWallet.AssetPriceTimeframe.OneDay,
   addUserAssetError: false,
-  defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
-  defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: {
     eTldPlusOne: '',
     originSpec: ''
-  },
-  gasEstimates: undefined,
-  connectedAccounts: [],
-  isMetaMaskInstalled: false,
-  defaultCurrencies: {
-    fiat: '',
-    crypto: ''
   },
   selectedNetworkFilter: parseJSONFromLocalStorage(
     'PORTFOLIO_NETWORK_FILTER_OPTION',
@@ -91,8 +63,6 @@ const defaultState: WalletState = {
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY) ||
     NoneGroupByOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
-  solFeeEstimates: undefined,
-  selectedDepositAssetId: undefined,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
   isNftPinningFeatureEnabled: false,
@@ -127,8 +97,8 @@ const defaultState: WalletState = {
     'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
     makeInitialFilteredOutNetworkKeys()
   ),
-  filteredOutPortfolioAccountAddresses: parseJSONFromLocalStorage(
-    'FILTERED_OUT_PORTFOLIO_ACCOUNT_ADDRESSES',
+  filteredOutPortfolioAccountIds: parseJSONFromLocalStorage(
+    'FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS',
     []
   ),
   hidePortfolioSmallBalances:
@@ -139,16 +109,13 @@ const defaultState: WalletState = {
     window.localStorage.getItem(
       LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS
     ) === 'true',
-  isRefreshingNetworksAndTokens: false,
-  importAccountError: undefined
+  isRefreshingNetworksAndTokens: false
 }
 
 // async actions
 export const WalletAsyncActions = {
   initialize: createAction<RefreshOpts>('initialize'),
   refreshAll: createAction<RefreshOpts>('refreshAll'),
-  lockWallet: createAction('lockWallet'), // keyringService.lock()
-  unlockWallet: createAction<UnlockWalletPayloadType>('unlockWallet'),
   addUserAsset: createAction<BraveWallet.BlockchainToken>('addUserAsset'),
   updateUserAsset: createAction<UpdateUsetAssetType>('updateUserAsset'),
   removeUserAsset: createAction<BraveWallet.BlockchainToken>('removeUserAsset'),
@@ -164,15 +131,6 @@ export const WalletAsyncActions = {
   unlocked: createAction('unlocked'),
   backedUp: createAction('backedUp'),
   getAllTokensList: createAction('getAllTokensList'),
-  selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>(
-    'selectPortfolioTimeline'
-  ),
-  defaultEthereumWalletChanged: createAction<DefaultEthereumWalletChanged>(
-    'defaultEthereumWalletChanged'
-  ), // refreshWalletInfo
-  defaultSolanaWalletChanged: createAction<DefaultSolanaWalletChanged>(
-    'defaultSolanaWalletChanged'
-  ), // refreshWalletInfo
   defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
     'defaultBaseCurrencyChanged'
   ), // refreshWalletInfo
@@ -180,9 +138,6 @@ export const WalletAsyncActions = {
     createAction<DefaultBaseCryptocurrencyChanged>(
       'defaultBaseCryptocurrencyChanged'
     ),
-  removeSitePermission: createAction<RemoveSitePermissionPayloadType>(
-    'removeSitePermission'
-  ),
   refreshNetworksAndTokens: createAction<RefreshOpts>(
     'refreshNetworksAndTokens'
   ),
@@ -195,14 +150,7 @@ export const WalletAsyncActions = {
   setSelectedAccountFilterItem: createAction<string>(
     'setSelectedAccountFilterItem'
   ),
-  autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
-  updateAccountName:
-    createAction<UpdateAccountNamePayloadType>('updateAccountName'),
-  removeAccount: createAction<RemoveAccountPayloadType>('removeAccount'),
-  importAccount: createAction<ImportAccountPayloadType>('importAccount'),
-  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
-    'importAccountFromJson'
-  )
+  autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
 }
 
 // slice
@@ -225,34 +173,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.addUserAssetError = payload
       },
 
-      defaultCurrenciesUpdated(
-        state: WalletState,
-        { payload }: PayloadAction<DefaultCurrencies>
-      ) {
-        state.defaultCurrencies = payload
-      },
-
-      defaultEthereumWalletUpdated(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.DefaultWallet>
-      ) {
-        state.defaultEthereumWallet = payload
-      },
-
-      defaultSolanaWalletUpdated(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.DefaultWallet>
-      ) {
-        state.defaultSolanaWallet = payload
-      },
-
-      hasIncorrectPassword(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.hasIncorrectPassword = payload
-      },
-
       initialized(
         state: WalletState,
         { payload }: PayloadAction<WalletInitializedPayload>
@@ -262,18 +182,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
         state.isZCashEnabled = payload.walletInfo.isZCashEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked
-        state.isWalletBackedUp = payload.walletInfo.isWalletBackedUp
         state.isNftPinningFeatureEnabled =
           payload.walletInfo.isNftPinningFeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
-      },
-
-      portfolioTimelineUpdated(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.AssetPriceTimeframe>
-      ) {
-        state.selectedPortfolioTimeline = payload
       },
 
       setAllTokensList: (
@@ -288,28 +200,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.assetAutoDiscoveryCompleted = payload
-      },
-
-      selectOnRampAssetId(
-        state: WalletState,
-        { payload }: PayloadAction<string | undefined>
-      ) {
-        state.selectedDepositAssetId = payload
-      },
-
-      setGasEstimates(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.GasEstimation1559>
-      ) {
-        state.hasFeeEstimatesError = false
-        state.gasEstimates = payload
-      },
-
-      setMetaMaskInstalled(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.isMetaMaskInstalled = payload
       },
 
       setPasswordAttempts(
@@ -382,11 +272,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.filteredOutPortfolioNetworkKeys = payload
       },
 
-      setFilteredOutPortfolioAccountAddresses(
+      setFilteredOutPortfolioAccountIds(
         state: WalletState,
         { payload }: PayloadAction<string[]>
       ) {
-        state.filteredOutPortfolioAccountAddresses = payload
+        state.filteredOutPortfolioAccountIds = payload
       },
 
       setHidePortfolioSmallBalances(
@@ -417,28 +307,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.hidePortfolioNFTsTab = payload
       },
 
-      setSitePermissions(
-        state: WalletState,
-        { payload }: PayloadAction<SitePermissionsPayloadType>
-      ) {
-        state.connectedAccounts = payload.accounts
-      },
-
-      setSolFeeEstimates(
-        state: WalletState,
-        { payload }: PayloadAction<SolFeeEstimates>
-      ) {
-        state.hasFeeEstimatesError = false
-        state.solFeeEstimates = payload
-      },
-
-      setHasFeeEstimatesError: (
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) => {
-        state.hasFeeEstimatesError = payload
-      },
-
       setVisibleTokensInfo: (
         state: WalletState,
         { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
@@ -452,11 +320,12 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       ) => {
         state.isRefreshingNetworksAndTokens = payload
       },
-      setImportAccountError(
+
+      setAllowedNewWalletAccountTypeNetworkIds(
         state: WalletState,
-        { payload }: PayloadAction<ImportAccountErrorType>
+        { payload }: PayloadAction<EntityId[]>
       ) {
-        state.importAccountError = payload
+        state.allowedNewWalletAccountTypeNetworkIds = payload
       }
     },
     extraReducers: (builder) => {

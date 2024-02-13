@@ -6,11 +6,11 @@
 #ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_OBSERVER_SERVICE_WIN_H_
 #define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_OBSERVER_SERVICE_WIN_H_
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -43,7 +43,7 @@ class BraveVpnWireguardObserverService
   void ShowFallbackDialog();
   bool ShouldShowFallbackDialog() const;
 
-  absl::optional<bool> should_fallback_for_testing_;
+  std::optional<bool> should_fallback_for_testing_;
   base::RepeatingClosure dialog_callback_;
 };
 

@@ -31,11 +31,11 @@ public class BraveTileView extends TileView {
         if (ProfileManager.isInitialized()) {
             TextView mTitleView = findViewById(R.id.tile_view_title);
             if (UserPrefs.get(Profile.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+                    .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
                 mTitleView.setTextColor(
-                        getResources().getColor(R.color.brave_state_time_count_color));
+                        getContext().getColor(R.color.brave_state_time_count_color));
                 mTitleView.setShadowLayer(
-                        18, 0, 0, getResources().getColor(R.color.onboarding_black));
+                        18, 0, 0, getContext().getColor(R.color.onboarding_black));
                 if (mTitleView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                     ViewGroup.MarginLayoutParams params =
                             (ViewGroup.MarginLayoutParams) mTitleView.getLayoutParams();

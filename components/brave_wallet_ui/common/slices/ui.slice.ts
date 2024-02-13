@@ -13,12 +13,11 @@ import { SetTransactionProviderErrorType } from '../constants/action_types'
 import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
 
 export const defaultUIState: UIState = {
-  isCreatingWallet: false,
   selectedPendingTransactionId: undefined,
   transactionProviderErrorRegistry: {},
   isPanel: false,
-  collapsedPortfolioAccountAddresses: parseJSONFromLocalStorage(
-    'COLLAPSED_PORTFOLIO_ACCOUNT_ADDRESSES',
+  collapsedPortfolioAccountIds: parseJSONFromLocalStorage(
+    'COLLAPSED_PORTFOLIO_ACCOUNT_IDS',
     []
   ),
   collapsedPortfolioNetworkKeys: parseJSONFromLocalStorage(
@@ -48,11 +47,11 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
           payload.providerError
       },
 
-      setCollapsedPortfolioAccountAddresses(
+      setCollapsedPortfolioAccountIds(
         state: UIState,
         { payload }: PayloadAction<string[]>
       ) {
-        state.collapsedPortfolioAccountAddresses = payload
+        state.collapsedPortfolioAccountIds = payload
       },
 
       setCollapsedPortfolioNetworkKeys(
@@ -101,32 +100,6 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
           ) {
             state.selectedPendingTransactionId = payload.txId
           }
-        }
-      )
-
-      builder.addMatcher(
-        (action) =>
-          walletApi.endpoints.createWallet.matchPending(action) ||
-          walletApi.endpoints.importFromMetaMask.matchPending(action) ||
-          walletApi.endpoints.importFromCryptoWallets.matchPending(action) ||
-          walletApi.endpoints.restoreWallet.matchPending(action),
-        (state, { payload }) => {
-          state.isCreatingWallet = true
-        }
-      )
-
-      builder.addMatcher(
-        (action) =>
-          walletApi.endpoints.createWallet.matchFulfilled(action) ||
-          walletApi.endpoints.createWallet.matchRejected(action) ||
-          walletApi.endpoints.importFromMetaMask.matchFulfilled(action) ||
-          walletApi.endpoints.importFromMetaMask.matchRejected(action) ||
-          walletApi.endpoints.importFromCryptoWallets.matchFulfilled(action) ||
-          walletApi.endpoints.importFromCryptoWallets.matchRejected(action) ||
-          walletApi.endpoints.restoreWallet.matchFulfilled(action) ||
-          walletApi.endpoints.restoreWallet.matchRejected(action),
-        (state, { payload }) => {
-          state.isCreatingWallet = false
         }
       )
     }

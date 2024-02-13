@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TX_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/scoped_observation.h"
@@ -50,48 +51,42 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
-                                const absl::optional<url::Origin>& origin,
+                                const std::optional<url::Origin>& origin,
                                 AddUnapprovedTransactionCallback) override;
-  void ApproveTransaction(const std::string& chain_id,
-                          const std::string& tx_meta_id,
+  void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
   void GetTransactionMessageToSign(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
   void SpeedupOrCancelTransaction(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
-  void RetryTransaction(const std::string& chain_id,
-                        const std::string& tx_meta_id,
+  void RetryTransaction(const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
   mojom::CoinType GetCoinType() const override;
   void UpdatePendingTransactions(
-      const absl::optional<std::string>& chain_id) override;
+      const std::optional<std::string>& chain_id) override;
 
   void ContinueAddUnapprovedTransaction(
       const std::string& chain_id,
       const mojom::AccountIdPtr& from,
-      const absl::optional<url::Origin>& origin,
+      const std::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> zcash_transaction);
 
-  void ContinueApproveTransaction(const std::string& chain_id,
-                                  const std::string& tx_meta_id,
+  void ContinueApproveTransaction(const std::string& tx_meta_id,
                                   ApproveTransactionCallback callback,
                                   std::string tx_cid,
                                   ZCashTransaction transaction,
                                   std::string error);
 
-  void OnGetTransactionStatus(const std::string& chain_id,
-                              const std::string& tx_meta_id,
+  void OnGetTransactionStatus(const std::string& tx_meta_id,
                               base::expected<bool, std::string> confirm_status);
 
   raw_ptr<ZCashWalletService> zcash_wallet_service_ = nullptr;
-  raw_ptr<zcash_rpc::ZCashRpc> zcash_rpc_ = nullptr;
+  raw_ptr<ZCashRpc> zcash_rpc_ = nullptr;
   base::ScopedObservation<ZCashBlockTracker, ZCashBlockTracker::Observer>
       block_tracker_observation_{this};
   base::WeakPtrFactory<ZCashTxManager> weak_factory_{this};

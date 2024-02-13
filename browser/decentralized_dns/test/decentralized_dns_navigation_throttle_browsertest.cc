@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
@@ -175,27 +177,27 @@ class EnsL2OffchanLookupNavigationThrottleBrowserTest
   PrefService* local_state() { return g_browser_process->local_state(); }
 
  protected:
-  void SetEnsResolverResult(absl::optional<EnsResolverTaskResult> task_result,
-                            absl::optional<EnsResolverTaskError> task_error) {
+  void SetEnsResolverResult(std::optional<EnsResolverTaskResult> task_result,
+                            std::optional<EnsResolverTaskError> task_error) {
     ens_resolved_task_result_ = std::move(task_result);
     ens_resolved_task_error_ = std::move(task_error);
   }
 
-  absl::optional<EnsResolverTaskResult> ens_resolved_task_result_;
-  absl::optional<EnsResolverTaskError> ens_resolved_task_error_;
+  std::optional<EnsResolverTaskResult> ens_resolved_task_result_;
+  std::optional<EnsResolverTaskError> ens_resolved_task_error_;
 };
 
 IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
                        ShowENSOffchainLookupInterstitialAndProceed) {
   local_state()->SetInteger(kENSResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ENABLED));
-  SetEnsResolverResult(EnsResolverTaskResult({}, true), absl::nullopt);
+  SetEnsResolverResult(EnsResolverTaskResult({}, true), std::nullopt);
 
   EnsResolverTask::GetWorkOnTaskForTesting() =
       base::BindLambdaForTesting([](EnsResolverTask* task) {
         EXPECT_FALSE(task->allow_offchain().has_value());
         task->SetResultForTesting(EnsResolverTaskResult({}, true),
-                                  absl::nullopt);
+                                  std::nullopt);
       });
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth")));
@@ -222,13 +224,13 @@ IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
                        ShowENSOffchainLookupInterstitialAndDontProceed) {
   local_state()->SetInteger(kENSResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ENABLED));
-  SetEnsResolverResult(EnsResolverTaskResult({}, true), absl::nullopt);
+  SetEnsResolverResult(EnsResolverTaskResult({}, true), std::nullopt);
 
   EnsResolverTask::GetWorkOnTaskForTesting() =
       base::BindLambdaForTesting([](EnsResolverTask* task) {
         EXPECT_FALSE(task->allow_offchain().has_value());
         task->SetResultForTesting(EnsResolverTaskResult({}, true),
-                                  absl::nullopt);
+                                  std::nullopt);
       });
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth")));

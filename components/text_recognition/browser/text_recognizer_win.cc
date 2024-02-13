@@ -45,10 +45,11 @@ TextRecognizerWin::~TextRecognizerWin() = default;
 
 void TextRecognizerWin::Detect(
     const SkBitmap& bitmap,
-    base::OnceCallback<void(const std::vector<std::string>&)> callback) {
+    base::OnceCallback<void(const std::pair<bool, std::vector<std::string>>&)>
+        callback) {
   if (FAILED(BeginDetect(bitmap))) {
     // No detection taking place; run |callback| with an empty array of results.
-    std::move(callback).Run({});
+    std::move(callback).Run({false, {}});
     return;
   }
   // Hold on the callback until AsyncOperation completes.
@@ -132,7 +133,7 @@ void TextRecognizerWin::OnTextDetected(ComPtr<ISoftwareBitmap> /* win_bitmap */,
     detected_string.push_back(re->raw_value);
   }
 
-  std::move(recognize_text_callback_).Run(detected_string);
+  std::move(recognize_text_callback_).Run({true, detected_string});
 }
 
 }  // namespace text_recognition

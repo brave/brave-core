@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 
@@ -12,12 +12,32 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/compositor.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
-#include "ui/views/view_class_properties.h"
 
 using tabs::features::HorizontalTabsUpdateEnabled;
+
+namespace {
+
+SkPath GetBorderPath(const gfx::Point& origin,
+                     bool extend_to_top,
+                     int corner_radius,
+                     const gfx::Size& contents_bounds) {
+  // Overridden to use Brave's non-circular shape
+  SkPath path;
+  const gfx::Rect path_rect(
+      origin.x(), extend_to_top ? 0 : origin.y(), contents_bounds.width(),
+      (extend_to_top ? origin.y() : 0) +
+          std::min(contents_bounds.width(), contents_bounds.height()));
+  path.addRoundRect(RectToSkRect(path_rect), corner_radius, corner_radius);
+  path.close();
+  return path;
+}
+
+}  // namespace
 
 // static
 gfx::Size BraveNewTabButton::GetButtonSize() {
@@ -27,30 +47,8 @@ gfx::Size BraveNewTabButton::GetButtonSize() {
   return {28, 28};
 }
 
-// static
-SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
-                                        float scale,
-                                        bool extend_to_top,
-                                        int corner_radius,
-                                        const gfx::Size& contents_bounds) {
-  // Overriden to use Brave's non-circular shape
-  gfx::PointF scaled_origin(origin);
-  scaled_origin.Scale(scale);
-  const float radius = corner_radius * scale;
-
-  SkPath path;
-  const gfx::Rect path_rect(
-      scaled_origin.x(), extend_to_top ? 0 : scaled_origin.y(),
-      contents_bounds.width() * scale,
-      (extend_to_top ? scaled_origin.y() : 0) +
-          std::min(contents_bounds.width(), contents_bounds.height()) * scale);
-  path.addRoundRect(RectToSkRect(path_rect), radius, radius);
-  path.close();
-  return path;
-}
-
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
-  // Overriden so that we use Brave's custom button size
+  // Overridden so that we use Brave's custom button size
   gfx::Size size = GetButtonSize();
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
@@ -58,21 +56,17 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
 }
 
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
-                                        float scale,
                                         bool extend_to_top) const {
-  return GetBorderPath(origin, scale, extend_to_top, GetCornerRadius(),
-                       GetContentsBounds().size());
+  if (GetWidget()) {
+    return ::GetBorderPath(origin, extend_to_top, GetCornerRadius(),
+                           GetContentsBounds().size());
+  }
+  return SkPath();
 }
 
 BraveNewTabButton::BraveNewTabButton(TabStrip* tab_strip,
                                      PressedCallback callback)
-    : NewTabButton(tab_strip, std::move(callback)) {
-  if (HorizontalTabsUpdateEnabled()) {
-    // Ensure that the new tab button is vertically centered within its flex
-    // layout container.
-    SetProperty(views::kCrossAxisAlignmentKey, views::LayoutAlignment::kCenter);
-  }
-}
+    : NewTabButton(tab_strip, std::move(callback)) {}
 
 BraveNewTabButton::~BraveNewTabButton() = default;
 
@@ -82,17 +76,18 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   if (HorizontalTabsUpdateEnabled()) {
     // Instead of letting `NewTabButton` draw a "plus", paint a vector icon to
     // the canvas in the center of the view.
-    constexpr int kIconSize = 16;
+    constexpr int kIconSize = 18;
     gfx::Rect bounds = GetContentsBounds();
-    canvas->Translate(gfx::Vector2d((bounds.width() - kIconSize) / 2,
-                                    (bounds.height() - kIconSize) / 2));
+    canvas->Translate(
+        gfx::Vector2d((bounds.width() - kIconSize) / 2 + bounds.x(),
+                      (bounds.height() - kIconSize) / 2 + bounds.y()));
     gfx::PaintVectorIcon(canvas, kLeoPlusAddIcon, kIconSize,
                          GetForegroundColor());
     return;
   }
 
   // Shim base implementation's painting
-  // Overriden to fix chromium assumption that border radius
+  // Overridden to fix chromium assumption that border radius
   // will be 50% of width.
 
   // Incorrect offset that base class will use
@@ -122,3 +117,6 @@ gfx::Insets BraveNewTabButton::GetInsets() const {
   // So, adding more insets here is easy solution.
   return NewTabButton::GetInsets() + gfx::Insets::TLBR(0, 6, 0, 0);
 }
+
+BEGIN_METADATA(BraveNewTabButton)
+END_METADATA

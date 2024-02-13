@@ -6,6 +6,8 @@
 
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
+#include <optional>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -35,7 +37,7 @@ TEST(BitcoinUtilsUnitTest, Bip0173TestVectors2) {
     const char* address;
     const char* opcodes;  // not relevant parts of scriptpubkey.
     const char* pubkey_hash_hex;
-    absl::optional<BitcoinAddressType> expected_type;
+    std::optional<BitcoinAddressType> expected_type;
   } test_cases[] = {
       {
           "BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4",
@@ -55,16 +57,16 @@ TEST(BitcoinUtilsUnitTest, Bip0173TestVectors2) {
           "5128",
           "751e76e8199196d454941c45d1b3a323f1433bd6751e76e8199196d454941c45d1b3"
           "a323f1433bd6",
-          absl::nullopt,  // We don't support unkown witness versions
+          std::nullopt,  // We don't support unkown witness versions
       },
       {
           "BC1SW50QA3JX3S", "6002", "751e",
-          absl::nullopt,  // We don't support unkown witness versions
+          std::nullopt,  // We don't support unkown witness versions
       },
       {
           "bc1zw508d6qejxtdg4y5r3zarvaryvg6kdaj", "5210",
           "751e76e8199196d454941c45d1b3a323",
-          absl::nullopt,  // We don't support unkown witness versions
+          std::nullopt,  // We don't support unkown witness versions
       },
       {
           "tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy",
@@ -116,7 +118,7 @@ TEST(BitcoinUtilsUnitTest, Bip0173TestVectors2) {
 
 // https://github.com/sparrowwallet/drongo/blob/9ae1f68dc42529085edcc8c10d9bcfdbf9639448/src/test/java/com/sparrowwallet/drongo/address/AddressTest.java#L12
 TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddress_SparrowWalletTestVectors) {
-  absl::optional<DecodedBitcoinAddress> decoded;
+  std::optional<DecodedBitcoinAddress> decoded;
 
   auto decoded1 =
       DecodeBitcoinAddress("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4");
@@ -257,6 +259,11 @@ TEST(BitcoinUtilsUnitTest, PubkeyToSegwitAddress) {
             PubkeyToSegwitAddress(pubkey, false));
   EXPECT_EQ("tb1qgg6x4mkdqy9l7pn8mq523l7ur3uzrh4y4sk6k3",
             PubkeyToSegwitAddress(pubkey, true));
+}
+
+TEST(BitcoinUtilsUnitTest, ApplyFeeRate) {
+  EXPECT_EQ(0u, ApplyFeeRate(0, 0));
+  EXPECT_EQ(3261u, ApplyFeeRate(23.123, 141));
 }
 
 }  // namespace brave_wallet

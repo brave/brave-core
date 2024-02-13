@@ -6,13 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_VALUE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_VALUE_UTIL_H_
 
+#include <optional>
+
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 
 namespace brave_ads {
 
 base::Value::List IssuersToValue(const IssuerList& issuers);
-absl::optional<IssuerList> ValueToIssuers(const base::Value::List& list);
+std::optional<IssuerList> ValueToIssuers(const base::Value::List& list);
 
 }  // namespace brave_ads
 

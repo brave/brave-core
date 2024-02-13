@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_URL_REQUEST_JSON_READER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_URL_REQUEST_JSON_READER_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -16,7 +16,7 @@ struct CatalogInfo;
 
 namespace json::reader {
 
-absl::optional<CatalogInfo> ReadCatalog(const std::string& json);
+std::optional<CatalogInfo> ReadCatalog(const std::string& json);
 
 }  // namespace json::reader
 }  // namespace brave_ads

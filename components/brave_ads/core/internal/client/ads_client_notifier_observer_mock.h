@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

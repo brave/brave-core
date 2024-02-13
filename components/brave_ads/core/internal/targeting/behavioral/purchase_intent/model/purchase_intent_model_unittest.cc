@@ -98,7 +98,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
-  processor.Process(GURL("https://www.basicattentiontoken.org/test?bar=foo"));
+  processor.Process(GURL("https://basicattentiontoken.org/test?bar=foo"));
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
   // Act & Assert
@@ -107,7 +107,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
-       GetSegmentsForPreviouslyMatchedSegmentKeywords) {
+       GetSegmentsForPreviouslyMatchedSegmentKeyphrases) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 

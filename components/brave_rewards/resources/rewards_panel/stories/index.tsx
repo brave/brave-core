@@ -71,7 +71,7 @@ function createHost (): Host {
       url: '',
       status: 'pending'
     },
-    externalWalletProviders: ['uphold', 'gemini'],
+    externalWalletProviders: ['uphold', 'gemini', 'solana'],
     balance: optional(10.2),
     exchangeInfo: {
       rate: 0.75,
@@ -122,7 +122,8 @@ function createHost (): Host {
     defaultCountry: 'US',
     declaredCountry: 'US',
     userType: 'unconnected',
-    publishersVisitedCount: 4
+    publishersVisitedCount: 4,
+    selfCustodyInviteDismissed: false
   })
 
   return {
@@ -181,6 +182,10 @@ function createHost (): Host {
           return n.id !== notification.id
         })
       })
+    },
+
+    dismissSelfCustodyInvite () {
+      console.log('dismissSelfCustodyInvite')
     },
 
     solveGrantCaptcha (solution) {

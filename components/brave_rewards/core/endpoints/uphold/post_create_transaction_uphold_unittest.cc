@@ -102,6 +102,16 @@ INSTANTIATE_TEST_SUITE_P(
       "87725361-4245-4435-a75a-f7a85674714a"
     },
     PostCreateTransactionUpholdParamType{
+      "HTTP_2xx_ok",
+      net::HTTP_PARTIAL_CONTENT,
+      R"(
+        {
+          "id": "87725361-4245-4435-a75a-f7a85674714a"
+        }
+      )",
+      "87725361-4245-4435-a75a-f7a85674714a"
+    },
+    PostCreateTransactionUpholdParamType{
       "HTTP_401_access_token_expired",
       net::HTTP_UNAUTHORIZED,
       "",

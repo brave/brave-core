@@ -5,18 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key_unittest_util.h"
 
-#include "base/check.h"
+#include <optional>
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr::test {
 
 VerificationKey GetVerificationKey() {
   const UnblindedToken unblinded_token = GetUnblindedToken();
-  const absl::optional<VerificationKey> verification_key =
+  const std::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
   CHECK(verification_key);
   return *verification_key;

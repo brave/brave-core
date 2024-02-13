@@ -1,0 +1,15 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_ai_chat_android_sources = [
+  "//brave/browser/ai_chat/android/ai_chat_mojom_helper_android.cc",
+  "//brave/browser/ai_chat/android/ai_chat_mojom_helper_android.h",
+  "//brave/browser/ai_chat/android/ai_chat_utils.cc",
+]
+
+brave_browser_ai_chat_android_deps = [
+  "//brave/components/ai_chat/core/browser",
+  "//brave/components/ai_chat/core/common/mojom",
+]

@@ -5,6 +5,8 @@
 
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
+#include "base/containers/span.h"
+
 extern "C" {
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/lib.h"
 }
@@ -16,10 +18,9 @@ TokenPreimage::TokenPreimage(const TokenPreimage& other) = default;
 TokenPreimage::~TokenPreimage() {}
 
 base::expected<TokenPreimage, std::string> TokenPreimage::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_TokenPreimage> raw_preimage(
-      token_preimage_decode_base64((const uint8_t*)encoded.data(),
-                                   encoded.length()),
+      token_preimage_decode_base64(encoded.data(), encoded.size()),
       token_preimage_destroy);
   if (raw_preimage == nullptr) {
     return base::unexpected("Failed to decode token preimage");
@@ -68,10 +69,9 @@ base::expected<BlindedToken, std::string> Token::blind() {
 }
 
 base::expected<Token, std::string> Token::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_Token> raw_tok(
-      token_decode_base64((const uint8_t*)encoded.data(), encoded.length()),
-      token_destroy);
+      token_decode_base64(encoded.data(), encoded.size()), token_destroy);
   if (raw_tok == nullptr) {
     return base::unexpected("Failed to decode token");
   }
@@ -104,10 +104,9 @@ BlindedToken& BlindedToken::operator=(const BlindedToken& other) = default;
 BlindedToken::~BlindedToken() {}
 
 base::expected<BlindedToken, std::string> BlindedToken::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_BlindedToken> raw_blinded(
-      blinded_token_decode_base64((const uint8_t*)encoded.data(),
-                                  encoded.length()),
+      blinded_token_decode_base64(encoded.data(), encoded.size()),
       blinded_token_destroy);
   if (raw_blinded == nullptr) {
     return base::unexpected("Failed to decode blinded token");
@@ -138,10 +137,9 @@ SignedToken::SignedToken(const SignedToken& other) = default;
 SignedToken::~SignedToken() {}
 
 base::expected<SignedToken, std::string> SignedToken::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_SignedToken> raw_signed(
-      signed_token_decode_base64((const uint8_t*)encoded.data(),
-                                 encoded.length()),
+      signed_token_decode_base64(encoded.data(), encoded.size()),
       signed_token_destroy);
   if (raw_signed == nullptr) {
     return base::unexpected("Failed to decode signed token");
@@ -175,10 +173,9 @@ VerificationSignature::VerificationSignature(
 VerificationSignature::~VerificationSignature() {}
 
 base::expected<VerificationSignature, std::string>
-VerificationSignature::decode_base64(const std::string encoded) {
+VerificationSignature::decode_base64(base::span<const uint8_t> encoded) {
   std::shared_ptr<C_VerificationSignature> raw_sig(
-      verification_signature_decode_base64((const uint8_t*)encoded.data(),
-                                           encoded.length()),
+      verification_signature_decode_base64(encoded.data(), encoded.size()),
       verification_signature_destroy);
   if (raw_sig == nullptr) {
     return base::unexpected("Failed to decode verification signature");
@@ -214,10 +211,9 @@ TokenPreimage UnblindedToken::preimage() const {
 }
 
 base::expected<UnblindedToken, std::string> UnblindedToken::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_UnblindedToken> raw_unblinded(
-      unblinded_token_decode_base64((const uint8_t*)encoded.data(),
-                                    encoded.length()),
+      unblinded_token_decode_base64(encoded.data(), encoded.size()),
       unblinded_token_destroy);
   if (raw_unblinded == nullptr) {
     return base::unexpected("Failed to decode unblinded token");
@@ -249,10 +245,9 @@ VerificationKey::VerificationKey(const VerificationKey& other) = default;
 VerificationKey::~VerificationKey() {}
 
 base::expected<VerificationSignature, std::string> VerificationKey::sign(
-    const std::string message) {
+    base::span<const uint8_t> message) {
   std::shared_ptr<C_VerificationSignature> raw_verification_signature(
-      verification_key_sign_sha512(raw.get(), (const uint8_t*)message.data(),
-                                   message.length()),
+      verification_key_sign_sha512(raw.get(), message.data(), message.size()),
       verification_signature_destroy);
   if (raw_verification_signature == nullptr) {
     base::unexpected("Failed to sign message");
@@ -262,10 +257,9 @@ base::expected<VerificationSignature, std::string> VerificationKey::sign(
 
 base::expected<bool, std::string> VerificationKey::verify(
     VerificationSignature sig,
-    const std::string message) {
+    base::span<const uint8_t> message) {
   int result = verification_key_invalid_sha512(raw.get(), sig.raw.get(),
-                                               (const uint8_t*)message.data(),
-                                               message.length());
+                                               message.data(), message.size());
   if (result < 0) {
     base::unexpected("Failed to verify message signature");
   }
@@ -308,10 +302,9 @@ PublicKey SigningKey::public_key() {
 }
 
 base::expected<SigningKey, std::string> SigningKey::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_SigningKey> raw_key(
-      signing_key_decode_base64((const uint8_t*)encoded.data(),
-                                encoded.length()),
+      signing_key_decode_base64(encoded.data(), encoded.size()),
       signing_key_destroy);
   if (raw_key == nullptr) {
     return base::unexpected("Failed to decode signing key");
@@ -342,10 +335,9 @@ PublicKey::PublicKey(const PublicKey& other) = default;
 PublicKey::~PublicKey() {}
 
 base::expected<PublicKey, std::string> PublicKey::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_PublicKey> raw_key(
-      public_key_decode_base64((const uint8_t*)encoded.data(),
-                               encoded.length()),
+      public_key_decode_base64(encoded.data(), encoded.size()),
       public_key_destroy);
   if (raw_key == nullptr) {
     return base::unexpected("Failed to decode public key");
@@ -409,10 +401,9 @@ base::expected<bool, std::string> DLEQProof::verify(BlindedToken blinded_token,
 }
 
 base::expected<DLEQProof, std::string> DLEQProof::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_DLEQProof> raw_proof(
-      dleq_proof_decode_base64((const uint8_t*)encoded.data(),
-                               encoded.length()),
+      dleq_proof_decode_base64(encoded.data(), encoded.size()),
       dleq_proof_destroy);
   if (raw_proof == nullptr) {
     return base::unexpected("Failed to decode DLEQ proof");
@@ -570,10 +561,9 @@ BatchDLEQProof::verify_and_unblind(std::vector<Token> tokens,
 }
 
 base::expected<BatchDLEQProof, std::string> BatchDLEQProof::decode_base64(
-    const std::string encoded) {
+    base::span<const uint8_t> encoded) {
   std::shared_ptr<C_BatchDLEQProof> raw_proof(
-      batch_dleq_proof_decode_base64((const uint8_t*)encoded.data(),
-                                     encoded.length()),
+      batch_dleq_proof_decode_base64(encoded.data(), encoded.size()),
       batch_dleq_proof_destroy);
   if (raw_proof == nullptr) {
     return base::unexpected("Failed to decode batch DLEQ proof");

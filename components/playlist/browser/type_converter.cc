@@ -37,6 +37,7 @@ constexpr char kPlaylistItemMediaSrcKey[] = "mediaSrc";
 constexpr char kPlaylistItemThumbnailSrcKey[] = "thumbnailSrc";
 constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
 constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
+constexpr char kPlaylistItemHlsMediaFilePathKey[] = "hlsMediaFilePath";
 constexpr char kPlaylistItemMediaFileCachedKey[] = "mediaCached";
 constexpr char kPlaylistItemTitleKey[] = "title";
 constexpr char kPlaylistItemAuthorKey[] = "author";
@@ -64,7 +65,10 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
          // Added 2023. Jan.
          !dict.contains(kPlaylistItemParentKey) ||
          // Added 2023. Aug.
-         !dict.contains(kPlaylistItemMediaFileBytesKey);
+         !dict.contains(kPlaylistItemMediaFileBytesKey) ||
+
+         // NEED TO CHECK BELOW FOR MIGRATION
+         !dict.contains(kPlaylistItemHlsMediaFilePathKey);
   // DO NOT ADD MORE
 }
 
@@ -75,9 +79,21 @@ void MigratePlaylistOrder(const base::Value::Dict& playlists,
     missing_ids.insert(id);
   }
 
+  base::flat_set<std::string> removed_ids;
   for (const auto& existing_id_value : order) {
-    missing_ids.erase(existing_id_value.GetString());
+    auto existing_id = existing_id_value.GetString();
+    if (base::Contains(missing_ids, existing_id)) {
+      missing_ids.erase(existing_id);
+    } else {
+      removed_ids.insert(existing_id);
+    }
   }
+
+  // Added 2024.01.
+  // Data resetting had left dangled data in the order list and it caused crash
+  order.EraseIf([&](const auto& id_value) {
+    return base::Contains(removed_ids, id_value.GetString());
+  });
 
   for (const auto& id : missing_ids) {
     order.Append(id);
@@ -96,6 +112,8 @@ mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
   item->thumbnail_path = GURL(*dict.FindString(kPlaylistItemThumbnailPathKey));
   item->media_source = GURL(*dict.FindString(kPlaylistItemMediaSrcKey));
   item->media_path = GURL(*dict.FindString(kPlaylistItemMediaFilePathKey));
+  item->hls_media_path =
+      GURL(*dict.FindString(kPlaylistItemHlsMediaFilePathKey));
   item->cached = *dict.FindBool(kPlaylistItemMediaFileCachedKey);
   item->duration = *dict.FindString(kPlaylistItemDurationKey);
   item->author = *dict.FindString(kPlaylistItemAuthorKey);
@@ -125,6 +143,7 @@ base::Value::Dict ConvertPlaylistItemToValue(
           .Set(kPlaylistItemThumbnailSrcKey, item->thumbnail_source.spec())
           .Set(kPlaylistItemThumbnailPathKey, item->thumbnail_path.spec())
           .Set(kPlaylistItemMediaFilePathKey, item->media_path.spec())
+          .Set(kPlaylistItemHlsMediaFilePathKey, item->hls_media_path.spec())
           .Set(kPlaylistItemMediaFileCachedKey, item->cached)
           .Set(kPlaylistItemAuthorKey, item->author)
           .Set(kPlaylistItemDurationKey, item->duration)

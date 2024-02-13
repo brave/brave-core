@@ -15,11 +15,15 @@ TxMeta::TxMeta() = default;
 TxMeta::~TxMeta() = default;
 
 bool TxMeta::operator==(const TxMeta& meta) const {
+  if (GetCoinType() != meta.GetCoinType()) {
+    return false;
+  }
+
   return id_ == meta.id_ && status_ == meta.status_ && from_ == meta.from_ &&
          created_time_ == meta.created_time_ &&
          submitted_time_ == meta.submitted_time_ &&
          confirmed_time_ == meta.confirmed_time_ && tx_hash_ == meta.tx_hash_ &&
-         origin_ == meta.origin_;
+         origin_ == meta.origin_ && chain_id_ == meta.chain_id_;
 }
 
 base::Value::Dict TxMeta::ToValue() const {
@@ -36,6 +40,7 @@ base::Value::Dict TxMeta::ToValue() const {
     DCHECK(!origin_->opaque());
     dict.Set("origin", origin_->GetURL().spec());
   }
+  dict.Set("coin", static_cast<int>(GetCoinType()));
   dict.Set("chain_id", chain_id_);
   return dict;
 }

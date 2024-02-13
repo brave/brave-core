@@ -94,16 +94,16 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,
   for (int i = 0; i < 25; ++i) {
     // P(X>1) > 0.99999999 with X~Bin(n=25, p=0.5), i.e. less than 1 in 100M
     // tests are expected to fail.
-    const absl::optional<CreativeNotificationAdInfo> creative_ad =
+    const std::optional<CreativeNotificationAdInfo> creative_ad =
         MaybeSampleCreativeAd(creative_ad_predictors);
     ASSERT_TRUE(creative_ad);
 
     if (creative_ad->creative_instance_id ==
         creative_ad_predictor_1.creative_ad.creative_instance_id) {
-      creative_ad_1_count++;
+      ++creative_ad_1_count;
     } else if (creative_ad->creative_instance_id ==
                creative_ad_predictor_2.creative_ad.creative_instance_id) {
-      creative_ad_2_count++;
+      ++creative_ad_2_count;
     }
   }
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -38,7 +39,7 @@ void BraveWalletIpfsService::TranslateToNFTGatewayURL(
                              false)) {
     std::move(callback).Run(new_url.spec());
   } else {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
   }
 }
 
@@ -51,7 +52,7 @@ void BraveWalletIpfsService::TranslateToGatewayURL(
                              false)) {
     std::move(callback).Run(new_url.spec());
   } else {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
   }
 }
 
@@ -62,7 +63,7 @@ void BraveWalletIpfsService::ExtractIPFSUrlFromGatewayLikeUrl(
   if (result.has_value()) {
     std::move(callback).Run(result.value().spec());
   } else {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
   }
 }
 

@@ -3,27 +3,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/legacy/media/github.h"
+
 #include <cmath>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/legacy/media/github.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace brave_rewards::internal {
 
@@ -44,7 +44,7 @@ std::string GitHub::GetLinkType(const std::string& url) {
 bool GitHub::GetJSONIntValue(const std::string& key,
                              const std::string& json_string,
                              int64_t* result) {
-  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
+  std::optional<base::Value> value = base::JSONReader::Read(json_string);
   if (!value || !value->is_dict()) {
     return false;
   }
@@ -62,7 +62,7 @@ bool GitHub::GetJSONIntValue(const std::string& key,
 bool GitHub::GetJSONStringValue(const std::string& key,
                                 const std::string& json_string,
                                 std::string* result) {
-  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
+  std::optional<base::Value> value = base::JSONReader::Read(json_string);
   if (!value || !value->is_dict()) {
     return false;
   }
@@ -209,8 +209,9 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
   }
 
   engine_->database()->GetMediaPublisherInfo(
-      media_key, std::bind(&GitHub::OnMediaPublisherActivity, this, _1, _2,
-                           window_id, visit_data, media_key));
+      media_key, base::BindOnce(&GitHub::OnMediaPublisherActivity,
+                                weak_factory_.GetWeakPtr(), window_id,
+                                visit_data, media_key));
 }
 
 void GitHub::ProcessMedia(const base::flat_map<std::string, std::string> parts,
@@ -218,23 +219,25 @@ void GitHub::ProcessMedia(const base::flat_map<std::string, std::string> parts,
   const std::string user_name = GetUserNameFromURL(visit_data.path);
   const std::string url = GetProfileAPIURL(user_name);
   auto iter = parts.find("duration");
-  uint64_t duration = iter != parts.end() ? std::stoull(iter->second) : 0U;
+  uint64_t duration = 0;
+  if (iter != parts.end()) {
+    base::StringToUint64(iter->second, &duration);
+  }
 
   if (duration == 0) {
     return;
   }
 
-  const auto callback =
-      std::bind(&GitHub::OnUserPage, this, duration, 0, visit_data, _1);
-
-  FetchDataFromUrl(url, callback);
+  FetchDataFromUrl(
+      url, base::BindOnce(&GitHub::OnUserPage, weak_factory_.GetWeakPtr(),
+                          duration, 0, visit_data));
 }
 
-void GitHub::OnMediaPublisherActivity(mojom::Result result,
-                                      mojom::PublisherInfoPtr info,
-                                      uint64_t window_id,
+void GitHub::OnMediaPublisherActivity(uint64_t window_id,
                                       const mojom::VisitData& visit_data,
-                                      const std::string& media_key) {
+                                      const std::string& media_key,
+                                      mojom::Result result,
+                                      mojom::PublisherInfoPtr info) {
   if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
     OnMediaActivityError(window_id);
     return;
@@ -244,10 +247,9 @@ void GitHub::OnMediaPublisherActivity(mojom::Result result,
     const std::string user_name = GetUserNameFromURL(visit_data.path);
     const std::string url = GetProfileAPIURL(user_name);
 
-    auto url_callback =
-        std::bind(&GitHub::OnUserPage, this, 0, window_id, visit_data, _1);
-
-    FetchDataFromUrl(url, url_callback);
+    FetchDataFromUrl(
+        url, base::BindOnce(&GitHub::OnUserPage, weak_factory_.GetWeakPtr(), 0,
+                            window_id, visit_data));
   } else {
     GetPublisherPanelInfo(window_id, visit_data, info->id);
   }
@@ -278,8 +280,8 @@ void GitHub::GetPublisherPanelInfo(uint64_t window_id,
       engine_->state()->GetReconcileStamp(), true, false);
   engine_->database()->GetPanelPublisherInfo(
       std::move(filter),
-      std::bind(&GitHub::OnPublisherPanelInfo, this, window_id, visit_data,
-                publisher_key, _1, _2));
+      base::BindOnce(&GitHub::OnPublisherPanelInfo, weak_factory_.GetWeakPtr(),
+                     window_id, visit_data, publisher_key));
 }
 
 void GitHub::OnPublisherPanelInfo(uint64_t window_id,
@@ -291,20 +293,21 @@ void GitHub::OnPublisherPanelInfo(uint64_t window_id,
     const std::string user_name = GetUserNameFromURL(visit_data.path);
     const std::string url = GetProfileAPIURL(user_name);
 
-    auto url_callback =
-        std::bind(&GitHub::OnUserPage, this, 0, window_id, visit_data, _1);
-    FetchDataFromUrl(url, url_callback);
+    FetchDataFromUrl(
+        url, base::BindOnce(&GitHub::OnUserPage, weak_factory_.GetWeakPtr(), 0,
+                            window_id, visit_data));
   } else {
     engine_->client()->OnPanelPublisherInfo(result, std::move(info), window_id);
   }
 }
 
 void GitHub::FetchDataFromUrl(const std::string& url,
-                              LegacyLoadURLCallback callback) {
+                              LoadURLCallback callback) {
   auto request = mojom::UrlRequest::New();
   request->url = url;
-  request->skip_log = true;
-  engine_->LoadURL(std::move(request), callback);
+
+  engine_->Get<URLLoader>().Load(std::move(request), URLLoader::LogLevel::kNone,
+                                 std::move(callback));
 }
 
 void GitHub::OnUserPage(const uint64_t duration,
@@ -323,8 +326,7 @@ void GitHub::OnUserPage(const uint64_t duration,
   const std::string profile_picture = GetProfileImageURL(response->body);
 
   SavePublisherInfo(duration, user_id, user_name, publisher_name,
-                    profile_picture, window_id,
-                    [](mojom::Result, mojom::PublisherInfoPtr) {});
+                    profile_picture, window_id, base::DoNothing());
 }
 
 void GitHub::SavePublisherInfo(const uint64_t duration,
@@ -333,13 +335,13 @@ void GitHub::SavePublisherInfo(const uint64_t duration,
                                const std::string& publisher_name,
                                const std::string& profile_picture,
                                const uint64_t window_id,
-                               PublisherInfoCallback callback) {
+                               GetPublisherInfoCallback callback) {
   const std::string publisher_key = GetPublisherKey(user_id);
   const std::string media_key = GetMediaKey(screen_name);
 
   if (publisher_key.empty()) {
-    callback(mojom::Result::FAILED, nullptr);
-    BLOG(0, "Publisher key is missing");
+    std::move(callback).Run(mojom::Result::FAILED, nullptr);
+    engine_->LogError(FROM_HERE) << "Publisher key is missing";
     return;
   }
 
@@ -352,11 +354,11 @@ void GitHub::SavePublisherInfo(const uint64_t duration,
   visit_data.name = publisher_name;
 
   engine_->publisher()->SaveVisit(publisher_key, visit_data, duration, true,
-                                  window_id, callback);
+                                  window_id, std::move(callback));
 
   if (!media_key.empty()) {
     engine_->database()->SaveMediaPublisherInfo(media_key, publisher_key,
-                                                [](const mojom::Result) {});
+                                                base::DoNothing());
   }
 }
 
@@ -365,29 +367,29 @@ void GitHub::OnMediaPublisherInfo(uint64_t window_id,
                                   const std::string& screen_name,
                                   const std::string& publisher_name,
                                   const std::string& profile_picture,
-                                  PublisherInfoCallback callback,
+                                  GetPublisherInfoCallback callback,
                                   mojom::Result result,
                                   mojom::PublisherInfoPtr publisher_info) {
   if (result != mojom::Result::OK && result != mojom::Result::NOT_FOUND) {
-    callback(mojom::Result::FAILED, nullptr);
+    std::move(callback).Run(mojom::Result::FAILED, nullptr);
     return;
   }
 
   if (!publisher_info || result == mojom::Result::NOT_FOUND) {
     SavePublisherInfo(0, user_id, screen_name, publisher_name, profile_picture,
-                      window_id, callback);
+                      window_id, std::move(callback));
   } else {
     // TODO(nejczdovc): we need to check if user is verified,
     //  but his image was not saved yet, so that we can fix it
-    callback(result, std::move(publisher_info));
+    std::move(callback).Run(result, std::move(publisher_info));
   }
 }
 
-void GitHub::OnMetaDataGet(PublisherInfoCallback callback,
+void GitHub::OnMetaDataGet(GetPublisherInfoCallback callback,
                            mojom::UrlResponsePtr response) {
   DCHECK(response);
   if (response->status_code != net::HTTP_OK) {
-    callback(mojom::Result::TIP_ERROR, nullptr);
+    std::move(callback).Run(mojom::Result::TIP_ERROR, nullptr);
     return;
   }
 
@@ -399,21 +401,18 @@ void GitHub::OnMetaDataGet(PublisherInfoCallback callback,
 
   engine_->database()->GetMediaPublisherInfo(
       media_key,
-      std::bind(&GitHub::OnMediaPublisherInfo, this, 0, user_id, user_name,
-                publisher_name, profile_picture, callback, _1, _2));
+      base::BindOnce(&GitHub::OnMediaPublisherInfo, weak_factory_.GetWeakPtr(),
+                     0, user_id, user_name, publisher_name, profile_picture,
+                     std::move(callback)));
 }
 
 void GitHub::SaveMediaInfo(const base::flat_map<std::string, std::string>& data,
-                           PublisherInfoCallback callback) {
+                           GetPublisherInfoCallback callback) {
   auto user_name = data.find("user_name");
   std::string url = GetProfileAPIURL(user_name->second);
 
-  auto url_callback =
-      std::bind(&GitHub::OnMetaDataGet, this, std::move(callback), _1);
-
-  auto request = mojom::UrlRequest::New();
-  request->url = url;
-  request->skip_log = true;
-  engine_->LoadURL(std::move(request), url_callback);
+  FetchDataFromUrl(
+      url, base::BindOnce(&GitHub::OnMetaDataGet, weak_factory_.GetWeakPtr(),
+                          std::move(callback)));
 }
 }  // namespace brave_rewards::internal

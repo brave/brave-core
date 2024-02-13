@@ -1,3 +1,8 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use std::error::Error;
 
 use crate::ffi;
@@ -132,4 +137,8 @@ impl From<ffi::SkusResult> for skus::errors::InternalError {
             _ => skus::errors::InternalError::UnhandledVariant,
         }
     }
+}
+
+pub fn result_to_string(result: &ffi::SkusResult) -> String {
+    <ffi::SkusResult as Into<skus::errors::InternalError>>::into(*result).to_string()
 }

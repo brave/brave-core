@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_RENDERER_PAGE_CONTENT_EXTRACTOR_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 
 #include "base/values.h"
@@ -14,7 +15,6 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ai_chat {
 
@@ -33,11 +33,11 @@ class PageContentExtractor : public ai_chat::mojom::PageContentExtractor,
   void OnJSTranscriptUrlResult(
       mojom::PageContentExtractor::ExtractPageContentCallback callback,
       ai_chat::mojom::PageContentType type,
-      absl::optional<base::Value> value,
+      std::optional<base::Value> value,
       base::TimeTicks start_time);
   void OnDistillResult(
       mojom::PageContentExtractor::ExtractPageContentCallback callback,
-      const absl::optional<std::string>& content);
+      const std::optional<std::string>& content);
 
   // RenderFrameObserver implementation:
   void OnDestruct() override;

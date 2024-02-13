@@ -24,17 +24,17 @@ class DatabaseManagerObserver : public base::CheckedObserver {
   // Invoked when the database cannot be created or opened.
   virtual void OnFailedToCreateOrOpenDatabase() {}
 
-  // Invoked when about to migrate the database from |from_version| to
-  // |to_version|.
+  // Invoked when about to migrate the database from `from_version` to
+  // `to_version`.
   virtual void OnWillMigrateDatabase(const int from_version,
                                      const int to_version) {}
 
-  // Invoked when the database was migrated from |from_version| to |to_version|.
+  // Invoked when the database was migrated from `from_version` to `to_version`.
   virtual void OnDidMigrateDatabase(const int from_version,
                                     const int to_version) {}
 
-  // Invoked when the database cannot be migrated from |from_version| to
-  // |to_version|.
+  // Invoked when the database cannot be migrated from `from_version` to
+  // `to_version`.
   virtual void OnFailedToMigrateDatabase(const int from_version,
                                          const int to_version) {}
 

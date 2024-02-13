@@ -12,10 +12,10 @@ struct ConfirmationInfo;
 
 class ConfirmationDelegate {
  public:
-  // Invoked to tell the delegate that the |confirmation| was successfully sent.
+  // Invoked to tell the delegate that the `confirmation` was successfully sent.
   virtual void OnDidConfirm(const ConfirmationInfo& confirmation) {}
 
-  // Invoked to tell the delegate that the |confirmation| failed to send.
+  // Invoked to tell the delegate that the `confirmation` failed to send.
   virtual void OnFailedToConfirm(const ConfirmationInfo& confirmation) {}
 
  protected:

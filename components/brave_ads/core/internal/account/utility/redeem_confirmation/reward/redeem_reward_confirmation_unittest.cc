@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation.h"
 
+#include <optional>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
@@ -56,7 +58,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -78,7 +80,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, RetryRedeemingIfNoIssuers) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -110,7 +112,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -144,7 +146,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -181,7 +183,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -217,7 +219,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -254,7 +256,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -290,7 +292,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -339,7 +341,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -389,7 +391,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -432,7 +434,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -481,7 +483,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -531,7 +533,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -580,7 +582,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -629,7 +631,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -679,7 +681,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -726,7 +728,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -773,7 +775,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -823,7 +825,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_STATE_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,7 +17,6 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -39,24 +39,22 @@ class TxStateManager {
   TxStateManager(const TxStateManager&) = delete;
 
   bool AddOrUpdateTx(const TxMeta& meta);
-  std::unique_ptr<TxMeta> GetTx(const std::string& chain_id,
-                                const std::string& id);
-  bool DeleteTx(const std::string& chain_id, const std::string& id);
-  bool WipeTxs();
+  std::unique_ptr<TxMeta> GetTx(const std::string& meta_id);
+  bool DeleteTx(const std::string& meta_id);
 
   static void MigrateAddChainIdToTransactionInfo(PrefService* prefs);
   static void MigrateSolanaTransactionsForV0TransactionsSupport(
       PrefService* prefs);
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      const absl::optional<std::string>& chain_id,
-      const absl::optional<mojom::TransactionStatus>& status,
+      const std::optional<std::string>& chain_id,
+      const std::optional<mojom::TransactionStatus>& status,
       const mojom::AccountIdPtr& from);
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      const absl::optional<std::string>& chain_id,
-      const absl::optional<mojom::TransactionStatus>& status,
-      const absl::optional<mojom::AccountIdPtr>& from);
+      const std::optional<std::string>& chain_id,
+      const std::optional<mojom::TransactionStatus>& status,
+      const std::optional<mojom::AccountIdPtr>& from);
 
   class Observer : public base::CheckedObserver {
    public:
@@ -90,15 +88,6 @@ class TxStateManager {
   // properties can be filled via the protected ValueToTxMeta function above.
   virtual std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) = 0;
-
-  // Each derived class should provide transaction pref path prefix as
-  // coin_type.network_id. For example, ethereum.mainnet or solana.testnet.
-  // This will be used to get/set the transaction pref for a specific
-  // coin_type. When chain_id is not provided, prefix will be just coin_type,
-  // ex. ethereum and solana and it will be used to acess all the transactions
-  // across different network for the coin.
-  virtual std::string GetTxPrefPathPrefix(
-      const absl::optional<std::string>& chain_id) = 0;
 
   raw_ptr<TxStorageDelegate> delegate_ = nullptr;
   raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;

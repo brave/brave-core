@@ -92,7 +92,7 @@ export const FilterDropdownSection = (props: Props) => {
         </Column>
       </Row>
       <DropdownFilter
-        onChange={(e) => onSelectOption(e.detail.value)}
+        onChange={(e: CustomEvent<any>) => onSelectOption(e.detail.value)}
         value={selectedOptionId}
       >
         <div slot='value'>{getLocale(selectedDropdownName)}</div>

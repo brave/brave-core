@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -12,6 +13,7 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
@@ -27,8 +29,7 @@ void TestValueToBlockchainTokenFailCases(const base::Value::Dict& value,
   for (const auto& key : keys) {
     auto invalid_value = value.Clone();
     invalid_value.Remove(key);
-    EXPECT_FALSE(
-        ValueToBlockchainToken(invalid_value, "0x1", mojom::CoinType::ETH))
+    EXPECT_FALSE(ValueToBlockchainToken(invalid_value))
         << "ValueToBlockchainToken should fail if " << key << " not exists";
   }
 }
@@ -229,31 +230,17 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   ASSERT_TRUE(result->Equals(chain));
 
   {
-    mojom::NetworkInfo test_chain = GetTestNetworkInfo1();
-
-    test_chain.coin = mojom::CoinType::ETH;
-    auto eth_value = NetworkInfoToValue(test_chain);
-    EXPECT_EQ(eth_value.FindInt("coin"),
-              static_cast<int>(mojom::CoinType::ETH));
-    EXPECT_TRUE(eth_value.FindBool("is_eip1559"));
-
-    test_chain.coin = mojom::CoinType::FIL;
-    auto fil_value = NetworkInfoToValue(test_chain);
-    EXPECT_EQ(fil_value.FindInt("coin"),
-              static_cast<int>(mojom::CoinType::FIL));
-    EXPECT_FALSE(fil_value.FindBool("is_eip1559"));
-
-    test_chain.coin = mojom::CoinType::SOL;
-    auto sol_value = NetworkInfoToValue(test_chain);
-    EXPECT_EQ(sol_value.FindInt("coin"),
-              static_cast<int>(mojom::CoinType::SOL));
-    EXPECT_FALSE(sol_value.FindBool("is_eip1559"));
-
-    test_chain.coin = mojom::CoinType::BTC;
-    auto btc_value = NetworkInfoToValue(test_chain);
-    EXPECT_EQ(btc_value.FindInt("coin"),
-              static_cast<int>(mojom::CoinType::BTC));
-    EXPECT_FALSE(btc_value.FindBool("is_eip1559"));
+    for (const auto& coin : kAllCoins) {
+      mojom::NetworkInfo test_chain = GetTestNetworkInfo1();
+      test_chain.coin = coin;
+      auto network_value = NetworkInfoToValue(test_chain);
+      EXPECT_EQ(network_value.FindInt("coin"), static_cast<int>(coin));
+      if (coin == mojom::CoinType::ETH) {
+        EXPECT_FALSE(network_value.FindBool("is_eip1559").value());
+      } else {
+        EXPECT_FALSE(network_value.FindBool("is_eip1559"));
+      }
+    }
 
     EXPECT_TRUE(AllCoinsTested());
   }
@@ -289,12 +276,20 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet}));
 
+    data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::ZEC));
+    value_network = ValueToNetworkInfo(data_value);
+    EXPECT_EQ(value_network->coin, mojom::CoinType::ZEC);
+    EXPECT_THAT(value_network->supported_keyrings,
+                ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
+
     EXPECT_TRUE(AllCoinsTested());
   }
 }
 
 TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   auto json_value = base::test::ParseJsonDict(R"({
+      "coin": 60,
+      "chain_id": "0x1",
       "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       "name": "Basic Attention Token",
       "symbol": "BAT",
@@ -315,8 +310,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "bat.png", true, false, false, false, false, "BAT", 18, true, "", "",
       "0x1", mojom::CoinType::ETH);
 
-  mojom::BlockchainTokenPtr token =
-      ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
+  mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
 
   // Test input value with required keys.
@@ -330,10 +324,12 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   optional_value.Remove("token_id");
   optional_value.Remove("coingecko_id");
   expected_token->logo = "";
-  token = ValueToBlockchainToken(optional_value, "0x1", mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(optional_value);
   EXPECT_EQ(token, expected_token);
 
   json_value = base::test::ParseJsonDict(R"({
+      "coin": 60,
+      "chain_id": "0x1",
       "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
       "name": "Crypto Kitties",
       "symbol": "CK",
@@ -352,11 +348,13 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "CryptoKitties-Kitty-13733.svg", false, true, false, true, true, "CK", 0,
       true, "", "", "0x1", mojom::CoinType::ETH);
 
-  token = ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
 
   // Test is_erc1155 is parsed
   json_value = base::test::ParseJsonDict(R"({
+      "coin": 60,
+      "chain_id": "0x1",
       "address": "0x28472a58A490c5e09A238847F66A68a47cC76f0f",
       "name": "ADIDAS",
       "symbol": "ADIDAS",
@@ -375,7 +373,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       false, false, true, true, false, "ADIDAS", 0, true, "", "", "0x1",
       mojom::CoinType::ETH);
 
-  token = ValueToBlockchainToken(json_value, "0x1", mojom::CoinType::ETH);
+  token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
 }
 
@@ -420,8 +418,8 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   std::string* type = caveats0.FindString("type");
   ASSERT_NE(type, nullptr);
   EXPECT_EQ(*type, "limitResponseLength");
-  absl::optional<int> primary_accounts_only_value = caveats0.FindInt("value");
-  ASSERT_NE(primary_accounts_only_value, absl::nullopt);
+  std::optional<int> primary_accounts_only_value = caveats0.FindInt("value");
+  ASSERT_NE(primary_accounts_only_value, std::nullopt);
   EXPECT_EQ(*primary_accounts_only_value, 1);
 
   auto& caveats1 = (*caveats)[1].GetDict();
@@ -442,8 +440,8 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   ASSERT_EQ(context->size(), 1UL);
   EXPECT_EQ((*context)[0], base::Value("https://github.com/MetaMask/rpc-cap"));
 
-  absl::optional<double> date = param0.FindDouble("date");
-  ASSERT_NE(date, absl::nullopt);
+  std::optional<double> date = param0.FindDouble("date");
+  ASSERT_NE(date, std::nullopt);
 
   std::string* id = param0.FindString("id");
   ASSERT_NE(id, nullptr);

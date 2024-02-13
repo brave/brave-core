@@ -24,7 +24,7 @@ export const MenuWrapper = styled.div`
   position: relative;
 `
 
-export const CircleButton = styled(WalletButton)<{
+export const MenuButton = styled(WalletButton)<{
   size?: number
   marginRight?: number
 }>`
@@ -36,7 +36,7 @@ export const CircleButton = styled(WalletButton)<{
   outline: none;
   background: none;
   background-color: ${leo.color.container.background};
-  border-radius: 100%;
+  border-radius: 8px;
   border: 1px solid var(--button-border-color);
   height: ${(p) => (p.size !== undefined ? p.size : 36)}px;
   width: ${(p) => (p.size !== undefined ? p.size : 36)}px;

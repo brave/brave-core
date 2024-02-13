@@ -9,7 +9,8 @@
 namespace brave_rewards::internal {
 
 RewardsEngineTest::RewardsEngineTest()
-    : engine_(client_receiver_.BindNewEndpointAndPassDedicatedRemote()) {}
+    : engine_(client_receiver_.BindNewEndpointAndPassDedicatedRemote(),
+              mojom::RewardsEngineOptions()) {}
 
 RewardsEngineTest::~RewardsEngineTest() = default;
 

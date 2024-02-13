@@ -39,7 +39,7 @@ export const PlaylistName = styled.div<{ color?: string }>`
     css`
       color: ${p.color};
     `};
-  font: ${font.primary.large.semibold};
+  font: ${font.large.semibold};
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -47,7 +47,7 @@ export const PlaylistName = styled.div<{ color?: string }>`
 
 export const PlaylistDetail = styled.div<{ color?: string }>`
   grid-row: 2;
-  font: ${font.primary.small.regular};
+  font: ${font.small.regular};
   ${p =>
     p.color &&
     css`

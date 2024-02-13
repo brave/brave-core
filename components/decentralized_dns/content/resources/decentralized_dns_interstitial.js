@@ -3,17 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-function setupEvents() {
-  $('body').classList.add('decentralized_dns');
-  $('icon').classList.add('icon');
+import { HIDDEN_CLASS, SecurityInterstitialCommandId, sendCommand } from 'chrome://interstitials/common/resources/interstitial_common.js';
 
-  $('primary-button').addEventListener('click', function() {
+function setupEvents() {
+  const body = document.querySelector('#body');
+  body.classList.add('decentralized_dns');
+  const icon = document.querySelector('#icon');
+  icon.classList.add('icon');
+
+  const primaryButton = document.querySelector('#primary-button');
+  primaryButton.addEventListener('click', function() {
     sendCommand(SecurityInterstitialCommandId.CMD_PROCEED);
   });
 
-  $('main-content').classList.remove(HIDDEN_CLASS);
+  const mainContent = document.querySelector('#main-content');
+  mainContent.classList.remove(HIDDEN_CLASS);
 
-  $('dont-proceed-button').addEventListener('click', function(event) {
+  const dontProceedButton = document.querySelector('#dont-proceed-button')
+  dontProceedButton.addEventListener('click', function(event) {
     sendCommand(SecurityInterstitialCommandId.CMD_DONT_PROCEED);
   });
 }

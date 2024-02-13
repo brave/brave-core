@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/ai_chat/android/sources.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
 import("//brave/browser/brave_ads/sources.gni")
@@ -27,6 +28,7 @@ import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/notifications/sources.gni")
 import("//brave/browser/ntp_background/sources.gni")
+import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
@@ -172,6 +174,7 @@ brave_chrome_browser_deps = [
   "//brave/components/cosmetic_filters/common:mojom",
   "//brave/components/de_amp/browser",
   "//brave/components/de_amp/common",
+  "//brave/components/debounce/content/browser",
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
   "//brave/components/google_sign_in_permission",
@@ -271,6 +274,7 @@ if (enable_sparkle) {
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
   ]
+  brave_chrome_browser_deps += [ "//brave/browser/mac:keystone_glue" ]
 }
 
 if (enable_speedreader) {
@@ -291,6 +295,11 @@ if (enable_ai_chat) {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
   ]
+
+  if (is_android) {
+    brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
+    brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
+  }
 }
 
 if (enable_brave_vpn) {
@@ -353,6 +362,9 @@ if (is_android) {
 }
 
 if (toolkit_views) {
+  brave_chrome_browser_sources += brave_browser_onboarding_sources
+
+  brave_chrome_browser_deps += brave_browser_onboarding_deps
   brave_chrome_browser_deps += [
     "//brave/browser/ui/sidebar",
     "//brave/components/sidebar",
@@ -428,6 +440,10 @@ brave_chrome_browser_public_deps = [
   "//brave/components/brave_sync:constants",
   "//brave/components/variations:constants",
 ]
+
+if (is_mac) {
+  brave_chrome_browser_public_deps += [ "//brave/browser/mac:keystone_glue" ]
+}
 
 if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/analyser_handler.cc b/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
-index b2f3242426930b06694a12296206da1e7a7abfb7..9f523172e49757ac1f5524c6bbe8b814bf41c40f 100644
+index 490143f710dc51a93dd89fdc85035519db5e292b..a8088fbaa2edf23ea3bcc292d1576f2eac5c672e 100644
 --- a/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
 +++ b/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
 @@ -23,6 +23,7 @@ AnalyserHandler::AnalyserHandler(AudioNode& node, float sample_rate)

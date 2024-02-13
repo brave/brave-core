@@ -3,24 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import os.path
 import re
-import sys
 
+import brave_chromium_utils
 import override_utils
 
-# We patch the upstream script to inline this file, so the path reported by
-# __file__ will be the path of the upstream script.
-SCRIPTS_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-sys.path.insert(1, SCRIPTS_DIR)
-
-from bind_gen.code_node import SymbolNode, TextNode  # pylint: disable=import-error,wrong-import-position
-from bind_gen.codegen_accumulator import CodeGenAccumulator  # pylint: disable=import-error,wrong-import-position
-from bind_gen.codegen_context import CodeGenContext  # pylint: disable=import-error,wrong-import-position
-from bind_gen.codegen_format import format_template as _format  # pylint: disable=import-error,wrong-import-position
+# pylint: disable=relative-beyond-top-level
+from .code_node import SymbolNode, TextNode
+from .codegen_accumulator import CodeGenAccumulator
+from .codegen_context import CodeGenContext
+from .codegen_format import format_template as _format
 
 # Get gn arg to enable WebAPI probes.
-_IS_PG_WEBAPI_PROBES_ENABLED = override_utils.get_gn_arg(
+_IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_gn_arg(
     "enable_brave_page_graph_webapi_probes")
 
 # Workaround attribute to set when is_observable_array codegen is active. This
@@ -216,11 +211,13 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
         exception_state = "nullptr"
 
     # Extract return value. See `bind_return_value` in upstream interface.py.
-    is_return_type_void = ((not cg_context.return_type
-                            or cg_context.return_type.unwrap().is_void)
-                           and not cg_context.does_override_idl_return_type)
-    if is_return_type_void or hasattr(cg_context, _IS_OBSERVABLE_ARRAY_SETTER):
-        return_value = "absl::nullopt"
+    is_return_type_undefined = (
+        (not cg_context.return_type
+         or cg_context.return_type.unwrap().is_undefined)
+        and not cg_context.does_override_idl_return_type)
+    if is_return_type_undefined or hasattr(cg_context,
+                                           _IS_OBSERVABLE_ARRAY_SETTER):
+        return_value = "std::nullopt"
     else:
         return_value = _to_page_graph_blink_arg("return_value")
 

@@ -7,6 +7,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -164,7 +165,7 @@ using OnDiscoverEthAllowancesCompletedValidation =
     base::RepeatingCallback<void(const std::vector<mojom::AllowanceInfoPtr>&)>;
 
 base::Value::Dict ParseTestJson(const std::string_view json) {
-  absl::optional<base::Value> potential_response_dict_val =
+  std::optional<base::Value> potential_response_dict_val =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   return std::move(potential_response_dict_val.value().GetDict());
@@ -246,7 +247,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   }
 
   void CreateCachedAllowancesPrefs(const std::string& json) {
-    absl::optional<base::Value> allowance_chache_json_value =
+    std::optional<base::Value> allowance_chache_json_value =
         base::JSONReader::Read(json,
                                base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                    base::JSONParserOptions::JSON_PARSE_RFC);
@@ -333,7 +334,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
                                               get_block_response_str);
             } else if (request.url.spec() == url.spec() &&
                        header_value == "eth_getLogs") {
-              absl::optional<base::Value> request_dict_val =
+              std::optional<base::Value> request_dict_val =
                   base::JSONReader::Read(
                       request.request_body->elements()
                           ->at(0)
@@ -363,7 +364,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
                 const auto request_approver_address =
                     (*topics_ptr)[1].GetString();
 
-                absl::optional<base::Value> potential_response_dict_val =
+                std::optional<base::Value> potential_response_dict_val =
                     base::JSONReader::Read(
                         potential_response,
                         base::JSON_PARSE_CHROMIUM_EXTENSIONS |

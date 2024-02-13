@@ -45,35 +45,21 @@ class SwapService : public KeyedService, public mojom::SwapService {
   mojo::PendingRemote<mojom::SwapService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::SwapService> receiver);
 
-  // Obtains a quote for the specified asset
-  void GetPriceQuote(mojom::SwapParamsPtr swap_params,
-                     GetPriceQuoteCallback callback) override;
-  // Obtains the transaction payload to be signed.
-  void GetTransactionPayload(mojom::SwapParamsPtr swap_params,
-                             GetTransactionPayloadCallback callback) override;
+  // Obtains a quote for a swap.
+  void GetQuote(mojom::SwapQuoteParamsPtr params,
+                GetQuoteCallback callback) override;
+  void GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
+                      GetTransactionCallback callback) override;
+
   // Obtains whether the given chain_id supports swap.
   void IsSwapSupported(const std::string& chain_id,
                        IsSwapSupportedCallback callback) override;
 
   static std::string GetBaseSwapURL(const std::string& chain_id);
-  static GURL GetPriceQuoteURL(const mojom::SwapParamsPtr swap_params,
-                               const std::string& chain_id);
-  static GURL GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
-                                       const std::string& chain_id);
-
-  static GURL GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
-                                 const std::string& chain_id);
-
-  static GURL GetJupiterSwapTransactionsURL(const std::string& chain_id);
-
-  // Obtains a price quote from Jupiter for a Solana swap
-  void GetJupiterQuote(mojom::JupiterQuoteParamsPtr swap_params,
-                       GetJupiterQuoteCallback callback) override;
-
-  // Get the serialized transactions to perform the swap
-  void GetJupiterSwapTransactions(
-      mojom::JupiterSwapParamsPtr params,
-      GetJupiterSwapTransactionsCallback callback) override;
+  static GURL GetZeroExQuoteURL(const mojom::SwapQuoteParams& params);
+  static GURL GetZeroExTransactionURL(const mojom::SwapQuoteParams& params);
+  static GURL GetJupiterQuoteURL(const mojom::SwapQuoteParams& params);
+  static GURL GetJupiterTransactionURL(const std::string& chain_id);
 
   void GetBraveFee(mojom::BraveSwapFeeParamsPtr params,
                    GetBraveFeeCallback callback) override;
@@ -81,16 +67,14 @@ class SwapService : public KeyedService, public mojom::SwapService {
   static void SetBaseURLForTest(const GURL& base_url_for_test);
 
  private:
-  void OnGetPriceQuote(GetPriceQuoteCallback callback,
-                       APIRequestResult api_request_result);
-  void OnGetTransactionPayload(GetTransactionPayloadCallback callback,
-                               APIRequestResult api_request_result);
-
-  void OnGetJupiterQuote(GetJupiterQuoteCallback callback,
+  void OnGetZeroExQuote(GetQuoteCallback callback,
+                        APIRequestResult api_request_result);
+  void OnGetJupiterQuote(GetQuoteCallback callback,
                          APIRequestResult api_request_result);
-
-  void OnGetJupiterSwapTransactions(GetJupiterSwapTransactionsCallback callback,
-                                    APIRequestResult api_request_result);
+  void OnGetZeroExTransaction(GetTransactionCallback callback,
+                              APIRequestResult api_request_result);
+  void OnGetJupiterTransaction(GetTransactionCallback callback,
+                               APIRequestResult api_request_result);
 
   static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;

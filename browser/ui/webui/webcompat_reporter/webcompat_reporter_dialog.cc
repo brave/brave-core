@@ -51,7 +51,7 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
   std::u16string GetDialogTitle() const override;
   GURL GetDialogContentURL() const override;
   void GetWebUIMessageHandlers(
-      std::vector<WebUIMessageHandler*>* handlers) const override;
+      std::vector<WebUIMessageHandler*>* handlers) override;
   void GetDialogSize(gfx::Size* size) const override;
   std::string GetDialogArgs() const override;
   void OnDialogClosed(const std::string& json_retval) override;
@@ -84,7 +84,7 @@ GURL WebcompatReporterDialogDelegate::GetDialogContentURL() const {
 }
 
 void WebcompatReporterDialogDelegate::GetWebUIMessageHandlers(
-    std::vector<WebUIMessageHandler*>* /* handlers */) const {
+    std::vector<WebUIMessageHandler*>* /* handlers */) {
   // WebcompatReporterWebUI should add its own message handlers.
 }
 

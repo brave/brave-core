@@ -92,7 +92,7 @@ copy("brave") {
       sources += [ "$root_out_dir/apks/MonochromePublic64.aab" ]
     } else {
       # There is no 64-bit apk target for Mono
-      deps += [ "//chrome/android:monochrome_public_apk" ]
+      deps += [ "//chrome/android:monochrome_64_32_public_apk" ]
       sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
     }
   } else {
@@ -212,7 +212,9 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
     "//brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge.java",
+    "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",
+    "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_WALLET_EXTERNAL_WALLETS_IMPORTER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -70,7 +71,7 @@ class ExternalWalletsImporter {
   bool is_external_wallet_installed_for_testing_ = false;
   mojom::ExternalWalletType type_;
   raw_ptr<content::BrowserContext> context_ = nullptr;
-  absl::optional<base::Value::Dict> storage_data_;
+  std::optional<base::Value::Dict> storage_data_;
   scoped_refptr<extensions::Extension> extension_;
 
   SEQUENCE_CHECKER(sequence_checker_);

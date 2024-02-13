@@ -1,0 +1,10 @@
+diff --git a/chrome/browser/resources/side_panel/bookmarks/BUILD.gn b/chrome/browser/resources/side_panel/bookmarks/BUILD.gn
+index 3de29e5e0223a1a48651b716540393eb63ca81fc..9d1e9aba0186f091b8cd43e9599c87cdab7212bb 100644
+--- a/chrome/browser/resources/side_panel/bookmarks/BUILD.gn
++++ b/chrome/browser/resources/side_panel/bookmarks/BUILD.gn
+@@ -60,4 +60,5 @@ build_webui("build") {
+         rebase_path(
+             "$root_gen_dir/chrome/browser/resources/side_panel/shared/tsc/*",
+             target_gen_dir) ]
++  import("//brave/browser/resources/side_panel/bookmarks/sources.gni") non_web_component_files += brave_side_panel_bookmarks_non_web_component_files exclude_ts_preprocess_files = brave_side_panel_bookmarks_ts_local_files preprocess_deps = brave_side_panel_bookmarks_preprocess_extra_deps
+ }

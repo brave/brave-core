@@ -9,7 +9,10 @@
 #include <string>
 
 #include "base/command_line.h"
+
 namespace brave_domains {
+
+enum ServicesEnvironment { DEV, STAGING, PROD };
 
 // Gets production services domain, or returns staging or dev
 // domain if relevant cli parameter is present.
@@ -22,9 +25,14 @@ namespace brave_domains {
 // All domains can be overridden globally via
 // CLI param syntax is brave-services-env={dev,staging,prod}.
 //
-// Prefix overridde(s) take precedence over global override.
+// Precedence is:
+// 1. Prefix specific CLI overrides
+// 2. Global CLI overrides overrides
+// 3. Default env override parameter
+// 4. Default env (production)
 std::string GetServicesDomain(
-    std::string prefix = "",
+    std::string prefix,
+    ServicesEnvironment env_value_default_override = PROD,
     base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
 
 }  // namespace brave_domains

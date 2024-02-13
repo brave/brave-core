@@ -1,0 +1,26 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+check_includes = false
+
+source_set("keystone_glue") {
+  sources = [
+    "keystone_glue.h",
+    "keystone_glue.mm",
+    "keystone_registration.h",
+    "keystone_registration.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:sparkle_buildflags",
+    "//chrome:strings",
+    "//chrome/app:generated_resources",
+    "//chrome/common:channel_info",
+    "//chrome/common:non_code_constants",
+    "//components/version_info",
+    "//ui/base",
+  ]
+}

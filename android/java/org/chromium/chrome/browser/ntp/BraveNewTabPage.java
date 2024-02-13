@@ -34,7 +34,6 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.xsurface.feed.FeedLaunchReliabilityLogger.SurfaceType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -46,8 +45,8 @@ public class BraveNewTabPage extends NewTabPage {
     private NewTabPageLayout mNewTabPageLayout;
     private FeedSurfaceProvider mFeedSurfaceProvider;
     private Supplier<Toolbar> mToolbarSupplier;
-    private TabModelSelector mTabModelSelector;
     private BottomSheetController mBottomSheetController;
+    private ObservableSupplier<Integer> mTabStripHeightSupplier;
 
     public BraveNewTabPage(
             Activity activity,
@@ -67,9 +66,9 @@ public class BraveNewTabPage extends NewTabPage {
             WindowAndroid windowAndroid,
             JankTracker jankTracker,
             Supplier<Toolbar> toolbarSupplier,
-            SettingsLauncher settingsLauncher,
             HomeSurfaceTracker homeSurfaceTracker,
-            ObservableSupplier<TabContentManager> tabContentManagerSupplier) {
+            ObservableSupplier<TabContentManager> tabContentManagerSupplier,
+            ObservableSupplier<Integer> tabStripHeightSupplier) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -88,9 +87,9 @@ public class BraveNewTabPage extends NewTabPage {
                 windowAndroid,
                 jankTracker,
                 toolbarSupplier,
-                settingsLauncher,
                 homeSurfaceTracker,
-                tabContentManagerSupplier);
+                tabContentManagerSupplier,
+                tabStripHeightSupplier);
 
         mJankTracker = jankTracker;
 
@@ -112,22 +111,28 @@ public class BraveNewTabPage extends NewTabPage {
             }
         }
         // Re-add to the new tab's profile
-        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(
-                Profile.fromWebContents(mTab.getWebContents()));
+        TemplateUrlService templateUrlService =
+                TemplateUrlServiceFactory.getForProfile(
+                        Profile.fromWebContents(mTab.getWebContents()));
         templateUrlService.addObserver(this);
     }
 
     @Override
-    protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
-            SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
-            Supplier<ShareDelegate> shareDelegateSupplier, String url) {
+    protected void initializeMainView(
+            Activity activity,
+            WindowAndroid windowAndroid,
+            SnackbarManager snackbarManager,
+            NewTabPageUma uma,
+            boolean isInNightMode,
+            Supplier<ShareDelegate> shareDelegateSupplier,
+            String url) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
         LayoutInflater inflater = LayoutInflater.from(activity);
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
-        assert !FeedFeatures.isFeedEnabled();
+        assert !FeedFeatures.isFeedEnabled(profile);
         FeedSurfaceCoordinator feedSurfaceCoordinator =
                 new BraveFeedSurfaceCoordinator(
                         activity,
@@ -154,7 +159,7 @@ public class BraveNewTabPage extends NewTabPage {
                         /* viewportView= */ null,
                         /* actionDelegate= */ null,
                         HelpAndFeedbackLauncherImpl.getForProfile(profile),
-                        mTabModelSelector);
+                        mTabStripHeightSupplier);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }

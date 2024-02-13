@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
@@ -149,3 +150,6 @@ bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
   DCHECK(browser);
   return tabs::utils::ShouldShowVerticalTabs(browser);
 }
+
+BEGIN_METADATA(BraveOpaqueBrowserFrameView)
+END_METADATA

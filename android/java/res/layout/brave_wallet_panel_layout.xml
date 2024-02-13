@@ -40,6 +40,7 @@
                     android:contentDescription="@string/accessibility_wallet_dapp_panel_expand"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:paddingVertical="10dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

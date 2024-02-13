@@ -6,6 +6,7 @@
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -160,6 +161,10 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
 }
 
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
+  if (blocked_script_url_.is_empty()) {
+    blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+    blocked_script_url_ = url::Origin(frame->GetSecurityOrigin()).GetURL();
+  }
   if (!blocked_script_url_.is_empty()) {
     BraveSpecificDidBlockJavaScript(
         base::UTF8ToUTF16(blocked_script_url_.spec()));
@@ -195,10 +200,11 @@ BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync() {
     return {};
   }
 
-  absl::optional<url::Origin> optional_ephemeral_storage_origin;
+  std::optional<url::Origin> optional_ephemeral_storage_origin;
   GetContentSettingsManager().AllowEphemeralStorageAccess(
-      routing_id(), frame_origin, frame->GetDocument().SiteForCookies(),
-      top_origin, &optional_ephemeral_storage_origin);
+      frame->GetLocalFrameToken(), frame_origin,
+      frame->GetDocument().SiteForCookies(), top_origin,
+      &optional_ephemeral_storage_origin);
   blink::WebSecurityOrigin ephemeral_storage_origin(
       optional_ephemeral_storage_origin
           ? blink::WebSecurityOrigin(*optional_ephemeral_storage_origin)

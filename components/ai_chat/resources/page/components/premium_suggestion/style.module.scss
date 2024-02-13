@@ -3,53 +3,51 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.actionsBox {
-  display: inline-flex;
-  gap: 10px;
-}
-
 .boxPremium {
   width: 100%;
-  background: linear-gradient(91.61deg, rgba(248, 190, 218, 0.1) 18.42%, rgba(173, 153, 255, 0.1) 85.72%);
+  background: var(--leo-color-private-window-10);
   border-radius: 16px;
-  padding: 16px;
   max-width: 600px;
   margin: 0 auto;
+}
 
-  h1 {
-    margin: 0;
-    padding: 0;
-    font: var(--leo-font-primary-default-semibold);
-  }
+.header {
+  padding: 24px;
 
   h4 {
-    font: var(--leo-font-primary-heading-h4);
-    margin: 0 0 5px 0;
+    font: var(--leo-font-heading-h4);
+    margin: 0;
   }
 
   p {
-    margin: 0 0 12px 0;
-    font: var(--leo-font-primary-default-regular);
+    font: var(--leo-font-default-regular);
+    margin: 0;
   }
 }
 
-.featuresListing {
-  --leo-icon-size: 20px;
+.features {
+  padding: 0 8px 8px 8px;
 
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  border: 1px solid var(--leo-color-divider-subtle);
-  border-radius: 8px;
-  overflow: hidden;
+  ul {
+    --leo-icon-size: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--leo-color-primary-20);
+    border-radius: 8px;
+    overflow: hidden;
+  }
 
   li {
+    font: var(--leo-font-default-semibold);
     list-style-type: none;
-    padding: 10px 12px;
+    padding: var(--leo-spacing-l);
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid var(--leo-color-divider-subtle);
+    border-bottom: 1px solid var(--leo-color-primary-20);
+
 
     &:last-child {
       border: 0;
@@ -57,32 +55,75 @@
 
     p {
       margin: 0;
-      font: var(--leo-font-primary-small-regular);
-      color: var(--leo-color-blue-40);
+      font: var(--leo-font-small-regular);
+      color: var(--leo-color-text-secondary);
     }
-  }
-
-  .priceList {
-    background-color: var(--leo-color-container-background);
-    color: var(--leo-color-text-primary);
-    padding: 20px 16px;
-    justify-content: space-between;
-    font: var(--leo-font-primary-default-semibold);
-
-    data {
-      font: var(--leo-font-primary-heading-h3);
-      color: var(--leo-color-text-primary);
-      margin: 0 5px;
-    }
-  }
-
-  leo-icon {
-    color: var(--leo-color-blue-30);
   }
 }
 
+.priceList {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--leo-color-private-window-20);
+  padding: 16px;
+}
+
 .price {
-  color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-primary-50);
   display: inline-flex;
   align-items: center;
+
+  data {
+    font: var(--leo-font-heading-h2);
+    color: var(--leo-color-text-primary);
+    margin: 0 5px;
+  }
+}
+
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--leo-radius-m);
+  background: var(--leo-color-private-window-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+
+  leo-icon {
+    color: var(--leo-color-private-window-60);
+  }
+}
+
+.priceButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border: 2px solid var(--leo-color-divider-interactive);
+  border-radius: 12px;
+  padding: var(--leo-spacing-xl);
+  background: var(--leo-color-container-background);
+}
+
+.priceButtonLabel {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+}
+
+.subscriptionPolicy {
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+  padding: var(--leo-spacing-l) 0 0 0;
+  text-align: center;
+}
+
+.actions {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding: 24px 16px 16px 16px;
 }

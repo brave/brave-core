@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
@@ -38,18 +39,19 @@ class SKUCommon {
                                SKUOrderCallback callback);
 
  private:
-  void OnTransactionCompleted(const mojom::Result result,
-                              const std::string& order_id,
-                              SKUOrderCallback callback);
+  void OnTransactionCompleted(const std::string& order_id,
+                              SKUOrderCallback callback,
+                              mojom::Result result);
 
   void GetSKUTransactionByOrderId(
+      SKUOrderCallback callback,
       base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
-          result,
-      SKUOrderCallback callback);
+          result);
 
   const raw_ref<RewardsEngineImpl> engine_;
   SKUOrder order_;
   SKUTransaction transaction_;
+  base::WeakPtrFactory<SKUCommon> weak_factory_{this};
 };
 
 }  // namespace sku

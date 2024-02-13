@@ -43,16 +43,20 @@ class BravePermissionDialogModel {
     private static final String URL_WIDEVINE_LEARN_MORE =
             "https://support.brave.com/hc/en-us/articles/17428756610061";
 
-    public static PropertyModel getModel(ModalDialogProperties.Controller controller,
-            PermissionDialogDelegate delegate, Runnable touchFilteredCallback) {
+    public static PropertyModel getModel(
+            ModalDialogProperties.Controller controller,
+            PermissionDialogDelegate delegate,
+            View customView,
+            Runnable touchFilteredCallback) {
         BravePermissionDialogDelegate braveDelegate =
                 (BravePermissionDialogDelegate) (Object) delegate;
         PropertyModel model = null;
         if (braveDelegate.getIsWidevinePermissionRequest()) {
             model = createModelForWidevineRequest(controller, delegate, touchFilteredCallback);
         } else {
-            model = PermissionDialogModel.getModel(controller, delegate, touchFilteredCallback);
-            View customView = (View) model.get(ModalDialogProperties.CUSTOM_VIEW);
+            model =
+                    PermissionDialogModelFactory.getModel(
+                            controller, delegate, customView, touchFilteredCallback);
             addLifetimeOptions(customView, delegate);
         }
         assert model != null;
@@ -97,17 +101,20 @@ class BravePermissionDialogModel {
         PropertyModel model =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
                         .with(ModalDialogProperties.CONTROLLER, controller)
-                        .with(ModalDialogProperties.TITLE,
-                                context.getResources().getString(
-                                        R.string.widevine_permission_request_title))
+                        .with(
+                                ModalDialogProperties.TITLE,
+                                context.getResources()
+                                        .getString(R.string.widevine_permission_request_title))
                         .with(ModalDialogProperties.CUSTOM_VIEW, customView)
                         .with(ModalDialogProperties.POSITIVE_BUTTON_TEXT, primaryButtonText)
-                        .with(ModalDialogProperties.NEGATIVE_BUTTON_TEXT,
-                                delegate.getSecondaryButtonText())
+                        .with(
+                                ModalDialogProperties.NEGATIVE_BUTTON_TEXT,
+                                delegate.getNegativeButtonText())
                         .with(ModalDialogProperties.CONTENT_DESCRIPTION, messageText)
                         .with(ModalDialogProperties.FILTER_TOUCH_FOR_SECURITY, true)
                         .with(ModalDialogProperties.TOUCH_FILTERED_CALLBACK, touchFilteredCallback)
-                        .with(ModalDialogProperties.BUTTON_TAP_PROTECTION_PERIOD_MS,
+                        .with(
+                                ModalDialogProperties.BUTTON_TAP_PROTECTION_PERIOD_MS,
                                 UiUtils.PROMPT_INPUT_PROTECTION_SHORT_DELAY_MS)
                         .build();
 

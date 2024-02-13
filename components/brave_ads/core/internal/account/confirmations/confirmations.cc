@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
 
+#include <optional>
+
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -19,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -53,7 +54,7 @@ void Confirmations::ConfirmCallback(const TransactionInfo& transaction,
                                     const UserDataInfo& user_data) {
   CHECK(transaction.IsValid());
 
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       UserHasJoinedBraveRewards()
           ? BuildRewardConfirmation(token_generator_, transaction, user_data)
           : BuildNonRewardConfirmation(transaction, user_data);
@@ -91,7 +92,7 @@ void Confirmations::OnDidAddConfirmationToQueue(
 
 void Confirmations::OnWillProcessConfirmationQueue(
     const ConfirmationInfo& confirmation,
-    base::Time process_at) {
+    const base::Time process_at) {
   BLOG(1, "Process " << confirmation.type << " confirmation for "
                      << confirmation.ad_type << " with transaction id "
                      << confirmation.transaction_id

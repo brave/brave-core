@@ -6,6 +6,7 @@
 /* eslint-disable @typescript-eslint/key-spacing */
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 import { color } from '@brave/leo/tokens/css'
 
 // magics
@@ -22,6 +23,9 @@ import Amount from '../../../../utils/amount'
 import { getLocale } from '../../../../../common/locale'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { IconAsset } from '../../../shared/create-placeholder-icon'
+import {
+  useGetCombinedTokensRegistryQuery //
+} from '../../../../common/slices/api.slice.extra'
 
 // components
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
@@ -64,18 +68,36 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
     | BraveWallet.BlowfishNativeAssetTransferData
   network: ChainInfo
 }): JSX.Element => {
+  // queries
+  const { data: tokensRegistry } = useGetCombinedTokensRegistryQuery(
+    transfer.asset.imageUrl ? skipToken : undefined
+  )
+
   // memos
   const asset: IconAsset = React.useMemo(() => {
+    const foundTokenId = transfer.asset.imageUrl
+      ? tokensRegistry?.fungibleIdsByChainId[network.chainId].find(
+          (id) =>
+            tokensRegistry.entities[id]?.contractAddress?.toLowerCase() ===
+            transfer.asset.address
+        )
+      : undefined
+
+    const foundTokenLogo =
+      foundTokenId !== undefined
+        ? tokensRegistry?.entities[foundTokenId]?.logo || ''
+        : ''
+
     return {
       contractAddress: transfer.asset.address,
       isErc721: false,
       isNft: false,
       chainId: network.chainId,
-      logo: transfer.asset.imageUrl || '',
+      logo: transfer.asset.imageUrl || foundTokenLogo,
       name: transfer.asset.name,
       symbol: transfer.asset.symbol
     }
-  }, [transfer.asset, network.chainId])
+  }, [transfer.asset, network.chainId, tokensRegistry])
 
   // computed
   const normalizedAmount = new Amount(transfer.amount.after)
@@ -163,20 +185,20 @@ export const NonFungibleErcTokenTransfer = ({
   transfer: Pick<
     | BraveWallet.BlowfishERC721TransferData
     | BraveWallet.BlowfishERC1155TransferData,
-    'amount' | 'contract' | 'metadata' | 'name' | 'tokenId'
+    'amount' | 'counterparty' | 'metadata' | 'asset'
   >
 }): JSX.Element => {
   // memos
   const asset: IconAsset = React.useMemo(() => {
     return {
       chainId: network.chainId,
-      contractAddress: transfer.contract.address,
-      isErc721: !!transfer.tokenId,
-      isNft: !!transfer.tokenId,
+      contractAddress: transfer.asset.address,
+      isErc721: !!transfer.asset.tokenId,
+      isNft: !!transfer.asset.tokenId,
       logo: transfer.metadata.rawImageUrl || '',
-      name: transfer.name,
-      symbol: transfer.name,
-      tokenId: transfer.tokenId || ''
+      name: transfer.asset.name,
+      symbol: transfer.asset.symbol,
+      tokenId: transfer.asset.tokenId || ''
     }
   }, [transfer, network.chainId])
 
@@ -184,8 +206,8 @@ export const NonFungibleErcTokenTransfer = ({
   const isReceive = new Amount(transfer.amount.after) //
     .gt(transfer.amount.before)
 
-  const tokenIdNumber = transfer.tokenId
-    ? new Amount(transfer.tokenId).toNumber()
+  const tokenIdNumber = transfer.asset.tokenId
+    ? new Amount(transfer.asset.tokenId).toNumber()
     : undefined
 
   // render
@@ -251,7 +273,7 @@ export const NonFungibleErcTokenTransfer = ({
 
           <InlineViewOnBlockExplorerIconButton
             address={asset.contractAddress}
-            id={transfer.tokenId}
+            id={transfer.asset.tokenId}
             network={network}
             urlType={asset.isNft ? 'nft' : 'token'}
           />
@@ -275,7 +297,7 @@ export const ErcTokenApproval = ({
   | {
       isERC20?: false
       isApprovalForAll?: boolean
-      approval: Pick<EVMApprovalData, 'amount' | 'contract' | 'spender'>
+      approval: Pick<EVMApprovalData, 'owner' | 'spender' | 'amount' | 'asset'>
     }
   | {
       isERC20: true
@@ -292,7 +314,7 @@ export const ErcTokenApproval = ({
         approval as
           | BraveWallet.BlowfishERC721ApprovalForAllData
           | BraveWallet.BlowfishERC721ApprovalData
-      )?.symbol ?? undefined
+      )?.asset.symbol ?? undefined
 
   // memos
   const beforeAmount = React.useMemo(() => {

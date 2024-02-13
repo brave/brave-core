@@ -10,7 +10,7 @@
 
 #include "base/observer_list_types.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
@@ -19,17 +19,17 @@ struct WalletInfo;
 
 class AccountObserver : public base::CheckedObserver {
  public:
-  // Invoked when the |wallet| did initialize.
+  // Invoked when the `wallet` did initialize.
   virtual void OnDidInitializeWallet(const WalletInfo& wallet) {}
 
   // Invoked if the wallet is invalid.
   virtual void OnFailedToInitializeWallet() {}
 
-  // Invoked after successfully processing a deposit for |transaction|.
+  // Invoked after successfully processing a deposit for `transaction`.
   virtual void OnDidProcessDeposit(const TransactionInfo& transaction) {}
 
-  // Invoked after failing to process a deposit for |creative_instance_id|,
-  // |ad_type| and |confirmation_type|.
+  // Invoked after failing to process a deposit for `creative_instance_id`,
+  // `ad_type` and `confirmation_type`.
   virtual void OnFailedToProcessDeposit(const std::string& creative_instance_id,
                                         AdType ad_type,
                                         ConfirmationType confirmation_type) {}

@@ -134,6 +134,8 @@ enum ZCashProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
   kUnknown = ProviderError.kUnknown,
   kInternalError = JsonRpcError.kInternalError,
+  // Fired when there are several outgoings transactions
+  kMultipleTransactionsNotSupported
 };
 
 union ProviderErrorUnion {
@@ -475,16 +477,47 @@ struct Dapp {
   string range;
 };
 
-// Structs to model 0x (swap) HTTP API interactions
-// Docs: https://docs.0x.org/0x-api-swap
-struct SwapParams {
-  string taker_address;
-  string sell_amount;
-  string buy_amount;
-  string buy_token;
-  string sell_token;
-  double slippage_percentage;
-  string gas_price;
+enum RoutePriority {
+  kRecommended,
+  kFastest,
+  kCheapest,
+  kSafest
+};
+
+struct SwapQuoteParams {
+  AccountId from_account_id;
+  string from_chain_id;
+  string from_token;
+  string from_amount;
+
+  // Setting the to_account_id is only supported for LiFi swaps.
+  AccountId to_account_id;
+  string to_chain_id;
+  string to_token;
+
+  // Setting the to_amount is not supported for Jupiter and LiFi swaps.
+  string to_amount;
+
+  string slippage_percentage;
+
+  // This is primarily used for LiFi swaps. For every other case, this should
+  // be set to kRecommended.
+  RoutePriority route_priority;
+};
+
+union SwapTransactionParamsUnion {
+  JupiterTransactionParams jupiter_transaction_params;
+  SwapQuoteParams zero_ex_transaction_params;
+};
+
+union SwapQuoteUnion {
+  JupiterQuote jupiter_quote;
+  ZeroExQuote zero_ex_quote;
+};
+
+union SwapTransactionUnion {
+  string jupiter_transaction;
+  ZeroExQuote zero_ex_transaction;
 };
 
 struct ZeroExSource {
@@ -503,7 +536,7 @@ struct ZeroExFees {
   ZeroExFee? zero_ex_fee;
 };
 
-struct SwapResponse {
+struct ZeroExQuote {
   string price;
   string guaranteed_price; // Unused for price quote response
   string to;   // Unused for price quote response
@@ -526,78 +559,70 @@ struct SwapResponse {
   ZeroExFees fees;
 };
 
-struct SwapErrorResponseItem {
+struct ZeroExErrorItem {
   string field;
   int32 code;
   string reason;
 };
 
-struct SwapErrorResponse {
+struct ZeroExError {
   int32 code;
   string reason;
-  array<SwapErrorResponseItem> validation_errors;
+  array<ZeroExErrorItem> validation_errors;
   bool is_insufficient_liquidity;
 };
 
+union SwapErrorUnion {
+  JupiterError jupiter_error;
+  ZeroExError zero_ex_error;
+};
+
 // Structs to model Jupiter (swap) HTTP API interactions
-// Swagger spec: https://quote-api.jup.ag/docs/static/index.html
+// Swagger spec: https://station.jup.ag/api-v6/get-quote
 //
 // Note that amount field is incorrectly modelled as number in spec,
 // but it has been fixed here.
-struct JupiterFee {
-  uint64 amount;
-  string mint;
-  double pct;
+struct JupiterPlatformFee {
+  string amount;
+  string fee_bps;
 };
 
-struct JupiterMarketInfo {
-  string id;
+struct JupiterSwapInfo {
+  string amm_key;
   string label;
   string input_mint;
   string output_mint;
-  bool not_enough_liquidity;
-  uint64 in_amount;
-  uint64 out_amount;
-  double price_impact_pct;
-  JupiterFee lp_fee;
-  JupiterFee platform_fee;
+  string in_amount;
+  string out_amount;
+  string fee_amount;
+  string fee_mint;
 };
 
-struct JupiterRoute {
-  uint64 in_amount;
-  uint64 out_amount;
-  uint64 amount;
-  uint64 other_amount_threshold;
-  string swap_mode;
-  double price_impact_pct;
-  int32 slippage_bps;
-  array<JupiterMarketInfo> market_infos;
+struct JupiterRouteStep {
+  JupiterSwapInfo swap_info;
+  string percent;
 };
 
 struct JupiterQuote {
-  array<JupiterRoute> routes;
+  string input_mint;
+  string in_amount;
+  string output_mint;
+  string out_amount;
+  string other_amount_threshold;
+  string swap_mode;
+  string slippage_bps;
+  JupiterPlatformFee? platform_fee;
+  string price_impact_pct;
+  array<JupiterRouteStep> route_plan;
 };
 
-struct JupiterQuoteParams {
-  string input_mint;
-  string output_mint;
-  string amount;
-  int32 slippage_bps;
+struct JupiterTransactionParams {
+  JupiterQuote quote;
+  string chain_id;
   string user_public_key;
 };
 
-struct JupiterSwapParams {
-  JupiterRoute route;
-  string user_public_key;
-  string input_mint;
-  string output_mint;
-};
-
-struct JupiterSwapTransactions {
-  string swap_transaction;
-};
-
-struct JupiterErrorResponse {
+struct JupiterError {
   string status_code;
   string error;
   string message;
@@ -950,7 +975,7 @@ interface AssetRatioService {
   GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
 
   // Obtains the URL for selling assets specifying currency
-  GetSellUrl(OffRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
+  GetSellUrl(OffRampProvider provider, string chain_id, string symbol, string amount, string currencyCode) => (string url, string? error);
 
   // Obtains the prices from a list of assets to a list of assets
   // Each from asset is represented in the to asset and includes the timeframe
@@ -963,34 +988,17 @@ interface AssetRatioService {
       AssetPriceTimeframe timeframe) =>
           (bool success, array<AssetTimePrice> values);
 
-  // Obtain token info via contract address through etherscan API.
-  // This is only for Ethereum mainnet.
-  // Note: The is_nft property of the token is not reliable because
-  // the value is based on the value of is_erc721 only and doesn't
-  // consider Solana NFTs and ERC1155 NFTs.
-  GetTokenInfo(string contract_address) => (BlockchainToken? token);
-
   // Obtain list of top currencies and their market data
   GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
 };
 
 // Implements swapping related functionality through the 0x API.
 interface SwapService {
-  // Obtains a price quote for a swap
-  GetPriceQuote(SwapParams params) =>
-      (SwapResponse? response, SwapErrorResponse? error_response, string error_string);
+  GetQuote(SwapQuoteParams params) =>
+      (SwapQuoteUnion? response, SwapErrorUnion? error, string error_string);
 
-  // Obtains transaction payload data for a swap
-  GetTransactionPayload(SwapParams params) =>
-      (SwapResponse? response, SwapErrorResponse? error_response, string error_string);
-
-  // Obtains a price quote from Jupiter for a Solana swap
-  GetJupiterQuote(JupiterQuoteParams params) =>
-      (JupiterQuote? response, JupiterErrorResponse? error_response, string error_string);
-
-  // Get the serialized transactions to perform the swap
-  GetJupiterSwapTransactions(JupiterSwapParams params) =>
-      (JupiterSwapTransactions? response, JupiterErrorResponse? error_response, string error_string);
+  GetTransaction(SwapTransactionParamsUnion params) =>
+      (SwapTransactionUnion? response, SwapErrorUnion? error, string error_string);
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
@@ -1321,17 +1329,27 @@ interface JsonRpcService {
   // Obtains the quantity of ERC1155 tokens a user has
   GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
-  // Fetches symbol of an ERC20 or ERC721 token.
-  GetEthTokenSymbol(string contract_address,
-                    string chain_id) => (string symbol,
-                                         ProviderError error,
-                                         string error_message);
+  // Fetches token info by contract address and chain ID. The returned token
+  // has the following fields populated:
+  //   - contract_address
+  //   - chain_id
+  //   - coin
+  //   - name
+  //   - symbol
+  //   - decimals
+  //   - coingecko_id
+  //
+  // The following fields are always set to false, and callers must NOT rely
+  // on them:
+  //   - is_erc721
+  //   - is_erc1155
+  //   - is_erc20
+  //   - is_nft
+  GetEthTokenInfo(string contract_address,
+                  string chain_id) => (BlockchainToken? token,
+                                       ProviderError error,
+                                       string error_message);
 
-  // Fetches decimals of an ERC20 or ERC721 token.
-  GetEthTokenDecimals(string contract_address,
-                      string chain_id) => (string decimals,
-                                           ProviderError error,
-                                           string error_message);
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 
@@ -1382,8 +1400,15 @@ struct BitcoinAddress {
 };
 
 struct BitcoinBalance {
+  // Total balance. Either all available now or will be available soon.
   uint64 total_balance;
-  map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
+  // Balance which can be spent now.
+  uint64 available_balance;
+  // Not yet confirmed balance change.
+  int64 pending_balance;
+  // address -> balance of that address(sum of all related utxos).
+  // Now needed for debugging purposes.
+  map<string, uint64> balances;
 };
 
 struct BitcoinAccountInfo {
@@ -1417,9 +1442,15 @@ struct ZCashAddress {
   ZCashKeyId key_id;
 };
 
+struct ZCashAccountInfo {
+  ZCashAddress next_transparent_receive_address;
+  ZCashAddress next_transparent_change_address;
+};
+
 interface ZCashWalletService {
   GetBalance(string network_id, AccountId account_id) => (ZCashBalance? balance, string? error_message);
   GetReceiverAddress(AccountId account_id) => (ZCashAddress? address, string? error_message);
+  GetZCashAccountInfo(AccountId account_id) => (ZCashAccountInfo? account_info);
 };
 
 enum TransactionStatus {
@@ -1463,6 +1494,8 @@ struct FilTxData {
 
 struct BtcTxInput {
   string address;
+  string outpoint_txid;
+  uint32 outpoint_index;
   uint64 value;
 };
 
@@ -1474,6 +1507,7 @@ struct BtcTxOutput {
 struct BtcTxData {
   string to;
   uint64 amount;
+  bool sending_max_amount;
   uint64 fee;
   array<BtcTxInput> inputs;
   array<BtcTxOutput> outputs;
@@ -2266,12 +2300,9 @@ enum BlowfishWarningKind {
   kPermitUnlimitedAllowance,
   kPermitNoExpiration,
   kEthSignTxHash,
-  kObfuscatedCode,
-  kDevtoolsDisabled,
   kBlocklistedDomainCrossOrigin,
   kWhitelistedDomainCrossOrigin,
   kTooManyTransactions,
-  kNonAsciiUrl,
   kCompromisedAuthorityUpgrade,
   kPoisonedAddress,
   kApprovalToEOA,
@@ -2282,7 +2313,6 @@ enum BlowfishWarningKind {
   kNewDomain,
   kUnusualGasConsumption,
   kReferencedOfacAddress,
-  kMainnetReplayPossible,
   kUnknown = -1
 };
 
@@ -2431,7 +2461,7 @@ struct BlowfishEVMError {
   string human_readable_error;
 };
 
-struct BlowfishEVMContract {
+struct BlowfishEVMCounterparty {
   string address;
   BlowfishEVMAddressKind kind;
 };
@@ -2443,12 +2473,37 @@ struct BlowfishEVMAmount {
 
 struct BlowfishEVMAsset {
   string address;
+
+  // The symbol field is defined in the following cases:
+  //   - ERC20:   always defined.
+  //   - ERC721:  may not be defined as it's not required in the standard.
+  //   - ERC1155: never defined as it's not part of the standard.
   string symbol;
+
+  // The name field is defined in the following cases:
+  //   - ERC20:  always defined.
+  //   - ERC721: may not be defined as it's not required in the standard.
+  //   - ERC1155: may not be defined as it's not required in the standard.
   string name;
+
+  // For ERC721 and ERC1155, decimals will always be 0, since each token is
+  // distinct and cannot be partitioned into smaller units.
   int32 decimals;
+
+  // The token_id field is defined only for ERC721 and ERC1155 tokens. In some
+  // edge cases where Blowfish is unable to parse the value, it may be empty.
+  string token_id;
+
+  // The collection field is defined only for ERC721.
+  string collection;
+
   bool verified;
   array<string> lists;
-  string? image_url;
+
+  // This field is only used for ERC20 tokens. For NFT images, please use the
+  // corresponding BlowfishEVMMetadata field.
+  string image_url;
+
   BlowfishPrice? price;
 };
 
@@ -2457,72 +2512,58 @@ struct BlowfishEVMMetadata {
 };
 
 struct BlowfishERC20TransferData {
-  BlowfishEVMContract contract;
   BlowfishEVMAmount amount;
+  BlowfishEVMCounterparty? counterparty;
   BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC20ApprovalData {
-  BlowfishEVMContract contract;
-  BlowfishEVMContract owner;
-  BlowfishEVMContract spender;
+  BlowfishEVMCounterparty owner;
+  BlowfishEVMCounterparty spender;
   BlowfishEVMAmount amount;
   BlowfishEVMAsset asset;
 };
 
 struct BlowfishNativeAssetTransferData {
   BlowfishEVMAmount amount;
+  BlowfishEVMCounterparty? counterparty;
   BlowfishEVMAsset asset;
-  BlowfishEVMContract contract;
 };
 
 struct BlowfishERC721TransferData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
+  BlowfishEVMCounterparty? counterparty;
   BlowfishEVMMetadata metadata;
-  string name;
-  string symbol;
-  string? token_id;
-  BlowfishPrice? asset_price;
+  BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC721ApprovalData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
   BlowfishEVMMetadata metadata;
-  string name;
-  BlowfishEVMContract owner;
-  BlowfishEVMContract spender;
-  string symbol;
-  string? token_id;
-  BlowfishPrice? asset_price;
+  BlowfishEVMCounterparty owner;
+  BlowfishEVMCounterparty spender;
+  BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC721ApprovalForAllData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
-  string name;
-  BlowfishEVMContract owner;
-  BlowfishEVMContract spender;
-  string symbol;
-  BlowfishPrice? asset_price;
+  BlowfishEVMCounterparty owner;
+  BlowfishEVMCounterparty spender;
+  BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC1155TransferData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
   BlowfishEVMMetadata metadata;
-  string name;
-  string? token_id;
-  BlowfishPrice? asset_price;
+  BlowfishEVMCounterparty? counterparty;
+  BlowfishEVMAsset asset;
 };
 
 struct BlowfishERC1155ApprovalForAllData {
   BlowfishEVMAmount amount;
-  BlowfishEVMContract contract;
-  BlowfishEVMContract owner;
-  BlowfishEVMContract spender;
-  BlowfishPrice? asset_price;
+  BlowfishEVMCounterparty owner;
+  BlowfishEVMCounterparty spender;
+  BlowfishEVMAsset asset;
 };
 
 union BlowfishEVMStateChangeRawInfoDataUnion {
@@ -2546,15 +2587,11 @@ struct BlowfishEVMStateChange {
   BlowfishEVMStateChangeRawInfo raw_info;
 };
 
-struct EVMSimulationResults {
-  BlowfishEVMError? error;
-  array<BlowfishEVMStateChange> expected_state_changes;
-};
-
 struct EVMSimulationResponse {
   BlowfishSuggestedAction action;
-  EVMSimulationResults simulation_results;
+  BlowfishEVMError? error;
   array<BlowfishWarning> warnings;
+  array<BlowfishEVMStateChange> expected_state_changes;
 };
 
 // Blowfish types specific to Solana.
@@ -2573,43 +2610,45 @@ struct BlowfishSolanaStakeAuthorities {
   string withdrawer;
 };
 
-struct BlowfishSOLTransferData {
+struct BlowfishSolanaAsset {
   string symbol;
   string name;
+  string mint;
   int32 decimals;
+  string image_url;
+  BlowfishPrice? price;
+
+  // Blowfish API may return a null or missing value for this field if the token
+  // does not conform to the Metaplex Token Standard. In all such cases, the
+  // value of this field is set to kUnknown and should be ignored.
+  //
+  // The choice of using kUnknown is intentional, since Mojo does not allow
+  // enums to be optional.
+  BlowfishMetaplexTokenStandardKind metaplex_token_standard;
+};
+
+struct BlowfishSOLTransferData {
+  BlowfishSolanaAsset asset;
   BlowfishSolanaDiff diff;
 };
 
 struct BlowfishSPLTransferData {
-  string symbol;
-  string name;
-  string mint;
-  int32 decimals;
+  BlowfishSolanaAsset asset;
   BlowfishSolanaDiff diff;
-  uint64 supply;
-  BlowfishMetaplexTokenStandardKind metaplex_token_standard;
-  BlowfishPrice? asset_price;
+  string counterparty;
 };
 
 struct BlowfishSPLApprovalData {
   string delegate;
-  string mint;
-  string symbol;
-  string name;
-  int32 decimals;
+  BlowfishSolanaAsset asset;
   BlowfishSolanaDiff diff;
-  uint64 supply;
-  BlowfishMetaplexTokenStandardKind metaplex_token_standard;
-  BlowfishPrice? asset_price;
 };
 
 struct BlowfishSOLStakeAuthorityChangeData {
   string stake_account;
-  BlowfishSolanaStakeAuthorities curr_authorities;
+  BlowfishSolanaStakeAuthorities current_authorities;
   BlowfishSolanaStakeAuthorities future_authorities;
-  string symbol;
-  string name;
-  int32 decimals;
+  BlowfishSolanaAsset asset;
   uint64 sol_staked;
 };
 
@@ -2631,16 +2670,11 @@ struct BlowfishSolanaStateChange {
   BlowfishSolanaStateChangeRawInfo raw_info;
 };
 
-struct SolanaSimulationResults {
-  bool is_recent_blockhash_expired;
-  array<BlowfishSolanaStateChange> expected_state_changes;
-  BlowfishSolanaError? error;
-};
-
 struct SolanaSimulationResponse {
   BlowfishSuggestedAction action;
   array<BlowfishWarning> warnings;
-  SolanaSimulationResults simulation_results;
+  BlowfishSolanaError? error;
+  array<BlowfishSolanaStateChange> expected_state_changes;
 };
 
 // Implements transaction and message scanning functionality through the

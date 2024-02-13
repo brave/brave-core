@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "chrome/browser/ui/views/tabs/tab.h"
@@ -31,7 +32,7 @@ class BraveTab : public Tab {
 
   void ActiveStateChanged() override;
 
-  absl::optional<SkColor> GetGroupColor() const override;
+  std::optional<SkColor> GetGroupColor() const override;
 
   void UpdateIconVisibility() override;
   bool ShouldRenderAsNormalTab() const override;

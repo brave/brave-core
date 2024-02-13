@@ -11,9 +11,9 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_ads.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_advertisers.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_constants.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
@@ -23,7 +23,7 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
@@ -114,7 +114,7 @@ void EligibleInlineContentAdsV1::GetForChildSegmentsCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
-    const SegmentList& /*segments=*/,
+    const SegmentList& /*segments*/,
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for child segments");
@@ -168,7 +168,7 @@ void EligibleInlineContentAdsV1::GetForParentSegmentsCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
-    const SegmentList& /*segments=*/,
+    const SegmentList& /*segments*/,
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for parent segments");
@@ -200,7 +200,7 @@ void EligibleInlineContentAdsV1::GetForUntargeted(
 
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
-      {kUntargeted}, dimensions,
+      {kUntargetedSegment}, dimensions,
       base::BindOnce(&EligibleInlineContentAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
                      std::move(callback)));
@@ -211,7 +211,7 @@ void EligibleInlineContentAdsV1::GetForUntargetedCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
-    const SegmentList& /*segments=*/,
+    const SegmentList& /*segments*/,
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for untargeted segment");
@@ -241,22 +241,29 @@ CreativeInlineContentAdList EligibleInlineContentAdsV1::FilterCreativeAds(
     return {};
   }
 
-  InlineContentAdExclusionRules exclusion_rules(
-      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
-      browsing_history);
-
   CreativeInlineContentAdList eligible_creative_ads =
-      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-
-  eligible_creative_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
-      eligible_creative_ads, AdType::kInlineContentAd);
+      FilterSeenAdvertisersAndRoundRobinIfNeeded(creative_ads,
+                                                 AdType::kInlineContentAd);
 
   eligible_creative_ads = FilterSeenAdsAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kInlineContentAd);
 
-  eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
+  InlineContentAdExclusionRules exclusion_rules(
+      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
+      browsing_history);
+  ApplyExclusionRules(eligible_creative_ads, last_served_ad_, &exclusion_rules);
 
-  return PrioritizeCreativeAds(eligible_creative_ads);
+  PaceCreativeAds(eligible_creative_ads);
+
+  const PrioritizedCreativeAdBuckets<CreativeInlineContentAdList> buckets =
+      SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
+  if (buckets.empty()) {
+    return {};
+  }
+
+  LogNumberOfCreativeAdsPerBucket(buckets);
+
+  return buckets.cbegin()->second;
 }
 
 }  // namespace brave_ads

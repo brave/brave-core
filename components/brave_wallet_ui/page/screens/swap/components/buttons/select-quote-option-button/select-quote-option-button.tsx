@@ -10,12 +10,9 @@ import { getLocale } from '../../../../../../../common/locale'
 import {
   getTokenPriceAmountFromRegistry //
 } from '../../../../../../utils/pricing-utils'
-
-// Selectors
-import { WalletSelectors } from '../../../../../../common/selectors'
 import {
-  useSafeWalletSelector //
-} from '../../../../../../common/hooks/use-safe-selector'
+  useGetDefaultFiatCurrencyQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // Types
 import { QuoteOption } from '../../../constants/types'
@@ -36,10 +33,8 @@ interface Props {
 export const SelectQuoteOptionButton = (props: Props) => {
   const { onClick, option, isSelected, isBest, spotPrices } = props
 
-  // Selectors
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
+  // Queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // Methods
   const onSelectToken = React.useCallback(() => {
@@ -56,6 +51,7 @@ export const SelectQuoteOptionButton = (props: Props) => {
       .formatAsFiat(defaultFiatCurrency)
   }, [spotPrices, option, defaultFiatCurrency])
 
+  // Render
   return (
     <Button
       onClick={onSelectToken}

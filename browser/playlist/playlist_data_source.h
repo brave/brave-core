@@ -11,7 +11,6 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "content/public/browser/url_data_source.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 class Profile;

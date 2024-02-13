@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 
+#include <optional>
 #include <string>
 
 #include "base/metrics/field_trial_params.h"
@@ -35,20 +36,20 @@ double g_testing_major_version = 0;
 // First one is upstream's major version.
 // Brave's major version is second and third component like 1.51.
 // Ignored fourth number as it's build number.
-absl::optional<double> GetBraveMajorVersionAsDouble(
+std::optional<double> GetBraveMajorVersionAsDouble(
     const base::Version& version) {
   double brave_major_version;
   if (!base::StringToDouble(base::StringPrintf("%d.%d", version.components()[1],
                                                version.components()[2]),
                             &brave_major_version)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return brave_major_version;
 }
 
 // Returns 1.xx or 2.xx as double.
-absl::optional<double> GetCurrentBrowserVersion() {
+std::optional<double> GetCurrentBrowserVersion() {
   if (g_testing_major_version != 0) {
     return g_testing_major_version;
   }
@@ -90,20 +91,20 @@ bool DoesUserGetMajorUpdateSinceInstall() {
   return current_version != profile_created_version;
 }
 
-absl::optional<double> GetTargetMajorVersion() {
+std::optional<double> GetTargetMajorVersion() {
   constexpr char kWhatsNewTrial[] = "WhatsNewStudy";
 
   const std::string target_major_version_string = base::GetFieldTrialParamValue(
       kWhatsNewTrial, whats_new::GetTargetMajorVersionParamName());
   // Field trial doesn't have this value.
   if (target_major_version_string.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   double target_major_version;
   if (!base::StringToDouble(target_major_version_string,
                             &target_major_version)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return target_major_version;

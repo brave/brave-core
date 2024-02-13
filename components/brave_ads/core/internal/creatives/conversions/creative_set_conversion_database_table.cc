@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <utility>
 #include <vector>
 
@@ -61,7 +62,7 @@ size_t BindParameters(
               creative_set_conversion.expire_at.ToDeltaSinceWindowsEpoch()
                   .InMicroseconds());
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -115,21 +116,23 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "ad_conversions");
 
+  DropTable(transaction, "creative_ad_conversions");
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS creative_ad_conversions (creative_set_id "
-      "TEXT NOT NULL, type TEXT NOT NULL, url_pattern TEXT NOT NULL, "
-      "advertiser_public_key TEXT, observation_window INTEGER NOT NULL, "
-      "expiry_timestamp TIMESTAMP NOT NULL, UNIQUE(creative_set_id, type) ON "
-      "CONFLICT REPLACE, PRIMARY KEY(creative_set_id, type));";
+      "CREATE TABLE creative_ad_conversions (creative_set_id TEXT NOT NULL, "
+      "type TEXT NOT NULL, url_pattern TEXT NOT NULL, advertiser_public_key "
+      "TEXT, observation_window INTEGER NOT NULL, expiry_timestamp TIMESTAMP "
+      "NOT NULL, UNIQUE(creative_set_id, type) ON CONFLICT REPLACE, PRIMARY "
+      "KEY(creative_set_id, type));";
   transaction->commands.push_back(std::move(command));
 }
 
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with renamed |expire_at| column.
+  // Create a temporary table with renamed `expire_at` column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -173,10 +176,10 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
 void MigrateToV30(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with a new |extract_verifiable_id| column
-  // defaulted to |true| for legacy conversions, remove the deprecated |type|
-  // column and rename the |advertiser_public_key| column to
-  // |verifiable_advertiser_public_key|.
+  // Create a temporary table with a new `extract_verifiable_id` column
+  // defaulted to `true` for legacy conversions, remove the deprecated `type`
+  // column and rename the `advertiser_public_key` column to
+  // `verifiable_advertiser_public_key`.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -208,7 +211,7 @@ void MigrateToV30(mojom::DBTransactionInfo* transaction) {
 void MigrateToV31(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table deprecating |extract_verifiable_id| column.
+  // Create a temporary table deprecating `extract_verifiable_id` column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =

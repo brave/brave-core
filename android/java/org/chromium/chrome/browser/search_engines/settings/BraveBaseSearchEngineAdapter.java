@@ -42,9 +42,13 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
     }
 
     public static void sortAndFilterUnnecessaryTemplateUrl(
-            List<TemplateUrl> templateUrls, TemplateUrl defaultSearchEngine) {
+            List<TemplateUrl> templateUrls,
+            TemplateUrl defaultSearchEngine,
+            boolean isEeaChoiceCountry,
+            boolean shouldShowUpdatedSettings) {
         int recentEngineNum = 0;
-        long displayTime = System.currentTimeMillis() - SearchEngineAdapter.MAX_DISPLAY_TIME_SPAN_MS;
+        long displayTime =
+                System.currentTimeMillis() - SearchEngineAdapter.MAX_DISPLAY_TIME_SPAN_MS;
         Set<String> templateUrlSet = new HashSet<String>();
         Iterator<TemplateUrl> iterator = templateUrls.iterator();
         while (iterator.hasNext()) {

@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -27,7 +28,7 @@
 #include "ui/color/color_provider.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
@@ -146,7 +147,7 @@ void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
 
 void SpeedreaderToolbarDataHandlerImpl::AiChat() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (!ai_chat::features::IsAIChatEnabled() || !browser_) {
+  if (!browser_ || !ai_chat::IsAIChatEnabled(browser_->profile()->GetPrefs())) {
     return;
   }
   auto* side_panel = SidePanelUI::GetSidePanelUIForBrowser(browser_.get());
@@ -195,6 +196,17 @@ void SpeedreaderToolbarDataHandlerImpl::Stop() {
 void SpeedreaderToolbarDataHandlerImpl::Forward() {
   if (auto* tts = GetTtsController()) {
     tts->Forward();
+  }
+}
+
+void SpeedreaderToolbarDataHandlerImpl::OnToolbarStateChanged(
+    speedreader::mojom::MainButtonType button) {
+  current_button_ = button;
+  if (current_button_ != speedreader::mojom::MainButtonType::TextToSpeech) {
+    Pause();
+  }
+  if (active_tab_helper_) {
+    active_tab_helper_->OnToolbarStateChanged(current_button_);
   }
 }
 
@@ -248,27 +260,6 @@ void SpeedreaderToolbarDataHandlerImpl::OnReadingStop(
   events_->SetPlaybackState(speedreader::mojom::PlaybackState::kStopped);
 }
 
-void SpeedreaderToolbarDataHandlerImpl::OnReadingProgress(
-    content::WebContents* web_contents,
-    int paragraph_index,
-    int char_index,
-    int length) {
-  if (!web_contents) {
-    return;
-  }
-
-  constexpr const char16_t kHighlight[] = uR"js( highlightText($1, $2, $3) )js";
-
-  const auto script = base::ReplaceStringPlaceholders(
-      kHighlight,
-      {base::NumberToString16(paragraph_index),
-       base::NumberToString16(char_index), base::NumberToString16(length)},
-      nullptr);
-
-  web_contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-}
-
 void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -280,6 +271,7 @@ void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
     if (selection.new_contents) {
       active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
           selection.new_contents);
+      active_tab_helper_->OnToolbarStateChanged(current_button_);
       tab_helper_observation_.Observe(active_tab_helper_);
       events_->SetPlaybackState(GetTabPlaybackState());
     }
@@ -302,7 +294,7 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
   colors->foreground =
       color_provider->GetColor(kColorSpeedreaderToolbarForeground);
   colors->border = color_provider->GetColor(kColorSpeedreaderToolbarBorder);
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
     // The border is rendered in HTML. Hide the border by giving it the same
     // color as the background. When this feature flag is removed, consider
     // removing the border in HTML.
@@ -313,6 +305,8 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
       color_provider->GetColor(kColorSpeedreaderToolbarButtonHover);
   colors->button_active =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonActive);
+  colors->button_active_text =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonActiveText);
   colors->button_border =
       color_provider->GetColor(kColorSpeedreaderToolbarButtonBorder);
   events_->OnBrowserThemeChanged(std::move(colors));
@@ -333,4 +327,10 @@ void SpeedreaderToolbarDataHandlerImpl::OnNativeThemeUpdated(
 
 void SpeedreaderToolbarDataHandlerImpl::OnTuneBubbleClosed() {
   events_->OnTuneBubbleClosed();
+}
+
+void SpeedreaderToolbarDataHandlerImpl::OnContentsReady() {
+  if (active_tab_helper_) {
+    active_tab_helper_->OnToolbarStateChanged(current_button_);
+  }
 }

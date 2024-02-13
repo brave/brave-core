@@ -6,13 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_MOCK_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/client/ads_client.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
@@ -80,7 +81,7 @@ class AdsClientMock : public AdsClient {
                SaveCallback callback));
   MOCK_METHOD(void, Load, (const std::string& name, LoadCallback callback));
   MOCK_METHOD(void,
-              LoadFileResource,
+              LoadComponentResource,
               (const std::string& id,
                const int version,
                LoadFileCallback callback));
@@ -105,7 +106,7 @@ class AdsClientMock : public AdsClient {
               (const std::vector<brave_federated::mojom::CovariateInfoPtr>
                    training_sample));
 
-  MOCK_METHOD(absl::optional<base::Value>,
+  MOCK_METHOD(std::optional<base::Value>,
               GetProfilePref,
               (const std::string& path));
   MOCK_METHOD(void,
@@ -114,7 +115,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, ClearProfilePref, (const std::string& path));
   MOCK_METHOD(bool, HasProfilePrefPath, (const std::string& path), (const));
 
-  MOCK_METHOD(absl::optional<base::Value>,
+  MOCK_METHOD(std::optional<base::Value>,
               GetLocalStatePref,
               (const std::string& path));
   MOCK_METHOD(void,

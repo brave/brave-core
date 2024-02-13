@@ -20,13 +20,19 @@ class BraveBookmarkContextMenu : public BookmarkContextMenu {
       Profile* profile,
       BookmarkLaunchLocation opened_from,
       const bookmarks::BookmarkNode* parent,
-      const std::vector<const bookmarks::BookmarkNode*>& selection,
+      const std::vector<raw_ptr<const bookmarks::BookmarkNode,
+                                VectorExperimental>>& selection,
       bool close_on_remove);
 
   BraveBookmarkContextMenu(const BraveBookmarkContextMenu&) = delete;
   BraveBookmarkContextMenu& operator=(const BraveBookmarkContextMenu&) = delete;
 
   ~BraveBookmarkContextMenu() override;
+
+ private:
+  friend class BraveBookmarkContextMenuTest;
+
+  BraveBookmarkContextMenuController* GetControllerForTesting();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BRAVE_BOOKMARK_CONTEXT_MENU_H_

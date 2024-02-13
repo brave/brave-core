@@ -9,31 +9,10 @@ import {
 } from '../../../brave_rewards/resources/shared/lib/user_type'
 
 import {
-  ExternalWallet,
-  externalWalletFromExtensionData
+  externalWalletFromExtensionData //
 } from '../../../brave_rewards/resources/shared/lib/external_wallet'
-
-export const WalletStatus = {
-  kNotConnected: 0,
-  kConnected: 2,
-  kLoggedOut: 4
-} as const
-
-export const externalWalletProviders = [
-  'uphold',
-  'bitflyer',
-  'gemini',
-  'zebpay'
-]
-
-export type WalletStatus = (typeof WalletStatus)[keyof typeof WalletStatus]
-
-export type RewardsExternalWallet = Pick<
-  ExternalWallet,
-  'links' | 'provider' | 'username'
-> & {
-  status: WalletStatus
-}
+import { RewardsExternalWallet, WalletStatus } from '../../constants/types'
+import { BraveRewardsProxyOverrides } from '../../constants/testing_types'
 
 export class BraveRewardsProxy {
   getRewardsEnabled = () => {
@@ -175,4 +154,11 @@ export const getBraveRewardsProxy = () => {
   }
 
   return braveRewardsProxyInstance
+}
+
+/** For testing */
+export function resetRewardsProxy(
+  overrides?: BraveRewardsProxyOverrides | undefined
+) {
+  // no-op in production
 }

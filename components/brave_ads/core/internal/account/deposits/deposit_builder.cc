@@ -7,18 +7,16 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
 DepositInfo BuildDeposit(const mojom::SearchResultAdInfoPtr& ad_mojom) {
-  DepositInfo deposit;
-
-  deposit.creative_instance_id = ad_mojom->creative_instance_id;
-  deposit.value = ad_mojom->value;
-  deposit.expire_at = base::Time::Now() + base::Hours(1);
-
-  return deposit;
+  return DepositInfo{
+      .creative_instance_id = ad_mojom->creative_instance_id,
+      .value = ad_mojom->value,
+      .expire_at = base::Time::Now() + base::Hours(1),
+  };
 }
 
 }  // namespace brave_ads

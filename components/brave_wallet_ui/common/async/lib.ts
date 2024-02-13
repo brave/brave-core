@@ -8,19 +8,10 @@ import { mapLimit } from 'async'
 import {
   HardwareWalletConnectOpts //
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import {
-  BraveWallet,
-  GetBlockchainTokenInfoReturnInfo,
-  SendEthTransactionParams,
-  SendFilTransactionParams,
-  SendSolTransactionParams,
-  SolanaSerializedTransactionParams
-} from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
-import { hasEIP1559Support } from '../../utils/network-utils'
-import { getAccountType } from '../../utils/account-utils'
 import { getAssetIdKey, isNativeAsset } from '../../utils/asset-utils'
 import {
   makeNativeAssetLogo,
@@ -55,30 +46,6 @@ import {
   isIpfs,
   stripERC20TokenImageURL
 } from '../../utils/string-utils'
-import { toTxDataUnion } from '../../utils/tx-utils'
-
-export const getERC20Allowance = (
-  contractAddress: string,
-  ownerAddress: string,
-  spenderAddress: string,
-  chainId: string
-): Promise<string> => {
-  return new Promise(async (resolve, reject) => {
-    const { jsonRpcService } = getAPIProxy()
-    const result = await jsonRpcService.getERC20TokenAllowance(
-      contractAddress,
-      ownerAddress,
-      spenderAddress,
-      chainId
-    )
-
-    if (result.error === BraveWallet.ProviderError.kSuccess) {
-      resolve(result.allowance)
-    } else {
-      reject(result.errorMessage)
-    }
-  })
-}
 
 export const onConnectHardwareWallet = (
   opts: HardwareWalletConnectOpts
@@ -158,38 +125,6 @@ export async function isStrongPassword(value: string) {
   return (await apiProxy.keyringService.isStrongPassword(value)).result
 }
 
-export async function getBlockchainTokenInfo(
-  contractAddress: string
-): Promise<GetBlockchainTokenInfoReturnInfo> {
-  const apiProxy = getAPIProxy()
-  return await apiProxy.assetRatioService.getTokenInfo(contractAddress)
-}
-
-export async function getSellAssetUrl(args: {
-  asset: BraveWallet.BlockchainToken
-  offRampProvider: BraveWallet.OffRampProvider
-  chainId: string
-  address: string
-  amount: string
-  currencyCode: string
-}) {
-  const { assetRatioService } = getAPIProxy()
-  const { url, error } = await assetRatioService.getSellUrl(
-    args.offRampProvider,
-    args.chainId,
-    args.address,
-    args.asset.symbol,
-    args.amount,
-    args.currencyCode
-  )
-
-  if (error) {
-    console.log(`Failed to get sell URL: ${error}`)
-  }
-
-  return url
-}
-
 export function refreshVisibleTokenInfo(
   targetNetwork?: BraveWallet.NetworkInfo
 ) {
@@ -199,8 +134,6 @@ export function refreshVisibleTokenInfo(
     const networkList = await getVisibleNetworksList(api)
 
     async function inner(network: BraveWallet.NetworkInfo) {
-      const nativeAsset = makeNetworkAsset(network)
-
       // Get a list of user tokens for each coinType and network.
       const getTokenList = await braveWalletService.getUserAssets(
         network.chainId,
@@ -212,7 +145,16 @@ export function refreshVisibleTokenInfo(
         ...token,
         logo: `chrome://erc-token-images/${token.logo}`
       })) as BraveWallet.BlockchainToken[]
-      return tokenList.length === 0 ? [nativeAsset] : tokenList
+
+      if (tokenList.length === 0) {
+        // user has hidden all tokens for the network
+        // we should still include the native asset, but as hidden
+        const nativeAsset = makeNetworkAsset(network)
+        nativeAsset.visible = false
+        return [nativeAsset]
+      }
+
+      return tokenList
     }
 
     const visibleAssets = targetNetwork
@@ -237,161 +179,6 @@ export function refreshVisibleTokenInfo(
     await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
     await dispatch(WalletActions.setRemovedNonFungibleTokens(removedNfts))
   }
-}
-
-export function refreshSitePermissions() {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { braveWalletService } = apiProxy
-
-    const {
-      allAccounts: { accounts }
-    } = await apiProxy.keyringService.getAllAccounts()
-
-    // Get a list of accounts with permissions of the active origin
-    const { accountsWithPermission } = await braveWalletService.hasPermission(
-      accounts.map((acc) => acc.accountId)
-    )
-
-    dispatch(
-      WalletActions.setSitePermissions({ accounts: accountsWithPermission })
-    )
-  }
-}
-
-export async function sendEthTransaction(payload: SendEthTransactionParams) {
-  const apiProxy = getAPIProxy()
-  /***
-   * Determine whether to create a legacy or EIP-1559 transaction.
-   *
-   * isEIP1559 is true IFF:
-   *   - network supports EIP-1559
-   *   - keyring supports EIP-1559 (ex: certain hardware wallets vendors)
-   *   - payload: SendEthTransactionParams has specified EIP-1559 gas-pricing
-   *     fields.
-   *
-   * In all other cases, fallback to legacy gas-pricing fields.
-   */
-  let isEIP1559
-  switch (true) {
-    // Transaction payload has hardcoded EIP-1559 gas fields.
-    case payload.maxPriorityFeePerGas !== undefined &&
-      payload.maxFeePerGas !== undefined:
-      isEIP1559 = true
-      break
-
-    // Transaction payload has hardcoded legacy gas fields.
-    case payload.gasPrice !== undefined:
-      isEIP1559 = false
-      break
-
-    // Check if network and keyring support EIP-1559.
-    default:
-      isEIP1559 = hasEIP1559Support(
-        getAccountType(payload.fromAccount),
-        payload.network
-      )
-  }
-
-  const txData: BraveWallet.TxData = {
-    nonce: '',
-    // Estimated by eth_tx_service if value is '' for legacy transactions
-    gasPrice: isEIP1559 ? '' : payload.gasPrice || '',
-    // Estimated by eth_tx_service if value is ''
-    gasLimit: payload.gas || '',
-    to: payload.to,
-    value: payload.value,
-    data: payload.data || [],
-    signOnly: false,
-    signedTransaction: ''
-  }
-
-  if (isEIP1559) {
-    const txData1559: BraveWallet.TxData1559 = {
-      baseData: txData,
-      chainId: payload.network.chainId,
-      // Estimated by eth_tx_service if value is ''
-      maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
-      // Estimated by eth_tx_service if value is ''
-      maxFeePerGas: payload.maxFeePerGas || '',
-      gasEstimation: undefined
-    }
-    return await apiProxy.txService.addUnapprovedTransaction(
-      toTxDataUnion({ ethTxData1559: txData1559 }),
-      payload.network.chainId,
-      payload.fromAccount.accountId
-    )
-  }
-
-  return await apiProxy.txService.addUnapprovedTransaction(
-    toTxDataUnion({ ethTxData: txData }),
-    payload.network.chainId,
-    payload.fromAccount.accountId
-  )
-}
-
-export async function sendFilTransaction(payload: SendFilTransactionParams) {
-  const apiProxy = getAPIProxy()
-  const filTxData: BraveWallet.FilTxData = {
-    nonce: payload.nonce || '',
-    gasPremium: payload.gasPremium || '',
-    gasFeeCap: payload.gasFeeCap || '',
-    gasLimit: payload.gasLimit || '',
-    maxFee: payload.maxFee || '0',
-    to: payload.to,
-    value: payload.value
-  }
-  return await apiProxy.txService.addUnapprovedTransaction(
-    toTxDataUnion({ filTxData: filTxData }),
-    payload.network.chainId,
-    payload.fromAccount.accountId
-  )
-}
-
-export async function sendSolTransaction(payload: SendSolTransactionParams) {
-  const { solanaTxManagerProxy, txService } = getAPIProxy()
-  const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(
-    payload.fromAccount.address,
-    payload.to,
-    BigInt(payload.value)
-  )
-  return await txService.addUnapprovedTransaction(
-    toTxDataUnion({ solanaTxData: value.txData ?? undefined }),
-    payload.network.chainId,
-    payload.fromAccount.accountId
-  )
-}
-
-export async function sendSolanaSerializedTransaction(
-  payload: SolanaSerializedTransactionParams
-) {
-  const { solanaTxManagerProxy, txService } = getAPIProxy()
-  const result =
-    await solanaTxManagerProxy.makeTxDataFromBase64EncodedTransaction(
-      payload.encodedTransaction,
-      payload.txType,
-      payload.sendOptions || null
-    )
-  if (result.error !== BraveWallet.ProviderError.kSuccess) {
-    console.error(`Failed to sign Solana message: ${result.errorMessage}`)
-    return { success: false, errorMessage: result.errorMessage, txMetaId: '' }
-  }
-
-  return await txService.addUnapprovedTransaction(
-    toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
-    payload.chainId,
-    payload.accountId
-  )
-}
-
-export function getSwapService() {
-  const { swapService } = getAPIProxy()
-  return swapService
-}
-
-export function getEthTxManagerProxy() {
-  const { ethTxManagerProxy } = getAPIProxy()
-  return ethTxManagerProxy
 }
 
 export async function getNFTMetadata(token: BraveWallet.BlockchainToken) {

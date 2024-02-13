@@ -122,8 +122,6 @@ OBJC_EXPORT
 
 - (nullable NSString*)getDeviceListJSON;
 
-- (BraveSyncInternalsController*)createSyncInternalsController;
-
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged;
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged
           onSyncServiceShutdown:(void (^)())onSyncServiceShutdown;

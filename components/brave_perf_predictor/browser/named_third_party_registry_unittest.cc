@@ -39,8 +39,8 @@ constexpr char test_mapping[] = R"(
 namespace {
 
 std::string LoadFile() {
-  base::FilePath source_root;
-  base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root);
+  base::FilePath source_root =
+      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
   auto path =
       source_root.Append(FILE_PATH_LITERAL("brave"))
           .Append(FILE_PATH_LITERAL("components"))

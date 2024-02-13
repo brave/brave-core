@@ -11,12 +11,10 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 
-absl::optional<ConfirmationInfo> BuildNonRewardConfirmation(
+std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
     const TransactionInfo& transaction,
     const UserDataInfo& user_data) {
   CHECK(transaction.IsValid());

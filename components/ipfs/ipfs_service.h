@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -34,7 +35,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/version_info/channel.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -71,7 +71,8 @@ class IpfsService : public KeyedService,
               ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
               version_info::Channel channel,
-              std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover);
+              std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
+              std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate);
   IpfsService(const IpfsService&) = delete;
   IpfsService& operator=(const IpfsService&) = delete;
   ~IpfsService() override;
@@ -86,14 +87,14 @@ class IpfsService : public KeyedService,
       base::OnceCallback<void(bool, const ipfs::NodeInfo&)>;
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
-  using NodeCallback = base::OnceCallback<void(absl::optional<std::string>)>;
+  using NodeCallback = base::OnceCallback<void(std::optional<std::string>)>;
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   // Local pins
-  using AddPinCallback = base::OnceCallback<void(absl::optional<AddPinResult>)>;
+  using AddPinCallback = base::OnceCallback<void(std::optional<AddPinResult>)>;
   using RemovePinCallback =
-      base::OnceCallback<void(absl::optional<RemovePinResult>)>;
+      base::OnceCallback<void(std::optional<RemovePinResult>)>;
   using GetPinsCallback =
-      base::OnceCallback<void(absl::optional<GetPinsResult>)>;
+      base::OnceCallback<void(std::optional<GetPinsResult>)>;
 #endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   using BoolCallback = base::OnceCallback<void(bool)>;
   using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;
@@ -132,7 +133,7 @@ class IpfsService : public KeyedService,
                       AddPinCallback callback);
   virtual void RemovePin(const std::vector<std::string>& cid,
                          RemovePinCallback callback);
-  virtual void GetPins(const absl::optional<std::vector<std::string>>& cid,
+  virtual void GetPins(const std::optional<std::vector<std::string>>& cid,
                        const std::string& type,
                        bool quiet,
                        GetPinsCallback callback);
@@ -160,7 +161,7 @@ class IpfsService : public KeyedService,
                  BoolCallback callback);
 #endif
   virtual void GetConnectedPeers(GetConnectedPeersCallback callback,
-                                 absl::optional<int> retries);
+                                 std::optional<int> retries);
   void GetAddressesConfig(GetAddressesConfigCallback callback);
   virtual void LaunchDaemon(BoolCallback callback);
   void ShutdownDaemon(BoolCallback callback);
@@ -208,7 +209,7 @@ class IpfsService : public KeyedService,
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  static absl::optional<std::string> WaitUntilExecutionFinished(
+  static std::optional<std::string> WaitUntilExecutionFinished(
       base::FilePath data_path,
       base::CommandLine cmd);
   void ExecuteNodeCommand(const base::CommandLine& command_line,
@@ -226,7 +227,7 @@ class IpfsService : public KeyedService,
                          api_request_helper::APIRequestResult response);
   void OnRemovePinCli(BoolCallback callback,
                       std::set<std::string> cids,
-                      absl::optional<std::string> result);
+                      std::optional<std::string> result);
 #endif
   base::TimeDelta CalculatePeersRetryTime();
 
@@ -249,7 +250,8 @@ class IpfsService : public KeyedService,
   void OnPreWarmComplete(api_request_helper::APIRequestResult response);
 
   std::string GetStorageSize();
-  void OnDnsConfigChanged(absl::optional<std::string> dns_server);
+  void OnDnsConfigChanged(std::optional<std::string> dns_server);
+  void OnIPFSAlwaysStartModeChanged();
 
   // The remote to the ipfs service running on an utility process. The browser
   // will not launch a new ipfs service process if this remote is already
@@ -260,6 +262,8 @@ class IpfsService : public KeyedService,
   base::ObserverList<IpfsServiceObserver> observers_;
 
   const raw_ptr<PrefService> prefs_ = nullptr;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   BlobContextGetterFactoryPtr blob_context_getter_factory_;
@@ -288,6 +292,7 @@ class IpfsService : public KeyedService,
 #endif
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   IpfsP3A ipfs_p3a_;
+  std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate_;
   base::WeakPtrFactory<IpfsService> weak_factory_{this};
 };
 

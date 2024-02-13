@@ -17,9 +17,11 @@ class WebContents;
 namespace ai_chat {
 
 using FetchPageContentCallback =
-    base::OnceCallback<void(std::string, bool is_video)>;
-
+    base::OnceCallback<void(std::string page_content,
+                            bool is_video,
+                            std::string invalidation_token)>;
 void FetchPageContent(content::WebContents* web_contents,
+                      std::string_view invalidation_token,
                       FetchPageContentCallback callback);
 
 }  // namespace ai_chat

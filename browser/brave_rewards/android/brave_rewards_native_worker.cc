@@ -151,7 +151,7 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
 double BraveRewardsNativeWorker::GetVbatDeadline(JNIEnv* env) {
   if (parameters_) {
     if (!parameters_->vbat_deadline.is_null()) {
-      return floor(parameters_->vbat_deadline.ToDoubleT() *
+      return floor(parameters_->vbat_deadline.InSecondsFSinceUnixEpoch() *
                    base::Time::kMillisecondsPerSecond);
     }
   }
@@ -448,7 +448,8 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
 
   Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
       env, weak_java_brave_rewards_native_worker_.get(env),
-      /* success */ true, statement->next_payment_date.ToDoubleT() * 1000,
+      /* success */ true,
+      statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000,
       statement->ads_received_this_month, statement->min_earnings_this_month,
       statement->max_earnings_this_month, statement->min_earnings_last_month,
       statement->max_earnings_last_month);
@@ -936,7 +937,18 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     brave_rewards::mojom::ExternalWalletPtr wallet) {
   std::string json_wallet;
   if (!wallet) {
-    json_wallet = "";
+    // If the user does not have an external wallet, expose a default/empty
+    // wallet for backward compatibility with Android code that expects an
+    // external wallet structure with a NOT_CONNECTED status.
+    base::Value::Dict dict;
+    dict.Set("token", "");
+    dict.Set("address", "");
+    dict.Set("status", static_cast<int32_t>(
+                           brave_rewards::mojom::WalletStatus::kNotConnected));
+    dict.Set("type", brave_rewards_service_->GetExternalWalletType());
+    dict.Set("user_name", "");
+    dict.Set("account_url", "");
+    base::JSONWriter::Write(dict, &json_wallet);
   } else {
     base::Value::Dict dict;
     dict.Set("token", wallet->token);

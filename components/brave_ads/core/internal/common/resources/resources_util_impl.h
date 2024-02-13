@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_IMPL_H_
 
-#include "brave/components/brave_ads/core/internal/common/resources/resources_util.h"
-
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -17,7 +16,7 @@
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resources_util.h"
 
 namespace base {
 class File;
@@ -26,15 +25,15 @@ class File;
 namespace brave_ads {
 
 template <typename T>
-base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
+base::expected<T, std::string> LoadAndParseComponentResourceOnBackgroundThread(
     base::File file) {
   if (!file.IsValid()) {
     return base::ok(T{});
   }
 
-  absl::optional<base::Value::Dict> dict;
+  std::optional<base::Value::Dict> dict;
   {
-    // |content| can be up to 10 MB, so we keep the scope of this object to this
+    // `content` can be up to 10 MB, so we keep the scope of this object to this
     // block to release its memory as soon as possible.
 
     std::string content;
@@ -53,11 +52,11 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
 }
 
 template <typename T>
-void LoadFileResourceCallback(LoadAndParseResourceCallback<T> callback,
-                              base::File file) {
+void LoadComponentResourceCallback(LoadAndParseResourceCallback<T> callback,
+                                   base::File file) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&ReadFileAndParseResourceOnBackgroundThread<T>,
+      base::BindOnce(&LoadAndParseComponentResourceOnBackgroundThread<T>,
                      std::move(file)),
       std::move(callback));
 }
@@ -66,9 +65,9 @@ template <typename T>
 void LoadAndParseResource(const std::string& id,
                           const int version,
                           LoadAndParseResourceCallback<T> callback) {
-  LoadFileResource(
+  LoadComponentResource(
       id, version,
-      base::BindOnce(&LoadFileResourceCallback<T>, std::move(callback)));
+      base::BindOnce(&LoadComponentResourceCallback<T>, std::move(callback)));
 }
 
 }  // namespace brave_ads

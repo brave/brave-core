@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 
 #include <limits>
+#include <optional>
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -27,7 +28,7 @@ namespace {
 void CalculatePinnedTabsBoundsInGrid(
     const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
-    absl::optional<int> width,
+    std::optional<int> width,
     bool is_floating_mode,
     std::vector<gfx::Rect>* result) {
   DCHECK(tabs.size());
@@ -70,7 +71,7 @@ void CalculatePinnedTabsBoundsInGrid(
 
 void CalculateVerticalLayout(const TabLayoutConstants& layout_constants,
                              const std::vector<TabWidthConstraints>& tabs,
-                             absl::optional<int> width,
+                             std::optional<int> width,
                              std::vector<gfx::Rect>* result) {
   DCHECK(tabs.size());
   DCHECK(result);
@@ -122,7 +123,7 @@ int GetTabCornerRadius(const Tab& tab) {
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
-    absl::optional<int> width,
+    std::optional<int> width,
     bool is_floating_mode) {
   if (tabs.empty()) {
     return std::vector<gfx::Rect>();
@@ -138,7 +139,7 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
 }
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<TabSlotView*>& views,
+    const std::vector<raw_ptr<TabSlotView, VectorExperimental>>& views,
     TabStrip* tab_strip) {
   const bool is_vertical_tabs_floating =
       static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();
@@ -176,7 +177,7 @@ void UpdateInsertionIndexForVerticalTabs(
     const gfx::Rect& dragged_bounds,
     int first_dragged_tab_index,
     int num_dragged_tabs,
-    absl::optional<tab_groups::TabGroupId> dragged_group,
+    std::optional<tab_groups::TabGroupId> dragged_group,
     int candidate_index,
     TabStripController* tab_strip_controller,
     TabContainer* tab_container,

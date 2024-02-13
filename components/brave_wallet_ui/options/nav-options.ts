@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Utils
+import { isPersistanceOfPanelProhibited } from '../utils/local-storage-utils'
+
 // Types
 import {
   NavOption,
@@ -42,7 +45,10 @@ const PANEL_TYPES: PanelTypes[] = [
 export const isValidPanelNavigationOption = (
   panelName: string
 ): panelName is PanelTypes => {
-  return PANEL_TYPES.includes(panelName as PanelTypes)
+  return (
+    PANEL_TYPES.includes(panelName as PanelTypes) &&
+    !isPersistanceOfPanelProhibited(panelName as PanelTypes)
+  )
 }
 
 export const BuySendSwapDepositOptions: NavOption[] = [
@@ -214,4 +220,26 @@ export const AccountDetailsOptions: NavOption[] = [
     icon: '',
     route: AccountPageTabs.AccountTransactionsSub
   }
+]
+
+export const SendSwapBridgeOptions: NavOption[] = [
+  {
+    id: 'send',
+    name: 'braveWalletSend',
+    icon: 'send',
+    route: WalletRoutes.Send
+  },
+  {
+    id: 'swap',
+    name: 'braveWalletSwap',
+    icon: 'currency-exchange',
+    route: WalletRoutes.Swap
+  }
+  // Bridge is not yet implemented
+  // {
+  //   id: 'bridge',
+  //   name: 'braveWalletBridge',
+  //   icon: 'bridge',
+  //   route: WalletRoutes.Bridge
+  // }
 ]

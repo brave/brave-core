@@ -12,6 +12,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/view_class_properties.h"
 
@@ -27,7 +28,7 @@ BraveWaybackMachineInfoBarButtonContainer::
       std::move(callback), brave_l10n::GetLocalizedResourceUTF16String(
                                IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
   button_ = button.get();
-  button->SetProminent(true);
+  button->SetStyle(ui::ButtonStyle::kProminent);
   button->SizeToPreferredSize();
   AddChildView(button.release());
 
@@ -79,3 +80,6 @@ void BraveWaybackMachineInfoBarButtonContainer::AdjustButtonInsets(
   button_->SetBorder(views::CreateEmptyBorder(button_insets));
   button_->SizeToPreferredSize();
 }
+
+BEGIN_METADATA(BraveWaybackMachineInfoBarButtonContainer)
+END_METADATA

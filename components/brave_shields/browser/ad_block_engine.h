@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -20,7 +21,6 @@
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -50,7 +50,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
       bool previously_matched_rule,
       bool previously_matched_exception,
       bool previously_matched_important);
-  absl::optional<std::string> GetCspDirectives(
+  std::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
@@ -71,6 +71,8 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void Load(bool deserialize,
             const DATFileDataBuffer& dat_buf,
             const std::string& resources_json);
+  void Load(rust::Box<adblock::FilterSet> filter_set,
+            const std::string& resources_json);
 
   class TestObserver : public base::CheckedObserver {
    public:
@@ -84,9 +86,11 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(rust::Box<adblock::Engine> ad_block_client,
                            const std::string& resources_json);
+
+  void OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
+                         const std::string& resources_json);
   void OnListSourceLoaded(const DATFileDataBuffer& filters,
                           const std::string& resources_json);
-
   void OnDATLoaded(const DATFileDataBuffer& dat_buf,
                    const std::string& resources_json);
 
@@ -100,7 +104,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   friend class ::PerfPredictorTabHelperTest;
 
   std::set<std::string> tags_ GUARDED_BY_CONTEXT(sequence_checker_);
-  absl::optional<adblock::RegexManagerDiscardPolicy> regex_discard_policy_
+  std::optional<adblock::RegexManagerDiscardPolicy> regex_discard_policy_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   raw_ptr<TestObserver> test_observer_ = nullptr;

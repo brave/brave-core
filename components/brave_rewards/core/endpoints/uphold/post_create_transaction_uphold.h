@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_POST_CREATE_TRANSACTION_UPHOLD_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_POST_CREATE_TRANSACTION_UPHOLD_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/common/post_create_transaction.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // POST /v0/me/cards/:card-id/transactions
 //
@@ -116,13 +116,14 @@ class PostCreateTransactionUphold final
  public:
   using PostCreateTransaction::PostCreateTransaction;
 
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
  private:
-  absl::optional<std::string> Url() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::string> Url() const override;
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
-  absl::optional<std::string> Content() const override;
+  std::optional<std::string> Content() const override;
 };
 
 }  // namespace brave_rewards::internal::endpoints

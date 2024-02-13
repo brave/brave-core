@@ -16,9 +16,9 @@ namespace brave_ads {
 AdsObserverMock* AddAdsObserverMock() {
   std::unique_ptr<AdsObserverMock> ads_observer_mock =
       std::make_unique<AdsObserverMock>();
-  AdsObserverMock* test = ads_observer_mock.get();
+  AdsObserverMock* value = ads_observer_mock.get();
   AdsNotifierManager::GetInstance().AddObserver(std::move(ads_observer_mock));
-  return test;
+  return value;
 }
 
 }  // namespace brave_ads

@@ -28,7 +28,7 @@ export const OnboardingConnectHardwareWallet = () => {
   const onSelectAccountType = React.useCallback(
     (accountType: CreateAccountOptionsType) => () => {
       history.push(
-        WalletRoutes.OnboardingConnectHardwareWallet.replace(
+        WalletRoutes.OnboardingHardwareWalletConnect.replace(
           ':accountTypeName?',
           accountType.name.toLowerCase()
         )

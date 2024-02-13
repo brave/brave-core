@@ -1,7 +1,7 @@
 # Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
@@ -9,6 +9,7 @@ import("//ios/public/provider/chrome/browser/build_config.gni")
 
 source_set("app") {
   configs += [
+    "//brave/ios/browser/api/ai_chat:mojom_header_config",
     "//brave/ios/browser/api/brave_wallet:mojom_header_config",
     "//brave/ios/browser/api/skus:mojom_header_config",
   ]
@@ -33,15 +34,19 @@ source_set("app") {
     "//brave/components/p3a:buildflags",
     "//brave/components/skus/browser",
     "//brave/components/update_client:buildflags",
+    "//brave/components/variations:constants",
     "//brave/ios/app/resources",
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
+    "//brave/ios/browser/api/ai_chat",
+    "//brave/ios/browser/api/ai_chat:ai_chat_mojom_wrappers",
     "//brave/ios/browser/api/bookmarks",
     "//brave/ios/browser/api/brave_rewards",
     "//brave/ios/browser/api/brave_shields",
     "//brave/ios/browser/api/brave_stats",
     "//brave/ios/browser/api/brave_wallet",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
+    "//brave/ios/browser/api/de_amp",
     "//brave/ios/browser/api/history",
     "//brave/ios/browser/api/ipfs",
     "//brave/ios/browser/api/ntp_background_images",
@@ -55,15 +60,18 @@ source_set("app") {
     "//brave/ios/browser/api/web_image",
     "//brave/ios/browser/component_updater",
     "//brave/ios/browser/skus",
+    "//brave/ios/browser/ui/webui",
     "//components/browser_sync",
     "//components/component_updater",
     "//components/component_updater/installer_policies",
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/password_manager/core/browser",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
     "//components/send_tab_to_self",
     "//components/sync/base",
     "//components/sync/service",
+    "//components/variations",
     "//ios/chrome/app:app_internal",
     "//ios/chrome/app:tests_fake_hook",
     "//ios/chrome/app/startup:startup",
@@ -71,9 +79,9 @@ source_set("app") {
     "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/browser_state/model",
     "//ios/chrome/browser/flags:system_flags",
-    "//ios/chrome/browser/history",
-    "//ios/chrome/browser/main",
-    "//ios/chrome/browser/passwords:store_factory",
+    "//ios/chrome/browser/history/model",
+    "//ios/chrome/browser/main/model",
+    "//ios/chrome/browser/passwords/model:store_factory",
     "//ios/chrome/browser/providers/ui_utils:chromium_ui_utils",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",

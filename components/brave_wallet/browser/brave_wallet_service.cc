@@ -6,12 +6,13 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include <map>
+#include <optional>
 #include <vector>
 
 #include "base/check_is_test.h"
+#include "base/containers/contains.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
@@ -115,40 +116,45 @@
 //
 namespace {
 
-// T could be base::Value or const base::Value
-template <typename T>
-decltype(std::declval<T>().begin()) FindAsset(
-    T* user_assets_list,
-    const std::string& address,
-    const std::string& token_id,
-    bool check_token_id,
-    const std::string& address_key = "address") {
-  static_assert(std::is_same<std::decay_t<T>, base::Value::List>::value,
-                "Only call with base::Value::List");
+bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
+  return token->is_erc721 || token->is_erc1155;
+}
 
-  auto iter =
-      base::ranges::find_if(*user_assets_list, [&](const base::Value& value) {
-        const auto* dict = value.GetIfDict();
-        if (!dict) {
-          return false;
-        }
-        const std::string* address_value = dict->FindString(address_key);
-        bool found = address_value && *address_value == address;
+bool TokenMatchesDict(const brave_wallet::mojom::BlockchainTokenPtr& token,
+                      const base::Value::Dict* dict) {
+  if (!dict) {
+    return false;
+  }
 
-        if (found && check_token_id) {
-          const std::string* token_id_ptr = dict->FindString("token_id");
-          found = token_id_ptr && *token_id_ptr == token_id;
-        }
+  std::optional<int> coin = dict->FindInt("coin");
+  if (!coin || *coin != static_cast<int>(token->coin)) {
+    return false;
+  }
 
-        return found;
-      });
+  const std::string* chain_id = dict->FindString("chain_id");
+  if (!chain_id || *chain_id != token->chain_id) {
+    return false;
+  }
 
-  return iter;
+  const std::string* address_value = dict->FindString("address");
+  if (!address_value || !base::EqualsCaseInsensitiveASCII(
+                            *address_value, token->contract_address)) {
+    return false;
+  }
+
+  if (ShouldCheckTokenId(token)) {
+    const std::string* token_id_ptr = dict->FindString("token_id");
+    return token_id_ptr && *token_id_ptr == token->token_id;
+  } else {
+    return true;
+  }
 }
 
 base::Value::Dict GetEthNativeAssetFromChain(
     const brave_wallet::mojom::NetworkInfoPtr& chain) {
   base::Value::Dict native_asset;
+  native_asset.Set("chain_id", chain->chain_id);
+  native_asset.Set("coin", static_cast<int>(chain->coin));
   native_asset.Set("address", "");
   native_asset.Set("name", chain->symbol_name);
   native_asset.Set("symbol", chain->symbol);
@@ -162,10 +168,6 @@ base::Value::Dict GetEthNativeAssetFromChain(
   return native_asset;
 }
 
-bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
-  return token->is_erc721 || token->is_erc1155;
-}
-
 }  // namespace
 
 namespace brave_wallet {
@@ -176,6 +178,31 @@ bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                                 const std::string& chain_id) {
   return base::Contains(GetSupportedKeyringsForNetwork(coin, chain_id),
                         account_id.keyring_id);
+}
+
+// Ensure token list contains native tokens when appears empty. Only for BTC
+// and ZEC by now.
+std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
+    const std::string& chain_id,
+    mojom::CoinType coin,
+    std::vector<mojom::BlockchainTokenPtr> tokens) {
+  if (coin != mojom::CoinType::BTC && coin != mojom::CoinType::ZEC) {
+    return tokens;
+  }
+
+  if (!tokens.empty()) {
+    return tokens;
+  }
+
+  if (coin == mojom::CoinType::BTC && IsBitcoinNetwork(chain_id)) {
+    tokens.push_back(GetBitcoinNativeToken(chain_id));
+  }
+
+  if (coin == mojom::CoinType::ZEC && IsZCashNetwork(chain_id)) {
+    tokens.push_back(GetZcashNativeToken(chain_id));
+  }
+
+  return tokens;
 }
 
 }  // namespace
@@ -298,7 +325,7 @@ void BraveWalletService::Bind(
 // For EVM, convert the address to a checksum address.
 // For Solana, verify if address is a base58 encoded address, if so, return it.
 // static
-absl::optional<std::string> BraveWalletService::GetUserAssetAddress(
+std::optional<std::string> BraveWalletService::GetUserAssetAddress(
     const std::string& address,
     mojom::CoinType coin,
     const std::string& chain_id) {
@@ -313,19 +340,28 @@ absl::optional<std::string> BraveWalletService::GetUserAssetAddress(
   if (coin == mojom::CoinType::SOL) {
     std::vector<uint8_t> bytes;
     if (!::brave_wallet::IsBase58EncodedSolanaPubkey(address)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     return address;
   }
 
-  // TODO(spylogsster): Handle Filecoin here when if we need to support tokens
-  // other than the native asset in the future.
-
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 // static
-absl::optional<std::string> BraveWalletService::GetChecksumAddress(
+bool BraveWalletService::ValidateAndFixAssetAddress(
+    mojom::BlockchainTokenPtr& token) {
+  if (auto address = GetUserAssetAddress(token->contract_address, token->coin,
+                                         token->chain_id)) {
+    token->contract_address = *address;
+    return true;
+  }
+
+  return false;
+}
+
+// static
+std::optional<std::string> BraveWalletService::GetChecksumAddress(
     const std::string& contract_address,
     const std::string& chain_id) {
   if (contract_address.empty()) {
@@ -334,11 +370,11 @@ absl::optional<std::string> BraveWalletService::GetChecksumAddress(
 
   const auto eth_addr = EthAddress::FromHex(contract_address);
   if (eth_addr.IsEmpty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   uint256_t chain;
   if (!HexValueToUint256(chain_id, &chain)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return eth_addr.ToChecksumAddress(chain);
@@ -348,31 +384,16 @@ absl::optional<std::string> BraveWalletService::GetChecksumAddress(
 std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
     PrefService* profile_prefs) {
   std::vector<mojom::BlockchainTokenPtr> result;
-  const auto& user_assets_dict = profile_prefs->GetDict(kBraveWalletUserAssets);
-  for (auto coin_it : user_assets_dict) {
-    auto coin = GetCoinTypeFromPrefKey(coin_it.first);
-    if (!coin) {
+  const auto& user_assets_list =
+      profile_prefs->GetList(kBraveWalletUserAssetsList);
+  for (auto& asset : user_assets_list) {
+    auto* token_dict = asset.GetIfDict();
+    if (!token_dict) {
       continue;
     }
 
-    for (auto network_it : coin_it.second.GetDict()) {
-      auto chain_id = GetChainId(profile_prefs, coin.value(), network_it.first);
-
-      if (!chain_id) {
-        continue;
-      }
-
-      for (const auto& item : network_it.second.GetList()) {
-        const auto* token = item.GetIfDict();
-        if (!token) {
-          continue;
-        }
-        mojom::BlockchainTokenPtr token_ptr =
-            ValueToBlockchainToken(*token, chain_id.value(), coin.value());
-        if (token_ptr) {
-          result.push_back(std::move(token_ptr));
-        }
-      }
+    if (auto token_ptr = ValueToBlockchainToken(*token_dict)) {
+      result.push_back(std::move(token_ptr));
     }
   }
   return result;
@@ -384,28 +405,10 @@ std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
     mojom::CoinType coin,
     PrefService* profile_prefs) {
   std::vector<mojom::BlockchainTokenPtr> result;
-  const std::string network_id = GetNetworkId(profile_prefs, coin, chain_id);
-  if (network_id.empty()) {
-    return result;
-  }
-
-  const auto& user_assets_dict = profile_prefs->GetDict(kBraveWalletUserAssets);
-  const auto* tokens = user_assets_dict.FindListByDottedPath(
-      base::StrCat({GetPrefKeyForCoinType(coin), ".", network_id}));
-  if (!tokens) {
-    return result;
-  }
-
-  for (const auto& item : *tokens) {
-    const auto* token = item.GetIfDict();
-    if (!token) {
-      continue;
-    }
-
-    mojom::BlockchainTokenPtr token_ptr =
-        ValueToBlockchainToken(*token, chain_id, coin);
-    if (token_ptr) {
-      result.push_back(std::move(token_ptr));
+  for (auto& item : GetUserAssets(profile_prefs)) {
+    if (base::EqualsCaseInsensitiveASCII(item->chain_id, chain_id) &&
+        item->coin == coin) {
+      result.push_back(std::move(item));
     }
   }
 
@@ -413,66 +416,35 @@ std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
 }
 
 // static
-bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
-                                      bool visible,
-                                      PrefService* profile_prefs) {
-  absl::optional<std::string> address = GetUserAssetAddress(
-      token->contract_address, token->coin, token->chain_id);
-  if (!address) {
-    return false;
+mojom::BlockchainTokenPtr BraveWalletService::AddUserAsset(
+    mojom::BlockchainTokenPtr token,
+    PrefService* profile_prefs) {
+  if (!GetChain(profile_prefs, token->chain_id, token->coin)) {
+    return nullptr;
   }
 
-  const std::string network_id =
-      GetNetworkId(profile_prefs, token->coin, token->chain_id);
-  if (network_id.empty()) {
-    return false;
+  if (!ValidateAndFixAssetAddress(token)) {
+    return nullptr;
   }
 
-  bool check_token_id = ShouldCheckTokenId(token);
-  if (check_token_id) {
+  if (ShouldCheckTokenId(token)) {
     uint256_t token_id_uint = 0;
     if (!HexValueToUint256(token->token_id, &token_id_uint)) {
-      return false;
+      return nullptr;
     }
   }
 
-  ScopedDictPrefUpdate update(profile_prefs, kBraveWalletUserAssets);
-  base::Value::Dict& user_assets_pref = update.Get();
+  ScopedListPrefUpdate update(profile_prefs, kBraveWalletUserAssetsList);
 
-  const auto path =
-      base::StrCat({GetPrefKeyForCoinType(token->coin), ".", network_id});
-  auto* user_assets_list = user_assets_pref.FindListByDottedPath(path);
-  if (!user_assets_list) {
-    user_assets_list =
-        user_assets_pref.SetByDottedPath(path, base::Value::List())
-            ->GetIfList();
-  }
-  DCHECK(user_assets_list);
-
-  auto it =
-      FindAsset(user_assets_list, *address, token->token_id, check_token_id);
-  if (it != user_assets_list->end()) {
-    return false;
+  for (auto& existing_asset : *update) {
+    if (TokenMatchesDict(token, existing_asset.GetIfDict())) {
+      return nullptr;
+    }
   }
 
-  base::Value::Dict value;
-  value.Set("address", *address);
-  value.Set("name", token->name);
-  value.Set("symbol", token->symbol);
-  value.Set("logo", token->logo);
-  value.Set("is_erc20", token->is_erc20);
-  value.Set("is_erc721", token->is_erc721);
-  value.Set("is_erc1155", token->is_erc1155);
-  value.Set("is_nft", token->is_nft);
-  value.Set("is_spam", token->is_spam);
-  value.Set("decimals", token->decimals);
-  value.Set("visible", visible);
-  value.Set("token_id", token->token_id);
-  value.Set("coingecko_id", token->coingecko_id);
+  update->Append(BlockchainTokenToValue(token));
 
-  user_assets_list->Append(std::move(value));
-
-  return true;
+  return token;
 }
 
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
@@ -480,7 +452,8 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        GetUserAssetsCallback callback) {
   std::vector<mojom::BlockchainTokenPtr> result =
       GetUserAssets(chain_id, coin, profile_prefs_);
-  std::move(callback).Run(std::move(result));
+  std::move(callback).Run(
+      EnsureNativeTokens(chain_id, coin, std::move(result)));
 }
 
 void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
@@ -488,18 +461,17 @@ void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
   std::move(callback).Run(std::move(result));
 }
 
-bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
-                                      bool visible) {
-  mojom::BlockchainTokenPtr clone = token.Clone();
-  bool result = BraveWalletService::AddUserAsset(std::move(token), visible,
-                                                 profile_prefs_);
-
-  if (result) {
-    for (const auto& observer : token_observers_) {
-      observer->OnTokenAdded(clone.Clone());
-    }
+bool BraveWalletService::AddUserAssetInternal(mojom::BlockchainTokenPtr token) {
+  auto added_asset =
+      BraveWalletService::AddUserAsset(std::move(token), profile_prefs_);
+  if (!added_asset) {
+    return false;
   }
-  return result;
+
+  for (const auto& observer : token_observers_) {
+    observer->OnTokenAdded(added_asset.Clone());
+  }
+  return true;
 }
 
 void BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
@@ -516,13 +488,13 @@ void BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
     return;
   }
 
-  std::move(callback).Run(AddUserAsset(std::move(token)));
+  std::move(callback).Run(AddUserAssetInternal(std::move(token)));
 }
 
 void BraveWalletService::OnGetEthNftStandard(
     mojom::BlockchainTokenPtr token,
     AddUserAssetCallback callback,
-    const absl::optional<std::string>& standard,
+    const std::optional<std::string>& standard,
     mojom::ProviderError error,
     const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess || !standard) {
@@ -542,7 +514,7 @@ void BraveWalletService::OnGetEthNftStandard(
     return;
   }
 
-  std::move(callback).Run(AddUserAsset(std::move(token)));
+  std::move(callback).Run(AddUserAssetInternal(std::move(token)));
 }
 
 void BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token,
@@ -551,32 +523,15 @@ void BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token,
 }
 
 bool BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token) {
-  absl::optional<std::string> address = GetUserAssetAddress(
-      token->contract_address, token->coin, token->chain_id);
-  if (!address) {
+  ScopedListPrefUpdate update(profile_prefs_, kBraveWalletUserAssetsList);
+
+  auto removed = update->EraseIf([&token](const base::Value& value) {
+    return TokenMatchesDict(token, value.GetIfDict());
+  });
+
+  if (!removed) {
     return false;
   }
-
-  const std::string network_id =
-      GetNetworkId(profile_prefs_, token->coin, token->chain_id);
-  if (network_id.empty()) {
-    return false;
-  }
-
-  ScopedDictPrefUpdate update(profile_prefs_, kBraveWalletUserAssets);
-
-  auto* user_assets_list = update->FindListByDottedPath(
-      base::StrCat({GetPrefKeyForCoinType(token->coin), ".", network_id}));
-  if (!user_assets_list) {
-    return false;
-  }
-
-  auto it = FindAsset(user_assets_list, *address, token->token_id,
-                      ShouldCheckTokenId(token));
-  if (it != user_assets_list->end()) {
-    user_assets_list->erase(it);
-  }
-
   for (const auto& observer : token_observers_) {
     observer->OnTokenRemoved(token.Clone());
   }
@@ -593,35 +548,18 @@ void BraveWalletService::SetUserAssetVisible(
 
 bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
                                              bool visible) {
-  DCHECK(token);
+  CHECK(token);
 
-  absl::optional<std::string> address = GetUserAssetAddress(
-      token->contract_address, token->coin, token->chain_id);
-  if (!address) {
-    return false;
+  ScopedListPrefUpdate update(profile_prefs_, kBraveWalletUserAssetsList);
+
+  for (auto& token_value : *update) {
+    if (TokenMatchesDict(token, token_value.GetIfDict())) {
+      token_value.GetDict().Set("visible", visible);
+      return true;
+    }
   }
 
-  const std::string network_id =
-      GetNetworkId(profile_prefs_, token->coin, token->chain_id);
-  if (network_id.empty()) {
-    return false;
-  }
-
-  ScopedDictPrefUpdate update(profile_prefs_, kBraveWalletUserAssets);
-  auto* user_assets_list = update->FindListByDottedPath(
-      base::StrCat({GetPrefKeyForCoinType(token->coin), ".", network_id}));
-  if (!user_assets_list) {
-    return false;
-  }
-
-  auto it = FindAsset(user_assets_list, *address, token->token_id,
-                      ShouldCheckTokenId(token));
-  if (it == user_assets_list->end()) {
-    return false;
-  }
-
-  it->GetDict().Set("visible", visible);
-  return true;
+  return false;
 }
 
 void BraveWalletService::SetAssetSpamStatus(
@@ -633,76 +571,26 @@ void BraveWalletService::SetAssetSpamStatus(
 
 bool BraveWalletService::SetAssetSpamStatus(mojom::BlockchainTokenPtr token,
                                             bool is_spam) {
-  DCHECK(token);
+  CHECK(token);
 
-  absl::optional<std::string> address = GetUserAssetAddress(
-      token->contract_address, token->coin, token->chain_id);
-  if (!address) {
-    return false;
+  {
+    ScopedListPrefUpdate update(profile_prefs_, kBraveWalletUserAssetsList);
+
+    for (auto& token_value : *update) {
+      if (TokenMatchesDict(token, token_value.GetIfDict())) {
+        token_value.GetDict().Set("is_spam", is_spam);
+        // Marking a token as spam makes it not visible and vice-versa
+        token_value.GetDict().Set("visible", !is_spam);
+        return true;
+      }
+    }
   }
 
-  const std::string network_id =
-      GetNetworkId(profile_prefs_, token->coin, token->chain_id);
-  if (network_id.empty()) {
-    return false;
-  }
-
-  ScopedDictPrefUpdate update(profile_prefs_, kBraveWalletUserAssets);
-  auto* user_assets_list = update->FindListByDottedPath(
-      base::StrCat({GetPrefKeyForCoinType(token->coin), ".", network_id}));
-  if (!user_assets_list) {
-    return false;
-  }
-
-  auto it = FindAsset(user_assets_list, *address, token->token_id,
-                      ShouldCheckTokenId(token));
-  if (it == user_assets_list->end()) {
-    // If the asset is not in the user's asset list, we automatically add it and
-    // set the spam status.
-    token->is_spam = is_spam;
-    token->visible = !is_spam;
-    return AddUserAsset(token.Clone(), token->visible);
-  }
-
-  it->GetDict().Set("is_spam", is_spam);
-
-  // Marking a token as spam makes it not visible and vice-versa
-  it->GetDict().Set("visible", !is_spam);
-
-  return true;
-}
-
-mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
-    const std::string& raw_address,
-    const std::string& token_id,
-    bool check_token_id,
-    const std::string& chain_id,
-    mojom::CoinType coin) {
-  absl::optional<std::string> address =
-      GetUserAssetAddress(raw_address, coin, chain_id);
-  if (!address) {
-    return nullptr;
-  }
-
-  const std::string network_id = GetNetworkId(profile_prefs_, coin, chain_id);
-  if (network_id.empty()) {
-    return nullptr;
-  }
-
-  const auto& user_assets_dict =
-      profile_prefs_->GetDict(kBraveWalletUserAssets);
-  const auto* user_assets_list = user_assets_dict.FindListByDottedPath(
-      base::StrCat({GetPrefKeyForCoinType(coin), ".", network_id}));
-  if (!user_assets_list) {
-    return nullptr;
-  }
-
-  auto it = FindAsset(user_assets_list, *address, token_id, check_token_id);
-  if (it == user_assets_list->end()) {
-    return nullptr;
-  }
-
-  return ValueToBlockchainToken(it->GetDict(), chain_id, coin);
+  // If the asset is not in the user's asset list, we automatically add it
+  // and set the spam status.
+  token->is_spam = is_spam;
+  token->visible = !is_spam;
+  return AddUserAssetInternal(token.Clone());
 }
 
 void BraveWalletService::IsExternalWalletInstalled(
@@ -809,7 +697,7 @@ mojom::AccountIdPtr BraveWalletService::EnsureSelectedAccountForChainSync(
   mojom::AccountIdPtr acc_to_select;
 
   // Prefer currently dapp selected account if available. This matches legacy
-  // behaior.
+  // behavior.
   // TODO(apaymyshev): implement account selection history pref to prefer
   // picking recently used matching account in a general way.
   if (coin == mojom::CoinType::ETH && all_accounts->eth_dapp_selected_account) {
@@ -997,165 +885,6 @@ void BraveWalletService::ResetWebSitePermission(
 }
 
 // static
-void BraveWalletService::MigrateUserAssetEthContractAddress(
-    PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated)) {
-    prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssetsDeprecated);
-  auto& user_assets_pref = update.Get();
-
-  for (auto user_asset_list : user_assets_pref) {
-    auto& item = user_asset_list.second.GetList();
-    auto it = FindAsset(&item, "eth", "", false, "contract_address");
-    if (it == item.end()) {
-      continue;
-    }
-
-    auto* asset = it->GetIfDict();
-    if (asset) {
-      const std::string* contract_address =
-          asset->FindString("contract_address");
-      if (contract_address && *contract_address == "eth") {
-        asset->Set("contract_address", "");
-        break;
-      }
-    }
-  }
-
-  prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
-}
-
-// static
-void BraveWalletService::MigrateMultichainUserAssets(PrefService* prefs) {
-  if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated)) {
-    return;
-  }
-
-  auto eth_user_assets =
-      prefs->GetDict(kBraveWalletUserAssetsDeprecated).Clone();
-
-  // Update contract_address key to address.
-  for (auto user_asset_list : eth_user_assets) {
-    for (auto& item : user_asset_list.second.GetList()) {
-      auto& asset = item.GetDict();
-      const std::string* address = asset.FindString("contract_address");
-      if (address) {
-        asset.Set("address", *address);
-        asset.Remove("contract_address");
-      }
-    }
-  }
-
-  base::Value::Dict new_user_assets;
-  new_user_assets.Set(kEthereumPrefKey, std::move(eth_user_assets));
-  new_user_assets.Set(kSolanaPrefKey, GetDefaultSolanaAssets());
-  new_user_assets.Set(kFilecoinPrefKey, GetDefaultFilecoinAssets());
-
-  prefs->Set(kBraveWalletUserAssets, base::Value(std::move(new_user_assets)));
-  prefs->ClearPref(kBraveWalletUserAssetsDeprecated);
-}
-
-// static
-void BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(
-    PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
-    prefs->SetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated,
-                      true);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
-  auto& user_assets_pref = update.Get();
-
-  // For each user asset list in ethereum known chains, check if it has the
-  // native token (address is empty) in the list already, if not, insert a
-  // native asset at the beginning based on the network info.
-  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
-    const std::string network_id = GetKnownEthNetworkId(chain->chain_id);
-    DCHECK(!network_id.empty());
-    const auto path = base::StrCat({kEthereumPrefKey, ".", network_id});
-    auto* user_assets_list = user_assets_pref.FindListByDottedPath(path);
-    if (!user_assets_list) {
-      user_assets_list =
-          user_assets_pref.SetByDottedPath(path, base::Value::List())
-              ->GetIfList();
-      user_assets_list->Append(GetEthNativeAssetFromChain(chain));
-      continue;
-    }
-
-    auto it = FindAsset(user_assets_list, "", "", false);
-    if (it == user_assets_list->end()) {
-      user_assets_list->Insert(user_assets_list->begin(),
-                               base::Value(GetEthNativeAssetFromChain(chain)));
-    }
-  }
-
-  prefs->SetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated, true);
-  if (prefs->HasPrefPath(
-          kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated)) {
-    prefs->ClearPref(
-        kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated);
-  }
-  if (prefs->HasPrefPath(
-          kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2)) {
-    prefs->ClearPref(
-        kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2);
-  }
-}
-
-// static
-void BraveWalletService::MigrateUserAssetsAddIsNFT(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
-    prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::Value::Dict& user_assets_pref = update.Get();
-
-  for (auto user_asset_dict_per_cointype : user_assets_pref) {
-    if (!user_asset_dict_per_cointype.second.is_dict()) {
-      continue;
-    }
-    for (auto user_asset_list_per_chain :
-         user_asset_dict_per_cointype.second.GetDict()) {
-      if (!user_asset_list_per_chain.second.is_list()) {
-        continue;
-      }
-      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
-        auto* asset = user_asset.GetIfDict();
-        if (!asset) {
-          continue;
-        }
-
-        auto is_erc721 = asset->FindBool("is_erc721");
-        if (is_erc721 && *is_erc721 == true) {
-          asset->Set("is_nft", true);
-        } else {
-          asset->Set("is_nft", false);
-        }
-      }
-    }
-  }
-  prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
-}
-
-// static
 void BraveWalletService::MigrateHiddenNetworks(PrefService* prefs) {
   auto previous_version_code =
       prefs->GetInteger(kBraveWalletDefaultHiddenNetworksVersion);
@@ -1178,78 +907,6 @@ void BraveWalletService::MigrateHiddenNetworks(PrefService* prefs) {
   }
 
   prefs->SetInteger(kBraveWalletDefaultHiddenNetworksVersion, 1);
-}
-
-void BraveWalletService::MigrateUserAssetsAddIsERC1155(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
-    prefs->SetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated, true);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::Value::Dict& user_assets_pref = update.Get();
-
-  for (auto user_asset_dict_per_cointype : user_assets_pref) {
-    if (!user_asset_dict_per_cointype.second.is_dict()) {
-      continue;
-    }
-    for (auto user_asset_list_per_chain :
-         user_asset_dict_per_cointype.second.GetDict()) {
-      if (!user_asset_list_per_chain.second.is_list()) {
-        continue;
-      }
-      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
-        auto* asset = user_asset.GetIfDict();
-        if (!asset) {
-          continue;
-        }
-        if (!asset->FindBool("is_erc1155")) {
-          asset->Set("is_erc1155", false);
-        }
-      }
-    }
-  }
-  prefs->SetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated, true);
-}
-
-void BraveWalletService::MigrateUserAssetsAddIsSpam(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated)) {
-    return;
-  }
-
-  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
-    prefs->SetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated, true);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::Value::Dict& user_assets_pref = update.Get();
-
-  for (auto user_asset_dict_per_cointype : user_assets_pref) {
-    if (!user_asset_dict_per_cointype.second.is_dict()) {
-      continue;
-    }
-    for (auto user_asset_list_per_chain :
-         user_asset_dict_per_cointype.second.GetDict()) {
-      if (!user_asset_list_per_chain.second.is_list()) {
-        continue;
-      }
-      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
-        auto* asset = user_asset.GetIfDict();
-        if (!asset) {
-          continue;
-        }
-        if (!asset->FindBool("is_spam")) {
-          asset->Set("is_spam", false);
-        }
-      }
-    }
-  }
-  prefs->SetBoolean(kBraveWalletUserAssetsAddIsSpamMigrated, true);
 }
 
 bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
@@ -1279,7 +936,7 @@ bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
     }
   }
 
-  return GetCurrentChainId(prefs, coin, absl::nullopt) == chain_id;
+  return GetCurrentChainId(prefs, coin, std::nullopt) == chain_id;
 }
 
 void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
@@ -1309,11 +966,56 @@ void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
   prefs->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated, true);
 }
 
+void BraveWalletService::MigrateAssetsPrefToList(PrefService* prefs) {
+  if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated)) {
+    return;
+  }
+
+  base::Value::List assets_list;
+
+  const auto& user_assets_dict =
+      prefs->GetDict(kBraveWalletUserAssetsDeprecated);
+  for (auto coin_it : user_assets_dict) {
+    auto coin = GetCoinTypeFromPrefKey_DEPRECATED(coin_it.first);
+    if (!coin) {
+      continue;
+    }
+
+    for (auto network_it : coin_it.second.GetDict()) {
+      auto chain_id = GetChainIdByNetworkId_DEPRECATED(prefs, coin.value(),
+                                                       network_it.first);
+
+      if (!chain_id) {
+        continue;
+      }
+
+      for (const auto& item : network_it.second.GetList()) {
+        const auto* token_legacy = item.GetIfDict();
+        if (!token_legacy) {
+          continue;
+        }
+
+        auto token = token_legacy->Clone();
+        token.Set("chain_id", *chain_id);
+        token.Set("coin", static_cast<int>(*coin));
+
+        assets_list.Append(std::move(token));
+      }
+    }
+  }
+
+  prefs->SetList(kBraveWalletUserAssetsList, std::move(assets_list));
+
+  prefs->ClearPref(kBraveWalletUserAssetsDeprecated);
+}
+
 // static
-base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
-  base::Value::Dict user_assets;
+base::Value::List BraveWalletService::GetDefaultEthereumAssets() {
+  base::Value::List user_assets_list;
 
   base::Value::Dict bat;
+  bat.Set("chain_id", mojom::kMainnetChainId);
+  bat.Set("coin", static_cast<int>(mojom::CoinType::ETH));
   bat.Set("address", "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
   bat.Set("name", "Basic Attention Token");
   bat.Set("symbol", "BAT");
@@ -1329,25 +1031,21 @@ base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   // Show ETH and BAT by default for mainnet, and the native token for other
   // known networks.
   for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::ETH)) {
-    const std::string network_id = GetKnownEthNetworkId(chain->chain_id);
-    DCHECK(!network_id.empty());
-    base::Value::List user_assets_list;
     user_assets_list.Append(GetEthNativeAssetFromChain(chain));
     if (chain->chain_id == mojom::kMainnetChainId) {
       user_assets_list.Append(bat.Clone());
     }
-
-    user_assets.Set(network_id, std::move(user_assets_list));
   }
 
-  return user_assets;
+  return user_assets_list;
 }
 
 // static
-base::Value::Dict BraveWalletService::GetDefaultSolanaAssets() {
-  base::Value::Dict user_assets;
+base::Value::List BraveWalletService::GetDefaultSolanaAssets() {
+  base::Value::List user_assets_list;
 
   base::Value::Dict sol;
+  sol.Set("coin", static_cast<int>(mojom::CoinType::SOL));
   sol.Set("address", "");
   sol.Set("name", "Solana");
   sol.Set("symbol", "SOL");
@@ -1360,21 +1058,21 @@ base::Value::Dict BraveWalletService::GetDefaultSolanaAssets() {
   sol.Set("visible", true);
   sol.Set("logo", "sol.png");
 
-  std::vector<std::string> network_ids = GetAllKnownSolNetworkIds();
-  for (const auto& network_id : network_ids) {
-    base::Value::List user_assets_list;
-    user_assets_list.Append(sol.Clone());
-    user_assets.Set(network_id, std::move(user_assets_list));
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::SOL)) {
+    auto asset = sol.Clone();
+    asset.Set("chain_id", chain->chain_id);
+    user_assets_list.Append(std::move(asset));
   }
 
-  return user_assets;
+  return user_assets_list;
 }
 
 // static
-base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
-  base::Value::Dict user_assets;
+base::Value::List BraveWalletService::GetDefaultFilecoinAssets() {
+  base::Value::List user_assets_list;
 
   base::Value::Dict fil;
+  fil.Set("coin", static_cast<int>(mojom::CoinType::FIL));
   fil.Set("address", "");
   fil.Set("name", "Filecoin");
   fil.Set("symbol", "FIL");
@@ -1387,77 +1085,37 @@ base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
   fil.Set("visible", true);
   fil.Set("logo", "fil.png");
 
-  std::vector<std::string> network_ids = GetAllKnownFilNetworkIds();
-  for (const auto& network_id : network_ids) {
-    base::Value::List user_assets_list;
-    user_assets_list.Append(fil.Clone());
-    user_assets.Set(network_id, std::move(user_assets_list));
-  }
-
-  return user_assets;
-}
-
-// static
-base::Value::Dict BraveWalletService::GetDefaultBitcoinAssets() {
-  base::Value::Dict user_assets;
-
-  base::Value::Dict btc;
-  btc.Set("address", "");
-  btc.Set("name", "Bitcoin");
-  btc.Set("decimals", 8);
-  btc.Set("is_erc20", false);
-  btc.Set("is_erc721", false);
-  btc.Set("is_erc1155", false);
-  btc.Set("is_spam", false);
-  btc.Set("is_nft", false);
-  btc.Set("visible", true);
-  btc.Set("logo", "btc.png");
-
-  std::vector<std::string> network_ids = GetAllKnownBtcNetworkIds();
-  for (const auto& network_id : network_ids) {
-    base::Value::List user_assets_list;
-    auto asset = btc.Clone();
-    if (network_id == "mainnet") {
-      asset.Set("symbol", "BTC");
-      asset.Set("coingecko_id", "btc");
-    } else if (network_id == "testnet") {
-      asset.Set("symbol", "BTC");
-    } else {
-      NOTREACHED();
-    }
+  for (const auto& chain : GetAllKnownChains(nullptr, mojom::CoinType::FIL)) {
+    auto asset = fil.Clone();
+    asset.Set("chain_id", chain->chain_id);
     user_assets_list.Append(std::move(asset));
-    user_assets.Set(network_id, std::move(user_assets_list));
   }
 
-  return user_assets;
+  return user_assets_list;
 }
 
 // static
-base::Value::Dict BraveWalletService::GetDefaultZCashAssets() {
-  base::Value::Dict user_assets;
+base::Value::List BraveWalletService::GetDefaultBitcoinAssets() {
+  base::Value::List user_assets_list;
 
-  base::Value::Dict zec;
-  zec.Set("address", "");
-  zec.Set("name", "ZCash");
-  zec.Set("decimals", 8);
-  zec.Set("is_erc20", false);
-  zec.Set("is_erc721", false);
-  zec.Set("is_erc1155", false);
-  zec.Set("is_spam", false);
-  zec.Set("is_nft", false);
-  zec.Set("visible", true);
-  zec.Set("logo", "zec.png");
-  zec.Set("symbol", "ZEC");
-  zec.Set("coingecko_id", "zec");
+  user_assets_list.Append(
+      BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinMainnet)));
+  user_assets_list.Append(
+      BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinTestnet)));
 
-  std::vector<std::string> network_ids = GetAllKnownZecNetworkIds();
-  for (const auto& network_id : network_ids) {
-    base::Value::List user_assets_list;
-    user_assets_list.Append(zec.Clone());
-    user_assets.Set(network_id, std::move(user_assets_list));
-  }
+  return user_assets_list;
+}
 
-  return user_assets;
+// static
+base::Value::List BraveWalletService::GetDefaultZCashAssets() {
+  base::Value::List user_assets_list;
+
+  user_assets_list.Append(
+      BlockchainTokenToValue(GetZcashNativeToken(mojom::kZCashMainnet)));
+  user_assets_list.Append(
+      BlockchainTokenToValue(GetZcashNativeToken(mojom::kZCashTestnet)));
+
+  return user_assets_list;
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(
@@ -1496,7 +1154,7 @@ void BraveWalletService::NotifySignMessageRequestProcessed(
     bool approved,
     int id,
     mojom::ByteArrayStringUnionPtr signature,
-    const absl::optional<std::string>& error) {
+    const std::optional<std::string>& error) {
   if (sign_message_requests_.empty() ||
       sign_message_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -1554,7 +1212,7 @@ void BraveWalletService::NotifySignTransactionRequestProcessed(
     bool approved,
     int id,
     mojom::ByteArrayStringUnionPtr signature,
-    const absl::optional<std::string>& error) {
+    const std::optional<std::string>& error) {
   if (sign_transaction_requests_.empty() ||
       sign_transaction_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -1586,8 +1244,8 @@ void BraveWalletService::GetPendingSignAllTransactionsRequests(
 void BraveWalletService::NotifySignAllTransactionsRequestProcessed(
     bool approved,
     int id,
-    absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
-    const absl::optional<std::string>& error) {
+    std::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+    const std::optional<std::string>& error) {
   if (sign_all_transactions_requests_.empty() ||
       sign_all_transactions_requests_.front()->id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
@@ -1644,7 +1302,7 @@ void BraveWalletService::OnDiscoverAssetsCompleted(
 
 void BraveWalletService::OnGetImportInfo(
     const std::string& new_password,
-    base::OnceCallback<void(bool, const absl::optional<std::string>&)> callback,
+    base::OnceCallback<void(bool, const std::optional<std::string>&)> callback,
     bool result,
     ImportInfo info,
     ImportError error) {
@@ -1688,10 +1346,9 @@ void BraveWalletService::OnGetImportInfo(
   CHECK(is_valid_mnemonic);
   WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
-          [](base::OnceCallback<void(bool, const absl::optional<std::string>&)>
+          [](base::OnceCallback<void(bool, const std::optional<std::string>&)>
                  callback) {
-            std::move(callback).Run(true /* is_valid_mnemonic */,
-                                    absl::nullopt);
+            std::move(callback).Run(true /* is_valid_mnemonic */, std::nullopt);
           },
           std::move(callback)));
 }
@@ -1742,8 +1399,12 @@ void BraveWalletService::AddSuggestTokenRequest(
     base::Value id) {
   // wallet_watchAsset currently only expect non-empty contract address and
   // only ERC20 type.
+  DCHECK_EQ(request->token->coin, mojom::CoinType::ETH);
   DCHECK(!request->token->contract_address.empty());
-  DCHECK(request->token->is_erc20 && !request->token->is_erc721);
+  DCHECK(request->token->is_erc20);
+  DCHECK(!request->token->is_erc721);
+  DCHECK(!request->token->is_erc1155);
+  DCHECK_EQ(request->token->token_id, "");
 
   if (add_suggest_token_requests_.contains(request->token->contract_address)) {
     bool reject = true;
@@ -1761,10 +1422,15 @@ void BraveWalletService::AddSuggestTokenRequest(
   //     1. User asset list
   //     2. BlockchainRegistry
   //     3. wallet_watchAsset request
-  mojom::BlockchainTokenPtr token =
-      GetUserAsset(request->token->contract_address, request->token->token_id,
-                   ShouldCheckTokenId(request->token), request->token->chain_id,
-                   request->token->coin);
+  mojom::BlockchainTokenPtr token;
+  for (auto& user_asset : GetUserAssets(request->token->chain_id,
+                                        mojom::CoinType::ETH, profile_prefs_)) {
+    if (base::EqualsCaseInsensitiveASCII(request->token->contract_address,
+                                         user_asset->contract_address)) {
+      token = user_asset->Clone();
+      break;
+    }
+  }
 
   if (!token) {
     token = BlockchainRegistry::GetInstance()->GetTokenByAddress(
@@ -1776,7 +1442,7 @@ void BraveWalletService::AddSuggestTokenRequest(
   }
 
   if (request->token->coingecko_id.empty()) {
-    absl::optional<std::string> coingecko_id =
+    std::optional<std::string> coingecko_id =
         BlockchainRegistry::GetInstance()->GetCoingeckoId(
             request->token->chain_id, request->token->contract_address);
     if (coingecko_id) {
@@ -1880,11 +1546,10 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
       auto callback = std::move(add_suggest_token_callbacks_[addr]);
       base::Value id = std::move(add_suggest_token_ids_[addr]);
 
+      auto token = std::move(add_suggest_token_requests_[addr]->token);
       bool reject = false;
-      if (approved &&
-          !AddUserAsset(add_suggest_token_requests_[addr]->token.Clone()) &&
-          !SetUserAssetVisible(add_suggest_token_requests_[addr]->token.Clone(),
-                               true)) {
+      if (approved && !AddUserAssetInternal(token->Clone()) &&
+          !SetUserAssetVisible(token.Clone(), true)) {
         add_suggest_token_requests_.erase(addr);
         add_suggest_token_callbacks_.erase(addr);
         add_suggest_token_ids_.erase(addr);
@@ -2077,8 +1742,8 @@ void BraveWalletService::GenerateReceiveAddress(
       std::move(callback).Run("", WalletInternalErrorMessage());
       return;
     }
-    zcash_wallet_service_->GetReceiverAddress(
-        std::move(account_id),
+    zcash_wallet_service_->DiscoverNextUnusedAddress(
+        std::move(account_id), false,
         base::BindOnce(&BraveWalletService::OnGenerateZecReceiveAddress,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
     return;
@@ -2090,7 +1755,7 @@ void BraveWalletService::GenerateReceiveAddress(
     const auto& accounts = keyring_service_->GetAllAccountInfos();
     for (auto& account : accounts) {
       if (account->account_id == account_id) {
-        std::move(callback).Run(account->address, absl::nullopt);
+        std::move(callback).Run(account->address, std::nullopt);
         return;
       }
     }
@@ -2105,39 +1770,37 @@ void BraveWalletService::GenerateReceiveAddress(
 void BraveWalletService::OnGenerateBtcReceiveAddress(
     GenerateReceiveAddressCallback callback,
     mojom::BitcoinAddressPtr address,
-    const absl::optional<std::string>& error_message) {
+    const std::optional<std::string>& error_message) {
   if (address) {
-    std::move(callback).Run(address->address_string, absl::nullopt);
+    std::move(callback).Run(address->address_string, std::nullopt);
     return;
   }
 
-  std::move(callback).Run(absl::nullopt,
+  std::move(callback).Run(std::nullopt,
                           error_message.value_or(WalletInternalErrorMessage()));
 }
 
 void BraveWalletService::OnGenerateZecReceiveAddress(
     GenerateReceiveAddressCallback callback,
-    mojom::ZCashAddressPtr address,
-    const absl::optional<std::string>& error_message) {
-  if (address) {
-    std::move(callback).Run(address->address_string, absl::nullopt);
+    base::expected<mojom::ZCashAddressPtr, std::string> result) {
+  if (result.has_value()) {
+    std::move(callback).Run(result.value()->address_string, std::nullopt);
     return;
   }
 
-  std::move(callback).Run(absl::nullopt,
-                          error_message.value_or(WalletInternalErrorMessage()));
+  std::move(callback).Run(std::nullopt, result.error());
 }
 
 void BraveWalletService::GetSimpleHashSpamNFTs(
     const std::string& wallet_address,
     const std::vector<std::string>& chain_ids,
     mojom::CoinType coin,
-    const absl::optional<std::string>& cursor,
+    const std::optional<std::string>& cursor,
     GetSimpleHashSpamNFTsCallback callback) {
   // Do not make requests to SimpleHash unless the user has
   // opted in to NFT discovery.
   if (!profile_prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled)) {
-    std::move(callback).Run({}, absl::nullopt);
+    std::move(callback).Run({}, std::nullopt);
     return;
   }
   simple_hash_client_->FetchNFTsFromSimpleHash(
@@ -2166,7 +1829,7 @@ void BraveWalletService::CancelAllSignMessageCallbacks() {
     auto callback = std::move(sign_message_callbacks_.front());
     sign_message_requests_.pop_front();
     sign_message_callbacks_.pop_front();
-    std::move(callback).Run(false, nullptr, absl::nullopt);
+    std::move(callback).Run(false, nullptr, std::nullopt);
   }
 }
 
@@ -2175,7 +1838,7 @@ void BraveWalletService::CancelAllSignTransactionCallbacks() {
     auto callback = std::move(sign_transaction_callbacks_.front());
     sign_transaction_requests_.pop_front();
     sign_transaction_callbacks_.pop_front();
-    std::move(callback).Run(false, nullptr, absl::nullopt);
+    std::move(callback).Run(false, nullptr, std::nullopt);
   }
 }
 
@@ -2184,7 +1847,7 @@ void BraveWalletService::CancelAllSignAllTransactionsCallbacks() {
     auto callback = std::move(sign_all_transactions_callbacks_.front());
     sign_all_transactions_requests_.pop_front();
     sign_all_transactions_callbacks_.pop_front();
-    std::move(callback).Run(false, absl::nullopt, absl::nullopt);
+    std::move(callback).Run(false, std::nullopt, std::nullopt);
   }
 }
 

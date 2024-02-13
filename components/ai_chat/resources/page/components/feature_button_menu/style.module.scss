@@ -7,7 +7,7 @@
   background-color: var(--leo-color-page-background);
   padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
   color: var(--leo-color-text-tertiary);
-  font: var(--leo-font-primary-small-regular);
+  font: var(--leo-font-small-regular);
 
 }
 
@@ -16,7 +16,7 @@
   margin: 14px calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
   margin-bottom: 2px;
   color: var(--leo-color-text-tertiary);
-  font: var(--leo-font-primary-small-regular);
+  font: var(--leo-font-small-regular);
   display: flex;
   flex-direction: row;
   justify-content: start;
@@ -53,9 +53,13 @@
 }
 
 .modelSubtitle {
-  font: var(--leo-font-primary-small-regular);
+  font: var(--leo-font-small-regular);
   padding: 0;
   margin: 0;
+}
+
+.modelFreemiumLabel {
+  align-self: flex-start;
 }
 
 .lockOpen {

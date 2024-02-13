@@ -5,25 +5,26 @@
 
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
+#include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_news {
 
-absl::optional<Publishers> ParseCombinedPublisherList(
-    const base::Value& value) {
+std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
   if (!value.is_list()) {
     LOG(ERROR) << "Publisher data expected to be a list";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   Publishers result;
@@ -33,7 +34,7 @@ absl::optional<Publishers> ParseCombinedPublisherList(
     if (!parsed_publisher.has_value()) {
       LOG(ERROR) << "Invalid Brave Publisher data. error="
                  << parsed_publisher.error();
-      return absl::nullopt;
+      return std::nullopt;
     }
     auto& entry = *parsed_publisher;
 
@@ -69,7 +70,18 @@ absl::optional<Publishers> ParseCombinedPublisherList(
         auto locale_info = mojom::LocaleInfo::New();
         locale_info->locale = locale.locale;
         locale_info->rank = locale.rank.value_or(0);
-        locale_info->channels = std::move(locale.channels);
+
+        // With migrations, it's possible we'll end up with duplicate channels,
+        // so filter them out with a set.
+        base::flat_set<std::string> seen;
+        for (const auto& channel : locale.channels) {
+          auto transformed = brave_news::GetMigratedChannel(channel);
+          if (seen.contains(transformed)) {
+            continue;
+          }
+          seen.insert(transformed);
+          locale_info->channels.push_back(std::move(transformed));
+        }
 
         publisher->locales.push_back(std::move(locale_info));
       }

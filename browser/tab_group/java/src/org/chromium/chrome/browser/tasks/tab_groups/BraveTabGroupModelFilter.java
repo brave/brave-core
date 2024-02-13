@@ -9,7 +9,7 @@ package org.chromium.chrome.browser.tasks.tab_groups;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
@@ -35,9 +35,10 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
      */
     public int getParentId(Tab tab) {
         if (linkClicked(tab.getLaunchType())
-                && SharedPreferencesManager.getInstance().readBoolean(
-                        BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true)
-                && isTabModelRestored() && !mIsResetting) {
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true)
+                && isTabModelRestored()
+                && !mIsResetting) {
             Tab parentTab = TabModelUtils.getTabById(getTabModel(), tab.getParentId());
             if (parentTab != null) {
                 return (int) BraveReflectionUtil.InvokeMethod(

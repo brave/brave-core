@@ -10,12 +10,12 @@ import re
 from typing import Optional
 
 import components.path_util as path_util
-from components.browser_type import BraveVersion, BrowserType
+from components.browser_type import BrowserType
 from components.common_options import CommonOptions
 from components.perf_config import RunnerConfig
 from components.perf_profile import GetProfilePath
-from components.perf_test_utils import (DownloadArchiveAndUnpack,
-                                        GetProcessOutput)
+from components.perf_test_utils import GetProcessOutput
+from components.version import BraveVersion
 
 with path_util.SysPath(path_util.GetTelemetryDir()):
   from telemetry.internal.backends import \
@@ -41,7 +41,7 @@ class BrowserBinary:
         if b.package == android_package:
           self.telemetry_browser_type = b.browser_type
       if self.telemetry_browser_type is None:
-        raise RuntimeError('No matching browser-type found')
+        raise RuntimeError('No matching browser-type found ' + android_package)
     else:
       assert binary_path is not None
 
@@ -67,14 +67,15 @@ def _GetPackageName(apk_path: str) -> str:
 def _GetPackageVersion(package: str) -> str:
   _, dump_info = GetProcessOutput(
       [path_util.GetAdbPath(), 'shell', 'dumpsys', 'package', package],
-      check=True)
+      check=True,
+      output_to_debug=False)
   version_match = re.search(r'versionName=((?:\w|\.)+)', dump_info)
   assert version_match is not None
   return version_match.group(1)
 
 
 def _InstallApk(apk_path: str, browser_type: BrowserType,
-                tag: Optional[BraveVersion]) -> str:
+                version: Optional[BraveVersion]) -> str:
   assert apk_path.endswith('.apk')
   package = _GetPackageName(apk_path)
 
@@ -99,10 +100,11 @@ def _InstallApk(apk_path: str, browser_type: BrowserType,
   ],
                    check=True)
 
-  if browser_type.name.startswith('brave'):
-    version = 'v' + _GetPackageVersion(package)
-    if version != tag.__str__():
-      raise RuntimeError(f'Version mismatch: tag {tag}, installed {version}')
+  if browser_type.win_name.startswith('brave') and version is not None:
+    installed_version = 'v' + _GetPackageVersion(package)
+    if installed_version != version.last_tag:
+      raise RuntimeError('Version mismatch: expected ' +
+                         f'{version.to_string()}, installed {version}')
 
   return package
 
@@ -120,32 +122,32 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
 
   profile_dir = None
   if config.profile != 'clean':
+    assert config.version is not None
     profile_dir = GetProfilePath(config.profile,
-                                 common_options.working_directory)
+                                 common_options.working_directory,
+                                 config.version)
 
   field_trial_config = config.browser_type.MakeFieldTrials(
-      config.tag, artifacts_dir, common_options)
+      config.version, artifacts_dir, common_options)
 
   binary_location = None
   package = None
+  url: Optional[str] = None
   is_android = common_options.target_os == 'android'
   if config.location:  # explicit binary/archive location
     if os.path.exists(config.location):
       binary_location = config.location
     elif config.location.startswith('https:'):
-      DownloadArchiveAndUnpack(binary_dir, config.location)
-      binary_location = os.path.join(
-          binary_dir,
-          config.browser_type.GetBinaryPath(common_options.target_os))
-      assert os.path.exists(binary_location)
+      url = config.location
     elif config.location.startswith('package:') and is_android:
       package = config.location[len('package:'):]
     else:
-      raise RuntimeError(f'{config.location} doesn\'t exist')
-  else:
-    assert config.tag is not None
+      raise RuntimeError(f'Bad explicit location {config.location}')
+
+  if binary_location is None and package is None:
+    assert config.version is not None
     binary_location = config.browser_type.DownloadBrowserBinary(
-        config.tag, binary_dir, common_options)
+        url, config.version, binary_dir, common_options)
 
   if not is_android:
     assert binary_location
@@ -154,7 +156,8 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
   if package is None:
     assert binary_location
     assert binary_location.endswith('.apk')
-    package = _InstallApk(binary_location, config.browser_type, config.tag)
+    package = _InstallApk(binary_location, config.browser_type, config.version)
 
   _PostInstallAndroidSetup(package)
-  return BrowserBinary(None, package, profile_dir, field_trial_config)
+  return BrowserBinary(binary_location, package, profile_dir,
+                       field_trial_config)

@@ -13,25 +13,25 @@ namespace brave_ads {
 
 enum class ConfirmationType {
   // When adding new confirmation types they must be added with highest
-  // priority at the top so that ads history can be filtered
+  // priority at the top so that ads history can be filtered.
   kUndefined,
   kClicked,
   kDismissed,
   kViewed,
   kServed,
-  kTransferred,
-  kFlagged,
-  kSaved,
-  kUpvoted,
-  kDownvoted,
+  kLanded,
+  kMarkAdAsInappropriate,
+  kSavedAd,
+  kLikedAd,
+  kDislikedAd,
   kConversion
 };
 
-// Provides a corresponding string to a given ConfirmationType value.
-const char* ToString(ConfirmationType type);
+// Returns a `ConfirmationType` value based on the string input.
+ConfirmationType ToConfirmationType(std::string_view value);
 
-// Returns a ConfirmationType value based on the string input.
-ConfirmationType ParseConfirmationType(std::string_view value);
+// Returns a string constant for a given `ConfirmationType` value.
+const char* ToString(ConfirmationType type);
 
 std::ostream& operator<<(std::ostream& os, ConfirmationType type);
 

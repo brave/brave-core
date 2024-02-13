@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_ADDRESS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_ADDRESS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/containers/span.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -26,10 +26,10 @@ class SolanaAddress {
   bool operator==(const SolanaAddress& other) const;
   bool operator!=(const SolanaAddress& other) const;
 
-  static absl::optional<SolanaAddress> FromBytes(
+  static std::optional<SolanaAddress> FromBytes(
       base::span<const uint8_t> bytes);
-  static absl::optional<SolanaAddress> FromBytes(std::vector<uint8_t> bytes);
-  static absl::optional<SolanaAddress> FromBase58(
+  static std::optional<SolanaAddress> FromBytes(std::vector<uint8_t> bytes);
+  static std::optional<SolanaAddress> FromBase58(
       const std::string& base58_string);
 
   static SolanaAddress ZeroAddress();

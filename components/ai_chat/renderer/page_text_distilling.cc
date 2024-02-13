@@ -5,18 +5,20 @@
 
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 
+#include <iterator>
+#include <optional>
 #include <queue>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/renderer/render_frame.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "ui/accessibility/ax_node.h"
@@ -26,10 +28,18 @@ namespace ai_chat {
 
 namespace {
 
-static const ax::mojom::Role kContentRoles[] = {ax::mojom::Role::kHeading,
-                                                ax::mojom::Role::kParagraph};
+static const ax::mojom::Role kContentParentRoles[]{
+    ax::mojom::Role::kMain,
+    ax::mojom::Role::kArticle,
+};
 
-static const ax::mojom::Role kRolesToSkip[] = {
+static const ax::mojom::Role kContentRoles[]{
+    ax::mojom::Role::kHeading,
+    ax::mojom::Role::kParagraph,
+    ax::mojom::Role::kNote,
+};
+
+static const ax::mojom::Role kRolesToSkip[]{
     ax::mojom::Role::kAudio,
     ax::mojom::Role::kBanner,
     ax::mojom::Role::kButton,
@@ -62,8 +72,7 @@ void GetContentRootNodes(const ui::AXNode* root,
     queue.pop();
     // If a main or article node is found, add it to the list of content root
     // nodes and continue. Do not explore children for nested article nodes.
-    if (node->GetRole() == ax::mojom::Role::kMain ||
-        node->GetRole() == ax::mojom::Role::kArticle) {
+    if (base::Contains(kContentParentRoles, node->GetRole())) {
       content_root_nodes->push_back(node);
       continue;
     }
@@ -105,7 +114,7 @@ void AddTextNodesToVector(const ui::AXNode* node,
     return;
   }
 
-  for (const auto* child : node->children()) {
+  for (const ui::AXNode* child : node->children()) {
     AddTextNodesToVector(child, strings);
   }
 }
@@ -115,7 +124,7 @@ void AddTextNodesToVector(const ui::AXNode* node,
 void DistillPageText(
     content::RenderFrame* render_frame,
     int32_t isolated_world_id,
-    base::OnceCallback<void(const absl::optional<std::string>&)> callback) {
+    base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   auto snapshotter = render_frame->CreateAXTreeSnapshotter(
       ui::AXMode::kWebContents | ui::AXMode::kHTML | ui::AXMode::kScreenReader);
   ui::AXTreeUpdate snapshot;
@@ -128,7 +137,17 @@ void DistillPageText(
   GetContentRootNodes(tree.root(), &content_root_nodes);
 
   for (const ui::AXNode* content_root_node : content_root_nodes) {
-    AddContentNodesToVector(content_root_node, &content_nodes);
+    std::vector<const ui::AXNode*> content_nodes_this_root;
+    AddContentNodesToVector(content_root_node, &content_nodes_this_root);
+    // If we didn't get any content for this root node, then fallback to using
+    // the text directly from the root node. We do this because at least we've
+    // identified this root node should be where the important content is.
+    if (content_nodes_this_root.empty()) {
+      content_nodes.emplace_back(content_root_node);
+    } else {
+      base::ranges::move(content_nodes_this_root,
+                         std::back_inserter(content_nodes));
+    }
   }
 
   std::vector<std::u16string> text_node_contents;
@@ -144,9 +163,8 @@ void DistillPageText(
         blink::WebString::FromASCII("document.body.innerText"));
 
     auto on_script_executed =
-        [](base::OnceCallback<void(const absl::optional<std::string>&)>
-               callback,
-           absl::optional<base::Value> value, base::TimeTicks start_time) {
+        [](base::OnceCallback<void(const std::optional<std::string>&)> callback,
+           std::optional<base::Value> value, base::TimeTicks start_time) {
           if (value->is_string()) {
             std::move(callback).Run(value->GetString());
             return;

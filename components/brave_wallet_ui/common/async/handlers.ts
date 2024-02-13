@@ -8,27 +8,14 @@ import { mapLimit } from 'async'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
-  RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
-  UnlockWalletPayloadType,
   UpdateUsetAssetType
 } from '../constants/action_types'
-import {
-  BraveWallet,
-  WalletState,
-  RefreshOpts,
-  UpdateAccountNamePayloadType
-} from '../../constants/types'
-import {
-  ImportAccountFromJsonPayloadType,
-  ImportAccountPayloadType,
-  RemoveAccountPayloadType
-} from '../../page/constants/action_types'
+import { BraveWallet, WalletState, RefreshOpts } from '../../constants/types'
 
 // Utils
 import getAPIProxy from './bridge'
 import {
-  refreshSitePermissions,
   refreshVisibleTokenInfo,
   refreshPortfolioFilterOptions,
   getNFTMetadata
@@ -66,25 +53,14 @@ async function refreshWalletInfo(store: Store, payload: RefreshOpts = {}) {
   // Populate tokens from blockchain registry.
   store.dispatch(WalletActions.getAllTokensList())
 
-  const braveWalletService = apiProxy.braveWalletService
-  const defaultEthereumResult =
-    await braveWalletService.getDefaultEthereumWallet()
   store.dispatch(
-    WalletActions.defaultEthereumWalletUpdated(
-      defaultEthereumResult.defaultWallet
-    )
+    walletApi.util.invalidateTags([
+      'ConnectedAccounts',
+      'DefaultEthWallet',
+      'DefaultSolWallet',
+      'IsMetaMaskInstalled'
+    ])
   )
-  const defaultSolanaResult = await braveWalletService.getDefaultSolanaWallet()
-  store.dispatch(
-    WalletActions.defaultSolanaWalletUpdated(defaultSolanaResult.defaultWallet)
-  )
-
-  const mmResult = await braveWalletService.isExternalWalletInstalled(
-    BraveWallet.ExternalWalletType.MetaMask
-  )
-  store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
-
-  await store.dispatch(refreshSitePermissions())
 }
 
 handler.on(
@@ -139,14 +115,6 @@ handler.on(WalletActions.backedUp.type, async (store) => {
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.defaultEthereumWalletChanged.type, async (store) => {
-  await refreshWalletInfo(store)
-})
-
-handler.on(WalletActions.defaultSolanaWalletChanged.type, async (store) => {
-  await refreshWalletInfo(store)
-})
-
 handler.on(WalletActions.defaultBaseCurrencyChanged.type, async (store) => {
   await refreshWalletInfo(store)
 })
@@ -155,20 +123,6 @@ handler.on(
   WalletActions.defaultBaseCryptocurrencyChanged.type,
   async (store) => {
     await refreshWalletInfo(store)
-  }
-)
-
-handler.on(WalletActions.lockWallet.type, async (store) => {
-  const keyringService = getAPIProxy().keyringService
-  keyringService.lock()
-})
-
-handler.on(
-  WalletActions.unlockWallet.type,
-  async (store: Store, payload: UnlockWalletPayloadType) => {
-    const keyringService = getAPIProxy().keyringService
-    const result = await keyringService.unlock(payload.password)
-    store.dispatch(WalletActions.hasIncorrectPassword(!result.success))
   }
 )
 
@@ -188,14 +142,7 @@ handler.on(
       }
     )
     const braveWalletService = getAPIProxy().braveWalletService
-    const defaultFiat = await braveWalletService.getDefaultBaseCurrency()
-    const defaultCrypto =
-      await braveWalletService.getDefaultBaseCryptocurrency()
-    const defaultCurrencies = {
-      fiat: defaultFiat.currency,
-      crypto: defaultCrypto.cryptocurrency
-    }
-    store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
+    store.dispatch(walletApi.util.invalidateTags(['DefaultFiatCurrency']))
     // Fetch Balances and Prices
     if (!state.isWalletLocked && state.isWalletCreated) {
       // refresh networks registry & selected network
@@ -302,10 +249,17 @@ handler.on(
   WalletActions.setUserAssetVisible.type,
   async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
     const { braveWalletService } = getAPIProxy()
-    await braveWalletService.setUserAssetVisible(
+
+    const { success } = await braveWalletService.setUserAssetVisible(
       payload.token,
       payload.isVisible
     )
+
+    if (!success) {
+      // token is probably not in the core-side assets list
+      // try adding it to the user tokens list
+      store.dispatch(WalletActions.addUserAsset(payload.token))
+    }
   }
 )
 
@@ -313,83 +267,6 @@ handler.on(
   WalletActions.refreshBalancesAndPriceHistory.type,
   async (store: Store) => {
     await refreshBalancesPricesAndHistory(store)
-  }
-)
-
-handler.on(
-  WalletActions.selectPortfolioTimeline.type,
-  async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {
-    store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
-  }
-)
-
-handler.on(
-  WalletActions.removeSitePermission.type,
-  async (store: Store, payload: RemoveSitePermissionPayloadType) => {
-    const braveWalletService = getAPIProxy().braveWalletService
-    await braveWalletService.resetPermission(payload.accountId)
-    await refreshWalletInfo(store)
-  }
-)
-
-handler.on(
-  WalletActions.updateAccountName.type,
-  async (_store: Store, payload: UpdateAccountNamePayloadType) => {
-    const { keyringService } = getAPIProxy()
-    const result = await keyringService.setAccountName(
-      payload.accountId,
-      payload.name
-    )
-    return result.success
-  }
-)
-
-handler.on(
-  WalletActions.removeAccount.type,
-  async (_store: Store, payload: RemoveAccountPayloadType) => {
-    const { keyringService } = getAPIProxy()
-    await keyringService.removeAccount(payload.accountId, payload.password)
-  }
-)
-
-handler.on(
-  WalletActions.importAccount.type,
-  async (store: Store, payload: ImportAccountPayloadType) => {
-    const { keyringService } = getAPIProxy()
-    const result =
-      payload.coin === BraveWallet.CoinType.FIL && payload.network
-        ? await keyringService.importFilecoinAccount(
-            payload.accountName,
-            payload.privateKey,
-            payload.network
-          )
-        : await keyringService.importAccount(
-            payload.accountName,
-            payload.privateKey,
-            payload.coin
-          )
-    if (result.account) {
-      store.dispatch(WalletActions.setImportAccountError(false))
-    } else {
-      store.dispatch(WalletActions.setImportAccountError(true))
-    }
-  }
-)
-
-handler.on(
-  WalletActions.importAccountFromJson.type,
-  async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
-    const { keyringService } = getAPIProxy()
-    const result = await keyringService.importAccountFromJson(
-      payload.accountName,
-      payload.password,
-      payload.json
-    )
-    if (result.account) {
-      store.dispatch(WalletActions.setImportAccountError(false))
-    } else {
-      store.dispatch(WalletActions.setImportAccountError(true))
-    }
   }
 )
 

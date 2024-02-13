@@ -6,15 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_FIXED_ROTATING_HASH_USER_DATA_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_FIXED_ROTATING_HASH_USER_DATA_UTIL_H_
 
+#include <optional>
 #include <string>
-
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 struct TransactionInfo;
 
-absl::optional<std::string> BuildRotatingHash(
+std::optional<std::string> BuildRotatingHash(
     const TransactionInfo& transaction);
 
 }  // namespace brave_ads

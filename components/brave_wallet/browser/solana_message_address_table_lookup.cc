@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
 
+#include <optional>
+
 #include "base/base64.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
@@ -15,12 +17,12 @@ constexpr char kAccountKey[] = "account_key";
 constexpr char kBase64EncodedWriteIndexes[] = "base64_encoded_write_indexes";
 constexpr char kBase64EncodedReadIndexes[] = "base64_encoded_read_indexes";
 
-absl::optional<std::vector<uint8_t>> GetIndexesFromBase64EncodedStringDict(
+std::optional<std::vector<uint8_t>> GetIndexesFromBase64EncodedStringDict(
     const base::Value::Dict& value,
     const std::string& dict_key) {
   const std::string* base64_encoded_indexes = value.FindString(dict_key);
   if (!base64_encoded_indexes) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return base::Base64Decode(*base64_encoded_indexes);
 }
@@ -65,33 +67,33 @@ void SolanaMessageAddressTableLookup::Serialize(
 }
 
 // static
-absl::optional<SolanaMessageAddressTableLookup>
+std::optional<SolanaMessageAddressTableLookup>
 SolanaMessageAddressTableLookup::Deserialize(const std::vector<uint8_t>& bytes,
                                              size_t* bytes_index) {
   DCHECK(bytes_index);
   if (*bytes_index >= bytes.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Account key.
   if (*bytes_index + kSolanaPubkeySize > bytes.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto account_key = SolanaAddress::FromBytes(
       base::make_span(bytes).subspan(*bytes_index, kSolanaPubkeySize));
   if (!account_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   *bytes_index += kSolanaPubkeySize;
 
   auto write_indexes = CompactArrayDecode(bytes, bytes_index);
   if (!write_indexes || write_indexes->size() > UINT8_MAX) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto read_indexes = CompactArrayDecode(bytes, bytes_index);
   if (!read_indexes || read_indexes->size() > UINT8_MAX) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaMessageAddressTableLookup(*account_key, *write_indexes,
@@ -107,27 +109,27 @@ base::Value::Dict SolanaMessageAddressTableLookup::ToValue() const {
 }
 
 // static
-absl::optional<SolanaMessageAddressTableLookup>
+std::optional<SolanaMessageAddressTableLookup>
 SolanaMessageAddressTableLookup::FromValue(const base::Value::Dict& value) {
   const std::string* account_key_str = value.FindString(kAccountKey);
   if (!account_key_str) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto account_key = SolanaAddress::FromBase58(*account_key_str);
   if (!account_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto write_indexes =
       GetIndexesFromBase64EncodedStringDict(value, kBase64EncodedWriteIndexes);
   if (!write_indexes) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto read_indexes =
       GetIndexesFromBase64EncodedStringDict(value, kBase64EncodedReadIndexes);
   if (!read_indexes) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaMessageAddressTableLookup(*account_key, *write_indexes,
@@ -148,7 +150,7 @@ SolanaMessageAddressTableLookup::ToMojomArray(
 }
 
 // static
-absl::optional<std::vector<SolanaMessageAddressTableLookup>>
+std::optional<std::vector<SolanaMessageAddressTableLookup>>
 SolanaMessageAddressTableLookup::FromMojomArray(
     const std::vector<mojom::SolanaMessageAddressTableLookupPtr>&
         mojom_lookups) {
@@ -156,7 +158,7 @@ SolanaMessageAddressTableLookup::FromMojomArray(
   for (const auto& mojom_lookup : mojom_lookups) {
     auto account_key = SolanaAddress::FromBase58(mojom_lookup->account_key);
     if (!account_key) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     ret_arr.emplace_back(SolanaMessageAddressTableLookup(
         *account_key, mojom_lookup->write_indexes, mojom_lookup->read_indexes));

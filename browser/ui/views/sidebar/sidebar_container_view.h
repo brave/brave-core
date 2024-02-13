@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
@@ -109,8 +110,8 @@ class SidebarContainerView
   void OnItemAdded(const sidebar::SidebarItem& item,
                    size_t index,
                    bool user_gesture) override;
-  void OnActiveIndexChanged(absl::optional<size_t> old_index,
-                            absl::optional<size_t> new_index) override;
+  void OnActiveIndexChanged(std::optional<size_t> old_index,
+                            std::optional<size_t> new_index) override;
   void OnItemRemoved(size_t index) override;
 
   // NOTE: If SidePanelEntryObserver could be used from outside of view,

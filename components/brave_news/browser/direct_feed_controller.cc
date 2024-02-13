@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -52,7 +53,7 @@ DirectFeedController::~DirectFeedController() = default;
 bool DirectFeedController::AddDirectFeedPref(
     const GURL& feed_url,
     const std::string& title,
-    const absl::optional<std::string>& id) {
+    const std::optional<std::string>& id) {
   // Check if feed url already exists
   const auto& existing_feeds = prefs_->GetDict(prefs::kBraveNewsDirectFeeds);
   for (const auto&& [key, value] : existing_feeds) {
@@ -185,6 +186,9 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
     }
     return;
   }
+
+  // If we didn't get a valid response, call back with no results.
+  OnFindFeedsImplResponse(feed_url, {});
 }
 
 void DirectFeedController::OnFindFeedsImplResponse(

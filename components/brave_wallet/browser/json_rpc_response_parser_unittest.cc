@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -46,20 +48,20 @@ TEST(JsonRpcResponseParserUnitTest, ParseBoolResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000001\"}";
-  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::make_optional(true));
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), std::make_optional(true));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000000\"}";
-  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::make_optional(false));
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), std::make_optional(false));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x00000000000000000000000000000000000000000\"}";
-  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::nullopt);
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), std::nullopt);
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}";
-  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::nullopt);
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), std::nullopt);
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
@@ -350,7 +352,7 @@ TEST(JsonRpcResponseParserUnitTest, RPCResponse) {
   ASSERT_TRUE(response);
   EXPECT_EQ(response->jsonrpc, "2.0");
   EXPECT_EQ(response->id, base::Value(2));
-  EXPECT_EQ(response->result, absl::nullopt);
+  EXPECT_EQ(response->result, std::nullopt);
   ASSERT_TRUE(response->error);
   EXPECT_EQ(response->error->code, -32601);
   EXPECT_EQ(response->error->message, "method does not exist");

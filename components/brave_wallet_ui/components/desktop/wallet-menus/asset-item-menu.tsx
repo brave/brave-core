@@ -22,8 +22,10 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
   makeDepositFundsRoute,
+  makeFundWalletRoute,
   makeSendRoute
 } from '../../../utils/routes-utils'
+import { getAssetIdKey } from '../../../utils/asset-utils'
 
 // Components
 import {
@@ -95,8 +97,8 @@ export const AssetItemMenu = (props: Props) => {
 
   // Methods
   const onClickBuy = React.useCallback(() => {
-    history.push(WalletRoutes.FundWalletPage.replace(':tokenId?', asset.symbol))
-  }, [asset.symbol])
+    history.push(makeFundWalletRoute(getAssetIdKey(asset)))
+  }, [asset])
 
   const onClickSend = React.useCallback(() => {
     if (account) {
@@ -111,8 +113,8 @@ export const AssetItemMenu = (props: Props) => {
   }, [])
 
   const onClickDeposit = React.useCallback(() => {
-    history.push(makeDepositFundsRoute(asset.symbol))
-  }, [asset.symbol])
+    history.push(makeDepositFundsRoute(getAssetIdKey(asset)))
+  }, [asset])
 
   const onClickSell = React.useCallback(() => {
     setSelectedSellAsset(asset)
@@ -120,13 +122,10 @@ export const AssetItemMenu = (props: Props) => {
   }, [setSelectedSellAsset, asset])
 
   const onOpenSellAssetLink = React.useCallback(() => {
-    if (account?.address) {
-      openSellAssetLink({
-        sellAddress: account.address,
-        sellAsset: selectedSellAsset
-      })
-    }
-  }, [account?.address, openSellAssetLink])
+    openSellAssetLink({
+      sellAsset: selectedSellAsset
+    })
+  }, [openSellAssetLink, selectedSellAsset])
 
   return (
     <StyledWrapper yPosition={42}>

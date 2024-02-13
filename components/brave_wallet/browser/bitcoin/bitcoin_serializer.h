@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_SERIALIZER_H_
 
 #include <map>
+#include <optional>
 #include <set>
 #include <string>
 #include <vector>
@@ -17,34 +18,13 @@
 
 namespace brave_wallet {
 
-class BitcoinSerializerStream {
- public:
-  explicit BitcoinSerializerStream(std::vector<uint8_t>* to) : to_(to) {}
-
-  void Push8AsLE(uint8_t i);
-  void Push16AsLE(uint16_t i);
-  void Push32AsLE(uint32_t i);
-  void Push64AsLE(uint64_t i);
-  void PushVarInt(uint64_t i);
-  void PushSizeAndBytes(base::span<const uint8_t> bytes);
-  void PushBytes(base::span<const uint8_t> bytes);
-  void PushBytesReversed(base::span<const uint8_t> bytes);
-
-  uint32_t serialized_bytes() const { return serialized_bytes_; }
-
- private:
-  uint32_t serialized_bytes_ = 0;
-  std::vector<uint8_t>* to() { return to_.get(); }
-  raw_ptr<std::vector<uint8_t>> to_;
-};
-
 // TODO(apaymyshev): test with reference test vectors.
 class BitcoinSerializer {
  public:
   static std::vector<uint8_t> AddressToScriptPubkey(const std::string& address,
                                                     bool testnet);
 
-  static absl::optional<SHA256HashArray> SerializeInputForSign(
+  static std::optional<SHA256HashArray> SerializeInputForSign(
       const BitcoinTransaction& tx,
       size_t input_index);
 
@@ -55,8 +35,15 @@ class BitcoinSerializer {
   static std::vector<uint8_t> SerializeSignedTransaction(
       const BitcoinTransaction& tx);
 
-  static uint32_t CalcTransactionWeight(const BitcoinTransaction& tx);
-  static uint32_t CalcVSize(const BitcoinTransaction& tx);
+  static uint32_t CalcOutputVBytesInTransaction(
+      const BitcoinTransaction::TxOutput& output);
+  static uint32_t CalcInputVBytesInTransaction(
+      const BitcoinTransaction::TxInput& input);
+
+  static uint32_t CalcTransactionWeight(const BitcoinTransaction& tx,
+                                        bool dummy_signatures);
+  static uint32_t CalcTransactionVBytes(const BitcoinTransaction& tx,
+                                        bool dummy_signatures);
 };
 
 }  // namespace brave_wallet

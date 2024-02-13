@@ -1,5 +1,5 @@
 diff --git a/components/vector_icons/aggregate_vector_icons.py b/components/vector_icons/aggregate_vector_icons.py
-index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..fe2065a020661fc59807a39b968e7673fd247f5c 100644
+index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..cdd7f33b20f747aa093ce2e0d1462baa86c0fe21 100644
 --- a/components/vector_icons/aggregate_vector_icons.py
 +++ b/components/vector_icons/aggregate_vector_icons.py
 @@ -102,7 +102,7 @@ def ExtractIconReps(icon_file_name):
@@ -48,7 +48,7 @@ index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..fe2065a020661fc59807a39b968e7673
    output_cc.close()
  
  
-+from import_inline import inline_file_from_src; inline_file_from_src('brave/chromium_src/components/vector_icons/aggregate_vector_icons.py', globals(), locals())
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
  def main():
    parser = optparse.OptionParser()
    parser.add_option("--working_directory",

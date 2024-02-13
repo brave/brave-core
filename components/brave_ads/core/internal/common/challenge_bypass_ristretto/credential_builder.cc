@@ -20,40 +20,40 @@ constexpr char kTokenPreimageKey[] = "t";
 
 }  // namespace
 
-absl::optional<base::Value::Dict> BuildCredential(
+std::optional<base::Value::Dict> BuildCredential(
     const UnblindedToken& unblinded_token,
     const std::string& payload) {
   CHECK(unblinded_token.has_value());
   CHECK(!payload.empty());
 
-  absl::optional<VerificationKey> verification_key =
+  std::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
   if (!verification_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<VerificationSignature> verification_signature =
+  const std::optional<VerificationSignature> verification_signature =
       verification_key->Sign(payload);
   if (!verification_signature) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<std::string> verification_signature_base64 =
+  const std::optional<std::string> verification_signature_base64 =
       verification_signature->EncodeBase64();
   if (!verification_signature_base64) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<TokenPreimage> token_preimage =
+  const std::optional<TokenPreimage> token_preimage =
       unblinded_token.GetTokenPreimage();
   if (!token_preimage) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<std::string> token_preimage_base64 =
+  const std::optional<std::string> token_preimage_base64 =
       token_preimage->EncodeBase64();
   if (!token_preimage_base64) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return base::Value::Dict()

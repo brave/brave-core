@@ -9,7 +9,6 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
@@ -19,8 +18,8 @@ namespace brave_ads {
 TransactionInfo BuildTransaction(const std::string& creative_instance_id,
                                  const std::string& segment,
                                  const double value,
-                                 AdType ad_type,
-                                 ConfirmationType confirmation_type) {
+                                 const AdType ad_type,
+                                 const ConfirmationType confirmation_type) {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
@@ -40,14 +39,14 @@ TransactionInfo BuildTransaction(const std::string& creative_instance_id,
 TransactionInfo AddTransaction(const std::string& creative_instance_id,
                                const std::string& segment,
                                const double value,
-                               AdType ad_type,
-                               ConfirmationType confirmation_type,
+                               const AdType ad_type,
+                               const ConfirmationType confirmation_type,
                                AddTransactionCallback callback) {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
-  TransactionInfo transaction = BuildTransaction(
+  const TransactionInfo transaction = BuildTransaction(
       creative_instance_id, segment, value, ad_type, confirmation_type);
 
   database::table::Transactions database_table;

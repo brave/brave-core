@@ -266,23 +266,6 @@ TEST_F(BraveAdsTabManagerTest, GetVisible) {
             TabManager::GetInstance().GetVisible());
 }
 
-TEST_F(BraveAdsTabManagerTest, GetLastVisible) {
-  // Arrange
-  OpenTab(/*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-          /*is_visible=*/true);
-
-  OpenTab(/*tab_id=*/2,
-          /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-          /*is_visible=*/true);
-
-  // Act & Assert
-  EXPECT_EQ(TabInfo(
-                /*id=*/1,
-                /*redirect_chain=*/{GURL("https://brave.com")},
-                /*is_playing_media=*/false),
-            TabManager::GetInstance().GetLastVisible());
-}
-
 TEST_F(BraveAdsTabManagerTest, GetForId) {
   // Arrange
   OpenTab(/*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},

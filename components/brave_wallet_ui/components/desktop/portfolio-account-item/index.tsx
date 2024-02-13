@@ -7,11 +7,7 @@ import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import {
-  AccountPageTabs,
-  BraveWallet,
-  DefaultCurrencies
-} from '../../../constants/types'
+import { AccountPageTabs, BraveWallet } from '../../../constants/types'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks/explorer'
@@ -68,7 +64,6 @@ import { BraveRewardsIndicator, VerticalSpacer } from '../../shared/style'
 
 interface Props {
   account: BraveWallet.AccountInfo
-  defaultCurrencies: DefaultCurrencies
   asset: BraveWallet.BlockchainToken
   assetBalance: string
   selectedNetwork?: BraveWallet.NetworkInfo | null
@@ -83,7 +78,6 @@ export const PortfolioAccountItem = (props: Props) => {
     assetBalance,
     account,
     selectedNetwork,
-    defaultCurrencies,
     hideBalances,
     isSellSupported,
     showSellModal
@@ -119,7 +113,8 @@ export const PortfolioAccountItem = (props: Props) => {
     [asset]
   )
 
-  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  // Queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
     defaultFiatCurrency && tokenPriceIds.length
@@ -140,10 +135,17 @@ export const PortfolioAccountItem = (props: Props) => {
     return new Amount(assetBalance).isZero()
   }, [assetBalance])
 
+  const blockExplorerSupported = !!account.address
+
   // Methods
   const onSelectAccount = React.useCallback(() => {
     history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
   }, [history, account])
+
+  const onViewAccountOnBlockExplorer = React.useCallback(
+    onClickViewOnBlockExplorer('address', account.address),
+    [account]
+  )
 
   const onHideAccountMenu = React.useCallback(() => {
     setShowAccountMenu(false)
@@ -195,7 +197,7 @@ export const PortfolioAccountItem = (props: Props) => {
               {`${formattedAssetBalance} ${asset.symbol}`}
             </AssetBalanceText>
             <FiatBalanceText>
-              {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+              {fiatBalance.formatAsFiat(defaultFiatCurrency)}
             </FiatBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
@@ -211,10 +213,11 @@ export const PortfolioAccountItem = (props: Props) => {
                 <RewardsMenu />
               ) : (
                 <PortfolioAccountMenu
-                  onClickViewOnExplorer={onClickViewOnBlockExplorer(
-                    'address',
-                    account.address
-                  )}
+                  onClickViewOnExplorer={
+                    blockExplorerSupported
+                      ? onViewAccountOnBlockExplorer
+                      : undefined
+                  }
                   onClickSell={
                     isSellSupported && !isAssetsBalanceZero
                       ? showSellModal

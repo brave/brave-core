@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FILECOIN_KEYRING_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -34,8 +34,8 @@ class FilecoinKeyring : public HDKeyring {
                                     mojom::FilecoinAddressProtocol protocol);
   void RestoreFilecoinAccount(const std::vector<uint8_t>& input_key,
                               const std::string& address);
-  absl::optional<std::string> SignTransaction(const std::string& address,
-                                              const FilTransaction* tx);
+  std::optional<std::string> SignTransaction(const std::string& address,
+                                             const FilTransaction* tx);
   std::string EncodePrivateKeyForExport(const std::string& address) override;
 
  private:

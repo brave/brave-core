@@ -29,7 +29,7 @@ BraveTabMenuModel::BraveTabMenuModel(
       is_vertical_tab_(is_vertical_tab) {
   web_contents_ = tab_strip_model->GetWebContentsAt(index);
   if (web_contents_) {
-    Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
+    Browser* browser = chrome::FindBrowserWithTab(web_contents_);
     restore_service_ =
         TabRestoreServiceFactory::GetForProfile(browser->profile());
   }
@@ -48,14 +48,17 @@ BraveTabMenuModel::~BraveTabMenuModel() = default;
 int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   int id = IDS_RESTORE_TAB;
 
-  if (!web_contents_)
+  if (!web_contents_) {
     return id;
+  }
 
-  if (!restore_service_)
+  if (!restore_service_) {
     return id;
+  }
 
-  if (!restore_service_->IsLoaded() || restore_service_->entries().empty())
+  if (!restore_service_->IsLoaded() || restore_service_->entries().empty()) {
     return id;
+  }
 
   if (restore_service_->entries().front()->type ==
       sessions::TabRestoreService::WINDOW) {
@@ -96,6 +99,8 @@ void BraveTabMenuModel::Build(int selected_tab_count) {
 
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
+  AddItemWithStringId(CommandBringAllTabsToThisWindow,
+                      IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
 
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddCheckItemWithStringId(CommandShowVerticalTabs,

@@ -19,6 +19,7 @@ import org.chromium.chrome.browser.app.BraveActivity.BraveActivityNotFoundExcept
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -175,7 +176,10 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.getMiscAndroidMetrics().recordPrivacyHubEnabledStatus(enabled);
+            MiscAndroidMetrics miscAndroidMetrics = activity.getMiscAndroidMetrics();
+            if (miscAndroidMetrics != null) {
+                miscAndroidMetrics.recordPrivacyHubEnabledStatus(enabled);
+            }
         } catch (BraveActivityNotFoundException e) {
             Log.e(TAG, "Could not report privacy hub enabled change to P3A: " + e);
         }

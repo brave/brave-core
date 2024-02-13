@@ -6,8 +6,8 @@
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
@@ -84,18 +84,6 @@ TEST_F(FilTxStateManagerUnitTest, FilTxMetaAndValue) {
   auto meta_from_value = fil_tx_state_manager_->ValueToFilTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);
   EXPECT_EQ(*meta_from_value, meta);
-}
-
-TEST_F(FilTxStateManagerUnitTest, GetTxPrefPathPrefix) {
-  EXPECT_EQ("filecoin.mainnet", fil_tx_state_manager_->GetTxPrefPathPrefix(
-                                    mojom::kFilecoinMainnet));
-  EXPECT_EQ("filecoin.testnet", fil_tx_state_manager_->GetTxPrefPathPrefix(
-                                    mojom::kFilecoinTestnet));
-  EXPECT_EQ(
-      "filecoin.http://localhost:1234/rpc/v0",
-      fil_tx_state_manager_->GetTxPrefPathPrefix(mojom::kLocalhostChainId));
-  EXPECT_EQ("filecoin",
-            fil_tx_state_manager_->GetTxPrefPathPrefix(absl::nullopt));
 }
 
 }  // namespace brave_wallet

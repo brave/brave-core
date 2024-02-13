@@ -1,0 +1,23 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Listed feature definitions are appended to the existing Chromium ones. To
+// fully replace definitions use "replace!" prefix like so:
+// "replace!sockets.tcp" : { ... }.
+
+// Command to get allowlist ID:
+// Brave Shields       A321D47A2B4CA86898167A55CA8B2E02385EA7CD: echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1 | tr '[:lower:]' '[:upper:]'
+
+{
+  "settingsPrivate": [
+    {
+      "channel": "stable",
+      "extension_types": ["extension"],
+      "allowlist": [
+        "A321D47A2B4CA86898167A55CA8B2E02385EA7CD" // Brave Shields
+      ]
+    }
+  ]
+}

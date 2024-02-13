@@ -92,10 +92,10 @@ void SkusUrlLoaderImpl::OnFetchComplete(
   bool success = api_request_result.IsResponseCodeValid();
 
   // Body might be empty here which is still a success.
+  auto body = api_request_result.SerializeBodyToString();
   std::vector<uint8_t> body_bytes;
-  if (!api_request_result.body().empty()) {
-    body_bytes.assign(api_request_result.body().begin(),
-                      api_request_result.body().end());
+  if (!body.empty()) {
+    body_bytes.assign(body.begin(), body.end());
   }
 
   std::vector<std::string> headers;

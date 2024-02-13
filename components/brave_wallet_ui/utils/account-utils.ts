@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assertNotReached } from 'chrome://resources/js/assert_ts.js'
+import { assertNotReached } from 'chrome://resources/js/assert.js'
 import { getLocale } from '../../common/locale'
 
 // types
@@ -71,10 +71,9 @@ export const getAccountType = (
 }
 
 export const entityIdFromAccountId = (
-  accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>
 ) => {
-  // TODO(apaymyshev): should use uniqueKey always
-  return accountId.address || accountId.uniqueKey
+  return accountId.uniqueKey
 }
 
 export const findAccountByAddress = (
@@ -93,29 +92,14 @@ export const findAccountByAddress = (
 }
 
 export const findAccountByAccountId = (
-  accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>,
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>,
   accounts: EntityState<BraveWallet.AccountInfo> | undefined
 ): BraveWallet.AccountInfo | undefined => {
   if (!accounts) {
     return undefined
   }
 
-  for (const id of accounts.ids) {
-    const entity = accounts.entities[id]
-    if (!entity) {
-      continue
-    }
-    if (
-      entity.accountId.address.toLowerCase() ===
-        accountId.address.toLowerCase() ||
-      entity.accountId.uniqueKey.toLowerCase() ===
-        accountId.uniqueKey.toLowerCase()
-    ) {
-      return entity
-    }
-  }
-
-  return undefined
+  return accounts.entities[entityIdFromAccountId(accountId)]
 }
 
 export const getAddressLabel = (
@@ -156,7 +140,10 @@ export const keyringIdForNewAccount = (
   }
 
   if (coin === BraveWallet.CoinType.FIL) {
-    if (chainId === BraveWallet.FILECOIN_MAINNET) {
+    if (
+      chainId === BraveWallet.FILECOIN_MAINNET ||
+      chainId === BraveWallet.LOCALHOST_CHAIN_ID
+    ) {
       return BraveWallet.KeyringId.kFilecoin
     }
     if (chainId === BraveWallet.FILECOIN_TESTNET) {
@@ -185,19 +172,28 @@ export const keyringIdForNewAccount = (
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
 }
 
-export const getAccountTypeDescription = (coin: BraveWallet.CoinType) => {
-  switch (coin) {
+const bitcoinTestnetKeyrings = [BraveWallet.KeyringId.kBitcoin84Testnet]
+const zcashTestnetKeyrings = [BraveWallet.KeyringId.kZCashTestnet]
+
+export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
+  switch (accountId.coin) {
     case BraveWallet.CoinType.ETH:
-      return getLocale('braveWalletETHAccountDescrption')
+      return getLocale('braveWalletETHAccountDescription')
     case BraveWallet.CoinType.SOL:
-      return getLocale('braveWalletSOLAccountDescrption')
+      return getLocale('braveWalletSOLAccountDescription')
     case BraveWallet.CoinType.FIL:
-      return getLocale('braveWalletFILAccountDescrption')
+      return getLocale('braveWalletFILAccountDescription')
     case BraveWallet.CoinType.BTC:
-      return getLocale('braveWalletBTCAccountDescrption')
+      if (bitcoinTestnetKeyrings.includes(accountId.keyringId)) {
+        return getLocale('braveWalletBTCTestnetAccountDescription')
+      }
+      return getLocale('braveWalletBTCMainnetAccountDescription')
     case BraveWallet.CoinType.ZEC:
-      return getLocale('braveWalletZECAccountDescrption')
+      if (zcashTestnetKeyrings.includes(accountId.keyringId)) {
+        return getLocale('braveWalletZECTestnetAccountDescription')
+      }
+      return getLocale('braveWalletZECAccountDescription')
     default:
-      assertNotReached(`Unknown coin ${coin}`)
+      assertNotReached(`Unknown coin ${accountId.coin}`)
   }
 }

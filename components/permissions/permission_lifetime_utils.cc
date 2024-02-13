@@ -6,6 +6,7 @@
 #include "brave/components/permissions/permission_lifetime_utils.h"
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -18,17 +19,16 @@
 #include "components/permissions/features.h"
 #include "components/permissions/permission_request.h"
 #include "net/base/features.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace permissions {
 
 namespace {
 
 // Returns manually set option to ease manual testing.
-absl::optional<PermissionLifetimeOption> GetTestSecondsOption() {
+std::optional<PermissionLifetimeOption> GetTestSecondsOption() {
   const char kPermissionLifetimeTestSeconds[] =
       "permission-lifetime-test-seconds";
-  static absl::optional<int> test_seconds;
+  static std::optional<int> test_seconds;
   if (!test_seconds.has_value()) {
     const std::string& test_seconds_str =
         base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
@@ -37,7 +37,7 @@ absl::optional<PermissionLifetimeOption> GetTestSecondsOption() {
     test_seconds = base::StringToInt(test_seconds_str, &val) ? val : 0;
   }
   if (!*test_seconds) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return PermissionLifetimeOption(
       base::UTF8ToUTF16(base::StringPrintf("%d seconds", *test_seconds)),
@@ -65,7 +65,7 @@ std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
                        base::Days(7));
   options.emplace_back(brave_l10n::GetLocalizedResourceUTF16String(
                            IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
-                       absl::nullopt);
+                       std::nullopt);
   DCHECK_LE(options.size(), kOptionsCount);
 
   // This is strictly for manual testing.
@@ -90,7 +90,7 @@ bool ShouldShowLifetimeOptions(PermissionPrompt::Delegate* delegate) {
 void SetRequestsLifetime(const std::vector<PermissionLifetimeOption>& options,
                          size_t index,
                          PermissionPrompt::Delegate* delegate) {
-  for (auto* request : delegate->Requests()) {
+  for (PermissionRequest* request : delegate->Requests()) {
     SetRequestLifetime(options, index, request);
   }
 }

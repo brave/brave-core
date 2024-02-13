@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -23,7 +24,7 @@ TEST(EthABIDecoderTest, ABIDecodeAddress) {
       "0x000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       &data));
   auto decoded = ABIDecode({"address"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
 
   ASSERT_EQ(tx_params.size(), 1UL);
@@ -46,7 +47,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint8) {
       "0x00000000000000000000000000000000000000000000000000000000000000ff",
       &data));
   auto decoded = ABIDecode({"uint8"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint8");
@@ -58,7 +59,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint8) {
       "ff",
       &data));
   decoded = ABIDecode({"uint8"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint8");
@@ -85,7 +86,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint16) {
       "0x0000000000000000000000000000000000000000000000000000000000000fff",
       &data));
   auto decoded = ABIDecode({"uint16"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint16");
@@ -97,7 +98,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint16) {
       "ff",
       &data));
   decoded = ABIDecode({"uint16"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint16");
@@ -124,7 +125,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint32) {
       "0x00000000000000000000000000000000000000000000000000000000ffffffff",
       &data));
   auto decoded = ABIDecode({"uint32"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint32");
@@ -136,7 +137,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint32) {
       "ff",
       &data));
   decoded = ABIDecode({"uint32"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint32");
@@ -163,7 +164,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint64) {
       "0x000000000000000000000000000000000000000000000000ffffffffffffffff",
       &data));
   auto decoded = ABIDecode({"uint64"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint64");
@@ -175,7 +176,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint64) {
       "ff",
       &data));
   decoded = ABIDecode({"uint64"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint64");
@@ -202,7 +203,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint128) {
       "0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff",
       &data));
   auto decoded = ABIDecode({"uint128"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint128");
@@ -214,7 +215,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint128) {
       "ff",
       &data));
   decoded = ABIDecode({"uint128"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint128");
@@ -241,7 +242,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint256) {
       "0x00000000000000000000000000000000000000000000000000000000000000ff",
       &data));
   auto decoded = ABIDecode({"uint256"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint256");
@@ -257,7 +258,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint256) {
       "ff",
       &data));
   decoded = ABIDecode({"uint256"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "uint256");
@@ -274,7 +275,7 @@ TEST(EthABIDecoderTest, ABIDecodeBool) {
       "0x0000000000000000000000000000000000000000000000000000000000000000",
       &data));
   auto decoded = ABIDecode({"bool"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "bool");
@@ -285,7 +286,7 @@ TEST(EthABIDecoderTest, ABIDecodeBool) {
       "0x0000000000000000000000000000000000000000000000000000000000000001",
       &data));
   decoded = ABIDecode({"bool"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "bool");
@@ -301,7 +302,7 @@ TEST(EthABIDecoderTest, ABIDecodeBool) {
       "00",
       &data));
   decoded = ABIDecode({"bool"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
   ASSERT_EQ(tx_params.size(), 1UL);
   EXPECT_EQ(tx_params[0], "bool");
@@ -320,7 +321,7 @@ TEST(EthABIDecoderTest, ABIDecodeAddressArray) {
       "0000000000000000000000000000000000000000000000000000000000000fff",
       &data));
   auto decoded = ABIDecode({"address[]"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
 
   ASSERT_EQ(tx_params.size(), 1UL);
@@ -335,7 +336,7 @@ TEST(EthABIDecoderTest, ABIDecodeAddressArray) {
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
   decoded = ABIDecode({"address[]"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
 
   ASSERT_EQ(tx_params.size(), 1UL);
@@ -351,7 +352,7 @@ TEST(EthABIDecoderTest, ABIDecodeAddressArray) {
       "ffff",
       &data));
   decoded = ABIDecode({"address[]"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
 
   ASSERT_EQ(tx_params.size(), 1UL);
@@ -408,7 +409,7 @@ TEST(EthABIDecoderTest, ABIDecodeBytes) {
       "ffff",
       &data));
   auto decoded = ABIDecode({"bytes"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
 
   ASSERT_EQ(tx_params.size(), 1UL);
@@ -423,7 +424,7 @@ TEST(EthABIDecoderTest, ABIDecodeBytes) {
       "ffffff",  // extraneous tail data,
       &data));
   decoded = ABIDecode({"bytes"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
 
   ASSERT_EQ(tx_params.size(), 1UL);
@@ -436,7 +437,7 @@ TEST(EthABIDecoderTest, ABIDecodeBytes) {
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
   decoded = ABIDecode({"bytes"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
 
   ASSERT_EQ(tx_params.size(), 1UL);
@@ -481,7 +482,7 @@ TEST(EthABIDecoderTest, ABIDecodeUnknownType) {
       "0x00000000000000000000000000000000000000000000000000000000000000ff",
       &data));
   auto decoded = ABIDecode({"supertype"}, data);
-  ASSERT_NE(decoded, absl::nullopt);
+  ASSERT_NE(decoded, std::nullopt);
   std::tie(tx_params, tx_args) = *decoded;
 
   ASSERT_EQ(tx_params.size(), 1UL);
@@ -492,12 +493,12 @@ TEST(EthABIDecoderTest, ABIDecodeUnknownType) {
 
 TEST(EthABIDecoderTest, UniswapEncodedPathDecodeValid) {
   // Single-hop swap: WETH → STG
-  absl::optional<std::vector<std::string>> path;
+  std::optional<std::vector<std::string>> path;
   path = UniswapEncodedPathDecode(
       "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"  // WETH
       "002710"                                      // POOL FEE (10000)
       "af5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6");  // STG
-  ASSERT_NE(path, absl::nullopt);
+  ASSERT_NE(path, std::nullopt);
   ASSERT_EQ(path->size(), 2UL);
   ASSERT_EQ(path->at(0), "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
   ASSERT_EQ(path->at(1), "0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6");
@@ -509,7 +510,7 @@ TEST(EthABIDecoderTest, UniswapEncodedPathDecodeValid) {
       "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"    // USDC
       "0001f4"                                      // POOL FEE (500)
       "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");  // WETH
-  ASSERT_NE(path, absl::nullopt);
+  ASSERT_NE(path, std::nullopt);
   ASSERT_EQ(path->size(), 3UL);
   ASSERT_EQ(path->at(0), "0xc98d64da73a6616c42117b582e832812e7b8d57f");
   ASSERT_EQ(path->at(1), "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");

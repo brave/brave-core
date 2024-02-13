@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -94,7 +93,7 @@ void PurchaseIntentResource::Reset() {
 }
 
 void PurchaseIntentResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale=*/) {
+    const std::string& /*locale*/) {
   MaybeLoad();
 }
 

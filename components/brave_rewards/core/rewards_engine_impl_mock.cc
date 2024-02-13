@@ -7,9 +7,6 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
-
-using ::testing::_;
 using ::testing::Return;
 
 namespace brave_rewards::internal {
@@ -20,15 +17,9 @@ AddMockRewardsClient::~AddMockRewardsClient() = default;
 
 MockRewardsEngineImpl::MockRewardsEngineImpl()
     : RewardsEngineImpl(
-          mock_client_receiver_.BindNewEndpointAndPassDedicatedRemote()) {
-  ON_CALL(*this, InitializeDatabase(_))
-      .WillByDefault([](ResultCallback callback) {
-        std::move(callback).Run(mojom::Result::OK);
-      });
+          mock_client_receiver_.BindNewEndpointAndPassDedicatedRemote(),
+          mojom::RewardsEngineOptions()) {
   ON_CALL(*this, database()).WillByDefault(Return(&mock_database_));
-
-  const auto result = mojom::RewardsEngineAsyncWaiter(this).Initialize();
-  DCHECK(result == mojom::Result::OK);
 }
 
 MockRewardsEngineImpl::~MockRewardsEngineImpl() = default;

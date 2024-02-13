@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_EMBEDDING_BASED_CREATIVE_AD_EMBEDDING_BASED_PREDICTOR_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_EMBEDDING_BASED_CREATIVE_AD_EMBEDDING_BASED_PREDICTOR_H_
 
+#include <optional>
 #include <vector>
 
 #include "base/check.h"
@@ -13,13 +14,12 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/sampling/creative_ad_embedding_based_predictor_sampling.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/voting/creative_ad_embedding_based_predictor_voting.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 template <typename T>
-absl::optional<T> MaybePredictCreativeAd(const std::vector<T>& creative_ads,
-                                         const UserModelInfo& user_model) {
+std::optional<T> MaybePredictCreativeAd(const std::vector<T>& creative_ads,
+                                        const UserModelInfo& user_model) {
   CHECK(!creative_ads.empty());
 
   const std::vector<int> creative_ad_vote_registry =

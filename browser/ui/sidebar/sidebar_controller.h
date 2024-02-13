@@ -7,13 +7,13 @@
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_CONTROLLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/window_open_disposition.h"
 
 class BraveBrowser;
@@ -49,7 +49,7 @@ class SidebarController : public SidebarService::Observer {
   // |disposition| is only valid for shortcut type. If |disposition| is not
   // CURRENT_TAB, item at |index| is handled based on |disposition|.
   void ActivateItemAt(
-      absl::optional<size_t> index,
+      std::optional<size_t> index,
       WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
 
@@ -63,7 +63,7 @@ class SidebarController : public SidebarService::Observer {
   // new tab.
   void LoadAtTab(const GURL& url);
 
-  bool IsActiveIndex(absl::optional<size_t> index) const;
+  bool IsActiveIndex(std::optional<size_t> index) const;
   bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
 
   void SetSidebar(Sidebar* sidebar);

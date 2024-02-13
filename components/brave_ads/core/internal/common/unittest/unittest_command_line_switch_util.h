@@ -6,17 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_COMMAND_LINE_SWITCH_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_COMMAND_LINE_SWITCH_UTIL_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 void InitializeCommandLineSwitches();
 void ShutdownCommandLineSwitches();
 
-absl::optional<bool>& DidAppendCommandLineSwitches();
+std::optional<bool>& DidAppendCommandLineSwitches();
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches);
 

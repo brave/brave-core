@@ -6,8 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_
 
+#include <optional>
+
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace tab_groups {
 class TabGroupId;
@@ -32,7 +33,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
   bool ShouldShowVerticalTabs() const;
   void LayoutTitleChipForVerticalTabs();
   SkColor GetGroupColor() const;
-  absl::optional<SkColor> GetChipBackgroundColor() const;
+  std::optional<SkColor> GetChipBackgroundColor() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_

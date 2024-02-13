@@ -232,8 +232,7 @@ export const _NftScreen = () => {
         isAutoPinEnabled: true,
         isFetchingNFTMetadata: false,
         nftMetadata: mockNFTMetadata[0],
-        nftMetadataError: '',
-        selectedAsset: mockErc721Token
+        nftMetadataError: ''
       }}
     >
       <LayoutCardWrapper headerHeight={92}>

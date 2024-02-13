@@ -7,16 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
-#include "brave/components/brave_ads/core/internal/units/ad_handler.h"
-#include "brave/components/brave_ads/core/internal/user/user_attention/user_idle_detection/user_idle_detection.h"
-#include "brave/components/brave_ads/core/internal/user/user_attention/user_reactions/user_reactions.h"
+#include "brave/components/brave_ads/core/internal/studies/studies.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -24,7 +26,6 @@
 #include "brave/components/brave_ads/core/public/history/history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Time;
@@ -76,7 +77,7 @@ class AdsImpl final : public Ads {
                                 mojom::NewTabPageAdEventType event_type,
                                 TriggerAdEventCallback callback) override;
 
-  absl::optional<NotificationAdInfo> MaybeGetNotificationAd(
+  std::optional<NotificationAdInfo> MaybeGetNotificationAd(
       const std::string& placement_id) override;
   void TriggerNotificationAdEvent(const std::string& placement_id,
                                   mojom::NotificationAdEventType event_type,
@@ -151,9 +152,12 @@ class AdsImpl final : public Ads {
   AdHandler ad_handler_;
 
   UserIdleDetection user_idle_detection_;
-  UserReactions user_reactions_;
+
+  Reactions reactions_;
 
   Reminder reminder_;
+
+  Studies studies_;
 
   base::WeakPtrFactory<AdsImpl> weak_factory_{this};
 };

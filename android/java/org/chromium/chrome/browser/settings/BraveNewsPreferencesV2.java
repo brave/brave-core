@@ -38,7 +38,7 @@ import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
@@ -197,8 +197,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     private void onShowNewsToggle(boolean isEnable) {
         BravePrefServiceBridge.getInstance().setShowNews(isEnable);
 
-        SharedPreferencesManager.getInstance().writeBoolean(
-                BravePreferenceKeys.BRAVE_NEWS_PREF_SHOW_NEWS, isEnable);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_NEWS_PREF_SHOW_NEWS, isEnable);
 
         FrameLayout.LayoutParams parentLayoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);

@@ -5,15 +5,15 @@
 
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace bat_ads {
 
@@ -185,7 +185,7 @@ void BatAdsClientMojoBridge::Save(const std::string& name,
   bat_ads_client_associated_receiver_->Save(name, value, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::LoadFileResource(
+void BatAdsClientMojoBridge::LoadComponentResource(
     const std::string& id,
     const int version,
     brave_ads::LoadFileCallback callback) {
@@ -194,8 +194,8 @@ void BatAdsClientMojoBridge::LoadFileResource(
     return;
   }
 
-  bat_ads_client_associated_receiver_->LoadFileResource(id, version,
-                                                        std::move(callback));
+  bat_ads_client_associated_receiver_->LoadComponentResource(
+      id, version, std::move(callback));
 }
 
 void BatAdsClientMojoBridge::GetBrowsingHistory(
@@ -230,7 +230,7 @@ void BatAdsClientMojoBridge::AddFederatedLearningPredictorTrainingSample(
 void BatAdsClientMojoBridge::Load(const std::string& name,
                                   brave_ads::LoadCallback callback) {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
-    std::move(callback).Run(/*value*/ absl::nullopt);
+    std::move(callback).Run(/*value*/ std::nullopt);
     return;
   }
 
@@ -289,13 +289,13 @@ void BatAdsClientMojoBridge::Log(const char* file,
   }
 }
 
-absl::optional<base::Value> BatAdsClientMojoBridge::GetProfilePref(
+std::optional<base::Value> BatAdsClientMojoBridge::GetProfilePref(
     const std::string& path) {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
     return CachedProfilePrefValue(path);
   }
 
-  absl::optional<base::Value> value;
+  std::optional<base::Value> value;
   if (!bat_ads_client_associated_receiver_->GetProfilePref(path, &value)) {
     return CachedProfilePrefValue(path);
   }
@@ -337,13 +337,13 @@ bool BatAdsClientMojoBridge::HasProfilePrefPath(const std::string& path) const {
   return value;
 }
 
-absl::optional<base::Value> BatAdsClientMojoBridge::GetLocalStatePref(
+std::optional<base::Value> BatAdsClientMojoBridge::GetLocalStatePref(
     const std::string& path) {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
     return CachedLocalStatePrefValue(path);
   }
 
-  absl::optional<base::Value> value;
+  std::optional<base::Value> value;
   if (!bat_ads_client_associated_receiver_->GetLocalStatePref(path, &value)) {
     return CachedLocalStatePrefValue(path);
   }
@@ -388,19 +388,19 @@ bool BatAdsClientMojoBridge::HasLocalStatePrefPath(
   return value;
 }
 
-absl::optional<base::Value> BatAdsClientMojoBridge::CachedProfilePrefValue(
+std::optional<base::Value> BatAdsClientMojoBridge::CachedProfilePrefValue(
     const std::string& path) const {
   if (!cached_profile_prefs_.contains(path)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return cached_profile_prefs_.at(path).Clone();
 }
 
-absl::optional<base::Value> BatAdsClientMojoBridge::CachedLocalStatePrefValue(
+std::optional<base::Value> BatAdsClientMojoBridge::CachedLocalStatePrefValue(
     const std::string& path) const {
   if (!cached_local_state_prefs_.contains(path)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return cached_local_state_prefs_.at(path).Clone();

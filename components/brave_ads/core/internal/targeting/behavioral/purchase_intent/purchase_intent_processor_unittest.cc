@@ -46,9 +46,25 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
   // Assert
-  const PurchaseIntentSignalHistoryMap& history =
-      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
-  EXPECT_TRUE(history.empty());
+  EXPECT_THAT(
+      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory(),
+      ::testing::IsEmpty());
+}
+
+TEST_F(BraveAdsPurchaseIntentProcessorTest,
+       DoNotProcessForUnsupportedUrlScheme) {
+  // Arrange
+  ASSERT_TRUE(LoadResource());
+
+  PurchaseIntentProcessor processor(*resource_);
+
+  // Act
+  processor.Process(GURL("brave://rewards"));
+
+  // Assert
+  EXPECT_THAT(
+      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory(),
+      ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
@@ -61,9 +77,9 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   processor.Process(GURL("INVALID"));
 
   // Assert
-  const PurchaseIntentSignalHistoryMap& history =
-      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
-  EXPECT_TRUE(history.empty());
+  EXPECT_THAT(
+      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory(),
+      ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
@@ -71,12 +87,12 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
   ASSERT_TRUE(LoadResource());
 
   // Assert
-  const PurchaseIntentSignalHistoryMap history =
-      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
-  EXPECT_TRUE(history.empty());
+  EXPECT_THAT(
+      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory(),
+      ::testing::IsEmpty());
 }
 
-TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessUrl) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSignalForUrl) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
@@ -86,16 +102,19 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessUrl) {
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
   // Assert
-  const PurchaseIntentSignalHistoryMap& history =
-      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
-
   const PurchaseIntentSignalHistoryMap expected_history = {
-      {"segment 2", {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}},
-      {"segment 3", {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
-  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
+      {"segment 2",
+       {PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}},
+      {"segment 3",
+       {PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}}};
+  EXPECT_THAT(
+      expected_history,
+      ::testing::ElementsAreArray(
+          ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory()));
 }
 
-TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest,
+       ProcessMultipleSignalsForMatchingUrls) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
@@ -108,24 +127,25 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   processor.Process(url);
 
   // Assert
-  const PurchaseIntentSignalHistoryMap& history =
-      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
-
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 2",
-       {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}},
+       {PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1),
+        PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}},
       {"segment 3",
-       {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
-  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
+       {PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1),
+        PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}}};
+  EXPECT_THAT(
+      expected_history,
+      ::testing::ElementsAreArray(
+          ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory()));
 }
 
-TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest,
+       ProcessMultipleSignalsForUniqueUrls) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  const base::Time now_before_advancing_clock = Now();
+  const base::Time at_before_advancing_clock = Now();
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
@@ -133,25 +153,26 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   AdvanceClockBy(base::Minutes(5));
 
   // Act
-  processor.Process(GURL("https://www.basicattentiontoken.org/test?foo=bar"));
+  processor.Process(GURL("https://basicattentiontoken.org/test?foo=bar"));
 
   // Assert
-  const PurchaseIntentSignalHistoryMap& history =
-      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
-
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 2",
-       {PurchaseIntentSignalHistoryInfo(now_before_advancing_clock,
+       {PurchaseIntentSignalHistoryInfo(at_before_advancing_clock,
                                         /*weight=*/1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}},
+        PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}},
       {"segment 3",
-       {PurchaseIntentSignalHistoryInfo(now_before_advancing_clock,
+       {PurchaseIntentSignalHistoryInfo(at_before_advancing_clock,
                                         /*weight=*/1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
-  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
+        PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}}};
+  EXPECT_THAT(
+      expected_history,
+      ::testing::ElementsAreArray(
+          ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory()));
 }
 
-TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest,
+       ProcessMultipleSearchQuerySignalsForMatchingKeywords) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
@@ -159,7 +180,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   processor.Process(
       GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar"));
 
-  const base::Time now_before_advancing_clock = Now();
+  const base::Time signaled_at_before_advancing_clock = Now();
 
   AdvanceClockBy(base::Minutes(5));
 
@@ -168,19 +189,21 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
       GURL("https://duckduckgo.com/?q=segment+keyword+2&bar=foo"));
 
   // Assert
-  const PurchaseIntentSignalHistoryMap& history =
-      ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
-
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 1",
-       {PurchaseIntentSignalHistoryInfo(now_before_advancing_clock,
+       {PurchaseIntentSignalHistoryInfo(signaled_at_before_advancing_clock,
                                         /*weight=*/1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}},
-      {"segment 2", {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
-  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
+        PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}},
+      {"segment 2",
+       {PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}}};
+  EXPECT_THAT(
+      expected_history,
+      ::testing::ElementsAreArray(
+          ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory()));
 }
 
-TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest,
+       ProcessMultipleSearchQuerySignalsForUniqueKeywords) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
@@ -188,7 +211,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   processor.Process(
       GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar"));
 
-  const base::Time now_before_advancing_clock = Now();
+  const base::Time signaled_at_before_advancing_clock = Now();
 
   AdvanceClockBy(base::Minutes(5));
 
@@ -199,14 +222,15 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   // Assert
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 1",
-       {PurchaseIntentSignalHistoryInfo(now_before_advancing_clock,
+       {PurchaseIntentSignalHistoryInfo(signaled_at_before_advancing_clock,
                                         /*weight=*/1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
+        PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/1)}}};
   EXPECT_EQ(expected_history,
             ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory());
 }
 
-TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest,
+       ProcessSearchQuerySignalForSegmentAndFunnelKeywords) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
@@ -220,7 +244,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 1",
        {
-           PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/3),
+           PurchaseIntentSignalHistoryInfo(/*at=*/Now(), /*weight=*/3),
        }}};
   EXPECT_EQ(expected_history,
             ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory());

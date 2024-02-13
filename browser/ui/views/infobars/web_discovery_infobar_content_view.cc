@@ -18,7 +18,6 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/singleton_tabs.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -57,8 +56,9 @@ void OpenMoreInfoPage() {
 // Re-calculated preferred size as it doesn't give proper
 // size when enlarged.
 class InfoBarStyledLabel : public CustomStyledLabel {
+  METADATA_HEADER(InfoBarStyledLabel, CustomStyledLabel)
+
  public:
-  METADATA_HEADER(InfoBarStyledLabel);
   using CustomStyledLabel::CustomStyledLabel;
   InfoBarStyledLabel(const InfoBarStyledLabel&) = delete;
   InfoBarStyledLabel& operator=(const InfoBarStyledLabel&) = delete;
@@ -87,7 +87,7 @@ class InfoBarStyledLabel : public CustomStyledLabel {
   }
 };
 
-BEGIN_METADATA(InfoBarStyledLabel, CustomStyledLabel)
+BEGIN_METADATA(InfoBarStyledLabel)
 END_METADATA
 
 // TODO(simonhong): Use leo MdTextButton when it's stabilized.
@@ -461,9 +461,9 @@ std::unique_ptr<views::View> WebDiscoveryInfoBarContentView::GetOkButton(
 std::unique_ptr<views::View> WebDiscoveryInfoBarContentView::GetCloseButton() {
   auto close_button = std::make_unique<views::ImageButton>(base::BindRepeating(
       &WebDiscoveryInfoBarContentView::CloseInfoBar, base::Unretained(this)));
-  close_button->SetImage(
+  close_button->SetImageModel(
       views::Button::STATE_NORMAL,
-      gfx::CreateVectorIcon(
+      ui::ImageModel::FromVectorIcon(
           kWebDiscoveryInfobarCloseButtonIcon,
           GetColorProvider()->GetColor(kColorWebDiscoveryInfoBarClose)));
   close_button->SetProperty(

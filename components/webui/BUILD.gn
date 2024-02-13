@@ -1,0 +1,37 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/buildflag_header.gni")
+
+static_library("webui") {
+  visibility = [
+    "//brave/browser/ui",
+    "//brave/ios/browser/ui/webui",
+  ]
+
+  sources = [
+    "about_ui.cc",
+    "about_ui.h",
+    "webui_resources.cc",
+    "webui_resources.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_rewards/resources:static_resources",
+    "//brave/components/constants",
+    "//brave/components/ipfs/buildflags",
+    "//brave/components/l10n/common",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/tor/buildflags",
+    "//components/resources:components_resources_grit",
+    "//components/strings:components_strings",
+    "//third_party/re2",
+    "//ui/base:base",
+  ]
+}

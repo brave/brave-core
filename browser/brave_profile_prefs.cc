@@ -14,9 +14,12 @@
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
+#include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
@@ -35,7 +38,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/debounce/browser/debounce_service.h"
+#include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
@@ -66,14 +69,8 @@
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
-#endif
-
-#if BUILDFLAG(ENABLE_WIDEVINE)
-#include "brave/browser/widevine/widevine_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -112,6 +109,8 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
+#include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
+#include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -141,11 +140,6 @@ namespace brave {
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  RegisterWidevineProfilePrefsForMigration(registry);
-#endif
-
-  dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
 #if !BUILDFLAG(IS_ANDROID)
   new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
 
@@ -279,6 +273,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2023-11
   brave_sync::Prefs::RegisterProfilePrefsForMigration(registry);
+
+  // Added 2023-11
+  brave_ads::RegisterProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -416,6 +413,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kPrivacySandboxApisEnabledV2,
                                 base::Value(false));
 
+  // Disable ScrollToText (Copy link to text).
+  registry->SetDefaultPrefValue(prefs::kScrollToTextFragmentEnabled,
+                                base::Value(false));
+
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
   registry->RegisterBooleanPref(kImportDialogPayments, true);
@@ -521,12 +522,14 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
+
+  registry->SetDefaultPrefValue(
+      bookmarks_webui::prefs::kBookmarksViewType,
+      base::Value(static_cast<int>(side_panel::mojom::ViewType::kCompact)));
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled()) {
-    ai_chat::prefs::RegisterProfilePrefs(registry);
-  }
+  ai_chat::prefs::RegisterProfilePrefs(registry);
 #endif
 
   brave_search_conversion::RegisterPrefs(registry);
@@ -548,6 +551,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRService::RegisterProfilePrefs(registry);
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+  bookmarks::prefs::RegisterProfilePrefs(registry);
 #endif
 }
 

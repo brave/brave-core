@@ -51,10 +51,12 @@ HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
                  dict.FindString(kLegacyCreatedAtKey)) {
     double value_as_double;
     if (base::StringToDouble(*legacy_string_value, &value_as_double)) {
-      history_item.created_at = base::Time::FromDoubleT(value_as_double);
+      history_item.created_at =
+          base::Time::FromSecondsSinceUnixEpoch(value_as_double);
     }
   } else if (const auto legacy_double_value = dict.FindDouble(kCreatedAtKey)) {
-    history_item.created_at = base::Time::FromDoubleT(*legacy_double_value);
+    history_item.created_at =
+        base::Time::FromSecondsSinceUnixEpoch(*legacy_double_value);
   }
 
   if (const auto* const value = dict.FindDict(kAdContentKey)) {
@@ -72,6 +74,7 @@ HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
 
 base::Value::List HistoryItemsToValue(const HistoryItemList& history_items) {
   base::Value::List list;
+  list.reserve(history_items.size());
 
   for (const auto& history_item : history_items) {
     list.Append(HistoryItemToValue(history_item));
@@ -82,6 +85,7 @@ base::Value::List HistoryItemsToValue(const HistoryItemList& history_items) {
 
 base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
   base::Value::List list;
+  list.reserve(history_items.size());
 
   int uuid = 0;
 
@@ -90,7 +94,8 @@ base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
         base::Value::Dict()
             .Set(kUIUuidKey, base::NumberToString(uuid++))
             .Set(kUIJavaScriptTimestampKey,
-                 history_item.created_at.ToJsTimeIgnoringNull())
+                 history_item.created_at
+                     .InMillisecondsFSinceUnixEpochIgnoringNull())
             .Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item)));
   }
 
@@ -99,6 +104,7 @@ base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
 
 HistoryItemList HistoryItemsFromValue(const base::Value::List& list) {
   HistoryItemList history_items;
+  history_items.reserve(list.size());
 
   for (const auto& item : list) {
     if (const auto* const item_dict = item.GetIfDict()) {

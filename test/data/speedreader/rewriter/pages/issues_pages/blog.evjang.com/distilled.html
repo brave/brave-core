@@ -112,7 +112,7 @@ As expected, at random initialization, the model’s predictions (blue) are tota
 
 </div>
 
-<p><a href="https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s1600/download.png" imageanchor="1"><img data-original-height="252" data-original-width="374" height="268" src="https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s400/download.png" width="400"></a></p>
+<p><a href="https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s1600/download.png" imageanchor="1"><img width="400" data-original-height="252" data-original-width="374" height="268" src="https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s400/download.png"></a></p>
 
 <p>
 Let’s train the network via gradient descent. JAX’s random number generator is set up differently than Numpy’s, so to initialize network parameters we’ll use the original Numpy library (onp) to generate random numbers. We’ll also import the tree_multimap utility to easily manipulate collections of per-parameter gradients (for TensorFlow users, this is analogous to nest.map_structure for Tensors).
@@ -134,7 +134,7 @@ We initialize the parameters and optimizer, and run the curve fitting for 100 st
 
 <p>
 Evaluating our network again, we see that the sinusoid curve has been correctly approximated.</p>
-<p><a href="https://4.bp.blogspot.com/-NuCVncO9wmI/XG7FjVOAetI/AAAAAAAAOes/G6hN1eRupnEAxrfgdeccjvrOz0G9oyCKgCEwYBhgL/s1600/download%2B%25281%2529.png" imageanchor="1"><img data-original-height="252" data-original-width="383" height="262" src="https://4.bp.blogspot.com/-NuCVncO9wmI/XG7FjVOAetI/AAAAAAAAOes/G6hN1eRupnEAxrfgdeccjvrOz0G9oyCKgCEwYBhgL/s400/download%2B%25281%2529.png" width="400"></a></p>
+<p><a href="https://4.bp.blogspot.com/-NuCVncO9wmI/XG7FjVOAetI/AAAAAAAAOes/G6hN1eRupnEAxrfgdeccjvrOz0G9oyCKgCEwYBhgL/s1600/download%2B%25281%2529.png" imageanchor="1"><img width="400" data-original-height="252" data-original-width="383" height="262" src="https://4.bp.blogspot.com/-NuCVncO9wmI/XG7FjVOAetI/AAAAAAAAOes/G6hN1eRupnEAxrfgdeccjvrOz0G9oyCKgCEwYBhgL/s400/download%2B%25281%2529.png"></a></p>
 <br>
 <p>
 This result is nothing to write home about, but in just a moment we’ll re-use a lot of these functions to implement MAML.</p>
@@ -158,7 +158,7 @@ When implementing ML algorithms, it’s important to unit-testing implementation
 <p>
 Now let’s extend our sinusoid regression task to a multi-task problem, in which the sinusoid function can have varying phases and amplitudes. This task was proposed in the MAML paper as a way to illustrate how MAML works on a toy problem. Below are some points sampled from two different tasks, divided into “train” (used to compute the inner loss) and “validation” splits (sampled from the same task, used to compute the outer loss).</p></div>
 
-<p><a href="https://3.bp.blogspot.com/-_juVWfK0Uj0/XG7FjZzbFnI/AAAAAAAAOe4/LG9MdTEaincGPjlS4p6lqdqP-AWmiihsACEwYBhgL/s1600/download%2B%25282%2529.png" imageanchor="1"><img data-original-height="252" data-original-width="383" height="262" src="https://3.bp.blogspot.com/-_juVWfK0Uj0/XG7FjZzbFnI/AAAAAAAAOe4/LG9MdTEaincGPjlS4p6lqdqP-AWmiihsACEwYBhgL/s400/download%2B%25282%2529.png" width="400"></a></p>
+<p><a href="https://3.bp.blogspot.com/-_juVWfK0Uj0/XG7FjZzbFnI/AAAAAAAAOe4/LG9MdTEaincGPjlS4p6lqdqP-AWmiihsACEwYBhgL/s1600/download%2B%25282%2529.png" imageanchor="1"><img width="400" data-original-height="252" data-original-width="383" height="262" src="https://3.bp.blogspot.com/-_juVWfK0Uj0/XG7FjZzbFnI/AAAAAAAAOe4/LG9MdTEaincGPjlS4p6lqdqP-AWmiihsACEwYBhgL/s400/download%2B%25282%2529.png"></a></p>
 
 
 <p><span id="docs-internal-guid-313a0369-7fff-b1c4-535d-2c17f57be320"><br>Suppose a task loss function $\mathcal{L}$ is defined with respect to model parameters $\theta$, input features $X$, output labels $Y$. Let $x_1, y_1$ and $x_2, y_2$ be identically distributed task instance data sampled from $X, Y$. Then MAML optimizes the following:<p>$\mathcal{L}(\theta - \nabla \mathcal{L}(\theta, x_1, y_1), x_2, y_2)$</p><p>MAML’s inner update operator is just gradient descent on the regression loss. The outer loss, <span>maml_loss</span>, is simply the original loss applied <i>after</i> the inner_update operator has been applied. One interpretation of the MAML objective is that it is a differentiable estimate of a cross-validation loss with respect to a learner. Meta-training results in an <span>inner_update</span> that minimizes the cross-validation loss.</p></span></p>
@@ -183,7 +183,7 @@ In each iteration of optimizing the MAML objective, we sample a single new task,
 </td></tr>
 </tbody></table>
 </div>
-<p><a href="https://3.bp.blogspot.com/-_B1gjozIcYk/XG7FjFCW-wI/AAAAAAAAOe8/MifBFI8wAtIKsoxOYUv6Lt23zk6rFyGbACEwYBhgL/s1600/download%2B%25283%2529.png" imageanchor="1"><img data-original-height="252" data-original-width="384" height="262" src="https://3.bp.blogspot.com/-_B1gjozIcYk/XG7FjFCW-wI/AAAAAAAAOe8/MifBFI8wAtIKsoxOYUv6Lt23zk6rFyGbACEwYBhgL/s400/download%2B%25283%2529.png" width="400"></a></p>
+<p><a href="https://3.bp.blogspot.com/-_B1gjozIcYk/XG7FjFCW-wI/AAAAAAAAOe8/MifBFI8wAtIKsoxOYUv6Lt23zk6rFyGbACEwYBhgL/s1600/download%2B%25283%2529.png" imageanchor="1"><img width="400" data-original-height="252" data-original-width="384" height="262" src="https://3.bp.blogspot.com/-_B1gjozIcYk/XG7FjFCW-wI/AAAAAAAAOe8/MifBFI8wAtIKsoxOYUv6Lt23zk6rFyGbACEwYBhgL/s400/download%2B%25283%2529.png"></a></p>
 
 <p>
 At meta-training time, the network learns to “quickly adapt” to x1, y1 in order to minimize cross-validation error on a new set of points x2. At deployment time (shown in the plot above), when we have a <i>new</i> task (new amplitude and phase not seen at training time), the model can apply the <span>inner_update</span> operator to fit the target sinusoid much faster and with fewer data samples than simply re-training the parameters with SGD.<br>
@@ -235,7 +235,7 @@ Now for the training loop, which strongly resembles the previous single-task one
 When we plot the MAML objective as a function of training step, we see that the batched MAML trains much faster (as a function of gradient steps) and also has lower variance during training.</p></div>
 <div>
 <br>
-<p><a href="https://2.bp.blogspot.com/-B_XbZrb3x-Y/XG7Fj-YtcNI/AAAAAAAAOe8/u8TtEfoZFF0kIa--Zlm23kFrtbjZWQOKwCEwYBhgL/s1600/download%2B%25284%2529.png" imageanchor="1"><img data-original-height="252" data-original-width="381" height="263" src="https://2.bp.blogspot.com/-B_XbZrb3x-Y/XG7Fj-YtcNI/AAAAAAAAOe8/u8TtEfoZFF0kIa--Zlm23kFrtbjZWQOKwCEwYBhgL/s400/download%2B%25284%2529.png" width="400"></a></p>
+<p><a href="https://2.bp.blogspot.com/-B_XbZrb3x-Y/XG7Fj-YtcNI/AAAAAAAAOe8/u8TtEfoZFF0kIa--Zlm23kFrtbjZWQOKwCEwYBhgL/s1600/download%2B%25284%2529.png" imageanchor="1"><img width="400" data-original-height="252" data-original-width="381" height="263" src="https://2.bp.blogspot.com/-B_XbZrb3x-Y/XG7Fj-YtcNI/AAAAAAAAOe8/u8TtEfoZFF0kIa--Zlm23kFrtbjZWQOKwCEwYBhgL/s400/download%2B%25284%2529.png"></a></p>
 
 <br>
 <h3>

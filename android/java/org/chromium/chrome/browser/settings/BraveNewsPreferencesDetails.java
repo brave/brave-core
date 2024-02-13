@@ -35,7 +35,7 @@ import org.chromium.brave_news.mojom.UserEnabled;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -293,8 +293,8 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
     }
 
     public void newsChangeSource() {
-        SharedPreferencesManager.getInstance().writeBoolean(
-                BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
     }
 
     @Override

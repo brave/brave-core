@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_ZEBPAY_GET_BALANCE_ZEBPAY_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_ZEBPAY_GET_BALANCE_ZEBPAY_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -13,7 +14,6 @@
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // GET /api/balance
 //
@@ -41,15 +41,16 @@ struct ResultFor<GetBalanceZebPay> {
 class GetBalanceZebPay final : public RequestBuilder,
                                public ResponseHandler<GetBalanceZebPay> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse& response);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse& response);
 
   GetBalanceZebPay(RewardsEngineImpl& engine, std::string&& token);
   ~GetBalanceZebPay() override;
 
  private:
-  absl::optional<std::string> Url() const override;
+  std::optional<std::string> Url() const override;
   mojom::UrlMethod Method() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
 
   std::string token_;

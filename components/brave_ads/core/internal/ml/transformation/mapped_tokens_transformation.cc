@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation.h"
 
-#include <map>
-#include <utility>
-
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_transformation_generated.h"
@@ -37,12 +34,12 @@ MappedTokensTransformation::MappedTokensTransformation(
 
 MappedTokensTransformation::~MappedTokensTransformation() = default;
 
-absl::optional<std::map<uint32_t, double>>
+std::optional<std::map<uint32_t, double>>
 MappedTokensTransformation::GetCategoryFrequencies(
     const std::vector<std::string>& words) const {
   const auto* token_categories = mapped_token_transformation_->mapping();
   if (!token_categories) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::map<uint32_t, double> frequencies;
@@ -84,7 +81,7 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
   CHECK(text_data);
 
   std::vector<std::string> words = GetWordsFromText(*text_data);
-  absl::optional<std::map<uint32_t, double>> frequencies =
+  std::optional<std::map<uint32_t, double>> frequencies =
       GetCategoryFrequencies(words);
   if (!frequencies) {
     return {};

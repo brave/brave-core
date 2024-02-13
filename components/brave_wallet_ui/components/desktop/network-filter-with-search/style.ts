@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -11,13 +12,13 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
-  border-radius: 4px;
+  border-radius: 8px;
+  background-color: ${leo.color.container.highlight};
 `
 
 export const HorizontalDivider = styled.div`
   display: flex;
   width: 1px;
   height: 24px;
-  background-color: ${(p) => p.theme.color.interactive08};
+  background-color: ${leo.color.divider.subtle};
 `

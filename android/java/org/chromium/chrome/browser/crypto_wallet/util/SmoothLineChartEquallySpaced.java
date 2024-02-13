@@ -215,7 +215,7 @@ public class SmoothLineChartEquallySpaced extends View {
         // Draw vertical lines
         if (mCurrentLineX != -1) {
             Paint paint = new Paint();
-            paint.setColor(getResources().getColor(R.color.wallet_text_color));
+            paint.setColor(getContext().getColor(R.color.wallet_text_color));
 
             paint.setStrokeWidth(2f);
             canvas.drawLine(mCurrentLineX, CANVAS_TEXT_START_Y + CANVAS_TEXT_PADDING_Y,
@@ -228,7 +228,7 @@ public class SmoothLineChartEquallySpaced extends View {
                 possibleValue = mDates.length - 1;
             }
             TextPaint paintText = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            paintText.setColor(getResources().getColor(R.color.wallet_text_color));
+            paintText.setColor(getContext().getColor(R.color.wallet_text_color));
             paintText.setTextSize(35);
             float textX = mCurrentLineX - 150;
             if (textX < 0) {

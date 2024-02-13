@@ -15,14 +15,11 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
+#include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave_base/random.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
-namespace brave_rewards::internal {
+namespace brave_rewards::internal::publisher {
 
 namespace {
 
@@ -32,60 +29,57 @@ int64_t GetCacheExpiryInSeconds() {
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
   // time we may want to introduce an additional option for this value.
-  return kPublisherListRefreshInterval;
+  return PublisherPrefixListUpdater::kRefreshInterval;
 }
 
 }  // namespace
-
-namespace publisher {
 
 ServerPublisherFetcher::ServerPublisherFetcher(RewardsEngineImpl& engine)
     : engine_(engine), private_cdn_server_(engine) {}
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
-void ServerPublisherFetcher::Fetch(
-    const std::string& publisher_key,
-    database::GetServerPublisherInfoCallback callback) {
+void ServerPublisherFetcher::Fetch(const std::string& publisher_key,
+                                   FetchCallback callback) {
   FetchCallbackVector& callbacks = callback_map_[publisher_key];
-  callbacks.push_back(callback);
+  callbacks.push_back(std::move(callback));
   if (callbacks.size() > 1) {
-    BLOG(1, "Fetch already in progress");
+    engine_->Log(FROM_HERE) << "Fetch already in progress";
     return;
   }
 
   const std::string hex_prefix =
       GetHashPrefixInHex(publisher_key, kQueryPrefixBytes);
 
-  auto url_callback = std::bind(&ServerPublisherFetcher::OnFetchCompleted, this,
-                                _1, _2, publisher_key);
-
-  private_cdn_server_.get_publisher().Request(publisher_key, hex_prefix,
-                                              url_callback);
+  private_cdn_server_.get_publisher().Request(
+      publisher_key, hex_prefix,
+      base::BindOnce(&ServerPublisherFetcher::OnFetchCompleted,
+                     weak_factory_.GetWeakPtr(), publisher_key));
 }
 
 void ServerPublisherFetcher::OnFetchCompleted(
-    const mojom::Result result,
-    mojom::ServerPublisherInfoPtr info,
-    const std::string& publisher_key) {
+    const std::string& publisher_key,
+    mojom::Result result,
+    mojom::ServerPublisherInfoPtr info) {
   if (result != mojom::Result::OK) {
     RunCallbacks(publisher_key, nullptr);
     return;
   }
 
-  // Create a shared pointer to a mojo struct so that it can be copied
-  // into a callback.
-  auto shared_info =
-      std::make_shared<mojom::ServerPublisherInfoPtr>(std::move(info));
-
   // Store the result for subsequent lookups.
   engine_->database()->InsertServerPublisherInfo(
-      **shared_info, [this, publisher_key, shared_info](mojom::Result result) {
-        if (result != mojom::Result::OK) {
-          BLOG(0, "Error saving server publisher info record");
-        }
-        RunCallbacks(publisher_key, std::move(*shared_info));
-      });
+      *info,
+      base::BindOnce(&ServerPublisherFetcher::OnRecordSaved,
+                     weak_factory_.GetWeakPtr(), publisher_key, info->Clone()));
+}
+
+void ServerPublisherFetcher::OnRecordSaved(const std::string& publisher_key,
+                                           mojom::ServerPublisherInfoPtr info,
+                                           mojom::Result result) {
+  if (result != mojom::Result::OK) {
+    engine_->LogError(FROM_HERE) << "Error saving server publisher info record";
+  }
+  RunCallbacks(publisher_key, std::move(info));
 }
 
 bool ServerPublisherFetcher::IsExpired(
@@ -94,7 +88,8 @@ bool ServerPublisherFetcher::IsExpired(
     return true;
   }
 
-  auto last_update_time = base::Time::FromDoubleT(server_info->updated_at);
+  auto last_update_time =
+      base::Time::FromSecondsSinceUnixEpoch(server_info->updated_at);
   auto age = base::Time::Now() - last_update_time;
 
   if (age.InSeconds() < 0) {
@@ -103,21 +98,22 @@ bool ServerPublisherFetcher::IsExpired(
     // Pessimistically assume that we are incorrectly storing
     // the timestamp in order to avoid a case where we fetch
     // on every tab update.
-    BLOG(0, "Server publisher info has a future updated_at time.");
+    engine_->LogError(FROM_HERE)
+        << "Server publisher info has a future updated_at time.";
   }
 
   return age.InSeconds() > GetCacheExpiryInSeconds();
 }
 
 void ServerPublisherFetcher::PurgeExpiredRecords() {
-  BLOG(1, "Purging expired server publisher info records");
+  engine_->Log(FROM_HERE) << "Purging expired server publisher info records";
   int64_t max_age = GetCacheExpiryInSeconds() * 2;
   engine_->database()->DeleteExpiredServerPublisherInfo(max_age,
-                                                        [](auto result) {});
+                                                        base::DoNothing());
 }
 
-FetchCallbackVector ServerPublisherFetcher::GetCallbacks(
-    const std::string& publisher_key) {
+ServerPublisherFetcher::FetchCallbackVector
+ServerPublisherFetcher::GetCallbacks(const std::string& publisher_key) {
   FetchCallbackVector callbacks;
   auto iter = callback_map_.find(publisher_key);
   if (iter != callback_map_.end()) {
@@ -133,10 +129,9 @@ void ServerPublisherFetcher::RunCallbacks(
   FetchCallbackVector callbacks = GetCallbacks(publisher_key);
   DCHECK(!callbacks.empty());
   for (auto& callback : callbacks) {
-    callback(server_info ? server_info.Clone() : nullptr);
+    std::move(callback).Run(server_info ? server_info.Clone() : nullptr);
   }
   engine_->client()->OnPublisherUpdated(publisher_key);
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

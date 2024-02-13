@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -22,7 +23,6 @@
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -35,7 +35,6 @@ class APIRequestResult {
  public:
   APIRequestResult();
   APIRequestResult(int response_code,
-                   std::string body,
                    base::Value value_body,
                    base::flat_map<std::string, std::string> headers,
                    int error_code,
@@ -54,10 +53,18 @@ class APIRequestResult {
 
   // HTTP response code.
   int response_code() const { return response_code_; }
-  // Sanitized json response.
-  const std::string& body() const { return body_; }
-  // `base::Value` of sanitized json response.
+
+  // Extract the sanitized response as base::Value.
+  base::Value TakeBody();
+
+  // Returns the sanitized response as base::Value.
+  // Note: don't clone large responses, use TakeBody() instead.
   const base::Value& value_body() const { return value_body_; }
+
+  // Serialize the sanitized response and returns it as string.
+  // Note: use TakeBody()/value_body() instead where possible.
+  std::string SerializeBodyToString() const;
+
   // HTTP response headers.
   const base::flat_map<std::string, std::string>& headers() const {
     return headers_;
@@ -72,18 +79,18 @@ class APIRequestResult {
   friend class APIRequestHelper;
 
   int response_code_ = -1;
-  std::string body_;
   base::Value value_body_;
   base::flat_map<std::string, std::string> headers_;
   int error_code_ = -1;
   GURL final_url_;
+  bool body_consumed_ = false;
 };
 
 struct APIRequestOptions {
   bool auto_retry_on_network_change = false;
   bool enable_cache = false;
   size_t max_body_size = -1u;
-  absl::optional<base::TimeDelta> timeout;
+  std::optional<base::TimeDelta> timeout;
 };
 
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
@@ -95,8 +102,11 @@ class APIRequestHelper {
   using DataReceivedCallback = base::RepeatingCallback<void(
       data_decoder::DataDecoder::ValueOrError result)>;
   using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
+  using ResponseStartedCallback =
+      base::OnceCallback<void(const std::string& url,
+                              const int64_t content_length)>;
   using ResponseConversionCallback =
-      base::OnceCallback<absl::optional<std::string>(
+      base::OnceCallback<std::optional<std::string>(
           const std::string& raw_response)>;
 
   class URLLoaderHandler : public network::SimpleURLLoaderStreamConsumer {
@@ -144,6 +154,7 @@ class APIRequestHelper {
     raw_ptr<APIRequestHelper> api_request_helper_;
 
     DataReceivedCallback data_received_callback_;
+    ResponseStartedCallback response_started_callback_;
     ResultCallback result_callback_;
     ResponseConversionCallback conversion_callback_;
 
@@ -196,7 +207,8 @@ class APIRequestHelper {
       DataReceivedCallback data_received_callback,
       ResultCallback result_callback,
       const base::flat_map<std::string, std::string>& headers = {},
-      const APIRequestOptions& request_options = {});
+      const APIRequestOptions& request_options = {},
+      ResponseStartedCallback response_started_callback = base::NullCallback());
 
   void Cancel(const Ticket& ticket);
   void CancelAll();

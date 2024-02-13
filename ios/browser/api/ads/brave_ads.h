@@ -49,12 +49,16 @@ OBJC_EXPORT
 
 #pragma mark -
 
-// Returns |true| if ads are supported for the user's current country otherwise
-// returns |false|.
+/// Returns |true| if ads are supported for the user's current country otherwise
+/// returns |false|.
 + (BOOL)isSupportedRegion;
 
 /// Returns |true| if the ads service is running otherwise returns |false|.
 - (BOOL)isServiceRunning;
+
+/// Returns |true| if always run the ads service, even if Brave Private Ads are
+/// disabled.
++ (BOOL)shouldAlwaysRunService;
 
 /// Whether or not Brave Ads is enabled and the user should receive
 /// notification-style ads and be rewarded for it

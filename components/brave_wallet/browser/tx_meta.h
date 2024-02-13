@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_META_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_META_H_
 
+#include <optional>
 #include <string>
 
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
 namespace base {
@@ -28,6 +28,7 @@ class TxMeta {
 
   virtual base::Value::Dict ToValue() const;
   virtual mojom::TransactionInfoPtr ToTransactionInfo() const = 0;
+  virtual mojom::CoinType GetCoinType() const = 0;
 
   const std::string& id() const { return id_; }
   mojom::TransactionStatus status() const { return status_; }
@@ -36,7 +37,7 @@ class TxMeta {
   base::Time submitted_time() const { return submitted_time_; }
   base::Time confirmed_time() const { return confirmed_time_; }
   const std::string& tx_hash() const { return tx_hash_; }
-  const absl::optional<url::Origin>& origin() const { return origin_; }
+  const std::optional<url::Origin>& origin() const { return origin_; }
   const std::string& chain_id() const { return chain_id_; }
 
   void set_id(const std::string& id) { id_ = id; }
@@ -52,7 +53,7 @@ class TxMeta {
     confirmed_time_ = confirmed_time;
   }
   void set_tx_hash(const std::string& tx_hash) { tx_hash_ = tx_hash; }
-  void set_origin(const absl::optional<url::Origin>& origin) {
+  void set_origin(const std::optional<url::Origin>& origin) {
     origin_ = origin;
   }
   void set_chain_id(const std::string& chain_id) { chain_id_ = chain_id; }
@@ -67,7 +68,7 @@ class TxMeta {
   base::Time submitted_time_;
   base::Time confirmed_time_;
   std::string tx_hash_;
-  absl::optional<url::Origin> origin_;
+  std::optional<url::Origin> origin_;
   std::string chain_id_;
 };
 

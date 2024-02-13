@@ -20,6 +20,8 @@ SegmentList GetSegments(const CatalogInfo& catalog);
 template <typename T>
 SegmentList GetSegments(const T& creative_ads) {
   SegmentList segments;
+  segments.reserve(creative_ads.size());
+
   for (const auto& creative_ad : creative_ads) {
     segments.push_back(creative_ad.segment);
   }

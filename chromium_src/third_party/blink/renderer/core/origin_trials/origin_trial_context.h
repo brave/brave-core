@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_ORIGIN_TRIALS_ORIGIN_TRIAL_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_ORIGIN_TRIALS_ORIGIN_TRIAL_CONTEXT_H_
 
-#define AddFeature                                     \
-  AddFeature_ChromiumImpl(OriginTrialFeature feature); \
+#define AddFeature                                                   \
+  AddFeature_ChromiumImpl(blink::mojom::OriginTrialFeature feature); \
   void AddFeature
 
 #define AddForceEnabledTrials                                            \

@@ -14,6 +14,7 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import { loadTimeData } from '../../../../common/loadTimeData'
+import { handleEndpointError } from '../../../utils/api-utils'
 
 export const p3aEndpoints = ({
   mutation,
@@ -24,7 +25,7 @@ export const p3aEndpoints = ({
       { success: boolean },
       TokenBalancesRegistry
     >({
-      queryFn: async (registry, { dispatch }, extraOptions, baseQuery) => {
+      queryFn: async (registry, { endpoint }, extraOptions, baseQuery) => {
         try {
           const {
             data: { braveWalletP3A },
@@ -81,9 +82,29 @@ export const p3aEndpoints = ({
             data: { success: true }
           }
         } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable to record active wallet count',
+            error
+          )
+        }
+      }
+    }),
+
+    reportOnboardingAction: mutation<true, BraveWallet.OnboardingAction>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          api.braveWalletP3A.reportOnboardingAction(arg)
           return {
-            error: `Unable to record active wallet count: ${error}`
+            data: true
           }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable to report onboarding action',
+            error
+          )
         }
       }
     })

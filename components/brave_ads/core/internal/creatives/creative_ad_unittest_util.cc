@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 
-#include "base/uuid.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "url/gurl.h"
 
 namespace brave_ads::test {
@@ -17,24 +17,12 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_uuids) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kCreativeInstanceId;
-
+      GetConstantId(should_use_random_uuids, kCreativeInstanceId);
   creative_ad.creative_set_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kCreativeSetId;
-
-  creative_ad.campaign_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kCampaignId;
-
+      GetConstantId(should_use_random_uuids, kCreativeSetId);
+  creative_ad.campaign_id = GetConstantId(should_use_random_uuids, kCampaignId);
   creative_ad.advertiser_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kAdvertiserId;
+      GetConstantId(should_use_random_uuids, kAdvertiserId);
 
   creative_ad.start_at = DistantPast();
   creative_ad.end_at = DistantFuture();
@@ -53,7 +41,7 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_uuids) {
 
   creative_ad.value = 1.0;
 
-  creative_ad.segment = "untargeted";
+  creative_ad.segment = kSegment;
 
   creative_ad.split_test_group = "";
 

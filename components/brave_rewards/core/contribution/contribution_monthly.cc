@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/contribution/contribution_monthly.h"
+
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -12,7 +15,6 @@
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
-#include "brave/components/brave_rewards/core/contribution/contribution_monthly.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
@@ -24,18 +26,16 @@ ContributionMonthly::ContributionMonthly(RewardsEngineImpl& engine)
 
 ContributionMonthly::~ContributionMonthly() = default;
 
-void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
-                                  LegacyResultCallback callback) {
-  engine_->contribution()->GetRecurringTips(
-      [this, cutoff_time,
-       callback](std::vector<mojom::PublisherInfoPtr> publishers) {
-        AdvanceContributionDates(cutoff_time, callback, std::move(publishers));
-      });
+void ContributionMonthly::Process(std::optional<base::Time> cutoff_time,
+                                  ResultCallback callback) {
+  engine_->contribution()->GetRecurringTips(base::BindOnce(
+      &ContributionMonthly::AdvanceContributionDates,
+      weak_factory_.GetWeakPtr(), std::move(cutoff_time), std::move(callback)));
 }
 
 void ContributionMonthly::AdvanceContributionDates(
-    absl::optional<base::Time> cutoff_time,
-    LegacyResultCallback callback,
+    std::optional<base::Time> cutoff_time,
+    ResultCallback callback,
     std::vector<mojom::PublisherInfoPtr> publishers) {
   // Remove any contributions whose next contribution date is in the future.
   std::erase_if(publishers,
@@ -43,8 +43,9 @@ void ContributionMonthly::AdvanceContributionDates(
                   if (!publisher || publisher->id.empty()) {
                     return true;
                   }
-                  base::Time next_contribution = base::Time::FromDoubleT(
-                      static_cast<double>(publisher->reconcile_stamp));
+                  base::Time next_contribution =
+                      base::Time::FromSecondsSinceUnixEpoch(
+                          static_cast<double>(publisher->reconcile_stamp));
                   return cutoff_time && next_contribution > cutoff_time;
                 });
 
@@ -57,16 +58,18 @@ void ContributionMonthly::AdvanceContributionDates(
   engine_->database()->AdvanceMonthlyContributionDates(
       publisher_ids,
       base::BindOnce(&ContributionMonthly::OnNextContributionDateAdvanced,
-                     base::Unretained(this), std::move(publishers), callback));
+                     weak_factory_.GetWeakPtr(), std::move(publishers),
+                     std::move(callback)));
 }
 
 void ContributionMonthly::OnNextContributionDateAdvanced(
     std::vector<mojom::PublisherInfoPtr> publishers,
-    LegacyResultCallback callback,
+    ResultCallback callback,
     bool success) {
   if (!success) {
-    BLOG(0, "Unable to advance monthly contribution dates.");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE)
+        << "Unable to advance monthly contribution dates";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -79,7 +82,8 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
            publisher->status == mojom::PublisherStatus::NOT_VERIFIED;
   });
 
-  BLOG(1, "Sending " << publishers.size() << " monthly contributions");
+  engine_->Log(FROM_HERE) << "Sending " << publishers.size()
+                          << " monthly contributions";
 
   for (const auto& item : publishers) {
     auto publisher = mojom::ContributionQueuePublisher::New();
@@ -94,11 +98,11 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
     queue->publishers.push_back(std::move(publisher));
 
     engine_->database()->SaveContributionQueue(std::move(queue),
-                                               [](mojom::Result) {});
+                                               base::DoNothing());
   }
 
   engine_->contribution()->CheckContributionQueue();
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace contribution

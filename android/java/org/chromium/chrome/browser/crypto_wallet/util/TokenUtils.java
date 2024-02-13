@@ -5,19 +5,20 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
 import org.chromium.base.Callback;
+import org.chromium.base.Callbacks;
+import org.chromium.base.Callbacks.Callback1;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnRampProvider;
-import org.chromium.mojo.bindings.Callbacks;
-import org.chromium.mojo.bindings.Callbacks.Callback1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,6 +120,7 @@ public class TokenUtils {
                 });
     }
 
+    @SuppressLint("WrongCommentType")
     /*
      * Wrapper for {@link BlockchainRegistry#getAllTokens} with Goerli contract address
      * modifications.
@@ -126,9 +128,14 @@ public class TokenUtils {
      * <b>Note:</b>: all calls to {@link BlockchainRegistry#getAllTokens} should be intercepted by
      * this method.
      */
-    public static void getAllTokens(@NonNull BlockchainRegistry blockchainRegistry, String chainId,
-            int coinType, Callbacks.Callback1<BlockchainToken[]> callback) {
-        blockchainRegistry.getAllTokens(chainId, coinType,
+    public static void getAllTokens(
+            @NonNull BlockchainRegistry blockchainRegistry,
+            String chainId,
+            int coinType,
+            BlockchainRegistry.GetAllTokens_Response callback) {
+        blockchainRegistry.getAllTokens(
+                chainId,
+                coinType,
                 tokens -> callback.call(Utils.fixupTokensRegistry(tokens, chainId)));
     }
 

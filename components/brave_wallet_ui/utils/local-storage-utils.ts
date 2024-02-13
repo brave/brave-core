@@ -3,11 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// types
 import {
   SupportedTestNetworks,
   SupportedCoinTypes,
-  BraveWallet
+  BraveWallet,
+  PanelTypes
 } from '../constants/types'
+import {
+  TokenBalancesRegistry //
+} from '../common/slices/entities/token-balance.entity'
+
+// utils
 import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
@@ -63,4 +70,78 @@ export const makeInitialFilteredOutNetworkKeys = () => {
       .toString()
   })
   return [...testNetworkKeys, ...localHostNetworkKeys]
+}
+
+export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
+  return (
+    panelType === 'connectWithSite' ||
+    panelType === 'signData' ||
+    panelType === 'signAllTransactions' ||
+    panelType === 'signTransaction' ||
+    panelType === 'addEthereumChain' ||
+    panelType === 'showUnlock'
+  )
+}
+
+export function storeCurrentAndPreviousPanel(
+  panelType: PanelTypes,
+  previousPanel: PanelTypes | undefined
+) {
+  if (!isPersistanceOfPanelProhibited(panelType)) {
+    window.localStorage.setItem(LOCAL_STORAGE_KEYS.CURRENT_PANEL, panelType)
+  }
+
+  if (previousPanel && !isPersistanceOfPanelProhibited(previousPanel)) {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.LAST_VISITED_PANEL,
+      previousPanel
+    )
+  }
+}
+
+export function getStoredPortfolioTimeframe(): BraveWallet.AssetPriceTimeframe {
+  const storedValue = window.localStorage.getItem(
+    LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
+  )
+
+  if (storedValue !== undefined) {
+    return Number(
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION)
+    )
+  }
+
+  return BraveWallet.AssetPriceTimeframe.OneDay
+}
+
+export function setStoredPortfolioTimeframe(
+  timeframe: BraveWallet.AssetPriceTimeframe
+) {
+  window.localStorage.setItem(
+    LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION,
+    timeframe.toString()
+  )
+}
+
+export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
+  try {
+    return JSON.parse(
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN_BALANCES) || '{}'
+    )
+  } catch (error) {
+    console.error(error)
+    return {}
+  }
+}
+
+export const setPersistedPortfolioTokenBalances = (
+  registry: TokenBalancesRegistry
+) => {
+  try {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.TOKEN_BALANCES,
+      JSON.stringify(registry)
+    )
+  } catch (error) {
+    console.error(error)
+  }
 }

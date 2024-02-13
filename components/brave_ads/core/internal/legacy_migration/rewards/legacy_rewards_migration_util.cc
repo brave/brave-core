@@ -15,23 +15,23 @@
 
 namespace brave_ads::rewards {
 
-absl::optional<TransactionList> BuildTransactionsFromJson(
+std::optional<TransactionList> BuildTransactionsFromJson(
     const std::string& json) {
-  const absl::optional<PaymentList> payments = json::reader::ReadPayments(json);
+  const std::optional<PaymentList> payments = json::reader::ReadPayments(json);
   if (!payments) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<TransactionList> transaction_history =
+  const std::optional<TransactionList> transaction_history =
       json::reader::ReadTransactionHistory(json);
   if (!transaction_history) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<PaymentTokenList> payment_tokens =
+  const std::optional<PaymentTokenList> payment_tokens =
       json::reader::ReadPaymentTokens(json);
   if (!payment_tokens) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Get a list of all unreconciled transactions
@@ -39,7 +39,7 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
       GetAllUnreconciledTransactions(*transaction_history, *payment_tokens);
 
   // Append a list of reconciled transactions for this month
-  const absl::optional<TransactionList> reconciled_transactions =
+  const std::optional<TransactionList> reconciled_transactions =
       BuildTransactionsForReconciledTransactionsThisMonth(*payments);
   if (reconciled_transactions) {
     base::Extend(transactions, *reconciled_transactions);
@@ -47,7 +47,7 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
 
   // Append a single transaction with an accumulated value for reconciled
   // transactions last month for calculating the next payment date
-  const absl::optional<TransactionInfo> reconciled_transaction =
+  const std::optional<TransactionInfo> reconciled_transaction =
       BuildTransactionForReconciledTransactionsLastMonth(*payments);
   if (reconciled_transaction) {
     transactions.push_back(*reconciled_transaction);

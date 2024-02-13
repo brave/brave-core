@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
@@ -15,45 +16,9 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
 namespace brave_rewards::internal {
 
 namespace {
-
-const char kACSKUDev[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGINiB9dUmpqLyeSEdZ23E4dPXwI"
-    "BOUNJCFN9d5toIME2M";  // NOLINT
-const char kACSKUStaging[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGIOH4Li+"
-    "rduCtFOfV8Lfa2o8h4SQjN5CuIwxmeQFjOk4W";  // NOLINT
-const char kACSKUProduction[] =
-    "AgEJYnJhdmUuY29tAiNicmF2ZSB1c2VyLXdhbGxldC12b3RlIHNrdSB0b2tlbiB2MQACFHNrdT"
-    "11c2VyLXdhbGxldC12b3RlAAIKcHJpY2U9MC4yNQACDGN1cnJlbmN5PUJBVAACDGRlc2NyaXB0"
-    "aW9uPQACGmNyZWRlbnRpYWxfdHlwZT1zaW5nbGUtdXNlAAAGIOaNAUCBMKm0IaLqxefhvxOtAK"
-    "B0OfoiPn0NPVfI602J";  // NOLINT
-
-std::string GetACSKU() {
-  if (_environment == mojom::Environment::PRODUCTION) {
-    return kACSKUProduction;
-  }
-
-  if (_environment == mojom::Environment::STAGING) {
-    return kACSKUStaging;
-  }
-
-  if (_environment == mojom::Environment::DEVELOPMENT) {
-    return kACSKUDev;
-  }
-
-  NOTREACHED();
-  return kACSKUDev;
-}
 
 void GetCredentialTrigger(mojom::SKUOrderPtr order,
                           credential::CredentialsTrigger* trigger) {
@@ -84,41 +49,41 @@ ContributionSKU::~ContributionSKU() = default;
 
 void ContributionSKU::AutoContribution(const std::string& contribution_id,
                                        const std::string& wallet_type,
-                                       LegacyResultCallback callback) {
+                                       ResultCallback callback) {
   mojom::SKUOrderItem item;
-  item.sku = GetACSKU();
+  item.sku = engine_->Get<EnvironmentConfig>().auto_contribute_sku();
 
-  Start(contribution_id, item, wallet_type, callback);
+  Start(contribution_id, item, wallet_type, std::move(callback));
 }
 
 void ContributionSKU::Start(const std::string& contribution_id,
                             const mojom::SKUOrderItem& item,
                             const std::string& wallet_type,
-                            LegacyResultCallback callback) {
-  auto get_callback = std::bind(&ContributionSKU::GetContributionInfo, this, _1,
-                                item, wallet_type, callback);
-
-  engine_->database()->GetContributionInfo(contribution_id, get_callback);
+                            ResultCallback callback) {
+  engine_->database()->GetContributionInfo(
+      contribution_id, base::BindOnce(&ContributionSKU::GetContributionInfo,
+                                      weak_factory_.GetWeakPtr(), item,
+                                      wallet_type, std::move(callback)));
 }
 
 void ContributionSKU::GetContributionInfo(
-    mojom::ContributionInfoPtr contribution,
     const mojom::SKUOrderItem& item,
     const std::string& wallet_type,
-    LegacyResultCallback callback) {
+    ResultCallback callback,
+    mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
-    BLOG(0, "Contribution not found");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution not found";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  LegacyResultCallback complete_callback =
-      std::bind(&ContributionSKU::Completed, this, _1,
-                contribution->contribution_id, contribution->type, callback);
+  ResultCallback complete_callback = base::BindOnce(
+      &ContributionSKU::Completed, weak_factory_.GetWeakPtr(),
+      contribution->contribution_id, contribution->type, std::move(callback));
 
-  auto process_callback =
-      std::bind(&ContributionSKU::GetOrder, this, _1, _2,
-                contribution->contribution_id, complete_callback);
+  auto process_callback = base::BindOnce(
+      &ContributionSKU::GetOrder, weak_factory_.GetWeakPtr(),
+      contribution->contribution_id, std::move(complete_callback));
 
   mojom::SKUOrderItem new_item = item;
   new_item.quantity = GetVotesFromAmount(contribution->amount);
@@ -128,31 +93,32 @@ void ContributionSKU::GetContributionInfo(
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(new_item);
 
-  sku_.Process(items, wallet_type, process_callback,
+  sku_.Process(items, wallet_type, std::move(process_callback),
                contribution->contribution_id);
 }
 
-void ContributionSKU::GetOrder(mojom::Result result,
-                               const std::string& order_id,
-                               const std::string& contribution_id,
-                               LegacyResultCallback callback) {
+void ContributionSKU::GetOrder(const std::string& contribution_id,
+                               ResultCallback callback,
+                               mojom::Result result,
+                               const std::string& order_id) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "SKU was not processed");
-    callback(result);
+    engine_->LogError(FROM_HERE) << "SKU was not processed";
+    std::move(callback).Run(result);
     return;
   }
 
-  auto get_callback = std::bind(&ContributionSKU::OnGetOrder, this, _1,
-                                contribution_id, callback);
-  engine_->database()->GetSKUOrder(order_id, get_callback);
+  engine_->database()->GetSKUOrder(
+      order_id,
+      base::BindOnce(&ContributionSKU::OnGetOrder, weak_factory_.GetWeakPtr(),
+                     contribution_id, std::move(callback)));
 }
 
-void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
-                                 const std::string& contribution_id,
-                                 LegacyResultCallback callback) {
+void ContributionSKU::OnGetOrder(const std::string& contribution_id,
+                                 ResultCallback callback,
+                                 mojom::SKUOrderPtr order) {
   if (!order) {
-    BLOG(0, "Order was not found");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Order was not found";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -160,58 +126,55 @@ void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
   credential::CredentialsTrigger trigger;
   GetCredentialTrigger(order->Clone(), &trigger);
 
-  credentials_.Start(
-      trigger, base::BindOnce([](LegacyResultCallback callback,
-                                 mojom::Result result) { callback(result); },
-                              std::move(callback)));
+  credentials_.Start(trigger, std::move(callback));
 }
 
-void ContributionSKU::Completed(mojom::Result result,
-                                const std::string& contribution_id,
+void ContributionSKU::Completed(const std::string& contribution_id,
                                 mojom::RewardsType type,
-                                LegacyResultCallback callback) {
+                                ResultCallback callback,
+                                mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order not completed");
-    callback(result);
+    engine_->LogError(FROM_HERE) << "Order not completed";
+    std::move(callback).Run(result);
     return;
   }
 
-  auto save_callback = std::bind(&ContributionSKU::CredsStepSaved, this, _1,
-                                 contribution_id, callback);
-
   engine_->database()->UpdateContributionInfoStep(
-      contribution_id, mojom::ContributionStep::STEP_CREDS, save_callback);
+      contribution_id, mojom::ContributionStep::STEP_CREDS,
+      base::BindOnce(&ContributionSKU::CredsStepSaved,
+                     weak_factory_.GetWeakPtr(), contribution_id,
+                     std::move(callback)));
 }
 
-void ContributionSKU::CredsStepSaved(mojom::Result result,
-                                     const std::string& contribution_id,
-                                     LegacyResultCallback callback) {
+void ContributionSKU::CredsStepSaved(const std::string& contribution_id,
+                                     ResultCallback callback,
+                                     mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Creds step not saved");
-    callback(result);
+    engine_->LogError(FROM_HERE) << "Creds step not saved";
+    std::move(callback).Run(result);
     return;
   }
 
   engine_->contribution()->StartUnblinded({mojom::CredsBatchType::SKU},
-                                          contribution_id, callback);
+                                          contribution_id, std::move(callback));
 }
 
 void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
-                               LegacyResultCallback callback) {
-  auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens, this, _1,
-                                transaction, callback);
-
+                               ResultCallback callback) {
   engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {mojom::CredsBatchType::PROMOTION}, get_callback);
+      {mojom::CredsBatchType::PROMOTION},
+      base::BindOnce(&ContributionSKU::GetUnblindedTokens,
+                     weak_factory_.GetWeakPtr(), transaction,
+                     std::move(callback)));
 }
 
 void ContributionSKU::GetUnblindedTokens(
-    std::vector<mojom::UnblindedTokenPtr> list,
     const mojom::SKUTransaction& transaction,
-    LegacyResultCallback callback) {
+    ResultCallback callback,
+    std::vector<mojom::UnblindedTokenPtr> list) {
   if (list.empty()) {
-    BLOG(0, "List is empty");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "List is empty";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -227,8 +190,8 @@ void ContributionSKU::GetUnblindedTokens(
   }
 
   if (current_amount < transaction.amount) {
-    BLOG(0, "Not enough funds");
-    callback(mojom::Result::NOT_ENOUGH_FUNDS);
+    engine_->LogError(FROM_HERE) << "Not enough funds";
+    std::move(callback).Run(mojom::Result::NOT_ENOUGH_FUNDS);
     return;
   }
 
@@ -238,74 +201,72 @@ void ContributionSKU::GetUnblindedTokens(
   redeem.token_list = token_list;
   redeem.order_id = transaction.order_id;
 
-  auto get_callback =
-      std::bind(&ContributionSKU::GetOrderMerchant, this, _1, redeem, callback);
-
-  engine_->database()->GetSKUOrder(transaction.order_id, get_callback);
+  engine_->database()->GetSKUOrder(
+      transaction.order_id,
+      base::BindOnce(&ContributionSKU::GetOrderMerchant,
+                     weak_factory_.GetWeakPtr(), redeem, std::move(callback)));
 }
 
 void ContributionSKU::GetOrderMerchant(
-    mojom::SKUOrderPtr order,
     const credential::CredentialsRedeem& redeem,
-    LegacyResultCallback callback) {
+    ResultCallback callback,
+    mojom::SKUOrderPtr order) {
   if (!order) {
-    BLOG(0, "Order was not found");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Order was not found";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   credential::CredentialsRedeem new_redeem = redeem;
   new_redeem.publisher_key = order->location;
 
-  auto creds_callback =
-      std::bind(&ContributionSKU::OnRedeemTokens, this, _1, callback);
-
-  credentials_.RedeemTokens(new_redeem, creds_callback);
+  credentials_.RedeemTokens(
+      new_redeem,
+      base::BindOnce(&ContributionSKU::OnRedeemTokens,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ContributionSKU::OnRedeemTokens(mojom::Result result,
-                                     LegacyResultCallback callback) {
+void ContributionSKU::OnRedeemTokens(ResultCallback callback,
+                                     mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Problem redeeming tokens");
-    callback(result);
+    engine_->LogError(FROM_HERE) << "Problem redeeming tokens";
+    std::move(callback).Run(result);
     return;
   }
 
-  callback(result);
+  std::move(callback).Run(result);
 }
 
 void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,
-                            LegacyResultCallback callback) {
+                            ResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution was not found");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution was not found";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  auto get_callback = std::bind(
-      &ContributionSKU::OnOrder, this, _1,
-      std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
-      callback);
+  std::string contribution_id = contribution->contribution_id;
 
   engine_->database()->GetSKUOrderByContributionId(
-      contribution->contribution_id, get_callback);
+      contribution_id,
+      base::BindOnce(&ContributionSKU::OnOrder, weak_factory_.GetWeakPtr(),
+                     std::move(contribution), std::move(callback)));
 }
 
-void ContributionSKU::OnOrder(
-    mojom::SKUOrderPtr order,
-    std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-    LegacyResultCallback callback) {
-  auto contribution = std::move(*shared_contribution);
+void ContributionSKU::OnOrder(mojom::ContributionInfoPtr contribution,
+                              ResultCallback callback,
+                              mojom::SKUOrderPtr order) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution is null";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   switch (contribution->step) {
     case mojom::ContributionStep::STEP_START:
     case mojom::ContributionStep::STEP_EXTERNAL_TRANSACTION: {
-      RetryStartStep(std::move(contribution), std::move(order), callback);
+      RetryStartStep(std::move(contribution), std::move(order),
+                     std::move(callback));
       return;
     }
     case mojom::ContributionStep::STEP_PREPARE:
@@ -313,7 +274,7 @@ void ContributionSKU::OnOrder(
     case mojom::ContributionStep::STEP_CREDS: {
       engine_->contribution()->RetryUnblinded({mojom::CredsBatchType::SKU},
                                               contribution->contribution_id,
-                                              callback);
+                                              std::move(callback));
       return;
     }
     case mojom::ContributionStep::STEP_RETRY_COUNT:
@@ -324,7 +285,7 @@ void ContributionSKU::OnOrder(
     case mojom::ContributionStep::STEP_FAILED:
     case mojom::ContributionStep::STEP_COMPLETED:
     case mojom::ContributionStep::STEP_NO: {
-      BLOG(0, "Step not correct " << contribution->step);
+      engine_->LogError(FROM_HERE) << "Step not correct " << contribution->step;
       NOTREACHED();
       return;
     }
@@ -333,10 +294,10 @@ void ContributionSKU::OnOrder(
 
 void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
                                      mojom::SKUOrderPtr order,
-                                     LegacyResultCallback callback) {
+                                     ResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution is null";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -355,8 +316,8 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
   }
 
   if (wallet_type.empty()) {
-    BLOG(0, "Invalid processor for SKU contribution");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Invalid processor for SKU contribution";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -365,19 +326,20 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
   if (!order || order->order_id.empty()) {
     DCHECK(wallet_type == constant::kWalletUphold ||
            wallet_type == constant::kWalletGemini);
-    AutoContribution(contribution->contribution_id, wallet_type, callback);
+    AutoContribution(contribution->contribution_id, wallet_type,
+                     std::move(callback));
     return;
   }
 
-  LegacyResultCallback complete_callback =
-      std::bind(&ContributionSKU::Completed, this, _1,
-                contribution->contribution_id, contribution->type, callback);
+  ResultCallback complete_callback = base::BindOnce(
+      &ContributionSKU::Completed, weak_factory_.GetWeakPtr(),
+      contribution->contribution_id, contribution->type, std::move(callback));
 
-  auto retry_callback =
-      std::bind(&ContributionSKU::GetOrder, this, _1, _2,
-                contribution->contribution_id, complete_callback);
+  auto retry_callback = base::BindOnce(
+      &ContributionSKU::GetOrder, weak_factory_.GetWeakPtr(),
+      contribution->contribution_id, std::move(complete_callback));
 
-  sku_.Retry(order->order_id, wallet_type, retry_callback);
+  sku_.Retry(order->order_id, wallet_type, std::move(retry_callback));
 }
 
 }  // namespace contribution

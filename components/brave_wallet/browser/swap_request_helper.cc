@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 
+#include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -13,110 +15,118 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
-absl::optional<std::string> EncodeJupiterTransactionParams(
-    mojom::JupiterSwapParamsPtr params,
+namespace {
+
+// Docs: https://station.jup.ag/docs/apis/adding-fees
+std::optional<std::string> GetFeeAccount(const std::string& output_mint) {
+  std::vector<std::vector<uint8_t>> seeds;
+  std::vector<uint8_t> referral_account_pubkey_bytes;
+  std::vector<uint8_t> output_mint_bytes;
+
+  if (!Base58Decode(kJupiterReferralKey, &referral_account_pubkey_bytes,
+                    kSolanaPubkeySize) ||
+      !Base58Decode(output_mint, &output_mint_bytes, kSolanaPubkeySize)) {
+    return std::nullopt;
+  }
+
+  const std::string& referral_fee_header = kJupiterReferralProgramHeader;
+  std::vector<uint8_t> referral_ata_bytes(referral_fee_header.begin(),
+                                          referral_fee_header.end());
+
+  seeds.push_back(std::move(referral_ata_bytes));
+  seeds.push_back(std::move(referral_account_pubkey_bytes));
+  seeds.push_back(std::move(output_mint_bytes));
+
+  return SolanaKeyring::FindProgramDerivedAddress(seeds,
+                                                  kJupiterReferralProgram);
+}
+
+}  // namespace
+
+std::optional<std::string> EncodeJupiterTransactionParams(
+    const mojom::JupiterTransactionParams& params,
     bool has_fee) {
-  DCHECK(params);
   base::Value::Dict tx_params;
 
   // The code below does the following two things:
   //   - compute the ATA address that should be used to receive fees
   //   - verify if output_mint is a valid address
-  absl::optional<std::string> associated_token_account =
-      SolanaKeyring::GetAssociatedTokenAccount(
-          params->output_mint, brave_wallet::kSolanaFeeRecipient);
-  if (!associated_token_account) {
-    return absl::nullopt;
+  std::optional<std::string> fee_account =
+      GetFeeAccount(params.quote->output_mint);
+  if (!fee_account) {
+    return std::nullopt;
   }
 
-  // If the if-condition below is false, associated_token_account is unused,
-  // but the originating call to SolanaKeyring::GetAssociatedTokenAccount()
-  // is still done to ensure output_mint is always valid.
+  // If the if-condition below is false, fee_account is unused,
+  // but the originating call to GetFeeAccount() is still done to ensure
+  // output_mint is always valid.
   if (has_fee) {
-    // feeAccount is the ATA account for the output mint where the fee will be
-    // sent to.
-    tx_params.Set("feeAccount", *associated_token_account);
+    tx_params.Set("feeAccount", *fee_account);
   }
 
-  tx_params.Set("userPublicKey", params->user_public_key);
+  tx_params.Set("userPublicKey", params.user_public_key);
 
-  base::Value::Dict route;
-  route.Set("inAmount", base::NumberToString(params->route->in_amount));
-  route.Set("outAmount", base::NumberToString(params->route->out_amount));
-  route.Set("amount", base::NumberToString(params->route->amount));
-  route.Set("otherAmountThreshold",
-            base::NumberToString(params->route->other_amount_threshold));
-  route.Set("swapMode", params->route->swap_mode);
-  route.Set("priceImpactPct", params->route->price_impact_pct);
-  route.Set("slippageBps", base::NumberToString(params->route->slippage_bps));
+  base::Value::Dict quote;
+  quote.Set("inputMint", params.quote->input_mint);
+  quote.Set("inAmount", params.quote->in_amount);
+  quote.Set("outputMint", params.quote->output_mint);
+  quote.Set("outAmount", params.quote->out_amount);
+  quote.Set("otherAmountThreshold", params.quote->other_amount_threshold);
+  quote.Set("swapMode", params.quote->swap_mode);
+  quote.Set("slippageBps", params.quote->slippage_bps);
+  quote.Set("priceImpactPct", params.quote->price_impact_pct);
 
-  base::Value::List market_infos_value;
-  for (const auto& market_info : params->route->market_infos) {
-    base::Value::Dict market_info_value;
-    market_info_value.Set("id", market_info->id);
-    market_info_value.Set("label", market_info->label);
-    market_info_value.Set("inputMint", market_info->input_mint);
-    market_info_value.Set("outputMint", market_info->output_mint);
-    market_info_value.Set("notEnoughLiquidity",
-                          market_info->not_enough_liquidity);
-    market_info_value.Set("inAmount",
-                          base::NumberToString(market_info->in_amount));
-    market_info_value.Set("outAmount",
-                          base::NumberToString(market_info->out_amount));
-    market_info_value.Set("priceImpactPct", market_info->price_impact_pct);
-
-    base::Value::Dict lp_fee_value;
-    lp_fee_value.Set("amount",
-                     base::NumberToString(market_info->lp_fee->amount));
-    lp_fee_value.Set("mint", market_info->lp_fee->mint);
-    lp_fee_value.Set("pct", market_info->lp_fee->pct);
-
-    market_info_value.Set("lpFee", std::move(lp_fee_value));
-
-    base::Value::Dict platform_fee_value;
-    platform_fee_value.Set(
-        "amount", base::NumberToString(market_info->platform_fee->amount));
-    platform_fee_value.Set("mint", market_info->platform_fee->mint);
-    platform_fee_value.Set("pct", market_info->platform_fee->pct);
-    market_info_value.Set("platformFee", std::move(platform_fee_value));
-
-    market_infos_value.Append(std::move(market_info_value));
+  if (params.quote->platform_fee) {
+    base::Value::Dict platform_fee;
+    platform_fee.Set("amount", params.quote->platform_fee->amount);
+    platform_fee.Set("feeBps", params.quote->platform_fee->fee_bps);
+    quote.Set("platformFee", std::move(platform_fee));
   }
 
-  route.Set("marketInfos", std::move(market_infos_value));
-  tx_params.Set("route", std::move(route));
+  base::Value::List route_plan_value;
+  for (const auto& step : params.quote->route_plan) {
+    base::Value::Dict step_value;
+    step_value.Set("percent", step->percent);
+
+    base::Value::Dict swap_info_value;
+    swap_info_value.Set("ammKey", step->swap_info->amm_key);
+    swap_info_value.Set("label", step->swap_info->label);
+    swap_info_value.Set("inputMint", step->swap_info->input_mint);
+    swap_info_value.Set("outputMint", step->swap_info->output_mint);
+    swap_info_value.Set("inAmount", step->swap_info->in_amount);
+    swap_info_value.Set("outAmount", step->swap_info->out_amount);
+    swap_info_value.Set("feeAmount", step->swap_info->fee_amount);
+    swap_info_value.Set("feeMint", step->swap_info->fee_mint);
+
+    step_value.Set("swapInfo", std::move(swap_info_value));
+    route_plan_value.Append(std::move(step_value));
+  }
+
+  quote.Set("routePlan", std::move(route_plan_value));
+
+  tx_params.Set("quoteResponse", std::move(quote));
 
   // FIXME - GetJSON should be refactored to accept a base::Value::Dict
   std::string result = GetJSON(base::Value(std::move(tx_params)));
-  result = std::string(
-      json::convert_string_value_to_uint64("/route/inAmount", result, false));
-  result = std::string(
-      json::convert_string_value_to_uint64("/route/outAmount", result, false));
-  result = std::string(
-      json::convert_string_value_to_uint64("/route/amount", result, false));
-  result = std::string(json::convert_string_value_to_uint64(
-      "/route/otherAmountThreshold", result, false));
-  result = std::string(json::convert_string_value_to_uint64(
-      "/route/slippageBps", result, false));
 
-  for (int i = 0; i < static_cast<int>(params->route->market_infos.size());
-       i++) {
+  result = std::string(json::convert_string_value_to_uint64(
+      "/quoteResponse/slippageBps", result, false));
+
+  if (params.quote->platform_fee) {
     result = std::string(json::convert_string_value_to_uint64(
-        base::StringPrintf("/route/marketInfos/%d/inAmount", i), result,
+        "/quoteResponse/platformFee/feeBps", result, false));
+  }
+
+  for (int i = 0; i < static_cast<int>(params.quote->route_plan.size()); i++) {
+    result = std::string(json::convert_string_value_to_uint64(
+        base::StringPrintf("/quoteResponse/routePlan/%d/percent", i), result,
         false));
-    result = std::string(json::convert_string_value_to_uint64(
-        base::StringPrintf("/route/marketInfos/%d/outAmount", i), result,
-        false));
-    result = std::string(json::convert_string_value_to_uint64(
-        base::StringPrintf("/route/marketInfos/%d/lpFee/amount", i), result,
-        false));
-    result = std::string(json::convert_string_value_to_uint64(
-        base::StringPrintf("/route/marketInfos/%d/platformFee/amount", i),
-        result, false));
   }
 
   return result;

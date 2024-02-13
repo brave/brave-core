@@ -17,9 +17,9 @@ import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
-import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonState;
@@ -47,24 +47,27 @@ public class TabSwitcherBottomToolbarCoordinator {
 
     /**
      * Build the coordinator that manages the tab switcher bottom toolbar.
+     *
      * @param stub The tab switcher bottom toolbar {@link ViewStub} to inflate.
      * @param topToolbarRoot The root {@link ViewGroup} of the top toolbar.
      * @param incognitoStateProvider Notifies components when incognito mode is entered or exited.
      * @param themeColorProvider Notifies components when the theme color changes.
-     * @param newTabClickListener An {@link OnClickListener} that is triggered when the
-     *                            new tab button is clicked.
-     * @param closeTabsClickListener An {@link OnClickListener} that is triggered when the
-     *                               close all tabs button is clicked.
-     * @param menuButtonHelper An {@link AppMenuButtonHelper} that is triggered when the
-     *                         menu button is clicked.
-     * @param tabCountProvider Updates the tab count number in the tab switcher button and in the
-     *                         incognito toggle tab layout.
+     * @param newTabClickListener An {@link OnClickListener} that is triggered when the new tab
+     *     button is clicked.
+     * @param closeTabsClickListener An {@link OnClickListener} that is triggered when the close all
+     *     tabs button is clicked.
+     * @param menuButtonHelper An {@link AppMenuButtonHelper} that is triggered when the menu button
+     *     is clicked.
      */
-    TabSwitcherBottomToolbarCoordinator(ViewStub stub, ViewGroup topToolbarRoot,
-            IncognitoStateProvider incognitoStateProvider, ThemeColorProvider themeColorProvider,
-            OnClickListener newTabClickListener, OnClickListener closeTabsClickListener,
+    TabSwitcherBottomToolbarCoordinator(
+            ViewStub stub,
+            ViewGroup topToolbarRoot,
+            IncognitoStateProvider incognitoStateProvider,
+            ThemeColorProvider themeColorProvider,
+            OnClickListener newTabClickListener,
+            OnClickListener closeTabsClickListener,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
-            TabCountProvider tabCountProvider) {
+            Profile profile) {
         final ViewGroup root = (ViewGroup) stub.inflate();
 
         View toolbar = root.findViewById(R.id.bottom_toolbar_buttons);
@@ -73,7 +76,9 @@ public class TabSwitcherBottomToolbarCoordinator {
 
         mModel = new TabSwitcherBottomToolbarModel();
 
-        PropertyModelChangeProcessor.create(mModel, root,
+        PropertyModelChangeProcessor.create(
+                mModel,
+                root,
                 new TabSwitcherBottomToolbarViewBinder(
                         topToolbarRoot, (ViewGroup) root.getParent()));
 
@@ -91,14 +96,16 @@ public class TabSwitcherBottomToolbarCoordinator {
         mMenuButton = root.findViewById(R.id.menu_button_wrapper);
         if (mMenuButton != null) {
             Supplier<MenuButtonState> menuButtonStateSupplier =
-                    () -> UpdateMenuItemHelper.getInstance().getUiState().buttonState;
+                    () -> UpdateMenuItemHelper.getInstance(profile).getUiState().buttonState;
             BraveMenuButtonCoordinator.setupPropertyModel(mMenuButton, menuButtonStateSupplier);
         }
 
-        new OneShotCallback<>(menuButtonHelperSupplier, (menuButtonHelper) -> {
-            assert menuButtonHelper != null;
-            mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
-        });
+        new OneShotCallback<>(
+                menuButtonHelperSupplier,
+                (menuButtonHelper) -> {
+                    assert menuButtonHelper != null;
+                    mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
+                });
     }
 
     /**

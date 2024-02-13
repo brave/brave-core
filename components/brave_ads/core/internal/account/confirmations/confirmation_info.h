@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_INFO_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -13,8 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
@@ -36,7 +36,7 @@ struct ConfirmationInfo final {
   ConfirmationType type = ConfirmationType::kUndefined;
   AdType ad_type = AdType::kUndefined;
   base::Time created_at;
-  absl::optional<RewardInfo> reward;
+  std::optional<RewardInfo> reward;
   UserDataInfo user_data;
 };
 

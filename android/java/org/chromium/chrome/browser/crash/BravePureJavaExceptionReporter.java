@@ -5,12 +5,10 @@
 
 package org.chromium.chrome.browser.crash;
 
-import org.chromium.build.annotations.MainDex;
 import org.chromium.build.annotations.UsedByReflection;
 
 import java.io.File;
 
-@MainDex
 @UsedByReflection("SplitCompatApplication.java")
 public class BravePureJavaExceptionReporter extends ChromePureJavaExceptionReporter {
     @UsedByReflection("SplitCompatApplication.java")

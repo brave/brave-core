@@ -335,6 +335,8 @@ class RewardsService : public KeyedService {
 
   virtual p3a::ConversionMonitor* GetP3AConversionMonitor() = 0;
 
+  virtual void OnRewardsPageShown() = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 };

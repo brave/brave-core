@@ -29,16 +29,16 @@
   height: 84px;
 }
 
-.requestotr #never-ask-again {
+.requestotr #dont-warn-again {
   padding-top: 1em;
 }
 
-.requestotr #never-ask-again > p {
+.requestotr #dont-warn-again > p {
   margin-top: 0;
   padding-inline-start: 1.8em;
 }
 
-.requestotr input#never-ask-again-checkbox {
+.requestotr input#dont-warn-again-checkbox {
   opacity: 1;
 }
 

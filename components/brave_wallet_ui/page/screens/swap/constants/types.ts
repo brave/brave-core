@@ -43,12 +43,6 @@ export type SwapAndSend = {
   name: string
 }
 
-export type GasFeeOption = {
-  id: string
-  name: string
-  icon: string
-}
-
 export type Exchange = {
   id: string
   name: string
@@ -85,6 +79,6 @@ export type SwapParams = {
    * format for Jupiter and 0x swap providers.
    */
   slippageTolerance: string
-  fromAddress?: string
+  fromAccount?: BraveWallet.AccountInfo
   spotPrices?: SpotPriceRegistry
 }

@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 
+#include <cstddef>
 #include <map>
 #include <utility>
 
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
@@ -26,7 +26,7 @@
 namespace brave_ads::database::table {
 
 using CreativeAdMap =
-    std::map</*creative_ad_uuid=*/std::string, CreativeAdInfo>;
+    std::map</*creative_ad_uuid*/ std::string, CreativeAdInfo>;
 
 namespace {
 
@@ -67,7 +67,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, creative_ad.split_test_group);
     BindString(command, index++, creative_ad.target_url.spec());
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -232,12 +232,12 @@ void CreativeAds::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE creative_ads (creative_instance_id TEXT NOT "
-      "NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, conversion INTEGER NOT "
-      "NULL DEFAULT 0, per_day INTEGER NOT NULL DEFAULT 0, per_week INTEGER "
-      "NOT NULL DEFAULT 0, per_month INTEGER NOT NULL DEFAULT 0, total_max "
-      "INTEGER NOT NULL DEFAULT 0, value DOUBLE NOT NULL DEFAULT 0, "
-      "split_test_group TEXT, target_url TEXT NOT NULL);";
+      "CREATE TABLE creative_ads (creative_instance_id TEXT NOT NULL PRIMARY "
+      "KEY UNIQUE ON CONFLICT REPLACE, conversion INTEGER NOT NULL DEFAULT 0, "
+      "per_day INTEGER NOT NULL DEFAULT 0, per_week INTEGER NOT NULL DEFAULT "
+      "0, per_month INTEGER NOT NULL DEFAULT 0, total_max INTEGER NOT NULL "
+      "DEFAULT 0, value DOUBLE NOT NULL DEFAULT 0, split_test_group TEXT, "
+      "target_url TEXT NOT NULL);";
   transaction->commands.push_back(std::move(command));
 }
 

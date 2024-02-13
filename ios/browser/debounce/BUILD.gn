@@ -1,0 +1,26 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("debounce") {
+  sources = [
+    "debounce_service_factory+private.h",
+    "debounce_service_factory.h",
+    "debounce_service_factory.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/debounce/core/browser",
+    "//brave/components/debounce/core/common",
+    "//brave/ios/browser/api/debounce",
+    "//brave/ios/browser/application_context",
+    "//brave/ios/browser/keyed_service",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios:ios",
+    "//components/user_prefs:user_prefs",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}

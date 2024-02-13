@@ -8,8 +8,10 @@
 #include <string>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -31,6 +33,10 @@ constexpr char16_t kGetDocumentHTMLScript[] =
     u"new XMLSerializer().serializeToString(document)";
 
 constexpr char16_t kGetInnerTextScript[] = u"document?.body?.innerText";
+
+bool UserHasOptedInToBraveRewards(const PrefService* prefs) {
+  return prefs->GetBoolean(brave_rewards::prefs::kEnabled);
+}
 
 }  // namespace
 
@@ -77,17 +83,26 @@ void AdsTabHelper::RunIsolatedJavaScript(
     content::RenderFrameHost* render_frame_host) {
   CHECK(render_frame_host);
 
+  const PrefService* prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+  if (!prefs) {
+    return;
+  }
+
   render_frame_host->ExecuteJavaScriptInIsolatedWorld(
       kGetDocumentHTMLScript,
       base::BindOnce(&AdsTabHelper::OnJavaScriptHtmlResult,
                      weak_factory_.GetWeakPtr()),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 
-  render_frame_host->ExecuteJavaScriptInIsolatedWorld(
-      kGetInnerTextScript,
-      base::BindOnce(&AdsTabHelper::OnJavaScriptTextResult,
-                     weak_factory_.GetWeakPtr()),
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  if (UserHasOptedInToBraveRewards(prefs)) {
+    render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+        kGetInnerTextScript,
+        base::BindOnce(&AdsTabHelper::OnJavaScriptTextResult,
+                       weak_factory_.GetWeakPtr()),
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
 }
 
 void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
@@ -130,8 +145,8 @@ void AdsTabHelper::DidFinishNavigation(
   const bool tab_not_restored =
       navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
 
-  // Some browser initiated navigations have HasUserGesture set to false.
-  // This should eventually be fixed in crbug.com/617904.
+  // Some browser initiated navigations have HasUserGesture set to false. This
+  // should eventually be fixed in crbug.com/617904.
   if (tab_not_restored && (navigation_handle->HasUserGesture() ||
                            !navigation_handle->IsRendererInitiated())) {
     ads_service_->NotifyUserGestureEventTriggered(
@@ -218,7 +233,7 @@ void AdsTabHelper::WebContentsDestroyed() {
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-// components/brave_ads/browser/background_helper_android.cc handles Android
+// "components/brave_ads/browser/background_helper_android.cc" handles Android
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   if (!browser || !ads_service_) {
     return;

@@ -5,15 +5,16 @@
 
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_oauth/post_oauth_gemini.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
 
@@ -22,19 +23,21 @@ PostOauth::PostOauth(RewardsEngineImpl& engine) : engine_(engine) {}
 PostOauth::~PostOauth() = default;
 
 std::string PostOauth::GetUrl() {
-  return GetOauthServerUrl("/auth/token");
+  return engine_->Get<EnvironmentConfig>()
+      .gemini_oauth_url()
+      .Resolve("/auth/token")
+      .spec();
 }
 
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code) {
-  const std::string client_id = internal::gemini::GetClientId();
-  const std::string client_secret = internal::gemini::GetClientSecret();
+  auto& config = engine_->Get<EnvironmentConfig>();
   const std::string request_id =
       base::Uuid::GenerateRandomV4().AsLowercaseString();
 
   base::Value::Dict dict;
-  dict.Set("client_id", client_id);
-  dict.Set("client_secret", client_secret);
+  dict.Set("client_id", config.gemini_client_id());
+  dict.Set("client_secret", config.gemini_client_secret());
   dict.Set("code", code);
   dict.Set("redirect_uri", "rewards://gemini/authorization");
   dict.Set("grant_type", "authorization_code");
@@ -48,16 +51,16 @@ mojom::Result PostOauth::ParseBody(const std::string& body,
                                    std::string* token) {
   DCHECK(token);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* access_token = dict.FindString("access_token");
   if (!access_token) {
-    BLOG(0, "Missing access token");
+    engine_->LogError(FROM_HERE) << "Missing access token";
     return mojom::Result::FAILED;
   }
 
@@ -74,23 +77,26 @@ void PostOauth::Request(const std::string& external_account_id,
   request->content_type = "application/json";
   request->method = mojom::UrlMethod::POST;
 
-  engine_->LoadURL(std::move(request),
-                   base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
-                                  std::move(callback)));
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kNone,
+      base::BindOnce(&PostOauth::OnRequest, base::Unretained(this),
+                     std::move(callback)));
 }
 
 void PostOauth::OnRequest(PostOauthCallback callback,
                           mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response, true);
 
-  mojom::Result result = CheckStatusCode(response->status_code);
-  if (result != mojom::Result::OK) {
-    return std::move(callback).Run(result, "");
+  switch (response->status_code) {
+    case net::HTTP_OK:
+      break;
+    default:
+      std::move(callback).Run(mojom::Result::FAILED, "");
+      return;
   }
 
   std::string token;
-  result = ParseBody(response->body, &token);
+  mojom::Result result = ParseBody(response->body, &token);
   std::move(callback).Run(result, std::move(token));
 }
 

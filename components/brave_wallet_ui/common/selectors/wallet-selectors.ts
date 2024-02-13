@@ -9,31 +9,14 @@ type State = Omit<WalletPageState, 'page'>
 
 // safe selectors (primitive return types only)
 export const addUserAssetError = ({ wallet }: State) => wallet.addUserAssetError
-export const defaultEthereumWallet = ({ wallet }: State) =>
-  wallet.defaultEthereumWallet
-export const defaultSolanaWallet = ({ wallet }: State) =>
-  wallet.defaultSolanaWallet
-export const defaultCryptocurrency = ({ wallet }: State) =>
-  wallet.defaultCurrencies.crypto
-export const defaultFiatCurrency = ({ wallet }: State) =>
-  wallet.defaultCurrencies.fiat
-export const hasIncorrectPassword = ({ wallet }: State) =>
-  wallet.hasIncorrectPassword
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled
-export const isMetaMaskInstalled = ({ wallet }: State) =>
-  wallet.isMetaMaskInstalled
-export const isWalletBackedUp = ({ wallet }: State) => wallet.isWalletBackedUp
 export const isWalletCreated = ({ wallet }: State) => wallet.isWalletCreated
 export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked
 export const passwordAttempts = ({ wallet }: State) => wallet.passwordAttempts
-export const selectedPortfolioTimeline = ({ wallet }: State) =>
-  wallet.selectedPortfolioTimeline
 export const assetAutoDiscoveryCompleted = ({ wallet }: State) =>
   wallet.assetAutoDiscoveryCompleted
-export const hasFeeEstimatesError = ({ wallet }: State) =>
-  wallet.hasFeeEstimatesError
 export const isNftPinningFeatureEnabled = ({ wallet }: State) =>
   wallet.isNftPinningFeatureEnabled
 export const hidePortfolioGraph = ({ wallet }: State) =>
@@ -46,33 +29,27 @@ export const removedNonFungibleTokens = ({ wallet }: State) =>
   wallet.removedNonFungibleTokens
 export const filteredOutPortfolioNetworkKeys = ({ wallet }: State) =>
   wallet.filteredOutPortfolioNetworkKeys
-export const filteredOutPortfolioAccountAddresses = ({ wallet }: State) =>
-  wallet.filteredOutPortfolioAccountAddresses
+export const filteredOutPortfolioAccountIds = ({ wallet }: State) =>
+  wallet.filteredOutPortfolioAccountIds
 export const hidePortfolioSmallBalances = ({ wallet }: State) =>
   wallet.hidePortfolioSmallBalances
 export const showNetworkLogoOnNfts = ({ wallet }: State) =>
   wallet.showNetworkLogoOnNfts
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
-export const importAccountError = ({ wallet }: State) =>
-  wallet.importAccountError
-export const selectedOnRampAssetId = ({ wallet }: State) =>
-  wallet.selectedDepositAssetId
+export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
+  wallet.allowedNewWalletAccountTypeNetworkIds
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
-export const connectedAccounts = ({ wallet }: State) => wallet.connectedAccounts
-export const defaultCurrencies = ({ wallet }: State) => wallet.defaultCurrencies
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
-export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
 export const selectedAssetFilter = ({ wallet }: State) =>
   wallet.selectedAssetFilter
 export const selectedGroupAssetsByItem = ({ wallet }: State) =>
   wallet.selectedGroupAssetsByItem
 export const selectedNetworkFilter = ({ wallet }: State) =>
   wallet.selectedNetworkFilter
-export const solFeeEstimates = ({ wallet }: State) => wallet.solFeeEstimates
 export const userVisibleTokensInfo = ({ wallet }: State) =>
   wallet.userVisibleTokensInfo
 export const selectedAccountFilter = ({ wallet }: State) =>

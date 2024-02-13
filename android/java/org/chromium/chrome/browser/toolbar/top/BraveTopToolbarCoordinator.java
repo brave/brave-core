@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.toolbar.top;
 
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewStub;
 
 import org.chromium.base.Callback;
@@ -13,11 +14,16 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
+import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ButtonData;
 import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
@@ -27,6 +33,7 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.resources.ResourceManager;
@@ -45,11 +52,16 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomToolbarVisible;
     private ObservableSupplier<Integer> mConstraintsProxy;
+    private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
 
-    public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
-            ViewStub toolbarStub, ToolbarLayout toolbarLayout,
-            ToolbarDataProvider toolbarDataProvider, ToolbarTabController tabController,
-            UserEducationHelper userEducationHelper, List<ButtonDataProvider> buttonDataProviders,
+    public BraveTopToolbarCoordinator(
+            ToolbarControlContainer controlContainer,
+            ViewStub toolbarStub,
+            ToolbarLayout toolbarLayout,
+            ToolbarDataProvider toolbarDataProvider,
+            ToolbarTabController tabController,
+            UserEducationHelper userEducationHelper,
+            List<ButtonDataProvider> buttonDataProviders,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ThemeColorProvider normalThemeColorProvider,
             ThemeColorProvider overviewThemeColorProvider,
@@ -58,42 +70,76 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
-            ButtonDataProvider identityDiscController, Callback<Runnable> invalidatorCallback,
+            ButtonDataProvider identityDiscController,
             Supplier<ButtonData> identityDiscButtonSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
-            BooleanSupplier isIncognitoModeEnabledSupplier, boolean isTabToGtsAnimationEnabled,
-            boolean isStartSurfaceEnabled, HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader,
+            BooleanSupplier isIncognitoModeEnabledSupplier,
+            boolean isTabToGtsAnimationEnabled,
+            boolean isStartSurfaceEnabled,
+            HistoryDelegate historyDelegate,
+            BooleanSupplier partnerHomepageEnabledSupplier,
+            OfflineDownloader offlineDownloader,
             boolean initializeWithIncognitoColors,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
-            boolean isStartSurfaceRefactorEnabled, ObservableSupplier<Integer> constraintsSupplier,
+            boolean isStartSurfaceRefactorEnabled,
+            ObservableSupplier<Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
-            boolean shouldCreateLogoInStartToolbar, FullscreenManager fullscreenManager) {
-        super(controlContainer, toolbarStub, toolbarLayout, toolbarDataProvider, tabController,
-                userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
-                normalThemeColorProvider, overviewThemeColorProvider,
-                browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
-                appMenuButtonHelperSupplier, tabModelSelectorSupplier, homepageEnabledSupplier,
-                identityDiscController, invalidatorCallback, identityDiscButtonSupplier,
-                resourceManagerSupplier, isIncognitoModeEnabledSupplier, isTabToGtsAnimationEnabled,
-                isStartSurfaceEnabled, historyDelegate, partnerHomepageEnabledSupplier,
-                offlineDownloader, initializeWithIncognitoColors, startSurfaceLogoClickedCallback,
-                isStartSurfaceRefactorEnabled, constraintsSupplier, compositorInMotionSupplier,
-                browserStateBrowserControlsVisibilityDelegate, shouldCreateLogoInStartToolbar,
-                fullscreenManager);
+            boolean shouldCreateLogoInStartToolbar,
+            FullscreenManager fullscreenManager,
+            TabObscuringHandler tabObscuringHandler) {
+        super(
+                controlContainer,
+                toolbarStub,
+                toolbarLayout,
+                toolbarDataProvider,
+                tabController,
+                userEducationHelper,
+                buttonDataProviders,
+                layoutStateProviderSupplier,
+                normalThemeColorProvider,
+                overviewThemeColorProvider,
+                browsingModeMenuButtonCoordinator,
+                overviewModeMenuButtonCoordinator,
+                appMenuButtonHelperSupplier,
+                tabModelSelectorSupplier,
+                homepageEnabledSupplier,
+                identityDiscController,
+                identityDiscButtonSupplier,
+                resourceManagerSupplier,
+                isIncognitoModeEnabledSupplier,
+                isTabToGtsAnimationEnabled,
+                isStartSurfaceEnabled,
+                historyDelegate,
+                partnerHomepageEnabledSupplier,
+                offlineDownloader,
+                initializeWithIncognitoColors,
+                startSurfaceLogoClickedCallback,
+                isStartSurfaceRefactorEnabled,
+                constraintsSupplier,
+                compositorInMotionSupplier,
+                browserStateBrowserControlsVisibilityDelegate,
+                shouldCreateLogoInStartToolbar,
+                fullscreenManager,
+                tabObscuringHandler);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
         mConstraintsProxy = constraintsSupplier;
+        mTabModelSelectorSupplier = tabModelSelectorSupplier;
 
         if (isToolbarPhone()) {
             if (!isStartSurfaceEnabled) {
-                mTabSwitcherModeCoordinator = new BraveTabSwitcherModeTTCoordinator(
-                        controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
-                        overviewModeMenuButtonCoordinator, isTabToGtsAnimationEnabled,
-                        isIncognitoModeEnabledSupplier, mToolbarColorObserverManager);
+                mTabSwitcherModeCoordinator =
+                        new BraveTabSwitcherModeTTCoordinator(
+                                controlContainer
+                                        .getRootView()
+                                        .findViewById(R.id.tab_switcher_toolbar_stub),
+                                overviewModeMenuButtonCoordinator,
+                                isTabToGtsAnimationEnabled,
+                                isIncognitoModeEnabledSupplier,
+                                mToolbarColorObserverManager);
             }
         }
     }
@@ -133,6 +179,38 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             mBraveToolbarLayout.setVisibility(
                     ((ToolbarPhone) mBraveToolbarLayout).isInTabSwitcherMode() ? View.INVISIBLE
                                                                                : View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void initializeWithNative(
+            Runnable layoutUpdater,
+            OnClickListener tabSwitcherClickHandler,
+            OnClickListener newTabClickHandler,
+            OnClickListener bookmarkClickHandler,
+            OnClickListener customTabsBackClickHandler,
+            AppMenuDelegate appMenuDelegate,
+            LayoutManager layoutManager,
+            ObservableSupplier<Tab> tabSupplier,
+            BrowserControlsVisibilityManager browserControlsVisibilityManager,
+            TopUiThemeColorProvider topUiThemeColorProvider) {
+        super.initializeWithNative(
+                layoutUpdater,
+                tabSwitcherClickHandler,
+                newTabClickHandler,
+                bookmarkClickHandler,
+                customTabsBackClickHandler,
+                appMenuDelegate,
+                layoutManager,
+                tabSupplier,
+                browserControlsVisibilityManager,
+                topUiThemeColorProvider);
+
+        assert mBraveToolbarLayout instanceof BraveToolbarLayoutImpl
+                : "Something has changed in the upstream!";
+        if (mBraveToolbarLayout instanceof BraveToolbarLayoutImpl) {
+            ((BraveToolbarLayoutImpl) mBraveToolbarLayout)
+                    .setTabModelSelector(mTabModelSelectorSupplier.get());
         }
     }
 }

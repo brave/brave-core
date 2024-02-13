@@ -5,6 +5,8 @@
 
 #include "brave/browser/ipfs/ipfs_dns_resolver_impl.h"
 
+#include <optional>
+
 #include "base/time/time.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -57,7 +59,7 @@ void IpfsDnsResolverImpl::OnDnsConfigChanged() {
   Notify(GetFirstDnsOverHttpsServer());
 }
 
-absl::optional<std::string> IpfsDnsResolverImpl::GetFirstDnsOverHttpsServer() {
+std::optional<std::string> IpfsDnsResolverImpl::GetFirstDnsOverHttpsServer() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   SecureDnsConfig secure_dns_config =
       SystemNetworkContextManager::GetStubResolverConfigReader()
@@ -66,11 +68,11 @@ absl::optional<std::string> IpfsDnsResolverImpl::GetFirstDnsOverHttpsServer() {
   const auto servers = secure_dns_config.doh_servers().servers();
 
   if (secure_dns_config.mode() == net::SecureDnsMode::kOff || servers.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::string server_template = servers[0].server_template();
   if (server_template.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return server_template;
 }

@@ -7,13 +7,12 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
+import classnames from '$web-common/classnames'
 import AlertCenter from '@brave/leo/react/alertCenter'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
-import SiteTitle from '../site_title'
-import PromptAutoSuggestion from '../prompt_auto_suggestion'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
@@ -24,13 +23,16 @@ import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import WarningLongPage from '../alerts/warning_long_page'
 import InfoLongConversation from '../alerts/info_long_conversation'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
+import WelcomeGuide from '../welcome_guide'
+import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
+
+const SCROLL_BOTTOM_THRESHOLD = 10.0
 
 function Main() {
   const context = React.useContext(DataContext)
   const {
     siteInfo,
-    userAutoGeneratePref,
     hasAcceptedAgreement,
     currentError,
     apiHasError
@@ -40,37 +42,30 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const shouldPromptSuggestQuestions = hasAcceptedAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
-
   const shouldShowPremiumSuggestionForModel =
     hasAcceptedAgreement &&
     !context.isPremiumStatusFetching && // Avoid flash of content
     !context.isPremiumUser &&
-    context.currentModel?.isPremium
+    context.currentModel?.access === mojom.ModelAccess.PREMIUM
 
   const shouldShowPremiumSuggestionStandalone =
     hasAcceptedAgreement &&
     !context.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
-    !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
     !apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
     context.canShowPremiumPrompt &&
     siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !context.isPremiumUser
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
+  const showContextToggle = context.conversationHistory.length === 0 && siteInfo?.isContentAssociationPossible
 
-  let conversationListElement = <PrivacyMessage />
-  let siteTitleElement = null
   let currentErrorElement = null
 
+  let scrollerElement: HTMLDivElement | null = null
+  const scrollPos = React.useRef({ isAtBottom: true })
+
   if (hasAcceptedAgreement) {
-    conversationListElement = <ConversationList />
-
-    if (siteInfo) {
-      siteTitleElement = <SiteTitle />
-    }
-
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
@@ -81,9 +76,7 @@ function Main() {
 
     if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
       currentErrorElement = (
-        <ErrorRateLimit
-          onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
-        />
+        <ErrorRateLimit />
       )
     }
 
@@ -94,8 +87,26 @@ function Main() {
     }
   }
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    // Monitor scroll positions only when Assistant is generating
+    if (!context.isGenerating) return
+    const el = e.currentTarget
+    scrollPos.current.isAtBottom = Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < SCROLL_BOTTOM_THRESHOLD
+  }
+
+  const handleLastElementHeightChange = () => {
+    if (!scrollerElement) {
+      return
+    }
+
+    if (scrollPos.current.isAtBottom) {
+      scrollerElement.scrollTop = scrollerElement.scrollHeight - scrollerElement.clientHeight
+    }
+  }
+
   return (
     <main className={styles.main}>
+      {context.showAgreementModal && <PrivacyMessage />}
       <div className={styles.header}>
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
@@ -122,13 +133,20 @@ function Main() {
           )}
         </div>
       </div>
-      <div className={styles.scroller}>
+      <div className={classnames({
+        [styles.scroller]: true,
+        [styles.flushBottom]: !hasAcceptedAgreement
+      })}
+        ref={node => (scrollerElement = node)}
+        onScroll={handleScroll}
+      >
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        {siteTitleElement && (
-          <div className={styles.siteTitleBox}>{siteTitleElement}</div>
-        )}
-        {context.showModelIntro && <ModelIntro />}
-        {conversationListElement}
+        {context.hasAcceptedAgreement && <>
+          <ModelIntro />
+          <ConversationList
+            onLastElementHeightChange={handleLastElementHeightChange}
+          />
+        </>}
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
         )}
@@ -137,13 +155,12 @@ function Main() {
             <div className={styles.promptContainer}>
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
-                verbose={true}
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
-                    onClick={() => context.switchToDefaultModel()}
+                    onClick={() => context.switchToBasicModel()}
                   >
-                    {getLocale('switchToDefaultModelButtonLabel')}
+                    {getLocale('switchToBasicModelButtonLabel')}
                   </Button>
                 }
               />
@@ -155,7 +172,6 @@ function Main() {
             <div className={styles.promptContainer}>
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
-                verbose={true}
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
@@ -181,11 +197,14 @@ function Main() {
         <div className={styles.promptContainer}>
             <InfoLongConversation />
         </div>}
+        {!hasAcceptedAgreement && <WelcomeGuide />}
       </div>
-      <div className={styles.inputBox}>
-        {shouldPromptSuggestQuestions &&
-        <PromptAutoSuggestion />
-        }
+      <div className={styles.input}>
+        {showContextToggle && (
+          <div className={styles.toggleContainer}>
+            <PageContextToggle />
+          </div>
+        )}
         <InputBox />
       </div>
     </main>

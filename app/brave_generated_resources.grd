@@ -174,6 +174,16 @@
       <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
         Never
       </message>
+      <if expr="use_titlecase">
+        <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
+          Show All Bookmarks Button
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
+          Show all bookmarks button
+        </message>
+      </if>
       <message name="IDS_COPY_CLEAN_LINK_SHARING_HUB" desc="The name of the Sharing Hub's menu item to copy clean link">
         Copy clean link
       </message>
@@ -213,6 +223,12 @@
       </message>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
+      </message>
+      <message name="IDS_AI_CHAT_CONTEXT_LEO_TOOLS" desc="The text label of Leo tools submenu in the context menu">
+        Leo tools
+      </message>
+      <message name="IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT" desc="The text label of context menu item to summarize selected text">
+        Summarize
       </message>
 
       <!-- Widevine -->
@@ -309,9 +325,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_LOCATION_BAR_OPEN_IN_TOR" desc="Button in location bar to open onion available site in tor window.">
         Tor
-      </message>
-      <message name="IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT" desc="The tooltip text of tor button in location bar.">
-        Open in Tor
       </message>
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
         Tor
@@ -813,7 +826,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Automatically send daily usage ping to Brave
       </message>
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING_SUBITEM" desc="Description that shows under main toggle setting for usage pings">
-        This anonymous, private ping lets Brave estimate active users.
+        This private ping lets Brave estimate active users.
       </message>
 
       <!-- P3A -->
@@ -830,7 +843,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
-        This completely anonymized info helps Brave estimate the overall usage of certain features and make them better for you.
+        These private responses help Brave estimate the overall usage of certain features and make them better for you.
       </message>
 
       <!-- Web3 detection -->
@@ -892,6 +905,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_NO" desc="Close infobar without redirection">
         No thanks
       </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_TEXT" desc="Text that proposes to the user to enable always starting an IPFS node with the browser">
+        Would you like to always start an IPFS node on browser startup?
+      </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_OK" desc="Enable IPFS always start mode">
+        Enable
+      </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_NO" desc="Ignore proposition">
+        Cancel
+      </message>
+      <!-- Brave Wallet -->
+      <message name="IDS_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The utility process running wallet utils">
+        Brave Wallet Utility Service
+      </message>
 
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
@@ -936,6 +962,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS" desc="The label of the 'Close Tabs below' Tab context menu item for vertical tabs.">
           Close tabs below
         </message>
+        <message name="IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW" desc="The label of the 'Bring all tabs to this window' tab context menu item">
+          Bring all tabs to this window
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -955,6 +984,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS" desc="The label of the 'Close Tabs below' Tab context menu item for vertical tabs.">
           Close Tabs Below
+        </message>
+        <message name="IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW" desc="The label of the 'Bring all tabs to this window' tab context menu item">
+          Bring All Tabs to This Window
         </message>
       </if>
 
@@ -1141,6 +1173,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </if>
       </if>
 
+      <message name="IDS_BOOKMARKS_SORT_CUSTOM" desc="Label for the custom order sort type">
+        Custom order
+      </message>
+      <message name="IDS_BOOKMARKS_SORT_CUSTOM_LOWER" desc="Lowercase label for the custom order sort type">
+        custom order
+      </message>
+
       <!-- Playlist -->
       <if expr="enable_playlist_webui">
           <message name="IDS_PLAYLIST_ADD_TO_PLAYLIST" desc="A title label on a bubble to add media files to Playlist">
@@ -1305,6 +1344,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_PLAYLIST_A11Y_LOOP_ALL" desc="An a11y name for a 'loop' button in media player when repeating all items">
           Repeat all
+        </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_TITLE" desc="A title for alert that shows up when an item is not playable">
+          Failed to play item
+        </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_DESCRIPTION" desc="Description for alert that shows up when an item is not playable">
+          [<ph name="ITEM_NAME">$1<ex>Awesome video</ex></ph>] may be expired. Would you like to recover it?
+        </message>
+        <message name="IDS_PLAYLIST_FAILED_TO_PLAY_RECOVER" desc="A label for 'Recover' button">
+          Recover
+        </message>
+        <message name="IDS_PLAYLIST_ALERT_DISMISS" desc="A label for 'Dismiss' button on alert">
+          Dismiss
         </message>
       </if> <!-- enable_playlist_webui -->
 

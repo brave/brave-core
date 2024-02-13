@@ -112,10 +112,10 @@ base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
 
-  exploded.month--;
+  --exploded.month;
   if (exploded.month < 1) {
     exploded.month = 12;
-    exploded.year--;
+    --exploded.year;
   }
 
   exploded.day_of_month = 1;
@@ -141,10 +141,10 @@ base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
 
-  exploded.month--;
+  --exploded.month;
   if (exploded.month < 1) {
     exploded.month = 12;
-    exploded.year--;
+    --exploded.year;
   }
 
   exploded.day_of_month = DaysPerMonth(exploded.year, exploded.month);
@@ -236,7 +236,7 @@ base::Time GetLocalTimeAtEndOfThisMonth() {
   return AdjustLocalTimeToEndOfMonth(now);
 }
 
-std::string TimeToPrivacyPreservingISO8601(const base::Time time) {
+std::string TimeToPrivacyPreservingIso8601(const base::Time time) {
   base::Time::Exploded exploded;
   time.UTCExplode(&exploded);
 

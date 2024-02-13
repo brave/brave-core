@@ -6,6 +6,7 @@
 #include "brave/browser/ui/wallet_bubble_manager_delegate_impl.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -36,10 +37,10 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
   WalletWebUIBubbleDialogView(
       views::View* anchor_view,
       BubbleContentsWrapper* contents_wrapper,
-      const absl::optional<gfx::Rect>& anchor_rect = absl::nullopt,
+      const std::optional<gfx::Rect>& anchor_rect = std::nullopt,
       views::BubbleBorder::Arrow arrow = views::BubbleBorder::TOP_RIGHT)
       : WebUIBubbleDialogView(anchor_view,
-                              contents_wrapper,
+                              contents_wrapper->GetWeakPtr(),
                               anchor_rect,
                               arrow) {}
   WalletWebUIBubbleDialogView(const WalletWebUIBubbleDialogView&) = delete;
@@ -73,7 +74,7 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
         anchor_view_(anchor_view) {}
 
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const absl::optional<gfx::Rect>& anchor,
+      const std::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
     // This is prevent duplicate logic of cached_contents_wrapper creation
     // so we close WebUIBubbleDialogView and re-create bubble with
@@ -85,7 +86,7 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
       widget->CloseNow();
     }
     auto* contents_wrapper = cached_contents_wrapper();
-    DCHECK(contents_wrapper);
+    CHECK(contents_wrapper);
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
         anchor_view_, contents_wrapper, anchor, arrow);
     BraveWebUIBubbleManager::CustomizeBubbleDialogView(*bubble_view);
@@ -190,7 +191,7 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
     content::WebContents* web_contents,
     const GURL& webui_url)
     : web_contents_(web_contents), webui_url_(webui_url) {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
+  Browser* browser = chrome::FindBrowserWithTab(web_contents_);
   DCHECK(browser);
 
   views::View* anchor_view;

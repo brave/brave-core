@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/update_client/protocol_serializer.h"
+#include <optional>
 
 #include "base/check.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/widevine/static_buildflags.h"
+#include "components/update_client/protocol_serializer.h"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 #include "brave/components/widevine/constants.h"
@@ -49,7 +50,7 @@ protocol_request::Request MakeProtocolRequest(
     const std::string& channel,
     const std::string& os_long_name,
     const std::string& download_preference,
-    absl::optional<bool> domain_joined,
+    std::optional<bool> domain_joined,
     const base::flat_map<std::string, std::string>& additional_attributes,
     const base::flat_map<std::string, std::string>& updater_state_attributes,
     std::vector<protocol_request::App> apps) {

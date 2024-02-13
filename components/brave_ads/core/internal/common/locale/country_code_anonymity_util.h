@@ -15,12 +15,12 @@ namespace brave_ads {
 // does not allow an individual to be identified based on their country of
 // origin while preserving the overall statistical accuracy of the data.
 
-// Return |true| if the given |country_code| is a member of the anonymity set,
-// otherwise returns |false|.
+// Return `true` if the given `country_code` is a member of the anonymity set,
+// otherwise returns `false`.
 bool IsCountryCodeMemberOfAnonymitySet(const std::string& country_code);
 
-// Return |true| if the given |country_code| should be classified as other
-// otherwise returns |false|.
+// Return `true` if the given `country_code` should be classified as other
+// otherwise returns `false`.
 bool ShouldClassifyCountryCodeAsOther(const std::string& country_code);
 
 }  // namespace brave_ads

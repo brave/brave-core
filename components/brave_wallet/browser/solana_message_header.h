@@ -7,10 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_MESSAGE_HEADER_H_
 
 #include <cstdint>
+#include <optional>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -24,7 +24,7 @@ struct SolanaMessageHeader {
   bool operator==(const SolanaMessageHeader&) const;
 
   base::Value::Dict ToValue() const;
-  static absl::optional<SolanaMessageHeader> FromValue(
+  static std::optional<SolanaMessageHeader> FromValue(
       const base::Value::Dict& value);
   mojom::SolanaMessageHeaderPtr ToMojom() const;
   static SolanaMessageHeader FromMojom(

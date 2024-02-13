@@ -13,8 +13,7 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -57,9 +56,9 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
        {"parent_latent_interest_segment_predictor_weight", "0.0"},
        {"child_interest_segment_predictor_weight", "0.0"},
        {"parent_interest_segment_predictor_weight", "0.0"},
+       {"untargeted_segment_predictor_weight", "0.0"},
        {"last_seen_ad_predictor_weight", "0.0"},
-       {"last_seen_advertiser_predictor_weight", "0.0"},
-       {"priority_predictor_weight", "0.0"}});
+       {"last_seen_advertiser_predictor_weight", "0.0"}});
 
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =

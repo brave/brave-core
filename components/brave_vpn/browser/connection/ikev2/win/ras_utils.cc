@@ -6,10 +6,11 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 
 #include <windows.h>
-
 #include <ras.h>
 #include <raserror.h>
 #include <stdio.h>
+
+#include <optional>
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
@@ -66,10 +67,10 @@ std::string GetSystemError(DWORD error) {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetcredentialsa
-absl::optional<std::string> SetCredentials(LPCTSTR phone_book_path,
-                                           LPCTSTR entry_name,
-                                           LPCTSTR username,
-                                           LPCTSTR password) {
+std::optional<std::string> SetCredentials(LPCTSTR phone_book_path,
+                                          LPCTSTR entry_name,
+                                          LPCTSTR username,
+                                          LPCTSTR password) {
   RASCREDENTIALS credentials;
 
   ZeroMemory(&credentials, sizeof(RASCREDENTIALS));
@@ -86,13 +87,13 @@ absl::optional<std::string> SetCredentials(LPCTSTR phone_book_path,
         {"RasSetCredential() - ", ras::GetRasErrorMessage(dw_ret)});
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<std::wstring> TryToCreateEmptyPhoneBookFile() {
+std::optional<std::wstring> TryToCreateEmptyPhoneBookFile() {
   base::FilePath dir;
   if (!base::PathService::Get(base::DIR_ROAMING_APP_DATA, &dir)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   dir = dir.Append(L"Microsoft")
@@ -100,7 +101,7 @@ absl::optional<std::wstring> TryToCreateEmptyPhoneBookFile() {
             .Append(L"Connections")
             .Append(L"Pbk");
   if (!base::CreateDirectoryAndGetError(dir, nullptr)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::FilePath phone_book_path = dir.Append(L"rasphone.pbk");
@@ -108,7 +109,7 @@ absl::optional<std::wstring> TryToCreateEmptyPhoneBookFile() {
   if (file_stream) {
     return phone_book_path.value();
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 std::wstring TryGetPhonebookPath(int key, const std::wstring& entry_name) {

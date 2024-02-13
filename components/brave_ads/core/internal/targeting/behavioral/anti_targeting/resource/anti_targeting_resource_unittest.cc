@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/files/file.h"
+#include "base/files/file_path.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resources_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -55,18 +55,18 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
 
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  ON_CALL(ads_client_mock_, LoadFileResource(kAntiTargetingResourceId,
-                                             ::testing::_, ::testing::_))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& /*id=*/, const int /*version=*/,
-             LoadFileCallback callback) {
-            const base::FilePath path =
-                GetFileResourcePath().AppendASCII(kMissingResourceId);
+  ON_CALL(ads_client_mock_, LoadComponentResource(kAntiTargetingResourceId,
+                                                  ::testing::_, ::testing::_))
+      .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
+                                          const int /*version*/,
+                                          LoadFileCallback callback) {
+        const base::FilePath path =
+            ComponentResourcesTestDataPath().AppendASCII(kMissingResourceId);
 
-            base::File file(path, base::File::Flags::FLAG_OPEN |
-                                      base::File::Flags::FLAG_READ);
-            std::move(callback).Run(std::move(file));
-          }));
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file));
+      }));
 
   // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));

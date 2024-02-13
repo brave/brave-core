@@ -16,7 +16,6 @@ export const _AddCustomTokenForm = () => {
       <AddCustomTokenForm
         contractAddress={contractAddress}
         onHideForm={noop}
-        onNftAssetFound={noop}
         onChangeContractAddress={setContractAddress}
       />
     </WalletPageStory>

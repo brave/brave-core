@@ -45,12 +45,6 @@ inline constexpr char kVPNPanelURL[] =
 inline constexpr char kVPNPanelHost[] = "vpn-panel.top-chrome";
 inline constexpr char kBraveUIWalletPageURL[] = "chrome://wallet/";
 inline constexpr char kWalletPageHost[] = "wallet";
-#if BUILDFLAG(IS_ANDROID)
-inline constexpr char kWalletBuyPagePath[] = "/crypto/fund-wallet";
-inline constexpr char kWalletSendPagePath[] = "/send";
-inline constexpr char kWalletSwapPagePath[] = "/swap";
-inline constexpr char kWalletDepositPagePath[] = "/crypto/deposit-funds";
-#endif  // BUILDFLAG(IS_ANDROID)
 inline constexpr char kExtensionSettingsURL[] = "brave://settings/extensions";
 inline constexpr char kWalletSettingsURL[] = "brave://settings/wallet";
 inline constexpr char kBraveSyncPath[] = "braveSync";

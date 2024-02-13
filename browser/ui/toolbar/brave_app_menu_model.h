@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_APP_MENU_MODEL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -15,7 +16,6 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/models/simple_menu_model.h"
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -37,14 +37,15 @@ class BraveAppMenuModel : public AppMenuModel {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveAppMenuModelBrowserTest, BraveIpfsMenuTest);
+  friend class BraveAppMenuModelBrowserTest;
 
   // AppMenuModel overrides:
   void Build() override;
   void ExecuteCommand(int id, int event_flags) override;
   bool IsCommandIdEnabled(int id) const override;
 
-  absl::optional<size_t> GetProperItemIndex(std::vector<int> commands_to_check,
-                                            bool insert_next) const;
+  std::optional<size_t> GetProperItemIndex(std::vector<int> commands_to_check,
+                                           bool insert_next) const;
 
   void BuildTabsAndWindowsSection();
 

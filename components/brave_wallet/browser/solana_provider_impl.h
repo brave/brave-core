@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -22,7 +23,6 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -53,7 +53,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
 
   void Init(mojo::PendingRemote<mojom::SolanaEventsListener> events_listener)
       override;
-  void Connect(absl::optional<base::Value::Dict> arg,
+  void Connect(std::optional<base::Value::Dict> arg,
                ConnectCallback callback) override;
   void Disconnect() override;
   void IsConnected(IsConnectedCallback callback) override;
@@ -64,10 +64,10 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       std::vector<mojom::SolanaSignTransactionParamPtr> params,
       SignAllTransactionsCallback callback) override;
   void SignAndSendTransaction(mojom::SolanaSignTransactionParamPtr param,
-                              absl::optional<base::Value::Dict> send_options,
+                              std::optional<base::Value::Dict> send_options,
                               SignAndSendTransactionCallback callback) override;
   void SignMessage(const std::vector<uint8_t>& blob_msg,
-                   const absl::optional<std::string>& display_encoding,
+                   const std::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override;
   void Request(base::Value::Dict arg, RequestCallback callback) override;
 
@@ -81,16 +81,16 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       const std::vector<mojom::AccountInfoPtr>& requested_accounts,
       ConnectCallback callback,
       RequestPermissionsError error,
-      const absl::optional<std::vector<std::string>>& allowed_accounts);
+      const std::optional<std::vector<std::string>>& allowed_accounts);
 
   void OnSignMessageRequestProcessed(const std::vector<uint8_t>& blob_msg,
                                      const mojom::AccountInfoPtr& account,
                                      SignMessageCallback callback,
                                      bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
-                                     const absl::optional<std::string>& error);
+                                     const std::optional<std::string>& error);
   void ContinueSignTransaction(
-      absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>> msg_pair,
+      std::optional<std::pair<SolanaMessage, std::vector<uint8_t>>> msg_pair,
       mojom::SolanaSignTransactionParamPtr param,
       const mojom::AccountInfoPtr& account,
       const std::string& chain_id,
@@ -104,7 +104,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       SignTransactionCallback callback,
       bool approved,
       mojom::ByteArrayStringUnionPtr signature,
-      const absl::optional<std::string>& error);
+      const std::optional<std::string>& error);
   void ContinueSignAllTransactions(
       std::vector<mojom::TxDataUnionPtr> tx_datas,
       std::vector<std::unique_ptr<SolanaTransaction>> txs,
@@ -118,15 +118,15 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       mojom::AccountInfoPtr account,
       SignAllTransactionsCallback callback,
       bool approved,
-      absl::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
-      const absl::optional<std::string>& error);
+      std::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+      const std::optional<std::string>& error);
   void OnAddUnapprovedTransaction(SignAndSendTransactionCallback callback,
                                   bool success,
                                   const std::string& tx_meta_id,
                                   const std::string& error_message);
 
   // Returns a pair of SolanaMessage and a raw message byte array.
-  absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>>
+  std::optional<std::pair<SolanaMessage, std::vector<uint8_t>>>
   GetDeserializedMessage(const std::string& encoded_serialized_msg);
 
   void OnRequestConnect(RequestCallback callback,
@@ -165,7 +165,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       sign_and_send_tx_callbacks_;
   // Pending callback and arg are for waiting user unlock before connect
   ConnectCallback pending_connect_callback_;
-  absl::optional<base::Value::Dict> pending_connect_arg_;
+  std::optional<base::Value::Dict> pending_connect_arg_;
 
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   bool account_creation_shown_ = false;

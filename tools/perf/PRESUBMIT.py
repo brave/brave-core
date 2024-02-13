@@ -5,6 +5,7 @@
 
 import pathlib
 import platform
+import os
 
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
@@ -13,29 +14,17 @@ PRESUBMIT_VERSION = '2.0.0'
 def CheckChange(input_api, output_api):
   tests = []
   results = []
-  testing_env = dict(input_api.environ)
   testing_path = pathlib.Path(input_api.PresubmitLocalPath())
-  vpython3_spec_path = input_api.os_path.join(testing_path, '..', '..', '..',
-                                              'third_party', 'crossbench',
-                                              '.vpython3')
-  testing_env['PYTHONPATH'] = input_api.os_path.pathsep.join(
-      map(str, [testing_path]))
 
   # Pytype (not supported on windows)
   if platform.system() in ('Linux', 'Darwin'):
+    run_pytype_path = os.path.join(str(testing_path), 'tests', 'run_pytype.py')
     tests.append(
         input_api.Command(
             name='pytype',
             cmd=[
                 input_api.python3_executable,
-                '-vpython-spec',
-                vpython3_spec_path,
-                '-m',
-                'pytype',
-                '--keep-going',
-                '--jobs=auto',
-                '--overriding-parameter-count-checks',
-                str(testing_path),
+                run_pytype_path,
             ],
             message=output_api.PresubmitError,
             kwargs={},

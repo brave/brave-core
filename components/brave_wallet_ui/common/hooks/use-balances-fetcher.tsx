@@ -12,9 +12,11 @@ import { querySubscriptionOptions60s } from '../slices/constants'
 // Types
 import { BraveWallet } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
+import {
+  GetTokenBalancesRegistryArg //
+} from '../slices/endpoints/token_balances.endpoints'
 
-interface Arg {
-  networks: BraveWallet.NetworkInfo[]
+type Arg = Pick<GetTokenBalancesRegistryArg, 'networks' | 'persistKey'> & {
   accounts: BraveWallet.AccountInfo[]
 }
 
@@ -43,10 +45,21 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
               supportedKeyrings
             })
           ),
-          useAnkrBalancesFeature
+          useAnkrBalancesFeature,
+          persistKey: arg.persistKey
         }
       : skipToken,
-    querySubscriptionOptions60s
+    {
+      ...querySubscriptionOptions60s,
+      selectFromResult: (res) => ({
+        data: res.data,
+        /**
+         * The data is streamed and may be `null` if nothing is persisted yet.
+         * res.isLoading is `false` when streaming is in progress
+         */
+        isLoading: !res.data
+      })
+    }
   )
 }
 

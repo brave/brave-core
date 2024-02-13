@@ -53,6 +53,7 @@ enum UserReactionType {
   kDislike
 };
 
+// These values must match AdType.
 enum AdType {
   kUndefined = 0,
   kNotificationAd,

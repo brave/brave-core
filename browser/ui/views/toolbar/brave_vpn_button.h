@@ -7,12 +7,12 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/menu_button_controller.h"
 
@@ -43,7 +43,7 @@ class BraveVPNButton : public ToolbarButton,
       brave_vpn::mojom::ConnectionState state) override;
   void OnPurchasedStateChanged(
       brave_vpn::mojom::PurchasedState state,
-      const absl::optional<std::string>& description) override;
+      const std::optional<std::string>& description) override;
 
  private:
   friend class brave_vpn::BraveVpnButtonUnitTest;
@@ -68,7 +68,7 @@ class BraveVPNButton : public ToolbarButton,
 
   bool is_error_state_ = false;
   bool is_connected_ = false;
-  absl::optional<brave_vpn::mojom::ConnectionState>
+  std::optional<brave_vpn::mojom::ConnectionState>
       connection_state_for_testing_;
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;

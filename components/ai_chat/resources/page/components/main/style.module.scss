@@ -12,19 +12,33 @@
   overflow: hidden;
 }
 
-.inputBox {
+.input {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 16px;
-  border-top: 1px solid var(--leo-color-divider-subtle);
-  background-color: var(--leo-color-container-background);
+  padding: 0 8px 8px 8px;
 }
 
 .scroller {
   overflow: auto;
   height: 100%;
   padding-bottom: 16px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-gray-20);
+    border-radius: var(--leo-spacing-m);
+  }
+}
+
+.flushBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 0;
 }
 
 .header {
@@ -50,7 +64,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font: var(--leo-font-primary-large-regular);
+  font: var(--leo-font-large-regular);
 }
 
 .logoTitle {
@@ -64,10 +78,6 @@
   }
 }
 
-.siteTitleBox {
-  padding: 16px 16px 0 16px;
-}
-
 .promptContainer {
   margin: 24px;
 }
@@ -77,7 +87,7 @@
   color: var(--leo-color-blue-50);
   user-select: none;
   padding: 3px 5px;
-  font: var(--leo-font-primary-x-small-semibold);
+  font: var(--leo-font-x-small-semibold);
   border-radius: 4px;
   font-size: 10px;
   letter-spacing: 0.5px;
@@ -89,4 +99,8 @@
   left: 0;
   z-index: 5;
   width: 100%;
+}
+
+.toggleContainer {
+  margin-bottom: var(--leo-spacing-m);
 }

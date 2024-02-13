@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_COMMON_POST_CONNECT_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_COMMON_POST_CONNECT_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -14,7 +15,6 @@
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;
@@ -31,7 +31,8 @@ struct ResultFor<PostConnect> {
 
 class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
   static mojom::ConnectExternalWalletResult ToConnectExternalWalletResult(
       const Result&);
 
@@ -42,8 +43,8 @@ class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
   virtual const char* Path() const = 0;
 
  private:
-  absl::optional<std::string> Url() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::string> Url() const override;
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
   std::string ContentType() const override;
 };

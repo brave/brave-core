@@ -13,7 +13,7 @@ namespace brave_ads {
 
 class RedeemPaymentTokensDelegate {
  public:
-  // Invoked to tell the delegate that the |payment_tokens| were successfully
+  // Invoked to tell the delegate that the `payment_tokens` were successfully
   // redeemed.
   virtual void OnDidRedeemPaymentTokens(
       const PaymentTokenList& payment_tokens) {}
@@ -22,12 +22,12 @@ class RedeemPaymentTokensDelegate {
   virtual void OnFailedToRedeemPaymentTokens() {}
 
   // Invoked to tell the delegate that payment token redemption is scheduled for
-  // |redeem_at|.
+  // `redeem_at`.
   virtual void OnDidScheduleNextPaymentTokenRedemption(
       const base::Time redeem_at) {}
 
   // Invoked to tell the delegate that we will retry redeeming payment tokens at
-  // |retry_at|.
+  // `retry_at`.
   virtual void OnWillRetryRedeemingPaymentTokens(const base::Time retry_at) {}
 
   // Invoked to tell the delegate that we retried redeeming payment tokens.

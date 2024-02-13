@@ -5,11 +5,9 @@ vars = {
 }
 
 deps = {
-  "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
-  "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha": {
-    "url": "https://github.com/brave/omaha.git@161f230c0b84de45427822a4eec463389288d29e",
+    "url": "https://github.com/brave/omaha.git@e57534eb50ed4a676d430c6199b1dc68edfeacd8",
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
@@ -18,12 +16,13 @@ deps = {
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@2d05ad803e249f3686d093b9318f783c6cb5f380",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@3d18f68dec687df171d3cdcdd79332a3c68b1c28",
   "third_party/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
   "third_party/rapidjson/src": "https://github.com/Tencent/rapidjson.git@06d58b9e848c650114556a23294d0b6440078c61",
+  "third_party/reclient_configs/src": "https://github.com/EngFlow/reclient-configs.git@61ddd9705962a6c6c921b42c933451d4810aa28e",
   'third_party/android_deps/libs/com_google_android_play_core': {
       'packages': [
           {
@@ -35,10 +34,8 @@ deps = {
       'dep_type': 'cipd',
   },
   "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@c043566e2ff6133d110cf516ed472451039139e2",
-  "third_party/rust/star_constellation/v0_2/crate": "https://github.com/brave/constellation.git@db575edec12509ce1bda6afe68bb58e538a21d3a",
   "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@a1da4641734adc8312215b38a8221962d2c8e045",
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
-  "third_party/rust/kuchiki/v0_8/crate": "https://github.com/brave/kuchiki.git@589eadca2c1d06ddda2919354590bfe1ace88a43",
   "third_party/macholib": {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
     "condition": "checkout_mac",
@@ -56,6 +53,12 @@ hooks = [
     'action': ['vpython3', 'script/bootstrap.py'],
   },
   {
+    'name': 'bootstrap_ios',
+    'pattern': '.',
+    'condition': 'checkout_ios and host_os == "mac"',
+    'action': ['vpython3', 'script/ios_bootstrap.py']
+  },
+  {
     # Download hermetic xcode for goma
     'name': 'download_hermetic_xcode',
     'pattern': '.',
@@ -65,7 +68,10 @@ hooks = [
   {
     'name': 'configure_reclient',
     'pattern': '.',
-    'action': ['python3', 'build/reclient_cfgs/configure_reclient.py'],
+    'action': ['python3', 'third_party/reclient_configs/src/configure_reclient.py',
+               '--src_dir=..',
+               '--exec_root=../..',
+               '--custom_py=third_party/reclient_configs/brave_custom/brave_custom.py'],
   },
   {
     'name': 'download_sparkle',

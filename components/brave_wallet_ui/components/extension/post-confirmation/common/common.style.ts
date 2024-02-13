@@ -57,6 +57,7 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   width: 100%;
   padding-bottom: 22px;
+  gap: 8px;
 `
 
 export const LinkIcon = styled.div`

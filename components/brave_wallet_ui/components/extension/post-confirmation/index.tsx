@@ -81,6 +81,10 @@ export function TransactionStatus(props: Props) {
   const { transactionsQueueLength } = usePendingTransactions()
 
   // memos
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(transactionNetwork)
+  }, [transactionNetwork])
+
   const transactionIntent = React.useMemo(() => {
     if (!tx) {
       return ''
@@ -92,7 +96,7 @@ export function TransactionStatus(props: Props) {
       getETHSwapTransactionBuyAndSellTokens({
         tokensList: combinedTokensList,
         tx,
-        nativeAsset: makeNetworkAsset(transactionNetwork)
+        nativeAsset: networkAsset
       })
 
     const { normalizedTransferredValue } =
@@ -166,8 +170,21 @@ export function TransactionStatus(props: Props) {
 
   if (tx.txStatus === BraveWallet.TransactionStatus.Error) {
     const providerError = transactionProviderErrorRegistry[tx.id]
+    const errorCode =
+      providerError?.code.providerError ??
+      providerError?.code.zcashProviderError ??
+      providerError?.code.bitcoinProviderError ??
+      providerError?.code.solanaProviderError ??
+      providerError?.code.filecoinProviderError ??
+      BraveWallet.ProviderError.kUnknown
+
     const errorDetailContent =
-      providerError && `${providerError.code}: ${providerError.message}`
+      providerError && `${errorCode}: ${providerError.message}`
+    const customDescription =
+      errorCode ===
+        BraveWallet.ZCashProviderError.kMultipleTransactionsNotSupported ?
+        providerError.message : undefined
+
     return (
       <TransactionFailed
         headerTitle={transactionIntent}
@@ -176,6 +193,7 @@ export function TransactionStatus(props: Props) {
           'braveWalletTransactionFailedModalSubtitle'
         )}
         errorDetailContent={errorDetailContent}
+        customDescription={customDescription}
         onClose={onClose}
         onClickPrimaryCTA={onClose}
       />

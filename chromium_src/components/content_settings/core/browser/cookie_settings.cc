@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/content_settings/core/browser/cookie_settings.h"
+#include <optional>
 
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
 
@@ -27,7 +28,7 @@ void CookieSettings::ShutdownOnUIThread() {
 bool CookieSettings::ShouldUseEphemeralStorage(
     const url::Origin& origin,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
+    const std::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides,
     url::Origin& storage_origin) {
   const bool should_use = CookieSettingsBase::ShouldUseEphemeralStorage(

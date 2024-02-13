@@ -24,13 +24,12 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/icon_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
+#include "brave/browser/brave_vpn/win/storage_utils.h"
+#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #include "components/grit/brave_components_strings.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/native_theme/native_theme.h"
@@ -100,7 +99,7 @@ StatusTrayRunner* StatusTrayRunner::GetInstance() {
   return instance.get();
 }
 
-StatusTrayRunner::StatusTrayRunner() = default;
+StatusTrayRunner::StatusTrayRunner() {}
 
 StatusTrayRunner::~StatusTrayRunner() = default;
 

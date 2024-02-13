@@ -31,8 +31,8 @@ class ViewCounterModelTest : public testing::Test {
 
     base::FieldTrialParams parameters;
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    parameters[features::kInitialCountToBrandedWallpaper.name] = "1";
-    parameters[features::kCountToBrandedWallpaper.name] = "3";
+    parameters[features::kInitialCountToBrandedWallpaper.name] = "2";
+    parameters[features::kCountToBrandedWallpaper.name] = "4";
     enabled_features.emplace_back(features::kBraveNTPBrandedWallpaper,
                                   parameters);
     feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
@@ -62,7 +62,8 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
   EXPECT_FALSE(model.always_show_branded_wallpaper_);
 
   // Loading initial count times.
-  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get(); ++i) {
+  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
+       ++i) {
     EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
     model.RegisterPageView();
   }
@@ -83,7 +84,7 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
     model.RegisterPageView();
 
     // Loading regular-count times.
-    for (int j = 0; j < features::kCountToBrandedWallpaper.Get(); ++j) {
+    for (int j = 0; j < features::kCountToBrandedWallpaper.Get() - 1; ++j) {
       EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
       model.RegisterPageView();
     }
@@ -116,7 +117,7 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToBrandedWallpaperTest) {
 
   // Loading regular-count times from kCountToBrandedWallpaper to 0 and do not
   // show branded wallpaper.
-  for (int i = 0; i < features::kCountToBrandedWallpaper.Get(); ++i) {
+  for (int i = 0; i < features::kCountToBrandedWallpaper.Get() - 1; ++i) {
     EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
     model.RegisterPageView();
   }
@@ -183,7 +184,8 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
   model.set_total_image_count(kTestImageCount);
 
   // Loading initial count times.
-  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get(); ++i) {
+  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
+       ++i) {
     EXPECT_EQ(i, model.current_wallpaper_image_index());
     model.RegisterPageView();
   }
@@ -193,9 +195,9 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
 
   // Loading regular-count times.
   int expected_wallpaper_index;
-  for (int i = 0; i < features::kCountToBrandedWallpaper.Get(); ++i) {
+  for (int i = 0; i < features::kCountToBrandedWallpaper.Get() - 1; ++i) {
     expected_wallpaper_index =
-        (i + features::kInitialCountToBrandedWallpaper.Get()) %
+        (i + (features::kInitialCountToBrandedWallpaper.Get() - 1)) %
         model.total_image_count_;
     EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
     model.RegisterPageView();
@@ -294,7 +296,8 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
   model.set_total_image_count(kTestImageCount);
 
   // Loading initial count model.
-  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get(); ++i) {
+  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
+       ++i) {
     EXPECT_EQ(i, model.current_wallpaper_image_index());
     model.RegisterPageView();
   }

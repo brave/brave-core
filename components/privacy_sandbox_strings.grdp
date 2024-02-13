@@ -180,17 +180,29 @@
   <message name="IDS_SETTINGS_TOPICS_PAGE_TOGGLE_SUB_LABEL" desc="A description of the new Ad topics setting. This text appears beneath the name of the new setting, 'Ad topics', and is associated with the control that a user can turn on or off. * 'browsing history': This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. * Ad topics are published at https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md * 'used by sites': Brave estimates a user's topics of interest. As the user continues browsing, a site can ask Brave for up to 3 of the user's topics to personalize ads for that user. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy." formatter_data="android_java">
     Topics of interest are based on your recent browsing history and are used by sites to show you personalized ads
   </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_TOGGLE_SUB_LABEL_PTB" desc="PTB - A description of the new Ad topics setting." translateable="false">
+    Topics are based on your recent browsing history and are used by sites to show you personalized ads while protecting your identity
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_DISCLAIMER" desc="Disclaimer of the new Ad topics setting. This text appears beneath the sublabel." translateable="false">
+    Ad topics are just one of many things a site can use to personalize ads. Even without ad topics, sites can still show you ads but they may be less interesting.
+  </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_HEADING" desc="A label above a list of the user's topics of interest. Ad topics are published at https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md" formatter_data="android_java">
     Your topics
   </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_HEADING_PTB" desc="PTB - A label above a list of the user's topics of interest. Ad topics are published at https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md" translateable="false">
+    Active topics
+  </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_CANONICAL" desc="A description that appear beneath the 'Your topics' label. * 'You can block': There is a 'Block' button (or an X on mobile) that appears next to each topic in the list. * 'auto-deletes': this could also read 'Brave deletes...' We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly. The link opens a dialog box that provides more information about Ad topics.">
-    You can block topics you don’t want shared with sites. Brave also auto-deletes your topics older than 4 weeks. Learn more
+   You can block topics you don’t want shared with sites. Brave also auto-deletes your topics older than 4 weeks. Learn more
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_DISABLED" desc="A description that appear beneath the 'Your topics' title. If this setting is off, no interests appear." formatter_data="android_java">
     When on, a list of topics appears here based on your recent browsing history
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_EMPTY" desc="A description that appear beneath the 'Your topics' title. This setting could be on but no topics appear in the list. This text explains why." formatter_data="android_java">
     No topics to show right now
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_EMPTY_PTB" desc="PTB - A description that appear beneath the 'Your topics' title. This setting could be on but no topics appear in the list. This text explains why." translateable="false">
+    You don't have any active topics yet
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCK_TOPIC" desc="A button associated with each of the user's topics. If the user clicks 'Block', that topic will get moved to the 'Topics you blocked' page.">
     Block
@@ -201,11 +213,17 @@
   <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_HEADING" desc="A label that serves as a button to open the 'Topics you blocked' page." formatter_data="android_java">
     Topics you blocked
   </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_HEADING_PTB" desc="A label that serves as a button to open the 'Topics you blocked' page." translateable="false">
+    Blocked Topics
+  </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_DESCRIPTION" desc="A description that appear beneath the 'Topics you blocked' title. * 'Add' is also the name used on the button that allows users to remove a topic from the blocked list.  * 'an item' could be replaced by 'a topic'. We didn't so as not to repeat 'topic' in the same sentence. * 'pool of topics': We want to express that by clicking 'Add', the user is making a topic eligible again for consideration. The full 'pool of topics' is published at https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md" formatter_data="android_java">
     Add an item back if you want it in the pool of topics that Brave can choose from when estimating your interests
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_DESCRIPTION_EMPTY" desc="A description that appear beneath the 'Topics you blocked' title. This string is used if the user doesn't have any topics on the 'Topics you blocked' list." formatter_data="android_java">
     Blocked topics appear here
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_DESCRIPTION_PTB" desc="PTB - A description that appear beneath the 'Topics you blocked' title. * 'Add' is also the name used on the button that allows users to remove a topic from the blocked list.  * 'an item' could be replaced by 'a topic'. We didn't so as not to repeat 'topic' in the same sentence. * 'pool of topics': We want to express that by clicking 'Add', the user is making a topic eligible again for consideration. The full 'pool of topics' is published at https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md" translateable="false">
+    When a topic is blocked, it won't be used to personalize ads
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_ALLOW_TOPIC" desc="A button associated with each of the user's topics. When the user clicks 'Add', it makes that topic eligible in the 'pool of topics' that Brave can use to estimate the user's topics of interest. Clicking 'Add' doesn't automatically put the added topic back onto the list of 'Your topics'. For that to happen, a user would have to browse sites associated with the 'Add'ed topic and Brave would have to estimate the topic as relevant to that user.">
     Add
@@ -227,6 +245,39 @@
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_FOOTER_CANONICAL" desc="This footer helps the user understand that this setting is just one signal among others that affect whether this user sees personalized ads on a site. We define 'personalize' as 'when Brave provides recommendations and other content for users based on their data'. At a high level, there are 4 things that affect whether an ad is personalized in this context: * 'this setting' refers to the 'Ad topics' setting. The user is on this page. * 'Site-suggested ads': this is a link to the other new ad setting Brave is launching and that sites can use to personalize ads a user sees. * 'cookie settings': this is a link to the cookies control section in Brave settings. The Privacy Sandbox project deprecates third-party cookies, but it's a process, and we're launching new functionality that will replace important functionality of cookies. Until third-party cookies are deprecated, the two systems remain active in Brave. * 'site you're viewing personalizes ads': When a user engages with a site, Brave has no control over whether that site shows the user personalized ads. Imagine you visit www.interesting-site.com and they know a lot about you already based on previous visits. They can personalize content and ads to you if they like. They can use an ad-serving product, like Facebook or Brave Ads to deliver personalized ads. They can also use the new Privacy Sandbox APIs (if they so choose) in order to get more information about the user that could be helpful to them in order to personalize ads. Those 2 APIs (settings, from the user's perspective), are 'Ad topics' and 'Site-suggested ads'.">
        As you browse, whether an ad you see is personalized depends on this setting, Site-suggested ads, your cookie settings, and if the site you’re viewing personalizes ads
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_FIRST_LEVEL_TOPIC_DESCRIPTOR" desc="Description of a couple of popular topics. Used in the Manage Topics page." translateable="false">
+    <ph name="TOPIC_1">$1<ex>American football</ex></ph>, <ph name="TOPIC_2">$2<ex>Tennis</ex></ph> and more
+  </message>
+
+  <!-- Proactive Topics Blocking -->
+  <!-- TODO(crbug.com/1515108) - Finalize and mark translateable. -->
+  <message name="IDS_SETTINGS_MANAGE_TOPICS_PAGE_DESCRIPTION" desc="Explanatory text for the Manage Topics settings page" translateable="false">
+    Choose which broad categories of topics can be used to help personalize ads. Turning off a broader category will also block its related topics.<ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph> Learn more<ph name="LINK_END1">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_EXPLANATION_DESCRIPTION" desc="" formatter_data="android_java" translateable="false">
+    Ad topics are just one of many things a site can use to personalize ads. Even without ad topics, sites can still show you ads but they may be less interesting.
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_HEADING_NEW" desc="" formatter_data="android_java" translateable="false">
+    Blocked topics
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_DESCRIPTION_NEW" desc="" formatter_data="android_java" translateable="false">
+    When a topic is blocked, it won’t be used to personalize ads
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_MANAGE_TOPICS_HEADING" desc="" formatter_data="android_java" translateable="false">
+    Manage topics
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_MANAGE_TOPICS_DESCRIPTION" desc="" formatter_data="android_java" translateable="false">
+    Choose which broad categories of topics can be used to personalize ads
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_MANAGE_TOPICS_EXPLANATION" desc="" formatter_data="android_java" translateable="false">
+    Choose which broad categories of topics can be used to help personalize ads. Turning off a broader category will also block its related topics. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_ACTIVE_TOPICS_HEADING" desc="" formatter_data="android_java" translateable="false">
+    Active topics
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_ACTIVE_TOPICS_DESCRIPTION" desc="" formatter_data="android_java" translateable="false">
+    Topics older than 4 weeks get auto-deleted
   </message>
 
   <!-- Privacy Sandbox v4 - Topics Consent Details -->
@@ -2158,68 +2209,102 @@
   </message>
 
   <!-- Tracking Protection -->
-  <!-- TODO(b/295926938: finalize the strings. -->
-  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_TITLE" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_TITLE" desc="Title of the Tracking Protection settings page." formatter_data="android_java">
     Tracking Protection
   </message>
-  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_DESCRIPTION" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_DESCRIPTION" desc="Describes how Tracking Protection in Brave works. Part of the Tracking Protection settings page." formatter_data="android_java">
     Brave limits the amount of information sites can use to track you as you browse. You can change your settings to choose your own level of protection.
   </message>
-  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_TITLE" desc="Title of the tracking protection onboarding notice" translateable="false">
+
+  <!-- Tracking Protection: Onboarding -->
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_TITLE" desc="Title of the tracking protection onboarding notice" formatter_data="android_java">
     Browse with more privacy
   </message>
-  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_BODY" desc="Content of the tracking protection notice, informing the user that they now have their third party cookies disabled by default" translateable="false">
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_BODY" desc="Content of the tracking protection notice, informing the user that they now have their third party cookies disabled by default" formatter_data="android_java">
     You’re one of the first to experience Tracking Protection, which limits sites from using third-party cookies to track you as you browse.
   </message>
-  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_SETTINGS_BUTTON_LABEL" desc="The user can choose to click “Settings“ to visit chrome://settings/cookies. If they do, they will find the cookie controls reflecting the new tracking protections." translateable="false">
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_SETTINGS_BUTTON_LABEL" desc="The user can choose to click “Settings“ to visit chrome://settings/cookies. If they do, they will find the cookie controls reflecting the new tracking protections." formatter_data="android_java">
     Settings
   </message>
-  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_ONE_TITLE" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_ACK_BUTTON_LABEL" desc="Onboarding notice primary button text." formatter_data="android_java">
+    Got it
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_LEARN_MORE_BUTTON_LABEL" desc="Onboarding notice secondary menu button text." formatter_data="android_java">
+    Learn more
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_ONBOARDING_NOTICE_LEARN_MORE_BUTTON_A11Y_LABEL" desc="Onboarding notice secondary menu button content accessibility text." formatter_data="android_java" is_accessibility_with_no_ui="true">
+    Learn more about Tracking Protection
+  </message>
+
+  <!-- Tracking Protection: Offboarding -->
+  <message name="IDS_TRACKING_PROTECTION_OFFBOARDING_NOTICE_TITLE" desc="Title of the tracking protection offboarding notice" formatter_data="android_java">
+    Tracking Protection is temporarily unavailable
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_OFFBOARDING_NOTICE_BODY" desc="Content of the tracking protection offboarding notice, informing the user that sites can temporarily use third party cookies while traking prootection is temporarily unavailable." formatter_data="android_java">
+    While Brave is updating this feature, sites can temporarily use third-party cookies unless you block them in settings.
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_OFFBOARDING_NOTICE_SETTINGS_BUTTON_LABEL" desc="The user can choose to click “Settings“ to visit chrome://settings/cookies. If they do, they will find the cookie controls reflecting the new tracking protections." formatter_data="android_java">
+    Settings
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_OFFBOARDING_NOTICE_ACK_BUTTON_LABEL" desc="Tracking protection offboarding notice primary button text.ollback notice primary button text." formatter_data="android_java">
+    Got it
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_OFFBOARDING_NOTICE_LEARN_MORE_BUTTON_LABEL" desc="Tracking protection offboarding notice secondary menu button text." formatter_data="android_java">
+    Learn more
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_OFFBOARDING_NOTICE_LEARN_MORE_BUTTON_A11Y_LABEL" desc="Tracking protection offboarding notice secondary menu button content accessibility text." formatter_data="android_java" is_accessibility_with_no_ui="true">
+    Learn more about Tracking Protection availability
+  </message>
+
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_ONE_TITLE" desc="Title of the first explanatory bullet point on the Tracking Protection settings page." formatter_data="android_java">
     Brave automatically limits third-party cookies
   </message>
-  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_ONE_DESCRIPTION" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_ONE_DESCRIPTION" desc="Description of the first explanatory bullet point on the Tracking Protection settings page." formatter_data="android_java">
     Most sites can’t use third-party cookies to track you as you browse, and sites can’t use third-party cookies in Private mode.
   </message>
-  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_TWO_TITLE" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_TWO_TITLE" desc="Title of the second explanatory bullet point on the Tracking Protection settings page." formatter_data="android_java">
     Most sites should work as expected
   </message>
-  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_TWO_DESCRIPTION" desc="" translateable="false" formatter_data="android_java">
-    If a site isn’t working, you can try giving it temporary permission to use third-party cookies. Learn more
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_TWO_DESCRIPTION" desc="Description of the second explanatory bullet point on the Tracking Protection settings page." formatter_data="android_java">
+    If a site isn’t working, you can try giving it temporary permission to use third-party cookies. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
   </message>
-  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_ADVANCED_CATEGORY" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_ADVANCED_CATEGORY" desc="Category title for advanced settings on the Tracking Protection settings page." formatter_data="android_java">
     Advanced
   </message>
-  <message name="IDS_TRACKING_PROTECTION_BLOCK_COOKIES_TOGGLE_TITLE" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_TRACKING_PROTECTION_BLOCK_COOKIES_TOGGLE_TITLE" desc="Title of the toggle to block all third-party cookies on the Tracking Protection page." formatter_data="android_java">
     Block all third-party cookies
   </message>
-  <message name="IDS_TRACKING_PROTECTION_BLOCK_COOKIES_TOGGLE_SUMMARY" desc="" translateable="false" formatter_data="android_java">
-    Features on some sites may not work. Learn more
+  <message name="IDS_TRACKING_PROTECTION_BLOCK_COOKIES_TOGGLE_SUMMARY" desc="Description of the toggle to block all third-party cookies on the Tracking Protection page." formatter_data="android_java">
+    Features on some sites may not work
   </message>
-  <message name="IDS_TRACKING_PROTECTION_DNT_TOGGLE_TITLE" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_TRACKING_PROTECTION_DNT_TOGGLE_TITLE" desc="Title of the toggle to enable 'Do Not Track' on the Tracking Protection page." formatter_data="android_java">
     Send a “Do Not Track” request with your browsing traffic
   </message>
-  <message name="IDS_TRACKING_PROTECTION_DNT_TOGGLE_SUMMARY" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_TRACKING_PROTECTION_DNT_TOGGLE_SUMMARY" desc="Description of the toggle to enable 'Do Not Track' on the Tracking Protection page." formatter_data="android_java">
     Sites use their discretion when responding to this request
   </message>
-  <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_TITLE" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_TITLE" desc="Title of the list of exceptions for sites that are allowed to use third-party cookies on the Tracking Protection page." formatter_data="android_java">
     Sites allowed to use third-party cookies
   </message>
-  <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_DESCRIPTION" desc="" translateable="false" formatter_data="android_java">
-    Affects the sites listed here and their subdomains. For example, adding “google.com” means that third-party cookies can also be active for mail.google.com, because it’s part of google.com.
+  <message name="IDS_TRACKING_PROTECTION_ALLOWED_GROUP_DESCRIPTION" desc="Description of the list of exceptions for sites that are allowed to use third-party cookies on the Tracking Protection page. Explains how to use a wildcard to create an exception for an entire domain." formatter_data="android_java">
+    Affects the sites listed here. Inserting “[*.]” before a domain name creates an exception for the entire domain. For example, adding “[*.]google.com” means that third-party cookies can also be active for mail.google.com, because it’s part of google.com.
   </message>
-  <message name="IDS_TRACKING_PROTECTION_NEVER_EXPIRES_LABEL" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_TRACKING_PROTECTION_NEVER_EXPIRES_LABEL" desc="Label on an exception for allowing third-party cookies that indicates that it never expires." formatter_data="android_java">
     Does not expire
   </message>
-  <message name="IDS_TRACKING_PROTECTION_EXPIRES_TODAY_LABEL" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_TRACKING_PROTECTION_EXPIRES_TODAY_LABEL" desc="Label on an exception for allowing third-party cookies that indicates that it expires today." formatter_data="android_java">
     Expires today
   </message>
-  <message name="IDS_TRACKING_PROTECTION_EXPIRES_LABEL" desc="" translateable="false" formatter_data="android_java">
+  <message name="IDS_TRACKING_PROTECTION_EXPIRES_LABEL" desc="Label on an exception for allowing third-party cookies that indicates that it expires in a specific number of days." formatter_data="android_java">
     {COUNT, plural,
       =1 {Expires tomorrow}
       other {Expires in # days}
     }
   </message>
-  <message name="IDS_TRACKING_PROTECTION_DELETE_SITE_LABEL" desc="" translateable="false" formatter_data="android_java">
-    Delete site
+  <message name="IDS_TRACKING_PROTECTION_DELETE_SITE_LABEL" desc="Accessibility label on an exception for allowing third-party cookies to delete it." formatter_data="android_java">
+    Delete site <ph name="SITE_NAME">%1$s<ex>google.com</ex></ph>
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_SETTINGS_ROLLBACK_NOTICE" desc="Notice text on the top of the 'Third-party cookies' settings page telling users that Tracking Protection is unavailable." formatter_data="android_java">
+    Tracking Protection is temporarily unavailable. While Brave is updating this feature, sites can temporarily use third-party cookies unless you block them. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
   </message>
 </grit-part>

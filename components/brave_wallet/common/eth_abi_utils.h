@@ -7,13 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_ABI_UTILS_H_
 
 #include <array>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet::eth_abi {
 constexpr size_t kRowLength = 32;
@@ -29,24 +29,24 @@ std::pair<Span, Span> ExtractFunctionSelectorAndArgsFromCall(Span data);
 
 EthAddress ExtractAddress(Span address_encoded);
 EthAddress ExtractAddressFromTuple(Span data, size_t tuple_pos);
-absl::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded);
-absl::optional<std::string> ExtractString(Span string_encoded);
+std::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded);
+std::optional<std::string> ExtractString(Span string_encoded);
 
-absl::optional<std::string> ExtractStringFromTuple(Span data, size_t tuple_pos);
-absl::optional<std::vector<std::string>> ExtractStringArray(Span data);
-absl::optional<std::vector<std::string>> ExtractStringArrayFromTuple(
+std::optional<std::string> ExtractStringFromTuple(Span data, size_t tuple_pos);
+std::optional<std::vector<std::string>> ExtractStringArray(Span data);
+std::optional<std::vector<std::string>> ExtractStringArrayFromTuple(
     Span data,
     size_t tuple_pos);
-absl::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
-                                                           size_t tuple_pos);
-absl::optional<std::pair<bool, std::vector<uint8_t>>> ExtractBoolAndBytes(
+std::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
+                                                          size_t tuple_pos);
+std::optional<std::pair<bool, std::vector<uint8_t>>> ExtractBoolAndBytes(
     Span data);
-absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
+std::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
 ExtractBoolBytesArray(Span string_array);
-absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
+std::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
 ExtractBoolBytesArrayFromTuple(Span data, size_t tuple_pos);
 
-absl::optional<std::vector<uint8_t>>
+std::optional<std::vector<uint8_t>>
 ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos);
 
 class TupleEncoder {

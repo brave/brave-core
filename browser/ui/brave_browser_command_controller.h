@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ref.h"
@@ -80,7 +81,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   // brave_vpn::BraveVPNServiceObserver overrides:
   void OnPurchasedStateChanged(
       brave_vpn::mojom::PurchasedState state,
-      const absl::optional<std::string>& description) override;
+      const std::optional<std::string>& description) override;
 #endif
 
   void InitBraveCommandState();

@@ -25,16 +25,20 @@ template("ios_objc_mojom_wrappers") {
   mojom_target_parser =
       get_path_info("${mojom_target_path}:${mojom_target_name}__parser",
                     "abspath")
-  mojom_output_dir = rebase_path(target_gen_dir)
+  mojom_output_dir = target_gen_dir
   dep_target_gen = get_label_info(mojom_target, "target_gen_dir")
+
+  if (defined(invoker.output_dir)) {
+    mojom_output_dir = invoker.output_dir
+  }
 
   generate_wrappers_output = []
   foreach(source, invoker.sources) {
     _file = get_path_info(source, "file")
     generate_wrappers_output += [
-      "$target_gen_dir/${_file}.objc.h",
-      "$target_gen_dir/${_file}.objc+private.h",
-      "$target_gen_dir/${_file}.objc.mm",
+      "$mojom_output_dir/${_file}.objc.h",
+      "$mojom_output_dir/${_file}.objc+private.h",
+      "$mojom_output_dir/${_file}.objc.mm",
     ]
   }
 
@@ -53,15 +57,15 @@ template("ios_objc_mojom_wrappers") {
     ]
     sources = invoker.sources
     outputs = [
-      "$target_gen_dir/{{source_file_part}}.objc.h",
-      "$target_gen_dir/{{source_file_part}}.objc+private.h",
-      "$target_gen_dir/{{source_file_part}}.objc.mm",
+      "$mojom_output_dir/{{source_file_part}}.objc.h",
+      "$mojom_output_dir/{{source_file_part}}.objc+private.h",
+      "$mojom_output_dir/{{source_file_part}}.objc.mm",
     ]
     _module_path = rebase_path("$dep_target_gen/{{source_file_part}}-module")
     bytecode_path = rebase_path("$root_gen_dir/brave/build/ios/mojom")
     args = [
       "--mojom-module=$_module_path",
-      "--output-dir=$mojom_output_dir",
+      "--output-dir=" + rebase_path(mojom_output_dir),
       "--bytecode-path=$bytecode_path",
     ]
     if (!generate_namespace) {

@@ -18,7 +18,6 @@
 #include "chrome/browser/download/download_ui_model.h"
 #include "chrome/browser/icon_loader.h"
 #include "chrome/browser/ui/views/download/download_shelf_context_menu_view.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"

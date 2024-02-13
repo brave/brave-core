@@ -26,7 +26,8 @@ namespace endpoint {
 namespace rewards {
 
 using GetPrefixListCallback =
-    std::function<void(const mojom::Result result, const std::string& body)>;
+    base::OnceCallback<void(const mojom::Result result,
+                            const std::string& body)>;
 
 class GetPrefixList {
  public:
@@ -40,8 +41,8 @@ class GetPrefixList {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 GetPrefixListCallback callback);
+  void OnRequest(GetPrefixListCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

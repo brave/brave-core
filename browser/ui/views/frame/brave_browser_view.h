@@ -22,6 +22,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/accelerators/accelerator.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
@@ -53,9 +54,11 @@ class SidebarContainerView;
 class WalletButton;
 class ViewShadow;
 class VerticalTabStripWidgetDelegateView;
+class BraveHelpBubbleHostView;
 
 class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer {
+  METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
@@ -101,6 +104,7 @@ class BraveBrowserView : public BrowserView,
   vertical_tab_strip_widget_delegate_view() {
     return vertical_tab_strip_widget_delegate_view_;
   }
+  bool ShowBraveHelpBubbleView(const std::string& text) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
@@ -116,6 +120,7 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripDragAndDropBrowserTest,
                            DragTabToReorder);
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, Toolbar);
+  FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, ToolbarLangs);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -156,6 +161,7 @@ class BraveBrowserView : public BrowserView,
   void UpdateSideBarHorizontalAlignment();
 
   bool closing_confirm_dialog_activated_ = false;
+  raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_separator_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;

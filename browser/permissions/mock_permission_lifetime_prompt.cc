@@ -5,6 +5,8 @@
 
 #include "brave/browser/permissions/mock_permission_lifetime_prompt.h"
 
+#include <optional>
+
 #include "brave/browser/permissions/mock_permission_lifetime_prompt_factory.h"
 
 namespace permissions {
@@ -37,9 +39,13 @@ void MockPermissionLifetimePrompt::ResetFactory() {
   factory_ = nullptr;
 }
 
-absl::optional<gfx::Rect> MockPermissionLifetimePrompt::GetViewBoundsInScreen()
+std::optional<gfx::Rect> MockPermissionLifetimePrompt::GetViewBoundsInScreen()
     const {
-  return absl::nullopt;
+  return std::nullopt;
+}
+
+bool MockPermissionLifetimePrompt::ShouldFinalizeRequestAfterDecided() const {
+  return true;
 }
 
 }  // namespace permissions

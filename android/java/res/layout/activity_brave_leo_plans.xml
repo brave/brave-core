@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/brave_leo_plans_bg"
+    android:orientation="vertical"
+    tools:context=".BraveLeoPlansActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/BraveLeoToolbar"
+        android:minHeight="?attr/actionBarSize"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/ic_leo_plans"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="32dp"
+                        android:text="@string/leo_unleash_power"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="12dp"
+                        android:textSize="16sp"
+                        app:drawableTint="@android:color/white"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:layout_marginHorizontal="24dp"
+                        android:baselineAligned="false"
+                        android:background="@drawable/leo_plan_premium_adv_bg"
+                        android:orientation="vertical">
+
+                        <!-- Explore tip -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="10dp"
+                            android:layout_marginHorizontal="10dp">
+
+                            <ImageView
+                                    android:id="@+id/iv_explore"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:padding="8dp"
+                                    app:srcCompat="@drawable/ic_leo_explore"
+                                    android:contentDescription="@null"/>
+
+                            <TextView
+                                    android:id="@+id/tv_explore"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/leo_tip_explore_title"
+                                    android:textSize="16sp"
+                                    android:textColor="@android:color/white"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_marginTop="8dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_explore"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/leo_tip_explore_description"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/brave_leo_plans_tips_desc"
+                                    android:layout_marginStart="12dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_explore"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_explore"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/brave_leo_plans_tips_border"/>
+
+                        <!-- Unlock tip -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="10dp"
+                            android:layout_marginHorizontal="10dp">
+
+                            <ImageView
+                                    android:id="@+id/iv_unlock"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:padding="8dp"
+                                    app:srcCompat="@drawable/ic_leo_unlock"
+                                    android:contentDescription="@null"/>
+
+                            <TextView
+                                    android:id="@+id/tv_unlock"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/leo_tip_unlock_title"
+                                    android:textSize="16sp"
+                                    android:textColor="@android:color/white"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_marginTop="8dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_unlock"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/leo_tip_unlock_description"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/brave_leo_plans_tips_desc"
+                                    android:layout_marginStart="12dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_unlock"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_unlock"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/brave_leo_plans_tips_border"/>
+
+                        <!-- Stay on focus tip -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="10dp"
+                            android:layout_marginHorizontal="10dp">
+
+                            <ImageView
+                                    android:id="@+id/iv_stay"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:padding="8dp"
+                                    app:srcCompat="@drawable/ic_leo_stay"
+                                    android:contentDescription="@null"/>
+
+                            <TextView
+                                    android:id="@+id/tv_stay"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/leo_tip_stay_title"
+                                    android:textSize="16sp"
+                                    android:textColor="@android:color/white"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_marginTop="8dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_stay"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/leo_tip_stay_description"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/brave_leo_plans_tips_desc"
+                                    android:layout_marginStart="12dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_stay"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_stay"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/brave_leo_plans_tips_border"/>
+
+                        <!-- Chat on focus tip -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="10dp"
+                            android:layout_marginHorizontal="10dp">
+
+                            <ImageView
+                                    android:id="@+id/iv_chat"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:padding="8dp"
+                                    app:srcCompat="@drawable/ic_leo_chat"
+                                    android:contentDescription="@null"/>
+
+                            <TextView
+                                    android:id="@+id/tv_chat"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/leo_tip_chat_title"
+                                    android:textSize="16sp"
+                                    android:textColor="@android:color/white"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_marginTop="8dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_chat"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/leo_tip_chat_description"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/brave_leo_plans_tips_desc"
+                                    android:layout_marginStart="12dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_chat"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_chat"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monthly_selector_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginTop="14dp"
+                        android:baselineAligned="false"
+                        android:padding="16dp"
+                        android:background="@drawable/leo_plan_monthly_bg"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/monthly_subscription_text"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="@string/monthly_subscription_leo"
+                            android:textColor="@android:color/white"
+                            android:layout_gravity="start"
+                            android:gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_marginBottom="2dp"
+                            android:textSize="18sp"/>
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ProgressBar
+                                android:id="@+id/monthly_plan_progress"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:visibility="gone"
+                                android:layout_gravity="center"
+                                android:indeterminate="true"/>
+
+                            <TextView
+                                android:id="@+id/monthly_subscription_amount_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/white"
+                                android:layout_gravity="start"
+                                android:gravity="start"
+                                android:textAlignment="textStart"
+                                android:textSize="16sp"/>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/leo_subscription_disclaimer"
+                        android:textColor="@color/brave_leo_plans_tips_desc"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:textSize="11sp"
+                        app:drawableTint="@android:color/white"/>
+
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/brave_leo_plans_tips_border"/>
+
+                <TextView
+                    android:id="@+id/tv_upgrade_now"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/leo_plan_upgrade_now_bg"
+                    android:text="@string/leo_subscription_upgrade_now"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="start"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginHorizontal="24dp"
+                    android:padding="16dp"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

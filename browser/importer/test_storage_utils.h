@@ -6,16 +6,16 @@
 #ifndef BRAVE_BROWSER_IMPORTER_TEST_STORAGE_UTILS_H_
 #define BRAVE_BROWSER_IMPORTER_TEST_STORAGE_UTILS_H_
 
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave {
-absl::optional<base::Value::Dict> ReadStore(base::FilePath path,
-                                            const std::string& id);
+std::optional<base::Value::Dict> ReadStore(base::FilePath path,
+                                           const std::string& id);
 void CreateTestingStore(base::FilePath path,
                         const std::string& id,
                         const base::flat_map<std::string, std::string>& values);

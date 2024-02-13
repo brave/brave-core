@@ -7,8 +7,11 @@
 
 #include "base/base64.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/gtest_util.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_model_type_controller.h"
 #include "brave/components/history/core/browser/sync/brave_history_model_type_controller.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
@@ -19,6 +22,7 @@
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
+#include "components/sync/model/type_entities_count.h"
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/test/data_type_manager_mock.h"
 #include "components/sync/test/fake_data_type_controller.h"
@@ -65,10 +69,13 @@ class SyncServiceImplDelegateMock : public SyncServiceImplDelegate {
  public:
   SyncServiceImplDelegateMock() = default;
   ~SyncServiceImplDelegateMock() override = default;
-  void SuspendDeviceObserverForOwnReset() override {}
-  void ResumeDeviceObserver() override {}
-  void SetLocalDeviceAppearedCallback(
-      base::OnceCallback<void()> local_device_appeared_callback) override {}
+
+  MOCK_METHOD0(SuspendDeviceObserverForOwnReset, void());
+  MOCK_METHOD0(ResumeDeviceObserver, void());
+  MOCK_METHOD1(SetLocalDeviceAppearedCallback,
+               void(base::OnceCallback<void()>));
+  MOCK_METHOD1(GetKnownToSyncHistoryCount,
+               void(base::OnceCallback<void(std::pair<bool, int>)>));
 };
 
 class SyncServiceObserverMock : public SyncServiceObserver {
@@ -78,10 +85,6 @@ class SyncServiceObserverMock : public SyncServiceObserver {
 
   MOCK_METHOD(void, OnStateChanged, (SyncService * sync), (override));
   MOCK_METHOD(void, OnSyncCycleCompleted, (SyncService * sync), (override));
-  MOCK_METHOD(void,
-              OnSyncConfigurationCompleted,
-              (SyncService * sync),
-              (override));
   MOCK_METHOD(void, OnSyncShutdown, (SyncService * sync), (override));
 };
 
@@ -110,9 +113,12 @@ class BraveSyncServiceImplTest : public testing::Test {
     ON_CALL(*sync_client, CreateDataTypeControllers(_))
         .WillByDefault(Return(ByMove(std::move(controllers))));
 
+    auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
+    sync_service_delegate_ = sync_service_delegate.get();
+
     sync_service_impl_ = std::make_unique<BraveSyncServiceImpl>(
         sync_service_impl_bundle_.CreateBasicInitParams(std::move(sync_client)),
-        std::make_unique<SyncServiceImplDelegateMock>());
+        std::move(sync_service_delegate));
   }
 
   brave_sync::Prefs* brave_sync_prefs() { return &brave_sync_prefs_; }
@@ -141,6 +147,7 @@ class BraveSyncServiceImplTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
+  raw_ptr<SyncServiceImplDelegateMock> sync_service_delegate_;
 
  private:
   SyncServiceImplBundle sync_service_impl_bundle_;
@@ -207,7 +214,7 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
   OSCryptMocker::TearDown();
 }
 
-// Google test doc strongly recommends to use ``*DeathTest` naming
+// Google test doc strongly recommends to use `*DeathTest` naming
 // for test suite
 using BraveSyncServiceImplDeathTest = BraveSyncServiceImplTest;
 
@@ -226,6 +233,15 @@ TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
 
   brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
+
+  // Since Chromium commit 33441a0f3f9a591693157f2fd16852ce072e6f9d
+  // we cannot change datatypes if we are not signed to sync, see changes
+  // around SyncUserSettingsImpl::SetSelectedTypes.
+  // Call pref_service()->SetString() below triggers
+  // BraveSyncServiceImpl::OnBraveSyncPrefsChanged which sets kBookmarks type.
+  // To workaround this, first set valid sync code to pretend we are signed in.
+  bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  EXPECT_TRUE(set_code_result);
 
   std::string wrong_seed = "123";
   std::string encrypted_wrong_seed;
@@ -269,18 +285,6 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
 
-  // By default Brave enables Bookmarks datatype when sync is enabled.
-  // This caused DCHECK at DataTypeManagerImpl::DataTypeManagerImpl
-  // after OnEngineInitialized(true, false) call.
-  // Current unit test is intended to verify fix for brave/brave-browser#22898
-  // and is about set encryption passphrase later setup after right after
-  // enabling sync, for example when internet connection is unstable. Related
-  // Chromium commit 3241d114b8036bb6d53931ba34b3bf819258c29d Prior to this
-  // commit DataTypeManagerImpl wasn't created for bookmarks at
-  // ForcedSetDecryptionPassphrase test.
-  brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
-      false, syncer::UserSelectableTypeSet());
-
   task_environment_.RunUntilIdle();
 
   brave_sync_service_impl()
@@ -298,6 +302,22 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
 
   EXPECT_TRUE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
+
+  // By default Brave enables Bookmarks datatype when sync is enabled.
+  // This caused DCHECK at DataTypeManagerImpl::DataTypeManagerImpl
+  // after OnEngineInitialized(true, false) call.
+  // Current unit test is intended to verify fix for brave/brave-browser#22898
+  // and is about set encryption passphrase later setup after right after
+  // enabling sync, for example when internet connection is unstable. Related
+  // Chromium commit 3241d114b8036bb6d53931ba34b3bf819258c29d Prior to this
+  // commit DataTypeManagerImpl wasn't created for bookmarks at
+  // ForcedSetDecryptionPassphrase test.
+  // Update Dec 2023: moved this workaround closer to OnEngineInitialized,
+  // with Chromium commit 33441a0f3f9a591693157f2fd16852ce072e6f9d the logic of
+  // SyncUserSettingsImpl::GetSelectedTypes had been changed and affected this
+  // test.
+  brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
+      false, syncer::UserSelectableTypeSet());
 
   brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
@@ -550,6 +570,75 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
       history_delete_directives_model_type_controller->GetPreconditionState();
   EXPECT_EQ(history_delete_directives_precondition_state,
             DataTypeController::PreconditionState::kPreconditionsMet);
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
+  OSCryptMocker::SetUp();
+  CreateSyncService();
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete(
+          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  EXPECT_TRUE(engine());
+
+  EXPECT_FALSE(
+      brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
+  auto selected_types =
+      brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
+  EXPECT_EQ(selected_types.Size(), 1u);
+  EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(ModelTypeSet({BOOKMARKS, HISTORY}));
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+  base::HistogramTester histogram_tester;
+
+  std::vector<syncer::TypeEntitiesCount> counts;
+  syncer::TypeEntitiesCount bookmarks_count(syncer::BOOKMARKS);
+  bookmarks_count.entities = bookmarks_count.non_tombstone_entities = 1;
+  counts.push_back(bookmarks_count);
+
+  brave_sync_service_impl()->OnGotEntityCounts(counts);
+  histogram_tester.ExpectBucketCount(
+      brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 0, 1);
+
+  // Enable History and pretend we got its number from delegate.
+  // We need to have setup handle, otherwise
+  // |SyncUserSettingsImpl::SetSelectedTypes| and
+  // |SyncUserSettingsImpl::GetSelectedTypes| work wrong
+  auto sync_blocker = brave_sync_service_impl()->GetSetupInProgressHandle();
+  auto selected_types =
+      brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
+  selected_types.Put(UserSelectableType::kHistory);
+  brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
+      false, selected_types);
+
+  ON_CALL(*sync_service_delegate_, GetKnownToSyncHistoryCount(_))
+      .WillByDefault(
+          [](base::OnceCallback<void(std::pair<bool, int>)> callback) {
+            std::move(callback).Run(std::pair<bool, int>(true, 10001));
+          });
+
+  brave_sync_service_impl()->OnGotEntityCounts(counts);
+  histogram_tester.ExpectBucketCount(
+      brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 2, 1);
 
   OSCryptMocker::TearDown();
 }

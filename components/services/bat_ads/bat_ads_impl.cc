@@ -5,10 +5,17 @@
 
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_observer_interface.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
@@ -19,15 +26,8 @@
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
-#include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_value_util.h"
-#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_value_util.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/bat_ads_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace bat_ads {
 
@@ -99,15 +99,14 @@ void BatAdsImpl::Shutdown(ShutdownCallback callback) {
 void BatAdsImpl::MaybeGetNotificationAd(
     const std::string& placement_id,
     MaybeGetNotificationAdCallback callback) {
-  const absl::optional<brave_ads::NotificationAdInfo> ad =
+  const std::optional<brave_ads::NotificationAdInfo> ad =
       GetAds()->MaybeGetNotificationAd(placement_id);
   if (!ad) {
-    std::move(callback).Run(/*ad*/ absl::nullopt);
+    std::move(callback).Run(/*ad*/ std::nullopt);
     return;
   }
 
-  absl::optional<base::Value::Dict> dict =
-      brave_ads::NotificationAdToValue(*ad);
+  std::optional<base::Value::Dict> dict = brave_ads::NotificationAdToValue(*ad);
   std::move(callback).Run(std::move(dict));
 }
 
@@ -125,13 +124,13 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
     MaybeServeNewTabPageAdCallback callback) {
   GetAds()->MaybeServeNewTabPageAd(base::BindOnce(
       [](MaybeServeNewTabPageAdCallback callback,
-         const absl::optional<brave_ads::NewTabPageAdInfo>& ad) {
+         const std::optional<brave_ads::NewTabPageAdInfo>& ad) {
         if (!ad) {
-          std::move(callback).Run(/*ad*/ absl::nullopt);
+          std::move(callback).Run(/*ad*/ std::nullopt);
           return;
         }
 
-        absl::optional<base::Value::Dict> dict =
+        std::optional<base::Value::Dict> dict =
             brave_ads::NewTabPageAdToValue(*ad);
         std::move(callback).Run(std::move(dict));
       },
@@ -168,14 +167,14 @@ void BatAdsImpl::MaybeServeInlineContentAd(
       base::BindOnce(
           [](MaybeServeInlineContentAdCallback callback,
              const std::string& dimensions,
-             const absl::optional<brave_ads::InlineContentAdInfo>& ad) {
+             const std::optional<brave_ads::InlineContentAdInfo>& ad) {
             if (!ad) {
               std::move(callback).Run(dimensions,
-                                      /*ads*/ absl::nullopt);
+                                      /*ads*/ std::nullopt);
               return;
             }
 
-            absl::optional<base::Value::Dict> dict =
+            std::optional<base::Value::Dict> dict =
                 brave_ads::InlineContentAdToValue(*ad);
             std::move(callback).Run(dimensions, std::move(dict));
           },

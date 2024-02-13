@@ -57,7 +57,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
   if (buttons & ConfirmInfoBarDelegate::BUTTON_OK) {
     ok_button_ = create_button(ConfirmInfoBarDelegate::BUTTON_OK,
                                &BraveConfirmInfoBar::OkButtonPressed);
-    ok_button_->SetProminent(true);
+    ok_button_->SetStyle(ui::ButtonStyle::kProminent);
     ok_button_->SetImageModel(
         views::Button::STATE_NORMAL,
         delegate_ptr->GetButtonImage(ConfirmInfoBarDelegate::BUTTON_OK));
@@ -72,7 +72,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
                                    &BraveConfirmInfoBar::CancelButtonPressed);
     if (buttons == ConfirmInfoBarDelegate::BUTTON_CANCEL ||
         delegate_ptr->IsProminent(ConfirmInfoBarDelegate::BUTTON_CANCEL)) {
-      cancel_button_->SetProminent(true);
+      cancel_button_->SetStyle(ui::ButtonStyle::kProminent);
     }
     cancel_button_->SetImageModel(
         views::Button::STATE_NORMAL,
@@ -88,7 +88,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
                                   &BraveConfirmInfoBar::ExtraButtonPressed);
     if (buttons == ConfirmInfoBarDelegate::BUTTON_EXTRA ||
         delegate_ptr->IsProminent(ConfirmInfoBarDelegate::BUTTON_EXTRA)) {
-      extra_button_->SetProminent(true);
+      extra_button_->SetStyle(ui::ButtonStyle::kProminent);
     }
     extra_button_->SetImageModel(
         views::Button::STATE_NORMAL,
@@ -141,8 +141,8 @@ void BraveConfirmInfoBar::Layout() {
 
   int x = GetStartX();
   Views views;
-  views.push_back(label_);
-  views.push_back(link_);
+  views.push_back(label_.get());
+  views.push_back(link_.get());
   AssignWidths(&views, std::max(0, GetEndX() - x - NonLabelWidth()));
 
   ChromeLayoutProvider* layout_provider = ChromeLayoutProvider::Get();
@@ -157,6 +157,9 @@ void BraveConfirmInfoBar::Layout() {
   auto order = GetDelegate()->GetButtonsOrder();
   for (const auto& id : order) {
     auto* current_button = GetButtonById(id);
+    if (!current_button) {
+      continue;
+    }
     current_button->SetPosition(gfx::Point(x, OffsetY(current_button)));
     x = current_button->bounds().right() +
         layout_provider->GetDistanceMetric(

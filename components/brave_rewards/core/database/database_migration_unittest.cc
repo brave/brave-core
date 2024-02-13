@@ -12,6 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
@@ -30,16 +31,18 @@ using database::DatabaseMigration;
 
 class RewardsDatabaseMigrationTest : public RewardsEngineTest {
  public:
-  RewardsDatabaseMigrationTest() { is_testing = true; }
+  RewardsDatabaseMigrationTest() {
+    engine().GetOptionsForTesting().is_testing = true;
+  }
 
   ~RewardsDatabaseMigrationTest() override {
     DatabaseMigration::SetTargetVersionForTesting(0);
-    is_testing = false;
+    engine().GetOptionsForTesting().is_testing = false;
   }
 
  protected:
   sql::Database* GetDB() {
-    return GetTestClient()->database()->GetInternalDatabaseForTesting();
+    return engine_client().database()->GetInternalDatabaseForTesting();
   }
 
   std::string GetExpectedSchema() {
@@ -733,7 +736,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_30_NonJapan) {
 TEST_F(RewardsDatabaseMigrationTest, Migration_30_Japan) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  mojom::RewardsEngineClientAsyncWaiter(GetTestClient())
+  mojom::RewardsEngineClientAsyncWaiter(&engine_client())
       .SetStringState(state::kDeclaredGeo, "JP");
   InitializeEngine();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
@@ -757,7 +760,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_32_NonJapan) {
 TEST_F(RewardsDatabaseMigrationTest, Migration_32_Japan) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  mojom::RewardsEngineClientAsyncWaiter(GetTestClient())
+  mojom::RewardsEngineClientAsyncWaiter(&engine_client())
       .SetStringState(state::kDeclaredGeo, "JP");
   InitializeEngine();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);

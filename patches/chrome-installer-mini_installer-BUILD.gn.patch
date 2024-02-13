@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 71803adcfbe02b8c76b58ddb6f657008c2d2ba88..41f0144d5669bc33ba9c6d0e53eceb8a73642ca8 100644
+index 6a32fb624ea4cd4b262cd7db7d4fba9b7e806536..f2ab3bf0f6dced6c22d916ad30bc816a682530f0 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -115,7 +115,7 @@ group("setup_runtime_deps") {
@@ -11,7 +11,7 @@ index 71803adcfbe02b8c76b58ddb6f657008c2d2ba88..41f0144d5669bc33ba9c6d0e53eceb8a
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -229,7 +229,7 @@ action("mini_installer_archive") {
+@@ -219,7 +219,7 @@ action("mini_installer_archive") {
    ]
  }
  
@@ -20,7 +20,7 @@ index 71803adcfbe02b8c76b58ddb6f657008c2d2ba88..41f0144d5669bc33ba9c6d0e53eceb8a
    sources = [
      "mini_installer_exe_main.cc",
      packed_files_rc_file,
-@@ -286,7 +286,7 @@ executable("mini_installer") {
+@@ -276,7 +276,7 @@ executable("mini_installer") {
      no_default_deps = true
      ldflags += [ "/ENTRY:MainEntryPoint" ]
    }

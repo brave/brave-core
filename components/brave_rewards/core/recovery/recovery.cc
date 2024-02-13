@@ -17,7 +17,7 @@ Recovery::~Recovery() = default;
 
 void Recovery::Check() {
   if (!engine_->state()->GetEmptyBalanceChecked()) {
-    BLOG(1, "Running empty balance check...")
+    engine_->Log(FROM_HERE) << "Running empty balance check...";
     empty_balance_.Check();
   }
 }

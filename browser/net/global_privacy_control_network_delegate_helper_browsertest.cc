@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/feature_list.h"
 #include "base/path_service.h"
 #include "base/thread_annotations.h"
@@ -15,7 +17,6 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/common/features.h"
 
 using blink::features::kBraveGlobalPrivacyControl;
@@ -94,8 +95,7 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
   net::test_server::EmbeddedTestServer https_server_;
   mutable base::Lock header_result_lock_;
   bool start_tracking_ GUARDED_BY(header_result_lock_) = false;
-  absl::optional<GPCHeaderResult> header_result_
-      GUARDED_BY(header_result_lock_);
+  std::optional<GPCHeaderResult> header_result_ GUARDED_BY(header_result_lock_);
 };
 
 // When kGlobalPrivacyControl is enabled, the Sec-GPC flag should appear on

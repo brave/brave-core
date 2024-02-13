@@ -32,6 +32,10 @@ export type Message =
   | 'bravePlaylistA11YLoopOff'
   | 'bravePlaylistA11YLoopOne'
   | 'bravePlaylistA11YLoopAll'
+  | 'bravePlaylistFailedToPlayTitle'
+  | 'bravePlaylistFailedToPlayDescription'
+  | 'bravePlaylistFailedToPlayRecover'
+  | 'bravePlaylistAlertDismiss'
 
 export function getLocalizedString(message: Message) {
   return getLocale(message)

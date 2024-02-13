@@ -15,8 +15,6 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-
 namespace {
 
 const int32_t kVersion = 1;
@@ -32,18 +30,16 @@ EmptyBalance::EmptyBalance(RewardsEngineImpl& engine)
 EmptyBalance::~EmptyBalance() = default;
 
 void EmptyBalance::Check() {
-  auto get_callback = std::bind(&EmptyBalance::OnAllContributions, this, _1);
-  engine_->database()->GetAllContributions(get_callback);
+  engine_->database()->GetAllContributions(base::BindOnce(
+      &EmptyBalance::OnAllContributions, weak_factory_.GetWeakPtr()));
 }
 
 void EmptyBalance::OnAllContributions(
     std::vector<mojom::ContributionInfoPtr> list) {
   // we can just restore all tokens if no contributions
   if (list.empty()) {
-    auto get_callback =
-        std::bind(&EmptyBalance::GetCredsByPromotions, this, _1);
-
-    GetPromotions(get_callback);
+    GetPromotions(base::BindOnce(&EmptyBalance::GetCredsByPromotions,
+                                 weak_factory_.GetWeakPtr()));
     return;
   }
 
@@ -54,24 +50,21 @@ void EmptyBalance::OnAllContributions(
     }
   }
 
-  BLOG(1, "Contribution SUM: " << contribution_sum);
+  engine_->Log(FROM_HERE) << "Contribution SUM: " << contribution_sum;
 
-  auto get_callback =
-      std::bind(&EmptyBalance::GetAllTokens, this, _1, contribution_sum);
-
-  GetPromotions(get_callback);
+  GetPromotions(base::BindOnce(&EmptyBalance::GetAllTokens,
+                               weak_factory_.GetWeakPtr(), contribution_sum));
 }
 
 void EmptyBalance::GetPromotions(database::GetPromotionListCallback callback) {
-  auto get_callback =
-      std::bind(&EmptyBalance::OnPromotions, this, _1, callback);
-
-  engine_->database()->GetAllPromotions(get_callback);
+  engine_->database()->GetAllPromotions(
+      base::BindOnce(&EmptyBalance::OnPromotions, weak_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
 void EmptyBalance::OnPromotions(
-    base::flat_map<std::string, mojom::PromotionPtr> promotions,
-    database::GetPromotionListCallback callback) {
+    database::GetPromotionListCallback callback,
+    base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   std::vector<mojom::PromotionPtr> list;
 
   for (auto& promotion : promotions) {
@@ -85,7 +78,7 @@ void EmptyBalance::OnPromotions(
     }
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void EmptyBalance::GetCredsByPromotions(std::vector<mojom::PromotionPtr> list) {
@@ -94,14 +87,14 @@ void EmptyBalance::GetCredsByPromotions(std::vector<mojom::PromotionPtr> list) {
     promotion_ids.push_back(promotion->id);
   }
 
-  auto get_callback = std::bind(&EmptyBalance::OnCreds, this, _1);
-
-  engine_->database()->GetCredsBatchesByTriggers(promotion_ids, get_callback);
+  engine_->database()->GetCredsBatchesByTriggers(
+      promotion_ids,
+      base::BindOnce(&EmptyBalance::OnCreds, weak_factory_.GetWeakPtr()));
 }
 
 void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
   if (list.empty()) {
-    BLOG(1, "Creds batch list is emtpy");
+    engine_->Log(FROM_HERE) << "Creds batch list is emtpy";
     engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
@@ -114,7 +107,8 @@ void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
     auto unblinded_encoded_creds = credential::UnBlindCreds(*creds_batch);
 
     if (!unblinded_encoded_creds.has_value()) {
-      BLOG(0, "UnBlindTokens: " << std::move(unblinded_encoded_creds).error());
+      engine_->LogError(FROM_HERE)
+          << "UnBlindTokens: " << std::move(unblinded_encoded_creds).error();
       continue;
     }
 
@@ -130,24 +124,24 @@ void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
   }
 
   if (token_list.empty()) {
-    BLOG(1, "Unblinded token list is emtpy");
+    engine_->Log(FROM_HERE) << "Unblinded token list is emtpy";
     engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
-  auto save_callback = std::bind(&EmptyBalance::OnSaveUnblindedCreds, this, _1);
-
-  engine_->database()->SaveUnblindedTokenList(std::move(token_list),
-                                              save_callback);
+  engine_->database()->SaveUnblindedTokenList(
+      std::move(token_list), base::BindOnce(&EmptyBalance::OnSaveUnblindedCreds,
+                                            weak_factory_.GetWeakPtr()));
 }
 
 void EmptyBalance::OnSaveUnblindedCreds(const mojom::Result result) {
-  BLOG(1, "Finished empty balance migration with result: " << result);
+  engine_->Log(FROM_HERE) << "Finished empty balance migration with result: "
+                          << result;
   engine_->state()->SetEmptyBalanceChecked(true);
 }
 
-void EmptyBalance::GetAllTokens(std::vector<mojom::PromotionPtr> list,
-                                const double contribution_sum) {
+void EmptyBalance::GetAllTokens(double contribution_sum,
+                                std::vector<mojom::PromotionPtr> list) {
   // from all completed promotions get creds
   // unblind them and save them
   double promotion_sum = 0.0;
@@ -155,45 +149,44 @@ void EmptyBalance::GetAllTokens(std::vector<mojom::PromotionPtr> list,
     promotion_sum += promotion->approximate_value;
   }
 
-  BLOG(1, "Promotion SUM: " << promotion_sum);
-
-  auto tokens_callback = std::bind(&EmptyBalance::ReportResults, this, _1,
-                                   contribution_sum, promotion_sum);
+  engine_->Log(FROM_HERE) << "Promotion SUM: " << promotion_sum;
 
   engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {mojom::CredsBatchType::PROMOTION}, tokens_callback);
+      {mojom::CredsBatchType::PROMOTION},
+      base::BindOnce(&EmptyBalance::ReportResults, weak_factory_.GetWeakPtr(),
+                     contribution_sum, promotion_sum));
 }
 
-void EmptyBalance::ReportResults(std::vector<mojom::UnblindedTokenPtr> list,
-                                 const double contribution_sum,
-                                 const double promotion_sum) {
+void EmptyBalance::ReportResults(double contribution_sum,
+                                 double promotion_sum,
+                                 std::vector<mojom::UnblindedTokenPtr> list) {
   double tokens_sum = 0.0;
   for (auto& item : list) {
     tokens_sum += item->value;
   }
-  BLOG(1, "Token SUM: " << tokens_sum);
+  engine_->Log(FROM_HERE) << "Token SUM: " << tokens_sum;
 
   double total = promotion_sum - contribution_sum - tokens_sum;
 
   if (total <= 0) {
-    BLOG(1, "Unblinded token total is OK");
+    engine_->Log(FROM_HERE) << "Unblinded token total is OK";
     engine_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
-  BLOG(1, "Unblinded token total is " << total);
+  engine_->Log(FROM_HERE) << "Unblinded token total is " << total;
 
-  auto url_callback = std::bind(&EmptyBalance::Sent, this, _1);
-
-  promotion_server_.post_bat_loss().Request(total, kVersion, url_callback);
+  promotion_server_.post_bat_loss().Request(
+      total, kVersion,
+      base::BindOnce(&EmptyBalance::Sent, weak_factory_.GetWeakPtr()));
 }
 
-void EmptyBalance::Sent(const mojom::Result result) {
+void EmptyBalance::Sent(mojom::Result result) {
   if (result != mojom::Result::OK) {
     return;
   }
 
-  BLOG(1, "Finished empty balance migration!");
+  engine_->Log(FROM_HERE) << "Finished empty balance migration";
   engine_->state()->SetEmptyBalanceChecked(true);
 }
 

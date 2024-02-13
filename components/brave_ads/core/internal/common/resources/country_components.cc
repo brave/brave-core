@@ -12,8 +12,9 @@
 
 namespace {
 
-constexpr auto kCountryComponentIds =
-    base::MakeFixedFlatSetSorted<std::string_view>({
+constexpr auto kCountryComponentIds = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
         "aafjalakdldginkbeobaiamnfphcdmko", "aaoipmkakdldlippoaocoegnnfnpcokj",
         "adnhangbagjlobdeicimblgcnafegpfb", "aeglmpapdhfhdicbifhnmaoehffffmie",
         "aeiffmlccgeaacefkfknodmnebanekbo", "ahhbponhjohgifhjbjggafboffbimmmg",

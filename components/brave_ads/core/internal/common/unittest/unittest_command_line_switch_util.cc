@@ -19,8 +19,7 @@ namespace {
 constexpr char kNoCommandLineSwitchKey[] = "WithNoCommandLineSwitch";
 constexpr char kNoCommandLineSwitchValue[] = "WithEmptyValue";
 
-std::string CommandLineSwitchToString(
-    const CommandLineSwitchInfo& command_line_switch) {
+std::string ToString(const CommandLineSwitchInfo& command_line_switch) {
   const std::string switch_value = command_line_switch.value.empty()
                                        ? kNoCommandLineSwitchValue
                                        : command_line_switch.value;
@@ -44,8 +43,8 @@ void ShutdownCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
 }
 
-absl::optional<bool>& DidAppendCommandLineSwitches() {
-  static absl::optional<bool> command_line;
+std::optional<bool>& DidAppendCommandLineSwitches() {
+  static std::optional<bool> command_line;
   return command_line;
 }
 
@@ -76,8 +75,7 @@ std::string SanitizeCommandLineSwitch(
     return kNoCommandLineSwitchKey;
   }
 
-  return SanitizeCommandLineSwitchFromString(
-      CommandLineSwitchToString(command_line_switch));
+  return SanitizeCommandLineSwitchFromString(ToString(command_line_switch));
 }
 
 }  // namespace brave_ads

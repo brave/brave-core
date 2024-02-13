@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -33,7 +34,6 @@
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/navigation_entry.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/compositor/layer.h"
@@ -79,10 +79,10 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
   }
 };
 
-absl::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
+std::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
   if (brave::IsRegularProfile(profile) || profile->IsGuestSession()) {
     // Don't update color.
-    return absl::nullopt;
+    return std::nullopt;
   }
   // Private or Tor window - use color mixer.
   return kColorLocationBarFocusRing;
@@ -142,7 +142,7 @@ void BraveLocationBarView::Init() {
   Update(nullptr);
 
   // Stop slide animation for all content settings views icon.
-  for (auto* content_setting_view : content_setting_views_) {
+  for (ContentSettingImageView* content_setting_view : content_setting_views_) {
     content_setting_view->disable_animation();
   }
 }

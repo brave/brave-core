@@ -15,7 +15,7 @@
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_widget.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view_factory.h"
-#include "brave/components/brave_ads/browser/units/notification_ad/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -55,7 +55,7 @@ constexpr SkColor kDarkModeBorderColor = SkColorSetRGB(0x3f, 0x41, 0x45);
 constexpr int kBorderThickness = 1;
 
 #if BUILDFLAG(IS_WIN)
-constexpr int kShadowElevation = 5;
+constexpr int kShadowElevation = 4;
 constexpr int kCornerRadius = 0;
 #elif BUILDFLAG(IS_MAC)
 constexpr int kShadowElevation = 5;
@@ -118,26 +118,27 @@ void NotificationAdPopup::SetDisableFadeInAnimationForTesting(
   g_disable_fade_in_animation_for_testing = disable;
 }
 
-void NotificationAdPopup::AdjustBoundsAndSnapToFitWorkAreaForWidget(
+gfx::Rect NotificationAdPopup::AdjustBoundsAndSnapToFitWorkAreaForWidget(
     views::Widget* widget,
     const gfx::Rect& bounds) {
   CHECK(widget);
 
   gfx::Rect fit_bounds = bounds;
-  AdjustBoundsAndSnapToFitWorkAreaForNativeView(widget, &fit_bounds);
+  AdjustBoundsAndSnapToFitWorkAreaForNativeView(*widget, &fit_bounds);
 
   base::AutoReset<bool> bounds_adjust_scope(&inside_adjust_bounds_, true);
   widget->SetBounds(fit_bounds);
+  return fit_bounds;
 }
 
 void NotificationAdPopup::OnDisplayAdded(const display::Display& new_display) {
-  // Called when |new_display| has been added
+  // Called when `new_display` has been added
   RecomputeAlignment();
 }
 
 void NotificationAdPopup::OnDisplayRemoved(
     const display::Display& old_display) {
-  // Called when |old_display| has been removed
+  // Called when `old_display` has been removed
   RecomputeAlignment();
 }
 
@@ -167,9 +168,10 @@ void NotificationAdPopup::OnWorkAreaChanged() {
 
 void NotificationAdPopup::OnPaintBackground(gfx::Canvas* canvas) {
   CHECK(canvas);
+  CHECK(GetWidget());
 
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
-  bounds.Inset(-GetShadowMargin());
+  bounds.Inset(GetWidgetMargin());
 
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
@@ -226,6 +228,12 @@ void NotificationAdPopup::OnMouseReleased(const ui::MouseEvent& event) {
   WidgetDelegateView::OnMouseReleased(event);
 
   if (is_dragging_) {
+    profile_->GetPrefs()->SetDouble(
+        prefs::kNotificationAdLastNormalizedCoordinateX,
+        last_normalized_coordinate_.x());
+    profile_->GetPrefs()->SetDouble(
+        prefs::kNotificationAdLastNormalizedCoordinateY,
+        last_normalized_coordinate_.y());
     is_dragging_ = false;
     return;
   }
@@ -253,13 +261,9 @@ void NotificationAdPopup::OnWidgetDestroyed(views::Widget* widget) {
 
 void NotificationAdPopup::OnWidgetBoundsChanged(views::Widget* widget,
                                                 const gfx::Rect& new_bounds) {
-  CHECK(widget);
   if (!inside_adjust_bounds_) {
-    return AdjustBoundsAndSnapToFitWorkAreaForWidget(widget, CalculateBounds());
+    RecomputeAlignment();
   }
-
-  widget_origin_ = new_bounds.origin();
-  SaveWidgetOrigin(widget_origin_, widget->GetNativeView());
 }
 
 void NotificationAdPopup::AnimationEnded(const gfx::Animation* animation) {
@@ -296,8 +300,15 @@ NotificationAd NotificationAdPopup::GetNotificationAd() const {
 }
 
 void NotificationAdPopup::MovePopup(const gfx::Vector2d& distance) {
-  const gfx::Rect bounds = CalculateBounds() + distance;
-  AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget(), bounds);
+  if (!IsWidgetValid()) {
+    return;
+  }
+
+  const gfx::Point new_origin =
+      GetWidget()->GetWindowBoundsInScreen().origin() + distance;
+  const gfx::Rect adjusted_bounds = AdjustBoundsAndSnapToFitWorkAreaForWidget(
+      GetWidget(), gfx::Rect(new_origin, CalculateViewSize()));
+  SaveWidgetOrigin(adjusted_bounds.origin(), GetWidget()->GetNativeView());
 }
 
 void NotificationAdPopup::ClosePopup() {
@@ -320,42 +331,46 @@ void NotificationAdPopup::CreatePopup(gfx::NativeWindow browser_native_window,
   notification_ad_view_ = container_view->AddChildView(
       NotificationAdViewFactory::Create(notification_ad_));
 
-  const gfx::Point point(-GetShadowMargin().top(), -GetShadowMargin().left());
+  const gfx::Point point(GetWidgetMargin().top(), GetWidgetMargin().left());
   container_view->SetPosition(point);
   container_view->SetSize(notification_ad_view_->size());
 
   CreateWidgetView(browser_native_window, browser_native_view);
 }
 
-bool NotificationAdPopup::WasNotificationAdPopupShownBefore() const {
+bool NotificationAdPopup::DidChangePopupPosition() const {
   return profile_->GetPrefs()->HasPrefPath(
-             prefs::kNotificationAdLastNormalizedDisplayCoordinateX) &&
+             prefs::kNotificationAdLastNormalizedCoordinateX) &&
          profile_->GetPrefs()->HasPrefPath(
-             prefs::kNotificationAdLastNormalizedDisplayCoordinateY);
+             prefs::kNotificationAdLastNormalizedCoordinateY);
 }
 
-void NotificationAdPopup::SetInitialWidgetOrigin(
+gfx::Rect NotificationAdPopup::GetInitialWidgetBounds(
     gfx::NativeView browser_native_view) {
+  if (DidChangePopupPosition()) {
+    last_normalized_coordinate_.set_x(profile_->GetPrefs()->GetDouble(
+        prefs::kNotificationAdLastNormalizedCoordinateX));
+    last_normalized_coordinate_.set_y(profile_->GetPrefs()->GetDouble(
+        prefs::kNotificationAdLastNormalizedCoordinateY));
+  }
   const gfx::Size size = CalculateViewSize();
-  widget_origin_ = GetWidgetOriginForSize(size, browser_native_view);
+  return GetWidgetBoundsForSize(size, browser_native_view);
 }
 
-gfx::Point NotificationAdPopup::GetWidgetOriginForSize(
+gfx::Rect NotificationAdPopup::GetWidgetBoundsForSize(
     const gfx::Size& size,
     gfx::NativeView browser_native_view) {
   const gfx::Rect display_work_area =
       GetDefaultDisplayScreenWorkArea(browser_native_view);
 
   double normalized_display_coordinate_x =
-      kCustomNotificationAdNormalizedDisplayCoordinateX.Get();
+      kCustomNotificationAdNormalizedCoordinateX.Get();
   double normalized_display_coordinate_y =
-      kCustomNotificationAdNormalizedDisplayCoordinateY.Get();
+      kCustomNotificationAdNormalizedCoordinateY.Get();
 
-  if (WasNotificationAdPopupShownBefore()) {
-    normalized_display_coordinate_x = profile_->GetPrefs()->GetDouble(
-        prefs::kNotificationAdLastNormalizedDisplayCoordinateX);
-    normalized_display_coordinate_y = profile_->GetPrefs()->GetDouble(
-        prefs::kNotificationAdLastNormalizedDisplayCoordinateY);
+  if (DidChangePopupPosition()) {
+    normalized_display_coordinate_x = last_normalized_coordinate_.x();
+    normalized_display_coordinate_y = last_normalized_coordinate_.y();
   }
 
   // Calculate position
@@ -374,21 +389,11 @@ gfx::Point NotificationAdPopup::GetWidgetOriginForSize(
   gfx::Rect bounds(origin, size);
   bounds.AdjustToFit(display_work_area);
 
-  if (!WasNotificationAdPopupShownBefore()) {
-    // Apply default insets
-    const gfx::Vector2d insets(kCustomNotificationAdInsetX.Get(),
-                               kCustomNotificationAdInsetY.Get());
-    bounds += insets;
-
-    // Adjust to fit display work area
-    bounds.AdjustToFit(display_work_area);
-  }
-
-  return bounds.origin();
+  return bounds;
 }
 
 void NotificationAdPopup::SaveWidgetOrigin(const gfx::Point& origin,
-                                           gfx::NativeView native_view) const {
+                                           gfx::NativeView native_view) {
   const gfx::Rect display_work_area =
       GetDefaultDisplayScreenWorkArea(native_view);
 
@@ -397,18 +402,11 @@ void NotificationAdPopup::SaveWidgetOrigin(const gfx::Point& origin,
   const gfx::Size size = CalculateViewSize();
   const double width =
       static_cast<double>(display_work_area.width() - size.width());
-  const double normalized_display_coordinate_x = offset.x() / width;
+  last_normalized_coordinate_.set_x(offset.x() / width);
 
   const double height =
       static_cast<double>(display_work_area.height() - size.height());
-  const double normalized_display_coordinate_y = offset.y() / height;
-
-  profile_->GetPrefs()->SetDouble(
-      prefs::kNotificationAdLastNormalizedDisplayCoordinateX,
-      normalized_display_coordinate_x);
-  profile_->GetPrefs()->SetDouble(
-      prefs::kNotificationAdLastNormalizedDisplayCoordinateY,
-      normalized_display_coordinate_y);
+  last_normalized_coordinate_.set_y(offset.y() / height);
 }
 
 gfx::Size NotificationAdPopup::CalculateViewSize() const {
@@ -416,13 +414,8 @@ gfx::Size NotificationAdPopup::CalculateViewSize() const {
   gfx::Size size = notification_ad_view_->size();
   CHECK(!size.IsEmpty());
 
-  size += gfx::Size(-GetShadowMargin().width(), -GetShadowMargin().height());
+  size += GetWidgetMargin().size();
   return size;
-}
-
-gfx::Rect NotificationAdPopup::CalculateBounds() {
-  const gfx::Size size = CalculateViewSize();
-  return gfx::Rect(widget_origin_, size);
 }
 
 void NotificationAdPopup::RecomputeAlignment() {
@@ -430,11 +423,14 @@ void NotificationAdPopup::RecomputeAlignment() {
     return;
   }
 
-  const gfx::Point window_origin =
-      GetWidget()->GetWindowBoundsInScreen().origin();
-  const gfx::Size view_size = CalculateViewSize();
-  AdjustBoundsAndSnapToFitWorkAreaForWidget(
-      GetWidget(), gfx::Rect(window_origin, view_size));
+  gfx::NativeView native_view = GetWidget()->GetNativeView();
+  if (GetWidget()->parent() && kUseSameZOrderAsBrowserWindow.Get()) {
+    native_view = GetWidget()->parent()->GetNativeView();
+  }
+
+  const gfx::Size size = CalculateViewSize();
+  const gfx::Rect widget_bounds = GetWidgetBoundsForSize(size, native_view);
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget(), widget_bounds);
 }
 
 const gfx::ShadowDetails& NotificationAdPopup::GetShadowDetails() const {
@@ -446,6 +442,12 @@ gfx::Insets NotificationAdPopup::GetShadowMargin() const {
   return gfx::ShadowValue::GetMargin(shadow_details.values);
 }
 
+gfx::Insets NotificationAdPopup::GetWidgetMargin() const {
+  gfx::Insets widget_margin(kCustomNotificationAdMargin.Get());
+  widget_margin.SetToMax(-GetShadowMargin());
+  return widget_margin;
+}
+
 void NotificationAdPopup::CreateWidgetView(
     gfx::NativeWindow browser_native_window,
     gfx::NativeView browser_native_view) {
@@ -455,8 +457,8 @@ void NotificationAdPopup::CreateWidgetView(
   widget->set_focus_on_creation(false);
   widget_observation_.Observe(widget);
 
-  SetInitialWidgetOrigin(browser_native_view);
-  widget->InitWidget(this, CalculateBounds(), browser_native_window,
+  const gfx::Rect widget_bounds = GetInitialWidgetBounds(browser_native_view);
+  widget->InitWidget(this, widget_bounds, browser_native_window,
                      browser_native_view);
 
   if (!g_disable_fade_in_animation_for_testing) {

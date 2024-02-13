@@ -10,6 +10,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -58,7 +59,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest, IsNotInitialized) {
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        LoadResourceIfNotificationAdsAndBraveNewsAdsAreEnabled) {
   // Act
-  LoadResource("catalog.json");
+  LoadResource(kCatalogFilename);
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -70,7 +71,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
   test::OptOutOfNotificationAds();
 
   // Act
-  LoadResource("catalog.json");
+  LoadResource(kCatalogFilename);
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -82,7 +83,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
   test::OptOutOfBraveNewsAds();
 
   // Act
-  LoadResource("catalog.json");
+  LoadResource(kCatalogFilename);
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -90,7 +91,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest, LoadResourceIfEmptyCatalog) {
   // Act
-  LoadResource("empty_catalog.json");
+  LoadResource(kEmptyCatalogFilename);
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -103,7 +104,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
   test::OptOutOfBraveNewsAds();
 
   // Act
-  LoadResource("catalog.json");
+  LoadResource(kCatalogFilename);
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -113,7 +114,7 @@ TEST_F(
     BraveAdsEpsilonGreedyBanditResourceTest,
     ResetResourceWhenOptedInToNotificationAdsPrefDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  LoadResource("catalog.json");
+  LoadResource(kCatalogFilename);
 
   test::OptOutOfNotificationAds();
   test::OptOutOfBraveNewsAds();
@@ -129,7 +130,7 @@ TEST_F(
     BraveAdsEpsilonGreedyBanditResourceTest,
     DoNotResetResourceWhenOptedInToNotificationAdsPrefDidChangeIfNotificationAdsOrBraveNewsAdsAreEnabled) {
   // Arrange
-  LoadResource("catalog.json");
+  LoadResource(kCatalogFilename);
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);

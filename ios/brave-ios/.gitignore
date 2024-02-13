@@ -1,0 +1,81 @@
+# Xcode
+build/
+.build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+*.xcscmblueprint
+
+# SPM
+Package.resolved
+
+/fastlane/README.md
+/fastlane/report.xml
+/fastlane/test_output
+
+# folders for storing builds and prov profiles
+/builds
+/provisioning-profiles
+/assets
+#build tools
+/fastlane/Appfile
+/fastlane/Snapfile
+/fastlane/SnapshotHelper.swift
+/fastlane/frames
+/fastlane/scripts
+/fastlane/templates
+
+#python environment
+python-env/
+
+# OS X
+.DS_Store
+
+# Vim
+*~
+.*.sw*
+
+# IDEA
+.idea
+
+# Python.
+*.pyc
+
+# SQLite
+*.db-shm
+*.db-wal
+
+# Config
+App/Configuration/LLDBInit
+
+adblock-regions.txt
+yubikit.log
+*.p8
+
+# Fastlane Env
+.env
+.env.*
+
+# Packed Scripts
+Sources/Brave/Assets/__firefox__.js
+Sources/Brave/Assets/AllFramesAtDocumentStart.js
+Sources/Brave/Assets/AllFramesAtDocumentEnd.js
+Sources/Brave/Assets/MainFrameAtDocumentStart.js
+Sources/Brave/Assets/MainFrameAtDocumentEnd.js
+Sources/Brave/Assets/AllFramesAtDocumentStartSandboxed.js
+Sources/Brave/Assets/AllFramesAtDocumentEndSandboxed.js
+Sources/Brave/Assets/MainFrameAtDocumentStartSandboxed.js
+Sources/Brave/Assets/MainFrameAtDocumentEndSandboxed.js
+Sources/Brave/Assets/*LICENSE.txt

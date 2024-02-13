@@ -36,10 +36,10 @@ cargo_crate("lib") {
     "//brave/third_party/rust/tracing/v0_1/crate/tests/filters_are_reevaluated_for_different_call_sites.rs",
     "//brave/third_party/rust/tracing/v0_1/crate/tests/filters_dont_leak.rs",
     "//brave/third_party/rust/tracing/v0_1/crate/tests/future_send.rs",
+    "//brave/third_party/rust/tracing/v0_1/crate/tests/instrument.rs",
     "//brave/third_party/rust/tracing/v0_1/crate/tests/macro_imports.rs",
     "//brave/third_party/rust/tracing/v0_1/crate/tests/macros.rs",
     "//brave/third_party/rust/tracing/v0_1/crate/tests/macros_incompatible_concat.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/macros_redefined_core.rs",
     "//brave/third_party/rust/tracing/v0_1/crate/tests/max_level_hint.rs",
     "//brave/third_party/rust/tracing/v0_1/crate/tests/multiple_max_level_hints.rs",
     "//brave/third_party/rust/tracing/v0_1/crate/tests/no_subscriber.rs",
@@ -56,7 +56,7 @@ cargo_crate("lib") {
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.37"
+  cargo_pkg_version = "0.1.40"
   cargo_pkg_authors =
       "Eliza Weisman <eliza@buoyant.io>, Tokio Contributors <team@tokio.rs>"
   cargo_pkg_name = "tracing"
@@ -69,7 +69,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/pin_project_lite/v0_2:lib",
     "//brave/third_party/rust/tracing_attributes/v0_1:lib",
     "//brave/third_party/rust/tracing_core/v0_1:lib",
-    "//third_party/rust/cfg_if/v1:lib",
   ]
   features = [
     "attributes",

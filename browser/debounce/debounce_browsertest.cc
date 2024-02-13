@@ -5,35 +5,28 @@
 
 #include "base/base64url.h"
 #include "base/memory/raw_ptr.h"
-#include "base/path_service.h"
 #include "base/scoped_observation.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/engine_test_observer.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
-#include "brave/components/constants/brave_paths.h"
-#include "brave/components/debounce/browser/debounce_component_installer.h"
-#include "brave/components/debounce/common/features.h"
-#include "brave/components/debounce/common/pref_names.h"
+#include "brave/components/debounce/core/browser/debounce_component_installer.h"
+#include "brave/components/debounce/core/common/features.h"
+#include "brave/components/debounce/core/common/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "content/public/test/test_utils.h"
 #include "net/base/url_util.h"
-#include "net/dns/mock_host_resolver.h"
-#include "net/test/embedded_test_server/default_handlers.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 namespace {
@@ -98,11 +91,12 @@ class SpyContentBrowserClient : public BraveContentBrowserClient {
       content::BrowserContext* browser_context,
       const base::RepeatingCallback<content::WebContents*()>& wc_getter,
       content::NavigationUIData* navigation_ui_data,
-      int frame_tree_node_id) override {
+      int frame_tree_node_id,
+      std::optional<int64_t> navigation_id) override {
     std::vector<std::unique_ptr<blink::URLLoaderThrottle>> throttles =
         BraveContentBrowserClient::CreateURLLoaderThrottles(
             request, browser_context, wc_getter, navigation_ui_data,
-            frame_tree_node_id);
+            frame_tree_node_id, navigation_id);
     throttles.push_back(std::make_unique<SpyThrottle>());
     return throttles;
   }
@@ -181,27 +175,16 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
   }
 
-  bool InstallAdBlockForDebounce() {
-    base::FilePath test_data_dir;
-    GetTestDataDir(&test_data_dir);
-    const extensions::Extension* ad_block_extension =
-        InstallExtension(test_data_dir.AppendASCII("adblock-data")
-                             .AppendASCII("adblock-default"),
-                         1);
-    if (!ad_block_extension) {
-      return false;
-    }
-    g_brave_browser_process->ad_block_service()
-        ->default_filters_provider()
-        ->OnComponentReady(ad_block_extension->path());
+  void InitAdBlockForDebounce() {
     auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
         "||blocked.com^", "[]");
     g_brave_browser_process->ad_block_service()->UseSourceProvidersForTest(
         source_provider.get(), source_provider.get());
     source_providers_.push_back(std::move(source_provider));
-    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->ad_block_service()->GetTaskRunner()));
-    return tr_helper->Run();
+    auto* engine =
+        g_brave_browser_process->ad_block_service()->default_engine_.get();
+    EngineTestObserver engine_observer(engine);
+    engine_observer.Wait();
   }
 
  private:
@@ -439,7 +422,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DebounceBeforeDomainBlock) {
   // Install adblock, turn on aggressive blocking for this URL, then attempt to
   // navigate to it. This should be interrupted by the domain block
   // interstitial.
-  ASSERT_TRUE(InstallAdBlockForDebounce());
+  InitAdBlockForDebounce();
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
                                   original_url);
   NavigateTo(original_url);

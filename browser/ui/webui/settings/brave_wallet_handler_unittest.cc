@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
+
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -14,8 +17,8 @@
 #include "base/test/bind.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -32,10 +35,12 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using brave_wallet::mojom::CoinType;
+using testing::Contains;
+using testing::Eq;
+using testing::Not;
 
 namespace {
 
@@ -190,6 +195,19 @@ TEST(TestBraveWalletHandler, ResetChain) {
 
 TEST(TestBraveWalletHandler, AddChain) {
   TestBraveWalletHandler handler;
+
+  auto expected_token = brave_wallet::mojom::BlockchainToken::New();
+  expected_token->coin = brave_wallet::mojom::CoinType::ETH;
+  expected_token->chain_id = "0x999";
+  expected_token->name = "symbol_name";
+  expected_token->symbol = "symbol";
+  expected_token->decimals = 11;
+  expected_token->logo = "https://url1.com";
+  expected_token->visible = true;
+
+  EXPECT_THAT(brave_wallet::BraveWalletService::GetUserAssets(handler.prefs()),
+              Not(Contains(Eq(std::ref(expected_token)))));
+
   brave_wallet::mojom::NetworkInfo chain1 =
       brave_wallet::GetTestNetworkInfo1("0x999");
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
@@ -206,20 +224,8 @@ TEST(TestBraveWalletHandler, AddChain) {
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 1u);
   EXPECT_EQ(handler.GetAllEthCustomChains()[0], chain1.Clone());
 
-  const auto& assets_pref = handler.prefs()->GetDict(kBraveWalletUserAssets);
-  const base::Value::List& list =
-      *assets_pref.FindListByDottedPath("ethereum.0x999");
-  ASSERT_EQ(list.size(), 1u);
-
-  EXPECT_EQ(*list[0].GetDict().FindString("address"), "");
-  EXPECT_EQ(*list[0].GetDict().FindString("name"), "symbol_name");
-  EXPECT_EQ(*list[0].GetDict().FindString("symbol"), "symbol");
-  EXPECT_EQ(*list[0].GetDict().FindBool("is_erc20"), false);
-  EXPECT_EQ(*list[0].GetDict().FindBool("is_erc721"), false);
-  EXPECT_EQ(*list[0].GetDict().FindBool("is_erc1155"), false);
-  EXPECT_EQ(*list[0].GetDict().FindInt("decimals"), 11);
-  EXPECT_EQ(*list[0].GetDict().FindString("logo"), "https://url1.com");
-  EXPECT_EQ(*list[0].GetDict().FindBool("visible"), true);
+  EXPECT_THAT(brave_wallet::BraveWalletService::GetUserAssets(handler.prefs()),
+              Contains(Eq(std::ref(expected_token))));
 
   base::Value::List args2;
   args2.Append(base::Value("id"));
@@ -348,7 +354,7 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
     EXPECT_EQ(data.arg3()->GetBool(), true);
 
     EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH,
-                                              absl::nullopt),
+                                              std::nullopt),
               "chain_id2");
   }
   {
@@ -363,7 +369,7 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
     EXPECT_EQ(data.arg3()->GetBool(), false);
 
     EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH,
-                                              absl::nullopt),
+                                              std::nullopt),
               "chain_id2");
   }
 }

@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_TRANSACTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_TRANSACTION_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -24,12 +24,12 @@ class FilTransaction {
   bool operator==(const FilTransaction&) const;
   bool operator!=(const FilTransaction&) const;
 
-  static absl::optional<FilTransaction> FromTxData(
+  static std::optional<FilTransaction> FromTxData(
       bool is_mainnet,
       const mojom::FilTxDataPtr& tx_data);
 
   // https://github.com/filecoin-project/lotus/blob/master/chain/types/message.go
-  absl::optional<uint64_t> nonce() const { return nonce_; }
+  std::optional<uint64_t> nonce() const { return nonce_; }
   std::string gas_premium() const { return gas_premium_; }
   std::string gas_fee_cap() const { return gas_fee_cap_; }
   int64_t gas_limit() const { return gas_limit_; }
@@ -39,7 +39,7 @@ class FilTransaction {
 
   void set_to(const FilAddress& to) { to_ = to; }
   void set_value(const std::string& value) { value_ = value; }
-  void set_nonce(absl::optional<uint64_t> nonce) { nonce_ = nonce; }
+  void set_nonce(std::optional<uint64_t> nonce) { nonce_ = nonce; }
   void set_gas_premium(const std::string& gas_premium) {
     gas_premium_ = gas_premium;
   }
@@ -49,35 +49,34 @@ class FilTransaction {
   void set_gas_limit(int64_t gas_limit) { gas_limit_ = gas_limit; }
   void set_max_fee(const std::string& max_fee) { max_fee_ = max_fee; }
 
-  absl::optional<std::string> GetMessageToSignJson(
-      const FilAddress& from) const;
+  std::optional<std::string> GetMessageToSignJson(const FilAddress& from) const;
   base::Value GetMessageToSign(const FilAddress& from) const;
 
   base::Value::Dict ToValue() const;
   mojom::FilTxDataPtr ToFilTxData() const;
-  absl::optional<std::string> GetSignedTransaction(
+  std::optional<std::string> GetSignedTransaction(
       const FilAddress& from,
       const std::vector<uint8_t>& private_key) const;
-  static absl::optional<FilTransaction> FromValue(
+  static std::optional<FilTransaction> FromValue(
       const base::Value::Dict& value);
 
   // Deserializes JSON which contains value, provided by SignTransaction
   // Wraps uint64_t fields to string
-  static absl::optional<base::Value> DeserializeSignedTx(
+  static std::optional<base::Value> DeserializeSignedTx(
       const std::string& signed_tx);
   // Finds signed tx JSON by path and converts some string fields to uint64 form
-  static absl::optional<std::string> ConvertMesssageStringFieldsToInt64(
+  static std::optional<std::string> ConvertMesssageStringFieldsToInt64(
       const std::string& path,
       const std::string& json);
   // Finds signed tx JSON by path and converts some string fields to uint64 form
-  static absl::optional<std::string> ConvertSignedTxStringFieldsToInt64(
+  static std::optional<std::string> ConvertSignedTxStringFieldsToInt64(
       const std::string& path,
       const std::string& json);
 
  private:
   bool IsEqual(const FilTransaction& tx) const;
 
-  absl::optional<uint64_t> nonce_;
+  std::optional<uint64_t> nonce_;
   std::string gas_premium_;
   std::string gas_fee_cap_;
   int64_t gas_limit_ = 0;
@@ -88,7 +87,7 @@ class FilTransaction {
   std::string signature_;
 
  private:
-  FilTransaction(absl::optional<uint64_t> nonce,
+  FilTransaction(std::optional<uint64_t> nonce,
                  const std::string& gas_premium,
                  const std::string& gas_fee_cap,
                  int64_t gas_limit,

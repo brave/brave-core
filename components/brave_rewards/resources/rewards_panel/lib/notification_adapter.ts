@@ -2,10 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {
-  ExternalWalletProvider,
-  externalWalletProviderFromString
-} from '../../shared/lib/external_wallet'
+import { externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 
 import {
   Notification,
@@ -29,11 +26,6 @@ function parseGrantDetails (args: string[]) {
     claimableUntil: parseFloat(args[2]) || null,
     expiresAt: null
   }
-}
-
-function mapProvider (name: string): ExternalWalletProvider {
-  const provider = externalWalletProviderFromString(name.toLocaleLowerCase())
-  return provider || 'uphold'
 }
 
 enum ExtensionNotificationType {
@@ -103,25 +95,31 @@ export function mapNotification (
       }
     case ExtensionNotificationType.GENERAL:
       switch (obj.args[0]) {
-        case 'wallet_disconnected':
+        case 'wallet_disconnected': {
+          const provider = externalWalletProviderFromString(obj.args[1] || '')
+          if (!provider) {
+            return null
+          }
           return create<ExternalWalletDisconnectedNotification>({
             ...baseProps,
             type: 'external-wallet-disconnected',
-            // The provider is not currently recorded for this notification
-            provider: mapProvider('')
+            provider
           })
-        case 'uphold_bat_not_allowed':
+        }
+        case 'uphold_bat_not_allowed': {
           return create<UpholdBATNotAllowedNotification>({
             ...baseProps,
             type: 'uphold-bat-not-allowed',
             provider: 'uphold'
           })
-        case 'uphold_insufficient_capabilities':
+        }
+        case 'uphold_insufficient_capabilities': {
           return create<UpholdInsufficientCapabilitiesNotification>({
             ...baseProps,
             type: 'uphold-insufficient-capabilities',
             provider: 'uphold'
           })
+        }
       }
       break
   }

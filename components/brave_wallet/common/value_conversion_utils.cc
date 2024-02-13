@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
+
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -12,7 +15,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "net/base/url_util.h"
 
 namespace {
@@ -59,7 +61,7 @@ bool ValueToNetworkInfoCommon(const base::Value& value,
     if (symbol) {
       chain->symbol = *symbol;
     }
-    absl::optional<int> decimals = nativeCurrencyValue->FindInt("decimals");
+    std::optional<int> decimals = nativeCurrencyValue->FindInt("decimals");
     if (decimals) {
       chain->decimals = decimals.value();
     }
@@ -72,15 +74,15 @@ bool ValueToNetworkInfoCommon(const base::Value& value,
 
 namespace brave_wallet {
 
-absl::optional<std::string> ExtractChainIdFromValue(
+std::optional<std::string> ExtractChainIdFromValue(
     const base::Value::Dict* dict) {
   if (!dict) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* chain_id = dict->FindString("chainId");
   if (!chain_id) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return *chain_id;
 }
@@ -256,102 +258,138 @@ base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   return dict;
 }
 
-mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value::Dict& value,
-                                                 const std::string& chain_id,
-                                                 mojom::CoinType coin) {
-  mojom::BlockchainTokenPtr tokenPtr = mojom::BlockchainToken::New();
+mojom::BlockchainTokenPtr ValueToBlockchainToken(
+    const base::Value::Dict& value) {
+  mojom::BlockchainTokenPtr token_ptr = mojom::BlockchainToken::New();
+
+  auto coin_int = value.FindInt("coin");
+  if (!coin_int) {
+    return nullptr;
+  }
+  auto coin = static_cast<mojom::CoinType>(*coin_int);
+  if (!mojom::IsKnownEnumValue(coin)) {
+    return nullptr;
+  }
+  token_ptr->coin = coin;
+
+  auto* chain_id = value.FindString("chain_id");
+  if (!chain_id) {
+    return nullptr;
+  }
+  token_ptr->chain_id = *chain_id;
 
   const std::string* contract_address = value.FindString("address");
   if (!contract_address) {
     return nullptr;
   }
-  tokenPtr->contract_address = *contract_address;
+  token_ptr->contract_address = *contract_address;
 
   const std::string* name = value.FindString("name");
   if (!name) {
     return nullptr;
   }
-  tokenPtr->name = *name;
+  token_ptr->name = *name;
 
   const std::string* symbol = value.FindString("symbol");
   if (!symbol) {
     return nullptr;
   }
-  tokenPtr->symbol = *symbol;
+  token_ptr->symbol = *symbol;
 
   const std::string* logo = value.FindString("logo");
   if (logo) {
-    tokenPtr->logo = *logo;
+    token_ptr->logo = *logo;
   }
 
-  absl::optional<bool> is_erc20 = value.FindBool("is_erc20");
+  std::optional<bool> is_erc20 = value.FindBool("is_erc20");
   if (!is_erc20) {
     return nullptr;
   }
-  tokenPtr->is_erc20 = is_erc20.value();
+  token_ptr->is_erc20 = is_erc20.value();
 
-  absl::optional<bool> is_erc721 = value.FindBool("is_erc721");
+  std::optional<bool> is_erc721 = value.FindBool("is_erc721");
   if (!is_erc721) {
     return nullptr;
   }
-  tokenPtr->is_erc721 = is_erc721.value();
+  token_ptr->is_erc721 = is_erc721.value();
 
-  absl::optional<bool> is_erc1155 = value.FindBool("is_erc1155");
+  std::optional<bool> is_erc1155 = value.FindBool("is_erc1155");
   if (!is_erc1155) {
+    // Might be missing in case of migration (03/2023).
     is_erc1155 = false;
   } else {
-    tokenPtr->is_erc1155 = is_erc1155.value();
+    token_ptr->is_erc1155 = is_erc1155.value();
   }
 
-  absl::optional<bool> is_spam = value.FindBool("is_spam");
+  std::optional<bool> is_spam = value.FindBool("is_spam");
   if (!is_spam) {
-    tokenPtr->is_spam = false;
+    // Might be missing in case of migration (06/2023).
+    token_ptr->is_spam = false;
   } else {
-    tokenPtr->is_spam = is_spam.value();
+    token_ptr->is_spam = is_spam.value();
   }
 
   // There might be existing pref values that does not have is_nft yet, in this
   // case, fallback to is_erc721 value.
-  absl::optional<bool> is_nft = value.FindBool("is_nft");
+  std::optional<bool> is_nft = value.FindBool("is_nft");
   if (is_nft) {
-    tokenPtr->is_nft = is_nft.value();
+    token_ptr->is_nft = is_nft.value();
   } else {
-    tokenPtr->is_nft = tokenPtr->is_erc721;
+    token_ptr->is_nft = token_ptr->is_erc721;
   }
 
-  absl::optional<int> decimals = value.FindInt("decimals");
+  std::optional<int> decimals = value.FindInt("decimals");
   if (!decimals) {
     return nullptr;
   }
-  tokenPtr->decimals = decimals.value();
+  token_ptr->decimals = decimals.value();
 
-  absl::optional<bool> visible = value.FindBool("visible");
+  std::optional<bool> visible = value.FindBool("visible");
   if (!visible) {
     return nullptr;
   }
-  tokenPtr->visible = visible.value();
+  token_ptr->visible = visible.value();
 
   const std::string* token_id = value.FindString("token_id");
   if (token_id) {
-    tokenPtr->token_id = *token_id;
+    token_ptr->token_id = *token_id;
   }
 
   const std::string* coingecko_id = value.FindString("coingecko_id");
   if (coingecko_id) {
-    tokenPtr->coingecko_id = *coingecko_id;
+    token_ptr->coingecko_id = *coingecko_id;
   }
 
-  tokenPtr->coin = coin;
-  tokenPtr->chain_id = chain_id;
+  return token_ptr;
+}
 
-  return tokenPtr;
+base::Value::Dict BlockchainTokenToValue(
+    const mojom::BlockchainTokenPtr& token) {
+  CHECK(token);
+  base::Value::Dict value;
+  value.Set("address", token->contract_address);
+  value.Set("name", token->name);
+  value.Set("symbol", token->symbol);
+  value.Set("logo", token->logo);
+  value.Set("is_erc20", token->is_erc20);
+  value.Set("is_erc721", token->is_erc721);
+  value.Set("is_erc1155", token->is_erc1155);
+  value.Set("is_nft", token->is_nft);
+  value.Set("is_spam", token->is_spam);
+  value.Set("decimals", token->decimals);
+  value.Set("visible", token->visible);
+  value.Set("token_id", token->token_id);
+  value.Set("coingecko_id", token->coingecko_id);
+  value.Set("coin", static_cast<int>(token->coin));
+  value.Set("chain_id", token->chain_id);
+  return value;
 }
 
 // Creates a response object as described in:
 // https://eips.ethereum.org/EIPS/eip-2255
 base::Value::List PermissionRequestResponseToValue(
     const url::Origin& origin,
-    const std::vector<std::string> accounts) {
+    const std::vector<std::string>& accounts) {
   base::Value::List container_list;
   base::Value::Dict dict;
   dict.Set("id", base::Uuid::GenerateRandomV4().AsLowercaseString());
@@ -377,7 +415,7 @@ base::Value::List PermissionRequestResponseToValue(
   caveats_list.Append(std::move(caveats_obj2));
   dict.Set("caveats", std::move(caveats_list));
 
-  dict.Set("date", base::Time::Now().ToJsTime());
+  dict.Set("date", base::Time::Now().InMillisecondsFSinceUnixEpoch());
   dict.Set("invoker", origin.Serialize());
   dict.Set("parentCapability", "eth_accounts");
   container_list.Append(std::move(dict));

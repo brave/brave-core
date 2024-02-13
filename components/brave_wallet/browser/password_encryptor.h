@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PASSWORD_ENCRYPTOR_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -31,12 +31,12 @@ class PasswordEncryptor {
   std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
                                base::span<const uint8_t> nonce);
 
-  absl::optional<std::vector<uint8_t>> Decrypt(
+  std::optional<std::vector<uint8_t>> Decrypt(
       base::span<const uint8_t> ciphertext,
       base::span<const uint8_t> nonce);
 
   // This can only be used by wallet importer
-  absl::optional<std::vector<uint8_t>> DecryptForImporter(
+  std::optional<std::vector<uint8_t>> DecryptForImporter(
       base::span<const uint8_t> ciphertext,
       base::span<const uint8_t> nonce);
 

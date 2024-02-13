@@ -11,12 +11,11 @@ type State = { ui: UIState }
 export const selectedPendingTransactionId = ({ ui }: State) =>
   ui.selectedPendingTransactionId
 export const isPanel = ({ ui }: State) => ui.isPanel
-export const isCreatingWallet = ({ ui }: State) => ui.isCreatingWallet
 
 // unsafe
 export const transactionProviderErrorRegistry = ({ ui }: State) =>
   ui.transactionProviderErrorRegistry
-export const collapsedPortfolioAccountAddresses = ({ ui }: State) =>
-  ui.collapsedPortfolioAccountAddresses
+export const collapsedPortfolioAccountIds = ({ ui }: State) =>
+  ui.collapsedPortfolioAccountIds
 export const collapsedPortfolioNetworkKeys = ({ ui }: State) =>
   ui.collapsedPortfolioNetworkKeys

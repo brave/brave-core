@@ -15,23 +15,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Browser;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.customtabs.TranslucentCustomTabActivity;
+import org.chromium.chrome.browser.omnibox.LocationBar;
+import org.chromium.chrome.browser.omnibox.OmniboxStub;
+import org.chromium.chrome.browser.omnibox.UrlFocusChangeListener;
+import org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator;
+import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.ui.util.ColorUtils;
 
-/**
- * Brave's Activity for AI Chat
- */
-public class BraveLeoActivity extends TranslucentCustomTabActivity {
+/** Brave's Activity for AI Chat */
+public class BraveLeoActivity extends TranslucentCustomTabActivity
+        implements UrlFocusChangeListener {
+    private static final String TAG = "BraveLeoActivity";
     // The Activity could be 50% or 100% of the screen. That number
     // indicates that we want it to be 50% on a first start.
-    static final int INITIAL_ACTIVITY_HEIGHT_PX = 300;
+    private static final int INITIAL_ACTIVITY_HEIGHT_PX = 300;
+
+    private static final int DRAG_BAR_Y_DELTA_TOLERANCE = 300;
+    private int mLastMotionEventAction;
+    private boolean mDragInProgress;
 
     @Override
     public boolean supportsAppMenu() {
@@ -47,10 +59,44 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
     public void performPostInflationStartup() {
         super.performPostInflationStartup();
 
+        mLastMotionEventAction = -1;
+        mDragInProgress = false;
         View toolbarContainer = findViewById(R.id.toolbar_container);
         if (toolbarContainer != null) {
             toolbarContainer.setVisibility(View.GONE);
         }
+
+        var omnibox = getMainActivityOmniboxStub();
+        if (omnibox != null) {
+            omnibox.addUrlFocusChangeListener(this);
+        }
+    }
+
+    @Override
+    protected void onDestroyInternal() {
+        var omnibox = getMainActivityOmniboxStub();
+        if (omnibox != null) {
+            omnibox.removeUrlFocusChangeListener(this);
+        }
+
+        super.onDestroyInternal();
+    }
+
+    private OmniboxStub getMainActivityOmniboxStub() {
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            BraveTabbedRootUiCoordinator rootUiCoordinator =
+                    (BraveTabbedRootUiCoordinator) braveActivity.getRootUiCoordinator();
+            BraveToolbarManager toolbarManager =
+                    (BraveToolbarManager) rootUiCoordinator.getToolbarManager();
+            LocationBar locationBar = toolbarManager.getLocationBar();
+            return locationBar.getOmniboxStub();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "getMainActivityOmniboxStub: " + e);
+        } catch (Exception e) {
+            Log.e(TAG, "getMainActivityOmniboxStub: " + e);
+        }
+        return null;
     }
 
     public static void showPage(Context context, String url) {
@@ -73,5 +119,45 @@ public class BraveLeoActivity extends TranslucentCustomTabActivity {
         IntentUtils.addTrustedIntentExtras(intent);
 
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onUrlFocusChange(boolean hasFocus) {
+        if (hasFocus) {
+            this.finish();
+        }
+    }
+
+    private void maybeRedirectToDragBar(MotionEvent ev) {
+        View dragBar = findViewById(R.id.drag_bar);
+        assert dragBar != null;
+
+        int dragBarLocation[] = new int[2];
+        dragBar.getLocationOnScreen(dragBarLocation);
+        int dragBarYDelta = (int) ev.getRawY() - dragBarLocation[1];
+        if (dragBarYDelta < DRAG_BAR_Y_DELTA_TOLERANCE || mDragInProgress) {
+            dragBar.dispatchTouchEvent(ev);
+            mDragInProgress = true;
+        } else {
+            mDragInProgress = false;
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        boolean skipDrag = false;
+        if (ev.getActionMasked() == MotionEvent.ACTION_DOWN
+                || mLastMotionEventAction == MotionEvent.ACTION_DOWN
+                        && ev.getActionMasked() == MotionEvent.ACTION_UP) {
+            skipDrag = true;
+        }
+        if (!skipDrag && getActivityTab() != null) {
+            maybeRedirectToDragBar(ev);
+        }
+        mLastMotionEventAction = ev.getActionMasked();
+        if (mLastMotionEventAction != MotionEvent.ACTION_MOVE) {
+            mDragInProgress = false;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

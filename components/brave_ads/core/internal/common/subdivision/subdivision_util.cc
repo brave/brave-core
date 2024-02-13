@@ -20,20 +20,20 @@ std::vector<std::string> SplitComponents(const std::string& subdivision) {
 
 }  // namespace
 
-absl::optional<std::string> GetSubdivisionCountryCode(
+std::optional<std::string> GetSubdivisionCountryCode(
     const std::string& subdivision) {
   const std::vector<std::string> components = SplitComponents(subdivision);
   if (components.size() != 2) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return components.front();
 }
 
-absl::optional<std::string> GetSubdivisionCode(const std::string& subdivision) {
+std::optional<std::string> GetSubdivisionCode(const std::string& subdivision) {
   const std::vector<std::string> components = SplitComponents(subdivision);
   if (components.size() != 2) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return components.back();

@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 
 #include <limits>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -109,41 +110,41 @@ bool ParseGetTokenAccountBalance(const base::Value& json_value,
   return true;
 }
 
-absl::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
+std::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
     const base::Value& json_value) {
   auto result = ParseResultDict(json_value);
   if (!result) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto* value = result->FindList("value");
   if (!value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<mojom::SPLTokenAmountPtr> balances;
 
   for (const auto& account_value : *value) {
     if (!account_value.is_dict()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const auto& account_dict = account_value.GetDict();
     auto* mint =
         account_dict.FindStringByDottedPath("account.data.parsed.info.mint");
     if (!mint) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     auto* tokenAmount = account_dict.FindDictByDottedPath(
         "account.data.parsed.info.tokenAmount");
     if (!tokenAmount) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     auto parsed_amount = ParseAmountDict(*tokenAmount);
     if (!parsed_amount) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     // Skip zero-value amounts.
@@ -194,7 +195,7 @@ bool ParseGetLatestBlockhash(const base::Value& json_value,
 
 bool ParseGetSignatureStatuses(
     const base::Value& json_value,
-    std::vector<absl::optional<SolanaSignatureStatus>>* statuses) {
+    std::vector<std::optional<SolanaSignatureStatus>>* statuses) {
   DCHECK(statuses);
   statuses->clear();
 
@@ -211,7 +212,7 @@ bool ParseGetSignatureStatuses(
   for (const auto& item : *value) {
     const auto* status_value = item.GetIfDict();
     if (!status_value) {
-      statuses->push_back(absl::nullopt);
+      statuses->push_back(std::nullopt);
       continue;
     }
 
@@ -219,13 +220,13 @@ bool ParseGetSignatureStatuses(
     if (!GetUint64FromDictValue(*status_value, "slot", false, &status.slot) ||
         !GetUint64FromDictValue(*status_value, "confirmations", true,
                                 &status.confirmations)) {
-      statuses->push_back(absl::nullopt);
+      statuses->push_back(std::nullopt);
       continue;
     }
 
     const base::Value* err_value = status_value->Find("err");
     if (!err_value || (!err_value->is_dict() && !err_value->is_none())) {
-      statuses->push_back(absl::nullopt);
+      statuses->push_back(std::nullopt);
       continue;
     }
     if (err_value->is_none()) {
@@ -239,7 +240,7 @@ bool ParseGetSignatureStatuses(
     if (!confirmation_status_value ||
         (!confirmation_status_value->is_string() &&
          !confirmation_status_value->is_none())) {
-      statuses->push_back(absl::nullopt);
+      statuses->push_back(std::nullopt);
     } else if (confirmation_status_value->is_none()) {
       status.confirmation_status = "";
     } else {  // is_string
@@ -256,7 +257,7 @@ bool ParseGetSignatureStatuses(
 }
 
 bool ParseGetAccountInfo(const base::Value& json_value,
-                         absl::optional<SolanaAccountInfo>* account_info_out) {
+                         std::optional<SolanaAccountInfo>* account_info_out) {
   DCHECK(account_info_out);
 
   auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
@@ -274,7 +275,7 @@ bool ParseGetAccountInfo(const base::Value& json_value,
   }
 
   if (value->is_none()) {
-    *account_info_out = absl::nullopt;
+    *account_info_out = std::nullopt;
     return true;
   }
 
@@ -287,7 +288,7 @@ bool ParseGetAccountInfo(const base::Value& json_value,
 
 bool ParseGetAccountInfoPayload(
     const base::Value::Dict& value_dict,
-    absl::optional<SolanaAccountInfo>* account_info_out) {
+    std::optional<SolanaAccountInfo>* account_info_out) {
   SolanaAccountInfo account_info;
   if (!GetUint64FromDictValue(value_dict, "lamports", false,
                               &account_info.lamports)) {
@@ -383,7 +384,7 @@ bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
       return false;
     }
 
-    absl::optional<SolanaAccountInfo> account_info;
+    std::optional<SolanaAccountInfo> account_info;
     if (!ParseGetAccountInfoPayload(account_value->GetDict(), &account_info)) {
       return false;
     }
@@ -396,28 +397,28 @@ bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
   return true;
 }
 
-absl::optional<bool> ParseIsBlockhashValid(const base::Value& json_value) {
+std::optional<bool> ParseIsBlockhashValid(const base::Value& json_value) {
   auto result = ParseResultDict(json_value);
   if (!result) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto is_valid = result->FindBool("value");
   if (!is_valid) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *is_valid;
 }
 
-base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
+base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo() {
   return base::BindOnce(&ConvertMultiUint64ToString,
                         std::vector<std::string>({"/result/value/lamports",
                                                   "/result/value/rentEpoch"}));
 }
 
-base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
+base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>
 ConverterForGetProrgamAccounts() {
   return base::BindOnce(
       &ConvertMultiUint64ToString,

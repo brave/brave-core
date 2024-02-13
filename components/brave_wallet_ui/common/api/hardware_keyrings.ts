@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { assert } from 'chrome://resources/js/assert_ts.js'
+import { assert } from 'chrome://resources/js/assert.js'
 import EthereumLedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../../common/hardware/ledgerjs/sol_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'

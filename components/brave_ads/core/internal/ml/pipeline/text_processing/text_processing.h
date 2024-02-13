@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_TEXT_PROCESSING_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/files/memory_mapped_file.h"
@@ -28,7 +29,7 @@ class TextProcessing final {
  public:
   TextProcessing();
   TextProcessing(TransformationVector transformations,
-                 absl::optional<LinearModel> linear_model);
+                 std::optional<LinearModel> linear_model);
 
   TextProcessing(const TextProcessing&) = delete;
   TextProcessing& operator=(const TextProcessing&) = delete;
@@ -45,17 +46,16 @@ class TextProcessing final {
   void SetPipeline(PipelineInfo pipeline);
   bool SetPipeline(base::File file);
 
-  absl::optional<PredictionMap> Predict(VectorData* vector_data) const;
+  std::optional<PredictionMap> Predict(VectorData* vector_data) const;
 
-  absl::optional<PredictionMap> Apply(
+  std::optional<PredictionMap> Apply(
       std::unique_ptr<Data> mutable_input_data) const;
 
-  absl::optional<PredictionMap> GetPredictions(const std::string& text) const;
+  std::optional<PredictionMap> GetPredictions(const std::string& text) const;
 
-  absl::optional<PredictionMap> GetTopPredictions(
-      const std::string& text) const;
+  std::optional<PredictionMap> GetTopPredictions(const std::string& text) const;
 
-  absl::optional<PredictionMap> ClassifyPage(const std::string& text) const;
+  std::optional<PredictionMap> ClassifyPage(const std::string& text) const;
 
  private:
   bool is_initialized_ = false;
@@ -64,8 +64,8 @@ class TextProcessing final {
 
   std::unique_ptr<base::MemoryMappedFile> pipeline_mapped_file_;
   TransformationVector transformations_;
-  absl::optional<LinearModel> linear_model_;
-  absl::optional<NeuralModel> neural_model_;
+  std::optional<LinearModel> linear_model_;
+  std::optional<NeuralModel> neural_model_;
 };
 
 }  // namespace brave_ads::ml::pipeline

@@ -57,7 +57,7 @@ const std::string& SubdivisionTargeting::GetSubdivision() const {
 void SubdivisionTargeting::MaybeInitialize() {
   const std::string& auto_detected_subdivision =
       GetLazyAutoDetectedSubdivision();
-  absl::optional<std::string> country_code =
+  std::optional<std::string> country_code =
       GetSubdivisionCountryCode(auto_detected_subdivision);
 
   if (!country_code) {
@@ -99,7 +99,7 @@ void SubdivisionTargeting::MaybeAllowForCountry(
 
   const std::string& subdivision = GetSubdivision();
 
-  absl::optional<std::string> subdivision_country_code;
+  std::optional<std::string> subdivision_country_code;
   if (!subdivision.empty()) {
     subdivision_country_code = GetSubdivisionCountryCode(subdivision);
   }
@@ -224,7 +224,7 @@ void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
 
 void SubdivisionTargeting::OnDidUpdateSubdivision(
     const std::string& subdivision) {
-  absl::optional<std::string> country_code =
+  std::optional<std::string> country_code =
       GetSubdivisionCountryCode(subdivision);
   if (!country_code) {
     return;

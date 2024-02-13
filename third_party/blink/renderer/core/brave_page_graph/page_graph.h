@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/time/time.h"
@@ -16,7 +17,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/abseil-cpp/absl/types/variant.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/renderer/core/core_export.h"
@@ -141,7 +141,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                  const AtomicString& http_method,
                                  blink::EncodedFormData*);
   // Requests tracking:
-  void WillSendRequest(blink::DocumentLoader* loader,
+  void WillSendRequest(blink::ExecutionContext* execution_context,
+                       blink::DocumentLoader* loader,
                        const blink::KURL& fetch_context_url,
                        const blink::ResourceRequest& request,
                        const blink::ResourceResponse& redirect_response,
@@ -198,7 +199,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       const blink::PageGraphBlinkReceiverData& receiver_data,
       blink::PageGraphBlinkArgs args,
       const blink::ExceptionState* exception_state,
-      const absl::optional<String>& result);
+      const std::optional<String>& result);
   // Event listeners tracking:
   void RegisterPageGraphEventListenerAdd(
       blink::EventTarget* event_target,

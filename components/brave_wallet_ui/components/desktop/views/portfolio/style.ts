@@ -14,6 +14,7 @@ import {
   NoTransactionsIconDark,
   NoTransactionsIconLight
 } from '../../../../assets/svg-icons/empty-state-icons'
+import Lines from '../../../../assets/svg-icons/portfolio_lines_background.svg'
 
 // Shared Styles
 import {
@@ -122,7 +123,7 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
   padding: 4px 8px;
   border-radius: 4px;
   background-color: ${(p) =>
-    p.isDown ? leo.color.red[10] : leo.color.green[10]};
+    p.isDown ? leo.color.red[20] : leo.color.green[20]};
   font-family: Poppins;
   font-size: 11px;
   line-height: 16px;
@@ -160,7 +161,7 @@ export const FilterTokenRow = styled.div<{
   margin-bottom: ${(p) => (p.isV2 ? '16px' : 0)};
 `
 
-export const BridgeToAuroraButton = styled(WalletButton)<{
+export const BuySellBridgeButton = styled(WalletButton)<{
   noBottomMargin?: boolean
 }>`
   display: flex;
@@ -218,6 +219,7 @@ export const BalanceAndButtonsWrapper = styled(Column)`
 `
 
 export const BalanceAndChangeWrapper = styled(Column)`
+  position: relative;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     align-items: flex-start;
   }
@@ -229,9 +231,7 @@ export const BalanceAndChangeWrapper = styled(Column)`
   }
 `
 
-export const CircleButton = styled(WalletButton)<{
-  marginRight?: number
-}>`
+export const PortfolioActionButton = styled(WalletButton)`
   --button-border-color: ${leo.color.divider.interactive};
   display: flex;
   align-items: center;
@@ -240,16 +240,22 @@ export const CircleButton = styled(WalletButton)<{
   outline: none;
   background: none;
   background-color: ${leo.color.container.background};
-  border-radius: 100%;
+  border-radius: 8px;
   border: 1px solid var(--button-border-color);
   height: 36px;
   width: 36px;
-  margin-right: ${(p) => (p.marginRight !== undefined ? p.marginRight : 0)}px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    height: 28px;
+    width: 28px;
+  }
 `
 
 export const ButtonIcon = styled(Icon)`
   --leo-icon-size: 18px;
   color: ${leo.color.icon.interactive};
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    --leo-icon-size: 16px;
+  }
 `
 
 export const SearchBarWrapper = styled(Row)<{
@@ -326,4 +332,23 @@ export const ContentWrapper = styled(Column)<{
 }>`
   background-color: ${(p) =>
     p.isPanel ? leo.color.container.background : 'transparent'};
+`
+
+export const BalanceAndLineChartWrapper = styled(Column)`
+  position: relative;
+`
+
+export const BackgroundWatermark = styled.div`
+  box-shadow: ${leo.color.page.background} 0px 50px 50px -30px inset;
+  width: 100%;
+  height: 100%;
+  background-image: url(${Lines});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  opacity: 0.6;
+  @media (prefers-color-scheme: dark) {
+    opacity: 0.2;
+  }
 `

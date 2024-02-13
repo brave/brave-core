@@ -31,7 +31,6 @@ import {
   Spacer,
   SwapAssetAmountSymbol,
   LaunchButton,
-  LaunchIcon,
   SwapAmountRow
 } from './swap.style'
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
@@ -39,7 +38,8 @@ import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 import { withPlaceholderIcon } from '../../shared/create-placeholder-icon/index'
 import {
   IconsWrapper as SwapAssetIconWrapper,
-  NetworkIconWrapper
+  NetworkIconWrapper,
+  LaunchIcon
 } from '../../shared/style'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
@@ -53,8 +53,7 @@ import {
 // Hooks
 import {
   useGetNetworkQuery,
-  useGetEthTokenDecimalsQuery,
-  useGetEthTokenSymbolQuery
+  useGetTokenInfoQuery
 } from '../../../common/slices/api.slice'
 
 type SwapToken = Pick<
@@ -138,62 +137,49 @@ export function SwapBase(props: Props) {
 
   const { data: buyAssetNetwork } = useGetNetworkQuery(buyToken ?? skipToken)
 
-  const { data: sellTokenDecimals } = useGetEthTokenDecimalsQuery(
+  const { data: sellTokenInfo } = useGetTokenInfoQuery(
     sellToken &&
       sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
       !isNativeToken(sellToken)
       ? {
+          contractAddress: sellToken.contractAddress,
           chainId: sellToken.chainId,
-          contractAddress: sellToken.contractAddress
-        }
-      : skipToken
-  )
-  const { data: sellTokenSymbol } = useGetEthTokenSymbolQuery(
-    sellToken &&
-      sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-      !isNativeToken(sellToken)
-      ? {
-          chainId: sellToken.chainId,
-          contractAddress: sellToken.contractAddress
+          coin: sellToken.coin
         }
       : skipToken
   )
 
-  const { data: buyTokenDecimals } = useGetEthTokenDecimalsQuery(
+  const { data: buyTokenInfo } = useGetTokenInfoQuery(
     buyToken &&
       buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
       !isNativeToken(buyToken)
       ? {
+          contractAddress: buyToken.contractAddress,
           chainId: buyToken.chainId,
-          contractAddress: buyToken.contractAddress
-        }
-      : skipToken
-  )
-  const { data: buyTokenSymbol } = useGetEthTokenSymbolQuery(
-    buyToken &&
-      buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-      !isNativeToken(buyToken)
-      ? {
-          chainId: buyToken.chainId,
-          contractAddress: buyToken.contractAddress
+          coin: buyToken.coin
         }
       : skipToken
   )
 
   const buyTokenResult = React.useMemo(
     () =>
-      makeToken(buyToken, buyAssetNetwork, buyTokenSymbol, buyTokenDecimals),
-    [buyToken, buyAssetNetwork, buyTokenSymbol, buyTokenDecimals]
+      makeToken(
+        buyToken,
+        buyAssetNetwork,
+        buyTokenInfo?.symbol,
+        buyTokenInfo?.decimals
+      ),
+    [buyToken, buyAssetNetwork, buyTokenInfo]
   )
   const sellTokenResult = React.useMemo(
     () =>
       makeToken(
         sellToken,
         sellAssetNetwork,
-        sellTokenSymbol,
-        sellTokenDecimals
+        sellTokenInfo?.symbol,
+        sellTokenInfo?.decimals
       ),
-    [sellToken, sellAssetNetwork, sellTokenSymbol, sellTokenDecimals]
+    [sellToken, sellAssetNetwork, sellTokenInfo]
   )
 
   return (

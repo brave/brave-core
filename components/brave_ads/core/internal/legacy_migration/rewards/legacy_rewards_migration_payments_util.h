@@ -6,13 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_PAYMENTS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_PAYMENTS_UTIL_H_
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/payment_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::rewards {
 
-absl::optional<PaymentInfo> GetPaymentForThisMonth(const PaymentList& payments);
-absl::optional<PaymentInfo> GetPaymentForLastMonth(const PaymentList& payments);
+std::optional<PaymentInfo> GetPaymentForThisMonth(const PaymentList& payments);
+std::optional<PaymentInfo> GetPaymentForLastMonth(const PaymentList& payments);
 
 }  // namespace brave_ads::rewards
 

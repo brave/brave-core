@@ -5,6 +5,8 @@
 
 #include "brave/components/ipfs/pin/ipfs_base_pin_service.h"
 
+#include <optional>
+
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 
@@ -127,7 +129,7 @@ void IpfsBasePinService::GetConnectedPeers(size_t attempt) {
   ipfs_service_->GetConnectedPeers(
       base::BindOnce(&IpfsBasePinService::OnGetConnectedPeersResult,
                      weak_ptr_factory_.GetWeakPtr(), attempt),
-      absl::nullopt);
+      std::nullopt);
 }
 
 bool IpfsBasePinService::HasJobs() {

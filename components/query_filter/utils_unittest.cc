@@ -5,8 +5,9 @@
 
 #include "brave/components/query_filter/utils.h"
 
+#include <vector>
+
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 TEST(BraveQueryFilter, FilterQueryTrackers) {
@@ -98,4 +99,49 @@ TEST(BraveQueryFilter, FilterQueryTrackers) {
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
       GURL("https://brave.com"), GURL("https://brave.com"),
       GURL("https://test.com/?gclid=123"), "GET", true));
+}
+
+TEST(BraveQueryFilter, IsScopedTracker) {
+  auto trackers = std::map<std::string_view, std::vector<std::string_view>>({
+      {"igshid", {"instagram.com"}},
+      {"ref_src", {"twitter.com", "x.com", "y.com"}},
+      {"sample1", {"", " ", "brave.com", ""}},
+      {"sample2", {" "}},
+      {"sample3", {""}},
+      {"sample4", {}},
+  });
+
+  // Normal case for a parameter that's not on the list
+  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
+      "t", "https://twitter.com/", trackers));
+
+  // Normal case with a single domain
+  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
+      "igshid", "https://instagram.com/", trackers));
+  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
+      "igshid", "http://www.instagram.com/", trackers));
+  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
+      "igshid", "https://example.com/", trackers));
+
+  // Normal case with more than one domain
+  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
+      "ref_src", "https://twitter.com/", trackers));
+  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
+      "ref_src", "https://x.com/", trackers));
+  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
+      "ref_src", "https://y.com/", trackers));
+  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
+      "ref_src", "https://z.com/", trackers));
+
+  // Edge cases
+  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
+      "sample1", "https://brave.com/", trackers));
+  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
+      "sample1", "https://example.com/", trackers));
+  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
+      "sample2", "https://brave.com/", trackers));
+  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
+      "sample3", "https://brave.com/", trackers));
+  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
+      "sample4", "https://brave.com/", trackers));
 }

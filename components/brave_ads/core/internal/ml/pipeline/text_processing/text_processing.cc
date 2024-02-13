@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 
 #include <algorithm>
-#include <memory>
 #include <utility>
 
 #include "base/files/file.h"
@@ -15,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::ml::pipeline {
 
@@ -45,7 +43,7 @@ TextProcessing& TextProcessing::operator=(TextProcessing&& other) noexcept =
 TextProcessing::~TextProcessing() = default;
 
 TextProcessing::TextProcessing(TransformationVector transformations,
-                               absl::optional<LinearModel> linear_model)
+                               std::optional<LinearModel> linear_model)
     : is_initialized_(true) {
   linear_model_ = std::move(linear_model);
   transformations_ = std::move(transformations);
@@ -69,7 +67,7 @@ void TextProcessing::SetPipeline(PipelineInfo pipeline) {
 }
 
 bool TextProcessing::SetPipeline(base::File file) {
-  absl::optional<PipelineInfo> pipeline;
+  std::optional<PipelineInfo> pipeline;
 
   if (file.IsValid()) {
     pipeline_mapped_file_ = std::make_unique<base::MemoryMappedFile>();
@@ -95,7 +93,7 @@ bool TextProcessing::SetPipeline(base::File file) {
   return is_initialized_;
 }
 
-absl::optional<PredictionMap> TextProcessing::Predict(
+std::optional<PredictionMap> TextProcessing::Predict(
     VectorData* vector_data) const {
   if (linear_model_) {
     return linear_model_->GetTopPredictions(*vector_data);
@@ -103,10 +101,10 @@ absl::optional<PredictionMap> TextProcessing::Predict(
   if (neural_model_) {
     return neural_model_->GetTopPredictions(*vector_data);
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<PredictionMap> TextProcessing::Apply(
+std::optional<PredictionMap> TextProcessing::Apply(
     std::unique_ptr<Data> input_data) const {
   std::unique_ptr<Data> mutable_input_data = std::move(input_data);
   CHECK(mutable_input_data);
@@ -115,34 +113,34 @@ absl::optional<PredictionMap> TextProcessing::Apply(
   for (size_t i = 0; i < transformation_count; ++i) {
     mutable_input_data = transformations_[i]->Apply(mutable_input_data);
     if (!mutable_input_data) {
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
   if (mutable_input_data->GetType() != DataType::kVector) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return Predict(static_cast<VectorData*>(mutable_input_data.get()));
 }
 
-absl::optional<PredictionMap> TextProcessing::GetPredictions(
+std::optional<PredictionMap> TextProcessing::GetPredictions(
     const std::string& text) const {
   std::string stripped_text = StripNonAlphaCharacters(text);
-  absl::optional<PredictionMap> predictions =
+  std::optional<PredictionMap> predictions =
       Apply(std::make_unique<TextData>(std::move(stripped_text)));
   return predictions;
 }
 
-absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
+std::optional<PredictionMap> TextProcessing::GetTopPredictions(
     const std::string& text) const {
-  const absl::optional<PredictionMap> predictions = GetPredictions(text);
+  const std::optional<PredictionMap> predictions = GetPredictions(text);
   if (!predictions) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return FilterPredictions(*predictions);
 }
 
-absl::optional<PredictionMap> TextProcessing::ClassifyPage(
+std::optional<PredictionMap> TextProcessing::ClassifyPage(
     const std::string& text) const {
   if (!IsInitialized()) {
     return PredictionMap{};

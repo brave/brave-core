@@ -10,9 +10,9 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_value_util.h"
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -40,15 +40,14 @@ NotificationAdManager& NotificationAdManager::GetInstance() {
   return GlobalState::GetInstance()->GetNotificationAdManager();
 }
 
-absl::optional<NotificationAdInfo>
-NotificationAdManager::MaybeGetForPlacementId(
+std::optional<NotificationAdInfo> NotificationAdManager::MaybeGetForPlacementId(
     const std::string& placement_id) const {
   CHECK(!placement_id.empty());
 
   const auto iter =
       base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
   if (iter == ads_.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *iter;
@@ -112,7 +111,7 @@ bool NotificationAdManager::Exists(const std::string& placement_id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdManager::Initialize() {
-  const absl::optional<base::Value::List> list =
+  const std::optional<base::Value::List> list =
       GetProfileListPref(prefs::kNotificationAds);
   if (!list) {
     return;

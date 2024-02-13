@@ -22,29 +22,18 @@ import {
   ConfirmTransactionPanel //
 } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
-import { SignPanel } from '../components/extension/sign-panel/index'
-import {
-  AllowAddChangeNetworkPanel //
-} from '../components/extension/allow-add-change-network-panel/index'
-import {
-  ConnectHardwareWalletPanel //
-} from '../components/extension/connect-hardware-wallet-panel/index'
 import {
   AddSuggestedTokenPanel //
 } from '../components/extension/add-suggested-token-panel/index'
 import {
-  DecryptRequestPanel,
-  ProvidePubKeyPanel //
+  DecryptRequestPanel //
 } from '../components/extension/encryption-key-panel/index'
 
-import { CreateAccountTab } from '../components/buy-send-swap/create-account'
 import {
   StyledExtensionWrapperLonger,
   StyledExtensionWrapper,
-  StyledWelcomPanel,
-  StyledCreateAccountPanel
+  StyledWelcomPanel
 } from './style'
-import { mockNetworks } from './mock-data/mock-networks'
 import { LibContext } from '../common/context/lib.context'
 import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 
@@ -55,15 +44,12 @@ import {
   mockedErc20ApprovalTransaction
 } from './mock-data/mock-transaction-info'
 import { mockAccounts } from './mock-data/mock-wallet-accounts'
-import {
-  mockEncryptionKeyRequest,
-  mockDecryptRequest
-} from './mock-data/mock-encryption-key-payload'
+import { mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { createMockStore } from '../utils/test-utils'
 import { deserializeTransaction } from '../utils/model-serialization-utils'
-import { WalletApiDataOverrides } from '../common/async/__mocks__/bridge'
+import { WalletApiDataOverrides } from '../constants/testing_types'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -381,7 +367,6 @@ const transactionList = [
 ]
 
 const mockCustomStoreState: Partial<WalletState> = {
-  defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
   fullTokenList: mockNewAssetOptions,
   activeOrigin: originInfo
 }
@@ -435,7 +420,6 @@ export const _ConfirmErcApproveTransaction = () => {
         store={createMockStore(
           {
             walletStateOverride: {
-              defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
               fullTokenList: mockNewAssetOptions
             },
             uiStateOverride: {
@@ -468,116 +452,10 @@ _ConfirmErcApproveTransaction.story = {
   name: 'Confirm ERC20 Approval Transaction'
 }
 
-export const _AllowAddChangeNetwork = () => {
-  const onApprove = () => {
-    alert('Will Approve adding or chainging networks')
-  }
-
-  const onCancel = () => {
-    alert('Canceled Adding Network')
-  }
-
-  return (
-    <StyledExtensionWrapperLonger>
-      <AllowAddChangeNetworkPanel
-        originInfo={originInfo}
-        panelType='change'
-        onApproveAddNetwork={onApprove}
-        onApproveChangeNetwork={onApprove}
-        onCancel={onCancel}
-        networkPayload={mockNetworks[0]}
-      />
-    </StyledExtensionWrapperLonger>
-  )
-}
-
-_AllowAddChangeNetwork.story = {
-  name: 'Allow Add or Change Network'
-}
-
-export const _SignData = () => {
-  const onCancel = () => {
-    alert('Canceled Signing Data')
-  }
-
-  const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [
-    {
-      id: 0,
-      accountId: mockEthAccountId('0x3f29A1da97149722eB09c526E4eAd698895b426')
-        .fromAccountId,
-      originInfo: mockOriginInfo,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.MAINNET_CHAIN_ID,
-      signData: {
-        ethStandardSignData: undefined,
-        ethSignTypedData: {
-          message: 'Sign below to authenticate with CryptoKitties.',
-          domain: '',
-          domainHash: undefined,
-          primaryHash: undefined,
-          meta: undefined
-        },
-        ethSiweData: undefined,
-        solanaSignData: undefined
-      }
-    }
-  ]
-
-  return (
-    <StyledExtensionWrapperLonger>
-      <SignPanel
-        signMessageData={signMessageDataPayload}
-        onCancel={onCancel}
-        showWarning={true}
-      />
-    </StyledExtensionWrapperLonger>
-  )
-}
-
-_SignData.story = {
-  name: 'Sign Transaction'
-}
-
-export const _ProvideEncryptionKey = () => {
-  const onProvide = () => {
-    alert('Will Provide Encryption Key')
-  }
-
-  const onCancel = () => {
-    alert('Will Cancel Providing Encryption Key')
-  }
-
-  return (
-    <StyledExtensionWrapperLonger>
-      <ProvidePubKeyPanel
-        payload={mockEncryptionKeyRequest}
-        onCancel={onCancel}
-        onProvide={onProvide}
-      />
-    </StyledExtensionWrapperLonger>
-  )
-}
-
-_ProvideEncryptionKey.story = {
-  name: 'Provide Encryption Key'
-}
-
 export const _ReadEncryptedMessage = () => {
-  const onAllow = () => {
-    alert('Will Allow Reading Encrypted Message')
-  }
-
-  const onCancel = () => {
-    alert('Will Not Allow Reading Encrypted Message')
-  }
-
   return (
     <StyledExtensionWrapperLonger>
-      <DecryptRequestPanel
-        payload={mockDecryptRequest}
-        onCancel={onCancel}
-        onAllow={onAllow}
-      />
+      <DecryptRequestPanel payload={mockDecryptRequest} />
     </StyledExtensionWrapperLonger>
   )
 }
@@ -604,49 +482,15 @@ _ConnectWithSite.story = {
 }
 
 export const _SetupWallet = () => {
-  const onSetup = () => {
-    alert('Will navigate to full wallet onboarding page')
-  }
-
   return (
     <StyledWelcomPanel>
-      <WelcomePanel onSetup={onSetup} />
+      <WelcomePanel />
     </StyledWelcomPanel>
   )
 }
 
 _SetupWallet.story = {
   name: 'Setup New Wallet'
-}
-
-export const _ConnectHardwareWallet = () => {
-  const onCancel = (account: BraveWallet.AccountInfo) => {
-    // Doesn't do anything in storybook
-  }
-
-  const onClickInstructions = () => {
-    // Open support link in new tab
-    window.open(
-      'https://support.brave.com/hc/en-us/articles/4409309138701',
-      '_blank',
-      'noreferrer'
-    )
-  }
-
-  return (
-    <StyledExtensionWrapper>
-      <ConnectHardwareWalletPanel
-        account={{ ...mockAccounts[0], name: 'Ledger 1' }}
-        onCancel={onCancel}
-        onClickInstructions={onClickInstructions}
-        hardwareWalletCode={undefined}
-      />
-    </StyledExtensionWrapper>
-  )
-}
-
-_ConnectHardwareWallet.story = {
-  name: 'Connect Hardware Wallet'
 }
 
 export const _AddSuggestedToken = () => {
@@ -661,23 +505,4 @@ export const _AddSuggestedToken = () => {
 
 _AddSuggestedToken.story = {
   name: 'Add Suggested Token'
-}
-
-export const _CreateAccount = () => {
-  return (
-    <Provider
-      store={createMockStore({ walletStateOverride: mockCustomStoreState })}
-    >
-      <StyledCreateAccountPanel>
-        <CreateAccountTab
-          network={mockNetworks[0]}
-          onCancel={() => {}}
-        />
-      </StyledCreateAccountPanel>
-    </Provider>
-  )
-}
-
-_CreateAccount.story = {
-  name: 'Create Account Tab'
 }

@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_
 
+#include <optional>
 #include <vector>
 
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
@@ -18,19 +19,20 @@ class TabDragController : public TabDragControllerChromium {
 
   // Making this virtual method is really painful as "Init" is too common name.
   // So, just hide Chromium's Init and make clients use this version
-  void Init(TabDragContext* source_context,
-            TabSlotView* source_view,
-            const std::vector<TabSlotView*>& dragging_views,
-            const gfx::Point& mouse_offset,
-            int source_view_offset,
-            ui::ListSelectionModel initial_selection_model,
-            ui::mojom::DragEventSource event_source);
+  Liveness Init(TabDragContext* source_context,
+                TabSlotView* source_view,
+                const std::vector<raw_ptr<TabSlotView, VectorExperimental>>&
+                    dragging_views,
+                const gfx::Point& mouse_offset,
+                int source_view_offset,
+                ui::ListSelectionModel initial_selection_model,
+                ui::mojom::DragEventSource event_source);
 
   // TabDragControllerChromium:
   gfx::Point GetAttachedDragPoint(const gfx::Point& point_in_screen) override;
   void MoveAttached(const gfx::Point& point_in_screen,
                     bool just_attached) override;
-  absl::optional<tab_groups::TabGroupId> GetTabGroupForTargetIndex(
+  std::optional<tab_groups::TabGroupId> GetTabGroupForTargetIndex(
       const std::vector<int>& selected) override;
   views::Widget* GetAttachedBrowserWidget() override;
 

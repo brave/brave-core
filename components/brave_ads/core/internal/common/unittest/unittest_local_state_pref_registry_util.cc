@@ -65,12 +65,12 @@ void RegisterLocalStateUint64Pref(const std::string& path,
 }
 
 void RegisterLocalStateTimePref(const std::string& path,
-                                base::Time default_value) {
+                                const base::Time default_value) {
   RegisterLocalStatePref(path, base::TimeToValue(default_value));
 }
 
 void RegisterLocalStateTimeDeltaPref(const std::string& path,
-                                     base::TimeDelta default_value) {
+                                     const base::TimeDelta default_value) {
   RegisterLocalStatePref(path, base::TimeDeltaToValue(default_value));
 }
 

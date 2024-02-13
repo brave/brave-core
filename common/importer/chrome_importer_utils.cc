@@ -6,6 +6,7 @@
 #include "brave/common/importer/chrome_importer_utils.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/files/file_path.h"
@@ -32,15 +33,15 @@ using extensions::Manifest;
 namespace {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 
-absl::optional<base::Value::Dict> GetChromeExtensionsListFromFile(
+std::optional<base::Value::Dict> GetChromeExtensionsListFromFile(
     const base::FilePath& preference_path) {
   if (!base::PathExists(preference_path))
-    return absl::nullopt;
+    return std::nullopt;
 
   std::string preference_content;
   base::ReadFileToString(preference_path, &preference_content);
 
-  absl::optional<base::Value> preference =
+  std::optional<base::Value> preference =
       base::JSONReader::Read(preference_content);
   DCHECK(preference);
   DCHECK(preference->is_dict());
@@ -48,7 +49,7 @@ absl::optional<base::Value::Dict> GetChromeExtensionsListFromFile(
           kChromeExtensionsListPath)) {
     return std::move(*extensions);
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 bool HasImportableExtensions(const base::FilePath& profile_path) {
@@ -84,7 +85,7 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
   return extensions;
 }
 
-absl::optional<base::Value::Dict> GetChromeExtensionsList(
+std::optional<base::Value::Dict> GetChromeExtensionsList(
     const base::FilePath& profile_path) {
   auto list_from_secure_preference = GetChromeExtensionsListFromFile(
       profile_path.AppendASCII(kChromeSecurePreferencesFile));
@@ -142,7 +143,7 @@ base::Value::List GetChromeSourceProfiles(
   if (base::PathExists(local_state_path)) {
     std::string local_state_content;
     base::ReadFileToString(local_state_path, &local_state_content);
-    absl::optional<base::Value> local_state =
+    std::optional<base::Value> local_state =
         base::JSONReader::Read(local_state_content);
     if (!local_state)
       return profiles;
@@ -225,11 +226,11 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-absl::optional<std::vector<std::string>> GetImportableChromeExtensionsList(
+std::optional<std::vector<std::string>> GetImportableChromeExtensionsList(
     const base::FilePath& profile_path) {
   if (auto extensions = GetChromeExtensionsList(profile_path)) {
     return GetImportableListFromChromeExtensionsList(extensions.value());
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 #endif

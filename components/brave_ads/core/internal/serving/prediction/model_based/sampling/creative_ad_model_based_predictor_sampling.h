@@ -7,22 +7,28 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_SAMPLING_CREATIVE_AD_MODEL_BASED_PREDICTOR_SAMPLING_H_
 
 #include <limits>
-#include <ostream>
+#include <optional>
+#include <ostream>  // IWYU pragma: keep
 
 #include "base/notreached.h"
 #include "base/numerics/ranges.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_info.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/sampling/creative_ad_model_based_predictor_sampling_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
+// Uses a sampling algorithm to select a creative ad based on its score. The
+// algorithm normalizes the scores of all ads, generates a random number, and
+// then iterates through the ads, summing their normalized scores until the sum
+// exceeds the random number. The ad where the sum exceeds the random number is
+// the one selected.
+
 template <typename T>
-absl::optional<T> MaybeSampleCreativeAd(
+std::optional<T> MaybeSampleCreativeAd(
     const CreativeAdModelBasedPredictorList<T>& creative_ad_predictors) {
   if (creative_ad_predictors.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const double normalizing_constant =
@@ -32,7 +38,7 @@ absl::optional<T> MaybeSampleCreativeAd(
   if (normalizing_constant <= 0.0 ||
       base::IsApproximatelyEqual(normalizing_constant, 0.0,
                                  std::numeric_limits<double>::epsilon())) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const double rand = base::RandDouble();
@@ -45,7 +51,7 @@ absl::optional<T> MaybeSampleCreativeAd(
 
     sum += probability;
 
-    if (rand <= sum || base::IsApproximatelyEqual(
+    if (sum >= rand || base::IsApproximatelyEqual(
                            rand, sum, std::numeric_limits<double>::epsilon())) {
       return creative_ad_predictor.creative_ad;
     }

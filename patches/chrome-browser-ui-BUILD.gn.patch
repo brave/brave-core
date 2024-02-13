@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index d5bc836ec888d3bb1f8e5e6f9f03511337ff9cf2..0e88fb860df4e80673fb07c6dbdf72b0e3f55a2c 100644
+index b0146268b3384ed643c813c2e50f8c3e774b6496..d15bf970129ef51018fe61410c8fc4672d3a513d 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -691,6 +691,7 @@ static_library("ui") {
-     "//chrome/browser/profiling_host",
-     "//chrome/browser/ui/webui:configs",
+@@ -726,6 +726,7 @@ static_library("ui") {
+ 
+     "//chrome/browser/permissions",
    ]
-+  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ]
++  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ] if (is_mac) { deps += [ "//brave/browser/mac:keystone_glue" ] }
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -4418,10 +4419,13 @@ static_library("ui") {
+@@ -4623,10 +4624,13 @@ static_library("ui") {
        ]
-       deps += [ "//chrome/updater/app/server/win:updater_legacy_idl_idl" ]
+       deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
 -      sources += [
 -        "webui/help/version_updater_basic.cc",

@@ -3,12 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/credentials/credentials_util.h"
+
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
@@ -76,11 +79,11 @@ std::string GetBlindedCredsJSON(
   return json;
 }
 
-absl::optional<base::Value::List> ParseStringToBaseList(
+std::optional<base::Value::List> ParseStringToBaseList(
     const std::string& string_list) {
-  absl::optional<base::Value> value = base::JSONReader::Read(string_list);
+  std::optional<base::Value> value = base::JSONReader::Read(string_list);
   if (!value || !value->is_list()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return value->GetList().Clone();
@@ -90,7 +93,8 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
     const mojom::CredsBatch& creds_batch) {
   std::vector<std::string> unblinded_encoded_creds;
 
-  auto batch_proof = BatchDLEQProof::decode_base64(creds_batch.batch_proof);
+  auto batch_proof = BatchDLEQProof::decode_base64(
+      base::as_bytes(base::make_span(creds_batch.batch_proof)));
   if (!batch_proof.has_value()) {
     return base::unexpected(std::move(batch_proof).error());
   }
@@ -99,7 +103,9 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
   DCHECK(creds_base64.has_value());
   std::vector<Token> creds;
   for (auto& item : creds_base64.value()) {
-    if (auto cred = Token::decode_base64(item.GetString()); cred.has_value()) {
+    if (auto cred = Token::decode_base64(
+            base::as_bytes(base::make_span(item.GetString())));
+        cred.has_value()) {
       creds.push_back(std::move(cred).value());
     } else {
       return base::unexpected(std::move(cred).error());
@@ -110,7 +116,8 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
   DCHECK(blinded_creds_base64.has_value());
   std::vector<BlindedToken> blinded_creds;
   for (auto& item : blinded_creds_base64.value()) {
-    if (auto blinded_cred = BlindedToken::decode_base64(item.GetString());
+    if (auto blinded_cred = BlindedToken::decode_base64(
+            base::as_bytes(base::make_span(item.GetString())));
         blinded_cred.has_value()) {
       blinded_creds.push_back(std::move(blinded_cred).value());
     } else {
@@ -122,7 +129,8 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
   DCHECK(signed_creds_base64.has_value());
   std::vector<SignedToken> signed_creds;
   for (auto& item : signed_creds_base64.value()) {
-    if (auto signed_cred = SignedToken::decode_base64(item.GetString());
+    if (auto signed_cred = SignedToken::decode_base64(
+            base::as_bytes(base::make_span(item.GetString())));
         signed_cred.has_value()) {
       signed_creds.push_back(std::move(signed_cred).value());
     } else {
@@ -130,7 +138,8 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
     }
   }
 
-  auto public_key = PublicKey::decode_base64(creds_batch.public_key);
+  auto public_key = PublicKey::decode_base64(
+      base::as_bytes(base::make_span(creds_batch.public_key)));
   if (!public_key.has_value()) {
     return base::unexpected(std::move(public_key).error());
   }
@@ -192,12 +201,13 @@ std::string ConvertRewardTypeToString(const mojom::RewardsType type) {
 }
 
 base::Value::List GenerateCredentials(
+    RewardsEngineImpl& engine,
     const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body) {
   base::Value::List credentials;
   for (auto& item : token_list) {
-    absl::optional<base::Value::Dict> token;
-    if (is_testing) {
+    std::optional<base::Value::Dict> token;
+    if (engine.options().is_testing) {
       token = GenerateSuggestionMock(item.token_value, item.public_key, body);
     } else {
       token = GenerateSuggestion(item.token_value, item.public_key, body);
@@ -212,30 +222,31 @@ base::Value::List GenerateCredentials(
   return credentials;
 }
 
-absl::optional<base::Value::Dict> GenerateSuggestion(
+std::optional<base::Value::Dict> GenerateSuggestion(
     const std::string& token_value,
     const std::string& public_key,
     const std::string& body) {
   if (token_value.empty() || public_key.empty() || body.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  auto unblinded = UnblindedToken::decode_base64(token_value);
+  auto unblinded = UnblindedToken::decode_base64(
+      base::as_bytes(base::make_span(token_value)));
   if (!unblinded.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   VerificationKey verification_key = unblinded->derive_verification_key();
-  auto signature = verification_key.sign(body);
+  auto signature = verification_key.sign(base::as_bytes(base::make_span(body)));
   if (!signature.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto pre_image = unblinded->preimage().encode_base64();
   auto enconded_signature = signature->encode_base64();
 
   if (!pre_image.has_value() || !enconded_signature.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::Value::Dict dict;

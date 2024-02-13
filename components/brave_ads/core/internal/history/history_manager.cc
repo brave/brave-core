@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -17,11 +17,10 @@
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_factory.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
-#include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 
 namespace brave_ads {
 
@@ -58,23 +57,21 @@ HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
 
   const auto date_range_filter =
       std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
-  history_items = date_range_filter->Apply(history_items);
+  date_range_filter->Apply(history_items);
 
-  const auto filter = HistoryFilterFactory::Build(filter_type);
-  if (filter) {
-    history_items = filter->Apply(history_items);
+  if (const auto filter = HistoryFilterFactory::Build(filter_type)) {
+    filter->Apply(history_items);
   }
 
-  const auto sort = HistorySortFactory::Build(sort_type);
-  if (sort) {
-    history_items = sort->Apply(history_items);
+  if (const auto sort = HistorySortFactory::Build(sort_type)) {
+    sort->Apply(history_items);
   }
 
   return history_items;
 }
 
 void HistoryManager::Add(const InlineContentAdInfo& ad,
-                         ConfirmationType confirmation_type) const {
+                         const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
     return;
   }
@@ -85,7 +82,7 @@ void HistoryManager::Add(const InlineContentAdInfo& ad,
 }
 
 void HistoryManager::Add(const NewTabPageAdInfo& ad,
-                         ConfirmationType confirmation_type) const {
+                         const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
     return;
   }
@@ -96,7 +93,7 @@ void HistoryManager::Add(const NewTabPageAdInfo& ad,
 }
 
 void HistoryManager::Add(const NotificationAdInfo& ad,
-                         ConfirmationType confirmation_type) const {
+                         const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
     return;
   }
@@ -107,7 +104,7 @@ void HistoryManager::Add(const NotificationAdInfo& ad,
 }
 
 void HistoryManager::Add(const PromotedContentAdInfo& ad,
-                         ConfirmationType confirmation_type) const {
+                         const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
     return;
   }
@@ -118,7 +115,7 @@ void HistoryManager::Add(const PromotedContentAdInfo& ad,
 }
 
 void HistoryManager::Add(const SearchResultAdInfo& ad,
-                         ConfirmationType confirmation_type) const {
+                         const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
     return;
   }

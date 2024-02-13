@@ -10,13 +10,10 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace credential {
@@ -29,15 +26,11 @@ CredentialsPromotion::~CredentialsPromotion() = default;
 void CredentialsPromotion::Start(const CredentialsTrigger& trigger,
                                  ResultCallback callback) {
   auto get_callback =
-      base::BindOnce(&CredentialsPromotion::OnStart, base::Unretained(this),
+      base::BindOnce(&CredentialsPromotion::OnStart, weak_factory_.GetWeakPtr(),
                      std::move(callback), trigger);
 
-  engine_->database()->GetCredsBatchByTrigger(
-      trigger.id, trigger.type,
-      [callback = std::make_shared<decltype(get_callback)>(
-           std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
-        std::move(*callback).Run(std::move(creds_batch));
-      });
+  engine_->database()->GetCredsBatchByTrigger(trigger.id, trigger.type,
+                                              std::move(get_callback));
 }
 
 void CredentialsPromotion::OnStart(ResultCallback callback,
@@ -54,42 +47,29 @@ void CredentialsPromotion::OnStart(ResultCallback callback,
       break;
     }
     case mojom::CredsBatchStatus::BLINDED: {
-      auto get_callback =
-          base::BindOnce(&CredentialsPromotion::Claim, base::Unretained(this),
-                         std::move(callback), trigger);
+      auto get_callback = base::BindOnce(&CredentialsPromotion::Claim,
+                                         weak_factory_.GetWeakPtr(),
+                                         std::move(callback), trigger);
 
-      engine_->database()->GetCredsBatchByTrigger(
-          trigger.id, trigger.type,
-          [callback = std::make_shared<decltype(get_callback)>(
-               std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
-            std::move(*callback).Run(std::move(creds_batch));
-          });
+      engine_->database()->GetCredsBatchByTrigger(trigger.id, trigger.type,
+                                                  std::move(get_callback));
       break;
     }
     case mojom::CredsBatchStatus::CLAIMED: {
-      auto get_callback =
-          base::BindOnce(&CredentialsPromotion::FetchSignedCreds,
-                         base::Unretained(this), std::move(callback), trigger);
+      auto get_callback = base::BindOnce(
+          &CredentialsPromotion::FetchSignedCreds, weak_factory_.GetWeakPtr(),
+          std::move(callback), trigger);
 
-      engine_->database()->GetPromotion(
-          trigger.id,
-          [callback = std::make_shared<decltype(get_callback)>(
-               std::move(get_callback))](mojom::PromotionPtr promotion) {
-            std::move(*callback).Run(std::move(promotion));
-          });
+      engine_->database()->GetPromotion(trigger.id, std::move(get_callback));
       break;
     }
     case mojom::CredsBatchStatus::SIGNED: {
-      auto get_callback =
-          base::BindOnce(&CredentialsPromotion::Unblind, base::Unretained(this),
-                         std::move(callback), trigger);
+      auto get_callback = base::BindOnce(&CredentialsPromotion::Unblind,
+                                         weak_factory_.GetWeakPtr(),
+                                         std::move(callback), trigger);
 
-      engine_->database()->GetCredsBatchByTrigger(
-          trigger.id, trigger.type,
-          [callback = std::make_shared<decltype(get_callback)>(
-               std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
-            std::move(*callback).Run(std::move(creds_batch));
-          });
+      engine_->database()->GetCredsBatchByTrigger(trigger.id, trigger.type,
+                                                  std::move(get_callback));
       break;
     }
     case mojom::CredsBatchStatus::FINISHED: {
@@ -106,7 +86,7 @@ void CredentialsPromotion::OnStart(ResultCallback callback,
 void CredentialsPromotion::Blind(ResultCallback callback,
                                  const CredentialsTrigger& trigger) {
   auto blinded_callback =
-      base::BindOnce(&CredentialsPromotion::OnBlind, base::Unretained(this),
+      base::BindOnce(&CredentialsPromotion::OnBlind, weak_factory_.GetWeakPtr(),
                      std::move(callback), trigger);
   common_.GetBlindedCreds(trigger, std::move(blinded_callback));
 }
@@ -115,28 +95,24 @@ void CredentialsPromotion::OnBlind(ResultCallback callback,
                                    const CredentialsTrigger& trigger,
                                    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Blinding failed");
+    engine_->LogError(FROM_HERE) << "Blinding failed";
     std::move(callback).Run(result);
     return;
   }
 
   auto get_callback =
-      base::BindOnce(&CredentialsPromotion::Claim, base::Unretained(this),
+      base::BindOnce(&CredentialsPromotion::Claim, weak_factory_.GetWeakPtr(),
                      std::move(callback), trigger);
 
-  engine_->database()->GetCredsBatchByTrigger(
-      trigger.id, trigger.type,
-      [callback = std::make_shared<decltype(get_callback)>(
-           std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
-        std::move(*callback).Run(std::move(creds_batch));
-      });
+  engine_->database()->GetCredsBatchByTrigger(trigger.id, trigger.type,
+                                              std::move(get_callback));
 }
 
 void CredentialsPromotion::Claim(ResultCallback callback,
                                  const CredentialsTrigger& trigger,
                                  mojom::CredsBatchPtr creds) {
   if (!creds) {
-    BLOG(0, "Creds not found");
+    engine_->LogError(FROM_HERE) << "Creds not found";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -144,22 +120,20 @@ void CredentialsPromotion::Claim(ResultCallback callback,
   auto blinded_creds = ParseStringToBaseList(creds->blinded_creds);
 
   if (!blinded_creds || blinded_creds->empty()) {
-    BLOG(0, "Blinded creds are corrupted, we will try to blind again");
+    engine_->LogError(FROM_HERE)
+        << "Blinded creds are corrupted, we will try to blind again";
     auto save_callback =
         base::BindOnce(&CredentialsPromotion::RetryPreviousStepSaved,
-                       base::Unretained(this), std::move(callback));
+                       weak_factory_.GetWeakPtr(), std::move(callback));
 
-    engine_->database()->UpdateCredsBatchStatus(
-        trigger.id, trigger.type, mojom::CredsBatchStatus::NONE,
-        [callback = std::make_shared<decltype(save_callback)>(
-             std::move(save_callback))](mojom::Result result) {
-          std::move(*callback).Run(result);
-        });
+    engine_->database()->UpdateCredsBatchStatus(trigger.id, trigger.type,
+                                                mojom::CredsBatchStatus::NONE,
+                                                std::move(save_callback));
     return;
   }
 
   auto url_callback =
-      base::BindOnce(&CredentialsPromotion::OnClaim, base::Unretained(this),
+      base::BindOnce(&CredentialsPromotion::OnClaim, weak_factory_.GetWeakPtr(),
                      std::move(callback), trigger);
 
   DCHECK(blinded_creds.has_value());
@@ -178,60 +152,50 @@ void CredentialsPromotion::OnClaim(ResultCallback callback,
 
   auto save_callback =
       base::BindOnce(&CredentialsPromotion::ClaimedSaved,
-                     base::Unretained(this), std::move(callback), trigger);
+                     weak_factory_.GetWeakPtr(), std::move(callback), trigger);
 
-  engine_->database()->SavePromotionClaimId(
-      trigger.id, claim_id,
-      [callback =
-           std::make_shared<decltype(save_callback)>(std::move(save_callback))](
-          mojom::Result result) { std::move(*callback).Run(result); });
+  engine_->database()->SavePromotionClaimId(trigger.id, claim_id,
+                                            std::move(save_callback));
 }
 
 void CredentialsPromotion::ClaimedSaved(ResultCallback callback,
                                         const CredentialsTrigger& trigger,
                                         mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Claim id was not saved");
+    engine_->LogError(FROM_HERE) << "Claim id was not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   auto save_callback =
       base::BindOnce(&CredentialsPromotion::ClaimStatusSaved,
-                     base::Unretained(this), std::move(callback), trigger);
+                     weak_factory_.GetWeakPtr(), std::move(callback), trigger);
 
-  engine_->database()->UpdateCredsBatchStatus(
-      trigger.id, trigger.type, mojom::CredsBatchStatus::CLAIMED,
-      [callback =
-           std::make_shared<decltype(save_callback)>(std::move(save_callback))](
-          mojom::Result result) { std::move(*callback).Run(result); });
+  engine_->database()->UpdateCredsBatchStatus(trigger.id, trigger.type,
+                                              mojom::CredsBatchStatus::CLAIMED,
+                                              std::move(save_callback));
 }
 
 void CredentialsPromotion::ClaimStatusSaved(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Claim status not saved");
+    engine_->LogError(FROM_HERE) << "Claim status not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   auto get_callback =
       base::BindOnce(&CredentialsPromotion::FetchSignedCreds,
-                     base::Unretained(this), std::move(callback), trigger);
+                     weak_factory_.GetWeakPtr(), std::move(callback), trigger);
 
-  engine_->database()->GetPromotion(
-      trigger.id,
-      [callback = std::make_shared<decltype(get_callback)>(
-           std::move(get_callback))](mojom::PromotionPtr promotion) {
-        std::move(*callback).Run(std::move(promotion));
-      });
+  engine_->database()->GetPromotion(trigger.id, std::move(get_callback));
 }
 
 void CredentialsPromotion::RetryPreviousStepSaved(ResultCallback callback,
                                                   mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Previous step not saved");
+    engine_->LogError(FROM_HERE) << "Previous step not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -243,30 +207,28 @@ void CredentialsPromotion::FetchSignedCreds(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::PromotionPtr promotion) {
   if (!promotion) {
-    BLOG(0, "Corrupted data");
+    engine_->LogError(FROM_HERE) << "Corrupted data";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   if (promotion->claim_id.empty()) {
-    BLOG(0, "Claim id is empty, we will try claim step again");
+    engine_->LogError(FROM_HERE)
+        << "Claim id is empty, we will try claim step again";
 
     auto save_callback =
         base::BindOnce(&CredentialsPromotion::RetryPreviousStepSaved,
-                       base::Unretained(this), std::move(callback));
+                       weak_factory_.GetWeakPtr(), std::move(callback));
 
     engine_->database()->UpdateCredsBatchStatus(
         trigger.id, trigger.type, mojom::CredsBatchStatus::BLINDED,
-        [callback = std::make_shared<decltype(save_callback)>(
-             std::move(save_callback))](mojom::Result result) {
-          std::move(*callback).Run(result);
-        });
+        std::move(save_callback));
     return;
   }
 
   auto url_callback =
       base::BindOnce(&CredentialsPromotion::OnFetchSignedCreds,
-                     base::Unretained(this), std::move(callback), trigger);
+                     weak_factory_.GetWeakPtr(), std::move(callback), trigger);
 
   promotion_server_.get_signed_creds().Request(trigger.id, promotion->claim_id,
                                                std::move(url_callback));
@@ -285,7 +247,7 @@ void CredentialsPromotion::OnFetchSignedCreds(ResultCallback callback,
   }
 
   if (result != mojom::Result::OK || !batch) {
-    BLOG(0, "Problem parsing response");
+    engine_->LogError(FROM_HERE) << "Problem parsing response";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -295,55 +257,43 @@ void CredentialsPromotion::OnFetchSignedCreds(ResultCallback callback,
 
   auto save_callback =
       base::BindOnce(&CredentialsPromotion::SignedCredsSaved,
-                     base::Unretained(this), std::move(callback), trigger);
+                     weak_factory_.GetWeakPtr(), std::move(callback), trigger);
 
-  engine_->database()->SaveSignedCreds(
-      std::move(batch), [callback = std::make_shared<decltype(save_callback)>(
-                             std::move(save_callback))](mojom::Result result) {
-        std::move(*callback).Run(result);
-      });
+  engine_->database()->SaveSignedCreds(std::move(batch),
+                                       std::move(save_callback));
 }
 
 void CredentialsPromotion::SignedCredsSaved(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Signed creds were not saved");
+    engine_->LogError(FROM_HERE) << "Signed creds were not saved";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   auto get_callback =
-      base::BindOnce(&CredentialsPromotion::Unblind, base::Unretained(this),
+      base::BindOnce(&CredentialsPromotion::Unblind, weak_factory_.GetWeakPtr(),
                      std::move(callback), trigger);
 
-  engine_->database()->GetCredsBatchByTrigger(
-      trigger.id, trigger.type,
-      [callback = std::make_shared<decltype(get_callback)>(
-           std::move(get_callback))](mojom::CredsBatchPtr creds_batch) {
-        std::move(*callback).Run(std::move(creds_batch));
-      });
+  engine_->database()->GetCredsBatchByTrigger(trigger.id, trigger.type,
+                                              std::move(get_callback));
 }
 
 void CredentialsPromotion::Unblind(ResultCallback callback,
                                    const CredentialsTrigger& trigger,
                                    mojom::CredsBatchPtr creds) {
   if (!creds) {
-    BLOG(0, "Corrupted data");
+    engine_->LogError(FROM_HERE) << "Corrupted data";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   auto get_callback = base::BindOnce(&CredentialsPromotion::VerifyPublicKey,
-                                     base::Unretained(this),
+                                     weak_factory_.GetWeakPtr(),
                                      std::move(callback), trigger, *creds);
 
-  engine_->database()->GetPromotion(
-      trigger.id,
-      [callback = std::make_shared<decltype(get_callback)>(
-           std::move(get_callback))](mojom::PromotionPtr promotion) {
-        std::move(*callback).Run(std::move(promotion));
-      });
+  engine_->database()->GetPromotion(trigger.id, std::move(get_callback));
 }
 
 void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
@@ -351,7 +301,7 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
                                            const mojom::CredsBatch& creds,
                                            mojom::PromotionPtr promotion) {
   if (!promotion) {
-    BLOG(0, "Corrupted data");
+    engine_->LogError(FROM_HERE) << "Corrupted data";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -359,7 +309,7 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
   auto promotion_keys = ParseStringToBaseList(promotion->public_keys);
 
   if (!promotion_keys || promotion_keys->empty()) {
-    BLOG(0, "Public key is missing");
+    engine_->LogError(FROM_HERE) << "Public key is missing";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -372,18 +322,19 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
   }
 
   if (!valid) {
-    BLOG(0, "Public key is not valid");
+    engine_->LogError(FROM_HERE) << "Public key is not valid";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   std::vector<std::string> unblinded_encoded_creds;
-  if (is_testing) {
+  if (engine_->options().is_testing) {
     unblinded_encoded_creds = UnBlindCredsMock(creds);
   } else {
     auto result = UnBlindCreds(creds);
     if (!result.has_value()) {
-      BLOG(0, "UnBlindTokens: " << result.error());
+      engine_->LogError(FROM_HERE) << "UnBlindTokens error";
+      engine_->Log(FROM_HERE) << result.error();
       std::move(callback).Run(mojom::Result::FAILED);
       return;
     }
@@ -394,8 +345,8 @@ void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
       promotion->approximate_value / promotion->suggestions;
 
   auto save_callback =
-      base::BindOnce(&CredentialsPromotion::Completed, base::Unretained(this),
-                     std::move(callback), trigger);
+      base::BindOnce(&CredentialsPromotion::Completed,
+                     weak_factory_.GetWeakPtr(), std::move(callback), trigger);
 
   uint64_t expires_at = 0ul;
   if (promotion->type != mojom::PromotionType::ADS) {
@@ -411,23 +362,23 @@ void CredentialsPromotion::Completed(ResultCallback callback,
                                      const CredentialsTrigger& trigger,
                                      mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Unblinded token save failed");
+    engine_->LogError(FROM_HERE) << "Unblinded token save failed";
     std::move(callback).Run(result);
     return;
   }
 
-  engine_->database()->PromotionCredentialCompleted(
-      trigger.id, ToLegacyCallback(std::move(callback)));
+  engine_->database()->PromotionCredentialCompleted(trigger.id,
+                                                    std::move(callback));
   engine_->client()->UnblindedTokensReady();
 }
 
 void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
-                                        LegacyResultCallback callback) {
+                                        ResultCallback callback) {
   DCHECK(redeem.type != mojom::RewardsType::TRANSFER);
 
   if (redeem.token_list.empty()) {
-    BLOG(0, "Token list empty");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Token list empty";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -436,26 +387,27 @@ void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
     token_id_list.push_back(base::NumberToString(item.id));
   }
 
-  auto url_callback = std::bind(&CredentialsPromotion::OnRedeemTokens, this, _1,
-                                token_id_list, redeem, callback);
-
   if (redeem.publisher_key.empty()) {
-    BLOG(0, "Publisher key is empty");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Publisher key is empty";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  promotion_server_.post_suggestions().Request(redeem, url_callback);
+  promotion_server_.post_suggestions().Request(
+      redeem,
+      base::BindOnce(&CredentialsPromotion::OnRedeemTokens,
+                     weak_factory_.GetWeakPtr(), std::move(token_id_list),
+                     redeem, std::move(callback)));
 }
 
 void CredentialsPromotion::OnRedeemTokens(
-    mojom::Result result,
-    const std::vector<std::string>& token_id_list,
-    const CredentialsRedeem& redeem,
-    LegacyResultCallback callback) {
+    std::vector<std::string> token_id_list,
+    CredentialsRedeem redeem,
+    ResultCallback callback,
+    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to parse redeem tokens response");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Failed to parse redeem tokens response";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -465,7 +417,7 @@ void CredentialsPromotion::OnRedeemTokens(
   }
 
   engine_->database()->MarkUnblindedTokensAsSpent(token_id_list, redeem.type,
-                                                  id, callback);
+                                                  id, std::move(callback));
 }
 
 void CredentialsPromotion::DrainTokens(const CredentialsRedeem& redeem,
@@ -473,7 +425,7 @@ void CredentialsPromotion::DrainTokens(const CredentialsRedeem& redeem,
   DCHECK(redeem.type == mojom::RewardsType::TRANSFER);
 
   if (redeem.token_list.empty()) {
-    BLOG(0, "Token list empty");
+    engine_->LogError(FROM_HERE) << "Token list empty";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -484,7 +436,7 @@ void CredentialsPromotion::DrainTokens(const CredentialsRedeem& redeem,
   }
 
   auto url_callback = base::BindOnce(
-      &CredentialsPromotion::OnDrainTokens, base::Unretained(this),
+      &CredentialsPromotion::OnDrainTokens, weak_factory_.GetWeakPtr(),
       std::move(callback), std::move(token_id_list), redeem);
 
   promotion_server_.post_suggestions_claim().Request(redeem,
@@ -498,7 +450,7 @@ void CredentialsPromotion::OnDrainTokens(
     mojom::Result result,
     std::string drain_id) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to parse drain tokens response");
+    engine_->LogError(FROM_HERE) << "Failed to parse drain tokens response";
     std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
@@ -514,7 +466,6 @@ void CredentialsPromotion::OnDrainTokens(
       [](PostSuggestionsClaimCallback callback, std::string drain_id,
          mojom::Result result) {
         if (result != mojom::Result::OK) {
-          BLOG(0, "Failed to mark tokens as spent");
           std::move(callback).Run(mojom::Result::FAILED, "");
         } else {
           std::move(callback).Run(mojom::Result::OK, std::move(drain_id));
@@ -524,10 +475,7 @@ void CredentialsPromotion::OnDrainTokens(
 
   engine_->database()->MarkUnblindedTokensAsSpent(
       token_id_list, mojom::RewardsType::TRANSFER, id,
-      [callback = std::make_shared<decltype(mark_tokens_callback)>(
-           std::move(mark_tokens_callback))](mojom::Result result) {
-        std::move(*callback).Run(result);
-      });
+      std::move(mark_tokens_callback));
 }
 
 }  // namespace credential

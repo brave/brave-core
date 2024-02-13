@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
 
 #include "base/values.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 
@@ -70,9 +70,9 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& dict) {
   AdContentInfo ad_content;
 
   if (const auto* const type = dict.FindString(kType)) {
-    ad_content.type = ParseAdType(*type);
+    ad_content.type = ToAdType(*type);
   } else if (const auto* const legacy_ad_type = dict.FindString(kLegacyType)) {
-    ad_content.type = ParseAdType(*legacy_ad_type);
+    ad_content.type = ToAdType(*legacy_ad_type);
   } else {
     ad_content.type = AdType::kNotificationAd;
   }
@@ -152,11 +152,11 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& dict) {
 
   if (const auto* const confirmation_type =
           dict.FindString(kConfirmationType)) {
-    ad_content.confirmation_type = ParseConfirmationType(*confirmation_type);
+    ad_content.confirmation_type = ToConfirmationType(*confirmation_type);
   } else if (const auto* const legacy_confirmation_type =
                  dict.FindString(kLegacyConfirmationType)) {
     ad_content.confirmation_type =
-        ParseConfirmationType(*legacy_confirmation_type);
+        ToConfirmationType(*legacy_confirmation_type);
   }
 
   if (const auto is_saved = dict.FindBool(kIsSaved)) {

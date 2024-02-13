@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 
-#include <memory>
 #include <string>
+#include <utility>
 
 #include "base/containers/contains.h"
 #include "base/files/file_path.h"
@@ -29,185 +29,40 @@ const char kAddress2[] = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
 
 }  // namespace
 
-TEST(BitcoinSerializerStream, Push8AsLE) {
-  std::vector<uint8_t> data;
-  BitcoinSerializerStream stream(&data);
-  stream.Push8AsLE(0xab);
-  EXPECT_EQ(base::HexEncode(data), "AB");
-  stream.Push8AsLE(0x12);
-  EXPECT_EQ(base::HexEncode(data), "AB12");
-
-  EXPECT_EQ(stream.serialized_bytes(), 2u);
-}
-
-TEST(BitcoinSerializerStream, Push16AsLE) {
-  std::vector<uint8_t> data;
-  BitcoinSerializerStream stream(&data);
-  stream.Push16AsLE(0xab);
-  EXPECT_EQ(base::HexEncode(data), "AB00");
-  stream.Push16AsLE(0x1234);
-  EXPECT_EQ(base::HexEncode(data), "AB003412");
-
-  EXPECT_EQ(stream.serialized_bytes(), 4u);
-}
-
-TEST(BitcoinSerializerStream, Push32AsLE) {
-  std::vector<uint8_t> data;
-  BitcoinSerializerStream stream(&data);
-  stream.Push32AsLE(0xabcd);
-  EXPECT_EQ(base::HexEncode(data), "CDAB0000");
-  stream.Push32AsLE(0x12345678);
-  EXPECT_EQ(base::HexEncode(data), "CDAB000078563412");
-
-  EXPECT_EQ(stream.serialized_bytes(), 8u);
-}
-
-TEST(BitcoinSerializerStream, Push64AsLE) {
-  std::vector<uint8_t> data;
-  BitcoinSerializerStream stream(&data);
-  stream.Push64AsLE(0xabcd);
-  EXPECT_EQ(base::HexEncode(data), "CDAB000000000000");
-  stream.Push64AsLE(0x1234567890abcdef);
-  EXPECT_EQ(base::HexEncode(data), "CDAB000000000000EFCDAB9078563412");
-
-  EXPECT_EQ(stream.serialized_bytes(), 16u);
-}
-
-TEST(BitcoinSerializerStream, PushVarInt) {
-  std::vector<uint8_t> data;
-  BitcoinSerializerStream stream(&data);
-  stream.PushVarInt(0xab);
-  EXPECT_EQ(base::HexEncode(data), "AB");
-  stream.PushVarInt(0xabcd);
-  EXPECT_EQ(base::HexEncode(data), "ABFDCDAB");
-  stream.PushVarInt(0xabcdef01);
-  EXPECT_EQ(base::HexEncode(data), "ABFDCDABFE01EFCDAB");
-  stream.PushVarInt(0xabcdef0123456789);
-  EXPECT_EQ(base::HexEncode(data), "ABFDCDABFE01EFCDABFF8967452301EFCDAB");
-
-  EXPECT_EQ(stream.serialized_bytes(), 18u);
-}
-
-TEST(BitcoinSerializerStream, PushSizeAndBytes) {
-  {
-    std::vector<uint8_t> bytes(10, 0xab);
-    std::vector<uint8_t> data;
-    BitcoinSerializerStream stream(&data);
-    stream.PushSizeAndBytes(bytes);
-    EXPECT_EQ(data.size(), 1u + 10u);
-    EXPECT_EQ(base::HexEncode(base::make_span(data).first(1)), "0A");
-    EXPECT_TRUE(base::ranges::all_of(base::make_span(data).last(10),
-                                     [](auto c) { return c == 0xab; }));
-    EXPECT_EQ(stream.serialized_bytes(), 11u);
-  }
-
-  {
-    std::vector<uint8_t> bytes(300, 0xcd);
-    std::vector<uint8_t> data;
-    BitcoinSerializerStream stream(&data);
-    stream.PushSizeAndBytes(bytes);
-    EXPECT_EQ(data.size(), 3u + 300u);
-    EXPECT_EQ(base::HexEncode(base::make_span(data).first(3)), "FD2C01");
-    EXPECT_TRUE(base::ranges::all_of(base::make_span(data).last(300),
-                                     [](auto c) { return c == 0xcd; }));
-    EXPECT_EQ(stream.serialized_bytes(), 303u);
-  }
-
-  {
-    std::vector<uint8_t> bytes(0x10000, 0xef);
-    std::vector<uint8_t> data;
-    BitcoinSerializerStream stream(&data);
-    stream.PushSizeAndBytes(bytes);
-    EXPECT_EQ(data.size(), 5u + 0x10000);
-    EXPECT_EQ(base::HexEncode(base::make_span(data).first(5)), "FE00000100");
-    EXPECT_TRUE(base::ranges::all_of(base::make_span(data).last(0x10000),
-                                     [](auto c) { return c == 0xef; }));
-    EXPECT_EQ(stream.serialized_bytes(), 65541u);
-  }
-}
-
-TEST(BitcoinSerializerStream, PushBytes) {
-  std::vector<uint8_t> bytes({0x01, 0x02, 0xab, 0xcd, 0xef});
-  std::vector<uint8_t> data;
-  BitcoinSerializerStream stream(&data);
-  stream.PushBytes(bytes);
-  EXPECT_EQ(base::HexEncode(data), "0102ABCDEF");
-
-  EXPECT_EQ(stream.serialized_bytes(), 5u);
-}
-
-TEST(BitcoinSerializerStream, PushBytesReversed) {
-  std::vector<uint8_t> bytes({0x01, 0x02, 0xab, 0xcd, 0xef});
-  std::vector<uint8_t> data;
-  BitcoinSerializerStream stream(&data);
-  stream.PushBytesReversed(bytes);
-  EXPECT_EQ(base::HexEncode(data), "EFCDAB0201");
-
-  EXPECT_EQ(stream.serialized_bytes(), 5u);
-}
-
-TEST(BitcoinSerializerStream, NoVectorInCtor) {
-  std::vector<uint8_t> bytes({0x01, 0x02, 0xab, 0xcd, 0xef});
-
-  BitcoinSerializerStream stream(nullptr);
-
-  stream.Push8AsLE(0xab);
-  EXPECT_EQ(stream.serialized_bytes(), 1u);
-
-  stream.Push16AsLE(0xab);
-  EXPECT_EQ(stream.serialized_bytes(), 3u);
-
-  stream.Push32AsLE(0x12345678);
-  EXPECT_EQ(stream.serialized_bytes(), 7u);
-
-  stream.Push64AsLE(0xabcd);
-  EXPECT_EQ(stream.serialized_bytes(), 15u);
-
-  stream.PushBytes(bytes);
-  EXPECT_EQ(stream.serialized_bytes(), 20u);
-
-  stream.PushBytesReversed(bytes);
-  EXPECT_EQ(stream.serialized_bytes(), 25u);
-
-  stream.PushSizeAndBytes(bytes);
-  EXPECT_EQ(stream.serialized_bytes(), 31u);
-
-  stream.PushVarInt(0xabcdef01);
-  EXPECT_EQ(stream.serialized_bytes(), 36u);
-}
-
 TEST(BitcoinSerializer, SerializeInputForSign) {
   BitcoinTransaction tx;
 
-  tx.inputs().reserve(2);
-
-  auto& input1 = tx.inputs().emplace_back();
+  BitcoinTransaction::TxInput input1;
   input1.utxo_address = kAddress1;
   input1.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
   input1.utxo_value = 555666777;
   input1.script_sig = {1, 2, 3};
   input1.witness = {4, 5, 6};
+  tx.AddInput(input1);
 
-  auto& input2 = tx.inputs().emplace_back();
+  BitcoinTransaction::TxInput input2;
   input2.utxo_address = kAddress2;
   input2.utxo_outpoint.index = 7;
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
   input2.utxo_value = 555;
   input2.script_sig = {1, 2};
   input2.witness = {4, 5};
+  tx.AddInput(std::move(input2));
 
-  auto& output1 = tx.outputs().emplace_back();
+  BitcoinTransaction::TxOutput output1;
   output1.address = kAddress1;
   output1.script_pubkey =
       BitcoinSerializer::AddressToScriptPubkey(kAddress1, true);
   output1.amount = 5;
+  tx.AddOutput(std::move(output1));
 
-  auto& output2 = tx.outputs().emplace_back();
+  BitcoinTransaction::TxOutput output2;
   output2.address = kAddress2;
   output2.script_pubkey =
       BitcoinSerializer::AddressToScriptPubkey(kAddress2, true);
   output2.amount = 50;
+  tx.AddOutput(std::move(output2));
 
   tx.set_locktime(777);
 
@@ -217,16 +72,22 @@ TEST(BitcoinSerializer, SerializeInputForSign) {
             "FBD8650BA68214C9659928A7E16A6B4148D895755BC5036B328532CAFC4267FB");
 
   // P2PKH addresses are not suppported.
-  tx.inputs()[0].utxo_address = "1N4Qbzg6LSXUXyXu2MDuGfzxwMA7do8AyL";
+  input1.utxo_address = "1N4Qbzg6LSXUXyXu2MDuGfzxwMA7do8AyL";
+  tx.ClearInputs();
+  tx.AddInput(input1);
   EXPECT_FALSE(BitcoinSerializer::SerializeInputForSign(tx, 0));
 
   // P2SH addresses are not suppported.
-  tx.inputs()[0].utxo_address = "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy";
+  input1.utxo_address = "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy";
+  tx.ClearInputs();
+  tx.AddInput(input1);
   EXPECT_FALSE(BitcoinSerializer::SerializeInputForSign(tx, 0));
 
   // P2TR addresses are not suppported.
-  tx.inputs()[0].utxo_address =
+  input1.utxo_address =
       "bc1peu5hzzyj8cnqm05le6ag7uwry0ysmtf3v4uuxv3v8hqhvsatca8ss2vuwx";
+  tx.ClearInputs();
+  tx.AddInput(input1);
   EXPECT_FALSE(BitcoinSerializer::SerializeInputForSign(tx, 0));
 }
 
@@ -244,33 +105,35 @@ TEST(BitcoinSerializer, SerializeSignedTransaction) {
 
   BitcoinTransaction tx;
 
-  tx.inputs().reserve(2);
-
-  auto& input1 = tx.inputs().emplace_back();
+  BitcoinTransaction::TxInput input1;
   input1.utxo_address = kAddress1;
   input1.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
   input1.utxo_value = 555666777;
   input1.witness = BitcoinSerializer::SerializeWitness(signature, pubkey);
+  tx.AddInput(std::move(input1));
 
-  auto& input2 = tx.inputs().emplace_back();
+  BitcoinTransaction::TxInput input2;
   input2.utxo_address = kAddress2;
   input2.utxo_outpoint.index = 7;
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
   input2.utxo_value = 555;
   input2.witness = BitcoinSerializer::SerializeWitness(signature, pubkey);
+  tx.AddInput(std::move(input2));
 
-  auto& output1 = tx.outputs().emplace_back();
+  BitcoinTransaction::TxOutput output1;
   output1.address = kAddress1;
   output1.script_pubkey =
       BitcoinSerializer::AddressToScriptPubkey(kAddress1, true);
   output1.amount = 5;
+  tx.AddOutput(std::move(output1));
 
-  auto& output2 = tx.outputs().emplace_back();
+  BitcoinTransaction::TxOutput output2;
   output2.address = kAddress2;
   output2.script_pubkey =
       BitcoinSerializer::AddressToScriptPubkey(kAddress2, true);
   output2.amount = 50;
+  tx.AddOutput(std::move(output2));
 
   tx.set_locktime(777);
 
@@ -282,8 +145,8 @@ TEST(BitcoinSerializer, SerializeSignedTransaction) {
       "7D3A35A32B45B3531F6A9228C63200000000000000160014674F8F912B5A9305F5D3A348"
       "F9B069D9101173E902040001020304AABBCCDD02040001020304AABBCCDD09030000");
 
-  EXPECT_EQ(BitcoinSerializer::CalcTransactionWeight(tx), 640u);
-  EXPECT_EQ(BitcoinSerializer::CalcVSize(tx), 160u);
+  EXPECT_EQ(BitcoinSerializer::CalcTransactionWeight(tx, false), 640u);
+  EXPECT_EQ(BitcoinSerializer::CalcTransactionVBytes(tx, false), 160u);
 }
 
 TEST(BitcoinSerializer, AddressToScriptPubkey_BitcoinCoreTestVectors) {
@@ -337,6 +200,74 @@ TEST(BitcoinSerializer, AddressToScriptPubkey_BitcoinCoreTestVectors) {
   }
   EXPECT_EQ(70u, total_tests);
   EXPECT_EQ(46u, skipped_tests);
+}
+
+TEST(BitcoinSerializer, CalcOutputVBytesInTransaction) {
+  {
+    // P2WPKH
+    BitcoinTransaction::TxOutput output;
+    output.address = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
+    output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+        "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4", false);
+    output.amount = 5;
+    EXPECT_EQ(BitcoinSerializer::CalcOutputVBytesInTransaction(output), 31u);
+  }
+  {
+    // P2WSH
+    BitcoinTransaction::TxOutput output;
+    output.address =
+        "bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3";
+    output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+        "bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3",
+        false);
+    output.amount = 5;
+    EXPECT_EQ(BitcoinSerializer::CalcOutputVBytesInTransaction(output), 43u);
+  }
+  {
+    // P2PKH
+    BitcoinTransaction::TxOutput output;
+    output.address = "19Sp9dLinHy3dKo2Xxj53ouuZWAoVGGhg8";
+    output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+        "19Sp9dLinHy3dKo2Xxj53ouuZWAoVGGhg8", false);
+    output.amount = 5;
+    EXPECT_EQ(BitcoinSerializer::CalcOutputVBytesInTransaction(output), 34u);
+  }
+  {
+    // P2SH
+    BitcoinTransaction::TxOutput output;
+    output.address = "34jnjFM4SbaB7Q8aMtNDG849RQ1gUYgpgo";
+    output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+        "34jnjFM4SbaB7Q8aMtNDG849RQ1gUYgpgo", false);
+    output.amount = 5;
+    EXPECT_EQ(BitcoinSerializer::CalcOutputVBytesInTransaction(output), 32u);
+  }
+  {
+    // P2TR
+    BitcoinTransaction::TxOutput output;
+    output.address =
+        "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0";
+    output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+        "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0",
+        false);
+    output.amount = 5;
+    EXPECT_EQ(BitcoinSerializer::CalcOutputVBytesInTransaction(output), 43u);
+  }
+}
+
+TEST(BitcoinSerializer, CalcInputVBytesInTransaction) {
+  BitcoinTransaction::TxInput input;
+  input.utxo_address = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
+  EXPECT_EQ(BitcoinSerializer::CalcInputVBytesInTransaction(input), 68u);
+}
+
+TEST(BitcoinSerializer, CalcTransactionWeight) {
+  // Tested by SerializeSignedTransaction.
+  SUCCEED();
+}
+
+TEST(BitcoinSerializer, CalcTransactionVBytes) {
+  // Tested by SerializeSignedTransaction.
+  SUCCEED();
 }
 
 }  // namespace brave_wallet

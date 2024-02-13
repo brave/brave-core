@@ -9,7 +9,6 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,7 +18,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, BuildCredential) {
   // Arrange
 
   // Act
-  const absl::optional<base::Value::Dict> credential =
+  const std::optional<base::Value::Dict> credential =
       BuildCredential(UnblindedToken(kUnblindedTokenBase64),
                       /*payload=*/"definition: the weight of a payload");
   ASSERT_TRUE(credential);

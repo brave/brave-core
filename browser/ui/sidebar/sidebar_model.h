@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_MODEL_H_
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -18,7 +19,6 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class CancelableTaskTracker;
@@ -58,8 +58,8 @@ class SidebarModel : public SidebarService::Observer,
                              bool user_gesture) {}
     virtual void OnItemMoved(const SidebarItem& item, size_t from, size_t to) {}
     virtual void OnItemRemoved(size_t index) {}
-    virtual void OnActiveIndexChanged(absl::optional<size_t> old_index,
-                                      absl::optional<size_t> new_index) {}
+    virtual void OnActiveIndexChanged(std::optional<size_t> old_index,
+                                      std::optional<size_t> new_index) {}
     virtual void OnItemUpdated(const SidebarItem& item,
                                const SidebarItemUpdate& update) {}
     virtual void OnFaviconUpdatedForItem(const SidebarItem& item,
@@ -80,19 +80,19 @@ class SidebarModel : public SidebarService::Observer,
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  void SetActiveIndex(absl::optional<size_t> index);
+  void SetActiveIndex(std::optional<size_t> index);
   // Returns true if webcontents of item at |index| already loaded url.
   bool IsSidebarHasAllBuiltInItems() const;
-  absl::optional<size_t> GetIndexOf(const SidebarItem& item) const;
-  absl::optional<size_t> GetIndexOf(SidebarItem::BuiltInItemType type) const;
+  std::optional<size_t> GetIndexOf(const SidebarItem& item) const;
+  std::optional<size_t> GetIndexOf(SidebarItem::BuiltInItemType type) const;
 
   void FetchFavicon(const sidebar::SidebarItem& item);
 
   // Don't cache item list. list can be changed during the runtime.
   const std::vector<SidebarItem>& GetAllSidebarItems() const;
 
-  // Return absl::nullopt if sidebar panel is not opened.
-  absl::optional<size_t> active_index() const { return active_index_; }
+  // Return std::nullopt if sidebar panel is not opened.
+  std::optional<size_t> active_index() const { return active_index_; }
 
   // SidebarService::Observer overrides:
   void OnItemAdded(const SidebarItem& item, size_t index) override;
@@ -114,7 +114,7 @@ class SidebarModel : public SidebarService::Observer,
   // Add item at last.
   void AddItem(const SidebarItem& item, size_t index, bool user_gesture);
   void RemoveItemAt(size_t index);
-  void UpdateActiveIndexAndNotify(absl::optional<size_t> new_active_index);
+  void UpdateActiveIndexAndNotify(std::optional<size_t> new_active_index);
 
   // TODO(simonhong): Use separated class for fetching favicon from this model
   // class.
@@ -129,7 +129,7 @@ class SidebarModel : public SidebarService::Observer,
       const image_fetcher::RequestMetadata& request_metadata);
 
   // Optional engaged if sidebar panel is opened.
-  absl::optional<size_t> active_index_ = absl::nullopt;
+  std::optional<size_t> active_index_ = std::nullopt;
   const raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<base::CancelableTaskTracker> task_tracker_;
   base::ObserverList<Observer> observers_;

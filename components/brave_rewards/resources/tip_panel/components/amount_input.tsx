@@ -12,11 +12,14 @@ import { SwapIcon } from './icons/swap_icon'
 
 import * as style from './amount_input.style'
 
-const minimumAmount = 0
+const minimumAmount = 0.002
 const maximumAmount = 100
-const amountStep = 0.25
+const amountStep = 0.001
 
 function quantizeAmount (amount: number) {
+  if (amount === 0) {
+    return amount
+  }
   const value = amountStep > 0
     ? Math.floor(amount / amountStep) * amountStep
     : amount
@@ -33,7 +36,12 @@ function currencyFormatter (currency: string) {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
+    minimumSignificantDigits: 1,
+    maximumSignificantDigits: 1,
+    // @ts-expect-error: "roudingPriority" not yet recognized
+    roundingPriority: 'morePrecision',
+    roundingMode: 'ceil'
   })
 }
 

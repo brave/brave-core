@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
+#include <cstddef>
+
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

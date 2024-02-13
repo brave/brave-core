@@ -6,7 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_TEST_REWARDS_ENGINE_TEST_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_TEST_REWARDS_ENGINE_TEST_H_
 
+#include <optional>
 #include <string>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -28,13 +32,13 @@ class RewardsEngineTest : public testing::Test {
 
  protected:
   // Returns the |TaskEnvironment| for this test.
-  base::test::TaskEnvironment* task_environment() { return &task_environment_; }
+  base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
   // Returns the |TestRewardsEngineClient| instance for this test.
-  TestRewardsEngineClient* GetTestClient() { return &client_; }
+  TestRewardsEngineClient& engine_client() { return client_; }
 
   // Returns the |RewardsEngineImpl| instance for this test.
-  RewardsEngineImpl* GetEngineImpl() { return &engine_; }
+  RewardsEngineImpl& engine() { return engine_; }
 
   // Adds a mock network response for the specified URL and HTTP method.
   void AddNetworkResultForTesting(const std::string& url,
@@ -43,6 +47,21 @@ class RewardsEngineTest : public testing::Test {
 
   // Sets a callback that is executed when a message is logged to the client.
   void SetLogCallbackForTesting(TestRewardsEngineClient::LogCallback callback);
+
+  // Executes the supplied lambda with an appropriate callback, waits until the
+  // callback has been executed, and the returns the values to the caller as a
+  // tuple.
+  template <typename... Args, typename F>
+  std::tuple<std::decay_t<Args>...> WaitFor(F fn) {
+    base::RunLoop run_loop;
+    std::optional<std::tuple<std::decay_t<Args>...>> result;
+    fn(base::BindLambdaForTesting([&result, &run_loop](Args... args) {
+      result = std::tuple<std::decay_t<Args>...>(std::move(args)...);
+      run_loop.Quit();
+    }));
+    run_loop.Run();
+    return std::move(*result);
+  }
 
  private:
   base::test::TaskEnvironment task_environment_;

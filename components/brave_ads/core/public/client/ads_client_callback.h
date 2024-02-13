@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_CALLBACK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_CALLBACK_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/files/file.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -22,7 +22,7 @@ using ResultCallback = base::OnceCallback<void(bool success)>;
 using SaveCallback = base::OnceCallback<void(bool success)>;
 
 using LoadCallback =
-    base::OnceCallback<void(const absl::optional<std::string>& value)>;
+    base::OnceCallback<void(const std::optional<std::string>& value)>;
 
 using LoadFileCallback = base::OnceCallback<void(base::File file)>;
 

@@ -5,21 +5,22 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
 namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::BlindedToken> Create(
+std::optional<challenge_bypass_ristretto::BlindedToken> Create(
     const std::string& blinded_token_base64) {
   if (blinded_token_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(
       challenge_bypass_ristretto::BlindedToken::decode_base64(
-          blinded_token_base64));
+          base::as_bytes(base::make_span(blinded_token_base64))));
 }
 
 }  // namespace
@@ -56,9 +57,9 @@ BlindedToken BlindedToken::DecodeBase64(
   return BlindedToken(blinded_token_base64);
 }
 
-absl::optional<std::string> BlindedToken::EncodeBase64() const {
+std::optional<std::string> BlindedToken::EncodeBase64() const {
   if (!blinded_token_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(blinded_token_->encode_base64());

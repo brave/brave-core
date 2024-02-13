@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_unittest_util.h"
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -51,8 +52,8 @@ PaymentTokenList SetPaymentTokens(const int count) {
   return payment_tokens;
 }
 
-PaymentTokenInfo BuildPaymentToken(ConfirmationType confirmation_type,
-                                   AdType ad_type) {
+PaymentTokenInfo BuildPaymentToken(const ConfirmationType confirmation_type,
+                                   const AdType ad_type) {
   const std::string payment_token_base64 =
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)";
   PaymentTokenInfo payment_token = BuildPaymentToken(payment_token_base64);

@@ -6,10 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_TRANSACTION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_TRANSACTION_UTIL_H_
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/payment_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::rewards {
 
@@ -17,11 +18,11 @@ TransactionList GetAllUnreconciledTransactions(
     const TransactionList& transactions,
     const PaymentTokenList& payment_tokens);
 
-absl::optional<TransactionList>
+std::optional<TransactionList>
 BuildTransactionsForReconciledTransactionsThisMonth(
     const PaymentList& payments);
 
-absl::optional<TransactionInfo>
+std::optional<TransactionInfo>
 BuildTransactionForReconciledTransactionsLastMonth(const PaymentList& payments);
 
 }  // namespace brave_ads::rewards

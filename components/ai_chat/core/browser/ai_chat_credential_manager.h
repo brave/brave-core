@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_CREDENTIAL_MANAGER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_CREDENTIAL_MANAGER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -38,14 +39,26 @@ class AIChatCredentialManager {
   AIChatCredentialManager& operator=(const AIChatCredentialManager&) = delete;
   ~AIChatCredentialManager();
 
-  void GetPremiumStatus(
-      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
+  void GetPremiumStatus(mojom::PageHandler::GetPremiumStatusCallback callback);
 
   void FetchPremiumCredential(
-      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback);
 
   void PutCredentialInCache(CredentialCacheEntry credential);
+
+#if BUILDFLAG(IS_ANDROID)
+  void CreateOrderFromReceipt(
+      const std::string& purchase_token,
+      const std::string& package,
+      const std::string& subscription_id,
+      skus::mojom::SkusService::CreateOrderFromReceiptCallback callback);
+  void FetchOrderCredentials(
+      const std::string& order_id,
+      skus::mojom::SkusService::FetchOrderCredentialsCallback callback);
+  void RefreshOrder(const std::string& order_id,
+                    skus::mojom::SkusService::RefreshOrderCallback callback);
+#endif
 
  private:
   bool EnsureMojoConnected();
@@ -53,17 +66,19 @@ class AIChatCredentialManager {
   void OnMojoConnectionError();
 
   void OnCredentialSummary(
-      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback,
+      mojom::PageHandler::GetPremiumStatusCallback callback,
       const std::string& domain,
+      const bool credential_in_cache,
       const std::string& summary_string);
 
   void OnGetPremiumStatus(
-      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback,
-      ai_chat::mojom::PremiumStatus);
+      mojom::PremiumStatus,
+      mojom::PremiumInfoPtr);
 
   void OnPrepareCredentialsPresentation(
-      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+      base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback,
       const std::string& domain,
       const std::string& credential_as_cookie);

@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;
@@ -98,7 +98,7 @@ class State {
 
   uint64_t GetPromotionLastFetchStamp();
 
-  absl::optional<std::string> GetEncryptedString(const std::string& key);
+  std::optional<std::string> GetEncryptedString(const std::string& key);
 
   bool SetEncryptedString(const std::string& key, const std::string& value);
 

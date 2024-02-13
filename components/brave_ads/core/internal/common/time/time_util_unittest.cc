@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-#include <string>
+#include <optional>
 
 #include "base/check.h"
 #include "base/time/time.h"
@@ -15,7 +15,6 @@
 
 #if BUILDFLAG(IS_LINUX)
 #include "base/environment.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -56,7 +55,7 @@ class ScopedLibcTZ {
   static constexpr char kTZ[] = "TZ";
 
   bool success_ = true;
-  absl::optional<std::string> old_timezone_;
+  std::optional<std::string> old_timezone_;
 };
 
 constexpr char ScopedLibcTZ::kTZ[];
@@ -235,14 +234,14 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
   EXPECT_EQ(expected_adjusted_time, GetLocalTimeAtEndOfThisMonth());
 }
 
-TEST_P(BraveAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
+TEST_P(BraveAdsTimeUtilTest, TimeToPrivacyPreservingIso8601) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 23:45:12.345", /*is_local=*/false);
   AdvanceClockTo(time);
 
   // Act & Assert
-  EXPECT_EQ("2020-11-18T23:00:00.000Z", TimeToPrivacyPreservingISO8601(Now()));
+  EXPECT_EQ("2020-11-18T23:00:00.000Z", TimeToPrivacyPreservingIso8601(Now()));
 }
 
 #if BUILDFLAG(IS_LINUX)

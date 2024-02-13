@@ -1,8 +1,6 @@
 //! Core auditing functionality
 
-use crate::{
-    binary_format::BinaryFormat, config::AuditConfig, lockfile, prelude::*, presenter::Presenter,
-};
+use crate::{binary_format::BinaryFormat, config::AuditConfig, prelude::*, presenter::Presenter};
 use rustsec::{registry, report, Error, ErrorKind, Lockfile, Warning, WarningKind};
 use std::{
     io::{self, Read},
@@ -10,9 +8,6 @@ use std::{
     process::exit,
     time::Duration,
 };
-
-/// Name of `Cargo.lock`
-const CARGO_LOCK_FILE: &str = "Cargo.lock";
 
 // TODO: make configurable
 const DEFAULT_LOCK_TIMEOUT: Duration = Duration::from_secs(5 * 60);
@@ -162,21 +157,7 @@ impl Auditor {
     }
 
     /// Perform an audit of a textual `Cargo.lock` file
-    pub fn audit_lockfile(
-        &mut self,
-        maybe_lockfile_path: Option<&Path>,
-    ) -> rustsec::Result<rustsec::Report> {
-        let lockfile_path = match maybe_lockfile_path {
-            Some(p) => p,
-            None => {
-                let path = Path::new(CARGO_LOCK_FILE);
-                if !path.exists() && Path::new("Cargo.toml").exists() {
-                    lockfile::generate()?;
-                }
-                path
-            }
-        };
-
+    pub fn audit_lockfile(&mut self, lockfile_path: &Path) -> rustsec::Result<rustsec::Report> {
         let lockfile = match self.load_lockfile(lockfile_path) {
             Ok(l) => l,
             Err(e) => {

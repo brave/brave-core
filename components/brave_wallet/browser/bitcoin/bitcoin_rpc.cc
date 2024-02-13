@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
@@ -15,8 +17,10 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/json/rs/src/lib.rs.h"
+#include "components/grit/brave_components_strings.h"
 #include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -157,35 +161,31 @@ const GURL MakePostTransactionUrl(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-absl::optional<std::string> ConvertPlainStringToJsonArray(
+std::optional<std::string> ConvertPlainStringToJsonArray(
     const std::string& json) {
   return base::StrCat({"[\"", json, "\"]"});
 }
 
-absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
   auto converted_json =
       std::string(json::convert_all_numbers_to_string(json, ""));
   if (converted_json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return converted_json;
 }
 
 template <class TCallback>
-void ReplyWithUnexpectedHttpResponseCode(TCallback callback, int code) {
-  std::move(callback).Run(base::unexpected("Unexpected HTTP result code " +
-                                           base::NumberToString(code)));
-}
-
-template <class TCallback>
 void ReplyWithInvalidJsonError(TCallback callback) {
-  std::move(callback).Run(base::unexpected("Invalid json"));
+  std::move(callback).Run(
+      base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
 }
 
 template <class TCallback>
 void ReplyWithInternalError(TCallback callback) {
-  std::move(callback).Run(base::unexpected("Internal Error"));
+  std::move(callback).Run(
+      base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
 }
 
 }  // namespace
@@ -228,8 +228,7 @@ void BitcoinRpc::GetChainHeight(const std::string& chain_id,
 void BitcoinRpc::OnGetChainHeight(GetChainHeightCallback callback,
                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    return ReplyWithUnexpectedHttpResponseCode(
-        std::move(callback), api_request_result.response_code());
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto* list = api_request_result.value_body().GetIfList();
@@ -263,8 +262,7 @@ void BitcoinRpc::GetFeeEstimates(const std::string& chain_id,
 void BitcoinRpc::OnGetFeeEstimates(GetFeeEstimatesCallback callback,
                                    APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    return ReplyWithUnexpectedHttpResponseCode(
-        std::move(callback), api_request_result.response_code());
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto* dict = api_request_result.value_body().GetIfDict();
@@ -304,8 +302,7 @@ void BitcoinRpc::GetTransaction(const std::string& chain_id,
 void BitcoinRpc::OnGetTransaction(GetTransactionCallback callback,
                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    return ReplyWithUnexpectedHttpResponseCode(
-        std::move(callback), api_request_result.response_code());
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto transaction = Transaction::FromValue(api_request_result.value_body());
@@ -336,8 +333,7 @@ void BitcoinRpc::GetAddressStats(const std::string& chain_id,
 void BitcoinRpc::OnGetAddressStats(GetAddressStatsCallback callback,
                                    APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    return ReplyWithUnexpectedHttpResponseCode(
-        std::move(callback), api_request_result.response_code());
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto result = AddressStats::FromValue(api_request_result.value_body());
@@ -369,8 +365,7 @@ void BitcoinRpc::OnGetUtxoList(GetUtxoListCallback callback,
                                const std::string& address,
                                APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    return ReplyWithUnexpectedHttpResponseCode(
-        std::move(callback), api_request_result.response_code());
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto* items = api_request_result.value_body().GetIfList();
@@ -417,8 +412,7 @@ void BitcoinRpc::PostTransaction(const std::string& chain_id,
 void BitcoinRpc::OnPostTransaction(PostTransactionCallback callback,
                                    APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    return ReplyWithUnexpectedHttpResponseCode(
-        std::move(callback), api_request_result.response_code());
+    return ReplyWithInternalError(std::move(callback));
   }
 
   auto* list = api_request_result.value_body().GetIfList();

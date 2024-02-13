@@ -62,17 +62,15 @@ const InstallConstants kInstallModes[] = {
                            0x4b6b,
                            {0x85, 0x60, 0xe4, 0xb2, 0x3, 0xa9, 0x7a,
                             0x8b}},  // Elevator CLSID.
-        .elevator_iid = {0xb7965c30,
-                         0x7d58,
-                         0x4d86,
-                         {0x9e, 0x18, 0x47, 0x94, 0x25, 0x64, 0x9, 0xee}},
+        .elevator_iid = {0xf396861e,
+                         0x0c8e,
+                         0x4c71,
+                         {0x82, 0x56, 0x2f, 0xae, 0x6d, 0x75, 0x9c, 0xe9}},
         .default_channel_name = L"",  // The empty string means "stable".
         .channel_strategy = ChannelStrategy::FLOATING,
         .supports_system_level = true,  // Supports system-level installs.
         .supports_set_as_default_browser =
             true,  // Supports in-product set as default browser UX.
-        .supports_retention_experiments =
-            true,  // Supports retention experiments.
         .app_icon_resource_index =
             icon_resources::kApplicationIndex,  // App icon resource index.
         .app_icon_resource_id = IDR_MAINFRAME,  // App icon resource id.
@@ -110,17 +108,15 @@ const InstallConstants kInstallModes[] = {
                            0x4347,
                            {0xbe, 0xc0, 0xd7, 0x22, 0xca, 0x41, 0x2c,
                             0x75}},  // Elevator CLSID.
-        .elevator_iid = {0xd9d7b102,
-                         0xfc8a,
-                         0x4843,
-                         {0xac, 0x35, 0x1e, 0xbc, 0xc7, 0xed, 0x12, 0x3d}},
+        .elevator_iid = {0x9ebad7ac,
+                         0x6e1e,
+                         0x4a1c,
+                         {0xaa, 0x85, 0x1a, 0x70, 0xca, 0xda, 0x8d, 0x82}},
         .default_channel_name = L"beta",  // Forced channel name.
         .channel_strategy = ChannelStrategy::FIXED,
         .supports_system_level = true,  // Supports system-level installs.
         .supports_set_as_default_browser =
             true,  // Supports in-product set as default browser UX.
-        .supports_retention_experiments =
-            true,  // Supports retention experiments.
         .app_icon_resource_index =
             icon_resources::kBetaApplicationIndex,  // App icon resource index.
         .app_icon_resource_id = IDR_X005_BETA,      // App icon resource id.
@@ -158,17 +154,15 @@ const InstallConstants kInstallModes[] = {
                            0x43b7,
                            {0xb7, 0x18, 0x8f, 0x82, 0x61, 0x45, 0x97,
                             0xa3}},  // Elevator CLSID.
-        .elevator_iid = {0x9cf6868c,
-                         0x8c9f,
-                         0x4220,
-                         {0x95, 0xbe, 0x13, 0x99, 0x9d, 0xd9, 0x9b, 0x48}},
+        .elevator_iid = {0x1e43c77b,
+                         0x48e6,
+                         0x4a4c,
+                         {0x9d, 0xb2, 0xc2, 0x97, 0x17, 0x06, 0xc2, 0x55}},
         .default_channel_name = L"dev",  // Forced channel name.
         .channel_strategy = ChannelStrategy::FIXED,
         .supports_system_level = true,  // Supports system-level installs.
         .supports_set_as_default_browser =
             true,  // Supports in-product set as default browser UX.
-        .supports_retention_experiments =
-            true,  // Supports retention experiments.
         .app_icon_resource_index =
             icon_resources::kDevApplicationIndex,  // App icon resource index.
         .app_icon_resource_id = IDR_X004_DEV,      // App icon resource id.
@@ -209,17 +203,15 @@ const InstallConstants kInstallModes[] = {
                            0x4389,
                            {0x87, 0xdb, 0xd0, 0x99, 0x48, 0x30, 0xbb,
                             0x17}},  // Elevator CLSID.
-        .elevator_iid = {0x648b3c2b,
-                         0xe53,
-                         0x4085,
-                         {0xa9, 0x75, 0x11, 0x18, 0x1, 0x75, 0x8f, 0xe7}},
+        .elevator_iid = {0x1db2116f,
+                         0x71b7,
+                         0x49f0,
+                         {0x89, 0x70, 0x33, 0xb1, 0xda, 0xcf, 0xb0, 0x72}},
         .default_channel_name = L"nightly",  // Forced channel name.
         .channel_strategy = ChannelStrategy::FIXED,
         .supports_system_level = true,  // Support system-level installs.
         .supports_set_as_default_browser =
             true,  // Support in-product set as default browser UX.
-        .supports_retention_experiments =
-            true,  // Supports retention experiments.
         .app_icon_resource_index =
             icon_resources::kSxSApplicationIndex,  // App icon resource index.
         .app_icon_resource_id = IDR_SXS,           // App icon resource id.
@@ -264,18 +256,16 @@ const InstallConstants kInstallModes[] = {
                            0x4421,
                            {0xaf, 0xe8, 0x58, 0xf3, 0xc9, 0x47, 0x43,
                             0x6a}},  // Elevator CLSID.
-        .elevator_iid = {0xedf6b466,
-                         0x4efc,
-                         0x4c88,
-                         {0x83, 0x8c, 0x96, 0xb4, 0x39, 0x1c, 0x6a, 0xe}},
+        .elevator_iid = {0x17239bf1,
+                         0xa1dc,
+                         0x4642,
+                         {0x84, 0x6c, 0x1b, 0xac, 0x85, 0xf9, 0x6a, 0x10}},
         .default_channel_name =
             L"",  // Empty default channel name since no update integration.
         .channel_strategy = ChannelStrategy::UNSUPPORTED,
         .supports_system_level = true,  // Supports system-level installs.
         .supports_set_as_default_browser =
             true,  // Supports in-product set as default browser UX.
-        .supports_retention_experiments =
-            false,  // Does not support retention experiments.
         .app_icon_resource_index =
             icon_resources::kApplicationIndex,  // App icon resource index.
         .app_icon_resource_id = IDR_MAINFRAME,  // App icon resource id.

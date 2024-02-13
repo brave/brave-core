@@ -37,22 +37,43 @@ class AIChatTabHelper : public content::WebContentsObserver,
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
+  void SetOnPDFA11yInfoLoadedCallbackForTesting(base::OnceClosure cb);
+
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
+
+  // To observe PDF InnerWebContents for "Finished loading PDF" event which
+  // means PDF content has been loaded to an accessibility tree.
+  class PDFA11yInfoLoadObserver : public content::WebContentsObserver {
+   public:
+    ~PDFA11yInfoLoadObserver() override;
+    explicit PDFA11yInfoLoadObserver(content::WebContents* web_contents,
+                                     AIChatTabHelper* helper);
+
+   private:
+    void AccessibilityEventReceived(
+        const content::AXEventNotificationDetails& details) override;
+    raw_ptr<AIChatTabHelper> helper_;
+  };
 
   AIChatTabHelper(
       content::WebContents* web_contents,
       AIChatMetrics* ai_chat_metrics,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter,
-      PrefService* local_state_prefs);
+      PrefService* local_state_prefs,
+      const std::string& channel_name);
+
+  void OnPDFA11yInfoLoaded();
 
   // content::WebContentsObserver
-  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void WebContentsDestroyed() override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
+  void InnerWebContentsAttached(content::WebContents* inner_web_contents,
+                                content::RenderFrameHost* render_frame_host,
+                                bool is_full_page) override;
 
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
@@ -63,17 +84,19 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // ai_chat::ConversationDriver
   GURL GetPageURL() const override;
-  void GetPageContent(base::OnceCallback<void(std::string, bool is_video)>
-                          callback) const override;
-  bool HasPrimaryMainFrame() const override;
-  bool IsDocumentOnLoadCompletedInPrimaryMainFrame() const override;
+  void GetPageContent(GetPageContentCallback callback,
+                      std::string_view invalidation_token) override;
+  std::u16string GetPageTitle() const override;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
-  // Store the unique ID for each navigation so that
-  // we can ignore API responses for previous navigations.
-  int64_t current_navigation_id_;
   bool is_same_document_navigation_ = false;
+  int64_t pending_navigation_id_;
+  bool is_pdf_a11y_info_loaded_ = false;
+  GetPageContentCallback pending_get_page_content_callback_;
+
+  std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
+  base::OnceClosure on_pdf_a11y_info_loaded_cb_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

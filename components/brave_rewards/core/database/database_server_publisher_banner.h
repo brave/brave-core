@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_links.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
@@ -35,11 +36,12 @@ class DatabaseServerPublisherBanner : public DatabaseTable {
                    const std::string& publisher_key,
                    mojom::DBCommandResponsePtr response);
 
-  void OnGetRecordLinks(const std::map<std::string, std::string>& links,
-                        const mojom::PublisherBanner& banner,
-                        GetPublisherBannerCallback callback);
+  void OnGetRecordLinks(const mojom::PublisherBanner& banner,
+                        GetPublisherBannerCallback callback,
+                        const std::map<std::string, std::string>& links);
 
   DatabaseServerPublisherLinks links_;
+  base::WeakPtrFactory<DatabaseServerPublisherBanner> weak_factory_{this};
 };
 
 }  // namespace database

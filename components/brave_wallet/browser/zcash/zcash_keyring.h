@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_KEYRING_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -22,12 +23,12 @@ class ZCashKeyring : public HDKeyring {
   ZCashKeyring(const ZCashKeyring&) = delete;
   ZCashKeyring& operator=(const ZCashKeyring&) = delete;
 
-  absl::optional<std::string> GetAddress(const mojom::ZCashKeyId& key_id);
+  mojom::ZCashAddressPtr GetAddress(const mojom::ZCashKeyId& key_id);
 
-  absl::optional<std::vector<uint8_t>> GetPubkey(
+  std::optional<std::vector<uint8_t>> GetPubkey(
       const mojom::ZCashKeyId& key_id);
 
-  absl::optional<std::vector<uint8_t>> SignMessage(
+  std::optional<std::vector<uint8_t>> SignMessage(
       const mojom::ZCashKeyId& key_id,
       base::span<const uint8_t, 32> message);
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -12,7 +13,6 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace cosmetic_filters {
 
@@ -27,7 +27,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
     const std::vector<std::string>& exceptions,
     HiddenClassIdSelectorsCallback callback) {
   DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
-  absl::optional<base::Value> input_value = base::JSONReader::Read(input);
+  std::optional<base::Value> input_value = base::JSONReader::Read(input);
   if (!input_value) {
     // Nothing to work with
     std::move(callback).Run(base::Value::Dict());

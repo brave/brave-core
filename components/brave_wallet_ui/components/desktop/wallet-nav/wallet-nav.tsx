@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 
 // Selectors
 import { UISelectors } from '../../../common/selectors'
@@ -29,12 +28,9 @@ import {
   PageOptionsWrapper,
   PanelOptionsWrapper
 } from './wallet-nav.style'
-import { WalletRoutes } from '../../../constants/types'
-import { WalletActions } from '../../../common/actions'
 
 export const WalletNav = () => {
   // redux
-  const dispatch = useDispatch()
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   return (
@@ -64,14 +60,6 @@ export const WalletNav = () => {
             <WalletNavButton
               option={option}
               key={option.id}
-              onClick={() => {
-                if (
-                  option.route === WalletRoutes.FundWalletPageStart ||
-                  option.route === WalletRoutes.DepositFundsPageStart
-                ) {
-                  dispatch(WalletActions.selectOnRampAssetId(undefined))
-                }
-              }}
             />
           ))}
         </Section>

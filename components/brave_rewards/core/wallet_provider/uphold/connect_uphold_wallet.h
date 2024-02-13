@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth_uphold.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
@@ -24,6 +23,8 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
   explicit ConnectUpholdWallet(RewardsEngineImpl& engine);
 
   ~ConnectUpholdWallet() override;
+
+  void CheckEligibility();
 
  private:
   const char* WalletType() const override;
@@ -52,15 +53,12 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
                     mojom::Result,
                     std::string&& id) const;
 
-  void CheckEligibility();
-
   void OnGetUser(mojom::Result, const User&) const;
 
   void OnGetCapabilities(mojom::Result, Capabilities) const;
 
   UpholdCard card_;
   endpoint::UpholdServer server_;
-  base::RetainingOneShotTimer eligibility_checker_;
 };
 
 }  // namespace brave_rewards::internal::uphold

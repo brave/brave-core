@@ -12,7 +12,6 @@ _INPUT_SRC_JARS = 'input_srcjars'
 _BRAVE_GEN_COMPONENTS = os.path.join('gen', 'brave', 'components')
 
 
-# pylint: disable=undefined-variable
 @override_utils.override_method(_ProjectEntry)
 def GeneratedJavaSubdir(self, _):
     gen_path = os.path.join('gen', self.GradleSubdir(), _GENERATED_JAVA_SUBDIR)

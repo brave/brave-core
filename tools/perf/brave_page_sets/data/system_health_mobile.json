@@ -1,0 +1,30 @@
+{
+    "archives": {
+        "load:site:bbc:2023": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "load:site:brave_search:2023": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "load:site:cnn:2023": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "load:site:example:2023": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "load:site:google:2023": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "load:site:twitter:2023": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "load:site:wikipedia:2023": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "load:site:youtube:2023": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        }
+    },
+    "description": "Describes the Web Page Replay archives for a story set. Don't edit by hand! Use record_wpr for updating.",
+    "platform_specific": true
+}

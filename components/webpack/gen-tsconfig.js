@@ -1,6 +1,6 @@
 const fs = require('fs-extra')
 const path = require('path')
-const pathMap = require('./path-map')
+const pathMap = require('./path-map')(process.env.ROOT_GEN_DIR)
 
 const srcPath = path.resolve(__dirname, '../../../')
 const braveSrcPath = path.join(srcPath, 'brave')

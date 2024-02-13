@@ -5,7 +5,10 @@
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
+#include <optional>
+
 #include "brave/app/brave_command_ids.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
@@ -21,6 +24,10 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
 
 namespace {
 
@@ -95,6 +102,8 @@ class BraveRenderViewContextMenuTest : public testing::Test {
   }
   void TearDown() override { registry_.reset(); }
 
+  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+
  private:
   content::BrowserTaskEnvironment browser_task_environment;
   std::unique_ptr<TestingProfile> profile_;
@@ -108,7 +117,7 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForPlainText) {
   content::ContextMenuParams params = CreateSelectedTextParams(u"plain text");
   auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
-  absl::optional<size_t> clean_link_index =
+  std::optional<size_t> clean_link_index =
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_FALSE(clean_link_index.has_value());
 }
@@ -117,7 +126,7 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForSelectedUrl) {
   content::ContextMenuParams params = CreateSelectedTextParams(u"brave.com");
   auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
-  absl::optional<size_t> clean_link_index =
+  std::optional<size_t> clean_link_index =
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_TRUE(clean_link_index.has_value());
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
@@ -128,8 +137,27 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
       CreateLinkParams(GURL("https://brave.com"));
   auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
-  absl::optional<size_t> clean_link_index =
+  std::optional<size_t> clean_link_index =
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_TRUE(clean_link_index.has_value());
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat) {
+  content::ContextMenuParams params = CreateSelectedTextParams(u"hello");
+
+  for (auto enabled : {true, false}) {
+    GetPrefs()->SetBoolean(ai_chat::prefs::kBraveAIChatContextMenuEnabled,
+                           enabled);
+    auto context_menu = CreateContextMenu(GetWebContents(), params);
+    EXPECT_TRUE(context_menu);
+    std::optional<size_t> ai_chat_index =
+        context_menu->menu_model().GetIndexOfCommandId(
+            IDC_AI_CHAT_CONTEXT_LEO_TOOLS);
+    EXPECT_EQ(ai_chat_index.has_value(), enabled);
+    EXPECT_EQ(context_menu->IsCommandIdEnabled(IDC_AI_CHAT_CONTEXT_LEO_TOOLS),
+              enabled);
+  }
+}
+#endif

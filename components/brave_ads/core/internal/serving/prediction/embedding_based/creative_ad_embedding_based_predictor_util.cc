@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/creative_ad_embedding_based_predictor_util.h"
 
+#include <algorithm>
+#include <iterator>
 #include <numeric>
 
 namespace brave_ads {
@@ -21,12 +23,14 @@ std::vector<double> ComputeCreativeAdProbabilitiesForVoteRegistry(
       CalculateNormalizingConstantForVoteRegistry(creative_ad_vote_registry);
 
   std::vector<double> probabilities;
+  probabilities.reserve(creative_ad_vote_registry.size());
 
-  for (const int creative_ad_vote : creative_ad_vote_registry) {
-    const double probability = creative_ad_vote / normalizing_constant;
-
-    probabilities.push_back(probability);
-  }
+  std::transform(creative_ad_vote_registry.cbegin(),
+                 creative_ad_vote_registry.cend(),
+                 std::back_inserter(probabilities),
+                 [normalizing_constant](const int creative_ad_vote) {
+                   return creative_ad_vote / normalizing_constant;
+                 });
 
   return probabilities;
 }

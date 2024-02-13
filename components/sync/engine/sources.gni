@@ -10,6 +10,4 @@ brave_components_sync_engine_sources = [
   "//brave/components/sync/engine/brave_sync_manager_impl.h",
   "//brave/components/sync/engine/brave_sync_server_commands.cc",
   "//brave/components/sync/engine/brave_sync_server_commands.h",
-  "//brave/components/sync/engine/brave_syncer_device_poll.cc",
-  "//brave/components/sync/engine/brave_syncer_device_poll.h",
 ]

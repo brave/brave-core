@@ -5,20 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_segments.h"
 
-#include "base/containers/extend.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_model.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 
 namespace brave_ads {
 
 SegmentList BuildInterestSegments() {
-  SegmentList segments;
-
-  if (base::FeatureList::IsEnabled(kTextClassificationFeature)) {
-    base::Extend(segments, GetTextClassificationSegments());
+  if (!base::FeatureList::IsEnabled(kTextClassificationFeature)) {
+    return {};
   }
 
-  return segments;
+  return GetTextClassificationSegments();
 }
 
 }  // namespace brave_ads

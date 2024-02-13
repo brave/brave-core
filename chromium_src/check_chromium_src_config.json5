@@ -6,22 +6,18 @@
         ".*\\.clangd",
         ".*\\.gn",
         ".*\\.gni",
-        ".*\\.idl",
         ".*\\.in",
         ".*\\.info",
-        ".*\\.json5",
-        ".*\\.mojom",
-        ".*\\.pdl",
-        ".*\\.py",
+        ".*\\.pyc",
         ".*\\.xml",
         "(.*/)?DEPS",
-        "python_modules/.*",
     ],
 
     // Files matching these exact paths will be excluded.
     // Please, keep in alphabetical order.
     "path_excludes": [
         "base/feature_override.h",
+        "check_chromium_src_config.json5",
         "chrome/browser/devtools/url_constants_unittest.cc",
         "chrome/browser/history/history_utils_unittest.cc",
         "chrome/browser/notifications/notification_handler_impl.h",
@@ -32,6 +28,7 @@
         "chrome/common/chrome_constants_unittest_mac.cc",
         "chrome/installer/mini_installer/brave_mini_installer_unittest.cc",
         "chrome/installer/setup/brave_behaviors.cc",
+        "chrome/installer/setup/test/install_worker_vpn_unittest.cc",
         "chrome/install_static/brave_install_details_unittest.cc",
         "chrome/install_static/brave_install_modes_unittest.cc",
         "chrome/install_static/brave_install_util_unittest.cc",
@@ -61,9 +58,6 @@
             "IF_BUILDFLAG_IMPL_0",
             "IF_BUILDFLAG_IMPL_1",
             "IF_BUILDFLAG_IMPL_CAT",
-        ],
-        "chrome/browser/active_use_util.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],
         "chrome/browser/bookmarks/android/bookmark_bridge.cc": [
             "BraveBookmarkBridge",
@@ -110,9 +104,6 @@
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],
         "chrome/installer/setup/install_worker.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
-        ],
-        "chrome/installer/setup/user_experiment.cc": [
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],
         "components/permissions/permission_request_data.h": [

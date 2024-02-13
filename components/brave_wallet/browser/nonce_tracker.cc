@@ -11,7 +11,6 @@
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 

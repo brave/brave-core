@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,7 +28,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -71,7 +71,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void GetEventLogs(const base::Value::List& args);
   void OnGetEventLogs(std::vector<brave_rewards::mojom::EventLogPtr> logs);
   void GetAdDiagnostics(const base::Value::List& args);
-  void OnGetAdDiagnostics(absl::optional<base::Value::List> diagnostics);
+  void OnGetAdDiagnostics(std::optional<base::Value::List> diagnostics);
   void SetAdDiagnosticId(const base::Value::List& args);
   void GetEnvironment(const base::Value::List& args);
   void OnGetEnvironment(brave_rewards::mojom::Environment environment);
@@ -388,13 +388,16 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
     return;
   }
 
-  base::Value::Dict data;
-  if (wallet) {
-    data.Set("address", wallet->address);
-    data.Set("memberId", wallet->member_id);
-    data.Set("status", static_cast<int>(wallet->status));
-    data.Set("type", wallet->type);
+  if (!wallet) {
+    CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet");
+    return;
   }
+
+  base::Value::Dict data;
+  data.Set("address", wallet->address);
+  data.Set("memberId", wallet->member_id);
+  data.Set("status", static_cast<int>(wallet->status));
+  data.Set("type", wallet->type);
 
   CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet", data);
 }
@@ -446,7 +449,7 @@ void RewardsInternalsDOMHandler::GetAdDiagnostics(
 }
 
 void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
-    absl::optional<base::Value::List> diagnosticsEntries) {
+    std::optional<base::Value::List> diagnosticsEntries) {
   if (!IsJavascriptAllowed()) {
     return;
   }

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_message.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -33,8 +34,8 @@ SolanaMessage GetTestLegacyMessage() {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(kFromAccount, absl::nullopt, true, true),
-       SolanaAccountMeta(kToAccount, absl::nullopt, false, true)},
+      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
+       SolanaAccountMeta(kToAccount, std::nullopt, false, true)},
       data);
   auto message = SolanaMessage::CreateLegacyMessage(
       kRecentBlockhash, kLastValidBlockHeight, kFromAccount, {instruction});
@@ -47,7 +48,7 @@ SolanaMessage GetTestV0Message() {
                                          {3, 1}, {2, 4});
   SolanaInstruction instruction(
       mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kFromAccount, absl::nullopt, true, true),
+      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
        SolanaAccountMeta(kToAccount, 1, false, true)},
       data);
   std::vector<SolanaMessageAddressTableLookup> lookups;
@@ -175,8 +176,8 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(kFromAccount, absl::nullopt, true, true),
-       SolanaAccountMeta(kToAccount, absl::nullopt, false, true)},
+      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
+       SolanaAccountMeta(kToAccount, std::nullopt, false, true)},
       // Data
       {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
   auto message_without_blockhash =
@@ -188,9 +189,9 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
 TEST(SolanaMessageUnitTest, GetSignerAccountsFromSerializedMessageLegacy) {
   SolanaInstruction ins(
       mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kFromAccount, absl::nullopt, true, true),
-       SolanaAccountMeta(kToAccount, absl::nullopt, true, true),
-       SolanaAccountMeta(kTestAccount, absl::nullopt, false, true)},
+      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
+       SolanaAccountMeta(kToAccount, std::nullopt, true, true),
+       SolanaAccountMeta(kTestAccount, std::nullopt, false, true)},
       {});
   auto msg = SolanaMessage::CreateLegacyMessage(kRecentBlockhash, 0,
                                                 kFromAccount, {ins});
@@ -280,12 +281,12 @@ TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {
   std::string account4 = "GcdayuLaLyrdmUu324nahyv33G5poQdLUEZ1nEytDeP";
   std::string account5 = "LX3EUdRUBUa3TbsYXLEUdj9J3prXkWXvLYSWyYyc2Jj";
 
-  SolanaAccountMeta account1_fee_payer(account1, absl::nullopt, true, true);
-  SolanaAccountMeta program1_non_signer_readonly(program1, absl::nullopt, false,
+  SolanaAccountMeta account1_fee_payer(account1, std::nullopt, true, true);
+  SolanaAccountMeta program1_non_signer_readonly(program1, std::nullopt, false,
                                                  false);
 
   // Test instructions with duplicate pubkeys.
-  SolanaAccountMeta account2_non_signer_readonly(account2, absl::nullopt, false,
+  SolanaAccountMeta account2_non_signer_readonly(account2, std::nullopt, false,
                                                  false);
   SolanaInstruction instruction1(program1, {account2_non_signer_readonly}, {});
   SolanaMessage::GetUniqueAccountMetas(account1, {instruction1, instruction1},
@@ -299,13 +300,13 @@ TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {
   // Test account order.
   // signer-read-write -> signer-readonly -> non-signer-read-write ->
   // non-signer-readonly
-  SolanaAccountMeta account3_non_signer_read_write(account3, absl::nullopt,
+  SolanaAccountMeta account3_non_signer_read_write(account3, std::nullopt,
                                                    false, true);
-  SolanaAccountMeta account4_signer_readonly(account4, absl::nullopt, true,
+  SolanaAccountMeta account4_signer_readonly(account4, std::nullopt, true,
                                              false);
-  SolanaAccountMeta account5_signer_read_write(account5, absl::nullopt, true,
+  SolanaAccountMeta account5_signer_read_write(account5, std::nullopt, true,
                                                true);
-  SolanaAccountMeta program2_non_signer_readonly(program2, absl::nullopt, false,
+  SolanaAccountMeta program2_non_signer_readonly(program2, std::nullopt, false,
                                                  false);
   SolanaInstruction instruction2(
       program1, {account3_non_signer_read_write, account4_signer_readonly}, {});
@@ -322,15 +323,15 @@ TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {
 
   // Test writable being updated when readonly and read-write both present for
   // the same account pubkey.
-  SolanaAccountMeta account2_signer_read_write(account2, absl::nullopt, true,
+  SolanaAccountMeta account2_signer_read_write(account2, std::nullopt, true,
                                                true);
-  SolanaAccountMeta account3_non_signer_readonly(account3, absl::nullopt, false,
+  SolanaAccountMeta account3_non_signer_readonly(account3, std::nullopt, false,
                                                  false);
-  SolanaAccountMeta account4_non_signer_read_write(account4, absl::nullopt,
+  SolanaAccountMeta account4_non_signer_read_write(account4, std::nullopt,
                                                    false, true);
-  SolanaAccountMeta account4_signer_read_write(account4, absl::nullopt, true,
+  SolanaAccountMeta account4_signer_read_write(account4, std::nullopt, true,
                                                true);
-  SolanaAccountMeta account5_signer_readonly(account5, absl::nullopt, true,
+  SolanaAccountMeta account5_signer_readonly(account5, std::nullopt, true,
                                              false);
 
   instruction1 = SolanaInstruction(
@@ -494,7 +495,7 @@ TEST(SolanaMessageUnitTest, FromToValue) {
       R"({"fee_payer": "fee payer", "instructions": []})"};
 
   for (const auto& invalid_value_string : invalid_value_strings) {
-    absl::optional<base::Value> invalid_value =
+    std::optional<base::Value> invalid_value =
         base::JSONReader::Read(invalid_value_string);
     ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
     EXPECT_FALSE(SolanaMessage::FromValue(invalid_value->GetDict()))

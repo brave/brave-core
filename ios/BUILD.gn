@@ -3,12 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/build/config.gni")
+import("//brave/build/mac/tweak_info_plist.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
+import("//brave/ios/browser/api/ai_chat/headers.gni")
 import("//brave/ios/browser/api/brave_rewards/headers.gni")
 import("//brave/ios/browser/api/brave_shields/headers.gni")
 import("//brave/ios/browser/api/brave_stats/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
+import("//brave/ios/browser/api/de_amp/headers.gni")
+import("//brave/ios/browser/api/debounce/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
 import("//brave/ios/browser/api/ipfs/headers.gni")
 import("//brave/ios/browser/api/ntp_background_images/headers.gni")
@@ -20,8 +25,11 @@ import("//brave/ios/browser/api/session_restore/headers.gni")
 import("//brave/ios/browser/api/skus/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
 import("//brave/ios/browser/api/url_sanitizer/headers.gni")
+import("//brave/ios/browser/api/web/ui/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
+import("//brave/ios/browser/debounce/headers.gni")
 import("//brave/ios/browser/url_sanitizer/headers.gni")
+import("//build/apple/tweak_info_plist.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/rules.gni")
 
@@ -61,7 +69,6 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/password/brave_password_api.h",
   "//brave/ios/browser/api/password/brave_password_observer.h",
   "//brave/ios/browser/api/sync/brave_sync_api.h",
-  "//brave/ios/browser/api/sync/brave_sync_internals.h",
   "//brave/ios/browser/api/sync/driver/brave_sync_profile_service.h",
   "//brave/ios/browser/api/web_image/web_image.h",
   "//brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h",
@@ -69,9 +76,13 @@ brave_core_public_headers = [
 ]
 
 brave_core_public_headers += ads_public_headers
+brave_core_public_headers += ai_chat_public_headers
 brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += browser_api_url_sanitizer_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers
+brave_core_public_headers += browser_api_de_amp_public_headers
+brave_core_public_headers += browser_api_debounce_public_headers
+brave_core_public_headers += browser_debounce_public_headers
 brave_core_public_headers += brave_stats_public_headers
 brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers
@@ -87,6 +98,7 @@ brave_core_public_headers += brave_p3a_public_headers
 brave_core_public_headers += browser_api_web_webstate_public_headers
 brave_core_public_headers += ipfs_public_headers
 brave_core_public_headers += ntp_background_images_public_headers
+brave_core_public_headers += browser_api_web_ui_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
@@ -102,20 +114,38 @@ action("brave_core_umbrella_header") {
   args += rebase_path(brave_core_public_headers, root_build_dir)
 }
 
+tweak_info_plist("info_plist") {
+  info_plists = [ "Info.plist" ]
+}
+
+brave_tweak_info_plist("brave_core_plist") {
+  info_plist = "$root_gen_dir/brave/ios/info_plist_tweaked.plist"
+
+  args = [
+    "--brave_channel=" + brave_channel,
+    "--brave_version=" + brave_version,
+    "--skip_signing",
+  ]
+
+  deps = [ ":info_plist" ]
+}
+
 ios_framework_bundle("brave_core_ios_framework") {
   output_name = "BraveCore"
   output_dir = root_out_dir
 
-  info_plist = "Info.plist"
+  info_plist_target = ":brave_core_plist"
 
   configs += [ ":internal_config" ]
 
   deps = [
+    ":brave_core_plist",
     ":brave_core_umbrella_header",
     "//brave/ios/app",
   ]
 
   deps += ads_public_deps
+  deps += ai_chat_public_deps
   deps += brave_wallet_public_deps
   deps += rewards_public_deps
   deps += skus_public_deps

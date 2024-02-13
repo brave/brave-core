@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.notifications;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
@@ -20,7 +21,6 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
-import org.chromium.ui.permissions.PermissionConstants;
 
 /**
  * This class is for settings permission related checks
@@ -30,7 +30,7 @@ public class BravePermissionUtils {
     private static final String APP_UID = "app_uid";
 
     public static boolean hasNotificationPermission(Context context) {
-        return hasPermission(context, PermissionConstants.NOTIFICATION_PERMISSION);
+        return hasPermission(context, Manifest.permission.POST_NOTIFICATIONS);
     }
 
     public static Boolean hasPermission(Context context, String permission) {

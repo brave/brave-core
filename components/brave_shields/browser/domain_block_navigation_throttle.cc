@@ -18,6 +18,7 @@
 #include "brave/components/brave_shields/browser/domain_block_page.h"
 #include "brave/components/brave_shields/browser/domain_block_tab_storage.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -175,34 +176,7 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     Resume();
     return;
   } else if (new_url.is_valid()) {
-    content::NavigationHandle* handle = navigation_handle();
-
-    content::OpenURLParams params =
-        content::OpenURLParams::FromNavigationHandle(handle);
-
-    content::WebContents* contents = handle->GetWebContents();
-
-    // Cancel without an error status to surface any real errors during page
-    // load.
-    CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
-        content::NavigationThrottle::CANCEL));
-
-    params.url = new_url;
-    params.transition = ui::PAGE_TRANSITION_CLIENT_REDIRECT;
-    // We get a DCHECK here if we don't clear the redirect chain because
-    // technically this is a new navigation
-    params.redirect_chain.clear();
-
-    base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(
-                       [](base::WeakPtr<content::WebContents> web_contents,
-                          const content::OpenURLParams& params) {
-                         if (!web_contents)
-                           return;
-                         web_contents->OpenURL(params);
-                       },
-                       contents->GetWeakPtr(), std::move(params)));
-
+    RestartNavigation(new_url);
     return;
   }
 
@@ -261,12 +235,55 @@ void DomainBlockNavigationThrottle::Enable1PESAndResume() {
   DCHECK(ephemeral_storage_service_);
   DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
       navigation_handle()->GetWebContents());
-  if (tab_storage) {
+  if (ephemeral_storage_service_->Is1PESEnabledForUrl(
+          navigation_handle()->GetURL())) {
+    Resume();
+  } else if (tab_storage) {
     tab_storage->Enable1PESForUrlIfPossible(
         ephemeral_storage_service_, navigation_handle()->GetURL(),
-        base::BindOnce(&DomainBlockNavigationThrottle::Resume,
+        base::BindOnce(&DomainBlockNavigationThrottle::On1PESState,
                        weak_ptr_factory_.GetWeakPtr()));
   }
+}
+
+void DomainBlockNavigationThrottle::On1PESState(bool is_1pes_enabled) {
+  if (is_1pes_enabled) {
+    RestartNavigation(navigation_handle()->GetURL());
+  } else {
+    Resume();
+  }
+}
+
+void DomainBlockNavigationThrottle::RestartNavigation(const GURL& url) {
+  content::NavigationHandle* handle = navigation_handle();
+
+  content::OpenURLParams params =
+      content::OpenURLParams::FromNavigationHandle(handle);
+
+  content::WebContents* contents = handle->GetWebContents();
+
+  params.url = url;
+  params.transition = static_cast<ui::PageTransition>(
+      params.transition | ui::PAGE_TRANSITION_CLIENT_REDIRECT);
+  // We get a DCHECK here if we don't clear the redirect chain because
+  // technically this is a new navigation
+  params.redirect_chain.clear();
+
+  // Cancel without an error status to surface any real errors during page
+  // load.
+  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+      content::NavigationThrottle::CANCEL));
+
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<content::WebContents> web_contents,
+                        const content::OpenURLParams& params) {
+                       if (!web_contents) {
+                         return;
+                       }
+                       web_contents->OpenURL(params);
+                     },
+                     contents->GetWeakPtr(), std::move(params)));
 }
 
 const char* DomainBlockNavigationThrottle::GetNameForLogging() {

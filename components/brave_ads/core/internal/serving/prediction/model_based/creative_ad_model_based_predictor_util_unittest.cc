@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_info.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_input_variable_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -80,8 +80,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .value = false;
   expected_creative_ad_predictor_1.input_variable.interest_segment
       .parent_matches.value = true;
-  expected_creative_ad_predictor_1.input_variable.priority.value = 2;
-  expected_creative_ad_predictor_1.score = 4.5;
+  expected_creative_ad_predictor_1.score = 4.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_1);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
@@ -103,8 +102,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       base::Hours(3);
   expected_creative_ad_predictor_2.input_variable.last_seen_advertiser.value =
       base::Hours(3);
-  expected_creative_ad_predictor_2.input_variable.priority.value = 2;
-  expected_creative_ad_predictor_2.score = 0.75;
+  expected_creative_ad_predictor_2.score = 0.25;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_2);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
@@ -122,8 +120,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .value = true;
   expected_creative_ad_predictor_3.input_variable.interest_segment
       .parent_matches.value = true;
-  expected_creative_ad_predictor_3.input_variable.priority.value = 2;
-  expected_creative_ad_predictor_3.score = 4.5;
+  expected_creative_ad_predictor_3.score = 4.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_3);
 
   EXPECT_EQ(expected_creative_ad_predictors, creative_ad_predictors);

@@ -28,11 +28,8 @@ declare_args() {
   brave_version_major = ""
   brave_version_minor = ""
   brave_version_build = ""
-  brave_version_patch = 0
+  brave_ios_marketing_version_patch = 0
   chrome_version_string = ""
-  build_omaha = false
-  tag_ap = ""
-  tag_installdataindex = ""
   target_android_base = ""
   target_android_output_format = ""
   brave_android_keystore_path = "."
@@ -50,6 +47,15 @@ declare_args() {
   # overrides with empty ones to make //base buildable for redirect_cc.
   is_redirect_cc_build = false
   android_aab_to_apk = false
+}
+
+if (target_os == "win") {
+  # Omaha 3 and its related arguments are available on Windows only.
+  declare_args() {
+    build_omaha = false
+    tag_ap = ""
+    tag_installdataindex = ""
+  }
 }
 
 declare_args() {

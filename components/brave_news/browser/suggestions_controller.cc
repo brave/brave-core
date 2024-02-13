@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -103,23 +104,15 @@ double GetVisitWeighting(const mojom::PublisherPtr& publisher,
 }
 
 SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
-    const std::string& json,
+    base::Value records_v,
     const std::string& locale) {
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return {};
-  }
-
-  if (!records_v->is_dict()) {
+  if (!records_v.is_dict()) {
     return {};
   }
 
   SuggestionsController::PublisherSimilarities similarities;
 
-  for (const auto it : records_v->GetDict()) {
+  for (const auto it : records_v.GetDict()) {
     const auto& for_publisher = it.first;
     const auto& similarity_list = it.second.GetList();
     for (const auto& similarity : similarity_list) {
@@ -301,7 +294,7 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {
                              api_request_result) {
                         controller->locale_ = locale;
                         controller->similarities_ = ParseSimilarityResponse(
-                            api_request_result.body(), locale);
+                            api_request_result.TakeBody(), locale);
                         controller->on_current_update_complete_->Signal();
                         controller->is_update_in_progress_ = false;
                         controller->on_current_update_complete_ =

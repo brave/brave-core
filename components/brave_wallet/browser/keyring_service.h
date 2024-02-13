@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -22,7 +23,6 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefChangeRegistrar;
 class PrefService;
@@ -56,8 +56,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static void MigrateDerivedAccountIndex(PrefService* profile_prefs);
 
   void MaybeMigrateSelectedAccountPrefs();
-  static absl::optional<int>& GetPbkdf2IterationsForTesting();
-  static void MigrateObsoleteProfilePrefs(PrefService* profile_prefs);
+  static std::optional<int>& GetPbkdf2IterationsForTesting();
 
   static bool HasPrefForKeyring(const PrefService& profile_prefs,
                                 const std::string& key,
@@ -70,7 +69,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                 const std::string& key,
                                 base::Value value,
                                 mojom::KeyringId keyring_id);
-  static absl::optional<std::vector<uint8_t>> GetPrefInBytesForKeyring(
+  static std::optional<std::vector<uint8_t>> GetPrefInBytesForKeyring(
       const PrefService& profile_prefs,
       const std::string& key,
       mojom::KeyringId keyring_id);
@@ -78,9 +77,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                        const std::string& key,
                                        base::span<const uint8_t> bytes,
                                        mojom::KeyringId keyring_id);
-
-  static absl::optional<mojom::KeyringId> GetKeyringIdForCoinNonFIL(
-      mojom::CoinType coin);
 
   mojo::PendingRemote<mojom::KeyringService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
@@ -148,11 +144,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void SignTransactionByDefaultKeyring(const mojom::AccountId& account_id,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
-  absl::optional<std::string> SignTransactionByFilecoinKeyring(
+  std::optional<std::string> SignTransactionByFilecoinKeyring(
       const mojom::AccountId& account_id,
       FilTransaction* tx);
-  absl::optional<std::string> GetDiscoveryAddress(mojom::KeyringId keyring_id,
-                                                  int index);
+  std::optional<std::string> GetDiscoveryAddress(mojom::KeyringId keyring_id,
+                                                 int index);
 
   struct SignatureWithError {
     SignatureWithError();
@@ -162,7 +158,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
     SignatureWithError& operator=(const SignatureWithError&) = delete;
     ~SignatureWithError();
 
-    absl::optional<std::vector<uint8_t>> signature;
+    std::optional<std::vector<uint8_t>> signature;
     std::string error_message;
   };
   SignatureWithError SignMessageByDefaultKeyring(
@@ -179,7 +175,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
       const mojom::AccountIdPtr& account_id,
       std::string* key);
-  absl::optional<std::vector<uint8_t>>
+  std::optional<std::vector<uint8_t>>
   DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
       const mojom::AccountIdPtr& account_id,
       const std::string& version,
@@ -218,11 +214,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void UpdateNextUnusedAddressForBitcoinAccount(
       const mojom::AccountIdPtr& account_id,
-      absl::optional<uint32_t> next_receive_index,
-      absl::optional<uint32_t> next_change_index);
+      std::optional<uint32_t> next_receive_index,
+      std::optional<uint32_t> next_change_index);
   mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfo(
       const mojom::AccountIdPtr& account_id);
-  absl::optional<std::vector<mojom::BitcoinAddressPtr>> GetBitcoinAddresses(
+  std::optional<std::vector<mojom::BitcoinAddressPtr>> GetBitcoinAddresses(
       const mojom::AccountIdPtr& account_id);
   mojom::BitcoinAddressPtr GetBitcoinAddress(
       const mojom::AccountIdPtr& account_id,
@@ -231,19 +227,32 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const mojom::KeyringId keyring_id,
       uint32_t account_index,
       const mojom::BitcoinKeyIdPtr& key_id);
-  absl::optional<std::vector<uint8_t>> GetBitcoinPubkey(
+  std::optional<std::vector<uint8_t>> GetBitcoinPubkey(
       const mojom::AccountIdPtr& account_id,
       const mojom::BitcoinKeyIdPtr& key_id);
-  absl::optional<std::vector<uint8_t>> SignMessageByBitcoinKeyring(
+  std::optional<std::vector<uint8_t>> SignMessageByBitcoinKeyring(
       const mojom::AccountIdPtr& account_id,
       const mojom::BitcoinKeyIdPtr& key_id,
       base::span<const uint8_t, 32> message);
 
-  absl::optional<std::vector<std::pair<std::string, mojom::ZCashKeyIdPtr>>>
-  GetZCashAddresses(const mojom::AccountId& account_id);
-  absl::optional<std::string> GetZCashAddress(
-      const mojom::AccountId& account_id,
-      const mojom::ZCashKeyId& key_id);
+  /* ZCash */
+  void UpdateNextUnusedAddressForZCashAccount(
+      const mojom::AccountIdPtr& account_id,
+      std::optional<uint32_t> next_receive_index,
+      std::optional<uint32_t> next_change_index);
+  mojom::ZCashAccountInfoPtr GetZCashAccountInfo(
+      const mojom::AccountIdPtr& account_id);
+  std::optional<std::vector<uint8_t>> SignMessageByZCashKeyring(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::ZCashKeyIdPtr& key_id,
+      const base::span<const uint8_t, 32> message);
+  mojom::ZCashAddressPtr GetZCashAddress(const mojom::AccountId& account_id,
+                                         const mojom::ZCashKeyId& key_id);
+  std::optional<std::vector<mojom::ZCashAddressPtr>> GetZCashAddresses(
+      const mojom::AccountIdPtr& account_id);
+  std::optional<std::vector<uint8_t>> GetZCashPubKey(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::ZCashKeyIdPtr& key_id);
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr GetSelectedWalletAccount();

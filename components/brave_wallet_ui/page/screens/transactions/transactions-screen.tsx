@@ -14,10 +14,8 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // utils
 import { getLocale } from 'brave-ui'
-import {
-  accountInfoEntityAdaptor,
-  accountInfoEntityAdaptorInitialState
-} from '../../../common/slices/entities/account-info.entity'
+import { accountInfoEntityAdaptorInitialState } from '../../../common/slices/entities/account-info.entity'
+import { useAccountFromAddressQuery } from '../../../common/slices/api.slice.extra'
 import {
   selectAllUserAssetsFromQueryResult,
   selectAllBlockchainTokensFromQueryResult
@@ -97,11 +95,10 @@ export const TransactionsScreen: React.FC = () => {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
     isLoading: isLoadingAccounts
   } = useGetAccountInfosRegistryQuery(undefined)
-  const foundAccountFromParam = address
-    ? accountInfosRegistry.entities[
-        accountInfoEntityAdaptor.selectIdByAddress(address)
-      ]
-    : undefined
+
+  const { account: foundAccountFromParam } = useAccountFromAddressQuery(
+    address ?? undefined
+  )
 
   const { data: knownTokensList } = useGetTokensRegistryQuery(undefined, {
     selectFromResult: (res) => ({

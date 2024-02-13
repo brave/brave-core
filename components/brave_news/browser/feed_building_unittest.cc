@@ -3,9 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_news/browser/feed_building.h"
+
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -18,13 +21,11 @@
 #include "base/values.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
-#include "brave/components/brave_news/browser/feed_building.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/mojom/url.mojom.h"
 
 namespace brave_news {
@@ -129,26 +130,26 @@ void PopulatePublishers(Publishers* publisher_list) {
   auto publisher1 = mojom::Publisher::New(
       "111", mojom::PublisherType::COMBINED_SOURCE, "First Publisher",
       "Top News", true, CreateLocales({"en_US"}, {"Top News", "Top Sources"}),
-      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
-      absl::nullopt, GURL("https://first-publisher.com/feed.xml"),
+      GURL("https://www.example.com"), std::nullopt, std::nullopt, std::nullopt,
+      GURL("https://first-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher2 = mojom::Publisher::New(
       "222", mojom::PublisherType::COMBINED_SOURCE, "Second Publisher",
       "Top News", true, CreateLocales({"en_US"}, {"Top News", "Top Sources"}),
-      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
-      absl::nullopt, GURL("https://second-publisher.com/feed.xml"),
+      GURL("https://www.example.com"), std::nullopt, std::nullopt, std::nullopt,
+      GURL("https://second-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
   auto publisher3 = mojom::Publisher::New(
       "333", mojom::PublisherType::COMBINED_SOURCE, "Third Publisher",
       "Top News", true, CreateLocales({"en_US"}, {"Top News"}),
-      GURL("https://www.example.com"), absl::nullopt, absl::nullopt,
-      absl::nullopt, GURL("https://third-publisher.com/feed.xml"),
+      GURL("https://www.example.com"), std::nullopt, std::nullopt, std::nullopt,
+      GURL("https://third-publisher.com/feed.xml"),
       mojom::UserEnabled::NOT_MODIFIED);
 
   auto publisher4 = mojom::Publisher::New(
       "444", mojom::PublisherType::COMBINED_SOURCE, "Fourth Publisher", "f",
       false, CreateLocales({}, {}), GURL("https://fourth.example.com"),
-      absl::nullopt, absl::nullopt, absl::nullopt,
+      std::nullopt, std::nullopt, std::nullopt,
       GURL("https://fourth-publisher.com/feed.xml"),
       mojom::UserEnabled::ENABLED);
 

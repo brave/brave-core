@@ -6,6 +6,7 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 
 #include <algorithm>
+#include <optional>
 #include <vector>
 
 #include "base/check.h"
@@ -13,13 +14,12 @@
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/metrics/histogram_functions.h"
-#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
-#include "brave/components/brave_ads/core/public/transfer/transfer_feature.h"
+#include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -281,7 +281,7 @@ void NTPP3AHelperImpl::UpdateMetricCount(
       creative_instance_dict->EnsureDict(kInflightDictKey);
     }
 
-    const absl::optional<int> current_value =
+    const std::optional<int> current_value =
         creative_instance_dict->FindInt(event_type);
 
     const int count = current_value.value_or(0) + 1;
@@ -299,7 +299,7 @@ void NTPP3AHelperImpl::OnLandingStartCheck(
     return;
   }
   landing_check_timer_.Start(
-      FROM_HERE, brave_ads::kTransferAfter.Get(),
+      FROM_HERE, brave_ads::kPageLandAfter.Get(),
       base::BindOnce(&NTPP3AHelperImpl::OnLandingEndCheck,
                      base::Unretained(this), creative_instance_id,
                      *last_tab_hostname_));

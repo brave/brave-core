@@ -4,9 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/qr_code_generator/qrcode_generator_service.h"
+
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
+
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/strings/string_util.h"
@@ -274,7 +277,7 @@ std::unique_ptr<GenerateQRCodeResponse> QRCodeGeneratorService::generateQRCode(
   // The QR version (i.e. size) must be >= 5 because otherwise the dino painted
   // over the middle covers too much of the code to be decodable.
   constexpr int kMinimumQRVersion = 5;
-  absl::optional<qr_code_generator::QRCodeGenerator::GeneratedCode> qr_data =
+  std::optional<qr_code_generator::QRCodeGenerator::GeneratedCode> qr_data =
       qr.Generate(
           base::span<const std::uint8_t>(
               reinterpret_cast<const std::uint8_t*>(request->data.data()),

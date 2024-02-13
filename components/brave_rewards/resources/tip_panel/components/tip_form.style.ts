@@ -19,27 +19,34 @@ import successBackground2DarkURL from '../assets/success_background_2_dark.svg'
 import successBackground3URL from '../assets/success_background_3.svg'
 import successBackground3DarkURL from '../assets/success_background_3_dark.svg'
 
+import selfCustodyBackgroundURL from '../assets/self_custody_background.svg'
+import selfCustodyBackgroundDarkURL from '../assets/self_custody_background_dark.svg'
+
 import * as mixins from '../lib/button_mixins'
 
 export const root = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  min-height: 400px;
   gap: 24px;
 
-  --form-background-url: url(./${formBackgroundURL});
+  --form-background-url: url(${formBackgroundURL});
   --form-background-gradient-color-1: #FFFFFF;
   --form-background-gradient-color-2: rgba(255, 255, 255, 0);
-  --success-background-1-url: url(./${successBackground1URL});
-  --success-background-2-url: url(./${successBackground2URL});
-  --success-background-3-url: url(./${successBackground3URL});
+  --success-background-1-url: url(${successBackground1URL});
+  --success-background-2-url: url(${successBackground2URL});
+  --success-background-3-url: url(${successBackground3URL});
+  --self-custody-background-url: url(${selfCustodyBackgroundURL});
 
   @media (prefers-color-scheme: dark) {
-    --form-background-url: url(./${formBackgroundDarkURL});
+    --form-background-url: url(${formBackgroundDarkURL});
     --form-background-gradient-color-1: #1E2025;
     --form-background-gradient-color-2: rgba(30, 32, 37, 0);
-    --success-background-1-url: url(./${successBackground1DarkURL});
-    --success-background-2-url: url(./${successBackground2DarkURL});
-    --success-background-3-url: url(./${successBackground3DarkURL});
+    --success-background-1-url: url(${successBackground1DarkURL});
+    --success-background-2-url: url(${successBackground2DarkURL});
+    --success-background-3-url: url(${successBackground3DarkURL});
+    --self-custody-background-url: url(${selfCustodyBackgroundDarkURL});
   }
 `
 
@@ -158,4 +165,34 @@ export const successText = styled.div`
   font-size: 24px;
   line-height: 36px;
   color: ${leo.color.text.interactive};
+`
+
+export const selfCustody = styled.div`
+  background:
+    no-repeat right top / auto var(--self-custody-background-url);
+  padding: 32px 32px 40px;
+`
+
+export const selfCustodyTitle = styled.div`
+  color: ${leo.color.text.secondary};
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -0.1px;
+`
+
+export const selfCustodyHeader = styled.div`
+  margin-top: 8px;
+  color: ${leo.color.text.primary};
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 28px;
+  width: 284px;
+`
+
+export const selfCustodyText = styled.div`
+  margin-top: 16px;
+  color: ${leo.color.text.primary};
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -0.1px;
 `

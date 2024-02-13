@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Това е поверителен прозорец с Tor</translation>
 <translation id="1037341607922068025">Отворете поверителен прозорец с Tor</translation>
-<translation id="1725356094208762656">Отворете в Tor</translation>
-<translation id="3396347744975515056">Синхронизирането на Brave е надстроено и изисква настройка</translation>
-<translation id="7473245612074035141">Начало на настройката</translation>
 <translation id="496896260395129787">Този акаунт в Brave Синхронизиране беше изтрит от друго устройство. Ако не сте искали да деактивирате Синхронизиране,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> създайте отново акаунта</translation>
 <translation id="6965382102122355670">Добре</translation>
@@ -82,6 +79,7 @@
 <translation id="2638041073279639246">Отворете линка в поверителен прозорец с Tor</translation>
 <translation id="3425600262621021599">Отворете линка в Brave поверителен прозорец с Tor</translation>
 <translation id="3229091547987707389">Импортиране и споделяне на директория</translation>
+<translation id="2545072023356206691">От 1 декември 2023 г. каналът Brave Dev вече няма да получава актуализации на браузъра. Препоръчваме на потребителите да мигрират към версиите Nightly, Beta или Release на Brave.</translation>
 <translation id="474217410105706308">Спиране на звука на раздела</translation>
 <translation id="2804710924397009224">Скриване на иконата Brave Rewards</translation>
 <translation id="5029193871181468990">Скриване на иконата за награди в Brave</translation>
@@ -189,6 +187,10 @@
 <translation id="7109885938715976444">Само този път</translation>
 <translation id="7473891865547856676">Не, благодаря</translation>
 <translation id="2722425322672922644">Научете как това се отразява на поверителността ви</translation>
+<translation id="5551268135482191097">Имаше грешка при зареждането на IPFS URL адреса. Искате ли да се пренасочите към оригиналния URL адрес?</translation>
+<translation id="4756627014339714615">Пренасочване</translation>
+<translation id="1338274252864046652">Желаете ли винаги да стартирате IPFS възел при стартиране на браузъра?</translation>
+<translation id="3435896845095436175">Активиране</translation>
 <translation id="4552520379838695057">За съжаление тази страница липсва.</translation>
 <translation id="2609895996619941644">Искате ли да проверите дали запазената версия е налична на Wayback Machine?</translation>
 <translation id="8053093028263274061">За съжаление няма налична запазена версия.</translation>
@@ -289,6 +291,19 @@
 <translation id="5181358966317519720">Премахване от плейлист</translation>
 <translation id="2377705456080309463">Преглед на оригиналната страница</translation>
 <translation id="158894735649719362">Забавлението започва, когато имате какво да играете. Добавете любимите си мултимедийни файлове и ги възпроизвеждайте по всяко време и навсякъде. Дори офлайн.</translation>
+<translation id="8422349592890097194">Създаване на нова папка</translation>
+<translation id="2818704116581303039">Отваряне на настройките на плейлиста</translation>
+<translation id="6790428901817661496">Пускане</translation>
+<translation id="1178581264944972037">Пауза</translation>
+<translation id="4477350412780666475">Следващ запис</translation>
+<translation id="3962859241508114581">Предишен запис</translation>
+<translation id="7544853251252956727">Разбъркване</translation>
+<translation id="4330722796577425585">Превъртане назад</translation>
+<translation id="7481312909269577407">Препращане</translation>
+<translation id="2800828306627475693">Изключване на повтаряне</translation>
+<translation id="1748244367114657861">Повтаряне на 1</translation>
+<translation id="6421906998825794164">Повтаряне на всички</translation>
+<translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
 <translation id="4472575034687746823">Първи стъпки</translation>
@@ -402,10 +417,6 @@
 <translation id="413570371620795359">Отворете панела награди за активиране и започване</translation>
 <translation id="1051600834033686945">Отворете пълните настройки на Brave Rewards</translation>
 <translation id="6333347122924254968">Показване на иконата с награди в Brave в адресната лента</translation>
-<translation id="7483857210736407752">Покажи бутоните за бакшиш на страниците</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Блокиране на социални медии</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
 <translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
@@ -574,7 +585,9 @@
 <translation id="6936835573742749135">Не може да се поиска CAPTCHA. Опитайте отново по-късно.</translation>
 <translation id="2653659639078652383">Изпращане</translation>
 <translation id="1369311132025451972">Автоматично пренасочване на .onion сайтове</translation>
-<translation id="1658670175365815312">Brave ще превключи на версията .onion на уебсайта, когато е налична, и автоматично ще отвори всички домейни .onion в прозорец на Tor.</translation>
+<translation id="6214393847480015759">В прозорци на Tor Brave автоматично превключва към .onion версията на даден уебсайт, когато е налична.</translation>
+<translation id="1294350054292274934">Разрешаване на .onion адреси само в прозорци на Tor</translation>
+<translation id="1258903596167452221">Услугите на Onion няма да са достъпни извън прозорци на Tor.</translation>
 <translation id="2896916411183256228">Използва WebTorrent за да показва торенти директно в браузъра. Поддържа торент файлове и магнет линкове.</translation>
 <translation id="5249433283143453448">Използвайте компонента за управление на цифрови права Widevine (DRM), за да гледате защитено поточно видео и друго съдържание в браузъра.</translation>
 <translation id="1314131187310290315">Разширения на манифест V2</translation>
@@ -623,6 +636,7 @@
 <translation id="4226543734057230801">Мрежи на Ethereum</translation>
 <translation id="3504157706952484145">Мрежи на Filecoin</translation>
 <translation id="1561541094377237745">Мрежи на Solana</translation>
+<translation id="7141438739990875547">Мрежи на Bitcoin</translation>
 <translation id="3159419679550543837">Показване на тестови мрежи</translation>
 <translation id="3215569562674795548">Редактиране или добавяне на нова мрежа</translation>
 <translation id="4418993400653250511">Идентификаторът на веригата</translation>
@@ -662,6 +676,7 @@
 <translation id="8425213833346101688">Промяна</translation>
 <translation id="585868419599255817">Възстановяване на публичния шлюз на IPFS</translation>
 <translation id="2618080188892567155">Автоматично връщане към публичния IPFS шлюз, ако локалният IPFS възел на Brave не може да бъде достигнат.</translation>
+<translation id="8956391206920485238">Да се стартира ли винаги IPFS възел при стартиране на браузъра?</translation>
 <translation id="6789104345873307368">Автоматично пренасочване на заявките за IPFS мрежови ресурси към конфигурирания шлюз.</translation>
 <translation id="4138306018048329894">Заявките за ресурси на IPFS, хоствани на IPFS шлюзове на трети страни, или ресурси на DNSLINK, ще бъдат маршрутизирани през избрания локален или отдалечен шлюз.
     Забележка: Ако е избран локален възел, ресурсът ще бъде заявен директно от вашия компютър и кешираните данни може да бъдат предоставени на IPFS мрежата за известно време.</translation>
@@ -711,6 +726,9 @@
 Leo. Това действие не може да бъде отменено.</translation>
 <translation id="8157373421434119674">Данни и история на чата</translation>
 <translation id="614530507403667291">Образец по подразбиране за нови разговори</translation>
+<translation id="349846214503465941">Активиране на плейлиста</translation>
+<translation id="7903608716704052878">Автоматично добавяне на файлове за гледане офлайн</translation>
+<translation id="4193768184502613558">Тази опция автоматично ще съхранява в кеш медийни файлове, за да можете да ги възпроизвеждате без връзка с интернет.</translation>
 <translation id="6624718837376802990">Аватар Edgy Rewards</translation>
 <translation id="6617313057407561765">Аватар Edgy Brave</translation>
 <translation id="6754445808455578019">Аватар Edgy Ocean</translation>

@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -23,13 +24,12 @@
 #include "base/win/security_descriptor.h"
 #include "base/win/sid.h"
 #include "base/win/windows_types.h"
+#include "brave/browser/brave_vpn/win/service_commands.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_details.h"
+#include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_commands.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -104,17 +104,17 @@ bool ConfigureConfigPermissions(const base::FilePath& config_path) {
       0, /*recursive=*/false);
 }
 
-absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
+std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   base::FilePath temp_dir_path;
   // Intentionally using base::GetTempDir to reuse same directory between
   // launches.
   if (!base::GetTempDir(&temp_dir_path) || temp_dir_path.empty()) {
     VLOG(1) << "Unable to get temporary directory";
-    return absl::nullopt;
+    return std::nullopt;
   }
   base::ScopedTempDir scoped_temp_dir;
   if (!scoped_temp_dir.Set(temp_dir_path.Append(base::FilePath(L"BraveVpn")))) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::FilePath temp_file_path(scoped_temp_dir.GetPath().Append(
@@ -122,7 +122,7 @@ absl::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
 
   if (!base::WriteFile(temp_file_path, config)) {
     VLOG(1) << "Failed to write config to file:" << temp_file_path;
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!ConfigureConfigPermissions(temp_file_path)) {
     VLOG(1) << "Failed to set permissions to file:" << temp_file_path;
@@ -141,7 +141,7 @@ bool IsServiceRunning(SC_HANDLE service) {
   return service_status.dwCurrentState == SERVICE_RUNNING;
 }
 
-absl::optional<base::FilePath> GetConfigFilePath(
+std::optional<base::FilePath> GetConfigFilePath(
     const std::wstring& encoded_config) {
   if (encoded_config.empty()) {
     return wireguard::GetLastUsedConfigPath();
@@ -151,7 +151,7 @@ absl::optional<base::FilePath> GetConfigFilePath(
   if (!base::Base64Decode(base::WideToUTF8(encoded_config), &decoded_config) ||
       decoded_config.empty()) {
     VLOG(1) << "Unable to decode wireguard config";
-    return absl::nullopt;
+    return std::nullopt;
   }
   return WriteConfigToFile(decoded_config);
 }

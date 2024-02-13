@@ -5,6 +5,9 @@
 
 #include "brave/components/ipfs/ipfs_service.h"
 
+#include <iterator>
+#include <memory>
+#include <optional>
 #include <set>
 #include <utility>
 
@@ -22,6 +25,7 @@
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_ports.h"
+#include "brave/components/ipfs/ipfs_service_delegate.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -94,10 +98,39 @@ base::flat_map<std::string, std::string> GetHeaders(const GURL& url) {
       {net::HttpRequestHeaders::kOrigin, url::Origin::Create(url).Serialize()}};
 }
 
-absl::optional<std::string> ConvertPlainStringToJsonArray(
+std::optional<std::string> ConvertPlainStringToJsonArray(
     const std::string& json) {
   return base::StrCat({"[\"", json, "\"]"});
 }
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+// Contains blessed extension IDs for all channels
+inline constexpr const char* kBlessedExtensionIds_Stable[] = {
+    // WebRecorder
+    "chrome-extension://fpeoodllldobpkbkabpblcfaogecpndd"};
+
+// Contains blessed extension IDs for nigtly channel and previous ones
+inline constexpr const char* kBlessedExtensionIds_Nightly[] = {
+    // markdown-publish
+    "chrome-extension://ioajeblglaafjfaepefmbohjlncbaaof",
+    // link-list
+    "chrome-extension://beppdjjojnaodnioccaagpgngahdejnk"};
+
+std::vector<std::string> GetBlessedExtensionListForChannel(
+    version_info::Channel channel) {
+  std::vector<std::string> blessed_extensions_list(
+      std::begin(kBlessedExtensionIds_Stable),
+      std::end(kBlessedExtensionIds_Stable));
+
+  if (channel <= version_info::Channel::CANARY) {
+    blessed_extensions_list.insert(blessed_extensions_list.end(),
+                                   std::begin(kBlessedExtensionIds_Nightly),
+                                   std::end(kBlessedExtensionIds_Nightly));
+  }
+
+  return blessed_extensions_list;
+}
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 
 }  // namespace
 
@@ -112,8 +145,10 @@ IpfsService::IpfsService(
     ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
     const base::FilePath& user_data_dir,
     version_info::Channel channel,
-    std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover)
+    std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
+    std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate)
     : prefs_(prefs),
+      pref_change_registrar_(std::make_unique<PrefChangeRegistrar>()),
       url_loader_factory_(url_loader_factory),
       blob_context_getter_factory_(std::move(blob_context_getter_factory)),
       server_endpoint_(GetAPIServer(channel)),
@@ -124,7 +159,8 @@ IpfsService::IpfsService(
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ipfs_p3a_(this, prefs) {
+      ipfs_p3a_(this, prefs),
+      ipfs_service_delegate_(std::move(ipfs_service_delegate)) {
   DCHECK(!user_data_dir.empty());
 
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
@@ -146,6 +182,16 @@ IpfsService::IpfsService(
   ipfs_dns_resolver_subscription_ =
       ipfs_dns_resolver_->AddObserver(base::BindRepeating(
           &IpfsService::OnDnsConfigChanged, weak_factory_.GetWeakPtr()));
+
+  if (prefs_) {
+    pref_change_registrar_->Init(prefs_);
+    pref_change_registrar_->Add(
+        kIPFSAlwaysStartMode,
+        base::BindRepeating(&IpfsService::OnIPFSAlwaysStartModeChanged,
+                            weak_factory_.GetWeakPtr()));
+  }
+
+  OnIPFSAlwaysStartModeChanged();
 }
 
 IpfsService::~IpfsService() {
@@ -180,6 +226,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
+  registry->RegisterBooleanPref(kIPFSAlwaysStartMode, false);
 
   registry->RegisterBooleanPref(kIPFSAutoRedirectToConfiguredGateway, false);
   registry->RegisterBooleanPref(kIPFSLocalNodeUsed, false);
@@ -191,6 +238,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
   registry->RegisterDictionaryPref(kIPFSPinnedCids);
   registry->RegisterBooleanPref(kShowIPFSPromoInfobar, true);
+  registry->RegisterBooleanPref(kIPFSAlwaysStartInfobarShown, false);
 
   // Deprecated, kIPFSAutoRedirectToConfiguredGateway is used instead
   registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
@@ -239,7 +287,8 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
   auto config = mojom::IpfsConfig::New(
       executable_path, GetConfigFilePath(), GetDataPath(),
       GetGatewayPort(channel_), GetAPIPort(channel_), GetSwarmPort(channel_),
-      GetStorageSize(), ipfs_dns_resolver_->GetFirstDnsOverHttpsServer());
+      GetStorageSize(), ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
+      GetBlessedExtensionListForChannel(channel_));
 
   ipfs_service_->Launch(
       std::move(config),
@@ -264,6 +313,16 @@ void IpfsService::RestartDaemon() {
         }
       },
       std::move(launch_callback)));
+}
+
+void IpfsService::OnIPFSAlwaysStartModeChanged() {
+  const auto is_ipfs_local =
+      (prefs_ &&
+       prefs_->GetInteger(kIPFSResolveMethod) ==
+           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  if (is_ipfs_local && prefs_ && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
+    StartDaemonAndLaunch(base::NullCallback());
+  }
 }
 
 void IpfsService::OnIpfsCrashed() {
@@ -323,13 +382,13 @@ void IpfsService::Shutdown() {
   ipfs_pid_ = -1;
 }
 
-void IpfsService::OnDnsConfigChanged(absl::optional<std::string> dns_server) {
+void IpfsService::OnDnsConfigChanged(std::optional<std::string> dns_server) {
   RestartDaemon();
 }
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // static
-absl::optional<std::string> IpfsService::WaitUntilExecutionFinished(
+std::optional<std::string> IpfsService::WaitUntilExecutionFinished(
     base::FilePath data_path,
     base::CommandLine command_line) {
   base::LaunchOptions options;
@@ -362,7 +421,7 @@ void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
   ExecuteNodeCommand(
       cmdline, GetDataPath(),
       base::BindOnce(
-          [](BoolCallback callback, absl::optional<std::string> result) {
+          [](BoolCallback callback, std::optional<std::string> result) {
             std::move(callback).Run(result.has_value());
           },
           std::move(callback)));
@@ -383,7 +442,7 @@ void IpfsService::ExportKey(const std::string& key,
   ExecuteNodeCommand(
       cmdline, GetDataPath(),
       base::BindOnce(
-          [](BoolCallback callback, absl::optional<std::string> result) {
+          [](BoolCallback callback, std::optional<std::string> result) {
             std::move(callback).Run(result.has_value());
           },
           std::move(callback)));
@@ -412,7 +471,7 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
                          bool recursive,
                          AddPinCallback callback) {
   if (!IsDaemonLaunched()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -440,7 +499,7 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
 void IpfsService::RemovePin(const std::vector<std::string>& cids,
                             RemovePinCallback callback) {
   if (!IsDaemonLaunched()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -491,7 +550,7 @@ void IpfsService::RemovePinCli(std::set<std::string> cids,
 void IpfsService::LsPinCli(NodeCallback callback) {
   base::FilePath path = GetIpfsExecutablePath();
   if (path.empty()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -506,7 +565,7 @@ void IpfsService::LsPinCli(NodeCallback callback) {
 
 void IpfsService::OnRemovePinCli(BoolCallback callback,
                                  std::set<std::string> cids,
-                                 absl::optional<std::string> result) {
+                                 std::optional<std::string> result) {
   DCHECK(!cids.empty());
   if (!result || cids.empty()) {
     std::move(callback).Run(false);
@@ -522,12 +581,12 @@ void IpfsService::OnRemovePinCli(BoolCallback callback,
   }
 }
 
-void IpfsService::GetPins(const absl::optional<std::vector<std::string>>& cids,
+void IpfsService::GetPins(const std::optional<std::vector<std::string>>& cids,
                           const std::string& type,
                           bool quiet,
                           GetPinsCallback callback) {
   if (!IsDaemonLaunched()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -661,15 +720,21 @@ void IpfsService::ImportTextToIpfs(const std::string& text,
 void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
                                    size_t key,
                                    const ipfs::ImportedData& data) {
+  bool is_import_success{data.state == ipfs::IPFS_IMPORT_SUCCESS};
+
   if (callback)
     std::move(callback).Run(data);
 
   importers_.erase(key);
+
+  if (is_import_success && ipfs_service_delegate_) {
+    ipfs_service_delegate_->OnImportToIpfsFinished(this);
+  }
 }
 #endif
 
 void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
-                                    absl::optional<int> retries) {
+                                    std::optional<int> retries) {
   if (!IsDaemonLaunched()) {
     if (callback)
       std::move(callback).Run(false, std::vector<std::string>{});
@@ -777,7 +842,9 @@ bool IpfsService::IsDaemonLaunched() const {
 void IpfsService::StartDaemonAndLaunch(
     base::OnceCallback<void(void)> success_callback) {
   if (IsDaemonLaunched()) {
-    std::move(success_callback).Run();
+    if (success_callback) {
+      std::move(success_callback).Run();
+    }
     return;
   }
   LaunchDaemon(base::BindOnce(
@@ -1031,7 +1098,7 @@ void IpfsService::OnGetPinsResult(
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to get pins, response_code = " << response_code;
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1039,7 +1106,7 @@ void IpfsService::OnGetPinsResult(
       IPFSJSONParser::GetGetPinsResultFromJSON(response.value_body());
   if (!parse_result) {
     VLOG(1) << "Fail to get pins, wrong format";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1055,7 +1122,7 @@ void IpfsService::OnPinAddResult(
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to add pin, response_code = " << response_code;
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1063,17 +1130,21 @@ void IpfsService::OnPinAddResult(
       IPFSJSONParser::GetAddPinsResultFromJSON(response.value_body());
   if (!parse_result) {
     VLOG(1) << "Fail to add pin service, wrong format";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   if (parse_result->pins.size() != cids_count_in_request) {
     VLOG(1) << "Not all CIDs were added";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   parse_result->recursive = recursive;
+
+  if (ipfs_service_delegate_) {
+    ipfs_service_delegate_->OnImportToIpfsFinished(this);
+  }
 
   std::move(callback).Run(std::move(parse_result));
 }
@@ -1085,7 +1156,7 @@ void IpfsService::OnPinRemoveResult(
 
   if (!response.Is2XXResponseCode()) {
     VLOG(1) << "Fail to remove pin, response_code = " << response_code;
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1093,7 +1164,7 @@ void IpfsService::OnPinRemoveResult(
       IPFSJSONParser::GetRemovePinsResultFromJSON(response.value_body());
   if (!parse_result) {
     VLOG(1) << "Fail to remove pin, wrong response format";
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1132,7 +1203,7 @@ void IpfsService::OnGatewayValidationComplete(
     const auto final_url = response.final_url();
     const std::string valid_host = base::StringPrintf(
         "%s.ipfs.%s", kGatewayValidationCID, initial_url.host().c_str());
-    success = (response.body() ==
+    success = (response.SerializeBodyToString() ==
                ConvertPlainStringToJsonArray(kGatewayValidationResult)) &&
               (initial_url.host() != final_url.host()) &&
               (initial_url.scheme() == final_url.scheme()) &&

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/ipfs_ui.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -129,7 +130,7 @@ void IPFSDOMHandler::HandleGetConnectedPeers(const base::Value::List& args) {
   service->GetConnectedPeers(
       base::BindOnce(&IPFSDOMHandler::OnGetConnectedPeers,
                      weak_ptr_factory_.GetWeakPtr()),
-      absl::nullopt);
+      std::nullopt);
 }
 
 void IPFSDOMHandler::OnGetConnectedPeers(

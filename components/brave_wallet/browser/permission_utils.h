@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PERMISSION_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PERMISSION_UTILS_H_
 
+#include <optional>
 #include <queue>
 #include <string>
 #include <vector>
@@ -78,10 +79,10 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
                                 const std::vector<std::string>& accounts,
                                 const url::Origin& origin);
 
-absl::optional<blink::PermissionType> CoinTypeToPermissionType(
+std::optional<blink::PermissionType> CoinTypeToPermissionType(
     mojom::CoinType coin_type);
 
-absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
+std::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
     mojom::CoinType coin_type);
 
 }  // namespace brave_wallet

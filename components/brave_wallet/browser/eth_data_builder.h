@@ -6,14 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_DATA_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_DATA_BUILDER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
+
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -21,7 +22,7 @@ namespace filforwarder {
 
 // Allows to forward funds from FEVM account fo FVM account
 // https://github.com/lotus-web3/FilForwarder/blob/main/contracts/FilForwarder.sol
-absl::optional<std::vector<uint8_t>> Forward(const FilAddress& fil_address);
+std::optional<std::vector<uint8_t>> Forward(const FilAddress& fil_address);
 
 }  // namespace filforwarder
 
@@ -95,8 +96,8 @@ namespace unstoppable_domains {
 inline constexpr uint8_t kGetManySelector[] = {0x1b, 0xd8, 0xcc, 0x1a};
 
 // Get mutiple record values mapped with keys of the target domain.
-absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
-                                    const std::string& domain);
+std::optional<std::string> GetMany(const std::vector<std::string>& keys,
+                                   const std::string& domain);
 
 std::vector<std::string> MakeEthLookupKeyList(const std::string& symbol,
                                               const std::string& chain_id);
@@ -114,13 +115,13 @@ namespace ens {
 
 std::string Resolver(const std::string& domain);
 
-absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name);
+std::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name);
 
 }  // namespace ens
 
 namespace balance_scanner {
 
-absl::optional<std::string> TokensBalance(
+std::optional<std::string> TokensBalance(
     const std::string& owner_address,
     const std::vector<std::string>& contract_addresses);
 

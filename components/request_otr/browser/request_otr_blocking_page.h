@@ -9,9 +9,12 @@
 #include <memory>
 #include <string>
 
+#include "base/time/time.h"
 #include "base/values.h"
 #include "components/security_interstitials/content/security_interstitial_page.h"
 #include "url/gurl.h"
+
+class PrefService;
 
 namespace content {
 class WebContents;
@@ -46,7 +49,7 @@ class RequestOTRBlockingPage
   RequestOTRBlockingPage& operator=(const RequestOTRBlockingPage&) = delete;
 
   // SecurityInterstitialPage:: overrides
-  void OnInterstitialClosing() override {}
+  void OnInterstitialClosing() override;
   void CommandReceived(const std::string& command) override;
   security_interstitials::SecurityInterstitialPage::TypeID GetTypeForTesting()
       override;
@@ -55,6 +58,10 @@ class RequestOTRBlockingPage
   // SecurityInterstitialPage:: overrides
   void PopulateInterstitialStrings(base::Value::Dict& load_time_data) override;
   int GetHTMLTemplateId() override;
+
+ private:
+  base::Time start_time_;
+  raw_ptr<PrefService> profile_prefs_;
 };
 
 }  // namespace request_otr

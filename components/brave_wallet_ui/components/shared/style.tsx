@@ -9,6 +9,8 @@ import { FC } from 'react'
 import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
 import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 // types
 import { BraveWallet, StringWithAutocomplete } from '../../constants/types'
@@ -65,6 +67,13 @@ export const LinkText = styled.a`
   text-decoration: none;
 `
 
+export const MutedLinkText = styled(LinkText)`
+  font-family: 'Inter', 'Poppins';
+  font-size: 12px;
+  font-weight: 400;
+  color: ${leo.color.text.tertiary};
+`
+
 export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
@@ -74,7 +83,10 @@ export const ErrorText = styled.span`
 `
 
 type FlexProps = Partial<
-  Pick<CSSProperties, 'flex' | 'alignItems' | 'justifyContent' | 'gap'>
+  Pick<
+    CSSProperties,
+    'flex' | 'alignItems' | 'justifyContent' | 'gap' | 'alignSelf'
+  >
 >
 
 // Mixins
@@ -83,6 +95,36 @@ export const walletButtonFocusMixin = css`
     outline-style: solid;
     outline-color: ${(p) => p.theme.palette.blurple300};
     outline-width: 2px;
+  }
+`
+
+/**
+ * Also forces the scroll indicator to be visible on MacOS when present,
+ * even when the element is not hovered
+ */
+export const styledScrollbarMixin = css`
+  ::-webkit-scrollbar {
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  ::-webkit-scrollbar:vertical {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar:horizontal {
+    height: 7px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: none;
+    border-radius: 8px;
   }
 `
 
@@ -99,20 +141,26 @@ export const backgroundColorMixin = css<{
 export const Row = styled.div<
   FlexProps & {
     maxWidth?: CSSProperties['maxWidth']
+    minWidth?: CSSProperties['minWidth']
     margin?: number | string
     padding?: number | string
     width?: '100%' | 'unset'
     marginBottom?: number | string
+    // https://styled-components.com/docs/api#transient-props
+    $wrap?: boolean
   }
 >`
   font-family: 'Poppins';
   display: flex;
   flex-direction: row;
+  flex-wrap: ${(p) => (p.$wrap ? 'wrap' : 'unset')};
   flex: ${(p) => p.flex ?? 'unset'};
   align-items: ${(p) => p.alignItems ?? 'center'};
+  align-self: ${(p) => p.alignSelf ?? 'unset'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
   gap: ${(p) => p.gap ?? 'unset'};
   width: ${(p) => p.width ?? '100%'};
+  min-width: ${(p) => p.minWidth ?? 'unset'};
   max-width: ${(p) => p.maxWidth ?? 'unset'};
   margin: ${(p) => p.margin ?? 'unset'};
   ${(p) =>
@@ -146,6 +194,7 @@ export const Column = styled.div<
   display: flex;
   flex-direction: column;
   align-items: ${(p) => p.alignItems ?? 'center'};
+  align-self: ${(p) => p.alignSelf ?? 'unset'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
   gap: ${(p) => p.gap ?? 'unset'};
   margin: ${(p) => p.margin ?? 0};
@@ -448,6 +497,12 @@ export const SwitchAccountIcon = styled.div`
   margin-right: 6px;
 `
 
+export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
+  --leo-icon-size: 14px;
+  --leo-icon-color: ${leo.color.icon.interactive};
+  margin-bottom: 1px;
+`
+
 // Asset Icon containers
 export const IconsWrapper = styled.div<{
   marginRight?: string
@@ -525,4 +580,8 @@ export const BraveRewardsIndicator = styled.div`
   padding: 2px 6px;
   border: 1px solid ${leo.color.divider.subtle};
   border-radius: 4px;
+`
+
+export const LeoSquaredButton = styled(Button)`
+  --leo-button-radius: 12px;
 `

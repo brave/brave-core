@@ -5,6 +5,8 @@
 
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h"
 
+#include <optional>
+
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -51,7 +53,7 @@ void BraveWalletProviderDelegateBridge::RequestPermissions(
     }
     if (results == nil) {
       std::move(*callback).Run(
-          static_cast<mojom::RequestPermissionsError>(error), absl::nullopt);
+          static_cast<mojom::RequestPermissionsError>(error), std::nullopt);
       return;
     }
     std::vector<std::string> v;
@@ -73,7 +75,7 @@ bool BraveWalletProviderDelegateBridge::IsAccountAllowed(
                            account:base::SysUTF8ToNSString(account)];
 }
 
-absl::optional<std::vector<std::string>>
+std::optional<std::vector<std::string>>
 BraveWalletProviderDelegateBridge::GetAllowedAccounts(
     mojom::CoinType type,
     const std::vector<std::string>& accounts) {
@@ -81,7 +83,7 @@ BraveWalletProviderDelegateBridge::GetAllowedAccounts(
       [bridge_ getAllowedAccounts:static_cast<BraveWalletCoinType>(type)
                          accounts:brave::vector_to_ns(accounts)];
   if (!results) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return brave::ns_to_vector<std::string>(results);

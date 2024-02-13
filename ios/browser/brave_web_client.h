@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "ios/chrome/browser/web/chrome_web_client.h"
+#include "ios/chrome/browser/web/model/chrome_web_client.h"
 
 class BraveWebClient : public ChromeWebClient {
  public:
@@ -24,6 +24,9 @@ class BraveWebClient : public ChromeWebClient {
   // WebClient implementation.
   std::unique_ptr<web::WebMainParts> CreateWebMainParts() override;
   std::string GetUserAgent(web::UserAgentType type) const override;
+
+  void PostBrowserURLRewriterCreation(
+      web::BrowserURLRewriter* rewriter) override;
 
  private:
   std::string user_agent_;

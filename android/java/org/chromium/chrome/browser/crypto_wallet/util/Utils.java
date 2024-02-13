@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -39,7 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
@@ -54,6 +55,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -90,7 +92,6 @@ import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.widget.Toast;
 
@@ -118,11 +119,6 @@ import java.util.stream.Collectors;
 public class Utils {
     private static final String TAG = "Utils";
 
-    public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
-    public static int ONBOARDING_ACTION = 2;
-    public static int UNLOCK_WALLET_ACTION = 3;
-    public static int RESTORE_WALLET_ACTION = 4;
-
     public static int ACCOUNT_ITEM = 1;
     public static int ASSET_ITEM = 2;
     public static int TRANSACTION_ITEM = 3;
@@ -136,6 +132,7 @@ public class Utils {
     public static final String ENS_OFFCHAIN_LEARN_MORE_URL =
             "https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
     public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
+    public static final String BRAVE_TERMS_OF_USE_URL = "https://brave.com/terms-of-use/";
     public static final String NAME = "name";
     public static final String COIN_TYPE = "coinType";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
@@ -1177,7 +1174,7 @@ public class Utils {
         TxService txService = activity.getTxService();
         assert txService != null;
 
-        PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true, null);
+        PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true);
 
         pendingTxHelper.fetchTransactions(() -> {
             HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
@@ -1359,22 +1356,26 @@ public class Utils {
     }
 
     /**
-     * This method should be used to make substring of a string clickable
-     * Example: This is <ph name="START">%1$s</ph>Clickable<ph name="END">%2$s</ph> text.
+     * This method should be used to make substring of a string clickable Example: This is <ph
+     * name="START">%1$s</ph>Clickable<ph name="END">%2$s</ph> text.
      *
-     * @param context         The context
-     * @param stringRes       The id of resource string
+     * @param context The context
+     * @param stringRes The id of resource string
      * @param onClickListener The callback when clickable substring is clicked.
      */
+    @NonNull
     public static SpannableString createSpanForSurroundedPhrase(
-            Context context, @StringRes int stringRes, View.OnClickListener onClickListener) {
+            @NonNull Context context,
+            @StringRes int stringRes,
+            @NonNull View.OnClickListener onClickListener) {
         String htmlString =
                 String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
         SpannableString spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
-            NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(
-                    context, R.color.brave_link, (view) -> { onClickListener.onClick(view); });
+            NoUnderlineClickableSpan linkSpan =
+                    new NoUnderlineClickableSpan(
+                            context, R.color.brave_link, onClickListener::onClick);
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -1399,16 +1400,8 @@ public class Utils {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    private static boolean canAuthenticate(BiometricManager biometricManager) {
-        assert biometricManager != null;
-
-        return biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
-                == BiometricManager.BIOMETRIC_SUCCESS;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public static boolean isBiometricAvailable(Context context) {
+    @SuppressLint("MissingPermission")
+    public static boolean isBiometricAvailable(@Nullable Context context) {
         // Only Android versions 9 and above are supported.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
             return false;
@@ -1420,16 +1413,19 @@ public class Utils {
                 return false;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                return Utils.canAuthenticate(biometricManager);
+                return biometricManager.canAuthenticate(
+                                BiometricManager.Authenticators.BIOMETRIC_WEAK)
+                        == BiometricManager.BIOMETRIC_SUCCESS;
             }
 
+            //noinspection deprecation
             return biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS;
         } else {
             // For API level < Q, we will use FingerprintManagerCompat to check enrolled
             // fingerprints. Note that for API level lower than 23, FingerprintManagerCompat behaves
             // like no fingerprint hardware and no enrolled fingerprints.
             FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(context);
-            return fingerprintManager != null && fingerprintManager.isHardwareDetected()
+            return fingerprintManager.isHardwareDetected()
                     && fingerprintManager.hasEnrolledFingerprints();
         }
     }

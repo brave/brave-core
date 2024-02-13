@@ -6,23 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
-                                         bool expect_transaction_data);
-mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
-    const base::Value& json_value);
+mojom::ZeroExQuotePtr ParseZeroExQuoteResponse(const base::Value& json_value,
+                                               bool expect_transaction_data);
+mojom::ZeroExErrorPtr ParseZeroExErrorResponse(const base::Value& json_value);
 
-mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value);
-mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
+mojom::JupiterQuotePtr ParseJupiterQuoteResponse(const base::Value& json_value);
+std::optional<std::string> ParseJupiterTransactionResponse(
     const base::Value& json_value);
-mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
-    const base::Value& json_value);
-absl::optional<std::string> ConvertAllNumbersToString(const std::string& json);
+mojom::JupiterErrorPtr ParseJupiterErrorResponse(const base::Value& json_value);
+std::optional<std::string> ConvertAllNumbersToString(const std::string& json);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_

@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -186,9 +187,13 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         proceedTextView.setMovementMethod(LinkMovementMethod.getInstance());
         String termsOfServiceText = String.format(res.getString(R.string.brave_rewards_tos_text),
                 res.getString(R.string.terms_of_service), res.getString(R.string.privacy_policy));
+        int termsOfServiceTextColor =
+                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                        ? R.color.terms_of_service_text_color_night
+                        : R.color.terms_of_service_text_color;
 
-        SpannableString spannableString = BraveRewardsHelper.tosSpannableString(
-                termsOfServiceText, R.color.terms_of_service_text_color);
+        SpannableString spannableString =
+                BraveRewardsHelper.tosSpannableString(termsOfServiceText, termsOfServiceTextColor);
         proceedTextView.setText(spannableString);
     }
 
@@ -205,6 +210,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                             String.format(getString(R.string.send_with_custodian),
                                     getWalletStringFromType(custodianType));
                     mSendButton.setText(sendWithCustodian);
+                    if (custodianType.equals(BraveWalletProvider.SOLANA)) {
+                        mSendButton.setVisibility(View.GONE);
+                    }
                 }
                 walletStatus = mExternalWallet.getStatus();
                 if (walletStatus != WalletStatus.NOT_CONNECTED) {
@@ -233,17 +241,23 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
             String notePart1 =
                     String.format(getString(R.string.creator_unable_receive_contributions),
                             getWalletStringFromType(mWalletType));
+            int backgroundDrawable = R.drawable.rewards_panel_information_for_unverified_background;
             hideAllViews();
             if (!TextUtils.isEmpty(mWeb3Url)) {
                 notePart1 += getString(R.string.still_receive_contributions_from_web3);
                 mWeb3WalletButton.setVisibility(View.VISIBLE);
+            } else if (mWalletType.equals(BraveWalletProvider.SOLANA)) {
+                notePart1 = getString(R.string.creator_isnt_setup_web3);
+                backgroundDrawable = R.drawable.rewards_tipping_web3_error_background;
             }
 
             mSendButton.setVisibility(View.GONE);
 
-            showWarningMessage(mContentView,
-                    R.drawable.rewards_panel_information_for_unverified_background,
-                    getString(R.string.can_not_send_your_contribution), notePart1);
+            showWarningMessage(
+                    mContentView,
+                    backgroundDrawable,
+                    getString(R.string.can_not_send_your_contribution),
+                    notePart1);
         }
     }
 
@@ -253,18 +267,6 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         mContentView.findViewById(R.id.set_as_monthly_contribution).setVisibility(View.GONE);
         mContentView.findViewById(R.id.monthly_switch).setVisibility(View.GONE);
         mCurrency1ValueEditTextView.setVisibility(View.GONE);
-    }
-
-    private String getWalletStringFromStatus(int pubStatus) {
-        if (pubStatus == PublisherStatus.UPHOLD_VERIFIED) {
-            return getResources().getString(R.string.uphold);
-        } else if (pubStatus == PublisherStatus.GEMINI_VERIFIED) {
-            return getResources().getString(R.string.gemini);
-        } else if (pubStatus == PublisherStatus.BITFLYER_VERIFIED) {
-            return getResources().getString(R.string.bitflyer);
-        } else {
-            return getResources().getString(R.string.zebpay);
-        }
     }
 
     private void setAlreadyMonthlyContributionSetMessage() {
@@ -384,8 +386,10 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
             return getResources().getString(R.string.gemini);
         } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return getResources().getString(R.string.bitflyer);
-        } else {
+        } else if (walletType.equals(BraveWalletProvider.ZEBPAY)) {
             return getResources().getString(R.string.zebpay);
+        } else {
+            return getResources().getString(R.string.wallet_sol_name);
         }
     }
 
@@ -398,6 +402,13 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         warningTitle.setText(title);
         TextView warningDescription = view.findViewById(R.id.tipping_warning_description_text);
         warningDescription.setText(description);
+        if (BraveWalletProvider.SOLANA.equals(mWalletType)) {
+            view.findViewById(R.id.tipping_warning_icon).setVisibility(View.VISIBLE);
+            warningTitle.setTextColor(
+                    getActivity().getColor(R.color.tipping_web3_error_text_color));
+            warningDescription.setTextColor(
+                    getActivity().getColor(R.color.tipping_web3_error_text_color));
+        }
     }
 
     private void web3ButtonClick(View view) {
@@ -531,8 +542,8 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     }
 
     private void setCustodianIconAndName(View view) {
-        int custodianIcon = R.drawable.ic_logo_bitflyer_colored;
-        int custodianName = R.string.bitflyer;
+        int custodianIcon = R.drawable.ic_logo_solana;
+        int custodianName = R.string.wallet_sol_name;
 
         if (mWalletType.equals(BraveWalletProvider.UPHOLD)) {
             custodianIcon = R.drawable.upload_icon;
@@ -540,6 +551,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         } else if (mWalletType.equals(BraveWalletProvider.GEMINI)) {
             custodianIcon = R.drawable.ic_gemini_logo_cyan;
             custodianName = R.string.gemini;
+        } else if (mWalletType.equals(BraveWalletProvider.BITFLYER)) {
+            custodianIcon = R.drawable.ic_logo_bitflyer_colored;
+            custodianName = R.string.bitflyer;
         } else if (mWalletType.equals(BraveWalletProvider.ZEBPAY)) {
             custodianIcon = R.drawable.ic_logo_zebpay;
             custodianName = R.string.zebpay;

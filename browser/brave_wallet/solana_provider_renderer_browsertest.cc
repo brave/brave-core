@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
@@ -320,7 +322,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
       events_listener_.Bind(std::move(events_listener));
     }
   }
-  void Connect(absl::optional<base::Value::Dict> arg,
+  void Connect(std::optional<base::Value::Dict> arg,
                ConnectCallback callback) override {
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
@@ -333,7 +335,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   void Disconnect() override {
     // Used to test onAccountChanged
     if (emit_empty_account_changed_) {
-      events_listener_->AccountChangedEvent(absl::nullopt);
+      events_listener_->AccountChangedEvent(std::nullopt);
     } else {
       events_listener_->AccountChangedEvent(kTestPublicKey);
     }
@@ -385,7 +387,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   }
   void SignAndSendTransaction(
       brave_wallet::mojom::SolanaSignTransactionParamPtr param,
-      absl::optional<base::Value::Dict> send_options,
+      std::optional<base::Value::Dict> send_options,
       SignAndSendTransactionCallback callback) override {
     EXPECT_EQ(param->encoded_serialized_msg,
               brave_wallet::Base58Encode(kSerializedMessage));
@@ -409,7 +411,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     }
   }
   void SignMessage(const std::vector<uint8_t>& blob_msg,
-                   const absl::optional<std::string>& display_encoding,
+                   const std::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override {
     EXPECT_EQ(blob_msg, kMessageToSign);
     base::Value::Dict result;
@@ -441,7 +443,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     error_message_ = error_message;
   }
 
-  void SetSendOptions(absl::optional<base::Value::Dict> options) {
+  void SetSendOptions(std::optional<base::Value::Dict> options) {
     send_options_ = std::move(options);
   }
 
@@ -457,7 +459,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   SolanaProviderError error_ = SolanaProviderError::kSuccess;
   std::string error_message_;
   bool emit_empty_account_changed_ = false;
-  absl::optional<base::Value::Dict> send_options_;
+  std::optional<base::Value::Dict> send_options_;
   mojo::Remote<brave_wallet::mojom::SolanaEventsListener> events_listener_;
 };
 
@@ -645,7 +647,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
-                       DoNotAttachIfNoWalletCreated) {
+                       AttachEvenIfNoWalletCreated) {
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           browser()->profile());
@@ -656,10 +658,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop(browser());
 
-  std::string command = "window.solana.isBraveWallet";
-  EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
-                  .error.find("Cannot read properties of undefined") !=
-              std::string::npos);
+  constexpr char kEvalIsBraveWallet[] = "window.solana.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(web_contents(browser())->GetPrimaryMainFrame(),
+                              kEvalIsBraveWallet)
+                  .ExtractBool());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 
@@ -908,7 +910,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
              SignAndSendTransactionScript(tx_with_send_options));
   EXPECT_EQ(base::Value(true), send_options_result.value);
 
-  provider->SetSendOptions(absl::nullopt);
+  provider->SetSendOptions(std::nullopt);
   const std::string tx =
       base::StrCat({"(", CreateTransactionScript(kSerializedTx), ")"});
 
@@ -927,7 +929,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   auto result2 =
       EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx2));
   EXPECT_EQ(base::Value(true), result2.value);
-  provider->SetSendOptions(absl::nullopt);
+  provider->SetSendOptions(std::nullopt);
 
   // no arg
   auto result3 =

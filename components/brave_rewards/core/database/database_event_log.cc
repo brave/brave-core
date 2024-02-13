@@ -31,7 +31,7 @@ DatabaseEventLog::~DatabaseEventLog() = default;
 void DatabaseEventLog::Insert(const std::string& key,
                               const std::string& value) {
   if (key.empty()) {
-    BLOG(0, "Key is empty");
+    engine_->LogError(FROM_HERE) << "Key is empty";
     return;
   }
 
@@ -60,10 +60,10 @@ void DatabaseEventLog::Insert(const std::string& key,
 
 void DatabaseEventLog::InsertRecords(
     const std::map<std::string, std::string>& records,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (records.empty()) {
-    BLOG(0, "No records");
-    callback(mojom::Result::NOT_FOUND);
+    engine_->LogError(FROM_HERE) << "No records";
+    std::move(callback).Run(mojom::Result::NOT_FOUND);
     return;
   }
 
@@ -125,8 +125,8 @@ void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
                                        mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback({});
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run({});
     return;
   }
 
@@ -143,7 +143,7 @@ void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database

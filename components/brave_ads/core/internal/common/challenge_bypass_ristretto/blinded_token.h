@@ -6,17 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_BLINDED_TOKEN_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_BLINDED_TOKEN_H_
 
+#include <optional>
 #include <ostream>
 #include <string>
 
 #include "base/check.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
-// A |BlindedToken| is sent to the server for signing. It is the result of the
-// scalar multiplication of the point derived from the |TokenPreimage| with the
+// A `BlindedToken` is sent to the server for signing. It is the result of the
+// scalar multiplication of the point derived from the `TokenPreimage` with the
 // blinding factor. (P = T^r = H_1(t)^r).
 
 class BlindedToken {
@@ -52,10 +52,10 @@ class BlindedToken {
   }
 
   static BlindedToken DecodeBase64(const std::string& blinded_token_base64);
-  absl::optional<std::string> EncodeBase64() const;
+  std::optional<std::string> EncodeBase64() const;
 
  private:
-  absl::optional<challenge_bypass_ristretto::BlindedToken> blinded_token_;
+  std::optional<challenge_bypass_ristretto::BlindedToken> blinded_token_;
 };
 
 std::ostream& operator<<(std::ostream& os, const BlindedToken& blinded_token);

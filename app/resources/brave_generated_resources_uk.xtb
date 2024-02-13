@@ -4,116 +4,114 @@
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7561196759112975576">Завжди</translation>
 <translation id="7961015016161918242">Ніколи</translation>
-<translation id="7630214457764713113">Скопіювати очищене посилання</translation>
-<translation id="7973394300052703468">Нове &amp;Приватне вікно</translation>
-<translation id="4615489450165434530">Повідомити про зламаний сайт</translation>
-<translation id="8097438084542431276">Скопіювати очищене посилання</translation>
+<translation id="7630214457764713113">Копіювати чисте посилання</translation>
+<translation id="7973394300052703468">Нове &amp;приватне вікно</translation>
+<translation id="4615489450165434530">Повідомити про пошкоджений сайт</translation>
+<translation id="8097438084542431276">Копіювати чисте посилання</translation>
 <translation id="4678672101289648246">Лише на сторінці нової вкладки</translation>
-<translation id="6516243500644829484">Нове приватне вікно</translation>
-<translation id="1209739344687072997">Звіт про пошкоджений сайт</translation>
+<translation id="6516243500644829484">Нове &amp;приватне вікно</translation>
+<translation id="1209739344687072997">Повідомити про пошкоджений сайт</translation>
 <translation id="8294286161128352783">Лише на сторінці нової вкладки</translation>
-<translation id="6406506848690869874">Синхронізувати</translation>
+<translation id="6406506848690869874">Синхронізація</translation>
 <translation id="1544192797660353713">Гаманець</translation>
 <translation id="8275068909952022340">Більше…</translation>
-<translation id="1990886731975529483">Установити та запустити Google Widevine</translation>
+<translation id="1990886731975529483">Встановити й запустити Google Widevine</translation>
 <translation id="8926389886865778422">Не запитувати знову</translation>
-<translation id="4900351245762303149">Установити Google Widevine</translation>
+<translation id="4900351245762303149">Встановити Google Widevine</translation>
 <translation id="2313383941300459392">Перезапустіть браузер, щоб увімкнути Google Widevine</translation>
-<translation id="8342816622062204340"><ph name="URL"/> хоче відтворити захищений уміст Google Widevine. Надайте системі Android дозвіл на підтримку Widevine. Дозволяючи, ви приймаєте умови використання Google.</translation>
-<translation id="2200626478572277092">Додаток Widevine іноді потрібен для відтворення медіавмісту на вебсторінці. Це розширення Google, завантажене із серверів Google, які Brave не може перевірити. Установлюючи його, ви погоджуєтеся з умовами використання Google.</translation>
+<translation id="8342816622062204340"><ph name="URL"/> хоче відтворити захищений вміст Google Widevine. Надайте системі Android дозвіл на підтримку Widevine. Дозволяючи, ви приймаєте умови використання Google.</translation>
+<translation id="2200626478572277092">Іноді для відтворення медіавмісту на вебсторінках потрібен плагін Widevine. Це розширення від Google, що завантажується з серверів Google, які Brave не може перевірити. Встановлюючи його, ви приймаєте умови використання Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
-Або змініть пізніше на вебсайті <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
-<translation id="6229752134959014186">Дізнатися більше про Widevine</translation>
+Або змініть пізніше на <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Докладніше про Widevine</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> запитує вас</translation>
-<translation id="3218385319396786393">Автопрогравання заблоковано на цій сторінці</translation>
-<translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST"/></translation>
-<translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
-<translation id="3477357195688115718">Brave не перевіряє розширення на предмет безпеки й захищеності. Установлюйте це розширення, лише якщо довіряєте його розробнику.</translation>
-<translation id="2928844661231356557">Надання доступу Bluetooth-пристрою дозволить вебсайту зчитати ідентифікаційну й потенційно конфіденційну інформацію про вас. Надавайте доступ до Bluetooth-пристроїв лише надійним вебсайтам. <ph name="LEARN_MORE"/></translation>
+<translation id="3218385319396786393">Автовідтворення заблоковано на цій сторінці</translation>
+<translation id="4988333904713528597">Завжди дозволяти автовідтворення на <ph name="HOST"/></translation>
+<translation id="4150684676757176434">Блокувати автовідтворення й надалі</translation>
+<translation id="3477357195688115718">Brave не перевіряє безпеку та надійність розширень. Встановлюйте це розширення лише якщо довіряєте його розробнику.</translation>
+<translation id="2928844661231356557">Надання доступу Bluetooth-пристрою дозволить вебсайту зчитувати ідентифікаційну й потенційно конфіденційну інформацію про вас. Надавайте доступ до Bluetooth-пристроїв лише надійним вебсайтам. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Вікна Tor</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
-<translation id="6924909138923993900">Нове проксі-з'єднання Tor для цього сайту</translation>
-<translation id="4734294903299549345">Залишити приватне вікно в Tor</translation>
-<translation id="8612763432858587652">Залишити приватне вікно</translation>
+<translation id="6924909138923993900">Нове Tor-з'єднання для цього сайту</translation>
+<translation id="4734294903299549345">Вийти з приватного вікна з Tor</translation>
+<translation id="8612763432858587652">Вийти з приватного вікна</translation>
 <translation id="8760415064721320867">Приватне вікно з Tor</translation>
 <translation id="2055363275850890030">Приватне вікно</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
-<translation id="1970435562892104727">Це приватне вікно в Tor</translation>
-<translation id="1037341607922068025">Відкрити приватне вікно в Tor</translation>
-<translation id="1725356094208762656">Відкрити в Tor</translation>
-<translation id="3396347744975515056">Синхронізація Brave була оновлена и потребує налаштування</translation>
-<translation id="7473245612074035141">Почати налаштування</translation>
+<translation id="1970435562892104727">Це приватне вікно з Tor</translation>
+<translation id="1037341607922068025">Відкрити приватне вікно з Tor</translation>
 <translation id="496896260395129787">Цей обліковий запис Brave Sync видалено на іншому пристрої. Якщо ви не хотіли вимикати синхронізацію, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> повторно створіть обліковий запис.</translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>повторно створіть обліковий запис</translation>
 <translation id="6965382102122355670">OK</translation>
-<translation id="3975865347033939965">Не вдалося запустити службу синхронізації, синхронізацію Brave не запущено</translation>
-<translation id="4450893287417543264">Більше не показувати</translation>
-<translation id="4595286989346610620">Переглянути деталі</translation>
+<translation id="3975865347033939965">Не вдалося запустити службу синхронізації. Синхронізація Brave не працює</translation>
+<translation id="4450893287417543264">Не показувати знову</translation>
+<translation id="4595286989346610620">Переглянути подробиці</translation>
 <translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">Опублікування та отримання файлів від системи IPFS</translation>
-<translation id="9220923434129933852">Читання та змінення налаштувань IPFS</translation>
+<translation id="3094628781200061820">Обмін файлами з системою IPFS</translation>
+<translation id="9220923434129933852">Читання і зміна налаштувань IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">Відкрити за допомогою адреси .onion</translation>
 <translation id="4759098689276706664">Вставити примусово</translation>
 <translation id="4901618511712685702">Імпортувати до IPFS</translation>
 <translation id="6794469945030154569">Ця сторінка</translation>
-<translation id="5037852323412456577">Обране зображення</translation>
-<translation id="2715839724138372481">Обране відео</translation>
-<translation id="4227945450504703638">Обране аудіо</translation>
-<translation id="7895302206188277628">Пов’язаний вміст</translation>
-<translation id="3654831858282189202">Публікувати з ключами IPNS</translation>
+<translation id="5037852323412456577">Вибране зображення</translation>
+<translation id="2715839724138372481">Вибране відео</translation>
+<translation id="4227945450504703638">Вибране аудіо</translation>
+<translation id="7895302206188277628">Пов'язаний вміст</translation>
+<translation id="3654831858282189202">Оприлюднити з ключем IPNS</translation>
 <translation id="1047401034925735299">Імпортувати вибраний текст до IPFS</translation>
-<translation id="6925604404524625582">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
-<translation id="1434416574322382019">Нове Приватне вікно з Tor</translation>
-<translation id="4703780849509456860">Відкрити посилання у Приватному вікні з Tor</translation>
-<translation id="3488584642074079080">Відкрити посилання у Приватному вікні Brave з Tor</translation>
+<translation id="6925604404524625582">Імпортувати й копіювати посилання до знімка IPFS</translation>
+<translation id="1434416574322382019">Нове приватне вікно з Tor</translation>
+<translation id="4703780849509456860">Відкрити посилання у приватному вікні з Tor</translation>
+<translation id="3488584642074079080">Відкрити посилання у приватному вікні Brave з Tor</translation>
 <translation id="186554175479803110">Імпорт і поширення файлу</translation>
 <translation id="3036649622769666520">Відкриття файлів</translation>
 <translation id="4408880250587950158">Імпорт і поширення каталогу</translation>
-<translation id="8396273373598682323">Із файлом</translation>
-<translation id="518600784989889917">Із каталогом</translation>
+<translation id="8396273373598682323">З файлом</translation>
+<translation id="518600784989889917">З каталогом</translation>
 <translation id="8147987711042435221">Оновлення IPNS</translation>
-<translation id="4491895534716990473">Імпортувати обраний текст до IPFS</translation>
-<translation id="8883166554766780543">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
-<translation id="709253338301411121">Імпорт і поширення файлу</translation>
+<translation id="4491895534716990473">Імпортувати вибраний текст до IPFS</translation>
+<translation id="8883166554766780543">Імпортувати й копіювати посилання до знімка IPFS</translation>
+<translation id="709253338301411121">Імпортувати й поширити файл</translation>
 <translation id="7068360136237591149">Відкриття файлів</translation>
 <translation id="6313675821927505581">Нове приватне вікно з Tor</translation>
-<translation id="2638041073279639246">Відкрийте посилання у приватномі вікні з Tor</translation>
-<translation id="3425600262621021599">Відкрийте посилання у приватномі вікні  Brave з Tor</translation>
-<translation id="3229091547987707389">Імпорт і поширення каталогу</translation>
-<translation id="474217410105706308">Вимкнути звук на вкладці</translation>
-<translation id="2804710924397009224">Приховати іконку нагород Brave</translation>
-<translation id="5029193871181468990">Приховати іконку нагород Brave</translation>
-<translation id="2808103541110899519">Приховати значок гаманця Brave</translation>
-<translation id="7595540212376041331">Приховати значок гаманця Brave</translation>
-<translation id="4928988318462976765">Веб Магазин Розширень</translation>
-<translation id="9181207987584064303">Переглянути у Веб Магазині Розширень</translation>
-<translation id="3161744659507801211">Попередження: Brave не може завадити розширенням записувати вашу історію пошуку.</translation>
-<translation id="2162109630536601963">Якщо це розширення робитиме мережеві запити, вони проходитимуть не через Tor чи приватний режим.</translation>
-<translation id="2725327089319971976">Щоб вимкнути це розширення у приватному та Tor-режимі, приберіть галочку біля цієї опції.</translation>
-<translation id="3371343170427636147">Програми браузера Brave Nightly</translation>
-<translation id="4097979995947147464">Бета-програми браузера Brave</translation>
-<translation id="8303432794159193481">Додатки браузера Brave</translation>
-<translation id="8292967014767479012">Програми браузера Brave</translation>
-<translation id="4743468424889072281">Розробницькі програми браузера Brave</translation>
+<translation id="2638041073279639246">Відкрити посилання у приватному вікні з Tor</translation>
+<translation id="3425600262621021599">Відкрити посилання у приватному вікні Brave з Tor</translation>
+<translation id="3229091547987707389">Імпортувати й поширити каталог</translation>
+<translation id="2545072023356206691">Починаючи з 1 грудня 2023 року, канал Brave Dev більше не отримуватиме оновлення браузера. Ми рекомендуємо користувачам перейти на Nightly, Beta або Release версію Brave.</translation>
+<translation id="474217410105706308">Вимкнути звук вкладки</translation>
+<translation id="2804710924397009224">Приховати піктограму Винагороди Brave</translation>
+<translation id="5029193871181468990">Приховати піктограму Винагороди Brave</translation>
+<translation id="2808103541110899519">Приховати піктограму Гаманець Brave</translation>
+<translation id="7595540212376041331">Приховати піктограму Гаманець Brave</translation>
+<translation id="4928988318462976765">Вебмагазин розширень</translation>
+<translation id="9181207987584064303">Переглянути у вебмагазині розширень</translation>
+<translation id="3161744659507801211">Попередження: Brave не може завадити розширенням записувати вашу історію перегляду.</translation>
+<translation id="2162109630536601963">Якщо це розширення виконуватиме мережеві запити, вони не проходитимуть через Tor чи приватний режим.</translation>
+<translation id="2725327089319971976">Щоб вимкнути це розширення у приватному і Tor режимах, вимкніть цей параметр.</translation>
+<translation id="3371343170427636147">Застосунки браузера Brave Nightly</translation>
+<translation id="4097979995947147464">Застосунки браузера Brave Beta</translation>
+<translation id="8303432794159193481">Застосунки браузера Brave Dev</translation>
+<translation id="8292967014767479012">Застосунки браузера Brave</translation>
+<translation id="4743468424889072281">Застосунки для розробників браузера Brave</translation>
 <translation id="5039804452771397117">Дозволити</translation>
 <translation id="7053983685419859001">Блокувати</translation>
-<translation id="1679356339067548863">Допоможіть Brave покращити стабільність продукту, автоматично надсилаючи звіти про діагностику, коли браузер Brave несподівано завершить роботу або зависне.</translation>
-<translation id="660171790038410175"><ph name="BROWSER_NAME"/> несподівано припинив працювати.</translation>
+<translation id="1679356339067548863">Допоможіть Brave покращити стабільність, автоматично надсилаючи звіти про діагностику, коли браузер Brave несподівано завершить роботу або зависне.</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> несподівано завершив роботу.</translation>
 <translation id="1324417023773393937">Браузер Brave</translation>
-<translation id="7276554663454265692">Ви можете змінити <ph name="SETTING_TEXT"/> будь-якої миті в налаштуваннях браузера.</translation>
-<translation id="6873781976650514089">це налаштування</translation>
+<translation id="7276554663454265692">Ви можете змінити <ph name="SETTING_TEXT"/> будь-коли в налаштуваннях браузера.</translation>
+<translation id="6873781976650514089">цей параметр</translation>
 <translation id="8915916167043355778">Закрити всі</translation>
 <translation id="7658239707568436148">Скасувати</translation>
 <translation id="4870911314065352661">Закрити всі вкладки?</translation>
 <translation id="7551864359422178684">Відкриті вкладки в цьому вікні браузера: <ph name="NUMBER_OF_TABS"/>.</translation>
 <translation id="2571596981920752023">Вкладки: <ph name="NUMBER_OF_TABS"/></translation>
-<translation id="1307431692088049276">Не питати знову</translation>
-<translation id="2272117088509540883">– Пошук Brave</translation>
-<translation id="2701279958223202597">Підтримайте незалежний пошук із кращою конфіденційністю. Пошук Brave не відстежує ваші дії, запити або натискання.</translation>
-<translation id="6438467592401259882">Підтримайте незалежний пошук із кращою конфіденційністю.</translation>
-<translation id="5167182095453855816">Настав час відмовитися від рішень великих технологічних компаній.</translation>
+<translation id="1307431692088049276">Не запитувати знову</translation>
+<translation id="2272117088509540883">- Пошук Brave</translation>
+<translation id="2701279958223202597">Підтримайте незалежний пошук із кращою приватністю. Пошук Brave не відстежує ваші дії.</translation>
+<translation id="6438467592401259882">Підтримайте незалежний пошук із кращою приватністю.</translation>
+<translation id="5167182095453855816">Настав час відмовитися від великих технологічних компаній.</translation>
 <translation id="45040495135337202">Браузер Brave не відстежує вас, ваші запити чи натискання. Він не залежить від великих технологічних компаній.</translation>
 <translation id="6919364924256365253">Відмовтеся від Google та Bing. Користуйтеся лише Brave.</translation>
 <translation id="3313148036097793884">Brave не відстежує вас, ваші запити чи натискання. Це повністю незалежний браузер.</translation>
@@ -189,6 +187,10 @@
 <translation id="7109885938715976444">Тільки цього разу</translation>
 <translation id="7473891865547856676">Ні, дякую</translation>
 <translation id="2722425322672922644">Дізнатися, як це впливає на конфіденційність</translation>
+<translation id="5551268135482191097">Під час завантаження URL-адреси IPFS сталася помилка. Перейти до оригінальної URL-адреси?</translation>
+<translation id="4756627014339714615">Перейти</translation>
+<translation id="1338274252864046652">Завжди починати з вузла IPFS під час запуску браузеру?</translation>
+<translation id="3435896845095436175">Увімкнути</translation>
 <translation id="4552520379838695057">Вибачте, сторінка відсутня.</translation>
 <translation id="2609895996619941644">Бажаєте перевірити, чи є збережена версія в Архіві?</translation>
 <translation id="8053093028263274061">Вибачте, збереженої версії немає.</translation>
@@ -289,6 +291,19 @@
 <translation id="5181358966317519720">Видалити зі списку відтворення</translation>
 <translation id="2377705456080309463">Переглянути оригінальну сторінку</translation>
 <translation id="158894735649719362">Найцікавіше почнеться, коли буде що відтворювати. Додайте улюблені медіафайли й відтворюйте їх будь-коли й будь-де. Навіть без підключення до мережі.</translation>
+<translation id="8422349592890097194">Створити нову папку</translation>
+<translation id="2818704116581303039">Відкрити налаштування списку відтворення</translation>
+<translation id="6790428901817661496">Відтворити</translation>
+<translation id="1178581264944972037">Пауза</translation>
+<translation id="4477350412780666475">Наступна композиція</translation>
+<translation id="3962859241508114581">Попередня композиція</translation>
+<translation id="7544853251252956727">Перемішати</translation>
+<translation id="4330722796577425585">Перемотати назад</translation>
+<translation id="7481312909269577407">Переслати</translation>
+<translation id="2800828306627475693">Повтор вимкнено</translation>
+<translation id="1748244367114657861">Повторити відтворення одного об’єкта</translation>
+<translation id="6421906998825794164">Повторити відтворення всіх об’єктів</translation>
+<translation id="1727684853006449697">Програвач Brave</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
@@ -402,10 +417,6 @@
 <translation id="413570371620795359">Відкрийте панель «Нагороди», щоб увімкнути й почати роботу</translation>
 <translation id="1051600834033686945">Відкрити всі налаштування Brave Rewards</translation>
 <translation id="6333347122924254968">Показувати значок Brave Rewards в адресному рядку</translation>
-<translation id="7483857210736407752">Показувати кнопки чайових на сайтах</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Блокування в соціальних медіа</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
@@ -574,7 +585,9 @@
 <translation id="6936835573742749135">Неможливо подати запит на тест CAPTCHA. Спробуйте ще раз пізніше.</translation>
 <translation id="2653659639078652383">Надіслати</translation>
 <translation id="1369311132025451972">Автоматично перенаправляти .цибулинний сайт</translation>
-<translation id="1658670175365815312">Brave перемкнеться на .onion-версію вебсайту, якщо вона доступна, а також відкриватиме у вікні браузеру Tor усі домени .onion.</translation>
+<translation id="6214393847480015759">У вікнах Tor Brave автоматично переходитиме на версію .onion, якщо така є у вебсайта.</translation>
+<translation id="1294350054292274934">Дозволяти розв’язання адрес .onion лише у вікнах Tor</translation>
+<translation id="1258903596167452221">Послуги Onion будуть недоступні поза межами вікон Tor.</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
 <translation id="5249433283143453448">Використовуйте компонент управління цифровими правами Widevine (DRM) для перегляду захищеного потокового відео та іншого вмісту в браузері.</translation>
 <translation id="1314131187310290315">Розширення Manifest V2</translation>
@@ -623,6 +636,7 @@
 <translation id="4226543734057230801">Мережі Ethereum</translation>
 <translation id="3504157706952484145">Мережі Filecoin</translation>
 <translation id="1561541094377237745">Мережі Solana</translation>
+<translation id="7141438739990875547">Мережі Bitcoin</translation>
 <translation id="3159419679550543837">Показувати тестові мережі</translation>
 <translation id="3215569562674795548">Редагування чи додавання нової мережі</translation>
 <translation id="4418993400653250511">Ідентифікатор ланцюга</translation>
@@ -662,6 +676,7 @@
 <translation id="8425213833346101688">Змінити</translation>
 <translation id="585868419599255817">Резервний відкритий шлюз IPFS</translation>
 <translation id="2618080188892567155">Автоматично переходити на відкритий шлюз IPFS, якщо не вдається зв’язатися з локальним вузлом IPFS Brave.</translation>
+<translation id="8956391206920485238">Завжди починати з вузла IPFS під час запуску браузеру?</translation>
 <translation id="6789104345873307368">Автоматично перенаправляти запити щодо ресурсів IPFS-мережі до налаштованого шлюзу.</translation>
 <translation id="4138306018048329894">Запити щодо ресурсів IPFS, розміщених у сторонніх шлюзах IPFS або ресурсах DNSLINK, передаватимуться через вибраний локальний чи віддалений шлюз.
     Примітка: у разі вибору локального вузла запит буде надіслано безпосередньо на ваш комп’ютер, і IPFS-мережа може протягом певного часу отримувати дані з кешу.</translation>
@@ -713,6 +728,9 @@
 Цю дію неможливо скасувати.</translation>
 <translation id="8157373421434119674">Дані та історія чата</translation>
 <translation id="614530507403667291">Модель за замовчуванням для нової розмови</translation>
+<translation id="349846214503465941">Увімкнути список відтворення</translation>
+<translation id="7903608716704052878">Автоматично додавати файли для перегляду в режимі офлайн</translation>
+<translation id="4193768184502613558">Коли цей параметр увімкнено, медіафайли автоматично зберігаються в кеші, щоб їх можна було відтворювати, якщо немає підключення до Інтернету.</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

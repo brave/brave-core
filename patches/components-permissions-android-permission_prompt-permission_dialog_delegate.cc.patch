@@ -1,18 +1,19 @@
 diff --git a/components/permissions/android/permission_prompt/permission_dialog_delegate.cc b/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
-index 95938a9c1947c3350604f064c4997e9c4eeaa108..b1bb6b54c3a4af0e0602adb97e2e7b8a6b816bc6 100644
+index 6901a85d3c6bba7deb258bc8033a75f3297ae954..2fdc22715443ef1c38c9320ce9519393dc7a25f1 100644
 --- a/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
 +++ b/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
-@@ -96,12 +96,14 @@ PermissionDialogDelegate* PermissionDialogDelegate::CreateForTesting(
+@@ -172,6 +172,7 @@ PermissionDialogDelegate* PermissionDialogDelegate::CreateForTesting(
  void PermissionDialogDelegate::Accept(JNIEnv* env,
                                        const JavaParamRef<jobject>& obj) {
-   DCHECK(permission_prompt_);
+   CHECK(permission_prompt_);
 +  BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT
    permission_prompt_->Accept();
  }
  
+@@ -185,6 +186,7 @@ void PermissionDialogDelegate::AcceptThisTime(
  void PermissionDialogDelegate::Cancel(JNIEnv* env,
                                        const JavaParamRef<jobject>& obj) {
-   DCHECK(permission_prompt_);
+   CHECK(permission_prompt_);
 +  BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL
    permission_prompt_->Deny();
  }

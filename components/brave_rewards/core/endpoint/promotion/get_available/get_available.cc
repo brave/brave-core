@@ -4,19 +4,19 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_available/get_available.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -27,40 +27,39 @@ GetAvailable::GetAvailable(RewardsEngineImpl& engine) : engine_(engine) {}
 GetAvailable::~GetAvailable() = default;
 
 std::string GetAvailable::GetUrl(const std::string& platform) {
-  const auto wallet = engine_->wallet()->GetWallet();
-  std::string payment_id;
-  if (wallet) {
-    payment_id =
-        base::StringPrintf("&paymentId=%s", wallet->payment_id.c_str());
+  auto url = engine_->Get<EnvironmentConfig>().rewards_grant_url().Resolve(
+      "/v1/promotions");
+
+  url = URLHelpers::SetQueryParameters(
+      url, {{"migrate", "true"}, {"platform", platform}});
+
+  if (const auto wallet = engine_->wallet()->GetWallet()) {
+    url = URLHelpers::SetQueryParameters(url,
+                                         {{"paymentId", wallet->payment_id}});
   }
 
-  const std::string& arguments = base::StringPrintf(
-      "migrate=true%s&platform=%s", payment_id.c_str(), platform.c_str());
-
-  const std::string& path =
-      base::StringPrintf("/v1/promotions?%s", arguments.c_str());
-
-  return GetServerUrl(path);
+  return url.spec();
 }
 
 mojom::Result GetAvailable::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid paymentId or platform in request");
+    engine_->LogError(FROM_HERE) << "Invalid paymentId or platform in request";
     return mojom::Result::FAILED;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
-    BLOG(0, "Unrecognized paymentId/promotion combination");
+    engine_->LogError(FROM_HERE)
+        << "Unrecognized paymentId/promotion combination";
     return mojom::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
+    engine_->LogError(FROM_HERE) << "Internal server error";
     return mojom::Result::FAILED;
   }
 
   if (status_code != net::HTTP_OK) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -73,9 +72,9 @@ mojom::Result GetAvailable::ParseBody(
     std::vector<std::string>* corrupted_promotions) {
   DCHECK(list && corrupted_promotions);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
+  std::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
@@ -145,11 +144,11 @@ mojom::Result GetAvailable::ParseBody(
       promotion->status = mojom::PromotionStatus::OVER;
     }
 
-    promotion->created_at = base::Time::Now().ToDoubleT();
+    promotion->created_at = base::Time::Now().InSecondsFSinceUnixEpoch();
     if (auto* created_at = item->FindString("createdAt")) {
       base::Time time;
       if (base::Time::FromUTCString(created_at->c_str(), &time)) {
-        promotion->created_at = time.ToDoubleT();
+        promotion->created_at = time.InSecondsFSinceUnixEpoch();
       }
     }
 
@@ -163,7 +162,7 @@ mojom::Result GetAvailable::ParseBody(
     bool success =
         base::Time::FromUTCString((*expires_at).c_str(), &expires_at_time);
     if (success) {
-      promotion->expires_at = expires_at_time.ToDoubleT();
+      promotion->expires_at = expires_at_time.InSecondsFSinceUnixEpoch();
     }
 
     auto* claimable_until = item->FindString("claimableUntil");
@@ -171,7 +170,8 @@ mojom::Result GetAvailable::ParseBody(
       base::Time claimable_until_time;
       if (base::Time::FromUTCString(claimable_until->c_str(),
                                     &claimable_until_time)) {
-        promotion->claimable_until = claimable_until_time.ToDoubleT();
+        promotion->claimable_until =
+            claimable_until_time.InSecondsFSinceUnixEpoch();
       }
     }
 
@@ -205,13 +205,14 @@ void GetAvailable::Request(const std::string& platform,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(platform);
-  engine_->LoadURL(std::move(request), std::move(url_callback));
+  engine_->Get<URLLoader>().Load(std::move(request),
+                                 URLLoader::LogLevel::kDetailed,
+                                 std::move(url_callback));
 }
 
 void GetAvailable::OnRequest(GetAvailableCallback callback,
                              mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   std::vector<mojom::PromotionPtr> list;
   std::vector<std::string> corrupted_promotions;
@@ -223,7 +224,8 @@ void GetAvailable::OnRequest(GetAvailableCallback callback,
   }
 
   result = ParseBody(response->body, &list, &corrupted_promotions);
-  std::move(callback).Run(result, std::move(list), corrupted_promotions);
+  std::move(callback).Run(result, std::move(list),
+                          std::move(corrupted_promotions));
 }
 
 }  // namespace promotion

@@ -1,0 +1,64 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
+  ]
+  include_dirs =
+      [ "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios" ]
+}
+
+source_set("ai_chat") {
+  configs += [ ":mojom_header_config" ]
+
+  sources = [
+    "ai_chat+private.h",
+    "ai_chat.h",
+    "ai_chat.mm",
+    "ai_chat_delegate.h",
+    "conversation_driver_ios.h",
+    "conversation_driver_ios.mm",
+  ]
+
+  deps = [
+    ":ai_chat_mojom_wrappers",
+    "//base",
+    "//brave/base/mac",
+    "//brave/components/ai_chat/core/browser:browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/constants",
+    "//brave/components/l10n/common",
+    "//brave/components/resources:strings_grit",
+    "//brave/ios/browser/skus",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//components/version_info",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/common",
+    "//net/traffic_annotation",
+    "//services/data_decoder/public/cpp",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//ui/base",
+    "//url",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}
+
+ios_objc_mojom_wrappers("ai_chat_mojom_wrappers") {
+  mojom_target = "//brave/components/ai_chat/core/common/mojom"
+  sources = [ "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom" ]
+  output_dir = "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios"
+}

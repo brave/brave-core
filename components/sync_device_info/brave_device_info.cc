@@ -5,6 +5,8 @@
 
 #include "brave/components/sync_device_info/brave_device_info.h"
 
+#include <optional>
+
 #include "base/values.h"
 
 namespace syncer {
@@ -23,8 +25,8 @@ BraveDeviceInfo::BraveDeviceInfo(
     base::Time last_updated_timestamp,
     base::TimeDelta pulse_interval,
     bool send_tab_to_self_receiving_enabled,
-    const absl::optional<DeviceInfo::SharingInfo>& sharing_info,
-    const absl::optional<PhoneAsASecurityKeyInfo>& paask_info,
+    const std::optional<DeviceInfo::SharingInfo>& sharing_info,
+    const std::optional<PhoneAsASecurityKeyInfo>& paask_info,
     const std::string& fcm_registration_token,
     const ModelTypeSet& interested_data_types,
     bool is_self_delete_supported)

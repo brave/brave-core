@@ -61,6 +61,7 @@ const StyledEditActionContainer = styled.div`
 const StyledEditButton = styled(LeoButton)`
   width: fit-content;
   flex-grow: 0;
+  color: var(--leo-color-text-primary);
   --leo-button-padding: 10px 12px;
 
   &:last-child {
@@ -166,7 +167,7 @@ const StyledEmptyFolderIcon = styled.div`
 const StyledEmptyFolderMessage = styled.div`
   color: ${color.text.tertiary};
   text-align: center;
-  font: ${font.primary.default.regular};
+  font: ${font.default.regular};
   padding: 0px 40px;
 `
 

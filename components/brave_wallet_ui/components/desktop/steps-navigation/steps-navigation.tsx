@@ -50,13 +50,20 @@ export const StepsNavigation: <T extends string>(
 
   // computed
   const currentStepIndex = steps.findIndex((s) => s === currentStep)
+  const prevStepIndex = currentStepIndex - 1
 
   // memos
   const buttonProps = React.useMemo(() => {
     return goBackUrl
       ? ({ as: Link, to: goBackUrl } as const)
-      : ({ onClick: goBack || history.goBack, as: 'button' } as const)
-  }, [goBackUrl, goBack, history])
+      : ({
+          onClick:
+            goBack || steps[prevStepIndex]
+              ? () => history.push(steps[prevStepIndex])
+              : history.goBack,
+          as: 'button'
+        } as const)
+  }, [steps, prevStepIndex, goBackUrl, goBack, history])
 
   return (
     <Wrapper>

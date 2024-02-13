@@ -6,17 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_VERIFICATION_KEY_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_VERIFICATION_KEY_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
 class VerificationSignature;
 
-// A shared |VerificationKey| for proving and verifying the validity of an
-// |UnblindedToken|. (K = H_2(t, W)).
+// A shared `VerificationKey` for proving and verifying the validity of an
+// `UnblindedToken`. (K = H_2(t, W)).
 
 class VerificationKey {
  public:
@@ -31,7 +31,7 @@ class VerificationKey {
     return verification_key_;
   }
 
-  absl::optional<VerificationSignature> Sign(const std::string& message);
+  std::optional<VerificationSignature> Sign(const std::string& message);
 
   [[nodiscard]] bool Verify(const VerificationSignature& verification_signature,
                             const std::string& message);

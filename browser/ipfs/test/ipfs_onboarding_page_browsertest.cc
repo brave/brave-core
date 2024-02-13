@@ -180,7 +180,8 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseLocalNode) {
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
 
   // Send Proceed command and check if we fallback to gateway and pref is set.
-  ExecuteInterstitialScript(browser(), "$('local-node-button').click();");
+  ExecuteInterstitialScript(
+      browser(), "document.querySelector('#local-node-button').click();");
   GURL resolved_url = GetResolvedNodeURL();
   EXPECT_EQ(resolved_url, web_contents->GetURL());
   EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
@@ -215,7 +216,8 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseGateway) {
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
 
   // Send Proceed command and check if we fallback to gateway and pref is set.
-  ExecuteInterstitialScript(browser(), "$('public-gateway-button').click();");
+  ExecuteInterstitialScript(
+      browser(), "document.querySelector('#public-gateway-button').click();");
   EXPECT_EQ(gateway_url(), web_contents->GetURL());
   EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
             static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -249,7 +251,8 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, LearnMore) {
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
 
   // Send Proceed command and check if we fallback to gateway and pref is set.
-  EXPECT_TRUE(content::ExecJs(web_contents, "$('learn-more').click();"));
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, "document.querySelector('#learn-more').click();"));
   EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
             static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
 
@@ -278,7 +281,8 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, OpenSettings) {
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
 
   // Send Proceed command and check if we fallback to gateway and pref is set.
-  EXPECT_TRUE(content::ExecJs(web_contents, "$('open-settings').click();"));
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, "document.querySelector('#open-settings').click();"));
   EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
             static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
 

@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.util;
 
+import android.annotation.SuppressLint;
+
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
@@ -12,15 +14,34 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class UsageMonitor {
+    private static final Object sLock = new Object();
     private static final long REPORT_INTERVAL_MS = 15000;
 
     private MiscAndroidMetrics mMiscAndroidMetrics;
     private Timer mTimer;
+    private static UsageMonitor sInstance;
 
-    public UsageMonitor(MiscAndroidMetrics miscAndroidMetrics) {
+    public static UsageMonitor getInstance(MiscAndroidMetrics miscAndroidMetrics) {
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new UsageMonitor();
+            }
+            sInstance.setMiscAndroidMetrics(miscAndroidMetrics);
+        }
+        return sInstance;
+    }
+
+    private UsageMonitor() {}
+
+    private void setMiscAndroidMetrics(MiscAndroidMetrics miscAndroidMetrics) {
         mMiscAndroidMetrics = miscAndroidMetrics;
     }
 
+    // Warning: Use of scheduleAtFixedRate is strongly discouraged because it can lead to unexpected
+    // behavior when Android processes become cached (tasks may unexpectedly execute hundreds or
+    // thousands of times in quick succession when a process changes from cached to uncached);
+    // prefer using schedule [DiscouragedApi].
+    @SuppressLint("DiscouragedApi")
     public void start() {
         if (mTimer != null) {
             mTimer.cancel();
@@ -30,9 +51,14 @@ public class UsageMonitor {
                 new TimerTask() {
                     @Override
                     public void run() {
-                        TimeDelta duration = new TimeDelta();
-                        duration.microseconds = REPORT_INTERVAL_MS * 1000;
-                        mMiscAndroidMetrics.recordBrowserUsageDuration(duration);
+                        try {
+                            TimeDelta duration = new TimeDelta();
+                            duration.microseconds = REPORT_INTERVAL_MS * 1000;
+                            mMiscAndroidMetrics.recordBrowserUsageDuration(duration);
+                        } catch (Exception exc) {
+                            assert false : "UsageMonitor exception" + exc.getMessage();
+                            // Ignore any kind of exception as it's fine if some pings fail
+                        }
                     }
                 },
                 REPORT_INTERVAL_MS,
@@ -40,6 +66,9 @@ public class UsageMonitor {
     }
 
     public void stop() {
+        if (mTimer == null) {
+            return;
+        }
         mTimer.cancel();
         mTimer = null;
     }

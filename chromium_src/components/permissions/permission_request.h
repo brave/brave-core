@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_H_
 
+#include <optional>
+
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 
@@ -27,7 +29,8 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
 
   PermissionRequest(PermissionRequestData request_data,
                     PermissionDecidedCallback permission_decided_callback,
-                    base::OnceClosure delete_callback);
+                    base::OnceClosure delete_callback,
+                    bool uses_automatic_embargo);
 
   PermissionRequest(const PermissionRequest&) = delete;
   PermissionRequest& operator=(const PermissionRequest&) = delete;
@@ -35,8 +38,8 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
   ~PermissionRequest() override;
 
   bool SupportsLifetime() const;
-  void SetLifetime(absl::optional<base::TimeDelta> lifetime);
-  const absl::optional<base::TimeDelta>& GetLifetime() const;
+  void SetLifetime(std::optional<base::TimeDelta> lifetime);
+  const std::optional<base::TimeDelta>& GetLifetime() const;
 
   void set_dont_ask_again(bool dont_ask_again) {
     dont_ask_again_ = dont_ask_again;
@@ -52,7 +55,7 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
   base::WeakPtr<PermissionRequest> GetWeakPtr();
 
  private:
-  absl::optional<base::TimeDelta> lifetime_;
+  std::optional<base::TimeDelta> lifetime_;
 
   bool dont_ask_again_ = false;
 

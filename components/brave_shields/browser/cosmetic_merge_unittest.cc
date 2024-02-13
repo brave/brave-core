@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/json/json_reader.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -22,13 +24,13 @@ class CosmeticResourceMergeTest : public testing::Test {
           const std::string& b,
           bool force_hide,
           const std::string& expected) {
-    absl::optional<base::Value> a_val = base::JSONReader::Read(a);
+    std::optional<base::Value> a_val = base::JSONReader::Read(a);
     ASSERT_TRUE(a_val);
 
-    absl::optional<base::Value> b_val = base::JSONReader::Read(b);
+    std::optional<base::Value> b_val = base::JSONReader::Read(b);
     ASSERT_TRUE(b_val);
 
-    const absl::optional<base::Value> expected_val =
+    const std::optional<base::Value> expected_val =
         base::JSONReader::Read(expected);
     ASSERT_TRUE(expected_val);
 

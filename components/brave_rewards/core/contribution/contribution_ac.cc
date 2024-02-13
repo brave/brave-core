@@ -14,11 +14,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 ContributionAC::ContributionAC(RewardsEngineImpl& engine) : engine_(engine) {}
 
@@ -26,21 +22,20 @@ ContributionAC::~ContributionAC() = default;
 
 void ContributionAC::Process(const uint64_t reconcile_stamp) {
   if (!engine_->state()->GetAutoContributeEnabled()) {
-    BLOG(1, "Auto contribution is off");
+    engine_->Log(FROM_HERE) << "Auto contribution is off";
     return;
   }
 
-  BLOG(1, "Starting auto contribution");
+  engine_->Log(FROM_HERE) << "Starting auto contribution";
 
   auto filter = engine_->publisher()->CreateActivityFilter(
       "", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED, true,
       reconcile_stamp, false, engine_->state()->GetPublisherMinVisits());
 
-  auto get_callback =
-      std::bind(&ContributionAC::PreparePublisherList, this, _1);
-
-  engine_->database()->GetActivityInfoList(0, 0, std::move(filter),
-                                           get_callback);
+  engine_->database()->GetActivityInfoList(
+      0, 0, std::move(filter),
+      base::BindOnce(&ContributionAC::PreparePublisherList,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void ContributionAC::PreparePublisherList(
@@ -50,7 +45,7 @@ void ContributionAC::PreparePublisherList(
   engine_->publisher()->NormalizeContributeWinners(&normalized_list, &list, 0);
 
   if (normalized_list.empty()) {
-    BLOG(1, "AC list is empty");
+    engine_->Log(FROM_HERE) << "AC list is empty";
     return;
   }
 
@@ -68,7 +63,7 @@ void ContributionAC::PreparePublisherList(
   }
 
   if (queue_list.empty()) {
-    BLOG(1, "AC queue list is empty");
+    engine_->Log(FROM_HERE) << "AC queue list is empty";
     return;
   }
 
@@ -82,19 +77,18 @@ void ContributionAC::PreparePublisherList(
   engine_->database()->SaveEventLog(log::kACAddedToQueue,
                                     std::to_string(queue->amount));
 
-  auto save_callback = std::bind(&ContributionAC::QueueSaved, this, _1);
-
-  engine_->database()->SaveContributionQueue(std::move(queue), save_callback);
+  engine_->database()->SaveContributionQueue(
+      std::move(queue),
+      base::BindOnce(&ContributionAC::QueueSaved, weak_factory_.GetWeakPtr()));
 }
 
 void ContributionAC::QueueSaved(const mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Queue was not saved");
+    engine_->LogError(FROM_HERE) << "Queue was not saved";
     return;
   }
 
   engine_->contribution()->CheckContributionQueue();
 }
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution

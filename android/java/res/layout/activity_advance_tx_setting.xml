@@ -9,6 +9,7 @@
     tools:context=".browser.crypto_wallet.activities.AdvanceTxSettingActivity">
 
     <include layout="@layout/brave_wallet_toolbar" />
+    <include layout="@layout/vpn_location_menu_item_action_layout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

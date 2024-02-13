@@ -6,6 +6,7 @@
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -35,7 +36,6 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/dns/public/dns_query_type.h"
 #include "services/network/host_resolver.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave {
 
@@ -67,12 +67,12 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     const ResponseCallback& next_callback,
                     std::shared_ptr<BraveRequestInfo> ctx,
                     EngineFlags previous_result,
-                    absl::optional<std::string> cname);
+                    std::optional<std::string> cname);
 
 class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
-  base::OnceCallback<void(absl::optional<std::string>)> cb_;
+  base::OnceCallback<void(std::optional<std::string>)> cb_;
   base::TimeTicks start_time_;
 
  public:
@@ -114,8 +114,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
           content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
       if (!web_contents) {
         start_time_ = base::TimeTicks::Now();
-        this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
-                         absl::nullopt, absl::nullopt);
+        this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(), std::nullopt,
+                         std::nullopt);
         return;
       }
 
@@ -134,22 +134,22 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     receiver_.set_disconnect_handler(base::BindOnce(
         &AdblockCnameResolveHostClient::OnComplete, base::Unretained(this),
         net::ERR_NAME_NOT_RESOLVED, net::ResolveErrorInfo(net::ERR_FAILED),
-        absl::nullopt, absl::nullopt));
+        std::nullopt, std::nullopt));
   }
 
   void OnComplete(int32_t result,
                   const net::ResolveErrorInfo& resolve_error_info,
-                  const absl::optional<net::AddressList>& resolved_addresses,
-                  const absl::optional<net::HostResolverEndpointResults>&
+                  const std::optional<net::AddressList>& resolved_addresses,
+                  const std::optional<net::HostResolverEndpointResults>&
                       endpoint_results_with_metadata) override {
     UMA_HISTOGRAM_TIMES("Brave.ShieldsCNAMEBlocking.TotalResolutionTime",
                         base::TimeTicks::Now() - start_time_);
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
-      std::move(cb_).Run(absl::optional<std::string>(
+      std::move(cb_).Run(std::optional<std::string>(
           GetCanonicalName(resolved_addresses.value().dns_aliases())));
     } else {
-      std::move(cb_).Run(absl::nullopt);
+      std::move(cb_).Run(std::nullopt);
     }
 
     delete this;
@@ -172,7 +172,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 EngineFlags ShouldBlockRequestOnTaskRunner(
     std::shared_ptr<BraveRequestInfo> ctx,
     EngineFlags previous_result,
-    absl::optional<GURL> canonical_url) {
+    std::optional<GURL> canonical_url) {
   if (!ctx->initiator_url.is_valid()) {
     return previous_result;
   }
@@ -201,8 +201,7 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
   if (adblock_result.rewritten_url.has_value &&
       GURL(std::string(adblock_result.rewritten_url.value)).is_valid() &&
       (ctx->method == "GET" || ctx->method == "HEAD" ||
-       ctx->method == "OPTIONS") &&
-      ctx->aggressive_blocking) {
+       ctx->method == "OPTIONS")) {
     ctx->new_url_spec = std::string(adblock_result.rewritten_url.value);
   }
 
@@ -244,7 +243,7 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     const ResponseCallback& next_callback,
                     std::shared_ptr<BraveRequestInfo> ctx,
                     EngineFlags previous_result,
-                    absl::optional<std::string> cname) {
+                    std::optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (cname.has_value() && ctx->request_url.host() != *cname &&
@@ -256,7 +255,7 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
     task_runner->PostTaskAndReplyWithResult(
         FROM_HERE,
         base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, previous_result,
-                       absl::make_optional<GURL>(canonical_url)),
+                       std::make_optional<GURL>(canonical_url)),
         base::BindOnce(&OnShouldBlockRequestResult, false, task_runner,
                        next_callback, ctx));
   } else {
@@ -351,7 +350,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, EngineFlags(),
-                     absl::nullopt),
+                     std::nullopt),
       base::BindOnce(&OnShouldBlockRequestResult, should_check_uncloaked,
                      task_runner, next_callback, ctx));
 }

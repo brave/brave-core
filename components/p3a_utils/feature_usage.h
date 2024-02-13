@@ -120,16 +120,23 @@ void RecordFeatureDaysInWeekUsed(PrefService* prefs,
 // Question: As an opted in feature user, when was the last time I used the
 // feature?
 //
-// Answers:
+// Answers, if not single month:
 // 1. 0 - 6 days ago (less than a week)
 // 2. 7 - 13 days ago (one week ago or more)
 // 3. 14 - 20 days ago (two weeks ago or more)
 // 4. 21 - 27 days ago (three weeks ago or more)
 // 5. 28 - 59 days ago (four weeks ago or more)
 // 6. 60 days ago or more (two months ago or more)
+//
+// Answers, if single month:
+// 1. Within the last 6 days
+// 2. 7 - 13 days ago
+// 3. 14 - 20 days ago
+// 4. 21 - 30 days ago
 void RecordFeatureLastUsageTimeMetric(PrefService* prefs,
                                       const char* last_use_time_pref_name,
-                                      const char* histogram_name);
+                                      const char* histogram_name,
+                                      bool single_month_only = false);
 
 }  // namespace p3a_utils
 

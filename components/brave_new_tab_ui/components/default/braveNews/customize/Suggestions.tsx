@@ -11,7 +11,7 @@ import Carousel from './Carousel'
 import CustomizeLink from './CustomizeLink'
 import CustomizePage from './CustomizePage'
 import DiscoverSection from './DiscoverSection'
-import FeedCard from './FeedCard'
+import PublisherCard from '../../../../../brave_news/browser/resources/shared/PublisherCard'
 
 export function SuggestionsCarousel () {
   const { suggestedPublisherIds, setCustomizePage } = useBraveNews()
@@ -31,7 +31,7 @@ export function SuggestionsPage () {
   const { suggestedPublisherIds } = useBraveNews()
   return <CustomizePage title={getLocale('braveNewsSuggestionsTitle')}>
     <DiscoverSection>
-      {suggestedPublisherIds.map(p => <FeedCard key={p} publisherId={p} />)}
+      {suggestedPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
     </DiscoverSection>
   </CustomizePage>
 }

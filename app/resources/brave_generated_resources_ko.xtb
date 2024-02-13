@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Tor 비공개 창입니다</translation>
 <translation id="1037341607922068025">Tor 비공개 창 열기</translation>
-<translation id="1725356094208762656">Tor에서 열기</translation>
-<translation id="3396347744975515056">Brave 동기화가 업그레이드되어서 설정이 필요합니다</translation>
-<translation id="7473245612074035141">설치 시작</translation>
 <translation id="496896260395129787">다른 디바이스에서 이 Brave 동기화 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>계정을 새로 만드세요.</translation>
 <translation id="6965382102122355670">좋습니다</translation>
@@ -82,6 +79,7 @@
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
 <translation id="3229091547987707389">디렉토리 가져오기 및 공유</translation>
+<translation id="2545072023356206691">2023년 12월 1일부터 Brave Dev 채널이 더 이상 브라우저 업데이트를 수신하지 않습니다. 기존 이용자는 Brave Nightly, Beta 또는 Release 버전으로 전환하기를 권장합니다.</translation>
 <translation id="474217410105706308">탭 음소거</translation>
 <translation id="2804710924397009224">Brave Rewards 아이콘 숨기기</translation>
 <translation id="5029193871181468990">Brave Rewards 아이콘 숨기기</translation>
@@ -189,6 +187,10 @@
 <translation id="7109885938715976444">이번 한 번만</translation>
 <translation id="7473891865547856676">건너뛰기</translation>
 <translation id="2722425322672922644">프라이버시에 끼치는 영향 알아보기</translation>
+<translation id="5551268135482191097">IPFS URL 로드 중에 오류가 발생했습니다. 원래 URL로 리디렉션하시겠습니까?</translation>
+<translation id="4756627014339714615">리디렉션</translation>
+<translation id="1338274252864046652">브라우저 시작 시에 항상 IPFS 노드를 시작하시겠습니까?</translation>
+<translation id="3435896845095436175">사용</translation>
 <translation id="4552520379838695057">죄송합니다. 해당 페이지가 없습니다.</translation>
 <translation id="2609895996619941644">Wayback Machine에서 저장된 버전을 사용할 수 있는지 확인하시겠습니까?</translation>
 <translation id="8053093028263274061">죄송합니다. 저장된 버전이 존재하지 않습니다.</translation>
@@ -289,6 +291,19 @@
 <translation id="5181358966317519720">재생목록에서 제거</translation>
 <translation id="2377705456080309463">원본 페이지 보기</translation>
 <translation id="158894735649719362">재생할 것이 있을 때 재미가 시작됩니다. 즐겨 보는 미디어를 추가하고 언제 어디서든 심지어 오프라인에서도 재생하세요.</translation>
+<translation id="8422349592890097194">새 폴더 만들기</translation>
+<translation id="2818704116581303039">재생목록 설정 열기</translation>
+<translation id="6790428901817661496">재생</translation>
+<translation id="1178581264944972037">중지</translation>
+<translation id="4477350412780666475">다음 트랙</translation>
+<translation id="3962859241508114581">이전 트랙</translation>
+<translation id="7544853251252956727">셔플</translation>
+<translation id="4330722796577425585">되감기</translation>
+<translation id="7481312909269577407">앞으로</translation>
+<translation id="2800828306627475693">반복 끔</translation>
+<translation id="1748244367114657861">한 개 반복</translation>
+<translation id="6421906998825794164">모두 반복</translation>
+<translation id="1727684853006449697">Brave 플레이어</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -402,10 +417,6 @@
 <translation id="413570371620795359">Rewards 패널을 열고 활성화하여 시작하세요.</translation>
 <translation id="1051600834033686945">Brave Rewards 설정 전체 열기</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
-<translation id="7483857210736407752">사이트상에 팁 버튼 표시</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">소셜 미디어 차단</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
@@ -574,7 +585,9 @@
 <translation id="6936835573742749135">CAPTCHA를 요청할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="2653659639078652383">제출</translation>
 <translation id="1369311132025451972">.onion 사이트 자동 리디렉션</translation>
-<translation id="1658670175365815312">웹사이트의 .onion 버전을 사용할 수 있을 때 Brave가 자동으로 Tor 창에서 모든 .onion 도메인을 엽니다.</translation>
+<translation id="6214393847480015759">Tor 창에서는 웹사이트의 .onion 버전이 사용 가능하다면 Brave가 자동으로 전환합니다.</translation>
+<translation id="1294350054292274934">Tor 창에서만 .onion 주소 해석</translation>
+<translation id="1258903596167452221">Onion 서비스는 Tor 창 외부에서 사용할 수 없습니다.</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="5249433283143453448">Widevine 디지털 권리 관리(DRM) 구성 요소 사용으로 브라우저에서 보호된 스트리밍 동영상 및 기타 콘텐츠를 볼 수 있습니다.</translation>
 <translation id="1314131187310290315">Manifest V2 확장 프로그램</translation>
@@ -623,6 +636,7 @@
 <translation id="4226543734057230801">이더리움 네트워크</translation>
 <translation id="3504157706952484145">Filecoin 네트워크</translation>
 <translation id="1561541094377237745">Solana 네트워크</translation>
+<translation id="7141438739990875547">비트코인 네트워크</translation>
 <translation id="3159419679550543837">테스트 네트워크 표시</translation>
 <translation id="3215569562674795548">네트워크 편집 또는 새로 추가</translation>
 <translation id="4418993400653250511">체인의 ID</translation>
@@ -662,6 +676,7 @@
 <translation id="8425213833346101688">변경</translation>
 <translation id="585868419599255817">IPFS 공용 게이트웨이 대체</translation>
 <translation id="2618080188892567155">Brave 로컬 IPFS 노드에 접근할 수 없는 경우에 퍼블릭 IPFS 게이트웨이로 자동 전환합니다.</translation>
+<translation id="8956391206920485238">브라우저를 시작할 때 항상 IPFS 노드를 시작하시겠습니까?</translation>
 <translation id="6789104345873307368">IPFS 네트워크 리소스 요청을 구성된 게이트웨이로 자동 리디렉션합니다.</translation>
 <translation id="4138306018048329894">제3자 IPFS 게이트웨이가 호스트하는 IPFS 리소스 또는 DNSLINK 리소스 요청은 선택한 로컬 또는 원격 게이트웨이를 통해 라우팅됩니다.
     참고: 로컬 노드가 선택되면 리소스가 귀하의 컴퓨터에서 바로 요청되며, 경우에 따라 캐시된 데이터가 IPFS 네트워크에 제공될 수 있습니다.</translation>
@@ -713,6 +728,9 @@ Brave 레오와 나눴던 모든 대화가 삭제됩니다.
 이 작업은 번복할 수 없습니다.</translation>
 <translation id="8157373421434119674">데이터 및 채팅 기록</translation>
 <translation id="614530507403667291">새 대화의 기본 모델</translation>
+<translation id="349846214503465941">재생목록 활성화</translation>
+<translation id="7903608716704052878">파일을 오프라인 보기용으로 자동 추가</translation>
+<translation id="4193768184502613558">이 옵션을 선택하면 미디어 파일을 자동으로 캐싱하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다.</translation>
 <translation id="6624718837376802990">아바타 에지 리워드</translation>
 <translation id="6617313057407561765">아바타 에지 브레이브</translation>
 <translation id="6754445808455578019">아바타 에지 오션</translation>

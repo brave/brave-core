@@ -6,8 +6,10 @@
 #include "brave/browser/ui/brave_browser.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
@@ -36,6 +38,12 @@ bool g_suppress_dialog_for_testing = false;
 // static
 void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
   g_suppress_dialog_for_testing = suppress;
+}
+
+// static
+bool BraveBrowser::ShouldUseBraveWebViewRoundedCorners(Browser* browser) {
+  return base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners) &&
+         browser->is_type_normal();
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
@@ -83,7 +91,7 @@ void BraveBrowser::TabStripEmpty() {
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
-                                true, absl::nullopt));
+                                true, std::nullopt));
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(

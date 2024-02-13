@@ -23,7 +23,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -32,7 +31,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletNativeUtils;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
 /**
@@ -52,8 +51,7 @@ public class BraveWalletResetPreference
         super(context, attrs);
 
         Resources resources = getContext().getResources();
-        mPrefAccentColor =
-                ApiCompatibilityUtils.getColor(resources, R.color.wallet_error_text_color);
+        mPrefAccentColor = getContext().getColor(R.color.wallet_error_text_color);
         mConfirmationPhrase =
                 resources.getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         setOnPreferenceClickListener(this);
@@ -82,31 +80,30 @@ public class BraveWalletResetPreference
         textView.setText(getContext().getString(
                 R.string.brave_wallet_reset_settings_confirmation, mConfirmationPhrase));
 
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                if (button == AlertDialog.BUTTON_POSITIVE) {
-                    String inputText = input.getText().toString().trim();
-                    if (TextUtils.equals(inputText, mConfirmationPhrase)) {
-                        Log.w(TAG, "Reset");
-                        WalletNativeUtils.resetWallet(Utils.getProfile(false));
-                        KeystoreHelper.resetBiometric();
-                        Utils.setCryptoOnboarding(true);
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == AlertDialog.BUTTON_POSITIVE) {
+                            String inputText = input.getText().toString().trim();
+                            if (TextUtils.equals(inputText, mConfirmationPhrase)) {
+                                Log.w(TAG, "Reset");
+                                WalletNativeUtils.resetWallet(Utils.getProfile(false));
+                                KeystoreHelper.resetBiometric();
+                                Utils.setCryptoOnboarding(true);
 
-                        SharedPreferencesManager preferencesManager =
-                                SharedPreferencesManager.getInstance();
-                        for (String key : WalletConstants.BRAVE_WALLET_PREFS) {
-                            preferencesManager.removeKey(key);
+                                for (String key : WalletConstants.BRAVE_WALLET_PREFS) {
+                                    ChromeSharedPreferences.getInstance().removeKey(key);
+                                }
+                            }
+
+                            // Force clear activity stack
+                            launchBraveTabbedActivity();
+                        } else {
+                            dialog.dismiss();
                         }
                     }
-
-                    // Force clear activity stack
-                    launchBraveTabbedActivity();
-                } else {
-                    dialog.dismiss();
-                }
-            }
-        };
+                };
 
         AlertDialog.Builder alert =
                 new AlertDialog.Builder(getContext(), R.style.ThemeOverlay_BrowserUI_AlertDialog);

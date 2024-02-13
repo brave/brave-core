@@ -49,7 +49,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -130,10 +130,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof StatsViewHolder) {
             StatsViewHolder statsViewHolder = (StatsViewHolder) holder;
 
-            statsViewHolder.hideStatsImg.setOnClickListener(view -> {
-                SharedPreferencesManager.getInstance().writeBoolean(
-                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
-            });
+            statsViewHolder.hideStatsImg.setOnClickListener(
+                    view -> {
+                        ChromeSharedPreferences.getInstance()
+                                .writeBoolean(
+                                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
+                    });
             List<Pair<String, String>> statsPairs = BraveStatsUtil.getStatsPairs();
 
             statsViewHolder.adsBlockedCountTv.setText(statsPairs.get(0).first);
@@ -194,9 +196,9 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
                         ? android.R.color.white
                         : android.R.color.black;
-                ImageViewCompat.setImageTintList(imageCreditViewHolder.superReferralLogo,
-                        ColorStateList.valueOf(
-                                mActivity.getResources().getColor(floatingButtonIconColor)));
+                ImageViewCompat.setImageTintList(
+                        imageCreditViewHolder.superReferralLogo,
+                        ColorStateList.valueOf(mActivity.getColor(floatingButtonIconColor)));
                 imageCreditViewHolder.superReferralLogo.setOnClickListener(view -> {
                     QRCodeShareDialogFragment qRCodeShareDialogFragment =
                             new QRCodeShareDialogFragment();
@@ -314,8 +316,15 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof NewsViewHolder) {
             NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
             newsViewHolder.linearLayout.removeAllViews();
-            int newsPosition = position - getStatsCount() - getTopSitesCount() - ONE_ITEM_SPACE
-                    - getNewContentCount();
+
+            int newsLoadingCount = shouldDisplayNewsLoading() ? 1 : 0;
+            int newsPosition =
+                    position
+                            - getStatsCount()
+                            - getTopSitesCount()
+                            - ONE_ITEM_SPACE
+                            - getNewContentCount()
+                            - newsLoadingCount;
             if (newsPosition < mNewsItems.size()) {
                 FeedItemsCard newsItem = mNewsItems.get(newsPosition);
                 if (mBraveNewsController != null) {
@@ -474,7 +483,6 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setDisplayNewsFeed(boolean isDisplayNewsFeed) {
         if (mIsDisplayNewsFeed != isDisplayNewsFeed) {
             mIsDisplayNewsFeed = isDisplayNewsFeed;
-
             if (mIsDisplayNewsFeed) {
                 notifyItemRangeChanged(getStatsCount() + getTopSitesCount(), TWO_ITEMS_SPACE);
             } else {

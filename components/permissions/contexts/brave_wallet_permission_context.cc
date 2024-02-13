@@ -5,6 +5,7 @@
 
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/permission_utils.h"
@@ -121,7 +122,9 @@ void BraveWalletPermissionContext::AcceptOrCancel(
     content::WebContents* web_contents) {
   PermissionRequestManager* manager =
       PermissionRequestManager::FromWebContents(web_contents);
-  DCHECK(manager);
+  if (!manager) {
+    return;
+  }
 
   std::vector<PermissionRequest*> allowed_requests;
   std::vector<PermissionRequest*> cancelled_requests;
@@ -143,7 +146,9 @@ void BraveWalletPermissionContext::AcceptOrCancel(
 void BraveWalletPermissionContext::Cancel(content::WebContents* web_contents) {
   PermissionRequestManager* manager =
       PermissionRequestManager::FromWebContents(web_contents);
-  DCHECK(manager);
+  if (!manager) {
+    return;
+  }
 
   // Dismiss all requests.
   manager->Dismiss();
@@ -156,7 +161,9 @@ bool BraveWalletPermissionContext::HasRequestsInProgress(
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   PermissionRequestManager* manager =
       PermissionRequestManager::FromWebContents(web_contents);
-  DCHECK(manager);
+  if (!manager) {
+    return false;
+  }
 
   // Only check the first entry because it will not be grouped with other types
   return !manager->Requests().empty() &&
@@ -209,13 +216,13 @@ void BraveWalletPermissionContext::RequestPermissions(
 }
 
 // static
-absl::optional<std::vector<std::string>>
+std::optional<std::vector<std::string>>
 BraveWalletPermissionContext::GetAllowedAccounts(
     blink::PermissionType permission,
     content::RenderFrameHost* rfh,
     const std::vector<std::string>& addresses) {
   if (!rfh) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Fail if there is no last committed URL yet
@@ -227,7 +234,7 @@ BraveWalletPermissionContext::GetAllowedAccounts(
   content::PermissionControllerDelegate* delegate =
       web_contents->GetBrowserContext()->GetPermissionControllerDelegate();
   if (!delegate) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const ContentSettingsType content_settings_type =

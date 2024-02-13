@@ -6,24 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_FILE_PATH_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_FILE_PATH_UTIL_H_
 
-#include <string>
-
-#include "base/files/file_path.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+namespace base {
+class FilePath;
+}  // namespace base
 
 namespace brave_ads {
 
-base::FilePath GetTestPath();
-absl::optional<std::string> ReadFileFromTestPathToString(
-    const std::string& name);
-absl::optional<std::string> ReadFileFromTestPathAndParseTagsToString(
-    const std::string& name);
+base::FilePath TestDataPath();
 
-base::FilePath GetFileResourcePath();
+base::FilePath ComponentResourcesTestDataPath();
 
-base::FilePath GetDataResourcePath();
-absl::optional<std::string> ReadFileFromDataResourcePathToString(
-    const std::string& name);
+base::FilePath DataResourcesPath();
 
 }  // namespace brave_ads
 

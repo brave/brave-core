@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/time/time.h"
@@ -19,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -80,7 +80,7 @@ void SubdivisionUrlRequest::FetchCallback(
   }
 
   BLOG(1, "Parsing subdivision");
-  const absl::optional<std::string> subdivision =
+  const std::optional<std::string> subdivision =
       json::reader::ParseSubdivision(url_response.body);
   if (!subdivision) {
     BLOG(1, "Failed to parse subdivision");

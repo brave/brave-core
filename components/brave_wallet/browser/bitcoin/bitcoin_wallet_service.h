@@ -10,8 +10,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <utility>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
@@ -74,6 +72,7 @@ class BitcoinWalletService : public KeyedService,
   void CreateTransaction(mojom::AccountIdPtr account_id,
                          const std::string& address_to,
                          uint64_t amount,
+                         bool sending_max_amount,
                          CreateTransactionCallback callback);
 
   using SignAndPostTransactionCallback =
@@ -105,6 +104,7 @@ class BitcoinWalletService : public KeyedService,
 
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  void SetArrangeTransactionsForTesting(bool arrange);
 
  private:
   friend CreateTransactionTask;
@@ -136,6 +136,7 @@ class BitcoinWalletService : public KeyedService,
   std::list<std::unique_ptr<CreateTransactionTask>> create_transaction_tasks_;
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
   std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
+  bool arrange_transactions_for_testing_ = false;
   base::WeakPtrFactory<BitcoinWalletService> weak_ptr_factory_{this};
 };
 

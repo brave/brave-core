@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_TX_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
@@ -44,40 +45,34 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::TxDataUnionPtr tx_data_union,
                                 const mojom::AccountIdPtr& from,
-                                const absl::optional<url::Origin>& origin,
+                                const std::optional<url::Origin>& origin,
                                 AddUnapprovedTransactionCallback) override;
-  void ApproveTransaction(const std::string& chain_id,
-                          const std::string& tx_meta_id,
+  void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
   void GetTransactionMessageToSign(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
   void SpeedupOrCancelTransaction(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
-  void RetryTransaction(const std::string& chain_id,
-                        const std::string& tx_meta_id,
+  void RetryTransaction(const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
 
   void Reset() override;
 
   void ProcessFilHardwareSignature(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& signed_message,
       ProcessFilHardwareSignatureCallback callback);
 
   void GetEstimatedGas(const std::string& chain_id,
                        const mojom::AccountIdPtr& from_account_id,
-                       const absl::optional<url::Origin>& origin,
+                       const std::optional<url::Origin>& origin,
                        std::unique_ptr<FilTransaction> tx,
                        AddUnapprovedTransactionCallback callback);
-  std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& chain_id,
-                                             const std::string& tx_meta_id);
+  std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
  private:
   friend class FilTxManagerUnitTest;
@@ -92,8 +87,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                  GetTransactionMessageToSignCallback callback,
                                  bool success,
                                  uint256_t nonce);
-  void OnSendFilecoinTransaction(const std::string& chain_id,
-                                 const std::string& tx_meta_id,
+  void OnSendFilecoinTransaction(const std::string& tx_meta_id,
                                  ApproveTransactionCallback callback,
                                  const std::string& tx_hash,
                                  mojom::FilecoinProviderError error,
@@ -101,7 +95,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   void ContinueAddUnapprovedTransaction(
       const std::string& chain_id,
       const mojom::AccountIdPtr& from_account_id,
-      const absl::optional<url::Origin>& origin,
+      const std::optional<url::Origin>& origin,
       std::unique_ptr<FilTransaction> tx,
       AddUnapprovedTransactionCallback callback,
       const std::string& gas_premium,
@@ -110,8 +104,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       mojom::FilecoinProviderError error,
       const std::string& error_message);
 
-  void OnGetFilStateSearchMsgLimited(const std::string& chain_id,
-                                     const std::string& tx_meta_id,
+  void OnGetFilStateSearchMsgLimited(const std::string& tx_meta_id,
                                      int64_t exit_code,
                                      mojom::FilecoinProviderError error,
                                      const std::string& error_message);
@@ -124,7 +117,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
 
   // TxManager
   void UpdatePendingTransactions(
-      const absl::optional<std::string>& chain_id) override;
+      const std::optional<std::string>& chain_id) override;
 
   std::unique_ptr<FilNonceTracker> nonce_tracker_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;

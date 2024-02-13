@@ -26,7 +26,6 @@ interface StyledButtonProps {
   maxHeight?: string
   minHeight?: string
   minWidth?: string
-  isV2?: boolean
 }
 
 const StyledButtonCssMixin = (p: StyledButtonProps) => {
@@ -42,21 +41,17 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
     justify-content: center;
     cursor: ${(p) => (p.disabled ? 'default' : 'pointer')};
     border-radius: 40px;
-    padding: ${p.isV2 ? '18px 24px' : '10px 22px'};
+    padding: 10px 22px;
     outline: none;
     margin-top: ${(p) => (p?.addTopMargin ? '8px' : '0px')};
 
     background-color: ${(p) =>
       p.disabled
-        ? p.isV2
-          ? leo.color.icon.disabled
-          : p.theme.color.disabled
+        ? leo.color.icon.disabled
         : p.buttonType === 'primary' ||
           p.buttonType === 'confirm' ||
           p.buttonType === 'sign'
-        ? p.isV2
-          ? leo.color.primitive.primary[60]
-          : p.theme.palette.blurple500
+        ? leo.color.primitive.primary[60]
         : p.buttonType === 'danger'
         ? p.theme.color.errorBorder
         : 'transparent'};
@@ -65,13 +60,6 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
       p.buttonType === 'secondary' || p.buttonType === 'reject'
         ? `1px solid ${p.theme.color.interactive08}`
         : 'none'};
-
-    margin-right: ${(p) =>
-      p.buttonType === 'primary' ||
-      p.buttonType === 'confirm' ||
-      p.buttonType === 'sign'
-        ? '0px'
-        : '8px'};
 
     pointer-events: ${(p) => (p.disabled ? 'none' : 'auto')};
 
@@ -104,7 +92,7 @@ export const ButtonText = styled.span<{
     p.buttonType === 'secondary' ||
     p.buttonType === 'reject' ||
     p.buttonType === 'cancel'
-      ? p.theme.color.interactive07
+      ? leo.color.text.secondary
       : p.theme.palette.white};
 `
 

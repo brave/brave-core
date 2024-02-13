@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_
 
 #include <limits>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -51,9 +51,9 @@ constexpr uint64_t kMaxSafeIntegerUint64 = 9007199254740991;  // 2^53-1
 // This is being used for sign typed data where values are not passed
 // around.
 bool ValidSolidityBits(size_t bits);
-absl::optional<uint256_t> MaxSolidityUint(size_t bits);
-absl::optional<int256_t> MaxSolidityInt(size_t bits);
-absl::optional<int256_t> MinSolidityInt(size_t bits);
+std::optional<uint256_t> MaxSolidityUint(size_t bits);
+std::optional<int256_t> MaxSolidityInt(size_t bits);
+std::optional<int256_t> MinSolidityInt(size_t bits);
 
 struct Log {
   Log();
@@ -119,7 +119,7 @@ struct SolanaSignatureStatus {
   bool operator!=(const SolanaSignatureStatus&) const;
 
   base::Value::Dict ToValue() const;
-  static absl::optional<SolanaSignatureStatus> FromValue(
+  static std::optional<SolanaSignatureStatus> FromValue(
       const base::Value::Dict& value);
 
   // The slot the transaction was processed.

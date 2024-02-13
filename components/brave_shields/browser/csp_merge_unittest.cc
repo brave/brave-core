@@ -3,18 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_shields {
 
-const absl::optional<std::string> NO_POLICY = absl::nullopt;
+const std::optional<std::string> NO_POLICY = std::nullopt;
 
 const auto POLICY1 =
-    absl::optional<std::string>("script-src 'self' 'unsafe-inline'");
+    std::optional<std::string>("script-src 'self' 'unsafe-inline'");
 const auto POLICY2 =
-    absl::optional<std::string>("media-src 'self' https://example.com");
+    std::optional<std::string>("media-src 'self' https://example.com");
 
 TEST(CspMergeTest, MergeTwoEmptyPolicies) {
   const auto a = NO_POLICY;

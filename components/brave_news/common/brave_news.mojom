@@ -208,10 +208,20 @@ union FeedV2Type {
   FeedV2ChannelType channel;
 };
 
+enum FeedV2Error {
+  NoArticles,
+  NoFeeds,
+  ConnectionError,
+};
+
 struct FeedV2 {
+  mojo_base.mojom.Time construct_time;
   string source_hash;
   FeedV2Type? type;
   array<FeedItemV2> items;
+
+  // If |error| is set items will be empty.
+  FeedV2Error? error;
 };
 
 struct DisplayAd {
@@ -247,6 +257,7 @@ struct ChannelsEvent {
 struct Configuration {
   bool isOptedIn;
   bool showOnNTP;
+  bool openArticlesInNewTab;
 };
 
 interface ChannelsListener {
@@ -271,6 +282,7 @@ interface BraveNewsController {
   GetChannelFeed(string channel) => (FeedV2 feed);
   GetPublisherFeed(string publisher_id) => (FeedV2 feed);
   GetFeedV2() => (FeedV2 feed);
+  EnsureFeedV2IsUpdating();
   GetSignals() => (map<string, Signal> signals);
 
   // Deprecated by https://github.com/brave/brave-core/pull/16038. Use

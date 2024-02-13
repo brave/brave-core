@@ -5,89 +5,32 @@
 
 import * as React from 'react'
 import classnames from '$web-common/classnames'
-import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
-import getPageHandlerInstance from '../../api/page_handler'
-
-type Timer = ReturnType<typeof setTimeout>
-
-const HOVER_TRANSITION_DELAY = 500
-
-interface ToolTipProps {
-  isVisible: boolean
+interface SiteTitleProps {
+  size: "default" | "small"
 }
 
-function Tooltip(props: ToolTipProps) {
-  const tooltipStyles = classnames({
-    [styles.tooltip]: true,
-    [styles.tooltipVisible]: props.isVisible
-  })
-
-  return (
-    <div role="tooltip" id="page-content-warning-tooltip" className={tooltipStyles}>
-      {getLocale('pageContentWarning')}
-    </div>
-  )
-}
-
-function SiteTitle () {
-  const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
-  const timerId = React.useRef<Timer | undefined>();
+function SiteTitle (props: SiteTitleProps) {
   const context = React.useContext(DataContext)
 
-  const showTooltipWithDelay = () => {
-    timerId.current = setTimeout(() => {
-      setIsTooltipVisible(true)
-    }, HOVER_TRANSITION_DELAY)
-  }
-
-  const hideTooltip = () => {
-    timerId.current && clearTimeout(timerId.current)
-    setIsTooltipVisible(false)
-  }
-
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Escape") {
-      setIsTooltipVisible(false)
-    }
-  }
-
-  const handlePageContentDisconnect = () => {
-    getPageHandlerInstance().pageHandler.disconnectPageContents()
-  }
-
    return (
-    <div className={styles.box}>
-      <Tooltip isVisible={isTooltipVisible} />
-      <div className={styles.favIconBox}>
+    <div className={classnames({
+      [styles.box]: true,
+      [styles.boxSm]: props.size === "small"
+    })}>
+      <div className={classnames({
+        [styles.favIconContainer]: true,
+        [styles.favIconContainerSm]: props.size === "small"
+      })}>
         { context.favIconUrl && <img src={context.favIconUrl} /> }
       </div>
-      <div className={styles.titleBox}>
-        <p className={styles.title} title={context.siteInfo?.title}>
-          {context.siteInfo?.title}
-        </p>
-      </div>
-      <div
-        aria-describedby='page-content-warning-tooltip'
-        onMouseOver={showTooltipWithDelay}
-        onMouseOut={hideTooltip}
-        onTouchStart={() => setIsTooltipVisible(true)}
-        onTouchEnd={() => setIsTooltipVisible(false)}
-        onFocus={() => setIsTooltipVisible(true)}
-        onBlur={() => setIsTooltipVisible(false)}
-        onKeyDown={handleOnKeyDown}
-      >
-        <Button
-          aria-label="Disconnect"
-          kind="plain-faint"
-          onClick={handlePageContentDisconnect}
-        >
-          <Icon name="link-broken" />
-        </Button>
+      <div className={classnames({
+        [styles.titleContainer]: true,
+        [styles.titleContainerSm]: props.size === "small"
+      })}>
+        <p className={styles.title} title={context.siteInfo?.title}>{context.siteInfo?.title}</p>
       </div>
     </div>
   )

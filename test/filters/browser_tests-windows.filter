@@ -5,6 +5,13 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# This test fails because we override PrivacySandboxSettings and
+# IsPrivacySandboxRestricted in IsPrivacySandboxRestricted c'tor causes a
+# different code path that triggers a DCHECK in ProfileManager::RemoveKeepAlive.
+# Seems this happens because setting prefs in that code path causes clearing of
+# browsing data while the second profile is still being created.
+-StartupBrowserCreatorTriggeredResetTest.TestMultiProfile
+
 # These tests fail on CI but pass locally
 -AutofillContextMenuManagerFeedbackUIBrowserTest.DisplaysFeedbackDialogUI
 -AutomationApiTest.*
@@ -44,8 +51,13 @@
 -StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
 
 # These tests fail on CI but passes locally
--LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
+-All/SoftNavigationTest.LayoutShift/*
 -AppMenuBrowserTest.*
+-LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
+-SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
+
+# These tests fail upstream when DCHECKs are enabled.
+-PenIdBrowserTest.*
 
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1

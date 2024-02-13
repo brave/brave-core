@@ -18,6 +18,9 @@ import {
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
+import {
+  setStoredPortfolioTimeframe //
+} from '../../../../utils/local-storage-utils'
 
 // Components
 import {
@@ -57,6 +60,7 @@ export const LineChartControls = (props: Props) => {
   const handleOnSelectTimeline = React.useCallback(
     (id: BraveWallet.AssetPriceTimeframe) => {
       onSelectTimeline(id)
+      setStoredPortfolioTimeframe(id)
       setShowLineChartControlMenu(false)
     },
     [onSelectTimeline]

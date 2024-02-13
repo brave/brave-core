@@ -10,8 +10,6 @@
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v2.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace state {
 
@@ -20,26 +18,26 @@ StateMigrationV2::StateMigrationV2(RewardsEngineImpl& engine)
 
 StateMigrationV2::~StateMigrationV2() = default;
 
-void StateMigrationV2::Migrate(LegacyResultCallback callback) {
+void StateMigrationV2::Migrate(ResultCallback callback) {
   legacy_state_ = std::make_unique<LegacyBatState>(*engine_);
 
-  auto load_callback =
-      std::bind(&StateMigrationV2::OnLoadState, this, _1, callback);
-
-  legacy_state_->Load(load_callback);
+  legacy_state_->Load(base::BindOnce(&StateMigrationV2::OnLoadState,
+                                     weak_factory_.GetWeakPtr(),
+                                     std::move(callback)));
 }
 
-void StateMigrationV2::OnLoadState(mojom::Result result,
-                                   LegacyResultCallback callback) {
+void StateMigrationV2::OnLoadState(ResultCallback callback,
+                                   mojom::Result result) {
   if (result == mojom::Result::NO_LEGACY_STATE) {
-    BLOG(1, "No engine state");
-    callback(mojom::Result::OK);
+    engine_->Log(FROM_HERE) << "No engine state";
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to load engine state file, setting default values");
-    callback(mojom::Result::OK);
+    engine_->LogError(FROM_HERE)
+        << "Failed to load engine state file, setting default values";
+    std::move(callback).Run(mojom::Result::OK);
     return;
   }
 
@@ -62,7 +60,7 @@ void StateMigrationV2::OnLoadState(mojom::Result result,
 
   engine_->SetState(kPaymentId, legacy_state_->GetPaymentId());
 
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace state

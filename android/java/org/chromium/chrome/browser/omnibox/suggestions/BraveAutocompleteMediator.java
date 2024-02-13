@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
@@ -24,10 +26,12 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabWindowManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
 
-class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSuggestionHost {
+class BraveAutocompleteMediator extends AutocompleteMediator
+        implements BraveSuggestionHost, BraveLeoAutocompleteDelegate {
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
 
     private Context mContext;
@@ -96,7 +100,17 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
         if (mDropdownViewInfoListBuilder instanceof BraveDropdownItemViewInfoListBuilder) {
             ((BraveDropdownItemViewInfoListBuilder) mDropdownViewInfoListBuilder)
                     .setAutocompleteDelegate(mDelegate);
+            if (BraveConfig.AI_CHAT_ENABLED) {
+                ((BraveDropdownItemViewInfoListBuilder) mDropdownViewInfoListBuilder)
+                        .setLeoAutocompleteDelegate(this);
+            }
         }
         super.initDefaultProcessors();
+    }
+
+    @Override
+    public void openLeoQuery(WebContents webContents, String query) {
+        mDelegate.clearOmniboxFocus();
+        BraveLeoUtils.openLeoQuery(webContents, query);
     }
 }

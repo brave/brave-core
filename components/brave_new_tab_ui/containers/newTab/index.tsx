@@ -515,6 +515,10 @@ class NewTabPage extends React.Component<Props, State> {
       }
     ]
 
+    const onSelfCustodyInviteDismissed = () => {
+      chrome.braveRewards.dismissSelfCustodyInvite()
+    }
+
     return (
       <Rewards
         {...rewardsState}
@@ -533,6 +537,7 @@ class NewTabPage extends React.Component<Props, State> {
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onDismissNotification={this.dismissNotification}
         customMenuItems={customMenuItems}
+        onSelfCustodyInviteDismissed={onSelfCustodyInviteDismissed}
       />
     )
   }

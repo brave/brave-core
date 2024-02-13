@@ -63,7 +63,7 @@ skrifa = "0.4"
 libc = "0.2.107"
 
 # speedreader
-kuchiki = "0.8.1"
+kuchikiki = "0.8.4-speedreader"
 lol_html = "0.3.0"
 # regex = "1"
 # serde_json = "1.0.70"
@@ -74,7 +74,7 @@ lazy_static = "1.4"
 
 # readability
 bitflags         = "1.2"
-kuchiki          = "0.8.1"
+kuchikiki        = "0.8.4-speedreader"
 lazy_static      = "1.4"
 # regex            = "1"
 # serde_json       = "1.0"
@@ -98,7 +98,7 @@ tracing-subscriber = { version = "0.2.0", default-features = false, features = [
 # tracing = "0.1"
 
 #skus
-http = { version = "0.1" }
+http = { version = "1" }
 async-trait = "0.1.64"
 rand = { version = "0.7" }
 # serde_json = "1.0"
@@ -108,7 +108,7 @@ data-encoding = "2.1.2"
 bigdecimal = { version = "0.1", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
-uuid = { version = "0.8", features = ["serde"] }
+uuid = { version = "1", features = ["v4"] }
 futures-retry = "0.5.0"
 urlencoding = "1.1.1"
 hmac = "0.10"
@@ -135,8 +135,10 @@ lazy_static = "1.4.0"
 # regex = "1.5.5"
 
 # brave-wallet
+bech32 = "0.9.1"
 cxx = { version = "1.0", features = [ "alloc", "std" ] }
 ed25519-dalek-bip32 = "0.2.0"
+
 # curve25519-dalek = "3.2.1"
 
 # filecoin
@@ -201,14 +203,25 @@ if (target_cpu == "arm64" &&
 '''
 
 [dependencies.curve25519-dalek]
-version = "3.2.1"
-features = [ "alloc", "serde", "std", "u64_backend" ]
+version = "4.1.1"
+allow-first-party-usage = false
+features = [ "rand_core", "serde" ]
+# curve25519-dalek-derive is only used on x64
+# gnrt did not detect that due to a complex build.rs condition
+gn-variables-lib = '''
+if (target_cpu == "x64") {
+  deps += [
+    "//brave/third_party/rust/cpufeatures/v0_2:lib", 
+    "//brave/third_party/rust/curve25519_dalek_derive/v0_1:lib",
+  ]
+}
+'''
 
 [dependencies.cpufeatures]
 version = "0.2"
 allow-first-party-usage = false
 gn-variables-lib = '''
-if (is_linux && target_cpu == "arm64") {
+if ((is_android || is_apple || is_linux) && target_cpu == "arm64") {
   deps += [ "//third_party/rust/libc/v0_2:lib" ]
 }
 '''
@@ -228,7 +241,7 @@ if (is_mac) {
 '''
 
 [dependencies.adblock]
-version = "0.8.3"
+version = "0.8.4"
 default-features = false
 features = ["full-regex-handling", "regex-debug-info", "css-validation"]
 gn-variables-lib = '''

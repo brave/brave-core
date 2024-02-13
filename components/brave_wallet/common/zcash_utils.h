@@ -6,13 +6,44 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ZCASH_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ZCASH_UTILS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
+
 namespace brave_wallet {
 
-std::string PubkeyToTransparentAddress(const std::vector<uint8_t>& pubkey,
+struct DecodedZCashAddress {
+  DecodedZCashAddress();
+  ~DecodedZCashAddress();
+  DecodedZCashAddress(const DecodedZCashAddress& other);
+  DecodedZCashAddress& operator=(const DecodedZCashAddress& other);
+  DecodedZCashAddress(DecodedZCashAddress&& other);
+  DecodedZCashAddress& operator=(DecodedZCashAddress&& other);
+
+  std::vector<uint8_t> pubkey_hash;
+  bool testnet = false;
+};
+
+bool IsUnifiedAddress(const std::string& address);
+
+std::string PubkeyToTransparentAddress(base::span<const uint8_t> pubkey,
                                        bool testnet);
+
+std::optional<std::string> PubkeyHashToTransparentAddress(
+    base::span<const uint8_t> pubkey_hash,
+    bool testnet);
+
+std::optional<DecodedZCashAddress> DecodeZCashAddress(
+    const std::string& address);
+
+std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
+                                                bool testnet);
+
+std::optional<std::string> ExtractTransparentPart(
+    const std::string& unified_address,
+    bool is_testnet);
 
 }  // namespace brave_wallet
 

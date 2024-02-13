@@ -44,6 +44,7 @@ std::string WrapStylesheetWithCSP(const std::string& stylesheet,
   };
 
   constexpr const char kCSP[] = R"html(
+    <meta name="referrer" content="no-referrer">
     <meta http-equiv="Content-Security-Policy"
       content="script-src 'none';
                style-src-elem 'sha256-%s' 'sha256-%s' 'sha256-%s'"
@@ -171,11 +172,15 @@ std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
     const std::string& font_size,
     const std::string& column_width) {
   auto rewriter = speedreader_->MakeRewriter(url.spec());
+  if (!rewriter) {
+    return nullptr;
+  }
   rewriter->SetMinOutLength(speedreader::kSpeedreaderMinOutLengthParam.Get());
   rewriter->SetTheme(theme);
   rewriter->SetFontFamily(font_family);
   rewriter->SetFontSize(font_size);
   rewriter->SetColumnWidth(column_width);
+  rewriter->SetDebugView(speedreader::kSpeedreaderDebugView.Get());
   return rewriter;
 }
 

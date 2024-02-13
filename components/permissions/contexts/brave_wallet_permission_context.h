@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_
 
 #include <map>
+#include <optional>
 #include <queue>
 #include <string>
 #include <vector>
@@ -61,7 +62,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
       content::WebContents* web_contents);
   static void Cancel(content::WebContents* web_contents);
 
-  static absl::optional<std::vector<std::string>> GetAllowedAccounts(
+  static std::optional<std::vector<std::string>> GetAllowedAccounts(
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses);

@@ -1,21 +1,26 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use crate::{dom, util};
 use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
-use kuchiki::iter::NodeIterator;
-use kuchiki::NodeData::{
+use kuchikiki::iter::NodeIterator;
+use kuchikiki::NodeData::{
     Comment, Doctype, Document, DocumentFragment, Element, ProcessingInstruction, Text,
 };
-use kuchiki::NodeRef as Handle;
-use kuchiki::{ElementData, Sink};
+use kuchikiki::NodeRef as Handle;
+use kuchikiki::{ElementData, Sink};
 use regex::Regex;
 use std::cmp::Ordering;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 use std::str::FromStr;
 use url::Url;
 
-pub static PUNCTUATIONS_REGEX: &str = r"([,]\?)";
+pub static PUNCTUATIONS_REGEX: &str = r"([、。，．！？]|\.[^A-Za-z0-9]|,[^0-9]|!|\?)";
 pub static UNLIKELY_CANDIDATES: &str = "(?i)-ad-|ai2html|banner\
     |breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|gdpr\
     |header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
@@ -71,7 +76,8 @@ static DECAY_FACTOR: f32 = 3.0;
 // https://github.com/mozilla/readability/blob/e2aea3121a9bb6e05478edc1596026c41c782779/Readability.js#L111
 static NUM_TOP_CANDIDATES: usize = 5;
 
-// The minimum score to be considered as a top candidate under strict heuristics.
+// The minimum score to be considered as a top candidate under strict
+// heuristics.
 static CANDIDATE_SCORE_THRESHOLD: f32 = 5.0;
 
 lazy_static! {
@@ -89,11 +95,7 @@ pub struct TopCandidate {
 impl TopCandidate {
     #[inline]
     pub fn score(&self) -> f32 {
-        if let Some(elem) = self.node.as_element() {
-            elem.score.get()
-        } else {
-            0.0
-        }
+        if let Some(elem) = self.node.as_element() { elem.score.get() } else { 0.0 }
     }
 }
 
@@ -130,18 +132,13 @@ bitflags::bitflags! {
 fn url_suffix_is_img(src: &str) -> bool {
     static LOADABLE_IMG_SUFFIX: [&str; 4] = [".jpg", ".jpeg", ".png", ".webp"];
 
-    if LOADABLE_IMG_SUFFIX
-        .iter()
-        .any(|suffix| src.ends_with(suffix))
-    {
+    if LOADABLE_IMG_SUFFIX.iter().any(|suffix| src.ends_with(suffix)) {
         return true;
     }
 
     // Try again with URL params stripped
     let is_loadable_path = |src: &str| match Url::parse(src) {
-        Ok(url) => LOADABLE_IMG_SUFFIX
-            .iter()
-            .any(|suffix| url.path().ends_with(suffix)),
+        Ok(url) => LOADABLE_IMG_SUFFIX.iter().any(|suffix| url.path().ends_with(suffix)),
         _ => false,
     };
     if src.starts_with('/') {
@@ -151,10 +148,11 @@ fn url_suffix_is_img(src: &str) -> bool {
     }
 }
 
-/// Returns true if the image src loads without JavaScript logic. Some sites like Kotaku and The
-/// Atlantic try and get fancy with this. Our simple heuristic is to check if src is set something
-/// reasonable or srcset is set at all. Some things we've seen in the wild are srcset being left
-/// out in favor of data-srcset, and src being base64 encoded.
+/// Returns true if the image src loads without JavaScript logic. Some sites
+/// like Kotaku and The Atlantic try and get fancy with this. Our simple
+/// heuristic is to check if src is set something reasonable or srcset is set at
+/// all. Some things we've seen in the wild are srcset being left out in favor
+/// of data-srcset, and src being base64 encoded.
 #[inline]
 fn img_loaded_mask(data: &ElementData) -> ImageLoadedMask {
     let mut mask: ImageLoadedMask = ImageLoadedMask::NONE;
@@ -204,9 +202,7 @@ impl From<std::num::ParseIntError> for ImageCandidateError {
 
 #[inline]
 fn is_valid_srcset(srcset: &str) -> bool {
-    srcset
-        .split(',')
-        .all(|candidate| validate_image_candidate_string(candidate).is_ok())
+    srcset.split(',').all(|candidate| validate_image_candidate_string(candidate).is_ok())
 }
 
 /// We roughly follow the guidelines at https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url
@@ -240,9 +236,9 @@ struct LazyImage {
     value: String,
 }
 
-/// Try and find attributes corresponding to a lazy loaded image and return the new attribute
-/// metadata. Look for anything ending in *srcset (data-srcset is fairly common) or any element
-/// with image suffixes.
+/// Try and find attributes corresponding to a lazy loaded image and return the
+/// new attribute metadata. Look for anything ending in *srcset (data-srcset is
+/// fairly common) or any element with image suffixes.
 fn try_lazy_img(
     data: &ElementData,
     mut mask: ImageLoadedMask,
@@ -255,26 +251,22 @@ fn try_lazy_img(
         if !mask.contains(ImageLoadedMask::SRCSET) {
             if name.local.as_ref().ends_with("-srcset") {
                 mask |= ImageLoadedMask::SRCSET;
-                lazy_srcs.push(LazyImage {
-                    local: local_name!("srcset"),
-                    value: value.value.clone(),
-                });
+                lazy_srcs
+                    .push(LazyImage { local: local_name!("srcset"), value: value.value.clone() });
             }
         }
         if !mask.contains(ImageLoadedMask::SRC) {
             if url_suffix_is_img(&value.value) {
                 mask |= ImageLoadedMask::SRC;
-                lazy_srcs.push(LazyImage {
-                    local: local_name!("src"),
-                    value: value.value.clone(),
-                });
+                lazy_srcs.push(LazyImage { local: local_name!("src"), value: value.value.clone() });
             }
         }
     }
     (mask, lazy_srcs)
 }
 
-/// Returns the proportion of links an element contains with the amount of text in the subtree.
+/// Returns the proportion of links an element contains with the amount of text
+/// in the subtree.
 #[inline]
 pub fn get_link_density(handle: &Handle) -> f32 {
     let text_length = dom::text_len(&handle) as f32;
@@ -283,13 +275,12 @@ pub fn get_link_density(handle: &Handle) -> f32 {
     }
     let mut links: Vec<Handle> = vec![];
     dom::find_node(&handle, "a", &mut links);
-    let link_length = links
-        .iter()
-        .fold(0.0, |acc, link| acc + dom::text_len(&link) as f32);
+    let link_length = links.iter().fold(0.0, |acc, link| acc + dom::text_len(&link) as f32);
     link_length / text_length
 }
 
-/// Returns the proportion of children an element has with the amount of text in the subtree.
+/// Returns the proportion of children an element has with the amount of text in
+/// the subtree.
 #[inline]
 pub fn get_text_density(handle: &Handle, tags: &[&str]) -> f32 {
     let text_length = dom::text_len(&handle) as f32;
@@ -297,9 +288,7 @@ pub fn get_text_density(handle: &Handle, tags: &[&str]) -> f32 {
         return 0.0;
     }
     let nodes = dom::find_nodes_with_tag(&handle, tags);
-    let children_length = nodes
-        .iter()
-        .fold(0.0, |acc, child| acc + dom::text_len(&child) as f32);
+    let children_length = nodes.iter().fold(0.0, |acc, child| acc + dom::text_len(&child) as f32);
     children_length / text_length as f32
 }
 
@@ -317,10 +306,9 @@ pub fn is_candidate(handle: &Handle) -> bool {
             local_name!("div")
             | local_name!("article")
             | local_name!("center")
-            | local_name!("section") => !dom::has_nodes(
-                &handle,
-                &BLOCK_CHILD_TAGS.iter().cloned().collect::<Vec<_>>(),
-            ),
+            | local_name!("section") => {
+                !dom::has_nodes(&handle, &BLOCK_CHILD_TAGS.iter().cloned().collect::<Vec<_>>())
+            }
             _ => false,
         },
         _ => false,
@@ -331,6 +319,7 @@ pub fn is_candidate(handle: &Handle) -> bool {
 pub fn init_content_score(handle: &Handle) -> f32 {
     let score = match handle.data() {
         Element(ref data) => match data.name.local {
+            local_name!("article") => 10.0,
             local_name!("div") | local_name!("section") => 5.0,
             local_name!("h1")
             | local_name!("h2")
@@ -387,8 +376,8 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
     weight
 }
 
-/// Do a subparse. The data inside of a noscript element is text. Send it through the parser and
-/// return the result if it is one img element.
+/// Do a subparse. The data inside of a noscript element is text. Send it
+/// through the parser and return the result if it is one img element.
 fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
     let child = handle.first_child()?;
     if let Some(contents) = child.as_text() {
@@ -404,9 +393,9 @@ fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
     None
 }
 
-/// Unwrap a <noscript><img src=".."/></noscript> element to just be an img element. Sites like
-/// Medium and BBC wrap img elements in a noscript on page load, and do this same process in
-/// Javascript.
+/// Unwrap a <noscript><img src=".."/></noscript> element to just be an img
+/// element. Sites like Medium and BBC wrap img elements in a noscript on page
+/// load, and do this same process in Javascript.
 fn unwrap_noscript(handle: &Handle, useless_nodes: &mut Vec<Handle>) -> Option<Handle> {
     if let Some(img) = get_inner_img_from_noscript(handle) {
         for sibling in handle.preceding_siblings().elements() {
@@ -435,11 +424,8 @@ pub fn replace_tags(dom: &mut Sink) {
     // have block elements as children. To get around this, we check its
     // children for non-phrasing content, and replace it with a div in that
     // case, or a span otherwise.
-    for node in dom
-        .document_node
-        .descendants()
-        .elements()
-        .filter(|e| e.name.local == local_name!("font"))
+    for node in
+        dom.document_node.descendants().elements().filter(|e| e.name.local == local_name!("font"))
     {
         let h = node.as_node();
         let local: LocalName;
@@ -459,8 +445,8 @@ pub fn replace_tags(dom: &mut Sink) {
     }
 }
 
-/// Prepare the DOM for the candidate and cleaning steps. Delete "noisy" nodes and do small
-/// transformations.
+/// Prepare the DOM for the candidate and cleaning steps. Delete "noisy" nodes
+/// and do small transformations.
 pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
     if let Some(data) = handle.as_element() {
         match data.name.local {
@@ -483,8 +469,8 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
             useless_nodes.push(child.clone());
         }
 
-        // These are pre-processing steps that don't just delete nodes, but also append nodes to
-        // their parent.
+        // These are pre-processing steps that don't just delete nodes, but also append
+        // nodes to their parent.
         match child.data() {
             Element(data) => {
                 match data.name.local {
@@ -590,7 +576,8 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
             dom.remove_from_parent(&sibling);
         }
         for sibling in p.following_siblings() {
-            // If we approach another <br><br> chain, we are encroaching on another paragraph.
+            // If we approach another <br><br> chain, we are encroaching on another
+            // paragraph.
             if dom::get_tag_name(&sibling) == Some(&local_name!("br")) {
                 if let Some(next) = sibling.next_sibling() {
                     if dom::get_tag_name(&next) == Some(&local_name!("br")) {
@@ -634,27 +621,18 @@ pub fn get_top_candidate(
 
     // scores all candidate nodes
     let mut top_candidates: Vec<TopCandidate> = vec![];
-    for elem in dom
-        .document_node
-        .descendants()
-        .elements()
-        .filter(|e| e.is_candidate.get())
-    {
+    for elem in dom.document_node.descendants().elements().filter(|e| e.is_candidate.get()) {
         let node = elem.as_node();
         let score = elem.score.get() * (1.0 - get_link_density(&node));
         elem.score.set(score);
 
         if top_candidates.len() < NUM_TOP_CANDIDATES {
-            top_candidates.push(TopCandidate {
-                node: Handle::clone(node),
-            });
+            top_candidates.push(TopCandidate { node: Handle::clone(node) });
         } else {
             let min_index = util::min_elem_index(&top_candidates);
             let min = &mut top_candidates[min_index];
             if score > min.score() {
-                *min = TopCandidate {
-                    node: Handle::clone(node),
-                }
+                *min = TopCandidate { node: Handle::clone(node) }
             }
         }
     }
@@ -820,8 +798,9 @@ pub fn search_alternative_candidates<'a>(top_candidates: &'a Vec<TopCandidate>) 
     None
 }
 
-/// Iterates through the siblings of the top candidate and appends related content. Having the same
-/// class name as the parent is a bonus, same with dense text nodes.
+/// Iterates through the siblings of the top candidate and appends related
+/// content. Having the same class name as the parent is a bonus, same with
+/// dense text nodes.
 pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
     if let Some(top_elem) = top_candidate.as_element() {
         if let Some(parent) = top_candidate.parent() {
@@ -856,10 +835,7 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
                     }
 
                     if append {
-                        if ALTER_TO_DIV_EXCEPTIONS
-                            .iter()
-                            .any(|&tag| tag == &elem.name.local)
-                        {
+                        if ALTER_TO_DIV_EXCEPTIONS.iter().any(|&tag| tag == &elem.name.local) {
                             let new_elem = Handle::new_element(
                                 QualName::new(None, ns!(), local_name!("div")),
                                 elem.attributes.borrow().map.clone(),
@@ -881,21 +857,22 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
 }
 
 /// decides whether the handle node is useless (should be dropped) or not.
-pub fn clean<S: ::std::hash::BuildHasher>(
+pub fn clean(
     mut dom: &mut Sink,
     handle: Handle,
     title_tokens: &HashSet<&str>,
     url: &Url,
-    features: &HashMap<String, u32, S>,
-) -> bool {
+    is_root: bool,
+    debug_view: bool,
+) -> Option<String> {
     let useless = match handle.data() {
-        Document(_) => false,
-        DocumentFragment => false,
-        Doctype(_) => false,
-        Text(_) => false,
-        Comment(_) => true,
+        Document(_) => None,
+        DocumentFragment => None,
+        Doctype(_) => None,
+        Text(_) => None,
+        Comment(_) => Some(format!("{}", line!())),
         Element(ref data) => {
-            let delete = match data.name.local {
+            let delete = (|| match data.name.local {
                 local_name!("script")
                 | local_name!("link")
                 | local_name!("style")
@@ -911,28 +888,27 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("select")
                 | local_name!("button")
                 | local_name!("svg")
-                | local_name!("aside") => true,
+                | local_name!("aside") => Some(format!("{}", line!())),
                 local_name!("source") => {
                     if let Some(parent) = handle.parent().as_ref() {
                         if dom::get_tag_name(&parent) == Some(&local_name!("picture")) {
-                            return true;
+                            return Some(format!("{}", line!()));
                         }
                     }
-                    false
-                }                
+                    None
+                }
                 local_name!("h1") | local_name!("h2") => {
                     // Delete remaining headings that may be duplicates of the title.
                     let mut heading = String::new();
                     dom::extract_text(&handle, &mut heading, true);
                     if heading.is_empty() {
-                        return true;
-                    }
-                    if !title_tokens.is_empty() {
+                        return Some(format!("{}", line!()));
+                    } else if !title_tokens.is_empty() {
                         let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
                         let distance = title_tokens.difference(&heading_tokens).count() as f32;
                         let similarity = 1.0 - distance / title_tokens.len() as f32;
                         if similarity >= 0.75 {
-                            return true;
+                            return Some(format!("{}, {}", line!(), similarity));
                         }
                     }
                     if data.name.local == local_name!("h1") {
@@ -942,24 +918,28 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                         let h2 = dom.create_element(name, vec![], ElementFlags::default());
                         dom.reparent_children(&handle, &h2);
                         dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
-                        true
+                        return Some(format!("{}", line!()));
                     } else {
-                        // If <h2> has class attribute with a negative pattern (ad, hidden, etc.) remove it.
-                        get_class_weight(&handle) < -20.0
+                        // If <h2> has class attribute with a negative pattern
+                        // (ad, hidden, etc.) remove it.
+                        let weight = get_class_weight(&handle);
+                        if weight < -20.0 {
+                            return Some(format!("{}, {}", line!(), weight));
+                        }
                     }
+                    None
                 }
                 local_name!("form")
                 | local_name!("table")
                 | local_name!("ul")
-                | local_name!("section")
                 | local_name!("div") => is_useless(&handle),
                 local_name!("br") => {
                     if let Some(sibling) = handle.next_sibling() {
                         if dom::get_tag_name(&sibling) == Some(&local_name!("p")) {
-                            return true;
+                            return Some(format!("{}", line!()));
                         }
                     }
-                    false
+                    None
                 }
                 local_name!("img") => {
                     let mask = img_loaded_mask(data);
@@ -967,19 +947,20 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     // but they are not in the mask. Means they are invalid.
                     let (mask, lazy_srcs) = try_lazy_img(data, mask);
                     if mask == ImageLoadedMask::NONE {
-                        true
+                        Some(format!("{}", line!()))
                     } else {
                         for src in lazy_srcs {
                             dom::set_attr(src.local.as_ref(), src.value, handle.clone(), true);
                         }
-                        false
+                        None
                     }
                 }
-                _ => false,
-            };
-            if !delete {
-                // Delete style, align, and other elements that will conflict with the Speedreader
-                // stylesheet.
+                _ => None,
+            })();
+
+            if delete.is_none() {
+                // Delete style, align, and other elements that will
+                // conflict with the Speedreader stylesheet.
                 let mut attrs = data.attributes.borrow_mut();
                 for attr in PRESENTATIONAL_ATTRIBUTES.iter() {
                     attrs.remove(*attr);
@@ -990,38 +971,60 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         ProcessingInstruction(_) => unreachable!(),
     };
 
-    if useless {
-        return true;
+    if !is_root && useless.is_some() {
+        return useless;
     }
+
     let mut useless_nodes = vec![];
     for child in handle.children() {
-        if clean(&mut dom, child.clone(), title_tokens, url, features) {
-            useless_nodes.push(child.clone());
+        let delete_reason = clean(&mut dom, child.clone(), title_tokens, url, false, debug_view);
+        if let Some(reason) = delete_reason {
+            useless_nodes.push((child.clone(), reason));
         }
     }
-    for node in useless_nodes.iter() {
-        dom.remove_from_parent(node);
+    for useless_node in useless_nodes.iter() {
+        let (node, delete_reason) = useless_node;
+        if debug_view && (node.children().count() > 0) {
+            let cut = dom::create_element_simple(dom, "details", "debug-view-useless-node", None);
+            let summary = dom::create_element_simple(
+                dom,
+                "summary",
+                "debug-view-useless-node",
+                Some(format!("reason {}", delete_reason).as_str()),
+            );
+            dom.append(&cut, NodeOrText::AppendNode(summary));
+            dom.reparent_children(&node, &cut);
+            dom.append_before_sibling(&node, NodeOrText::AppendNode(cut));
+        }
+
+        dom.remove_from_parent(&node);
     }
     if dom::is_empty(&handle) {
-        return true;
+        return Some(format!("empty node {}", line!()));
     }
-    false
+
+    return useless;
 }
 
-/// Using content score and other heuristics, determine if the handle should be marked for
-/// deletion.
-pub fn is_useless(handle: &Handle) -> bool {
+/// Using content score and other heuristics, determine if the handle should be
+/// marked for deletion.
+pub fn is_useless(handle: &Handle) -> Option<String> {
     let tag_name = dom::get_tag_name(&handle);
     let weight = get_class_weight(&handle);
     let score = handle.as_element().map(|e| e.score.get()).unwrap_or(0.0);
     if weight + score < 0.0 {
-        return true;
+        return Some(format!("{}: {} {}", line!(), weight, score));
     }
 
-    let content_length = dom::text_len(&handle);
     let para_count =
         dom::count_nodes(&handle, &local_name!("p")) + dom::text_children_count(&handle) as u32;
 
+    let input_count = dom::count_nodes(&handle, &local_name!("input"));
+    if input_count as f32 > f32::floor(para_count as f32 / 3.0) {
+        return Some(format!("{}, {} {}", line!(), input_count, para_count));
+    }
+
+    let content_length = dom::text_len(&handle);
     let mut is_list = tag_name == Some(&local_name!("ul")) || tag_name == Some(&local_name!("ol"));
     if !is_list {
         let list_nodes = dom::find_nodes_with_tag(handle, &["ul", "ol"]);
@@ -1034,45 +1037,37 @@ pub fn is_useless(handle: &Handle) -> bool {
         }
         is_list = list_length / content_length as f32 > 0.9;
     }
-
-    let input_count = dom::count_nodes(&handle, &local_name!("input"));
-    if input_count as f32 > f32::floor(para_count as f32 / 3.0) {
-        return true;
+    if is_list {
+        let li_count = dom::count_nodes(&handle, &local_name!("li")) as i32 - 100;
+        if li_count > para_count as i32 {
+            return Some(format!("{}, {} {}", line!(), li_count, para_count));
+        }
     }
 
     let link_density = get_link_density(handle);
     if weight >= 25.0 && link_density > 0.5 {
-        return true;
+        return Some(format!("{}, {} {}", line!(), weight, link_density));
+    } else if weight < 25.0 && link_density > 0.2 {
+        return Some(format!("{}, {} {}", line!(), weight, link_density));
     }
 
     let img_count = dom::count_nodes(&handle, &local_name!("img"));
 
-    if !is_list {
-        let li_count = dom::count_nodes(&handle, &local_name!("li")) as i32 - 100;
-        if li_count > para_count as i32 {
-            return true;
-        }
-
-        if weight < 25.0 && link_density > 0.2 {
-            return true;
-        }
-
-        let heading_density = get_text_density(&handle, &["h1", "h2", "h3", "h4", "h5", "h6"]);
-        if heading_density < 0.9 && content_length < 25 && (img_count == 0 || img_count > 2) {
-            return true;
-        }
+    let heading_density = get_text_density(&handle, &["h1", "h2", "h3", "h4", "h5", "h6"]);
+    if heading_density < 0.9 && content_length < 25 && (img_count == 0 || img_count > 2) {
+        return Some(format!("{}, {} {} {}", line!(), heading_density, content_length, img_count));
     }
 
     let svg_count = dom::count_nodes(&handle, &local_name!("svg"));
     if svg_count > 1 && content_length < 75 {
-        return true;
+        return Some(format!("{}, {} {} {}", line!(), is_list, svg_count, content_length));
     }
 
     let embed_count = dom::count_nodes(&handle, &local_name!("embed"));
     if (embed_count == 1 && content_length < 75) || embed_count > 1 {
-        return true;
+        return Some(format!("{}, {} {} {}", line!(), is_list, embed_count, content_length));
     }
-    false
+    return None;
 }
 
 #[cfg(test)]
@@ -1136,17 +1131,17 @@ mod tests {
         );
         assert!(validate_image_candidate_string("image-480w.jpg      480w").is_ok());
         assert!(validate_image_candidate_string("image-480w.jpg      480w").is_ok());
-        assert!(validate_image_candidate_string(
-            "/content/dam/news/2017/11/16/a08.jpeg?imwidth=480 480w"
-        )
-        .is_ok());
+        assert!(
+            validate_image_candidate_string(
+                "/content/dam/news/2017/11/16/a08.jpeg?imwidth=480 480w"
+            )
+            .is_ok()
+        );
         assert!(validate_image_candidate_string("https://i.guim.co.uk/img/media/603fd890c17afa94c6fd0e41f87875be104b811a/38_0_4848_2912/master/4848.jpg?width=160&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=fc5a4d4e165ba28ea00817f416bae258 160w").is_ok());
     }
 
     #[test]
     fn test_is_srcset() {
-        assert!(is_valid_srcset(
-            "https://test.com/original.jpg, https://test.com/original.jpg 2x"
-        ));
+        assert!(is_valid_srcset("https://test.com/original.jpg, https://test.com/original.jpg 2x"));
     }
 }

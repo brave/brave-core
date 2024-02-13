@@ -3,19 +3,31 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-function setupEvents() {
-  $('body').classList.add('ipfs');
-  $('icon').classList.add('icon');
+import { HIDDEN_CLASS, SecurityInterstitialCommandId, sendCommand } from 'chrome://interstitials/common/resources/interstitial_common.js';
+import { loadTimeData } from 'chrome://resources/js/load_time_data.js';
 
-  $('primary-button').addEventListener('click', function() {
+function setupEvents() {
+  // `loadTimeDataRaw` is injected to the `window` scope from C++.
+  loadTimeData.data = window.loadTimeDataRaw;
+
+  const body = document.querySelector('#body');
+  body.classList.add('ipfs');
+  const icon = document.querySelector('#icon');
+  icon.classList.add('icon');
+
+  const primaryButton = document.querySelector('#primary-button');
+  primaryButton.addEventListener('click', function() {
     sendCommand(SecurityInterstitialCommandId.CMD_PROCEED);
   });
 
-  $('main-content').classList.remove(HIDDEN_CLASS);
+  const mainContent = document.querySelector('#main-content');
+  mainContent.classList.remove(HIDDEN_CLASS);
 
-  $('details-button').addEventListener('click', function(event) {
-    const hiddenDetails = $('details').classList.toggle(HIDDEN_CLASS);
-    $('details-button').innerText = hiddenDetails ?
+  const detailsButton = document.querySelector('#details-button');
+  detailsButton.addEventListener('click', function(event) {
+    const hiddenDetails =
+      document.querySelector('#details').classList.toggle(HIDDEN_CLASS);
+    detailsButton.innerText = hiddenDetails ?
         loadTimeData.getString('openDetails') :
         loadTimeData.getString('closeDetails');
   });

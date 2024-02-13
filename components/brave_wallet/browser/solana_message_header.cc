@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/solana_message_header.h"
 
+#include <optional>
+
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
@@ -45,24 +47,24 @@ base::Value::Dict SolanaMessageHeader::ToValue() const {
 }
 
 // static
-absl::optional<SolanaMessageHeader> SolanaMessageHeader::FromValue(
+std::optional<SolanaMessageHeader> SolanaMessageHeader::FromValue(
     const base::Value::Dict& value) {
   auto num_required_signatures =
       GetUint8FromStringDict(value, kNumRequiredSignatures);
   if (!num_required_signatures) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto num_readonly_signed_accounts =
       GetUint8FromStringDict(value, kNumReadonlySignedAccounts);
   if (!num_readonly_signed_accounts) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto num_readonly_unsigned_accounts =
       GetUint8FromStringDict(value, kNumReadonlyUnsignedAccounts);
   if (!num_readonly_unsigned_accounts) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return SolanaMessageHeader(*num_required_signatures,

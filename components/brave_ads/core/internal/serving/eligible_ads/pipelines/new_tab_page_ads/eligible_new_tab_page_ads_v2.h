@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
 namespace brave_ads {
 
@@ -49,10 +49,15 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
       const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
 
-  CreativeNewTabPageAdList FilterCreativeAds(
+  void FilterAndMaybePredictCreativeAd(
+      const UserModelInfo& user_model,
       const CreativeNewTabPageAdList& creative_ads,
       const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history);
+      const BrowsingHistoryList& browsing_history,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void FilterIneligibleCreativeAds(CreativeNewTabPageAdList& creative_ads,
+                                   const AdEventList& ad_events,
+                                   const BrowsingHistoryList& browsing_history);
 
   base::WeakPtrFactory<EligibleNewTabPageAdsV2> weak_factory_{this};
 };

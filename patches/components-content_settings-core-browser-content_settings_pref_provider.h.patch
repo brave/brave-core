@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref_provider.h b/components/content_settings/core/browser/content_settings_pref_provider.h
-index 35d4908d5c6d571c302faf196fec97e648f3e5fa..bd29072a4ac8ed079a82fdcf54075e4e20866dc0 100644
+index 3f45115b63171f938bac7068295a69a654601353..8e519ca244c77f4c5785cfacbc7e36f2ed0fd0e4 100644
 --- a/components/content_settings/core/browser/content_settings_pref_provider.h
 +++ b/components/content_settings/core/browser/content_settings_pref_provider.h
-@@ -78,6 +78,7 @@ class PrefProvider : public UserModifiableProvider {
+@@ -92,6 +92,7 @@ class PrefProvider : public UserModifiableProvider {
    ContentSettingsPref* GetPref(ContentSettingsType type) const;
  
   private:

@@ -7,9 +7,9 @@
 #define BRAVE_BROWSER_UI_VIEWS_WALLET_BUBBLE_FOCUS_OBSERVER_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/gtest_prod_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/view_observer.h"
 
@@ -56,7 +56,7 @@ class WalletBubbleFocusObserver : public views::ViewObserver,
   virtual bool GetCurrentBubbleDeactivationState();
   virtual void CloseBubble();
 
-  absl::optional<bool> close_on_deactivate() { return close_on_deactivate_; }
+  std::optional<bool> close_on_deactivate() { return close_on_deactivate_; }
   // views::ViewObserver
   // Listening Bubble's WebView focus events
   void OnViewFocused(views::View* observed_view) override;
@@ -72,7 +72,7 @@ class WalletBubbleFocusObserver : public views::ViewObserver,
  private:
   raw_ptr<WebUIBubbleDialogView> const web_ui_bubble_view_;
   raw_ptr<views::FocusManager> const focus_manager_;
-  absl::optional<bool> close_on_deactivate_;
+  std::optional<bool> close_on_deactivate_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_WALLET_BUBBLE_FOCUS_OBSERVER_H_

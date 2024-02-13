@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 
+#include <optional>
 #include <string>
 
 #include "base/base64url.h"
@@ -20,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
@@ -31,7 +32,7 @@ constexpr char kVerificationSignatureKey[] = "signature";
 bool Verify(const ConfirmationInfo& confirmation) {
   CHECK(confirmation.reward);
 
-  absl::optional<cbr::VerificationKey> verification_key =
+  std::optional<cbr::VerificationKey> verification_key =
       confirmation.reward->unblinded_token.DeriveVerificationKey();
   if (!verification_key) {
     return false;
@@ -44,7 +45,7 @@ bool Verify(const ConfirmationInfo& confirmation) {
     return false;
   }
 
-  const absl::optional<base::Value::Dict> dict =
+  const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(credential);
   if (!dict) {
     return false;

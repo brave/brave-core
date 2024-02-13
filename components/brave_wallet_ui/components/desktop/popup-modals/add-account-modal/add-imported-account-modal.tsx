@@ -20,14 +20,12 @@ import {
   BraveWallet,
   CreateAccountOptionsType,
   WalletRoutes,
-  ImportAccountErrorType,
   FilecoinNetwork,
   FilecoinNetworkTypes,
   FilecoinNetworkLocaleMapping
 } from '../../../../constants/types'
 
 // actions
-import { WalletActions } from '../../../../common/actions'
 import { PanelActions } from '../../../../panel/actions'
 
 // components
@@ -55,13 +53,14 @@ import {
 } from '../account-settings-modal/account-settings-modal.style'
 
 // selectors
-import { UISelectors, WalletSelectors } from '../../../../common/selectors'
+import { UISelectors } from '../../../../common/selectors'
 
 // hooks
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
 import {
-  useSafeUISelector,
-  useSafeWalletSelector
-} from '../../../../common/hooks/use-safe-selector'
+  useImportAccountFromJsonMutation,
+  useImportAccountMutation
+} from '../../../../common/slices/api.slice'
 
 interface Params {
   accountTypeName: string
@@ -83,9 +82,11 @@ export const ImportAccountModal = () => {
   const { accountTypeName } = useParams<Params>()
 
   // redux
-  const hasImportError = useSafeWalletSelector(
-    WalletSelectors.importAccountError
-  )
+  const dispatch = useDispatch()
+
+  // mutations
+  const [importAccount] = useImportAccountMutation()
+  const [importAccountFromJson] = useImportAccountFromJsonMutation()
 
   // memos
   const createAccountOptions = React.useMemo(() => {
@@ -104,6 +105,7 @@ export const ImportAccountModal = () => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
+  const [hasImportError, setHasImportError] = React.useState(false)
   const [accountName, setAccountName] = React.useState<string>('')
   const [filecoinNetwork, setFilecoinNetwork] =
     React.useState<FilecoinNetwork>('f')
@@ -112,58 +114,18 @@ export const ImportAccountModal = () => {
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
   const [password, setPassword] = React.useState<string>('')
 
-  // redux
-  const dispatch = useDispatch()
-
   // methods
-  const setImportError = React.useCallback(
-    (hasError: ImportAccountErrorType) => {
-      dispatch(WalletActions.setImportAccountError(hasError))
-    },
-    []
-  )
-
   const onClickClose = React.useCallback(() => {
-    setImportError(undefined)
+    setHasImportError(false)
     history.push(WalletRoutes.Accounts)
-  }, [setImportError])
-
-  const importAccount = React.useCallback(
-    (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
-      dispatch(WalletActions.importAccount({ accountName, privateKey, coin }))
-    },
-    []
-  )
-
-  const importFilecoinAccount = React.useCallback(
-    (
-      accountName: string,
-      privateKey: string,
-      coin: BraveWallet.CoinType,
-      network: FilecoinNetwork
-    ) => {
-      dispatch(
-        WalletActions.importAccount({ accountName, privateKey, coin, network })
-      )
-    },
-    []
-  )
-
-  const importAccountFromJson = React.useCallback(
-    (accountName: string, password: string, json: string) => {
-      dispatch(
-        WalletActions.importAccountFromJson({ accountName, password, json })
-      )
-    },
-    []
-  )
+  }, [])
 
   const handleAccountNameChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setAccountName(event.target.value)
-      setImportError(undefined)
+      setHasImportError(false)
     },
-    [setImportError]
+    []
   )
 
   const onChangeFilecoinNetwork = React.useCallback(
@@ -176,9 +138,9 @@ export const ImportAccountModal = () => {
   const handlePrivateKeyChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setPrivateKey(event.target.value)
-      setImportError(undefined)
+      setHasImportError(false)
     },
-    [setImportError]
+    []
   )
 
   const onClearClipboard = React.useCallback(() => {
@@ -205,36 +167,46 @@ export const ImportAccountModal = () => {
     (file: React.ChangeEvent<HTMLInputElement>) => {
       if (file.target.files) {
         setFile(file.target.files)
-        setImportError(undefined)
+        setHasImportError(false)
         passwordInputRef.current?.focus()
       }
     },
-    [setImportError]
+    []
   )
 
   const handlePasswordChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(event.target.value)
-      setImportError(undefined)
+      setHasImportError(false)
     },
-    [setImportError]
+    []
   )
 
-  const onClickCreateAccount = React.useCallback(() => {
+  const onClickCreateAccount = React.useCallback(async () => {
     if (importOption === 'key') {
       if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
-        importFilecoinAccount(
-          accountName,
-          privateKey,
-          BraveWallet.CoinType.FIL,
-          filecoinNetwork
-        )
+        try {
+          await importAccount({
+            accountName,
+            privateKey,
+            coin: BraveWallet.CoinType.FIL,
+            network: filecoinNetwork
+          })
+          history.push(WalletRoutes.Accounts)
+        } catch (error) {
+          setHasImportError(true)
+        }
       } else {
-        importAccount(
-          accountName,
-          privateKey,
-          selectedAccountType?.coin || BraveWallet.CoinType.ETH
-        )
+        try {
+          await importAccount({
+            accountName,
+            privateKey,
+            coin: selectedAccountType?.coin || BraveWallet.CoinType.ETH
+          }).unwrap()
+          history.push(WalletRoutes.Accounts)
+        } catch (error) {
+          setHasImportError(true)
+        }
       }
       return
     }
@@ -242,13 +214,18 @@ export const ImportAccountModal = () => {
     if (file) {
       const index = file[0]
       const reader = new FileReader()
-      reader.onload = function () {
+      reader.onload = async function () {
         if (reader.result) {
-          importAccountFromJson(
-            accountName,
-            password,
-            reader.result.toString().trim()
-          )
+          try {
+            await importAccountFromJson({
+              accountName,
+              password,
+              json: reader.result.toString().trim()
+            }).unwrap()
+            history.push(WalletRoutes.Accounts)
+          } catch (error) {
+            setHasImportError(true)
+          }
         }
       }
 
@@ -261,7 +238,9 @@ export const ImportAccountModal = () => {
     privateKey,
     file,
     password,
-    filecoinNetwork
+    filecoinNetwork,
+    importAccount,
+    importAccountFromJson
   ])
 
   const handleKeyDown = React.useCallback(
@@ -284,13 +263,6 @@ export const ImportAccountModal = () => {
     },
     []
   )
-
-  React.useEffect(() => {
-    if (hasImportError === false) {
-      setImportError(undefined)
-      history.push(WalletRoutes.Accounts)
-    }
-  }, [hasImportError, setImportError])
 
   // computed
   const isDisabled = accountName === ''

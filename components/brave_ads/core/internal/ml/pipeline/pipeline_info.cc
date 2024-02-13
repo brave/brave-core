@@ -11,8 +11,8 @@ namespace brave_ads::ml::pipeline {
 
 PipelineInfo::PipelineInfo(std::string locale,
                            TransformationVector transformations,
-                           absl::optional<LinearModel> linear_model,
-                           absl::optional<NeuralModel> neural_model)
+                           std::optional<LinearModel> linear_model,
+                           std::optional<NeuralModel> neural_model)
     : locale(std::move(locale)),
       transformations(std::move(transformations)),
       linear_model(std::move(linear_model)),

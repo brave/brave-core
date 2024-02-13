@@ -16,11 +16,8 @@ namespace {
 constexpr int kCompatibleServingVersion = 3;
 
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
-  if (kNotificationAdServingVersion.Get() != kCompatibleServingVersion) {
-    return true;
-  }
-
-  return !creative_ad.embedding.empty();
+  return kNotificationAdServingVersion.Get() != kCompatibleServingVersion ||
+         !creative_ad.embedding.empty();
 }
 
 }  // namespace

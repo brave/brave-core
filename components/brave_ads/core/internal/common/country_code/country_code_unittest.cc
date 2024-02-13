@@ -18,7 +18,6 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,7 +25,7 @@ namespace brave_ads {
 
 namespace {
 
-absl::optional<std::string> GetCountryCode() {
+std::optional<std::string> GetCountryCode() {
   return GetLocalStateStringPref(brave_l10n::prefs::kCountryCode);
 }
 

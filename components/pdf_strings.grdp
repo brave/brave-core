@@ -171,6 +171,12 @@
     <message name="IDS_PDF_LABEL_PAGE_NUMBER" desc="Label for the input field containing the current page number">
       Page number
     </message>
+    <message name="IDS_PDF_LOADING_TO_A11Y_TREE" is_accessibility_with_no_ui="true" desc="Notification to inform the user that PDF content is being loaded to an accessibility tree.">
+      Loading PDF
+    </message>
+    <message name="IDS_PDF_LOADED_TO_A11Y_TREE" is_accessibility_with_no_ui="true" desc="Notification to inform the user that PDF content has been loaded to an accessibility tree.">
+      Finished loading PDF
+    </message>
     <message name="IDS_PDF_OVERSIZE_ATTACHMENT_WARNING" desc="Disclaimer for why download buttons are not available for oversize attachments">
       Files over 100MB are not available for download
     </message>
@@ -367,10 +373,10 @@
       </else>
     </if>
     <message name="IDS_PDF_OCR_IN_PROGRESS" is_accessibility_with_no_ui="true" desc="Notification to inform the user that OCR is in progress.">
-      This PDF is inaccessible. Extracting text, powered by Brave AI
+      This PDF is inaccessible. Extracting text, powered by Google AI
     </message>
     <message name="IDS_PDF_OCR_COMPLETED" is_accessibility_with_no_ui="true" desc="Notification to inform the user that OCR is completed.">
-      This PDF is inaccessible. Text extracted, powered by Brave AI
+      This PDF is inaccessible. Text extracted, powered by Google AI
     </message>
     <message name="IDS_PDF_OCR_NO_RESULT" is_accessibility_with_no_ui="true" desc="Notification to inform the user that no text was converted by OCR from images.">
       This PDF is inaccessible. No text extracted

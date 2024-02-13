@@ -98,6 +98,7 @@ export const ButtonWrapper = styled.div`
   justify-content: center;
   flex-direction: row;
   margin-bottom: 14px;
+  gap: 8px;
 `
 
 export const NetworkText = styled.span`

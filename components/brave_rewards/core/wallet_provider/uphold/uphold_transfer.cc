@@ -11,7 +11,6 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 namespace brave_rewards::internal {
 
@@ -58,8 +57,7 @@ void UpholdTransfer::OnCreateTransaction(
     if (result.error() ==
         PostCreateTransactionUphold::Error::kAccessTokenExpired) {
       if (!engine_->uphold()->LogOutWallet()) {
-        BLOG(0,
-             "Failed to disconnect " << constant::kWalletUphold << " wallet!");
+        engine_->LogError(FROM_HERE) << "Failed to disconnect uphold wallet";
       }
     }
 
@@ -118,8 +116,7 @@ void UpholdTransfer::OnCommitTransaction(
           mojom::Result::RETRY_PENDING_TRANSACTION_SHORT);
     case PostCommitTransactionUphold::Error::kAccessTokenExpired:
       if (!engine_->uphold()->LogOutWallet()) {
-        BLOG(0,
-             "Failed to disconnect " << constant::kWalletUphold << " wallet!");
+        engine_->LogError(FROM_HERE) << "Failed to disconnect uphold wallet";
       }
       ABSL_FALLTHROUGH_INTENDED;
     default:
@@ -149,8 +146,7 @@ void UpholdTransfer::OnGetTransactionStatus(
           mojom::Result::RETRY_PENDING_TRANSACTION_SHORT);
     case GetTransactionStatusUphold::Error::kAccessTokenExpired:
       if (!engine_->uphold()->LogOutWallet()) {
-        BLOG(0,
-             "Failed to disconnect " << constant::kWalletUphold << " wallet!");
+        engine_->LogError(FROM_HERE) << "Failed to disconnect uphold wallet";
       }
       ABSL_FALLTHROUGH_INTENDED;
     default:

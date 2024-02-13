@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -246,7 +247,7 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
     const JavaParamRef<jobject>& obj) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
-  absl::optional<base::Value::Dict> data;
+  std::optional<base::Value::Dict> data;
   if (view_counter_service_)
     data = view_counter_service_->GetCurrentWallpaperForDisplay();
 

@@ -30,8 +30,8 @@ namespace endpoint {
 namespace private_cdn {
 
 using GetPublisherCallback =
-    std::function<void(const mojom::Result result,
-                       mojom::ServerPublisherInfoPtr info)>;
+    base::OnceCallback<void(const mojom::Result result,
+                            mojom::ServerPublisherInfoPtr info)>;
 
 class GetPublisher {
  public:
@@ -51,9 +51,9 @@ class GetPublisher {
                           const std::string& publisher_key,
                           mojom::ServerPublisherInfo* info);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 const std::string& publisher_key,
-                 GetPublisherCallback callback);
+  void OnRequest(const std::string& publisher_key,
+                 GetPublisherCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -311,7 +312,7 @@ void EthereumProviderImpl::IsLocked(IsLockedCallback callback) {
 }
 
 // AddUnapprovedTransaction is a different return type from
-// AddAndApproveTransaction so we need to use an adapter callback that passses
+// AddAndApproveTransaction so we need to use an adapter callback that passes
 // through.
 void EthereumProviderImpl::OnAddUnapprovedTransactionAdapter(
     RequestCallback callback,
@@ -404,7 +405,7 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
               IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
               l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_ACCOUNT),
               base::ASCIIToUTF16(siwe_message->address)),
-          absl::nullopt));
+          std::nullopt));
       delegate_->ShowPanel();
       return RejectMismatchError(
           std::move(id),
@@ -427,7 +428,7 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
               IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
               l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
               base::ASCIIToUTF16(err_domain)),
-          absl::nullopt));
+          std::nullopt));
       delegate_->ShowPanel();
       return RejectMismatchError(
           std::move(id),
@@ -489,11 +490,10 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
                           false);
 }
 
-void EthereumProviderImpl::EthSubscribe(
-    const std::string& event_type,
-    absl::optional<base::Value::Dict> filter,
-    RequestCallback callback,
-    base::Value id) {
+void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
+                                        std::optional<base::Value::Dict> filter,
+                                        RequestCallback callback,
+                                        base::Value id) {
   const auto generateHexBytes = [](std::vector<std::string>& subscriptions) {
     std::vector<uint8_t> bytes(16);
     crypto::RandBytes(&bytes.front(), bytes.size());
@@ -629,7 +629,7 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
     return;
   }
 
-  absl::optional<std::vector<uint8_t>> unsafe_message_bytes =
+  std::optional<std::vector<uint8_t>> unsafe_message_bytes =
       keyring_service_
           ->DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
               account_id, version, nonce, ephemeral_public_key, ciphertext);
@@ -738,7 +738,7 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     bool is_eip712,
     bool approved,
     mojom::ByteArrayStringUnionPtr signature,
-    const absl::optional<std::string>& error) {
+    const std::optional<std::string>& error) {
   bool reject = false;
   if (error && !error->empty()) {
     base::Value formed_response = GetProviderErrorDictionary(
@@ -1018,12 +1018,11 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     Decrypt(untrusted_encrypted_data_json, address, delegate_->GetOrigin(),
             std::move(callback), std::move(id));
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
-    mojom::BlockchainTokenPtr token;
     const auto chain_id = json_rpc_service_->GetChainIdSync(
         mojom::CoinType::ETH, delegate_->GetOrigin());
-    if (!ParseWalletWatchAssetParams(normalized_json_request, chain_id,
-                                     mojom::CoinType::ETH, &token,
-                                     &error_message)) {
+    mojom::BlockchainTokenPtr token = ParseWalletWatchAssetParams(
+        normalized_json_request, chain_id, &error_message);
+    if (!token) {
       if (!error_message.empty()) {
         error = mojom::ProviderError::kInvalidParams;
       }
@@ -1116,7 +1115,7 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     }
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
                                  origin, RequestPermissionsError::kInternal,
-                                 absl::nullopt);
+                                 std::nullopt);
     return;
   }
 
@@ -1124,7 +1123,7 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     if (pending_request_ethereum_permissions_callback_) {
       OnRequestEthereumPermissions(
           std::move(callback), std::move(id), method, origin,
-          RequestPermissionsError::kRequestInProgress, absl::nullopt);
+          RequestPermissionsError::kRequestInProgress, std::nullopt);
       return;
     }
     pending_request_ethereum_permissions_callback_ = std::move(callback);
@@ -1143,7 +1142,7 @@ void EthereumProviderImpl::RequestEthereumPermissions(
   if (!success) {
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
                                  origin, RequestPermissionsError::kInternal,
-                                 absl::nullopt);
+                                 std::nullopt);
     return;
   }
 
@@ -1180,7 +1179,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
     const std::string& method,
     const url::Origin& origin,
     RequestPermissionsError error,
-    const absl::optional<std::vector<std::string>>& allowed_accounts) {
+    const std::optional<std::vector<std::string>>& allowed_accounts) {
   base::Value formed_response;
 
   bool success = error == RequestPermissionsError::kNone;
@@ -1230,7 +1229,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
                           first_allowed_account, true);
 }
 
-absl::optional<std::vector<std::string>>
+std::optional<std::vector<std::string>>
 EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
   std::vector<std::string> addresses;
   for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
@@ -1247,7 +1246,7 @@ EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
       delegate_->GetAllowedAccounts(mojom::CoinType::ETH, addresses);
 
   if (!allowed_accounts) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<std::string> filtered_accounts;
@@ -1370,7 +1369,7 @@ void EthereumProviderImpl::Init(
 void EthereumProviderImpl::ChainChangedEvent(
     const std::string& chain_id,
     mojom::CoinType coin,
-    const absl::optional<url::Origin>& origin) {
+    const std::optional<url::Origin>& origin) {
   if (!events_listener_.is_bound() || coin != mojom::CoinType::ETH) {
     return;
   }

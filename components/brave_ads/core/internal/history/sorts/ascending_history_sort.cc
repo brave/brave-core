@@ -10,14 +10,9 @@
 
 namespace brave_ads {
 
-HistoryItemList AscendingHistorySort::Apply(
-    const HistoryItemList& history) const {
-  HistoryItemList sorted_history = history;
-
-  base::ranges::sort(sorted_history, base::ranges::less{},
+void AscendingHistorySort::Apply(HistoryItemList& history) const {
+  base::ranges::sort(history, base::ranges::less{},
                      &HistoryItemInfo::created_at);
-
-  return sorted_history;
 }
 
 }  // namespace brave_ads

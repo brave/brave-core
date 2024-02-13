@@ -6,20 +6,40 @@ import logging
 import os
 import subprocess
 import tempfile
+import platform
+
 from threading import Timer
 from typing import List, Optional, Tuple
 from urllib.request import urlopen
 
-from lib.util import extract_zip
-
 import components.path_util as path_util
 
-# pylint: disable=import-error
-# pytype: disable=import-error
-with path_util.SysPath(path_util.GetPyJson5Dir()):
-  import json5
-# pylint: enable=import-error
-# pytype: enable=import-error
+with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
+  from lib.util import extract_zip
+
+
+def ToChromiumPlatformName(target_os: str) -> str:
+  if target_os == 'mac':
+    return 'mac-arm64' if platform.processor() == 'arm' else 'mac-x64'
+  if target_os == 'windows':
+    return 'win64'
+  if target_os == 'linux':
+    return 'linux64'
+  if target_os == 'android':
+    return 'android-arm64'
+  raise RuntimeError('Platform is not supported')
+
+
+def ToBravePlatformName(target_os: str) -> str:
+  if target_os == 'mac':
+    return 'darwin-arm64' if platform.processor() == 'arm' else 'darwin-x64'
+  if target_os == 'windows':
+    return 'win32-x64'
+  if target_os == 'linux':
+    return 'linux-x64'
+  if target_os == 'android':
+    return 'android-arm64'
+  raise RuntimeError('Platform is not supported')
 
 
 def TerminateProcess(p):
@@ -30,6 +50,7 @@ def TerminateProcess(p):
 def GetProcessOutput(args: List[str],
                      cwd: Optional[str] = None,
                      check=False,
+                     output_to_debug=True,
                      timeout: Optional[int] = None) -> Tuple[bool, str]:
   if logging.root.isEnabledFor(logging.DEBUG):
     logging.debug('Run binary: %s, cwd = %s  output:', ' '.join(args), cwd)
@@ -52,7 +73,8 @@ def GetProcessOutput(args: List[str],
         line = process.stdout.readline()
         if line:
           output += line
-          logging.debug(line.rstrip())
+          if output_to_debug:
+            logging.debug(line.rstrip())
         if not line and process.poll() is not None:
           break
     finally:
@@ -75,25 +97,19 @@ def GetProcessOutput(args: List[str],
                                      universal_newlines=True)
     return True, output
   except subprocess.CalledProcessError as e:
-    logging.error(e.output)
+    if output_to_debug:
+      logging.error(e.output)
     if check:
       raise
     return False, e.output
 
 
-def GetConfigPath(config_path: str) -> str:
-  if os.path.isfile(config_path):
-    return config_path
-
-  config_path = os.path.join(path_util.GetBravePerfConfigDir(), config_path)
-  if os.path.isfile(config_path):
-    return config_path
-  raise RuntimeError(f'Bad config {config_path}')
-
-
 def DownloadFile(url: str, output: str):
-  logging.debug('Downloading %s', url)
-  f = urlopen(url)
+  logging.info('Downloading %s to %s', url, output)
+  try:
+    f = urlopen(url)
+  except Exception as e:
+    raise RuntimeError(f'Can\'t download {url}') from e
   data = f.read()
   with open(output, 'wb') as output_file:
     output_file.write(data)
@@ -105,43 +121,10 @@ def DownloadArchiveAndUnpack(output_directory: str, url: str):
   extract_zip(f, output_directory)
 
 
-def LoadJsonConfig(config: str, working_directory: str) -> dict:
-  if config.startswith('https://'):
-    _, config_filename = tempfile.mkstemp(dir=working_directory,
-                                          prefix='config-')
-    DownloadFile(config, config_filename)
-  else:
-    config_filename = GetConfigPath(config)
-  with open(config_filename, 'r', encoding='utf-8') as config_file:
-    return json5.load(config_file)
-
-
-def GetRevisionNumberAndHash(revision: str, ci_mode: bool) -> Tuple[str, str]:
-  """Returns pair [revision_number, sha1]. revision_number is a number "primary"
-  commits from the begging to `revision`.
-  Use this to get the commit from a revision number:
-  git rev-list --topo-order --first-parent --reverse origin/master
-  | head -n <rev_num> | tail -n 1 | git log -n 1 --stdin
-  """
-
-  if not ci_mode:
-    # Fetch the revision first:
-    GetProcessOutput(['git', 'fetch', 'origin', f'{revision}:{revision}'],
-                     cwd=path_util.GetBraveDir(),
-                     check=True)
-
-  # Get git hash of the revision:
-  _, git_hash_output = GetProcessOutput(['git', 'rev-parse', revision],
-                                        cwd=path_util.GetBraveDir(),
-                                        check=True)
-
-  rev_number_args = [
-      'git', 'rev-list', '--topo-order', '--first-parent', '--count', revision
-  ]
-
-  # Get the revision number:
-  _, rev_number_output = GetProcessOutput(rev_number_args,
-                                          cwd=path_util.GetBraveDir(),
-                                          check=True)
-
-  return (rev_number_output.rstrip(), git_hash_output.rstrip())
+def GetFileAtRevision(filepath: str, revision: str) -> Optional[str]:
+  if os.path.isabs(filepath):
+    filepath = os.path.relpath(filepath, path_util.GetBraveDir())
+  success, content = GetProcessOutput(['git', 'show', f'{revision}:{filepath}'],
+                                      cwd=path_util.GetBraveDir(),
+                                      output_to_debug=False)
+  return content if success else None

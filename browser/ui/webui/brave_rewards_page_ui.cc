@@ -39,7 +39,6 @@
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
@@ -79,7 +78,7 @@ PrefService* GetLocalState() {
 brave_rewards::RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
-  if (auto* browser = chrome::FindBrowserWithWebContents(web_contents)) {
+  if (auto* browser = chrome::FindBrowserWithTab(web_contents)) {
     return brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
   }
   return nullptr;
@@ -297,7 +296,6 @@ class RewardsDOMHandler
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};
-  bool browser_upgrade_required_to_serve_ads_ = false;
 
   PrefChangeRegistrar pref_change_registrar_;
 
@@ -513,6 +511,8 @@ void RewardsDOMHandler::Init() {
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
 
+  rewards_service_->OnRewardsPageShown();
+
   // Configure a pref change registrar to update brave://rewards when settings
   // are changed via brave://settings
   InitPrefChangeRegistrar();
@@ -686,7 +686,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   data.Set("payoutStatus", std::move(payout_status));
   data.Set("walletProviderRegions", std::move(wallet_provider_regions));
   if (!vbat_deadline.is_null()) {
-    data.Set("vbatDeadline", floor(vbat_deadline.ToDoubleT() *
+    data.Set("vbatDeadline", floor(vbat_deadline.InSecondsFSinceUnixEpoch() *
                                    base::Time::kMillisecondsPerSecond));
   }
   data.Set("vbatExpired", vbat_expired);
@@ -972,7 +972,12 @@ void RewardsDOMHandler::SaveSetting(const base::Value::List& args) {
     const std::string value = args[1].GetString();
 
     if (key == "contributionMonthly") {
-      rewards_service_->SetAutoContributionAmount(std::stod(value));
+      double double_value = 0;
+      if (!base::StringToDouble(value, &double_value)) {
+        LOG(ERROR) << "Auto contribution amount not a double";
+        return;
+      }
+      rewards_service_->SetAutoContributionAmount(double_value);
     }
 
     if (key == "contributionMinTime") {
@@ -1225,7 +1230,7 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
       prefs->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting));
   ads_data.Set("adsUIEnabled", true);
   ads_data.Set("needsBrowserUpgradeToServeAds",
-               browser_upgrade_required_to_serve_ads_);
+               ads_service_->IsBrowserUpgradeRequiredToServeAds());
 
   const std::string country_code = brave_l10n::GetCountryCode(GetLocalState());
   ads_data.Set("subdivisions",
@@ -1505,7 +1510,7 @@ void RewardsDOMHandler::OnGetStatementOfAccounts(
 
   base::Value::Dict dict;
   dict.Set("adsNextPaymentDate",
-           statement->next_payment_date.ToDoubleT() * 1000);
+           statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000);
   dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
   dict.Set("adsMinEarningsThisMonth", statement->min_earnings_this_month);
   dict.Set("adsMaxEarningsThisMonth", statement->max_earnings_this_month);
@@ -1533,7 +1538,6 @@ void RewardsDOMHandler::OnAdRewardsDidChange() {
 }
 
 void RewardsDOMHandler::OnBrowserUpgradeRequiredToServeAds() {
-  browser_upgrade_required_to_serve_ads_ = true;
   GetAdsData(base::Value::List());
 }
 

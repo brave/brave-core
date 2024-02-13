@@ -25,10 +25,10 @@ DatabaseCredsBatch::DatabaseCredsBatch(RewardsEngineImpl& engine)
 DatabaseCredsBatch::~DatabaseCredsBatch() = default;
 
 void DatabaseCredsBatch::InsertOrUpdate(mojom::CredsBatchPtr creds,
-                                        LegacyResultCallback callback) {
+                                        ResultCallback callback) {
   if (!creds) {
-    BLOG(1, "Creds is null");
-    callback(mojom::Result::FAILED);
+    engine_->Log(FROM_HERE) << "Creds is null";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -105,15 +105,15 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback(nullptr);
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run(nullptr);
     return;
   }
 
   if (response->result->get_records().size() != 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
-    callback(nullptr);
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
+    std::move(callback).Run(nullptr);
     return;
   }
 
@@ -131,14 +131,14 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
   info->batch_proof = GetStringColumn(record, 7);
   info->status = static_cast<mojom::CredsBatchStatus>(GetIntColumn(record, 8));
 
-  callback(std::move(info));
+  std::move(callback).Run(std::move(info));
 }
 
 void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
-                                         LegacyResultCallback callback) {
+                                         ResultCallback callback) {
   if (!creds) {
-    BLOG(1, "Creds is null");
-    callback(mojom::Result::FAILED);
+    engine_->Log(FROM_HERE) << "Creds is null";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -201,8 +201,8 @@ void DatabaseCredsBatch::OnGetRecords(GetCredsBatchListCallback callback,
                                       mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback({});
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run({});
     return;
   }
 
@@ -226,16 +226,16 @@ void DatabaseCredsBatch::OnGetRecords(GetCredsBatchListCallback callback,
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
                                       mojom::CredsBatchType trigger_type,
                                       mojom::CredsBatchStatus status,
-                                      LegacyResultCallback callback) {
+                                      ResultCallback callback) {
   if (trigger_id.empty()) {
-    BLOG(0, "Trigger id is empty");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Trigger id is empty";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -264,10 +264,10 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
     const std::vector<std::string>& trigger_ids,
     mojom::CredsBatchType trigger_type,
     mojom::CredsBatchStatus status,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (trigger_ids.empty()) {
-    BLOG(0, "Trigger id is empty");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Trigger id is empty";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -30,7 +31,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
       *EthTransaction::FromTxData(mojom::TxData::New(
           "0x09", "0x4a817c800", "0x5208",
           "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-          std::vector<uint8_t>(), false, absl::nullopt)));
+          std::vector<uint8_t>(), false, std::nullopt)));
   EthTxMeta meta(eth_account_id, std::move(tx));
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   base::Time confirmed_time = meta.confirmed_time();
@@ -63,11 +64,11 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
             "");
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas, "");
   EXPECT_FALSE(ti->tx_data_union->get_eth_tx_data_1559()->gas_estimation);
-  EXPECT_EQ(meta.created_time().ToJavaTime(),
+  EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
             ti->created_time.InMilliseconds());
-  EXPECT_EQ(meta.submitted_time().ToJavaTime(),
+  EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
             ti->submitted_time.InMilliseconds());
-  EXPECT_EQ(meta.confirmed_time().ToJavaTime(),
+  EXPECT_EQ(meta.confirmed_time().InMillisecondsSinceUnixEpoch(),
             ti->confirmed_time.InMilliseconds());
 
   // type 1
@@ -76,7 +77,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
           mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                              "0x3535353535353535353535353535353535353535",
                              "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                             false, absl::nullopt),
+                             false, std::nullopt),
           0x3));
   auto* access_list = tx1->access_list();
   Eip2930Transaction::AccessListItem item_a;
@@ -121,7 +122,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
               mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                  "0x3535353535353535353535353535353535353535",
                                  "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                                 false, absl::nullopt),
+                                 false, std::nullopt),
               "0x3", "0x1E", "0x32",
               mojom::GasEstimation1559::New(
                   "0x3b9aca00" /* Hex of 1 * 1e9 */,
@@ -205,7 +206,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", data, false,
-                                   absl::nullopt),
+                                   std::nullopt),
                 mojom::kFilecoinEthereumMainnetChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,
@@ -235,7 +236,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
-                                   absl::nullopt),
+                                   std::nullopt),
                 mojom::kGoerliChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,
@@ -266,7 +267,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
-                                   absl::nullopt),
+                                   std::nullopt),
                 mojom::kGoerliChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,
@@ -297,7 +298,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
-                                   absl::nullopt),
+                                   std::nullopt),
                 mojom::kGoerliChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,
@@ -321,7 +322,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                                   false, absl::nullopt),
+                                   false, std::nullopt),
                 mojom::kGoerliChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,

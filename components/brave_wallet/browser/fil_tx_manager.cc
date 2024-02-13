@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -52,7 +53,7 @@ FilTxManager::~FilTxManager() {
 
 void FilTxManager::GetEstimatedGas(const std::string& chain_id,
                                    const mojom::AccountIdPtr& from,
-                                   const absl::optional<url::Origin>& origin,
+                                   const std::optional<url::Origin>& origin,
                                    std::unique_ptr<FilTransaction> tx,
                                    AddUnapprovedTransactionCallback callback) {
   const std::string gas_premium = tx->gas_premium();
@@ -73,7 +74,7 @@ void FilTxManager::GetEstimatedGas(const std::string& chain_id,
 void FilTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     std::unique_ptr<FilTransaction> tx,
     AddUnapprovedTransactionCallback callback,
     const std::string& gas_premium,
@@ -109,7 +110,7 @@ void FilTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
-    const absl::optional<url::Origin>& origin,
+    const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_fil_tx_data());
   const bool is_mainnet = chain_id == mojom::kFilecoinMainnet;
@@ -143,11 +144,10 @@ void FilTxManager::AddUnapprovedTransaction(
   }
 }
 
-void FilTxManager::ApproveTransaction(const std::string& chain_id,
-                                      const std::string& tx_meta_id,
+void FilTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                       ApproveTransactionCallback callback) {
   std::unique_ptr<FilTxMeta> meta =
-      GetFilTxStateManager()->GetFilTx(chain_id, tx_meta_id);
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -159,6 +159,7 @@ void FilTxManager::ApproveTransaction(const std::string& chain_id,
   }
   if (!meta->tx()->nonce()) {
     auto from = meta->from()->Clone();
+    auto chain_id = meta->chain_id();
     nonce_tracker_->GetNextNonce(
         chain_id, from,
         base::BindOnce(&FilTxManager::OnGetNextNonce,
@@ -214,18 +215,17 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
   json_rpc_service_->SendFilecoinTransaction(
       meta->chain_id(), signed_tx.value(),
       base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
-                     weak_factory_.GetWeakPtr(), meta->chain_id(), meta->id(),
+                     weak_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));
 }
 
 void FilTxManager::OnSendFilecoinTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     ApproveTransactionCallback callback,
     const std::string& tx_cid,
     mojom::FilecoinProviderError error,
     const std::string& error_message) {
-  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(chain_id, tx_meta_id);
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
     NOTREACHED() << "Transaction should be found";
     std::move(callback).Run(
@@ -256,7 +256,7 @@ void FilTxManager::OnSendFilecoinTransaction(
   }
 
   if (success) {
-    UpdatePendingTransactions(chain_id);
+    UpdatePendingTransactions(meta->chain_id());
   }
   std::move(callback).Run(
       error_message.empty(),
@@ -265,25 +265,22 @@ void FilTxManager::OnSendFilecoinTransaction(
 }
 
 void FilTxManager::SpeedupOrCancelTransaction(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     bool cancel,
     SpeedupOrCancelTransactionCallback callback) {
   NOTIMPLEMENTED();
 }
 
-void FilTxManager::RetryTransaction(const std::string& chain_id,
-                                    const std::string& tx_meta_id,
+void FilTxManager::RetryTransaction(const std::string& tx_meta_id,
                                     RetryTransactionCallback callback) {
   NOTIMPLEMENTED();
 }
 
 void FilTxManager::GetTransactionMessageToSign(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
   std::unique_ptr<FilTxMeta> meta =
-      GetFilTxStateManager()->GetFilTx(chain_id, tx_meta_id);
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
   if (!meta || !meta->tx()) {
     VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
     std::move(callback).Run(nullptr);
@@ -291,6 +288,7 @@ void FilTxManager::GetTransactionMessageToSign(
   }
   if (!meta->tx()->nonce()) {
     auto from = meta->from().Clone();
+    auto chain_id = meta->chain_id();
     nonce_tracker_->GetNextNonce(
         chain_id, from,
         base::BindOnce(&FilTxManager::OnGetNextNonceForHardware,
@@ -348,9 +346,8 @@ void FilTxManager::Reset() {
 }
 
 std::unique_ptr<FilTxMeta> FilTxManager::GetTxForTesting(
-    const std::string& chain_id,
     const std::string& tx_meta_id) {
-  return GetFilTxStateManager()->GetFilTx(chain_id, tx_meta_id);
+  return GetFilTxStateManager()->GetFilTx(tx_meta_id);
 }
 
 FilTxStateManager* FilTxManager::GetFilTxStateManager() {
@@ -358,9 +355,9 @@ FilTxStateManager* FilTxManager::GetFilTxStateManager() {
 }
 
 void FilTxManager::UpdatePendingTransactions(
-    const absl::optional<std::string>& chain_id) {
+    const std::optional<std::string>& chain_id) {
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
+      chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
   std::set<std::string> pending_chain_ids;
   for (const auto& pending_transaction : pending_transactions) {
     auto cid = pending_transaction->tx_hash();
@@ -376,15 +373,13 @@ void FilTxManager::UpdatePendingTransactions(
     json_rpc_service_->GetFilStateSearchMsgLimited(
         pending_chain_id, cid, limit_epochs,
         base::BindOnce(&FilTxManager::OnGetFilStateSearchMsgLimited,
-                       weak_factory_.GetWeakPtr(), pending_chain_id,
-                       pending_transaction->id()));
+                       weak_factory_.GetWeakPtr(), pending_transaction->id()));
     pending_chain_ids.emplace(pending_chain_id);
   }
   CheckIfBlockTrackerShouldRun(pending_chain_ids);
 }
 
 void FilTxManager::OnGetFilStateSearchMsgLimited(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     int64_t exit_code,
     mojom::FilecoinProviderError error,
@@ -393,7 +388,7 @@ void FilTxManager::OnGetFilStateSearchMsgLimited(
     return;
   }
   std::unique_ptr<FilTxMeta> meta =
-      GetFilTxStateManager()->GetFilTx(chain_id, tx_meta_id);
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
   if (!meta) {
     return;
   }
@@ -417,12 +412,11 @@ FilBlockTracker* FilTxManager::GetFilBlockTracker() {
 }
 
 void FilTxManager::ProcessFilHardwareSignature(
-    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& signed_tx,
     ProcessFilHardwareSignatureCallback callback) {
   std::unique_ptr<FilTxMeta> meta =
-      GetFilTxStateManager()->GetFilTx(chain_id, tx_meta_id);
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
   if (!meta) {
     std::move(callback).Run(
         false,
@@ -443,9 +437,9 @@ void FilTxManager::ProcessFilHardwareSignature(
   }
 
   json_rpc_service_->SendFilecoinTransaction(
-      chain_id, signed_tx,
+      meta->chain_id(), signed_tx,
       base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
-                     weak_factory_.GetWeakPtr(), chain_id, meta->id(),
+                     weak_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));
 }
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -12,7 +13,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
 
@@ -139,14 +140,14 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     const std::string& json_string,
     const base::FilePath& installed_dir)
     : NTPSponsoredImagesData() {
-  absl::optional<base::Value> json_value = base::JSONReader::Read(json_string);
+  std::optional<base::Value> json_value = base::JSONReader::Read(json_string);
   if (!json_value || !json_value->is_dict()) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
   }
   base::Value::Dict& root = json_value->GetDict();
 
-  absl::optional<int> incomingSchemaVersion = root.FindInt(kSchemaVersionKey);
+  std::optional<int> incomingSchemaVersion = root.FindInt(kSchemaVersionKey);
   const bool schemaVersionIsValid =
       incomingSchemaVersion && *incomingSchemaVersion == kExpectedSchemaVersion;
   if (!schemaVersionIsValid) {
@@ -299,7 +300,7 @@ bool NTPSponsoredImagesData::IsSuperReferral() const {
   return IsValid() && !theme_name.empty();
 }
 
-absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
+std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
     size_t campaign_index,
     size_t background_index) {
   DCHECK(campaign_index < campaigns.size() && background_index >= 0 &&
@@ -307,7 +308,7 @@ absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
 
   const auto campaign = campaigns[campaign_index];
   if (!campaign.IsValid())
-    return absl::nullopt;
+    return std::nullopt;
 
   base::Value::Dict data;
   data.Set(kThemeNameKey, theme_name);
@@ -341,7 +342,7 @@ absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   return data;
 }
 
-absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundByAdInfo(
+std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundByAdInfo(
     const brave_ads::NewTabPageAdInfo& ad_info) {
   // Find campaign
   size_t campaign_index = 0;
@@ -353,7 +354,7 @@ absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundByAdInfo(
   if (campaign_index == campaigns.size()) {
     VLOG(0) << "The ad campaign wasn't found in the NTP sponsored images data: "
             << ad_info.campaign_id;
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const auto& sponsored_backgrounds = campaigns[campaign_index].backgrounds;
@@ -367,7 +368,7 @@ absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundByAdInfo(
   if (background_index == sponsored_backgrounds.size()) {
     VLOG(0) << "Creative instance wasn't found in NTP sposored images data: "
             << ad_info.creative_instance_id;
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (VLOG_IS_ON(0)) {
@@ -380,7 +381,7 @@ absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundByAdInfo(
     }
   }
 
-  absl::optional<base::Value::Dict> data =
+  std::optional<base::Value::Dict> data =
       GetBackgroundAt(campaign_index, background_index);
   if (data) {
     data->Set(kWallpaperIDKey, ad_info.placement_id);

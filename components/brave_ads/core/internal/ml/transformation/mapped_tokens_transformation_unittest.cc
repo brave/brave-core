@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_test_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -23,7 +22,7 @@ namespace brave_ads::ml {
 
 class BraveAdsMappedTokensTransformationTest : public UnitTestBase {
  public:
-  absl::optional<MappedTokensTransformation> BuildMappedTokensTransformation(
+  std::optional<MappedTokensTransformation> BuildMappedTokensTransformation(
       const int vector_dimension,
       const std::map<std::string, std::vector<uint16_t>>&
           token_categories_mapping) {
@@ -36,24 +35,24 @@ class BraveAdsMappedTokensTransformationTest : public UnitTestBase {
     flatbuffers::Verifier verifier(
         reinterpret_cast<const uint8_t*>(buffer_.data()), buffer_.size());
     if (!neural_text_classification::flat::VerifyModelBuffer(verifier)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const auto* raw_model =
         neural_text_classification::flat::GetModel(buffer_.data());
     if (!raw_model || !raw_model->transformations()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const auto* transformation_entry = raw_model->transformations()->Get(0);
     if (!transformation_entry) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const auto* transformation =
         transformation_entry->transformation_as_MappedTokenTransformation();
     if (!transformation) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     return MappedTokensTransformation(transformation);
@@ -74,7 +73,7 @@ TEST_F(BraveAdsMappedTokensTransformationTest, ToMappedTokens) {
   std::map<std::string, std::vector<uint16_t>> token_categories_mapping = {
       {"is", {1}}, {"this", {5}}, {"test-string", {0, 3}}, {"simple", {1, 4}}};
 
-  absl::optional<MappedTokensTransformation> to_mapped_tokens =
+  std::optional<MappedTokensTransformation> to_mapped_tokens =
       BuildMappedTokensTransformation(vector_dimension,
                                       token_categories_mapping);
   ASSERT_TRUE(to_mapped_tokens);
@@ -110,7 +109,7 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyText) {
   std::map<std::string, std::vector<uint16_t>> token_categories_mapping = {
       {"is", {1}}, {"this", {5}}, {"test-string", {0, 3}}, {"simple", {1, 4}}};
 
-  absl::optional<MappedTokensTransformation> to_mapped_tokens =
+  std::optional<MappedTokensTransformation> to_mapped_tokens =
       BuildMappedTokensTransformation(vector_dimension,
                                       token_categories_mapping);
   ASSERT_TRUE(to_mapped_tokens);
@@ -145,7 +144,7 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyMap) {
   int vector_dimension = 6;
   std::map<std::string, std::vector<uint16_t>> token_categories_mapping = {};
 
-  absl::optional<MappedTokensTransformation> to_mapped_tokens =
+  std::optional<MappedTokensTransformation> to_mapped_tokens =
       BuildMappedTokensTransformation(vector_dimension,
                                       token_categories_mapping);
   ASSERT_TRUE(to_mapped_tokens);
@@ -179,7 +178,7 @@ TEST_F(BraveAdsMappedTokensTransformationTest, NonTextData) {
   std::map<std::string, std::vector<uint16_t>> token_categories_mapping = {
       {"is", {1}}, {"this", {5}}, {"test-string", {0, 3}}, {"simple", {1, 4}}};
 
-  absl::optional<MappedTokensTransformation> to_mapped_tokens =
+  std::optional<MappedTokensTransformation> to_mapped_tokens =
       BuildMappedTokensTransformation(vector_dimension,
                                       token_categories_mapping);
   ASSERT_TRUE(to_mapped_tokens);

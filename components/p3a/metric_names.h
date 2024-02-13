@@ -24,13 +24,15 @@ namespace p3a {
 //
 // clang-format off
 inline constexpr auto kCollectedTypicalHistograms =
-  base::MakeFixedFlatSetSorted<std::string_view>({
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
-    "Brave.AIChat.Enabled",
+    "Brave.AIChat.Enabled.2",
+    "Brave.AIChat.NewUserReturning",
     "Brave.AIChat.OmniboxOpens",
     "Brave.AIChat.OmniboxWeekCompare",
+    "Brave.AIChat.UsageWeekly",
     "Brave.Core.BookmarksCountOnProfileLoad.2",
     "Brave.Core.CrashReportsEnabled",
     "Brave.Core.DomainsLoaded",
@@ -39,7 +41,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Core.LocationNewEntries",
     "Brave.Core.NewTabMethods",
     "Brave.Core.NumberOfExtensions",
-    "Brave.Core.PagesLoaded",
+    "Brave.Core.PagesLoaded.2",
+    "Brave.Core.PagesReloaded",
     "Brave.Core.TabCount",
     "Brave.Core.TorEverUsed",
     "Brave.Core.WeeklyUsage",
@@ -47,6 +50,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.DNS.AutoSecureRequests",
     "Brave.DNS.SecureSetting",
     "Brave.Extensions.AdBlock",
+    "Brave.IOS.IsLikelyDefault",
 
     // IPFS
     "Brave.IPFS.DaemonRunTime",
@@ -56,7 +60,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.IPFS.LocalNodeRetention",
 
     "Brave.Importer.ImporterSource.2",
-    "Brave.NTP.CustomizeUsageStatus",
+    "Brave.NTP.CustomizeUsageStatus.2",
     "Brave.NTP.NewTabsCreated.2",
     "Brave.NTP.SponsoredImagesEnabled",
     "Brave.NTP.SponsoredNewTabsCreated",
@@ -135,6 +139,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Playlist.UsageDaysInWeek",
     "Brave.Rewards.AdTypesEnabled",
     "Brave.Rewards.AutoContributionsState.3",
+    "Brave.Rewards.CustomNotificationAdPosition",
+    "Brave.Rewards.DesktopPanelCount",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.MobileConversion",
     "Brave.Rewards.MobilePanelCount",
@@ -143,7 +149,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Rewards.WalletBalance.3",
     "Brave.Rewards.WalletState",
     "Brave.Savings.BandwidthSavingsMB",
-    "Brave.Search.DefaultEngine.4",
     "Brave.Search.Promo.BannerA",
     "Brave.Search.Promo.BannerB",
     "Brave.Search.Promo.BannerC",
@@ -201,13 +206,18 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Wallet.SolProvider.2",
     "Brave.Wallet.SolTransactionSent",
     "Brave.Wallet.UsageWeekly",
+    "Brave.WebTorrent.UsageWeekly",
     "Brave.Welcome.InteractionStatus.2",
 });
 
 inline constexpr auto kCollectedSlowHistograms =
-  base::MakeFixedFlatSetSorted<std::string_view>({
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    "Brave.AIChat.LastUsageTime",
+    "Brave.AIChat.UsageMonthly",
     "Brave.Accessibility.DisplayZoomEnabled",
+    "Brave.Autofill.PaymentMethodPresent",
     "Brave.Core.DocumentsDirectorySizeMB",
+    "Brave.Core.PrimaryLang",
     "Brave.Core.ProfileCount",
     "Brave.Core.UsageMonthly",
     "Brave.General.BottomBarLocation",
@@ -216,19 +226,24 @@ inline constexpr auto kCollectedSlowHistograms =
     "Brave.PrivacyHub.IsEnabled",
     "Brave.PrivacyHub.Views",
     "Brave.ReaderMode.NumberReaderModeActivated",
+    "Brave.RequestOTR.InterstitialDuration",
+    "Brave.RequestOTR.InterstitialShown",
+    "Brave.RequestOTR.SessionCount",
+    "Brave.Rewards.PageViewCount",
     "Brave.Rewards.TipsSent.2",
     "Brave.Sync.EnabledTypes",
-    "Brave.Sync.SyncedObjectsCount",
+    "Brave.Sync.SyncedObjectsCount.2",
     "Brave.Today.UsageMonthly",
     "Brave.Toolbar.ForwardNavigationAction",
     "Brave.Wallet.UsageMonthly",
 });
 
 inline constexpr auto kCollectedExpressHistograms =
-  base::MakeFixedFlatSetSorted<std::string_view>({
-    "Brave.AIChat.UsageDaily",
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    "Brave.AIChat.UsageDaily.2",
     "Brave.Core.UsageDaily",
     "Brave.Rewards.EnabledInstallationTime",
+    "Brave.Search.DefaultEngine.4",
     "Brave.Today.IsEnabled",
     "Brave.Today.UsageDaily",
     "Brave.Uptime.BrowserOpenTime",
@@ -239,20 +254,26 @@ inline constexpr auto kCollectedExpressHistograms =
 // List of metrics that should only be sent once per latest histogram update.
 // Once the metric value has been sent, the value will be removed from the log store.
 inline constexpr auto kEphemeralHistograms =
-  base::MakeFixedFlatSetSorted<std::string_view>({
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
+    "Brave.AIChat.LastUsageTime",
     "Brave.AIChat.OmniboxOpens",
     "Brave.AIChat.OmniboxWeekCompare",
-    "Brave.AIChat.UsageDaily",
+    "Brave.AIChat.UsageDaily.2",
+    "Brave.AIChat.UsageMonthly",
+    "Brave.AIChat.UsageWeekly",
     "Brave.Playlist.FirstTimeOffset",
     "Brave.Playlist.UsageDaysInWeek",
     "Brave.PrivacyHub.Views",
+    "Brave.RequestOTR.InterstitialDuration",
+    "Brave.Rewards.DesktopPanelCount",
     "Brave.Rewards.EnabledInstallationTime",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.MobileConversion",
     "Brave.Rewards.MobilePanelCount",
+    "Brave.Rewards.PageViewCount",
     "Brave.Rewards.TipsSent",
     "Brave.Rewards.ToolbarButtonTrigger",
     "Brave.Search.QueriesBeforeChurn",
@@ -269,6 +290,14 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageMonthly",
     "Brave.Wallet.UsageWeekly",
+    "Brave.WebTorrent.UsageWeekly"
+});
+
+// List of metrics that should only be via STAR/Constellation.
+// TODO(djandries): remove this once JSON deprecation is complete
+inline constexpr auto kConstellationOnlyHistograms =
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    "Brave.Core.PrimaryLang",
 });
 
 // clang-format on

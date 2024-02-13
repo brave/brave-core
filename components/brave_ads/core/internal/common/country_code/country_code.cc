@@ -5,13 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -47,7 +48,7 @@ void CountryCode::OnNotifyPrefDidChange(const std::string& path) {
 }
 
 void CountryCode::OnDidUpdateSubdivision(const std::string& subdivision) {
-  absl::optional<std::string> subdivision_country_code =
+  std::optional<std::string> subdivision_country_code =
       GetSubdivisionCountryCode(subdivision);
   if (!subdivision_country_code || subdivision_country_code->empty()) {
     return;

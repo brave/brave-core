@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "chrome/browser/ui/views/infobars/infobar_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 namespace content {
 class WebContents;
@@ -18,6 +19,7 @@ class WebContents;
 class BraveWaybackMachineInfoBarDelegate;
 
 class BraveWaybackMachineInfoBarView : public InfoBarView {
+  METADATA_HEADER(BraveWaybackMachineInfoBarView, InfoBarView)
  public:
   BraveWaybackMachineInfoBarView(
       std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,

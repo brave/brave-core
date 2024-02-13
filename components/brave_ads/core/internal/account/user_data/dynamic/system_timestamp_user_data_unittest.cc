@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/dynamic/system_timestamp_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"

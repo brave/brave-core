@@ -60,7 +60,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.custom_layout.AutoFitVerticalGridLayoutManager;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.text.SpanApplier;
@@ -201,10 +201,10 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mActive = true;
         recordP3AView();
 
-        if (JavaUtils.anyNull(mWalletModel) || !mCanRunOnceWhenResumed
-                || !SharedPreferencesManager.getInstance().readBoolean(
-                        SHOW_NFT_DISCOVERY_DIALOG, true))
-            return;
+        if (JavaUtils.anyNull(mWalletModel)
+                || !mCanRunOnceWhenResumed
+                || !ChromeSharedPreferences.getInstance()
+                        .readBoolean(SHOW_NFT_DISCOVERY_DIALOG, true)) return;
 
         mWalletModel.getCryptoModel().isNftDiscoveryEnabled(isNftDiscoveryEnabled -> {
             if (!isNftDiscoveryEnabled) {
@@ -332,15 +332,19 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         nftDiscoveryDialogBuilder.setView(dialogView);
         var dialog = nftDiscoveryDialogBuilder.create();
 
-        enableBtn.setOnClickListener(v -> {
-            dialog.dismiss();
-            mWalletModel.getCryptoModel().updateNftDiscovery(true);
-            SharedPreferencesManager.getInstance().writeBoolean(SHOW_NFT_DISCOVERY_DIALOG, false);
-        });
-        cancelBtn.setOnClickListener(v -> {
-            dialog.dismiss();
-            SharedPreferencesManager.getInstance().writeBoolean(SHOW_NFT_DISCOVERY_DIALOG, false);
-        });
+        enableBtn.setOnClickListener(
+                v -> {
+                    dialog.dismiss();
+                    mWalletModel.getCryptoModel().updateNftDiscovery(true);
+                    ChromeSharedPreferences.getInstance()
+                            .writeBoolean(SHOW_NFT_DISCOVERY_DIALOG, false);
+                });
+        cancelBtn.setOnClickListener(
+                v -> {
+                    dialog.dismiss();
+                    ChromeSharedPreferences.getInstance()
+                            .writeBoolean(SHOW_NFT_DISCOVERY_DIALOG, false);
+                });
         dialog.show();
     }
 

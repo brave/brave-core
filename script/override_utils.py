@@ -6,9 +6,9 @@
 import contextlib
 import inspect
 import types
-import os
 
-_gn_args = None
+from typing import Any
+
 
 def override_function(scope, name=None, condition=True):
     """Replaces an existing function in the scope."""
@@ -47,7 +47,7 @@ def override_method(scope, name=None, condition=True):
     def decorator(new_method):
         assert not isinstance(scope, dict)
         method_name = name or new_method.__name__
-        original_method = getattr(scope, method_name, None)
+        original_method: Any = getattr(scope, method_name, None)
 
         if not condition:
             wrapped_method = original_method
@@ -117,8 +117,7 @@ def override_scope_variable(scope,
     var_exist = hasattr(scope, name)
     if fail_if_not_found and not var_exist:
         raise NameError(f'Failed to override scope variable: {name} not found')
-    if var_exist:
-        original_value = getattr(scope, name)
+    original_value = getattr(scope, name) if var_exist else None
     try:
         setattr(scope, name, value)
         yield
@@ -127,23 +126,3 @@ def override_scope_variable(scope,
             setattr(scope, name, original_value)
         else:
             delattr(scope, name)
-
-
-def get_gn_arg(arg, output_dir=os.getcwd()):
-    """Returns GN arg from args.gn in output_dir."""
-    global _gn_args  # pylint: disable=global-statement
-    if _gn_args is None:
-        ARGS_GN = "args.gn"
-        args_gn_filename = os.path.join(output_dir, ARGS_GN)
-        if not os.path.exists(args_gn_filename):
-            raise FileNotFoundError(f"{ARGS_GN} not found in {output_dir}")
-        with open(args_gn_filename, "r") as f:
-            import gn_helpers  # pylint: disable=import-outside-toplevel
-            _gn_args = gn_helpers.FromGNArgs(f.read())
-
-    if arg not in _gn_args:
-        raise RuntimeError(
-            f"Python-checked gn arg should be explicitly set during gn gen: "
-            f"{arg} gn arg not found")
-
-    return _gn_args[arg]

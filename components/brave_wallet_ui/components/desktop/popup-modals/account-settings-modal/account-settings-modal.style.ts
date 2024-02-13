@@ -56,7 +56,7 @@ export const Input = styled.input`
   }
 `
 
-export const QRCodeWrapper = styled.img`
+export const QRCodeWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,6 +66,12 @@ export const QRCodeWrapper = styled.img`
   border-radius: 8px;
   border: 2px solid ${(p) => p.theme.color.disabled};
   margin-bottom: 16px;
+`
+
+export const QRCodeImage = styled.img`
+  width: 210px;
+  height: 210px;
+  border-radius: 8px;
 `
 
 export const AddressButton = styled(WalletButton)`
@@ -92,6 +98,7 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 `
 
 export const CopyIcon = styled.div`

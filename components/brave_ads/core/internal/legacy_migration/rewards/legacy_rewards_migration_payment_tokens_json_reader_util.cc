@@ -19,48 +19,48 @@ constexpr char kPaymentTokenListKey[] = "unblinded_payment_tokens";
 constexpr char kUnblindedTokenKey[] = "unblinded_token";
 constexpr char kPublicKeyKey[] = "public_key";
 
-absl::optional<PaymentTokenInfo> ParsePaymentToken(
+std::optional<PaymentTokenInfo> ParsePaymentToken(
     const base::Value::Dict& dict) {
   PaymentTokenInfo payment_token;
 
   // Public key
   const std::string* const public_key = dict.FindString(kPublicKeyKey);
   if (!public_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   payment_token.public_key = cbr::PublicKey(*public_key);
   if (!payment_token.public_key.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Unblinded token
   const std::string* const unblinded_token =
       dict.FindString(kUnblindedTokenKey);
   if (!unblinded_token) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   payment_token.unblinded_token = cbr::UnblindedToken(*unblinded_token);
   if (!payment_token.unblinded_token.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return payment_token;
 }
 
-absl::optional<PaymentTokenList> GetPaymentTokensFromList(
+std::optional<PaymentTokenList> GetPaymentTokensFromList(
     const base::Value::List& list) {
   PaymentTokenList payment_tokens;
 
   for (const auto& item : list) {
     const auto* item_dict = item.GetIfDict();
     if (!item_dict) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
-    const absl::optional<PaymentTokenInfo> payment_token =
+    const std::optional<PaymentTokenInfo> payment_token =
         ParsePaymentToken(*item_dict);
     if (!payment_token) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     payment_tokens.push_back(*payment_token);
@@ -71,7 +71,7 @@ absl::optional<PaymentTokenList> GetPaymentTokensFromList(
 
 }  // namespace
 
-absl::optional<PaymentTokenList> ParsePaymentTokens(
+std::optional<PaymentTokenList> ParsePaymentTokens(
     const base::Value::Dict& dict) {
   const auto* const list = dict.FindList(kPaymentTokenListKey);
   if (!list) {

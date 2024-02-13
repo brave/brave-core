@@ -63,12 +63,12 @@ void RegisterProfileUint64Pref(const std::string& path,
 }
 
 void RegisterProfileTimePref(const std::string& path,
-                             base::Time default_value) {
+                             const base::Time default_value) {
   RegisterProfilePref(path, base::TimeToValue(default_value));
 }
 
 void RegisterProfileTimeDeltaPref(const std::string& path,
-                                  base::TimeDelta default_value) {
+                                  const base::TimeDelta default_value) {
   RegisterProfilePref(path, base::TimeDeltaToValue(default_value));
 }
 

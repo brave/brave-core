@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -13,10 +14,10 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_value_converter.h"
 #include "base/logging.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -70,6 +71,34 @@ bool GetStringVector(const base::Value* value,
   }
 }
 
+bool GetUint8(const base::Value* value, uint8_t* field) {
+  DCHECK(field);
+  if (value == nullptr || !value->is_int()) {
+    return false;
+  } else {
+    int i = value->GetInt();
+    if (!base::IsValueInRangeForNumericType<uint8_t>(i)) {
+      return false;
+    }
+    *field = base::checked_cast<uint8_t>(i);
+    return true;
+  }
+}
+
+#if BUILDFLAG(IS_LINUX)
+constexpr char kCurrentPlatform[] = "LINUX";
+#elif BUILDFLAG(IS_WIN)
+constexpr char kCurrentPlatform[] = "WINDOWS";
+#elif BUILDFLAG(IS_MAC)
+constexpr char kCurrentPlatform[] = "MAC";
+#elif BUILDFLAG(IS_ANDROID)
+constexpr char kCurrentPlatform[] = "ANDROID";
+#elif BUILDFLAG(IS_IOS)
+constexpr char kCurrentPlatform[] = "IOS";
+#else
+constexpr char kCurrentPlatform[] = "OTHER";
+#endif
+
 }  // namespace
 
 namespace brave_shields {
@@ -82,17 +111,27 @@ FilterListCatalogEntry::FilterListCatalogEntry(
     const std::string& title,
     const std::vector<std::string>& langs,
     const std::string& support_url,
+    const std::string& desc,
+    bool hidden,
+    bool default_enabled,
+    bool first_party_protections,
+    uint8_t permission_mask,
+    const std::vector<std::string>& platforms,
     const std::string& component_id,
-    const std::string& base64_public_key,
-    const std::string& desc)
+    const std::string& base64_public_key)
     : uuid(uuid),
       url(url),
       title(title),
       langs(langs),
       support_url(support_url),
+      desc(desc),
+      hidden(hidden),
+      default_enabled(default_enabled),
+      first_party_protections(first_party_protections),
+      permission_mask(permission_mask),
+      platforms(platforms),
       component_id(component_id),
-      base64_public_key(base64_public_key),
-      desc(desc) {}
+      base64_public_key(base64_public_key) {}
 
 FilterListCatalogEntry::FilterListCatalogEntry(
     const FilterListCatalogEntry& other) = default;
@@ -108,21 +147,38 @@ void FilterListCatalogEntry::RegisterJSONConverter(
       "langs", &FilterListCatalogEntry::langs, &GetStringVector);
   converter->RegisterStringField("support_url",
                                  &FilterListCatalogEntry::support_url);
+  converter->RegisterStringField("desc", &FilterListCatalogEntry::desc);
+  converter->RegisterBoolField("hidden", &FilterListCatalogEntry::hidden);
+  converter->RegisterBoolField("default_enabled",
+                               &FilterListCatalogEntry::default_enabled);
+  converter->RegisterBoolField(
+      "first_party_protections",
+      &FilterListCatalogEntry::first_party_protections);
+  converter->RegisterCustomValueField(
+      "permission_mask", &FilterListCatalogEntry::permission_mask, &GetUint8);
   converter->RegisterCustomValueField("list_text_component",
                                       &FilterListCatalogEntry::component_id,
                                       &GetComponentId);
   converter->RegisterCustomValueField(
       "list_text_component", &FilterListCatalogEntry::base64_public_key,
       &GetBase64PublicKey);
-  converter->RegisterStringField("desc", &FilterListCatalogEntry::desc);
+  converter->RegisterCustomValueField<std::vector<std::string>>(
+      "platforms", &FilterListCatalogEntry::platforms, &GetStringVector);
+}
+
+bool FilterListCatalogEntry::SupportsCurrentPlatform() const {
+  if (platforms.empty()) {
+    return true;
+  }
+
+  return std::find(platforms.begin(), platforms.end(), kCurrentPlatform) !=
+         platforms.end();
 }
 
 std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
     const std::vector<FilterListCatalogEntry>& region_lists,
     const std::string& uuid) {
-  std::string uuid_uppercase = base::ToUpperASCII(uuid);
-  return base::ranges::find(region_lists, uuid_uppercase,
-                            &FilterListCatalogEntry::uuid);
+  return base::ranges::find(region_lists, uuid, &FilterListCatalogEntry::uuid);
 }
 
 // Given a locale like `en-US`, find regional lists corresponding to the
@@ -156,8 +212,7 @@ std::vector<FilterListCatalogEntry> FilterListCatalogFromJSON(
   std::vector<FilterListCatalogEntry> catalog =
       std::vector<FilterListCatalogEntry>();
 
-  absl::optional<base::Value> parsed_json =
-      base::JSONReader::Read(catalog_json);
+  std::optional<base::Value> parsed_json = base::JSONReader::Read(catalog_json);
   if (!parsed_json || !parsed_json->is_list()) {
     LOG(ERROR) << "Could not load regional adblock catalog";
     return catalog;

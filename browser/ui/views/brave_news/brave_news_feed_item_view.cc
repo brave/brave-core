@@ -72,8 +72,17 @@ BraveNewsFeedItemView::~BraveNewsFeedItemView() = default;
 void BraveNewsFeedItemView::Update() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  title_->SetText(
-      base::UTF8ToUTF16(tab_helper_->GetTitleForFeedUrl(feed_url_)));
+  auto title = tab_helper_->GetTitleForFeedUrl(feed_url_);
+
+  // The only scenario where the title will be empty is when the feed doesn't
+  // exist (most likely when if we tried to fetch the feed and it failed). In
+  // that case, we should remove this row.
+  if (title.empty() && this->parent()) {
+    this->parent()->RemoveChildView(this);
+    return;
+  }
+
+  title_->SetText(base::UTF8ToUTF16(title));
   auto is_subscribed = tab_helper_->IsSubscribed(feed_url_);
   subscribe_button_->SetText(l10n_util::GetStringUTF16(
       is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE

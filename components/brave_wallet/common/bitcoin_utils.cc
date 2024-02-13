@@ -6,6 +6,7 @@
 
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/strings/string_util.h"
@@ -13,7 +14,6 @@
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/bech32.h"
 #include "brave/third_party/bitcoin-core/src/src/util/strencodings.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -29,20 +29,20 @@ constexpr uint8_t kP2PKHTestnetPrefix = 111;
 constexpr uint8_t kP2SHMainnetPrefix = 5;
 constexpr uint8_t kP2SHTestnetPrefix = 196;
 }  // namespace
-#pragma clang optimize off
+
 namespace brave_wallet {
 
 namespace {
 
 // https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#segwit-address-format
 // https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki#addresses-for-segregated-witness-outputs
-absl::optional<DecodedBitcoinAddress> DecodeBech32Address(
+std::optional<DecodedBitcoinAddress> DecodeBech32Address(
     const std::string& address) {
   auto bech_result = bech32::Decode(address);
 
   if (bech_result.encoding != bech32::Encoding::BECH32 &&
       bech_result.encoding != bech32::Encoding::BECH32M) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   bool testnet = false;
@@ -52,11 +52,11 @@ absl::optional<DecodedBitcoinAddress> DecodeBech32Address(
                                               kBech32MainnetHrp)) {
     testnet = false;
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (bech_result.data.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> data;
@@ -64,18 +64,18 @@ absl::optional<DecodedBitcoinAddress> DecodeBech32Address(
   if (!ConvertBits<5, 8, false>([&](unsigned char c) { data.push_back(c); },
                                 bech_result.data.begin() + 1,
                                 bech_result.data.end())) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto witness_version = bech_result.data[0];
 
   if (witness_version == 0 &&
       bech_result.encoding != bech32::Encoding::BECH32) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (witness_version != 0 &&
       bech_result.encoding != bech32::Encoding::BECH32M) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#witness-program
@@ -95,18 +95,18 @@ absl::optional<DecodedBitcoinAddress> DecodeBech32Address(
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<DecodedBitcoinAddress> DecodeBase58Address(
+std::optional<DecodedBitcoinAddress> DecodeBase58Address(
     const std::string& address) {
   std::vector<uint8_t> decoded(kLegacyAddressLength);
   if (!DecodeBase58Check(address, decoded, kLegacyAddressLength)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (decoded.size() != kLegacyAddressLength) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> pubkey_hash(decoded.begin() + 1, decoded.end());
@@ -127,7 +127,7 @@ absl::optional<DecodedBitcoinAddress> DecodeBase58Address(
     return DecodedBitcoinAddress(BitcoinAddressType::kScriptHash,
                                  std::move(pubkey_hash), true);
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 }
 
@@ -150,7 +150,7 @@ DecodedBitcoinAddress::DecodedBitcoinAddress(DecodedBitcoinAddress&& other) =
 DecodedBitcoinAddress& DecodedBitcoinAddress::operator=(
     DecodedBitcoinAddress&& other) = default;
 
-absl::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
+std::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
     const std::string& address) {
   if (base::StartsWith(address, kBech32MainnetHrp,
                        base::CompareCase::INSENSITIVE_ASCII) ||
@@ -174,6 +174,12 @@ std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
 
   return bech32::Encode(bech32::Encoding::BECH32,
                         testnet ? kBech32TestnetHrp : kBech32MainnetHrp, input);
+}
+
+uint64_t ApplyFeeRate(double fee_rate, uint32_t vbytes) {
+  // Bitcoin core does ceiling here.
+  // https://github.com/bitcoin/bitcoin/blob/v25.1/src/policy/feerate.cpp#L29
+  return static_cast<uint64_t>(std::ceil(fee_rate * vbytes));
 }
 
 }  // namespace brave_wallet

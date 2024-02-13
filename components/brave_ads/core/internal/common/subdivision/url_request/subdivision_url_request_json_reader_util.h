@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_URL_REQUEST_SUBDIVISION_URL_REQUEST_JSON_READER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_URL_REQUEST_SUBDIVISION_URL_REQUEST_JSON_READER_UTIL_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::json::reader {
 
-absl::optional<std::string> ParseSubdivision(const std::string& json);
+std::optional<std::string> ParseSubdivision(const std::string& json);
 
 }  // namespace brave_ads::json::reader
 

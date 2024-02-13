@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_IPFS_IPFS_TAB_HELPER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -18,13 +19,13 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class NavigationHandle;
 class WebContents;
 }  // namespace content
 
+class BraveGlobalInfobarService;
 class PrefService;
 
 namespace ipfs {
@@ -60,6 +61,10 @@ class IPFSTabHelper : public content::WebContentsObserver,
     redirect_callback_for_testing_ = callback;
   }
 
+#if !BUILDFLAG(IS_ANDROID)
+  virtual bool IsResolveMethod(
+      const ipfs::IPFSResolveMethodTypes& resolution_method);
+#endif  // !BUILDFLAG(IS_ANDROID)
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
   FRIEND_TEST_ALL_PREFIXES(
@@ -106,9 +111,11 @@ class IPFSTabHelper : public content::WebContentsObserver,
                            GatewayIPNS_Redirect_LibP2PKey_NoAutoRedirect);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
                            GatewayIPNS_No_Redirect_WhenNoDnsLink);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, IPFSAlwaysStartInfobar);
   friend class content::WebContentsUserData<IPFSTabHelper>;
   friend class BraveIPFSInfoBarDelegateObserverImpl;
 #if !BUILDFLAG(IS_ANDROID)
+  friend class IPFSTabHelperTest;
   friend class BraveIPFSFallbackInfoBarDelegateObserverImpl;
 
   void SetSetShowFallbackInfobarCallbackForTesting(
@@ -129,7 +136,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers,
                                const bool& auto_redirect_blocked);
   void UpdateDnsLinkButtonState();
-  absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
+  std::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
 
   GURL ResolveDNSLinkUrl(const GURL& url);
   GURL ResolveXIPFSPathUrl(const std::string& x_ipfs_path_header_value);
@@ -143,15 +150,15 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   void CheckDNSLinkRecord(const GURL& gurl,
                           bool is_gateway_url,
-                          absl::optional<std::string> x_ipfs_path_header,
+                          std::optional<std::string> x_ipfs_path_header,
                           const bool& auto_redirect_blocked);
   void HostResolvedCallback(const GURL& current,
                             const GURL& url,
                             bool is_gateway_url,
-                            absl::optional<std::string> x_ipfs_path_header,
+                            std::optional<std::string> x_ipfs_path_header,
                             const bool auto_redirect_blocked,
                             const std::string& host,
-                            const absl::optional<std::string>& dnslink);
+                            const std::optional<std::string>& dnslink);
 
   void LoadUrl(const GURL& gurl);
 
@@ -165,6 +172,9 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
+#if !BUILDFLAG(IS_ANDROID)
+  raw_ptr<BraveGlobalInfobarService> global_infobar_service_;
+#endif  // !BUILDFLAG(IS_ANDROID)
   GURL ipfs_resolved_url_;
   GURL current_page_url_for_testing_;
   base::RepeatingCallback<void(const GURL&)> redirect_callback_for_testing_;

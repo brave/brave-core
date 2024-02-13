@@ -114,4 +114,39 @@ TEST_F(UtilsUnitTest, ResolveMethodMigration) {
   EXPECT_TRUE(IsENSResolveMethodAsk(local_state()));
 }
 
+TEST_F(UtilsUnitTest, SNSResolveMethodMigration) {
+  // Ask
+  EXPECT_TRUE(IsSnsResolveMethodAsk(local_state()));
+  EXPECT_FALSE(local_state()->GetBoolean(kSnsResolveMethodMigrated));
+
+  MigrateObsoleteLocalStatePrefs(local_state());
+
+  EXPECT_TRUE(IsSnsResolveMethodAsk(local_state()));
+  EXPECT_TRUE(local_state()->GetBoolean(kSnsResolveMethodMigrated));
+
+  // Enabled
+  local_state()->SetBoolean(kSnsResolveMethodMigrated, false);
+  local_state()->SetInteger(kSnsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
+  EXPECT_TRUE(IsSnsResolveMethodEnabled(local_state()));
+  EXPECT_FALSE(local_state()->GetBoolean(kSnsResolveMethodMigrated));
+
+  MigrateObsoleteLocalStatePrefs(local_state());
+
+  EXPECT_TRUE(IsSnsResolveMethodAsk(local_state()));
+  EXPECT_TRUE(local_state()->GetBoolean(kSnsResolveMethodMigrated));
+
+  // Disabled
+  local_state()->SetBoolean(kSnsResolveMethodMigrated, false);
+  local_state()->SetInteger(kSnsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::DISABLED));
+  EXPECT_FALSE(local_state()->GetBoolean(kSnsResolveMethodMigrated));
+
+  MigrateObsoleteLocalStatePrefs(local_state());
+
+  EXPECT_EQ(local_state()->GetInteger(kSnsResolveMethod),
+            static_cast<int>(ResolveMethodTypes::DISABLED));
+  EXPECT_TRUE(local_state()->GetBoolean(kSnsResolveMethodMigrated));
+}
+
 }  // namespace decentralized_dns

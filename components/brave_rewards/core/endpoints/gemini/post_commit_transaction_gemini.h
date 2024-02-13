@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GEMINI_POST_COMMIT_TRANSACTION_GEMINI_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GEMINI_POST_COMMIT_TRANSACTION_GEMINI_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/common/post_commit_transaction.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // POST /v1/payments/pay
 //
@@ -45,11 +45,12 @@ class PostCommitTransactionGemini final
  public:
   using PostCommitTransaction::PostCommitTransaction;
 
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
  private:
-  absl::optional<std::string> Url() const override;
-  absl::optional<std::vector<std::string>> Headers(
+  std::optional<std::string> Url() const override;
+  std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
   std::string ContentType() const override;
 };

@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <optional>
+
 #include "base/at_exit.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
@@ -15,19 +17,16 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/brave_wireguard_service_crash_reporter_client.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/notifications/notification_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/resources/resource_loader.h"
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/install_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
-#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/install_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_tray_runner.h"
-#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/browser/brave_vpn/win/service_constants.h"
 #include "chrome/install_static/product_install_details.h"
 #include "components/crash/core/app/crash_switches.h"
 #include "components/crash/core/app/crashpad.h"
 #include "components/crash/core/app/fallback_crash_handling_win.h"
 #include "components/crash/core/app/run_as_crashpad_handler_win.h"
 #include "components/grit/brave_components_strings.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -37,7 +36,7 @@ const char kLogFile[] = "log-file";
 }  // namespace
 
 // List of commands executed on user level and interacting with users.
-absl::optional<int> ProcessUserLevelCommands(
+std::optional<int> ProcessUserLevelCommands(
     const base::CommandLine& command_line) {
   brave_vpn::LoadLocaleResources();
   // User level command line. In this mode creates an invisible window and sets
@@ -68,7 +67,7 @@ absl::optional<int> ProcessUserLevelCommands(
             IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_DISCONNECTED)));
     return 0;
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
@@ -129,23 +128,6 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
     return brave_vpn::wireguard::RunWireguardTunnelService(
         command_line->GetSwitchValuePath(
             brave_vpn::kBraveVpnWireguardServiceConnectSwitchName));
-  }
-
-  // System level command line. Makes registeration and configuration for
-  // BraveVPNWireguardService windows service. Used by the installer.
-  if (command_line->HasSwitch(
-          brave_vpn::kBraveVpnWireguardServiceInstallSwitchName)) {
-    auto success = brave_vpn::InstallBraveWireguardService();
-    return success ? 0 : 1;
-  }
-
-  // System level command line. Unregisters BraveVPNWireguardService
-  // windows service and removes stored data. Used by the uninstaller.
-  if (command_line->HasSwitch(
-          brave_vpn::kBraveVpnWireguardServiceUnnstallSwitchName)) {
-    auto success = brave_vpn::UninstallBraveWireguardService() &&
-                   brave_vpn::UninstallStatusTrayIcon();
-    return success ? 0 : 1;
   }
 
   auto result = ProcessUserLevelCommands(*command_line);

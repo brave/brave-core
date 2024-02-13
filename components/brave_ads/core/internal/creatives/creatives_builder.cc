@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -39,24 +38,17 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
     // Geo Targets
     base::flat_set<std::string> geo_targets;
     for (const auto& geo_target : campaign.geo_targets) {
-      const std::string code = geo_target.code;
-
-      if (base::Contains(geo_targets, code)) {
-        continue;
-      }
-
-      geo_targets.insert(code);
+      geo_targets.insert(geo_target.code);
     }
 
     // Dayparts
-    CreativeDaypartList creative_dayparts;
+    CreativeDaypartList dayparts;
+    dayparts.reserve(campaign.dayparts.size());
     for (const auto& daypart : campaign.dayparts) {
-      CreativeDaypartInfo creative_daypart;
-      creative_daypart.days_of_week = daypart.days_of_week;
-      creative_daypart.start_minute = daypart.start_minute;
-      creative_daypart.end_minute = daypart.end_minute;
-
-      creative_dayparts.push_back(creative_daypart);
+      dayparts.push_back(
+          CreativeDaypartInfo{.days_of_week = daypart.days_of_week,
+                              .start_minute = daypart.start_minute,
+                              .end_minute = daypart.end_minute});
     }
 
     // Creative Sets
@@ -102,7 +94,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.value = creative_set.value;
         creative_ad.embedding = creative_set.embedding;
         creative_ad.split_test_group = creative_set.split_test_group;
-        creative_ad.dayparts = creative_dayparts;
+        creative_ad.dayparts = dayparts;
         creative_ad.geo_targets = geo_targets;
         creative_ad.target_url = creative.payload.target_url;
 
@@ -127,7 +119,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           creative_ad.segment = segment_name;
           creatives.notification_ads.push_back(creative_ad);
-          entries++;
+          ++entries;
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
@@ -136,12 +128,12 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           if (top_level_segment_name != segment_name) {
             creative_ad.segment = top_level_segment_name;
             creatives.notification_ads.push_back(creative_ad);
-            entries++;
+            ++entries;
           }
         }
       }
 
-      // inline content ad creatives
+      // Inline content ad creatives
       for (const auto& creative : creative_set.creative_inline_content_ads) {
         CreativeInlineContentAdInfo creative_ad;
         creative_ad.creative_instance_id = creative.instance_id;
@@ -150,11 +142,13 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
                                        &creative_ad.start_at)) {
-          creative_ad.start_at = base::Time();
+          BLOG(1, "Campaign id " << campaign.id
+                                 << " has an invalid start at time");
         }
         if (!base::Time::FromUTCString(campaign.end_at.c_str(),
                                        &creative_ad.end_at)) {
-          creative_ad.end_at = base::Time();
+          BLOG(1,
+               "Campaign id " << campaign.id << " has an invalid end at time");
         }
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
@@ -166,7 +160,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.total_max = creative_set.total_max;
         creative_ad.value = creative_set.value;
         creative_ad.split_test_group = creative_set.split_test_group;
-        creative_ad.dayparts = creative_dayparts;
+        creative_ad.dayparts = dayparts;
         creative_ad.geo_targets = geo_targets;
         creative_ad.target_url = creative.payload.target_url;
 
@@ -194,7 +188,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           creative_ad.segment = segment_name;
           creatives.inline_content_ads.push_back(creative_ad);
-          entries++;
+          ++entries;
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
@@ -203,56 +197,54 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           if (top_level_segment_name != segment_name) {
             creative_ad.segment = top_level_segment_name;
             creatives.inline_content_ads.push_back(creative_ad);
-            entries++;
+            ++entries;
           }
         }
       }
 
       // New tab page ad creatives
       for (const auto& creative : creative_set.creative_new_tab_page_ads) {
-        CreativeNewTabPageAdInfo info;
-        info.creative_instance_id = creative.instance_id;
-        info.creative_set_id = creative_set.id;
-        info.campaign_id = campaign.id;
-        info.advertiser_id = campaign.advertiser_id;
+        CreativeNewTabPageAdInfo creative_ad;
+        creative_ad.creative_instance_id = creative.instance_id;
+        creative_ad.creative_set_id = creative_set.id;
+        creative_ad.campaign_id = campaign.id;
+        creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                       &info.start_at)) {
-          info.start_at = base::Time();
+                                       &creative_ad.start_at)) {
+          BLOG(1, "Campaign id " << campaign.id
+                                 << " has an invalid start at time");
         }
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &info.end_at)) {
-          info.end_at = base::Time();
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(),
+                                       &creative_ad.end_at)) {
+          BLOG(1,
+               "Campaign id " << campaign.id << " has an invalid end at time");
         }
-        info.daily_cap = campaign.daily_cap;
-        info.priority = campaign.priority;
-        info.pass_through_rate = campaign.pass_through_rate;
-        info.has_conversion = !creative_set.conversions.empty();
-        info.per_day = creative_set.per_day;
-        info.per_week = creative_set.per_week;
-        info.per_month = creative_set.per_month;
-        info.total_max = creative_set.total_max;
-        info.value = creative_set.value;
-        info.split_test_group = creative_set.split_test_group;
-        info.dayparts = creative_dayparts;
-        info.geo_targets = geo_targets;
-        info.target_url = creative.payload.target_url;
+        creative_ad.daily_cap = campaign.daily_cap;
+        creative_ad.priority = campaign.priority;
+        creative_ad.pass_through_rate = campaign.pass_through_rate;
+        creative_ad.has_conversion = !creative_set.conversions.empty();
+        creative_ad.per_day = creative_set.per_day;
+        creative_ad.per_week = creative_set.per_week;
+        creative_ad.per_month = creative_set.per_month;
+        creative_ad.total_max = creative_set.total_max;
+        creative_ad.value = creative_set.value;
+        creative_ad.split_test_group = creative_set.split_test_group;
+        creative_ad.dayparts = dayparts;
+        creative_ad.geo_targets = geo_targets;
+        creative_ad.target_url = creative.payload.target_url;
 
-        info.company_name = creative.payload.company_name;
-        info.image_url = creative.payload.image_url;
-        info.alt = creative.payload.alt;
+        creative_ad.company_name = creative.payload.company_name;
+        creative_ad.image_url = creative.payload.image_url;
+        creative_ad.alt = creative.payload.alt;
 
         CHECK(!creative.payload.wallpapers.empty());
         for (const auto& catalog_new_tab_page_ad_wallpaper :
              creative.payload.wallpapers) {
-          CreativeNewTabPageAdWallpaperInfo wallpaper;
-
-          wallpaper.image_url = catalog_new_tab_page_ad_wallpaper.image_url;
-
-          CreativeNewTabPageAdWallpaperFocalPointInfo focal_point;
-          focal_point.x = catalog_new_tab_page_ad_wallpaper.focal_point.x;
-          focal_point.y = catalog_new_tab_page_ad_wallpaper.focal_point.y;
-          wallpaper.focal_point = focal_point;
-
-          info.wallpapers.push_back(wallpaper);
+          creative_ad.wallpapers.push_back(CreativeNewTabPageAdWallpaperInfo{
+              .image_url = catalog_new_tab_page_ad_wallpaper.image_url,
+              .focal_point = CreativeNewTabPageAdWallpaperFocalPointInfo{
+                  .x = catalog_new_tab_page_ad_wallpaper.focal_point.x,
+                  .y = catalog_new_tab_page_ad_wallpaper.focal_point.y}});
         }
 
         // Segments
@@ -271,52 +263,55 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
             continue;
           }
 
-          info.segment = segment_name;
-          creatives.new_tab_page_ads.push_back(info);
-          entries++;
+          creative_ad.segment = segment_name;
+          creatives.new_tab_page_ads.push_back(creative_ad);
+          ++entries;
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
           CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
-            info.segment = top_level_segment_name;
-            creatives.new_tab_page_ads.push_back(info);
-            entries++;
+            creative_ad.segment = top_level_segment_name;
+            creatives.new_tab_page_ads.push_back(creative_ad);
+            ++entries;
           }
         }
       }
 
       // Promoted content ad creatives
       for (const auto& creative : creative_set.creative_promoted_content_ads) {
-        CreativePromotedContentAdInfo info;
-        info.creative_instance_id = creative.instance_id;
-        info.creative_set_id = creative_set.id;
-        info.campaign_id = campaign.id;
-        info.advertiser_id = campaign.advertiser_id;
+        CreativePromotedContentAdInfo creative_ad;
+        creative_ad.creative_instance_id = creative.instance_id;
+        creative_ad.creative_set_id = creative_set.id;
+        creative_ad.campaign_id = campaign.id;
+        creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                       &info.start_at)) {
-          info.start_at = base::Time();
+                                       &creative_ad.start_at)) {
+          BLOG(1, "Campaign id " << campaign.id
+                                 << " has an invalid start at time");
         }
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &info.end_at)) {
-          info.end_at = base::Time();
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(),
+                                       &creative_ad.end_at)) {
+          BLOG(1,
+               "Campaign id " << campaign.id << " has an invalid end at time");
         }
-        info.daily_cap = campaign.daily_cap;
-        info.priority = campaign.priority;
-        info.pass_through_rate = campaign.pass_through_rate;
-        info.has_conversion = !creative_set.conversions.empty();
-        info.per_day = creative_set.per_day;
-        info.per_week = creative_set.per_week;
-        info.per_month = creative_set.per_month;
-        info.total_max = creative_set.total_max;
-        info.value = creative_set.value;
-        info.split_test_group = creative_set.split_test_group;
-        info.dayparts = creative_dayparts;
-        info.geo_targets = geo_targets;
-        info.target_url = creative.payload.target_url;
+        creative_ad.daily_cap = campaign.daily_cap;
+        creative_ad.priority = campaign.priority;
+        creative_ad.pass_through_rate = campaign.pass_through_rate;
+        creative_ad.has_conversion = !creative_set.conversions.empty();
+        creative_ad.per_day = creative_set.per_day;
+        creative_ad.per_week = creative_set.per_week;
+        creative_ad.per_month = creative_set.per_month;
+        creative_ad.total_max = creative_set.total_max;
+        creative_ad.value = creative_set.value;
+        creative_ad.split_test_group = creative_set.split_test_group;
+        creative_ad.dayparts = dayparts;
+        creative_ad.geo_targets = geo_targets;
+        creative_ad.target_url = creative.payload.target_url;
 
-        info.title = creative.payload.title;
-        info.description = creative.payload.description;
+        creative_ad.title = creative.payload.title;
+        creative_ad.description = creative.payload.description;
 
         // Segments
         for (const auto& segment : creative_set.segments) {
@@ -334,18 +329,18 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
             continue;
           }
 
-          info.segment = segment_name;
-          creatives.promoted_content_ads.push_back(info);
-          entries++;
+          creative_ad.segment = segment_name;
+          creatives.promoted_content_ads.push_back(creative_ad);
+          ++entries;
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
           CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
-            info.segment = top_level_segment_name;
-            creatives.promoted_content_ads.push_back(info);
-            entries++;
+            creative_ad.segment = top_level_segment_name;
+            creatives.promoted_content_ads.push_back(creative_ad);
+            ++entries;
           }
         }
       }
@@ -356,6 +351,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       }
 
       // Creative set conversions
+      creatives.conversions.reserve(creative_set.conversions.size());
+
       for (const auto& conversion : creative_set.conversions) {
         CreativeSetConversionInfo creative_set_conversion;
 

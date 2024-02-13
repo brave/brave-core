@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -407,7 +408,7 @@ void SidebarContainerView::AnimationProgressed(
 }
 
 void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
-  side_panel_->set_fixed_contents_width(absl::nullopt);
+  side_panel_->set_fixed_contents_width(std::nullopt);
 
   PreferredSizeChanged();
 
@@ -433,8 +434,8 @@ void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
 }
 
 void SidebarContainerView::OnActiveIndexChanged(
-    absl::optional<size_t> old_index,
-    absl::optional<size_t> new_index) {
+    std::optional<size_t> old_index,
+    std::optional<size_t> new_index) {
   DVLOG(1) << "OnActiveIndexChanged: "
            << (old_index ? std::to_string(*old_index) : "none") << " to "
            << (new_index ? std::to_string(*new_index) : "none");
@@ -506,7 +507,7 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   }
 
   width_animation_.Reset();
-  side_panel_->set_fixed_contents_width(absl::nullopt);
+  side_panel_->set_fixed_contents_width(std::nullopt);
 
   // Calculate the start & end width for animation. Both are used when
   // calculating preferred width during the show animation.
@@ -597,7 +598,7 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
   }
 
   width_animation_.Reset(1.0);
-  side_panel_->set_fixed_contents_width(absl::nullopt);
+  side_panel_->set_fixed_contents_width(std::nullopt);
 
   // Calculate the start & end width for animation. Both are used when
   // calculating preferred width during the hide animation.
@@ -692,8 +693,11 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
   auto has_panel_item =
       GetSidebarService(browser_)->GetDefaultPanelItem().has_value();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  browser_view->toolbar()->GetSidePanelButton()->SetVisible(
-      has_panel_item && show_side_panel_button_.GetValue());
+  if (browser_view->toolbar() &&
+      browser_view->toolbar()->GetSidePanelButton()) {
+    browser_view->toolbar()->GetSidePanelButton()->SetVisible(
+        has_panel_item && show_side_panel_button_.GetValue());
+  }
 }
 
 void SidebarContainerView::StartBrowserWindowEventMonitoring() {
@@ -766,7 +770,7 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
       // item because same item should be activated.
       if (controller->IsActiveIndex(sidebar_index) &&
           side_panel_coordinator_->GetCurrentEntryId() != entry->key().id()) {
-        controller->ActivateItemAt(absl::nullopt);
+        controller->ActivateItemAt(std::nullopt);
         return;
       }
     }

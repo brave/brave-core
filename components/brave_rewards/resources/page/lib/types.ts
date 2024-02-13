@@ -57,10 +57,12 @@ export interface State {
   tipsList: Publisher[]
   ui: {
     modalConnect: boolean
+    modalConnectState: 'loading' | 'error' | ''
     modalRedirect: ConnectExternalWalletResult
       | 'error'
       | 'hide'
       | 'show'
+    modalRedirectProvider: string
     modalReset: boolean
     modalAdsHistory: boolean
     adsSettings: boolean

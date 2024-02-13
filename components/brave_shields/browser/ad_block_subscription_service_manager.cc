@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -54,9 +55,9 @@ bool ParseTimeValue(const base::Value* value, base::Time* field) {
 }
 
 bool ParseOptionalStringField(const base::Value* value,
-                              absl::optional<std::string>* field) {
+                              std::optional<std::string>* field) {
   if (value == nullptr) {
-    *field = absl::nullopt;
+    *field = std::nullopt;
     return true;
   } else if (!value->is_string()) {
     return false;
@@ -118,9 +119,9 @@ void SubscriptionInfo::RegisterJSONConverter(
       "last_successful_update_attempt",
       &SubscriptionInfo::last_successful_update_attempt, &ParseTimeValue);
   converter->RegisterBoolField("enabled", &SubscriptionInfo::enabled);
-  converter->RegisterCustomValueField<absl::optional<std::string>>(
+  converter->RegisterCustomValueField<std::optional<std::string>>(
       "homepage", &SubscriptionInfo::homepage, &ParseOptionalStringField);
-  converter->RegisterCustomValueField<absl::optional<std::string>>(
+  converter->RegisterCustomValueField<std::optional<std::string>>(
       "title", &SubscriptionInfo::title, &ParseOptionalStringField);
   converter->RegisterCustomValueField<uint16_t>(
       "expires", &SubscriptionInfo::expires, &ParseExpiresWithFallback);
@@ -271,7 +272,7 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
                                                            bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  absl::optional<SubscriptionInfo> info = GetInfo(sub_url);
+  std::optional<SubscriptionInfo> info = GetInfo(sub_url);
 
   DCHECK(info);
 
@@ -355,7 +356,7 @@ void AdBlockSubscriptionServiceManager::OnListMetadata(
 
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  absl::optional<SubscriptionInfo> info = GetInfo(sub_url);
+  std::optional<SubscriptionInfo> info = GetInfo(sub_url);
 
   if (!info)
     return;
@@ -363,13 +364,13 @@ void AdBlockSubscriptionServiceManager::OnListMetadata(
   // Title can only be set once - only set it if an existing title does not
   // exist
   if (!info->title && metadata.title.has_value) {
-    info->title = absl::make_optional(std::string(metadata.title.value));
+    info->title = std::make_optional(std::string(metadata.title.value));
   }
 
   if (metadata.homepage.has_value) {
-    info->homepage = absl::make_optional(std::string(metadata.homepage.value));
+    info->homepage = std::make_optional(std::string(metadata.homepage.value));
   } else {
-    info->homepage = absl::nullopt;
+    info->homepage = std::nullopt;
   }
 
   if (metadata.expires_hours.has_value) {
@@ -396,14 +397,14 @@ void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(
 }
 
 // static
-absl::optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
+std::optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto* list_subscription_dict = subscriptions_.FindDict(sub_url.spec());
   if (!list_subscription_dict)
-    return absl::nullopt;
+    return std::nullopt;
 
-  return absl::make_optional<SubscriptionInfo>(
+  return std::make_optional<SubscriptionInfo>(
       BuildInfoFromDict(sub_url, *list_subscription_dict));
 }
 
@@ -492,7 +493,7 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  absl::optional<SubscriptionInfo> info = GetInfo(sub_url);
+  std::optional<SubscriptionInfo> info = GetInfo(sub_url);
 
   if (!info)
     return;
@@ -512,7 +513,7 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
 
 void AdBlockSubscriptionServiceManager::OnSubscriptionDownloadFailure(
     const GURL& sub_url) {
-  absl::optional<SubscriptionInfo> info = GetInfo(sub_url);
+  std::optional<SubscriptionInfo> info = GetInfo(sub_url);
 
   if (!info)
     return;

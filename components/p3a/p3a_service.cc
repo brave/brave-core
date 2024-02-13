@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/p3a_service.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -202,12 +203,12 @@ void P3AService::OnMetricCycled(const std::string& histogram_name,
   metric_cycled_callbacks_.Notify(histogram_name, is_constellation);
 }
 
-absl::optional<MetricLogType> P3AService::GetDynamicMetricLogType(
+std::optional<MetricLogType> P3AService::GetDynamicMetricLogType(
     const std::string& histogram_name) const {
   auto log_type_it = dynamic_metric_log_types_.find(histogram_name);
   return log_type_it != dynamic_metric_log_types_.end()
              ? log_type_it->second
-             : absl::optional<MetricLogType>();
+             : std::optional<MetricLogType>();
 }
 
 void P3AService::LoadDynamicMetrics() {
@@ -291,11 +292,14 @@ void P3AService::OnHistogramChangedOnUI(const char* histogram_name,
 void P3AService::HandleHistogramChange(
     std::string_view histogram_name,
     size_t bucket,
-    absl::optional<bool> only_update_for_constellation) {
+    std::optional<bool> only_update_for_constellation) {
   if (IsSuspendedMetric(histogram_name, bucket)) {
     message_manager_->RemoveMetricValue(std::string(histogram_name),
                                         only_update_for_constellation);
     return;
+  }
+  if (kConstellationOnlyHistograms.contains(histogram_name)) {
+    only_update_for_constellation = true;
   }
   message_manager_->UpdateMetricValue(std::string(histogram_name), bucket,
                                       only_update_for_constellation);

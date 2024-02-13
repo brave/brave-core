@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -127,7 +128,7 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
       !previously_matched_exception);
 }
 
-absl::optional<std::string> AdBlockEngine::GetCspDirectives(
+std::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
@@ -144,9 +145,9 @@ absl::optional<std::string> AdBlockEngine::GetCspDirectives(
       is_third_party);
 
   if (result.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   } else {
-    return absl::optional<std::string>(std::string(result));
+    return std::optional<std::string>(std::string(result));
   }
 }
 
@@ -212,7 +213,7 @@ base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto result = ad_block_client_->url_cosmetic_resources(url);
 
-  absl::optional<base::Value> parsed_result =
+  std::optional<base::Value> parsed_result =
       base::JSONReader::Read(result.c_str());
 
   if (!parsed_result) {
@@ -255,6 +256,11 @@ void AdBlockEngine::Load(bool deserialize,
   }
 }
 
+void AdBlockEngine::Load(rust::Box<adblock::FilterSet> filter_set,
+                         const std::string& resources_json) {
+  OnFilterSetLoaded(std::move(filter_set), resources_json);
+}
+
 void AdBlockEngine::UpdateAdBlockClient(
     rust::Box<adblock::Engine> ad_block_client,
     const std::string& resources_json) {
@@ -276,6 +282,33 @@ void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     ad_block_client_->enable_tag(tag);
   });
+}
+
+void AdBlockEngine::OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
+                                      const std::string& resources_json) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  base::ElapsedTimer timer;
+  TRACE_EVENT_BEGIN1("brave.adblock", "MakeEngineWithRules",
+                     "is_default_engine", is_default_engine_);
+
+  auto result = adblock::engine_from_filter_set(std::move(filter_set));
+
+  TRACE_EVENT_END0("brave.adblock", "MakeEngineWithRules");
+  if (is_default_engine_) {
+    base::UmaHistogramTimes("Brave.Adblock.MakeEngineWithRules.Default",
+                            timer.Elapsed());
+  } else {
+    base::UmaHistogramTimes("Brave.Adblock.MakeEngineWithRules.Additional",
+                            timer.Elapsed());
+  }
+
+  if (result.result_kind != adblock::ResultKind::Success) {
+    VLOG(0) << "AdBlockEngine::OnFilterSetLoaded failed: "
+            << result.error_message.c_str();
+    return;
+  }
+  UpdateAdBlockClient(std::move(result.value), resources_json);
 }
 
 void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,

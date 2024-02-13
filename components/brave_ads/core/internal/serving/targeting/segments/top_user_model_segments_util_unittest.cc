@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_user_model_segments_util.h"
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
@@ -19,7 +21,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int kTopSegmentsMaxCount = 2;
+constexpr size_t kTopSegmentsMaxCount = 2;
 
 UserModelInfo BuildUserModel() {
   return UserModelInfo{

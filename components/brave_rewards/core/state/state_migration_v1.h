@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
@@ -24,18 +25,19 @@ class StateMigrationV1 {
   explicit StateMigrationV1(RewardsEngineImpl& engine);
   ~StateMigrationV1();
 
-  void Migrate(LegacyResultCallback callback);
+  void Migrate(ResultCallback callback);
 
   bool legacy_data_migrated() const { return legacy_data_migrated_; }
 
  private:
-  void OnLoadState(mojom::Result result, LegacyResultCallback callback);
+  void OnLoadState(ResultCallback callback, mojom::Result result);
 
-  void BalanceReportsSaved(mojom::Result result, LegacyResultCallback callback);
+  void BalanceReportsSaved(ResultCallback callback, mojom::Result result);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
   const raw_ref<RewardsEngineImpl> engine_;
   bool legacy_data_migrated_ = false;
+  base::WeakPtrFactory<StateMigrationV1> weak_factory_{this};
 };
 
 }  // namespace state

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_GAS_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_GAS_UTILS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,7 @@ namespace brave_wallet {
 
 namespace eth {
 
-absl::optional<uint256_t> ScaleBaseFeePerGas(const std::string& value);
+std::optional<uint256_t> ScaleBaseFeePerGas(const std::string& value);
 
 bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
                           const std::vector<double>& gas_used_ratio,

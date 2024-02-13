@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_BATCH_DLEQ_PROOF_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_BATCH_DLEQ_PROOF_H_
 
+#include <optional>
 #include <ostream>
 #include <string>
 #include <vector>
 
 #include "base/check.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
@@ -23,7 +23,7 @@ class SigningKey;
 class Token;
 class UnblindedToken;
 
-// A |BatchDLEQProof| is a proof of the equivalence of the discrete logarithm
+// A `BatchDLEQProof` is a proof of the equivalence of the discrete logarithm
 // between a common pair of points and one or more other pairs of points.
 
 class BatchDLEQProof {
@@ -61,20 +61,20 @@ class BatchDLEQProof {
 
   static BatchDLEQProof DecodeBase64(
       const std::string& batch_dleq_proof_base64);
-  absl::optional<std::string> EncodeBase64() const;
+  std::optional<std::string> EncodeBase64() const;
 
   [[nodiscard]] bool Verify(const std::vector<BlindedToken>& blinded_tokens,
                             const std::vector<SignedToken>& signed_tokens,
                             const PublicKey& public_key);
 
-  [[nodiscard]] absl::optional<std::vector<UnblindedToken>> VerifyAndUnblind(
+  [[nodiscard]] std::optional<std::vector<UnblindedToken>> VerifyAndUnblind(
       const std::vector<Token>& tokens,
       const std::vector<BlindedToken>& blinded_tokens,
       const std::vector<SignedToken>& signed_tokens,
       const PublicKey& public_key);
 
  private:
-  absl::optional<challenge_bypass_ristretto::BatchDLEQProof> batch_dleq_proof_;
+  std::optional<challenge_bypass_ristretto::BatchDLEQProof> batch_dleq_proof_;
 };
 
 std::ostream& operator<<(std::ostream& os,

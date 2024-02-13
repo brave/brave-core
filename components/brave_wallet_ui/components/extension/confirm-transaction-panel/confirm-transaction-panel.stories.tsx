@@ -4,6 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { PanelWrapper } from '../../../panel/style'
+import { LongWrapper } from '../../../stories/style'
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
 import { ConfirmTransactionPanel } from './confirm-transaction-panel'
@@ -11,7 +13,11 @@ import { ConfirmTransactionPanel } from './confirm-transaction-panel'
 export const _ConfirmTransactionPanel = () => {
   return (
     <WalletPanelStory>
-      <ConfirmTransactionPanel />
+      <PanelWrapper isLonger>
+        <LongWrapper>
+          <ConfirmTransactionPanel />
+        </LongWrapper>
+      </PanelWrapper>
     </WalletPanelStory>
   )
 }

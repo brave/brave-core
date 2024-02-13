@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 
+#include <vector>
+
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
@@ -30,17 +32,17 @@ void PaymentTokens::SetTokens(const PaymentTokenList& payment_tokens) {
 }
 
 void PaymentTokens::AddTokens(const PaymentTokenList& payment_tokens) {
-  for (const auto& payment_token : payment_tokens) {
-    if (TokenExists(payment_token)) {
-      continue;
-    }
+  payment_tokens_.reserve(payment_tokens_.size() + payment_tokens.size());
 
-    payment_tokens_.push_back(payment_token);
+  for (const auto& payment_token : payment_tokens) {
+    if (!TokenExists(payment_token)) {
+      payment_tokens_.push_back(payment_token);
+    }
   }
 }
 
 bool PaymentTokens::RemoveToken(const PaymentTokenInfo& payment_token) {
-  auto iter = base::ranges::find(payment_tokens_, payment_token);
+  const auto iter = base::ranges::find(payment_tokens_, payment_token);
   if (iter == payment_tokens_.cend()) {
     return false;
   }
@@ -51,13 +53,10 @@ bool PaymentTokens::RemoveToken(const PaymentTokenInfo& payment_token) {
 }
 
 void PaymentTokens::RemoveTokens(const PaymentTokenList& payment_tokens) {
-  payment_tokens_.erase(
-      base::ranges::remove_if(
-          payment_tokens_,
-          [&payment_tokens](const PaymentTokenInfo& payment_token) {
-            return base::Contains(payment_tokens, payment_token);
-          }),
-      payment_tokens_.cend());
+  std::erase_if(payment_tokens_,
+                [&payment_tokens](const PaymentTokenInfo& payment_token) {
+                  return base::Contains(payment_tokens, payment_token);
+                });
 }
 
 void PaymentTokens::RemoveAllTokens() {

@@ -28,7 +28,7 @@ base::Time GetLocalTimeAtEndOfLastMonth();
 base::Time GetLocalTimeAtBeginningOfThisMonth();
 base::Time GetLocalTimeAtEndOfThisMonth();
 
-std::string TimeToPrivacyPreservingISO8601(base::Time time);
+std::string TimeToPrivacyPreservingIso8601(base::Time time);
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.

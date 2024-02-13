@@ -5,6 +5,7 @@
 
 #include "brave/browser/importer/test_storage_utils.h"
 
+#include <optional>
 #include <string>
 
 #include "base/files/file_path.h"
@@ -29,17 +30,17 @@ void CreateTestingStore(
   }
 }
 
-absl::optional<base::Value::Dict> ReadStore(base::FilePath path,
-                                            const std::string& id) {
+std::optional<base::Value::Dict> ReadStore(base::FilePath path,
+                                           const std::string& id) {
   if (!base::DirectoryExists(path))
-    return absl::nullopt;
+    return std::nullopt;
   auto store_factory =
       base::MakeRefCounted<value_store::TestValueStoreFactory>(path);
   auto source_store0 = store_factory->CreateValueStore(
       base::FilePath(extensions::kLocalExtensionSettingsDirectoryName), id);
   auto store = source_store0->Get();
   if (!store.status().ok())
-    return absl::nullopt;
+    return std::nullopt;
   return store.PassSettings();
 }
 

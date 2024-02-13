@@ -13,6 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
+#include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -53,6 +54,7 @@ ChannelsController::ChannelsController(
     PrefService* prefs,
     PublishersController* publishers_controller)
     : prefs_(prefs), publishers_controller_(publishers_controller) {
+  MigrateChannels(*prefs);
   scoped_observation_.Observe(publishers_controller_);
 }
 
@@ -67,13 +69,14 @@ Channels ChannelsController::GetChannelsFromPublishers(
   for (const auto& it : publishers) {
     for (const auto& locale_info : it.second->locales) {
       for (const auto& channel_id : locale_info->channels) {
-        if (!channels.contains(channel_id)) {
+        auto migrated_channel_id = GetMigratedChannel(channel_id);
+        if (!channels.contains(migrated_channel_id)) {
           auto channel = mojom::Channel::New();
           channel->channel_name = channel_id;
-          channels[channel_id] = std::move(channel);
+          channels[migrated_channel_id] = std::move(channel);
         }
 
-        auto& channel = channels[channel_id];
+        auto& channel = channels[migrated_channel_id];
 
         // We already know we're subscribed to this channel in this locale.
         if (base::Contains(channel->subscribed_locales, locale_info->locale)) {
@@ -81,7 +84,7 @@ Channels ChannelsController::GetChannelsFromPublishers(
         }
 
         auto subscribed_in_locale = IsChannelSubscribedInLocale(
-            channel_subscriptions, locale_info->locale, channel_id);
+            channel_subscriptions, locale_info->locale, migrated_channel_id);
         if (subscribed_in_locale) {
           channel->subscribed_locales.push_back(locale_info->locale);
         }

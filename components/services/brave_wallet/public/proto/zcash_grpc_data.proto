@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package zcash;
+
+message GetAddressUtxosRequest {
+  repeated string addresses = 1;
+  uint64 startHeight = 2;
+  uint32 maxEntries = 3;  // zero means unlimited
+}
+
+message ZCashUtxo {
+  string address = 6;
+  bytes txid = 1;
+  int32 index = 2;
+  bytes script = 3;
+  int64 valueZat = 4;
+  uint64 height = 5;
+}
+
+message GetAddressUtxosResponse {
+  repeated ZCashUtxo addressUtxos = 1;
+}
+
+message ChainSpec {}
+
+message BlockID {
+  uint64 height = 1;
+  bytes hash = 2;
+}
+
+message TxFilter {
+  BlockID block = 1;
+  uint64 index = 2;
+  bytes hash = 3;
+}
+
+message RawTransaction {
+  bytes data = 1;
+  uint64 height = 2;
+}
+
+message SendResponse {
+  int32 errorCode = 1;
+  string errorMessage = 2;
+}
+
+message BlockRange {
+  BlockID start = 1;
+  BlockID end = 2;
+}
+
+message TransparentAddressBlockFilter {
+  string address = 1;
+  BlockRange range = 2;
+}

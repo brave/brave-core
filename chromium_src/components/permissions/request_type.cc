@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/request_type.h"
+#include <optional>
 
 #include "build/build_config.h"
+#include "components/permissions/request_type.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "components/resources/android/theme_resources.h"
@@ -99,7 +100,7 @@ RequestType ContentSettingsTypeToRequestType(
   }
 }
 
-absl::optional<ContentSettingsType> RequestTypeToContentSettingsType(
+std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
     RequestType request_type) {
   switch (request_type) {
     case RequestType::kBraveGoogleSignInPermission:

@@ -49,17 +49,17 @@
 
 void RegisterChromeUntrustedWebUIConfigs() {
   RegisterChromeUntrustedWebUIConfigs_ChromiumImpl();
-#if !BUILDFLAG(IS_ANDROID)
-  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
-      std::make_unique<ledger::UntrustedLedgerUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<market::UntrustedMarketUIConfig>());
-  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
-      std::make_unique<trezor::UntrustedTrezorUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<nft::UntrustedNftUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<line_chart::UntrustedLineChartUIConfig>());
+#if !BUILDFLAG(IS_ANDROID)
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<ledger::UntrustedLedgerUIConfig>());
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<trezor::UntrustedTrezorUIConfig>());
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(

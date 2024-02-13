@@ -9,12 +9,12 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import {
-  getBatTokensFromList,
-  getNativeTokensFromList,
-  getUniqueAssets
+  getUniqueAssets,
+  sortNativeAndAndBatAssetsToTop
 } from '../../../utils/asset-utils'
 import { addLogoToToken } from '../../async/lib'
 import { mapLimit } from 'async'
+import { handleEndpointError } from '../../../utils/api-utils'
 
 export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
   return {
@@ -48,26 +48,13 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
                 await addLogoToToken(token)
             )
 
-          // separate native assets from tokens
-          const {
-            tokens: rampTokenOptions,
-            nativeAssets: rampNativeAssetOptions
-          } = getNativeTokensFromList(rampAssetOptions)
-
-          // separate BAT from other tokens
-          const { bat: rampBatTokens, nonBat: rampNonBatTokens } =
-            getBatTokensFromList(rampTokenOptions)
-
           // moves Gas coins and BAT to front of list
-          const sortedRampOptions = [
-            ...rampNativeAssetOptions,
-            ...rampBatTokens,
-            ...rampNonBatTokens
-          ]
+          const sortedRampOptions =
+            sortNativeAndAndBatAssetsToTop(rampAssetOptions)
 
           const results = {
             rampAssetOptions: sortedRampOptions,
-            allAssetOptions: getUniqueAssets([...sortedRampOptions])
+            allAssetOptions: getUniqueAssets(sortedRampOptions)
           }
 
           return {
@@ -86,6 +73,40 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
           return ['UNKNOWN_ERROR']
         }
         return ['OffRampAssets']
+      }
+    }),
+
+    getSellAssetUrl: query<
+      string, // url
+      {
+        assetSymbol: string
+        offRampProvider: BraveWallet.OffRampProvider
+        chainId: string
+        amount: string
+        fiatCurrencyCode: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { url, error } = await api.assetRatioService.getSellUrl(
+            arg.offRampProvider,
+            arg.chainId,
+            arg.assetSymbol,
+            arg.amount,
+            arg.fiatCurrencyCode
+          )
+
+          if (error) {
+            throw new Error(error)
+          }
+
+          return {
+            data: url
+          }
+        } catch (error) {
+          return handleEndpointError(endpoint, 'Failed to get sell URL', error)
+        }
       }
     })
   }

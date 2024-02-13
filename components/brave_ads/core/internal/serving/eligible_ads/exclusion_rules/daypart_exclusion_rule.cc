@@ -12,23 +12,15 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_util.h"
 
 namespace brave_ads {
 
 namespace {
 
-bool MatchDayOfWeek(const CreativeDaypartInfo& daypart,
-                    const char day_of_week) {
-  return daypart.days_of_week.find(day_of_week) != std::string::npos;
-}
-
-bool MatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {
-  return minutes >= daypart.start_minute && minutes <= daypart.end_minute;
-}
-
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   if (creative_ad.dayparts.empty()) {
-    // Always respect cap if there are no dayparts specified
+    // Always respect cap if there are no dayparts specified.
     return true;
   }
 
@@ -41,7 +33,7 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   return base::ranges::any_of(
       creative_ad.dayparts,
       [day_of_week, local_time_in_minutes](const CreativeDaypartInfo& daypart) {
-        return MatchDayOfWeek(daypart, static_cast<char>('0' + day_of_week)) &&
+        return MatchDayOfWeek(daypart, day_of_week) &&
                MatchTimeSlot(daypart, local_time_in_minutes);
       });
 }

@@ -13,7 +13,7 @@
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_sessions/open_tabs_ui_delegate.h"
 #include "components/sync_sessions/session_sync_service.h"
-#include "ios/chrome/browser/synced_sessions/synced_sessions.h"
+#include "ios/chrome/browser/synced_sessions/model/synced_sessions.h"
 #include "net/base/mac/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -200,10 +200,11 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
   if (open_tabs_delegate) {
     // Iterating through all remote sessions, then retrieving the tabs to
     // display to the user.
-    std::vector<const sync_sessions::SyncedSession*> sessions;
+    std::vector<raw_ptr<const sync_sessions::SyncedSession, VectorExperimental>>
+        sessions;
     open_tabs_delegate->GetAllForeignSessions(&sessions);
 
-    for (const auto* session : sessions) {
+    for (const sync_sessions::SyncedSession* session : sessions) {
       // Create a distant session
       IOSOpenDistantSession* distant_session = [[IOSOpenDistantSession alloc]
               initWithName:base::SysUTF8ToNSString(session->GetSessionName())

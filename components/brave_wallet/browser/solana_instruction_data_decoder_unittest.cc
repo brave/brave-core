@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 
+#include <optional>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -36,7 +37,7 @@ class SolanaInstructionDecoderTest : public testing::Test {
       EXPECT_EQ(params[i], std::make_pair(std::get<0>(ret->params[i]),
                                           std::get<2>(ret->params[i])));
     }
-    EXPECT_EQ(GetAccountParamsForTesting(ins_type, absl::nullopt),
+    EXPECT_EQ(GetAccountParamsForTesting(ins_type, std::nullopt),
               ret->account_params);
 
     for (size_t i = 0; i < data.size(); ++i) {
@@ -59,7 +60,7 @@ class SolanaInstructionDecoderTest : public testing::Test {
       EXPECT_EQ(params[i], std::make_pair(std::get<0>(ret->params[i]),
                                           std::get<2>(ret->params[i])));
     }
-    EXPECT_EQ(GetAccountParamsForTesting(absl::nullopt, ins_type),
+    EXPECT_EQ(GetAccountParamsForTesting(std::nullopt, ins_type),
               ret->account_params);
 
     // Skip when testing typescript impl without passing the optional key

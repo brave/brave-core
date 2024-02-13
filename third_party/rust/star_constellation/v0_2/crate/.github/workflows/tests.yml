@@ -1,0 +1,37 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+name: Tests
+
+jobs:
+  test:
+    name: ${{matrix.rust}} on ${{matrix.os}}
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        rust: [1.67.1, stable]
+        os: [ubuntu-20.04]
+
+    env:
+      RUSTFLAGS: ''
+      CARGO_PROFILE_DEV_DEBUG: '0' # reduce size of target directory
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Toolchain
+        run: rustup default ${{matrix.rust}}
+
+      - name: Cache
+        uses: Swatinem/rust-cache@3cf7f8cc28d1b4e7d01e3783be10a97d55d483c8 # v2.7.1
+
+      - name: Build
+        run: cargo build --release --all-targets
+
+      - name: Test
+        run: cargo test --release

@@ -6,53 +6,22 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
-#include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_signal_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_parser.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_signal_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_funnel_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_site_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
-using KeywordList = std::vector<std::string>;
-
 namespace {
-
-constexpr uint16_t kPurchaseIntentDefaultSignalWeight = 1;
-
-void AppendSignalToHistory(
-    const PurchaseIntentSignalInfo& purchase_intent_signal) {
-  for (const auto& segment : purchase_intent_signal.segments) {
-    const PurchaseIntentSignalHistoryInfo history(
-        purchase_intent_signal.created_at, purchase_intent_signal.weight);
-
-    ClientStateManager::GetInstance()
-        .AppendToPurchaseIntentSignalHistoryForSegment(segment, history);
-  }
-}
-
-KeywordList ToKeywords(const std::string& value) {
-  return base::SplitString(
-      base::ToLowerASCII(StripNonAlphaNumericCharacters(value)), " ",
-      base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-}
-
-bool IsSubset(KeywordList keywords_lhs, KeywordList keywords_rhs) {
-  base::ranges::sort(keywords_lhs);
-  base::ranges::sort(keywords_rhs);
-  return base::ranges::includes(keywords_lhs, keywords_rhs);
-}
-
+constexpr int kDefaultFunnelKeyphraseWeightForSearchQuery = 1;
 }  // namespace
 
 PurchaseIntentProcessor::PurchaseIntentProcessor(
@@ -70,147 +39,164 @@ void PurchaseIntentProcessor::Process(const GURL& url) {
     return;
   }
 
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return BLOG(
+        1, url.scheme()
+               << " scheme is not supported for processing purchase intent");
+  }
+
   if (!url.is_valid()) {
-    return BLOG(1,
-                "Failed to process purchase intent signal because the visited "
-                "URL is invalid");
+    return BLOG(
+        1,
+        "Failed to process purchase intent because the visited URL is invalid");
   }
 
-  const absl::optional<PurchaseIntentSignalInfo> signal = ExtractSignal(url);
+  const std::optional<PurchaseIntentSignalInfo> signal =
+      MaybeExtractSignal(url);
   if (!signal || signal->segments.empty()) {
-    return BLOG(1, "No purchase intent matches found for visited URL");
+    return BLOG(1, "No purchase intent matches found");
   }
 
-  BLOG(1, "Extracted purchase intent signal from visited URL");
-
-  AppendSignalToHistory(*signal);
+  BuyPurchaseIntentSignal(*signal);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-absl::optional<PurchaseIntentSignalInfo> PurchaseIntentProcessor::ExtractSignal(
-    const GURL& url) const {
-  const absl::optional<std::string> search_query =
+bool PurchaseIntentProcessor::ShouldProcess(const int32_t tab_id,
+                                            const GURL& url) const {
+  const auto iter = tabs_.find(tab_id);
+  if (iter == tabs_.cend()) {
+    return true;
+  }
+
+  return iter->second != url;
+}
+
+std::optional<PurchaseIntentSignalInfo>
+PurchaseIntentProcessor::MaybeExtractSignal(const GURL& url) const {
+  const std::optional<std::string> search_term_query_value =
       ExtractSearchTermQueryValue(url);
-  if (search_query) {
-    const absl::optional<SegmentList> segments =
-        GetSegmentsForSearchQuery(*search_query);
-    if (!segments || segments->empty()) {
-      return absl::nullopt;
-    }
 
-    PurchaseIntentSignalInfo purchase_intent_signal;
-    purchase_intent_signal.created_at = base::Time::Now();
-    purchase_intent_signal.segments = *segments;
-    purchase_intent_signal.weight =
-        GetFunnelWeightForSearchQuery(*search_query);
-    return purchase_intent_signal;
-  }
-
-  const absl::optional<PurchaseIntentSiteInfo> site = GetSite(url);
-  if (!site || !site->url_netloc.is_valid()) {
-    return absl::nullopt;
-  }
-
-  PurchaseIntentSignalInfo purchase_intent_signal;
-  purchase_intent_signal.created_at = base::Time::Now();
-  purchase_intent_signal.segments = site->segments;
-  purchase_intent_signal.weight = site->weight;
-  return purchase_intent_signal;
+  return search_term_query_value
+             ? MaybeExtractSignalForSearchQuery(*search_term_query_value)
+             : MaybeExtractSignalForUrl(url);
 }
 
-absl::optional<PurchaseIntentSiteInfo> PurchaseIntentProcessor::GetSite(
-    const GURL& url) const {
-  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
-  if (!purchase_intent) {
-    return absl::nullopt;
-  }
-
-  for (const auto& site : purchase_intent->sites) {
-    if (SameDomainOrHost(url, site.url_netloc)) {
-      return site;
-    }
-  }
-
-  return absl::nullopt;
-}
-
-absl::optional<SegmentList> PurchaseIntentProcessor::GetSegmentsForSearchQuery(
+std::optional<PurchaseIntentSignalInfo>
+PurchaseIntentProcessor::MaybeExtractSignalForSearchQuery(
     const std::string& search_query) const {
-  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
-  if (!purchase_intent) {
-    return absl::nullopt;
+  BLOG(1, "Extracting purchase intent signal from search query");
+
+  KeywordList search_query_keywords = ParseKeyphrase(search_query);
+  base::ranges::sort(search_query_keywords);
+
+  const std::optional<SegmentList> search_query_segments =
+      MaybeGetSegmentsForSearchQuery(search_query_keywords);
+  if (!search_query_segments || search_query_segments->empty()) {
+    return std::nullopt;
   }
 
-  const KeywordList search_query_keywords = ToKeywords(search_query);
+  BLOG(1, "Extracted purchase intent signal from search query");
 
-  for (const auto& keyword : purchase_intent->segment_keywords) {
-    // Intended behavior relies on early return from list traversal and
-    // implicitely on the ordering of |segment_keywords_| to ensure specific
-    // segments are matched over general segments, e.g. "audi a6" segments
-    // should be returned over "audi" segments if possible.
-    if (IsSubset(search_query_keywords, ToKeywords(keyword.keywords))) {
-      return keyword.segments;
-    }
-  }
-
-  return absl::nullopt;
+  return PurchaseIntentSignalInfo(
+      /*at=*/base::Time::Now(), *search_query_segments,
+      ComputeFunnelKeyphraseWeightForSearchQuery(search_query_keywords));
 }
 
-uint16_t PurchaseIntentProcessor::GetFunnelWeightForSearchQuery(
-    const std::string& search_query) const {
-  const absl::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+std::optional<SegmentList>
+PurchaseIntentProcessor::MaybeGetSegmentsForSearchQuery(
+    const KeywordList& search_query_keywords) const {
+  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
   if (!purchase_intent) {
-    return kPurchaseIntentDefaultSignalWeight;
+    return std::nullopt;
   }
 
-  const KeywordList search_query_keywords = ToKeywords(search_query);
+  const auto iter = base::ranges::find_if(
+      purchase_intent->segment_keyphrases,
+      [&search_query_keywords](const auto& segment_keyphrase) {
+        return base::ranges::includes(search_query_keywords,
+                                      segment_keyphrase.keywords);
+      });
 
-  uint16_t max_weight = kPurchaseIntentDefaultSignalWeight;
+  if (iter == purchase_intent->segment_keyphrases.cend()) {
+    return std::nullopt;
+  }
 
-  for (const auto& keyword : purchase_intent->funnel_keywords) {
-    const KeywordList keywords = ToKeywords(keyword.keywords);
+  return iter->segments;
+}
 
-    if (keyword.weight > max_weight &&
-        IsSubset(search_query_keywords, keywords)) {
-      max_weight = keyword.weight;
+int PurchaseIntentProcessor::ComputeFunnelKeyphraseWeightForSearchQuery(
+    const KeywordList& search_query_keywords) const {
+  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  if (!purchase_intent) {
+    return kDefaultFunnelKeyphraseWeightForSearchQuery;
+  }
+
+  int max_funnel_keyphrase_weight = kDefaultFunnelKeyphraseWeightForSearchQuery;
+
+  for (const auto& funnel_keyphrase : purchase_intent->funnel_keyphrases) {
+    if (funnel_keyphrase.weight > max_funnel_keyphrase_weight &&
+        base::ranges::includes(search_query_keywords,
+                               funnel_keyphrase.keywords)) {
+      max_funnel_keyphrase_weight = funnel_keyphrase.weight;
     }
   }
 
-  return max_weight;
+  return max_funnel_keyphrase_weight;
+}
+
+std::optional<PurchaseIntentSignalInfo>
+PurchaseIntentProcessor::MaybeExtractSignalForUrl(const GURL& url) const {
+  BLOG(1, "Extracting purchase intent signal from visited URL");
+
+  const std::optional<PurchaseIntentFunnelInfo> funnel =
+      MaybeGetFunnelForUrl(url);
+  if (!funnel) {
+    return std::nullopt;
+  }
+
+  BLOG(1, "Extracted purchase intent signal from visited URL");
+
+  return PurchaseIntentSignalInfo(
+      /*at=*/base::Time::Now(), funnel->segments, funnel->weight);
+}
+
+std::optional<PurchaseIntentFunnelInfo>
+PurchaseIntentProcessor::MaybeGetFunnelForUrl(const GURL& url) const {
+  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  if (!purchase_intent) {
+    return std::nullopt;
+  }
+
+  const auto iter =
+      purchase_intent->funnel_sites.find(url.GetWithEmptyPath().spec());
+  if (iter == purchase_intent->funnel_sites.cend()) {
+    return std::nullopt;
+  }
+
+  return iter->second;
 }
 
 void PurchaseIntentProcessor::OnTextContentDidChange(
-    const int32_t /*tab_id=*/,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const std::string& /*text=*/) {
+    const std::string& /*text*/) {
   if (redirect_chain.empty()) {
     return;
   }
 
   const GURL& url = redirect_chain.back();
 
-  if (!url.SchemeIsHTTPOrHTTPS()) {
-    BLOG(1, url.scheme()
-                << " scheme is not supported for processing purchase intent");
+  if (!ShouldProcess(tab_id, url)) {
     return;
   }
-
-  const absl::optional<TabInfo> last_visible_tab =
-      TabManager::GetInstance().GetLastVisible();
-  if (!last_visible_tab) {
-    return;
-  }
-
-  if (last_visible_tab->redirect_chain.empty()) {
-    return;
-  }
-
-  if (SameDomainOrHost(url, last_visible_tab->redirect_chain.back())) {
-    return;
-  }
+  tabs_[tab_id] = url;
 
   Process(url);
+}
+
+void PurchaseIntentProcessor::OnDidCloseTab(const int32_t tab_id) {
+  tabs_.erase(tab_id);
 }
 
 }  // namespace brave_ads

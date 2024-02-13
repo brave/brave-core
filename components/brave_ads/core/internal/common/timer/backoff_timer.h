@@ -16,18 +16,18 @@ namespace brave_ads {
 
 class BackoffTimer final {
  public:
-  // |location| provides basic info where the timer was posted from. Start a
-  // timer to run at the given |delay| from now backing off exponentially for
+  // `location` provides basic info where the timer was posted from. Start a
+  // timer to run at the given `delay` from now backing off exponentially for
   // each call. If the timer is already running, it will be replaced to call the
-  // given |user_task|. Returns the time the delayed task will be fired.
+  // given `user_task`. Returns the time the delayed task will be fired.
   base::Time Start(const base::Location& location,
                    base::TimeDelta delay,
                    base::OnceClosure user_task);
 
-  // |location| provides basic info where the timer was posted from. Start a
-  // timer to run at a geometrically distributed number of seconds |~delay| from
+  // `location` provides basic info where the timer was posted from. Start a
+  // timer to run at a geometrically distributed number of seconds `~delay` from
   // now backing off exponentially for each call. If the timer is already
-  // running, it will be replaced to call the given |user_task|. Returns the
+  // running, it will be replaced to call the given `user_task`. Returns the
   // time the delayed task will be fired.
   base::Time StartWithPrivacy(const base::Location& location,
                               base::TimeDelta delay,
@@ -37,12 +37,12 @@ class BackoffTimer final {
   bool IsRunning() const;
 
   // Call this method to stop the timer if running and to reset the exponential
-  // backoff delay. Returns |true| if the timer was stopped, otherwise returns
-  // |false|.
+  // backoff delay. Returns `true` if the timer was stopped, otherwise returns
+  // `false`.
   bool Stop();
 
   // Optionally call this method to set the maximum backoff delay to
-  // |max_delay|. Default maximum backoff delay is 1 hour.
+  // `max_delay`. Default maximum backoff delay is 1 hour.
   void SetMaxBackoffDelay(const base::TimeDelta max_backoff_delay) {
     max_backoff_delay_ = max_backoff_delay;
   }

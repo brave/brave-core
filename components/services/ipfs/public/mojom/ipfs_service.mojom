@@ -15,6 +15,7 @@ struct IpfsConfig {
   string swarm_port;
   string storage_max;
   string? doh_server_url;
+  array<string>? blessed_extension_list;
 };
 
 interface IpfsService {

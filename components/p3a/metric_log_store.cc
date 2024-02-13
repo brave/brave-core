@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/metric_log_store.h"
 
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -169,7 +170,8 @@ void MetricLogStore::ResetUploadStamps() {
       // Update persistent values.
       base::Value::Dict* log_dict = update->EnsureDict(it->first);
       log_dict->Set(kLogSentKey, it->second.sent);
-      log_dict->Set(kLogTimestampKey, it->second.sent_timestamp.ToDoubleT());
+      log_dict->Set(kLogTimestampKey,
+                    it->second.sent_timestamp.InSecondsFSinceUnixEpoch());
     }
     it++;
   }
@@ -226,9 +228,9 @@ const std::string& MetricLogStore::staged_log_signature() const {
   return staged_log_signature_;
 }
 
-absl::optional<uint64_t> MetricLogStore::staged_log_user_id() const {
+std::optional<uint64_t> MetricLogStore::staged_log_user_id() const {
   NOTREACHED();
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void MetricLogStore::StageNextLog() {
@@ -260,7 +262,8 @@ void MetricLogStore::DiscardStagedLog(std::string_view reason) {
   ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
   base::Value::Dict* log_dict = update->EnsureDict(log_iter->first);
   log_dict->Set(kLogSentKey, log_iter->second.sent);
-  log_dict->Set(kLogTimestampKey, log_iter->second.sent_timestamp.ToDoubleT());
+  log_dict->Set(kLogTimestampKey,
+                log_iter->second.sent_timestamp.InSecondsFSinceUnixEpoch());
 
   // Erase the entry from the unsent queue.
   auto unsent_entries_iter = unsent_entries_.find(staged_entry_key_);
@@ -313,7 +316,7 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
 
     // Timestamp.
     if (auto v = dict.FindDouble(kLogTimestampKey)) {
-      entry.sent_timestamp = base::Time::FromDoubleT(*v);
+      entry.sent_timestamp = base::Time::FromSecondsSinceUnixEpoch(*v);
       if ((entry.sent && entry.sent_timestamp.is_null()) ||
           (!entry.sent && !entry.sent_timestamp.is_null())) {
         return;
@@ -332,6 +335,11 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
       update->Remove(name);
     }
   }
+}
+
+const metrics::LogMetadata MetricLogStore::staged_log_metadata() const {
+  DCHECK(has_staged_log());
+  return {};
 }
 
 }  // namespace p3a

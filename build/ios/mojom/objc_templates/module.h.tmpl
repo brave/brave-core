@@ -38,6 +38,10 @@
 @class {%- for union in unions %} {{class_prefix}}{{union.name}}{% if union != unions|last -%},{%- endif -%}{%- endfor -%};
 {% endif %}
 
+{%- if interfaces %}
+@protocol {%- for interface in interfaces %} {{class_prefix}}{{interface.name}}{% if interface != interfaces|last -%},{%- endif -%}{%- endfor -%};
+{%- endif %}
+
 NS_ASSUME_NONNULL_BEGIN
 
 {# Constants #}

@@ -358,6 +358,9 @@ export function createHost (): Host {
       apiAdapter.getSettings().then((settings) => {
         stateManager.update({ settings })
       }),
+      apiAdapter.getSelfCustodyInviteDismissed().then((dismissed) => {
+        stateManager.update({ selfCustodyInviteDismissed: dismissed })
+      }),
       apiAdapter.getExternalWalletProviders().then((providers) => {
         stateManager.update({ externalWalletProviders: providers })
       }),
@@ -482,6 +485,11 @@ export function createHost (): Host {
       stateManager.update({
         notifications: notifications.filter(n => n.id !== notification.id)
       })
+    },
+
+    dismissSelfCustodyInvite () {
+      chrome.braveRewards.dismissSelfCustodyInvite()
+      stateManager.update({ selfCustodyInviteDismissed: true })
     },
 
     solveGrantCaptcha (solution) {

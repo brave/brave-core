@@ -5,8 +5,13 @@
 
 package org.chromium.chrome.browser.misc_metrics;
 
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
+
+import org.chromium.base.Promise;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskRunner;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
@@ -18,30 +23,43 @@ import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
 public class MiscAndroidMetricsFactory {
-    private static final Object lock = new Object();
-    private static MiscAndroidMetricsFactory instance;
+    private static final Object sLock = new Object();
+    private static MiscAndroidMetricsFactory sInstance;
+    private final TaskRunner mTaskRunner;
 
     public static MiscAndroidMetricsFactory getInstance() {
-        synchronized (lock) {
-            if (instance == null) {
-                instance = new MiscAndroidMetricsFactory();
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new MiscAndroidMetricsFactory();
             }
         }
-        return instance;
+        return sInstance;
     }
 
-    private MiscAndroidMetricsFactory() {}
+    private MiscAndroidMetricsFactory() {
+        mTaskRunner = PostTask.createSequencedTaskRunner(TaskTraits.UI_DEFAULT);
+    }
 
-    public MiscAndroidMetrics getMetricsService(ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = Utils.getProfile(false); // always use regular profile
-        long nativeHandle =
-                MiscAndroidMetricsFactoryJni.get().getInterfaceToMiscAndroidMetrics(profile);
-        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        MiscAndroidMetrics metricsService = MiscAndroidMetrics.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) metricsService).getProxyHandler();
-        handler.setErrorHandler(connectionErrorHandler);
+    public Promise<MiscAndroidMetrics> getMetricsService(
+            ConnectionErrorHandler connectionErrorHandler) {
+        final Promise<MiscAndroidMetrics> promise = new Promise<>();
 
-        return metricsService;
+        mTaskRunner.postTask(
+                () -> {
+                    Profile profile = Utils.getProfile(false); // always use regular profile
+                    long nativeHandle =
+                            MiscAndroidMetricsFactoryJni.get()
+                                    .getInterfaceToMiscAndroidMetrics(profile);
+                    MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+                    MiscAndroidMetrics metricsService =
+                            MiscAndroidMetrics.MANAGER.attachProxy(handle, 0);
+                    Handler handler = ((Interface.Proxy) metricsService).getProxyHandler();
+                    handler.setErrorHandler(connectionErrorHandler);
+
+                    promise.fulfill(metricsService);
+                });
+
+        return promise;
     }
 
     private MessagePipeHandle wrapNativeHandle(long nativeHandle) {

@@ -43,8 +43,8 @@ namespace playlist {
 // * Mimetype to extension
 //   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 constexpr auto kMimeTypeToExtension =
-    base::MakeFixedFlatMapSorted<std::string_view /*mime_type*/,
-                                 std::string_view /*extension*/>({
+    base::MakeFixedFlatMap<std::string_view /*mime_type*/,
+                           std::string_view /*extension*/>({
         {"application/ogg", "ogx"},
         {"application/vnd.apple.mpegurl", "m3u8"},
         {"application/x-mpegurl", "m3u8"},

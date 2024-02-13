@@ -26,7 +26,7 @@ TEST(BraveAdsCalendarUtilTest, DayOfWeek) {
 
 TEST(BraveAdsCalendarUtilTest, IsLeapYear) {
   // Act & Assert
-  for (int year = 2000; year < 2050; year++) {
+  for (int year = 2000; year < 2050; ++year) {
     EXPECT_EQ(year % 4 == 0, IsLeapYear(year));
   }
 }

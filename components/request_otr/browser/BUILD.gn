@@ -21,6 +21,8 @@ source_set("browser") {
     "request_otr_controller_client.h",
     "request_otr_navigation_throttle.cc",
     "request_otr_navigation_throttle.h",
+    "request_otr_p3a.cc",
+    "request_otr_p3a.h",
     "request_otr_rule.cc",
     "request_otr_rule.h",
     "request_otr_service.cc",
@@ -34,16 +36,34 @@ source_set("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/browser:browser",
     "//brave/components/l10n/common:common",
+    "//brave/components/p3a_utils",
     "//brave/components/request_otr/common:common",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
+    "//brave/components/time_period_storage",
     "//brave/extensions:common",
     "//components/prefs:prefs",
+    "//components/profile_metrics",
     "//components/security_interstitials/content:security_interstitial_page",
     "//components/security_interstitials/core:core",
     "//components/user_prefs:user_prefs",
     "//content/public/browser",
     "//ui/base",
     "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "request_otr_p3a_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/request_otr/browser",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
   ]
 }

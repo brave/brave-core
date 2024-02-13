@@ -26,6 +26,7 @@ namespace TemplateURLPrepopulateData {
 // default value of the last two arguents.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines_Unused(
     PrefService* prefs,
+    search_engines::SearchEngineChoiceService* search_engine_choice_service,
     size_t* default_search_provider_index,
     bool include_current_default = false,
     TemplateURLService* template_url_service = nullptr);
@@ -111,8 +112,7 @@ constexpr BravePrepopulatedEngineID kBraveEnginesNZ[] = {
 // A map to keep track of a full list of default engines for countries
 // that don't use the default list.
 constexpr auto kDefaultEnginesByCountryIdMap =
-    base::MakeFixedFlatMapSorted<int,
-                                 base::span<const BravePrepopulatedEngineID>>(
+    base::MakeFixedFlatMap<int, base::span<const BravePrepopulatedEngineID>>(
         {{country_codes::CountryCharsToCountryID('A', 'M'),
           kBraveEnginesWithYandex},
          {country_codes::CountryCharsToCountryID('A', 'T'),
@@ -178,7 +178,7 @@ constexpr auto kDefaultEnginesByCountryIdMap =
 BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
   const BravePrepopulatedEngineID default_v6 = PREPOPULATED_ENGINE_ID_GOOGLE;
   static constexpr auto kContentV6 =
-      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'U'),
            PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
           {country_codes::CountryCharsToCountryID('D', 'E'),
@@ -191,7 +191,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
       });
   static constexpr auto kContentV8 =
-      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'U'),
@@ -224,7 +224,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
   static constexpr auto kContentV16 =
-      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
@@ -249,7 +249,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
   static constexpr auto kContentV17 =
-      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'Z'),
@@ -283,7 +283,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
       });
 
   static constexpr auto kContentV20 =
-      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'T'),
@@ -323,7 +323,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
       });
 
   static constexpr auto kContentV21 =
-      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'R'),
@@ -366,7 +366,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
   static constexpr auto kContentV22 =
-      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'R'),
@@ -411,7 +411,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
   static constexpr auto kContentV25 =
-      base::MakeFixedFlatMapSorted<int, BravePrepopulatedEngineID>({
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
           {country_codes::CountryCharsToCountryID('A', 'R'),
@@ -606,6 +606,7 @@ int GetDataVersion(PrefService* prefs) {
 // get search engines defined by Brave.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
     PrefService* prefs,
+    search_engines::SearchEngineChoiceService* search_engine_choice_service,
     size_t* default_search_provider_index,
     bool include_current_default,
     TemplateURLService* template_url_service) {
@@ -624,7 +625,9 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   }
 
   return GetBravePrepopulatedEnginesForCountryID(
-      country_codes::GetCountryIDFromPrefs(prefs),
+      search_engine_choice_service
+          ? search_engine_choice_service->GetCountryId()
+          : country_codes::GetCountryIDFromPrefs(prefs),
       default_search_provider_index, version);
 }
 
@@ -633,10 +636,11 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
 #if BUILDFLAG(IS_ANDROID)
 
 std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
-    const std::string& locale) {
-  int country_id = country_codes::CountryStringToCountryID(locale);
+    const std::string& country_code,
+    PrefService& prefs) {
+  int country_id = country_codes::CountryStringToCountryID(country_code);
   if (country_id == country_codes::kCountryIDUnknown) {
-    LOG(ERROR) << "Unknown country code specified: " << locale;
+    LOG(ERROR) << "Unknown country code specified: " << country_code;
     return std::vector<std::unique_ptr<TemplateURLData>>();
   }
 
@@ -649,11 +653,13 @@ std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
 // components\search_engines\template_url_prepopulate_data.cc because they
 // need to call our versions of redefined Chromium's functions.
 
-std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(PrefService* prefs,
-                                                       int prepopulated_id) {
+std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(
+    PrefService* prefs,
+    search_engines::SearchEngineChoiceService* search_engine_choice_service,
+    int prepopulated_id) {
   size_t default_index;
-  auto engines =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(prefs, &default_index);
+  auto engines = TemplateURLPrepopulateData::GetPrepopulatedEngines(
+      prefs, search_engine_choice_service, &default_index);
   for (auto& engine : engines) {
     if (engine->prepopulate_id == prepopulated_id)
       return std::move(engine);
@@ -662,12 +668,14 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(PrefService* prefs,
 }
 
 std::unique_ptr<TemplateURLData> GetPrepopulatedDefaultSearch(
-    PrefService* prefs) {
+    PrefService* prefs,
+    search_engines::SearchEngineChoiceService* search_engine_choice_service) {
   size_t default_search_index;
   // This could be more efficient.  We are loading all the URLs to only keep
   // the first one.
   std::vector<std::unique_ptr<TemplateURLData>> loaded_urls =
-      GetPrepopulatedEngines(prefs, &default_search_index);
+      GetPrepopulatedEngines(prefs, search_engine_choice_service,
+                             &default_search_index);
 
   return (default_search_index < loaded_urls.size())
              ? std::move(loaded_urls[default_search_index])

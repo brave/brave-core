@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_processor.h"
 
+#include <optional>
+
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
@@ -17,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_processor_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -49,8 +50,8 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
     return BLOG(1, "No text available for embedding");
   }
 
-  const absl::optional<ml::pipeline::EmbeddingProcessing>&
-      embedding_processing = resource_->get();
+  const std::optional<ml::pipeline::EmbeddingProcessing>& embedding_processing =
+      resource_->get();
   CHECK(embedding_processing);
 
   const ml::pipeline::TextEmbeddingInfo text_embedding =
@@ -86,7 +87,7 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextEmbeddingProcessor::OnHtmlContentDidChange(
-    const int32_t /*tab_id=*/,
+    const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   if (redirect_chain.empty()) {

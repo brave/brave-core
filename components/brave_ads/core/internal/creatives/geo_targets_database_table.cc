@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -31,7 +32,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
       BindString(command, index++, creative_ad.campaign_id);
       BindString(command, index++, geo_target);
 
-      count++;
+      ++count;
     }
   }
 

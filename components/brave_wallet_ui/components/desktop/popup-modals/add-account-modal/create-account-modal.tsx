@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory, useLocation, useParams } from 'react-router'
 
 // utils
@@ -24,15 +23,11 @@ import {
   FilecoinNetwork,
   FilecoinNetworkLocaleMapping,
   FilecoinNetworkTypes,
-  ImportAccountErrorType,
   WalletRoutes,
   ZCashNetwork,
   ZCashNetworkLocaleMapping,
   ZCashNetworkTypes
 } from '../../../../constants/types'
-
-// actions
-import { WalletActions } from '../../../../common/actions'
 
 // components
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
@@ -65,7 +60,6 @@ export const CreateAccountModal = () => {
   const { accountTypeName } = useParams<Params>()
 
   // redux
-  const dispatch = useDispatch()
   const isBitcoinEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinEnabled
   )
@@ -83,7 +77,7 @@ export const CreateAccountModal = () => {
     BraveWallet.FILECOIN_MAINNET
   )
   const [bitcoinNetwork, setBitcoinNetwork] = React.useState<BitcoinNetwork>(
-    BraveWallet.BITCOIN_TESTNET
+    BraveWallet.BITCOIN_MAINNET
   )
   const [zcashNetwork, setZCashNetwork] = React.useState<ZCashNetwork>(
     BraveWallet.Z_CASH_MAINNET
@@ -129,27 +123,18 @@ export const CreateAccountModal = () => {
       undefined
 
     return keyringIdForNewAccount(selectedAccountType.coin, network)
-  }, [selectedAccountType, filecoinNetwork, bitcoinNetwork])
+  }, [selectedAccountType, filecoinNetwork, bitcoinNetwork, zcashNetwork])
 
   // methods
-  const setImportAccountError = React.useCallback(
-    (hasError: ImportAccountErrorType) => {
-      dispatch(WalletActions.setImportAccountError(hasError))
-    },
-    []
-  )
-
   const onClickClose = React.useCallback(() => {
-    setImportAccountError(undefined)
     history.push(WalletRoutes.Accounts)
-  }, [setImportAccountError])
+  }, [])
 
   const handleAccountNameChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setAccountName(event.target.value)
-      setImportAccountError(undefined)
     },
-    [setImportAccountError]
+    []
   )
 
   const onChangeFilecoinNetwork = React.useCallback(

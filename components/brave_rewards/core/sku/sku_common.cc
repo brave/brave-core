@@ -10,8 +10,6 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
-using std::placeholders::_1;
-
 namespace brave_rewards::internal {
 namespace sku {
 
@@ -22,7 +20,7 @@ SKUCommon::~SKUCommon() = default;
 
 void SKUCommon::CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
                             SKUOrderCallback callback) {
-  order_.Create(items, callback);
+  order_.Create(items, std::move(callback));
 }
 
 void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
@@ -30,59 +28,61 @@ void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
                                   const std::string& wallet_type,
                                   SKUOrderCallback callback) {
   if (!order) {
-    BLOG(0, "Order not found");
-    callback(mojom::Result::FAILED, "");
+    engine_->LogError(FROM_HERE) << "Order not found";
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  auto create_callback = std::bind(&SKUCommon::OnTransactionCompleted, this, _1,
-                                   order->order_id, callback);
-
-  transaction_.Run(order->Clone(), destination, wallet_type, create_callback);
+  transaction_.Run(order->Clone(), destination, wallet_type,
+                   base::BindOnce(&SKUCommon::OnTransactionCompleted,
+                                  weak_factory_.GetWeakPtr(), order->order_id,
+                                  std::move(callback)));
 }
 
-void SKUCommon::OnTransactionCompleted(const mojom::Result result,
-                                       const std::string& order_id,
-                                       SKUOrderCallback callback) {
+void SKUCommon::OnTransactionCompleted(const std::string& order_id,
+                                       SKUOrderCallback callback,
+                                       mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order status was not updated");
-    callback(result, "");
+    engine_->LogError(FROM_HERE) << "Order status was not updated";
+    std::move(callback).Run(result, "");
     return;
   }
 
-  callback(mojom::Result::OK, order_id);
+  std::move(callback).Run(mojom::Result::OK, order_id);
 }
 
 void SKUCommon::SendExternalTransaction(const std::string& order_id,
                                         SKUOrderCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
-    callback(mojom::Result::FAILED, "");
+    engine_->LogError(FROM_HERE) << "Order id is empty";
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  auto get_callback =
-      std::bind(&SKUCommon::GetSKUTransactionByOrderId, this, _1, callback);
-
-  engine_->database()->GetSKUTransactionByOrderId(order_id, get_callback);
+  engine_->database()->GetSKUTransactionByOrderId(
+      order_id,
+      base::BindOnce(&SKUCommon::GetSKUTransactionByOrderId,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void SKUCommon::GetSKUTransactionByOrderId(
+    SKUOrderCallback callback,
     base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
-        result,
-    SKUOrderCallback callback) {
+        result) {
   const auto transaction = std::move(result).value_or(nullptr);
   if (!transaction) {
-    BLOG(0,
-         "Failed to get SKU transaction from database, or there's no "
-         "transaction with this order_id!");
-    return callback(mojom::Result::FAILED, "");
+    engine_->LogError(FROM_HERE)
+        << "Failed to get SKU transaction from database, or there's no "
+           "transaction with this order_id";
+    return std::move(callback).Run(mojom::Result::FAILED, "");
   }
 
   transaction_.SendExternalTransaction(
-      mojom::Result::OK, *transaction,
-      std::bind(&SKUCommon::OnTransactionCompleted, this, _1,
-                transaction->order_id, std::move(callback)));
+      *transaction,
+      base::BindOnce(&SKUCommon::OnTransactionCompleted,
+                     weak_factory_.GetWeakPtr(), transaction->order_id,
+                     std::move(callback)),
+      mojom::Result::OK);
 }
 
 }  // namespace sku

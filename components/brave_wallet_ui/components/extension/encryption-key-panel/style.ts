@@ -86,6 +86,7 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   width: 100%;
   margin-bottom: 14px;
+  gap: 8px;
 `
 
 export const DecryptButton = styled(WalletButton)`

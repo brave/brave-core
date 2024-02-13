@@ -9,7 +9,6 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -21,25 +20,25 @@ constexpr char kPublicKeyKey[] = "publicKey";
 
 }  // namespace
 
-absl::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict) {
+std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict) {
   const std::string* const public_key_base64 = dict.FindString(kPublicKeyKey);
   if (!public_key_base64) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const cbr::PublicKey public_key(*public_key_base64);
+  cbr::PublicKey public_key(*public_key_base64);
   if (!public_key.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return public_key;
 }
 
-absl::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
+std::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
     const base::Value::Dict& dict) {
   const base::Value::List* list = dict.FindList(kSignedTokensKey);
   if (!list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<cbr::SignedToken> signed_tokens;
@@ -47,13 +46,13 @@ absl::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
   for (const auto& item : *list) {
     const std::string* const signed_token_base64 = item.GetIfString();
     if (!signed_token_base64) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const cbr::SignedToken signed_token =
         cbr::SignedToken(*signed_token_base64);
     if (!signed_token.has_value()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     signed_tokens.push_back(signed_token);
@@ -83,13 +82,13 @@ ParseVerifyAndUnblindTokens(
     return base::unexpected("Invalid batch DLEQ proof");
   }
 
-  const absl::optional<std::vector<cbr::SignedToken>> signed_tokens =
+  const std::optional<std::vector<cbr::SignedToken>> signed_tokens =
       ParseSignedTokens(dict);
   if (!signed_tokens) {
     return base::unexpected("Failed to parse signed tokens");
   }
 
-  const absl::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens, *signed_tokens,
                                         public_key);
   if (!unblinded_tokens || unblinded_tokens->empty()) {

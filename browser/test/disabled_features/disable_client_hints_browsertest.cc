@@ -46,24 +46,18 @@ const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     blink::features::kClientHintsResourceWidth_DEPRECATED,
     blink::features::kClientHintsViewportWidth,
     blink::features::kClientHintsViewportWidth_DEPRECATED,
-    blink::features::kUserAgentClientHint,
     blink::features::kViewportHeightClientHintHeader,
-    // Client hints features
-    blink::features::kClientHintsMetaHTTPEquivAcceptCH,
-    blink::features::kClientHintThirdPartyDelegation,
 };
 
 }  // namespace
 
-class ClientHintsBrowserTest
-    : public InProcessBrowserTest,
-      public ::testing::WithParamInterface<std::tuple<bool, bool>> {
+class ClientHintsBrowserTest : public InProcessBrowserTest,
+                               public ::testing::WithParamInterface<bool> {
  public:
   ClientHintsBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  bool IsClientHintHeaderEnabled() { return std::get<0>(GetParam()); }
-  bool IsBraveClientHintFeatureEnabled() { return std::get<1>(GetParam()); }
+  bool IsClientHintHeaderEnabled() { return GetParam(); }
 
   void SetUp() override {
     // Test that even with CH features enabled, there is no header.
@@ -77,18 +71,10 @@ class ClientHintsBrowserTest
       }
     }
 
-    if (IsBraveClientHintFeatureEnabled()) {
-      enabled_features.push_back(blink::features::kAllowCertainClientHints);
-    } else {
-      disabled_features.push_back(blink::features::kAllowCertainClientHints);
-    }
-
     scoped_feature_list_.InitWithFeatures(enabled_features, disabled_features);
 
-    if (IsBraveClientHintFeatureEnabled()) {
-      PopulateDefaultClientHints();
-      PopulateAllowedClientHints();
-    }
+    PopulateDefaultClientHints();
+    PopulateAllowedClientHints();
     InProcessBrowserTest::SetUp();
   }
 
@@ -149,7 +135,7 @@ class ClientHintsBrowserTest
     return allowed_client_hints_headers_seen_.size();
   }
 
-  size_t client_hints_headers_seen_count() const {
+  size_t unexpected_client_hints_headers_seen_count() const {
     return unexpected_client_hints_headers_seen_.size();
   }
 
@@ -200,14 +186,12 @@ class ClientHintsBrowserTest
     for (const auto& elem : network::GetClientHintToNameMap()) {
       const auto& header = elem.second;
       if (base::Contains(request.headers, header)) {
-        if (IsBraveClientHintFeatureEnabled()) {
-          if (base::Contains(default_hints_, header)) {
-            default_client_hints_headers_seen_.insert(header);
-            continue;
-          } else if (base::Contains(allowed_hints_, header)) {
-            allowed_client_hints_headers_seen_.insert(header);
-            continue;
-          }
+        if (base::Contains(default_hints_, header)) {
+          default_client_hints_headers_seen_.insert(header);
+          continue;
+        } else if (base::Contains(allowed_hints_, header)) {
+          allowed_client_hints_headers_seen_.insert(header);
+          continue;
         }
         unexpected_client_hints_headers_seen_.push_back(header);
       }
@@ -239,16 +223,9 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
     EXPECT_EQ(IsClientHintHeaderEnabled(),
               base::FeatureList::IsEnabled(feature));
   }
-  EXPECT_EQ(
-      IsBraveClientHintFeatureEnabled(),
-      base::FeatureList::IsEnabled(blink::features::kAllowCertainClientHints));
 
-  const size_t expected_default_client_hints_count =
-      IsClientHintHeaderEnabled() && IsBraveClientHintFeatureEnabled() ? 3u
-                                                                       : 0u;
-  const size_t expected_allowed_client_hints_count =
-      IsClientHintHeaderEnabled() && IsBraveClientHintFeatureEnabled() ? 2u
-                                                                       : 0u;
+  const size_t expected_default_client_hints_count = 3u;
+  const size_t expected_allowed_client_hints_count = 2u;
 
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), no_client_hints_headers_url()));
@@ -258,7 +235,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
       << "Default headers seen: " << default_client_hints_headers_seen();
   EXPECT_EQ(0u, allowed_client_hints_headers_seen_count())
       << "Allowed headers seen: " << allowed_client_hints_headers_seen();
-  EXPECT_EQ(0u, client_hints_headers_seen_count())
+  EXPECT_EQ(0u, unexpected_client_hints_headers_seen_count())
       << "Unexpected headers: " << unexpected_client_hints_headers_seen();
 
   reset_client_hints_headers_seen();
@@ -270,7 +247,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   EXPECT_EQ(expected_allowed_client_hints_count,
             allowed_client_hints_headers_seen_count())
       << "Allowed headers seen: " << allowed_client_hints_headers_seen();
-  EXPECT_EQ(0u, client_hints_headers_seen_count())
+  EXPECT_EQ(0u, unexpected_client_hints_headers_seen_count())
       << "Unexpected headers: " << unexpected_client_hints_headers_seen();
 
   reset_client_hints_headers_seen();
@@ -283,7 +260,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   EXPECT_EQ(expected_allowed_client_hints_count,
             allowed_client_hints_headers_seen_count())
       << "Allowed headers seen: " << allowed_client_hints_headers_seen();
-  EXPECT_EQ(0u, client_hints_headers_seen_count())
+  EXPECT_EQ(0u, unexpected_client_hints_headers_seen_count())
       << "Unexpected headers: " << unexpected_client_hints_headers_seen();
 
   reset_client_hints_headers_seen();
@@ -296,7 +273,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   EXPECT_EQ(expected_allowed_client_hints_count,
             allowed_client_hints_headers_seen_count())
       << "Allowed headers seen: " << allowed_client_hints_headers_seen();
-  EXPECT_EQ(0u, client_hints_headers_seen_count())
+  EXPECT_EQ(0u, unexpected_client_hints_headers_seen_count())
       << "Unexpected headers: " << unexpected_client_hints_headers_seen();
 
   reset_client_hints_headers_seen();
@@ -309,19 +286,15 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   EXPECT_EQ(expected_allowed_client_hints_count,
             allowed_client_hints_headers_seen_count())
       << "Allowed headers seen: " << allowed_client_hints_headers_seen();
-  EXPECT_EQ(0u, client_hints_headers_seen_count())
+  EXPECT_EQ(0u, unexpected_client_hints_headers_seen_count())
       << "Unexpected headers: " << unexpected_client_hints_headers_seen();
 }
 
 INSTANTIATE_TEST_SUITE_P(
     ClientHintsBrowserTest,
     ClientHintsBrowserTest,
-    ::testing::Combine(::testing::Bool(), ::testing::Bool()),
+    ::testing::Bool(),
     [](const testing::TestParamInfo<ClientHintsBrowserTest::ParamType>& info) {
-      bool chromium_features_enabled = std::get<0>(info.param);
-      bool brave_feature_enabled = std::get<1>(info.param);
-      return base::StringPrintf(
-          "ChromiumCHFeatures%s_BraveCHFeature%s",
-          chromium_features_enabled ? "Enabled" : "Disabled",
-          brave_feature_enabled ? "Enabled" : "Disabled");
+      return base::StringPrintf("ChromiumCHFeatures_%s",
+                                info.param ? "Enabled" : "Disabled");
     });

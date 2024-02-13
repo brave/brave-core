@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_TRAY_RUNNER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -18,7 +19,6 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/wireguard/wireguard_service_observer.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/win/ras/ras_connection_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ui {
 class SimpleMenuModel;
@@ -51,7 +51,7 @@ class StatusTrayRunner : public TrayMenuModel::Delegate,
   }
 
   void SetCurrentStateForTesting(
-      absl::optional<brave_vpn::mojom::ConnectionState> state) {
+      std::optional<brave_vpn::mojom::ConnectionState> state) {
     current_state_ = std::move(state);
   }
 
@@ -92,9 +92,9 @@ class StatusTrayRunner : public TrayMenuModel::Delegate,
   void ExecuteCommand(int command_id, int event_flags) override;
   void OnMenuWillShow(ui::SimpleMenuModel* source) override;
 
-  absl::optional<brave_vpn::mojom::ConnectionState> current_state_;
+  std::optional<brave_vpn::mojom::ConnectionState> current_state_;
   SetIconStateCallback callback_for_testing_;
-  absl::optional<bool> vpn_connected_for_testing_;
+  std::optional<bool> vpn_connected_for_testing_;
   base::win::RegKey storage_;
   std::unique_ptr<StatusTray> status_tray_;
   base::OnceClosure quit_;

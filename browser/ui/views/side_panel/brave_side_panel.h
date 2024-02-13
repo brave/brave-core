@@ -7,10 +7,10 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "components/prefs/pref_member.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/resize_area_delegate.h"
@@ -53,7 +53,7 @@ class BraveSidePanel : public views::View,
   bool IsRightAligned();
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
 
-  void set_fixed_contents_width(absl::optional<int> fixed_width) {
+  void set_fixed_contents_width(std::optional<int> fixed_width) {
     fixed_contents_width_ = fixed_width;
   }
 
@@ -76,12 +76,12 @@ class BraveSidePanel : public views::View,
   void OnSidePanelWidthChanged();
 
   HorizontalAlignment horizontal_alignment_ = kHorizontalAlignLeft;
-  absl::optional<int> starting_width_on_resize_;
+  std::optional<int> starting_width_on_resize_;
 
   // If this is set, use this width for panel contents during the layout
   // instead of using this panel's bounds. This is used to prevent panel
   // contents layout while sidebar show/hide animation is in-progress.
-  absl::optional<int> fixed_contents_width_;
+  std::optional<int> fixed_contents_width_;
   raw_ptr<BrowserView> browser_view_ = nullptr;
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;

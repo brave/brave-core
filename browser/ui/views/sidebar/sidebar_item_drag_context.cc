@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_item_drag_context.h"
 
+#include <optional>
+
 SidebarItemDragContext::SidebarItemDragContext() = default;
 
 SidebarItemDragContext::~SidebarItemDragContext() = default;
@@ -25,9 +27,9 @@ bool SidebarItemDragContext::ShouldMoveItem() const {
 }
 
 void SidebarItemDragContext::Reset() {
-  source_index_ = absl::nullopt;
+  source_index_ = std::nullopt;
   source_ = nullptr;
-  drag_indicator_index_ = absl::nullopt;
+  drag_indicator_index_ = std::nullopt;
 }
 
 // static

@@ -16,7 +16,7 @@ import {
 } from './wellet-menus.style'
 
 interface Props {
-  onClickViewOnExplorer: () => void
+  onClickViewOnExplorer?: () => void
   onClickSell?: () => void
 }
 
@@ -31,12 +31,14 @@ export const PortfolioAccountMenu = (props: Props) => {
           <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
         </PopupButton>
       )}
-      <PopupButton onClick={onClickViewOnExplorer}>
-        <ButtonIcon name='launch' />
-        <PopupButtonText>
-          {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
-        </PopupButtonText>
-      </PopupButton>
+      {onClickViewOnExplorer && (
+        <PopupButton onClick={onClickViewOnExplorer}>
+          <ButtonIcon name='launch' />
+          <PopupButtonText>
+            {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+          </PopupButtonText>
+        </PopupButton>
+      )}
     </StyledWrapper>
   )
 }

@@ -185,88 +185,88 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     </if>
   </outputs>
   <translations>
-    <file path="resources/chromium_strings_af.xtb" lang="af" />
-    <file path="resources/chromium_strings_am.xtb" lang="am" />
-    <file path="resources/chromium_strings_ar.xtb" lang="ar" />
-    <file path="resources/chromium_strings_as.xtb" lang="as" />
-    <file path="resources/chromium_strings_az.xtb" lang="az" />
-    <file path="resources/chromium_strings_be.xtb" lang="be" />
-    <file path="resources/chromium_strings_bg.xtb" lang="bg" />
-    <file path="resources/chromium_strings_bn.xtb" lang="bn" />
-    <file path="resources/chromium_strings_bs.xtb" lang="bs" />
-    <file path="resources/chromium_strings_ca.xtb" lang="ca" />
-    <file path="resources/chromium_strings_cs.xtb" lang="cs" />
-    <file path="resources/chromium_strings_cy.xtb" lang="cy" />
-    <file path="resources/chromium_strings_da.xtb" lang="da" />
-    <file path="resources/chromium_strings_de.xtb" lang="de" />
-    <file path="resources/chromium_strings_el.xtb" lang="el" />
-    <file path="resources/chromium_strings_en-GB.xtb" lang="en-GB" />
-    <file path="resources/chromium_strings_es.xtb" lang="es" />
-    <file path="resources/chromium_strings_es-419.xtb" lang="es-419" />
-    <file path="resources/chromium_strings_et.xtb" lang="et" />
-    <file path="resources/chromium_strings_eu.xtb" lang="eu" />
-    <file path="resources/chromium_strings_fa.xtb" lang="fa" />
-    <file path="resources/chromium_strings_fi.xtb" lang="fi" />
-    <file path="resources/chromium_strings_fil.xtb" lang="fil" />
-    <file path="resources/chromium_strings_fr.xtb" lang="fr" />
-    <file path="resources/chromium_strings_fr-CA.xtb" lang="fr-CA" />
-    <file path="resources/chromium_strings_gl.xtb" lang="gl" />
-    <file path="resources/chromium_strings_gu.xtb" lang="gu" />
-    <file path="resources/chromium_strings_hi.xtb" lang="hi" />
-    <file path="resources/chromium_strings_hr.xtb" lang="hr" />
-    <file path="resources/chromium_strings_hu.xtb" lang="hu" />
-    <file path="resources/chromium_strings_hy.xtb" lang="hy" />
-    <file path="resources/chromium_strings_id.xtb" lang="id" />
-    <file path="resources/chromium_strings_is.xtb" lang="is" />
-    <file path="resources/chromium_strings_it.xtb" lang="it" />
+    <file path="resources/brave_strings_af.xtb" lang="af" />
+    <file path="resources/brave_strings_am.xtb" lang="am" />
+    <file path="resources/brave_strings_ar.xtb" lang="ar" />
+    <file path="resources/brave_strings_as.xtb" lang="as" />
+    <file path="resources/brave_strings_az.xtb" lang="az" />
+    <file path="resources/brave_strings_be.xtb" lang="be" />
+    <file path="resources/brave_strings_bg.xtb" lang="bg" />
+    <file path="resources/brave_strings_bn.xtb" lang="bn" />
+    <file path="resources/brave_strings_bs.xtb" lang="bs" />
+    <file path="resources/brave_strings_ca.xtb" lang="ca" />
+    <file path="resources/brave_strings_cs.xtb" lang="cs" />
+    <file path="resources/brave_strings_cy.xtb" lang="cy" />
+    <file path="resources/brave_strings_da.xtb" lang="da" />
+    <file path="resources/brave_strings_de.xtb" lang="de" />
+    <file path="resources/brave_strings_el.xtb" lang="el" />
+    <file path="resources/brave_strings_en-GB.xtb" lang="en-GB" />
+    <file path="resources/brave_strings_es.xtb" lang="es" />
+    <file path="resources/brave_strings_es-419.xtb" lang="es-419" />
+    <file path="resources/brave_strings_et.xtb" lang="et" />
+    <file path="resources/brave_strings_eu.xtb" lang="eu" />
+    <file path="resources/brave_strings_fa.xtb" lang="fa" />
+    <file path="resources/brave_strings_fi.xtb" lang="fi" />
+    <file path="resources/brave_strings_fil.xtb" lang="fil" />
+    <file path="resources/brave_strings_fr.xtb" lang="fr" />
+    <file path="resources/brave_strings_fr-CA.xtb" lang="fr-CA" />
+    <file path="resources/brave_strings_gl.xtb" lang="gl" />
+    <file path="resources/brave_strings_gu.xtb" lang="gu" />
+    <file path="resources/brave_strings_hi.xtb" lang="hi" />
+    <file path="resources/brave_strings_hr.xtb" lang="hr" />
+    <file path="resources/brave_strings_hu.xtb" lang="hu" />
+    <file path="resources/brave_strings_hy.xtb" lang="hy" />
+    <file path="resources/brave_strings_id.xtb" lang="id" />
+    <file path="resources/brave_strings_is.xtb" lang="is" />
+    <file path="resources/brave_strings_it.xtb" lang="it" />
     <!-- The translation console uses 'iw' for Hebrew, but we use 'he'. -->
-    <file path="resources/chromium_strings_iw.xtb" lang="he" />
-    <file path="resources/chromium_strings_ja.xtb" lang="ja" />
-    <file path="resources/chromium_strings_ka.xtb" lang="ka" />
-    <file path="resources/chromium_strings_kk.xtb" lang="kk" />
-    <file path="resources/chromium_strings_km.xtb" lang="km" />
-    <file path="resources/chromium_strings_kn.xtb" lang="kn" />
-    <file path="resources/chromium_strings_ko.xtb" lang="ko" />
-    <file path="resources/chromium_strings_ky.xtb" lang="ky" />
-    <file path="resources/chromium_strings_lo.xtb" lang="lo" />
-    <file path="resources/chromium_strings_lt.xtb" lang="lt" />
-    <file path="resources/chromium_strings_lv.xtb" lang="lv" />
-    <file path="resources/chromium_strings_mk.xtb" lang="mk" />
-    <file path="resources/chromium_strings_ml.xtb" lang="ml" />
-    <file path="resources/chromium_strings_mn.xtb" lang="mn" />
-    <file path="resources/chromium_strings_mr.xtb" lang="mr" />
-    <file path="resources/chromium_strings_ms.xtb" lang="ms" />
-    <file path="resources/chromium_strings_my.xtb" lang="my" />
-    <file path="resources/chromium_strings_ne.xtb" lang="ne" />
-    <file path="resources/chromium_strings_nl.xtb" lang="nl" />
-    <file path="resources/chromium_strings_no.xtb" lang="no" />
-    <file path="resources/chromium_strings_or.xtb" lang="or" />
-    <file path="resources/chromium_strings_pa.xtb" lang="pa" />
-    <file path="resources/chromium_strings_pl.xtb" lang="pl" />
-    <file path="resources/chromium_strings_pt-BR.xtb" lang="pt-BR" />
-    <file path="resources/chromium_strings_pt-PT.xtb" lang="pt-PT" />
-    <file path="resources/chromium_strings_ro.xtb" lang="ro" />
-    <file path="resources/chromium_strings_ru.xtb" lang="ru" />
-    <file path="resources/chromium_strings_si.xtb" lang="si" />
-    <file path="resources/chromium_strings_sk.xtb" lang="sk" />
-    <file path="resources/chromium_strings_sl.xtb" lang="sl" />
-    <file path="resources/chromium_strings_sq.xtb" lang="sq" />
-    <file path="resources/chromium_strings_sr.xtb" lang="sr" />
-    <file path="resources/chromium_strings_sr-Latn.xtb" lang="sr-Latn" />
-    <file path="resources/chromium_strings_sv.xtb" lang="sv" />
-    <file path="resources/chromium_strings_sw.xtb" lang="sw" />
-    <file path="resources/chromium_strings_ta.xtb" lang="ta" />
-    <file path="resources/chromium_strings_te.xtb" lang="te" />
-    <file path="resources/chromium_strings_th.xtb" lang="th" />
-    <file path="resources/chromium_strings_tr.xtb" lang="tr" />
-    <file path="resources/chromium_strings_uk.xtb" lang="uk" />
-    <file path="resources/chromium_strings_ur.xtb" lang="ur" />
-    <file path="resources/chromium_strings_uz.xtb" lang="uz" />
-    <file path="resources/chromium_strings_vi.xtb" lang="vi" />
-    <file path="resources/chromium_strings_zh-CN.xtb" lang="zh-CN" />
-    <file path="resources/chromium_strings_zh-HK.xtb" lang="zh-HK" />
-    <file path="resources/chromium_strings_zh-TW.xtb" lang="zh-TW" />
-    <file path="resources/chromium_strings_zu.xtb" lang="zu" />
+    <file path="resources/brave_strings_iw.xtb" lang="he" />
+    <file path="resources/brave_strings_ja.xtb" lang="ja" />
+    <file path="resources/brave_strings_ka.xtb" lang="ka" />
+    <file path="resources/brave_strings_kk.xtb" lang="kk" />
+    <file path="resources/brave_strings_km.xtb" lang="km" />
+    <file path="resources/brave_strings_kn.xtb" lang="kn" />
+    <file path="resources/brave_strings_ko.xtb" lang="ko" />
+    <file path="resources/brave_strings_ky.xtb" lang="ky" />
+    <file path="resources/brave_strings_lo.xtb" lang="lo" />
+    <file path="resources/brave_strings_lt.xtb" lang="lt" />
+    <file path="resources/brave_strings_lv.xtb" lang="lv" />
+    <file path="resources/brave_strings_mk.xtb" lang="mk" />
+    <file path="resources/brave_strings_ml.xtb" lang="ml" />
+    <file path="resources/brave_strings_mn.xtb" lang="mn" />
+    <file path="resources/brave_strings_mr.xtb" lang="mr" />
+    <file path="resources/brave_strings_ms.xtb" lang="ms" />
+    <file path="resources/brave_strings_my.xtb" lang="my" />
+    <file path="resources/brave_strings_ne.xtb" lang="ne" />
+    <file path="resources/brave_strings_nl.xtb" lang="nl" />
+    <file path="resources/brave_strings_no.xtb" lang="no" />
+    <file path="resources/brave_strings_or.xtb" lang="or" />
+    <file path="resources/brave_strings_pa.xtb" lang="pa" />
+    <file path="resources/brave_strings_pl.xtb" lang="pl" />
+    <file path="resources/brave_strings_pt-BR.xtb" lang="pt-BR" />
+    <file path="resources/brave_strings_pt-PT.xtb" lang="pt-PT" />
+    <file path="resources/brave_strings_ro.xtb" lang="ro" />
+    <file path="resources/brave_strings_ru.xtb" lang="ru" />
+    <file path="resources/brave_strings_si.xtb" lang="si" />
+    <file path="resources/brave_strings_sk.xtb" lang="sk" />
+    <file path="resources/brave_strings_sl.xtb" lang="sl" />
+    <file path="resources/brave_strings_sq.xtb" lang="sq" />
+    <file path="resources/brave_strings_sr.xtb" lang="sr" />
+    <file path="resources/brave_strings_sr-Latn.xtb" lang="sr-Latn" />
+    <file path="resources/brave_strings_sv.xtb" lang="sv" />
+    <file path="resources/brave_strings_sw.xtb" lang="sw" />
+    <file path="resources/brave_strings_ta.xtb" lang="ta" />
+    <file path="resources/brave_strings_te.xtb" lang="te" />
+    <file path="resources/brave_strings_th.xtb" lang="th" />
+    <file path="resources/brave_strings_tr.xtb" lang="tr" />
+    <file path="resources/brave_strings_uk.xtb" lang="uk" />
+    <file path="resources/brave_strings_ur.xtb" lang="ur" />
+    <file path="resources/brave_strings_uz.xtb" lang="uz" />
+    <file path="resources/brave_strings_vi.xtb" lang="vi" />
+    <file path="resources/brave_strings_zh-CN.xtb" lang="zh-CN" />
+    <file path="resources/brave_strings_zh-HK.xtb" lang="zh-HK" />
+    <file path="resources/brave_strings_zh-TW.xtb" lang="zh-TW" />
+    <file path="resources/brave_strings_zu.xtb" lang="zu" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -350,9 +350,18 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </message>
       <if expr="not chromeos_ash">
         <!-- Browser Window Title Format -->
-        <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabs and popup windows">
-          <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
-        </message>
+        <if expr="_is_chrome_for_testing_branded">
+          <then>
+            <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabs and popup windows">
+              <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave for Testing
+            </message>
+          </then>
+          <else>
+            <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabs and popup windows">
+              <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
+            </message>
+          </else>
+        </if>
       </if>
       <if expr="chromeos_ash">
         <!-- Browser Window Title Format -->
@@ -380,9 +389,18 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <!-- Accessible window title format - includes the channel, and the same
            on all browser platforms rather than different on ChromeOS. -->
-      <message name="IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window">
-        <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
-      </message>
+      <if expr="_is_chrome_for_testing_branded">
+        <then>
+          <message name="IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window">
+            <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave for Testing
+          </message>
+        </then>
+        <else>
+          <message name="IDS_ACCESSIBLE_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window">
+            <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
+          </message>
+        </else>
+      </if>
       <message name="IDS_ACCESSIBLE_BETA_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the beta channel version of the browser">
         <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Beta
       </message>
@@ -434,11 +452,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </else>
       </if>
       <if expr="is_macosx">
-        <message name="IDS_MAC_10_13_OBSOLETE" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using will soon be or is already unsupported.">
-          To get future Brave updates, you'll need macOS 10.15 or later. This computer is using macOS 10.13.
-        </message>
-        <message name="IDS_MAC_10_14_OBSOLETE" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using will soon be or is already unsupported.">
-          To get future Brave updates, you'll need macOS 10.15 or later. This computer is using macOS 10.14.
+        <message name="IDS_MACOS_OBSOLETE" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using will soon be or is already unsupported.">
+          To get future Brave updates, you'll need macOS 11 or later. This computer is using macOS 10.15.
         </message>
       </if>
       <if expr="is_win">
@@ -680,11 +695,11 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_MALWARE" desc="Subpage summary for malware warning for the user.">
         Brave blocked this file because it has malware
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_DEEP_SCANNING_PROMPT" desc="Subpage summary of warning for Deep Scanning.">
-        Brave recommends scanning this file because it may be dangerous
-      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_BLOCKED_LEARN_MORE_LINK" desc="Text for the link to the help page about why Brave blocks some downloaded files.">
         Learn why Brave blocks some downloads
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_DEEP_SCANNING_PROMPT_LOCAL_DECRYPTION" desc="Subpage summary of warning for a file where we recommend providing the password for on-device decryption">
+        This file may be dangerous<ph name="LINE_BREAK">$1</ph>Brave can check this download for you if you provide the password. Info about the file gets sent to Google Safe Browsing, but the file content and password stay on your device.
       </message>
 
       <!-- Download Shelf Items -->
@@ -730,6 +745,11 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <message name="IDS_BLOCK_DOWNLOAD_REASON_UNVERIFIED_NO_SAFE_BROWSING" desc="On the chrome://downloads page, the description shown for a blocked file that could not be verified because Safe Browsing is off.">
         Brave blocked this download because you turned Safe Browsing off and the file can't be verified
+      </message>
+
+      <!-- chrome://downloads page bypass dangerous download warning dialog -->
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_LEARN_MORE_LINK" desc="On the downloads page, the label for the link to the help center in the dialog to bypass a dangerous download warning.">
+        Learn why Brave blocks some files
       </message>
 
       <!-- Abandon in-progress downloads confirmation dialog -->
@@ -1001,6 +1021,18 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC_V2" desc="Body of the web signin interception bubble. It is shown when the user signs in on the web while they already have another account present in the current profile.">
           Another account is already signed in. To keep your browsing separate, Brave can create your own profile for you.
         </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_TITLE" desc="Title of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account.">
+          Make Brave your own
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE" desc="Subtitle of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account.">
+          Sign in to get the most out of Brave
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_DECLINE_TEXT" desc="Label of the Decline button of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account.">
+          Use Brave without an account
+        </message>
+        <message name="IDS_AVATAR_BUTTON_INTERCEPT_BUBBLE_CHROME_SIGNIN_TEXT" desc="Text asking the user to sign into Brave while the Brave Signin Bubble intercept is shown.">
+          Sign in to Brave?
+        </message>
       </if>
 
       <if expr="not chromeos_ash and not is_android">
@@ -1149,17 +1181,8 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- Settings API bubble -->
-      <message name="IDS_EXTENSIONS_SETTINGS_API_FIRST_LINE_START_PAGES_SPECIFIC" desc="Text displayed in the Settings API bubble as first line when an extension has changed the start pages, and we are pointing to its icon.">
-        This extension has changed what page is shown when you start Brave.
-      </message>
-      <message name="IDS_EXTENSIONS_SETTINGS_API_FIRST_LINE_START_PAGES" desc="Text displayed in the Settings API bubble as first line when an extension has changed the start pages, and we are not pointing to its icon.">
-        The extension "<ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>" has changed what page is shown when you start Brave.
-      </message>
       <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_PAGES" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was just the start pages. The triple single quotes are needed to preserve the space before and after the sentence which is needed when the language (Brave is being translated to) uses space as word separator. Please preserve them, unless the language being translated to does not use space as word separator.">
         ''' It also controls what page is shown when you start Brave. '''
-      </message>
-      <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_AND_HOME" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was both the start page and the home page. See IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_PAGES for reason for triple quotes.">
-        ''' It also controls what page is shown when you start Brave or click the Home button. '''
       </message>
       <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_AND_SEARCH" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was both the start page and the search engine. See IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_START_PAGES for reason for triple quotes.">
         ''' It also controls what page is shown when you start Brave or search from the Omnibox. '''
@@ -1680,6 +1703,17 @@ Permissions you've already given to websites and apps may apply to this account.
         You can learn more about these features in Brave settings.
       </message>
 
+      <!-- Advanced security settings -->
+      <message name="IDS_SETTINGS_SECURITY_V8_LINK_DESCRIPTION" desc="Description for the link row of the V8 security settings page.">
+        Turn on additional protection in Brave’s JavaScript and WebAssembly engine
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_JIT_DESCRIPTION" desc="Description of the JavaScript optimizer content setting.">
+        V8 is Brave’s JavaScript and WebAssembly engine used to improve site performance
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_JIT_ALLOWED_SUB_LABEL" desc="Sub-label for the enabled option of the JavaScript optimizer content setting.">
+        Brave runs faster and features that use JavaScript should work as designed (recommended)
+      </message>
+
       <!-- BraveUpdater Strings -->
       <if expr="is_win">
         <message name="IDS_FRIENDLY_COMPANY_NAME" desc="Company name" translateable="false">
@@ -1769,37 +1803,128 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_BUNDLE_INSTALLED_SUCCESSFULLY" desc="Installation complete message.">
           Installation complete.
         </message>
+
+        <!--extra code-->
+        <message name="IDS_EXTRA_CODE" desc="The optional extra code for any of the errors below">
+          Extra code: <ph name="EXTRA_CODE">$1<ex>0x80071234</ex></ph>.
+        </message>
+
+        <!--Network errors.-->
+        <message name="IDS_NO_NETWORK_PRESENT_ERROR" desc="Error message displayed in the main dialog when the Updater is unable to connect to the network.">
+          Unable to connect to the Internet. If you use a firewall, please allowlist <ph name="PRODUCT_EXE_NAME">$1<ex>BraveUpdater.exe</ex></ph>.
+        </message>
+        <message name="IDS_ERROR_HTTPSTATUS_UNAUTHORIZED" desc="Error message displayed in the main dialog when an update check or download fails due to unauthorized access, usually due to proxy problems.">
+          Unable to connect to the Internet. HTTP 401 Unauthorized. Please check your proxy configuration.
+        </message>
+        <message name="IDS_ERROR_HTTPSTATUS_FORBIDDEN" desc="Error message displayed in the main dialog when an update check or download fails due to forbidden access, usually due to proxy problems.">
+          Unable to connect to the Internet. HTTP 403 Forbidden. Please check your proxy configuration.
+        </message>
+        <message name="IDS_ERROR_HTTPSTATUS_PROXY_AUTH_REQUIRED" desc="Error message displayed in the main dialog when an update check or download fails due to a need for proxy authentication.">
+          Unable to connect to the Internet. Proxy server requires authentication.
+        </message>
+
+        <!--Update server response errors.-->
+        <message name="IDS_UNKNOWN_APPLICATION" desc="Error message displayed in the main dialog when the server responds with an error of unknown application.">
+          Unable to install, the application is unknown to the server.
+        </message>
+        <message name="IDS_RESTRICTED_RESPONSE_FROM_SERVER" desc="Error message displayed in the main dialog when the user is in a export-restricted country.">
+          Installation failed because access is restricted in this country.
+        </message>
+        <message name="IDS_OS_NOT_SUPPORTED" desc="Error message displayed in the main dialog when the OS does not meet the application's requirements.">
+          Installation failed because this version of the operating system is not supported.
+        </message>
+        <message name="IDS_HW_NOT_SUPPORTED" desc="Error message displayed in the main dialog when the computer does not meet the application's minimum hardware requirements.">
+          Installation failed because your computer does not meet the minimum hardware requirements.
+        </message>
+        <message name="IDS_NO_HASH" desc="Error message displayed in the main dialog when the server does not have the application installer's hash.">
+          Installation failed because the update server does not have any hash data for the application.
+        </message>
+        <message name="IDS_UNSUPPORTED_PROTOCOL" desc="Error message displayed in the main dialog for protocols that do not support multiple packages.">
+          Installation failed because of an unsupported protocol error.
+        </message>
+        <message name="IDS_INTERNAL" desc="Error message displayed in the main dialog when the update server encounters an internal error.">
+          Installation failed because of an update server internal error.
+        </message>
+        <message name="IDS_GENERIC_UPDATE_CHECK_ERROR" desc="Error message displayed in the main dialog when the update client returns an error in the update check.">
+          Update check error: <ph name="UPDATE_CHECK_ERROR">$1<ex>error-internal</ex></ph>.
+        </message>
+
+        <!--Download errors.-->
+        <message name="IDS_DOWNLOAD_HASH_MISMATCH" desc="Error message displayed in the main dialog when the downloaded file fails hash verification.">
+          The downloaded file failed verification.
+        </message>
+        <message name="IDS_GENERIC_DOWNLOAD_ERROR" desc="Error message displayed in the main dialog when the update client returns an error while downloading.">
+          Download error: <ph name="DOWNLOAD_ERROR">$1<ex>error-internal</ex></ph>.
+        </message>
+
+        <!--Unpack errors.-->
+        <message name="IDS_UNPACK_CACHING_ERROR" desc="Error message displayed in the main dialog when the update client fails to cache the installer.">
+          Failed to cache the downloaded installer. Error: <ph name="UNPACK_CACHING_ERROR_CODE">$1<ex>0x80070005</ex></ph>.
+        </message>
+        <message name="IDS_GENERIC_UNPACK_ERROR" desc="Error message displayed in the main dialog when the update client returns an error while unpacking.">
+          Unpack error: <ph name="UNPACK_ERROR">$1<ex>error-internal</ex></ph>.
+        </message>
+
+        <!--Service errors.-->
+        <message name="IDS_GENERIC_SERVICE_ERROR" desc="Error message displayed in the main dialog for runtime errors that occur in the update client service.">
+          Service error: <ph name="SERVICE_ERROR">$1<ex>error-internal</ex></ph>.
+        </message>
+
+        <!--Install errors.-->
+        <message name="IDS_GENERIC_INSTALL_ERROR" desc="Error message displayed in the main dialog for runtime errors that occur while installing.">
+          Install error: <ph name="INSTALL_ERROR">$1<ex>error-internal</ex></ph>
+        </message>
+        <message name="IDS_INSTALL_REBOOT" desc="Message displayed in the main dialog when a system reboot is required or has been initiated after installing.">
+          Reboot required: <ph name="INSTALL_SUCCESS">$1<ex>success-message-internal</ex></ph>
+        </message>
+        <message name="IDS_APP_INSTALL_DISABLED_BY_GROUP_POLICY" desc="Error message displayed in the main dialog when an IT admin has disabled installation or update of this application using Windows Group Policy.">
+          Install error: Your network administrator has applied a Group Policy that prevents installation: <ph name="INSTALL_ERROR">$1<ex>error-internal</ex></ph>
+        </message>
+        <message name="IDS_INVALID_INSTALLER_FILENAME" desc="Error message displayed in the main dialog when the application installer's filename or extension is invalid or unsupported.">
+          Install error: The installer filename is invalid or unsupported.
+        </message>
+        <message name="IDS_INSTALLER_FAILED_TO_START" desc="Error message displayed in the main dialog when the application installer process fails to start.">
+          Install error: The installer process failed to start.
+        </message>
+        <message name="IDS_INSTALLER_TIMED_OUT" desc="Error message displayed in the main dialog when the application installer does not complete in the allowed amount of time.">
+          Install error: The installer did not complete. The installation has been aborted.
+        </message>
       </if>
-      <!-- High Efficiency Chip strings -->
+      <!-- Memory Saver Chip strings -->
       <if expr="not is_android">
         <if expr="use_titlecase">
-          <message name="IDS_HIGH_EFFICIENCY_DIALOG_TITLE" desc="In Title Case: Title text for a dialog describing that the Memory Saver setting is enabled">
+          <message name="IDS_MEMORY_SAVER_DIALOG_TITLE" desc="In Title Case: Title text for a dialog describing that the Memory Saver setting is enabled">
             Memory Saver Made Brave Faster
           </message>
         </if>
         <if expr="not use_titlecase">
-          <message name="IDS_HIGH_EFFICIENCY_DIALOG_TITLE" desc="Title text for a dialog describing that the Memory Saver setting is enabled">
+          <message name="IDS_MEMORY_SAVER_DIALOG_TITLE" desc="Title text for a dialog describing that the Memory Saver setting is enabled">
             Memory Saver made Brave faster
           </message>
         </if>
-        <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_V2" desc="Body text for a dialog describing that Memory Saver mode will use less memory.">
+        <message name="IDS_MEMORY_SAVER_DIALOG_BODY_V2" desc="Body text for a dialog describing that Memory Saver mode will use less memory.">
           While this tab was inactive, memory was freed up to keep Brave fast. You can choose to always exclude this site from being inactive.
         </message>
       </if>
 
-      <!-- High Efficiency IPH strings -->
+      <!-- Memory Saver IPH strings -->
       <if expr="not is_android">
         <if expr="use_titlecase">
-          <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_TITLE" desc="In Title Case: The title for the high efficiency mode in-product promo bubble">
+          <message name="IDS_MEMORY_SAVER_MODE_PROMO_TITLE" desc="In Title Case: The title for the Memory Saver mode in-product promo bubble">
             Make Brave Faster
           </message>
         </if>
         <if expr="not use_titlecase">
-          <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_TITLE" desc="The title for the high efficiency mode in-product promo bubble">
+          <message name="IDS_MEMORY_SAVER_MODE_PROMO_TITLE" desc="The title for the Memory Saver mode in-product promo bubble">
             Make Brave faster
           </message>
         </if>
       </if>
+
+      <!-- Clear Browsing Data -->
+      <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_SIGNED_IN" desc="Description in the footer of the Clear Browsing Data dialog when the user is signed.">
+        To clear browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out of Brave<ph name="END_LINK">&lt;/a&gt;</ph>.
+      </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
         </message><message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">

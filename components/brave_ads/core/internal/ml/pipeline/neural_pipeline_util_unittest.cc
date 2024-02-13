@@ -6,10 +6,9 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_util.h"
 
 #include <string>
-#include <utility>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -25,13 +24,13 @@ class BraveAdsNeuralPipelineUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNeuralPipelineUtilTest, LoadNeuralPipelineTest) {
   // Arrange
-  absl::optional<std::string> buffer =
-      ReadFileFromTestPathToString(kOnlyRequiredFieldsNeuralModelPipeline);
-  ASSERT_TRUE(buffer);
+  const std::optional<std::string> contents =
+      MaybeReadFileToString(kOnlyRequiredFieldsNeuralModelPipeline);
+  ASSERT_TRUE(contents);
 
   // Act & Assert
   EXPECT_TRUE(pipeline::LoadNeuralPipeline(
-      reinterpret_cast<const uint8_t*>(buffer->data()), buffer->size()));
+      reinterpret_cast<const uint8_t*>(contents->data()), contents->size()));
 }
 
 }  // namespace brave_ads::ml

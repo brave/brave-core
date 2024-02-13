@@ -6,11 +6,11 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -23,7 +23,6 @@
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -72,7 +71,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
       *EthTransaction::FromTxData(mojom::TxData::New(
           "0x09", "0x4a817c800", "0x5208",
           "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-          std::vector<uint8_t>(), false, absl::nullopt)));
+          std::vector<uint8_t>(), false, std::nullopt)));
   EthTxMeta meta(eth_account_id, std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -128,7 +127,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
           mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                              "0x3535353535353535353535353535353535353535",
                              "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                             false, absl::nullopt),
+                             false, std::nullopt),
           0x3));
   auto* access_list = tx1->access_list();
   Eip2930Transaction::AccessListItem item_a;
@@ -154,7 +153,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
               mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                  "0x3535353535353535353535353535353535353535",
                                  "0x0de0b6b3a7640000", std::vector<uint8_t>(),
-                                 false, absl::nullopt),
+                                 false, std::nullopt),
               "0x3", "0x1E", "0x32",
               mojom::GasEstimation1559::New(
                   "0x3b9aca00" /* Hex of 1 * 1e9 */,
@@ -178,7 +177,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
       *EthTransaction::FromTxData(mojom::TxData::New(
           "0x09", "0x4a817c800", "0x5208",
           "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-          std::vector<uint8_t>(), false, absl::nullopt)));
+          std::vector<uint8_t>(), false, std::nullopt)));
   EthTxMeta meta3(eth_account_id, std::move(tx3));
   meta3.set_sign_only(true);
   base::Value::Dict meta_value3 = meta3.ToValue();
@@ -190,20 +189,6 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta_from_value3 = eth_tx_state_manager_->ValueToEthTxMeta(meta_value3);
   ASSERT_NE(meta_from_value3, nullptr);
   EXPECT_FALSE(meta_from_value3->sign_only());
-}
-
-TEST_F(EthTxStateManagerUnitTest, GetTxPrefPathPrefix) {
-  EXPECT_EQ("ethereum.mainnet",
-            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kMainnetChainId));
-  EXPECT_EQ("ethereum.goerli",
-            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kGoerliChainId));
-  EXPECT_EQ("ethereum.sepolia",
-            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kSepoliaChainId));
-  EXPECT_EQ(
-      "ethereum.http://localhost:7545/",
-      eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kLocalhostChainId));
-  EXPECT_EQ("ethereum",
-            eth_tx_state_manager_->GetTxPrefPathPrefix(absl::nullopt));
 }
 
 }  // namespace brave_wallet

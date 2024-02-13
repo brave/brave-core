@@ -15,10 +15,13 @@ class RewardsEngineImpl;
 
 namespace publisher {
 
+using RefreshPublisherStatusCallback =
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
+
 // Refreshes the publisher status for each entry in the specified list
 void RefreshPublisherStatus(RewardsEngineImpl& engine,
                             std::vector<mojom::PublisherInfoPtr>&& info_list,
-                            GetRecurringTipsCallback callback);
+                            RefreshPublisherStatusCallback callback);
 
 }  // namespace publisher
 }  // namespace brave_rewards::internal

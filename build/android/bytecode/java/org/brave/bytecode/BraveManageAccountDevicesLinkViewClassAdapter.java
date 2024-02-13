@@ -18,7 +18,9 @@ public class BraveManageAccountDevicesLinkViewClassAdapter extends BraveClassVis
 
         changeSuperName(sManageAccountDevicesLinkView, sBraveManageAccountDevicesLinkView);
 
-        changeMethodOwner(sManageAccountDevicesLinkView, "inflateIfVisible",
+        changeMethodOwner(
+                sManageAccountDevicesLinkView,
+                "getSharingAccountInfo",
                 sBraveManageAccountDevicesLinkView);
     }
 }

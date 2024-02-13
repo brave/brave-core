@@ -75,7 +75,7 @@ void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
   }
 
   if (url.empty()) {
-    BLOG(0, "Media activity error");
+    engine_->LogError(FROM_HERE) << "Media activity error";
     return;
   }
 
@@ -92,7 +92,7 @@ void Media::SaveMediaInfo(const std::string& type,
                           const base::flat_map<std::string, std::string>& data,
                           PublisherInfoCallback callback) {
   if (type == GITHUB_MEDIA_TYPE) {
-    media_github_.SaveMediaInfo(data, callback);
+    media_github_.SaveMediaInfo(data, std::move(callback));
     return;
   }
 }

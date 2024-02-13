@@ -6,8 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_TOOLBAR_BRAVE_VPN_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_VPN_MENU_MODEL_H_
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/models/simple_menu_model.h"
 
 class Browser;
@@ -39,7 +40,7 @@ class BraveVPNMenuModel : public ui::SimpleMenuModel,
 #if BUILDFLAG(IS_WIN)
   bool IsTrayIconEnabled() const;
 #endif  // BUILDFLAG(IS_WIN)
-  absl::optional<bool> tray_icon_enabled_for_testing_;
+  std::optional<bool> tray_icon_enabled_for_testing_;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
 };

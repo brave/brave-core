@@ -36,6 +36,10 @@ static_library("browser") {
     "asset_ratio_service.h",
     "bitcoin/bitcoin_block_tracker.cc",
     "bitcoin/bitcoin_block_tracker.h",
+    "bitcoin/bitcoin_knapsack_solver.cc",
+    "bitcoin/bitcoin_knapsack_solver.h",
+    "bitcoin/bitcoin_max_send_solver.cc",
+    "bitcoin/bitcoin_max_send_solver.h",
     "bitcoin/bitcoin_rpc.cc",
     "bitcoin/bitcoin_rpc.h",
     "bitcoin/bitcoin_serializer.cc",
@@ -208,8 +212,12 @@ static_library("browser") {
     "wallet_data_files_installer_delegate.h",
     "zcash/zcash_block_tracker.cc",
     "zcash/zcash_block_tracker.h",
+    "zcash/zcash_grpc_utils.cc",
+    "zcash/zcash_grpc_utils.h",
     "zcash/zcash_rpc.cc",
     "zcash/zcash_rpc.h",
+    "zcash/zcash_serializer.cc",
+    "zcash/zcash_serializer.h",
     "zcash/zcash_transaction.cc",
     "zcash/zcash_transaction.h",
     "zcash/zcash_tx_manager.cc",
@@ -220,6 +228,8 @@ static_library("browser") {
     "zcash/zcash_tx_state_manager.h",
     "zcash/zcash_wallet_service.cc",
     "zcash/zcash_wallet_service.h",
+    "zcash/zcash_wallet_service_tasks.cc",
+    "zcash/zcash_wallet_service_tasks.h",
   ]
   if (enable_ipfs_local_node) {
     sources += [
@@ -240,7 +250,6 @@ static_library("browser") {
     ":pref_names",
     ":transaction",
     ":utils",
-    ":zcash_proto",
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
@@ -257,6 +266,11 @@ static_library("browser") {
     "//brave/components/json/rs:rust_lib",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
+    "//brave/components/services/brave_wallet/public/cpp",
+    "//brave/components/services/brave_wallet/public/cpp/utils",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//brave/components/services/brave_wallet/public/proto:zcash_proto",
+    "//brave/third_party/argon2",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
@@ -477,10 +491,6 @@ generated_types("generated_swap_responses") {
     ":browser",
     "test:brave_wallet_unit_tests",
   ]
-}
-
-proto_library("zcash_proto") {
-  sources = [ "zcash/protos/zcash_grpc_data.proto" ]
 }
 
 config("sardine_config") {

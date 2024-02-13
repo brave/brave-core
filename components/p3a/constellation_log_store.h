@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_CONSTELLATION_LOG_STORE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -17,7 +18,6 @@
 #include "base/time/time.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "components/metrics/log_store.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 class PrefRegistrySimple;
@@ -55,10 +55,11 @@ class ConstellationLogStore : public metrics::LogStore {
   std::string staged_log_type() const;
   const std::string& staged_log_hash() const override;
   const std::string& staged_log_signature() const override;
-  absl::optional<uint64_t> staged_log_user_id() const override;
+  std::optional<uint64_t> staged_log_user_id() const override;
   void StageNextLog() override;
   void DiscardStagedLog(std::string_view reason = "") override;
   void MarkStagedLogAsSent() override;
+  const metrics::LogMetadata staged_log_metadata() const override;
 
   // |TrimAndPersistUnsentLogs| should not be used, since we persist everything
   // on the fly.

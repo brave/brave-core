@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -19,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -70,8 +70,8 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(from_account, absl::nullopt, true, true),
-       SolanaAccountMeta(to_account, absl::nullopt, false, true)},
+      {SolanaAccountMeta(from_account, std::nullopt, true, true),
+       SolanaAccountMeta(to_account, std::nullopt, false, true)},
       data);
   auto msg = SolanaMessage::CreateLegacyMessage(
       recent_blockhash, last_valid_block_height, from_account,
@@ -97,20 +97,6 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
       solana_tx_state_manager_->ValueToSolanaTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);
   EXPECT_EQ(*meta_from_value, meta);
-}
-
-TEST_F(SolanaTxStateManagerUnitTest, GetTxPrefPathPrefix) {
-  EXPECT_EQ("solana.mainnet", solana_tx_state_manager_->GetTxPrefPathPrefix(
-                                  mojom::kSolanaMainnet));
-  EXPECT_EQ("solana.testnet", solana_tx_state_manager_->GetTxPrefPathPrefix(
-                                  mojom::kSolanaTestnet));
-  EXPECT_EQ("solana.devnet", solana_tx_state_manager_->GetTxPrefPathPrefix(
-                                 mojom::kSolanaDevnet));
-  EXPECT_EQ(
-      "solana.http://localhost:8899/",
-      solana_tx_state_manager_->GetTxPrefPathPrefix(mojom::kLocalhostChainId));
-  EXPECT_EQ("solana",
-            solana_tx_state_manager_->GetTxPrefPathPrefix(absl::nullopt));
 }
 
 }  // namespace brave_wallet

@@ -8,6 +8,7 @@
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
+
 #include <iterator>
 
 #include "base/base64.h"
@@ -30,7 +31,7 @@ constexpr uint8_t kHKDFSalt[] = {
     246, 105, 20,  215, 5,   248, 154, 179, 191, 46,  17,  6,   72,
     210, 91,  10,  169, 145, 248, 22,  147, 117, 24,  105, 12};
 
-absl::optional<std::vector<uint8_t>> GetHKDF(
+std::optional<std::vector<uint8_t>> GetHKDF(
     const std::vector<uint8_t>& secret) {
   CHECK(!secret.empty());
 
@@ -41,7 +42,7 @@ absl::optional<std::vector<uint8_t>> GetHKDF(
   if (HKDF(derived_key.data(), kHKDFSeedLength, EVP_sha512(), secret.data(),
            secret.size(), kHKDFSalt, std::size(kHKDFSalt), kInfo,
            sizeof(kInfo) / sizeof(kInfo[0])) == 0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return derived_key;
@@ -71,15 +72,15 @@ std::vector<uint8_t> Sha256(const std::string& value) {
   return hash;
 }
 
-absl::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
+std::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
     const std::vector<uint8_t>& seed) {
   if (seed.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const absl::optional<std::vector<uint8_t>> derived_key = GetHKDF(seed);
+  const std::optional<std::vector<uint8_t>> derived_key = GetHKDF(seed);
   if (!derived_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return GenerateSignKeyPairFromSecret(*derived_key);
@@ -103,21 +104,21 @@ std::vector<uint8_t> GenerateRandomNonce() {
   return nonce;
 }
 
-absl::optional<std::string> Sign(const std::string& message,
-                                 const std::string& secret_key) {
-  const absl::optional<std::vector<uint8_t>> raw_secret_key =
+std::optional<std::string> Sign(const std::string& message,
+                                const std::string& secret_key) {
+  const std::optional<std::vector<uint8_t>> raw_secret_key =
       base::Base64Decode(secret_key);
   if (!raw_secret_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const std::vector<uint8_t> raw_message(message.begin(), message.end());
+  const std::vector<uint8_t> raw_message(message.cbegin(), message.cend());
 
   std::vector<uint8_t> raw_signature;
   raw_signature.resize(ED25519_SIGNATURE_LEN);
   if (ED25519_sign(raw_signature.data(), raw_message.data(), raw_message.size(),
                    raw_secret_key->data()) == 0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return base::Base64Encode(raw_signature);
@@ -126,19 +127,19 @@ absl::optional<std::string> Sign(const std::string& message,
 bool Verify(const std::string& message,
             const std::string& public_key,
             const std::string& signature) {
-  const absl::optional<std::vector<uint8_t>> raw_public_key =
+  const std::optional<std::vector<uint8_t>> raw_public_key =
       base::Base64Decode(public_key);
   if (!raw_public_key) {
     return false;
   }
 
-  const absl::optional<std::vector<uint8_t>> raw_signature =
+  const std::optional<std::vector<uint8_t>> raw_signature =
       base::Base64Decode(signature);
   if (!raw_signature) {
     return false;
   }
 
-  const std::vector<uint8_t> raw_message(message.begin(), message.end());
+  const std::vector<uint8_t> raw_message(message.cbegin(), message.cend());
 
   return ED25519_verify(raw_message.data(), raw_message.size(),
                         raw_signature->data(), raw_public_key->data()) != 0;

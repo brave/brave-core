@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <limits>
+#include <optional>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -16,7 +17,6 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet::eth_abi {
 namespace {
@@ -53,18 +53,18 @@ bool BytesToBool(Span32 data) {
   return value != 0;
 }
 
-absl::optional<size_t> BytesToSize(Span32 data) {
+std::optional<size_t> BytesToSize(Span32 data) {
   auto result = BytesToUint256(data);
   if (result > std::numeric_limits<size_t>::max()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return static_cast<size_t>(result);
 }
 
-absl::optional<Span32> ToSpan32(Span data) {
+std::optional<Span32> ToSpan32(Span data) {
   if (data.size() != kRowLength) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return Span32(data.data(), kRowLength);
@@ -85,7 +85,7 @@ Span ExtractRows(Span data, size_t row, size_t row_count) {
   return data.subspan(row * kRowLength, row_count * kRowLength);
 }
 
-absl::optional<Span32> ExtractRow(Span data, size_t row) {
+std::optional<Span32> ExtractRow(Span data, size_t row) {
   return ToSpan32(ExtractRows(data, row, 1));
 }
 
@@ -97,7 +97,7 @@ bool CheckPadding(Span data, size_t padded_data_size) {
                               [](uint8_t b) { return b == 0; });
 }
 
-absl::optional<Span32> ExtractHeadFromTuple(Span data, size_t tuple_pos) {
+std::optional<Span32> ExtractHeadFromTuple(Span data, size_t tuple_pos) {
   return ExtractRow(data, tuple_pos);
 }
 
@@ -117,7 +117,7 @@ std::pair<Span, Span> ExtractFunctionSelectorAndArgsFromCall(Span data) {
   return {data.subspan(0, 4), data.subspan(4)};
 }
 
-std::pair<absl::optional<size_t>, Span> ExtractArrayInfo(Span data) {
+std::pair<std::optional<size_t>, Span> ExtractArrayInfo(Span data) {
   auto array_size_row = ExtractRow(data, 0);
   if (!array_size_row) {
     return {};
@@ -145,15 +145,15 @@ EthAddress ExtractAddressFromTuple(Span data, size_t tuple_pos) {
   return ExtractAddress(*address_head);
 }
 
-absl::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded) {
+std::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded) {
   // uint256 size followed by padded bytes.
   auto bytes_len_row = ExtractRow(bytes_encoded, 0);
   if (!bytes_len_row) {
-    return absl::nullopt;
+    return std::nullopt;
   }
-  absl::optional<size_t> bytes_len = BytesToSize(*bytes_len_row);
+  std::optional<size_t> bytes_len = BytesToSize(*bytes_len_row);
   if (!bytes_len) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (*bytes_len == 0) {
     return std::vector<uint8_t>();
@@ -162,24 +162,24 @@ absl::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded) {
   Span padded_bytes_data =
       ExtractRows(bytes_encoded, 1, PaddedRowCount(*bytes_len));
   if (*bytes_len > padded_bytes_data.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!CheckPadding(padded_bytes_data, *bytes_len)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   Span bytes_result = padded_bytes_data.subspan(0, *bytes_len);
   return std::vector<uint8_t>{bytes_result.begin(), bytes_result.end()};
 }
 
-absl::optional<std::string> ExtractString(Span string_encoded) {
+std::optional<std::string> ExtractString(Span string_encoded) {
   // uint256 size followed by padded string bytes.
   auto string_len_row = ExtractRow(string_encoded, 0);
   if (!string_len_row) {
-    return absl::nullopt;
+    return std::nullopt;
   }
-  absl::optional<size_t> string_len = BytesToSize(*string_len_row);
+  std::optional<size_t> string_len = BytesToSize(*string_len_row);
   if (!string_len) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (*string_len == 0) {
     return std::string();
@@ -188,25 +188,25 @@ absl::optional<std::string> ExtractString(Span string_encoded) {
   Span padded_string_data =
       ExtractRows(string_encoded, 1, PaddedRowCount(*string_len));
   if (*string_len > padded_string_data.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!CheckPadding(padded_string_data, *string_len)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   Span string_result = padded_string_data.subspan(0, *string_len);
   return std::string{string_result.begin(), string_result.end()};
 }
 
-absl::optional<std::vector<std::string>> ExtractStringArray(Span string_array) {
+std::optional<std::vector<std::string>> ExtractStringArray(Span string_array) {
   // Array is stored as size row and tuple of that size.
   auto [tuple_size, tuple_header] = ExtractArrayInfo(string_array);
   if (!tuple_size) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   // Row count in array is reasonable upper limit.
   if (*tuple_size > PaddedRowCount(string_array.size())) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (*tuple_size == 0) {
     return std::vector<std::string>();
@@ -218,65 +218,65 @@ absl::optional<std::vector<std::string>> ExtractStringArray(Span string_array) {
     // Each tuple head row contains offset to encoded string.
     auto tuple_element_head = ExtractHeadFromTuple(tuple_header, i);
     if (!tuple_element_head) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     auto tuple_element_offset = BytesToSize(*tuple_element_head);
     if (!tuple_element_offset || *tuple_element_offset > tuple_header.size()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     auto string = ExtractString(tuple_header.subspan(*tuple_element_offset));
     if (!string) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     result.emplace_back(std::move(*string));
   }
   return result;
 }
 
-absl::optional<std::pair<bool, std::vector<uint8_t>>> ExtractBoolAndBytes(
+std::optional<std::pair<bool, std::vector<uint8_t>>> ExtractBoolAndBytes(
     Span data) {
   auto bool_row = ExtractRow(data, 0);
   if (!bool_row) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto bytes = ExtractBytesFromTuple(data, 1);
   if (!bytes) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::make_pair(BytesToBool(*bool_row), std::move(*bytes));
 }
 
-absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
+std::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
 ExtractBoolBytesArrayFromTuple(Span data, size_t tuple_pos) {
   // Head row contains offset to (bool, bytes)[] start.
   auto array_head = ExtractHeadFromTuple(data, tuple_pos);
   if (!array_head) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  absl::optional<size_t> array_offset = BytesToSize(*array_head);
+  std::optional<size_t> array_offset = BytesToSize(*array_head);
   if (!array_offset || *array_offset > data.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   Span array_data = data.subspan(*array_offset);
   return ExtractBoolBytesArray(array_data);
 }
 
-absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
+std::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
 ExtractBoolBytesArray(Span tuple_array) {
   // Array is stored as size row and tuple of that size.
   auto [tuple_size, tuple_header] = ExtractArrayInfo(tuple_array);
   if (!tuple_size) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   // Row count in array is reasonable upper limit.
   if (*tuple_size > PaddedRowCount(tuple_array.size())) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (*tuple_size == 0) {
     return std::vector<std::pair<bool, std::vector<uint8_t>>>();
@@ -288,18 +288,18 @@ ExtractBoolBytesArray(Span tuple_array) {
     // Each tuple head row contains offset to encoded tuple.
     auto tuple_element_head = ExtractHeadFromTuple(tuple_header, i);
     if (!tuple_element_head) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     auto tuple_element_offset = BytesToSize(*tuple_element_head);
     if (!tuple_element_offset || *tuple_element_offset > tuple_header.size()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     auto bool_bytes =
         ExtractBoolAndBytes(tuple_header.subspan(*tuple_element_offset));
     if (!bool_bytes) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     result.emplace_back(std::move(*bool_bytes));
   }
@@ -307,73 +307,72 @@ ExtractBoolBytesArray(Span tuple_array) {
   return result;
 }
 
-absl::optional<std::string> ExtractStringFromTuple(Span data,
-                                                   size_t tuple_pos) {
+std::optional<std::string> ExtractStringFromTuple(Span data, size_t tuple_pos) {
   // Head contains offset to string start.
   auto head = ExtractHeadFromTuple(data, tuple_pos);
   if (!head) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  absl::optional<size_t> offset = BytesToSize(*head);
+  std::optional<size_t> offset = BytesToSize(*head);
   if (!offset || *offset > data.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   Span string = data.subspan(*offset);
   return ExtractString(string);
 }
 
-absl::optional<std::vector<std::string>> ExtractStringArrayFromTuple(
+std::optional<std::vector<std::string>> ExtractStringArrayFromTuple(
     Span data,
     size_t tuple_pos) {
   // Head contains offset to string[] start.
   auto head = ExtractHeadFromTuple(data, tuple_pos);
   if (!head) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  absl::optional<size_t> offset = BytesToSize(*head);
+  std::optional<size_t> offset = BytesToSize(*head);
   if (!offset || *offset > data.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   Span string_array = data.subspan(*offset);
   return ExtractStringArray(string_array);
 }
 
-absl::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
-                                                           size_t tuple_pos) {
+std::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
+                                                          size_t tuple_pos) {
   // Head contains offset to bytes start.
   auto head = ExtractHeadFromTuple(data, tuple_pos);
   if (!head) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  absl::optional<size_t> offset = BytesToSize(*head);
+  std::optional<size_t> offset = BytesToSize(*head);
   if (!offset || *offset > data.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   Span bytes = data.subspan(*offset);
   return ExtractBytes(bytes);
 }
 
-absl::optional<std::vector<uint8_t>>
+std::optional<std::vector<uint8_t>>
 ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos) {
   if (fixed_size == 0 || fixed_size > 32) {
     NOTREACHED();
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Head contains bytes itself.
   auto head = ExtractHeadFromTuple(data, tuple_pos);
   if (!head) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!CheckPadding(head->subspan(0), fixed_size)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::vector<uint8_t>{head->begin(), head->begin() + fixed_size};

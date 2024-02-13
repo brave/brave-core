@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "services/network/cookie_settings.h"
+#include <optional>
 
 #include "net/base/features.h"
-#include "url/origin.h"
-
+#include "services/network/cookie_settings.h"
 #include "src/services/network/cookie_settings.cc"
+#include "url/origin.h"
 
 namespace network {
 
@@ -16,7 +16,8 @@ bool CookieSettings::IsEphemeralCookieAccessible(
     const net::CanonicalCookie& cookie,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
+    const std::optional<url::Origin>& top_frame_origin,
+    const net::FirstPartySetMetadata& first_party_set_metadata,
     net::CookieSettingOverrides overrides,
     net::CookieInclusionStatus* cookie_inclusion_status) const {
   // Upstream now do single cookie-specific checks in some places to determine
@@ -30,14 +31,15 @@ bool CookieSettings::IsEphemeralCookieAccessible(
   }
 
   return IsCookieAccessible(cookie, url, site_for_cookies, top_frame_origin,
-                            overrides, cookie_inclusion_status);
+                            first_party_set_metadata, overrides,
+                            cookie_inclusion_status);
 }
 
 net::NetworkDelegate::PrivacySetting
 CookieSettings::IsEphemeralPrivacyModeEnabled(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
+    const std::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides) const {
   if (IsEphemeralCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
                                      overrides)) {
@@ -56,7 +58,7 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
     net::CookieSettingOverrides overrides,
     net::CookieAccessResultList& maybe_included_cookies,
     net::CookieAccessResultList& excluded_cookies) const {
-  absl::optional<url::Origin> top_frame_origin_opt;
+  std::optional<url::Origin> top_frame_origin_opt;
   if (top_frame_origin)
     top_frame_origin_opt = *top_frame_origin;
 

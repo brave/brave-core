@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/>件</translation>
 <translation id="1970435562892104727">これはTorを備えたプライベートウィンドウです</translation>
 <translation id="1037341607922068025">Torを備えたプライベートウィンドウを開く</translation>
-<translation id="1725356094208762656">Torで開く</translation>
-<translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
-<translation id="7473245612074035141">セットアップ開始</translation>
 <translation id="496896260395129787">このBrave同期アカウントは、同期先のデバイスから削除されました。同期を無効にする必要がない場合は、<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>アカウントを作成し直してください</translation>
 <translation id="6965382102122355670">はい</translation>
@@ -82,6 +79,7 @@
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
 <translation id="3229091547987707389">ディレクトリをインポートおよびシェア</translation>
+<translation id="2545072023356206691">2023年12月1日から、Brave Devチャンネルはブラウザアップデートを受け取らなくなります。Nightly、Beta、またはRelease版のBraveに移行をお勧めします。</translation>
 <translation id="474217410105706308">タブをミュート</translation>
 <translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
 <translation id="5029193871181468990">Brave Rewardsアイコンを非表示にする</translation>
@@ -189,6 +187,10 @@
 <translation id="7109885938715976444">今回のみ</translation>
 <translation id="7473891865547856676">スキップ</translation>
 <translation id="2722425322672922644">これによるプライバシーへの影響について確認</translation>
+<translation id="5551268135482191097">IPFSのURLの読み込みにエラーが発生しました。元のURLにリダイレクトしますか？</translation>
+<translation id="4756627014339714615">リダイレクト</translation>
+<translation id="1338274252864046652">ブラウザ起動時に常にIPFSノードを起動しますか？</translation>
+<translation id="3435896845095436175">有効にする</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認しますか？</translation>
 <translation id="8053093028263274061">申し訳ございません、利用可能な保存されたバージョンはありません。</translation>
@@ -289,6 +291,19 @@
 <translation id="5181358966317519720">プレイリストから削除</translation>
 <translation id="2377705456080309463">元のページを表示</translation>
 <translation id="158894735649719362">音があると楽しさが広がります。お気に入りのメディアを追加して、いつでもどこでも再生。オフラインのときでも視聴を楽しみましょう。</translation>
+<translation id="8422349592890097194">新しいフォルダを作成</translation>
+<translation id="2818704116581303039">プレイリスト設定を開く</translation>
+<translation id="6790428901817661496">再生</translation>
+<translation id="1178581264944972037">一時停止</translation>
+<translation id="4477350412780666475">次のトラック</translation>
+<translation id="3962859241508114581">前のトラック</translation>
+<translation id="7544853251252956727">シャッフル</translation>
+<translation id="4330722796577425585">巻き戻し</translation>
+<translation id="7481312909269577407">進む</translation>
+<translation id="2800828306627475693">繰り返しをオフ</translation>
+<translation id="1748244367114657861">1回繰り返し</translation>
+<translation id="6421906998825794164">すべてを繰り返し</translation>
+<translation id="1727684853006449697">Braveプレーヤー</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="4472575034687746823">利用を開始</translation>
@@ -402,10 +417,6 @@
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="1051600834033686945">Braveリワードの設定を開く</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
-<translation id="7483857210736407752">サイト上にチップボタンを表示する</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
@@ -574,7 +585,9 @@
 <translation id="6936835573742749135">CAPTCHAを要求できません。後で再試行してください。</translation>
 <translation id="2653659639078652383">送信</translation>
 <translation id="1369311132025451972">.onionサイトに自動的にリダイレクトします</translation>
-<translation id="1658670175365815312">Braveは、利用可能な場合は.onionバージョンのウェブサイトに切り替え、自動的にTorウィンドウですべての.onionドメインを開きます。</translation>
+<translation id="6214393847480015759">Torウィンドウでは、Braveは利用可能な場合、自動的にウェブサイトの.onionバージョンに切り替えます。</translation>
+<translation id="1294350054292274934">Torウィンドウで.onionアドレスのみを解決</translation>
+<translation id="1258903596167452221">OnionサービスはTorウィンドウの外では利用できません。</translation>
 <translation id="2896916411183256228">WebTorrentを有効にして、直接Torrentファイルやマグネットリンクを表示</translation>
 <translation id="5249433283143453448">Widevineデジタル著作権管理 (DRM) コンポーネントを使用して、保護されたストリーミング動画と他のコンテンツをブラウザで表示しましょう。</translation>
 <translation id="1314131187310290315">Manifest V2拡張機能</translation>
@@ -623,6 +636,7 @@
 <translation id="4226543734057230801">Ethereumネットワーク</translation>
 <translation id="3504157706952484145">Filecoinネットワーク</translation>
 <translation id="1561541094377237745">Solanaネットワーク</translation>
+<translation id="7141438739990875547">ビットコインネットワーク</translation>
 <translation id="3159419679550543837">テストネットワークを表示</translation>
 <translation id="3215569562674795548">編集または新しいネットワークを追加</translation>
 <translation id="4418993400653250511">チェーンID</translation>
@@ -662,6 +676,7 @@
 <translation id="8425213833346101688">変更</translation>
 <translation id="585868419599255817">IPFSパブリックゲートウェイのフォールバック</translation>
 <translation id="2618080188892567155">BraveのローカルIPFSノードに到達できない場合は、自動的にパブリックIPFSゲートウェイにフォールバックします。</translation>
+<translation id="8956391206920485238">ブラウザ起動時に常にIPFSノードを起動しますか？</translation>
 <translation id="6789104345873307368">IPFSネットワークリソースへのリクエストを、設定されたゲートウェイに自動的にリダイレクトします。</translation>
 <translation id="4138306018048329894">サードパーティのIPFSゲートウェイまたはDNSLINKリソースでホストされているIPFSリソースへのリクエストは、選択したローカルまたはリモートゲートウェイを介してルーティングされます。
 注: ローカルノードを選択した場合、リソースはお使いのコンピュータから直接要求され、しばらくの間はキャッシュされたデータがIPFSネットワークに提供される可能性があります。</translation>
@@ -713,6 +728,9 @@ Leoの利用をオプトインする必要があります。チャット履歴�
 Leoとの会話がすべて削除されます。この操作を元に戻すことはできません。</translation>
 <translation id="8157373421434119674">データ＆チャット履歴</translation>
 <translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
+<translation id="349846214503465941">プレイリストを有効にする</translation>
+<translation id="7903608716704052878">オフラインでの閲覧用に自動でファイルを追加</translation>
+<translation id="4193768184502613558">このオプションは、メディアファイルを自動的にキャッシュし、インターネット接続がなくても再生できるようにします。</translation>
 <translation id="6624718837376802990">アバター「エッジ・リワード」</translation>
 <translation id="6617313057407561765">アバター「エッジ・ブレイブ」</translation>
 <translation id="6754445808455578019">アバター「エッジ・オーシャン」</translation>

@@ -10,11 +10,6 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
-#include "brave/components/brave_rewards/core/sku/sku_util.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace brave_rewards::internal {
 namespace sku {
@@ -27,41 +22,41 @@ SKUOrder::~SKUOrder() = default;
 void SKUOrder::Create(const std::vector<mojom::SKUOrderItem>& items,
                       SKUOrderCallback callback) {
   if (items.empty()) {
-    BLOG(0, "List is empty");
-    callback(mojom::Result::FAILED, "");
+    engine_->LogError(FROM_HERE) << "List is empty";
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  auto url_callback = std::bind(&SKUOrder::OnCreate, this, _1, _2, callback);
-
-  payment_server_.post_order().Request(items, url_callback);
+  payment_server_.post_order().Request(
+      items, base::BindOnce(&SKUOrder::OnCreate, weak_factory_.GetWeakPtr(),
+                            std::move(callback)));
 }
 
-void SKUOrder::OnCreate(const mojom::Result result,
-                        mojom::SKUOrderPtr order,
-                        SKUOrderCallback callback) {
+void SKUOrder::OnCreate(SKUOrderCallback callback,
+                        mojom::Result result,
+                        mojom::SKUOrderPtr order) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order response could not be parsed");
-    callback(mojom::Result::FAILED, "");
+    engine_->LogError(FROM_HERE) << "Order response could not be parsed";
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  auto save_callback =
-      std::bind(&SKUOrder::OnCreateSave, this, _1, order->order_id, callback);
-
-  engine_->database()->SaveSKUOrder(order->Clone(), save_callback);
+  engine_->database()->SaveSKUOrder(
+      order->Clone(),
+      base::BindOnce(&SKUOrder::OnCreateSave, weak_factory_.GetWeakPtr(),
+                     order->order_id, std::move(callback)));
 }
 
-void SKUOrder::OnCreateSave(const mojom::Result result,
-                            const std::string& order_id,
-                            SKUOrderCallback callback) {
+void SKUOrder::OnCreateSave(const std::string& order_id,
+                            SKUOrderCallback callback,
+                            mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order couldn't be saved");
-    callback(result, "");
+    engine_->LogError(FROM_HERE) << "Order couldn't be saved";
+    std::move(callback).Run(result, "");
     return;
   }
 
-  callback(mojom::Result::OK, order_id);
+  std::move(callback).Run(mojom::Result::OK, order_id);
 }
 
 }  // namespace sku

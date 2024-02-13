@@ -18,7 +18,7 @@ import android.os.Bundle;
 import com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider.QuickActionSearchWidgetProviderDino;
 import org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider.QuickActionSearchWidgetProviderSearch;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
@@ -69,12 +69,12 @@ public class BraveSearchWidgetUtils {
 
         if (hasBookmarkThumbnailWidget) return false;
 
-        return SharedPreferencesManager.getInstance().readBoolean(
-                SHOW_WIDGET, isRequestPinAppWidgetSupported());
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(SHOW_WIDGET, isRequestPinAppWidgetSupported());
     }
 
     public static void setShouldShowWidgetPromo(boolean shouldShow) {
-        SharedPreferencesManager.getInstance().writeBoolean(SHOW_WIDGET, shouldShow);
+        ChromeSharedPreferences.getInstance().writeBoolean(SHOW_WIDGET, shouldShow);
     }
 
     public static boolean isRequestPinAppWidgetSupported() {

@@ -1,7 +1,7 @@
 {
   "appName": {
     "message": "Braveの拡張機能",
-    "description": "The name of the the extension."
+    "description": "The name of the extension."
   },
   "shields": {
     "message": "Shieldsはこのサイトに対して",

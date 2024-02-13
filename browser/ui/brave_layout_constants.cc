@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/brave_layout_constants.h"
 
+#include <optional>
+
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -13,7 +15,7 @@
 using tabs::features::HorizontalTabsUpdateEnabled;
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
-absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
+std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   const bool touch = ui::TouchUiController::Get()->touch_ui();
   // const bool hybrid = mode == ui::MaterialDesignController::MATERIAL_HYBRID;
   // const bool touch_optimized_material =
@@ -29,7 +31,7 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     }
     case TABSTRIP_TOOLBAR_OVERLAP: {
       if (!HorizontalTabsUpdateEnabled()) {
-        return absl::nullopt;
+        return std::nullopt;
       }
       return 0;
     }
@@ -37,9 +39,14 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return 24;
     }
     case LOCATION_BAR_HEIGHT:
-      return touch ? 36 : 34;
+      // Consider adjust below element padding also when this height is changed.
+      return 32;
+    case LOCATION_BAR_TRAILING_ICON_SIZE:
+      return 18;
+    case LOCATION_BAR_ELEMENT_PADDING:
+      return 2;
     default:
       break;
   }
-  return absl::nullopt;
+  return std::nullopt;
 }

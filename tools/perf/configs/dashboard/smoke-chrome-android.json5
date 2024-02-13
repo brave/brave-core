@@ -1,0 +1,40 @@
+{
+  "configurations": [{
+    "dashboard-bot-name": "test-agent-android",
+    "browser-type": "chromium",
+    "profile": "chrome-typical-android",
+    "extra-browser-args": [],
+    "extra-benchmark-args": [],
+  }],
+  "benchmarks": [
+    {
+      "name": "system_health.memory_mobile",
+      "pageset-repeat": 1,
+      "stories": [
+        "load:site:example:2023",
+        "load:site:brave_search:2023",
+        "load:site:wikipedia:2023",
+        "load:site:cnn:2023",
+        "load:site:bbc:2023",
+      ]
+    },
+    {
+      "name": "system_health.common_mobile",
+      "pageset-repeat": 1,
+      "stories": [
+        "load:site:example:2023",
+        "load:site:brave_search:2023",
+        "load:site:wikipedia:2023",
+        "load:site:cnn:2023",
+        "load:site:bbc:2023",
+      ]
+    },
+    {
+      "name": "speedometer2",
+      "pageset-repeat": 1
+    },
+    {
+      "name": "apk_size",
+    },
+  ]
+}

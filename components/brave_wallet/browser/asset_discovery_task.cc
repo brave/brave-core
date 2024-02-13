@@ -6,10 +6,12 @@
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 
 #include <map>
+#include <optional>
 #include <string_view>
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/environment.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -183,8 +185,8 @@ void AssetDiscoveryTask::MergeDiscoveredAnkrTokens(
 
   for (const auto& discovered_assets_result : discovered_assets_results) {
     for (const auto& balance : discovered_assets_result) {
-      if (!BraveWalletService::AddUserAsset(balance->asset.Clone(), true,
-                                            prefs_)) {
+      DCHECK(balance->asset->visible);
+      if (!BraveWalletService::AddUserAsset(balance->asset.Clone(), prefs_)) {
         continue;
       }
       discovered_tokens.push_back(balance->asset.Clone());
@@ -330,8 +332,12 @@ void AssetDiscoveryTask::MergeDiscoveredERC20s(
         seen_contract_addresses[chain_id].insert(contract_address);
         auto token = std::move(
             chain_id_to_contract_address_to_token[chain_id][contract_address]);
-        if (token &&
-            BraveWalletService::AddUserAsset(token.Clone(), true, prefs_)) {
+        if (!token) {
+          continue;
+        }
+
+        DCHECK(token->visible);
+        if (BraveWalletService::AddUserAsset(token.Clone(), prefs_)) {
           discovered_tokens.push_back(std::move(token));
         }
       }
@@ -347,7 +353,7 @@ void AssetDiscoveryTask::DiscoverSPLTokensFromRegistry(
   // Convert each account address to SolanaAddress and check validity
   std::vector<SolanaAddress> solana_addresses;
   for (const auto& address : account_addresses) {
-    absl::optional<SolanaAddress> solana_address =
+    std::optional<SolanaAddress> solana_address =
         SolanaAddress::FromBase58(address);
     if (!solana_address.has_value()) {
       continue;
@@ -391,11 +397,11 @@ void AssetDiscoveryTask::OnGetSolanaTokenAccountsByOwner(
   std::vector<SolanaAddress> discovered_mint_addresses;
   for (const auto& token_account : token_accounts) {
     // Decode Base64
-    const absl::optional<std::vector<uint8_t>> data =
+    const std::optional<std::vector<uint8_t>> data =
         base::Base64Decode(token_account.data);
     if (data.has_value()) {
       // Decode the address
-      const absl::optional<SolanaAddress> mint_address =
+      const std::optional<SolanaAddress> mint_address =
           DecodeMintAddress(data.value());
       if (mint_address.has_value()) {
         // Add the contract address to the list
@@ -446,7 +452,8 @@ void AssetDiscoveryTask::OnGetSolanaTokenRegistry(
   std::vector<mojom::BlockchainTokenPtr> discovered_tokens;
   for (const auto& token : sol_token_registry) {
     if (discovered_mint_addresses.contains(token->contract_address)) {
-      if (!BraveWalletService::AddUserAsset(token.Clone(), true, prefs_)) {
+      DCHECK(token->visible);
+      if (!BraveWalletService::AddUserAsset(token.Clone(), prefs_)) {
         continue;
       }
       discovered_tokens.push_back(token.Clone());
@@ -507,7 +514,8 @@ void AssetDiscoveryTask::MergeDiscoveredNFTs(
       seen_nft.insert(nft.Clone());
 
       // Add the NFT to the user's assets
-      if (BraveWalletService::AddUserAsset(nft.Clone(), true, prefs_)) {
+      DCHECK(nft->visible);
+      if (BraveWalletService::AddUserAsset(nft.Clone(), prefs_)) {
         discovered_nfts.push_back(nft.Clone());
       }
     }
@@ -520,10 +528,10 @@ void AssetDiscoveryTask::MergeDiscoveredNFTs(
 // Parses the Account object for the `mint` field which is a 32 byte public key.
 // See
 // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L86-L105
-absl::optional<SolanaAddress> AssetDiscoveryTask::DecodeMintAddress(
+std::optional<SolanaAddress> AssetDiscoveryTask::DecodeMintAddress(
     const std::vector<uint8_t>& data) {
   if (data.size() < 32) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> pub_key_bytes(data.begin(), data.begin() + 32);

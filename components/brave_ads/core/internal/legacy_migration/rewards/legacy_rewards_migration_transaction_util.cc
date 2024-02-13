@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_util.h"
 
+#include <cstddef>
+
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_util.h"
@@ -66,7 +68,7 @@ TransactionList GetAllUnreconciledTransactions(
                                               from_time, to_time);
 
   for (auto& transaction : unreconciled_transactions) {
-    // |created_at|, |value| and |confirmation_type| are set from legacy state
+    // `created_at`, `value` and `confirmation_type` are set from legacy state
     transaction.id = base::Uuid::GenerateRandomV4().AsLowercaseString();
     transaction.creative_instance_id = kMigrationUnreconciledTransactionId;
     transaction.ad_type = AdType::kNotificationAd;
@@ -75,16 +77,16 @@ TransactionList GetAllUnreconciledTransactions(
   return unreconciled_transactions;
 }
 
-absl::optional<TransactionList>
+std::optional<TransactionList>
 BuildTransactionsForReconciledTransactionsThisMonth(
     const PaymentList& payments) {
-  const absl::optional<PaymentInfo> payment = GetPaymentForThisMonth(payments);
+  const std::optional<PaymentInfo> payment = GetPaymentForThisMonth(payments);
   if (!payment) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (payment->balance == 0.0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const base::Time time = GetLocalTimeAtBeginningOfThisMonth();
@@ -94,7 +96,7 @@ BuildTransactionsForReconciledTransactionsThisMonth(
   // Add a transaction with the payment balance for this month as the value
   reconciled_transactions.push_back(BuildTransaction(time, payment->balance));
 
-  // Add |transaction_count - 1| transactions with a value of 0.0 to migrate ads
+  // Add `transaction_count` - 1 transactions with a value of 0.0 to migrate ads
   // received this month
   for (int i = 0; i < payment->transaction_count - 1; ++i) {
     reconciled_transactions.push_back(BuildTransaction(time,
@@ -104,12 +106,12 @@ BuildTransactionsForReconciledTransactionsThisMonth(
   return reconciled_transactions;
 }
 
-absl::optional<TransactionInfo>
+std::optional<TransactionInfo>
 BuildTransactionForReconciledTransactionsLastMonth(
     const PaymentList& payments) {
-  const absl::optional<PaymentInfo> payment = GetPaymentForLastMonth(payments);
+  const std::optional<PaymentInfo> payment = GetPaymentForLastMonth(payments);
   if (!payment || payment->balance == 0.0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const base::Time time = GetLocalTimeAtBeginningOfLastMonth();

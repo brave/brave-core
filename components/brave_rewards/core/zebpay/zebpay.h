@@ -25,6 +25,8 @@ class ZebPay final : public wallet_provider::WalletProvider {
 
   const char* WalletType() const override;
 
+  void AssignWalletLinks(mojom::ExternalWallet& external_wallet) override;
+
   void FetchBalance(
       base::OnceCallback<void(mojom::Result, double)> callback) override;
 

@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/reward_confirmation_payload_util.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -22,12 +22,13 @@ constexpr char kPublicKeyKey[] = "publicKey";
 
 base::Value::Dict BuildRewardConfirmationPayload(const RewardInfo& reward) {
   base::Value::List list;
-  const absl::optional<std::string> blinded_token_base64 =
+
+  const std::optional<std::string> blinded_token_base64 =
       reward.blinded_token.EncodeBase64();
   CHECK(blinded_token_base64);
   list.Append(*blinded_token_base64);
 
-  const absl::optional<std::string> public_key_base64 =
+  const std::optional<std::string> public_key_base64 =
       reward.public_key.EncodeBase64();
   CHECK(public_key_base64);
 

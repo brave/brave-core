@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_CONSTRAINT_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_CONSTRAINT_UTIL_H_
 
+#include <cstddef>
 #include <vector>
 
 namespace base {
@@ -15,6 +16,9 @@ class TimeDelta;
 
 namespace brave_ads {
 
+// Check if the `history` of time points respects a certain `time_constraint`
+// and a `cap` on the number of elements. Assumes that `history` is in
+// chronological order.
 bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
     base::TimeDelta time_constraint,

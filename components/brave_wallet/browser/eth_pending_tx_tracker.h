@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_PENDING_TX_TRACKER_H_
 
 #include <map>
+#include <optional>
 #include <set>
 #include <string>
 
@@ -33,7 +34,7 @@ class EthPendingTxTracker {
   EthPendingTxTracker(const EthPendingTxTracker&) = delete;
   EthPendingTxTracker operator=(const EthPendingTxTracker&) = delete;
 
-  bool UpdatePendingTransactions(const absl::optional<std::string>& chain_id,
+  bool UpdatePendingTransactions(const std::optional<std::string>& chain_id,
                                  std::set<std::string>* pending_chain_ids);
   void Reset();
 
@@ -42,8 +43,7 @@ class EthPendingTxTracker {
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
 
-  void OnGetTxReceipt(const std::string& chain_id,
-                      std::string id,
+  void OnGetTxReceipt(const std::string& meta_id,
                       TransactionReceipt receipt,
                       mojom::ProviderError error,
                       const std::string& error_message);

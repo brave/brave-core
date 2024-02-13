@@ -21,32 +21,35 @@ import {
   mockTransactionInfo //
 } from '../../../stories/mock-data/mock-transaction-info'
 import { mockGoerli } from '../../../stories/mock-data/mock-networks'
+import { PanelWrapper } from '../../../panel/style'
 
 export const _EditGas = () => {
   return (
     <WalletPanelStory>
-      <EditGas
-        onCancel={function (): void {
-          alert('onCancel')
-        }}
-        transactionInfo={mockTransactionInfo}
-        selectedNetwork={mockGoerli}
-        baseFeePerGas={'1'}
-        suggestedMaxPriorityFeeChoices={[]}
-        suggestedSliderStep={''}
-        maxPriorityPanel={MaxPriorityPanels.setCustom}
-        updateUnapprovedTransactionGasFields={function (
-          payload: UpdateUnapprovedTransactionGasFieldsType
-        ): void {
-          alert(JSON.stringify(payload, undefined, 2))
-        }}
-        setSuggestedSliderStep={function (value: string): void {
-          alert(value)
-        }}
-        setMaxPriorityPanel={function (value: MaxPriorityPanels): void {
-          alert(value)
-        }}
-      />
+      <PanelWrapper>
+        <EditGas
+          onCancel={function (): void {
+            alert('onCancel')
+          }}
+          transactionInfo={mockTransactionInfo}
+          selectedNetwork={mockGoerli}
+          baseFeePerGas={'1'}
+          suggestedMaxPriorityFeeChoices={[]}
+          suggestedSliderStep={''}
+          maxPriorityPanel={MaxPriorityPanels.setCustom}
+          updateUnapprovedTransactionGasFields={function (
+            payload: UpdateUnapprovedTransactionGasFieldsType
+          ): void {
+            alert(JSON.stringify(payload, undefined, 2))
+          }}
+          setSuggestedSliderStep={function (value: string): void {
+            alert(value)
+          }}
+          setMaxPriorityPanel={function (value: MaxPriorityPanels): void {
+            alert(value)
+          }}
+        />
+      </PanelWrapper>
     </WalletPanelStory>
   )
 }

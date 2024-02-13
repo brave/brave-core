@@ -8,23 +8,24 @@
 #include <windows.h>
 
 #include <memory>
+#include <optional>
 
 namespace brave_l10n {
 
-absl::optional<std::string> MaybeGetDefaultLocaleString() {
+std::optional<std::string> MaybeGetDefaultLocaleString() {
   const int buffer_size =
       ::GetLocaleInfoEx(/*lpLocaleName*/ nullptr,
                         /*LCType*/ LOCALE_SNAME, /*lpLCData*/ nullptr,
                         /*cchData*/ 0);
   if (buffer_size == 0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::unique_ptr<wchar_t[]> locale_sname(new wchar_t[buffer_size]);
   if (::GetLocaleInfoEx(/*lpLocaleName*/ nullptr, /*LCType*/ LOCALE_SNAME,
                         /*lpLCData*/ locale_sname.get(),
                         /*cchData*/ buffer_size) == 0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::unique_ptr<char[]> default_locale(new char[buffer_size]);

@@ -16,7 +16,7 @@ class NotificationObserver {
   virtual void OnShow() {}
 
   // Called when the notification is closed. If closed by a user explicitly
-  // then |by_user| should be true, otherwise false
+  // then `by_user` should be `true`, otherwise `false`
   virtual void OnClose(const bool by_user) {}
 
   // Called when the notification is clicked

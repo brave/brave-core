@@ -191,7 +191,7 @@ void BraveImportDataHandler::DidStopLoading() {
   auto* web_contents = web_ui()->GetWebContents();
   TabModalConfirmDialog::Create(
       std::make_unique<FullDiskAccessConfirmDialogDelegate>(
-          web_contents, chrome::FindBrowserWithWebContents(web_contents)),
+          web_contents, chrome::FindBrowserWithTab(web_contents)),
       web_contents);
 }
 #endif

@@ -6,6 +6,7 @@
 #include "brave/utility/importer/chrome_importer.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -24,15 +25,14 @@
 #include "chrome/common/importer/importer_url_row.h"
 #include "chrome/utility/importer/favicon_reencode.h"
 #include "components/os_crypt/sync/os_crypt.h"
-#include "components/password_manager/core/browser/login_database.h"
 #include "components/password_manager/core/browser/password_form.h"
+#include "components/password_manager/core/browser/password_store/login_database.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
 #include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
@@ -85,7 +85,7 @@ bool SetEncryptionKeyForPasswordImporting(
     const base::FilePath& local_state_path) {
   std::string local_state_content;
   base::ReadFileToString(local_state_path, &local_state_content);
-  absl::optional<base::Value> local_state =
+  std::optional<base::Value> local_state =
       base::JSONReader::Read(local_state_content);
   if (!local_state || !local_state->is_dict()) {
     return false;
@@ -261,8 +261,8 @@ void ChromeImporter::ImportHistory() {
 
     ImporterURLRow row(url);
     row.title = s.ColumnString16(1);
-    row.last_visit =
-        base::Time::FromDoubleT(chromeTimeToDouble((s.ColumnInt64(2))));
+    row.last_visit = base::Time::FromSecondsSinceUnixEpoch(
+        chromeTimeToDouble((s.ColumnInt64(2))));
     row.hidden = false;
     row.typed_count = s.ColumnInt(3);
     row.visit_count = s.ColumnInt(4);
@@ -284,7 +284,7 @@ void ChromeImporter::ImportBookmarks() {
 
   base::ReadFileToString(copy_bookmark_file.copied_file_path(),
                          &bookmarks_content);
-  absl::optional<base::Value> bookmarks_json =
+  std::optional<base::Value> bookmarks_json =
       base::JSONReader::Read(bookmarks_content);
   if (!bookmarks_json)
     return;
@@ -423,7 +423,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
           entry.url = GURL();
           entry.path = parent_path;
           entry.title = name;
-          entry.creation_time = base::Time::FromDoubleT(
+          entry.creation_time = base::Time::FromSecondsSinceUnixEpoch(
               chromeTimeToDouble(std::stoll(*date_added)));
           bookmarks->push_back(entry);
         }
@@ -437,7 +437,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
         entry.url = GURL(*url);
         entry.path = parent_path;
         entry.title = name;
-        entry.creation_time = base::Time::FromDoubleT(
+        entry.creation_time = base::Time::FromSecondsSinceUnixEpoch(
             chromeTimeToDouble(std::stoll(*date_added)));
         bookmarks->push_back(entry);
       }

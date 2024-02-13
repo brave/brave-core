@@ -7,15 +7,12 @@
 
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -36,11 +33,7 @@ base::Value::Dict BuildUrlResponseBody() {
 class BraveAdsSignedTokensUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsSignedTokensUtilTest, ParsePublicKey) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(cbr::PublicKey(cbr::kPublicKeyBase64),
             ParsePublicKey(BuildUrlResponseBody()));
 }
@@ -50,9 +43,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidPublicKey) {
   base::Value::Dict dict = BuildUrlResponseBody();
   dict.Set("publicKey", cbr::kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParsePublicKey(dict));
 }
 
@@ -60,7 +51,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParseSignedTokens) {
   // Arrange
 
   // Act
-  const absl::optional<std::vector<cbr::SignedToken>> signed_tokens =
+  const std::optional<std::vector<cbr::SignedToken>> signed_tokens =
       ParseSignedTokens(BuildUrlResponseBody());
 
   // Assert
@@ -74,9 +65,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseSignedTokensIfMissingKey) {
   base::Value::Dict dict = BuildUrlResponseBody();
   dict.Remove("signedTokens");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSignedTokens(dict));
 }
 
@@ -85,9 +74,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidSignedTokens) {
   base::Value::Dict dict = BuildUrlResponseBody();
   dict.Set("signedTokens", cbr::kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSignedTokens(dict));
 }
 

@@ -6,7 +6,6 @@
 import styled from 'styled-components'
 import { ArrowRightIcon, LoaderIcon } from 'brave-ui/components/icons'
 import * as leo from '@brave/leo/tokens/css'
-import Icon from '@brave/leo/react/icon'
 
 import LinkIcon from '../../../assets/svg-icons/link-icon.svg'
 import { WarningBoxIcon } from '../shared-panel-styles'
@@ -140,20 +139,10 @@ export const TransactionTypeText = styled.span`
   text-align: left;
 `
 
-export const FromToRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  margin-bottom: 8px;
-`
-
 export const ArrowIcon = styled(ArrowRightIcon)`
-  width: auto;
+  display: inline-block;
+  width: 16px;
   height: 16px;
-  margin-right: 6px;
-  margin-left: 6px;
   color: ${(p) => p.theme.color.text03};
 `
 
@@ -269,10 +258,4 @@ export const ExplorerIcon = styled.div`
   margin-left: 8px;
   mask-size: contain;
   background-color: ${(p) => p.theme.color.interactive05};
-`
-
-export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
-  --leo-icon-size: 14px;
-  --leo-icon-color: ${leo.color.icon.interactive};
-  margin-bottom: 1px;
 `

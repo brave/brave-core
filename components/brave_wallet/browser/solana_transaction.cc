@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 
+#include <optional>
+
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
@@ -40,9 +42,9 @@ SolanaTransaction::SendOptions::~SendOptions() = default;
 SolanaTransaction::SendOptions::SendOptions(
     const SolanaTransaction::SendOptions&) = default;
 SolanaTransaction::SendOptions::SendOptions(
-    absl::optional<uint64_t> max_retries_param,
-    absl::optional<std::string> preflight_commitment_param,
-    absl::optional<bool> skip_preflight_param)
+    std::optional<uint64_t> max_retries_param,
+    std::optional<std::string> preflight_commitment_param,
+    std::optional<bool> skip_preflight_param)
     : max_retries(std::move(max_retries_param)),
       preflight_commitment(std::move(preflight_commitment_param)),
       skip_preflight(std::move(skip_preflight_param)) {}
@@ -60,17 +62,17 @@ bool SolanaTransaction::SendOptions::operator!=(
 }
 
 // static
-absl::optional<SolanaTransaction::SendOptions>
+std::optional<SolanaTransaction::SendOptions>
 SolanaTransaction::SendOptions::FromValue(
-    absl::optional<base::Value::Dict> value) {
+    std::optional<base::Value::Dict> value) {
   if (!value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return FromValue(*value);
 }
 
 // static
-absl::optional<SolanaTransaction::SendOptions>
+std::optional<SolanaTransaction::SendOptions>
 SolanaTransaction::SendOptions::FromValue(const base::Value::Dict& dict) {
   SolanaTransaction::SendOptions options;
 
@@ -114,11 +116,11 @@ base::Value::Dict SolanaTransaction::SendOptions::ToValue() const {
 }
 
 // static
-absl::optional<SolanaTransaction::SendOptions>
+std::optional<SolanaTransaction::SendOptions>
 SolanaTransaction::SendOptions::FromMojomSendOptions(
     mojom::SolanaSendTransactionOptionsPtr mojom_options) {
   if (!mojom_options) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   SendOptions options;
@@ -157,9 +159,9 @@ SolanaTransaction::SolanaTransaction(
     uint64_t last_valid_block_height,
     const std::string& fee_payer,
     const SolanaMessageHeader& message_header,
-    std::vector<SolanaAddress>&& static_account_keys,
-    std::vector<SolanaInstruction>&& instructions,
-    std::vector<SolanaMessageAddressTableLookup>&& addr_table_lookups)
+    std::vector<SolanaAddress> static_account_keys,
+    std::vector<SolanaInstruction> instructions,
+    std::vector<SolanaMessageAddressTableLookup> addr_table_lookups)
     : message_(version,
                recent_blockhash,
                last_valid_block_height,
@@ -169,15 +171,16 @@ SolanaTransaction::SolanaTransaction(
                std::move(instructions),
                std::move(addr_table_lookups)) {}
 
-SolanaTransaction::SolanaTransaction(SolanaMessage&& message)
+SolanaTransaction::SolanaTransaction(SolanaMessage message)
     : message_(std::move(message)) {}
 
-SolanaTransaction::SolanaTransaction(SolanaMessage&& message,
-                                     const std::vector<uint8_t>& raw_signatures)
-    : message_(std::move(message)), raw_signatures_(raw_signatures) {}
+SolanaTransaction::SolanaTransaction(SolanaMessage message,
+                                     std::vector<uint8_t> raw_signatures)
+    : message_(std::move(message)),
+      raw_signatures_(std::move(raw_signatures)) {}
 
 SolanaTransaction::SolanaTransaction(
-    SolanaMessage&& message,
+    SolanaMessage message,
     mojom::SolanaSignTransactionParamPtr sign_tx_param)
     : message_(std::move(message)), sign_tx_param_(std::move(sign_tx_param)) {}
 
@@ -199,13 +202,13 @@ bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
 // Get serialized message bytes and array of signers.
 // Serialized message will be the result of decoding
 // sign_tx_param_->encoded_serialized_msg if exists.
-absl::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>
+std::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>
 SolanaTransaction::GetSerializedMessage() const {
   if (!sign_tx_param_) {
     std::vector<std::string> signers;
     auto message_bytes = message_.Serialize(&signers);
     if (!message_bytes || signers.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     return std::make_pair(std::move(*message_bytes), std::move(signers));
@@ -216,12 +219,12 @@ SolanaTransaction::GetSerializedMessage() const {
   std::vector<uint8_t> message_bytes;
   if (!Base58Decode(sign_tx_param_->encoded_serialized_msg, &message_bytes,
                     kSolanaMaxTxSize, false)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto signers =
       SolanaMessage::GetSignerAccountsFromSerializedMessage(message_bytes);
   if (!signers || signers->empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::make_pair(std::move(message_bytes), std::move(*signers));
@@ -232,22 +235,22 @@ SolanaTransaction::GetSerializedMessage() const {
 // A compact-array is serialized as the array length, followed by each array
 // item. The array length is a special multi-byte encoding called compact-u16.
 // See https://docs.solana.com/developing/programming-model/transactions.
-absl::optional<std::vector<uint8_t>>
+std::optional<std::vector<uint8_t>>
 SolanaTransaction::GetSignedTransactionBytes(
     KeyringService* keyring_service,
     const std::vector<uint8_t>* selected_account_signature) const {
   if (!keyring_service && !selected_account_signature) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (selected_account_signature &&
       selected_account_signature->size() != kSolanaSignatureSize) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto message_signers_pair = GetSerializedMessage();
   if (!message_signers_pair) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto& message_bytes = message_signers_pair->first;
   auto& signers = message_signers_pair->second;
@@ -255,13 +258,13 @@ SolanaTransaction::GetSignedTransactionBytes(
   // Preparing signatures.
   std::vector<uint8_t> transaction_bytes;
   if (signers.size() > UINT8_MAX) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   CompactU16Encode(signers.size(), &transaction_bytes);
 
   const auto selected_account = keyring_service->GetSelectedSolanaDappAccount();
   if (!selected_account) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Assign selected account's signature, and keep signatures for other signers
@@ -316,7 +319,7 @@ SolanaTransaction::GetSignedTransactionBytes(
                            message_bytes.end());
 
   if (transaction_bytes.size() > kSolanaMaxTxSize) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return transaction_bytes;
 }
@@ -413,7 +416,7 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
     return nullptr;
   }
 
-  absl::optional<SolanaMessage> message =
+  std::optional<SolanaMessage> message =
       SolanaMessage::FromValue(*message_dict);
   if (!message) {
     return nullptr;
@@ -558,7 +561,7 @@ SolanaTransaction::FromSignedTransactionBytes(
   if (index + num_of_signatures * kSolanaSignatureSize > bytes.size()) {
     return nullptr;
   }
-  const std::vector<uint8_t> signatures(
+  std::vector<uint8_t> signatures(
       bytes.begin() + index,
       bytes.begin() + index + num_of_signatures * kSolanaSignatureSize);
   index += num_of_signatures * kSolanaSignatureSize;
@@ -568,7 +571,8 @@ SolanaTransaction::FromSignedTransactionBytes(
     return nullptr;
   }
 
-  return std::make_unique<SolanaTransaction>(std::move(*message), signatures);
+  return std::make_unique<SolanaTransaction>(std::move(*message),
+                                             std::move(signatures));
 }
 
 }  // namespace brave_wallet

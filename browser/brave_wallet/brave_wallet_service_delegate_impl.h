@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -51,7 +52,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                                        const std::string& password,
                                        GetImportInfoCallback callback) override;
 
-  absl::optional<url::Origin> GetActiveOrigin() override;
+  std::optional<url::Origin> GetActiveOrigin() override;
 
   void ClearWalletUIStoragePartition() override;
 
@@ -81,7 +82,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                                                GetImportInfoCallback callback,
                                                bool init_success);
 
-  absl::optional<url::Origin> GetActiveOriginInternal();
+  std::optional<url::Origin> GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
   base::flat_map<mojom::ExternalWalletType,

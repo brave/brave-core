@@ -244,7 +244,8 @@ class BridgeRequest {
   std::unique_ptr<network::SimpleURLLoader> MakeMoatRequest(
       const GURL& url,
       const base::Value& data,
-      network::SimpleURLLoader::BodyAsStringCallback response_callback) {
+      network::SimpleURLLoader::BodyAsStringCallbackDeprecated
+          response_callback) {
     auto request = std::make_unique<network::ResourceRequest>();
     request->url = url;
     request->method = net::HttpRequestHeaders::kPostMethod;

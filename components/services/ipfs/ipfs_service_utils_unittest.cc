@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/services/ipfs/ipfs_service_utils.h"
+
 #include <memory>
+#include <optional>
+#include <utility>
+#include <vector>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-
-#include "brave/components/services/ipfs/ipfs_service_utils.h"
-
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,12 +22,17 @@ typedef testing::Test IPFSServiceUtils;
 TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
   std::string json = R"({})";
   std::string updated;
+  std::vector<std::string> blessed_extension_list{
+      "chrome-extension://extension_id"};
   auto config = ipfs::mojom::IpfsConfig::New(
       base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
-      "APIPort", "SwarmPort", "StorageSize", absl::nullopt);
+      "APIPort", "SwarmPort", "StorageSize", std::nullopt,
+      std::move(blessed_extension_list));
 
   std::string expect =
-      "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
+      "{\"API\":{\"HTTPHeaders\":{\"Access-Control-Allow-Origin\":"
+      "[\"chrome-extension://extension_id\"]}},\"Addresses\":{\"API\":\"/ip4/"
+      "127.0.0.1/tcp/APIPort\","
       "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
       "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/SwarmPort/"
       "quic-v1/webtransport\","
@@ -37,6 +44,7 @@ TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
       "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":true,"
       "\"Paths\":[\"/ipfs\",\"/ipns\",\"/api\"],\"UseSubdomains\":true}}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
+  LOG(ERROR) << "updated: " << updated << "\r\nexpect:" << expect;
   EXPECT_EQ(updated, expect);
   updated.clear();
   json = R"({
@@ -74,14 +82,18 @@ TEST_F(IPFSServiceUtils, DNSResolversRemove) {
   std::string updated;
   {
     std::string json = R"({})";
+    std::vector<std::string> blessed_extension_list{
+        "chrome-extension://extension_id"};
 
     auto config = ipfs::mojom::IpfsConfig::New(
         base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
         "APIPort", "SwarmPort", "StorageSize",
-        "https://cloudflare.com/dns-query");
+        "https://cloudflare.com/dns-query", std::move(blessed_extension_list));
 
     std::string expect =
-        "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
+        "{\"API\":{\"HTTPHeaders\":{\"Access-Control-Allow-Origin\":[\"chrome-"
+        "extension://extension_id\"]}},\"Addresses\":{\"API\":\"/ip4/127.0.0.1/"
+        "tcp/APIPort\","
         "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
         "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/"
         "SwarmPort/quic-v1/webtransport\","
@@ -104,10 +116,12 @@ TEST_F(IPFSServiceUtils, DNSResolversRemove) {
 
   auto config = ipfs::mojom::IpfsConfig::New(
       base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
-      "APIPort", "SwarmPort", "StorageSize", absl::nullopt);
+      "APIPort", "SwarmPort", "StorageSize", std::nullopt, std::nullopt);
 
   std::string expect =
-      "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
+      "{\"API\":{\"HTTPHeaders\":{\"Access-Control-Allow-Origin\":[\"chrome-"
+      "extension://extension_id\"]}},\"Addresses\":{\"API\":\"/ip4/127.0.0.1/"
+      "tcp/APIPort\","
       "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
       "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/SwarmPort/"
       "quic-v1/webtransport\","
@@ -126,13 +140,17 @@ TEST_F(IPFSServiceUtils, DNSResolversRemove) {
 TEST_F(IPFSServiceUtils, DNSResolversUpdate) {
   std::string json = R"({})";
   std::string updated;
+  std::vector<std::string> blessed_extension_list{
+      "chrome-extension://extension_id"};
   auto config = ipfs::mojom::IpfsConfig::New(
       base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
-      "APIPort", "SwarmPort", "StorageSize",
-      "https://cloudflare.com/dns-query");
+      "APIPort", "SwarmPort", "StorageSize", "https://cloudflare.com/dns-query",
+      std::move(blessed_extension_list));
 
   std::string expect =
-      "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
+      "{\"API\":{\"HTTPHeaders\":{\"Access-Control-Allow-Origin\":[\"chrome-"
+      "extension://extension_id\"]}},\"Addresses\":{\"API\":\"/ip4/127.0.0.1/"
+      "tcp/APIPort\","
       "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
       "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/SwarmPort/"
       "quic-v1/webtransport\","
@@ -151,23 +169,28 @@ TEST_F(IPFSServiceUtils, DNSResolversUpdate) {
 TEST_F(IPFSServiceUtils, DNSResolversUpdate_DnsHasRFC8484Template) {
   std::string json = R"({})";
   std::string updated;
+  std::vector<std::string> blessed_extension_list{
+      "chrome-extension://extension_id"};
   auto config = ipfs::mojom::IpfsConfig::New(
       base::FilePath(), base::FilePath(), base::FilePath(), "GatewayPort",
       "APIPort", "SwarmPort", "StorageSize",
-      "https://cloudflare.com/dns-query{?dns}");
+      "https://cloudflare.com/dns-query{?dns}",
+      std::move(blessed_extension_list));
 
   std::string expect =
-      "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
-      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
-      "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/SwarmPort/"
-      "quic-v1/webtransport\","
+      "{\"API\":{\"HTTPHeaders\":{\"Access-Control-Allow-Origin\":[\"chrome-"
+      "extension://extension_id\"]}},\"Addresses\":{\"API\":\"/ip4/127.0.0.1/"
+      "tcp/APIPort\",\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
+      "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/"
+      "SwarmPort/quic-v1/webtransport\","
       "\"/ip4/0.0.0.0/udp/SwarmPort/quic-v1\",\"/ip6/::/udp/SwarmPort/"
-      "quic-v1\",\"/ip6/::/udp/SwarmPort/quic-v1/webtransport\",\"/ip6/::/tcp/"
-      "SwarmPort\"]},"
+      "quic-v1\",\"/ip6/::/udp/SwarmPort/quic-v1/webtransport\",\"/ip6/::/"
+      "tcp/SwarmPort\"]},"
       "\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
       "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
       "\"StorageSize\"},"
-      "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":true,"
+      "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":"
+      "true,"
       "\"Paths\":[\"/ipfs\",\"/ipns\",\"/api\"],\"UseSubdomains\":true}}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   EXPECT_EQ(updated, expect);

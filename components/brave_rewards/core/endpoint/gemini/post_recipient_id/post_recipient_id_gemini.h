@@ -48,6 +48,8 @@ using PostRecipientIdCallback =
 
 class PostRecipientId {
  public:
+  static inline const std::string kRecipientLabel = "Brave Browser";
+
   explicit PostRecipientId(RewardsEngineImpl& engine);
   ~PostRecipientId();
 

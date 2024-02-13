@@ -4,7 +4,6 @@
 <translation id="8631427463833030968">管理广告</translation>
 <translation id="7630214457764713113">复制干净的链接</translation>
 <translation id="885805571521218129">这反映了你对本月Brave 广告的预期收益范围。</translation>
-<translation id="818003031290137834">现在您已连接到 ZebPay，之前的余额将存入您的 ZebPay 账户，作为下一次收入支付的一部分。到账后，您就可以在奖励余额中看到您的 BAT。</translation>
 <translation id="3478449063771497234">通知被禁用</translation>
 <translation id="2862978891748913252">选择国家/地点</translation>
 <translation id="3970520675790340955">请选择您所在的国家/地区，以便我们为您提供适合您所在地区的正确选项和广告。</translation>
@@ -23,7 +22,7 @@
 <translation id="5562948772940025260">您最多只能使用您的 Brave 奖励余额发送 <ph name="AMOUNT"/> BAT 。</translation>
 <translation id="5012991400231464322">每月捐款</translation>
 <translation id="5907051927340164207">您每个月都在给这位创作者捐款</translation>
-<translation id="307555373157330047">您现在仍然可以发送捐款，并且您可以通过从<ph name="MONTHLY_CONTRIBUTION"/>中删除来取消对该创作者的每月捐款</translation>
+<translation id="4848906651275579475">您现在仍然可以捐款，如要取消每月捐款给这位创作者，只要将创作者从<ph name="MONTHLY_CONTRIBUTION"/>移除即可。</translation>
 <translation id="5379685283876547860">捐款已发送！</translation>
 <translation id="1041398280582063935">分享您的支持</translation>
 <translation id="8855543392451028706">欢迎你！用户可以通过向他们捐款来支持这个内容创作者。 这是一种感谢他们制作精彩内容的方式。</translation>
@@ -32,7 +31,7 @@
 <translation id="9038728316393235637">登录至 <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">感谢您支持您最喜爱的创作者</translation>
 <translation id="3796032246917966749">您似乎已注销了 Brave 奖励帐户<ph name="CUSTODIAN"/>。 再次登录以继续。</translation>
-<translation id="594652923071049606">该创作者尚未通过 Brave 的创作者进行验证。验证后，您就可以向他们发送捐款。 <ph name="LEARN_MORE"/></translation>
+<translation id="5202112619925434373">这位创作者尚未通过 Brave Creators 的验证。创作者完成验证后，您就能捐款给对方。<ph name="LEARN_MORE"/></translation>
 <translation id="3733094367889291358">发送捐款</translation>
 <translation id="1899434873745933492">无法发送捐款</translation>
 <translation id="1794046983410841192">使用 Brave 奖励</translation>
@@ -42,7 +41,7 @@
 <translation id="1177863135347784049">自定义</translation>
 <translation id="4827581232860040208">在发送您的捐款时出了问题</translation>
 <translation id="3259723213051400722">请重试。</translation>
-<translation id="8899147737996487517">该创作者已在 Brave 注册，并可以接收 Brave 奖励用户的捐款。 <ph name="LEARN_MORE"/></translation>
+<translation id="5298965408768377685">这位创作者已注册 Brave，能接收 Brave Rewards 用户的捐款。<ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">当通知被禁用时，Brave 奖励可能无法运行。</translation>
 <translation id="4259212006412783790">打开</translation>
 <translation id="6112331814131703370">封鎖「切換至應用程式」通知</translation>
@@ -78,11 +77,9 @@
 <translation id="7307834434086582547">启用/关闭 Brave 屏蔽</translation>
 <translation id="6945863270524203017">获取有关跟踪器和广告拦截的的每周隐私更新。</translation>
 <translation id="4324735664183300693">開啟通知</translation>
-<translation id="3570081523466826008">升级连接为 HTTPS</translation>
 <translation id="6395059271589866759">Brave 收取发送金额的5%作为手续费。</translation>
 <translation id="6661699662755460155">兑换</translation>
 <translation id="6790981891677399838">我刚刚使用了 Brave 浏览器捐赠了<ph name="AMOUNT"/> BAT。了解如何支持您喜爱的创作者和网站：https://brave.com/rewards</translation>
-<translation id="2278950434998763147">使用安全的 HTTPS 连接而不是明文的 HTTP 打开一些站点。</translation>
 <translation id="5510493033031835532">自动重定向 AMP 页面</translation>
 <translation id="5197219128592971597">始终访问原始（非 AMP）页面 URL，而非谷歌的”加速移动页面“版本</translation>
 <translation id="920638232916443453">自动重定向跟踪链接</translation>
@@ -129,6 +126,11 @@
 <translation id="3365863382631355729">上次更新：<ph name="TIME"/></translation>
 <translation id="802154636333426148">下载失败</translation>
 <translation id="7824440849056209910"><ph name="TIME"/> 更新失败</translation>
+<translation id="8580328754808744073">创建自定义过滤器</translation>
+<translation id="6532106788206463496">保存更改</translation>
+<translation id="5132969826889386652">成功保存更改</translation>
+<translation id="4335929145384293789">在上面的字段中添加您创建的自定义筛选器，每行一个。请务必使用<ph name="ADBLOCK_FILTER_SYNTAX"/>。</translation>
+<translation id="5023212862780303376">广告屏蔽过滤器语法</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> 价格 (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">以太坊名称服务</translation>
 <translation id="531747189990625622">Solana 域名服务</translation>
@@ -171,11 +173,12 @@
 <translation id="254100925533869330">没有内容</translation>
 <translation id="7172792761509429092">Brave News 没有内容可以显示。</translation>
 <translation id="1771307734839364850">选择内容来源</translation>
-<translation id="5787084571334399599">防止浏览器使用指纹识别</translation>
+<translation id="6891769200437737956">防止网站对我进行指纹验证</translation>
 <translation id="7459000603787995422">退出时关闭标签页</translation>
 <translation id="4448697385961650078">阻止跟踪器和广告</translation>
 <translation id="2448893613530489637">阻止跟踪器和广告加载显示在网页中</translation>
 <translation id="1025207378813960343">确保网站的连接是安全的。</translation>
+<translation id="3570081523466826008">升级连接为 HTTPS</translation>
 <translation id="6686219838158572786">要求所有连接使用 HTTPS（严格）</translation>
 <translation id="4221284400051835823">尽可能升级到 HTTPS（默认）</translation>
 <translation id="4690906712010847708">不要将连接升级到 HTTPS（禁用）</translation>
@@ -188,8 +191,6 @@
 <translation id="5987838417172370108">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高 Brave\u2019s 产品稳定性。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
 <translation id="9008534313521214777">预计节省的\n时间</translation>
-<translation id="1842747674580016420">在 Brave 总进行视频播放</translation>
-<translation id="5368992950177874750">如果启用，视频会在 Brave 上而不是与其相应的应用上播放</translation>
 <translation id="410351446219883937">自动播放</translation>
 <translation id="7445411102860286510">允许网站自动播放静音的视频（推荐）</translation>
 <translation id="7837721118676387834">允许特定网站自动播放静音的视频。</translation>
@@ -207,6 +208,7 @@
 <translation id="1690924763769415936">在后台播放</translation>
 <translation id="6332924730165919598">关闭所有标签页即会关闭 Brave</translation>
 <translation id="8308305244351876417">当您切换到 Brave 或其他应用程序的另一个标签或设备屏幕关闭时，允许继续播放音频。</translation>
+<translation id="49147335255967913">在 Brave 中打开 YouTube 链接</translation>
 <translation id="4150201353443180367">显示</translation>
 <translation id="4275663329226226506">媒体</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
@@ -368,17 +370,17 @@
 <translation id="8457451314607652708">导入书签</translation>
 <translation id="1008186147501209563">导出书签</translation>
 <translation id="6680516947641001448">选择要导入书签的文件</translation>
+<translation id="2353910600995338714">导出成功</translation>
+<translation id="229319993704311844">书签已导出至<ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">导出失败</translation>
+<translation id="1166543535974380311">书签导出失败，请重试。</translation>
+<translation id="6154243540085290880">导入成功</translation>
 <translation id="7028125942261647795">书签导入成功。</translation>
-<translation id="444953779119381206">书签导入失败。</translation>
-<translation id="6606836200439368332">书签导出失败。</translation>
-<translation id="1395297034387418032">书签导出成功。</translation>
-<translation id="3396347744975515056">Brave 同步已升级，并需要进行设置</translation>
-<translation id="7473245612074035141">开始设置</translation>
+<translation id="4803910478683254032">导入失败</translation>
+<translation id="8325139248201792113">书签导出失败。请重试。</translation>
+<translation id="2803313416453193357">打开文件夹</translation>
 <translation id="8985635554450124959">无法设置同步</translation>
-<translation id="2514300153301737214">我们检测到您已启用 Brave Sync，但是系统同步已关闭，并且不允许 Brave 同步。按下以开启设定</translation>
 <translation id="7173114856073700355">打开“设置”</translation>
-<translation id="6965382102122355670">确定</translation>
-<translation id="4450893287417543264">不再显示</translation>
 <translation id="496896260395129787">此 Brave 同步账户已从其他设备删除。如果您未故意禁用同步，<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新创建账户</translation>
 <translation id="4094590686212463338">无法加入此同步链。同步链已删除。</translation>
@@ -392,6 +394,10 @@
 请再次确认这些单词由您所拥有的设备生成。
 确定要这么做吗？</translation>
 <translation id="4550208292810542331">未获摄影许可</translation>
+<translation id="6470233139461745039">要启用密码同步，请先在设备上设置屏幕锁</translation>
+<translation id="3063783274005996079">解锁以启用密码同步</translation>
+<translation id="7551563084530025179">同步密码前，您必须先使用装置的生物辨识功能/密码完成验证。采用这项额外的安全措施有助于确保密码安全。</translation>
+<translation id="6925081665778864449">如需同步密码，请先在您的 Android 设备上启用生物辨识功能/密码。采用这项额外的安全措施有助于确保密码安全。</translation>
 <translation id="597993392929850353">Brave 执照</translation>
 <translation id="6336451774241870485">新的私有标签页</translation>
 <translation id="6199596294742117349">这是一个私人标签页</translation>
@@ -428,7 +434,7 @@
 <translation id="9096003370755878766">提现您之前添加到 Brave Rewards 钱包中的 BAT</translation>
 <translation id="1554282356558968486">我们的钱包服务提供商：</translation>
 <translation id="6569877533335686968">Uphold</translation>
-<translation id="734105583050813665">Bitflyer</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
@@ -471,7 +477,7 @@
 <translation id="7854108565842971747">这些是新站点的默认 Shields 设置。更改这些设置不会影响现有针对单一站点的设置。</translation>
 <translation id="218587021686734263">通过语言设置防止指纹识别</translation>
 <translation id="1706099589708266367">根据浏览器的语言设置减少网站可以了解到您的信息的数量。</translation>
-<translation id="184568144098869637">阻止浏览器识别您的设备</translation>
+<translation id="4721088070859595932">防止网站识别您的设备</translation>
 <translation id="7445306466605902444">已拦截指纹识别（严格，可能破坏网站）</translation>
 <translation id="5582686930349810484">已拦截指纹识别（标准）</translation>
 <translation id="769702552748212954">允许所有指纹识别</translation>
@@ -615,8 +621,9 @@
 <translation id="1783600039044302171">使用密码保护您的加密货币</translation>
 <translation id="3726490322412361740">输入密码</translation>
 <translation id="3038243139480464605">验证密码</translation>
-<translation id="3717685683157254329">密码长度至少为7个字符，至少包含一个字母、一个数字和一个特殊字符。</translation>
+<translation id="3043677904160378840">密码长度至少为 8 个字符。</translation>
 <translation id="7396672979287122068">验证密码不匹配</translation>
+<translation id="7084181009966710506">正在创建钱包…</translation>
 <translation id="3188963375823360044">1 小时</translation>
 <translation id="8163269366661594721">1 天</translation>
 <translation id="7640956400175663828">1 周</translation>
@@ -769,7 +776,6 @@
 <translation id="1705662265912724430">确定要重置 VPN 配置吗？</translation>
 <translation id="604124094241169006">自动</translation>
 <translation id="7475580600756356589">正在连接到服务器。应该只需要一会儿…</translation>
-<translation id="1342728075788541348">正在断开与服务器的连接。应该只需要一会儿…</translation>
 <translation id="669072536454692117">成功续订</translation>
 <translation id="1187506504156101449">未能确认购买：</translation>
 <translation id="8420522105268941892">您已经订阅了订阅套餐。尝试恢复订阅。</translation>
@@ -802,7 +808,6 @@
 <translation id="8084782383392198011">账户名不能为空。</translation>
 <translation id="5045550434625856497">密码不正确</translation>
 <translation id="1367951781824006909">选择文件</translation>
-<translation id="8648684608605749476">在无痕模式下阻止第三方 Cookie</translation>
 <translation id="5932938770824268122">私钥</translation>
 <translation id="2472882733835903303">显示私钥</translation>
 <translation id="4391056902675005799">隐藏私钥</translation>
@@ -953,9 +958,12 @@
 <translation id="6044189892950611565">Brave 浏览器的通知通道</translation>
 <translation id="1173919438868967364">选择帐户</translation>
 <translation id="8922793255489232731">找不到相匹配的时区：<ph name="VALUE"/></translation>
-<translation id="8901748741234750758">下载钱包数据文件\u2022<ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">已连接到 <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">试用</translation>
+<translation id="6458565248779152483">禁用 Brave VPN</translation>
+<translation id="9080536793704001825">暂停 15 分钟</translation>
+<translation id="803706420145725977">暂停 1 小时</translation>
+<translation id="4394049700291259645">停用</translation>
 <translation id="7733890291091968191">显示 Web3 通知</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave 不会追踪您或了解您如何使用我们的应用程序，因此我们不知道您是如何设置 VPN 的。请分享有关您遇到的问题的信息，我们会尽最大努力尽快解决。####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN 主机名称\n <ph name="VALUE"/></translation>
@@ -985,6 +993,7 @@
 <translation id="8219806187375413057"><ph name="CLICK_START"/>了解如何减少 Rainbow Bridge 上的风险<ph name="CLICK_END"/></translation>
 <translation id="1065082006518490444"><ph name="APP_NAME"/> 是一项独立的服务，可帮助您跨网络桥接资产，并在其他网络和 DApp 生态系统上使用您的加密货币。将资产桥接到其他网络存在一些风险。</translation>
 <translation id="8423380132356660250">开启 <ph name="APP_NAME"/> 应用程序</translation>
+<translation id="4450893287417543264">不再显示</translation>
 <translation id="168154537623654021">正在更新 VPN 配置文件...</translation>
 <translation id="7457027586454688423">输入您的 Brave Wallet 密码</translation>
 <translation id="4784306439879850873">请注意，Brave 无法验证您签名后会发生什么。签名可以授权他人进行账户的几乎任何操作，包括（但不限于）将您的账户和加密资产的完全控制权交给提出此请求的网站。因此只有在您确定要执行此操作并信任提出请求的网站时才能签名。</translation>
@@ -1202,4 +1211,7 @@
 <translation id="6759710362319508545">资源</translation>
 <translation id="2471230424465522689">以前没有</translation>
 <translation id="4841860051609590575">申请 ID</translation>
+<translation id="1179407411385015942">Leo 是采用 AI 技术的智慧助理，内置于浏览器中。</translation>
+<translation id="1250335737108905610">重置并清除 Leo 数据</translation>
+<translation id="6165101586663336913">如果重置 Leo 助理，日后必须重新选择加入才能再次使用，您的聊天记录也会一并清除。清除聊天记录会删除您先前与 Leo 的对话。此动作无法还原。</translation>
 </translationbundle>

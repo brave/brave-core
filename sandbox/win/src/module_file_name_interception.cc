@@ -6,13 +6,14 @@
 #include "brave/sandbox/win/src/module_file_name_interception.h"
 
 #include <string.h>
+
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <string_view>
 
 #include "base/strings/string_util.h"
 #include "base/win/windows_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -58,13 +59,13 @@ struct TestBraveToChrome<wchar_t> {
 };
 
 template <template <class T> class FromTo, typename CharT>
-absl::optional<DWORD> PatchFilenameImpl(CharT* filename,
-                                        DWORD length,
-                                        DWORD size) {
-  if (!base::EndsWith(base::BasicStringPiece<CharT>(filename, length),
+std::optional<DWORD> PatchFilenameImpl(CharT* filename,
+                                       DWORD length,
+                                       DWORD size) {
+  if (!base::EndsWith(std::basic_string_view<CharT>(filename, length),
                       FromTo<CharT>::kBrave,
                       base::CompareCase::INSENSITIVE_ASCII)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   constexpr DWORD kBraveLen = FromTo<CharT>::kBrave.length();

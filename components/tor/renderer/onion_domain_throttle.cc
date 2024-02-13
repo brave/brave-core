@@ -18,8 +18,8 @@ OnionDomainThrottle::~OnionDomainThrottle() = default;
 
 // static
 std::unique_ptr<blink::URLLoaderThrottle>
-OnionDomainThrottle::MaybeCreateThrottle(bool is_tor) {
-  if (is_tor) {
+OnionDomainThrottle::MaybeCreateThrottle(bool is_onion_allowed) {
+  if (is_onion_allowed) {
     return nullptr;
   }
   return base::WrapUnique(new tor::OnionDomainThrottle());

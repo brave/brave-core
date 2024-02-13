@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
+#include <string>
+
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -55,6 +57,9 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual void ToggleSidebar();
   virtual bool HasSelectedURL() const;
   virtual void CleanAndCopySelectedURL();
+
+  // Returns true when bubble is shown.
+  virtual bool ShowBraveHelpBubbleView(const std::string& text);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)

@@ -5,13 +5,15 @@
 
 #include "brave/components/brave_rewards/core/endpoints/zebpay/post_oauth_zebpay.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/zebpay/zebpay_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -21,30 +23,31 @@ using Result = PostOAuthZebPay::Result;
 namespace {
 
 base::expected<std::pair<std::string, std::string>, Error>
-GetAccessTokenAndLinkingInfo(const std::string& body) {
+GetAccessTokenAndLinkingInfo(RewardsEngineImpl& engine,
+                             const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* access_token = value->GetDict().FindString("access_token");
   if (!access_token || access_token->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* linking_info = value->GetDict().FindString("linking_info");
   if (!linking_info || linking_info->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   return std::pair{std::move(*access_token), std::move(*linking_info)};
 }
 
-Result ParseBody(const std::string& body) {
-  auto access_token_linking_info = GetAccessTokenAndLinkingInfo(body);
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
+  auto access_token_linking_info = GetAccessTokenAndLinkingInfo(engine, body);
   if (!access_token_linking_info.has_value()) {
     return base::unexpected(access_token_linking_info.error());
   }
@@ -59,7 +62,7 @@ Result ParseBody(const std::string& body) {
   }
 
   if (dots.size() != 2) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -67,19 +70,19 @@ Result ParseBody(const std::string& body) {
   if (!base::Base64Decode(
           linking_info.substr(dots[0] + 1, dots[1] - dots[0] - 1), &payload,
           base::Base64DecodePolicy::kForgiving)) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto value = base::JSONReader::Read(payload);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* deposit_id = value->GetDict().FindString("depositId");
   if (!deposit_id || deposit_id->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -90,12 +93,14 @@ Result ParseBody(const std::string& body) {
 }  // namespace
 
 // static
-Result PostOAuthZebPay::ProcessResponse(const mojom::UrlResponse& response) {
+Result PostOAuthZebPay::ProcessResponse(RewardsEngineImpl& engine,
+                                        const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
+      return ParseBody(engine, response.body);
     default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
+      engine.LogError(FROM_HERE)
+          << "Unexpected status code! (HTTP " << response.status_code << ')';
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
@@ -106,19 +111,27 @@ PostOAuthZebPay::PostOAuthZebPay(RewardsEngineImpl& engine,
 
 PostOAuthZebPay::~PostOAuthZebPay() = default;
 
-absl::optional<std::string> PostOAuthZebPay::Url() const {
-  return endpoint::zebpay::GetOauthServerUrl("/connect/token");
+std::optional<std::string> PostOAuthZebPay::Url() const {
+  return engine_->Get<EnvironmentConfig>()
+      .zebpay_oauth_url()
+      .Resolve("/connect/token")
+      .spec();
 }
 
-absl::optional<std::vector<std::string>> PostOAuthZebPay::Headers(
+std::optional<std::vector<std::string>> PostOAuthZebPay::Headers(
     const std::string&) const {
-  return endpoint::zebpay::RequestAuthorization();
+  auto& config = engine_->Get<EnvironmentConfig>();
+  std::string user;
+  base::Base64Encode(base::StrCat({config.zebpay_client_id(), ":",
+                                   config.zebpay_client_secret()}),
+                     &user);
+  return std::vector<std::string>{"Authorization: Basic " + user};
 }
 
-absl::optional<std::string> PostOAuthZebPay::Content() const {
+std::optional<std::string> PostOAuthZebPay::Content() const {
   if (code_.empty()) {
-    BLOG(0, "code_ is empty!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "code_ is empty";
+    return std::nullopt;
   }
 
   return "grant_type=authorization_code"

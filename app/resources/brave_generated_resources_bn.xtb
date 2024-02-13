@@ -41,9 +41,6 @@
 <translation id="7897433216002294926">টর <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">এটি টর সহ একটি ব্যক্তিগত উইন্ডো</translation>
 <translation id="1037341607922068025">টর দিয়ে প্রাইভেট উইন্ডো খুলুন</translation>
-<translation id="1725356094208762656">Tor এ খুলুন</translation>
-<translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
-<translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
 <translation id="496896260395129787">এই Brave সিঙ্ক অ্যাকাউন্টটি অন্য ডিভাইস থেকে মোছা হয়েছে। আপনি সিঙ্ক বন্ধ করতে না চাইলে, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>আবার অ্যাকাউন্ট তৈরি করুন</translation>
 <translation id="6965382102122355670">ঠিক আছে</translation>
@@ -82,6 +79,7 @@
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3229091547987707389">একটি ডিরেক্টরি পাঠান এবং শেয়ার করুন</translation>
+<translation id="2545072023356206691">1 ডিসেম্বর, 2023 থেকে, Brave Dev চ্যানেল আর ব্রাউজারের আপডেট পাবে না। আমরা ব্যবহারকারীদের Nightly, Beta বা Brave-এর Release ভার্সনে মাইগ্রেট করতে বলি।</translation>
 <translation id="474217410105706308">ট্যাব মিউট করুন</translation>
 <translation id="2804710924397009224">ব্রেভ রিওয়ার্ড আইকন লুকান</translation>
 <translation id="5029193871181468990">Brave রিওয়ার্ড আইকন লুকান</translation>
@@ -189,6 +187,10 @@
 <translation id="7109885938715976444">শুধুমাত্র এইবার</translation>
 <translation id="7473891865547856676">না থাক</translation>
 <translation id="2722425322672922644">এটি আমার প্রাইভেসিকে কীভাবে প্রভাবিত করে তা জানুন</translation>
+<translation id="5551268135482191097">IPFS URL লোড করার সময় একটি ত্রুটি হয়েছে। আপনি কি আসল URL-এ রিডাইরেক্ট করতে চান?</translation>
+<translation id="4756627014339714615">রিডাইরেক্ট করুন</translation>
+<translation id="1338274252864046652">আপনি কি ব্রাউজার স্টার্টআপে সর্বদা একটি IPFS নোড শুরু করতে চান?</translation>
+<translation id="3435896845095436175">সক্ষম করুন</translation>
 <translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
 <translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>
 <translation id="8053093028263274061">দুঃখিত, কোনও সংরক্ষিত সংস্করণ উপলভ্য নেই।</translation>
@@ -289,6 +291,19 @@
 <translation id="5181358966317519720">প্লেলিস্ট থেকে সরান</translation>
 <translation id="2377705456080309463">আসল পৃষ্ঠা দেখুন</translation>
 <translation id="158894735649719362">মজা শুরু হয় যখন আপনার কাছে বাজানোর মতো কিছু থাকে। যেকোনও সময়, যেকোনও জায়গায় আপনার পছন্দের মিডিয়া ও প্লেব্যাক যোগ করুন। এমনকি অফলাইনেও।</translation>
+<translation id="8422349592890097194">নতুন ফোল্ডার তৈরি করুন</translation>
+<translation id="2818704116581303039">প্লেলিস্ট সেটিংস খুলুন</translation>
+<translation id="6790428901817661496">চালু করুন</translation>
+<translation id="1178581264944972037">বিরতি</translation>
+<translation id="4477350412780666475">পরবর্তী ট্র্যাক</translation>
+<translation id="3962859241508114581">পূর্ববর্তী ট্র্যাক</translation>
+<translation id="7544853251252956727">শাফল করুন</translation>
+<translation id="4330722796577425585">রিওয়াইন্ড</translation>
+<translation id="7481312909269577407">ফরওয়ার্ড</translation>
+<translation id="2800828306627475693">পুনরাবৃত্তি বন্ধ করুন</translation>
+<translation id="1748244367114657861">একটি পুনরাবৃত্তি করুন</translation>
+<translation id="6421906998825794164">সব পুনরাবৃত্তি করুন</translation>
+<translation id="1727684853006449697">Brave প্লেয়ার</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="4472575034687746823">শুরু করুন</translation>
@@ -402,10 +417,6 @@
 <translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
 <translation id="1051600834033686945">সম্পূর্ণ Brave Rewards সেটিংস খুলুন</translation>
 <translation id="6333347122924254968">Brave রিওয়ার্ডগুলো দেখাতে বলছে</translation>
-<translation id="7483857210736407752">সাইটগুলিতে টিপ বোতামগুলি দেখান</translation>
-<translation id="3905400818082450708">রেড্ডিট</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">সামাজিক মিডিয়া রোধক</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
@@ -574,7 +585,9 @@
 <translation id="6936835573742749135">একটি CAPTCHA অনুরোধ করতে পারবেন না। পরে আবার চেষ্টা করুন।</translation>
 <translation id="2653659639078652383">জমা দিন</translation>
 <translation id="1369311132025451972">স্বয়ংক্রিয়ভাবে .onion সাইটগুলিতে পুনঃনির্দেশিত করে</translation>
-<translation id="1658670175365815312">একটি ওয়েবসাইটের .onion সংস্করণ উপলভ্য হলে Brave সেটি খুলবে এবং স্বয়ংক্রিয়ভাবে একটি Tor উইন্ডোতে সমস্ত .onion ডোমেইন খুলবে।</translation>
+<translation id="6214393847480015759">Tor উইন্ডোতে, Brave স্বয়ংক্রিয়ভাবে একটি ওয়েবসাইটের .onion সংস্করণে স্যুইচ করবে যখন উপলব্ধ হবে।</translation>
+<translation id="1294350054292274934">Tor উইন্ডোতে শুধুমাত্র .onion ঠিকানাগুলি সমাধান করুন</translation>
+<translation id="1258903596167452221">Tor উইন্ডোর বাইরে Onion পরিষেবা পাওয়া যাবে না।</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="5249433283143453448">ব্রাউজারে সুরক্ষিত ভিডিও স্ট্রিমিং এবং অন্যান্য সামগ্রী দেখতে ওয়াইডওয়াইন ডিজিটাল রাইটস ম্যানেজমেন্ট (ডিআরএম) উপাদান ব্যবহার করুন।</translation>
 <translation id="1314131187310290315">ম্যানিফেস্ট V2 এক্সটেনশন</translation>
@@ -623,6 +636,7 @@
 <translation id="4226543734057230801">Ethereum নেটওয়ার্ক</translation>
 <translation id="3504157706952484145">Filecoin নেটওয়ার্ক</translation>
 <translation id="1561541094377237745">Solana নেটওয়ার্ক</translation>
+<translation id="7141438739990875547">Bitcoin নেটওয়ার্ক</translation>
 <translation id="3159419679550543837">টেস্ট নেটওয়ার্ক দেখান</translation>
 <translation id="3215569562674795548">নতুন নেটওয়ার্ক যোগ করুন বা এডিট করুন</translation>
 <translation id="4418993400653250511">চেইনের Id</translation>
@@ -662,6 +676,7 @@
 <translation id="8425213833346101688">পরিবর্তন</translation>
 <translation id="585868419599255817">IPFS পাবলিক গেটওয়ে ফলব্যাক</translation>
 <translation id="2618080188892567155">আপনার Brave স্থানীয় IPFS নোড পৌঁছাতে না পারলে স্বয়ংক্রিয়ভাবে সর্বজনীন IPFS গেটওয়েতে ফিরে যান।</translation>
+<translation id="8956391206920485238">ব্রাউজার স্টার্টআপে সর্বদা একটি IPFS নোড শুরু করতে চান?</translation>
 <translation id="6789104345873307368">স্বয়ংক্রিয় কনফিগার করা গেটওয়েতে IPFS নেটওয়ার্ক সংস্থানের জন্য অনুরোধ পুনঃনির্দেশ পাঠান।</translation>
 <translation id="4138306018048329894">তৃতীয় পক্ষের IPFS গেটওয়ে বা DNSLINK সংস্থানে হোস্ট করা IPFS সংস্থানগুলির জন্য অনুরোধে নির্বাচিত স্থানীয় বা দূরবর্তী গেটওয়ের মাধ্যমে রুট করানো হবে।
     বিশেষ দ্রষ্টব্য: লোকাল নোড নির্বাচন হলে, আপনার কম্পিউটার থেকে সরাসরি রিসোর্সের জন্য অনুরোধ করা হবে এবং কিছু সময়ের জন্য IPFS নেটওয়ার্কে ক্যাশেড ডেটা প্রদান করা হতে পারে।</translation>
@@ -713,6 +728,9 @@
 মুছে দেবে। এই কার্য পূর্বাবস্থায় ফেরানো যাবে না।</translation>
 <translation id="8157373421434119674">ডেটা এবং চ্যাটের ইতিহাস</translation>
 <translation id="614530507403667291">নতুন কথোপকথনের জন্য ডিফল্ট মডেল</translation>
+<translation id="349846214503465941">প্লেলিস্ট সক্রিয় করুন</translation>
+<translation id="7903608716704052878">অফলাইন দেখার জন্য স্বয়ংক্রিয়ভাবে ফাইল যোগ করুন</translation>
+<translation id="4193768184502613558">এই বিকল্পটি স্বয়ংক্রিয়ভাবে মিডিয়া ফাইলগুলিকে ক্যাশে করবে যাতে আপনি সেগুলিকে ইন্টারনেট সংযোগ ছাড়াই চালাতে পারেন।</translation>
 <translation id="6624718837376802990">অবতার এজি পুরস্কারসমূহ</translation>
 <translation id="6617313057407561765">অবতার এজি ব্রেভ</translation>
 <translation id="6754445808455578019">অবতার এজি ওসান</translation>

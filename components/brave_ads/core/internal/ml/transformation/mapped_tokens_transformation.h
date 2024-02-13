@@ -8,12 +8,12 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 namespace neural_text_classification::flat {
@@ -32,7 +32,7 @@ class MappedTokensTransformation final : public Transformation {
 
   explicit MappedTokensTransformation(const std::string& parameters);
 
-  absl::optional<std::map<uint32_t, double>> GetCategoryFrequencies(
+  std::optional<std::map<uint32_t, double>> GetCategoryFrequencies(
       const std::vector<std::string>& words) const;
 
   std::unique_ptr<Data> Apply(

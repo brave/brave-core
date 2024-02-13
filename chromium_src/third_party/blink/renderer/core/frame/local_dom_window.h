@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_DOM_WINDOW_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_DOM_WINDOW_H_
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
 
 #define SetStorageKey                                                        \
   SetEphemeralStorageOrigin(const SecurityOrigin* ephemeral_storage_origin); \
@@ -15,7 +15,7 @@
   const SecurityOrigin* GetEphemeralStorageOriginOrSecurityOrigin() const;   \
                                                                              \
  private:                                                                    \
-  absl::optional<BlinkStorageKey> ephemeral_storage_key_;                    \
+  std::optional<BlinkStorageKey> ephemeral_storage_key_;                     \
                                                                              \
  public:                                                                     \
   void SetStorageKey
@@ -36,8 +36,9 @@
   screenY_ChromiumImpl() const; \
   int screenTop
 
-#define resizeTo                                      \
-  resizeTo_ChromiumImpl(int width, int height) const; \
+#define resizeTo                                                \
+  resizeTo_ChromiumImpl(int width, int height,                  \
+                        ExceptionState& exception_state) const; \
   void resizeTo
 
 #define moveTo                             \

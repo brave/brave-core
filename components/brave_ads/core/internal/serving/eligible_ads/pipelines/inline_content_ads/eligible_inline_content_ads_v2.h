@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/history/browsing_history.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
 namespace brave_ads {
 
@@ -53,10 +53,15 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
       bool success,
       const CreativeInlineContentAdList& creative_ads);
 
-  CreativeInlineContentAdList FilterCreativeAds(
+  void FilterAndMaybePredictCreativeAd(
+      const UserModelInfo& user_model,
       const CreativeInlineContentAdList& creative_ads,
       const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history);
+      const BrowsingHistoryList& browsing_history,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback);
+  void FilterIneligibleCreativeAds(CreativeInlineContentAdList& creative_ads,
+                                   const AdEventList& ad_events,
+                                   const BrowsingHistoryList& browsing_history);
 
   base::WeakPtrFactory<EligibleInlineContentAdsV2> weak_factory_{this};
 };

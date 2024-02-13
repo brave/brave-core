@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/base_paths.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -21,7 +23,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "chrome/browser/password_manager/password_store_factory.h"
+#include "chrome/browser/password_manager/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -93,7 +95,7 @@ bool PerformNetworkAuditProcess(base::Value::List* events) {
     base::Value::Dict* event_dict = event_value.GetIfDict();
     EXPECT_TRUE(event_dict);
 
-    absl::optional<int> event_type = event_dict->FindInt("type");
+    std::optional<int> event_type = event_dict->FindInt("type");
     EXPECT_TRUE(event_type.has_value());
 
     // Showing these helps determine which URL requests which don't
@@ -107,7 +109,7 @@ bool PerformNetworkAuditProcess(base::Value::List* events) {
     EXPECT_TRUE(source_dict);
 
     // Consider URL requests only.
-    absl::optional<int> source_type = source_dict->FindInt("type");
+    std::optional<int> source_type = source_dict->FindInt("type");
     EXPECT_TRUE(source_type.has_value());
 
     if (static_cast<net::NetLogSourceType>(source_type.value()) !=
@@ -219,8 +221,8 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    base::FilePath source_root_path;
-    base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root_path);
+    base::FilePath source_root_path =
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
 
     // Full log containing all the network requests.
     net_log_path_ = source_root_path.AppendASCII("network_log.json");
@@ -303,8 +305,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
 
   // Add a password to the password manager.
   password_manager::PasswordStoreInterface* password_store =
-      PasswordStoreFactory::GetForProfile(browser()->profile(),
-                                          ServiceAccessType::IMPLICIT_ACCESS)
+      ProfilePasswordStoreFactory::GetForProfile(
+          browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS)
           .get();
   password_manager::PasswordForm signin_form;
   signin_form.signon_realm = "https://www.facebook.com/";

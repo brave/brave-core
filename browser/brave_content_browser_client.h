@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_CONTENT_BROWSER_CLIENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
 class PrefChangeRegistrar;
@@ -62,10 +62,14 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       network::mojom::WebSandboxFlags sandbox_flags,
       ui::PageTransition page_transition,
       bool has_user_gesture,
-      const absl::optional<url::Origin>& initiating_origin,
+      const std::optional<url::Origin>& initiating_origin,
       content::RenderFrameHost* initiator_document,
       mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory)
       override;
+
+  std::optional<base::UnguessableToken> GetEphemeralStorageToken(
+      content::RenderFrameHost* render_frame_host,
+      const url::Origin& origin) override;
 
   bool AllowWorkerFingerprinting(
       const GURL& url,
@@ -93,7 +97,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::BrowserContext* browser_context,
       const base::RepeatingCallback<content::WebContents*()>& wc_getter,
       content::NavigationUIData* navigation_ui_data,
-      int frame_tree_node_id) override;
+      int frame_tree_node_id,
+      std::optional<int64_t> navigation_id) override;
 
   bool WillCreateURLLoaderFactory(
       content::BrowserContext* browser_context,
@@ -101,7 +106,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       int render_process_id,
       URLLoaderFactoryType type,
       const url::Origin& request_initiator,
-      absl::optional<int64_t> navigation_id,
+      std::optional<int64_t> navigation_id,
       ukm::SourceIdObj ukm_source_id,
       mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
       mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
@@ -118,7 +123,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
-      const absl::optional<std::string>& user_agent,
+      const std::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client) override;
 

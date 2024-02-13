@@ -83,6 +83,18 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE" desc="The label for the settings select controlling what happens when a user hovers over a tab.">
     Tab hover mode
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_POSITION" desc="Title for radio group to set vertical tab position">
+    Position
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR" desc="Title for checkbox to show scrollbar on vertical tabs">
+    Show scrollbar
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_RIGHT" desc="The label for radio button to show vertical tab on right">
+    Show on the right
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_LEFT" desc="The label for radio button to show vertical tab on left">
+    Show on the left
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD" desc="The label name of the tab hover mode where a card with the title and origin of the site is shown.">
     Card
   </message>
@@ -160,6 +172,12 @@
     <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDEBAR_BUTTON" desc="The label for whether the side panel button should be shown or not">
       Show Sidebar button
     </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ALIGN_LEFT" desc="Label for the button that allows the side panel to appear on the left side of the browser. Translate this verbatim, do not localize for RTL languages.">
+      Show on the left
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ALIGN_RIGHT" desc="Label for the button that allows the side panel to appear on the right side of the browser. Translate this verbatim, do not localize for RTL languages.">
+      Show on the right
+    </message>
   </if>
 
   <!-- Settings / Autofill -->
@@ -227,7 +245,7 @@
     Shields status
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION" desc="Label for shields status on site settings.">
-    Sites can block trackers, ads, and fingerprinting using Shields
+    Shields can block trackers, ads, and fingerprinting
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
     Shields Up
@@ -421,7 +439,7 @@
     Open full Brave Rewards settings
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
-    Show Brave Rewards icon in address bar
+    Show Brave Rewards button
   </message>
 
   <!-- Settings / Social media blocking -->
@@ -988,7 +1006,13 @@
     Automatically redirect .onion sites
   </message>
   <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-    Brave will switch to the .onion version of a website when available, and automatically open all .onion domains in a Tor window.
+    In Tor windows, Brave will automatically switch to the .onion version of a website when available.
+  </message>
+  <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_TITLE" desc="">
+    Only resolve .onion addresses in Tor windows
+  </message>
+  <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_DESC" desc="">
+    Onion services will not be available outside of Tor windows.
   </message>
   <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
     Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
@@ -1143,6 +1167,9 @@
   <message name="IDS_SETTINGS_WALLET_BTC_NETWORK_LIST_TITLE" desc="The title of the list with wallet bitcoin networks">
     Bitcoin networks
   </message>
+  <message name="IDS_SETTINGS_WALLET_ZEC_NETWORK_LIST_TITLE" desc="The title of the list with wallet Zcash networks">
+    Zcash networks
+  </message>
   <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS" desc="The description for showing the Brave wallet test networks">
     Show test networks
   </message>
@@ -1272,6 +1299,9 @@
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
     Automatically fall back to public IPFS gateway if your Brave local IPFS node cannot be reached.
+  </message>
+  <message name="IDS_SETTINGS_IPFS_ALWAYS_START_MODE_LABEL" desc="The text label for IPFS always start mode switch">
+    Always start an IPFS node on browser startup?
   </message>
   <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL">
     Automatically redirect requests for IPFS network resources to the configured gateway.
@@ -1412,6 +1442,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL" desc="The text for settings option">
     Show Leo icon in the sidebar
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_LABEL" desc="The text for settings option to show Leo in context menu">
+    Show Leo in the context menu on websites
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC" desc="The description for settings option to show Leo in context menu">
+    Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo.
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation
   </message>
@@ -1423,6 +1459,9 @@
 Leo in the future and will also clear your chat history. Clearing your
 chat history will delete all your previous conversations with Brave
 Leo. This action cannot be undone.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_AUTOCOMPLETE_LINK" desc="A label for a link to settings page to adjust autocomplete suggestion based on Leo">
+    Adjust autocomplete suggestions
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL" desc="The text for settings option">
     Leo

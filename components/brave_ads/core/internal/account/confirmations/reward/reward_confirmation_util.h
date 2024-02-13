@@ -6,21 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_REWARD_REWARD_CONFIRMATION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_REWARD_REWARD_CONFIRMATION_UTIL_H_
 
+#include <optional>
 #include <string>
-
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-struct ConfirmationInfo;
-struct UserDataInfo;
 class TokenGeneratorInterface;
+struct ConfirmationInfo;
 struct TransactionInfo;
+struct UserDataInfo;
 
-absl::optional<std::string> BuildRewardCredential(
+std::optional<std::string> BuildRewardCredential(
     const ConfirmationInfo& confirmation);
 
-absl::optional<ConfirmationInfo> BuildRewardConfirmation(
+std::optional<ConfirmationInfo> BuildRewardConfirmation(
     TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
     const UserDataInfo& user_data);

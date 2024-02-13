@@ -17,22 +17,20 @@
 
 namespace brave_ads {
 
-absl::optional<std::string> BuildRotatingHash(
+std::optional<std::string> BuildRotatingHash(
     const TransactionInfo& transaction) {
   const std::string& device_id =
       GlobalState::GetInstance()->SysInfo().device_id;
   if (device_id.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  const int64_t timestamp_rounded_down_to_nearest_hour =
-      base::Time::Now().ToDeltaSinceWindowsEpoch().InSeconds() /
-      base::Time::kSecondsPerHour;
+  const int64_t timestamp_in_hours =
+      base::Time::Now().ToDeltaSinceWindowsEpoch().InHours();
 
-  return base::Base64Encode(crypto::Sha256(
-      base::StringPrintf("%s%s%" PRId64, device_id.c_str(),
-                         transaction.creative_instance_id.c_str(),
-                         timestamp_rounded_down_to_nearest_hour)));
+  return base::Base64Encode(crypto::Sha256(base::StringPrintf(
+      "%s%s%" PRId64, device_id.c_str(),
+      transaction.creative_instance_id.c_str(), timestamp_in_hours)));
 }
 
 }  // namespace brave_ads

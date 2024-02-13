@@ -10,11 +10,10 @@
 import inspect
 import os
 import re
-import sys
 import traceback
 
+import brave_chromium_utils
 import override_utils
-import import_inline
 
 # pylint: disable=line-too-long,protected-access,unused-variable
 
@@ -23,19 +22,13 @@ CANNED_CHECKS_KEY = 'canned'
 
 # Helper to load json5 presubmit config.
 def load_presubmit_config():
-    try:
-        json5_path = import_inline.join_src_dir('third_party', 'pyjson5',
-                                                'src')
-        sys.path.append(json5_path)
-        # pylint: disable=import-outside-toplevel,import-error
+    with brave_chromium_utils.sys_path('//third_party/pyjson5/src'):
+        # pylint: disable=import-outside-toplevel
         import json5
         return json5.load(
             open(
-                import_inline.join_src_dir('brave',
-                                           'chromium_presubmit_config.json5')))
-    finally:
-        # Restore sys.path to what it was before.
-        sys.path.remove(json5_path)
+                brave_chromium_utils.wspath(
+                    '//brave/chromium_presubmit_config.json5')))
 
 
 config = load_presubmit_config()
@@ -90,7 +83,7 @@ def override_canned_checks(canned_checks):
             src_filter = lambda f: input_api.FilterSourceFile(
                 f, files_to_check=files_to_check, files_to_skip=files_to_skip)
             return [
-                f.LocalPath()
+                f.AbsoluteLocalPath()
                 for f in input_api.AffectedSourceFiles(src_filter)
             ]
 
@@ -192,11 +185,11 @@ def setup_per_check_file_filter(input_api):
 
 
 # Inlines presubmit file as if it was run from the dir where it's located.
-def inline_presubmit_from_src(filename, _globals, _locals):
+def inline_presubmit(filename, _globals, _locals):
     class State:
         def __init__(self, filename):
             self.presubmit_dir = os.path.dirname(
-                import_inline.join_src_dir(filename))
+                brave_chromium_utils.wspath(filename))
             self.orig_cwd = os.getcwd()
             self.orig_presubmit_dir = ''
 
@@ -220,7 +213,7 @@ def inline_presubmit_from_src(filename, _globals, _locals):
     assert pre_check_name not in _globals
     _globals[pre_check_name] = PreRunChecks
 
-    import_inline.inline_file_from_src(filename, _globals, _locals)
+    brave_chromium_utils.inline_file(filename, _globals, _locals)
     apply_generic_check_overrides(_globals, filename, True)
 
     def PostRunChecks(input_api, _output_api):

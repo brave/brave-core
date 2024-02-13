@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"

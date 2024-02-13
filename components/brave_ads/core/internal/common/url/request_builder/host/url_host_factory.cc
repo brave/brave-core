@@ -8,6 +8,7 @@
 #include <ostream>
 
 #include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/anonymous_search_url_host.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/anonymous_url_host.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/geo_url_host.h"
@@ -41,7 +42,7 @@ std::unique_ptr<UrlHostInterface> UrlHostFactory::Build(
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for UrlHostType: "
-                        << static_cast<int>(type);
+                        << base::to_underlying(type);
 }
 
 }  // namespace brave_ads

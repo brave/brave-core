@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_SIGNING_KEY_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_SIGNING_KEY_H_
 
+#include <optional>
 #include <ostream>
 #include <string>
 
 #include "base/check.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
@@ -21,8 +21,8 @@ class SignedToken;
 class TokenPreimage;
 class UnblindedToken;
 
-// A |SigningKey| is used to sign a |BlindedToken| and to verify an
-// |UnblindedToken|.
+// A `SigningKey` is used to sign a `BlindedToken` and to verify an
+// `UnblindedToken`.
 
 class SigningKey {
  public:
@@ -55,17 +55,17 @@ class SigningKey {
   }
 
   static SigningKey DecodeBase64(const std::string& signing_key_base64);
-  absl::optional<std::string> EncodeBase64() const;
+  std::optional<std::string> EncodeBase64() const;
 
-  absl::optional<SignedToken> Sign(const BlindedToken& blinded_token) const;
+  std::optional<SignedToken> Sign(const BlindedToken& blinded_token) const;
 
-  absl::optional<UnblindedToken> RederiveUnblindedToken(
+  std::optional<UnblindedToken> RederiveUnblindedToken(
       const TokenPreimage& token_preimage);
 
-  absl::optional<PublicKey> GetPublicKey();
+  std::optional<PublicKey> GetPublicKey();
 
  private:
-  absl::optional<challenge_bypass_ristretto::SigningKey> signing_key_;
+  std::optional<challenge_bypass_ristretto::SigningKey> signing_key_;
 };
 
 std::ostream& operator<<(std::ostream& os, const SigningKey& signing_key);

@@ -27,7 +27,7 @@ extern const base::FeatureParam<double> kBraveNewsPopScoreHalfLife;
 // Used as the fallback |pop_score| value for articles we
 // don't have a |pop_score| for, such as articles from a direct feed, or just
 // articles that Brave Search doesn't have enough information about.
-extern const base::FeatureParam<double> kBraveNewsPopScoreFallback;
+extern const base::FeatureParam<double> kBraveNewsPopScoreMin;
 
 // The ratio at which inline cards present discovery options (i.e. a source the
 // user has not visited before).

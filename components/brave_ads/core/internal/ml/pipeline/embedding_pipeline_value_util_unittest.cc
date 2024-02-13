@@ -74,7 +74,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
   };
 
   // Act
-  absl::optional<EmbeddingPipelineInfo> pipeline =
+  std::optional<EmbeddingPipelineInfo> pipeline =
       EmbeddingPipelineFromValue(dict);
   ASSERT_TRUE(pipeline);
   EmbeddingPipelineInfo embedding_pipeline = std::move(pipeline).value();

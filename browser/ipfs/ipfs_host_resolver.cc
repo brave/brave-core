@@ -3,19 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ipfs/ipfs_host_resolver.h"
+
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/base/host_port_pair.h"
 #include "net/dns/public/dns_protocol.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -24,7 +25,7 @@ namespace {
 const char kDnsLinkHeader[] = "dnslink";
 
 // Expects dns TXT record in format: name=value
-absl::optional<std::string> GetDNSRecordValue(
+std::optional<std::string> GetDNSRecordValue(
     const std::vector<std::string>& text_results,
     const std::string& name) {
   for (const auto& txt : text_results) {
@@ -36,7 +37,7 @@ absl::optional<std::string> GetDNSRecordValue(
       continue;
     return tokens.back();
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace
@@ -69,7 +70,7 @@ void IPFSHostResolver::Resolve(
 
   receiver_.reset();
   resolved_callback_ = std::move(callback);
-  dnslink_ = absl::nullopt;
+  dnslink_ = std::nullopt;
   resolving_host_ = host.host();
   net::HostPortPair local_host_port(prefix_ + resolving_host_, host.port());
   auto* network_context = GetNetworkContext();
@@ -96,14 +97,14 @@ network::mojom::NetworkContext* IPFSHostResolver::GetNetworkContext() {
 void IPFSHostResolver::OnComplete(
     int result,
     const net::ResolveErrorInfo& error_info,
-    const absl::optional<net::AddressList>& list,
-    const absl::optional<net::HostResolverEndpointResults>&
+    const std::optional<net::AddressList>& list,
+    const std::optional<net::HostResolverEndpointResults>&
         endpoint_results_with_metadata) {
   if (result != net::OK) {
     VLOG(1) << "DNS resolving error:" << net::ErrorToString(result)
             << " for host: " << prefix_ + resolving_host_;
     if (resolved_callback_) {
-      std::move(resolved_callback_).Run(resolving_host_, absl::nullopt);
+      std::move(resolved_callback_).Run(resolving_host_, std::nullopt);
     }
   }
 }

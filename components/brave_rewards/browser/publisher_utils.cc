@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/browser/publisher_utils.h"
 
 #include <array>
+#include <optional>
 
 #include "base/ranges/algorithm.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -34,33 +35,33 @@ bool IsMediaPlatformURL(const GURL& url) {
 
 }  // namespace
 
-absl::optional<std::string> GetPublisherIdFromURL(const GURL& url) {
+std::optional<std::string> GetPublisherIdFromURL(const GURL& url) {
   if (IsMediaPlatformURL(url)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return GetPublisherDomainFromURL(url);
 }
 
-absl::optional<std::string> GetPublisherDomainFromURL(const GURL& url) {
+std::optional<std::string> GetPublisherDomainFromURL(const GURL& url) {
 #if BUILDFLAG(ENABLE_IPFS)
   if (url.SchemeIs(ipfs::kIPNSScheme)) {
     std::string domain = ipfs::GetRegistryDomainFromIPNS(url);
     if (domain.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     return domain;
   }
 #endif
 
   if (!url.SchemeIsHTTPOrHTTPS()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
       url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   if (domain.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return domain;
 }

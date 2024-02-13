@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Penanda Halaman";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Muat Turun";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Capai laman web kegemaran anda dengan cepat.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Kegemaran";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "Sejarah";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Cuba lagi kemudian";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Baca Lebih Lanjut";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Dapatkan berita terkini";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Berita Hangat";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Sila buka Brave untuk melihat kegemaran anda di sini";
+
+/* QR Code section title */
+"widgets.QRCode" = "Kod QR";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Carian";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Ringkasan tentang cara Brave menjimatkan masa anda dan melindungi anda dalam talian.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Statistik Privasi";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Statistik Privasi";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Cari atau taip URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Tab Baharu";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Senarai Main";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Tab Peribadi";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Capaian cepat untuk membuat carian melalui web atau membuka halaman web dalam Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Pintasan";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Ringkasan tentang cara Brave telah melindungi anda dalam talian.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Statistik Privasi";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Brave Wallet";
+

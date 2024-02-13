@@ -11,7 +11,6 @@
 
 #include "base/files/file_path.h"
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 

@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_MESSAGE_ADDRESS_TABLE_LOOKUP_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_MESSAGE_ADDRESS_TABLE_LOOKUP_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -36,17 +36,17 @@ class SolanaMessageAddressTableLookup {
   bool operator==(const SolanaMessageAddressTableLookup&) const;
 
   void Serialize(std::vector<uint8_t>* bytes) const;
-  static absl::optional<SolanaMessageAddressTableLookup> Deserialize(
+  static std::optional<SolanaMessageAddressTableLookup> Deserialize(
       const std::vector<uint8_t>& bytes,
       size_t* bytes_index);
 
   base::Value::Dict ToValue() const;
-  static absl::optional<SolanaMessageAddressTableLookup> FromValue(
+  static std::optional<SolanaMessageAddressTableLookup> FromValue(
       const base::Value::Dict& value);
   static std::vector<mojom::SolanaMessageAddressTableLookupPtr> ToMojomArray(
       const std::vector<SolanaMessageAddressTableLookup>&
           address_table_lookups);
-  static absl::optional<std::vector<SolanaMessageAddressTableLookup>>
+  static std::optional<std::vector<SolanaMessageAddressTableLookup>>
   FromMojomArray(const std::vector<mojom::SolanaMessageAddressTableLookupPtr>&
                      mojom_lookups);
 

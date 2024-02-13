@@ -27,10 +27,10 @@ DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
 void DatabaseSKUTransaction::InsertOrUpdate(
     mojom::SKUTransactionPtr transaction,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (!transaction) {
-    BLOG(1, "Transcation is null");
-    callback(mojom::Result::FAILED);
+    engine_->Log(FROM_HERE) << "Transcation is null";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -64,11 +64,11 @@ void DatabaseSKUTransaction::InsertOrUpdate(
 void DatabaseSKUTransaction::SaveExternalTransaction(
     const std::string& transaction_id,
     const std::string& external_transaction_id,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (transaction_id.empty() || external_transaction_id.empty()) {
-    BLOG(1,
-         "Data is empty " << transaction_id << "/" << external_transaction_id);
-    callback(mojom::Result::FAILED);
+    engine_->Log(FROM_HERE)
+        << "Data is empty " << transaction_id << "/" << external_transaction_id;
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -98,8 +98,9 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
     const std::string& order_id,
     GetSKUTransactionCallback callback) {
   if (order_id.empty()) {
-    BLOG(1, "Order id is empty");
-    callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
+    engine_->Log(FROM_HERE) << "Order id is empty";
+    std::move(callback).Run(
+        base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
   auto transaction = mojom::DBTransaction::New();
@@ -134,20 +135,23 @@ void DatabaseSKUTransaction::OnGetRecord(GetSKUTransactionCallback callback,
                                          mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run(
+        base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
 
   if (response->result->get_records().empty()) {
-    callback(base::unexpected(GetSKUTransactionError::kTransactionNotFound));
+    std::move(callback).Run(
+        base::unexpected(GetSKUTransactionError::kTransactionNotFound));
     return;
   }
 
   if (response->result->get_records().size() > 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
-    callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
+    std::move(callback).Run(
+        base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
 
@@ -162,7 +166,7 @@ void DatabaseSKUTransaction::OnGetRecord(GetSKUTransactionCallback callback,
   info->status =
       static_cast<mojom::SKUTransactionStatus>(GetIntColumn(record, 5));
 
-  callback(std::move(info));
+  std::move(callback).Run(std::move(info));
 }
 
 }  // namespace database

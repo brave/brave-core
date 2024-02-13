@@ -11,7 +11,7 @@ import Carousel from './Carousel'
 import CustomizeLink from './CustomizeLink'
 import CustomizePage from './CustomizePage'
 import DiscoverSection from './DiscoverSection'
-import FeedCard from './FeedCard'
+import PublisherCard from '../../../../../brave_news/browser/resources/shared/PublisherCard'
 
 const usePopularPublisherIds = () => {
   const { filteredPublisherIds, publishers, locale } = useBraveNews()
@@ -49,7 +49,7 @@ export function PopularPage () {
   const popularPublisherIds = usePopularPublisherIds()
   return <CustomizePage title={getLocale('braveNewsPopularTitle')}>
     <DiscoverSection>
-      {popularPublisherIds.map(p => <FeedCard key={p} publisherId={p} />)}
+      {popularPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
     </DiscoverSection>
   </CustomizePage>
 }

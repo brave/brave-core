@@ -6,19 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_UNBLINDED_TOKEN_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_UNBLINDED_TOKEN_H_
 
+#include <optional>
 #include <ostream>
 #include <string>
 
 #include "base/check.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
 class TokenPreimage;
 class VerificationKey;
 
-// An |UnblindedToken| is the result of unblinding a |SignedToken|. While both
+// An `UnblindedToken` is the result of unblinding a `SignedToken`. While both
 // the client and server both "know" this value, it should nevertheless not be
 // sent between the two.
 
@@ -55,14 +55,14 @@ class UnblindedToken {
   }
 
   static UnblindedToken DecodeBase64(const std::string& unblinded_token_base64);
-  absl::optional<std::string> EncodeBase64() const;
+  std::optional<std::string> EncodeBase64() const;
 
-  absl::optional<VerificationKey> DeriveVerificationKey() const;
+  std::optional<VerificationKey> DeriveVerificationKey() const;
 
-  absl::optional<TokenPreimage> GetTokenPreimage() const;
+  std::optional<TokenPreimage> GetTokenPreimage() const;
 
  private:
-  absl::optional<challenge_bypass_ristretto::UnblindedToken> unblinded_token_;
+  std::optional<challenge_bypass_ristretto::UnblindedToken> unblinded_token_;
 };
 
 std::ostream& operator<<(std::ostream& os,

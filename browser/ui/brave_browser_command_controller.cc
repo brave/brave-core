@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -253,6 +254,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandsForMute();
   UpdateCommandsForSend();
   UpdateCommandsForPin();
+
+  UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -512,6 +515,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_BRAVE_SEND_TAB_TO_SELF:
       chrome::SendTabToSelfFromPageAction(&*browser_);
       break;
+    case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
+      brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));
+      break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
       break;
@@ -523,7 +529,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void BraveBrowserCommandController::OnPurchasedStateChanged(
     brave_vpn::mojom::PurchasedState state,
-    const absl::optional<std::string>& description) {
+    const std::optional<std::string>& description) {
   UpdateCommandForBraveVPN();
 }
 #endif

@@ -3,15 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "ui/views/controls/button/md_text_button.h"
-
+#include <optional>
 #include <tuple>
 
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "build/build_config.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_id.h"
@@ -22,6 +20,7 @@
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
@@ -44,8 +43,8 @@ using ColorScheme = ui::NativeTheme::PreferredColorScheme;
 using ButtonState = views::Button::ButtonState;
 
 struct ButtonStyle {
-  absl::optional<SkColor> background_color;
-  absl::optional<SkColor> border_color;
+  std::optional<SkColor> background_color;
+  std::optional<SkColor> border_color;
   SkColor text_color;
 };
 
@@ -68,71 +67,71 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
       button_themes(
           {{{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
             {.background_color = kBravePrimaryColor,
-             .border_color = absl::nullopt,
+             .border_color = std::nullopt,
              .text_color = SK_ColorWHITE}},
            {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
             {.background_color = kBravePrimaryColor,
-             .border_color = absl::nullopt,
+             .border_color = std::nullopt,
              .text_color = SK_ColorWHITE}},
            {{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
             {.background_color = SkColorSetRGB(24, 56, 172),
-             .border_color = absl::nullopt,
+             .border_color = std::nullopt,
              .text_color = SK_ColorWHITE}},
            {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
             {.background_color = SkColorSetRGB(77, 92, 253),
-             .border_color = absl::nullopt,
+             .border_color = std::nullopt,
              .text_color = SK_ColorWHITE}},
 
            {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-            {.background_color = absl::nullopt,
+            {.background_color = std::nullopt,
              .border_color = SK_ColorBLACK,
              .text_color = SK_ColorBLACK}},
            {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-            {.background_color = absl::nullopt,
+            {.background_color = std::nullopt,
              .border_color = SK_ColorWHITE,
              .text_color = SK_ColorWHITE}},
            {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
-            {.background_color = absl::nullopt,
+            {.background_color = std::nullopt,
              .border_color = kBravePrimaryColor,
              .text_color = kBravePrimaryColor}},
            {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-            {.background_color = absl::nullopt,
+            {.background_color = std::nullopt,
              .border_color = kBravePrimaryColor,
              .text_color = kBravePrimaryColor}},
 
            {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-            {.background_color = absl::nullopt,
-             .border_color = absl::nullopt,
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
              .text_color = SkColorSetRGB(32, 74, 227)}},
            {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-            {.background_color = absl::nullopt,
-             .border_color = absl::nullopt,
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
              .text_color = SkColorSetRGB(153, 173, 243)}},
            {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
-            {.background_color = absl::nullopt,
-             .border_color = absl::nullopt,
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
              .text_color = SkColorSetRGB(24, 56, 172)}},
            {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-            {.background_color = absl::nullopt,
-             .border_color = absl::nullopt,
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
              .text_color = SkColorSetRGB(186, 199, 247)}},
 
            {{Kind::kQuaternary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-            {.background_color = absl::nullopt,
-             .border_color = absl::nullopt,
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
              .text_color = SkColorSetRGB(84, 96, 113)}},
            {{Kind::kQuaternary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-            {.background_color = absl::nullopt,
-             .border_color = absl::nullopt,
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
              .text_color = SkColorSetRGB(195, 201, 211)}},
            {{Kind::kQuaternary, ColorScheme::kLight,
              ButtonState::STATE_HOVERED},
-            {.background_color = absl::nullopt,
-             .border_color = absl::nullopt,
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
              .text_color = SkColorSetRGB(63, 72, 85)}},
            {{Kind::kQuaternary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-            {.background_color = absl::nullopt,
-             .border_color = absl::nullopt,
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
              .text_color = SkColorSetRGB(195, 201, 211)}}});
 
   return *button_themes;
@@ -157,8 +156,12 @@ namespace views {
 
 MdTextButton::MdTextButton(PressedCallback callback,
                            const std::u16string& text,
-                           int button_context)
-    : MdTextButtonBase(std::move(callback), text, button_context) {
+                           int button_context,
+                           bool use_text_color_for_icon)
+    : MdTextButtonBase(std::move(callback),
+                       text,
+                       button_context,
+                       use_text_color_for_icon) {
   SetCornerRadius(100);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
@@ -230,7 +233,7 @@ void MdTextButton::UpdateTextColor() {
   // Once we update the buttons across Brave to use the new style, we can remove
   // this branch.
   if (kind_ == kOld) {
-    if (GetProminent()) {
+    if (GetStyle() == ui::ButtonStyle::kProminent) {
       return;
     }
     const ui::NativeTheme* theme = GetNativeTheme();
@@ -254,7 +257,7 @@ void MdTextButton::UpdateBackgroundColor() {
     MdTextButtonBase::UpdateBackgroundColor();
 
     // We don't modify the Prominent button at all.
-    if (GetProminent()) {
+    if (GetStyle() == ui::ButtonStyle::kProminent) {
       return;
     }
 
@@ -306,7 +309,7 @@ void MdTextButton::UpdateColors() {
 void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
   // Set brave-style hover colors
   MdTextButtonBase::OnPaintBackground(canvas);
-  if (GetProminent() &&
+  if (GetStyle() == ui::ButtonStyle::kProminent &&
       (hover_animation().is_animating() || GetState() == STATE_HOVERED)) {
     constexpr SkColor normal_color = kBraveBrandColor;
     constexpr SkColor hover_color = SkColorSetRGB(0xff, 0x97, 0x7d);
@@ -366,6 +369,9 @@ MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
               style.border_color.value_or(SK_ColorTRANSPARENT), opacity),
           .text_color = AddOpacity(style.text_color, opacity)};
 }
+
+BEGIN_METADATA(MdTextButton)
+END_METADATA
 
 }  // namespace views
 

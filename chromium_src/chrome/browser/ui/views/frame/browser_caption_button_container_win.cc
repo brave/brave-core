@@ -8,6 +8,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 
 #define BrowserCaptionButtonContainer BrowserCaptionButtonContainer_ChromiumImpl
 
@@ -51,3 +52,6 @@ void BrowserCaptionButtonContainer::UpdateSearchTabsButtonState() {
     button->SetVisible(is_tab_search_visible);
   }
 }
+
+BEGIN_METADATA(BrowserCaptionButtonContainer)
+END_METADATA

@@ -1,0 +1,33 @@
+[package]
+name = "star-sharks"
+version = "0.6.1"
+authors = ["Aitor Ruano <codearm@pm.me>", "Alex Davidson <coela@alxdavids.xyz>", "Ralph Giles <rgiles@brave.com>"]
+description = "Shamir's Secret Sharing library for the STAR protocol"
+repository = "https://github.com/brave/sta-rs"
+readme = "README.md"
+keywords = ["shamir", "secret", "sharing", "share", "crypto"]
+categories = ["algorithms", "cryptography", "mathematics"]
+license = "MIT/Apache-2.0"
+edition = "2018"
+
+[features]
+default = ["std", "zeroize_memory"]
+std = ["rand/std", "rand/std_rng"]
+fuzzing = ["std", "arbitrary"]
+zeroize_memory = ["zeroize"]
+
+[dependencies]
+rand = { version = "0.8.5", default-features = false }
+arbitrary = { version = "1.3.0", features = ["derive"], optional = true }
+zeroize = { version = "1.5.5", features = ["zeroize_derive"], optional = true }
+ff = { version = "0.13", features = ["derive"] }
+bitvec = { version = "1.0.1", default-features = false }
+byteorder = { version = "1", default-features = false }
+
+[dev-dependencies]
+criterion = "0.5"
+rand_chacha = "0.3"
+
+[[bench]]
+name = "benchmarks"
+harness = false

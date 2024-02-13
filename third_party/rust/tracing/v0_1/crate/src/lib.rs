@@ -19,7 +19,7 @@
 //! The `tracing` crate provides the APIs necessary for instrumenting libraries
 //! and applications to emit trace data.
 //!
-//! *Compiler support: [requires `rustc` 1.49+][msrv]*
+//! *Compiler support: [requires `rustc` 1.56+][msrv]*
 //!
 //! [msrv]: #supported-rust-versions
 //! # Core Concepts
@@ -192,7 +192,7 @@
 //!
 //! You can find more examples showing how to use this crate [here][examples].
 //!
-//! [RAII]: https://github.com/rust-unofficial/patterns/blob/master/patterns/behavioural/RAII.md
+//! [RAII]: https://github.com/rust-unofficial/patterns/blob/main/src/patterns/behavioural/RAII.md
 //! [examples]: https://github.com/tokio-rs/tracing/tree/master/examples
 //!
 //! ### Events
@@ -214,7 +214,7 @@
 //! ### Configuring Attributes
 //!
 //! Both macros require a [`Level`] specifying the verbosity of the span or
-//! event. Optionally, the [target] and [parent span] may be overridden. If the
+//! event. Optionally, the, [target] and [parent span] may be overridden. If the
 //! target and parent span are not overridden, they will default to the
 //! module path where the macro was invoked and the current span (as determined
 //! by the subscriber), respectively.
@@ -237,7 +237,16 @@
 //! ```
 //!
 //! The span macros also take a string literal after the level, to set the name
-//! of the span.
+//! of the span (as above).  In the case of the event macros, the name of the event can
+//! be overridden (the default is `event file:line`) using the `name:` specifier.
+//!
+//! ```
+//! # use tracing::{span, event, Level};
+//! # fn main() {
+//! span!(Level::TRACE, "my span");
+//! event!(name: "some_info", Level::INFO, "something has happened!");
+//! # }
+//! ```
 //!
 //! ### Recording Fields
 //!
@@ -307,6 +316,19 @@
 //! //  - "guid:x-request-id", containing a `:`, with the value "abcdef"
 //! //  - "type", which is a reserved word, with the value "request"
 //! span!(Level::TRACE, "api", "guid:x-request-id" = "abcdef", "type" = "request");
+//! # }
+//!```
+//!
+//! Constant expressions can also be used as field names. Constants
+//! must be enclosed in curly braces (`{}`) to indicate that the *value*
+//! of the constant is to be used as the field name, rather than the
+//! constant's name. For example:
+//! ```
+//! # use tracing::{span, Level};
+//! # fn main() {
+//! const RESOURCE_NAME: &str = "foo";
+//! // this span will have the field `foo = "some_id"`
+//! span!(Level::TRACE, "get", { RESOURCE_NAME } = "some_id");
 //! # }
 //!```
 //!
@@ -384,22 +406,6 @@
 //!
 //! // Now, record a value for parting as well.
 //! span.record("parting", &"goodbye world!");
-//! ```
-//!
-//! Note that a span may have up to 32 fields. The following will not compile:
-//!
-//! ```rust,compile_fail
-//! # use tracing::Level;
-//! # fn main() {
-//! let bad_span = span!(
-//!     Level::TRACE,
-//!     "too many fields!",
-//!     a = 1, b = 2, c = 3, d = 4, e = 5, f = 6, g = 7, h = 8, i = 9,
-//!     j = 10, k = 11, l = 12, m = 13, n = 14, o = 15, p = 16, q = 17,
-//!     r = 18, s = 19, t = 20, u = 21, v = 22, w = 23, x = 24, y = 25,
-//!     z = 26, aa = 27, bb = 28, cc = 29, dd = 30, ee = 31, ff = 32, gg = 33
-//! );
-//! # }
 //! ```
 //!
 //! Finally, events may also include human-readable messages, in the form of a
@@ -719,6 +725,7 @@
 //!  - [`tracing-actix-web`] provides `tracing` integration for the `actix-web` web framework.
 //!  - [`tracing-actix`] provides `tracing` integration for the `actix` actor
 //!    framework.
+//!  - [`axum-insights`] provides `tracing` integration and Application insights export for the `axum` web framework.
 //!  - [`tracing-gelf`] implements a subscriber for exporting traces in Greylog
 //!    GELF format.
 //!  - [`tracing-coz`] provides integration with the [coz] causal profiler
@@ -747,6 +754,8 @@
 //!  - [`tracing-loki`] provides a layer for shipping logs to [Grafana Loki].
 //!  - [`tracing-logfmt`] provides a layer that formats events and spans into the logfmt format.
 //!  - [`reqwest-tracing`] provides a middleware to trace [`reqwest`] HTTP requests.
+//!  - [`tracing-cloudwatch`] provides a layer that sends events to AWS CloudWatch Logs.
+//!  - [`clippy-tracing`] provides a tool to add, remove and check for `tracing::instrument`.
 //!
 //! If you're the maintainer of a `tracing` ecosystem crate not listed above,
 //! please let us know! We'd love to add your project to the list!
@@ -758,6 +767,7 @@
 //! [honeycomb.io]: https://www.honeycomb.io/
 //! [`tracing-actix-web`]: https://crates.io/crates/tracing-actix-web
 //! [`tracing-actix`]: https://crates.io/crates/tracing-actix
+//! [`axum-insights`]: https://crates.io/crates/axum-insights
 //! [`tracing-gelf`]: https://crates.io/crates/tracing-gelf
 //! [`tracing-coz`]: https://crates.io/crates/tracing-coz
 //! [coz]: https://github.com/plasma-umass/coz
@@ -776,7 +786,7 @@
 //! [Tracy]: https://github.com/wolfpld/tracy
 //! [`tracing-elastic-apm`]: https://crates.io/crates/tracing-elastic-apm
 //! [Elastic APM]: https://www.elastic.co/apm
-//! [`tracing-etw`]: https://github.com/microsoft/tracing-etw
+//! [`tracing-etw`]: https://github.com/microsoft/rust_win_etw/tree/main/win_etw_tracing
 //! [ETW]: https://docs.microsoft.com/en-us/windows/win32/etw/about-event-tracing
 //! [`tracing-fluent-assertions`]: https://crates.io/crates/tracing-fluent-assertions
 //! [`sentry-tracing`]: https://crates.io/crates/sentry-tracing
@@ -787,6 +797,8 @@
 //! [`tracing-logfmt`]: https://crates.io/crates/tracing-logfmt
 //! [`reqwest-tracing`]: https://crates.io/crates/reqwest-tracing
 //! [`reqwest`]: https://crates.io/crates/reqwest
+//! [`tracing-cloudwatch`]: https://crates.io/crates/tracing-cloudwatch
+//! [`clippy-tracing`]: https://crates.io/crates/clippy-tracing
 //!
 //! <pre class="ignore" style="white-space:normal;font:inherit;">
 //!     <strong>Note</strong>: Some of these ecosystem crates are currently
@@ -817,7 +829,7 @@
 //!
 //!   ```toml
 //!   [dependencies]
-//!   tracing = { version = "0.1.37", default-features = false }
+//!   tracing = { version = "0.1.38", default-features = false }
 //!   ```
 //!
 //! <pre class="ignore" style="white-space:normal;font:inherit;">
@@ -859,14 +871,14 @@
 //! ## Supported Rust Versions
 //!
 //! Tracing is built against the latest stable release. The minimum supported
-//! version is 1.49. The current Tracing version is not guaranteed to build on
+//! version is 1.56. The current Tracing version is not guaranteed to build on
 //! Rust versions earlier than the minimum supported version.
 //!
 //! Tracing follows the same compiler support policies as the rest of the Tokio
 //! project. The current stable Rust compiler and the three most recent minor
 //! versions before it will always be supported. For example, if the current
-//! stable compiler version is 1.45, the minimum supported version will not be
-//! increased past 1.42, three minor versions prior. Increasing the minimum
+//! stable compiler version is 1.69, the minimum supported version will not be
+//! increased past 1.66, three minor versions prior. Increasing the minimum
 //! supported compiler version is not considered a semver breaking change as
 //! long as doing so complies with this policy.
 //!
@@ -900,7 +912,6 @@
 //! [flags]: #crate-feature-flags
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(docsrs, feature(doc_cfg), deny(rustdoc::broken_intra_doc_links))]
-#![doc(html_root_url = "https://docs.rs/tracing/0.1.37")]
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png",
     issue_tracker_base_url = "https://github.com/tokio-rs/tracing/issues/"
@@ -911,7 +922,6 @@
     rust_2018_idioms,
     unreachable_pub,
     bad_style,
-    const_err,
     dead_code,
     improper_ctypes,
     non_shorthand_field_patterns,

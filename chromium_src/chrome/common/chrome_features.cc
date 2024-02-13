@@ -15,13 +15,10 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kKAnonymityServiceOHTTPRequests, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivacyGuide3, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {kDesktopPWAsLinkCapturing, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
-    {kPrivacyGuide3, base::FEATURE_DISABLED_BY_DEFAULT},
-#if BUILDFLAG(IS_ANDROID)
-    {kPrivacyGuideAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrivacyGuideAndroidPostMVP, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kPrivacyGuidePreload, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_ANDROID)

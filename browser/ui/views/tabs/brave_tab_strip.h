@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -30,15 +31,16 @@ class BraveTabStrip : public TabStrip {
       const ui::LocatedEvent& event,
       const ui::ListSelectionModel& original_selection) override;
   void AddedToWidget() override;
-  absl::optional<int> GetCustomBackgroundId(
+  std::optional<int> GetCustomBackgroundId(
       BrowserFrameActiveState active_state) const override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
 
   void UpdateTabContainer();
-  void UpdateTabStripMargins();
   bool ShouldShowVerticalTabs() const;
+
+  TabContainer* GetTabContainerForTesting();
 
   // TabStrip overrides:
   SkColor GetTabSeparatorColor() const override;

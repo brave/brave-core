@@ -49,6 +49,10 @@ base::Value::Dict ConstructAboutInformation(
       section_brave_sync.AddBoolStat("OS encryption available");
   is_os_encryption_available->Set(OSCrypt::IsEncryptionAvailable());
 
+  Stat<std::string>* leave_chain_details =
+      section_brave_sync.AddStringStat("Leave chain details");
+  leave_chain_details->Set(brave_sync_service->prefs().GetLeaveChainDetails());
+
   base::Value::List* details = about_info.FindList(kDetailsKey);
   DCHECK_NE(details, nullptr);
 

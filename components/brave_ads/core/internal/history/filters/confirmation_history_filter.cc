@@ -15,7 +15,7 @@ namespace brave_ads {
 
 namespace {
 
-bool ShouldFilterConfirmationType(ConfirmationType confirmation_type) {
+bool ShouldFilterConfirmationType(const ConfirmationType confirmation_type) {
   switch (confirmation_type) {
     case ConfirmationType::kViewed:
     case ConfirmationType::kClicked:
@@ -24,17 +24,17 @@ bool ShouldFilterConfirmationType(ConfirmationType confirmation_type) {
     }
 
     case ConfirmationType::kServed:
-    case ConfirmationType::kTransferred:
-    case ConfirmationType::kSaved:
-    case ConfirmationType::kFlagged:
-    case ConfirmationType::kUpvoted:
-    case ConfirmationType::kDownvoted:
+    case ConfirmationType::kLanded:
+    case ConfirmationType::kSavedAd:
+    case ConfirmationType::kMarkAdAsInappropriate:
+    case ConfirmationType::kLikedAd:
+    case ConfirmationType::kDislikedAd:
     case ConfirmationType::kConversion: {
       return true;
     }
 
     case ConfirmationType::kUndefined: {
-      NOTREACHED_NORETURN();
+      break;
     }
   }
 
@@ -42,7 +42,7 @@ bool ShouldFilterConfirmationType(ConfirmationType confirmation_type) {
                         << base::to_underlying(confirmation_type);
 }
 
-std::map</*placement_id=*/std::string, HistoryItemInfo> BuildBuckets(
+std::map</*placement_id*/ std::string, HistoryItemInfo> BuildBuckets(
     const HistoryItemList& history_items) {
   std::map<std::string, HistoryItemInfo> buckets;
 
@@ -54,14 +54,12 @@ std::map</*placement_id=*/std::string, HistoryItemInfo> BuildBuckets(
     }
 
     const std::string& placement_id = history_item.ad_content.placement_id;
-    const auto iter = buckets.find(placement_id);
-    if (iter == buckets.cend()) {
-      buckets.insert({placement_id, history_item});
-    } else {
+    auto [iter, inserted] = buckets.try_emplace(placement_id, history_item);
+    if (!inserted) {
       const HistoryItemInfo& current_history_item = iter->second;
       if (current_history_item.ad_content.confirmation_type >
           confirmation_type) {
-        buckets[placement_id] = history_item;
+        iter->second = history_item;
       }
     }
   }
@@ -71,16 +69,17 @@ std::map</*placement_id=*/std::string, HistoryItemInfo> BuildBuckets(
 
 }  // namespace
 
-HistoryItemList ConfirmationHistoryFilter::Apply(
-    const HistoryItemList& history) const {
+void ConfirmationHistoryFilter::Apply(HistoryItemList& history) const {
   const std::map<std::string, HistoryItemInfo> buckets = BuildBuckets(history);
 
   HistoryItemList filtered_history;
-  for (const auto& [placement_id, history_item] : buckets) {
+  filtered_history.reserve(buckets.size());
+
+  for (const auto& [_, history_item] : buckets) {
     filtered_history.push_back(history_item);
   }
 
-  return filtered_history;
+  history = filtered_history;
 }
 
 }  // namespace brave_ads

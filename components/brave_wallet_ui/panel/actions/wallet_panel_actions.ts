@@ -5,12 +5,10 @@
 
 import { createAction } from '@reduxjs/toolkit'
 import {
-  ConnectWithSitePayloadType,
   GetEncryptionPublicKeyProcessedPayload,
   DecryptProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainRequestPayload,
-  RequestSitePermissionPayloadType,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload,
@@ -21,11 +19,6 @@ import {
 import { BraveWallet, PanelTypes } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
-export const connectToSite =
-  createAction<ConnectWithSitePayloadType>('connectToSite')
-export const cancelConnectToSite = createAction('cancelConnectToSite')
-export const requestSitePermission =
-  createAction<RequestSitePermissionPayloadType>('requestSitePermission')
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
 export const showConnectToSite =
   createAction<ShowConnectToSitePayload>('showConnectToSite')

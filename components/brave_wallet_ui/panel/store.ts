@@ -21,7 +21,6 @@ import { panelReducer } from './reducers/panel_reducer'
 import { uiReducer, defaultUIState } from '../common/slices/ui.slice'
 
 // utils
-import { setApiProxyFetcher } from '../common/async/base-query-cache'
 import {
   makeJsonRpcServiceObserver,
   makeKeyringServiceObserver,
@@ -67,9 +66,6 @@ proxy.addBraveWalletPinServiceObserver(makeBraveWalletPinServiceObserver(store))
 proxy.addBraveWalletAutoPinServiceObserver(
   makeBraveWalletAutoPinServiceObserver(store)
 )
-
-// use this proxy in the api slice of the store
-setApiProxyFetcher(getWalletPanelApiProxy)
 
 export const walletPanelApiProxy = proxy
 

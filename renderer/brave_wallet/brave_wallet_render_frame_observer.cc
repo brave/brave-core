@@ -6,13 +6,13 @@
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "build/buildflag.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
@@ -28,7 +28,7 @@ BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 
 void BraveWalletRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    absl::optional<blink::WebNavigationType> navigation_type) {
+    std::optional<blink::WebNavigationType> navigation_type) {
   url_ = url;
 }
 

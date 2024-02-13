@@ -435,11 +435,19 @@ void EphemeralStorageBrowserTest::LoadIndexedDbHelper(RenderFrameHost* host) {
   ASSERT_EQ(true, content::EvalJs(host, kLoadIndexMinScript));
 }
 
-bool EphemeralStorageBrowserTest::SetIDBValue(RenderFrameHost* host) {
+content::EvalJsResult EphemeralStorageBrowserTest::SetIDBValue(
+    RenderFrameHost* host) {
   LoadIndexedDbHelper(host);
-  content::EvalJsResult eval_js_result = content::EvalJs(
-      host, "(async () => { await window.idbKeyval.set('a', 'a'); })()");
-  return eval_js_result.error.empty();
+  return content::EvalJs(host,
+                         R"((async () => {
+          try {
+            await window.idbKeyval.set('a', 'a');
+            return true;
+          } catch (e) {
+            return false;
+          }
+        })()
+      )");
 }
 
 HostContentSettingsMap* EphemeralStorageBrowserTest::content_settings() {
@@ -643,10 +651,18 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", before_timeout.iframe_1.local_storage);
   EXPECT_EQ("a.com value", before_timeout.iframe_2.local_storage);
 
-  // keepalive does not apply to session storage
-  EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
-  EXPECT_EQ(nullptr, before_timeout.iframe_1.session_storage);
-  EXPECT_EQ(nullptr, before_timeout.iframe_2.session_storage);
+  if (base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    // Session storage data is stored in a tab until its closed.
+    EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
+    EXPECT_EQ("a.com value", before_timeout.iframe_1.session_storage);
+    EXPECT_EQ("a.com value", before_timeout.iframe_2.session_storage);
+  } else {
+    // keepalive does not apply to session storage
+    EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
+    EXPECT_EQ(nullptr, before_timeout.iframe_1.session_storage);
+    EXPECT_EQ(nullptr, before_timeout.iframe_2.session_storage);
+  }
 
   EXPECT_EQ("name=acom_simple; from=a.com", before_timeout.main_frame.cookies);
   EXPECT_EQ("name=bcom_simple; from=a.com", before_timeout.iframe_1.cookies);
@@ -1068,21 +1084,22 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   RenderFrameHost* site_a_main_frame = web_contents->GetPrimaryMainFrame();
-  RenderFrameHost* nested_frames_tab =
+  RenderFrameHost* third_party_nested_bcom_frames =
       content::ChildFrameAt(site_a_main_frame, 3);
-  ASSERT_NE(nested_frames_tab, nullptr);
-  RenderFrameHost* first_party_nested_acom =
-      content::ChildFrameAt(nested_frames_tab, 2);
-  ASSERT_NE(first_party_nested_acom, nullptr);
+  ASSERT_NE(third_party_nested_bcom_frames, nullptr);
+  RenderFrameHost* third_party_nested_bcom_nested_acom =
+      content::ChildFrameAt(third_party_nested_bcom_frames, 2);
+  ASSERT_NE(third_party_nested_bcom_nested_acom, nullptr);
 
   WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
   RenderFrameHost* site_b_main_frame = site_b_tab->GetPrimaryMainFrame();
   RenderFrameHost* third_party_nested_acom =
       content::ChildFrameAt(site_b_main_frame, 2);
-  ASSERT_NE(first_party_nested_acom, nullptr);
+  ASSERT_NE(third_party_nested_acom, nullptr);
 
   ASSERT_EQ("name=acom", GetCookiesInFrame(site_a_main_frame));
-  ASSERT_EQ("name=acom", GetCookiesInFrame(first_party_nested_acom));
+  ASSERT_EQ("name=acom",
+            GetCookiesInFrame(third_party_nested_bcom_nested_acom));
   ASSERT_EQ("", GetCookiesInFrame(third_party_nested_acom));
 
   SetValuesInFrame(site_a_main_frame, "first-party-a.com",
@@ -1090,11 +1107,22 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   SetValuesInFrame(third_party_nested_acom, "third-party-a.com",
                    "name=third-party-a.com");
 
-  ValuesFromFrame first_party_values =
-      GetValuesFromFrame(first_party_nested_acom);
-  EXPECT_EQ("first-party-a.com", first_party_values.local_storage);
-  EXPECT_EQ("first-party-a.com", first_party_values.session_storage);
-  EXPECT_EQ("name=first-party-a.com", first_party_values.cookies);
+  // Values in a.com (main) -> b.com -> a.com frame.
+  ValuesFromFrame cross_site_acom_values =
+      GetValuesFromFrame(third_party_nested_bcom_nested_acom);
+  if (base::FeatureList::IsEnabled(
+          net::features::kThirdPartyStoragePartitioning)) {
+    // a.com -> b.com -> a.com is considered third-party. Storage should be
+    // partitioned from the main frame.
+    EXPECT_EQ(nullptr, cross_site_acom_values.local_storage);
+    EXPECT_EQ(nullptr, cross_site_acom_values.session_storage);
+  } else {
+    // a.com -> b.com -> a.com is NOT considered third-party.
+    EXPECT_EQ("first-party-a.com", cross_site_acom_values.local_storage);
+    EXPECT_EQ("first-party-a.com", cross_site_acom_values.session_storage);
+  }
+  // Cookies are not partitioned via kThirdPartyStoragePartitioning feature.
+  EXPECT_EQ("name=first-party-a.com", cross_site_acom_values.cookies);
 
   ValuesFromFrame third_party_values =
       GetValuesFromFrame(third_party_nested_acom);

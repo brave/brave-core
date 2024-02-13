@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 020073134f1ab091bb4fb54391df6804faf68841..39c17d5a7761c5ec5c4c29fa4d38ed5641004a2c 100644
+index b4b2f01a846a744d1df203a3b3e21b82516be035..704cb9a3040a16d305017e16016e91c8fa9ae16a 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -756,6 +756,7 @@ void LocationBarView::Layout() {
+@@ -706,6 +706,7 @@ void LocationBarView::Layout() {
+   if (show_overriding_permission_chip)
+     text_left += text_overriding_permission_chip_indent;
+ 
++  BRAVE_LAYOUT_LEADING_DECORATIONS
+   LocationBarLayout leading_decorations(LocationBarLayout::Position::kLeftEdge,
+                                         text_left);
+   LocationBarLayout trailing_decorations(
+@@ -785,6 +786,7 @@ void LocationBarView::Layout() {
      }
    };
  

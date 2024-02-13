@@ -45,6 +45,7 @@ struct PlaylistItem {
 
   // cached path or original src url
   url.mojom.Url media_path;
+  url.mojom.Url hls_media_path;
   url.mojom.Url thumbnail_path;
 
   // When it's |cached|, |media_path| and |thumbnail_path| will be
@@ -104,11 +105,13 @@ interface PlaylistService {
   ReorderItemFromPlaylist(string playlist_id, string item_id, int16 position)
       => (bool result);
 
-  // If you want to update a specific field, using the version for the feild
+  // If you want to update a specific field, using the version for the field
   // would be better to gurantee the data consistency. We have many concurrent
   // actors that update the item.
   UpdateItem(PlaylistItem item);
   UpdateItemLastPlayedPosition(string id, int32 last_played_position);
+  UpdateItemHlsMediaFilePath(string id, string media_file_path,
+    int64 updated_file_size);
 
   // Try downloading media files again. Returns PlaylistItem after trying
   // recovery. If it succeeded, |cached| state of the return item would be true.
@@ -132,7 +135,13 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
+  RequestStreamingQuery(string query_id, string url,string method);
+  ClearAllQueries();
+  CancelQuery(string query_id);
+
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
+  AddObserverForStreaming(pending_remote<PlaylistStreamingObserver> observer);
+  ClearObserverForStreaming();
 };
 
 // WebUI will delegate some UIs to native UI via this interface. While
@@ -155,10 +164,12 @@ interface PlaylistServiceObserver {
   // https://github.com/brave/brave-browser/issues/30735
   OnEvent(PlaylistEvent event, string playlist_id);
 
-  OnItemCreated(PlaylistItem item);
-  OnItemDeleted(string id);
-  OnItemAddedToList(string playlist_id, string item_id);
-  OnItemRemovedFromList(string playlist_id, string item_id);
+  OnItemCreated(PlaylistItem playlist_item);
+  OnItemLocalDataDeleted(string playlist_item_id);
+  OnItemAddedToList(string playlist_id, string playlist_item_id);
+  OnItemRemovedFromList(string playlist_id, string playlist_item_id);
+  OnItemCached(PlaylistItem playlist_item);
+  OnItemUpdated(PlaylistItem playlist_item);
 
   OnPlaylistUpdated(Playlist playlist);
 
@@ -174,6 +185,14 @@ interface PlaylistServiceObserver {
       array<PlaylistItem> items);
 };
 
-interface PlaylistRenderFrameBrowserClient {
+// Interface that is used to notify that found media from renderer process to 
+// browser process.
+interface PlaylistMediaHandler {
   OnMediaUpdatedFromRenderFrame();
+};
+
+interface PlaylistStreamingObserver {
+  OnResponseStarted(string url, int64 content_length);
+  OnDataReceived(array<uint8> data_received);
+  OnDataCompleted();
 };

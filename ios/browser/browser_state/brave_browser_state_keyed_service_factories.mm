@@ -11,6 +11,7 @@
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
+#include "brave/ios/browser/debounce/debounce_service_factory+private.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
 
@@ -25,6 +26,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   brave_wallet::SwapServiceFactory::GetInstance();
   skus::SkusServiceFactory::GetInstance();
   brave::URLSanitizerServiceFactory::GetInstance();
+  debounce::DebounceServiceFactory::GetInstance();
 }
 
 }  // namespace brave

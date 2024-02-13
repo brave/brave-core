@@ -17,17 +17,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 
 public class BraveRewardsUserWalletActivity
         extends AsyncInitializationActivity implements View.OnClickListener {
     private static final String TAG = "BraveRewards";
     public static final int UNDEFINED_WALLET_STATUS = -1;
 
-    private String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
+    private String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
 
     @Override
     protected void triggerLayoutInflation() {
@@ -53,12 +56,17 @@ public class BraveRewardsUserWalletActivity
         TextView txtUserStatus = (TextView) findViewById(R.id.user_status);
         Button btnGotoProvider = (Button) findViewById(R.id.provider_action);
         btnGotoProvider.setOnClickListener(this);
-        String providerText = (status == WalletStatus.CONNECTED)
-                ? String.format(getResources().getString(R.string.user_wallet_goto_provider),
-                        getWalletString(walletType))
-                : String.format(getResources().getString(R.string.login_provider),
-                        getWalletString(walletType));
+        String providerText =
+                (status == WalletStatus.CONNECTED)
+                        ? String.format(
+                                getResources().getString(R.string.user_wallet_goto_provider),
+                                getWalletString(mWalletType))
+                        : String.format(
+                                getResources().getString(R.string.login_provider),
+                                getWalletString(mWalletType));
         btnGotoProvider.setText(providerText);
+        btnGotoProvider.setCompoundDrawablesWithIntrinsicBounds(
+                0, 0, R.drawable.ic_rewards_external_link, 0);
 
         switch (status) {
             case WalletStatus.CONNECTED:
@@ -74,7 +82,7 @@ public class BraveRewardsUserWalletActivity
 
         String userId = intent.getStringExtra(BraveRewardsExternalWallet.USER_NAME);
         txtUserId.setText(userId);
-        txtUserId.setCompoundDrawablesWithIntrinsicBounds(getWalletIcon(walletType), 0, 0, 0);
+        txtUserId.setCompoundDrawablesWithIntrinsicBounds(getWalletIcon(mWalletType), 0, 0, 0);
     }
 
     private int getWalletIcon(String walletType) {
@@ -84,8 +92,10 @@ public class BraveRewardsUserWalletActivity
             return R.drawable.ic_gemini_logo_cyan;
         } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return R.drawable.ic_logo_bitflyer_colored;
-        } else {
+        } else if (walletType.equals(BraveWalletProvider.ZEBPAY)) {
             return R.drawable.ic_logo_zebpay;
+        } else {
+            return R.drawable.ic_logo_solana;
         }
     }
 
@@ -96,8 +106,10 @@ public class BraveRewardsUserWalletActivity
             return getResources().getString(R.string.gemini);
         } else if (walletType.equals(BraveWalletProvider.BITFLYER)) {
             return getResources().getString(R.string.bitflyer);
-        } else {
+        } else if (walletType.equals(BraveWalletProvider.ZEBPAY)) {
             return getResources().getString(R.string.zebpay);
+        } else {
+            return getResources().getString(R.string.wallet_sol_name);
         }
     }
 
@@ -138,5 +150,10 @@ public class BraveRewardsUserWalletActivity
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
     }
 }

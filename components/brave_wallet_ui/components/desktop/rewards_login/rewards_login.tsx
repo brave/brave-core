@@ -8,8 +8,8 @@ import Button from '@brave/leo/react/button'
 
 // Types
 import {
-  RewardsExternalWallet //
-} from '../../../common/async/brave_rewards_api_proxy'
+  ExternalWalletProvider //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -28,14 +28,11 @@ import {
 import { Row } from '../../shared/style'
 
 interface Props {
-  externalRewardsInfo: RewardsExternalWallet | null | undefined
+  provider: ExternalWalletProvider | undefined
 }
 
-export const RewardsLogin = (props: Props) => {
-  const { externalRewardsInfo } = props
-
+export const RewardsLogin = ({ provider }: Props) => {
   // Computed
-  const provider = externalRewardsInfo?.provider ?? ''
   const providerName = getRewardsProviderName(provider)
   const loginDescription = getLocale(
     'braveWalletBraveRewardsLoggedOutDescription'

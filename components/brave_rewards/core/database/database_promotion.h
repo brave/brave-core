@@ -14,17 +14,17 @@
 namespace brave_rewards::internal {
 namespace database {
 
-using GetPromotionCallback = std::function<void(mojom::PromotionPtr)>;
+using GetPromotionCallback = base::OnceCallback<void(mojom::PromotionPtr)>;
 
 using GetPromotionListCallback =
-    std::function<void(std::vector<mojom::PromotionPtr>)>;
+    base::OnceCallback<void(std::vector<mojom::PromotionPtr>)>;
 
 class DatabasePromotion : public DatabaseTable {
  public:
   explicit DatabasePromotion(RewardsEngineImpl& engine);
   ~DatabasePromotion() override;
 
-  void InsertOrUpdate(mojom::PromotionPtr info, LegacyResultCallback callback);
+  void InsertOrUpdate(mojom::PromotionPtr info, ResultCallback callback);
 
   void GetRecord(const std::string& id, GetPromotionCallback callback);
 
@@ -35,21 +35,21 @@ class DatabasePromotion : public DatabaseTable {
 
   void SaveClaimId(const std::string& promotion_id,
                    const std::string& claim_id,
-                   LegacyResultCallback callback);
+                   ResultCallback callback);
 
   void UpdateStatus(const std::string& promotion_id,
                     mojom::PromotionStatus status,
-                    LegacyResultCallback callback);
+                    ResultCallback callback);
 
   void UpdateRecordsStatus(const std::vector<std::string>& ids,
                            mojom::PromotionStatus status,
-                           LegacyResultCallback callback);
+                           ResultCallback callback);
 
   void CredentialCompleted(const std::string& promotion_id,
-                           LegacyResultCallback callback);
+                           ResultCallback callback);
 
   void UpdateRecordsBlankPublicKey(const std::vector<std::string>& ids,
-                                   LegacyResultCallback callback);
+                                   ResultCallback callback);
 
  private:
   void OnGetRecord(GetPromotionCallback callback,

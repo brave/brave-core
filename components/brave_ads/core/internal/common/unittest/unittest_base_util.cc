@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -22,22 +23,22 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 namespace {
 
 using AdEventHistoryMap =
-    base::flat_map</*type_id=*/std::string, std::vector<base::Time>>;
-using AdEventMap = base::flat_map</*uuid=*/std::string, AdEventHistoryMap>;
+    base::flat_map</*type_id*/ std::string, std::vector<base::Time>>;
+using AdEventMap = base::flat_map</*uuid*/ std::string, AdEventHistoryMap>;
 
 AdEventMap& AdEventCache() {
   static base::NoDestructor<AdEventMap> ad_events;
@@ -50,7 +51,7 @@ void MockFlags() {
   GlobalState::GetInstance()->Flags() = *BuildFlags();
 
   // Use the staging environment for tests if we did not append command line
-  // switches in |SetUpMocks|.
+  // switches in `SetUpMocks()`.
   if (!DidAppendCommandLineSwitches()) {
     CHECK(GlobalState::HasInstance());
     GlobalState::GetInstance()->Flags().environment_type =
@@ -138,8 +139,8 @@ void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock) {
 
 void MockSave(AdsClientMock& mock) {
   ON_CALL(mock, Save)
-      .WillByDefault(::testing::Invoke([](const std::string& /*name=*/,
-                                          const std::string& /*value=*/,
+      .WillByDefault(::testing::Invoke([](const std::string& /*name*/,
+                                          const std::string& /*value*/,
                                           SaveCallback callback) {
         std::move(callback).Run(/*success=*/true);
       }));
@@ -152,29 +153,29 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(name);
             if (!base::PathExists(path)) {
               // If path does not exist load the file from the test path.
-              path = GetTestPath().AppendASCII(name);
+              path = TestDataPath().AppendASCII(name);
             }
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              return std::move(callback).Run(absl::nullopt);
+              return std::move(callback).Run(std::nullopt);
             }
 
             std::move(callback).Run(value);
           }));
 }
 
-void MockLoadFileResource(AdsClientMock& mock,
-                          const base::ScopedTempDir& temp_dir) {
-  ON_CALL(mock, LoadFileResource)
+void MockLoadComponentResource(AdsClientMock& mock,
+                               const base::ScopedTempDir& temp_dir) {
+  ON_CALL(mock, LoadComponentResource)
       .WillByDefault(::testing::Invoke(
-          [&temp_dir](const std::string& id, const int /*version=*/,
+          [&temp_dir](const std::string& id, const int /*version*/,
                       LoadFileCallback callback) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(id);
 
             if (!base::PathExists(path)) {
               // If path does not exist load the file from the test path.
-              path = GetFileResourcePath().AppendASCII(id);
+              path = ComponentResourcesTestDataPath().AppendASCII(id);
             }
 
             base::File file(path, base::File::Flags::FLAG_OPEN |
@@ -187,7 +188,7 @@ void MockLoadDataResource(AdsClientMock& mock) {
   ON_CALL(mock, LoadDataResource)
       .WillByDefault(
           ::testing::Invoke([](const std::string& name) -> std::string {
-            return ReadFileFromDataResourcePathToString(name).value_or("");
+            return MaybeReadDataResourceToString(name).value_or("");
           }));
 }
 
@@ -210,7 +211,7 @@ void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
 void MockGetProfilePref(const AdsClientMock& mock) {
   ON_CALL(mock, GetProfilePref)
       .WillByDefault(::testing::Invoke(
-          [](const std::string& path) -> absl::optional<base::Value> {
+          [](const std::string& path) -> std::optional<base::Value> {
             return GetProfilePrefValue(path);
           }));
 }
@@ -231,7 +232,7 @@ void MockHasProfilePrefPath(const AdsClientMock& mock) {
 void MockGetLocalStatePref(const AdsClientMock& mock) {
   ON_CALL(mock, GetLocalStatePref)
       .WillByDefault(::testing::Invoke(
-          [](const std::string& path) -> absl::optional<base::Value> {
+          [](const std::string& path) -> std::optional<base::Value> {
             return GetLocalStatePrefValue(path);
           }));
 }

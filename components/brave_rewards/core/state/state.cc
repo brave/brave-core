@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/state/state.h"
+
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -17,7 +20,6 @@
 #include "brave/components/brave_rewards/core/endpoints/brave/get_parameters_utils.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 
@@ -38,7 +40,7 @@ std::string VectorDoubleToString(const std::vector<double>& items) {
 }
 
 std::vector<double> StringToVectorDouble(const std::string& items_string) {
-  absl::optional<base::Value> list = base::JSONReader::Read(items_string);
+  std::optional<base::Value> list = base::JSONReader::Read(items_string);
   if (!list || !list->is_list()) {
     return {};
   }
@@ -114,16 +116,17 @@ base::Value WalletProviderRegionsToValue(
 }
 
 base::flat_map<std::string, mojom::RegionsPtr> ValueToWalletProviderRegions(
+    RewardsEngineImpl& engine,
     const base::Value& value) {
   if (!value.is_dict()) {
-    BLOG(0, "Failed to parse JSON!");
+    engine.LogError(FROM_HERE) << "Failed to parse JSON";
     return {};
   }
 
   auto wallet_provider_regions =
       endpoints::GetWalletProviderRegions(value.GetDict());
   if (!wallet_provider_regions) {
-    BLOG(0, "Failed to parse JSON!");
+    engine.LogError(FROM_HERE) << "Failed to parse JSON";
     return {};
   }
 
@@ -248,7 +251,7 @@ void State::SetReconcileStamp(const int reconcile_interval) {
   engine_->client()->ReconcileStampReset();
 }
 void State::ResetReconcileStamp() {
-  SetReconcileStamp(reconcile_interval);
+  SetReconcileStamp(engine_->options().reconcile_interval);
 }
 
 uint64_t State::GetCreationStamp() {
@@ -334,6 +337,7 @@ base::flat_map<std::string, std::string> State::GetPayoutStatus() {
 base::flat_map<std::string, mojom::RegionsPtr>
 State::GetWalletProviderRegions() {
   return ValueToWalletProviderRegions(
+      *engine_,
       engine_->GetState<base::Value>(kParametersWalletProviderRegions));
 }
 
@@ -381,7 +385,7 @@ uint64_t State::GetPromotionLastFetchStamp() {
   return engine_->GetState<uint64_t>(kPromotionLastFetchStamp);
 }
 
-absl::optional<std::string> State::GetEncryptedString(const std::string& key) {
+std::optional<std::string> State::GetEncryptedString(const std::string& key) {
   std::string value = engine_->GetState<std::string>(key);
 
   // If the state value is empty, then we consider this a successful read of a
@@ -391,13 +395,13 @@ absl::optional<std::string> State::GetEncryptedString(const std::string& key) {
   }
 
   if (!base::Base64Decode(value, &value)) {
-    BLOG(0, "Base64 decoding failed for " << key);
+    engine_->LogError(FROM_HERE) << "Base64 decoding failed for " << key;
     return {};
   }
 
   auto decrypted = engine_->DecryptString(value);
   if (!decrypted) {
-    BLOG(0, "Decryption failed for " << key);
+    engine_->LogError(FROM_HERE) << "Decryption failed for " << key;
     return {};
   }
 
@@ -408,7 +412,7 @@ bool State::SetEncryptedString(const std::string& key,
                                const std::string& value) {
   auto encrypted = engine_->EncryptString(value);
   if (!encrypted) {
-    BLOG(0, "Encryption failed for " << key);
+    engine_->LogError(FROM_HERE) << "Encryption failed for " << key;
     return false;
   }
 

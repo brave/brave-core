@@ -72,7 +72,7 @@ WelcomeDOMHandler::~WelcomeDOMHandler() {
 }
 
 Browser* WelcomeDOMHandler::GetBrowser() {
-  return chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
+  return chrome::FindBrowserWithTab(web_ui()->GetWebContents());
 }
 
 void WelcomeDOMHandler::RegisterMessages() {

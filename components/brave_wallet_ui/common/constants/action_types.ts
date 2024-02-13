@@ -10,10 +10,6 @@ import {
   TransactionProviderError
 } from '../../constants/types'
 
-export type UnlockWalletPayloadType = {
-  password: string
-}
-
 export type IsEip1559Changed = {
   chainId: string
   isEip1559: boolean
@@ -79,14 +75,6 @@ export type DefaultBaseCurrencyChanged = {
 
 export type DefaultBaseCryptocurrencyChanged = {
   cryptocurrency: string
-}
-
-export type SitePermissionsPayloadType = {
-  accounts: BraveWallet.AccountId[]
-}
-
-export type RemoveSitePermissionPayloadType = {
-  accountId: BraveWallet.AccountId
 }
 
 export type SetTransactionProviderErrorType = {

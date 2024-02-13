@@ -48,6 +48,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
@@ -93,7 +94,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.query_tiles.BraveQueryTileSection;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
@@ -102,7 +103,7 @@ import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesGridLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
-import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.tab_resumption.TabResumptionModuleUtils.SuggestionClickCallback;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -446,42 +447,38 @@ public class BraveNewTabPageLayout
                                 linearLayoutManager.findFirstVisibleItemPosition();
 
                         int newsFeedPosition = firstNewsFeedPosition();
-
+                        int tabId = -1;
+                        try {
+                            Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                            tabId = tab != null ? tab.getId() : -1;
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "onScrollStateChanged " + e);
+                        }
                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            try {
-                                if (BraveActivity.getBraveActivity().getActivityTab() != null
-                                        && mRecyclerView.getChildCount() > 0) {
-                                    View firstChild = mRecyclerView.getChildAt(0);
-                                    if (firstChild != null) {
-                                        int firstVisiblePosition =
-                                                mRecyclerView.getChildAdapterPosition(firstChild);
-                                        int verticalOffset = firstChild.getTop();
+                            if (tabId != -1 && mRecyclerView.getChildCount() > 0) {
+                                View firstChild = mRecyclerView.getChildAt(0);
+                                if (firstChild != null) {
+                                    int firstVisiblePosition =
+                                            mRecyclerView.getChildAdapterPosition(firstChild);
+                                    int verticalOffset = firstChild.getTop();
 
-                                        ContextUtils.getAppSharedPreferences()
-                                                .edit()
-                                                .putInt(
-                                                        BravePreferenceKeys
-                                                                        .BRAVE_RECYCLERVIEW_OFFSET_POSITION
-                                                                + BraveActivity.getBraveActivity()
-                                                                        .getActivityTab()
-                                                                        .getId(),
-                                                        verticalOffset)
-                                                .apply();
+                                    ContextUtils.getAppSharedPreferences()
+                                            .edit()
+                                            .putInt(
+                                                    BravePreferenceKeys
+                                                                    .BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                            + tabId,
+                                                    verticalOffset)
+                                            .apply();
 
-                                        ContextUtils.getAppSharedPreferences()
-                                                .edit()
-                                                .putInt(
-                                                        BravePreferenceKeys
-                                                                        .BRAVE_RECYCLERVIEW_POSITION
-                                                                + BraveActivity.getBraveActivity()
-                                                                        .getActivityTab()
-                                                                        .getId(),
-                                                        firstVisiblePosition)
-                                                .apply();
-                                    }
+                                    ContextUtils.getAppSharedPreferences()
+                                            .edit()
+                                            .putInt(
+                                                    BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION
+                                                            + tabId,
+                                                    firstVisiblePosition)
+                                            .apply();
                                 }
-                            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                Log.e(TAG, "onScrollStateChanged " + e);
                             }
                         }
                         if (mIsDisplayNewsFeed
@@ -662,6 +659,7 @@ public class BraveNewTabPageLayout
                                                     // if viewed for more than 100 ms and is more
                                                     // than 50%
                                                     // visible send the event
+                                                    final int tabIdForLambda = tabId;
                                                     Timer timer = new Timer();
                                                     timer.schedule(
                                                             new TimerTask() {
@@ -685,7 +683,8 @@ public class BraveNewTabPageLayout
                                                                                                 mUuid,
                                                                                                 mCreativeInstanceId);
 
-                                                                                insertAd();
+                                                                                insertAd(
+                                                                                        tabIdForLambda);
                                                                             }
                                                                         }
                                                                     }.start();
@@ -702,16 +701,11 @@ public class BraveNewTabPageLayout
                         }
                     }
 
-                    private void insertAd() {
+                    private void insertAd(int tabId) {
                         DisplayAd currentDisplayAd =
                                 BraveNewsUtils.getFromDisplayAdsMap(mItemPosition);
-                        try {
-                            mDatabaseHelper.insertAd(
-                                    currentDisplayAd,
-                                    mItemPosition,
-                                    BraveActivity.getBraveActivity().getActivityTab().getId());
-                        } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "insertAd " + e);
+                        if (tabId != -1) {
+                            mDatabaseHelper.insertAd(currentDisplayAd, mItemPosition, tabId);
                         }
                     }
 
@@ -1178,10 +1172,12 @@ public class BraveNewTabPageLayout
             NewTabPageUma uma,
             boolean isIncognito,
             WindowAndroid windowAndroid,
-            boolean isNtpAsHomeSurfaceEnabled,
+            boolean isNtpAsHomeSurfaceOnTablet,
             boolean isSurfacePolishEnabled,
             boolean isSurfacePolishOmniboxColorEnabled,
-            boolean isTablet) {
+            boolean isTablet,
+            ObservableSupplier<Integer> tabStripHeightSupplier,
+            SuggestionClickCallback suggestionClickCallback) {
         super.initialize(
                 manager,
                 activity,
@@ -1195,10 +1191,12 @@ public class BraveNewTabPageLayout
                 uma,
                 isIncognito,
                 windowAndroid,
-                isNtpAsHomeSurfaceEnabled,
+                isNtpAsHomeSurfaceOnTablet,
                 isSurfacePolishEnabled,
                 isSurfacePolishOmniboxColorEnabled,
-                isTablet);
+                isTablet,
+                tabStripHeightSupplier,
+                suggestionClickCallback);
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 
@@ -1210,8 +1208,7 @@ public class BraveNewTabPageLayout
 
             if (tilesLayout instanceof MostVisitedTilesGridLayout) {
                 ((MostVisitedTilesGridLayout) tilesLayout)
-                        .setMaxRows(
-                                BraveQueryTileSection.getMaxRowsForMostVisitedTiles(getContext()));
+                        .setMaxRows(getMaxRowsForMostVisitedTiles());
             }
         }
 
@@ -1292,11 +1289,11 @@ public class BraveNewTabPageLayout
     }
 
     private void initilizeSponsoredTab() {
-        if (TabAttributes.from(getTab()).get(String.valueOf(getTabImpl().getId())) == null) {
+        if (TabAttributes.from(getTab()).get(String.valueOf(getTab().getId())) == null) {
             SponsoredTab sponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
-            TabAttributes.from(getTab()).set(String.valueOf(getTabImpl().getId()), sponsoredTab);
+            TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
-        mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTabImpl()).getId()));
+        mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTab()).getId()));
         if (shouldShowSuperReferral()) mNTPBackgroundImagesBridge.getTopSites();
     }
 
@@ -1372,8 +1369,7 @@ public class BraveNewTabPageLayout
         mSuperReferralSitesLayout = new LinearLayout(mActivity);
         mSuperReferralSitesLayout.setWeightSum(1f);
         mSuperReferralSitesLayout.setOrientation(LinearLayout.HORIZONTAL);
-        mSuperReferralSitesLayout.setBackgroundColor(
-                mActivity.getResources().getColor(R.color.topsite_bg_color));
+        mSuperReferralSitesLayout.setBackgroundColor(mActivity.getColor(R.color.topsite_bg_color));
 
         LayoutInflater inflater =
                 (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1384,7 +1380,7 @@ public class BraveNewTabPageLayout
             TextView tileViewTitleTv = tileView.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
             tileViewTitleTv.setTextColor(
-                    getResources().getColor(R.color.brave_state_time_count_color));
+                    getContext().getColor(R.color.brave_state_time_count_color));
 
             ImageView iconIv = tileView.findViewById(R.id.tile_view_icon);
             if (NTPUtil.imageCache.get(topSite.getDestinationUrl()) == null) {
@@ -1393,7 +1389,7 @@ public class BraveNewTabPageLayout
                                 NTPUtil.getTopSiteBitmap(topSite.getImagePath())));
             }
             iconIv.setImageBitmap(NTPUtil.imageCache.get(topSite.getDestinationUrl()).get());
-            iconIv.setBackgroundColor(mActivity.getResources().getColor(android.R.color.white));
+            iconIv.setBackgroundColor(mActivity.getColor(android.R.color.white));
             iconIv.setClickable(false);
 
             tileView.setOnClickListener(
@@ -1471,10 +1467,6 @@ public class BraveNewTabPageLayout
         return mTab;
     }
 
-    private TabImpl getTabImpl() {
-        return (TabImpl) getTab();
-    }
-
     @Override
     public void onConnectionError(MojoException e) {
         if (mBraveNewsController != null) {
@@ -1512,5 +1504,21 @@ public class BraveNewTabPageLayout
     @Override
     void setSearchProviderBottomMargin(int bottomMargin) {
         if (mLogoCoordinator != null) mLogoCoordinator.setBottomMargin(bottomMargin);
+    }
+
+    private int getMaxRowsForMostVisitedTiles() {
+        try {
+            if (!ProfileManager.isInitialized()
+                    || !UserPrefs.get(BraveActivity.getBraveActivity().getCurrentProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "getMaxRowsForMostVisitedTiles ", e);
+        }
+
+        return 2;
     }
 }

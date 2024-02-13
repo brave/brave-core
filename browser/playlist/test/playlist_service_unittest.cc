@@ -1322,6 +1322,22 @@ TEST_F(PlaylistServiceUnitTest, MigratePlaylistOrder) {
   // After migration, the order pref should have both default and new playlist
   EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
                              base::Value(*playlist->id)));
+
+  // Remove a playlist from playlists pref and not from order pref.
+  // https://github.com/brave/brave-browser/issues/35500
+  auto playlists_dict = prefs()->GetDict(kPlaylistsPref).Clone();
+  EXPECT_TRUE(playlists_dict.Remove(playlist->id.value()));
+  prefs()->SetDict(kPlaylistsPref, std::move(playlists_dict));
+  EXPECT_FALSE(
+      base::Contains(prefs()->GetDict(kPlaylistsPref), playlist->id.value()));
+
+  new_order_list = prefs()->GetList(kPlaylistOrderPref).Clone();
+  MigratePlaylistOrder(prefs()->GetDict(kPlaylistsPref), new_order_list);
+  prefs()->SetList(kPlaylistOrderPref, std::move(new_order_list));
+
+  // After migration, the dangled item in the order pref should be gone.
+  EXPECT_FALSE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
+                              base::Value(*playlist->id)));
 }
 
 TEST_F(PlaylistServiceUnitTest, PlaylistOrderSync) {

@@ -71,6 +71,15 @@ void SpeedReaderThrottle::WillProcessResponse(
 
   if (speedreader_delegate_->IsPageContentPresent()) {
     // We've got the content, starting the local source body producer.
+    if (response_head) {
+      // We already got the content of the page and we know it is an utf-8
+      // encoded html. So ignore any encodings from the headers.
+      response_head->charset = "utf-8";
+      if (response_head->headers) {
+        response_head->headers->SetHeader("Content-Type",
+                                          "text/html; charset=utf-8");
+      }
+    }
     StartSpeedReaderLocalUrlLoader(response_url);
   } else {
     *defer = true;

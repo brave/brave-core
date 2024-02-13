@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/anonymous_search_url_host.h"
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -22,8 +21,6 @@ constexpr char kStagingHost[] =
 std::string AnonymousSearchUrlHost::Get() const {
   const mojom::EnvironmentType environment_type =
       GlobalState::GetInstance()->Flags().environment_type;
-  CHECK(mojom::IsKnownEnumValue(environment_type));
-
   switch (environment_type) {
     case mojom::EnvironmentType::kProduction: {
       return kProductionHost;

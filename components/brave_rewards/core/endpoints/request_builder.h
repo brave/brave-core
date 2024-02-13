@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_REQUEST_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_REQUEST_BUILDER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;
@@ -24,19 +24,19 @@ class RequestBuilder {
 
   virtual ~RequestBuilder();
 
-  absl::optional<mojom::UrlRequestPtr> Request() const;
+  std::optional<mojom::UrlRequestPtr> Request() const;
 
  protected:
   explicit RequestBuilder(RewardsEngineImpl& engine);
 
-  virtual absl::optional<std::string> Url() const = 0;
+  virtual std::optional<std::string> Url() const = 0;
 
   virtual mojom::UrlMethod Method() const;
 
-  virtual absl::optional<std::vector<std::string>> Headers(
+  virtual std::optional<std::vector<std::string>> Headers(
       const std::string& content) const;
 
-  virtual absl::optional<std::string> Content() const;
+  virtual std::optional<std::string> Content() const;
 
   virtual std::string ContentType() const;
 

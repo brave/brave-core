@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_MENU_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_MENU_METRICS_H_
 
+#include <optional>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -67,7 +67,7 @@ class MenuMetrics {
 
   void Update();
 
-  absl::optional<std::pair<MenuGroup, int>> current_max_group_;
+  std::optional<std::pair<MenuGroup, int>> current_max_group_;
 
   raw_ptr<PrefService> local_state_ = nullptr;
   WeeklyStorage menu_shown_storage_;

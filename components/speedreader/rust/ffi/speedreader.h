@@ -19,7 +19,7 @@
 #else
 #define SPEEDREADER_EXPORT __declspec(dllimport)
 #endif  // defined(SPEEDREADER_IMPLEMENTATION)
-#else  // defined(WIN32)
+#else   // defined(WIN32)
 #if defined(SPEEDREADER_IMPLEMENTATION)
 #define SPEEDREADER_EXPORT __attribute__((visibility("default")))
 #else
@@ -34,19 +34,6 @@ namespace speedreader {
 
 class SPEEDREADER_EXPORT Rewriter {
  public:
-  /// Create a buffering `Rewriter`. Output will be accumulated internally,
-  /// retrievable via `GetOutput`. Expected to only be instantiated by
-  /// `SpeedReader`.
-  Rewriter(C_SpeedReader* speedreader, const std::string& url);
-
-  /// Create a streaming `Rewriter`. Provided callback will be called with every
-  /// new chunk of output available. Output availability is not strictly related
-  /// to when more input is `Written`. Expected to only be instantiated by
-  /// `SpeedReader`.
-  Rewriter(C_SpeedReader* speedreader,
-           const std::string& url,
-           void (*output_sink)(const char*, size_t, void*),
-           void* output_sink_user_data);
   ~Rewriter();
 
   Rewriter(const Rewriter&) = delete;
@@ -60,6 +47,7 @@ class SPEEDREADER_EXPORT Rewriter {
   void SetFontFamily(const std::string& font_family);
   void SetFontSize(const std::string& font_size);
   void SetColumnWidth(const std::string& column_width);
+  void SetDebugView(bool debug_view);
 
   /// Write a new chunk of data (byte array) to the rewriter instance. Does
   /// _not_ need to be a full document and can be called many times with ever
@@ -75,6 +63,22 @@ class SPEEDREADER_EXPORT Rewriter {
   const std::string& GetOutput();
 
  private:
+  friend class SpeedReader;
+
+  /// Create a buffering `Rewriter`. Output will be accumulated internally,
+  /// retrievable via `GetOutput`. Expected to only be instantiated by
+  /// `SpeedReader`.
+  Rewriter(C_SpeedReader* speedreader, const std::string& url);
+
+  /// Create a streaming `Rewriter`. Provided callback will be called with every
+  /// new chunk of output available. Output availability is not strictly related
+  /// to when more input is `Written`. Expected to only be instantiated by
+  /// `SpeedReader`.
+  Rewriter(C_SpeedReader* speedreader,
+           const std::string& url,
+           void (*output_sink)(const char*, size_t, void*),
+           void* output_sink_user_data);
+
   std::string output_;
   bool ended_;
   bool poisoned_;

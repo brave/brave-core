@@ -6,10 +6,14 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 
 #include <algorithm>
+#include <limits>
+#include <utility>
 
 #include "base/metrics/histogram_macros.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/p3a_utils/feature_usage.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -22,10 +26,15 @@ const int kChatCountBuckets[] = {1, 5, 10, 20, 50};
 const int kAvgPromptCountBuckets[] = {2, 5, 10, 20};
 // Value -1 is added to buckets to add padding for the "less than 1% option"
 const int kOmniboxOpenBuckets[] = {-1, 0, 3, 5, 10, 25};
+
+constexpr base::TimeDelta kPremiumCheckInterval = base::Days(1);
+
 }  // namespace
 
 AIChatMetrics::AIChatMetrics(PrefService* local_state)
-    : chat_count_storage_(local_state,
+    : is_premium_(
+          local_state->GetBoolean(prefs::kBraveChatP3ALastPremiumStatus)),
+      chat_count_storage_(local_state,
                           prefs::kBraveChatP3AChatCountWeeklyStorage),
       prompt_count_storage_(local_state,
                             prefs::kBraveChatP3APromptCountWeeklyStorage),
@@ -35,7 +44,8 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
       omnibox_autocomplete_storage_(
           local_state,
           prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage,
-          14) {}
+          14),
+      local_state_(local_state) {}
 
 AIChatMetrics::~AIChatMetrics() = default;
 
@@ -45,18 +55,76 @@ void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveChatP3AOmniboxOpenWeeklyStorage);
   registry->RegisterListPref(
       prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage);
+  registry->RegisterTimePref(prefs::kBraveChatP3ALastPremiumCheck,
+                             base::Time());
+  registry->RegisterBooleanPref(prefs::kBraveChatP3ALastPremiumStatus, false);
+  registry->RegisterTimePref(prefs::kBraveChatP3AFirstUsageTime, base::Time());
+  registry->RegisterTimePref(prefs::kBraveChatP3ALastUsageTime, base::Time());
+  registry->RegisterBooleanPref(prefs::kBraveChatP3AUsedSecondDay, false);
 }
 
-void AIChatMetrics::RecordEnabled(bool is_new_user) {
-  is_enabled_ = true;
-  if (is_new_user) {
-    UMA_HISTOGRAM_BOOLEAN(kEnabledHistogramName, true);
-    if (acquisition_source_.has_value()) {
-      UMA_HISTOGRAM_ENUMERATION(kAcquisitionSourceHistogramName,
-                                *acquisition_source_);
+void AIChatMetrics::RecordEnabled(
+    bool is_enabled,
+    bool is_new_user,
+    RetrievePremiumStatusCallback retrieve_premium_status_callback) {
+  if (is_enabled && !is_new_user &&
+      local_state_->GetTime(prefs::kBraveChatP3AFirstUsageTime).is_null()) {
+    // If the user already had AI chat enabled, and we did not record the first
+    // & last usage time, set the first & last usage time to a date 90 days ago
+    // so we don't skew feature usage metrics.
+    base::Time three_months_ago = base::Time::Now() - base::Days(90);
+    local_state_->SetTime(prefs::kBraveChatP3AFirstUsageTime, three_months_ago);
+    local_state_->SetTime(prefs::kBraveChatP3ALastUsageTime, three_months_ago);
+  }
+
+  if (!is_enabled) {
+    ReportFeatureUsageMetrics();
+    return;
+  }
+
+  if (retrieve_premium_status_callback) {
+    base::Time last_premium_check =
+        local_state_->GetTime(prefs::kBraveChatP3ALastPremiumCheck);
+    if (last_premium_check.is_null() ||
+        (base::Time::Now() - last_premium_check) >= kPremiumCheckInterval) {
+      if (!premium_check_in_progress_) {
+        premium_check_in_progress_ = true;
+        std::move(retrieve_premium_status_callback)
+            .Run(base::BindOnce(&AIChatMetrics::OnPremiumStatusUpdated,
+                                weak_ptr_factory_.GetWeakPtr(), is_new_user));
+      }
+      return;
     }
   }
+
+  is_enabled_ = true;
+
+  UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName, is_premium_ ? 2 : 1, 3);
+  if (is_new_user && acquisition_source_.has_value()) {
+    UMA_HISTOGRAM_ENUMERATION(kAcquisitionSourceHistogramName,
+                              *acquisition_source_);
+  }
+
   ReportAllMetrics();
+}
+
+void AIChatMetrics::RecordReset() {
+  UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName,
+                             std::numeric_limits<int>::max() - 1, 3);
+  UMA_HISTOGRAM_EXACT_LINEAR(kAcquisitionSourceHistogramName,
+                             std::numeric_limits<int>::max() - 1, 2);
+}
+
+void AIChatMetrics::OnPremiumStatusUpdated(bool is_new_user,
+                                           mojom::PremiumStatus premium_status,
+                                           mojom::PremiumInfoPtr) {
+  is_premium_ = premium_status == mojom::PremiumStatus::Active ||
+                premium_status == mojom::PremiumStatus::ActiveDisconnected;
+  local_state_->SetBoolean(prefs::kBraveChatP3ALastPremiumStatus, is_premium_);
+  local_state_->SetTime(prefs::kBraveChatP3ALastPremiumCheck,
+                        base::Time::Now());
+  premium_check_in_progress_ = false;
+  RecordEnabled(true, is_new_user, {});
 }
 
 void AIChatMetrics::RecordNewChat() {
@@ -64,7 +132,14 @@ void AIChatMetrics::RecordNewChat() {
 }
 
 void AIChatMetrics::RecordNewPrompt() {
-  UMA_HISTOGRAM_EXACT_LINEAR(kUsageDailyHistogramName, 1, 2);
+  UMA_HISTOGRAM_EXACT_LINEAR(kUsageDailyHistogramName, is_premium_ ? 2 : 1, 3);
+  UMA_HISTOGRAM_EXACT_LINEAR(kUsageWeeklyHistogramName, is_premium_ ? 2 : 1, 3);
+  UMA_HISTOGRAM_EXACT_LINEAR(kUsageMonthlyHistogramName, is_premium_ ? 2 : 1,
+                             3);
+  p3a_utils::RecordFeatureUsage(local_state_,
+                                prefs::kBraveChatP3AFirstUsageTime,
+                                prefs::kBraveChatP3ALastUsageTime);
+  ReportFeatureUsageMetrics();
   prompt_count_storage_.AddDelta(1);
   report_debounce_timer_.Start(
       FROM_HERE, kReportDebounceDelay,
@@ -93,6 +168,17 @@ void AIChatMetrics::ReportAllMetrics() {
       base::BindOnce(&AIChatMetrics::ReportAllMetrics, base::Unretained(this)));
   ReportChatCounts();
   ReportOmniboxCounts();
+  ReportFeatureUsageMetrics();
+}
+
+void AIChatMetrics::ReportFeatureUsageMetrics() {
+  p3a_utils::RecordFeatureNewUserReturning(
+      local_state_, prefs::kBraveChatP3AFirstUsageTime,
+      prefs::kBraveChatP3ALastUsageTime, prefs::kBraveChatP3AUsedSecondDay,
+      kNewUserReturningHistogramName);
+  p3a_utils::RecordFeatureLastUsageTimeMetric(
+      local_state_, prefs::kBraveChatP3ALastUsageTime,
+      kLastUsageTimeHistogramName, true);
 }
 
 void AIChatMetrics::ReportChatCounts() {

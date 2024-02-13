@@ -31,7 +31,7 @@ class MockDatabase : public Database {
                     GetUnblindedTokenListCallback callback));
 
   MOCK_METHOD2(SavePromotion,
-               void(mojom::PromotionPtr info, LegacyResultCallback callback));
+               void(mojom::PromotionPtr info, ResultCallback callback));
 
   MOCK_METHOD1(GetAllPromotions, void(GetAllPromotionsCallback callback));
 };

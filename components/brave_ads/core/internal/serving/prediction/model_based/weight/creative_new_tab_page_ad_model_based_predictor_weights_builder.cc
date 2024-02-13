@@ -29,12 +29,13 @@ BuildCreativeNewTabPageAdModelBasedPredictorWeights() {
   weights.interest_segment.parent =
       kNewTabPageAdParentInterestSegmentPredictorWeight.Get();
 
+  weights.untargeted_segment =
+      kNewTabPageAdUntargetedSegmentPredictorWeight.Get();
+
   weights.last_seen_ad = kNewTabPageAdLastSeenPredictorWeight.Get();
 
   weights.last_seen_advertiser =
       kNewTabPageAdLastSeenAdvertiserPredictorWeight.Get();
-
-  weights.priority = kNewTabPageAdPriorityPredictorWeight.Get();
 
   return weights;
 }

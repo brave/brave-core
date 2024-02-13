@@ -120,6 +120,16 @@ INSTANTIATE_TEST_SUITE_P(
       {}
     },
     GetTransactionStatusUpholdParamType{
+      "HTTP_2xx_transaction_completed",
+      net::HTTP_PARTIAL_CONTENT,
+      R"(
+        {
+          "status": "completed"
+        }
+      )",
+      {}
+    },
+    GetTransactionStatusUpholdParamType{
       "HTTP_401_access_token_expired",
       net::HTTP_UNAUTHORIZED,
       "",

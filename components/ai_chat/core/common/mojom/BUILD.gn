@@ -6,6 +6,7 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("mojom") {
+  generate_java = true
   sources = [
     "ai_chat.mojom",
     "page_content_extractor.mojom",

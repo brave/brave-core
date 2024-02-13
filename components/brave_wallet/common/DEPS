@@ -17,4 +17,7 @@ specific_include_rules = {
   "brave_wallet_types\.h": [
     "+boost/multiprecision/cpp_int.hpp",
   ],
+  "zcash_utils\.cc": [
+    "+brave/third_party/bitcoin-core/src/src/base58.h",
+  ],
 }

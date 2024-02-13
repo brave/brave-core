@@ -17,7 +17,13 @@ namespace brave_wallet {
 
 inline constexpr mojom::CoinType kAllCoins[] = {
     mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL,
-    mojom::CoinType::BTC};
+    mojom::CoinType::BTC, mojom::CoinType::ZEC};
+
+inline constexpr mojom::KeyringId kAllKeyrings[] = {
+    mojom::KeyringId::kDefault,          mojom::KeyringId::kBitcoin84,
+    mojom::KeyringId::kBitcoin84Testnet, mojom::KeyringId::kFilecoin,
+    mojom::KeyringId::kFilecoinTestnet,  mojom::KeyringId::kSolana,
+    mojom::KeyringId::kZCashMainnet,     mojom::KeyringId::kZCashTestnet};
 
 bool IsZCashKeyring(mojom::KeyringId keyring_id);
 
@@ -32,13 +38,14 @@ bool IsAllowed(PrefService* prefs);
 bool IsFilecoinKeyringId(mojom::KeyringId keyring_id);
 
 bool IsBitcoinKeyring(mojom::KeyringId keyring_id);
-bool IsZCashKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinMainnetKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinTestnetKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinNetwork(const std::string& network_id);
-bool IsZCashNetwork(const std::string& network_id);
 bool IsBitcoinAccount(const mojom::AccountId& account_id);
+
 bool IsZCashAccount(const mojom::AccountId& account_id);
+bool IsZCashNetwork(const std::string& network_id);
+bool IsZCashKeyring(mojom::KeyringId keyring_id);
 
 mojom::KeyringId GetFilecoinKeyringId(const std::string& network);
 
@@ -64,6 +71,8 @@ mojom::AccountIdPtr MakeBitcoinAccountId(mojom::CoinType coin,
                                          uint32_t account_index);
 std::string GetNetworkForBitcoinKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
+
+std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id);
 
 mojom::AccountIdPtr MakeZCashAccountId(mojom::CoinType coin,
                                        mojom::KeyringId keyring_id,

@@ -11,6 +11,8 @@ import Card from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { isPublisherEnabled } from './shared/api';
 import { FeedView } from './shared/useFeedV2';
+import { getLocale } from '$web-common/locale';
+import SettingsButton from './SettingsButton';
 
 const DEFAULT_SHOW_COUNT = 4;
 
@@ -23,14 +25,12 @@ const Container = styled(Card)`
   align-self: flex-start;
   position: sticky;
   top: ${spacing.xl};
-`
 
-const Heading = styled.h3`
-  font: ${font.primary.default.semibold};
-  color: var(--bn-glass-25);
-  margin: 0;
+  max-height: calc(100vh - ${spacing.xl} * 2);
+  overflow-y: auto;
 
-  padding-left: ${PAD_LEFT};
+  scrollbar-width: thin;
+  scrollbar-color: var(--bn-glass-10) var(--bn-glass-10);
 `
 
 const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, bold?: boolean }>`
@@ -45,8 +45,8 @@ const CustomButton = styled.button <{ selected?: boolean, faint?: boolean, bold?
   text-align: left;
   width: 100%;
 
-  color: ${p => p.faint ? `var(--bn-glass-25)` : `var(--bn-glass-70)`};
-  font: ${p => font.primary.small[p.bold ? 'semibold' : 'regular']};
+  color: ${p => p.faint ? `var(--bn-glass-50)` : `var(--bn-glass-100)`};
+  font: ${p => font.small[p.bold ? 'semibold' : 'regular']};
   cursor: pointer;
 
   &:hover {
@@ -72,7 +72,7 @@ const Section = styled.details`
     align-items: center;
     gap: ${spacing.m};
     list-style: none;
-    font: ${font.primary.small.semibold};
+    font: ${font.small.semibold};
 
     cursor: pointer;
 
@@ -80,12 +80,7 @@ const Section = styled.details`
       box-shadow: ${effect.focusState};
     }
 
-    ${CustomButton} {
-      padding: 0;
-      flex: 0;
-      display: flex;
-      gap: ${spacing.m};
-      align-items: center;
+    ${SettingsButton} {
       margin-left: auto;
     }
   }
@@ -101,12 +96,26 @@ const Section = styled.details`
   }
 `
 
+const AddButton = styled(SettingsButton)`
+  --leo-button-padding: ${spacing.xs};
+`
+
+function usePersistedState<T>(name: string, defaultValue: T) {
+  const [value, setValue] = React.useState<T>(JSON.parse(localStorage[name] ?? null) ?? defaultValue)
+  React.useEffect(() => {
+    localStorage[name] = JSON.stringify(value)
+  }, [name, value])
+
+  return [value, setValue] as const
+}
+
 const Marker = <Icon name='arrow-small-right' className='marker' />
+const PlaceholderMarker = <Icon />
 
 export function Item(props: { id: FeedView, name: string }) {
   const { feedView, setFeedView } = useBraveNews()
-
-  return <CustomButton selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={props.id === 'all'}>
+  const topLevel = ['all', 'following'].includes(props.id)
+  return <CustomButton selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={topLevel}>
     {props.name}
   </CustomButton>
 }
@@ -115,45 +124,61 @@ export default function Sidebar() {
   const { channels, publishers, setCustomizePage } = useBraveNews()
   const { signals } = useInspectContext()
 
-  const [showingMoreChannels, setShowingMoreChannels] = React.useState(false)
-  const [showingMorePublishers, setShowingMorePublishers] = React.useState(false)
+  const [showingMoreChannels, setShowingMoreChannels] = usePersistedState("showingMoreChannels", false)
+  const [showingMorePublishers, setShowingMorePublishers] = usePersistedState("showingMorePublishers", false)
 
-  const slicedPublisherIds = React.useMemo(() => Object.keys(publishers)
+  const subscribedPublisherIds = React.useMemo(() => Object.keys(publishers)
     .filter(p => isPublisherEnabled(publishers[p]))
-    .sort((a, b) => signals[b]?.visitWeight - signals[a]?.visitWeight)
-    .slice(0, showingMorePublishers ? undefined : DEFAULT_SHOW_COUNT), [publishers, showingMorePublishers, signals])
-  const slicedChannelIds = React.useMemo(() => Object.keys(channels)
+    .sort((a, b) => signals[b]?.visitWeight - signals[a]?.visitWeight), [publishers, signals])
+  const slicedPublisherIds = React.useMemo(() => subscribedPublisherIds
+    .slice(0, showingMorePublishers ? undefined : DEFAULT_SHOW_COUNT), [subscribedPublisherIds, showingMorePublishers])
+  const subscribedChannels = React.useMemo(() => Object.keys(channels)
     .filter(c => channels[c].subscribedLocales.length)
-    .sort((a, b) => signals[b]?.visitWeight - signals[a]?.visitWeight)
-    .slice(0, showingMoreChannels ? undefined : DEFAULT_SHOW_COUNT), [channels, showingMoreChannels, signals])
+    .sort((a, b) => signals[b]?.visitWeight - signals[a]?.visitWeight),
+    [channels, signals])
+  const slicedChannelIds = React.useMemo(() => subscribedChannels
+    .slice(0, showingMoreChannels ? undefined : DEFAULT_SHOW_COUNT), [subscribedChannels, showingMoreChannels])
 
   return <Container>
-    <Heading>My Feed</Heading>
-    <Item id='all' name="All" />
-    <Item id='following' name="Following" />
+    <Item id='all' name={getLocale('braveNewsForYouFeed')} />
+    <Item id='following' name={getLocale('braveNewsFollowingFeed')} />
     <Section open>
       <summary>
-        {Marker}
-        Channels
-        <CustomButton faint onClick={() => setCustomizePage('news')}>
+        {subscribedChannels.length ? Marker : PlaceholderMarker}
+        {getLocale('braveNewsChannelsHeader')}
+        <AddButton size="tiny" onClick={e => {
+          setCustomizePage('news')
+          e.stopPropagation()
+        }}>
           <Icon name='plus-add' />
-          Add
-        </CustomButton>
+        </AddButton>
       </summary>
       {slicedChannelIds.map(c => <Item key={c} id={`channels/${c}`} name={c} />)}
-      {!showingMoreChannels && slicedChannelIds.length >= DEFAULT_SHOW_COUNT && <CustomButton faint onClick={() => setShowingMoreChannels(true)}>Show all</CustomButton>}
+      {subscribedChannels.length > DEFAULT_SHOW_COUNT
+        && <CustomButton faint onClick={() => setShowingMoreChannels(s => !s)}>
+          {showingMoreChannels
+            ? getLocale('braveNewsShowLess')
+            : getLocale('braveNewsShowAll')}
+        </CustomButton>}
     </Section>
     <Section open>
       <summary>
-        {Marker}
-        Publishers
-        <CustomButton faint>
-          <Icon name='plus-add' onClick={() => setCustomizePage('news')} />
-          Add
-        </CustomButton>
+        {subscribedPublisherIds.length ? Marker : PlaceholderMarker}
+        {getLocale('braveNewsPublishersHeading')}
+        <AddButton size="tiny" onClick={e => {
+          setCustomizePage('popular')
+          e.stopPropagation()
+        }}>
+          <Icon name='plus-add' />
+        </AddButton>
       </summary>
       {slicedPublisherIds.map(p => <Item key={p} id={`publishers/${p}`} name={publishers[p]?.publisherName} />)}
-      {!showingMorePublishers && slicedPublisherIds.length >= DEFAULT_SHOW_COUNT && <CustomButton faint onClick={() => setShowingMorePublishers(true)}>Show all</CustomButton>}
+      {subscribedPublisherIds.length > DEFAULT_SHOW_COUNT
+        && <CustomButton faint onClick={() => setShowingMorePublishers(s => !s)}>
+          {showingMorePublishers
+            ? getLocale('braveNewsShowLess')
+            : getLocale('braveNewsShowAll')}
+        </CustomButton>}
     </Section>
   </Container>
 }

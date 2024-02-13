@@ -21,6 +21,11 @@ namespace p3a {
 
 namespace {
 
+constexpr char kBraveP3AHeader[] = "X-Brave-P3A";
+constexpr char kBraveP3AVersionHeader[] = "Brave-P3A-Version";
+
+constexpr size_t kCurrentP3AVersionValue = 3;
+
 GURL GetConstellationUploadURL(const P3AConfig* config,
                                MetricLogType log_type,
                                const std::string& upload_type) {
@@ -57,12 +62,14 @@ void Uploader::UploadLog(const std::string& compressed_log_data,
     if (is_constellation) {
       resource_request->url =
           GetConstellationUploadURL(config_, log_type, upload_type);
+      resource_request->headers.SetHeader(
+          kBraveP3AVersionHeader, std::to_string(kCurrentP3AVersionValue));
     } else {
       resource_request->url = upload_type == kP3ACreativeUploadType
                                   ? config_->p3a_creative_upload_url
                                   : config_->p3a_json_upload_url;
     }
-    resource_request->headers.SetHeader("X-Brave-P3A", "?1");
+    resource_request->headers.SetHeader(kBraveP3AHeader, "?1");
   }
 
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;

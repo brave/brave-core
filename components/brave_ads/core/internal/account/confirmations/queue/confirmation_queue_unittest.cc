@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 
 #include <memory>
+#include <optional>
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
@@ -31,7 +32,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -63,7 +63,7 @@ TEST_F(BraveAdsConfirmationQueueTest, AddRewardConfirmationToQueue) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -85,7 +85,7 @@ TEST_F(BraveAdsConfirmationQueueTest, AddNonRewardConfirmationToQueue) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -120,7 +120,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessRewardConfirmationInQueue) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -151,7 +151,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessNonRewardConfirmationQueue) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction,
                                  /*user_data=*/{});
   ASSERT_TRUE(confirmation);
@@ -191,7 +191,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -226,7 +226,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
   FastForwardClockToNextPendingTask();
 
   // Act & Assert
-  RemoveAllPaymentTokens();  // Force |MaybeAddPaymentToken| to succeed.
+  RemoveAllPaymentTokens();  // Force `MaybeAddPaymentToken()` to succeed.
 
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
   EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
@@ -247,7 +247,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 

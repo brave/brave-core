@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.62.72",
+  "version": "1.64.68",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "sync": "node ./build/commands/scripts/sync.js",
     "gclient": "node ./build/commands/scripts/gclient.js",
     "build": "node ./build/commands/scripts/commands.js build",
+    "build_chromium_release": "node ./build/commands/scripts/commands.js build_chromium_release",
     "gn_check": "node ./build/commands/scripts/commands.js gn_check",
     "versions": "node ./build/commands/scripts/commands.js versions",
     "upload": "node ./build/commands/scripts/commands.js upload",
@@ -23,7 +24,6 @@
     "push_l10n": "node ./build/commands/scripts/commands.js push_l10n",
     "pull_l10n": "node ./build/commands/scripts/commands.js pull_l10n",
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
-    "lint": "node ./build/commands/scripts/commands.js lint",
     "presubmit": "node ./build/commands/scripts/commands.js presubmit",
     "format": "node ./build/commands/scripts/commands.js format",
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
@@ -33,12 +33,11 @@
     "tslint": "npm run eslint",
     "eslint": "eslint ./components",
     "pep8": "pycodestyle --max-line-length 120 -r script",
-    "pylint": "node ./build/commands/scripts/commands.js pylint",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui-gen-tsconfig": "node components/webpack/gen-tsconfig",
-    "web-ui": "webpack --config components/webpack/webpack.config.js --colors",
-    "build-storybook": "build-storybook -c .storybook -o .storybook-out",
-    "storybook": "start-storybook",
+    "web-ui": "webpack --config components/webpack/webpack.config.js",
+    "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
+    "storybook": "storybook dev",
     "test-unit": "cross-env NODE_OPTIONS=--no-experimental-fetch jest -t",
     "test-unit:wallet": "cross-env NODE_OPTIONS=--no-experimental-fetch jest --coverage=false components/brave_wallet_ui",
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
@@ -47,7 +46,10 @@
     "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer",
     "perf_tests": "node ./build/commands/scripts/commands.js run_perf_tests",
     "gen_env": "node ./build/commands/scripts/genEnv.js",
-    "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle"
+    "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle",
+    "ios_pack_js": "webpack --config ios/brave-ios/webpack.config.js",
+    "ios_create_xcframeworks": "node ./build/commands/scripts/iosCommands.js ios_create_xcframeworks",
+    "ios_bootstrap": "node ./build/commands/scripts/iosCommands.js ios_bootstrap"
   },
   "repository": {
     "type": "git",
@@ -56,208 +58,6 @@
   "author": {
     "name": "Brave Software <support@brave.com>"
   },
-  "contributors": [
-    {
-      "name": "Cezar Augusto",
-      "email": "cezar@brave.com"
-    },
-    {
-      "name": "Matt Bacchi",
-      "email": "mbacchi@gmail.com"
-    },
-    {
-      "name": "Alexey Barabash",
-      "email": "alexey@brave.com"
-    },
-    {
-      "name": "Brian R. Bondy",
-      "email": "bbondy@gmail.com"
-    },
-    {
-      "name": "Brian Clifton",
-      "email": "brian@clifton.me"
-    },
-    {
-      "name": "George Dregalo",
-      "email": "gdregalo@brave.com"
-    },
-    {
-      "name": "Rafael Ebron",
-      "email": "rebron@brave.com"
-    },
-    {
-      "name": "Brendan Eich",
-      "email": "brendan@brave.com"
-    },
-    {
-      "name": "Matt Evangelista",
-      "email": "mevangelista@brave.com"
-    },
-    {
-      "name": "Ryan Gerstenkorn"
-    },
-    {
-      "name": "Kyle Hickinson",
-      "email": "khickinson@brave.com"
-    },
-    {
-      "name": "Simon Hong",
-      "email": "shong@igalia.com"
-    },
-    {
-      "name": "Brian Johnson",
-      "email": "bjohnson@brave.com"
-    },
-    {
-      "name": "Kamil Jozwiak",
-      "email": "kamil@jozwiak.ch"
-    },
-    {
-      "name": "Pranjal Jumde",
-      "email": "pranjal@brave.com"
-    },
-    {
-      "name": "Max Karolinskiy",
-      "email": "max@brave.com"
-    },
-    {
-      "name": "Ben Kero",
-      "email": "bkero@brave.com"
-    },
-    {
-      "name": "Aubrey Keus",
-      "email": "aekeus@gmail.com"
-    },
-    {
-      "name": "Ryan Lanese",
-      "email": "ryanlanese@gmail.com"
-    },
-    {
-      "name": "Kevin Lawler",
-      "email": "kevin@brave.com"
-    },
-    {
-      "name": "Bartlomiej Lechowski",
-      "email": "btlechowski@gmail.com"
-    },
-    {
-      "name": "Brian Lee"
-    },
-    {
-      "name": "Ailin Liao"
-    },
-    {
-      "name": "Jocelyn Liu",
-      "email": "yrliou@gmail.com"
-    },
-    {
-      "name": "Karen Liu",
-      "email": "kliu@brave.com"
-    },
-    {
-      "name": "Tom Lowenthal",
-      "email": "me@tomlowenthal.com"
-    },
-    {
-      "name": "Terry Mancey",
-      "email": "tmancey@brave.com"
-    },
-    {
-      "name": "Pete Miller",
-      "email": "miller.pete@gmail.com"
-    },
-    {
-      "name": "Ross Moody",
-      "email": "fiftyfivehis@gmail.com"
-    },
-    {
-      "name": "Mark Pilgrim",
-      "email": "mpilgrim@brave.com"
-    },
-    {
-      "name": "Mihai Plesa",
-      "email": "mihai.plesa@gmail.com"
-    },
-    {
-      "name": "Brad Richter",
-      "email": "bradley.richter@gmail.com"
-    },
-    {
-      "name": "Jenn Rhim",
-      "email": "jennrhim@gmail.com"
-    },
-    {
-      "name": "Riastradh"
-    },
-    {
-      "name": "Garrett Robinson",
-      "email": "garrett.f.robinson@gmail.com"
-    },
-    {
-      "name": "Emerick Rogul",
-      "email": "erogul@brave.com"
-    },
-    {
-      "name": "Jason Sadler",
-      "email": "jsadler@brave.com"
-    },
-    {
-      "name": "Geeta Sarvadnya",
-      "email": "gsarvadnya@brave.com"
-    },
-    {
-      "name": "Mandar Shinde",
-      "email": "mandar@brave.com"
-    },
-    {
-      "name": "Peter Snyder",
-      "email": "psnyder@brave.com"
-    },
-    {
-      "name": "David Temkin",
-      "email": "temkin@gmail.com"
-    },
-    {
-      "name": "Anthony Tseng",
-      "email": "darkdh@gmail.com"
-    },
-    {
-      "name": "Sriram Bellur Venkataram",
-      "email": "srirambv@gmail.com"
-    },
-    {
-      "name": "Lauren Wagner",
-      "email": "lauren@brave.com"
-    },
-    {
-      "name": "Ryan Watson",
-      "email": "w0ts0n@gmail.com"
-    },
-    {
-      "name": "Nejc Zdovc",
-      "email": "nejc@brave.com"
-    },
-    {
-      "name": "Yan Zhu",
-      "email": "yan@mit.edu"
-    },
-    {
-      "name": "Sergey Zhukovsky",
-      "email": "serg@brave.com"
-    },
-    {
-      "name": "Szilard Szaloki",
-      "email": "szilardszaloki@gmail.com"
-    },
-    {
-      "name": "Wojciech Knapik",
-      "email": "wmknapik@gmail.com"
-    },
-    {
-      "name": "Michael Herrmann",
-      "email": "michael@herrmann.io"
-    }
-  ],
   "license": "MPL-2.0",
   "bugs": {
     "url": "https://github.com/brave/brave-browser/issues"
@@ -267,7 +67,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "119.0.6045.163",
+        "tag": "122.0.6261.29",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -275,12 +75,11 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "7.16.0",
-    "@babel/plugin-proposal-export-namespace-from": "7.16.0",
-    "@storybook/addon-essentials": "6.4.13",
-    "@storybook/addon-knobs": "6.4.0",
-    "@storybook/addons": "6.4.13",
-    "@storybook/react": "6.4.13",
+    "@storybook/addon-essentials": "7.5.3",
+    "@storybook/addon-knobs": "7.0.2",
+    "@storybook/addons": "7.5.3",
+    "@storybook/react": "7.5.3",
+    "@storybook/react-webpack5": "7.5.3",
     "@testing-library/react-hooks": "7.0.2",
     "@types/array-move": "2.0.0",
     "@types/async": "^3.2.20",
@@ -292,21 +91,23 @@
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.18",
     "@types/react-redux": "7.1.25",
+    "@types/react-syntax-highlighter": "15.5.11",
     "@types/react-window": "1.8.5",
     "@types/recharts": "1.8.24",
     "@types/redux-logger": "3.0.9",
     "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "5.51.0",
     "acorn": "8.0.5",
-    "babel-loader": "8.2.3",
+    "browserify-zlib": "0.2.0",
+    "buffer": "6.0.3",
     "chalk": "4.1.2",
     "commander": "2.20.3",
     "cross-env": "7.0.3",
-    "css-loader": "3.6.0",
+    "crypto-browserify": "3.12.0",
+    "css-loader": "5.2.7",
     "csstype": "2.6.21",
     "dotenv": "16.3.1",
     "emptykit.css": "1.0.1",
-    "enhanced-resolve": "5.8.3",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.7",
     "eslint": "8.33.0",
@@ -319,69 +120,83 @@
     "eslint-plugin-promise": "6.1.1",
     "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",
     "ethereumjs-util": "7.0.9",
-    "file-loader": "1.1.11",
-    "follow-redirects": "1.14.8",
+    "file-loader": "6.2.0",
+    "follow-redirects": "1.15.4",
     "font-awesome": "4.7.0",
     "fs-extra": "8.1.0",
+    "https-browserify": "1.0.0",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.6.3",
     "jest-junit": "13.0.0",
     "less": "3.13.1",
-    "less-loader": "4.1.0",
+    "less-loader": "11.1.3",
     "log-update": "3.4.0",
     "mkdirp": "0.5.6",
     "mz": "2.7.0",
+    "os-browserify": "0.3.0",
+    "path-browserify": "1.0.1",
     "prettier": "2.8.8",
+    "process": "0.11.10",
+    "querystring-es3": "0.2.1",
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-redux": "7.2.9",
     "recharts": "2.0.9",
     "redux": "4.1.0",
-    "sass-loader": "10.2.1",
+    "sass-loader": "10.4.1",
     "sinon": "7.5.0",
-    "style-loader": "0.23.1",
+    "storybook": "7.5.3",
+    "stream-browserify": "3.0.0",
+    "stream-http": "3.2.0",
+    "style-loader": "2.0.0",
     "styled-components": "5.3.11",
     "teamcity-service-messages": "0.1.14",
     "terser": "5.16.2",
-    "trezor-connect": "8.2.12-extended",
+    "timers-browserify": "2.0.12",
     "ts-jest": "26.5.6",
     "ts-loader": "8.4.0",
     "typesafe-actions": "2.2.0",
     "typescript": "4.9.4",
     "typescript-plugin-css-modules": "3.4.0",
     "typescript-plugin-styled-components": "2.0.0",
-    "url-loader": "1.0.0",
-    "webpack": "4.46.0",
-    "webpack-cli": "3.3.12"
+    "url-loader": "4.1.1",
+    "webpack": "5.89.0",
+    "webpack-cli": "5.1.4"
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.4",
-    "@brave/leo": "github:brave/leo#99fe83ce417b4dadc22e6c9989f8f52f9e39daa5",
+    "@brave/leo": "github:brave/leo#033a457665879461b5492edc66e11ceaf80e949d",
+    "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#775bb8fca9df76679b9b272545e162418127c5de",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
-    "@brave/wallet-standard-brave": "~0.0.10",
+    "@brave/wallet-standard-brave": "0.0.12",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "2.0.0-beta.12",
     "@ledgerhq/hw-app-eth": "6.24.1",
     "@ledgerhq/hw-app-solana": "6.27.1",
     "@ledgerhq/hw-transport-webhid": "6.24.1",
+    "@mozilla/readability": "^0.4.2",
     "@reduxjs/toolkit": "1.8.6",
     "@solana/web3.js": "1.58.0",
+    "@trezor/connect": "9.1.11",
+    "@trezor/connect-web": "9.1.11",
     "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
     "@types/react-router-dom": "^5.1.9",
-    "@types/webtorrent": "^0.109.0",
+    "@types/webtorrent": "0.109.0",
     "array-move": "^2.2.1",
     "async": "^3.2.4",
     "bignumber.js": "^9.0.2",
     "core-js": "^3.9.1",
     "date-fns": "^2.15.0",
     "jszip": "^3.8.0",
+    "page-metadata-parser": "^1.1.3",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
     "react-json-view-lite": "^0.9.5",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
+    "react-syntax-highlighter": "15.5.0",
     "react-window": "^1.8.5",
     "redux-act": "^1.8.0",
     "redux-logger": "^3.0.6",

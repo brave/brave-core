@@ -25,7 +25,6 @@ setIconBasePath('chrome-untrusted://resources/brave-icons')
 // constants
 import {
   BraveWallet,
-  DefaultCurrencies,
   MarketAssetFilterOption,
   MarketGridColumnTypes,
   SortOrder
@@ -43,7 +42,6 @@ import {
   UpdateBuyableAssetsMessage,
   UpdateDepositableAssetsMessage,
   UpdateCoinMarketMessage,
-  UpdateTradableAssetsMessage,
   UpdateIframeHeightMessage,
   braveWalletPanelOrigin
 } from './market-ui-messages'
@@ -76,17 +74,13 @@ const App = () => {
   const [coinMarkets, setCoinMarkets] = React.useState<
     BraveWallet.CoinMarket[]
   >([])
-  const [tradableAssets, setTradableAssets] = React.useState<
-    BraveWallet.BlockchainToken[]
-  >([])
   const [buyableAssets, setBuyableAssets] = React.useState<
     BraveWallet.BlockchainToken[]
   >([])
   const [depositableAssets, setDepositableAssets] = React.useState<
     BraveWallet.BlockchainToken[]
   >([])
-  const [defaultCurrencies, setDefaultCurrencies] =
-    React.useState<DefaultCurrencies>()
+  const [defaultFiatCurrency, setDefaultFiatCurrency] = React.useState<string>()
 
   // Constants
   const origin =
@@ -102,11 +96,18 @@ const App = () => {
         : searchCoinMarkets(coinMarkets, searchTerm)
     const filteredCoins = filterCoinMarkets(
       searchResults,
-      tradableAssets,
+      buyableAssets,
       currentFilter
     )
     return [...sortCoinMarkets(filteredCoins, sortOrder, sortByColumnId)]
-  }, [coinMarkets, sortOrder, sortByColumnId, searchTerm, currentFilter])
+  }, [
+    searchTerm,
+    coinMarkets,
+    buyableAssets,
+    currentFilter,
+    sortOrder,
+    sortByColumnId
+  ])
 
   // Methods
   const isBuySupported = React.useCallback(
@@ -178,13 +179,7 @@ const App = () => {
           case MarketUiCommand.UpdateCoinMarkets: {
             const { payload } = message as UpdateCoinMarketMessage
             setCoinMarkets(payload.coins)
-            setDefaultCurrencies(payload.defaultCurrencies)
-            break
-          }
-
-          case MarketUiCommand.UpdateTradableAssets: {
-            const { payload } = message as UpdateTradableAssetsMessage
-            setTradableAssets(payload)
+            setDefaultFiatCurrency(payload.defaultFiatCurrency)
             break
           }
 
@@ -255,7 +250,7 @@ const App = () => {
             headers={marketGridHeaders}
             coinMarketData={visibleCoinMarkets}
             showEmptyState={visibleCoinMarkets.length === 0}
-            fiatCurrency={defaultCurrencies?.fiat ?? 'USD'}
+            fiatCurrency={defaultFiatCurrency || 'USD'}
             sortedBy={sortByColumnId}
             sortOrder={sortOrder}
             onSelectCoinMarket={onSelectCoinMarket}

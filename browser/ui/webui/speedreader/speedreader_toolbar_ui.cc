@@ -17,6 +17,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/prefs/prefs_tab_helper.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/web_contents.h"
@@ -24,7 +25,7 @@
 #include "content/public/common/url_constants.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #endif
 
 SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
@@ -49,13 +50,14 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   source->AddBoolean("aiChatFeatureEnabled",
-                     ai_chat::features::IsAIChatEnabled());
+                     ai_chat::IsAIChatEnabled(profile_->GetPrefs()));
 #else
   source->AddBoolean("aiChatFeatureEnabled", false);
 #endif
   source->AddBoolean("ttsEnabled",
                      speedreader::features::IsSpeedreaderEnabled() &&
                          speedreader::kSpeedreaderTTS.Get());
+  PrefsTabHelper::CreateForWebContents(web_ui->GetWebContents());
 }
 
 SpeedreaderToolbarUI::~SpeedreaderToolbarUI() = default;

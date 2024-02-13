@@ -7,6 +7,7 @@
 #define BRAVE_NET_HTTP_PARTITIONED_HOST_STATE_MAP_H_
 
 #include <array>
+#include <optional>
 #include <string>
 
 #include "base/auto_reset.h"
@@ -14,7 +15,6 @@
 #include "base/ranges/algorithm.h"
 #include "crypto/sha2.h"
 #include "net/base/net_export.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace net {
 
@@ -31,8 +31,8 @@ class NET_EXPORT PartitionedHostStateMapBase {
       delete;
 
   // Stores scoped partition hash for use in subsequent calls.
-  base::AutoReset<absl::optional<HashedHost>> SetScopedPartitionHash(
-      absl::optional<HashedHost> partition_hash);
+  base::AutoReset<std::optional<HashedHost>> SetScopedPartitionHash(
+      std::optional<HashedHost> partition_hash);
   // Returns true if |partition_hash_| is set. The value may be empty.
   bool HasPartitionHash() const;
   // Returns true if |partition_hash_| contains a non empty valid hash.
@@ -51,7 +51,7 @@ class NET_EXPORT PartitionedHostStateMapBase {
   //   empty array - invalid/opaque partition, i.e. shouldn't be stored;
   //   non-empty array - valid partition.
   // Where empty is defined as zero-initialized.
-  absl::optional<HashedHost> partition_hash_;
+  std::optional<HashedHost> partition_hash_;
 };
 
 // Allows data partitioning using half key from PartitionHash. The class mimics

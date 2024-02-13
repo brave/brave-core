@@ -6,8 +6,9 @@
 #ifndef BRAVE_BROWSER_IPFS_CONTENT_BROWSER_CLIENT_HELPER_H_
 #define BRAVE_BROWSER_IPFS_CONTENT_BROWSER_CLIENT_HELPER_H_
 
+#include <optional>
+
 #include "content/public/browser/web_contents.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -29,7 +30,7 @@ void LoadOrLaunchIPFSURL(const GURL& url,
                          content::WebContents::OnceGetter web_contents_getter,
                          ui::PageTransition page_transition,
                          bool has_user_gesture,
-                         const absl::optional<url::Origin>& initiating_origin);
+                         const std::optional<url::Origin>& initiating_origin);
 
 bool HandleIPFSURLRewrite(GURL* url,
     content::BrowserContext* browser_context);

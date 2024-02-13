@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/command_line.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
@@ -93,7 +95,7 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     std::vector<mojom::BlockchainTokenPtr> tokens_out;
     brave_wallet_service_->GetUserAssets(
         GetCurrentChainId(browser()->profile()->GetPrefs(),
-                          mojom::CoinType::ETH, absl::nullopt),
+                          mojom::CoinType::ETH, std::nullopt),
         mojom::CoinType::ETH,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> tokens) {

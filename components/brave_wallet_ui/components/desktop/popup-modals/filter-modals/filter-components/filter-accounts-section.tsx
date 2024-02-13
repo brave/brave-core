@@ -32,12 +32,12 @@ import {
 import { Row, Column } from '../../../../shared/style'
 
 interface Props {
-  filteredOutAccountAddresses: string[]
-  setFilteredOutAccountAddresses: (addresses: string[]) => void
+  filteredOutAccountIds: string[]
+  setFilteredOutAccountIds: (addresses: string[]) => void
 }
 
 export const FilterAccountsSection = (props: Props) => {
-  const { filteredOutAccountAddresses, setFilteredOutAccountAddresses } = props
+  const { filteredOutAccountIds, setFilteredOutAccountIds } = props
 
   const { data: accountsList } = useGetAccountInfosRegistryQuery(undefined, {
     selectFromResult: (res) => ({
@@ -48,44 +48,34 @@ export const FilterAccountsSection = (props: Props) => {
 
   // Methods
   const isAccountFilteredOut = React.useCallback(
-    (address: string) => {
-      return filteredOutAccountAddresses.includes(address)
+    (uniqueKey: string) => {
+      return filteredOutAccountIds.includes(uniqueKey)
     },
-    [filteredOutAccountAddresses]
+    [filteredOutAccountIds]
   )
 
   const onCheckAccount = React.useCallback(
-    (address: string) => {
-      if (isAccountFilteredOut(address)) {
-        setFilteredOutAccountAddresses(
-          filteredOutAccountAddresses.filter(
-            (addressKey) => addressKey !== address
-          )
+    (uniqueKey: string) => {
+      if (isAccountFilteredOut(uniqueKey)) {
+        setFilteredOutAccountIds(
+          filteredOutAccountIds.filter((addressKey) => addressKey !== uniqueKey)
         )
         return
       }
-      setFilteredOutAccountAddresses([...filteredOutAccountAddresses, address])
+      setFilteredOutAccountIds([...filteredOutAccountIds, uniqueKey])
     },
-    [
-      filteredOutAccountAddresses,
-      isAccountFilteredOut,
-      setFilteredOutAccountAddresses
-    ]
+    [filteredOutAccountIds, isAccountFilteredOut, setFilteredOutAccountIds]
   )
 
   const onSelectOrDeselectAllAccounts = React.useCallback(() => {
-    if (filteredOutAccountAddresses.length > 0) {
-      setFilteredOutAccountAddresses([])
+    if (filteredOutAccountIds.length > 0) {
+      setFilteredOutAccountIds([])
       return
     }
-    setFilteredOutAccountAddresses(
-      accountsList.map((account) => account.address)
+    setFilteredOutAccountIds(
+      accountsList.map((account) => account.accountId.uniqueKey)
     )
-  }, [
-    accountsList,
-    filteredOutAccountAddresses,
-    setFilteredOutAccountAddresses
-  ])
+  }, [accountsList, filteredOutAccountIds, setFilteredOutAccountIds])
 
   return (
     <>
@@ -100,7 +90,7 @@ export const FilterAccountsSection = (props: Props) => {
           {getLocale('braveWalletSelectAccounts')}
         </Title>
         <SelectAllButton onClick={onSelectOrDeselectAllAccounts}>
-          {filteredOutAccountAddresses.length > 0
+          {filteredOutAccountIds.length > 0
             ? getLocale('braveWalletSelectAll')
             : getLocale('braveWalletDeselectAll')}
         </SelectAllButton>
@@ -118,8 +108,8 @@ export const FilterAccountsSection = (props: Props) => {
             key={account.accountId.uniqueKey}
           >
             <Checkbox
-              checked={!isAccountFilteredOut(account.address)}
-              onChange={() => onCheckAccount(account.address)}
+              checked={!isAccountFilteredOut(account.accountId.uniqueKey)}
+              onChange={() => onCheckAccount(account.accountId.uniqueKey)}
             >
               <CreateAccountIcon
                 size='medium'
@@ -136,7 +126,7 @@ export const FilterAccountsSection = (props: Props) => {
                   textSize='12px'
                   isBold={false}
                 >
-                  {getAccountTypeDescription(account.accountId.coin)}
+                  {getAccountTypeDescription(account.accountId)}
                 </Description>
               </Column>
             </Checkbox>

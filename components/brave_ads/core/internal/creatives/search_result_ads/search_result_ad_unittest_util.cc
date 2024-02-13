@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 
 #include "base/check.h"
-#include "base/uuid.h"
-#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
@@ -29,33 +29,15 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAd(
     const bool should_use_random_uuids) {
   mojom::SearchResultAdInfoPtr ad = mojom::SearchResultAdInfo::New();
 
-  ad->placement_id = should_use_random_uuids
-                         ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                         : kPlacementId;
-
+  ad->placement_id = GetConstantId(should_use_random_uuids, kPlacementId);
   ad->creative_instance_id =
-      should_use_random_uuids
-          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-          : kCreativeInstanceId;
-
-  ad->creative_set_id = should_use_random_uuids
-                            ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                            : kCreativeSetId;
-
-  ad->campaign_id = should_use_random_uuids
-                        ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                        : kCampaignId;
-
-  ad->advertiser_id = should_use_random_uuids
-                          ? base::Uuid::GenerateRandomV4().AsLowercaseString()
-                          : kAdvertiserId;
-
+      GetConstantId(should_use_random_uuids, kCreativeInstanceId);
+  ad->creative_set_id = GetConstantId(should_use_random_uuids, kCreativeSetId);
+  ad->campaign_id = GetConstantId(should_use_random_uuids, kCampaignId);
+  ad->advertiser_id = GetConstantId(should_use_random_uuids, kAdvertiserId);
   ad->target_url = GURL("https://brave.com");
-
   ad->headline_text = kHeadlineText;
-
   ad->description = kDescription;
-
   ad->value = kValue;
 
   return ad;

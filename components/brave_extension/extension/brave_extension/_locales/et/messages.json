@@ -1,7 +1,7 @@
 {
   "appName": {
-    "message": "The Brave Extension",
-    "description": "The name of the the extension."
+    "message": "Brave Extension",
+    "description": "The name of the extension."
   },
   "shields": {
     "message": "Kaitse",
@@ -208,7 +208,7 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Bravei lisamine",
+    "message": "Brave'i lisamine",
     "description": "Message for adding an extension to Brave"
   },
   "removeFromBrave": {

@@ -23,8 +23,8 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 
 namespace brave_ads {
 
@@ -125,7 +125,12 @@ void NotificationAdServing::GetEligibleAdsForUserModelCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  ServeAd(BuildNotificationAd(ChooseCreativeAd(creative_ads)));
+  const CreativeNotificationAdInfo creative_ad = ChooseCreativeAd(creative_ads);
+  BLOG(1, "Chosen eligible ad with creative instance id "
+              << creative_ad.creative_instance_id << " and a priority of "
+              << creative_ad.priority);
+
+  ServeAd(BuildNotificationAd(creative_ad));
 }
 
 void NotificationAdServing::UpdateMaximumAdsPerHour() {

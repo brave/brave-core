@@ -9,7 +9,7 @@
 
 #include "base/metrics/histogram_functions.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 
@@ -43,7 +43,7 @@ void CookieListOptInPageHandler::CloseUI() {
 
 void CookieListOptInPageHandler::EnableFilter() {
   g_brave_browser_process->ad_block_service()
-      ->regional_service_manager()
+      ->component_service_manager()
       ->EnableFilterList(brave_shields::kCookieListUuid, true);
 }
 

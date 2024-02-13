@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_info.h"
 
+#include <optional>
+
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -34,7 +35,7 @@ base::expected<AntiTargetingInfo, std::string>
 AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
   AntiTargetingInfo anti_targeting;
 
-  if (const absl::optional<int> version = dict.FindInt(kVersionKey)) {
+  if (const std::optional<int> version = dict.FindInt(kVersionKey)) {
     if (kAntiTargetingResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }

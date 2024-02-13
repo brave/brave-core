@@ -11,15 +11,15 @@ namespace brave_ads {
 
 base::flat_map<std::string, int32_t> GetAdsSummaryForDateRange(
     const TransactionList& transactions,
-    base::Time from_time,
-    base::Time to_time) {
+    const base::Time from_time,
+    const base::Time to_time) {
   base::flat_map<std::string, int32_t> ads_summary;
 
   for (const auto& transaction : transactions) {
     if (transaction.confirmation_type == ConfirmationType::kViewed &&
         transaction.created_at >= from_time &&
         transaction.created_at <= to_time) {
-      ads_summary[ToString(transaction.ad_type)]++;
+      ++ads_summary[ToString(transaction.ad_type)];
     }
   }
 

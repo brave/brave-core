@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -52,15 +53,19 @@ base::Value::Dict ZCashTxMeta::ToValue() const {
 
 mojom::TransactionInfoPtr ZCashTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
-      id_, absl::nullopt, from_.Clone(), tx_hash_,
+      id_, std::nullopt, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewZecTxData(ToZecTxData(*tx_)), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
-      base::Milliseconds(created_time_.ToJavaTime()),
-      base::Milliseconds(submitted_time_.ToJavaTime()),
-      base::Milliseconds(confirmed_time_.ToJavaTime()),
+      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
+      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
+      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
       tx_->to());
+}
+
+mojom::CoinType ZCashTxMeta::GetCoinType() const {
+  return mojom::CoinType::ZEC;
 }
 
 }  // namespace brave_wallet

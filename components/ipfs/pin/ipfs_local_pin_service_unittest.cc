@@ -6,6 +6,7 @@
 #include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <utility>
 
@@ -38,7 +39,7 @@ class MockIpfsService : public IpfsService {
                void(const std::vector<std::string>& cid,
                     IpfsService::RemovePinCallback callback));
   MOCK_METHOD4(GetPins,
-               void(const absl::optional<std::vector<std::string>>& cid,
+               void(const std::optional<std::vector<std::string>>& cid,
                     const std::string& type,
                     bool quiet,
                     IpfsService::GetPinsCallback callback));
@@ -102,7 +103,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
               std::move(callback).Run(result);
             }));
 
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->AddPins(
         "a", {"ipfs://Qma/metadata/1.json", "ipfs://Qmb/images/1.jpg"},
         base::BindLambdaForTesting(
@@ -117,7 +118,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                                 "QmaD1" : ["a"],
                                 "QmbD1" : ["a"]
                              }})";
-    absl::optional<base::Value> expected_value = base::JSONReader::Read(
+    std::optional<base::Value> expected_value = base::JSONReader::Read(
         expected, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
     EXPECT_EQ(expected_value.value(), GetPrefs()->GetDict(kIPFSPinnedCids));
@@ -137,7 +138,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
               std::move(callback).Run(result);
             }));
 
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->AddPins("b",
                        {"ipfs://Qma", "ipfs://Qmb", "ipfs://Qmc", "ipfs://Qmd",
                         "ipfs://Qimage"},
@@ -157,7 +158,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                                 "QmaD1" : ["a"],
                                 "QmbD1" : ["a"]
                              }})";
-    absl::optional<base::Value> expected_value = base::JSONReader::Read(
+    std::optional<base::Value> expected_value = base::JSONReader::Read(
         expected, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
     EXPECT_EQ(expected_value.value(), GetPrefs()->GetDict(kIPFSPinnedCids));
@@ -172,14 +173,14 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                IpfsService::AddPinCallback callback) {
               AddPinResult result;
               if (recursive) {
-                std::move(callback).Run(absl::nullopt);
+                std::move(callback).Run(std::nullopt);
                 return;
               }
               result.recursive = recursive;
               std::move(callback).Run(result);
             }));
 
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->AddPins(
         "c",
         {"ipfs://Qma", "ipfs://Qmb", "ipfs://Qmc", "ipfs://Qmd", "ipfs://Qme"},
@@ -199,7 +200,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                                 "QmaD1" : ["a"],
                                 "QmbD1" : ["a"]
                              }})";
-    absl::optional<base::Value> expected_value = base::JSONReader::Read(
+    std::optional<base::Value> expected_value = base::JSONReader::Read(
         expected, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
     EXPECT_EQ(expected_value.value(), GetPrefs()->GetDict(kIPFSPinnedCids));
@@ -212,10 +213,10 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
         .WillByDefault(::testing::Invoke(
             [](const std::vector<std::string>& cids, bool recursive,
                IpfsService::AddPinCallback callback) {
-              std::move(callback).Run(absl::nullopt);
+              std::move(callback).Run(std::nullopt);
             }));
 
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->AddPins(
         "c",
         {"ipfs://Qma", "ipfs://Qmb", "ipfs://Qmc", "ipfs://Qmd", "ipfs://Qme"},
@@ -235,7 +236,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                                 "QmaD1" : ["a"],
                                 "QmbD1" : ["a"]
                              }})";
-    absl::optional<base::Value> expected_value = base::JSONReader::Read(
+    std::optional<base::Value> expected_value = base::JSONReader::Read(
         expected, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
     EXPECT_EQ(expected_value.value(), GetPrefs()->GetDict(kIPFSPinnedCids));
@@ -251,14 +252,14 @@ TEST_F(IpfsLocalPinServiceTest, RemoveLocalPinJobTest) {
                                   "Qmc" : ["a", "b"],
                                   "Qmd" : ["b"]
                                }, "direct": {}})";
-    absl::optional<base::Value> base_value = base::JSONReader::Read(
+    std::optional<base::Value> base_value = base::JSONReader::Read(
         base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
     GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
   }
 
   {
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->RemovePins("a",
                           base::BindLambdaForTesting(
                               [&success](bool result) { success = result; }));
@@ -269,7 +270,7 @@ TEST_F(IpfsLocalPinServiceTest, RemoveLocalPinJobTest) {
                              "Qmc" : ["b"],
                              "Qmd" : ["b"]
                              })";
-    absl::optional<base::Value> expected_value = base::JSONReader::Read(
+    std::optional<base::Value> expected_value = base::JSONReader::Read(
         expected, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
     EXPECT_EQ(expected_value.value(),
@@ -278,7 +279,7 @@ TEST_F(IpfsLocalPinServiceTest, RemoveLocalPinJobTest) {
   }
 
   {
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->RemovePins("c",
                           base::BindLambdaForTesting(
                               [&success](bool result) { success = result; }));
@@ -289,7 +290,7 @@ TEST_F(IpfsLocalPinServiceTest, RemoveLocalPinJobTest) {
                              "Qmc" : ["b"],
                              "Qmd" : ["b"]
                              })";
-    absl::optional<base::Value> expected_value = base::JSONReader::Read(
+    std::optional<base::Value> expected_value = base::JSONReader::Read(
         expected, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
     EXPECT_EQ(expected_value.value(),
@@ -298,14 +299,14 @@ TEST_F(IpfsLocalPinServiceTest, RemoveLocalPinJobTest) {
   }
 
   {
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->RemovePins("b",
                           base::BindLambdaForTesting(
                               [&success](bool result) { success = result; }));
 
     std::string expected = R"({
                              })";
-    absl::optional<base::Value> expected_value = base::JSONReader::Read(
+    std::optional<base::Value> expected_value = base::JSONReader::Read(
         expected, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
     EXPECT_EQ(expected_value.value(),
@@ -322,7 +323,7 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
                                   "Qmc" : ["a", "b"],
                                   "Qmd" : ["b"]
                                }, "direct": {}})";
-    absl::optional<base::Value> base_value = base::JSONReader::Read(
+    std::optional<base::Value> base_value = base::JSONReader::Read(
         base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
     GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
@@ -330,7 +331,7 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
 
   {
     ON_CALL(*GetIpfsService(), GetPins(_, _, _, _))
-        .WillByDefault(::testing::Invoke([](const absl::optional<
+        .WillByDefault(::testing::Invoke([](const std::optional<
                                                 std::vector<std::string>>& cid,
                                             const std::string& type, bool quiet,
                                             IpfsService::GetPinsCallback
@@ -339,10 +340,10 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
           std::move(callback).Run(result);
         }));
 
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->ValidatePins(
         "a", {"ipfs://Qma", "ipfs://Qmb", "ipfs://Qmc"},
-        base::BindLambdaForTesting([&success](absl::optional<bool> result) {
+        base::BindLambdaForTesting([&success](std::optional<bool> result) {
           success = result.value();
         }));
 
@@ -353,7 +354,7 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
   {
     ON_CALL(*GetIpfsService(), GetPins(_, _, _, _))
         .WillByDefault(::testing::Invoke(
-            [](const absl::optional<std::vector<std::string>>& cid,
+            [](const std::optional<std::vector<std::string>>& cid,
                const std::string& type, bool quiet,
                IpfsService::GetPinsCallback callback) {
               GetPinsResult result = {{"Qma", "Recursive"},
@@ -362,10 +363,10 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
               std::move(callback).Run(result);
             }));
 
-    absl::optional<bool> success;
+    std::optional<bool> success;
     service()->ValidatePins(
         "a", {"ipfs://Qma", "ipfs://Qmb", "ipfs://Qmc"},
-        base::BindLambdaForTesting([&success](absl::optional<bool> result) {
+        base::BindLambdaForTesting([&success](std::optional<bool> result) {
           success = result.value();
         }));
     EXPECT_TRUE(success.has_value());
@@ -375,17 +376,17 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
   {
     ON_CALL(*GetIpfsService(), GetPins(_, _, _, _))
         .WillByDefault(::testing::Invoke(
-            [](const absl::optional<std::vector<std::string>>& cid,
+            [](const std::optional<std::vector<std::string>>& cid,
                const std::string& type, bool quiet,
                IpfsService::GetPinsCallback callback) {
               GetPinsResult result = {};
               std::move(callback).Run(result);
             }));
 
-    absl::optional<bool> success = false;
+    std::optional<bool> success = false;
     service()->ValidatePins(
         "b", {"ipfs://Qma", "ipfs://Qmb", "ipfs://Qmc", "ipfs://Qmd"},
-        base::BindLambdaForTesting([&success](absl::optional<bool> result) {
+        base::BindLambdaForTesting([&success](std::optional<bool> result) {
           success = result.value();
         }));
 
@@ -395,21 +396,21 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
   }
 
   {
-    absl::optional<bool> success;
+    std::optional<bool> success;
     VerifyLocalPinJob job(
         GetPrefs(), GetIpfsService(), "b",
         IpfsLocalPinService::ExtractMergedPinData(
             {"ipfs://Qma", "ipfs://Qmb", "ipfs://Qmc", "ipfs://Qmd"})
             .value(),
         base::BindLambdaForTesting(
-            [&success](absl::optional<bool> result) { success = result; }));
+            [&success](std::optional<bool> result) { success = result; }));
 
     ON_CALL(*GetIpfsService(), GetPins(_, _, _, _))
         .WillByDefault(::testing::Invoke(
-            [](const absl::optional<std::vector<std::string>>& cid,
+            [](const std::optional<std::vector<std::string>>& cid,
                const std::string& type, bool quiet,
                IpfsService::GetPinsCallback callback) {
-              std::move(callback).Run(absl::nullopt);
+              std::move(callback).Run(std::nullopt);
             }));
 
     job.Start();
@@ -428,21 +429,21 @@ TEST_F(IpfsLocalPinServiceTest, GcJobTest) {
                                }, "direct":{
                                 "Qmb" : ["a", "b"]
                                 }})";
-    absl::optional<base::Value> base_value = base::JSONReader::Read(
+    std::optional<base::Value> base_value = base::JSONReader::Read(
         base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
     GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
   }
 
   {
-    absl::optional<bool> success;
+    std::optional<bool> success;
     GcJob job(GetPrefs(), GetIpfsService(),
               base::BindLambdaForTesting(
                   [&success](bool result) { success = result; }));
 
     ON_CALL(*GetIpfsService(), GetPins(_, _, _, _))
         .WillByDefault(::testing::Invoke(
-            [](const absl::optional<std::vector<std::string>>& cid,
+            [](const std::optional<std::vector<std::string>>& cid,
                const std::string& type, bool quiet,
                IpfsService::GetPinsCallback callback) {
               EXPECT_FALSE(cid.has_value());
@@ -461,27 +462,26 @@ TEST_F(IpfsLocalPinServiceTest, GcJobTest) {
   }
 
   {
-    absl::optional<bool> success;
+    std::optional<bool> success;
     GcJob job(GetPrefs(), GetIpfsService(),
               base::BindLambdaForTesting(
                   [&success](bool result) { success = result; }));
 
     ON_CALL(*GetIpfsService(), GetPins(_, _, _, _))
-        .WillByDefault(::testing::Invoke([](const absl::optional<
-                                                std::vector<std::string>>& cid,
-                                            const std::string& type, bool quiet,
-                                            IpfsService::GetPinsCallback
-                                                callback) {
-          EXPECT_FALSE(cid.has_value());
-          EXPECT_TRUE(quiet);
-          GetPinsResult result;
-          if (type == "recursive") {
-            result = {{"Qm1", "Recursive"}, {"Qm2", "Recursive"}};
-          } else {
-            result = {};
-          }
-          std::move(callback).Run(result);
-        }));
+        .WillByDefault(::testing::Invoke(
+            [](const std::optional<std::vector<std::string>>& cid,
+               const std::string& type, bool quiet,
+               IpfsService::GetPinsCallback callback) {
+              EXPECT_FALSE(cid.has_value());
+              EXPECT_TRUE(quiet);
+              GetPinsResult result;
+              if (type == "recursive") {
+                result = {{"Qm1", "Recursive"}, {"Qm2", "Recursive"}};
+              } else {
+                result = {};
+              }
+              std::move(callback).Run(result);
+            }));
     EXPECT_CALL(*GetIpfsService(), RemovePin(_, _)).Times(1);
 
     ON_CALL(*GetIpfsService(), RemovePin(_, _))
@@ -501,17 +501,17 @@ TEST_F(IpfsLocalPinServiceTest, GcJobTest) {
   }
 
   {
-    absl::optional<bool> success;
+    std::optional<bool> success;
     GcJob job(GetPrefs(), GetIpfsService(),
               base::BindLambdaForTesting(
                   [&success](bool result) { success = result; }));
 
     ON_CALL(*GetIpfsService(), GetPins(_, _, _, _))
         .WillByDefault(::testing::Invoke(
-            [](const absl::optional<std::vector<std::string>>& cid,
+            [](const std::optional<std::vector<std::string>>& cid,
                const std::string& type, bool quiet,
                IpfsService::GetPinsCallback callback) {
-              std::move(callback).Run(absl::nullopt);
+              std::move(callback).Run(std::nullopt);
             }));
 
     EXPECT_CALL(*GetIpfsService(), RemovePin(_, _)).Times(0);
@@ -530,7 +530,7 @@ TEST_F(IpfsLocalPinServiceTest, ResetTest) {
                                     "Qmc" : ["a", "b"],
                                     "Qmd" : ["b"]
                                  }, "direct":{}})";
-    absl::optional<base::Value> base_value = base::JSONReader::Read(
+    std::optional<base::Value> base_value = base::JSONReader::Read(
         base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
     GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
@@ -549,7 +549,7 @@ TEST_F(IpfsLocalPinServiceTest, ResetTest) {
             EXPECT_NE(cid.end(), cid.find("bafy3"));
             std::move(callback).Run(true);
           }));
-  absl::optional<bool> reset_result;
+  std::optional<bool> reset_result;
   service()->AddPins("123", {"ipfs://bafy1", "ipfs://bafy2"},
                      base::DoNothing());
   service()->AddPins("345", {"ipfs://bafy1", "ipfs://bafy2"},
@@ -572,7 +572,7 @@ TEST_F(IpfsLocalPinServiceTest, ResetTest_UnpinFailed) {
                                     "Qmc" : ["a", "b"],
                                     "Qmd" : ["b"]
                                  }, "direct":{}})";
-    absl::optional<base::Value> base_value = base::JSONReader::Read(
+    std::optional<base::Value> base_value = base::JSONReader::Read(
         base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
     GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
@@ -591,7 +591,7 @@ TEST_F(IpfsLocalPinServiceTest, ResetTest_UnpinFailed) {
             EXPECT_NE(cid.end(), cid.find("bafy3"));
             std::move(callback).Run(false);
           }));
-  absl::optional<bool> reset_result;
+  std::optional<bool> reset_result;
   service()->Reset(base::BindLambdaForTesting(
       [&reset_result](bool result) { reset_result = result; }));
   EXPECT_EQ(4u,
@@ -607,7 +607,7 @@ TEST_F(IpfsLocalPinServiceTest, ResetTest_NoPinnedItems) {
                                     "Qmc" : ["a", "b"],
                                     "Qmd" : ["b"]
                                  }, "direct":{}})";
-    absl::optional<base::Value> base_value = base::JSONReader::Read(
+    std::optional<base::Value> base_value = base::JSONReader::Read(
         base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
     GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
@@ -617,7 +617,7 @@ TEST_F(IpfsLocalPinServiceTest, ResetTest_NoPinnedItems) {
       .WillByDefault(::testing::Invoke([](IpfsService::NodeCallback callback) {
         std::move(callback).Run("");
       }));
-  absl::optional<bool> reset_result;
+  std::optional<bool> reset_result;
   service()->Reset(base::BindLambdaForTesting(
       [&reset_result](bool result) { reset_result = result; }));
   EXPECT_EQ(0u, GetPrefs()->GetDict(kIPFSPinnedCids).size());

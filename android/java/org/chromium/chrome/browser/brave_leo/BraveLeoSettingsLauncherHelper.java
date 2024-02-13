@@ -7,14 +7,17 @@ package org.chromium.chrome.browser.brave_leo;
 
 import android.content.Context;
 
-import org.chromium.base.annotations.CalledByNative;
+import org.jni_zero.CalledByNative;
+
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.content_public.browser.WebContents;
 
-/** Launches Brave Leo settings page. */
+/** Launches Brave Leo settings page or subscription. */
 public class BraveLeoSettingsLauncherHelper {
+    private static final String ACCOUNT_PAGE_URL = "https://account.brave.com/";
     private static SettingsLauncher sLauncher;
 
     @CalledByNative
@@ -24,6 +27,20 @@ public class BraveLeoSettingsLauncherHelper {
             return;
         }
         getLauncher().launchSettingsActivity(context, BraveLeoPreferences.class);
+    }
+
+    @CalledByNative
+    private static void goPremium(WebContents webContents) {
+        BraveLeoUtils.goPremium(webContents.getTopLevelNativeWindow().getActivity().get());
+    }
+
+    @CalledByNative
+    private static void managePremium(WebContents webContents) {
+        if (BraveLeoPrefUtils.getIsSubscriptionActive(Profile.fromWebContents(webContents))) {
+            BraveLeoUtils.openManageSubscription();
+        } else {
+            BraveLeoUtils.openURL(ACCOUNT_PAGE_URL);
+        }
     }
 
     private static SettingsLauncher getLauncher() {

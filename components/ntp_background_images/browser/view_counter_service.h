@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -76,11 +77,11 @@ class ViewCounterService : public KeyedService,
                                    const std::string& destination_url,
                                    const std::string& wallpaper_id);
 
-  absl::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
-  absl::optional<base::Value::Dict> GetCurrentWallpaper() const;
-  absl::optional<base::Value::Dict> GetCurrentBrandedWallpaper() const;
-  absl::optional<base::Value::Dict> GetCurrentBrandedWallpaperByAdInfo() const;
-  absl::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromModel() const;
+  std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
+  std::optional<base::Value::Dict> GetCurrentWallpaper() const;
+  std::optional<base::Value::Dict> GetCurrentBrandedWallpaper() const;
+  std::optional<base::Value::Dict> GetCurrentBrandedWallpaperByAdInfo() const;
+  std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromModel() const;
   std::vector<TopSite> GetTopSitesData() const;
 
   bool IsSuperReferral() const;

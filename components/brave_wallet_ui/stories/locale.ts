@@ -5,6 +5,9 @@
 import { provideStrings } from '../../../.storybook/locale'
 
 provideStrings({
+  // Entities
+  braveWalletContract: 'Contract',
+
   // Search Text
   braveWalletSearchText: 'Search',
 
@@ -64,11 +67,15 @@ provideStrings({
   braveWalletBuy: 'Buy',
   braveWalletSend: 'Send',
   braveWalletSwap: 'Swap',
+  braveWalletBridge: 'Bridge',
   braveWalletReset: 'Reset',
   braveWalletSell: 'Sell',
   braveWalletNotEnoughBalance: 'You don’t have enough $1 in this account.',
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
   braveWalletSlippageToleranceTitle: 'Slippage tolerance',
+  braveWalletSlippageToleranceExplanation:
+    'Your swap will execute within the maximum amount of slippage you define here. For example, 1% slippage means you’re willing to accept up to 1% less due to market conditions.',
+  braveWalletSlippageToleranceDescription: 'Enter a value between 0.5% and 99%',
   braveWalletExpiresInTitle: 'Expires in',
   braveWalletSendPlaceholder: 'Wallet address or URL',
   braveWalletSendNoURLPlaceholder: 'Wallet address',
@@ -100,14 +107,14 @@ provideStrings({
     "It looks like you've entered an ENS address. " +
     "We'll need to use a third-party resolver to resolve this request, " +
     'which may be able to see your IP address and domain.',
+  braveSwapFindingPrice: 'Finding the best quote...',
+  braveWalletReceiveEstimate: 'Receive (est.)',
+  braveWalletFromToken: 'From token',
+  braveWalletToToken: 'To token',
 
   // Send Tab
-  braveWalletSendToken: 'Send token',
-  braveWalletSendNFT: 'Send NFT',
-  braveWalletSelectToken: 'Select token',
-  braveWalletSelectNFT: 'Select NFT',
-  braveWalletSendTabSelectTokenTitle: 'Select a token to send',
-  braveWalletSendTabSelectNFTTitle: 'Select an NFT to send',
+  braveWalletChooseAssetToSend: 'Choose asset to send',
+  braveWalletChooseAssetToSwap: 'Choose asset to swap',
   braveWalletEnterRecipientAddress: 'Enter recipient address',
   braveWalletNotEnoughFunds: 'Not enough funds',
   braveWalletSendHalf: 'HALF',
@@ -117,6 +124,10 @@ provideStrings({
   braveWalletNoAvailableTokens: 'No available tokens',
   braveWalletSearchTokens: 'Search token by name',
   braveWalletSearchNFTs: 'Search NFT by name, id',
+  braveWalletChooseAsset: 'Choose asset',
+  braveWalletOrdinalsWarningMessage:
+    'Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.',
+  braveWalletUserUnderstandsLabel: 'I understand',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:
@@ -126,6 +137,7 @@ provideStrings({
 
   // Buttons
   braveWalletButtonContinue: 'Continue',
+  braveWalletContinueWithXItems: 'Continue with $1 $2',
   braveWalletButtonNext: 'Next',
   braveWalletButtonGotIt: 'Got it',
   braveWalletButtonCopy: 'Copy',
@@ -138,6 +150,9 @@ provideStrings({
   braveWalletButtonCancel: 'Cancel',
   braveWalletButtonSaveChanges: 'Save changes',
   braveWalletLearnMore: 'Learn more',
+  braveWalletButtonNoThanks: 'No thanks',
+  braveWalletButtonEnable: 'Enable',
+  braveWalletProceedButton: 'Proceed',
 
   // Onboarding - Welcome
   braveWalletWelcomeTitle:
@@ -478,6 +493,16 @@ provideStrings({
   braveWalletNetworkBinance: 'Binance Smart Chain',
   braveWalletNetworkBinanceAbbr: 'BSC',
   braveWalletNetworkLocalhost: 'Localhost',
+  braveWalletAddNetworksAnytimeInSettings:
+    'You can add networks anytime in Settings.',
+  braveWalletSupportedNetworks: 'Supported networks',
+  braveWalletChooseChainsToUse:
+    'Choose which blockchains to use in your wallet.',
+  braveWalletShowTestnets: 'Show testnets',
+
+  // Grouping Labels
+  braveWalletFeatured: 'Featured',
+  braveWalletPopular: 'Popular',
 
   // Select Screens
   braveWalletSelectAccount: 'Select account',
@@ -566,6 +591,11 @@ provideStrings({
   braveWalletSignTransactionEIP712MessageDomain: 'Domain',
   braveWalletSignTransactionButton: 'Sign',
   braveWalletApproveTransaction: 'Approve transaction',
+  braveWalletRiskOfLossAction: 'Unsafe action with risk of loss',
+  braveWalletUntrustedRequestWarning:
+    'This request appears malicious, ' +
+    'and may leave you vulnerable to theft. ' +
+    'Do not continue unless you trust the app.',
 
   // Sign in with Ethereum
   braveWalletSignInWithBraveWallet: 'Sign in with Brave Wallet',
@@ -940,11 +970,13 @@ provideStrings({
   braveWalletSelectAll: 'Select all',
   braveWalletDeselectAll: 'Deselect all',
   braveWalletPrimaryNetworks: 'Primary networks',
-  braveWalletETHAccountDescrption: 'Ethereum + EVM Chains',
-  braveWalletSOLAccountDescrption: 'Solana + SVM Chains',
-  braveWalletFILAccountDescrption: 'Filecoin',
-  braveWalletBTCAccountDescrption: 'Bitcoin',
-  braveWalletZECAccountDescrption: 'ZCash',
+  braveWalletETHAccountDescription: 'Ethereum + EVM Chains',
+  braveWalletSOLAccountDescription: 'Solana + SVM Chains',
+  braveWalletFILAccountDescription: 'Filecoin',
+  braveWalletBTCMainnetAccountDescription: 'Bitcoin Mainnet',
+  braveWalletBTCTestnetAccountDescription: 'Bitcoin Testnet',
+  braveWalletZECAccountDescription: 'Zcash Mainnet',
+  braveWalletZECTestnetAccountDescription: 'Zcash Testnet',
   braveWalletShowNetworkLogoOnNftsTitle: 'Network Logo',
   braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
   braveWalletShowSpamNftsTitle: 'Spam NFTs',
@@ -1076,6 +1108,8 @@ provideStrings({
   // Warnings
   braveWalletNonAsciiCharactersInMessageWarning:
     'Non-ASCII characters detected!',
+  braveWalletFoundRisks: 'We found $1 risks.',
+  braveWalletFoundIssues: 'We found $1 issues.',
 
   // ASCII toggles
   braveWalletViewEncodedMessage: 'View original message',
@@ -1210,5 +1244,30 @@ provideStrings({
   braveWalletLogIn: 'Log in',
   braveWalletViewOn: 'View on $1',
   braveWalletRewardsSettings: 'Rewards settings',
-  braveWalletPlatforms: 'Platforms'
+  braveWalletPlatforms: 'Platforms',
+  braveWalletTestNetworkAccount: 'Test Network Account',
+
+  // Transaction Simulations Opt-in
+  braveWalletEnableEnhancedTransactionDetailsTitle:
+    'Enable Enhanced Transaction Details to:',
+  braveWalletTransactionSimulationSeeEstimates: 'See estimated balance change',
+  braveWalletTransactionSimulationDetectMalicious:
+    'Identify potentially malicious transactions',
+  braveWalletTransactionSimulationDetectPhishing:
+    'Help detect phishing attempts',
+  braveWalletTransactionSimulationTerms:
+    'Brave works with a partner to provide this service. ' +
+    'By enabling, you agree to share unsigned transactions ' +
+    'and their DApp URLs with our partner.',
+  braveWalletChangeAnytimeInSettings: 'Change anytime in $1Settings$2.',
+
+  // Balance Details Modal
+  braveWalletAvailable: 'Available',
+  braveWalletAvailableBalanceDescription: 'Funds available for you to use.',
+  braveWalletPending: 'Pending',
+  braveWalletPendingBalanceDescription:
+    'A pending change in your wallet balance.',
+  braveWalletTotalBalanceDescription:
+    'Your available funds plus any not-yet-confirmed transactions.',
+  braveWalletUnavailableBalances: 'Some balances may be unavailable'
 })

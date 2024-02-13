@@ -42,7 +42,8 @@ class RewardsEngineImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostSuggestionsCallback = std::function<void(const mojom::Result result)>;
+using PostSuggestionsCallback =
+    base::OnceCallback<void(const mojom::Result result)>;
 
 class PostSuggestions {
  public:
@@ -59,8 +60,8 @@ class PostSuggestions {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 PostSuggestionsCallback callback);
+  void OnRequest(PostSuggestionsCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

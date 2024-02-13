@@ -35,6 +35,10 @@ export const NetworkButton = styled(WalletButton)<{ useWithSearch?: boolean }>`
   padding: 10px;
   padding-left: 12px;
   margin-bottom: ${(p) => (p.useWithSearch ? '0px' : '8px')};
+  :disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `
 
 export const DropDownIcon = styled(CaratStrongDownIcon)<{ isOpen: boolean }>`

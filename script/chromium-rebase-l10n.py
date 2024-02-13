@@ -1,9 +1,16 @@
-#!/usr/bin/python3
+#!/usr/bin/vpython3
 #
 # Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/. */
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# [VPYTHON:BEGIN]
+# wheel: <
+#   name: "infra/python/wheels/lxml/${vpython_platform}"
+#   version: "version:4.9.3"
+# >
+# [VPYTHON:END]
 
 import argparse
 import os.path
@@ -66,7 +73,7 @@ def migrate_google_chrome_xtb_translations_for_message(message_id):
             continue
         brave_xtb_path = os.path.join(
             BRAVE_SOURCE_ROOT,
-            'app/resources/chromium_strings_{}.xtb'.format(lang))
+            'app/resources/brave_strings_{}.xtb'.format(lang))
         if not os.path.exists(brave_xtb_path):
             print('Unable to find brave translation file {}'.format(
                 brave_xtb_path))
@@ -79,6 +86,7 @@ def migrate_google_chrome_xtb_translations_for_message(message_id):
 
 def migrate_google_chrome_strings(brave_strings_xml_tree,
                                   google_chrome_strings_map):
+    print('Migrating Chrome strings...')
     google_chrome_string_path = os.path.join(
         SRC_SOURCE_ROOT, 'chrome/app/google_chrome_strings.grd')
     google_chrome_xml_tree = etree.parse(google_chrome_string_path)
@@ -92,13 +100,14 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
             print(
                 'Unable to migrate translations from google chrome: {}'.format(
                     item))
-            return
+            return False
 
         messages_element = brave_strings_xml_tree.xpath('//messages')[0]
         new_element = etree.SubElement(messages_element, 'message')
         new_element.set('name', google_chrome_strings_map[item])
         new_element.text = google_message_elem.text
         new_element.set('desc', google_message_elem.get('desc'))
+    return True
 
 
 def parse_args():
@@ -172,7 +181,7 @@ def main():
     extension = os.path.splitext(source_string_path)[1]
     if extension not in ('.grd', '.grdp'):
         print(f'returning early: unexpected file extension {extension}')
-        return
+        return 1
 
     print(f'Rebasing source string file: {source_string_path}')
     print(f'filename: {filename}')
@@ -184,8 +193,9 @@ def main():
     xml_tree = etree.parse(source_string_path)
     (basename, _) = filename.split('.')
     if basename == 'brave_strings':
-        migrate_google_chrome_strings(xml_tree,
-                                      GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
+        if not migrate_google_chrome_strings(
+                xml_tree, GOOGLE_CHROME_STRINGS_MIGRATION_MAP):
+            return 1
         elem1 = xml_tree.xpath('//message[@name="IDS_SXS_SHORTCUT_NAME"]')[0]
         elem1.text = 'Brave Nightly'
         elem1.attrib.pop('desc')
@@ -264,10 +274,17 @@ def main():
                 namespaces={"re": "http://exslt.org/regular-expressions"}):
             pak_filename.attrib['filename'] = pak_filename.attrib[
                 'filename'].replace('chromium_strings', 'brave_strings')
+    if basename in ('brave_strings'):
+        for xtb_filename in xml_tree.xpath(
+                "//file[re:test(@path, '.*\\.xtb')]",
+                namespaces={"re": "http://exslt.org/regular-expressions"}):
+            xtb_filename.attrib['path'] = xtb_filename.attrib['path'].replace(
+                'chromium_strings', 'brave_strings')
 
     print(f'writing file {source_string_path}')
     write_xml_file_from_tree(source_string_path, xml_tree)
     print('-----------')
+    return 0
 
 
 if __name__ == '__main__':

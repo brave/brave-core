@@ -19,6 +19,10 @@ SidebarItemView::SidebarItemView(const std::u16string& accessible_name)
 SidebarItemView::~SidebarItemView() = default;
 
 void SidebarItemView::SetActiveState(bool active) {
+  if (active_ == active) {
+    return;
+  }
+
   active_ = active;
   SetHighlighted(active_);
 }

@@ -1,0 +1,29 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("cpp") {
+  visibility = [
+    "//brave/components/brave_wallet/browser:*",
+    "//chrome/utility:*",
+  ]
+
+  sources = [
+    "brave_wallet_utils_service.cc",
+    "brave_wallet_utils_service.h",
+    "brave_wallet_utils_service_in_process_launcher.cc",
+    "brave_wallet_utils_service_in_process_launcher.h",
+  ]
+
+  deps = [
+    "//brave/components/services/brave_wallet:lib",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//brave/components/services/brave_wallet/zcash:zcash_decoder",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  if (!is_ios) {
+    deps += [ "//brave/components/services/brave_wallet/content" ]
+  }
+}

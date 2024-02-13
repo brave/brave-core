@@ -10,9 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
-#include "base/timer/timer.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_rewards/core/endpoints/brave/get_wallet.h"
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
@@ -32,17 +30,20 @@ class ConnectExternalWallet {
   void Run(const base::flat_map<std::string, std::string>& query_parameters,
            ConnectExternalWalletCallback);
 
-  void SetOAuthStateForTesting(const std::string& one_time_string,
-                               const std::string& code_verifier);
-
- protected:
-  virtual const char* WalletType() const = 0;
-
   struct OAuthInfo {
     std::string one_time_string;
     std::string code_verifier;
     std::string code;
   };
+
+  void SetOAuthStateForTesting(const OAuthInfo& oauth_info) {
+    oauth_info_ = oauth_info;
+  }
+
+  const OAuthInfo& GetOAuthStateForTesting() const { return oauth_info_; }
+
+ protected:
+  virtual const char* WalletType() const = 0;
 
   virtual std::string GetOAuthLoginURL() const = 0;
 
@@ -60,12 +61,6 @@ class ConnectExternalWallet {
   base::expected<std::string, mojom::ConnectExternalWalletResult> GetCode(
       const base::flat_map<std::string, std::string>& query_parameters,
       const std::string& current_one_time_string) const;
-
-  void CheckLinkage();
-
-  void CheckLinkageCallback(endpoints::GetWallet::Result&& result);
-
-  base::RetainingOneShotTimer linkage_checker_;
 };
 
 }  // namespace wallet_provider

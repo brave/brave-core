@@ -77,7 +77,7 @@ void PermissionRequestManager::AcceptDenyCancel(
   } else if (!denied_requests.empty()) {
     action = PermissionAction::DENIED;
   }
-  FinalizeCurrentRequests(action);
+  CurrentRequestsDecided(action);
 }
 
 }  // namespace permissions

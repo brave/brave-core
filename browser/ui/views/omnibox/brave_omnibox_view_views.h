@@ -6,12 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_
 #define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_
 
+#include <optional>
+
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class GURL;
 
 class BraveOmniboxViewViews : public OmniboxViewViews {
+  METADATA_HEADER(BraveOmniboxViewViews, OmniboxViewViews)
+
  public:
   using OmniboxViewViews::OmniboxViewViews;
 
@@ -23,7 +27,7 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   void CleanAndCopySelectedURL();
 
  protected:
-  absl::optional<GURL> GetURLToCopy();
+  std::optional<GURL> GetURLToCopy();
   void CopySanitizedURL(const GURL& url);
 #if BUILDFLAG(IS_WIN)
   // View overrides:
@@ -32,12 +36,19 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   bool GetAcceleratorForCommandId(int command_id,
                                   ui::Accelerator* accelerator) const override;
 
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
   // ui::views::Textfield
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
   void ExecuteTextEditCommand(ui::TextEditCommand command) override;
 #endif
+  void ExecuteCommand(int command_id, int event_flags) override;
+
   // ui::views::TextfieldController:
   void UpdateContextMenu(ui::SimpleMenuModel* menu_contents) override;
+
+ private:
+  FRIEND_TEST_ALL_PREFIXES(BraveOmniboxViewViewsTest, PasteAndSearchTest);
+
+  std::optional<std::u16string> GetClipboardTextForPasteAndSearch();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_

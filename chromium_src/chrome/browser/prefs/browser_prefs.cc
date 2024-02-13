@@ -11,10 +11,10 @@
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
@@ -25,6 +25,7 @@
 #include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -33,6 +34,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -41,10 +43,6 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
@@ -71,7 +69,8 @@
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
-void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
+void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+                                 const base::FilePath& profile_path) {
   DCHECK(profile_prefs);
   // BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -81,16 +80,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
   gcm::MigrateGCMPrefs(profile_prefs);
 #endif
 
-  MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs);
+  MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs, profile_path);
 
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  // Added 11/2019.
-  MigrateWidevinePrefs(profile_prefs);
-#endif
   brave_sync::MigrateBraveSyncPrefs(profile_prefs);
-
-  // Added 12/2019.
-  dark_mode::MigrateBraveDarkModePrefs(profile_prefs);
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 9/2020
@@ -109,7 +101,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
   profile_prefs->ClearPref(kBraveSearchVisitCount);
 #endif
 
-  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(profile_prefs);
   brave_wallet::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added 05/2021
@@ -236,6 +227,14 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
   ntp_background_images::ViewCounterService::MigrateObsoleteProfilePrefs(
       profile_prefs);
 
+  // Added 2023-11
+  brave_ads::MigrateObsoleteProfilePrefs(profile_prefs);
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 2024-01
+  brave_tabs::MigrateBraveProfilePrefs(profile_prefs);
+#endif  // !BUILDFLAG(IS_ANDROID)
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
@@ -244,22 +243,12 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   // BEGIN_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
   MigrateObsoleteLocalStatePrefs_ChromiumImpl(local_state);
 
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  // Added 11/2020.
-  MigrateObsoleteWidevineLocalStatePrefs(local_state);
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
   // Added 4/2021.
   tor::MigrateLastUsedProfileFromLocalStatePrefs(local_state);
 #endif
 
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-  // Migrating the feature flag here because dependencies relying on its value.
-  brave_vpn::MigrateWireguardFeatureFlag(local_state);
-#endif
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022

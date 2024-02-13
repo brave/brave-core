@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <vector>
@@ -26,7 +27,6 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -39,7 +39,7 @@ class ContentTypeChecker {
 
   virtual void CheckContentTypeSupported(
       const std::string& cid,
-      base::OnceCallback<void(absl::optional<bool>)> callback);
+      base::OnceCallback<void(std::optional<bool>)> callback);
 
  protected:
   // For tests
@@ -49,7 +49,7 @@ class ContentTypeChecker {
   using UrlLoaderList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   void OnHeadersFetched(UrlLoaderList::iterator iterator,
-                        base::OnceCallback<void(absl::optional<bool>)> callback,
+                        base::OnceCallback<void(std::optional<bool>)> callback,
                         scoped_refptr<net::HttpResponseHeaders> headers);
 
   raw_ptr<PrefService> pref_service_;
@@ -61,7 +61,7 @@ class ContentTypeChecker {
 };
 
 /**
- * At the moment only local pinning is supported so use absl::nullopt
+ * At the moment only local pinning is supported so use std::nullopt
  * for optional service argument.
  */
 class BraveWalletPinService : public KeyedService,
@@ -82,11 +82,11 @@ class BraveWalletPinService : public KeyedService,
   mojo::PendingRemote<mojom::WalletPinService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::WalletPinService> receiver);
 
-  static absl::optional<std::string> GetTokenPrefPath(
-      const absl::optional<std::string>& service,
+  static std::optional<std::string> GetTokenPrefPath(
+      const std::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);
   static mojom::BlockchainTokenPtr TokenFromPrefPath(const std::string& path);
-  static absl::optional<std::string> ServiceFromPrefPath(
+  static std::optional<std::string> ServiceFromPrefPath(
       const std::string& path);
   static std::string StatusToString(const mojom::TokenPinStatusCode& status);
   static std::string ErrorCodeToString(
@@ -98,15 +98,15 @@ class BraveWalletPinService : public KeyedService,
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletPinServiceObserver>
                        observer) override;
   void AddPin(mojom::BlockchainTokenPtr token,
-              const absl::optional<std::string>& service,
+              const std::optional<std::string>& service,
               AddPinCallback callback) override;
   void RemovePin(mojom::BlockchainTokenPtr token,
-                 const absl::optional<std::string>& service,
+                 const std::optional<std::string>& service,
                  RemovePinCallback callback) override;
   void GetTokenStatus(mojom::BlockchainTokenPtr token,
                       GetTokenStatusCallback callback) override;
   void Validate(mojom::BlockchainTokenPtr token,
-                const absl::optional<std::string>& service,
+                const std::optional<std::string>& service,
                 ValidateCallback callback) override;
   void IsLocalNodeRunning(IsLocalNodeRunningCallback callback) override;
   void IsTokenSupported(mojom::BlockchainTokenPtr token,
@@ -114,23 +114,23 @@ class BraveWalletPinService : public KeyedService,
 
   virtual void MarkAsPendingForPinning(
       const mojom::BlockchainTokenPtr& token,
-      const absl::optional<std::string>& service);
+      const std::optional<std::string>& service);
   virtual void MarkAsPendingForUnpinning(
       const mojom::BlockchainTokenPtr& token,
-      const absl::optional<std::string>& service);
+      const std::optional<std::string>& service);
 
   virtual mojom::TokenPinStatusPtr GetTokenStatus(
-      const absl::optional<std::string>& service,
+      const std::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);
   mojom::TokenPinStatusPtr GetTokenStatus(const std::string& path);
-  virtual absl::optional<base::Time> GetLastValidateTime(
-      const absl::optional<std::string>& service,
+  virtual std::optional<base::Time> GetLastValidateTime(
+      const std::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);
   // Returns list of known tokens for the provided pinning service.
   // Tokens are returned in the format of string path.
   // See BraveWalletPinService::GetTokenPrefPath.
   virtual std::set<std::string> GetTokens(
-      const absl::optional<std::string>& service);
+      const std::optional<std::string>& service);
 
   size_t GetPinnedTokensCount();
 
@@ -139,53 +139,53 @@ class BraveWalletPinService : public KeyedService,
   BraveWalletPinService();
 
  private:
-  bool AddToken(const absl::optional<std::string>& service,
+  bool AddToken(const std::optional<std::string>& service,
                 const mojom::BlockchainTokenPtr& token,
                 const std::vector<std::string>& cids);
-  bool RemoveToken(const absl::optional<std::string>& service,
+  bool RemoveToken(const std::optional<std::string>& service,
                    const mojom::BlockchainTokenPtr& token);
-  bool SetTokenStatus(const absl::optional<std::string>& service,
+  bool SetTokenStatus(const std::optional<std::string>& service,
                       const mojom::BlockchainTokenPtr& token,
                       mojom::TokenPinStatusCode,
                       const mojom::PinErrorPtr& error);
 
-  absl::optional<std::vector<std::string>> ResolvePinItems(
-      const absl::optional<std::string>& service,
+  std::optional<std::vector<std::string>> ResolvePinItems(
+      const std::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);
 
-  void OnPinsRemoved(absl::optional<std::string> service,
+  void OnPinsRemoved(std::optional<std::string> service,
                      RemovePinCallback callback,
                      mojom::BlockchainTokenPtr token,
                      bool result);
-  void OnTokenPinned(absl::optional<std::string> service,
+  void OnTokenPinned(std::optional<std::string> service,
                      AddPinCallback callback,
                      mojom::BlockchainTokenPtr,
                      bool result);
-  void OnTokenValidated(absl::optional<std::string> service,
+  void OnTokenValidated(std::optional<std::string> service,
                         ValidateCallback callback,
                         mojom::BlockchainTokenPtr,
-                        absl::optional<bool> result);
+                        std::optional<bool> result);
 
-  void ProcessTokenMetadata(const absl::optional<std::string>& service,
+  void ProcessTokenMetadata(const std::optional<std::string>& service,
                             const mojom::BlockchainTokenPtr& token,
                             const std::string& token_url,
                             const std::string& result,
                             AddPinCallback callback);
 
-  void OnTokenMetaDataReceived(absl::optional<std::string> service,
+  void OnTokenMetaDataReceived(std::optional<std::string> service,
                                AddPinCallback callback,
                                mojom::BlockchainTokenPtr token,
                                const std::string& token_url,
                                const std::string& result,
                                mojom::ProviderError error,
                                const std::string& error_message);
-  void OnContentTypeChecked(absl::optional<std::string> service,
+  void OnContentTypeChecked(std::optional<std::string> service,
                             mojom::BlockchainTokenPtr token,
                             std::vector<std::string> cids,
                             AddPinCallback callback,
-                            absl::optional<bool> result);
+                            std::optional<bool> result);
 
-  void OnSolTokenMetaDataReceived(absl::optional<std::string> service,
+  void OnSolTokenMetaDataReceived(std::optional<std::string> service,
                                   AddPinCallback callback,
                                   mojom::BlockchainTokenPtr token,
                                   const std::string& token_url,

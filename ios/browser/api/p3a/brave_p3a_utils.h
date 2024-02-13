@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class BraveHistogramsController;
-
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NSInteger P3AMetricLogType NS_TYPED_ENUM;
@@ -37,7 +35,6 @@ OBJC_EXPORT
                       logType:(P3AMetricLogType)logType
               mainThreadBound:(BOOL)mainThreadBound;
 - (void)removeDynamicMetric:(NSString*)histogramName;
-- (BraveHistogramsController*)histogramsController;
 - (instancetype)init NS_UNAVAILABLE;
 @end
 

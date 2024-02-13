@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.externalnav;
 import android.content.Intent;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -21,6 +23,7 @@ import org.chromium.url.GURL;
  * Extends Chromium's ExternalNavigationHandler
  */
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
+    private static final String TAG = "BraveUrlHandler";
 
     public BraveExternalNavigationHandler(ExternalNavigationDelegate delegate) {
         super(delegate);
@@ -28,16 +31,15 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
 
     @Override
     public OverrideUrlLoadingResult shouldOverrideUrlLoading(ExternalNavigationParams params) {
-        // TODO: Once we have a ready for https://github.com/brave/brave-browser/issues/33015, We'll
-        // use this code
-        /*if (originalUrl.equalsIgnoreCase("chrome://adblock/")) {
+        String originalUrl = params.getUrl().getSpec();
+        if (originalUrl.equalsIgnoreCase("chrome://adblock/")) {
             try {
                 BraveActivity.getBraveActivity().openBraveContentFilteringSettings();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "adblock url " + e);
             }
             return OverrideUrlLoadingResult.forExternalIntent();
-        }*/
+        }
         return super.shouldOverrideUrlLoading(params);
     }
 
@@ -45,7 +47,10 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     protected OverrideUrlLoadingResult startActivity(Intent intent, boolean requiresIntentChooser,
             QueryIntentActivitiesSupplier resolvingInfos, ResolveActivitySupplier resolveActivity,
             GURL browserFallbackUrl, GURL intentDataUrl, ExternalNavigationParams params) {
-        boolean isYoutubeDomain = intentDataUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN);
+        boolean isYoutubeDomain =
+                intentDataUrl != null
+                        ? intentDataUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN)
+                        : false;
         if ((isYoutubeDomain
                         && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled())
                 || (!isYoutubeDomain

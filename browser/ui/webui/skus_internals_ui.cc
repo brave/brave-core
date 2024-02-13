@@ -17,10 +17,12 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/resources/grit/skus_internals_generated_map.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
@@ -29,6 +31,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -55,6 +58,14 @@ SkusInternalsUI::SkusInternalsUI(content::WebUI* web_ui,
   CreateAndAddWebUIDataSource(web_ui, name, kSkusInternalsGenerated,
                               kSkusInternalsGeneratedSize,
                               IDR_SKUS_INTERNALS_HTML);
+
+  auto* web_contents = web_ui->GetWebContents();
+  content::BrowserContext* context = web_contents->GetBrowserContext();
+  skus_service_getter_ = base::BindRepeating(
+      [](content::BrowserContext* context) {
+        return skus::SkusServiceFactory::GetForContext(context);
+      },
+      context);
 }
 
 SkusInternalsUI::~SkusInternalsUI() = default;
@@ -196,18 +207,18 @@ void SkusInternalsUI::DownloadSkusState() {
       web_contents->GetTopLevelNativeWindow(), nullptr);
 }
 
-void SkusInternalsUI::FileSelected(const base::FilePath& path,
+void SkusInternalsUI::FileSelected(const ui::SelectedFileInfo& file,
                                    int index,
                                    void* params) {
   auto* web_contents = web_ui()->GetWebContents();
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  profile->set_last_selected_directory(path.DirName());
+  profile->set_last_selected_directory(file.path().DirName());
   select_file_dialog_ = nullptr;
 
-  base::ThreadPool::PostTask(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&SaveSkusStateToFile, path, GetSkusStateAsString()));
+  base::ThreadPool::PostTask(FROM_HERE, {base::MayBlock()},
+                             base::BindOnce(&SaveSkusStateToFile, file.path(),
+                                            GetSkusStateAsString()));
 }
 
 void SkusInternalsUI::FileSelectionCanceled(void* params) {
@@ -250,6 +261,35 @@ std::string SkusInternalsUI::GetSkusStateAsString() const {
   std::string result;
   base::JSONWriter::Write(dict, &result);
   return result;
+}
+
+void SkusInternalsUI::EnsureMojoConnected() {
+  if (!skus_service_) {
+    auto pending = skus_service_getter_.Run();
+    skus_service_.Bind(std::move(pending));
+  }
+  DCHECK(skus_service_);
+  skus_service_.set_disconnect_handler(base::BindOnce(
+      &SkusInternalsUI::OnMojoConnectionError, base::Unretained(this)));
+}
+
+void SkusInternalsUI::OnMojoConnectionError() {
+  skus_service_.reset();
+  EnsureMojoConnected();
+}
+
+void SkusInternalsUI::CreateOrderFromReceipt(
+    const std::string& domain,
+    const std::string& receipt,
+    CreateOrderFromReceiptCallback callback) {
+  EnsureMojoConnected();
+
+  skus_service_->CreateOrderFromReceipt(domain, receipt, std::move(callback));
+
+  // TODO(bsclifton): remove once this has been tested.
+  LOG(ERROR) << "skus-internals> CreateOrderFromReceipt> domain=" << domain
+             << " | receipt=" << receipt;
+  return;
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(SkusInternalsUI)

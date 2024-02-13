@@ -6,19 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TRANSACTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TRANSACTION_H_
 
-#include <map>
-#include <set>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 class BitcoinTransaction {
  public:
+  // Bitcoin tx outpoint. Pair of transaction id and its output index.
   struct Outpoint {
     Outpoint();
     ~Outpoint();
@@ -28,29 +27,30 @@ class BitcoinTransaction {
     Outpoint& operator=(Outpoint&& other);
     bool operator==(const Outpoint& other) const;
     bool operator!=(const Outpoint& other) const;
+    bool operator<(const Outpoint& other) const;
 
     base::Value::Dict ToValue() const;
-    static absl::optional<Outpoint> FromValue(const base::Value::Dict& value);
+    static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
 
     SHA256HashArray txid;
     uint32_t index = 0;
   };
 
+  // Input of bitcoin transaction.
   struct TxInput {
     TxInput();
     ~TxInput();
-    TxInput(const TxInput& other) = delete;
-    TxInput& operator=(const TxInput& other) = delete;
+    TxInput(const TxInput& other);
+    TxInput& operator=(const TxInput& other);
     TxInput(TxInput&& other);
     TxInput& operator=(TxInput&& other);
     bool operator==(const TxInput& other) const;
     bool operator!=(const TxInput& other) const;
 
-    TxInput Clone() const;
     base::Value::Dict ToValue() const;
-    static absl::optional<TxInput> FromValue(const base::Value::Dict& value);
+    static std::optional<TxInput> FromValue(const base::Value::Dict& value);
 
-    static absl::optional<TxInput> FromRpcUtxo(
+    static std::optional<TxInput> FromRpcUtxo(
         const std::string& address,
         const bitcoin_rpc::UnspentOutput& utxo);
 
@@ -65,20 +65,48 @@ class BitcoinTransaction {
     bool IsSigned() const;
   };
 
+  // A set of inputs for bitcoin transaction which should be spent together. Now
+  // just grouped by same address.
+  class TxInputGroup {
+   public:
+    TxInputGroup();
+    ~TxInputGroup();
+    TxInputGroup(const TxInputGroup& other);
+    TxInputGroup& operator=(const TxInputGroup& other);
+    TxInputGroup(TxInputGroup&& other);
+    TxInputGroup& operator=(TxInputGroup&& other);
+
+    const std::vector<BitcoinTransaction::TxInput>& inputs() const {
+      return inputs_;
+    }
+
+    void AddInput(BitcoinTransaction::TxInput input);
+    void AddInputs(std::vector<BitcoinTransaction::TxInput> inputs);
+
+    uint64_t total_amount() const { return total_amount_; }
+
+   private:
+    std::vector<BitcoinTransaction::TxInput> inputs_;
+    uint64_t total_amount_ = 0;
+  };
+
+  enum class TxOutputType { kTarget, kChange };
+
+  // Output of bitcoin transaction. Has type of either `kTarget` or `kChange`.
   struct TxOutput {
     TxOutput();
     ~TxOutput();
-    TxOutput(const TxOutput& other) = delete;
-    TxOutput& operator=(const TxOutput& other) = delete;
+    TxOutput(const TxOutput& other);
+    TxOutput& operator=(const TxOutput& other);
     TxOutput(TxOutput&& other);
     TxOutput& operator=(TxOutput&& other);
     bool operator==(const TxOutput& other) const;
     bool operator!=(const TxOutput& other) const;
 
-    TxOutput Clone() const;
     base::Value::Dict ToValue() const;
-    static absl::optional<TxOutput> FromValue(const base::Value::Dict& value);
+    static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
 
+    TxOutputType type = TxOutputType::kTarget;
     std::string address;
     std::vector<uint8_t> script_pubkey;  // Lock script.
     uint64_t amount = 0;
@@ -86,23 +114,31 @@ class BitcoinTransaction {
 
   BitcoinTransaction();
   ~BitcoinTransaction();
-  BitcoinTransaction(const BitcoinTransaction& other) = delete;
-  BitcoinTransaction& operator=(const BitcoinTransaction& other) = delete;
+  BitcoinTransaction(const BitcoinTransaction& other);
+  BitcoinTransaction& operator=(const BitcoinTransaction& other);
   BitcoinTransaction(BitcoinTransaction&& other);
   BitcoinTransaction& operator=(BitcoinTransaction&& other);
   bool operator==(const BitcoinTransaction& other) const;
   bool operator!=(const BitcoinTransaction& other) const;
 
-  BitcoinTransaction Clone() const;
   base::Value::Dict ToValue() const;
-  static absl::optional<BitcoinTransaction> FromValue(
+  static std::optional<BitcoinTransaction> FromValue(
       const base::Value::Dict& value);
 
+  // All inputs are signed.
   bool IsSigned() const;
+
+  // Sum of all inputs' amounts.
   uint64_t TotalInputsAmount() const;
+
+  // Sum of all outputs' amounts.
   uint64_t TotalOutputsAmount() const;
+
+  // Checks if sum of inputs is GE than sum of outputs plus fee.
+  bool AmountsAreValid(uint64_t min_fee) const;
+
+  // Fee is calculated as sum of inputs which minus sum of outputs.
   uint64_t EffectiveFeeAmount() const;
-  void ClearSignatures();
 
   uint8_t sighash_type() const;
 
@@ -112,13 +148,37 @@ class BitcoinTransaction {
   uint64_t amount() const { return amount_; }
   void set_amount(uint64_t amount) { amount_ = amount; }
 
+  bool sending_max_amount() const { return sending_max_amount_; }
+  void set_sending_max_amount(bool sending_max_amount) {
+    sending_max_amount_ = sending_max_amount;
+  }
+
   const std::vector<TxInput>& inputs() const { return inputs_; }
-  std::vector<TxInput>& inputs() { return inputs_; }
+  void AddInput(TxInput input);
+  void AddInputs(std::vector<TxInput> input);
+  void ClearInputs();
+  void SetInputWitness(size_t input_index, std::vector<uint8_t> witness);
+
   const std::vector<TxOutput>& outputs() const { return outputs_; }
-  std::vector<TxOutput>& outputs() { return outputs_; }
+  void AddOutput(TxOutput output);
+  void ClearOutputs();
+  void ClearChangeOutput();
+  const TxOutput* TargetOutput() const;
+  const TxOutput* ChangeOutput() const;
+  TxOutput* TargetOutput();
+  TxOutput* ChangeOutput();
+
+  // Adjust amount of change output so transaction fee is equal to `min_fee`.
+  uint64_t MoveSurplusFeeToChangeOutput(uint64_t min_fee);
 
   uint32_t locktime() const { return locktime_; }
   void set_locktime(uint32_t locktime) { locktime_ = locktime; }
+
+  // Shuffle order of inputs and outputs to increase privacy.
+  void ShuffleTransaction();
+  // Arrange order of inputs and outputs so transaction binary form is suitable
+  // for testing.
+  void ArrangeTransactionForTesting();
 
  private:
   std::vector<TxInput> inputs_;
@@ -126,6 +186,7 @@ class BitcoinTransaction {
   uint32_t locktime_ = 0;
   std::string to_;
   uint64_t amount_ = 0;
+  bool sending_max_amount_ = false;
 };
 
 }  // namespace brave_wallet

@@ -7,6 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/path_service.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -228,12 +229,14 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     if (!infobar_manager)
       return ::testing::AssertionFailure() << "!infobar_manager";
 
-    for (size_t i = 0; i < infobar_manager->infobar_count(); ++i) {
-      if (infobar_manager->infobar_at(i)->delegate()->GetIdentifier() ==
-          infobars::InfoBarDelegate::BAD_FLAGS_INFOBAR_DELEGATE) {
-        return ::testing::AssertionFailure() << "Bad flags infobar found.";
-      }
+    const auto it = base::ranges::find(
+        infobar_manager->infobars(),
+        infobars::InfoBarDelegate::BAD_FLAGS_INFOBAR_DELEGATE,
+        &infobars::InfoBar::GetIdentifier);
+    if (it != infobar_manager->infobars().cend()) {
+      return ::testing::AssertionFailure() << "Bad flags infobar found.";
     }
+
     return ::testing::AssertionSuccess();
   }
 

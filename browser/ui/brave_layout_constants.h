@@ -6,9 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_LAYOUT_CONSTANTS_H_
 #define BRAVE_BROWSER_UI_BRAVE_LAYOUT_CONSTANTS_H_
 
-#include "chrome/browser/ui/layout_constants.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
 
-absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant);
+#include "chrome/browser/ui/layout_constants.h"
+
+std::optional<int> GetBraveLayoutConstant(LayoutConstant constant);
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_LAYOUT_CONSTANTS_H_

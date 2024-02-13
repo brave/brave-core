@@ -5,12 +5,6 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import { useDispatch } from 'react-redux'
-
-// Actions
-import { PanelActions } from '../../../panel/actions'
-
-import { WalletActions } from '../../../common/actions'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -23,18 +17,15 @@ import {
 } from '../../shared/create-account-icon/create-account-icon'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
-// Selectors
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
-
 // Queries
 import {
   useSelectedAccountQuery //
 } from '../../../common/slices/api.slice.extra'
 import {
+  useGetActiveOriginConnectedAccountIdsQuery,
   useGetDefaultFiatCurrencyQuery,
+  useRemoveSitePermissionMutation,
+  useRequestSitePermissionMutation,
   useSetSelectedAccountMutation
 } from '../../../common/slices/api.slice'
 
@@ -62,20 +53,18 @@ interface Props {
 export const ChangeAccountButton = (props: Props) => {
   const { account, getAccountsFiatValue } = props
 
-  // Redux
-  const dispatch = useDispatch()
-
   // Queries
   const { data: selectedAccount } = useSelectedAccountQuery()
-  const [setSelectedAccount] = useSetSelectedAccountMutation()
   const isActive =
     account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { data: connectedAccounts = [] } =
+    useGetActiveOriginConnectedAccountIdsQuery()
 
-  // Selectors
-  const connectedAccounts = useUnsafeWalletSelector(
-    WalletSelectors.connectedAccounts
-  )
+  // mutations
+  const [setSelectedAccount] = useSetSelectedAccountMutation()
+  const [removeSitePermission] = useRemoveSitePermissionMutation()
+  const [requestSitePermission] = useRequestSitePermissionMutation()
 
   // Constants
   const selectedCoin = selectedAccount?.accountId.coin
@@ -108,26 +97,29 @@ export const ChangeAccountButton = (props: Props) => {
   }, [getAccountsFiatValue, account])
 
   // Methods
-  const onClickConnect = React.useCallback(() => {
-    dispatch(
-      PanelActions.requestSitePermission({ accountId: account.accountId })
-    )
+  const onClickConnect = React.useCallback(async () => {
+    await requestSitePermission(account.accountId).unwrap()
+
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
-  }, [account.accountId, selectedCoin])
+  }, [requestSitePermission, account.accountId, selectedCoin])
 
-  const onClickDisconnect = React.useCallback(() => {
-    dispatch(
-      WalletActions.removeSitePermission({ accountId: account.accountId })
-    )
+  const onClickDisconnect = React.useCallback(async () => {
+    await removeSitePermission(account.accountId).unwrap()
+
     if (
       connectedAccounts.length !== 0 &&
       selectedCoin !== BraveWallet.CoinType.SOL
     ) {
       setSelectedAccount(account.accountId)
     }
-  }, [connectedAccounts, account.accountId, selectedCoin])
+  }, [
+    removeSitePermission, //
+    connectedAccounts,
+    account.accountId,
+    selectedCoin
+  ])
 
   const onClickSwitchAccount = React.useCallback(() => {
     setSelectedAccount(account.accountId)

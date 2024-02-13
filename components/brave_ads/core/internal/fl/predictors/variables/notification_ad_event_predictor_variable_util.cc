@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable.h"
 
@@ -15,8 +14,6 @@ namespace brave_ads {
 
 void SetNotificationAdEventPredictorVariable(
     const mojom::NotificationAdEventType event_type) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
-
   PredictorsManager::GetInstance().SetPredictorVariable(
       std::make_unique<NotificationAdEventPredictorVariable>(event_type));
 }

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"

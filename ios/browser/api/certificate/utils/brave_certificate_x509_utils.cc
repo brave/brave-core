@@ -12,36 +12,36 @@
 #include "net/base/net_export.h"
 #include "net/cert/ct_objects_extractor.h"
 #include "net/cert/ct_serialization.h"
-#include "net/cert/pki/cert_errors.h"
-#include "net/cert/pki/parse_certificate.h"
-#include "net/cert/pki/signature_algorithm.h"
 #include "net/cert/signed_certificate_timestamp.h"
 #include "net/cert/time_conversions.h"
-#include "net/der/input.h"
-#include "net/der/parse_values.h"
-#include "net/der/parser.h"
-#include "net/der/tag.h"
 #include "third_party/boringssl/src/include/openssl/base.h"
 #include "third_party/boringssl/src/include/openssl/crypto.h"
 #include "third_party/boringssl/src/include/openssl/err.h"
 #include "third_party/boringssl/src/include/openssl/obj.h"
+#include "third_party/boringssl/src/pki/cert_errors.h"
+#include "third_party/boringssl/src/pki/input.h"
+#include "third_party/boringssl/src/pki/parse_certificate.h"
+#include "third_party/boringssl/src/pki/parse_values.h"
+#include "third_party/boringssl/src/pki/parser.h"
+#include "third_party/boringssl/src/pki/signature_algorithm.h"
+#include "third_party/boringssl/src/pki/tag.h"
 
 namespace certificate {
 namespace x509_utils {
-std::vector<net::der::Input> SupportedExtensionOIDs() {
-  return {net::der::Input(net::kSubjectKeyIdentifierOid),
-          net::der::Input(net::kKeyUsageOid),
-          net::der::Input(net::kSubjectAltNameOid),
-          net::der::Input(net::kBasicConstraintsOid),
-          net::der::Input(net::kNameConstraintsOid),
-          net::der::Input(net::kCertificatePoliciesOid),
-          net::der::Input(net::kAuthorityKeyIdentifierOid),
-          net::der::Input(net::kPolicyConstraintsOid),
-          net::der::Input(net::kExtKeyUsageOid),
-          net::der::Input(net::kAuthorityInfoAccessOid),
-          net::der::Input(net::kAdCaIssuersOid),
-          net::der::Input(net::kAdOcspOid),
-          net::der::Input(net::kCrlDistributionPointsOid)};
+std::vector<bssl::der::Input> SupportedExtensionOIDs() {
+  return {bssl::der::Input(bssl::kSubjectKeyIdentifierOid),
+          bssl::der::Input(bssl::kKeyUsageOid),
+          bssl::der::Input(bssl::kSubjectAltNameOid),
+          bssl::der::Input(bssl::kBasicConstraintsOid),
+          bssl::der::Input(bssl::kNameConstraintsOid),
+          bssl::der::Input(bssl::kCertificatePoliciesOid),
+          bssl::der::Input(bssl::kAuthorityKeyIdentifierOid),
+          bssl::der::Input(bssl::kPolicyConstraintsOid),
+          bssl::der::Input(bssl::kExtKeyUsageOid),
+          bssl::der::Input(bssl::kAuthorityInfoAccessOid),
+          bssl::der::Input(bssl::kAdCaIssuersOid),
+          bssl::der::Input(bssl::kAdOcspOid),
+          bssl::der::Input(bssl::kCrlDistributionPointsOid)};
 }
 
 bool ExtractEmbeddedSCT(
@@ -79,9 +79,9 @@ bool ExtractEmbeddedSCT(
   return result;
 }
 
-bool ParseAlgorithmIdentifier(const net::der::Input& input,
-                              net::der::Input* algorithm_oid,
-                              net::der::Input* parameters) {
+bool ParseAlgorithmIdentifier(const bssl::der::Input& input,
+                              bssl::der::Input* algorithm_oid,
+                              bssl::der::Input* parameters) {
   DCHECK(algorithm_oid);
   DCHECK(parameters);
 
@@ -89,9 +89,9 @@ bool ParseAlgorithmIdentifier(const net::der::Input& input,
     return false;
   }
 
-  net::der::Parser parser(input);
+  bssl::der::Parser parser(input);
 
-  net::der::Parser algorithm_identifier_parser;
+  bssl::der::Parser algorithm_identifier_parser;
   if (!parser.ReadSequence(&algorithm_identifier_parser)) {
     return false;
   }
@@ -100,11 +100,11 @@ bool ParseAlgorithmIdentifier(const net::der::Input& input,
     return false;
   }
 
-  if (!algorithm_identifier_parser.ReadTag(net::der::kOid, algorithm_oid)) {
+  if (!algorithm_identifier_parser.ReadTag(bssl::der::kOid, algorithm_oid)) {
     return false;
   }
 
-  *parameters = net::der::Input();
+  *parameters = bssl::der::Input();
   if (algorithm_identifier_parser.HasMore() &&
       !algorithm_identifier_parser.ReadRawTLV(parameters)) {
     return false;
@@ -112,9 +112,9 @@ bool ParseAlgorithmIdentifier(const net::der::Input& input,
   return !algorithm_identifier_parser.HasMore();
 }
 
-bool ParseAlgorithmSequence(const net::der::Input& input,
-                            net::der::Input* algorithm_oid,
-                            net::der::Input* parameters) {
+bool ParseAlgorithmSequence(const bssl::der::Input& input,
+                            bssl::der::Input* algorithm_oid,
+                            bssl::der::Input* parameters) {
   DCHECK(algorithm_oid);
   DCHECK(parameters);
 
@@ -122,10 +122,10 @@ bool ParseAlgorithmSequence(const net::der::Input& input,
     return false;
   }
 
-  net::der::Parser parser(input);
+  bssl::der::Parser parser(input);
 
   // Extract object identifier field
-  if (!parser.ReadTag(net::der::kOid, algorithm_oid)) {
+  if (!parser.ReadTag(bssl::der::kOid, algorithm_oid)) {
     return false;
   }
 
@@ -134,16 +134,16 @@ bool ParseAlgorithmSequence(const net::der::Input& input,
   }
 
   // Extract the parameters field.
-  *parameters = net::der::Input();
+  *parameters = bssl::der::Input();
   if (parser.HasMore() && !parser.ReadRawTLV(parameters)) {
     return false;
   }
   return !parser.HasMore();
 }
 
-bool ParseSubjectPublicKeyInfo(const net::der::Input& input,
-                               net::der::Input* algorithm_sequence,
-                               net::der::Input* spk) {
+bool ParseSubjectPublicKeyInfo(const bssl::der::Input& input,
+                               bssl::der::Input* algorithm_sequence,
+                               bssl::der::Input* spk) {
   // From RFC 5280, Section 4.1
   //   SubjectPublicKeyInfo  ::=  SEQUENCE  {
   //     algorithm            AlgorithmIdentifier,
@@ -160,15 +160,15 @@ bool ParseSubjectPublicKeyInfo(const net::der::Input& input,
     return false;
   }
 
-  net::der::Parser parser(input);
-  net::der::Parser spki_parser;
+  bssl::der::Parser parser(input);
+  bssl::der::Parser spki_parser;
   if (!parser.ReadSequence(&spki_parser)) {
     return false;
   }
 
   // Extract algorithm field.
   // ReadSequenceTLV then maybe ParseAlgorithmIdentifier instead.
-  if (!spki_parser.ReadTag(net::der::kSequence, algorithm_sequence)) {
+  if (!spki_parser.ReadTag(bssl::der::kSequence, algorithm_sequence)) {
     return false;
   }
 
@@ -177,15 +177,15 @@ bool ParseSubjectPublicKeyInfo(const net::der::Input& input,
   }
 
   // Extract the subjectPublicKey field.
-  if (!spki_parser.ReadTag(net::der::kBitString, spk)) {
+  if (!spki_parser.ReadTag(bssl::der::kBitString, spk)) {
     return false;
   }
   return true;
 }
 
-bool ParseRSAPublicKeyInfo(const net::der::Input& input,
-                           net::der::Input* modulus,
-                           net::der::Input* public_exponent) {
+bool ParseRSAPublicKeyInfo(const bssl::der::Input& input,
+                           bssl::der::Input* modulus,
+                           bssl::der::Input* public_exponent) {
   // From RFC 3447, Appendix-A.1.1
   //   RSAPublicKey  ::=  SEQUENCE  {
   //     modulus            INTEGER,
@@ -199,14 +199,14 @@ bool ParseRSAPublicKeyInfo(const net::der::Input& input,
     return false;
   }
 
-  net::der::Parser parser(input);
-  net::der::Parser rsa_parser;
+  bssl::der::Parser parser(input);
+  bssl::der::Parser rsa_parser;
   if (!parser.ReadSequence(&rsa_parser)) {
     return false;
   }
 
   // Extract the modulus field.
-  if (!rsa_parser.ReadTag(net::der::kInteger, modulus)) {
+  if (!rsa_parser.ReadTag(bssl::der::kInteger, modulus)) {
     return false;
   }
 
@@ -215,20 +215,20 @@ bool ParseRSAPublicKeyInfo(const net::der::Input& input,
   }
 
   // Extract the publicExponent field.
-  if (!rsa_parser.ReadTag(net::der::kInteger, public_exponent)) {
+  if (!rsa_parser.ReadTag(bssl::der::kInteger, public_exponent)) {
     return false;
   }
   return true;
 }
 
-bool IsNull(const net::der::Input& input) {
-  auto IsEmpty = [](const net::der::Input& input) {
+bool IsNull(const bssl::der::Input& input) {
+  auto IsEmpty = [](const bssl::der::Input& input) {
     return input.Length() == 0;
   };
 
-  net::der::Parser parser(input);
-  net::der::Input null_value;
-  if (!parser.ReadTag(net::der::kNull, &null_value)) {
+  bssl::der::Parser parser(input);
+  bssl::der::Input null_value;
+  if (!parser.ReadTag(bssl::der::kNull, &null_value)) {
     return false;
   }
 
@@ -241,7 +241,7 @@ bool IsNull(const net::der::Input& input) {
   return !parser.HasMore();
 }
 
-bool OIDToNID(const net::der::Input& input, std::int32_t* out) {
+bool OIDToNID(const bssl::der::Input& input, std::int32_t* out) {
   DCHECK(out);
 
   if (!out) {
@@ -264,7 +264,7 @@ bool OIDToNID(const net::der::Input& input, std::int32_t* out) {
   return result;
 }
 
-std::string NIDToAbsoluteOID(const net::der::Input& input) {
+std::string NIDToAbsoluteOID(const bssl::der::Input& input) {
   std::int32_t nid = -1;
   if (OIDToNID(input, &nid)) {
     ASN1_OBJECT* object = OBJ_nid2obj(nid);
@@ -282,48 +282,48 @@ std::string NIDToAbsoluteOID(const net::der::Input& input) {
 }
 
 std::string SignatureAlgorithmDigestToName(
-    const net::SignatureAlgorithm& signature_algorithm) {
+    const bssl::SignatureAlgorithm& signature_algorithm) {
   switch (signature_algorithm) {
-    case net::SignatureAlgorithm::kEcdsaSha1:
-    case net::SignatureAlgorithm::kRsaPkcs1Sha1:
+    case bssl::SignatureAlgorithm::kEcdsaSha1:
+    case bssl::SignatureAlgorithm::kRsaPkcs1Sha1:
       return "SHA-1";
-    case net::SignatureAlgorithm::kRsaPkcs1Sha256:
-    case net::SignatureAlgorithm::kEcdsaSha256:
-    case net::SignatureAlgorithm::kRsaPssSha256:
+    case bssl::SignatureAlgorithm::kRsaPkcs1Sha256:
+    case bssl::SignatureAlgorithm::kEcdsaSha256:
+    case bssl::SignatureAlgorithm::kRsaPssSha256:
       return "SHA-256";
-    case net::SignatureAlgorithm::kRsaPkcs1Sha384:
-    case net::SignatureAlgorithm::kEcdsaSha384:
-    case net::SignatureAlgorithm::kRsaPssSha384:
+    case bssl::SignatureAlgorithm::kRsaPkcs1Sha384:
+    case bssl::SignatureAlgorithm::kEcdsaSha384:
+    case bssl::SignatureAlgorithm::kRsaPssSha384:
       return "SHA-384";
-    case net::SignatureAlgorithm::kRsaPkcs1Sha512:
-    case net::SignatureAlgorithm::kEcdsaSha512:
-    case net::SignatureAlgorithm::kRsaPssSha512:
+    case bssl::SignatureAlgorithm::kRsaPkcs1Sha512:
+    case bssl::SignatureAlgorithm::kEcdsaSha512:
+    case bssl::SignatureAlgorithm::kRsaPssSha512:
       return "SHA-512";
   }
 }
 
 std::string SignatureAlgorithmIdToName(
-    const net::SignatureAlgorithm& signature_algorithm) {
+    const bssl::SignatureAlgorithm& signature_algorithm) {
   switch (signature_algorithm) {
-    case net::SignatureAlgorithm::kRsaPkcs1Sha1:
-    case net::SignatureAlgorithm::kRsaPkcs1Sha256:
-    case net::SignatureAlgorithm::kRsaPkcs1Sha384:
-    case net::SignatureAlgorithm::kRsaPkcs1Sha512:
+    case bssl::SignatureAlgorithm::kRsaPkcs1Sha1:
+    case bssl::SignatureAlgorithm::kRsaPkcs1Sha256:
+    case bssl::SignatureAlgorithm::kRsaPkcs1Sha384:
+    case bssl::SignatureAlgorithm::kRsaPkcs1Sha512:
       return "RSA";
-    case net::SignatureAlgorithm::kRsaPssSha256:
-    case net::SignatureAlgorithm::kRsaPssSha384:
-    case net::SignatureAlgorithm::kRsaPssSha512:
+    case bssl::SignatureAlgorithm::kRsaPssSha256:
+    case bssl::SignatureAlgorithm::kRsaPssSha384:
+    case bssl::SignatureAlgorithm::kRsaPssSha512:
       return "RSA-PSS";
-    case net::SignatureAlgorithm::kEcdsaSha1:
-    case net::SignatureAlgorithm::kEcdsaSha256:
-    case net::SignatureAlgorithm::kEcdsaSha384:
-    case net::SignatureAlgorithm::kEcdsaSha512:
+    case bssl::SignatureAlgorithm::kEcdsaSha1:
+    case bssl::SignatureAlgorithm::kEcdsaSha256:
+    case bssl::SignatureAlgorithm::kEcdsaSha384:
+    case bssl::SignatureAlgorithm::kEcdsaSha512:
       return "ECDSA";
   }
 }
 
 base::Time GeneralizedTimeToTime(
-    const net::der::GeneralizedTime& generalized_time) {
+    const bssl::der::GeneralizedTime& generalized_time) {
   base::Time time;
   net::GeneralizedTimeToTime(generalized_time, &time);
   return time;

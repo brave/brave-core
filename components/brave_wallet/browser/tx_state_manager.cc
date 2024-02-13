@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/values_util.h"
-#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -39,7 +39,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   }
   meta->set_id(*id);
 
-  absl::optional<int> status = value.FindInt("status");
+  std::optional<int> status = value.FindInt("status");
   if (!status) {
     return false;
   }
@@ -57,7 +57,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   if (!created_time) {
     return false;
   }
-  absl::optional<base::Time> created_time_from_value =
+  std::optional<base::Time> created_time_from_value =
       base::ValueToTime(created_time);
   if (!created_time_from_value) {
     return false;
@@ -68,7 +68,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   if (!submitted_time) {
     return false;
   }
-  absl::optional<base::Time> submitted_time_from_value =
+  std::optional<base::Time> submitted_time_from_value =
       base::ValueToTime(submitted_time);
   if (!submitted_time_from_value) {
     return false;
@@ -79,7 +79,7 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   if (!confirmed_time) {
     return false;
   }
-  absl::optional<base::Time> confirmed_time_from_value =
+  std::optional<base::Time> confirmed_time_from_value =
       base::ValueToTime(confirmed_time);
   if (!confirmed_time_from_value) {
     return false;
@@ -97,6 +97,18 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
   if (origin_spec) {
     meta->set_origin(url::Origin::Create(GURL(*origin_spec)));
     DCHECK(!meta->origin()->opaque());
+  }
+
+  const auto coin_int = value.FindInt("coin");
+  if (!coin_int) {
+    return false;
+  }
+  const auto coin = static_cast<mojom::CoinType>(coin_int.value());
+  if (!mojom::IsKnownEnumValue(coin)) {
+    return false;
+  }
+  if (coin != meta->GetCoinType()) {
+    return false;
   }
 
   const auto* chain_id_string = value.FindString("chain_id");
@@ -123,17 +135,16 @@ TxStateManager::~TxStateManager() = default;
 
 bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DCHECK(meta.from());
+  DCHECK_EQ(GetCoinType(), meta.GetCoinType());
 
   if (!delegate_->IsInitialized()) {
     return false;
   }
-  const std::string path =
-      base::JoinString({GetTxPrefPathPrefix(meta.chain_id()), meta.id()}, ".");
   bool is_add = false;
   {
     ScopedTxsUpdate update(delegate_);
-    is_add = update->FindByDottedPath(path) == nullptr;
-    update->SetByDottedPath(path, meta.ToValue());
+    is_add = update->Find(meta.id()) == nullptr;
+    update->Set(meta.id(), meta.ToValue());
   }
   if (!is_add) {
     for (auto& observer : observers_) {
@@ -153,14 +164,12 @@ bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   return true;
 }
 
-std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& chain_id,
-                                              const std::string& id) {
+std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& meta_id) {
   if (!delegate_->IsInitialized()) {
     return nullptr;
   }
   const auto& txs = delegate_->GetTxs();
-  const base::Value::Dict* value = txs.FindDictByDottedPath(
-      base::JoinString({GetTxPrefPathPrefix(chain_id), id}, "."));
+  const base::Value::Dict* value = txs.FindDict(meta_id);
   if (!value) {
     return nullptr;
   }
@@ -168,77 +177,62 @@ std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& chain_id,
   return ValueToTxMeta(*value);
 }
 
-bool TxStateManager::DeleteTx(const std::string& chain_id,
-                              const std::string& id) {
+bool TxStateManager::DeleteTx(const std::string& meta_id) {
   if (!delegate_->IsInitialized()) {
     return false;
   }
   {
     ScopedTxsUpdate update(delegate_);
-    update->RemoveByDottedPath(
-        base::JoinString({GetTxPrefPathPrefix(chain_id), id}, "."));
-  }
-  return true;
-}
-
-bool TxStateManager::WipeTxs() {
-  if (!delegate_->IsInitialized()) {
-    return false;
-  }
-  {
-    ScopedTxsUpdate update(delegate_);
-    update->RemoveByDottedPath(GetTxPrefPathPrefix(absl::nullopt));
+    update->Remove(meta_id);
   }
   return true;
 }
 
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<mojom::TransactionStatus>& status,
+    const std::optional<std::string>& chain_id,
+    const std::optional<mojom::TransactionStatus>& status,
     const mojom::AccountIdPtr& from) {
   DCHECK(from);
   return GetTransactionsByStatus(chain_id, status,
-                                 absl::make_optional(from.Clone()));
+                                 std::make_optional(from.Clone()));
 }
 
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<mojom::TransactionStatus>& status,
-    const absl::optional<mojom::AccountIdPtr>& from) {
+    const std::optional<std::string>& chain_id,
+    const std::optional<mojom::TransactionStatus>& status,
+    const std::optional<mojom::AccountIdPtr>& from) {
   std::vector<std::unique_ptr<TxMeta>> result;
   if (!delegate_->IsInitialized()) {
     return result;
   }
   const auto& txs = delegate_->GetTxs();
-  const base::Value::Dict* network_dict =
-      txs.FindDictByDottedPath(GetTxPrefPathPrefix(chain_id));
-  if (!network_dict) {
-    return result;
+
+  for (const auto it : txs) {
+    auto* meta_dict = it.second.GetIfDict();
+    if (!meta_dict) {
+      continue;
+    }
+
+    std::unique_ptr<TxMeta> meta = ValueToTxMeta(*meta_dict);
+    if (!meta) {
+      continue;
+    }
+    if (meta->from()->coin != GetCoinType()) {
+      continue;
+    }
+    if (chain_id.has_value() && meta->chain_id() != *chain_id) {
+      continue;
+    }
+    if (status.has_value() && meta->status() != *status) {
+      continue;
+    }
+    if (from.has_value() && meta->from() != *from) {
+      continue;
+    }
+
+    result.push_back(std::move(meta));
   }
 
-  for (const auto it : *network_dict) {
-    if (chain_id.has_value()) {
-      std::unique_ptr<TxMeta> meta = ValueToTxMeta(it.second.GetDict());
-      if (!meta) {
-        continue;
-      }
-      if (!status.has_value() || meta->status() == *status) {
-        if (from.has_value() && meta->from() != *from) {
-          continue;
-        }
-        result.push_back(std::move(meta));
-      }
-    } else {
-      auto chain_id_from_pref =
-          GetChainIdByNetworkId(prefs_, GetCoinType(), it.first);
-      if (!chain_id_from_pref) {
-        continue;
-      }
-      auto metas = GetTransactionsByStatus(chain_id_from_pref, status, from);
-      result.insert(result.end(), std::make_move_iterator(metas.begin()),
-                    std::make_move_iterator(metas.end()));
-    }
-  }
   return result;
 }
 
@@ -249,7 +243,7 @@ void TxStateManager::RetireTxByStatus(const std::string& chain_id,
       status != mojom::TransactionStatus::Rejected) {
     return;
   }
-  auto tx_metas = GetTransactionsByStatus(chain_id, status, absl::nullopt);
+  auto tx_metas = GetTransactionsByStatus(chain_id, status, std::nullopt);
   if (tx_metas.size() > max_num) {
     TxMeta* oldest_meta = nullptr;
     for (const auto& tx_meta : tx_metas) {
@@ -266,7 +260,7 @@ void TxStateManager::RetireTxByStatus(const std::string& chain_id,
       }
     }
     DCHECK(oldest_meta);
-    DeleteTx(chain_id, oldest_meta->id());
+    DeleteTx(oldest_meta->id());
   }
 }
 
@@ -293,7 +287,7 @@ void TxStateManager::MigrateAddChainIdToTransactionInfo(PrefService* prefs) {
   auto set_chain_id = [&](base::Value::Dict* tx_by_network_ids,
                           const mojom::CoinType& coin) {
     for (auto tnid : *tx_by_network_ids) {
-      auto chain_id = GetChainIdByNetworkId(prefs, coin, tnid.first);
+      auto chain_id = GetChainIdByNetworkId_DEPRECATED(prefs, coin, tnid.first);
       if (!chain_id.has_value()) {
         continue;
       }
@@ -316,7 +310,7 @@ void TxStateManager::MigrateAddChainIdToTransactionInfo(PrefService* prefs) {
   };
 
   for (auto txs_coin_type : all_txs) {
-    auto coin = GetCoinTypeFromPrefKey(txs_coin_type.first);
+    auto coin = GetCoinTypeFromPrefKey_DEPRECATED(txs_coin_type.first);
 
     if (!coin.has_value()) {
       continue;

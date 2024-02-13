@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_delegate.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
 
+#include <optional>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/patch_wallets.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
 
 namespace brave_rewards::internal {
 
@@ -50,23 +52,24 @@ mojom::CreateRewardsWalletResult MapEndpointError(PatchWallets::Error error) {
 
 WalletCreate::WalletCreate(RewardsEngineImpl& engine) : engine_(engine) {}
 
-void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
+void WalletCreate::CreateWallet(std::optional<std::string>&& geo_country,
                                 CreateRewardsWalletCallback callback) {
   bool corrupted = false;
   auto wallet = engine_->wallet()->GetWallet(&corrupted);
 
   if (corrupted) {
     DCHECK(!wallet);
-    BLOG(0, "Rewards wallet data is corrupted - generating a new wallet!");
+    engine_->LogError(FROM_HERE)
+        << "Rewards wallet data is corrupted - generating a new wallet";
     engine_->database()->SaveEventLog(log::kWalletCorrupted, "");
   }
 
   if (!wallet) {
     wallet = mojom::RewardsWallet::New();
-    wallet->recovery_seed = util::Security::GenerateSeed();
+    wallet->recovery_seed = Signer::GenerateRecoverySeed();
 
     if (!engine_->wallet()->SetWallet(std::move(wallet))) {
-      BLOG(0, "Failed to set Rewards wallet!");
+      engine_->LogError(FROM_HERE) << "Failed to set Rewards wallet";
       return std::move(callback).Run(
           mojom::CreateRewardsWalletResult::kUnexpected);
     }
@@ -80,7 +83,7 @@ void WalletCreate::CreateWallet(absl::optional<std::string>&& geo_country,
       return RequestFor<PatchWallets>(*engine_, std::move(*geo_country))
           .Send(std::move(on_update_wallet));
     } else {
-      BLOG(1, "Rewards wallet already exists.");
+      engine_->Log(FROM_HERE) << "Rewards wallet already exists.";
       return std::move(callback).Run(
           mojom::CreateRewardsWalletResult::kSuccess);
     }
@@ -99,13 +102,13 @@ inline constexpr bool dependent_false_v = false;
 
 template <typename Result>
 void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
-                            absl::optional<std::string>&& geo_country,
+                            std::optional<std::string>&& geo_country,
                             Result&& result) {
   if (!result.has_value()) {
     if constexpr (std::is_same_v<Result, PostWallets::Result>) {
-      BLOG(0, "Failed to create Rewards wallet!");
+      engine_->LogError(FROM_HERE) << "Failed to create Rewards wallet";
     } else if constexpr (std::is_same_v<Result, PatchWallets::Result>) {
-      BLOG(0, "Failed to update Rewards wallet!");
+      engine_->LogError(FROM_HERE) << "Failed to update Rewards wallet";
     } else {
       static_assert(dependent_false_v<Result>,
                     "Result must be either "
@@ -124,18 +127,19 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
   }
 
   if (!engine_->wallet()->SetWallet(std::move(wallet))) {
-    BLOG(0, "Failed to set Rewards wallet!");
+    engine_->LogError(FROM_HERE) << "Failed to set Rewards wallet";
     return std::move(callback).Run(
         mojom::CreateRewardsWalletResult::kUnexpected);
   }
 
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
     engine_->state()->ResetReconcileStamp();
-    if (!is_testing) {
+    if (!engine_->options().is_testing) {
       engine_->state()->SetEmptyBalanceChecked(true);
       engine_->state()->SetPromotionCorruptedMigrated(true);
     }
     engine_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
+    engine_->Get<LinkageChecker>().Start();
   }
 
   std::move(callback).Run(mojom::CreateRewardsWalletResult::kSuccess);

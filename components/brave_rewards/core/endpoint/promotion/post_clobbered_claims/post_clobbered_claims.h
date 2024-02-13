@@ -36,7 +36,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostClobberedClaimsCallback =
-    std::function<void(const mojom::Result result)>;
+    base::OnceCallback<void(const mojom::Result result)>;
 
 class PostClobberedClaims {
  public:
@@ -53,8 +53,8 @@ class PostClobberedClaims {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 PostClobberedClaimsCallback callback);
+  void OnRequest(PostClobberedClaimsCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

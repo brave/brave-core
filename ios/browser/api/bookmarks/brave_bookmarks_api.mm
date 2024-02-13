@@ -92,13 +92,13 @@
     node->SetTitle(base::SysNSStringToUTF16(title));
 
     if (dateAdded) {
-      node->set_date_added(
-          base::Time::FromDoubleT([dateAdded timeIntervalSince1970]));
+      node->set_date_added(base::Time::FromSecondsSinceUnixEpoch(
+          [dateAdded timeIntervalSince1970]));
     }
 
     if (dateModified) {
-      node->set_date_folder_modified(
-          base::Time::FromDoubleT([dateModified timeIntervalSince1970]));
+      node->set_date_folder_modified(base::Time::FromSecondsSinceUnixEpoch(
+          [dateModified timeIntervalSince1970]));
     }
 
     for (IOSBookmarkNode* child : children) {
@@ -216,27 +216,28 @@
 
 - (NSDate*)dateAdded {
   DCHECK(node_);
-  return [NSDate dateWithTimeIntervalSince1970:node_->date_added().ToDoubleT()];
+  return [NSDate dateWithTimeIntervalSince1970:node_->date_added()
+                                                   .InSecondsFSinceUnixEpoch()];
 }
 
 - (void)setDateAdded:(NSDate*)date {
   DCHECK(node_);
   DCHECK(model_);
-  model_->SetDateAdded(node_,
-                       base::Time::FromDoubleT([date timeIntervalSince1970]));
+  model_->SetDateAdded(node_, base::Time::FromSecondsSinceUnixEpoch(
+                                  [date timeIntervalSince1970]));
 }
 
 - (NSDate*)dateFolderModified {
   DCHECK(node_);
-  return [NSDate
-      dateWithTimeIntervalSince1970:node_->date_folder_modified().ToDoubleT()];
+  return [NSDate dateWithTimeIntervalSince1970:node_->date_folder_modified()
+                                                   .InSecondsFSinceUnixEpoch()];
 }
 
 - (void)setDateFolderModified:(NSDate*)date {
   DCHECK(node_);
   DCHECK(model_);
-  model_->SetDateFolderModified(
-      node_, base::Time::FromDoubleT([date timeIntervalSince1970]));
+  model_->SetDateFolderModified(node_, base::Time::FromSecondsSinceUnixEpoch(
+                                           [date timeIntervalSince1970]));
 }
 
 - (bool)isFolder {

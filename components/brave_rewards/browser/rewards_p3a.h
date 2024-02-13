@@ -6,12 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -29,8 +30,15 @@ inline constexpr char kAdTypesEnabledHistogramName[] =
     "Brave.Rewards.AdTypesEnabled";
 inline constexpr char kMobileConversionHistogramName[] =
     "Brave.Rewards.MobileConversion";
-inline constexpr char kMobilePanelCountHistogramName[] =
+#if BUILDFLAG(IS_ANDROID)
+inline constexpr char kPanelCountHistogramName[] =
     "Brave.Rewards.MobilePanelCount";
+#else
+inline constexpr char kPanelCountHistogramName[] =
+    "Brave.Rewards.DesktopPanelCount";
+#endif
+inline constexpr char kPageViewCountHistogramName[] =
+    "Brave.Rewards.PageViewCount";
 
 enum class AutoContributionsState {
   kNoWallet,
@@ -51,6 +59,8 @@ void RecordTipsSent(size_t tip_count);
 void RecordAutoContributionsState(bool ac_enabled);
 
 void RecordNoWalletCreatedForAllMetrics();
+
+void RecordRewardsPageViews(PrefService* prefs, bool new_view);
 
 enum class AdTypesEnabled {
   kNone,
@@ -79,19 +89,19 @@ class ConversionMonitor {
   void RecordRewardsEnable();
 
  private:
-#if BUILDFLAG(IS_ANDROID)
   void ReportPeriodicMetrics();
+  void ReportPanelTriggerCount();
+#if BUILDFLAG(IS_ANDROID)
   void OnMobileTriggerTimer();
-  void ReportMobilePanelTriggerCount();
 
-  raw_ptr<PrefService> prefs_;
-  WeeklyStorage mobile_panel_trigger_count_;
   base::OneShotTimer mobile_trigger_timer_;
-  base::WallClockTimer daily_timer_;
 #else
-  absl::optional<PanelTrigger> last_trigger_;
+  std::optional<PanelTrigger> last_trigger_;
   base::Time last_trigger_time_;
 #endif
+  raw_ptr<PrefService> prefs_;
+  base::WallClockTimer daily_timer_;
+  WeeklyStorage panel_trigger_count_;
 };
 
 }  // namespace p3a

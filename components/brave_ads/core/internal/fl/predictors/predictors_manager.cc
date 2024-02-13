@@ -23,10 +23,9 @@ namespace brave_ads {
 namespace {
 
 constexpr auto kUserActivityEventToPredictorVariableTypeMapping =
-    base::MakeFixedFlatMapSorted<
-        UserActivityEventType,
-        std::pair<brave_federated::mojom::CovariateType,
-                  brave_federated::mojom::CovariateType>>({
+    base::MakeFixedFlatMap<UserActivityEventType,
+                           std::pair<brave_federated::mojom::CovariateType,
+                                     brave_federated::mojom::CovariateType>>({
         {UserActivityEventType::kBrowserDidEnterForeground,
          {brave_federated::mojom::CovariateType::
               kNumberOfBrowserDidEnterForegroundEvents,

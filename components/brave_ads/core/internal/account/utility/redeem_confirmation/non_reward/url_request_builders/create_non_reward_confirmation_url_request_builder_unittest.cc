@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -39,7 +41,7 @@ TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 

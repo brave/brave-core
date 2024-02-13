@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/values.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "extensions/common/extension.h"
@@ -18,7 +20,7 @@ TEST(Mv2WarningTest, ExtensionManifestVersions) {
   auto main_extra_parts = BraveBrowserMainExtraParts();
   main_extra_parts.PreProfileInit();
 
-  auto get_manifest = [](absl::optional<int> manifest_version) {
+  auto get_manifest = [](std::optional<int> manifest_version) {
     base::Value::Dict dict;
     dict.Set("name", "My Extension");
     dict.Set("version", "0.1");

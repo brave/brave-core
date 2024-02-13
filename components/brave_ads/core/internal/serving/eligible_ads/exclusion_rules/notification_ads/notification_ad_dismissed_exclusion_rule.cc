@@ -25,7 +25,7 @@ bool DoesRespectCap(const AdEventList& ad_events) {
     if (ad_event.confirmation_type == ConfirmationType::kClicked) {
       count = 0;
     } else if (ad_event.confirmation_type == ConfirmationType::kDismissed) {
-      count++;
+      ++count;
       if (count >= 2) {
         // An ad was dismissed two or more times in a row without being clicked,
         // so do not show another ad from the same campaign for the specified
@@ -46,15 +46,17 @@ AdEventList FilterAdEvents(const AdEventList& ad_events,
     return {};
   }
 
+  const base::Time now = base::Time::Now();
+
   AdEventList filtered_ad_events;
   base::ranges::copy_if(
       ad_events, std::back_inserter(filtered_ad_events),
-      [time_constraint, &creative_ad](const AdEventInfo& ad_event) {
+      [now, time_constraint, &creative_ad](const AdEventInfo& ad_event) {
         return (ad_event.confirmation_type == ConfirmationType::kClicked ||
                 ad_event.confirmation_type == ConfirmationType::kDismissed) &&
                ad_event.type == AdType::kNotificationAd &&
                ad_event.campaign_id == creative_ad.campaign_id &&
-               base::Time::Now() - ad_event.created_at < time_constraint;
+               now - ad_event.created_at < time_constraint;
       });
 
   return filtered_ad_events;

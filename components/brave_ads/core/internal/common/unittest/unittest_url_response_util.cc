@@ -5,10 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
 
+#include <cstddef>
 #include <string>
 
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
@@ -40,7 +42,7 @@ URLResponseList GetUrlResponsesForRequestPath(
   return iter->second;
 }
 
-absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
+std::optional<URLResponsePair> GetNextUrlResponseForUrl(
     const GURL& url,
     const URLResponseMap& url_responses) {
   CHECK(url.is_valid()) << "Invalid URL: " << url;
@@ -52,7 +54,7 @@ absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
       GetUrlResponsesForRequestPath(url_responses, request_path);
   if (url_responses_for_request_path.empty()) {
     // URL responses not found for the given request path.
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   size_t index = 0;
@@ -64,7 +66,7 @@ absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
     // uuid does not exist so insert a new index set to 0 for the url responses.
     UrlResponseIndexes()[uuid] = index;
   } else {
-    iter->second++;
+    ++iter->second;
     if (iter->second == url_responses_for_request_path.size()) {
       iter->second = 0;
     }
@@ -87,21 +89,21 @@ std::string ParseFilenameFromResponseBody(const std::string& response_body) {
 
 }  // namespace
 
-absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
+std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     const mojom::UrlRequestInfoPtr& url_request,
     const URLResponseMap& url_responses) {
-  const absl::optional<URLResponsePair> url_response =
+  const std::optional<URLResponsePair> url_response =
       GetNextUrlResponseForUrl(url_request->url, url_responses);
   if (!url_response) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string response_body = url_response->second;
   if (ShouldReadResponseBodyFromFile(response_body)) {
-    const base::FilePath file_path =
-        GetTestPath().AppendASCII(ParseFilenameFromResponseBody(response_body));
-    if (!base::ReadFileToString(file_path, &response_body)) {
-      NOTREACHED_NORETURN() << file_path << " not found";
+    const base::FilePath path = TestDataPath().AppendASCII(
+        ParseFilenameFromResponseBody(response_body));
+    if (!base::ReadFileToString(path, &response_body)) {
+      NOTREACHED_NORETURN() << path << " not found";
     }
 
     ParseAndReplaceTags(response_body);

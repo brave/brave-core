@@ -6,12 +6,13 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h"
 
 #include <libxml/tree.h>
-
 #include <signal.h>
+
 #include <climits>
 #include <iostream>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <sstream>
 #include <string>
@@ -440,6 +441,7 @@ void PageGraph::WillSendNavigationRequest(uint64_t identifier,
 }
 
 void PageGraph::WillSendRequest(
+    blink::ExecutionContext* execution_context,
     blink::DocumentLoader* loader,
     const blink::KURL& fetch_context_url,
     const blink::ResourceRequest& request,
@@ -452,9 +454,6 @@ void PageGraph::WillSendRequest(
     LOG(INFO) << "Skip request redirect";
     return;
   }
-
-  blink::ExecutionContext* execution_context =
-      loader->GetFrame()->GetDocument()->GetExecutionContext();
 
   const String page_graph_resource_type = blink::Resource::ResourceTypeToString(
       resource_type, options.initiator_info.name);
@@ -744,7 +743,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
     const blink::PageGraphBlinkReceiverData& receiver_data,
     blink::PageGraphBlinkArgs args,
     const blink::ExceptionState* exception_state,
-    const absl::optional<String>& result) {
+    const std::optional<String>& result) {
   const std::string_view name_piece(name);
   if (base::StartsWith(name_piece, "Document.")) {
     if (name_piece == "Document.cookie.get") {
@@ -846,16 +845,16 @@ void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
       blink::mojom::ConsoleMessageSource::kJavaScript,
       blink::mojom::ConsoleMessageSource::kConsoleApi,
   };
-  if (!base::Contains(kValidSources, console_message->Source())) {
+  if (!base::Contains(kValidSources, console_message->GetSource())) {
     return;
   }
 
   std::ostringstream str;
   base::Value::Dict dict;
-  str << console_message->Source();
+  str << console_message->GetSource();
   dict.Set("source", str.str());
   str.str("");
-  str << console_message->Level();
+  str << console_message->GetLevel();
   dict.Set("level", str.str());
   dict.Set("message", console_message->Message().Utf8());
 
@@ -884,12 +883,12 @@ void PageGraph::RegisterV8ScriptCompilationFromEval(
     v8::Local<v8::String> source) {
   v8::page_graph::ExecutingScript executing_script =
       v8::page_graph::GetExecutingScript(isolate);
-  ScriptData script_data{
-      .code = blink::ToBlinkString<String>(source, blink::kExternalize),
-      .source = {
-          .parent_script_id = executing_script.script_id,
-          .is_eval = true,
-      }};
+  ScriptData script_data{.code = blink::ToBlinkString<String>(
+                             isolate, source, blink::kExternalize),
+                         .source = {
+                             .parent_script_id = executing_script.script_id,
+                             .is_eval = true,
+                         }};
 
   RegisterScriptCompilation(
       blink::ToExecutionContext(isolate->GetCurrentContext()), script_id,

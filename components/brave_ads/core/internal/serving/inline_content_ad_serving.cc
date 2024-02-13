@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 
 #include <cstdint>
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -23,8 +24,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 
 namespace brave_ads {
 
@@ -49,7 +49,7 @@ void InlineContentAdServing::MaybeServeAd(
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  const std::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
   if (!tab) {
     return FailedToServeAd(dimensions, std::move(callback));
   }
@@ -113,8 +113,13 @@ void InlineContentAdServing::GetEligibleAdsForUserModelCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  ServeAd(tab_id, BuildInlineContentAd(ChooseCreativeAd(creative_ads)),
-          std::move(callback));
+  const CreativeInlineContentAdInfo creative_ad =
+      ChooseCreativeAd(creative_ads);
+  BLOG(1, "Chosen eligible ad with creative instance id "
+              << creative_ad.creative_instance_id << " and a priority of "
+              << creative_ad.priority);
+
+  ServeAd(tab_id, BuildInlineContentAd(creative_ad), std::move(callback));
 }
 
 void InlineContentAdServing::ServeAd(
@@ -145,7 +150,7 @@ void InlineContentAdServing::FailedToServeAd(
     MaybeServeInlineContentAdCallback callback) const {
   NotifyFailedToServeInlineContentAd();
 
-  std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
+  std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
 }
 
 void InlineContentAdServing::NotifyOpportunityAroseToServeInlineContentAd()

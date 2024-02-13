@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -20,7 +21,6 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "net/base/url_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
@@ -72,17 +72,20 @@ const char16_t kVideoTrackTranscriptUrlExtractionScript[] =
       })()
     )JS";
 
-constexpr auto kYouTubeHosts = base::MakeFixedFlatSetSorted<std::string_view>({
-    "m.youtube.com",
-    "www.youtube.com",
-});
+constexpr auto kYouTubeHosts =
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "m.youtube.com",
+                                                 "www.youtube.com",
+                                             });
 
 // TODO(petemill): Use heuristics to determine if page's main focus is
 // a video, and not a hard-coded list of Url hosts.
 constexpr auto kVideoTrackHosts =
-    base::MakeFixedFlatSetSorted<std::string_view>({
-        "www.ted.com",
-    });
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "www.ted.com",
+                                             });
 
 }  // namespace
 
@@ -191,7 +194,7 @@ void PageContentExtractor::BindReceiver(
 
 void PageContentExtractor::OnDistillResult(
     mojom::PageContentExtractor::ExtractPageContentCallback callback,
-    const absl::optional<std::string>& content) {
+    const std::optional<std::string>& content) {
   // Validate
   if (!content.has_value()) {
     VLOG(1) << "null content";
@@ -214,7 +217,7 @@ void PageContentExtractor::OnDistillResult(
 void PageContentExtractor::OnJSTranscriptUrlResult(
     ai_chat::mojom::PageContentExtractor::ExtractPageContentCallback callback,
     ai_chat::mojom::PageContentType type,
-    absl::optional<base::Value> value,
+    std::optional<base::Value> value,
     base::TimeTicks start_time) {
   DVLOG(2) << "Video transcript Url extraction script completed and took"
            << (base::TimeTicks::Now() - start_time).InMillisecondsF() << "ms"

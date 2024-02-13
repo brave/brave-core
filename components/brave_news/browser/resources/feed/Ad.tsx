@@ -2,7 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import SecureLink, { handleOpenURLClick } from '$web-common/SecureLink';
+import SecureLink from '$web-common/SecureLink';
+import { getLocale } from '$web-common/locale';
 import { useOnVisibleCallback } from '$web-common/useVisible';
 import VisibilityTimer from '$web-common/visibilityTimer';
 import Button from '@brave/leo/react/button';
@@ -13,7 +14,8 @@ import styled from 'styled-components';
 import getBraveNewsController from '../shared/api';
 import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { MetaInfoContainer } from './ArticleMetaRow';
-import Card, { LargeImage, Title } from './Card';
+import Card, { LargeImage, Title, braveNewsCardClickHandler } from './Card';
+import { useBraveNews } from '../shared/Context';
 
 interface Props {
   info: FeedV2Ad
@@ -34,11 +36,17 @@ const BatAdLabel = styled.a`
   text-decoration: none;
 
   color: rgba(var(--bn-text-base, 0.7));
-  font: ${font.primary.small.regular};
+  font: ${font.small.regular};
+  line-height: 16px;
 `
 
 const CtaButton = styled(Button)`
+  --leo-button-color: var(--bn-glass-container);
   align-self: flex-start;
+`
+
+const AdImage = styled(LargeImage)`
+  height: unset;
 `
 
 export const useVisibleFor = (callback: () => void, timeout: number) => {
@@ -64,9 +72,12 @@ export const useVisibleFor = (callback: () => void, timeout: number) => {
   }
 }
 
+const adTargetUrlAllowedSchemes = ['https:', 'chrome:', 'brave:']
+
 export default function Advert(props: Props) {
   const [advert, setAdvert] = React.useState<DisplayAd | null | undefined>(undefined)
   const imageUrl = useUnpaddedImageUrl(advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url)
+  const { openArticlesInNewTab } = useBraveNews()
 
   const onDisplayAdViewed = React.useCallback(() => {
     if (!advert) return
@@ -82,7 +93,7 @@ export default function Advert(props: Props) {
 
     console.debug(`Brave News: Visited display ad: ${advert.uuid}`)
     await getBraveNewsController().onDisplayAdVisit(advert.uuid, advert.creativeInstanceId)
-    handleOpenURLClick(advert.targetUrl.url, e);
+    braveNewsCardClickHandler(advert.targetUrl.url, adTargetUrlAllowedSchemes)(e);
   }, [advert])
 
   const { setElementRef: setTriggerRef } = useOnVisibleCallback(async () => {
@@ -96,7 +107,7 @@ export default function Advert(props: Props) {
   })
 
   // Advert is null if we didn't manage to load an advertisement
-  if (advert === null) return <div style={{color: 'white'}}>Advert</div>
+  if (advert === null) return null
 
   // Otherwise, render a placeholder div - when close to the viewport we'll
   // request an ad.
@@ -105,14 +116,14 @@ export default function Advert(props: Props) {
   }
 
   return <Container ref={setAdEl} onClick={onDisplayAdVisited}>
-    <LargeImage src={imageUrl} />
+    <AdImage src={imageUrl} />
     <MetaInfoContainer>
-      <BatAdLabel onClick={e => e.stopPropagation()} href="brave://rewards">Ad</BatAdLabel>
+      <BatAdLabel onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} href="chrome://rewards">{getLocale('braveNewsAdvertBadge')}</BatAdLabel>
       •
       {' ' + advert.description}
     </MetaInfoContainer>
     <Title>
-      <SecureLink href={advert.targetUrl.url} onClick={e => {
+      <SecureLink allowedSchemes={adTargetUrlAllowedSchemes} href={advert.targetUrl.url} onClick={e => {
         // preventDefault, so we go through onDisplayAdVisit and record the
         // result.
         e.preventDefault()
@@ -120,6 +131,6 @@ export default function Advert(props: Props) {
         {advert.title}
       </SecureLink>
     </Title>
-    <CtaButton kind='outline'>{advert.ctaText}</CtaButton>
+    <CtaButton kind='filled'>{advert.ctaText}</CtaButton>
   </Container>
 }

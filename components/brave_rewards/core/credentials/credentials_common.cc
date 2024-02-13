@@ -9,7 +9,6 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -28,7 +27,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
   const auto creds = GenerateCreds(trigger.size);
 
   if (creds.empty()) {
-    BLOG(0, "Creds are empty");
+    engine_->LogError(FROM_HERE) << "Creds are empty";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -37,7 +36,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
   const auto blinded_creds = GenerateBlindCreds(creds);
 
   if (blinded_creds.empty()) {
-    BLOG(0, "Blinded creds are empty");
+    engine_->LogError(FROM_HERE) << "Blinded creds are empty";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -53,21 +52,16 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
   creds_batch->trigger_type = trigger.type;
   creds_batch->status = mojom::CredsBatchStatus::BLINDED;
 
-  auto save_callback =
-      base::BindOnce(&CredentialsCommon::BlindedCredsSaved,
-                     base::Unretained(this), std::move(callback));
-
   engine_->database()->SaveCredsBatch(
       std::move(creds_batch),
-      [callback =
-           std::make_shared<decltype(save_callback)>(std::move(save_callback))](
-          mojom::Result result) { std::move(*callback).Run(result); });
+      base::BindOnce(&CredentialsCommon::BlindedCredsSaved,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void CredentialsCommon::BlindedCredsSaved(ResultCallback callback,
                                           mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Creds batch save failed");
+    engine_->LogError(FROM_HERE) << "Creds batch save failed";
     std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
@@ -94,29 +88,24 @@ void CredentialsCommon::SaveUnblindedCreds(
     list.push_back(std::move(unblinded));
   }
 
-  auto save_callback =
-      base::BindOnce(&CredentialsCommon::OnSaveUnblindedCreds,
-                     base::Unretained(this), std::move(callback), trigger);
-
   engine_->database()->SaveUnblindedTokenList(
-      std::move(list), [callback = std::make_shared<decltype(save_callback)>(
-                            std::move(save_callback))](mojom::Result result) {
-        std::move(*callback).Run(result);
-      });
+      std::move(list),
+      base::BindOnce(&CredentialsCommon::OnSaveUnblindedCreds,
+                     weak_factory_.GetWeakPtr(), std::move(callback), trigger));
 }
 
 void CredentialsCommon::OnSaveUnblindedCreds(ResultCallback callback,
                                              const CredentialsTrigger& trigger,
                                              mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Token list not saved");
+    engine_->LogError(FROM_HERE) << "Token list not saved";
     std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
 
-  engine_->database()->UpdateCredsBatchStatus(
-      trigger.id, trigger.type, mojom::CredsBatchStatus::FINISHED,
-      ToLegacyCallback(std::move(callback)));
+  engine_->database()->UpdateCredsBatchStatus(trigger.id, trigger.type,
+                                              mojom::CredsBatchStatus::FINISHED,
+                                              std::move(callback));
 }
 
 }  // namespace credential

@@ -5,12 +5,12 @@
 
 static_library("browser") {
   sources = [
-    "units/search_result_ad/search_result_ad_converting_util.cc",
-    "units/search_result_ad/search_result_ad_converting_util.h",
-    "units/search_result_ad/search_result_ad_handler.cc",
-    "units/search_result_ad/search_result_ad_handler.h",
-    "units/search_result_ad/search_result_ad_util.cc",
-    "units/search_result_ad/search_result_ad_util.h",
+    "ad_units/search_result_ad/search_result_ad_converting_util.cc",
+    "ad_units/search_result_ad/search_result_ad_converting_util.h",
+    "ad_units/search_result_ad/search_result_ad_handler.cc",
+    "ad_units/search_result_ad/search_result_ad_handler.h",
+    "ad_units/search_result_ad/search_result_ad_util.cc",
+    "ad_units/search_result_ad/search_result_ad_util.h",
   ]
 
   deps = [
@@ -22,7 +22,6 @@ static_library("browser") {
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//services/service_manager/public/cpp",
-    "//third_party/abseil-cpp:absl",
     "//third_party/blink/public/common",
   ]
 

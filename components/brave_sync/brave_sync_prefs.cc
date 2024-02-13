@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -23,6 +24,7 @@ const char kSyncFailedDecryptSeedNoticeDismissed[] =
     "brave_sync_v2.failed_decrypt_seed_notice_dismissed";
 const char kSyncAccountDeletedNoticePending[] =
     "brave_sync_v2.account_deleted_notice_pending";
+const char kSyncLeaveChainDetails[] = "brave_sync_v2.diag.leave_chain_details";
 
 // Deprecated
 // ============================================================================
@@ -69,6 +71,7 @@ void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
   registry->RegisterBooleanPref(kSyncFailedDecryptSeedNoticeDismissed, false);
   registry->RegisterBooleanPref(kSyncAccountDeletedNoticePending, false);
+  registry->RegisterStringPref(kSyncLeaveChainDetails, std::string());
 }
 
 // static
@@ -161,6 +164,24 @@ bool Prefs::IsSyncAccountDeletedNoticePending() const {
 
 void Prefs::SetSyncAccountDeletedNoticePending(bool is_pending) {
   pref_service_->SetBoolean(kSyncAccountDeletedNoticePending, is_pending);
+}
+
+void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
+  std::string details = pref_service_->GetString(kSyncLeaveChainDetails);
+
+  std::ostringstream stream;
+  stream << base::Time::Now() << " "
+         << base::FilePath::FromASCII(file).BaseName() << "(" << line << ") "
+         << func << std::endl;
+  pref_service_->SetString(kSyncLeaveChainDetails, details + stream.str());
+}
+
+std::string Prefs::GetLeaveChainDetails() const {
+  return pref_service_->GetString(kSyncLeaveChainDetails);
+}
+
+void Prefs::ClearLeaveChainDetails() {
+  pref_service_->ClearPref(kSyncLeaveChainDetails);
 }
 
 void Prefs::Clear() {

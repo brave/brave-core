@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/device_chooser_content_view.h"
+#include "chrome/browser/ui/views/extensions/extensions_request_access_button.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
@@ -71,7 +72,7 @@ namespace chrome {
 Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
     content::WebContents* contents) {
   if (!IsBravePanel(contents))
-    return chrome::FindBrowserWithWebContents(contents);
+    return chrome::FindBrowserWithTab(contents);
 
   Browser* browser = chrome::FindBrowserWithProfile(
       Profile::FromBrowserContext(contents->GetBrowserContext()));
@@ -86,7 +87,7 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
 
 }  // namespace chrome
 
-#define FindBrowserWithWebContents FindBrowserAndAdjustBubbleForBraveWalletPanel
+#define FindBrowserWithTab FindBrowserAndAdjustBubbleForBraveWalletPanel
 #define GetActiveWebContents                           \
   GetActiveWebContents() && !IsBravePanel(contents) && \
       browser->tab_strip_model()->GetActiveWebContents
@@ -102,4 +103,4 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
 #undef SetExtraView
 #undef BubbleDialogDelegateView
 #undef GetActiveWebContents
-#undef FindBrowserWithWebContents
+#undef FindBrowserWithTab

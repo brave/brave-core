@@ -6,11 +6,11 @@
 package org.chromium.chrome.browser.tasks.tab_management;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class BraveTabUiFeatureUtilities {
     public static boolean isBraveTabGroupsEnabled() {
-        return SharedPreferencesManager.getInstance().readBoolean(
-                BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true);
     }
 }

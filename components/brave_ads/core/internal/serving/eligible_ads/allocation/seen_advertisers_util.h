@@ -6,8 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_ALLOCATION_SEEN_ADVERTISERS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_ALLOCATION_SEEN_ADVERTISERS_UTIL_H_
 
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
+
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
 namespace base {
 class Time;
@@ -17,7 +18,7 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-absl::optional<base::Time> GetLastSeenAdvertiserAt(
+std::optional<base::Time> GetLastSeenAdvertiserAt(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad);
 

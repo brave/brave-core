@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -41,18 +42,19 @@ base::Value::Dict MakeSelectValue(const std::u16string& name,
   return item;
 }
 
-absl::optional<brave_wallet::mojom::CoinType> ToCoinType(
-    absl::optional<int> val) {
+std::optional<brave_wallet::mojom::CoinType> ToCoinType(
+    std::optional<int> val) {
   if (!val) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto result = static_cast<brave_wallet::mojom::CoinType>(*val);
   if (result != brave_wallet::mojom::CoinType::ETH &&
       result != brave_wallet::mojom::CoinType::FIL &&
       result != brave_wallet::mojom::CoinType::SOL &&
-      result != brave_wallet::mojom::CoinType::BTC) {
+      result != brave_wallet::mojom::CoinType::BTC &&
+      result != brave_wallet::mojom::CoinType::ZEC) {
     NOTREACHED();
-    return absl::nullopt;
+    return std::nullopt;
   }
   return result;
 }
@@ -105,6 +107,9 @@ void BraveWalletHandler::RegisterMessages() {
       "isBitcoinEnabled",
       base::BindRepeating(&BraveWalletHandler::IsBitcoinEnabled,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isZCashEnabled", base::BindRepeating(&BraveWalletHandler::IsZCashEnabled,
+                                            base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getPinnedNftCount",
       base::BindRepeating(&BraveWalletHandler::GetPinnedNftCount,
@@ -186,7 +191,7 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
   }
 
   result.Set("defaultNetwork",
-             brave_wallet::GetCurrentChainId(prefs, *coin, absl::nullopt));
+             brave_wallet::GetCurrentChainId(prefs, *coin, std::nullopt));
 
   auto& networks = result.Set("networks", base::Value::List())->GetList();
   for (const auto& it : brave_wallet::GetAllChains(prefs, *coin)) {
@@ -287,7 +292,7 @@ void BraveWalletHandler::SetDefaultNetwork(const base::Value::List& args) {
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
   auto result = json_rpc_service ? json_rpc_service->SetNetwork(
-                                       *chain_id, *coin, absl::nullopt)
+                                       *chain_id, *coin, std::nullopt)
                                  : false;
   ResolveJavascriptCallback(args[0], base::Value(result));
 }
@@ -344,6 +349,13 @@ void BraveWalletHandler::IsBitcoinEnabled(const base::Value::List& args) {
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsBitcoinEnabled()));
+}
+
+void BraveWalletHandler::IsZCashEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(::brave_wallet::IsZCashEnabled()));
 }
 
 void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {

@@ -5,17 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/url_request_builders/redeem_payment_tokens_url_request_builder.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/json/json_writer.h"
-#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/credential_builder.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -93,17 +92,15 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
   base::Value::List list;
 
   for (const auto& payment_token : payment_tokens_) {
-    const absl::optional<base::Value::Dict> credential =
+    const std::optional<base::Value::Dict> credential =
         cbr::BuildCredential(payment_token.unblinded_token, payload);
     if (!credential) {
       continue;
     }
 
-    const absl::optional<std::string> public_key_base64 =
+    const std::optional<std::string> public_key_base64 =
         payment_token.public_key.EncodeBase64();
-    if (!public_key_base64) {
-      NOTREACHED_NORETURN();
-    }
+    CHECK(public_key_base64);
 
     list.Append(
         base::Value::Dict()

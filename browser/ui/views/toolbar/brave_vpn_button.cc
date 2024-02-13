@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
@@ -23,7 +24,6 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_strings.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -90,7 +90,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
   // BraveVPNServiceObserver overrides:
   void OnPurchasedStateChanged(
       brave_vpn::mojom::PurchasedState state,
-      const absl::optional<std::string>& description) override {
+      const std::optional<std::string>& description) override {
     // Rebuild menu items based on purchased state change.
     Build(service_->is_purchased_user());
   }
@@ -188,7 +188,7 @@ void BraveVPNButton::UpdateButtonState() {
 
 void BraveVPNButton::OnPurchasedStateChanged(
     brave_vpn::mojom::PurchasedState state,
-    const absl::optional<std::string>& description) {
+    const std::optional<std::string>& description) {
   UpdateButtonState();
   UpdateColorsAndInsets();
 }
@@ -222,21 +222,22 @@ void BraveVPNButton::UpdateColorsAndInsets() {
                                         ? kColorBraveVpnButtonTextError
                                         : kColorBraveVpnButtonText));
   if (is_error_state_) {
-    SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kVpnIndicatorErrorIcon,
-                              cp->GetColor(kColorBraveVpnButtonIconError)));
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(
+                      kVpnIndicatorErrorIcon,
+                      cp->GetColor(kColorBraveVpnButtonIconError)));
 
     // Use background for inner color of error button image.
     image()->SetBackground(std::make_unique<ConnectErrorIconBackground>(
         cp->GetColor(kColorBraveVpnButtonIconErrorInner)));
   } else {
-    SetImage(views::Button::STATE_NORMAL,
-             gfx::CreateVectorIcon(
-                 is_connected_ ? kVpnIndicatorOnIcon : kVpnIndicatorOffIcon,
-                 cp->GetColor(is_connected_
-                                  ? kColorBraveVpnButtonIconConnected
-                                  : kColorBraveVpnButtonIconDisconnected)));
+    SetImageModel(
+        views::Button::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(
+            is_connected_ ? kVpnIndicatorOnIcon : kVpnIndicatorOffIcon,
+            cp->GetColor(is_connected_
+                             ? kColorBraveVpnButtonIconConnected
+                             : kColorBraveVpnButtonIconDisconnected)));
 
     // Use background for inner color of button image.
     // Adjusted border thickness to make invisible to the outside of the icon.
@@ -332,5 +333,5 @@ void BraveVPNButton::OnButtonPressed(const ui::Event& event) {
   chrome::ExecuteCommand(browser_, IDC_SHOW_BRAVE_VPN_PANEL);
 }
 
-BEGIN_METADATA(BraveVPNButton, LabelButton)
+BEGIN_METADATA(BraveVPNButton, views::LabelButton)
 END_METADATA

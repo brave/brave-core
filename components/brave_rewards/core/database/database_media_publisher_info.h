@@ -20,7 +20,7 @@ class DatabaseMediaPublisherInfo : public DatabaseTable {
 
   void InsertOrUpdate(const std::string& media_key,
                       const std::string& publisher_key,
-                      LegacyResultCallback callback);
+                      ResultCallback callback);
 
   void GetRecord(const std::string& media_key, PublisherInfoCallback callback);
 

@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util_constants.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "components/variations/variations_switches.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -91,8 +91,8 @@ TEST_P(BraveAdsFlagsUtilTest, BuildFlags) {
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
   // Environment
-  const std::string environment_type = test::EnvironmentTypeEnumToString(
-      test_param.param.expected_environment_type);
+  const std::string environment_type =
+      test::ToString(test_param.param.expected_environment_type);
 
   // When
   std::vector<std::string> flags;

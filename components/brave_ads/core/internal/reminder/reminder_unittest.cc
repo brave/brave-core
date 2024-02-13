@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
 
+#include <cstddef>
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"
@@ -17,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

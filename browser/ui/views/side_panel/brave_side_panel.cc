@@ -5,9 +5,11 @@
 
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 
+#include <optional>
+
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
-#include "brave/browser/brave_browser_features.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -34,7 +36,8 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
   OnSidePanelWidthChanged();
   AddObserver(this);
 
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+          browser_view_->browser())) {
     shadow_ = BraveContentsViewUtil::CreateShadow(this);
     SetBackground(
         views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
@@ -59,7 +62,8 @@ bool BraveSidePanel::IsRightAligned() {
 }
 
 void BraveSidePanel::UpdateBorder() {
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+          browser_view_->browser())) {
     // Use a negative top border to hide the separator inserted by the upstream
     // side panel implementation.
     SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(-1, 0, 0, 0)));
@@ -126,7 +130,7 @@ void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
                        (IsRightAligned() ? -resize_amount : resize_amount);
 
   if (done_resizing) {
-    starting_width_on_resize_ = absl::nullopt;
+    starting_width_on_resize_ = std::nullopt;
     // Before arriving resizing doen event, user could hide sidebar because
     // resizing done event is arrived a little bit later after user stops
     // resizing. And resizing done event is arrived as a result of

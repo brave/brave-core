@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#import "brave_rewards_api.h"
+#import "brave/ios/browser/api/brave_rewards/brave_rewards_api.h"
+
 #import <UIKit/UIKit.h>
+
+#include <optional>
 
 #include "base/base64.h"
 #include "base/containers/flat_map.h"
@@ -176,8 +179,6 @@ static const auto kOneDay =
       self.prefs[walletProviderRegionsKey] = @"{}";
     }
 
-    [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
-
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
@@ -192,9 +193,11 @@ static const auto kOneDay =
         FROM_HERE, base::BindOnce(^{
           self->_rewardsClient =
               brave_rewards::internal::make_task_ptr<RewardsClientIOS>(self);
+          auto options = [self
+              handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
           self->_engine = brave_rewards::internal::make_task_ptr<
               brave_rewards::internal::RewardsEngineImpl>(
-              self->_rewardsClient->MakeRemote());
+              self->_rewardsClient->MakeRemote(), std::move(options));
         }));
 
     // Add notifications for standard app foreground/background
@@ -217,35 +220,32 @@ static const auto kOneDay =
   [self.notificationStartupTimer invalidate];
 }
 
-- (void)handleFlags:(const brave_rewards::RewardsFlags&)flags {
+- (brave_rewards::mojom::RewardsEngineOptions)handleFlags:
+    (const brave_rewards::RewardsFlags&)flags {
+  brave_rewards::mojom::RewardsEngineOptions options;
   if (flags.environment) {
     switch (*flags.environment) {
       case brave_rewards::RewardsFlags::Environment::kDevelopment:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::DEVELOPMENT;
+        options.environment = brave_rewards::mojom::Environment::kDevelopment;
         break;
       case brave_rewards::RewardsFlags::Environment::kStaging:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::STAGING;
+        options.environment = brave_rewards::mojom::Environment::kStaging;
         break;
       case brave_rewards::RewardsFlags::Environment::kProduction:
-        brave_rewards::internal::_environment =
-            brave_rewards::mojom::Environment::PRODUCTION;
+        options.environment = brave_rewards::mojom::Environment::kProduction;
         break;
     }
   }
 
-  if (flags.debug) {
-    brave_rewards::internal::is_debug = true;
-  }
-
   if (flags.reconcile_interval) {
-    brave_rewards::internal::reconcile_interval = *flags.reconcile_interval;
+    options.reconcile_interval = *flags.reconcile_interval;
   }
 
   if (flags.retry_interval) {
-    brave_rewards::internal::retry_interval = *flags.retry_interval;
+    options.retry_interval = *flags.retry_interval;
   }
+
+  return options;
 }
 
 - (void)postEngineTask:
@@ -1149,7 +1149,7 @@ static const auto kOneDay =
             (brave_rewards::mojom::RewardsEngineClient::SetTimeStateCallback)
                 callback {
   const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = @(value.ToDoubleT());
+  self.prefs[key] = @(value.InSecondsFSinceUnixEpoch());
   [self savePrefs];
   std::move(callback).Run();
 }
@@ -1160,7 +1160,7 @@ static const auto kOneDay =
                  callback {
   const auto key = base::SysUTF8ToNSString(name);
   std::move(callback).Run(
-      base::Time::FromDoubleT([self.prefs[key] doubleValue]));
+      base::Time::FromSecondsSinceUnixEpoch([self.prefs[key] doubleValue]));
 }
 
 - (void)clearState:(const std::string&)name
@@ -1400,10 +1400,10 @@ static const auto kOneDay =
                  callback {
   std::string encrypted_value;
   if (!OSCrypt::EncryptString(value, &encrypted_value)) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  std::move(callback).Run(absl::make_optional(encrypted_value));
+  std::move(callback).Run(std::make_optional(encrypted_value));
 }
 
 - (void)
@@ -1413,10 +1413,10 @@ static const auto kOneDay =
                  callback {
   std::string decrypted_value;
   if (!OSCrypt::DecryptString(value, &decrypted_value)) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  std::move(callback).Run(absl::make_optional(decrypted_value));
+  std::move(callback).Run(std::make_optional(decrypted_value));
 }
 
 - (void)externalWalletConnected {

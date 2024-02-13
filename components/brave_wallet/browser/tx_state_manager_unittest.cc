@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-#include <utility>
-
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
+
+#include <memory>
+#include <optional>
+#include <utility>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/run_loop.h"
@@ -68,7 +69,6 @@ class TxStateManagerUnitTest : public testing::Test {
     delegate_ = GetTxStorageDelegateForTest(&prefs_, factory_);
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
-    WaitForTxStorageDelegateInitialized(delegate_.get());
     tx_state_manager_ = std::make_unique<EthTxStateManager>(
         &prefs_, delegate_.get(), account_resolver_delegate_.get());
     eth_account_id_ = account_resolver_delegate_->RegisterAccount(
@@ -88,12 +88,12 @@ class TxStateManagerUnitTest : public testing::Test {
     }
   }
 
-  absl::optional<base::Value> GetTxs() {
+  std::optional<base::Value> GetTxs() {
     base::RunLoop run_loop;
-    absl::optional<base::Value> value_out;
+    std::optional<base::Value> value_out;
     delegate_->store_->Get(
         "transactions",
-        base::BindLambdaForTesting([&](absl::optional<base::Value> value) {
+        base::BindLambdaForTesting([&](std::optional<base::Value> value) {
           value_out = std::move(value);
           run_loop.Quit();
         }));
@@ -122,8 +122,7 @@ TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
 
   auto txs = GetTxs();
   ASSERT_TRUE(txs);
-  const base::Value::Dict* value =
-      txs->GetDict().FindDictByDottedPath("ethereum.mainnet.001");
+  const base::Value::Dict* value = txs->GetDict().FindDict("001");
   ASSERT_TRUE(value);
 
   // Transaction is stored with account id.
@@ -164,14 +163,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
     auto txs = GetTxs();
     ASSERT_TRUE(txs);
     const auto& dict = txs->GetDict();
-    EXPECT_EQ(dict.size(), 1u);
-    const auto* ethereum_dict = dict.FindDict("ethereum");
-    ASSERT_TRUE(ethereum_dict);
-    EXPECT_EQ(ethereum_dict->size(), 1u);
-    const auto* network_dict = ethereum_dict->FindDict("mainnet");
-    ASSERT_TRUE(network_dict);
-    EXPECT_EQ(network_dict->size(), 1u);
-    const base::Value::Dict* value = network_dict->FindDict("001");
+    const base::Value::Dict* value = dict.FindDict("001");
     ASSERT_TRUE(value);
     auto meta_from_value = tx_state_manager_->ValueToTxMeta(*value);
     ASSERT_NE(meta_from_value, nullptr);
@@ -185,14 +177,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
     auto txs = GetTxs();
     ASSERT_TRUE(txs);
     const auto& dict = txs->GetDict();
-    EXPECT_EQ(dict.size(), 1u);
-    const auto* ethereum_dict = dict.FindDict("ethereum");
-    ASSERT_TRUE(ethereum_dict);
-    EXPECT_EQ(ethereum_dict->size(), 1u);
-    const auto* network_dict = ethereum_dict->FindDict("mainnet");
-    ASSERT_TRUE(network_dict);
-    EXPECT_EQ(network_dict->size(), 1u);
-    const base::Value::Dict* value = network_dict->FindDict("001");
+    const base::Value::Dict* value = dict.FindDict("001");
     ASSERT_TRUE(value);
     auto meta_from_value = tx_state_manager_->ValueToTxMeta(*value);
     ASSERT_NE(meta_from_value, nullptr);
@@ -207,55 +192,34 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
     auto txs = GetTxs();
     ASSERT_TRUE(txs);
     const auto& dict = txs->GetDict();
-    EXPECT_EQ(dict.size(), 1u);
-    const auto* ethereum_dict = dict.FindDict("ethereum");
-    ASSERT_TRUE(ethereum_dict);
-    EXPECT_EQ(ethereum_dict->size(), 1u);
-    const auto* network_dict = ethereum_dict->FindDict("mainnet");
-    ASSERT_TRUE(network_dict);
-    EXPECT_EQ(network_dict->size(), 2u);
+    EXPECT_EQ(dict.size(), 2u);
   }
 
   // Get
   {
-    auto meta_fetched = tx_state_manager_->GetTx(mojom::kMainnetChainId, "001");
+    auto meta_fetched = tx_state_manager_->GetTx("001");
     ASSERT_NE(meta_fetched, nullptr);
-    ASSERT_EQ(tx_state_manager_->GetTx(mojom::kMainnetChainId, "003"), nullptr);
-    ASSERT_EQ(tx_state_manager_->GetTx(mojom::kGoerliChainId, "001"), nullptr);
+    ASSERT_EQ(tx_state_manager_->GetTx("003"), nullptr);
     EXPECT_EQ(meta_fetched->id(), "001");
     EXPECT_EQ(meta_fetched->tx_hash(), "0xabcd");
 
-    auto meta_fetched2 =
-        tx_state_manager_->GetTx(mojom::kMainnetChainId, "002");
+    auto meta_fetched2 = tx_state_manager_->GetTx("002");
     ASSERT_NE(meta_fetched2, nullptr);
     EXPECT_EQ(meta_fetched2->id(), "002");
     EXPECT_EQ(meta_fetched2->tx_hash(), "0xabff");
 
-    auto meta_fetched3 = tx_state_manager_->GetTx(mojom::kMainnetChainId, "");
+    auto meta_fetched3 = tx_state_manager_->GetTx("");
     EXPECT_EQ(meta_fetched3, nullptr);
   }
 
   // Delete
-  ASSERT_TRUE(tx_state_manager_->DeleteTx(mojom::kMainnetChainId, "001"));
+  ASSERT_TRUE(tx_state_manager_->DeleteTx("001"));
   {
     auto txs = GetTxs();
     ASSERT_TRUE(txs);
     const auto& dict = txs->GetDict();
     EXPECT_EQ(dict.size(), 1u);
-    const auto* ethereum_dict = dict.FindDict("ethereum");
-    ASSERT_TRUE(ethereum_dict);
-    EXPECT_EQ(ethereum_dict->size(), 1u);
-    const auto* network_dict = ethereum_dict->FindDict("mainnet");
-    ASSERT_TRUE(network_dict);
-    EXPECT_EQ(network_dict->size(), 1u);
   }
-
-  // Purge
-  ASSERT_TRUE(tx_state_manager_->WipeTxs());
-  auto txs = GetTxs();
-  const auto& dict = txs->GetDict();
-  EXPECT_EQ(dict.size(), 0u);
-  EXPECT_FALSE(dict.FindByDottedPath("ethereum"));
 }
 
 TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
@@ -305,88 +269,88 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   EXPECT_EQ(
       tx_state_manager_
           ->GetTransactionsByStatus(
-              absl::nullopt, mojom::TransactionStatus::Approved, absl::nullopt)
+              std::nullopt, mojom::TransactionStatus::Approved, std::nullopt)
           .size(),
       0u);
   EXPECT_EQ(
       tx_state_manager_
           ->GetTransactionsByStatus(
-              absl::nullopt, mojom::TransactionStatus::Confirmed, absl::nullopt)
+              std::nullopt, mojom::TransactionStatus::Confirmed, std::nullopt)
           .size(),
       10u);
   EXPECT_EQ(tx_state_manager_
                 ->GetTransactionsByStatus(mojom::kMainnetChainId,
                                           mojom::TransactionStatus::Confirmed,
-                                          absl::nullopt)
+                                          std::nullopt)
                 .size(),
             4u);
   EXPECT_EQ(tx_state_manager_
                 ->GetTransactionsByStatus(mojom::kGoerliChainId,
                                           mojom::TransactionStatus::Confirmed,
-                                          absl::nullopt)
+                                          std::nullopt)
                 .size(),
             6u);
   EXPECT_EQ(
       tx_state_manager_
           ->GetTransactionsByStatus(
-              absl::nullopt, mojom::TransactionStatus::Submitted, absl::nullopt)
+              std::nullopt, mojom::TransactionStatus::Submitted, std::nullopt)
           .size(),
       10u);
   EXPECT_EQ(tx_state_manager_
                 ->GetTransactionsByStatus(mojom::kMainnetChainId,
                                           mojom::TransactionStatus::Submitted,
-                                          absl::nullopt)
+                                          std::nullopt)
                 .size(),
             1u);
   EXPECT_EQ(tx_state_manager_
                 ->GetTransactionsByStatus(mojom::kGoerliChainId,
                                           mojom::TransactionStatus::Submitted,
-                                          absl::nullopt)
+                                          std::nullopt)
                 .size(),
             9u);
 
   EXPECT_EQ(tx_state_manager_
                 ->GetTransactionsByStatus(
-                    absl::nullopt, mojom::TransactionStatus::Approved, acc1)
+                    std::nullopt, mojom::TransactionStatus::Approved, acc1)
                 .size(),
             0u);
 
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, absl::nullopt)
+          ->GetTransactionsByStatus(std::nullopt, std::nullopt, std::nullopt)
           .size(),
       20u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, acc1)
+                ->GetTransactionsByStatus(std::nullopt, std::nullopt, acc1)
                 .size(),
             5u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kMainnetChainId, absl::nullopt, acc1)
+          ->GetTransactionsByStatus(mojom::kMainnetChainId, std::nullopt, acc1)
           .size(),
       2u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kGoerliChainId, absl::nullopt, acc1)
+          ->GetTransactionsByStatus(mojom::kGoerliChainId, std::nullopt, acc1)
           .size(),
       3u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, acc2)
+                ->GetTransactionsByStatus(std::nullopt, std::nullopt, acc2)
                 .size(),
             2u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kMainnetChainId, absl::nullopt, acc2)
+          ->GetTransactionsByStatus(mojom::kMainnetChainId, std::nullopt, acc2)
           .size(),
       0u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kGoerliChainId, absl::nullopt, acc2)
+          ->GetTransactionsByStatus(mojom::kGoerliChainId, std::nullopt, acc2)
           .size(),
       2u);
 
   auto confirmed_addr1 = tx_state_manager_->GetTransactionsByStatus(
-      absl::nullopt, mojom::TransactionStatus::Confirmed, acc1);
+      std::nullopt, mojom::TransactionStatus::Confirmed, acc1);
   EXPECT_EQ(confirmed_addr1.size(), 5u);
   for (const auto& meta : confirmed_addr1) {
     unsigned id;
@@ -395,7 +359,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   }
 
   auto submitted_addr2 = tx_state_manager_->GetTransactionsByStatus(
-      absl::nullopt, mojom::TransactionStatus::Submitted, acc2);
+      std::nullopt, mojom::TransactionStatus::Submitted, acc2);
   EXPECT_EQ(submitted_addr2.size(), 2u);
   for (const auto& meta : submitted_addr2) {
     unsigned id;
@@ -419,27 +383,27 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   // OK: no filter
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, absl::nullopt)
+          ->GetTransactionsByStatus(std::nullopt, std::nullopt, std::nullopt)
           .size(),
       21u);
 
   // OK: filter by address
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, acc1)
+                ->GetTransactionsByStatus(std::nullopt, std::nullopt, acc1)
                 .size(),
             6u);
 
   // OK: filter by chain_id
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(custom_chain.chain_id, absl::nullopt,
-                                          absl::nullopt)
+                ->GetTransactionsByStatus(custom_chain.chain_id, std::nullopt,
+                                          std::nullopt)
                 .size(),
             1u);
 
   // OK: filter by chain_id and address
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(custom_chain.chain_id, absl::nullopt, acc1)
+          ->GetTransactionsByStatus(custom_chain.chain_id, std::nullopt, acc1)
           .size(),
       1u);
 
@@ -447,7 +411,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   EXPECT_EQ(tx_state_manager_
                 ->GetTransactionsByStatus(custom_chain.chain_id,
                                           mojom::TransactionStatus::Submitted,
-                                          absl::nullopt)
+                                          std::nullopt)
                 .size(),
             1u);
 
@@ -458,47 +422,6 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
                                     mojom::TransactionStatus::Submitted, acc1)
           .size(),
       1u);
-}
-
-TEST_F(TxStateManagerUnitTest, MultiChainId) {
-  prefs_.ClearPref(kBraveWalletTransactions);
-
-  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
-  meta.set_id("001");
-  meta.set_chain_id(mojom::kMainnetChainId);
-  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
-
-  EXPECT_EQ(tx_state_manager_->GetTx(mojom::kGoerliChainId, "001"), nullptr);
-  meta.set_chain_id(mojom::kGoerliChainId);
-  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
-
-  EXPECT_EQ(tx_state_manager_->GetTx(mojom::kLocalhostChainId, "001"), nullptr);
-  meta.set_chain_id(mojom::kLocalhostChainId);
-  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
-
-  auto txs = GetTxs();
-  ASSERT_TRUE(txs);
-  const auto& dict = txs->GetDict();
-  EXPECT_EQ(dict.size(), 1u);
-  const auto* ethereum_dict = dict.FindDict("ethereum");
-  ASSERT_TRUE(ethereum_dict);
-  EXPECT_EQ(ethereum_dict->size(), 3u);
-  const auto* mainnet_dict = ethereum_dict->FindDict("mainnet");
-  ASSERT_TRUE(mainnet_dict);
-  EXPECT_EQ(mainnet_dict->size(), 1u);
-  EXPECT_TRUE(mainnet_dict->FindDict("001"));
-  const auto* goerli_dict = ethereum_dict->FindDict("goerli");
-  ASSERT_TRUE(goerli_dict);
-  EXPECT_EQ(goerli_dict->size(), 1u);
-  EXPECT_TRUE(goerli_dict->FindDict("001"));
-  auto localhost_url_spec =
-      brave_wallet::GetNetworkURL(&prefs_, mojom::kLocalhostChainId,
-                                  mojom::CoinType::ETH)
-          .spec();
-  const auto* localhost_dict = ethereum_dict->FindDict(localhost_url_spec);
-  ASSERT_TRUE(localhost_dict);
-  EXPECT_EQ(localhost_dict->size(), 1u);
-  EXPECT_TRUE(localhost_dict->FindDict("001"));
 }
 
 TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
@@ -517,35 +440,35 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
     ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   }
 
-  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "0"));
+  EXPECT_TRUE(tx_state_manager_->GetTx("0"));
   EthTxMeta meta1000(eth_account_id_, std::make_unique<EthTransaction>());
   meta1000.set_id("1000");
   meta1000.set_chain_id(mojom::kMainnetChainId);
   meta1000.set_status(mojom::TransactionStatus::Confirmed);
   meta1000.set_confirmed_time(base::Time::Now());
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1000));
-  EXPECT_FALSE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "0"));
+  EXPECT_FALSE(tx_state_manager_->GetTx("0"));
 
-  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "1"));
+  EXPECT_TRUE(tx_state_manager_->GetTx("1"));
   EthTxMeta meta1001(eth_account_id_, std::make_unique<EthTransaction>());
   meta1001.set_id("1001");
   meta1001.set_chain_id(mojom::kMainnetChainId);
   meta1001.set_status(mojom::TransactionStatus::Rejected);
   meta1001.set_created_time(base::Time::Now());
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1001));
-  EXPECT_FALSE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "1"));
+  EXPECT_FALSE(tx_state_manager_->GetTx("1"));
 
   // Other status doesn't matter
-  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
-  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
+  EXPECT_TRUE(tx_state_manager_->GetTx("2"));
+  EXPECT_TRUE(tx_state_manager_->GetTx("3"));
   EthTxMeta meta1002(eth_account_id_, std::make_unique<EthTransaction>());
   meta1002.set_id("1002");
   meta1002.set_chain_id(mojom::kMainnetChainId);
   meta1002.set_status(mojom::TransactionStatus::Submitted);
   meta1002.set_created_time(base::Time::Now());
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1002));
-  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
-  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
+  EXPECT_TRUE(tx_state_manager_->GetTx("2"));
+  EXPECT_TRUE(tx_state_manager_->GetTx("3"));
 
   // Other chain id doesn't matter
   EthTxMeta meta1003(eth_account_id_, std::make_unique<EthTransaction>());
@@ -554,8 +477,8 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   meta1003.set_status(mojom::TransactionStatus::Confirmed);
   meta1003.set_created_time(base::Time::Now());
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1003));
-  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
-  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
+  EXPECT_TRUE(tx_state_manager_->GetTx("2"));
+  EXPECT_TRUE(tx_state_manager_->GetTx("3"));
 }
 
 TEST_F(TxStateManagerUnitTest, Observer) {

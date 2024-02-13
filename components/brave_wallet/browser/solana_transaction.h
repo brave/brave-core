@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TRANSACTION_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,7 +15,6 @@
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Value;
@@ -31,28 +31,27 @@ class SolanaTransaction {
     SendOptions();
     ~SendOptions();
     SendOptions(const SendOptions&);
-    SendOptions(absl::optional<uint64_t> max_retries_param,
-                absl::optional<std::string> preflight_commitment_param,
-                absl::optional<bool> skip_preflight_param);
+    SendOptions(std::optional<uint64_t> max_retries_param,
+                std::optional<std::string> preflight_commitment_param,
+                std::optional<bool> skip_preflight_param);
 
     bool operator==(const SolanaTransaction::SendOptions&) const;
     bool operator!=(const SolanaTransaction::SendOptions&) const;
 
-    static absl::optional<SendOptions> FromValue(
-        const base::Value::Dict& value);
-    static absl::optional<SendOptions> FromValue(
-        absl::optional<base::Value::Dict> value);
+    static std::optional<SendOptions> FromValue(const base::Value::Dict& value);
+    static std::optional<SendOptions> FromValue(
+        std::optional<base::Value::Dict> value);
     base::Value::Dict ToValue() const;
-    static absl::optional<SendOptions> FromMojomSendOptions(
+    static std::optional<SendOptions> FromMojomSendOptions(
         mojom::SolanaSendTransactionOptionsPtr mojom_options);
     mojom::SolanaSendTransactionOptionsPtr ToMojomSendOptions() const;
 
-    absl::optional<uint64_t> max_retries;
-    absl::optional<std::string> preflight_commitment;
-    absl::optional<bool> skip_preflight;
+    std::optional<uint64_t> max_retries;
+    std::optional<std::string> preflight_commitment;
+    std::optional<bool> skip_preflight;
   };
 
-  explicit SolanaTransaction(SolanaMessage&& message);
+  explicit SolanaTransaction(SolanaMessage message);
 
   SolanaTransaction(
       mojom::SolanaMessageVersion version,
@@ -60,13 +59,12 @@ class SolanaTransaction {
       uint64_t last_valid_block_height,
       const std::string& fee_payer,
       const SolanaMessageHeader& message_header,
-      std::vector<SolanaAddress>&& static_account_keys,
-      std::vector<SolanaInstruction>&& instructions,
-      std::vector<SolanaMessageAddressTableLookup>&& addr_table_lookups);
+      std::vector<SolanaAddress> static_account_keys,
+      std::vector<SolanaInstruction> instructions,
+      std::vector<SolanaMessageAddressTableLookup> addr_table_lookups);
 
-  SolanaTransaction(SolanaMessage&& message,
-                    const std::vector<uint8_t>& raw_signatures);
-  SolanaTransaction(SolanaMessage&& message,
+  SolanaTransaction(SolanaMessage message, std::vector<uint8_t> raw_signatures);
+  SolanaTransaction(SolanaMessage message,
                     mojom::SolanaSignTransactionParamPtr sign_tx_param);
   SolanaTransaction(const SolanaTransaction&) = delete;
   SolanaTransaction& operator=(const SolanaTransaction&) = delete;
@@ -78,12 +76,12 @@ class SolanaTransaction {
   std::string GetSignedTransaction(KeyringService* keyring_service) const;
   // Serialize and encode the message in Base64.
   std::string GetBase64EncodedMessage() const;
-  absl::optional<std::vector<uint8_t>> GetSignedTransactionBytes(
+  std::optional<std::vector<uint8_t>> GetSignedTransactionBytes(
       KeyringService* keyring_service,
       const std::vector<uint8_t>* selected_account_signature = nullptr) const;
 
   // Returns message bytes and signer addresses (public keys).
-  absl::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>
+  std::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>
   GetSerializedMessage() const;
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
@@ -103,7 +101,7 @@ class SolanaTransaction {
   uint64_t amount() const { return amount_; }
   SolanaMessage* message() { return &message_; }
   const std::vector<uint8_t>& raw_signatures() const { return raw_signatures_; }
-  absl::optional<SolanaTransaction::SendOptions> send_options() const {
+  std::optional<SolanaTransaction::SendOptions> send_options() const {
     return send_options_;
   }
 
@@ -116,7 +114,7 @@ class SolanaTransaction {
   void set_tx_type(mojom::TransactionType tx_type);
   void set_lamports(uint64_t lamports) { lamports_ = lamports; }
   void set_amount(uint64_t amount) { amount_ = amount; }
-  void set_send_options(absl::optional<SendOptions> options) {
+  void set_send_options(std::optional<SendOptions> options) {
     send_options_ = options;
   }
   void set_sign_tx_param(mojom::SolanaSignTransactionParamPtr sign_tx_param) {
@@ -149,7 +147,7 @@ class SolanaTransaction {
 
   // Currently might be specified by solana.signAndSendTransaction provider
   // API as the options to be passed to sendTransaction RPC call.
-  absl::optional<SendOptions> send_options_;
+  std::optional<SendOptions> send_options_;
 };
 
 }  // namespace brave_wallet

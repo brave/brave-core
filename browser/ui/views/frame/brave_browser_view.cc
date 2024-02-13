@@ -9,13 +9,13 @@
 #include <iterator>
 #include <map>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
@@ -28,6 +28,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -59,7 +60,6 @@
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/accelerators/accelerator_manager.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -86,7 +86,7 @@
 
 namespace {
 
-absl::optional<bool> g_download_confirm_return_allow_for_testing;
+std::optional<bool> g_download_confirm_return_allow_for_testing;
 
 bool IsUnsupportedCommand(int command_id, Browser* browser) {
   return chrome::IsRunningInForcedAppMode() &&
@@ -196,7 +196,7 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
     // Collapse the separator line between the toolbar or bookmark bar and the
     // views below.
     contents_separator_->SetPreferredSize(gfx::Size());
@@ -248,7 +248,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
             std::move(original_side_panel)));
     unified_side_panel_ = sidebar_container_view_->side_panel();
 
-    if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
       sidebar_separator_view_ =
           AddChildView(std::make_unique<SidebarSeparator>());
     }
@@ -435,7 +435,15 @@ void BraveBrowserView::ShowReaderModeToolbar() {
   if (!reader_mode_toolbar_view_) {
     reader_mode_toolbar_view_ =
         std::make_unique<ReaderModeToolbarView>(GetProfile());
+    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
+      SetBorder(views::CreateThemedSolidSidedBorder(
+          gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
+    }
     AddChildView(reader_mode_toolbar_view_.get());
+
+    // See the comment of same code in ctor.
+    // TODO(simonhong): Find more better way instead of calling multiple times.
+    ReorderChildView(find_bar_host_view_, -1);
     GetBrowserViewLayout()->set_reader_mode_toolbar(
         reader_mode_toolbar_view_.get());
   } else {
@@ -560,6 +568,7 @@ void BraveBrowserView::CloseWalletBubble() {
 
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
+  // we must call all new views once BraveBrowserView is added to widget
 
   GetBrowserViewLayout()->set_contents_background(contents_background_view_);
   GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
@@ -585,6 +594,27 @@ void BraveBrowserView::AddedToWidget() {
   }
 }
 
+bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
+  auto* shields_action_view =
+      static_cast<BraveLocationBarView*>(GetLocationBarView())
+          ->brave_actions_contatiner_view()
+          ->GetShieldsActionView();
+  if (!shields_action_view || !shields_action_view->GetVisible()) {
+    return false;
+  }
+
+  // When help bubble is closed, this host view gets hidden.
+  // For now, this help bubble host view is only used for shield icon, but it
+  // could be re-used for other icons or views in the future.
+  if (!brave_help_bubble_host_view_) {
+    brave_help_bubble_host_view_ =
+        AddChildView(std::make_unique<BraveHelpBubbleHostView>());
+  }
+  brave_help_bubble_host_view_->set_text(text);
+  brave_help_bubble_host_view_->set_tracked_element(shields_action_view);
+  return brave_help_bubble_host_view_->Show();
+}
+
 void BraveBrowserView::LoadAccelerators() {
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     auto* accelerator_service =
@@ -607,6 +637,11 @@ void BraveBrowserView::OnTabStripModelChanged(
     // This can happen when tab is closed by shortcut (ex, ctrl + F4).
     // After stopping, current tab cycling, new tab cycling will be started.
     StopTabCycling();
+  }
+
+  if (selection.active_tab_changed() && brave_help_bubble_host_view_ &&
+      brave_help_bubble_host_view_->GetVisible()) {
+    brave_help_bubble_host_view_->Hide();
   }
 }
 
@@ -728,7 +763,7 @@ BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
 }
 
 void BraveBrowserView::UpdateWebViewRoundedCorners() {
-  if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
     return;
   }
 
@@ -806,3 +841,6 @@ void BraveBrowserView::SetSidePanelOperationByActiveTabChange(bool tab_change) {
 
   sidebar_container_view_->set_operation_from_active_tab_change(tab_change);
 }
+
+BEGIN_METADATA(BraveBrowserView)
+END_METADATA

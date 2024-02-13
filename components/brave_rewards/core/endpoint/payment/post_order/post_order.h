@@ -64,8 +64,8 @@ class RewardsEngineImpl;
 namespace endpoint {
 namespace payment {
 
-using PostOrderCallback =
-    std::function<void(const mojom::Result result, mojom::SKUOrderPtr order)>;
+using PostOrderCallback = base::OnceCallback<void(const mojom::Result result,
+                                                  mojom::SKUOrderPtr order)>;
 
 class PostOrder {
  public:
@@ -86,9 +86,9 @@ class PostOrder {
                           const std::vector<mojom::SKUOrderItem>& order_items,
                           mojom::SKUOrder* order);
 
-  void OnRequest(mojom::UrlResponsePtr response,
-                 const std::vector<mojom::SKUOrderItem>& items,
-                 PostOrderCallback callback);
+  void OnRequest(std::vector<mojom::SKUOrderItem> items,
+                 PostOrderCallback callback,
+                 mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

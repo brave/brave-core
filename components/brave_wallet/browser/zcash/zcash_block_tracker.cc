@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -14,7 +15,7 @@
 
 namespace brave_wallet {
 
-ZCashBlockTracker::ZCashBlockTracker(zcash_rpc::ZCashRpc* zcash_rpc)
+ZCashBlockTracker::ZCashBlockTracker(ZCashRpc* zcash_rpc)
     : zcash_rpc_(zcash_rpc) {}
 
 ZCashBlockTracker::~ZCashBlockTracker() = default;
@@ -37,28 +38,28 @@ void ZCashBlockTracker::GetBlockHeight(const std::string& chain_id) {
                                weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
-absl::optional<uint32_t> ZCashBlockTracker::GetLatestHeight(
+std::optional<uint32_t> ZCashBlockTracker::GetLatestHeight(
     const std::string& chain_id) const {
   if (!base::Contains(latest_height_map_, chain_id)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return latest_height_map_.at(chain_id);
 }
 
 void ZCashBlockTracker::OnGetLatestBlockForHeight(
     const std::string& chain_id,
-    base::expected<zcash::BlockID, std::string> latest_block) {
-  if (!latest_block.has_value()) {
+    base::expected<mojom::BlockIDPtr, std::string> latest_block) {
+  if (!latest_block.has_value() || !latest_block.value()) {
     return;
   }
   auto cur_latest_height = GetLatestHeight(chain_id);
   if (cur_latest_height &&
-      cur_latest_height.value() == latest_block->height()) {
+      cur_latest_height.value() == (*latest_block)->height) {
     return;
   }
-  latest_height_map_[chain_id] = latest_block->height();
+  latest_height_map_[chain_id] = (*latest_block)->height;
   for (auto& observer : observers_) {
-    observer.OnLatestHeightUpdated(chain_id, latest_block->height());
+    observer.OnLatestHeightUpdated(chain_id, (*latest_block)->height);
   }
 }
 

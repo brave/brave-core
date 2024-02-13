@@ -12,7 +12,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "brave/components/brave_rewards/core/logging/logging_util.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal::endpoints {
 
@@ -24,11 +24,11 @@ class ResponseHandler {
   using Result = base::expected<Value, Error>;
 
  private:
-  static void OnResponse(base::OnceCallback<void(Result&&)> callback,
+  static void OnResponse(RewardsEngineImpl& engine,
+                         base::OnceCallback<void(Result&&)> callback,
                          mojom::UrlResponsePtr response) {
     DCHECK(response);
-    LogUrlResponse(__func__, *response);
-    std::move(callback).Run(Endpoint::ProcessResponse(*response));
+    std::move(callback).Run(Endpoint::ProcessResponse(engine, *response));
   }
 
   // Note that friend class RequestFor<Endpoint>; is not sufficient due to

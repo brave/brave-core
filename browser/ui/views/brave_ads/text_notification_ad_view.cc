@@ -57,7 +57,7 @@ constexpr int kBodyMaximumLines = 2;
 #if BUILDFLAG(IS_WIN)
 constexpr int kBodyLineSpacing = 0;
 #elif BUILDFLAG(IS_MAC)
-constexpr int kBodyLineSpacing = 2;
+constexpr int kBodyLineSpacing = 5;
 #elif BUILDFLAG(IS_LINUX)
 constexpr int kBodyLineSpacing = 2;
 #endif

@@ -58,7 +58,7 @@ const ColoredIcon = styled(Icon)<{ color: string }>`
 const ProductNameContainer = styled.div`
   flex-grow: 1;
   padding: 4px;
-  font: ${font.primary.heading.h4};
+  font: ${font.heading.h4};
 `
 
 const ColoredSpan = styled.span<{ color: string }>`
@@ -87,7 +87,7 @@ const StyledButton = styled(LeoButton)`
 const StyledInput = styled.input`
   flex-grow: 1;
   color: ${color.text.primary};
-  font: ${font.primary.heading.h4};
+  font: ${font.heading.h4};
   border: none;
   border-radius: ${radius[8]};
   background: ${color.container.highlight};

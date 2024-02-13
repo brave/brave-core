@@ -4,9 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .form {
-  border-radius: 8px;
+  border-radius: var(--leo-radius-m);
   border: 1px solid var(--leo-color-divider-strong);
-  display: flex;
+  width: 100%;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  position: relative;
+  box-shadow: var(--leo-effect-elevation-01);
 
   &:has(textarea:disabled) {
     border-color: var(--leo-color-divider-subtle);
@@ -18,39 +22,42 @@
   }
 }
 
-.textareaBox {
-  width: 100%;
-  font: var(--leo-font-secondary-default-regular);
-  color: var(--leo-color-text-primary);
-}
+.growWrap {
+  display: grid;
+  grid-template-columns: calc(100% - 20px);
+  max-height: 300px;
+  overflow-y: auto;
 
-.textarea {
-  width: 100%;
-  padding: 10px 16px;
-  resize: none;
-  background-color: transparent;
-  border: 0;
+  textarea {
+    width: 100%;
+    resize: none;
+    background-color: transparent;
+    border: 0;
+    overflow: hidden;
 
-
-  &:focus {
-    outline: none;
+    &:focus { outline: none; }
+    &::placeholder { color: var(--leo-color-text-tertiary); }
   }
 
-  &::placeholder {
-    color: var(--leo-color-text-tertiary);
+  &::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
   }
-}
 
-.buttonSend {
-  background-color: transparent;
-  border: 0;
-  padding: 14px;
-  color: var(--leo-color-icon-default);
-  cursor: pointer;
+  textarea,
+  &::after {
+    padding: 10px var(--leo-spacing-xl);
+    grid-area: 1 / 1 / 2 / 2;
+  }
 
-  &:disabled {
-    color: var(--leo-color-icon-disabled);
-    cursor: not-allowed;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-gray-20);
+    border-radius: var(--leo-spacing-m);
   }
 }
 
@@ -77,7 +84,7 @@
 }
 
 .counterText {
-  font: var(--leo-font-primary-small-regular);
+  font: var(--leo-font-small-regular);
   color: var(--leo-color-systemfeedback-warning-icon);
   padding: 3px 16px;
   visibility: hidden;
@@ -92,4 +99,10 @@
 
 .counterTextError {
   color: var(--leo-color-systemfeedback-error-icon);
+}
+
+.actions {
+  position: absolute;
+  top: 2px;
+  right: var(--leo-spacing-m);
 }

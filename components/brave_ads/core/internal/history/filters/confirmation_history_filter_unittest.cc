@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/history/filters/confirmation_history_filter.h"
 
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -62,7 +62,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
   const ConfirmationHistoryFilter filter;
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   const HistoryItemList expected_history = {
@@ -81,25 +81,25 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   ad1.ad_content.placement_id = "54ee85b3-b84e-4e80-a6db-8954b554f466";
   ad1.ad_content.type = AdType::kNotificationAd;
   ad1.ad_content.creative_instance_id = "69b684d7-d893-4f4e-b156-859919a0fcc9";
-  ad1.ad_content.confirmation_type = ConfirmationType::kTransferred;
+  ad1.ad_content.confirmation_type = ConfirmationType::kLanded;
 
   HistoryItemInfo ad2;  // Unsupported
   ad2.ad_content.placement_id = "f067d4a9-0b92-4d3b-8cc5-e9baf89081c1";
   ad2.ad_content.type = AdType::kNewTabPageAd;
   ad2.ad_content.creative_instance_id = "d3be2e79-ffa8-4b4e-b61e-88545055fbad";
-  ad2.ad_content.confirmation_type = ConfirmationType::kFlagged;
+  ad2.ad_content.confirmation_type = ConfirmationType::kMarkAdAsInappropriate;
 
   HistoryItemInfo ad3;  // Unsupported
   ad3.ad_content.placement_id = "445fae45-c9f5-4cfe-abfb-85e23c7bd1c7";
   ad3.ad_content.type = AdType::kNotificationAd;
   ad3.ad_content.creative_instance_id = "9390f66a-d4f2-4c8a-8315-1baed4aae612";
-  ad3.ad_content.confirmation_type = ConfirmationType::kUpvoted;
+  ad3.ad_content.confirmation_type = ConfirmationType::kLikedAd;
 
   HistoryItemInfo ad4;  // Unsupported
   ad4.ad_content.placement_id = "a86a11d7-674c-494e-844d-f62417c2357b";
   ad4.ad_content.type = AdType::kPromotedContentAd;
   ad4.ad_content.creative_instance_id = "47c73793-d1c1-4fdb-8530-4ae478c79783";
-  ad4.ad_content.confirmation_type = ConfirmationType::kDownvoted;
+  ad4.ad_content.confirmation_type = ConfirmationType::kDislikedAd;
 
   HistoryItemInfo ad5;  // Unsupported
   ad5.ad_content.placement_id = "fc82694e-b518-4fb0-84ca-5cb7a055416a";
@@ -130,7 +130,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   const ConfirmationHistoryFilter filter;
 
   // Act
-  history = filter.Apply(history);
+  filter.Apply(history);
 
   // Assert
   const HistoryItemList expected_history = {

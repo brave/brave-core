@@ -24,17 +24,22 @@
     <color name="modern_blue_700">#C22700</color>
     <color name="dialog_bg_color_dark_baseline">@color/toolbar_background_primary_dark</color>
     <color name="default_text_color_on_accent1_dark">@color/baseline_neutral_0</color>
+    <color name="gm3_baseline_surface_tint_light">#948989</color>
+    <color name="gm3_baseline_surface_tint_dark">#F7F9FC</color>
 
     <!-- Day/Night brave wallet colors -->
+    <color name="brave_wallet_onboarding_item_background_color">#687485</color>
     <color name="brave_wallet_day_night_toolbar_icon_color">#495057</color>
     <color name="brave_wallet_day_night_icon_color">#212529</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#E1E3E4</color>
     <color name="brave_wallet_dn_error_text_bg_color">#F0F2FF</color>
     <color name="brave_wallet_dn_highlight_bg_color">#FFFFFF</color>
+    <color name="brave_wallet_onboarding_card_view_background">#FFFFFF</color>
     <color name="brave_wallet_day_night_bull">#FF2AC194</color>
     <color name="brave_wallet_day_night_bear">#FFEE6374</color>
     <color name="brave_wallet_day_night_chip_background_color">#EDEEF1</color>
     <color name="brave_wallet_dn_button_color">#3F39E8</color>
+    <color name="brave_wallet_checkbox_color">@color/brave_wallet_dn_button_color</color>
     <!-- Brave wallet 2.0 colors -->
     <color name="brave_wallet_dn_panel_bg">#EDEEF1</color>
 
@@ -146,9 +151,6 @@
     <color name="user_wallet_background">#F1F3F5</color>
     <color name="user_wallet_status">#49CC69</color>
 
-    <!-- User wallet -->
-    <color name="user_wallet_dimmed_note">#E6E3F4</color>
-
     <color name="qr_button_color">@android:color/white</color>
     <color name="section_divider_color">#c8c7cc</color>
     <color name="shield_title_color">@android:color/black</color>
@@ -222,9 +224,9 @@
 
     <color name="wallet_text_color">#0D0F14</color>
     <color name="wallet_secondary_text_color">#686978</color>
+    <color name="wallet_onboarding_secondary_text_color">#3F4E55</color>
     <color name="wallet_secondary_layout_text_color">#495057</color>
     <color name="recovery_phrase_text_color">#F8F9FA</color>
-    <color name="rounded_filled_background">#F8F9FA</color>
     <color name="wallet_toolbar_bg_color">#F6F7F8</color>
     <color name="chip_outline_selected_color">#F8F9FA</color>
     <color name="tab_color">#FF4081</color>
@@ -241,6 +243,10 @@
     <color name="wallet_divider_line">#66A1ABBA</color>
 
     <color name="wallet_sign_msg_err_bg_color">#FFF1F1</color>
+
+    <color name="wallet_onboarding_gradient_start">#C9CCF0</color>
+    <color name="wallet_onboarding_gradient_center">#D8DCF2</color>
+    <color name="wallet_onboarding_gradient_end">#F2F3F4</color>
 
     <color name="vpn_callout_bg_color">#381E85</color>
     <color name="brave_plan_bg">#27155E</color>
@@ -321,8 +327,6 @@
     <color name="notification_rationale_dialog_card_bg_color">@android:color/white</color>
     <color name="you_are_not_earning_rewards_bg_color">#F8F9FA</color>
 
-    <color name="playlist_warning_dialog_bg">#FFFFFF</color>
-    <color name="playlist_warning_settings_color">#A0A5EB</color>
     <color name="tipping_details_description_text_color">#6B7084</color>
     <color name="link_icon_color">#6B7084</color>
     <color name="rewards_background_gradient_start_color">#FDF6EB</color>
@@ -349,9 +353,12 @@
     <color name="go_back_text_color">#666D89</color>
     <color name="monthly_contributions_text_color">#423EEE</color>
     <color name="terms_of_service_text_color">#1C1E26</color>
+    <color name="terms_of_service_text_color_night">#EDEEF1</color>
     <color name="terms_of_service_text_color_default">#666D89</color>
     <color name="tipping_warning_default_background">#F0F7FC</color>
     <color name="tipping_logout_warning_background_color">#FFF4D8</color>
+    <color name="tipping_web3_error_background_color">#E2F0FF</color>
+    <color name="tipping_web3_error_text_color">#0061AA</color>
     <color name="rewards_private_ads_icon_color1">#E1E2E8</color>
     <color name="rewards_private_ads_icon_color2">#5D65D3</color>
     <color name="rewards_private_ads_icon_color3">#A8ADBF</color>
@@ -369,5 +376,19 @@
     <color name="rewards_estimated_earning_close_color">#697284</color>
     <color name="rewards_tipping_progress_bar">@android:color/black</color>
 
+
+    <color name="vpn_timer_bg_color">#F6F7F8</color>
+    <color name="vpn_timer_text_color">#0D0F14</color>
+    <color name="vpn_timer_icon_color">#687485</color>
+
+    <!-- Brave Leo colors-->
+    <color name="leo_plan_monthly_bt_bg">#542FE5</color>
+    <color name="leo_plan_monthly_bt_bg_border">#6754F8</color>
+    <color name="leo_plan_upgrade_now_bt_bg_start">#FF006B</color>
+    <color name="leo_plan_upgrade_now_bt_bg_end">#FF5500</color>
     <color name="leo_reset_text_color">#FF4B6A</color>
+    <color name="brave_leo_plans_bg">#1F0B63</color>
+    <color name="brave_leo_plans_tips_border">#4100C1</color>
+    <color name="brave_leo_plans_tips_desc">#BFC3FE</color>
+    <!-- End Brave Leo colors-->
 </resources>

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_REGISTRY_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_REGISTRY_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -52,7 +53,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
                                               mojom::CoinType coin,
                                               const std::string& address);
   std::vector<mojom::NetworkInfoPtr> GetPrepopulatedNetworks();
-  absl::optional<std::string> GetCoingeckoId(
+  std::optional<std::string> GetCoingeckoId(
       const std::string& chain_id,
       const std::string& contract_address);
 

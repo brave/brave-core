@@ -3,11 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assert, assertNotReached } from 'chrome://resources/js/assert_ts.js'
-import { mapLimit } from 'async'
+import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
+import { eachLimit } from 'async'
 
 // constants
-import { BraveWallet, CoinTypes } from '../../../constants/types'
+import {
+  BraveWallet,
+  CoinTypes,
+  BitcoinBalances,
+  WalletStatus
+} from '../../../constants/types'
 import { coinTypesMapping } from '../constants'
 
 // types
@@ -25,10 +30,18 @@ import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import { cacher } from '../../../utils/query-cache-utils'
 import { networkEntityAdapter } from '../entities/network.entity'
+import { TokenBalancesRegistry } from '../entities/token-balance.entity'
+import { baseQueryFunction } from '../../async/base-query-cache'
 import {
-  TokenBalancesRegistry,
-  TokenBalancesForChainId
-} from '../entities/token-balance.entity'
+  getPersistedPortfolioTokenBalances,
+  setPersistedPortfolioTokenBalances
+} from '../../../utils/local-storage-utils'
+import { getIsRewardsNetwork } from '../../../utils/rewards_utils'
+
+type BalanceNetwork = Pick<
+  BraveWallet.NetworkInfo,
+  'chainId' | 'coin' | 'supportedKeyrings'
+>
 
 type GetHardwareAccountDiscoveryBalanceArg = {
   coin: BraveWallet.CoinType
@@ -68,12 +81,20 @@ type GetTokenBalancesForChainIdArg =
   | GetSPLTokenBalancesForAddressAndChainIdArg
   | GetTokenBalancesForAddressAndChainIdArg
 
-type GetTokenBalancesRegistryArg = {
+export type GetTokenBalancesRegistryArg = {
   accountIds: BraveWallet.AccountId[]
-  networks: Array<
-    Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin' | 'supportedKeyrings'>
-  >
+  networks: BalanceNetwork[]
   useAnkrBalancesFeature: boolean
+  /**
+   * Allows the results to be save in local-storage.
+   *
+   * Only allowing the portfolio-page registry for now since that loads the most
+   * balances.
+   *
+   * All calls to this query will use the persisted portfolio registry for the
+   * initial balance before the latest values are streamed-in
+   */
+  persistKey?: 'portfolio'
 }
 
 export const tokenBalancesEndpoints = ({
@@ -85,16 +106,18 @@ export const tokenBalancesEndpoints = ({
       string,
       GetAccountTokenCurrentBalanceArg
     >({
-      queryFn: async (arg, { dispatch, endpoint }, extraOptions, baseQuery) => {
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        const { data: api } = baseQuery(undefined)
+        const { jsonRpcService, bitcoinWalletService, zcashWalletService } = api
         try {
-          const { jsonRpcService, bitcoinWalletService, zcashWalletService } =
-            baseQuery(undefined).data // apiProxy
-          return fetchAccountTokenCurrentBalance({
-            arg,
-            bitcoinWalletService,
-            jsonRpcService,
-            zcashWalletService
-          })
+          return {
+            data: await fetchAccountTokenCurrentBalance({
+              arg,
+              bitcoinWalletService,
+              jsonRpcService,
+              zcashWalletService
+            })
+          }
         } catch (error) {
           return handleEndpointError(
             endpoint,
@@ -115,12 +138,7 @@ export const tokenBalancesEndpoints = ({
       TokenBalancesRegistry,
       GetTokenBalancesForChainIdArg[]
     >({
-      queryFn: async (
-        args,
-        { dispatch, endpoint },
-        extraOptions,
-        baseQuery
-      ) => {
+      queryFn: async (args, { endpoint }, extraOptions, baseQuery) => {
         const {
           bitcoinWalletService,
           zcashWalletService,
@@ -129,7 +147,7 @@ export const tokenBalancesEndpoints = ({
         } = baseQuery(undefined).data
 
         try {
-          const result = await fetchTokenBalancesForChainId({
+          const result = await fetchTokenBalanceRegistryForAccountsAndChainIds({
             args,
             bitcoinWalletService,
             braveWalletService,
@@ -172,93 +190,164 @@ export const tokenBalancesEndpoints = ({
             ) || ['TokenBalancesForChainId']
     }),
 
+    /**
+     * `isLoading` should not be use when consuming this query, as it is `false`
+     * when streaming
+     */
     getTokenBalancesRegistry: query<
-      TokenBalancesRegistry,
+      TokenBalancesRegistry | null,
       GetTokenBalancesRegistryArg
     >({
-      queryFn: async (
-        args,
-        { dispatch, endpoint },
-        extraOptions,
-        baseQuery
-      ) => {
-        try {
+      queryFn: function () {
+        const persistedBalances = getPersistedPortfolioTokenBalances()
+
+        // return null so we can tell if we have data or not to start with
+        return {
+          data: Object.keys(persistedBalances).length ? persistedBalances : null
+        }
+      },
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
+        const { data: api, cache } = baseQueryFunction()
+
+        const {
+          braveWalletService,
+          jsonRpcService,
+          bitcoinWalletService,
+          zcashWalletService
+        } = api
+
+        const tokenBalancesRegistry: TokenBalancesRegistry = {}
+
+        const includeRewardsBalance = arg.networks.some(getIsRewardsNetwork)
+
+        if (includeRewardsBalance) {
+          const rewardsData =
+            cache.rewardsInfo || (await cache.getBraveRewardsInfo())
+
           const {
-            data: {
-              braveWalletService,
-              jsonRpcService,
-              bitcoinWalletService,
-              zcashWalletService
-            },
-            cache
-          } = baseQuery(undefined) // apiProxy
-          const {
-            getUserTokensRegistry
-            // getTokenBalancesForChainId
-          } = cache
+            balance: rewardsBalance,
+            provider: externalRewardsProvider,
+            rewardsToken,
+            status: rewardsStatus
+          } = rewardsData
 
-          const { chainIds: ankrSupportedChainIdsResult } =
-            await braveWalletService.getAnkrSupportedChainIds()
-          const ankrSupportedChainIds = args.useAnkrBalancesFeature
-            ? ankrSupportedChainIdsResult
-            : []
-
-          const ankrSupportedNetworks = args.networks.filter((network) =>
-            ankrSupportedChainIds.includes(network.chainId)
-          )
-          const nonAnkrSupportedNetworks = args.networks.filter(
-            (network) => !ankrSupportedChainIds.includes(network.chainId)
-          )
-
-          const userTokens = await getUserTokensRegistry()
-
-          const tokenBalancesRegistryArray = await mapLimit(
-            args.accountIds,
-            args.accountIds.length,
-            async (accountId: BraveWallet.AccountId) => {
-              const ankrSupportedAccountNetworks = ankrSupportedNetworks.filter(
-                (network) => networkSupportsAccount(network, accountId)
-              )
-              const nonAnkrSupportedAccountNetworks =
-                nonAnkrSupportedNetworks.filter((network) =>
-                  networkSupportsAccount(network, accountId)
-                )
-
-              let ankrAssetBalances: BraveWallet.AnkrAssetBalance[] = []
-
-              if (ankrSupportedAccountNetworks.length) {
-                const { balances, error, errorMessage } =
-                  await jsonRpcService.ankrGetAccountBalances(
-                    accountId.address,
-                    ankrSupportedAccountNetworks.map(
-                      (network) => network.chainId
-                    )
-                  )
-
-                if (
-                  error !== BraveWallet.ProviderError.kSuccess ||
-                  errorMessage
-                ) {
-                  console.log(
-                    `ankrGetAccountBalance error: ${error}
-                      msg: ${errorMessage}`
-                  )
-                }
-
-                ankrAssetBalances = balances || []
+          if (
+            rewardsStatus === WalletStatus.kConnected &&
+            rewardsToken &&
+            externalRewardsProvider &&
+            rewardsBalance
+          ) {
+            // add rewards info to balance registry
+            tokenBalancesRegistry[externalRewardsProvider] = {
+              [BraveWallet.MAINNET_CHAIN_ID]: {
+                [rewardsToken.contractAddress]: new Amount(rewardsBalance)
+                  .multiplyByDecimals(rewardsToken.decimals)
+                  .format()
               }
+            }
+          }
+        }
 
-              let nonAnkrBalancesRegistry: TokenBalancesRegistry = {}
+        function onBalance(
+          accountBalanceKey: string,
+          chainId: string,
+          contractAddress: string,
+          balance: string
+        ) {
+          // update registry for persisted cache
+          if (!tokenBalancesRegistry[accountBalanceKey]) {
+            tokenBalancesRegistry[accountBalanceKey] = {}
+          }
+          if (!tokenBalancesRegistry[accountBalanceKey][chainId]) {
+            tokenBalancesRegistry[accountBalanceKey][chainId] = {}
+          }
+          tokenBalancesRegistry[accountBalanceKey][chainId][contractAddress] =
+            balance
+        }
 
-              if (nonAnkrSupportedAccountNetworks.length) {
-                const nonAnkrBalancesRegistryArray = await mapLimit(
-                  nonAnkrSupportedAccountNetworks,
-                  3,
-                  async (network: BraveWallet.NetworkInfo) => {
-                    assert(coinTypesMapping[network.coin] !== undefined)
-                    try {
-                      const partialRegistry: TokenBalancesRegistry =
-                        await fetchTokenBalancesForChainId({
+        function onAnkrBalances(
+          accountKey: string,
+          ankrAssetBalances: BraveWallet.AnkrAssetBalance[]
+        ) {
+          // update registry for persisted cache
+          if (!tokenBalancesRegistry[accountKey]) {
+            tokenBalancesRegistry[accountKey] = {}
+          }
+
+          for (const { asset, balance } of ankrAssetBalances) {
+            if (!tokenBalancesRegistry[accountKey][asset.chainId]) {
+              tokenBalancesRegistry[accountKey][asset.chainId] = {}
+            }
+
+            tokenBalancesRegistry[accountKey][asset.chainId][
+              asset.contractAddress
+            ] = balance
+          }
+        }
+
+        try {
+          // wait for the initial query to resolve before proceeding
+          await cacheDataLoaded
+
+          try {
+            const ankrSupportedNetworks: BalanceNetwork[] = []
+            const nonAnkrSupportedNetworks: BalanceNetwork[] =
+              arg.useAnkrBalancesFeature ? [] : arg.networks
+
+            if (arg.useAnkrBalancesFeature) {
+              const { chainIds: ankrSupportedChainIds } =
+                await braveWalletService.getAnkrSupportedChainIds()
+
+              for (const network of arg.networks) {
+                if (ankrSupportedChainIds.includes(network.chainId)) {
+                  ankrSupportedNetworks.push(network)
+                } else {
+                  nonAnkrSupportedNetworks.push(network)
+                }
+              }
+            }
+
+            await eachLimit(
+              arg.accountIds,
+              arg.accountIds.length,
+              async (accountId: BraveWallet.AccountId) => {
+                const ankrSupportedAccountChainIds = ankrSupportedNetworks
+                  .filter((network) =>
+                    networkSupportsAccount(network, accountId)
+                  )
+                  .map(({ chainId }) => chainId)
+
+                const ankrAssetBalances: BraveWallet.AnkrAssetBalance[] =
+                  ankrSupportedAccountChainIds.length
+                    ? await fetchAnkrAccountBalances(
+                        jsonRpcService,
+                        accountId,
+                        ankrSupportedAccountChainIds
+                      )
+                    : []
+
+                const accountKey = getAccountBalancesKey(accountId)
+
+                onAnkrBalances(accountKey, ankrAssetBalances)
+
+                const nonAnkrSupportedAccountNetworks =
+                  nonAnkrSupportedNetworks.filter((network) =>
+                    networkSupportsAccount(network, accountId)
+                  )
+
+                const userTokens = await cache.getUserTokensRegistry()
+
+                if (nonAnkrSupportedAccountNetworks.length) {
+                  await eachLimit(
+                    nonAnkrSupportedAccountNetworks,
+                    3,
+                    async (network: BraveWallet.NetworkInfo) => {
+                      assert(coinTypesMapping[network.coin] !== undefined)
+                      try {
+                        await fetchTokenBalanceRegistryForAccountsAndChainIds({
                           args:
                             network.coin === CoinTypes.SOL
                               ? [
@@ -287,64 +376,43 @@ export const tokenBalancesEndpoints = ({
                           bitcoinWalletService,
                           braveWalletService,
                           jsonRpcService,
-                          zcashWalletService
+                          zcashWalletService,
+                          onBalance
                         })
-
-                      return partialRegistry
-                    } catch (error) {
-                      console.error(error)
-                      return {}
-                    }
-                  }
-                )
-
-                nonAnkrBalancesRegistry = nonAnkrBalancesRegistryArray.reduce(
-                  (acc, curr) => {
-                    for (const [uniqueKey, chainIds] of Object.entries(curr)) {
-                      if (!acc.hasOwnProperty(uniqueKey)) {
-                        acc[uniqueKey] = chainIds
-                      } else {
-                        acc[uniqueKey] = {
-                          ...acc[uniqueKey],
-                          ...chainIds
-                        }
+                      } catch (error) {
+                        console.error(error)
                       }
                     }
-                    return acc
-                  },
-                  {}
-                )
-              }
-
-              return ankrAssetBalances.reduce((acc, { asset, balance }) => {
-                const accountKey = getAccountBalancesKey(accountId)
-
-                acc[accountKey] = {
-                  ...(acc[accountKey] || {}),
-                  [asset.chainId]: {
-                    ...((acc[accountKey] || {})[asset.chainId] || {}),
-                    [asset.contractAddress]: balance
-                  }
+                  )
                 }
+              }
+            )
 
-                return acc
-              }, nonAnkrBalancesRegistry)
+            updateCachedData((draft) => {
+              // rules of `immer` apply here:
+              // https://redux-toolkit.js.org/usage/immer-reducers#immer-usage-patterns
+
+              // return the object since we can't reassigning the draft
+              return tokenBalancesRegistry
+            })
+
+            if (arg.persistKey === 'portfolio') {
+              setPersistedPortfolioTokenBalances(tokenBalancesRegistry)
             }
-          )
-
-          return {
-            data: tokenBalancesRegistryArray.reduce(
-              (acc, curr) => ({ ...acc, ...curr }),
-              {}
+          } catch (error) {
+            handleEndpointError(
+              'getTokenBalancesRegistry.onCacheEntryAdded',
+              `Streaming token balances failed`,
+              error
             )
           }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            `Error calling getTokenBalancesRegistry: ${error}`,
-            error
-          )
+        } catch {
+          // cacheDataLoaded` will throw if
+          // `cacheEntryRemoved` resolves before `cacheDataLoaded`
         }
+        // cacheEntryRemoved will resolve when the cache subscription is no
+        // longer active
+        await cacheEntryRemoved
       },
       providesTags: (result, err, args) =>
         err
@@ -360,6 +428,7 @@ export const tokenBalancesEndpoints = ({
               }))
             })
     }),
+
     getHardwareAccountDiscoveryBalance: query<
       string,
       GetHardwareAccountDiscoveryBalanceArg
@@ -431,11 +500,156 @@ export const tokenBalancesEndpoints = ({
           id: [arg.coin, arg.chainId, arg.address].join('-')
         }
       ]
+    }),
+    getBitcoinBalances: query<BitcoinBalances, BraveWallet.AccountId>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { balance, errorMessage } =
+            await api.bitcoinWalletService.getBalance(arg)
+
+          if (errorMessage || balance === null) {
+            throw new Error(errorMessage || 'Unknown error')
+          }
+          return {
+            data: {
+              availableBalance: Amount.normalize(
+                balance.availableBalance.toString()
+              ),
+              pendingBalance: Amount.normalize(
+                balance.pendingBalance.toString()
+              ),
+              totalBalance: Amount.normalize(balance.totalBalance.toString())
+            }
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Failed to fetch Bitcoin balances: ${JSON.stringify(
+              arg,
+              undefined,
+              2
+            )}`,
+            error
+          )
+        }
+      }
     })
   }
 }
 
 // Internals
+async function fetchAnkrAccountBalances(
+  jsonRpcService: BraveWallet.JsonRpcServiceRemote,
+  accountId: BraveWallet.AccountId,
+  chainIds: string[]
+) {
+  const { balances, error, errorMessage } =
+    await jsonRpcService.ankrGetAccountBalances(accountId.address, chainIds)
+
+  if (error !== BraveWallet.ProviderError.kSuccess || errorMessage) {
+    console.log(
+      `ankrGetAccountBalance error: ${error}
+                      msg: ${errorMessage}`
+    )
+  }
+
+  return balances || []
+}
+
+async function fetchAccountCurrentNativeBalance({
+  arg: { accountId, token },
+  jsonRpcService,
+  bitcoinWalletService,
+  zcashWalletService
+}: {
+  arg: GetAccountTokenCurrentBalanceArg
+  jsonRpcService: BraveWallet.JsonRpcServiceRemote
+  bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
+  zcashWalletService: BraveWallet.ZCashWalletServiceRemote
+}): Promise<string> {
+  // LOCALHOST
+  if (
+    token.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
+    accountId.coin !== BraveWallet.CoinType.SOL
+  ) {
+    const { balance, error, errorMessage } = await jsonRpcService.getBalance(
+      accountId.address,
+      accountId.coin,
+      token.chainId
+    )
+
+    // LOCALHOST will error until a local instance is detected
+    // return a '0' balance until it's detected.
+    if (error !== 0) {
+      console.log(`getBalance error: ${errorMessage}`)
+      return Amount.zero().format()
+    }
+
+    return Amount.normalize(balance)
+  }
+
+  // NON-LOCALHOST
+  switch (accountId.coin) {
+    case BraveWallet.CoinType.SOL: {
+      const { balance, error } = await jsonRpcService.getSolanaBalance(
+        accountId.address,
+        token.chainId
+      )
+
+      if (token.chainId === BraveWallet.LOCALHOST_CHAIN_ID && error !== 0) {
+        return Amount.zero().format()
+      }
+
+      return Amount.normalize(balance.toString())
+    }
+
+    case BraveWallet.CoinType.FIL:
+    case BraveWallet.CoinType.ETH: {
+      const { balance, error, errorMessage } = await jsonRpcService.getBalance(
+        accountId.address,
+        accountId.coin,
+        token.chainId
+      )
+
+      if (error && errorMessage) {
+        throw new Error(`getBalance error: ${errorMessage}`)
+      }
+
+      return Amount.normalize(balance)
+    }
+
+    case BraveWallet.CoinType.BTC: {
+      const { balance, errorMessage } = await bitcoinWalletService.getBalance(
+        accountId
+      )
+
+      if (errorMessage || balance === null) {
+        throw new Error(`getBalance error: ${errorMessage || 'Unknown error'}`)
+      }
+
+      return Amount.normalize(balance.totalBalance.toString())
+    }
+
+    case BraveWallet.CoinType.ZEC: {
+      const { balance, errorMessage } = await zcashWalletService.getBalance(
+        token.chainId,
+        accountId
+      )
+
+      if (errorMessage || balance === null) {
+        throw new Error(`getBalance error: ${errorMessage || 'Unknown error'}`)
+      }
+
+      return Amount.normalize(balance.totalBalance.toString())
+    }
+
+    default: {
+      assertNotReached(`Unknown coin ${accountId.coin}`)
+    }
+  }
+}
+
 async function fetchAccountTokenCurrentBalance({
   arg: { accountId, token },
   jsonRpcService,
@@ -446,112 +660,15 @@ async function fetchAccountTokenCurrentBalance({
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
-}): Promise<
-  { data: string; error?: undefined } | { error: string; data?: undefined }
-> {
+}): Promise<string> {
   // Native asset balances
   if (isNativeAsset(token)) {
-    // LOCALHOST
-    if (
-      token.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
-      accountId.coin !== BraveWallet.CoinType.SOL
-    ) {
-      const { balance, error, errorMessage } = await jsonRpcService.getBalance(
-        accountId.address,
-        accountId.coin,
-        token.chainId
-      )
-
-      // LOCALHOST will error until a local instance is detected
-      // return a '0' balance until it's detected.
-      if (error !== 0) {
-        console.log(`getBalance error: ${errorMessage}`)
-        return {
-          data: Amount.zero().format()
-        }
-      }
-
-      return {
-        data: Amount.normalize(balance)
-      }
-    }
-
-    switch (accountId.coin) {
-      case BraveWallet.CoinType.SOL: {
-        const { balance, error } = await jsonRpcService.getSolanaBalance(
-          accountId.address,
-          token.chainId
-        )
-
-        if (token.chainId === BraveWallet.LOCALHOST_CHAIN_ID && error !== 0) {
-          return { data: Amount.zero().format() }
-        }
-
-        return {
-          data: Amount.normalize(balance.toString())
-        }
-      }
-
-      case BraveWallet.CoinType.FIL:
-      case BraveWallet.CoinType.ETH: {
-        const { balance, error, errorMessage } =
-          await jsonRpcService.getBalance(
-            accountId.address,
-            accountId.coin,
-            token.chainId
-          )
-
-        if (error && errorMessage) {
-          console.log(`getBalance error: ${errorMessage}`)
-          return {
-            error: errorMessage
-          }
-        }
-
-        return {
-          data: Amount.normalize(balance)
-        }
-      }
-
-      case BraveWallet.CoinType.BTC: {
-        const { balance, errorMessage } = await bitcoinWalletService.getBalance(
-          accountId
-        )
-
-        if (errorMessage || balance === null) {
-          console.log(`getBalance error: ${errorMessage}`)
-          return {
-            error: errorMessage || 'Unknown error'
-          }
-        }
-
-        return {
-          data: Amount.normalize(balance.totalBalance.toString())
-        }
-      }
-
-      case BraveWallet.CoinType.ZEC: {
-        const { balance, errorMessage } = await zcashWalletService.getBalance(
-          token.chainId,
-          accountId
-        )
-
-        if (errorMessage || balance === null) {
-          console.log(`getBalance error: ${errorMessage}`)
-          return {
-            error: errorMessage || 'Unknown error'
-          }
-        }
-
-        return {
-          data: Amount.normalize(balance.totalBalance.toString())
-        }
-      }
-
-      default: {
-        assertNotReached(`Unknown coin ${accountId.coin}`)
-      }
-    }
+    return fetchAccountCurrentNativeBalance({
+      arg: { accountId, token },
+      jsonRpcService,
+      bitcoinWalletService,
+      zcashWalletService
+    })
   }
 
   // Token Balances
@@ -572,12 +689,10 @@ async function fetchAccountTokenCurrentBalance({
           )
 
       if (error && errorMessage) {
-        return { error: errorMessage }
+        throw new Error(errorMessage || 'Unknown error')
       }
 
-      return {
-        data: Amount.normalize(balance)
-      }
+      return Amount.normalize(balance)
     }
     // Solana Network Tokens
     case BraveWallet.CoinType.SOL: {
@@ -589,221 +704,216 @@ async function fetchAccountTokenCurrentBalance({
         )
 
       if (error && errorMessage) {
-        return { error: errorMessage }
+        throw new Error(errorMessage || 'Unknown error')
       }
 
-      return {
-        data: token.isNft ? uiAmountString : amount
-      }
+      return token.isNft ? uiAmountString : amount
     }
 
     // Other network type tokens
     default: {
-      return {
-        data: Amount.zero().format()
-      }
+      return Amount.zero().format()
     }
   }
 }
 
-async function fetchTokenBalancesForChainId({
+async function fetchAccountTokenBalanceRegistryForChainId({
+  arg,
+  bitcoinWalletService,
+  jsonRpcService,
+  zcashWalletService,
+  braveWalletService,
+  onBalance
+}: {
+  arg: GetTokenBalancesForChainIdArg
+  jsonRpcService: BraveWallet.JsonRpcServiceRemote
+  bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
+  zcashWalletService: BraveWallet.ZCashWalletServiceRemote
+  braveWalletService: BraveWallet.BraveWalletServiceRemote
+  onBalance: (
+    accountBalanceKey: string,
+    chainId: string,
+    contractAddress: string,
+    balance: string
+  ) => void | Promise<void>
+}): Promise<void> {
+  const accountBalanceKey = getAccountBalancesKey(arg.accountId)
+
+  // Construct arg to query native token for use in case the
+  // optimized balance fetcher kicks in.
+  const nativeTokenArg = arg.tokens
+    ? arg.tokens.find(isNativeAsset)
+    : {
+        coin: arg.coin,
+        chainId: arg.chainId,
+        contractAddress: '',
+        isErc721: false,
+        isNft: false,
+        tokenId: ''
+      }
+
+  const nonNativeTokens = (arg.tokens ?? []).filter(
+    (token) => !isNativeAsset(token)
+  )
+
+  if (nativeTokenArg) {
+    const balance = await fetchAccountTokenCurrentBalance({
+      arg: {
+        accountId: arg.accountId,
+        token: nativeTokenArg
+      },
+      bitcoinWalletService,
+      jsonRpcService,
+      zcashWalletService
+    })
+
+    if (balance) {
+      onBalance(
+        accountBalanceKey,
+        arg.chainId,
+        nativeTokenArg.contractAddress,
+        balance
+      )
+    }
+  }
+
+  if (arg.coin === CoinTypes.ETH) {
+    // jsonRpcService.getERC20TokenBalances cannot handle
+    // native assets
+    if (nonNativeTokens.length === 0) {
+      return
+    }
+
+    // TODO(josheleonard): aggresively cache this response
+    // since it never changes
+    const {
+      chainIds: supportedChainIds //
+    } = await braveWalletService.getBalanceScannerSupportedChains()
+
+    if (supportedChainIds.includes(arg.chainId)) {
+      const result = await jsonRpcService.getERC20TokenBalances(
+        nonNativeTokens.map((token) => token.contractAddress),
+        arg.accountId.address,
+        arg.chainId
+      )
+
+      if (result.error !== BraveWallet.ProviderError.kSuccess) {
+        throw new Error(
+          'Error calling ' +
+            'jsonRpcService.getERC20TokenBalances: ' +
+            `error=${result.errorMessage} arg=` +
+            JSON.stringify(arg, undefined, 2)
+        )
+      }
+
+      for (const { balance, contractAddress } of result.balances) {
+        if (balance) {
+          onBalance(
+            accountBalanceKey,
+            arg.chainId,
+            contractAddress,
+            new Amount(balance).format()
+          )
+        }
+      }
+
+      return
+    }
+  }
+
+  if (arg.coin === CoinTypes.SOL && !arg.tokens) {
+    const result = await jsonRpcService.getSPLTokenBalances(
+      arg.accountId.address,
+      arg.chainId
+    )
+
+    if (result.error !== BraveWallet.ProviderError.kSuccess) {
+      throw new Error(
+        `Error calling jsonRpcService.getSPLTokenBalances:
+              error=${result.errorMessage}
+              arg=` + JSON.stringify(arg, undefined, 2)
+      )
+    }
+
+    for (const { mint, amount } of result.balances) {
+      if (amount) {
+        onBalance(
+          accountBalanceKey,
+          arg.chainId,
+          mint,
+          Amount.normalize(amount)
+        )
+      }
+    }
+
+    return
+  }
+
+  // Fallback to fetching individual balances
+  await eachLimit(
+    nonNativeTokens,
+    10,
+    async (token: BraveWallet.BlockchainToken) => {
+      const result = await fetchAccountTokenCurrentBalance({
+        arg: {
+          accountId: arg.accountId,
+          token
+        },
+        bitcoinWalletService,
+        jsonRpcService,
+        zcashWalletService
+      })
+
+      if (result && new Amount(result).gt(0)) {
+        onBalance(accountBalanceKey, arg.chainId, token.contractAddress, result)
+      }
+    }
+  )
+}
+
+async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   args,
   jsonRpcService,
   bitcoinWalletService,
   braveWalletService,
-  zcashWalletService
+  zcashWalletService,
+  onBalance
 }: {
   args: GetTokenBalancesForChainIdArg[]
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
   braveWalletService: BraveWallet.BraveWalletServiceRemote
+  onBalance?: (
+    accountBalanceKey: string,
+    chainId: string,
+    contractAddress: string,
+    balance: string
+  ) => void | Promise<void>
 }): Promise<TokenBalancesRegistry> {
-  const result = await mapLimit(
-    args,
-    1,
-    async (arg: GetTokenBalancesForChainIdArg) => {
-      // Construct arg to query native token for use in case the
-      // optimised balance fetcher kicks in.
-      const nativeTokenArg =
-        arg.coin === CoinTypes.ETH
-          ? arg.tokens.find(isNativeAsset)
-          : arg.tokens // arg.coin is SOL
-          ? arg.tokens.find(isNativeAsset)
-          : {
-              coin: arg.coin,
-              chainId: arg.chainId,
-              contractAddress: '',
-              isErc721: false,
-              isNft: false,
-              tokenId: ''
-            }
+  const tokenBalancesRegistry: TokenBalancesRegistry = {}
 
-      const baseTokenBalances: TokenBalancesForChainId = {}
-      if (nativeTokenArg) {
-        const { data: balance } = await fetchAccountTokenCurrentBalance({
-          arg: {
-            accountId: arg.accountId,
-            token: nativeTokenArg
-          },
-          bitcoinWalletService,
-          jsonRpcService,
-          zcashWalletService
-        })
-        if (balance) {
-          baseTokenBalances[nativeTokenArg.contractAddress] = balance
-        }
-      }
-
-      if (arg.coin === CoinTypes.ETH) {
-        // jsonRpcService.getERC20TokenBalances cannot handle
-        // native assets
-        const contracts = arg.tokens
-          .filter((token) => !isNativeAsset(token))
-          .map((token) => token.contractAddress)
-        if (contracts.length === 0) {
-          return {
-            [getAccountBalancesKey(arg.accountId)]: {
-              [arg.chainId]: baseTokenBalances
-            }
+  await eachLimit(args, 1, async (arg: GetTokenBalancesForChainIdArg) => {
+    await fetchAccountTokenBalanceRegistryForChainId({
+      arg,
+      bitcoinWalletService,
+      braveWalletService,
+      jsonRpcService,
+      zcashWalletService,
+      onBalance:
+        onBalance ||
+        function (accountBalanceKey, chainId, contractAddress, balance) {
+          if (!tokenBalancesRegistry[accountBalanceKey]) {
+            tokenBalancesRegistry[accountBalanceKey] = {}
           }
-        }
-
-        // TODO(josheleonard): aggresively cache this response
-        // since it never changes
-        const {
-          chainIds: supportedChainIds //
-        } = await braveWalletService.getBalanceScannerSupportedChains()
-
-        if (supportedChainIds.includes(arg.chainId)) {
-          const result = await jsonRpcService.getERC20TokenBalances(
-            contracts,
-            arg.accountId.address,
-            arg.chainId
-          )
-          if (result.error === BraveWallet.ProviderError.kSuccess) {
-            return {
-              [getAccountBalancesKey(arg.accountId)]: {
-                [arg.chainId]: result.balances.reduce(
-                  (acc, { balance, contractAddress }) => {
-                    const token = arg.tokens.find(
-                      (token) => token.contractAddress === contractAddress
-                    )
-
-                    const balanceAmount = balance
-                      ? new Amount(balance)
-                      : undefined
-
-                    if (balanceAmount && token) {
-                      return {
-                        ...acc,
-                        [contractAddress]: balanceAmount.format()
-                      }
-                    }
-
-                    return acc
-                  },
-                  baseTokenBalances
-                )
-              }
-            }
-          } else {
-            throw new Error(
-              'Error calling ' +
-                'jsonRpcService.getERC20TokenBalances: ' +
-                `error=${result.errorMessage} arg=` +
-                JSON.stringify(arg, undefined, 2)
-            )
+          if (!tokenBalancesRegistry[accountBalanceKey][chainId]) {
+            tokenBalancesRegistry[accountBalanceKey][chainId] = {}
           }
+          tokenBalancesRegistry[accountBalanceKey][chainId][contractAddress] =
+            balance
         }
-      }
+    })
+  })
 
-      if (arg.coin === CoinTypes.SOL && !arg.tokens) {
-        const result = await jsonRpcService.getSPLTokenBalances(
-          arg.accountId.address,
-          arg.chainId
-        )
-
-        if (result.error === BraveWallet.ProviderError.kSuccess) {
-          return {
-            [getAccountBalancesKey(arg.accountId)]: {
-              [arg.chainId]: result.balances.reduce((acc, balanceResult) => {
-                if (balanceResult.amount) {
-                  return {
-                    ...acc,
-                    [balanceResult.mint]: Amount.normalize(balanceResult.amount)
-                  }
-                }
-
-                return acc
-              }, baseTokenBalances)
-            }
-          }
-        } else {
-          throw new Error(
-            `Error calling jsonRpcService.getSPLTokenBalances:
-              error=${result.errorMessage}
-              arg=` + JSON.stringify(arg, undefined, 2)
-          )
-        }
-      }
-
-      // Fallback to fetching individual balances
-      const tokens = (arg.tokens ?? []).filter((token) => !isNativeAsset(token))
-
-      const combinedBalancesResult = await mapLimit(
-        tokens,
-        10,
-        async (token: BraveWallet.BlockchainToken) => {
-          const { data: result } = await fetchAccountTokenCurrentBalance({
-            arg: {
-              accountId: arg.accountId,
-              token
-            },
-            bitcoinWalletService,
-            jsonRpcService,
-            zcashWalletService
-          })
-
-          return {
-            key: token.contractAddress,
-            value: result
-          }
-        }
-      )
-
-      return {
-        [getAccountBalancesKey(arg.accountId)]: {
-          [arg.chainId]: combinedBalancesResult
-            .filter(
-              (
-                item
-              ): item is {
-                key: string
-                value: string
-              } => new Amount(item.value || '').gt(0)
-            )
-            .reduce((obj, item) => {
-              obj[item.key] = item.value
-              return obj
-            }, baseTokenBalances)
-        }
-      }
-    }
-  )
-
-  return result.reduce((acc: TokenBalancesRegistry, curr) => {
-    const [[uniqueKey, chainIdBalances]] = Object.entries(curr)
-
-    if (!acc.hasOwnProperty(uniqueKey)) {
-      acc[uniqueKey] = chainIdBalances
-    } else {
-      acc[uniqueKey] = {
-        ...acc[uniqueKey],
-        ...chainIdBalances
-      }
-    }
-
-    return acc
-  }, {})
+  return tokenBalancesRegistry
 }

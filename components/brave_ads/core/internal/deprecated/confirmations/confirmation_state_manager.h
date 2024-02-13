@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -15,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -34,7 +34,7 @@ class ConfirmationStateManager final {
 
   static ConfirmationStateManager& GetInstance();
 
-  void LoadState(const absl::optional<WalletInfo>& wallet,
+  void LoadState(const std::optional<WalletInfo>& wallet,
                  InitializeCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
@@ -44,7 +44,7 @@ class ConfirmationStateManager final {
   std::string ToJson();
   [[nodiscard]] bool FromJson(const std::string& json);
 
-  absl::optional<RewardInfo> GetReward(const base::Value::Dict& dict) const;
+  std::optional<RewardInfo> GetReward(const base::Value::Dict& dict) const;
 
   bool GetConfirmationsFromDictionary(const base::Value::Dict& dict,
                                       ConfirmationList* confirmations) const;
@@ -75,7 +75,7 @@ class ConfirmationStateManager final {
 
  private:
   void LoadCallback(InitializeCallback callback,
-                    const absl::optional<std::string>& json);
+                    const std::optional<std::string>& json);
 
   bool ParseConfirmationsFromDictionary(const base::Value::Dict& dict);
 
@@ -85,7 +85,7 @@ class ConfirmationStateManager final {
 
   bool is_initialized_ = false;
 
-  absl::optional<WalletInfo> wallet_;
+  std::optional<WalletInfo> wallet_;
 
   ConfirmationList confirmations_;
 

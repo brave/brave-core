@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 
 #include <map>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -62,7 +63,7 @@ constexpr char kPalm[] = "palm";
 constexpr char kPolygonZkEvm[] = "polygon-zkevm";
 constexpr char kZkSyncEra[] = "zksync-era";
 
-absl::optional<std::string> ChainIdToSimpleHashChainId(
+std::optional<std::string> ChainIdToSimpleHashChainId(
     const std::string& chain_id) {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
       chain_id_lookup({
@@ -84,13 +85,13 @@ absl::optional<std::string> ChainIdToSimpleHashChainId(
           {brave_wallet::mojom::kZkSyncEraChainId, kZkSyncEra},
       });
   if (!chain_id_lookup->contains(chain_id)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return chain_id_lookup->at(chain_id);
 }
 
-absl::optional<std::string> SimpleHashChainIdToChainId(
+std::optional<std::string> SimpleHashChainIdToChainId(
     const std::string& simple_hash_chain_id) {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
       simple_hash_chain_id_lookup({
@@ -112,7 +113,7 @@ absl::optional<std::string> SimpleHashChainIdToChainId(
           {kZkSyncEra, brave_wallet::mojom::kZkSyncEraChainId},
       });
   if (!simple_hash_chain_id_lookup->contains(simple_hash_chain_id)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return simple_hash_chain_id_lookup->at(simple_hash_chain_id);
@@ -149,18 +150,18 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
     const std::string& account_address,
     const std::vector<std::string>& chain_ids,
     mojom::CoinType coin,
-    const absl::optional<std::string>& cursor,
+    const std::optional<std::string>& cursor,
     bool skip_spam,
     bool only_spam,
     FetchNFTsFromSimpleHashCallback callback) {
   if (!(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL)) {
-    std::move(callback).Run({}, absl::nullopt);
+    std::move(callback).Run({}, std::nullopt);
     return;
   }
 
   GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids, cursor);
   if (!url.is_valid()) {
-    std::move(callback).Run({}, absl::nullopt);
+    std::move(callback).Run({}, std::nullopt);
     return;
   }
 
@@ -182,22 +183,22 @@ void SimpleHashClient::OnFetchNFTsFromSimpleHash(
     APIRequestResult api_request_result) {
   std::vector<mojom::BlockchainTokenPtr> nfts;
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(std::move(nfts), absl::nullopt);
+    std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
   }
 
   // Invalid JSON becomes an empty string after sanitization
-  if (api_request_result.body().empty()) {
-    std::move(callback).Run(std::move(nfts), absl::nullopt);
+  if (api_request_result.value_body().is_none()) {
+    std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
   }
 
-  absl::optional<std::pair<absl::optional<std::string>,
-                           std::vector<mojom::BlockchainTokenPtr>>>
-      result = ParseNFTsFromSimpleHash(api_request_result.value_body(), coin,
+  std::optional<std::pair<std::optional<std::string>,
+                          std::vector<mojom::BlockchainTokenPtr>>>
+      result = ParseNFTsFromSimpleHash(api_request_result.TakeBody(), coin,
                                        skip_spam, only_spam);
   if (!result) {
-    std::move(callback).Run(std::move(nfts), absl::nullopt);
+    std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
   }
 
@@ -219,7 +220,7 @@ void SimpleHashClient::FetchAllNFTsFromSimpleHash(
       weak_ptr_factory_.GetWeakPtr(), std::vector<mojom::BlockchainTokenPtr>(),
       account_address, chain_ids, coin, std::move(callback));
 
-  FetchNFTsFromSimpleHash(account_address, chain_ids, coin, absl::nullopt,
+  FetchNFTsFromSimpleHash(account_address, chain_ids, coin, std::nullopt,
                           true /* skip_spam*/, false /* only spam */,
                           std::move(internal_callback));
 }
@@ -231,7 +232,7 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
     mojom::CoinType coin,
     FetchAllNFTsFromSimpleHashCallback callback,
     std::vector<mojom::BlockchainTokenPtr> nfts,
-    const absl::optional<std::string>& next_cursor) {
+    const std::optional<std::string>& next_cursor) {
   // Combine the NFTs with the ones fetched already
   for (auto& token : nfts) {
     nfts_so_far.push_back(std::move(token));
@@ -254,8 +255,8 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
   std::move(callback).Run(std::move(nfts_so_far));
 }
 
-absl::optional<std::pair<absl::optional<std::string>,
-                         std::vector<mojom::BlockchainTokenPtr>>>
+std::optional<std::pair<std::optional<std::string>,
+                        std::vector<mojom::BlockchainTokenPtr>>>
 SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
                                           mojom::CoinType coin,
                                           bool skip_spam,
@@ -440,30 +441,30 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
 
   // Only ETH and SOL NFTs are supported.
   if (!(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // If both skip_spam and only_spam are true, return early.
   if (skip_spam && only_spam) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const base::Value::Dict* dict = json_value.GetIfDict();
   if (!dict) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto* next_cursor_ptr = dict->FindString("next_cursor");
-  absl::optional<std::string> next_cursor;
+  std::optional<std::string> next_cursor;
   if (next_cursor_ptr) {
     next_cursor = *next_cursor_ptr;
   } else {
-    next_cursor = absl::nullopt;
+    next_cursor = std::nullopt;
   }
 
   const base::Value::List* nfts = dict->FindList("nfts");
   if (!nfts) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<mojom::BlockchainTokenPtr> nft_tokens;
@@ -478,7 +479,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     if (!collection) {
       continue;
     }
-    absl::optional<int> spam_score = collection->FindInt("spam_score");
+    std::optional<int> spam_score = collection->FindInt("spam_score");
     if (skip_spam && (!spam_score || *spam_score > 0)) {
       continue;
     }
@@ -498,7 +499,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     if (!chain) {
       continue;
     }
-    absl::optional<std::string> chain_id = SimpleHashChainIdToChainId(*chain);
+    std::optional<std::string> chain_id = SimpleHashChainIdToChainId(*chain);
     if (!chain_id) {
       continue;
     }
@@ -600,7 +601,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
 GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     const std::string& account_address,
     const std::vector<std::string>& chain_ids,
-    const absl::optional<std::string>& cursor) {
+    const std::optional<std::string>& cursor) {
   if (chain_ids.empty() || account_address.empty()) {
     return GURL();
   }
@@ -610,7 +611,7 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
 
   std::string chain_ids_param;
   for (const auto& chain_id : chain_ids) {
-    absl::optional<std::string> simple_hash_chain_id =
+    std::optional<std::string> simple_hash_chain_id =
         ChainIdToSimpleHashChainId(chain_id);
     if (simple_hash_chain_id) {
       if (!chain_ids_param.empty()) {

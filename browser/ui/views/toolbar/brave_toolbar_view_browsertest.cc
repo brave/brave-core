@@ -12,7 +12,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/skus/common/features.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -106,7 +105,6 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     return bookmark_button->GetVisible();
   }
 
- private:
   raw_ptr<ToolbarButtonProvider> toolbar_button_provider_ = nullptr;
   raw_ptr<BraveToolbarView> toolbar_view_ = nullptr;
 
@@ -205,6 +203,16 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
+
+  // Check avatar is positioned at the right before app menu button.
+  views::View* avatar = toolbar_button_provider_->GetAvatarToolbarButton();
+  ASSERT_TRUE(!!avatar);
+  views::View* container = avatar->parent();
+  ASSERT_TRUE(!!container);
+  views::View* app_menu = toolbar_button_provider_->GetAppMenuButton();
+  ASSERT_TRUE(!!app_menu);
+  EXPECT_EQ(container->GetIndexOf(avatar).value(),
+            container->GetIndexOf(app_menu).value() - 1ul);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,

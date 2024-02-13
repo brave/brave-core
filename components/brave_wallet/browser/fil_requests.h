@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_REQUESTS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_REQUESTS_H_
 
+#include <optional>
 #include <string>
 
 #include "base/values.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -34,7 +34,7 @@ std::string getChainHead();
 // Returns Filecoin.StateSearchMsgLimited request.
 std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period);
 // Returns Filecoin.MPoolPush request.
-absl::optional<std::string> getSendTransaction(const std::string& signed_tx);
+std::optional<std::string> getSendTransaction(const std::string& signed_tx);
 
 }  // namespace fil
 

@@ -3,18 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/brave_browser_command_controller.h"
+
 #include <memory>
+#include <optional>
 
 #include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -88,7 +89,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
         browser->command_controller())
-        ->OnPurchasedStateChanged(target_state, absl::nullopt);
+        ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
 
   void CheckBraveVPNCommands(Browser* browser) {

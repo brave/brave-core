@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -13,73 +14,73 @@
 
 namespace brave_wallet {
 
-absl::optional<std::string> ParseSingleStringResult(
+std::optional<std::string> ParseSingleStringResult(
     const base::Value& json_value) {
   auto result_v = ParseResultValue(json_value);
   if (!result_v) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* result_str = result_v->GetIfString();
   if (!result_str) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *result_str;
 }
 
-absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
+std::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
     const base::Value& json_value) {
   auto result_v = ParseResultValue(json_value);
   if (!result_v) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* result_str = result_v->GetIfString();
   if (!result_str) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return PrefixedHexStringToBytes(*result_str);
 }
 
-absl::optional<base::Value> ParseResultValue(const base::Value& json_value) {
+std::optional<base::Value> ParseResultValue(const base::Value& json_value) {
   if (!json_value.is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto response =
       json_rpc_responses::RPCResponse::FromValue(json_value.GetDict());
   if (!response || !response->result) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return std::move(*response->result);
 }
 
-absl::optional<base::Value::Dict> ParseResultDict(
+std::optional<base::Value::Dict> ParseResultDict(
     const base::Value& json_value) {
   auto result = ParseResultValue(json_value);
   if (!result || !result->is_dict()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::move(result->GetDict());
 }
 
-absl::optional<base::Value::List> ParseResultList(
+std::optional<base::Value::List> ParseResultList(
     const base::Value& json_value) {
   auto result = ParseResultValue(json_value);
   if (!result || !result->is_list()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return std::move(result->GetList());
 }
 
-absl::optional<bool> ParseBoolResult(const base::Value& json_value) {
+std::optional<bool> ParseBoolResult(const base::Value& json_value) {
   auto result = ParseSingleStringResult(json_value);
   if (!result) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (*result ==
@@ -91,36 +92,36 @@ absl::optional<bool> ParseBoolResult(const base::Value& json_value) {
     return false;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<std::string> ConvertUint64ToString(const std::string& path,
-                                                  const std::string& json) {
+std::optional<std::string> ConvertUint64ToString(const std::string& path,
+                                                 const std::string& json) {
   if (path.empty() || json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string converted_json(
       json::convert_uint64_value_to_string(path, json, true));
   if (converted_json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return converted_json;
 }
 
-absl::optional<std::string> ConvertMultiUint64ToString(
+std::optional<std::string> ConvertMultiUint64ToString(
     const std::vector<std::string>& paths,
     const std::string& json) {
   if (paths.empty() || json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string converted_json(json);
   for (const auto& path : paths) {
     auto result = ConvertUint64ToString(path, converted_json);
     if (!result) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     converted_json = std::move(*result);
   }
@@ -128,40 +129,40 @@ absl::optional<std::string> ConvertMultiUint64ToString(
   return converted_json;
 }
 
-absl::optional<std::string> ConvertMultiUint64InObjectArrayToString(
+std::optional<std::string> ConvertMultiUint64InObjectArrayToString(
     const std::string& path_to_list,
     const std::string& path_to_object,
     const std::vector<std::string>& keys,
     const std::string& json) {
   if (path_to_list.empty() || json.empty() || keys.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string converted_json(json);
   for (const auto& key : keys) {
     if (key.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     converted_json = std::string(json::convert_uint64_in_object_array_to_string(
         path_to_list, path_to_object, key, converted_json));
     if (converted_json.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 
   return converted_json;
 }
 
-absl::optional<std::string> ConvertInt64ToString(const std::string& path,
-                                                 const std::string& json) {
+std::optional<std::string> ConvertInt64ToString(const std::string& path,
+                                                const std::string& json) {
   if (path.empty() || json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string converted_json(
       json::convert_int64_value_to_string(path, json, true));
   if (converted_json.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return converted_json;
 }
@@ -170,7 +171,7 @@ namespace ankr {
 
 namespace {
 
-absl::optional<std::string> GetChainIdFromAnkrBlockchain(
+std::optional<std::string> GetChainIdFromAnkrBlockchain(
     const std::string& blockchain) {
   auto& blockchains = GetAnkrBlockchains();
   for (const auto& entry : blockchains) {
@@ -179,12 +180,12 @@ absl::optional<std::string> GetChainIdFromAnkrBlockchain(
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 }  // namespace
 
-absl::optional<std::vector<mojom::AnkrAssetBalancePtr>>
+std::optional<std::vector<mojom::AnkrAssetBalancePtr>>
 ParseGetAccountBalanceResponse(const base::Value& json_value) {
   // {
   //   "jsonrpc": "2.0",
@@ -225,13 +226,13 @@ ParseGetAccountBalanceResponse(const base::Value& json_value) {
 
   auto result = ParseResultDict(json_value);
   if (!result) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto response =
       json_rpc_responses::AnkrGetAccountBalancesResult::FromValue(*result);
   if (!response) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<mojom::AnkrAssetBalancePtr> balances;
@@ -264,6 +265,7 @@ ParseGetAccountBalanceResponse(const base::Value& json_value) {
     asset->is_erc1155 = asset_value.token_type == "ERC1155";
     asset->is_nft = false;   // Reserved for Solana
     asset->is_spam = false;  // Reserved for NFTs
+    asset->visible = true;
     asset->symbol = asset_value.token_symbol;
     if (!base::StringToInt(asset_value.token_decimals, &asset->decimals) ||
         asset->decimals < 0) {

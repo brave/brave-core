@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -30,8 +31,8 @@ const int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
 const char* kTimePrefsToMigrateToLocalState[] = {kBraveWalletLastUnlockTime,
                                                  kBraveWalletP3AFirstUnlockTime,
                                                  kBraveWalletP3ALastUnlockTime};
-const char* kTimePrefsToRemove[] = {kBraveWalletP3AFirstReportTime,
-                                    kBraveWalletP3ALastReportTime};
+const char* kTimePrefsToRemove[] = {kBraveWalletP3AFirstReportTimeDeprecated,
+                                    kBraveWalletP3ALastReportTimeDeprecated};
 const int kNFTCountBuckets[] = {0, 4, 20};
 constexpr base::TimeDelta kOnboardingRecordDelay = base::Seconds(120);
 
@@ -135,10 +136,6 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
                                       bool allow_provider_overwrite) {
   CHECK(coin_type == mojom::CoinType::ETH || coin_type == mojom::CoinType::SOL);
 
-  const auto keyring_id =
-      keyring_service_->GetKeyringIdForCoinNonFIL(coin_type);
-  CHECK(keyring_id.has_value());
-
   const char* histogram_name;
   switch (coin_type) {
     case mojom::CoinType::ETH:
@@ -188,14 +185,14 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
   base::UmaHistogramEnumeration(histogram_name, answer);
 }
 
-absl::optional<mojom::OnboardingAction>
+std::optional<mojom::OnboardingAction>
 BraveWalletP3A::GetLastOnboardingAction() {
   if (local_state_->HasPrefPath(kBraveWalletP3AOnboardingLastStep)) {
     int pref_value =
         local_state_->GetInteger(kBraveWalletP3AOnboardingLastStep);
     return static_cast<mojom::OnboardingAction>(pref_value);
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
@@ -206,7 +203,7 @@ void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
     onboarding_report_timer_.Stop();
     return;
   }
-  absl::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
+  std::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
   if (!last_step.has_value() || *last_step < action) {
     // Only record steps that are ahead of the previous step so we
     // don't record back navigation.
@@ -230,7 +227,7 @@ void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
 }
 
 void BraveWalletP3A::RecordOnboardingHistogram() {
-  absl::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
+  std::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
   if (!last_step.has_value()) {
     return;
   }
@@ -267,7 +264,7 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
   std::string coin_key = base::NumberToString(static_cast<int>(coin));
 
   base::Time now = base::Time::Now();
-  base::Time last_sent_time = base::Time::FromDoubleT(
+  base::Time last_sent_time = base::Time::FromSecondsSinceUnixEpoch(
       last_sent_time_dict.FindDouble(coin_key).value_or(0.0));
 
   if (!new_send && last_sent_time.is_null()) {
@@ -279,7 +276,7 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     answer = 1;
   }
   if (new_send) {
-    last_sent_time_dict.Set(coin_key, now.ToDoubleT());
+    last_sent_time_dict.Set(coin_key, now.InSecondsFSinceUnixEpoch());
   }
 
   base::UmaHistogramExactLinear(histogram_name, answer, 2);
@@ -356,7 +353,7 @@ void BraveWalletP3A::ReportNftDiscoverySetting() {
   }
 }
 
-// TODO(djandries): remove pref migration around November 2023
+// TODO(djandries): remove pref migration around April 2024
 void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
   for (const char* pref_name : kTimePrefsToMigrateToLocalState) {
     if (local_state_->GetTime(pref_name).is_null()) {
@@ -379,8 +376,8 @@ void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
       profile_prefs_->ClearPref(kBraveWalletP3AUsedSecondDay);
     }
   }
-  local_state_->ClearPref(kBraveWalletP3AWeeklyStorage);
-  profile_prefs_->ClearPref(kBraveWalletP3AWeeklyStorage);
+  local_state_->ClearPref(kBraveWalletP3AWeeklyStorageDeprecated);
+  profile_prefs_->ClearPref(kBraveWalletP3AWeeklyStorageDeprecated);
 }
 
 void BraveWalletP3A::OnUpdateTimerFired() {

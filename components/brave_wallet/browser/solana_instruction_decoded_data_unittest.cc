@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_instruction_decoded_data.h"
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -28,7 +29,7 @@ TEST(SolanaInstructionDecodedDataUnitTest, FromToMojom) {
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
       static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
       solana_ins_data_decoder::GetMojomAccountParamsForTesting(
-          mojom::SolanaSystemInstruction::kTransfer, absl::nullopt),
+          mojom::SolanaSystemInstruction::kTransfer, std::nullopt),
       std::move(mojom_params));
 
   auto decoded_data = SolanaInstructionDecodedData::FromMojom(
@@ -45,7 +46,7 @@ TEST(SolanaInstructionDecodedDataUnitTest, FromToMojom) {
                       mojom::SolanaInstructionParamType::kPublicKey}});
   auto expect_account_params =
       solana_ins_data_decoder::GetAccountParamsForTesting(
-          mojom::SolanaSystemInstruction::kTransfer, absl::nullopt);
+          mojom::SolanaSystemInstruction::kTransfer, std::nullopt);
   EXPECT_EQ(decoded_data->params, expect_params);
   EXPECT_EQ(decoded_data->account_params, expect_account_params);
   EXPECT_EQ(decoded_data->ToMojom(), mojom_decoded_data);
@@ -54,9 +55,9 @@ TEST(SolanaInstructionDecodedDataUnitTest, FromToMojom) {
       static_cast<uint32_t>(mojom::SolanaTokenInstruction::kApprove);
   mojom_decoded_data->account_params =
       solana_ins_data_decoder::GetMojomAccountParamsForTesting(
-          absl::nullopt, mojom::SolanaTokenInstruction::kApprove);
+          std::nullopt, mojom::SolanaTokenInstruction::kApprove);
   expect_account_params = solana_ins_data_decoder::GetAccountParamsForTesting(
-      absl::nullopt, mojom::SolanaTokenInstruction::kApprove);
+      std::nullopt, mojom::SolanaTokenInstruction::kApprove);
   decoded_data = SolanaInstructionDecodedData::FromMojom(
       mojom::kSolanaTokenProgramId, mojom_decoded_data.Clone());
   ASSERT_TRUE(decoded_data);

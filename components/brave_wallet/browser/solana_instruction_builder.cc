@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 
+#include <optional>
 #include <type_traits>
 #include <utility>
 
@@ -52,11 +53,11 @@ namespace system_program {
 //   0. Funding account [signer, writable].
 //   1. Recipient account [non-signer, writable].
 // Insturction data: u32 instruction index and u64 lamport.
-absl::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
-                                           const std::string& to_pubkey,
-                                           uint64_t lamport) {
+std::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
+                                          const std::string& to_pubkey,
+                                          uint64_t lamport) {
   if (from_pubkey.empty() || to_pubkey.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Instruction data is consisted of u32 instruction index and u64 lamport.
@@ -73,8 +74,8 @@ absl::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
   return SolanaInstruction(
       mojom::kSolanaSystemProgramId,
       std::vector<SolanaAccountMeta>(
-          {SolanaAccountMeta(from_pubkey, absl::nullopt, true, true),
-           SolanaAccountMeta(to_pubkey, absl::nullopt, false, true)}),
+          {SolanaAccountMeta(from_pubkey, std::nullopt, true, true),
+           SolanaAccountMeta(to_pubkey, std::nullopt, false, true)}),
       instruction_data);
 }
 
@@ -95,7 +96,7 @@ namespace spl_token_program {
 //      [non-signer, readonly]
 //   3~3+M. M signer accounts [signer, readonly].
 // Insturction data: u8 instruction index and u64 amount.
-absl::optional<SolanaInstruction> Transfer(
+std::optional<SolanaInstruction> Transfer(
     const std::string& token_program_id,
     const std::string& source_pubkey,
     const std::string& destination_pubkey,
@@ -104,7 +105,7 @@ absl::optional<SolanaInstruction> Transfer(
     uint64_t amount) {
   if (token_program_id.empty() || source_pubkey.empty() ||
       destination_pubkey.empty() || authority_pubkey.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Instruction data is consisted of u8 instruction index and u64 amount.
@@ -117,13 +118,13 @@ absl::optional<SolanaInstruction> Transfer(
                           amount_bytes.end());
 
   std::vector<SolanaAccountMeta> account_metas = {
-      SolanaAccountMeta(source_pubkey, absl::nullopt, false, true),
-      SolanaAccountMeta(destination_pubkey, absl::nullopt, false, true),
-      SolanaAccountMeta(authority_pubkey, absl::nullopt, signer_pubkeys.empty(),
+      SolanaAccountMeta(source_pubkey, std::nullopt, false, true),
+      SolanaAccountMeta(destination_pubkey, std::nullopt, false, true),
+      SolanaAccountMeta(authority_pubkey, std::nullopt, signer_pubkeys.empty(),
                         false)};
 
   for (const auto& signer_pubkey : signer_pubkeys) {
-    account_metas.emplace_back(signer_pubkey, absl::nullopt, true, false);
+    account_metas.emplace_back(signer_pubkey, std::nullopt, true, false);
   }
 
   return SolanaInstruction(token_program_id, std::move(account_metas),
@@ -147,7 +148,7 @@ namespace spl_associated_token_account_program {
 // 5. SPL Token program [non-signer, readonly].
 // Ref:
 // https://docs.rs/spl-associated-token-account/1.1.2/spl_associated_token_account/instruction/enum.AssociatedTokenAccountInstruction.html#variant.Create
-absl::optional<SolanaInstruction> CreateAssociatedTokenAccount(
+std::optional<SolanaInstruction> CreateAssociatedTokenAccount(
     const std::string& funding_address,
     const std::string& wallet_address,
     const std::string& associated_token_account_address,
@@ -155,18 +156,18 @@ absl::optional<SolanaInstruction> CreateAssociatedTokenAccount(
   if (funding_address.empty() || wallet_address.empty() ||
       associated_token_account_address.empty() ||
       spl_token_mint_address.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<SolanaAccountMeta> account_metas = {
-      SolanaAccountMeta(funding_address, absl::nullopt, true, true),
-      SolanaAccountMeta(associated_token_account_address, absl::nullopt, false,
+      SolanaAccountMeta(funding_address, std::nullopt, true, true),
+      SolanaAccountMeta(associated_token_account_address, std::nullopt, false,
                         true),
-      SolanaAccountMeta(wallet_address, absl::nullopt, false, false),
-      SolanaAccountMeta(spl_token_mint_address, absl::nullopt, false, false),
-      SolanaAccountMeta(mojom::kSolanaSystemProgramId, absl::nullopt, false,
+      SolanaAccountMeta(wallet_address, std::nullopt, false, false),
+      SolanaAccountMeta(spl_token_mint_address, std::nullopt, false, false),
+      SolanaAccountMeta(mojom::kSolanaSystemProgramId, std::nullopt, false,
                         false),
-      SolanaAccountMeta(mojom::kSolanaTokenProgramId, absl::nullopt, false,
+      SolanaAccountMeta(mojom::kSolanaTokenProgramId, std::nullopt, false,
                         false)};
   return SolanaInstruction(mojom::kSolanaAssociatedTokenProgramId,
                            std::move(account_metas), std::vector<uint8_t>());

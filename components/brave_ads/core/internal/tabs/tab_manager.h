@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -42,10 +42,9 @@ class TabManager final : public AdsClientNotifierObserver {
 
   bool IsPlayingMedia(int32_t tab_id) const;
 
-  absl::optional<TabInfo> GetVisible() const;
-  absl::optional<TabInfo> GetLastVisible() const;
+  std::optional<TabInfo> GetVisible() const;
 
-  absl::optional<TabInfo> MaybeGetForId(int32_t tab_id) const;
+  std::optional<TabInfo> MaybeGetForId(int32_t tab_id) const;
 
  private:
   TabInfo& GetOrCreateForId(int32_t tab_id);
@@ -83,10 +82,9 @@ class TabManager final : public AdsClientNotifierObserver {
   uint32_t last_text_content_hash_ = 0;
   uint32_t last_html_content_hash_ = 0;
 
-  absl::optional<int32_t> visible_tab_id_;
-  absl::optional<int32_t> last_visible_tab_id_;
+  std::optional<int32_t> visible_tab_id_;
 
-  std::map</*tab_id=*/int32_t, TabInfo> tabs_;
+  std::map</*tab_id*/ int32_t, TabInfo> tabs_;
 };
 
 }  // namespace brave_ads

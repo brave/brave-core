@@ -7,10 +7,12 @@
 #define BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_BRIDGE_H_
 
 #import <Foundation/Foundation.h>
-#import "brave/components/brave_ads/core/public/client/ads_client.h"
 
+#include <optional>
 #include <string>
 #include <vector>
+
+#import "brave/components/brave_ads/core/public/client/ads_client.h"
 
 @protocol AdsClientBridge
 @required
@@ -23,9 +25,9 @@
 - (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
-- (void)loadFileResource:(const std::string&)id
-                 version:(const int)version
-                callback:(brave_ads::LoadFileCallback)callback;
+- (void)loadComponentResource:(const std::string&)id
+                      version:(const int)version
+                     callback:(brave_ads::LoadFileCallback)callback;
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(brave_ads::GetScheduledCaptchaCallback)callback;
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
@@ -58,11 +60,11 @@
 - (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(brave_ads::RunDBTransactionCallback)callback;
 - (void)setProfilePref:(const std::string&)path value:(base::Value)value;
-- (absl::optional<base::Value>)getProfilePref:(const std::string&)path;
+- (std::optional<base::Value>)getProfilePref:(const std::string&)path;
 - (void)clearProfilePref:(const std::string&)path;
 - (bool)hasProfilePrefPath:(const std::string&)path;
 - (void)setLocalStatePref:(const std::string&)path value:(base::Value)value;
-- (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path;
+- (std::optional<base::Value>)getLocalStatePref:(const std::string&)path;
 - (void)clearLocalStatePref:(const std::string&)path;
 - (bool)hasLocalStatePrefPath:(const std::string&)path;
 - (void)recordP2AEvents:(const std::vector<std::string>&)events;

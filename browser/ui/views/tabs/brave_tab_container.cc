@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -124,8 +125,8 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
   const auto slots_bounds = layout_helper_->CalculateIdealBounds(
       available_width_callback_.is_null() ||
               base::FeatureList::IsEnabled(features::kScrollableTabStrip)
-          ? absl::nullopt
-          : absl::optional<int>(available_width_callback_.Run()));
+          ? std::nullopt
+          : std::optional<int>(available_width_callback_.Run()));
   height =
       std::max(height, slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
 
@@ -175,7 +176,7 @@ gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
   return target_bounds;
 }
 
-void BraveTabContainer::EnterTabClosingMode(absl::optional<int> override_width,
+void BraveTabContainer::EnterTabClosingMode(std::optional<int> override_width,
                                             CloseTabSource source) {
   // Don't shrink vertical tab strip's width
   if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
@@ -428,7 +429,7 @@ void BraveTabContainer::DropArrow::OnWidgetDestroying(views::Widget* widget) {
 }
 
 void BraveTabContainer::HandleDragUpdate(
-    const absl::optional<BrowserRootView::DropIndex>& index) {
+    const std::optional<BrowserRootView::DropIndex>& index) {
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     TabContainerImpl::HandleDragUpdate(index);
@@ -551,9 +552,9 @@ gfx::ImageSkia* BraveTabContainer::GetDropArrowImage(
 }
 
 void BraveTabContainer::SetDropArrow(
-    const absl::optional<BrowserRootView::DropIndex>& index) {
+    const std::optional<BrowserRootView::DropIndex>& index) {
   if (!index) {
-    controller_->OnDropIndexUpdate(absl::nullopt, false);
+    controller_->OnDropIndexUpdate(std::nullopt, false);
     drop_arrow_.reset();
     return;
   }

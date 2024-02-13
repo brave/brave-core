@@ -21,12 +21,11 @@ import {
 // Types and constants
 import {
   QuoteOption,
-  GasFeeOption,
   GasEstimate,
   SwapParams,
   SwapValidationErrorType
 } from '../constants/types'
-import { BraveWallet } from '../../../../constants/types'
+import { BraveWallet, GasFeeOption } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -45,9 +44,6 @@ import {
   useGetSwapSupportedNetworksQuery,
   useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
-import {
-  useGetCombinedTokensListQuery //
-} from '../../../../common/slices/api.slice.extra'
 import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
 import {
   AccountInfoEntity,
@@ -75,7 +71,6 @@ const hasDecimalsOverflow = (
 
 export const useSwap = () => {
   // Queries
-  const { data: assetsList } = useGetCombinedTokensListQuery()
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: supportedNetworks } = useGetSwapSupportedNetworksQuery()
@@ -95,12 +90,12 @@ export const useSwap = () => {
   >(undefined)
 
   const selectedNetwork = useMemo(() => {
-    if (!selectedNetworkState && supportedNetworks.length) {
+    if (!selectedNetworkState && supportedNetworks?.length) {
       return (
-        supportedNetworks.find(
+        supportedNetworks?.find(
           (network) => network.chainId === BraveWallet.MAINNET_CHAIN_ID
         ) ||
-        supportedNetworks.find(
+        supportedNetworks?.find(
           (network) => network.chainId === BraveWallet.SOLANA_MAINNET
         )
       )
@@ -119,26 +114,6 @@ export const useSwap = () => {
     return selectedAccountState
   }, [selectedAccountState, accountsList, selectedNetwork])
 
-  const setSelectedNetwork = useCallback(
-    (network: BraveWallet.NetworkInfo) => {
-      setSelectedNetworkState(network)
-      if (selectedAccount && network.coin !== selectedAccount.accountId.coin) {
-        setSelectedAccountState(undefined)
-      }
-    },
-    [setSelectedNetworkState, selectedAccount]
-  )
-
-  const setSelectedAcount = useCallback(
-    (account: BraveWallet.AccountInfo) => {
-      setSelectedAccountState(account)
-      if (selectedNetwork && account.accountId.coin !== selectedNetwork.coin) {
-        setSelectedNetworkState(undefined)
-      }
-    },
-    [setSelectedAccountState, selectedNetwork]
-  )
-
   const nativeAsset = useMemo(
     () => makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
@@ -155,8 +130,6 @@ export const useSwap = () => {
   const [selectingFromOrTo, setSelectingFromOrTo] = useState<
     'from' | 'to' | undefined
   >(undefined)
-  const [selectedQuoteOptionIndex, setSelectedQuoteOptionIndex] =
-    useState<number>(0)
   const [selectedSwapAndSendOption, setSelectedSwapAndSendOption] =
     useState<string>(SwapAndSendOptions[0].name)
   const [swapAndSendSelected, setSwapAndSendSelected] = useState<boolean>(false)
@@ -171,14 +144,15 @@ export const useSwap = () => {
   const [selectedGasFeeOption, setSelectedGasFeeOption] =
     useState<GasFeeOption>(gasFeeOptions[1])
 
-  const { data: tokenBalancesRegistry } = useBalancesFetcher(
-    selectedNetwork && selectedAccount
-      ? {
-          networks: [selectedNetwork],
-          accounts: [selectedAccount]
-        }
-      : skipToken
-  )
+  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+    useBalancesFetcher(
+      selectedNetwork && selectedAccount
+        ? {
+            networks: [selectedNetwork],
+            accounts: [selectedAccount]
+          }
+        : skipToken
+    )
 
   const tokenPriceIds = useMemo(
     () =>
@@ -197,16 +171,6 @@ export const useSwap = () => {
     querySubscriptionOptions60s
   )
 
-  const resetSelectedAssets = useCallback(() => {
-    setFromToken(nativeAsset)
-    setToToken(undefined)
-    setFromAmount('')
-    setToAmount('')
-  }, [nativeAsset])
-
-  // Reset FROM asset when network changes
-  useEffect(resetSelectedAssets, [resetSelectedAssets])
-
   const jupiter = useJupiter({
     selectedNetwork,
     selectedAccount,
@@ -215,7 +179,7 @@ export const useSwap = () => {
     fromAmount,
     toAmount: '',
     slippageTolerance,
-    fromAddress: selectedAccount?.address,
+    fromAccount: selectedAccount,
     spotPrices: spotPriceRegistry
   })
   const zeroEx = useZeroEx({
@@ -226,7 +190,7 @@ export const useSwap = () => {
     fromToken,
     toToken,
     slippageTolerance,
-    fromAddress: selectedAccount?.address,
+    fromAccount: selectedAccount,
     spotPrices: spotPriceRegistry
   })
 
@@ -241,38 +205,20 @@ export const useSwap = () => {
   const onSelectQuoteOption = useCallback(
     (index: number) => {
       const option = quoteOptions[index]
-      if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
-        if (jupiter.quote && jupiter.quote.routes.length > index && toToken) {
-          const route = jupiter.quote.routes[index]
-          jupiter.setSelectedRoute(route)
-          setToAmount(option.toAmount.format(6))
-        }
-      } else if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
-        if (zeroEx.quote && toToken) {
-          setToAmount(option.toAmount.format(6))
-        }
+      if (!option) {
+        return
       }
 
-      setSelectedQuoteOptionIndex(index)
+      if (!toToken) {
+        return
+      }
+
+      setToAmount(option.toAmount.format(6))
     },
-    [quoteOptions, selectedNetwork?.coin, jupiter, toToken, zeroEx.quote]
+    [quoteOptions, toToken]
   )
 
   // Methods
-  const getNetworkAssetsList = useCallback(
-    (networkInfo: BraveWallet.NetworkInfo) => {
-      return assetsList.filter(
-        (asset) =>
-          asset.coin === networkInfo.coin &&
-          asset.chainId === networkInfo.chainId &&
-          !asset.isNft &&
-          !asset.isErc1155 &&
-          !asset.isErc721
-      )
-    },
-    [assetsList]
-  )
-
   const handleJupiterQuoteRefreshInternal = useCallback(
     async (overrides: Partial<SwapParams>) => {
       const quote = await jupiter.refresh(overrides)
@@ -282,9 +228,9 @@ export const useSwap = () => {
 
       if (overrides.fromAmount === '') {
         const token = overrides.fromToken || fromToken
-        if (token && quote.routes.length > 0) {
+        if (token) {
           setFromAmount(
-            new Amount(quote.routes[0].inAmount.toString())
+            new Amount(quote.inAmount)
               .divideByDecimals(token.decimals)
               .format(6)
           )
@@ -293,9 +239,9 @@ export const useSwap = () => {
 
       if (overrides.toAmount === '') {
         const token = overrides.toToken || toToken
-        if (token && quote.routes.length > 0) {
+        if (token) {
           setToAmount(
-            new Amount(quote.routes[0].outAmount.toString())
+            new Amount(quote.outAmount)
               .divideByDecimals(token.decimals)
               .format(6)
           )
@@ -473,19 +419,30 @@ export const useSwap = () => {
   //  3. Refresh balance for the new fromToken.
   //  4. Refresh spot price.
   const onSelectFromToken = useCallback(
-    async (token: BraveWallet.BlockchainToken) => {
+    async (
+      token: BraveWallet.BlockchainToken,
+      account?: BraveWallet.AccountInfo
+    ) => {
       setFromToken(token)
+      setSelectedAccountState(account)
+      const tokensNetwork = supportedNetworks?.find(
+        (network) => network.chainId === token.chainId
+      )
+      setSelectedNetworkState(tokensNetwork)
       setSelectingFromOrTo(undefined)
       setFromAmount('')
       setToAmount('')
+      if (toToken?.chainId !== tokensNetwork?.chainId) {
+        setToToken(undefined)
+      }
 
-      if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
+      if (tokensNetwork?.coin === BraveWallet.CoinType.SOL) {
         await jupiter.reset()
-      } else if (selectedNetwork?.coin === BraveWallet.CoinType.ETH) {
+      } else if (tokensNetwork?.coin === BraveWallet.CoinType.ETH) {
         await zeroEx.reset()
       }
     },
-    [selectedAccount, selectedNetwork, zeroEx, jupiter]
+    [zeroEx, jupiter, supportedNetworks, toToken?.chainId]
   )
 
   const onSetSelectedSwapAndSendOption = useCallback((value: string) => {
@@ -613,7 +570,7 @@ export const useSwap = () => {
       if (selectedNetwork?.coin === BraveWallet.CoinType.SOL) {
         if (
           jupiter.error?.isInsufficientLiquidity ||
-          jupiter.quote?.routes?.length === 0
+          jupiter.quote?.routePlan?.length === 0
         ) {
           return 'insufficientLiquidity'
         }
@@ -774,7 +731,7 @@ export const useSwap = () => {
     fiatValue,
     isFetchingQuote: zeroEx.loading || jupiter.loading,
     quoteOptions,
-    selectedQuoteOptionIndex,
+    selectedQuoteOptionIndex: 0,
     selectingFromOrTo,
     swapAndSendSelected,
     selectedSwapAndSendOption,
@@ -787,7 +744,6 @@ export const useSwap = () => {
     gasEstimates,
     onSelectFromToken,
     onSelectToToken,
-    getCachedAssetBalance: getAssetBalance,
     onSelectQuoteOption,
     setSelectingFromOrTo,
     handleOnSetFromAmount,
@@ -805,12 +761,12 @@ export const useSwap = () => {
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
-    getNetworkAssetsList,
     spotPrices: spotPriceRegistry,
     selectedNetwork,
-    setSelectedNetwork,
+    setSelectedNetwork: setSelectedNetworkState,
     selectedAccount,
-    setSelectedAcount
+    tokenBalancesRegistry,
+    isLoadingBalances
   }
 }
 export default useSwap

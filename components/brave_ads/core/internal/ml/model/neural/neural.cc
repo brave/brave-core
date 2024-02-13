@@ -33,27 +33,25 @@ NeuralModel::NeuralModel(NeuralModel&& other) noexcept = default;
 
 NeuralModel& NeuralModel::operator=(NeuralModel&& other) noexcept = default;
 
-NeuralModel::~NeuralModel() = default;
-
-absl::optional<PredictionMap> NeuralModel::Predict(
+std::optional<PredictionMap> NeuralModel::Predict(
     const VectorData& data) const {
   PredictionMap predictions;
 
   const neural_text_classification::flat::Classifier* classifier =
       model_->classifier();
   if (!classifier) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const auto* matrices = classifier->matrices();
   if (!matrices) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const auto* activation_functions = classifier->activation_functions();
   if (!activation_functions ||
       matrices->size() != activation_functions->size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   VectorData layer_input = data;
@@ -61,12 +59,12 @@ absl::optional<PredictionMap> NeuralModel::Predict(
     std::vector<float> next_layer_input;
     const auto* matrix = matrices->Get(i);
     if (!matrix || !matrix->weights_rows()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     for (const auto* matrix_row : *matrix->weights_rows()) {
       if (!matrix_row || !matrix_row->row()) {
-        return absl::nullopt;
+        return std::nullopt;
       }
 
       std::vector<float> row;
@@ -80,7 +78,7 @@ absl::optional<PredictionMap> NeuralModel::Predict(
 
     const auto* activation_function = activation_functions->Get(i);
     if (!activation_function) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     if (activation_function->str() == kPostMatrixFunctionTypeTanh) {
       layer_input.Tanh();
@@ -92,17 +90,17 @@ absl::optional<PredictionMap> NeuralModel::Predict(
   const std::vector<float> output_layer = layer_input.GetDenseData();
   const auto* segments = classifier->segments();
   if (!segments || segments->size() != output_layer.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   for (size_t i = 0; i < segments->size(); i++) {
     const auto* segment = segments->Get(i);
     if (!segment) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     const std::string segment_value = segment->str();
     if (segment_value.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     predictions[segment_value] = output_layer[i];
   }
@@ -110,23 +108,23 @@ absl::optional<PredictionMap> NeuralModel::Predict(
   return predictions;
 }
 
-absl::optional<PredictionMap> NeuralModel::GetTopPredictions(
+std::optional<PredictionMap> NeuralModel::GetTopPredictions(
     const VectorData& data) const {
   return GetTopCountPredictionsImpl(data, data.GetDimensionCount());
 }
 
-absl::optional<PredictionMap> NeuralModel::GetTopCountPredictions(
+std::optional<PredictionMap> NeuralModel::GetTopCountPredictions(
     const VectorData& data,
     size_t top_count) const {
   return GetTopCountPredictionsImpl(data, top_count);
 }
 
-absl::optional<PredictionMap> NeuralModel::GetTopCountPredictionsImpl(
+std::optional<PredictionMap> NeuralModel::GetTopCountPredictionsImpl(
     const VectorData& data,
     size_t top_count) const {
-  const absl::optional<PredictionMap> predictions = Predict(data);
+  const std::optional<PredictionMap> predictions = Predict(data);
   if (!predictions) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<std::pair<double, std::string>> prediction_order;

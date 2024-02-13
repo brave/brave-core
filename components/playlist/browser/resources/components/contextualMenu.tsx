@@ -31,7 +31,7 @@ const StyledRow = styled.div`
 `
 
 const StyledButtonMenu = styled(ButtonMenu)<{ visible: boolean }>`
-  ${p =>
+  ${(p) =>
     !p.visible &&
     css`
       visibility: hidden;
@@ -40,7 +40,7 @@ const StyledButtonMenu = styled(ButtonMenu)<{ visible: boolean }>`
   color: ${color.text.secondary};
 `
 
-export default function ContextualMenuAnchorButton ({
+export default function ContextualMenuAnchorButton({
   items,
   visible,
   onShowMenu,
@@ -55,12 +55,22 @@ export default function ContextualMenuAnchorButton ({
   // TODO(sko) We don't have event for opening menu widget. Once it's ready,
   // wire onShowMenu and onDismissMenu to corresponding events.
   return (
-    <StyledButtonMenu tabIndex={0} visible={visible} {...menuButtonProps}>
+    <StyledButtonMenu
+      tabIndex={0}
+      visible={visible}
+      {...menuButtonProps}
+    >
       <div slot='anchor-content'>
         <Icon name='more-horizontal' />
       </div>
-      {items.map(i => (
-        <leo-menu-item key={i.name} onClick={i.onClick}>
+      {items.map((i) => (
+        <leo-menu-item
+          key={i.name}
+          onClick={(e) => {
+            e.stopPropagation()
+            i.onClick()
+          }}
+        >
           <StyledRow>
             <span>{i.name}</span>
             <Icon name={i.iconName} />

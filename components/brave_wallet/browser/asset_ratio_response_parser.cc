@@ -14,11 +14,10 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
-absl::optional<std::string> ParseSardineAuthToken(
+std::optional<std::string> ParseSardineAuthToken(
     const base::Value& json_value) {
   // Parses results like this:
   // {
@@ -29,13 +28,13 @@ absl::optional<std::string> ParseSardineAuthToken(
 
   if (!json_value.is_dict()) {
     VLOG(0) << "Invalid response, JSON is not a dict";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string* auth_token =
       json_value.GetDict().FindString("clientToken");
   if (!auth_token) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *auth_token;
@@ -89,7 +88,7 @@ bool ParseAssetPrice(const base::Value& json_value,
       asset_price->from_asset = from_asset;
       asset_price->to_asset = to_asset;
 
-      absl::optional<double> to_price =
+      std::optional<double> to_price =
           from_asset_dict->FindDoubleByDottedPath(to_asset);
       if (!to_price) {
         return false;
@@ -97,7 +96,7 @@ bool ParseAssetPrice(const base::Value& json_value,
       asset_price->price = base::NumberToString(*to_price);
       std::string to_asset_timeframe_key =
           base::StringPrintf("%s_timeframe_change", to_asset.c_str());
-      absl::optional<double> to_timeframe_change =
+      std::optional<double> to_timeframe_change =
           from_asset_dict->FindDoubleByDottedPath(to_asset_timeframe_key);
       if (!to_timeframe_change) {
         return false;
@@ -161,9 +160,10 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
     }
     double price = price_value.GetDouble();
 
-    base::Time date = base::Time::FromJsTime(date_dbl);
+    base::Time date = base::Time::FromMillisecondsSinceUnixEpoch(date_dbl);
     auto asset_time_price = mojom::AssetTimePrice::New();
-    asset_time_price->date = base::Milliseconds(date.ToJavaTime());
+    asset_time_price->date =
+        base::Milliseconds(date.InMillisecondsSinceUnixEpoch());
     asset_time_price->price = base::NumberToString(price);
     values->push_back(std::move(asset_time_price));
   }
@@ -171,45 +171,12 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
   return true;
 }
 
-mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
-                                         const std::string& chain_id,
-                                         mojom::CoinType coin) {
-  auto token_info = api::asset_ratio::TokenInfo::FromValue(json_value);
-  if (!token_info) {
-    LOG(ERROR) << "Invalid response, could not parse JSON. ";
-    return nullptr;
-  }
-
-  if (token_info->result.size() != 1) {
-    return nullptr;
-  }
-  const api::asset_ratio::TokenInfoResult& result = token_info->result.front();
-
-  int decimals = 0;
-  const auto eth_addr = EthAddress::FromHex(result.contract_address);
-  if (!base::StringToInt(result.divisor, &decimals) ||
-      result.token_name.empty() || result.symbol.empty() ||
-      eth_addr.IsEmpty()) {
-    return nullptr;
-  }
-
-  return mojom::BlockchainToken::New(
-      eth_addr.ToChecksumAddress(), result.token_name, "" /* logo */,
-      result.token_type == api::asset_ratio::TokenType::kErc20 /* is_erc20 */,
-      result.token_type == api::asset_ratio::TokenType::kErc721 /* is_erc721 */,
-      result.token_type ==
-          api::asset_ratio::TokenType::kErc1155 /* is_erc1155 */,
-      result.token_type == api::asset_ratio::TokenType::kErc721 /* is_nft */,
-      false /* is_spam */, result.symbol, decimals, true /* visible */,
-      "" /* token_id */, "" /* coingecko_id */, chain_id, coin);
-}
-
-absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
+std::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
     const base::Value& json_value) {
   auto coin_market_data = api::asset_ratio::CoinMarket::FromValue(json_value);
 
   if (!coin_market_data) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<mojom::CoinMarketPtr> values;
@@ -231,7 +198,7 @@ absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
   return values;
 }
 
-absl::optional<std::string> ParseStripeBuyURL(const base::Value& json_value) {
+std::optional<std::string> ParseStripeBuyURL(const base::Value& json_value) {
   // Parses results like this:
   // {
   //   "url": "https://crypto.link.com?session_hash=abcdefgh"
@@ -240,7 +207,7 @@ absl::optional<std::string> ParseStripeBuyURL(const base::Value& json_value) {
       api::asset_ratio::StripeBuyURLResponse::FromValue(json_value);
 
   if (!stripe_buy_url_response) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return stripe_buy_url_response->url;

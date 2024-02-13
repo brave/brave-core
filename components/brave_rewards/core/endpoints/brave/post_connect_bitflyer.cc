@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_rewards/core/endpoints/brave/post_connect_bitflyer.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/logging/logging.h"
+#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal::endpoints {
 
@@ -18,10 +19,10 @@ PostConnectBitflyer::PostConnectBitflyer(RewardsEngineImpl& engine,
 
 PostConnectBitflyer::~PostConnectBitflyer() = default;
 
-absl::optional<std::string> PostConnectBitflyer::Content() const {
+std::optional<std::string> PostConnectBitflyer::Content() const {
   if (linking_info_.empty()) {
-    BLOG(0, "linking_info_ is empty!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "linking_info_ is empty";
+    return std::nullopt;
   }
 
   base::Value::Dict content;
@@ -29,8 +30,8 @@ absl::optional<std::string> PostConnectBitflyer::Content() const {
 
   std::string json;
   if (!base::JSONWriter::Write(content, &json)) {
-    BLOG(0, "Failed to write content to JSON!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "Failed to write content to JSON";
+    return std::nullopt;
   }
 
   return json;

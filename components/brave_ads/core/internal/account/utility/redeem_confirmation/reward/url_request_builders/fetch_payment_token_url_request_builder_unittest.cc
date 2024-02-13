@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
@@ -31,7 +33,7 @@ TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 

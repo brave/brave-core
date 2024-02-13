@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -463,7 +464,7 @@ std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
   return public_key;
 }
 
-absl::optional<std::vector<uint8_t>>
+std::optional<std::vector<uint8_t>>
 HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::string& version,
     const std::vector<uint8_t>& nonce,
@@ -471,18 +472,18 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::vector<uint8_t>& ciphertext) const {
   // Only x25519-xsalsa20-poly1305 is supported by MM at the time of writing
   if (version != "x25519-xsalsa20-poly1305") {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (ephemeral_public_key.size() !=
       crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (private_key_.size() !=
       crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint8_t> padded_ciphertext = ciphertext;
@@ -493,7 +494,7 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
   if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
                       padded_ciphertext.size(), nonce.data(),
                       ephemeral_public_key.data(), private_key_ptr) != 0) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::vector<uint8_t> plaintext(
       padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
@@ -705,8 +706,7 @@ std::vector<uint8_t> HDKey::SignCompact(const std::vector<uint8_t>& msg,
   return sig;
 }
 
-// TODO(apaymyshev): return as base::expected?
-absl::optional<std::vector<uint8_t>> HDKey::SignDer(
+std::optional<std::vector<uint8_t>> HDKey::SignDer(
     base::span<const uint8_t, 32> msg) {
   unsigned char extra_entropy[32] = {0};
   secp256k1_ecdsa_signature ecdsa_sig;
@@ -714,7 +714,7 @@ absl::optional<std::vector<uint8_t>> HDKey::SignDer(
                             private_key_.data(),
                             secp256k1_nonce_function_rfc6979, nullptr)) {
     LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto sig_has_low_r = [](const secp256k1_context* ctx,
@@ -735,7 +735,7 @@ absl::optional<std::vector<uint8_t>> HDKey::SignDer(
             GetSecp256k1Ctx(), &ecdsa_sig, msg.data(), private_key_.data(),
             secp256k1_nonce_function_rfc6979, extra_entropy)) {
       LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 
@@ -743,7 +743,7 @@ absl::optional<std::vector<uint8_t>> HDKey::SignDer(
   size_t sig_der_length = sig_der.size();
   if (!secp256k1_ecdsa_signature_serialize_der(
           GetSecp256k1Ctx(), sig_der.data(), &sig_der_length, &ecdsa_sig)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   sig_der.resize(sig_der_length);
 

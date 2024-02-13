@@ -75,7 +75,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, ConfirmationTokenCount) {
   test::SetConfirmationTokens(/*count=*/3);
 
   // Act & Assert
-  EXPECT_EQ(3, ConfirmationTokenCount());
+  EXPECT_EQ(3U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsConfirmationTokenUtilTest, IsValid) {

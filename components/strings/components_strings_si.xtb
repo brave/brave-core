@@ -43,6 +43,7 @@
 <translation id="1074497978438210769">සුරක්ෂිත නැත</translation>
 <translation id="1075079914415273530">කෘෂිකර්මය සහ වනසම්පත්</translation>
 <translation id="1075364221219156102">මුරයතුරක් භාවිතා කරන්න</translation>
+<translation id="1078033282564106222">ගොඩනැගිලි අංක විකල්පය තෝරා ඇත</translation>
 <translation id="1080116354587839789">පළලට ගැළපෙන</translation>
 <translation id="1081061862829655580">Tray 19</translation>
 <translation id="1089439967362294234">මුරපදය වෙනස් කරන්න</translation>
@@ -67,6 +68,7 @@
 <translation id="1131264053432022307">ඔබ පිටපත් කළ රූපය</translation>
 <translation id="1142713751288681188">කඩදාසි වර්ගය</translation>
 <translation id="1147769322402934017">සබැඳි රූප ගැලරි</translation>
+<translation id="1149617035358809955">එයට ඔබේ ගෙවීම් තොරතුරු පිරවිය හැකි පරිදි ඒ ඔබ බව සත්‍යාපනය කරන්න.</translation>
 <translation id="1150565364351027703">අව් කණ්නාඩි</translation>
 <translation id="1150979032973867961">මෙම සේවාදායකයට එය <ph name="DOMAIN"/> බව සනාථ කිරීමට නොහැකි විය; එහි ආරක්ෂණ සහතිකය ඔබගේ පරිගණකයෙහි මෙහෙයුම් පද්ධතිය මගින් විශ්වාස නොකරයි. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයකු ඔබගේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය.</translation>
 <translation id="1151972924205500581">රහස්වචනය අවශ්‍යයි</translation>
@@ -77,6 +79,7 @@
 <translation id="6628439996552631516">ලිපින කළමනාකරණය කරන්න බොත්තම, Brave සැකසීම් තුළ ලිපින එක් කිරීමට සහ කළමනාකරණය කිරීමට සක්‍රිය කරන්න</translation>
 <translation id="1165039591588034296">දෝෂයක්</translation>
 <translation id="1165174597379888365">පිටුවට පිවිසේ</translation>
+<translation id="7108524493226474140">{COUNT,plural, =0{කිසිත් නැත}=1{1 අඩවියකින් (ඔබ ඔබේ Brave ගිණුමට පුරනය වී සිටිනු ඇත)}one{අඩවි #කින් (ඔබ ඔබේ Brave ගිණුමට පුරනය වී සිටිනු ඇත)}other{අඩවි #කින් (ඔබ ඔබේ Brave ගිණුමට පුරනය වී සිටිනු ඇත)}}</translation>
 <translation id="1165852471352757509">TV වාර්තාමය වැඩසටහන් සහ ප්‍රබන්ධ නොවන</translation>
 <translation id="1174644974616730562">ලියුම් කවරය චීන #1</translation>
 <translation id="1174723505405632867">ඔබට <ph name="EMBEDDED_URL"/> හට <ph name="TOP_LEVEL_URL"/> මත කුකී සහ අඩවි දත්ත භාවිත කිරීමට ඉඩ දීමට අවශ්‍යද?
@@ -85,11 +88,13 @@
 <translation id="1175364870820465910">&amp;මුද්‍රණය...</translation>
 <translation id="1175393348063009671">ඡායාරූපය (මැට්)</translation>
 <translation id="1175875016430184367">දකුණට තුන් වරක් ස්ටේපල් කරන්න</translation>
+<translation id="1177548198167638471">නැවත නොඅසන්න</translation>
 <translation id="1177802847690410663">වෙබ් බ්‍රවුසර</translation>
 <translation id="1177863135347784049">සැකසුම්</translation>
 <translation id="1178581264944972037">විරාමය</translation>
 <translation id="1178821169867863726">අඟ 12 x 16</translation>
 <translation id="1181037720776840403">ඉවත් කරන්න</translation>
+<translation id="3248691252569103537">Brave ඔබ බ්‍රවුස් කරන විට වෙබ් අඩවි ඔබව නිරීක්‍ෂණ කිරීමට තුන් වන පාර්ශ්ව කුකී භාවිත කිරීම අවහිර කරයි. <ph name="LINK"/> සඳහා සැකසීම් වෙත පිවිසෙන්න.</translation>
 <translation id="1186201132766001848">මුරපද පරීක්‍ෂා කරන්න</translation>
 <translation id="1190491977647722791">කඩදාසි (අධික බර)</translation>
 <translation id="1195073053842921378">මෙම ලිපිනය මෙම උපාංගයෙන් මකනු ඇත</translation>
@@ -104,12 +109,14 @@
 <translation id="1206967143813997005">අයහපත් මූලික අත්සන</translation>
 <translation id="1209206284964581585">දැනට සඟවන්න</translation>
 <translation id="121201262018556460">ඔබ <ph name="DOMAIN"/> වෙත ළඟා වීමට උත්සාහ කළෙහිය, නමුත් සර්වරය ඉදිරිපත් කළේ දුර්වල යතුරක් සහිත සහතිකයකි. ප්‍රහාරකයා පුද්ගලික යතුර කඩා දමා තිබිය හැකි අතර, සර්වරය ඔබ අපේක්ෂා කළ සර්වරයම නොවීමට පුළුවන (ඔබ ප්‍රහාරකයෙකු සමඟ සන්නිවේදනය කරමින් සිටිනවා විය හැකිය).</translation>
+<translation id="1212527389003717329">බාගැනීම ආරම්භ විය. එය බැලීම සඳහා, |<ph name="ACCELERATOR"/>| ඔබා අල්ලාගෙන සිටින්න.</translation>
 <translation id="1219129156119358924">පද්ධති ආරක්ෂාව</translation>
 <translation id="1222060260947439312">Right Tray</translation>
 <translation id="1224330468394120478">A3x6</translation>
 <translation id="1225570101506606926">බිලියඩ්</translation>
 <translation id="2735968720006267833">Brave ඔබ සඳහා වට්ටම් සොයා ගනු ඇත</translation>
 <translation id="1227224963052638717">නොදන්නා ප්‍රතිපත්තිය.</translation>
+<translation id="1227677022489889280">චලනය වීමට හේතුව සපයන්න (අවශ්‍යයි)</translation>
 <translation id="1228893227497259893">වැරදි ස්ථීති හඳුන්වනය</translation>
 <translation id="1230244617745022071"><ph name="SOURCE"/> (ස්වයංව අනාවරණය වූ)</translation>
 <translation id="1232569758102978740">මාතෘකා නොමැති</translation>
@@ -135,6 +142,7 @@
 <translation id="1264309058268477500">Alternate</translation>
 <translation id="1264974993859112054">ක්‍රීඩා</translation>
 <translation id="1266469291454105242">උපාංග අගුලු හැරීම</translation>
+<translation id="126728463333482584">ඔබ බ්‍රවුස් කරන විට ඔබව හඹා යාමට තුන්වන පාර්ශ්ව කුකීස් භාවිතා කිරීමෙන් අඩවි සීමා කරන ලුහුබැඳීමේ ආරක්ෂණය අත්විඳින පළමු අයගෙන් ඔබ කෙනෙකි.</translation>
 <translation id="1268480293435976622">ලියුම් කවරය චීන #7</translation>
 <translation id="53564677632020212">ඉක්මනින් Brave Sites තුළ නව අඩවියක් තනන්න</translation>
 <translation id="1270328905573953738">මාරුවීම සහ වෙනතකට යාම</translation>
@@ -217,6 +225,7 @@
 <translation id="1413809658975081374">රහස්‍යතා දෝෂය</translation>
 <translation id="1414134146594747368">පෙර පාසල</translation>
 <translation id="141826476809826269">උපුටා ගත් පෙළෙහි අවසානය</translation>
+<translation id="3181333394175596679">Brave මෙම විශේෂාංගය යාවත්කාලීන කරන අතරතුර, ඔබ ඒවා සැකසීම් තුළ අවහිර නොකළහොත් අඩවිවලට තාවකාලිකව තෙවන පාර්ශ්ව කුකී භාවිත කළ හැක.</translation>
 <translation id="5305237486453576422">Brave තුළ බාගැනීම් කළමනාකරණය කරන්න බොත්තම, ඔබ Brave තුළ බාගත කර ඇති ගොනු කළමනාකරණය කිරීමට සක්‍රිය කරන්න</translation>
 <translation id="1422930527989633628">අවට බ්ලූටූත් උපාංග සොයා ගැනීමට ඉල්ලිය හැකිය</translation>
 <translation id="1426410128494586442">ඔව්</translation>
@@ -237,10 +246,10 @@
 <translation id="1446396933673057385">නිරවද්‍යතා පරීක්ෂාව</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
 <translation id="1452803302401719440">ඔබේ මාපියන් තෝරා ගත් සැකසීම් දැන් ඔබව සබැඳිව ආරක්ෂිතව තබයි</translation>
-<translation id="1453974140256777690">විශ්ලේෂණය සඳහා ඔබ අලවන හෝ අමුණන පෙළ Google Cloud හෝ තෙවන පාර්ශ්ව වෙත යවයි. උදාහරණයක් වශයෙන්, සංවේදි දත්ත සඳහා එය ස්කෑන් කරනු ලැබිය හැකිය.</translation>
 <translation id="1455413310270022028">මකනය</translation>
 <translation id="1458140305240870199">යට ඇඳුම්</translation>
 <translation id="1459693405370120464">කාලගුණය</translation>
+<translation id="1461041542809785877">ක්‍රියාකාරීත්වය</translation>
 <translation id="1462245070427461050">JIS B9</translation>
 <translation id="1462951478840426066">ඔබේ පරිගණකයේ ෆොන්ට භාවිත කරන්න එවිට ඔබට ඉහළ විශ්වාසදායක අන්තර්ගතයක් නිර්මාණය කළ හැකිය</translation>
 <translation id="1467432559032391204">වම</translation>
@@ -264,12 +273,14 @@
 <translation id="1507780850870535225">භූදර්ශන සැලසුම</translation>
 <translation id="1513706915089223971">ඉතිහාස ඇතුළත් කිරීම් ලැයිස්තුව</translation>
 <translation id="1516097932025103760">එය සංකේතනය කර, ආරක්ෂිතව සුරකිනු ඇති අතර CVC කිසිදා ගබඩා නොකෙරේ.</translation>
+<translation id="151720253492607760">ඉඩ නොදී දිගටම කරගෙන යන්න</translation>
 <translation id="1517433312004943670">දුරකථන අංකය අවශ්‍යයි</translation>
 <translation id="1519264250979466059">නිශ්පාදක දිනය</translation>
 <translation id="1521159554480556801">ෆයිබර් සහ රෙදිපිළි කලා</translation>
 <translation id="5524011986660000129">Brave පත්‍ර</translation>
 <translation id="1524669537550112617">ගෘහ භාණ්ඩ කුලියට දීම</translation>
 <translation id="1527263332363067270">සම්බන්ධතාවය සඳහා රැඳෙමින්...</translation>
+<translation id="1528311629279578926">ඔබේ පෞද්ගලික ජාලයෙහි උපාංග හෝ සේවාදායක වෙත සම්බන්ධ වීමට එය පොදු පිටුවක් මගින් ආරම්භ කර ඇති නිසා සම්බන්ධතාවය අවහිර කර ඇත. සම්බන්ධතාවයට ඉඩ දීම සඳහා මෙම පිටුව නැවත පූරණය කරන්න.</translation>
 <translation id="1529789484829130889">බඳුන 8</translation>
 <translation id="1530707389502320859">ඔබ මේ දැන් පැමිණීමට උත්සාහ කළ වෙබ් අඩවිය ව්‍යාජ බව පෙනේ. ප්‍රහාරකයින් සමහර විට URL වෙත කුඩා, බැලීමට අපහසු වෙනස්කම් කිරීමෙන් වෙබ් අඩවි අනුකාර කරති.</translation>
 <translation id="1532118530259321453">මෙම පිටුව කියයි</translation>
@@ -291,6 +302,7 @@
 
       &lt;p&gt;කරුණාකර &lt;strong&gt;සැකසීම්&lt;/strong&gt; යෙදුම තුළ &lt;strong&gt;සාමාන්‍ය&lt;/strong&gt; කොටස වෙතින් දිනය සහ වේලාව සීරුමාරු කරන්න.&lt;/p&gt;</translation>
 <translation id="1559839503761818503">ඔබගේ පරිපාලක ඔබගේ උපාංගය <ph name="DATE"/> <ph name="TIME"/>ට යළි ආරම්භ කරනු ඇත</translation>
+<translation id="1564634006476980707">සෙවීම් URL සඳහා නිර්දේශිත HTTPS යෝජනා ක්‍රමය: <ph name="SEARCH_URL"/></translation>
 <translation id="156703335097561114">ලිපින, අතුරු මුහුණත් වින්‍යාස කිරීම සහ සම්බන්ධතා ගුණත්වය වැනි ජාලකරණ තොරතුරු</translation>
 <translation id="1567040042588613346">මෙම ප්‍රතිපත්තිය අපේක්ෂිත පරිදි ක්‍රියාත්මක වන නමුත් සමාන අගයක් වෙනත් තැනක සකසා ඇති අතර එය මෙම ප්‍රතිපත්තියෙන් ඉක්මවා යයි.</translation>
 <translation id="1567405528131216114"><ph name="TOPIC"/> එක් කරන්න</translation>
@@ -300,6 +312,7 @@
 <translation id="1574714699824202614">ගෙවීම් ක්‍රමය සත්‍යාපනය කිරීම</translation>
 <translation id="1576277203042721907">සාප්පු සවාරි ඇතුළාන්ත</translation>
 <translation id="1581080074034554886">CVC</translation>
+<translation id="1581172376168798878">කල් ඉකුත් නොවේ</translation>
 <translation id="1583429793053364125">මෙම වෙබ් පිටුව සංසංදර්ශනය කිරීමේදී යමක් වැරදී ඇත.</translation>
 <translation id="1584492003828271317">ඔබ බ්‍රවුස් කරන විට, ඔබ දකින දැන්වීමක් පෞද්ගලීකරණය කර තිබේ ද යන්න මෙම සැකසීම, අඩවි-යෝජිත දැන්වීම්, ඔබේ කුකී සැකසීම්, සහ ඔබ බලන අඩවිය දැන්වීම් පෞද්ගලීකරණය කරන්නේ දැයි මත රඳා පවතී</translation>
 <translation id="1586541204584340881">ඔබ ස්ථාපන කර ඇති දිගු මොනවාද</translation>
@@ -309,7 +322,6 @@
 <translation id="1593359183944365958">අංශක 270</translation>
 <translation id="1594030484168838125">තෝරන්න</translation>
 <translation id="1596296697375291157">ත්‍රාසජනක, අපරාධ සහ අභිරහස් චිත්‍රපට</translation>
-<translation id="1597473228022844713">ඔබ මෙම නිෂ්පාදනය නිරීක්ෂණය කරයි. මෙම පිටුව <ph name="LAST_BOOKMARKS_FOLDER"/> හි සුරකින ලදි</translation>
 <translation id="1598816256585174656">Windows Hello වෙතින් මුරයතුර</translation>
 <translation id="1599199147673445968">නව කාඩ්පත ද? <ph name="BEGIN_LINK"/>කාඩ්පත් විස්තර ඇතුළු කරන්න<ph name="END_LINK"/></translation>
 <translation id="8523167061098356223">Brave තුළ Dino Run ක්‍රීඩා කරන්න</translation>
@@ -319,6 +331,7 @@
 <translation id="1615402009686901181">රහසිගත අන්තර්ගතය දෘශ්‍යමාන විට පරිපාලක ප්‍රතිපත්තිය තිර ග්‍රහණය අබල කරයි</translation>
 <translation id="1617276713587758852">ක්‍රොස්ඕවර්</translation>
 <translation id="1618571384971354160">ඇදගෙන යාම සහ මග දෙපස සහාය</translation>
+<translation id="1619007254056372606">උපාංගය මත අඩවි දත්ත කළමනා කරන්න</translation>
 <translation id="1620510694547887537">කැමරාව</translation>
 <translation id="1622571349153632031">නිර්මාංශ පිහමන</translation>
 <translation id="162285686621567578">මෙම වෙබ් අඩවිය ඔබේ මාපියන් විසින් අවහිර කර ඇත.</translation>
@@ -328,16 +341,17 @@
 <translation id="1633941398432788136">සිදුවීම් සැලසුම් කිරීම</translation>
 <translation id="1634828734222219955">එකතුව</translation>
 <translation id="163669211644121865">බදු සකස් කිරීම සහ සැලසුම් කිරීම</translation>
-<translation id="1638780421120290329">කාඩ්පත සුරැකිය නොහැක</translation>
 <translation id="1639239467298939599">පැටවෙමින්</translation>
 <translation id="1640180200866533862">පරිශීලක ප්‍රතිපත්ති</translation>
 <translation id="1640244768702815859"><ph name="BEGIN_LINK"/>අඩවියෙහි මුල් පිටුවට පිවිසීම<ph name="END_LINK"/> උත්සාහ කරන්න.</translation>
 <translation id="1641976391427233992">මේ දක්වා දෛනික ප්‍රතිදානය</translation>
 <translation id="164212631332220697">ගෙවීමේදී <ph name="CARD_DETAIL"/> සමගින් ගෙවන්න.</translation>
+<translation id="8088023492467080559">Brave ආරක්ෂක පරීක්ෂා බොත්තම වෙත යන්න, සැකසීම් තුළ Brave ආරක්ෂක පරීක්ෂා පිටුවට පිවිසීමට සක්‍රිය කරන්න</translation>
 <translation id="1644574205037202324">ඉතිහාසය</translation>
 <translation id="1645368109819982629">සහාය නොදක්වන ප්‍රොටොකෝලය</translation>
 <translation id="1995056549836388472">ඔබගේ Brave සැකසීම් කළමනාකරණය කරන්න</translation>
 <translation id="1652415888492971589">JIS B8</translation>
+<translation id="3549478477646243075">macOS Keychain සමග මුරපද කළමනාකරු භාවිත කිරීමට, Brave යළි දියත් කර Keychain ප්‍රවේශයට ඉඩ දෙන්න. ඔබේ පටිත්ත යළි දියත් කිරීමෙන් පසු නැවත විවෘත වෙයි.</translation>
 <translation id="3848846802033604519">මෙය කියවීමට පහසු කිරීමට Brave මෙම පිටුව සරල කළා. Brave ආරක්‍ෂිත සම්බන්ධතාවක් ඔස්සේ මූලික පිටුව ලබා ගත්තා.</translation>
 <translation id="1656489000284462475">භාර ගන්න</translation>
 <translation id="1658111267661135323">රූපවාහිනී සහ වීඩියෝ</translation>
@@ -356,9 +370,9 @@
 <translation id="4480331350562494522"><ph name="BEGIN_BOLD"/>ඔබට ඔබේ දත්ත කළමනාකරණය කළ හැකි ආකාරය:<ph name="END_BOLD"/> Brave සති 4කට වඩා පැරණි මාතෘකා ස්වයංව මකා දමයි. ඔබ දිගටම බ්‍රවුස් කරන විට, මාතෘකාවක් ලැයිස්තුවෙහි නැවත දිස් විය හැක. ඔබට Brave විසින් අඩවි සමග බෙදා ගැනීමට අවශ්‍ය නැති මාතෘකා අවහිර කිරීමට සහ Brave සැකසීම් තුළ ඕනෑම වේලාවක දැන්වීම් මාතෘකා ක්‍රියා විරහිත කිරීමට ද හැක.</translation>
 <translation id="1697532407822776718">ඔබ මුළුමනින් සුදානම්ය!</translation>
 <translation id="4030336595318918117">ඔබට දැන් ඔබේ Brave ගිණුමෙන් ලිපින භාවිතා කළ හැක</translation>
+<translation id="1700542542921501212">ඔබට වෙබය සෙවීමට <ph name="SEARCH_ENGINE_NAME"/> භාවිතා කළ හැක.</translation>
 <translation id="1702815194757674443">ROC 16K</translation>
 <translation id="1703835215927279855">Letter</translation>
-<translation id="1705644428387053571">නියම සහ කොන්දේසි</translation>
 <translation id="1706625117072057435">විශාලන මට්ටම්</translation>
 <translation id="1706954506755087368">{1,plural, =1{මෙම සේවාදායකයට එය <ph name="DOMAIN"/> බව සනාථ කළ නොහැකි විය; එහි ආරක්ෂණ සහතිකය හෙට සිට විය හැකිය. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයකු ඔබගේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය.}one{මෙම සේවාදායකයට එය <ph name="DOMAIN"/> බව සනාථ කළ නොහැකි විය; එහි ආරක්ෂණ සහතිකය අනාගතයේදී දින #ක් සිට විය හැකිය. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයකු ඔබගේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය.}other{මෙම සේවාදායකයට එය <ph name="DOMAIN"/>බව සනාථ කළ නොහැකි විය; එහි ආරක්ෂණ සහතිකය අනාගතයේදී දින #ක් සිට විය හැකිය. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයකු ඔබගේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය.}}</translation>
 <translation id="1710259589646384581">OS</translation>
@@ -393,6 +407,7 @@
 <translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>අපි මෙම දත්ත භාවිතා කරන ආකාරය:<ph name="END_BOLD"/> Brave ඔබ බ්‍රවුස් කරන විට උනන්දුවක් දක්වන මාතෘකා සටහන් කරයි. මාතෘකා ලේබල පූර්ව නිර්වචනය කර ඇති අතර කලා සහ විනෝදාස්වාදය, සාප්පු සවාරි, සහ ක්‍රීඩා වැනි දේ ඇතුළත් වේ. පසුව, ඔබ පිවිසෙන අඩවියකට ඔබ දකින දැන්වීම් පෞද්ගලීකරණය කිරීමට ඔබේ මාතෘකා කිහිපයක් (නමුත් ඔබේ බ්‍රවුස් කිරීමේ ඉතිහාසය නොවේ) Brave වෙතින් විමසා සිටිය හැක.</translation>
 <translation id="1746113442205726301">රූපයේ Y වැඩ මුරය</translation>
 <translation id="1746531169546376413">අංශක 0</translation>
+<translation id="1751544761369730824"><ph name="SITE_NAME"/> අඩවිය මකන්න</translation>
 <translation id="1752021286346845558">තැපැල් පෙට්ටිය 8</translation>
 <translation id="1753068535428855445">පෙම්හමු සහ පුද්ගලික</translation>
 <translation id="1753706481035618306">පිටු අංකය</translation>
@@ -440,6 +455,7 @@
 <translation id="1854180393107901205">Cast කිරීම නවත්වන්න</translation>
 <translation id="1855370856221982654">බොක්සිං</translation>
 <translation id="1862788842908766795">විධායක සහ කළමනාකරණ රැකියා</translation>
+<translation id="7675404561163771060">ලුහුබැඳීමේ ආරක්ෂාව තාවකාලිකව නොමැත. Brave මෙම විශේෂාංගය යාවත්කාලීන කරන අතරතුර, ඔබ ඒවා අවහිර නොකරන්නේ නම් අඩවිවලට තාවකාලිකව තෙවන පාර්ශ්ව කුකී භාවිත කළ හැක. <ph name="BEGIN_LINK"/>තව දැන ගන්න<ph name="END_LINK"/></translation>
 <translation id="1863257867908022953">Tray 12</translation>
 <translation id="1864927262126810325"><ph name="SOURCE_NAME"/> සිට</translation>
 <translation id="186539747722034544">කේබල් සහ චන්ද්‍රිකා සපයන්නන්</translation>
@@ -453,10 +469,10 @@
 <translation id="85321348617848915">Brave පෝරම</translation>
 <translation id="1876399092304384674">දිනය අනුව</translation>
 <translation id="187918866476621466">ආරම්භක පිටු විවෘත කරන්න</translation>
+<translation id="8632214058523487060">මීළඟ වතාවේ දී වේගවත්ව ගෙවීමට, ඔබේ Brave ගිණුම තුළ ඔබේ කාඩ්පත, සංකේතිත ආරක්ෂක කේතය, සහ බිල්පත් ලිපිනය සුරකින්න</translation>
 <translation id="1883255238294161206">ලැයිස්තුව හකුළන්න</translation>
 <translation id="1884843295353628214">ජෑස්</translation>
 <translation id="1890171020361705182">Dino ක්‍රීඩාව. පාළු භූ දර්ශනයක් හරහා දුවන පික්සිලේටඩ් ඩයිනෝසෝරයක් පතොක් සහ ටෙරෝඩැක්ටයිල් තල්ලු කරයි. ඔබට ශ්‍රව්‍ය ශබ්දයක් ඇසෙන විට, බාධක උඩින් පැනීමට තට්ටු කරන්න.</translation>
-<translation id="189035593835762169">නියම සහ කොන්දේසි</translation>
 <translation id="1898423065542865115">පෙරහන් කරමින්</translation>
 <translation id="1901443836186977402">{1,plural, =1{මෙම සේවාදායකයට එය <ph name="DOMAIN"/> බව සනාථ කිරීමට නොහැකි විය; එහි ආරක්ෂණ සහතිකය අවසන් දිනට කල් ඉකුත් විය. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයෙකු ඔබේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය. ඔබේ පරිගණකයේ ඔරලෝසුව දැනට <ph name="CURRENT_DATE"/> දිනයට සකසා ඇත. එය නිවැරදි බවක් පෙනේ ද? එසේ නොමැති නම්, ඔබ ඔබේ පද්ධති ඔරලෝසුව නිවැරදි කර මෙම පිටුව නැවුම් කළ යුතුය.}one{මෙම සේවාදායකයට එය <ph name="DOMAIN"/> බව සනාථ කිරීමට නොහැකි විය; එහි ආරක්ෂණ සහතිකය දින #කට පෙර කල් ඉකුත් විය. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයෙකු ඔබේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය. ඔබේ පරිගණකයේ ඔරලෝසුව දැනට <ph name="CURRENT_DATE"/> දිනයට සකසා ඇත. එය නිවැරදි බවක් පෙනේ ද? එසේ නොමැති නම්, ඔබ ඔබේ පද්ධති ඔරලෝසුව නිවැරදි කර මෙම පිටුව නැවුම් කළ යුතුය.}other{මෙම සේවාදායකයට එය <ph name="DOMAIN"/> බව සනාථ කිරීමට නොහැකි විය; එහි ආරක්ෂණ සහතිකය දින #කට පෙර කල් ඉකුත් විය. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයෙකු ඔබේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය. ඔබේ පරිගණකයේ ඔරලෝසුව දැනට <ph name="CURRENT_DATE"/> දිනයට සකසා ඇත. එය නිවැරදි බවක් පෙනේ ද? එසේ නොමැති නම්, ඔබ ඔබේ පද්ධති ඔරලෝසුව නිවැරදි කර මෙම පිටුව නැවුම් කළ යුතුය.}}</translation>
 <translation id="1902576642799138955">වලංගු කාලය</translation>
@@ -464,7 +480,6 @@
 <translation id="1913037223029790376">මෙම අතථ්‍ය කාඩ්පත සඳහා CVC භාවිත කරන්න</translation>
 <translation id="191374271204266022">JSON ලෙස පිටපත් කරන්න</translation>
 <translation id="1914326953223720820">සේවාව දිගහරින්න</translation>
-<translation id="1916770123977586577">මෙම අඩවියට ඔබේ යාවත්කාලීන සැකසීම් යෙදීමට, මෙම පිටුව නැවත පූරණය කරන්න</translation>
 <translation id="1919367280705858090">නිශ්චිත දෝෂ පණිවිඩයක් සමඟ උදවු ලබා ගන්න</translation>
 <translation id="1919526244108283799">මිමි 400 x 600</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{කිසිවක් නැත}=1{1 අඩවියක්}one{අඩවි #ක්}other{අඩවි #ක්}}</translation>
@@ -498,8 +513,10 @@
 <translation id="1997484222658892567"><ph name="URL"/> හට විශාල දත්ත ඔබේ ස්ථානීය පරිගණකයේ ස්ථිරව ගබඩා කිරීමට අවශ්‍යයි</translation>
 <translation id="1997774360448418989">කඩදාසි (සැහැල්ලු)</translation>
 <translation id="2001146170449793414">{COUNT,plural, =1{සහ තව 1}one{සහ තව #}other{සහ තව #}}</translation>
+<translation id="2001469757375372617">යමක් වැරදී ඇත. ඔබේ වෙනස් කිරීම සුරැකුවේ නැත.</translation>
 <translation id="2003709556000175978">ඔබේ මුරපදය දැන් යළි සකසන්න</translation>
 <translation id="2003775180883135320">ඉහළට සිවු වරක් අනින්න</translation>
+<translation id="2004697686368036666">සමහර අඩවිවල විශේෂාංග ක්‍රියා නොකළ හැකිය</translation>
 <translation id="6855500251167861792">සිදුවීම් තනන්න බොත්තම, Brave දින දර්ශනයේ ඉක්මනින් නව සිදුවීමක් තැනීමට සක්‍රිය කරන්න</translation>
 <translation id="2342444980304536062">Brave සැකසීම් තුළ අඩවි හරහා ගබඩා කර ඇති අවසර සහ දත්ත කළමනාකරණය කරන්න</translation>
 <translation id="2012276282211112603">දැන් පෙන්වීමට මාතෘකා නැත</translation>
@@ -513,6 +530,7 @@
 <translation id="2025891858974379949">අනාරක්‍ෂිත අන්තර්ගතය</translation>
 <translation id="2027465737841872819">ප්ලාස්ටික්</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>ප්‍රොක්සි සහ සුරැකුම් පවුර පරීක්ෂා කරමින්<ph name="END_LINK"/></translation>
+<translation id="2033900728810589426">කෙටිමඟ <ph name="DEFAULT_SEARCH_PROVIDER_KEYWORD_POLICY_NAME"/> මගින් අර්ථ දක්වා ඇති පෙරනිමි සෙවීම් සැපයුම්කරුගේ මූල පදයට සමාන විය නොහැක: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="2034971124472263449">කෙසේ වෙතත් සුරකින්න</translation>
 <translation id="2035400064145347639">සංචාර උපදේශකයන් සහ ගමන් විස්තර</translation>
 <translation id="2036514476578229158">ඔබ මෙම අඩවියට පිවිසීමට විමසා ඇත. ඔබේ මාපියන්ට Family Link තුළ පිළිතුරු දිය හැක.</translation>
@@ -527,6 +545,7 @@
 <translation id="205212645995975601">බාබිකියු සහ ග්‍රිලින්</translation>
 <translation id="2053111141626950936"><ph name="LANGUAGE"/> හි පිටු පරිවර්තන නොකෙරේ</translation>
 <translation id="5469355573019315764">ඔබ දකින දැන්වීම් පෞද්ගලීකරණය කිරීමට උදවු කිරීමට අඩවිවලට තොරතුරු සඳහා Brave වෙතින් විමසිය හැක.</translation>
+<translation id="2059166748188874810">නගර සභාව</translation>
 <translation id="2059202684901022309">අඟ 22 x 34</translation>
 <translation id="2064568741209980952">හර සහ ණයට දීම</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{යෝජනා 1}one{යෝජනා #}other{යෝජනා #}}</translation>
@@ -539,6 +558,7 @@
 <translation id="2072275792380684364">මෝස්‌තර සහ විලාසිතා</translation>
 <translation id="2075497153347571252">ඔබේ පරිපාලක <ph name="ORIGIN"/> මත <ph name="PERMISSION"/> අවහිර කර ඇත</translation>
 <translation id="2079545284768500474">පසුගමනය</translation>
+<translation id="2080021694978766903">මෙම ප්‍රතිපත්තියට <ph name="MAX_ITEMS_LIMIT"/>කට වඩා වැඩි ඇතුළත් කිරීම් නොතිබිය යුතු ය.</translation>
 <translation id="20817612488360358">පද්ධති ප්‍රොක්සි පසුතල සකසා ඇත්තේ භාවිතා කිරීමට වන නමුත් සවිස්තර ප්‍රොක්සි වින්‍යාසකරණයද නිශ්චිතව දක්වා තිබේ.</translation>
 <translation id="2082238445998314030">ප්‍රතිඵල <ph name="TOTAL_RESULTS"/> කින් <ph name="RESULT_NUMBER"/></translation>
 <translation id="2083256696566019397">සෑම පැමිණීමකම ඉඩ දෙන්න</translation>
@@ -618,8 +638,9 @@
 <translation id="2225927550500503913">අතථ්‍ය කාඩ්පත සක්‍රීය කළා</translation>
 <translation id="2226636330183131181">WiFi ජාලයට <ph name="BEGIN_LINK"/>පුරනය වීම<ph name="END_LINK"/></translation>
 <translation id="1271895112771969155">මෙම ලිපිනය දැනට Brave වෙත සුරැකෙයි. එය Brave නිෂ්පාදන පුරා භාවිතා කිරීමට, එය ඔබේ Brave ගිණුම, <ph name="ACCOUNT"/> තුළ සුරකින්න.</translation>
-<translation id="2228466771983364669"><ph name="EMBEDDED_URL"/> ඔබ <ph name="TOP_LEVEL_URL"/> වෙත පැමිණි බව දැන ගනු ඇත.</translation>
+<translation id="2229456043301340598">නොසලකා හරින ලද අනන්‍ය නොවන කෙටිමඟ: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="2233745931693710080">සංයුක්ත තැටිය</translation>
+<translation id="2235344399760031203">තෙවන පාර්ශ්ව කුකී අවහිර කළා</translation>
 <translation id="2239100178324503013">දැන් යවන්න</translation>
 <translation id="2241693394036365668">ගොනුව බාගෙන ඇත</translation>
 <translation id="2246264294482514010">අඟ 10 x 12</translation>
@@ -634,6 +655,7 @@
 <translation id="2262243747453050782">HTTP දෝෂය</translation>
 <translation id="226481340855943334">පරම්පරාව සහ පෙළපත</translation>
 <translation id="2265192657948645752">සිල්ලර රැකියා</translation>
+<translation id="2265356434276802347">මෙම ප්‍රතිපත්තියට විශේෂාංගී ඇතුළත් කිරීම් <ph name="MAX_ITEMS_LIMIT"/>කට වඩා වැඩියෙන් නොතිබිය යුතු ය.</translation>
 <translation id="2267047181501709434">ඔබේ අනන්‍යතාව සත්‍යාපන කරන්න...</translation>
 <translation id="2268743667444073169">TV සෝප් ඔපෙරා</translation>
 <translation id="2270484714375784793">දුරකථන අංකය</translation>
@@ -660,7 +682,6 @@
 <translation id="2324604504973636700">ගෘහ උපකරණ</translation>
 <translation id="2328651992442742497">ඉඩ දේ (පෙරනිමි)</translation>
 <translation id="2328955282645810595">ඉදිකිරීම් සහ බල මෙවලම්</translation>
-<translation id="2329473609445770916">මෙම අඩවිය ඔබට වෙළඳ දැන්වීම් පෙන්වීමට වෙනත් අඩවි භාවිත කළ හැකි ලැදිකම් නිර්වචනය කරයි</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, <ph name="EXPIRATION_DATE_ABBR"/> දින කල් ඉකුත් වේ</translation>
 <translation id="2337852623177822836">සැකසීම ඔබේ පරිපාලක විසින් පාලනය කරයි</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> හට යුගල වීමට අවශ්‍යයි</translation>
@@ -679,6 +700,7 @@
 <translation id="2361263712565360498">මිමි 275 x 395</translation>
 <translation id="236340516568226369">ටොගල මෙනුව ප්‍රතිප්‍රමාණ කරන්න</translation>
 <translation id="2365355378251437925"><ph name="FIELD"/> ඇතුළු කරන්න</translation>
+<translation id="2365382709349300355">ප්‍රතිපත්තිය නිසා 1 ගොනුවක් අවහිර කර ඇත</translation>
 <translation id="2365508935344991784">එළිමහන් ගෘහ භාණ්ඩ</translation>
 <translation id="2366689192918515749">මස් සහ මුහුදු ආහාර</translation>
 <translation id="2367567093518048410">මට්ටම</translation>
@@ -709,6 +731,7 @@
 <translation id="2448295565072560657">ඔබ පුරා සිටින අතරතුර මෙම උපාංගයට පර්යන්ත උපාංග අමුණා ඇත</translation>
 <translation id="2450021089947420533">සංචාර</translation>
 <translation id="2456755709261364512">ඔබේ බැටරිය <ph name="REQUIRED_BATTERY_PRECENT"/>%ට වඩා ආරෝපණය කළ යුතු වේ</translation>
+<translation id="2462599289530201834"><ph name="KEYWORD_SHORT_NAME"/> සොයන්න</translation>
 <translation id="2463739503403862330">සම්පූර්ණ කරන්න</translation>
 <translation id="2465688316154986572">ස්ටේපල්</translation>
 <translation id="4058615531773510267">Brave තුළ ඔබ බාගෙන ඇති ගොනු කළමනාකරණය කරන්න</translation>
@@ -751,6 +774,7 @@
 <translation id="2544546346215446551">ඔබගේ පරිපාලක විසින් ඔබගේ උපාංගය නැවත ආරම්භ කරන ලදි</translation>
 <translation id="2544644783021658368">තනි ලේඛනය</translation>
 <translation id="5342827302598046226">Brave පෙරනිමි බ්‍රව්සරය ලෙස සකසන්න</translation>
+<translation id="2545721997179863249">සියල්ල පිරවීමේ විකල්පය තෝරා ගන්නා ලදි</translation>
 <translation id="2546283357679194313">කුකීස් සහ අඩවි දත්ත</translation>
 <translation id="2547466893236767989">වෙබ් නිර්මාණය සහ සංවර්ධනය</translation>
 <translation id="254947805923345898">ප්‍රතිපත්ති අගය වලංගු නොවේ.</translation>
@@ -837,6 +861,7 @@
 <translation id="2722622039067384533">විසිත්ත කාමරය සඳහා ගෘහභාණ්ඞ</translation>
 <translation id="4054726005361352357">Brave සැකසීම් තුළ ආරක්ෂක පරීක්ෂාවක් ධාවනය කරන්න</translation>
 <translation id="2725492561136085792">මෙම ක්‍රියාව ක්‍රියාත්මක කිරීමට Enter ඔබන්න.</translation>
+<translation id="2725927759457695883">සම්පූර්ණ නම පුරවන්න</translation>
 <translation id="2726001110728089263">Side Tray</translation>
 <translation id="2728127805433021124">සේවාදායකයේ සහතිකය දුර්වල අත්සන් ඇල්ගොරිතමයක් භාවිතයෙන් සන් කර ඇත.</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>සම්බන්ධතා දෝෂහරණ ධාවනය කරමින්<ph name="END_LINK"/></translation>
@@ -853,6 +878,7 @@
 <translation id="2765217105034171413">කුඩා</translation>
 <translation id="2770159525358613612">ඔබේ ගොනු නැවත උඩුගත කිරීමට උත්සාහ කරන්න</translation>
 <translation id="277133753123645258">නැව්ගත කිරීමේ ක්‍රමය</translation>
+<translation id="7956239349290436105">තුන්වන පාර්ශ්ව කුකීස් භාවිතා කිරීමෙන් Brave බොහෝ අඩවි සීමා කරයි. නමුත් මෙම වෙබ් අඩවියේ තුන්වන පාර්ශ්ව කුකීස් වලට එය මූලික සේවා සැපයීම සඳහා ඒවා මත රඳා පවතින නිසා ඉඩ දෙනු ලැබේ. <ph name="LINK"/> වෙත සැකසීම් කරා පිවිසෙන්න.</translation>
 <translation id="277499241957683684">අහිමි උපාංග වාර්ථාව</translation>
 <translation id="2775884851269838147">පළමු මුද්‍රණ පිටුව</translation>
 <translation id="2781692009645368755">Google Pay</translation>
@@ -870,6 +896,7 @@
 <translation id="2814184336982254349">මෙම PDF වෙත ප්‍රවේශ විය නොහැක. සන්දර්භ මෙනුව විවෘත කිරීමට සෙවීම සමග m ඔබා "PDF වෙතින් පෙළ උපුටා ගන්න" ක්‍රියාත්මක කරන්න</translation>
 <translation id="2818338148457093657">රූපලාවන්‍ය සේවා සහ ස්පා</translation>
 <translation id="2820957248982571256">ස්කෑන් කරමින්...</translation>
+<translation id="2824549017793319782">ලිපින තීරුවේ සෘජුවම ඔබේ සෙවීම ටයිප් කිරීමට තෝරන්න</translation>
 <translation id="2824775600643448204">ලිපිනය සහ සෙවීම් බාර් එක</translation>
 <translation id="2826760142808435982">සම්බන්ධතාවය සංකේතනය කර <ph name="CIPHER"/> භාවිතයෙන් සත්‍යාපනය කර ඇති අතර කේත හුවමාරු ක්‍රමවේදය ලෙස <ph name="KX"/> භාවිතා කරයි.</translation>
 <translation id="2835170189407361413">පෝර්මය හිස් කරන්න</translation>
@@ -938,8 +965,10 @@
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, දැනට තෝරා ඇත. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">ඔපෙරා</translation>
 <translation id="2979424420072875974">ලියන්නන්ගේ සම්පත්</translation>
+<translation id="6172169316494799304">මෙම කාඩ්පතේ CVC සංකේතනය කර වේගවත් පිටවීම සඳහා ඔබේ Brave ගිණුමේ සුරකිනු ඇත</translation>
 <translation id="2985398929374701810">වලංගු ලිපිනයක් ඇතුළු කරන්න</translation>
 <translation id="2987034854559945715">ගැළපෙන විශේෂාංග නැත</translation>
+<translation id="714850411804317247">Brave ඔබ බ්‍රවුස් කරන විට ඔබව නිරීක්ෂණයට භාවිතා කළ හැකි තොරතුරු ප්‍රමාණය සීමා කරයි. ඔබට ඔබේම ආරක්ෂණ මට්ටම තෝරා ගැනීමට ඔබේ සැකසීම් වෙනස් කළ හැක.</translation>
 <translation id="2989742184762224133">ඉහළට දෙවරක් ස්ටේපල් කරන්න</translation>
 <translation id="2991174974383378012">වෙබ අඩවි සමග බෙදා ගැනීම</translation>
 <translation id="299122504639061328">ඔබගේ පෙරනිමි සෙවීම් යන්ත්‍රය සහ අඩවි සෙවීම කළමනාකරණය කරන්න</translation>
@@ -1031,6 +1060,7 @@
 <translation id="3195213714973468956"><ph name="SERVER_NAME"/> මත <ph name="PRINTER_NAME"/></translation>
 <translation id="3197136577151645743">ඔබ මෙම උපාංගය සක්‍රියව භාවිත කරන අවස්ථාව දැන ගැනීමට ඉල්ලිය හැකිය</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave සැකසීම් තුළ ඔබ සමමුහුර්ත කරන තොරතුරු කළමනාකරණය කිරීමට Tab ඔබා﻿ අනතුරුව Enter ඔබන්න</translation>
+<translation id="3203025201812691413">URL හිස් විය නොහැක</translation>
 <translation id="320323717674993345">ගෙවීම අවලංගු කරන්න</translation>
 <translation id="3203366800380907218">වෙබය වෙතින්</translation>
 <translation id="3207960819495026254">පිටුසලකුණු කළ</translation>
@@ -1057,7 +1087,6 @@
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ඔබගේ බ්‍රවුසරයේ පෙනුම අභිරුචිකරණය කිරීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
 <translation id="3240791268468473923">සුරක්ෂිත ගෙවීම් අක්තපත්‍ර ගැළපෙන අක්තපත්‍ර පත්‍රය විවෘත කර නැත</translation>
 <translation id="324180406144491771">“<ph name="HOST_NAME"/>” සබැඳි අවහිර කර ඇත</translation>
-<translation id="5195034764845981810">මෙම අඩවිය ඔබට වෙළඳ දැන්වීම් පෙන්වීමට වෙනත් අඩවි භාවිත කළ හැකි ලැදිකම් නිර්වචනය කරයි. මෙම අඩවිය ඔබට වඩාත් අදාළ වෙළඳ දැන්වීම් පෙන්වීමට Brave වෙතින් ඔබගේ ලැදිකම්ද ලබා ගනී</translation>
 <translation id="3249151924975132674">ශිෂ්‍ය ණය සහ විද්‍යාල මූල්‍යකරණය</translation>
 <translation id="3249845759089040423">විනෝදජනක</translation>
 <translation id="3250640885957938546">වෙළඳ ප්‍රචාරණය සහ අලෙවිකරණය</translation>
@@ -1071,6 +1100,7 @@
 <translation id="3266793032086590337">අගය (ගැටුම්කාරී)</translation>
 <translation id="3266972086368072861">{NUM_COOKIES,plural, =0{අදාළ අඩවි ඇතුළුව, කිසිදු අඩවියක් අවහිර කර නැත}=1{අදාළ අඩවි ඇතුළුව, 1 අඩවියක් අවහිර කර ඇත}one{අදාළ අඩවි ඇතුළුව, අඩවි #ක් අවහිර කර ඇත}other{අදාළ අඩවි ඇතුළුව, අඩවි #ක් අවහිර කර ඇත}}</translation>
 <translation id="3268451620468152448">ටැබ විවෘත කරන්න</translation>
+<translation id="3270041629388773465">ඔබේ CVC සුරැකී ඇති විට ඉතා වේගයෙන් ගෙවා පිටවන්න</translation>
 <translation id="3270156322180235608">ගුවන් ගමන</translation>
 <translation id="3270847123878663523">යළි ඇණවුම් කිරීම &amp;පසුගමනය කරන්න</translation>
 <translation id="3271648667212143903"><ph name="ORIGIN"/> හට සම්බන්ධ වීමට අවශ්‍යයි</translation>
@@ -1085,6 +1115,7 @@
 <translation id="3293642807462928945"><ph name="POLICY_NAME"/> ප්‍රතිපත්තිය ගැන තව දැන ගන්න</translation>
 <translation id="5894665462526421022">Brave සැකසීම් තුළ ඔබගේ මුරපද බලන්න සහ කළමනාකරණය කරන්න</translation>
 <translation id="3299098170013242198">මුරපද පිරවීම සඳහා Windows Hello ක්‍රියාත්මකයි</translation>
+<translation id="3299720788264079132"><ph name="FEATURE_NAME"/> භාවිතා කරන අතරේ යමක් වැරදී ඇත</translation>
 <translation id="3303176609391916566">අඟ 30 x 42</translation>
 <translation id="3303855915957856445">සෙවුම් ප්‍රතිඵල හමු නොවිණි</translation>
 <translation id="3304073249511302126">බ්ලූටූත් ස්කෑන් කිරීම</translation>
@@ -1097,6 +1128,7 @@
 <translation id="3325027355611702542">කඳවුරුකරුවන් සහ RVs</translation>
 <translation id="3329013043687509092">සංතෘප්ත වීම</translation>
 <translation id="3333762389743153920">අතථ්‍ය කාඩ්පත සඳහා සුදුසුකම් නොලබයි</translation>
+<translation id="3336044043987989409">ඔබේ පෞද්ගලික ජාලයෙහි උපාංග හෝ සේවාදායක වෙත සබැඳුමට ඉඩ දීමට නැවත පූරණය කිරීමේ බොත්තම ඔබන්න.</translation>
 <translation id="3338095232262050444">සුරක්ෂිතයි</translation>
 <translation id="333839153442689579">දැඩි තීව්‍රතා කාලාන්තර පුහුණුව</translation>
 <translation id="3339440062908617027">දිවීම සහ ඇවිදීම</translation>
@@ -1104,7 +1136,6 @@
 <translation id="3340978935015468852">සැකසීම්</translation>
 <translation id="3342018947887487892">පසුව, ඔබ පිවිසෙන අඩවියකට මෙම තොරතුරු විමසා සිටිය හැක — ඔබේ දැන්වීම් මාතෘකා හෝ ඔබ පිවිසි අඩවි මගින් යෝජනා කරන ලද දැන්වීම්.</translation>
 <translation id="3342366525167526994">ශරීර චිත්‍රය</translation>
-<translation id="3344167530090084176">මීළඟ වතාවේ වේගයෙන් ගෙවීම සඳහා, ඔබේ කාඩ්පත සහ ආරක්ෂක කේතය ඔබේ උපාංගයට සුරකින්න</translation>
 <translation id="334438173029876234">හිමමත ලිස්සායාමේ උපකරණ</translation>
 <translation id="3349952286488694786">SRA2</translation>
 <translation id="3355823806454867987">ප්‍රොක්සි සැකසුම් වෙනස් කරන්න...</translation>
@@ -1146,22 +1177,25 @@
 <translation id="3427092606871434483">ඉඩ දෙන්න (පෙරනිමි)</translation>
 <translation id="3427342743765426898">සංස්කරණය &amp;යළි කරන්න</translation>
 <translation id="3428151540071562330">DnsOverHttpsTemplates සේවාදායක අච්චු URI-වලින් එකක් හෝ වැඩි ගණනක් අවලංගු බැවින් භාවිත නොකෙරේ.</translation>
-<translation id="3429817405364886479">ඔබේ සෙවීම් යන්ත්‍රය තහවුරු කරන්න</translation>
+<translation id="3428789896412418755">සමූහගත ඉතිහාසය</translation>
 <translation id="3431216045099978607">පූර්ණ තිරයෙන් පිටවීමට සහ බාගැනීම දැකීමට |<ph name="ACCELERATOR"/>| ඔබන්න.</translation>
 <translation id="3432601291244612633">පිටුව වසන්න</translation>
 <translation id="3433111389595862568">සහයෝගීතාවය සහ සම්මන්ත්‍රණ මෘදුකාංග</translation>
 <translation id="3433144818443565002">කටහඬ සහ වීඩියෝ කතාබස</translation>
+<translation id="343474037147570563">ඔබ උඩුගත කරන හෝ අමුණන ගොනු විශ්ලේෂණය සඳහා Google Cloud හෝ තෙවන පාර්ශව වෙත යවයි. උදාහරණයක් ලෙස, ඒවා සංවේදී දත්ත හෝ අනිෂ්ට මෘදුකාංග සඳහා ස්කෑන් කළ හැකි අතර සමාගම් ප්‍රතිපත්ති මත පදනම්ව ගබඩා කළ හැකි අතර ඔබේ පරිපාලකයාට දෘශ්‍යමාන වේ.</translation>
 <translation id="3435557549311968410">අඛණ්ඩ (කෙටි)</translation>
 <translation id="3435738964857648380">ආරක්ෂක</translation>
 <translation id="4527130811319726464">ඔබේ Brave ගිණුම තුළ සුරැකි මුරපද භාවිත කරන්න</translation>
 <translation id="3440783957068352691">සමචතුරස්‍රය</translation>
 <translation id="3441653493275994384">තිරය</translation>
 <translation id="3443504041532578451">ප්‍රකාශ තැටිය (බුරුත)</translation>
+<translation id="344449859752187052">තෙවන පාර්ශ්ව කුකීස් අවහිර කර ඇත</translation>
+<translation id="3447644283769633681">සියලු තෙවන පාර්ශ්ව කුකි අවහිර කරන්න</translation>
 <translation id="3447661539832366887">මෙම උපාංගයේ හිමිකරු ඩයිනසෝර ක්‍රීඩාව ක්‍රියාවිරහිත කර ඇත.</translation>
 <translation id="3447884698081792621">සහතිකය පෙන්වන්න (නිකුත් කරන ලද්දේ <ph name="ISSUER"/> )</translation>
+<translation id="3450323514459570273">ඔබේ MIDI උපාංග පාලනය කිරීමට සහ නැවත ක්‍රමලේඛන කිරීමට ඉල්ලා සිටිය හැක</translation>
 <translation id="3452404311384756672">කාලාන්තරය සොයන්න:</translation>
 <translation id="3453962258458347894">යළි උත්සාහ කිරීම් සංඛ්‍යාව</translation>
-<translation id="3454555520521576458">ප්‍රතිප්‍රමාණ කළ හැකිය</translation>
 <translation id="3461266716147554923"><ph name="URL"/> හට පසුරු පුවරුවට පිටපත් කළ පෙළ සහ රූප බැලීමට අවශ්‍යයි</translation>
 <translation id="3461824795358126837">උද්දීපකය</translation>
 <translation id="3462200631372590220">සැඟවීම උසස් කළ</translation>
@@ -1174,9 +1208,11 @@
 <translation id="3479552764303398839">දැන් නොවේ</translation>
 <translation id="3484861421501147767">සිහිකැඳවීම: සුරැකි ප්‍රවර්ධන කේතය තිබේ</translation>
 <translation id="3487845404393360112">බඳුන 4</translation>
+<translation id="3492199565975299728">වීදිය</translation>
 <translation id="3493660662684070951">ට්‍ර ක් රථ, වෑන් සහ SUV රථ</translation>
 <translation id="3495081129428749620">පිටුව තුළ සොයන්න
     <ph name="PAGE_TITLE"/></translation>
+<translation id="3497627066518778351">නව කවුළුවක උපාංගය-මත අඩවි දත්ත ලැයිස්තුවක් සමාලෝචනය කරන්න</translation>
 <translation id="3498215018399854026">අපට ඔබේ දෙමව්පියන් වෙත ලඟාවිය නොහැකි විය. කරුණාකර නැවත උත්සහ කරන්න.</translation>
 <translation id="350069200438440499">ගොනුවේ නම:</translation>
 <translation id="3501300228850242680">මෙටල් (සංගීතය)</translation>
@@ -1205,6 +1241,7 @@
 <translation id="3552297013052089404">Sans-serif ෆොන්ට</translation>
 <translation id="3558573058928565255">දවස, වේලාව</translation>
 <translation id="355995771319966853">ස්වයං පිරවුම අහෝසි කරන්න</translation>
+<translation id="3560408312959371419">ආරක්‍ෂා සහ උපාංගය මත අඩවි දත්ත හඹා යෑම සඳහා වන විකල්ප</translation>
 <translation id="3560824484345057728">අදාළ වෙබ් අඩවි බලන්න</translation>
 <translation id="3566021033012934673">ඔබගේ සබැඳුම පුද්ගලික නොවේ</translation>
 <translation id="3566336457819493938">මිමි 215 x 315</translation>
@@ -1215,6 +1252,7 @@
 <translation id="3574305903863751447"><ph name="CITY"/>, <ph name="STATE"/> <ph name="COUNTRY"/></translation>
 <translation id="3575121482199441727">මෙම වෙබ් අඩවිය සඳහා අවසර දෙන්න</translation>
 <translation id="3575168918110434329">A4x7</translation>
+<translation id="3575589330755445706">වීදි නම් විකල්පය තෝරා ඇත</translation>
 <translation id="3576616784287504635"><ph name="SITE"/> හිදී කාවැද්දූ පිටුවක් කියයි</translation>
 <translation id="3577473026931028326">යම් දෙයක් වැරදිණි. නැවත උත්සාහ කරන්න.</translation>
 <translation id="3577902790357386792">ජිම්නාස්ටික්</translation>
@@ -1263,6 +1301,7 @@
 <translation id="365641980390710834">සාමාන්‍ය ඇඟලුම්</translation>
 <translation id="3658742229777143148">පුනරීක්ශණය</translation>
 <translation id="3664782872746246217">මූලපද:</translation>
+<translation id="3665100783276035932">බොහෝ අඩවි අපේක්ෂා කළ පරිදි ක්‍රියා කළ යුතු ය</translation>
 <translation id="3667704023705708645">ව්‍යාපාර ප්‍රාග්ධනය</translation>
 <translation id="3671117652518853176">ක්‍රියාවිරහිත කළ විට, ආරක්ෂක අරමුණු සඳහා සත්‍යාපනය කිරීමට ඔබෙන් ඉඳහිට අසනු ඇත</translation>
 <translation id="3671540257457995106">ප්‍රතිප්‍රමාණ කිරීමට ඉඩ දෙන්නද?</translation>
@@ -1275,6 +1314,7 @@
 <translation id="3678914302246317895">සංඛ්‍යා-<ph name="OTP_LENGTH"/> සත්‍යාපන කේතය ඇතුළු කරන්න</translation>
 <translation id="3681007416295224113">සහතික තොරතුරු</translation>
 <translation id="2659564324969662497">Brave ඔබේ මෑත බ්‍රවුස් කිරීමේ ඉතිහාසය මත පදනම්ව උනන්දුවක් දක්වන මාතෘකා සටහන් කරයි.</translation>
+<translation id="3689867156802445220">ගොඩනැගිලි අංකය</translation>
 <translation id="3693327506115126094">ඔබ ඒ ඔබ බව සත්‍යාපනය කරන ආකාරය තෝරා ගන්න</translation>
 <translation id="974818914962304978">අඩවි තනන්න බොත්තම, Brave අඩවි තුළ ඉක්මනින් නව අඩවියක් තැනීමට සක්‍රිය කරන්න</translation>
 <translation id="3701325639446035885">සිදුවීම් ප්‍රවේශපත් විකුණුම්</translation>
@@ -1299,6 +1339,7 @@
 <translation id="3723663469265383848">යාවත්කාලීන කිරීමේ දී ඔබට විනාඩි 10ක් දක්වා ඔබේ උපාංගය භාවිතා කිරීමට නොහැකි වනු ඇත.</translation>
 <translation id="372429172604983730">මෙම දෝෂයට හේතු වන යෙදුම්වල ප්‍රති-වයිරස, ෆයර්වෝල් සහ වෙබ්-පෙරහන් හෝ ප්‍රොක්සි මෘදුකාංග ඇතුළත් වේ.</translation>
 <translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Slides තුළ ඉක්මනින් නව Brave ඉදිරිපත් කිරීමක් තැනීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
+<translation id="8077319455765501118">macOS Keychain සමග Brave මුරපද කළමනාකරු භාවිත කිරීමට, Brave යළි දියත් කර Keychain ප්‍රවේශයට ඉඩ දෙන්න. ඔබේ පටිත්ත යළි දියත් කිරීමෙන් පසු නැවත විවෘත වෙයි.</translation>
 <translation id="3733139489341305600">ස්වයංක්‍රීය වාහන</translation>
 <translation id="3736520371357197498">ඔබට ඔබගේ ආරක්ෂාව සඳහා වන අවදානම් වැටහෙන්නේ නම්, ඔබ හානිකර ක්‍රමලේඛ ඉවත් කර තිබීමට පෙර <ph name="BEGIN_LINK"/>මෙම අනාරක්ෂාකාරී වෙබ් අඩවිය වෙත පිවිසිය හැක<ph name="END_LINK"/></translation>
 <translation id="3736739313435669994">ඔබ බ්‍රවුස් කරන විට ඔබව හඹා යාමට තුන්වන පාර්ශ්ව කුකීස් භාවිතා කිරීමෙන් ඔබ අඩවි අවහිර කර ඇත. <ph name="LINK"/> වෙත සැකසීම් කරා පිවිසෙන්න.</translation>
@@ -1309,7 +1350,6 @@
 <translation id="3743765582345153106">ස්වයං පිරවුම භාවිතා කරන විට සැම විට ම සත්‍යාපනය කරන්න</translation>
 <translation id="3744111561329211289">පසුබිමෙහි සමමුහුර්තකරණය</translation>
 <translation id="3744212718085287312">මීළඟ වතාවේ අතථ්‍ය කාඩ්පතක් සමග එය වඩාත් සුරක්ෂිත කරන්න ද?</translation>
-<translation id="3744286742364977428">ඔබ බාගත කරන ගොනු විශ්ලේෂණය සඳහා Google Cloud හෝ තෙවන පාර්ශව වෙත යවනු ලැබේ. උදාහරණයක් ලෙස, ඒවා සංවේදී දත්ත හෝ අනිෂ්ට මෘදුකාංග තිබේදැයි ස්කෑන් කළ හැකි අතර සමාගම් ප්‍රතිපත්තිවලට අනුව ගබඩා කළ හැක.</translation>
 <translation id="3748009735914587286">ලෝහ (ඉහළ දීප්තිය)</translation>
 <translation id="3748148204939282805"><ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> හි ප්‍රහාරකයන් මෘදුකාංගයක් ස්ථාපනය හෝ ඔබේ පුද්ගලික තොරතුරු (උදාහරණ ලෙස, මුරපද, දුරකථන අංක, හෝ ණයපත්) හෙළිදරව් කිරීම වැනි අවදානම් සහගත දේවල්වලට ඔබව පෙළඹවිය හැකිය. <ph name="BEGIN_LEARN_MORE_LINK"/>තව දැන ගන්න<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3748912308089554501">ගුවන් සේවා කර්මාන්තය</translation>
@@ -1335,11 +1375,13 @@
 <translation id="3793574014653384240">මෑතදී සිදු වූ බිඳ වැටීම් සංඛ්‍යාව සහ හේතු</translation>
 <translation id="3795344968043407227">ඉන්ඩී සහ විකල්ප සංගීතය</translation>
 <translation id="3799805948399000906">අකුරු වර්ගය ඉල්ලුවා</translation>
+<translation id="3801265110651850478">ඔබේ බ්‍රවුස් කිරීමේ මාර්ග තදබදය සමගින් “හඹා නොයන්න” ඉල්ලීමක් යවන්න</translation>
 <translation id="380329542618494757">නම</translation>
 <translation id="4435991890010083520">ඔබ පිවිසීමට උත්සාහ කරන අඩවියේ සිටින ප්‍රහාරකයන් මෘදුකාංග ස්ථාපනය කිරීමට හෝ ඔබේ මුරපදය, දුරකථනය, හෝ ණය කාඩ්පත් අංකය වැනි දේවල් හෙළි කිරීමට ඔබව රවටා ගත හැක. සුරක්ෂිතව ආපසු යාමට Brave දැඩි ලෙස නිර්දේශ කරයි. <ph name="BEGIN_LEARN_MORE_LINK"/>තව දැන ගන්න<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3807270098669886186">දුරකථන සේවා සපයන්නන්</translation>
 <translation id="3807366285948165054">රූපයේ X වැඩ මුරය</translation>
 <translation id="3807873520724684969">අහිතකර අන්තර්ගතය අවහිරයි.</translation>
+<translation id="3810770279996899697">මුරපද කළමනාකරුට MacOS Keychain වෙත ප්‍රවේශය අවශ්‍යයි</translation>
 <translation id="3810973564298564668">කළමනාකරණය</translation>
 <translation id="3812398568375898177">මෙය ChromeOS හි Android යෙදුම්වල ක්‍රියාකාරිත්වය වැඩි දියුණු කරන තීරණාත්මක යාවත්කාලීන කිරීමකි.</translation>
 <translation id="3815434930383843058">අඟ 8 x 12</translation>
@@ -1391,7 +1433,6 @@
 <translation id="3942048175062210325">ඔබේ ගොනු නැවත විවෘත කිරීමට උත්සාහ කරන්න</translation>
 <translation id="3943857333388298514">අලවන්න</translation>
 <translation id="3946209740501886391">මෙම අඩවියේදී සැමවිටම විමසන්න</translation>
-<translation id="3947595700203588284">අඩවි MIDI උපාංග වෙත සම්බන්ධ වීමට ඉල්ලිය හැකිය</translation>
 <translation id="3948588869002647271">මෙම යෙදුම අස්ථානගත වී හෝ හානි වී ඇත</translation>
 <translation id="3949571496842715403">මෙම සේවාදායකයට එය <ph name="DOMAIN"/> බව සනාථ කිරීමට නොහැකි විය; එහි ආරක්ෂක සහතිකය විෂයට විකල්ප නම් සඳහන් කරන්නේ නැත. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයකු ඔබේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය.</translation>
 <translation id="3949601375789751990">ඔබගේ බ්‍රවුස් කිරීමේ ඉතිහාසය මෙහි දිස් වේ</translation>
@@ -1434,6 +1475,7 @@
 <translation id="4047351652147966654">අඟ 18 x 24</translation>
 <translation id="404831776305217138">"<ph name="EXTENSION_ID"/>" යන හැඳුනුම සහිත දිගුව සඳහා යාවත්කාලීන URL වලංගු නොවේ නැතහොත් සහය නොදැක්වෙන ක්‍රමයක් භාවිත කරයි. සහය දැක්වෙන ක්‍රම වන්නේ: <ph name="HTTP_SCHEME"/>, <ph name="HTTPS_SCHEME"/> සහ <ph name="FILE_SCHEME"/>.</translation>
 <translation id="2635033286761217583">ඔබට එය Brave නිෂ්පාදන හරහා භාවිතා කිරීමට හැකි වනු ඇත</translation>
+<translation id="336808635693308470">Brave ගෙවීම් ක්‍රම සංස්කරණය කිරීමට උත්සාහ කරයි.</translation>
 <translation id="405399507749852140">කිනම් හෝ අඩවියක මිල අඩු වුවහොත් ඇඟවීම් ලබා ගන්න</translation>
 <translation id="4056223980640387499">Sepia</translation>
 <translation id="4161619938555288542">ඔබේ කරත්ත සඳහා වට්ටම් සොයා ගැනීමට ඔබට උදවු කිරීමට Brave හට ඉඩ දෙන්න</translation>
@@ -1492,7 +1534,6 @@
 <translation id="4152318981910038897">{COUNT,plural, =1{1 වෙනි පිටුව}one{{COUNT} වෙනි පිටුව}other{{COUNT} වෙනි පිටුව}}</translation>
 <translation id="6923879007831202776">ගෙවීම් ක්‍රමය පිරවීමට පෙර Brave ඒ ඔබ බව සනාථ කරයි. ඔබට <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/> තුළ ඕනෑම වේලාවක මෙය යාවත්කාලීන කළ හැකිය.</translation>
 <translation id="4159149286839604525">මෙයින් අදහස් කරන්නේ බොහෝ අඩවි විශේෂාංග ක්‍රියා කළ යුතු නමුත්, ඔබට අඩුවෙන් ආරක්ෂණයක් ඇති බවයි</translation>
-<translation id="8024248006695962840">මීළඟ වතාවේ දී වේගවත්ව ගෙවීමට, ඔබේ Brave ගිණුම තුළ ඔබේ කාඩ්පත, ආරක්ෂක කේතය, සහ බිල්පත් ලිපිනය සුරකින්න</translation>
 <translation id="4159784952369912983">දම්</translation>
 <translation id="4165986682804962316">අඩවි සැකසුම්</translation>
 <translation id="4169535189173047238">අවසර නොදෙන්න</translation>
@@ -1507,7 +1548,6 @@
 <translation id="4177501066905053472">දැන්වීම් මාතෘකා</translation>
 <translation id="4179515394835346607"><ph name="ROW_NAME"/> <ph name="ROW_CONTENT"/></translation>
 <translation id="4186035307311647330">මිල හඹා නොයන්න</translation>
-<translation id="4194250254487269611">ඔබේ කාඩ්පත දැනට සුරැකිය නොහැක</translation>
 <translation id="9150836098508392713">Brave ඉඟි බලන්න බොත්තම, Brave විශේෂාංග පිළිබඳව දැන ගැනීමට සක්‍රිය කරන්න</translation>
 <translation id="4195643157523330669">නව ටැබයක විවෘත කරන්න</translation>
 <translation id="4196861286325780578">&amp;ගෙන යාම යළි කරන්න</translation>
@@ -1540,6 +1580,7 @@
 <translation id="4250716950689692560">A4x4</translation>
 <translation id="4250937007454749162">ටී-ෂර්ට්</translation>
 <translation id="4253168017788158739">සටහන</translation>
+<translation id="4255487295905690262">ඕනෑම අඩවියක මිල අඩු වුවහොත් ඔබට ඉ-තැපැල් ඇඟවීම් ලැබෙනු ඇත.</translation>
 <translation id="425582637250725228">ඔබ සිදු කළ වෙනස්කම් සුරැකීම නොවනු ඇත.</translation>
 <translation id="4258748452823770588">වැරදි අත්සනකි</translation>
 <translation id="4261046003697461417">ආරක්‍ෂිත ලේඛන අනුසටහන් කළ නොහැක</translation>
@@ -1590,6 +1631,7 @@
 <translation id="4331708818696583467">සුරක්ෂිත නැත</translation>
 <translation id="4333295216031073611">සාප්පු යාමේ ලැයිස්තුව</translation>
 <translation id="4333561522337981382">ඔබේ සියලු සංදර්ශකවල කවුළු කළමනාකරණය කරන්න</translation>
+<translation id="4336219115486912529">{COUNT,plural, =1{හෙට කල් ඉකුත් වෙයි}one{දින #කින් කල් ඉකුත් වෙයි}other{දින #කින් කල් ඉකුත් වෙයි}}</translation>
 <translation id="5792122559159836842">මෙම දැන්වීම ඔබේ උපාංගය සඳහා භාවිත කළ සම්පත් ඉතා වැඩි බැවින්, Brave මෙය ඉවත් කළා.</translation>
 <translation id="4340810192899866471">JSON වෙතින් ආයාත කරන්න</translation>
 <translation id="6116812392674177288">මෙම පරිගණකය ව්‍යවසාය කළමනාකරණය කරනු ලබන ලෙස හදුනා නොගැනේ. එම නිසා ප්‍රතිපත්තියට Brave Webstore හි පමණක් ස්වයංක්‍රියව දිගු ස්ථාපනය කළ හැකිය. Brave Webstore යාවත්කාලීන කිරීමේ URL "<ph name="CWS_UPDATE_URL"/>" වේ.</translation>
@@ -1615,6 +1657,7 @@
 <translation id="4386413576162606861">භූමිකා නිරූපණ ක්‍රීඩා</translation>
 <translation id="4390472908992056574">ගැට්ට</translation>
 <translation id="4393632246160856858">නිය සත්කාර නිෂ්පාදන</translation>
+<translation id="4397059608630092079">ස්වයං පිරවුම භාවිතා කරන විට සැම විට සත්‍යාපනය කරන්න</translation>
 <translation id="4406883609789734330">සජීවී සිරස්තලය</translation>
 <translation id="4406896451731180161">සෙවීම් ප්‍රතිඵල</translation>
 <translation id="4408413947728134509">කුකීස් <ph name="NUM_COOKIES"/></translation>
@@ -1625,7 +1668,6 @@
 <translation id="4415426530740016218">නංවා ගැනීමේ ලිපිනය</translation>
 <translation id="4425173294238317796">මුරයතුර තහවුරු කිරීමේ පත්‍රිකාව</translation>
 <translation id="4425750422187370446">ක්‍රීඩා ඇඟලුම්</translation>
-<translation id="4428065317363009941">වෙළඳ දැන්වීම් පුද්ගලිකකරණය</translation>
 <translation id="443121186588148776">අනුක්‍රමික තොට</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> ඔබේ පුරනය වීමේ සහතිකය පිළිගත්තේ නැත, හෝ සහතිකයක් ලබා දී නොමැති විය හැකිය.</translation>
 <translation id="4432792777822557199"><ph name="SOURCE_LANGUAGE"/> හි පිටු දැන් පටන් <ph name="TARGET_LANGUAGE"/> වෙත පරිවර්තනය කරනු ඇත</translation>
@@ -1665,6 +1707,7 @@
 <translation id="4521280267704259211">ලියුම් කවරය මහරජ</translation>
 <translation id="4521916730539354575">Left Tray</translation>
 <translation id="4522570452068850558">විස්තර</translation>
+<translation id="6221032662362020209">IBAN Brave ගිණුමට සුරකින්න ද?</translation>
 <translation id="4523643381056109546">සංඥා පුවරු</translation>
 <translation id="4524138615196389145">දැන් සිට WebAuthn භාවිත කිරීමෙන් ඔබේ කාඩ්පත් වඩා වේගයෙන් තහවුරු කරන්න</translation>
 <translation id="45243788195988825"><ph name="TOPIC"/> අවහිර කරන්න</translation>
@@ -1681,7 +1724,6 @@
 <translation id="4558551763791394412">ඔබගේ දිගු අබල කිරීම උත්සාහ කරන්න.</translation>
 <translation id="456043042661026303">ඔබේ ගෙවීම් විස්තර සුරක්ෂිතව පරීක්ෂා කිරීම</translation>
 <translation id="4566017918361049074">එළිමහන්</translation>
-<translation id="4568329205873177285">නව කවුළුවක කුකීස් සහ අඩවි දත්ත ලැයිස්තුවක් සමාලෝචනය කරන්න</translation>
 <translation id="4569155249847375786">තහවුරු කරයි</translation>
 <translation id="457875822857220463">බෙදා හැරීම</translation>
 <translation id="4579699065574932398">බැංකුකරණය</translation>
@@ -1776,6 +1818,7 @@
 <translation id="4761104368405085019">මයික්‍රොෙෆෝනය භාවිතා කරන්න</translation>
 <translation id="4761326898079498987">වැඩිදුර විස්තර සඳහා සමාලෝචනය කරන්න</translation>
 <translation id="1980929286541331105">Brave ආරක්ෂක පරීක්ෂාව ධාවනය කරන්න</translation>
+<translation id="4763196677855776703"><ph name="URL"/> විසින් සපයනු ලබන නියමයන් සහ කොන්දේසි</translation>
 <translation id="4764680219299728632">රේන්ජර්ස්, කුක් ටොප්ස් සහ අවන්</translation>
 <translation id="4764776831041365478"><ph name="URL"/> හි වෙබ් පිටුව තාවකාලිකව ක්‍රියා නොකරයි නැතහොත් එය ස්ථිරවම වෙනත් වෙබ් ලිපිනයක් වෙත ගෙනගොස් ඇත.</translation>
 <translation id="4766713847338118463">පහළට දෙවරක් ස්ටේපල්</translation>
@@ -1806,6 +1849,7 @@
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ඉක්මනින් නව Brave Sheet එකක් තැනීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
 <translation id="4825507807291741242">ශක්තිසම්පන්න</translation>
 <translation id="4826588772550366629">කැමරාව සහ මයික්‍රෆෝනය</translation>
+<translation id="4827283332383516812">කාඩ්පත මකන්න</translation>
 <translation id="4831993743164297314">රූප සැකසුම් කඩදාසි</translation>
 <translation id="483241715238664915">අනතුරු ඇඟවීම් ක්‍රියාත්මක කරන්න</translation>
 <translation id="4834250788637067901">Google Pay භාවිතයෙන් ගෙවීමේ ක්‍රම, දීමනා සහ ලිපින</translation>
@@ -1825,6 +1869,7 @@
 <translation id="4873616204573862158">ඇස් පැළඳුම්</translation>
 <translation id="4876188919622883022">සරල දසුන</translation>
 <translation id="4876305945144899064">පරිශීලක නමක් නැත</translation>
+<translation id="4876327226315760474">මෙයින් අදහස් කරන්නේ අඩවි විශේෂාංග බලාපොරොත්තු වූ පරිදි ක්‍රියා කළ යුතු නමුත් ඔබට අඩු බ්‍රවුස් කිරීමේ ආරක්ෂාවක් තිබිය හැකි බවයි.</translation>
 <translation id="4877047577339061095">නිවාස ගබඩාව සහ රාක්කගත කිරීම</translation>
 <translation id="4877083676943085827">{COUNT,plural, =0{කිසිවක් නැත}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}one{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831"><ph name="TEXT"/> සෙවීම</translation>
@@ -1839,6 +1884,7 @@
 <translation id="4888600795924685526">විදෙස් භාෂා ඉගෙනීම</translation>
 <translation id="4890070067176768718">ඔබේ පරිපාලක <ph name="ORIGIN"/> මත <ph name="PERMISSION"/> වෙත ඉඩ දී ඇත</translation>
 <translation id="4892518386797173871">පසුපස</translation>
+<translation id="4895019427244614047">ලිපිනය මකන්න</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4896809202198625921">ඔලිම්පික්</translation>
 <translation id="4900217275619098670">Ninth Roll</translation>
@@ -1858,6 +1904,7 @@
 <translation id="4926340098269537727"><ph name="ACTIVE_MATCH"/>/<ph name="TOTAL_MATCHCOUNT"/></translation>
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, සෙවීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
 <translation id="4930153903256238152">විශාල ධාරිතාව</translation>
+<translation id="4932035752129140860">විශ්ලේෂණය සඳහා ඔබ අලවන හෝ අමුණන පෙළ Google Cloud හෝ තෙවන පාර්ශ්ව වෙත යවයි. උදාහරණයක් ලෙස, එය සංවේදී දත්ත සඳහා ස්කෑන් කළ හැකි අතර සමාගම් ප්‍රතිපත්ති මත පදනම්ව ගබඩා කර ඔබේ පරිපාලකයාට දෘශ්‍යමාන විය හැක.</translation>
 <translation id="4934780484581617878">කවුළු කළමනාකරණය</translation>
 <translation id="4936134414789135531">ඇතුළත් කළ <ph name="VALUE_NAME"/> සොයා ගත නොහැකි විය.</translation>
 <translation id="4936675324097895694">මූල්‍යය</translation>
@@ -1872,6 +1919,7 @@
 <translation id="5398999400894437316">ඔබට Brave දැන්වීම් පෞද්ගලිකත්ව සැකසීම් තුළ වෙනස්කම් කළ හැක</translation>
 <translation id="4960203958361543136">ඔබේ සෙවීම් යන්ත්‍රය තෝරා ගන්න</translation>
 <translation id="4964505745997821360">සෞඛ්‍ය රක්ෂණය</translation>
+<translation id="4967366744630699583">ලිපිනය සංස්කරණය කරන්න</translation>
 <translation id="4968522289500246572">මෙම යෙදුම ජංගම සඳහා සැලසුම් කර ඇති අතර ප්‍රතිප්‍රමාණ නොවීමටද හැකිය. මෙම යෙදුම ගැටලු හෝ යළි ආරම්භ වීම අත්විඳිය හැකිය.</translation>
 <translation id="4968665849807487749">ඔබේ සියලු සංදර්ශකවල කවුළු කළමනාකරණය කිරීමට විමසිය හැක</translation>
 <translation id="4969341057194253438">පටිගත කිරීම මකන්න</translation>
@@ -1917,6 +1965,7 @@
 <translation id="5045550434625856497">රහස්වචනය වැරදියි</translation>
 <translation id="5051305769747448211">සජීවී ප්‍රහසන</translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{ළඟ බෙදා ගැනීම භාවිතයෙන් මෙම ගොනුව යැවීමට, ඔබගේ උපාංගයෙහි (<ph name="DISK_SPACE_SIZE"/>) හිස් කරන්න}one{ළඟ බෙදා ගැනීම භාවිතයෙන් මෙම ගොනු යැවීමට, ඔබගේ උපාංගයෙහි (<ph name="DISK_SPACE_SIZE"/>) හිස් කරන්න}other{ළඟ බෙදා ගැනීම භාවිතයෙන් මෙම ගොනු යැවීමට, ඔබගේ උපාංගයෙහි (<ph name="DISK_SPACE_SIZE"/>) හිස් කරන්න}}</translation>
+<translation id="505757197798929356">විවෘත කිරීමට හේතුව සපයන්න (අවශ්‍යයි)</translation>
 <translation id="5060419232449737386">සිරස්තල සැකසීම්</translation>
 <translation id="5060483733937416656">ඔබ <ph name="PROVIDER_ORIGIN"/> භාවිත කරන වෙබ් අඩවිවල Windows Hello සමඟ සත්‍යාපනය කිරීමට තෝරා ඇත. මෙම සපයන්නා ඔබට <ph name="LINK_TEXT"/> හැකි, ඔබගේ ගෙවීම් ක්‍රමය පිළිබඳ තොරතුරු ගබඩා කර තිබිය හැකිය.</translation>
 <translation id="5061227663725596739">ඔබ අදහස් කළේ <ph name="LOOKALIKE_DOMAIN"/> ද?</translation>
@@ -2032,6 +2081,7 @@
 <translation id="5288393065350884210">ගිණුම්කරණය සහ විගණනය</translation>
 <translation id="5289384342738547352">බහුවිධ ලේඛන පරිහරණය</translation>
 <translation id="5291770543968339335">{DAYS_UNTIL_DEADLINE,plural, =1{අද යාවත්කාලීන කිරීම අවශ්‍යයි}=2{හෙට වන විට යාවත්කාලීන කිරීම අවශ්‍ය වේ}one{දින #ක් ඇතුළත යාවත්කාලීන කිරීම අවශ්‍යයි}other{දින #ක් ඇතුළත යාවත්කාලීන කිරීම අවශ්‍යයි}}</translation>
+<translation id="5292714443869769806"><ph name="OPERATING_SYSTEM"/> සැකසීම් වෙත යන්න</translation>
 <translation id="5293919335876685914">කූප්ස්</translation>
 <translation id="5296589789433599000">ඉවුම්පිහුම් සහ කෑම වට්ටෝරු</translation>
 <translation id="5299298092464848405">ප්‍රතිපත්ති විග්‍රහ කිරීමේ දෝශය</translation>
@@ -2086,7 +2136,6 @@
 <translation id="540969355065856584">මෙම සේවාදායකයට එය <ph name="DOMAIN"/> බව සනාථ කිරීමට නොහැකි විය; එහි ආරක්ෂණ සහතිකය මෙම අවස්ථවේ වලංගු නැත. මෙය වැරදි වින්‍යාස කිරීමක් හෝ ප්‍රහාරකයකු ඔබගේ සබැඳුමට බාධා කිරීමක් නිසා විය හැකිය.</translation>
 <translation id="5411462078004183575">අඩු මිල විකල්පය</translation>
 <translation id="5412040515238827314">අවලංගු ආකෘතියකි: රටා ලැයිස්තුවක් බලාපොරොත්තු විය.</translation>
-<translation id="9079419934310259761">මෙම අඩවිය ඔබට වඩාත් අදාළ වෙළඳ දැන්වීම් පෙන්වීමට Brave වෙතින් ඔබගේ ලැදිකම් ලබා ගනී</translation>
 <translation id="5412245327974352290"><ph name="TRADITIONAL_TEXT"/> - <ph name="ADDITIONAL_TEXT"/></translation>
 <translation id="541416427766103491">අට්ටිය 4</translation>
 <translation id="5414446060143308245">මාරු කිරීමට පෙර සමාලෝචනය අවශ්‍යයි</translation>
@@ -2123,6 +2172,7 @@
     <ph name="LINE_BREAK"/>
     ඔබේ පද්ධති පරිපාලක ඇමතීමට උත්සාහ කරන්න.</translation>
 <translation id="549333378215107354">ප්‍රමාණය 3</translation>
+<translation id="550365051221576010">සියල්ල පුරවන්න</translation>
 <translation id="5509762909502811065">B0</translation>
 <translation id="5509780412636533143">පාලිත පොත්සලකුණු</translation>
 <translation id="5510481203689988000">මෙම සැකසීම කුකී සැකසීම් තුළ පාලන‌ කෙරේ.</translation>
@@ -2131,6 +2181,7 @@
 <translation id="5512812358367123529">කාර්යාල ලීබඩු</translation>
 <translation id="5513528801833998679">උපාංග පුරනය භාවිතා කරන්න</translation>
 <translation id="5515388687005870733">මිමි 55 x 85</translation>
+<translation id="7244699920401708198">බොහෝ අඩවිවලට ඔබ බ්‍රවුස් කරන විට ඔබව නිරීක්ෂණයට තෙවන පාර්ශ්ව කුකීස් භාවිතා කළ නොහැකි අතර අඩවිවලට අප්‍රකට ප්‍රකාරයේ දී තෙවන පාර්ශ්වීය කුකීස් භාවිතා කළ නොහැක.</translation>
 <translation id="5518670652865028077">කලා සහ විනෝදාස්වාදය</translation>
 <translation id="5519516356611866228">ඔබගේ වෙනස් කිරීම් සමග</translation>
 <translation id="5519696598216267194">කඩදාසි (පෙර සිදුරු කරන ලද)</translation>
@@ -2196,6 +2247,7 @@
 <translation id="5633259641094592098">කල්ට් සහ ඉන්ඩී චිත්‍රපට</translation>
 <translation id="563371367637259496">ජංගම</translation>
 <translation id="5635237618724097525">ස්මාර්ට් දුරකථන</translation>
+<translation id="5635478143789726479">විකුණුම්කරුගේ නියමයන් සහ කොන්දේසි</translation>
 <translation id="5642362243427711530"><ph name="FIRST_STRING"/>. <ph name="SECOND_STRING"/></translation>
 <translation id="5642411781689336699">ස්ටීරියෝ පද්ධති සහ කොටස්</translation>
 <translation id="5644090287519800334">පැත්ත 1 රූප X වැඩ මුරය</translation>
@@ -2205,16 +2257,19 @@
 <translation id="5651323159439184939">ඝර්ෂණ පෝෂණය</translation>
 <translation id="5653432653077411130">ජල සැපයුම සහ පිරියම් කිරීම</translation>
 <translation id="5654927323611874862">උඩුගත කළ බිඳ වැටීම් වාර්තා හැඳුනුම:</translation>
+<translation id="5654965123204121933">URL හි අවශ්‍ය ප්‍රතිස්ථාපන තන්තුව <ph name="SEARCH_TERMS_REPLACEMENT"/> ඇතුළත් නොවේ: <ph name="SEARCH_URL"/></translation>
 <translation id="5659593005791499971">ඊතැපෑල</translation>
 <translation id="5660122698869360728">ඔබේ සියලු සාප්පු සවාරි පිටු එක තැනක සුරැකීමට, සහ මිල ගණන් ස්වයංක්‍රීයව නිරීක්ෂණය කිරීමට, මිල ඇතුළාන්ත ලබා ගැනීමට, සහ තවත් දේ සඳහා ඔබට උදවු කරන නව ස්මාර්ට් ෆෝල්ඩරයක්.</translation>
 <translation id="5663955426505430495">මෙම උපාංගයේ පරිපාලකයා අමතර කාර්ය සඳහා දිගු ස්ථාපන කර ඇත. දිගුවලට ඔබේ දත්තවලින් සමහරකට ප්‍රවේශය තිබේ.</translation>
 <translation id="5666606186680807225">වෙරළ සහ දූපත්</translation>
 <translation id="5667827081946850877">ශ්‍රව්‍යපොත්</translation>
 <translation id="5675650730144413517">මෙම පිටුව ක්‍රියා නොකරයි</translation>
+<translation id="5677928146339483299">බාධාකළ</translation>
 <translation id="5678007133659493065">ලෝපත</translation>
 <translation id="568292603005599551">රූපයේ X ස්ථානය</translation>
 <translation id="5684277895745049190">ලැයිස්තුව</translation>
 <translation id="5684874026226664614">අපොයි. මෙම පිටුව පැටවිය නොහැකි විය.</translation>
+<translation id="5687340364605915800">මෙම ඉල්ලීමට ප්‍රතිචාර දැක්වීමේ දී අඩවි ඒවායේ අභිමතය භාවිතා කරයි</translation>
 <translation id="5688137257686092846">විලේපන වේදය සහ අලංකරණ ශිල්පින්</translation>
 <translation id="5689199277474810259">JSON වෙත නිර්යාත කරන්න</translation>
 <translation id="5689516760719285838">ස්ථානය</translation>
@@ -2222,6 +2277,7 @@
 <translation id="5691848789297492617">කාඩ්පත සම්පූර්ණ උසින් විවෘත කර සුරකින්න.</translation>
 <translation id="5695542892312572833">ඔබගේ මිලදී ගැනීම සත්‍යාපනය කිරීමට සහ සම්පූර්ණ කිරීමට Windows Hello භාවිත කරන්නද?</translation>
 <translation id="5699628521141772782">කිරි සහ බිත්තර</translation>
+<translation id="5700761515355162635">තුන්වන පාර්ශ්ව කුකීස් ඉඩ දී ඇත</translation>
 <translation id="5701381305118179107">මධ්‍ය</translation>
 <translation id="570530837424789914">කළමනාකරණය කරන්න...</translation>
 <translation id="5707154300732650394">ඔබගේ සංචාරය නැවත පටන් ගන්න</translation>
@@ -2232,7 +2288,7 @@
 <translation id="5720705177508910913">වත්මන් භාවිතකරු</translation>
 <translation id="572328651809341494">මෑතකාලීන පටිති</translation>
 <translation id="5723287205918986743">ආරක්ෂක කර්මාන්තය</translation>
-<translation id="5725567311035061582">කුකීස් සහ අඩවි දත්ත කළමනාකරණය කරන්න</translation>
+<translation id="5725297205162868298">කෙටිමඟ @ අනුලකුණ සමග ආරම්භ කළ නොහැක: "<ph name="SHORTCUT_NAME"/>"</translation>
 <translation id="3006790309890592320">Brave ඔබේ මුරපදය ඔබ වෙනත් අඩවිවල නැවත භාවිත කර තිබේ නම් යළි සැකසීමට නිර්දේශ කරයි.</translation>
 <translation id="5732392974455271431">ඔබේ දෙමව්පියන්ට එය ඔබ සඳහා අනවහිර කළ හැකිය</translation>
 <translation id="5110141686029759199">පෝරමය තනන්න බොත්තම, Brave පෝරම තුළ ඉක්මනින් නව පෝරමයක් තැනීමට සක්‍රිය කරන්න</translation>
@@ -2263,6 +2319,7 @@
 <translation id="5785756445106461925">තවද, මෙම පිටුවේ ආරක්ෂිත නොවන වෙනත් සම්පත් ඇත. එම සම්පත් හුවමාරුව අතරතුර ‍අනෙක් අයටත් බැලිය හැකි අතර, පිටුවේ පෙනුම වෙනස් වන අයුරින් වෙනස් කිරීමට වෙබ් ප්‍රහාරකයෙකුට හැකිය.</translation>
 <translation id="5786044859038896871">ඔබට ඔබේ කාඩ්පත් තොරතුරු පිරවීමට අවශ්‍යද?</translation>
 <translation id="5789643057113097023">.</translation>
+<translation id="5793317771769868848">මෙම ගෙවීමේ ක්‍රමය මෙම උපාංගයෙන් මකනු ඇත</translation>
 <translation id="5793777472500812427">{COUNT,plural, =0{කිසිත් නැත}=1{1 ගිණුමක් සඳහා පුරනය වීමේ දත්ත}one{ගිණුම් #ක් සඳහා පුරනය වීමේ දත්ත}other{ගිණුම් #ක් සඳහා පුරනය වීමේ දත්ත}}</translation>
 <translation id="5800727402210090597">ජංගම දුරකථන අලුත්වැඩියා සහ සේවා</translation>
 <translation id="580241730938216256">යාවත්කාලීන කිරීම ආරම්භ කරන්න</translation>
@@ -2293,15 +2350,16 @@
 <translation id="5866898949289125849">ඔබ සංවර්ධක මෙවලම් පිටුවක් දකියි</translation>
 <translation id="5869405914158311789">මෙම අඩවියට ළඟා විය නොහැකිය</translation>
 <translation id="5869522115854928033">සුරැකි රහස්වචන</translation>
+<translation id="5872318519182427835">මෙහි ලැයිස්තුගත කර ඇති අඩවි සහ ඒවායේ උප වසම්වලට බලපායි. උදාහරණයක් ලෙස, “google.com” එක් කිරීම යන්නෙන් අදහස් වන්නේ එය google.com හි කොටසක් වන නිසා, තෙවන පාර්ශ්වීය කුකීස් mail.google.com සඳහා සක්‍රිය විය හැකි බවයි.</translation>
 <translation id="5872692522325383488">IBAN සුරකින ලදි</translation>
 <translation id="5873297634595728366">ඩීසල් වාහන</translation>
 <translation id="5877831137320480913">රූපාලංකරණ සහ යෝග්‍යතාව</translation>
 <translation id="5879989559903563723">ආගන්තුක ප්‍රකාරයේ ඉඩ නොදෙයි</translation>
+<translation id="8967688963142514142">Brave ආරක්ෂක පරීක්ෂාව වෙත යන්න</translation>
 <translation id="5883861433316751031">MIDI උපාංග පාලනය කර නැවත ක්‍රමලේඛනය කරන්න ද?</translation>
 <translation id="5884465125445718607">ලියුම් කවරය චීන #6</translation>
 <translation id="5887400589839399685">කාඩ්පත සුරැකිණි</translation>
 <translation id="5887687176710214216">අවසන් වරට ඊයේ පිවිසි</translation>
-<translation id="5888023855665301188">ඔබේ CVC සුරැකී ඇති විට ඉතා වේගයෙන් ගෙවා පිටවන්න. <ph name="LINK_BEGIN"/>සුරැකි ආරක්‍ෂක කේත මකන්න<ph name="LINK_END"/></translation>
 <translation id="5895138241574237353">යළි අරඹන්න</translation>
 <translation id="5895187275912066135">නිකුත් කළේ</translation>
 <translation id="5901630391730855834">කහ</translation>
@@ -2313,6 +2371,7 @@
 <translation id="5911110632211230665">විවෘත කිරීම අවහිරයි</translation>
 <translation id="59174027418879706">සබලයි</translation>
 <translation id="5918373444239520146">ගැජට් සහ එහා මෙහා ගෙනයා හැකි ඉලෙක්ට්‍රොනික්</translation>
+<translation id="5918847752193018339">ඔබේ CVC සුරැකී ඇති විට ඉතා වේගයෙන් ගෙවා පිටවන්න. <ph name="LINK_BEGIN"/>සුරැකි ආරක්ෂක කේත මකන්න<ph name="LINK_END"/></translation>
 <translation id="5919090499915321845">B10</translation>
 <translation id="5920262536204764679">{NUM_COOKIES,plural, =1{1ක් භාවිතයේ ඇත}one{#ක් භාවිතයේ ඇත}other{#ක් භාවිතයේ ඇත}}</translation>
 <translation id="592031860219554105">හිමමත ලිස්සායාම</translation>
@@ -2330,10 +2389,10 @@
 <translation id="5938153366081463283">අතථ්‍ය කාඩ්පත එක් කරන්න</translation>
 <translation id="5938793338444039872">Troy</translation>
 <translation id="5944297261866530437">රෙදි (ඉහළ දීප්තිය)</translation>
-<translation id="5947508410139465809">ඔබ උඩුගත කරන හෝ අමුණන ගොනු විශ්ලේෂණය සඳහා Google Cloud හෝ තෙවන පාර්ශව වෙත යවයි. උදාහරණයක් ලෙස, ඒවා සංවේදී දත්ත හෝ අනිෂ්ට මෘදුකාංග තිබේදැයි ස්කෑන් කළ හැකි අතර සමාගම් ප්‍රතිපත්තිවලට අනුව ගබඩා කළ හැක.</translation>
 <translation id="5951495562196540101">පාරිභෝගික ගිණුම සමඟ ලියාපදිංචි විය නොහැක (ඇසුරුම් කළ බලපත්‍රයක් ලබාගත හැක).</translation>
 <translation id="5953516610448771166">සජීවී සිරස්තල මෙම මාධ්‍ය සඳහා ලබා ගත නොහැකිය. සිරස්තල ලබා ගැනීමට, මෙම අඩවිය සඳහා <ph name="CONTENT_SETTINGS"/> අවහිර කරන්න.</translation>
 <translation id="5955063559762970069">හෝටල් සහ නවාතැන්</translation>
+<translation id="595873925609605681">වෙබ් අඩවි විශේෂාංග ක්‍රියා නොකරන්නේ නම් <ph name="BEGIN_LINK"/>තුන් වන පාර්ශ්ව කුකී සඳහා තාවකාලිකව ඉඩ දීමට උත්සාහ කරන්න<ph name="END_LINK"/>.</translation>
 <translation id="5963413905009737549">කොටස</translation>
 <translation id="5964247741333118902">කාවද්දන ලද අන්තර්ගතය</translation>
 <translation id="5967260682280773804">අඟ 36 x 48</translation>
@@ -2341,6 +2400,7 @@
 <translation id="5967867314010545767">ඉතිහාසයෙන් මකන්න</translation>
 <translation id="5968022600320704045">සෙවීම් ප්‍රතිඵල නැත</translation>
 <translation id="5969199813874624822">සුරැක මිල හඹා යන්න</translation>
+<translation id="5973514677932942122"><ph name="EXPIRATION_DATE"/> | <ph name="SECURITY_CODE"/></translation>
 <translation id="5974052231147553524">Sixth Roll</translation>
 <translation id="5975083100439434680">විශාලනය අඩු කරන්න</translation>
 <translation id="5979084224081478209">මුරපද පරීක්‍ෂා කරන්න</translation>
@@ -2443,8 +2503,10 @@
 <translation id="6177531123306197852">ලියුම් කවරය C2</translation>
 <translation id="6180316780098470077">යළි උත්සාහ කිරීමේ විරාමය</translation>
 <translation id="6182972682129119950">A4x5</translation>
+<translation id="1713601041945301465">Brave ස්වයංක්‍රීයව තෙවන පාර්ශ්වීය කුකීස් සීමා කරයි</translation>
 <translation id="61877208875190028">කාන්තා ඇඳුම්</translation>
 <translation id="6194209731893739467">ඔබ නිරීක්ෂණය කළ නිෂ්පාදන සියල්ල මෙතැනින් බලන්න</translation>
+<translation id="6195163219142236913">තෙවන පාර්ශ්ව කුකීස් සීමිතයි</translation>
 <translation id="6195371403461054755">භූ විද්‍යාව</translation>
 <translation id="6196640612572343990">තෙවන-පාර්ශ්ව කුකී අවහිර කරන්න</translation>
 <translation id="6197648101609735209">මිමි 89 x 89</translation>
@@ -2467,12 +2529,14 @@
 <translation id="6232271601416750929">ස්වභාවික රූපාලංකරණ</translation>
 <translation id="6234122620015464377">සෑම ලේඛනයකටම පසුව කප්පාදු කරන්න</translation>
 <translation id="6236290670123303279">සැකසීම් කළමනා කරන්න</translation>
+<translation id="623825323736974198">සැමවිට ක්‍රියාකාරීව පවතින සහ ඒවායින් මතකය නිදහස් නොවන අඩවි කළමනාකරණය කරන්න</translation>
 <translation id="6240447795304464094">Google Pay ලාංඡනය</translation>
 <translation id="6241121617266208201">යෝජනා සඟවන්න</translation>
 <translation id="624499991300733384">මුද්‍රණ වර්ණයෝජක සේවය</translation>
 <translation id="6251906504834538140">{0,plural, =1{ගොනුව ගෙන යාමෙන් අවහිර කර ඇත}one{ගොනු <ph name="FILE_COUNT"/>ක් ගෙන යාමෙන් අවහිර කර ඇත}other{ගොනු <ph name="FILE_COUNT"/>ක් ගෙන යාමෙන් අවහිර කර ඇත}}</translation>
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave තුළ ඔබ බාගෙන ඇති ගොනු කළමනාකරණය කිරීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
 <translation id="6254436959401408446">මෙම පිටුව විවෘත කිරීමට ප්‍රමාණවත් තරම් මතකයක් නැත</translation>
+<translation id="625463612687472648">ඉඩ දීම නවත්වන්න</translation>
 <translation id="6259156558325130047">යළි ඇනවුම් කිරීම &amp;යළි කරන්න</translation>
 <translation id="6263376278284652872"><ph name="DOMAIN"/> පොත්සලකුණු</translation>
 <translation id="6264376385120300461">කෙසේ වුවත් බාගන්න</translation>
@@ -2483,6 +2547,7 @@
 <translation id="1300170712564922349">ඔබගේ Brave ඉතිහාසය තුළ අදාළ ක්‍රියාකාරකම් බැලීමට ඔබගේ සංචාරය නැවත පටන් ගන්න</translation>
 <translation id="9136010393039243713">Brave යාවත්කාලීන</translation>
 <translation id="6279183038361895380">ඔබේ කර්සරය පෙන්වීමට |<ph name="ACCELERATOR"/>| ඔබන්න</translation>
+<translation id="628016388715774955">පූර්ණ ලිපින පිරවීමේ විකල්පය තෝරා ගන්නා ලදි</translation>
 <translation id="6280223929691119688">මෙම ලිපිනයට බෙදා හැරීමට නොහැකිය. වෙනත් ලිපිනයක් තෝරන්න.</translation>
 <translation id="6284292079994426700">අඟ 26 x 38</translation>
 <translation id="6284517535531159884">ප්‍රභේදන බිජ වර්ගය</translation>
@@ -2521,6 +2586,7 @@
 <translation id="6348220984832452017">සක්‍රිය විචලන</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> ස්ථාපන කරන්න</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{කිසිවක් නැත}=1{1 මුරපදයක් (<ph name="DOMAIN_LIST"/> සඳහා, සමමුහූර්තයි)}=2{මුරපද 2 ක් (<ph name="DOMAIN_LIST"/> සඳහා, සමමුහූර්තයි)}one{මුරපද # ක් (<ph name="DOMAIN_LIST"/> සඳහා, සමමුහූර්තයි)}other{මුරපද # ක් (<ph name="DOMAIN_LIST"/> සඳහා, සමමුහූර්තයි)}}</translation>
+<translation id="6358088212770985041">ගෙවීමේ ක්‍රමය සංස්කරණය කරන්න.</translation>
 <translation id="6358450015545214790">මෙයින් හැඟෙන්නේ කුමක්ද?</translation>
 <translation id="6361757823711327522">B7</translation>
 <translation id="6363786367719063276">ලොග බලන්න</translation>
@@ -2550,6 +2616,7 @@
 <translation id="6394852772105848029">මෙම අඩවියට <ph name="APP_NAME"/> යෙදුම විවෘත කිරීමට අවශ්‍ය වේ</translation>
 <translation id="6398765197997659313">සම්පුර්ණ තිරයෙන් ඉවත් වන්න</translation>
 <translation id="6401136357288658127">මෙම ප්‍රතිපත්තිය අත්හරින ලදි. ඒ වෙනුවට ඔබ <ph name="NEW_POLICY"/> ප්‍රතිපත්තිය භාවිත කළ යුතු ය.</translation>
+<translation id="640163077447496506">අද කල් ඉකුත් වෙයි</translation>
 <translation id="6402537308870515461">ගෙන යාමට පෙර සමාලෝචනය අවශ්‍යයි</translation>
 <translation id="6403167778944553">ඇඳ සහ නෑම</translation>
 <translation id="6404511346730675251">පිටු සලකුණ සංස්කරණය කරන්න</translation>
@@ -2619,6 +2686,7 @@
 <translation id="6529602333819889595">මැකීම &amp;යළි කරන්න</translation>
 <translation id="6535751101619004418">මුදල් වර්ග සහ විදේශ විනිමය</translation>
 <translation id="6536221421038631327">ඔබේ <ph name="DEVICE_TYPE"/> වෙතින් Passpoint ග්‍රාහකත්වයක් ඉවත් කිරීම ආශ්‍රිත ජාල ඉවත් කරනු ඇත. ඔබේ ග්‍රාහකත්ව සැලසුමට වෙනස්කම් කිරීම සඳහා "<ph name="FRIENDLY_NAME"/>" සම්බන්ධ කර ගන්න. <ph name="LEARN_MORE"/></translation>
+<translation id="6540488083026747005">ඔබ මෙම අඩවියෙහි තුන්වන පාර්ශ්ව කුකීස් ඉඩ දී ඇත</translation>
 <translation id="6540534463546766581">පොදු අරමුදල්</translation>
 <translation id="6545864417968258051">බ්ලූටූත් ස්කෑන් කිරීම</translation>
 <translation id="6547208576736763147">වමට ද්වි අනින්න</translation>
@@ -2628,6 +2696,7 @@
 <translation id="6556866813142980365">නැවත කරන්න</translation>
 <translation id="6557715786897013164">අඟ 14 x 17</translation>
 <translation id="6560786330438719938">ස්ථාපන කර හෝ අස්ථාපන කර ඇති යෙදුම් සහ ඒවා කොපමණ වාරයක් භාවිත කරන්නේද යන්න</translation>
+<translation id="6567084950885568327">MIDI උපාංග පාලනය සහ නැවත ක්‍රමලේඛනය</translation>
 <translation id="3720758671413152948">ගෙවීම් ක්‍රම කළමනාකරණය කරන්න බොත්තම, Brave සැකසීම් තුළ ඔබේ ගෙවීම් සහ ණයපත් තොරතුරු කළමනාකරණය කිරීමට සක්‍රිය කරන්න</translation>
 <translation id="6569060085658103619">ඔබ දිගු පිටුවක් බලමින් සිටී</translation>
 <translation id="6569366777234823130">නාට්‍ය චිත්‍රපට</translation>
@@ -2643,12 +2712,13 @@
 <translation id="6596325263575161958">සංකේතනය කිරීමේ විකල්ප</translation>
 <translation id="6597665340361269064">අංශක 90</translation>
 <translation id="6599642189720630047">හඹා ගිය නිෂ්පාදන</translation>
+<translation id="5976895887103591798">Brave ඔබ බ්‍රවුස් කරන විට වෙබ් අඩවි ඔබව නිරීක්ෂණය කිරීමට තුන් වන පාර්ශ්ව කුකී භාවිත කිරීම අවහිර කරයි.
+            <ph name="NEW_LINE"/>අඩවි විශේෂාංග ක්‍රියා නොකරන්නේ නම් <ph name="START_LINK"/>තුන් වන පාර්ශ්ව කුකී සඳහා තාවකාලිකව ඉඩ දීමට<ph name="END_LINK"/> උත්සාහ කරන්න.</translation>
 <translation id="6611723696964473273">ආර්ථික පුවත්</translation>
 <translation id="6612010098632894193">ඔන්ලයින් වීඩියෝ</translation>
 <translation id="5887670611153282204">Brave හි ඔබේ සෙවීම් යන්ත්‍රය පිළිබඳව තව දැන ගන්න</translation>
 <translation id="6615297766614333076">අට්ටිය 2</translation>
 <translation id="6624427990725312378">සම්බන්ධතා තතු</translation>
-<translation id="6627727261837091711">වෙළඳ දැන්වීම් පුද්ගලිකකරණ විස්තර පෙන්වන්න</translation>
 <translation id="6628463337424475685"><ph name="ENGINE"/> සෙවීම</translation>
 <translation id="6629652037942826935">සුඛෝපභෝගී ගමන්</translation>
 <translation id="6630043285902923878">USB උපාංග සොයමින්...</translation>
@@ -2722,6 +2792,7 @@
 <translation id="6767985426384634228">ලිපිනය යාවත්කාලීන කරන්නද?</translation>
 <translation id="6770747695101757579">කඩදාසි (කපු)</translation>
 <translation id="6775759552199460396">JIS B2</translation>
+<translation id="4302311572898487420">Brave මුරපද කළමනාකරුට MacOS Keychain වෙත ප්‍රවේශය අවශ්‍යයි</translation>
 <translation id="6784045420901191374">වාණිජමය ණය දීම</translation>
 <translation id="8425450156395369987">ඔබට Brave හි සැකසීම් තුළ ඕනෑම වේලාවක ඔබේ සෙවීම් යන්ත්‍රය වෙනස් කළ හැක.</translation>
 <translation id="6786145470008421571">ලියුම් කවරය අඟල් 6 x 9</translation>
@@ -2734,12 +2805,14 @@
 <translation id="6793213097893210590">කාඩ්බෝඩ්</translation>
 <translation id="679355240208270552">ප්‍රතිපත්තිය මඟින් පෙරනිමි සෙවීම සබල කර නැති නිසා නොසලකා හරිනු ලැබේ.</translation>
 <translation id="6794951432696553238">දැන් සිට Windows Hello භාවිත කිරීමෙන් ඔබේ කාඩ්පත් වඩා වේගයෙන් තහවුරු කරන්න</translation>
+<translation id="6798066466127540426">ලැයිස්තුවේ වලංගු සෙවුම් සපයන්නෙකු නොමැත.</translation>
 <translation id="6798460514924505775">ලියුම් කවරය චෞ 3</translation>
 <translation id="6799145206637008376">මෙම අතථ්‍ය කාඩ්පත සඳහා CVC පුරවන්න</translation>
 <translation id="6805030849054648206">ලියුම් කවරය B6/C4</translation>
 <translation id="6807791860691150411">අධ්‍යාපනය</translation>
 <translation id="681021252041861472">අත්‍යාවශ්‍ය ක්ෂේත්‍රයකි</translation>
 <translation id="6810899417690483278">අභිරුචිකරණ ID</translation>
+<translation id="681459028290894216">සම්පූර්ණ ලිපිනය පුරවන්න</translation>
 <translation id="6816109178681043245">ක්‍රීඩා භාණ්ඩ</translation>
 <translation id="6817217109584391709">ජාවාස්ක්‍රිප්ට්</translation>
 <translation id="6820143000046097424">අනුක්‍රමික තොට</translation>
@@ -2770,6 +2843,7 @@
 <translation id="6874604403660855544">&amp;එක් කිරීම යළි කරන්න</translation>
 <translation id="6880941331070119097">ඉහළ මිල විකල්පය</translation>
 <translation id="5856252669085142737">ඉක්මනින් අලුත් Brave Doc එකක් තනන්න</translation>
+<translation id="6882210908253838664">අඩවියක් ක්‍රියා නොකරන්නේ නම්, ඔබට තෙවන පාර්ශ්ව කුකීස් භාවිතා කිරීමට තාවකාලික අවසරය ලබා දීමට උත්සාහ කළ හැක. <ph name="BEGIN_LINK"/>තව දැන ගන්න<ph name="END_LINK"/></translation>
 <translation id="6883221904761970440">ආරක්ෂිත ගෙවීම් අක්තපත්‍ර සත්‍යාපනය කිරීමේ පත්‍රය වසා ඇත</translation>
 <translation id="6884662655240309489">ප්‍රමාණය 1</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
@@ -2792,6 +2866,7 @@
           <ph name="END_LIST"/></translation>
 <translation id="691024665142758461">ගොනු කිහිපයක් බාගන්න</translation>
 <translation id="6915804003454593391">පරිශීලක</translation>
+<translation id="6916193791494646625">බා ගැනීමට හේතුව සපයන්න (අවශ්‍යයි)</translation>
 <translation id="6916954549222464607">මූල්‍ය සැලසුම්කරණය සහ කළමනාකරණය</translation>
 <translation id="6917795328362592458">ඔබ මේ දැන් භාවිත කළ මුරපදය දත්ත කඩ කිරීමකින් සොයා ගන්නා ලදී. ඔබගේ ගිණුම් සුරක්ෂිත කිරීමට, මුරපද කළමනාකරු ඔබගේ සුරකින ලද මුරපද පරීක්ෂා කිරීම නිර්දේශ කරයි.</translation>
 <translation id="6925267999184670015">උතුරු ඇමරිකානු B+</translation>
@@ -2826,6 +2901,7 @@
 <translation id="6965382102122355670">හරි</translation>
 <translation id="6965978654500191972">උපාංගය</translation>
 <translation id="696703987787944103">සංජානක</translation>
+<translation id="6967851206780867018">අන්තර්ගතය නිසා 1 ගොනුවක් අවහිර කර ඇත</translation>
 <translation id="6970885655016700774">රෙදි (ලේඛනාගාරය)</translation>
 <translation id="8485851762575764192">ඉක්මනින් Slides තුළ නව Brave ඉදිරිපත් කිරීමක් තනන්න</translation>
 <translation id="6972629891077993081">HID උපාංග</translation>
@@ -2843,7 +2919,6 @@
 <translation id="6999480632062519056">ශරීර සුවතා උපදෙස් සහ පුද්ගලික පුහුණුව</translation>
 <translation id="6999969238895751684">විනෝදාස්වාද කර්මාන්තය</translation>
 <translation id="7003278537452757231">ඇතිරිලි සහ බුමුතුරුණු</translation>
-<translation id="7003335073762455340">ඔබ මෙම නිෂ්පාදනය නිරීක්ෂණය කරයි. මෙම පිටුව <ph name="LAST_BOOKMARKS_FOLDER"/> හි සුරකින ලදි.</translation>
 <translation id="7004499039102548441">මෑතකාලීන ටැබ</translation>
 <translation id="7004583254764674281">කාඩ්පත් වඩා වේගයෙන් තහවුරු කිරීමට Windows Hello භාවිත කරන්න</translation>
 <translation id="7006930604109697472">කෙසේ වුවත් යවන්න</translation>
@@ -2858,6 +2933,7 @@
 <translation id="7023162328967545559">පරිපාලක අනතුරු ඇඟවීම</translation>
 <translation id="7613812024276037086">ඔබ බ්‍රවුස් කරන අතරේ ඔබව ආරක්ෂා කිරීම සඳහා Brave ආරක්ෂිත බ්‍රවුස් කිරීම වැනි — Brave හි එක්ව තැනූ සුරක්ෂිතතා විශේෂාංග ඇති අතර, එය ඔබ පිවිසීමට උත්සාහ කරන අඩවියෙහි <ph name="BEGIN_LINK"/>තතුබෑම මෑතක දී සොයා ගන්නා ලදි<ph name="END_LINK"/>. තතුබෑම් අඩවි ඔබව රැවටීමට වෙනත් අඩවි ලෙස පෙනී සිටියි.<ph name="NEW_LINE"/>සාමාන්‍යයෙන් ආරක්ෂිත අඩවි පවා සමහර විට ප්‍රහාරකයින් විසින් අවදානමට ලක් වේ. වැරදීමක් සිදුවී ඇති බවත් මෙම අඩවිය අනතුරක් නොවන බවත් ඔබ සිතන්නේ නම් <ph name="BEGIN_ERROR_LINK"/>අපට දන්වන්න<ph name="END_ERROR_LINK"/>.</translation>
 <translation id="7029809446516969842">මුරපද</translation>
+<translation id="7030164307377592766">ගෙවීමේ ක්‍රමය පිරවීම සඳහා සැකසීම් වෙනස් කරන්න.</translation>
 <translation id="7030436163253143341">සහතිකය වලංගු නැත</translation>
 <translation id="7031646650991750659">ඔබ ස්ථාපන කර ඇති Google Play යෙදුම් මොනවාද</translation>
 <translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ඔබගේ Brave ගිණුම් පෞද්ගලිකත්ව සැකසීම් කළමනාකරණය කිරීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
@@ -2878,6 +2954,7 @@
 <translation id="70705239631109039">ඔබේ සම්බන්ධතාව සම්පූර්ණයෙන් සුරක්‍ෂිත නොවේ</translation>
 <translation id="7075452647191940183">ඉල්ලීම විශාල වැඩියි</translation>
 <translation id="7078665357168027058">RA3</translation>
+<translation id="7079138647457502205">වැඩිපුර පෞද්ගලිකත්වය සමග බ්‍රවුස් කරන්න</translation>
 <translation id="7079718277001814089">මෙම අඩවියෙහි අනිෂ්ට මෘදුකාංග අඩංගුය</translation>
 <translation id="7081308185095828845">මෙම විශේෂාංගය ඔබේ උපාංගයේ නොලැබේ</translation>
 <translation id="7083258188081898530">බඳුන 9</translation>
@@ -2898,7 +2975,6 @@
 <translation id="7108819624672055576">දිගුවකින් ඉඩ දෙයි</translation>
 <translation id="7109510814665441393">රිය පැදවීමේ සහ ධාවන ක්‍රීඩා</translation>
 <translation id="7110116949943042888">තාවකාලික සහ කාලීන රැකියා</translation>
-<translation id="7110553203952632623">ඕනෑම අඩවියක මිල අඩු වුවහොත් ඔබට ඉ-තැපැල් ඇඟවීම් ලැබෙනු ඇත</translation>
 <translation id="7111012039238467737">(වලංගුයි)</translation>
 <translation id="7111507312244504964">දේපළ නිරීක්ෂණය සහ තක්සේරුව</translation>
 <translation id="7112327784801341716">ඔබ දකින්නේ ඔබේ වත්මන් තතු නොවේ ද? එය යාවත්කාලීන කිරීමට ඔබේ බැංකුව සම්බන්ධ කර ගන්න.</translation>
@@ -2921,10 +2997,12 @@
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> සහ තව <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}one{<ph name="PAYMENT_METHOD_PREVIEW"/> සහ තව <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}other{<ph name="PAYMENT_METHOD_PREVIEW"/> සහ තව <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}}</translation>
 <translation id="7153618581592392745">ලැවැන්ඩර්</translation>
 <translation id="7156870133441232244">සේවාදායකය TLS 1.2 හෝ පසු අනුවාදයට උත්ශ්‍රේණි කළ යුතුය.</translation>
+<translation id="715996170234243096">{NUM_FILES,plural, =1{<ph name="FEATURE_NAME"/> භාවිතයෙන් මෙම ගොනුව යැවීම සඳහා, ඔබේ උපාංගයෙහි ඉඩ නිදහස් කරන්න (<ph name="DISK_SPACE_SIZE"/>)}one{<ph name="FEATURE_NAME"/> භාවිතයෙන් මෙම ගොනු යැවීම සඳහා, ඔබේ උපාංගයෙහි ඉඩ නිදහස් කරන්න (<ph name="DISK_SPACE_SIZE"/>)}other{<ph name="FEATURE_NAME"/> භාවිතයෙන් මෙම ගොනු යැවීම සඳහා, ඔබේ උපාංගයෙහි ඉඩ නිදහස් කරන්න (<ph name="DISK_SPACE_SIZE"/>)}}</translation>
 <translation id="7160999678034985039">ඔබේ කාර්යය සුරකින්න සහ ඔබ සූදානම් වූ විට යාවත්කාලීන කිරීම ආරම්භ කරන්න.</translation>
 <translation id="7163295244162773898">{0,plural, =1{රහස්‍ය ගොනුව පිටපත් කරන්න ද?}one{රහස්‍ය ගොනු පිටපත් කරන්න ද?}other{රහස්‍ය ගොනු පිටපත් කරන්න ද?}}</translation>
 <translation id="717330890047184534">Gaia ID:</translation>
 <translation id="7174545416324379297">ඒකාබද්ධ කළා</translation>
+<translation id="7175097078723125014">ලිපිනය සංස්කරණය කිරීමේ විකල්පය තෝරා ගන්නා ලදි</translation>
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> සහ තව <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}one{<ph name="SHIPPING_OPTION_PREVIEW"/> සහ තව <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}other{<ph name="SHIPPING_OPTION_PREVIEW"/> සහ තව <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}}</translation>
 <translation id="7179323680825933600">ගෙවීමේ ක්‍රම සුරක්ෂිත කර පුරවන්න</translation>
 <translation id="7180611975245234373">නැවුම් කරන්න</translation>
@@ -2974,6 +3052,7 @@
 <translation id="725866823122871198">ඔබගේ පරිගණකයේ දිනය සහ වේලාව (<ph name="DATE_AND_TIME"/>) වැරදි නිසා <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> වෙත පුද්ගලික සම්බන්ධතාවය ස්ථාපනය කළ නොහැක.</translation>
 <translation id="7260075294900977274">ඔබේ සියලු සාප්පු සවාරි පිටු එක තැනක සුරැකීමට, සහ මිල ගණන් ස්වයංක්‍රීයව නිරීක්ෂණය කිරීමට, මිල ඇතුළාන්ත ලබා ගැනීමට, සහ තවත් දේ සඳහා ඔබට උදවු කරන නව ස්මාර්ට් ෆෝල්ඩරයක්</translation>
 <translation id="7265608370113700582">ලිපිනය ලබා ගත හැක්කේ මෙම උපාංගයෙහි පමණි</translation>
+<translation id="7273111226200291353">ඔබ බාගත කරන ගොනු විශ්ලේෂණය සඳහා Google Cloud හෝ තෙවන පාර්ශව වෙත යවනු ලැබේ. උදාහරණයක් ලෙස, ඒවා සංවේදී දත්ත හෝ අනිෂ්ට මෘදුකාංග සඳහා ස්කෑන් කළ හැකි අතර සමාගම් ප්‍රතිපත්ති මත පදනම්ව ගබඩා කළ හැකි අතර ඔබේ පරිපාලකයාට දෘශ්‍යමාන වේ.</translation>
 <translation id="7275334191706090484">පාලිත පොත්සලකුණු</translation>
 <translation id="7277998515889183784">මේක්අප් සහ ආලේපන</translation>
 <translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ඔබගේ Brave ගිණුම් මුරපදය වෙනස් කිරීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
@@ -3051,8 +3130,10 @@
 <translation id="7421067045979951561">ප්‍රොටොකෝල හසුරුවන්නන්</translation>
 <translation id="7422347648202898039">ලේබල් (ආරක්ෂක)</translation>
 <translation id="4814329941923406129">කුකීස් කළමනාකරණය කරන්න බොත්තම, Brave සැකසීම් තුළ ඔබේ කුකී මනාප කළමනාකරණය කිරීමට සක්‍රිය කරන්න</translation>
+<translation id="7424421098814895617">ලිපිනය මකා දැමීමේ විකල්පය තෝරා ගන්නා ලදි</translation>
 <translation id="7427366580982928791">ළමා අන්තර්ජාල ආරක්ෂාව</translation>
 <translation id="7429429656042611765">විධායක</translation>
+<translation id="288933326661929857">Brave හට ඔබේ ගෙවීම් තතු පිරවිය හැකි පරිදි ඒ ඔබ බව සත්‍යාපනය කරන්න.</translation>
 <translation id="7437289804838430631">සම්බන්ධතා තතු එක් කරන්න</translation>
 <translation id="7437490109271760224">කාඩ් ක්‍රීඩා</translation>
 <translation id="6591887805206070045">ඔබ පිවිසීමට උත්සාහ කරන අඩවියේ සිටින ප්‍රහාරකයන් ඔබ බ්‍රවුස් කරන ආකාරය කෙරෙහි බලපාන හානිකර මෘදුකාංග ස්ථාපනය කිරීමට ඔබව රවටා ගත හැක — උදාහරණයක් ලෙස, ඔබේ මුල් පිටුව වෙනස් කිරීමෙන් හෝ ඔබ පිවිසෙන අඩවිවල අමතර දැන්වීම් පෙන්වීමෙන්. හානිය වළක්වා ගැනීම සඳහා සුරක්ෂිතව ආපසු යාමට Brave දැඩි ලෙස නිර්දේශ කරයි. <ph name="BEGIN_LEARN_MORE_LINK"/>තව දැන ගන්න<ph name="END_LEARN_MORE_LINK"/></translation>
@@ -3073,8 +3154,11 @@
 <translation id="745640750744109667">A0x3</translation>
 <translation id="7461924472993315131">පින්</translation>
 <translation id="7463075493919226237">ඕස්ට්‍රේලියානු පාපන්දු</translation>
+<translation id="7465036432780054056"><ph name="EMBEDDED_URL"/> ඔබ <ph name="TOP_LEVEL_URL"/> වෙත පැමිණි බව දැන ගනු ඇත</translation>
 <translation id="7465963048299965912">අඟ 10 x 13</translation>
 <translation id="7469935732330206581">පෝරමය ආරක්ෂිත නැත</translation>
+<translation id="7470854469646445678">පිටපත් කිරීමට හේතුව සපයන්න (අවශ්‍යයි)</translation>
+<translation id="7471007961486718967">මාරු කිරීමට හේතුව සපයන්න (අවශ්‍යයි)</translation>
 <translation id="7473891865547856676">එපා ස්තූතියි</translation>
 <translation id="7481312909269577407">ඉදිරියට යන්න</translation>
 <translation id="7481603210197454575">ලියුම් කවරය ඉතාලි</translation>
@@ -3108,6 +3192,7 @@
 <translation id="7521825010239864438">"<ph name="SECTION"/>" කොටස සඟවා ඇත</translation>
 <translation id="8552966873255887118">ඔබට එය Brave නිෂ්පාදන හරහා භාවිතා කළ හැක</translation>
 <translation id="7523408071729642236">නිෂ්පාදනය</translation>
+<translation id="7525804896095537619">නම හිස් විය නොහැක</translation>
 <translation id="7526934274050461096">මෙම අඩවිය වෙත ඔබේ සබැඳුම පුද්ගලික නොවේ</translation>
 <translation id="7529884293139707752">නිවෙස් අධ්‍යාපනය ලැබීම</translation>
 <translation id="7534987659046836932">ලියුම් කවරය C7</translation>
@@ -3121,6 +3206,7 @@
 <translation id="5474381306981932386">ඔබේ උපාංග පරිශීලක නාමය සහ Brave පරිශීලක නාමය</translation>
 <translation id="7551484245293639699">සංචාරක රක්ෂණය</translation>
 <translation id="7552846755917812628">පහත ඉඟි උත්සාහ කරන්න:</translation>
+<translation id="7554242657529665960">ඔබේ පරිපාලකගෙන්: "<ph name="ADMIN_MESSAGE"/>"</translation>
 <translation id="7554475479213504905">කෙසේ වූවත් නැවත පූරණ කර පෙන්වන්න</translation>
 <translation id="7554791636758816595">නව ටැබය</translation>
 <translation id="7555777498260651025">TV පවුලේ වැඩසටහන්</translation>
@@ -3136,7 +3222,6 @@
 <translation id="7574998639136359461">ශීත ඍතු ක්‍රීඩා උපකරණ</translation>
 <translation id="7575207903026901870">යෝජනා බොත්තම ඉවත් කරන්න, මෙම යෝජනාව ඉවත් කිරීමට Enter ඔබන්න</translation>
 <translation id="7575887283389198269">ජංගම දුරකථන</translation>
-<translation id="7577900504646297215">ලැදිකම් කළමනා කරන්න</translation>
 <translation id="405970181812690156">ඔබ Brave සමග සුරකින ලද කාඩ්පත් භාවිතයෙන්, විවිධ උපාංග හරහා, අඩවි සහ යෙදුම්වල ගෙවීම් ඉක්මනින් කරන්න.</translation>
 <translation id="7579442726219254162">"<ph name="APPLICATION_ID"/>" හි කළමනාකරණය කළ වින්‍යාසය තුළ නොදන්නා "<ph name="VARIABLE"/>" විචල්‍යය</translation>
 <translation id="7581199239021537589">පැත්ත 2 රූප Y වැඩ මුරය</translation>
@@ -3170,6 +3255,7 @@
 <translation id="7631444403134069754">මළල ක්‍රීඩා</translation>
 <translation id="7631527008834753063">රූපවාහිනී ක්‍රීඩා වැඩසටහන්</translation>
 <translation id="7633909222644580952">කාර්ය සාධන දත්ත සහ බිඳ වැටීම් වාර්තා</translation>
+<translation id="7636346903338549690">අඩවිවලට තෙවන පාර්ශ්වීය කුකීස් භාවිතා කිරීමට ඉඩ දී ඇත</translation>
 <translation id="6386821459680628976">Brave වෙතින් ණය කාඩ්පත ඉවත් කරන්නද?</translation>
 <translation id="7637586430889951925">{COUNT,plural, =0{කිසිවක් නැත}=1{ඔබේ ගිණුමේ මුරපද 1 (<ph name="DOMAIN_LIST"/> සඳහා)}one{ඔබේ ගිණුමේ මුරපද # (<ph name="DOMAIN_LIST"/> සඳහා)}other{ඔබේ ගිණුමේ මුරපද # (<ph name="DOMAIN_LIST"/> සඳහා)}}</translation>
 <translation id="7638605456503525968">අනුක්‍රමික තොට</translation>
@@ -3182,7 +3268,6 @@
 <translation id="765676359832457558">උසස් සැකසුම් සඟවන්න...</translation>
 <translation id="7658239707568436148">අවලංගු කරන්න</translation>
 <translation id="7659327900411729175">ලියුම් කවරය කකු 8</translation>
-<translation id="7659880963341457291">ඔබේ සෙවීම් යන්ත්‍රය තහවුරු කරන්න</translation>
 <translation id="766014026101194726">{0,plural, =1{පරිපාලක ප්‍රතිපත්තිය මෙම ගොනුව උඩුගත කිරීම අවහිර කර ඇත}one{පරිපාලක ප්‍රතිපත්තිය ගොනු # උඩුගත කිරීම අවහිර කර ඇත}other{පරිපාලක ප්‍රතිපත්තිය ගොනු # උඩුගත කිරීම අවහිර කර ඇත}}</translation>
 <translation id="7662298039739062396">සැකසීම දිගුවකින් පාලනය කෙරේ</translation>
 <translation id="7663736086183791259">සහතිකය <ph name="CERTIFICATE_VALIDITY"/></translation>
@@ -3219,6 +3304,7 @@
 <translation id="7706689436519265630">ඔබ පිටපත් කරන හෝ ගෙන යන ගොනු විශ්ලේෂණය සඳහා Google Cloud හෝ තෙවන පාර්ශ්ව වෙත යවනු ලැබේ. උදාහරණයක් ලෙස, ඒවා සංවේදී දත්ත හෝ අනිෂ්ට මෘදුකාංග තිබේදැයි ස්කෑන් කළ හැකි අතර සමාගම් ප්‍රතිපත්තිවලට අනුව ගබඩා කළ හැක.</translation>
 <translation id="7709911732293795808">රක්ෂණය</translation>
 <translation id="7714404809393719981">ඡායාරූපය (අර්ධ දීප්තිය)</translation>
+<translation id="7714424966701020172">සම්පූර්ණ නම පිරවීමේ විකල්පය තෝරා ගන්නා ලදි</translation>
 <translation id="7714464543167945231">සහතිකය</translation>
 <translation id="7716147886133743102">ඔබේ පරිපාලක විසින් අවහිර කර ඇත</translation>
 <translation id="7716375162095500223">තවමත් උඩුගත කළේ හෝ නොසලකා හැරියේ නැත</translation>
@@ -3234,6 +3320,7 @@
 <translation id="7744505202669469867">සුරැකි ලිපින වගුව</translation>
 <translation id="774634243536837715">අනතුරුදායක අන්තර්ගතය අවහිරයි.</translation>
 <translation id="7748758200357401411">ඉහළ කාර්ය සාධනය සහ අලෙවියෙන් පසු වාහන අමතර කොටස්</translation>
+<translation id="7751019142333897329"><ph name="FIRST_STRING"/> <ph name="SECOND_STRING"/></translation>
 <translation id="921286857694606205">Brave තුළ අකුරු වර්ග තරම සහ මුහුණත අභිරුචිකරණය කරන්න</translation>
 <translation id="7752995774971033316">කළමනාකරණය නොකළ</translation>
 <translation id="1771750053794015966">යාවත්කාලීනය ආරම්භ වූ විට ඔබේ Brave පටිති සහ යෙදුම් වැසෙනු ඇත</translation>
@@ -3255,7 +3342,6 @@
 <translation id="7785790577395078482">මෙම ටැබ්ලටය</translation>
 <translation id="7786368602962652765">අවශ්‍ය ක්ෂේත්‍රයක් හිස් වේ. සුරැකීමට පෙර එය පුරවන්න.</translation>
 <translation id="7786432318297177736">මෙම සෙවීම් යන්ත්‍ර අහඹු අනුපිළිවෙලින් පෙන්වයි. ඔබට සැකසීම් තුළ ඕනෑම වේලාවක ඔබේ පෙරනිමිය වෙනස් කළ හැක.</translation>
-<translation id="7786912885126430740">ඔබේ CVC සුරැකී ඇති විට ඉතා වේගයෙන් ගෙවා පිටවන්න</translation>
 <translation id="6865562781710080368">ඔබ පිවිසෙන අඩවි ඒවායේ දැන්වීම්වල කාර්ය සාධනය මැනීමට උදවු කිරීමට තොරතුරු සඳහා Brave වෙතින් විමසා සිටිය හැක. Brave ඔබට දැන්වීමක් පෙන්වූ දවසේ වේලාව වැනි සීමිත දත්ත වර්ග එකතු කිරීමට අඩවිවලට ඉඩ දෙයි.</translation>
 <translation id="7791011319128895129">මුදා නොකළ</translation>
 <translation id="7791196057686275387">මිටිය</translation>
@@ -3267,6 +3353,7 @@
 <translation id="7802989406998618639">ඔබේ බැංකුවට ඒ ඔබ බව සත්‍යාපනය කර ගත හැකි පරිදි <ph name="SIDE_OF_CARD"/> හි සංඛ්‍යා <ph name="NUMBER_OF_DIGITS"/>ක ආරක්ෂක කේතය ඇතුළු කරන්න</translation>
 <translation id="780301667611848630">එපා, ස්තූතියි</translation>
 <translation id="7805768142964895445">තත්වය</translation>
+<translation id="7810410097247356677">මීළඟ වතාවේ වේගයෙන් ගෙවීම සඳහා, ඔබේ කාඩ්පත සහ සංකේතිත ආරක්ෂක කේතය ඔබේ උපාංගයට සුරකින්න</translation>
 <translation id="7812922009395017822">Mir</translation>
 <translation id="4670564340385807132">Brave වෙතින් වන යෝජනාවලින් ඉවත් කරන්නද?</translation>
 <translation id="781440967107097262">පසුරු පුවරුව බෙදා ගන්නද?</translation>
@@ -3279,6 +3366,7 @@
 <translation id="7831993212387676366">සාප්පු ලැයිස්තුව යනු කුමක් ද?</translation>
 <translation id="7840103971441592723">තිර ග්‍රහණය ආරම්භ කර ඇත</translation>
 <translation id="784137052867620416">සාප්පු සවාරි ඇතුළාන්ත</translation>
+<translation id="784404208867107517">සමූහගත ඉතිහාසය</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{කිසිවක් නැත}=1{1 යෙදුමක් (<ph name="EXAMPLE_APP_1"/>)}=2{යෙදුම් 2ක් (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}one{යෙදුම් #ක් (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}other{යෙදුම් #ක් (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7162988054835087448">පසුව, ඔබ පිවිසෙන අඩවියකට ඔබ දකින වෙළඳ දැන්වීම් පෞද්ගලීකරණය කිරීමට ඔබේ මාතෘකා සඳහා Brave විමසා සිටිය හැක. ඔබේ බ්‍රවුස් කිරීමේ ඉතිහාසය සහ අනන්‍යතාවය ආරක්ෂා කරමින් Brave මාතෘකා 3ක් දක්වා බෙදා ගනී.</translation>
@@ -3287,7 +3375,6 @@
 <translation id="7865448901209910068">හොඳම වේගය</translation>
 <translation id="7870281855125116701">වට්ටම හමු විය</translation>
 <translation id="7971990257511863579">ඔබගේ Brave ගිණුම් මුරපදය වෙනස් කරන්න</translation>
-<translation id="614871537517043877">වේගවත් ගෙවා පිටවීම සඳහා, ඔබේ Brave ගිණුමේ මෙම කාඩ්පත සඳහා CVC සුරකින්න</translation>
 <translation id="7877007680666472091">ආරක්ෂිත අන්තර්ගත ID</translation>
 <translation id="7878562273885520351">ඔබේ මුරපදය අන් සතු වී තිබිය හැකිය</translation>
 <translation id="7880146494886811634">ලිපිනය සුරකින්න</translation>
@@ -3298,6 +3385,7 @@
 <translation id="7888575728750733395">මුද්‍රණ විදහීමේ යෙදීම</translation>
 <translation id="7894280532028510793">අක්ෂර වින්‍යාසය නිවැරදි නම්, <ph name="BEGIN_LINK"/>ජාල දෝෂ නිර්ණ ධාවනය කිරීම උත්සාහ කරන්න<ph name="END_LINK"/>.</translation>
 <translation id="7901831439558593470">ලියුම් කවරය අඟල් 7 x 9</translation>
+<translation id="3733419689526948053"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, සැකසීම් තුළ Brave සුරක්ෂිත පිරික්සුම් පිටුවට යාමට පටිත්ත සහ එන්ටර් ඔබන්න</translation>
 <translation id="7916162853251942238">ෆ්ලෙක්සෝ පදනම</translation>
 <translation id="7927971017714848357">බිම් කැබලි සහ ඉඩම්</translation>
 <translation id="793209273132572360">ලිපිනය යාවත්කාලීන කරන්නද?</translation>
@@ -3305,6 +3393,7 @@
 <translation id="79338296614623784">වලංගු දුරකථන අංකයක් ඇතුළු කරන්න</translation>
 <translation id="8329449853370113380"><ph name="URL"/> හට ආරක්ෂිත අන්තර්ගතය වාදනය කිරීමට අවශ්‍යයි. ඔබේ උපාංගයේ අනන්‍යතාවය Brave විසින් සත්‍යාපනය කරනු ඇත.</translation>
 <translation id="7935318582918952113">DOM පෙරනය</translation>
+<translation id="7937163678541954811">මෙම කාඩ්පතේ CVC සංකේතනය කර වේගවත් පිටවීම සඳහා ඔබේ උපාංගයට සුරකිනු ඇත</translation>
 <translation id="7937554595067888181"><ph name="EXPIRATION_DATE_ABBR"/> දින කල් ඉකුත් වේ</translation>
 <translation id="7938958445268990899">සර්වරයේ සහතිකය තවම වලංගු නැත.</translation>
 <translation id="7939713744218886332">ලෝක ආහාර පිසීම් ක්‍රම</translation>
@@ -3314,13 +3403,16 @@
 <translation id="7942349550061667556">රතු</translation>
 <translation id="7943397946612013052">බාගැනීම අවහිරයි</translation>
 <translation id="7943893128817522649">ස්වයංක්‍රියව ගොනු කිහිපයක් බාගැනීමට ඉල්ලිය හැකිය</translation>
+<translation id="794567586469801724">macOS</translation>
 <translation id="7946724693008564269">අනාවරණය කර ගත් භාෂාව</translation>
 <translation id="7947285636476623132">ඔබේ කල් ඉකුත් වීමේ වසර පරික්ෂා කර නැවත උත්සාහ කරන්න</translation>
 <translation id="3227327027957060968"><ph name="SEE_CHROME_TIPS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave විශේෂාංග ගැන දැන ගැනීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
 <translation id="1535074845255182168">Brave සැකසීම් තුළ ඔබගේ කුකි මනාප කළමනාකරණය කරන්න</translation>
 <translation id="7951415247503192394">(බිට්-32)</translation>
 <translation id="7952192831285741665">යුරෝපීය EDP</translation>
+<translation id="7952250633095257243">කෙටිමඟ හිස් විය නොහැක</translation>
 <translation id="7952327717479677595">සෙව්ම් යන්ත්‍ර කළමනාකරණය කරන්න බොත්තම, ඔබේ පෙරනිමි සෙව්ම් යන්ත්‍රය සහ අඩවි සෙවීම කළමනාකරණය කිරීමට සක්‍රිය කරන්න</translation>
+<translation id="7953236668995583915">මෙම අඩවියෙහි ඔබේ යාවත්කාලීන කළ සැකසීම් යෙදීමට මෙම පිටුව නැවත පූරණය කරන්න</translation>
 <translation id="7953569069500808819">ඉහළ දාරය මසන්න</translation>
 <translation id="7956713633345437162">ජංගම පොත්සලකුණු</translation>
 <translation id="7961015016161918242">කිසිවිට එපා</translation>
@@ -3368,6 +3460,7 @@
 <translation id="8041089156583427627">ප්‍රතිපෝෂණ යවන්න</translation>
 <translation id="8041940743680923270">ගෝලීය පෙරනිමිය භාවිතා කරන්න(අසන්න)</translation>
 <translation id="8042577181291637092">MIDI උපාංග භාවිත කරන්න ද?</translation>
+<translation id="8043255123207491407">විකුණුම්කරුගේ නියමයන් සහ කොන්දේසි බලන්න</translation>
 <translation id="8046360364391076336">කාර්මික අමුද්‍රව්‍ය සහ උපකරණ</translation>
 <translation id="8052898407431791827">පසුරු පුවරුවට පිටපත් කරන ලදි</translation>
 <translation id="8055534648776115597">වෘත්තීය සහ අඛණ්ඩ අධ්‍යාපනය</translation>
@@ -3375,7 +3468,6 @@
 <translation id="8058009102480785916">අහාර නිෂ්පාදනය</translation>
 <translation id="8058603697124206642">අවශ්‍ය නැත</translation>
 <translation id="8063875539456488183">සුරැක මිල හඹා යන්න</translation>
-<translation id="8064892030280197386">එයට ඔබේ ගෙවීම් තතු පිරවිය හැකි පරිදි ඒ ඔබ බව සත්‍යාපනය කරන්න.</translation>
 <translation id="8066225060526005217">කුකීස් සැකසීම් මගින් කළමනාකරණය කරයි</translation>
 <translation id="5442778523450464826">ඔබ මේ දැන් වංචනික වෙබ් අඩවියක් මත ඔබේ මුරපදය ඇතුළත් කළා. Brave උදවු කළ හැක. ඔබේ මුරපදය වෙනස් කිරීමටත් ඔබේ ගිණුම අවදානමේ තිබිය හැකි බව Brave වෙත දැනුම් දිමටත්, ගිණුම ආරක්‍ෂා කරන්න ක්ලික් කරන්න.</translation>
 <translation id="8070439594494267500">යෙදුම් නිරූපකය</translation>
@@ -3416,7 +3508,6 @@
 <translation id="8131740175452115882">තහවුරු කරන්න</translation>
 <translation id="8134058435519644366">බඳවා ගැනීම් සහ මණ්ඩලීකරණය</translation>
 <translation id="8135546115396015134">වම් යතුර</translation>
-<translation id="8144303576836498784">යමක් වැරදී ඇත. ඔබේ වෙනස් කිරීම සුරැකුවේ නැත</translation>
 <translation id="8148608574971654810">PDF අනුවාදය:</translation>
 <translation id="8149426793427495338">ඔබේ පරිගණකය නින්දට ගියේය.</translation>
 <translation id="8150722005171944719"><ph name="URL"/> හි ඇති ගොනුව කියවිය නොහැක. එය ඉවත්කර, ස්ථාන මාරු කර හෝ ගොනු බලතල මගින් පිවිසිම වලකා තිබිය හැක.</translation>
@@ -3432,6 +3523,7 @@
 <translation id="8183800802493617952">පවුල්-සම්බන්ධිත ක්‍රීඩා සහ ක්‍රියාකාරකම්</translation>
 <translation id="8184538546369750125">ගෝලීය පෙරනිමිය භාවිතා කරන්න (අවසර)</translation>
 <translation id="8186706823560132848">මෘදුකාංගය</translation>
+<translation id="8189557652711717875">ඔබ තෝරන සෙවුම් යන්ත්‍රය ලිපින තීරුවෙන් සහ වෙබ් පිටුවල පින්තූරවලින් සෙවීම වැනි විශේෂාංග සඳහා භාවිත වේ.</translation>
 <translation id="8190193880870196235">දිගුවක් මගින් කළමනාකරණය කෙරේ</translation>
 <translation id="8194412401381329820">ඔබට මෙම කළමනාකරණය නොකළ උපාංගයේ කළමනාකරණය කළ ගිණුමකින් මෙම පිටුව භාවිත කළ නොහැක. ඔබ මෙම පිටුව භාවිතා කරන්නේ නම්, මෙම උපාංගයේ (අනුබද්ධ ගිණුම්) එකම ආයතනය විසින් කළමනාකරණය කරන ගිණුම් හැර, කළමනාකරණය කළ සියලු ම ගිණුම් අගුළු දමනු ඇත.</translation>
 <translation id="8194797478851900357">ගෙන යාම &amp;පසුගමනය කරන්න</translation>
@@ -3442,6 +3534,7 @@
 <translation id="8202370299023114387">ගැටුම</translation>
 <translation id="8207625368992715508">මෝටර් වාහන ක්‍රීඩා</translation>
 <translation id="8208363704094329105">මිමි 300 x 400</translation>
+<translation id="8208629719488976364">ඔබ මුද්‍රණ කරන පිටුවල අන්තර්ගතය සහ ඔබේ මුද්‍රණ යන්ත්‍රයේ තොරතුරු විශ්ලේෂණය සඳහා Google Cloud හෝ තෙවන පාර්ශ්ව වෙත යවනු ලැබේ. උදාහරණයක් ලෙස, එය සංවේදී දත්ත සඳහා ස්කෑන් කළ හැකි අතර සමාගම් ප්‍රතිපත්ති මත පදනම්ව ගබඩා කර ඔබේ පරිපාලකයාට දෘශ්‍යමාන විය හැක.</translation>
 <translation id="8210490490377416373">ප්‍රතිපත්ති නම තෝරන්න</translation>
 <translation id="8210604850413485128">වෙබ් හොස්ටින්</translation>
 <translation id="8211406090763984747">සම්බන්ධතාවය ආරක්ෂිත වේ</translation>
@@ -3450,6 +3543,7 @@
 <translation id="8217240300496046857">අඩවිවලට වෙබය හරහා ඔබව හඹා යන කුකි භාවිත කළ නොහැකිය. සමහර අඩවිවල විශේෂාංග බිඳිය හැකිය.</translation>
 <translation id="8217748145574471584">මානව සම්පත්</translation>
 <translation id="8218327578424803826">පැවරූ ස්ථානය:</translation>
+<translation id="8220833680085771143">ලුහුබැඳීමේ ආරක්ෂාව තාවකාලිකව නොමැත</translation>
 <translation id="8228419419708659934">පිටු දෙකේ දසුන</translation>
 <translation id="8228477714872026922"><ph name="ORIGIN"/>ට ඔබේ ජාලයේ උපාංගයකට ප්‍රවේශ වීමට අවශ්‍යයි:</translation>
 <translation id="8229288958566709448">මිමී <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
@@ -3510,7 +3604,6 @@
 <translation id="8308653357438598313">සජීවී වීඩියෝ ප්‍රවාහය</translation>
 <translation id="8311895354659782580">දේපළ වෙළෙඳාම් ලැයිස්තුගත කිරීම්</translation>
 <translation id="8316555157357957253">දැන් භාවිතා කරයි</translation>
-<translation id="8317570861267063617">වේගවත් ගෙවා පිටවීම සඳහා, මෙම කාඩ්පත සඳහා CVC ඔබේ උපාංගයට සුරකින්න</translation>
 <translation id="8319269383395457801">නේවාසික විකුණුම්</translation>
 <translation id="831997045666694187">සවස</translation>
 <translation id="8321476692217554900">දැනුම්දීම්</translation>
@@ -3524,8 +3617,8 @@
 <translation id="834457929814110454">ඔබට ඔබගේ ආරක්ෂාව වෙත අවදානම වැටහෙන්නේ නම්, හානිකර ක්‍රමලේඛ ඉවත් කර තිබීමට පෙර ඔබ <ph name="BEGIN_LINK"/>මෙම අඩවිය වෙත පිවිසිය<ph name="END_LINK"/> හැකිය.</translation>
 <translation id="8344776605855290140">අතථ්‍ය කාඩ්පත් ලියාපදිංචි කිරීම පුර්ණ උසක දී විවෘත විය</translation>
 <translation id="8347658365704983341">දුරස්ථ ඉගෙනුම</translation>
+<translation id="8350416046273606058">කෙටිමඟේ හිස්තැන් අඩංගු විය නොහැක: "<ph name="SHORTCUT_NAME"/>"</translation>
 <translation id="8351131234907093545">සටහන සාදන්න</translation>
-<translation id="835203957414790336">ඔබ මුද්‍රණ කරන පිටුවල අන්තර්ගතය සහ ඔබේ මුද්‍රණ යන්ත්‍රයේ තොරතුරු විශ්ලේෂණය සඳහා Google Cloud හෝ තෙවන පාර්ශ්ව වෙත යවනු ලැබේ. උදාහරණය වශයෙන්, සංවේදි දත්ත තිබේදැයි එය ස්කෑන් කරනු ලැබීමට ඉඩ ඇත.</translation>
 <translation id="8352849934814541340">මෙම උපාංගයෙහි පරිපාලකයා අතිරේක කාර්යයන් සඳහා යෙදුම් ස්ථාපනය කර ඇත. යෙදුම්වලට ඔබේ සමහර දත්තවලට ප්‍රවේශය ඇත.</translation>
 <translation id="8355270400102541638">ස්ථානීය බිඳ වැටීම් සංදර්භය:</translation>
 <translation id="8363502534493474904">ගුවන් යානා ප්‍රකාරය ක්‍රියාවිරහිත කරමින්</translation>
@@ -3561,11 +3654,14 @@
 <translation id="8416874502399604126">මෙම අවස්ථාවේ දී මයික්‍රෆෝනයට ඉඩ දී ඇත</translation>
 <translation id="8422228580902424274">ඔබ පිවිසීමට උත්සාහ කරන අඩවියේ සිටින ප්‍රහාරකයන් මෘදුකාංග ස්ථාපනය කිරීමට හෝ ඔබේ මුරපදය, දුරකථනය, හෝ ණය කාඩ්පත් අංකය වැනි දේවල් හෙළි කිරීමට ඔබව රවටා ගත හැක.</translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
+<translation id="8425213833346101688">වෙනස් කරන්න</translation>
 <translation id="8427848540066057481">මිමි 500 x 750</translation>
 <translation id="8428213095426709021">සැකසුම්</translation>
 <translation id="8428634594422941299">තේරුණා</translation>
 <translation id="5808418475906247813"><ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave සැකසීම් තුළ ඔබගේ කුකි මනාප කළමනාකරණය කිරීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
+<translation id="8432419784006585012">ඔබේ MIDI උපාංග භාවිත කිරීමට ඉල්ලා සිටිය හැක</translation>
 <translation id="8433057134996913067">මෙය ඔබව බොහෝ අඩවිවලින් වරනු ඇත.</translation>
+<translation id="4198850929558436563">මීළඟ වතාවේ වේගයෙන් ගෙවීම සඳහා, ඔබේ Brave ගිණුමට ඔබේ IBAN සුරකින්න</translation>
 <translation id="8434840396568290395">සුරතලුන්</translation>
 <translation id="8436623588884785770">ප්‍රතිපත්තිය එක් කරන්න</translation>
 <translation id="8437238597147034694">ගෙන යාම &amp;පසුගමනය කරන්න</translation>
@@ -3582,6 +3678,7 @@
 <translation id="8460854335417802511">එය ක්‍රියාත්මක කරන්න</translation>
 <translation id="8461694314515752532">ඔබගේම සමමුහූර්ත මුර-වැකිකඩ සමඟ සමමුහූර්ත කළ දත්ත සංකේතන කරන්න</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{ණය කාඩ්පත් 1}one{ණය කාඩ්පත් #}other{ණය කාඩ්පත් #}}</translation>
+<translation id="1912557825937556898">සැකසීම් තුළ Brave ආරක්ෂක පරීක්ෂා පිටුව වෙත යන්න</translation>
 <translation id="8468358362970107653">ලියුම් කවරය C3</translation>
 <translation id="8473626140772740486">මිමි 300 x 450</translation>
 <translation id="8473863474539038330">ලිපින සහ තව</translation>
@@ -3593,6 +3690,7 @@
 <translation id="8490137692873530638">අට්ටිය 10</translation>
 <translation id="8493948351860045254">ඉඩ හිස් කරන්න</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> ප්‍රතිචාර දැක්වීමට දිගු කාලයක් ගත්තේය.</translation>
+<translation id="443150778270806272">මෙම අඩවියෙහි ඔබේ <ph name="PERMISSION"/> භාවිතය සඳහා, ඔබට Brave වෙත ප්‍රවේශය ලබා දීමට අවශ්‍ය වේ</translation>
 <translation id="230699814587342492">Brave මුරපද</translation>
 <translation id="8503813439785031346">පරිශීලක නාමය</translation>
 <translation id="8504928302600319133">පරිගණක දෘඨාංග</translation>
@@ -3611,6 +3709,7 @@
 <translation id="853246364274116957">පළල් පාරවල් සහ සංගීත ශාලා</translation>
 <translation id="853332391023689529">පිකප් ට්‍රක් රථ</translation>
 <translation id="8533619373899488139">ඔබේ පද්ධති පරිපාලක විසින් පනවන ලද අවහිර කළ URL සහ වෙනත් ප්‍රතිපත්ති බැලීමට &lt;strong&gt;chrome://policy&lt;/strong&gt; වෙත පිවිසෙන්න.</translation>
+<translation id="5734033364988802986">ඔබ Brave සඳහා <ph name="PERMISSION"/> අක්‍රිය කර ඇත.</translation>
 <translation id="8536234749087605613">ලියුම් කවරය (කවුළුව)</translation>
 <translation id="8539500321752640291">අවසර 2කට ඉඩ දෙන්නද?</translation>
 <translation id="8541158209346794904">බ්ලූටූත් උපාංගය</translation>
@@ -3619,8 +3718,10 @@
 <translation id="8542014550340843547">පහළට තුන් වරක් ස්ටේපල් කරන්න</translation>
 <translation id="8542617028204211143">SRA0</translation>
 <translation id="8543181531796978784">ඔබට <ph name="BEGIN_ERROR_LINK"/>අනාවරණය කර ගැනීමේ ගැටලුවක් වාර්තා කිරීමට<ph name="END_ERROR_LINK"/> හෝ, ඔබට ඔබගේ ආරක්ෂාව සඳහා වන අවදානම වැටහෙන්නේ නම්, <ph name="BEGIN_LINK"/>මෙම අනාරක්ෂිත වෙබ් අඩවිය වෙත පිවිසීමට<ph name="END_LINK"/> හැකිය.</translation>
+<translation id="907470742420136113">Brave ගෙවීම් ක්‍රම පිරවීම සඳහා සැකසීම් වෙනස් කිරීමට උත්සාහ දරයි.</translation>
 <translation id="8544303911974837265">පොලියෙස්ටර්</translation>
 <translation id="854548366864113872">ඉහළ මිල විකල්පය</translation>
+<translation id="8546254312340305428">උඩුගත කිරීමට හේතුව සපයන්න (අවශ්‍යයි)</translation>
 <translation id="8546350655047701518">JSON වෙත ලොග නිර්යාත කරන්න</translation>
 <translation id="8546667245446052521">කඩදාසි (ලේඛනාගාරය)</translation>
 <translation id="854892890027593466">ලියුම් කවරය C6/C5</translation>
@@ -3632,6 +3733,7 @@
 <translation id="8555010941760982128">ගෙවා පිටවීමේදී මෙම කේතය භාවිත කරන්න</translation>
 <translation id="8556297087315686325">ජාල අධීක්ෂණය සහ කළමනාකරණය</translation>
 <translation id="8557066899867184262">CVC ඔබේ කාඩ්පත පිටුපස පිහිටා ඇත.</translation>
+<translation id="8557412555245662180">හඹා යෑම් ආරක්ෂාව ගැන තව දැන ගන්න</translation>
 <translation id="8558347880669160417">මෙම අවස්ථාවේ දී කැමරාවට සහ මයික්‍රෆෝනයට ඉඩ දී ඇත</translation>
 <translation id="8559762987265718583">ඔබගේ උපාංගයේ දිනය සහ වේලාව (<ph name="DATE_AND_TIME"/>) නිවැරදි නොවන නිසා <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> වෙත පෞද්ගලික සම්බන්ධයක් සෑදිය නොහැකියි.</translation>
 <translation id="8564182942834072828">වෙන් වූ ලේඛන/එකතු නොකළ පිටපත්</translation>
@@ -3639,7 +3741,7 @@
 <translation id="8576310925653847813">හෝම් තියටර් පද්ධති</translation>
 <translation id="8577192028579836704">සියලු විකල්ප නියමානුකූලව <ph name="TYPICAL_PRICE"/></translation>
 <translation id="8577348305244205642">අතථ්‍ය කාඩ්පත ලබා ගත නොහැකිය</translation>
-<translation id="8585615573162100611"><ph name="PERMISSION"/> හට ඉඩ දීම නවත්වන්න</translation>
+<translation id="8581064022803799721">මෙම පිටුව <ph name="LAST_BOOKMARKS_FOLDER"/> හි සුරකින ලදි.</translation>
 <translation id="8586082901536468629">ස්කොෂ් සහ රැකට්පන්දු උපකරණ</translation>
 <translation id="858637041960032120">දුරකථන අංකය එක් කරන්න</translation>
 <translation id="8589998999637048520">ඉහළම ගුණත්වය</translation>
@@ -3663,6 +3765,7 @@
 <translation id="865032292777205197">චලන සංවේදක</translation>
 <translation id="865255447216708819">පසුපස මුද්‍රණ චිත්‍රපටිය</translation>
 <translation id="8654126188050905496">මිමි 55 x 91</translation>
+<translation id="8655930295668719549">ඔබ මීට පෙර <ph name="ORIGIN"/> මත <ph name="PERMISSION"/> හට ඉඩ දුන්නේ නැත</translation>
 <translation id="8662463432865928030">වාණිජ දේපළ</translation>
 <translation id="8663226718884576429">ඇණවුමේ සාරාංශය, <ph name="TOTAL_LABEL"/>, තව විස්තර</translation>
 <translation id="8663909737634214500">ප්‍රකාශ තැටිය</translation>
@@ -3678,6 +3781,7 @@
 <translation id="8687429322371626002">ඔබගේ උපාංගය සහ ගිණුම <ph name="MANAGER"/> විසින් කළමනාකරණය කරනු ලැබේ.</translation>
 <translation id="8688672835843460752">තිබේ</translation>
 <translation id="868922510921656628">කට්ටලයකට පිටු</translation>
+<translation id="8693639060656817812">ලුහුබැඳීමේ ආරක්ෂණය ලබා ගැනීම පිළිබඳව තව දැන ගන්න</translation>
 <translation id="869891660844655955">කල් ඉකුත් වීමේ දිනය:</translation>
 <translation id="8699041776323235191">HID උපාංගය</translation>
 <translation id="8699985386408839112">ලියුම් කවරය කකු 1</translation>
@@ -3782,6 +3886,7 @@
 <translation id="8903921497873541725">විශාලනය කරන්න</translation>
 <translation id="890493561996401738">යෝජනා බොත්තම ඉවත් කරන්න, ඉවත් කිරීමට Enter ඔබන්න, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="8910898109640902752">අඟ 8 x 10</translation>
+<translation id="4805806622840861220">Brave නැවත දියත් කරන්න</translation>
 <translation id="8918062451146297192">අතථ්‍ය කාඩ්පත සඳහා CVC</translation>
 <translation id="8919740778133505789">ක්‍රීඩා මෝටර් රථ</translation>
 <translation id="8919895429178014996">සියලුම අයිතම සඟවන්න</translation>
@@ -3792,6 +3897,7 @@
 <translation id="893332455753468063">නම එක් කරන්න</translation>
 <translation id="8942355029279167844">ඔබගේ පරිපාලක <ph name="APP_NAME"/> හට නිෂ්පාදන අත්දැකීම වැඩිදියුණු කිරීම සඳහා දෝෂ නිර්ණ දත්ත රැස් කිරීමට ඉඩ දී ඇත. වැඩි විස්තර සඳහා <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/> බලන්න.</translation>
 <translation id="8943282376843390568">දෙහි</translation>
+<translation id="8944485226638699751">සීමිතයි</translation>
 <translation id="8949493680961858543">A1x4</translation>
 <translation id="8951415078585015151">නීතිය සහ රජය</translation>
 <translation id="8954252855949068147">ඇඟලුම්</translation>
@@ -3805,6 +3911,7 @@
 <translation id="8975012916872825179">දුරකථන අංක, ඊ-තැපැල් ලිපින, සහ නැව්ගත කිරීමේ ලිපින වැනි තොරතුරු අන්තර්ගත වේ</translation>
 <translation id="8975263830901772334">ඔබ මුද්‍රණ කරන ගොනුවල නම්</translation>
 <translation id="8978053250194585037">Brave සුරක්ෂිත බ්‍රවුස් කිරීම විසින් මෑත දී <ph name="SITE"/> මත <ph name="BEGIN_LINK"/>තතු බෑමක්<ph name="END_LINK"/> අනාවරණය කර ගෙන ඇත. තතු බෑමේ අඩවි ඔබව රැවටීමට වෙනත් වෙබ් අඩවි මෙන් පෙනී සිටී.</translation>
+<translation id="8982884016487650216">PDF පූරණ කිරීම අවසන් විය</translation>
 <translation id="8983369100812962543">ඔබට දැන් යෙදුම ප්‍රතිප්‍රමාණ කළ හැකිය</translation>
 <translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave තුළ ඔබගේ බ්‍රවුස් කිරීමේ ඉතිහාසය බැලීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
 <translation id="8987663052629670333">ඡායාරූප මුද්‍රණ සේවා</translation>
@@ -3831,6 +3938,7 @@
 <translation id="9021429684248523859"><ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, සබැඳිය බෙදා ගැනීමෙන්, QR කේතයක් තැනීමෙන්, විකාශය කිරීමෙන් සහ තවත් දේ මඟින් මෙම ටැබය බෙදා ගැනීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
 <translation id="9023536760430404133">වාහන රෝද සහ ටයර්</translation>
 <translation id="9025348182339809926">(අවලංගුයි)</translation>
+<translation id="902590795160480390">PDF පූරණ කිරීම</translation>
 <translation id="9030265603405983977">මොනොක්‍රෝම්</translation>
 <translation id="9035022520814077154">ආරක්ෂක දෝෂය</translation>
 <translation id="9035824888276246493">ආරක්‍ෂක කේත සුරකින්න</translation>
@@ -3929,6 +4037,7 @@
 <translation id="9207861905230894330">භාණ්ඩය එකතු කළ නොහැකි විය.</translation>
 <translation id="9213433120051936369">පෙනුම අභිරුචිකරණය කරන්න</translation>
 <translation id="2206050430829841793">යෙදුමක් මෙම අඩවියට සුරක්ෂිතව සබැඳීමෙන් Brave නවතයි</translation>
+<translation id="92178312226016010">ඔබ මෙම නිෂ්පාදනය නිරීක්ෂණය කරයි.</translation>
 <translation id="9218430445555521422">පෙරනිමි ලෙස සකසන්න</translation>
 <translation id="9219103736887031265">රූප</translation>
 <translation id="142389341645668510">Brave අභිරුචිකරණය කරන්න</translation>
@@ -3942,6 +4051,7 @@
 <translation id="939736085109172342">නව ෆෝල්ඩරය</translation>
 <translation id="940053046584497293">සංචාර සහ ප්‍රවාහනය</translation>
 <translation id="6588091288231158998">ඔබේ Brave ගිණුමේ සුරකින ලද මුරපද සහ මුරයතුරු භාවිතා කරන්න</translation>
+<translation id="5444457503062019851">Brave ඔබ බ්‍රවුස් කරන විට වෙබ් අඩවි ඔබව නිරීක්‍ෂණ කිරීමට තුන් වන පාර්ශ්ව කුකී භාවිත කිරීම අවහිර කරයි.</translation>
 <translation id="945855313015696284">පහත තොරතුරු පරීක්‍ෂා කර, කිසියම් අවලංගු කාඩ්පත් තිබේ නම් මකන්න</translation>
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave Site හි නව අඩවියක් ඉක්මනින් තැනීමට Tab ඔබා අනතුරුව Enter ඔබන්න</translation>
 <translation id="7776043919629791284">{COUNT,plural, =0{Brave අද නැවතත් කුකීස් සීමා කරනු ඇත}=1{Brave හෙට නැවතත් කුකීස් සීමා කරනු ඇත}one{Brave නැවත කුකී සීමා කරන තෙක් දින #ක්}other{Brave නැවත කුකී සීමා කරන තෙක් දින #ක්}}</translation>

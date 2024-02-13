@@ -15,7 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/thread_annotations.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
-#include "components/content_settings/core/browser/content_settings_origin_identifier_value_map.h"
+#include "components/content_settings/core/browser/content_settings_origin_value_map.h"
 #include "components/content_settings/core/browser/content_settings_pref_provider.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -42,10 +42,13 @@ class BravePrefProvider : public PrefProvider,
                          const ContentSettingsPattern& secondary_pattern,
                          ContentSettingsType content_type,
                          base::Value&& value,
-                         const ContentSettingConstraints& constraints) override;
+                         const ContentSettingConstraints& constraints,
+                         const PartitionKey& partition_key =
+                             PartitionKey::WipGetDefault()) override;
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
-      bool incognito) const override;
+      bool incognito,
+      const PartitionKey& partition_key) const override;
 
   // calls superclass directly
   bool SetWebsiteSettingForTest(const ContentSettingsPattern& primary_pattern,
@@ -85,14 +88,15 @@ class BravePrefProvider : public PrefProvider,
   void MigrateFingerprintingSetingsToOriginScoped();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
-  void NotifyChanges(const std::vector<std::unique_ptr<OwnedRule>>& rules,
+  void NotifyChanges(const std::vector<std::unique_ptr<Rule>>& rules,
                      bool incognito);
   bool SetWebsiteSettingInternal(
       const ContentSettingsPattern& primary_pattern,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsType content_type,
       base::Value&& value,
-      const ContentSettingConstraints& constraints);
+      const ContentSettingConstraints& constraints,
+      const PartitionKey& partition_key = PartitionKey::WipGetDefault());
 
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
@@ -100,10 +104,10 @@ class BravePrefProvider : public PrefProvider,
                                ContentSettingsType content_type) override;
   void OnCookiePrefsChanged(const std::string& pref);
 
-  std::map<bool /* is_incognito */, OriginIdentifierValueMap> cookie_rules_;
-  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<OwnedRule>>>
+  std::map<bool /* is_incognito */, OriginValueMap> cookie_rules_;
+  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_cookie_rules_;
-  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<OwnedRule>>>
+  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_shield_down_rules_;
 
   bool initialized_;

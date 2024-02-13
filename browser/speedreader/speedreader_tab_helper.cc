@@ -73,6 +73,7 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
       PageDistiller(web_contents) {
   dom_distiller::AddObserver(web_contents, this);
   speedreader_service_observation_.Observe(GetSpeedreaderService());
+  tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
 }
 
 SpeedreaderTabHelper::~SpeedreaderTabHelper() {
@@ -188,7 +189,7 @@ void SpeedreaderTabHelper::ShowSpeedreaderBubble(
     SpeedreaderBubbleLocation location) {
 #if !BUILDFLAG(IS_ANDROID)
   auto* contents = web_contents();
-  Browser* browser = chrome::FindBrowserWithWebContents(contents);
+  Browser* browser = chrome::FindBrowserWithTab(contents);
   DCHECK(browser);
 
   speedreader_bubble_ = static_cast<BraveBrowserWindow*>(browser->window())
@@ -221,6 +222,26 @@ void SpeedreaderTabHelper::OnTtsPlayPause(int paragraph_index) {
   }
 }
 
+void SpeedreaderTabHelper::OnToolbarStateChanged(mojom::MainButtonType button) {
+  switch (button) {
+    case mojom::MainButtonType::None:
+      SetDocumentAttribute("data-toolbar-button", "");
+      break;
+    case mojom::MainButtonType::Tune:
+      SetDocumentAttribute("data-toolbar-button", "tune");
+      break;
+    case mojom::MainButtonType::Appearance:
+      SetDocumentAttribute("data-toolbar-button", "appearance");
+      break;
+    case mojom::MainButtonType::TextToSpeech:
+      SetDocumentAttribute("data-toolbar-button", "tts");
+      break;
+    case mojom::MainButtonType::AI:
+      SetDocumentAttribute("data-toolbar-button", "ai");
+      break;
+  }
+}
+
 void SpeedreaderTabHelper::ClearPersistedData() {
   if (auto* entry = web_contents()->GetController().GetLastCommittedEntry()) {
     SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
@@ -232,11 +253,23 @@ void SpeedreaderTabHelper::ReloadContents() {
 }
 
 void SpeedreaderTabHelper::ProcessNavigation(
-    content::NavigationHandle* navigation_handle) {
+    content::NavigationHandle* navigation_handle,
+    bool finish_navigation) {
   if (!navigation_handle->IsInPrimaryMainFrame() ||
       navigation_handle->IsSameDocument() ||
       MaybeUpdateCachedState(navigation_handle)) {
     UpdateUI();
+    return;
+  }
+
+  if (finish_navigation) {
+    if (navigation_handle->IsErrorPage() ||
+        web_contents()->GetPrimaryMainFrame()->IsErrorDocument()) {
+      TransitStateTo(
+          DistillStates::ViewOriginal(
+              DistillStates::ViewOriginal::Reason::kNotDistillable, false),
+          true);
+    }
     return;
   }
 
@@ -254,7 +287,8 @@ void SpeedreaderTabHelper::ProcessNavigation(
   auto* nav_entry = navigation_handle->GetNavigationEntry();
 
   const bool url_looks_readable =
-      nav_entry && !nav_entry->IsViewSourceMode() && rewriter_service &&
+      rewriter_service && nav_entry &&
+      nav_entry->GetVirtualURL().SchemeIsHTTPOrHTTPS() &&
       rewriter_service->URLLooksReadable(navigation_handle->GetURL());
 
   const bool enabled_for_site =
@@ -287,8 +321,7 @@ void SpeedreaderTabHelper::UpdateUI() {
     return;
   }
 #if !BUILDFLAG(IS_ANDROID)
-  if (const auto* browser =
-          chrome::FindBrowserWithWebContents(web_contents())) {
+  if (const auto* browser = chrome::FindBrowserWithTab(web_contents())) {
     if (!DistillStates::IsDistilled(PageDistillState())) {
       static_cast<BraveBrowserWindow*>(browser->window())
           ->HideReaderModeToolbar();
@@ -310,6 +343,11 @@ void SpeedreaderTabHelper::DidStartNavigation(
 void SpeedreaderTabHelper::DidRedirectNavigation(
     content::NavigationHandle* navigation_handle) {
   ProcessNavigation(navigation_handle);
+}
+
+void SpeedreaderTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  ProcessNavigation(navigation_handle, true);
 }
 
 void SpeedreaderTabHelper::DidStopLoading() {
@@ -347,6 +385,10 @@ void SpeedreaderTabHelper::DOMContentLoaded(
 
   render_frame_host->ExecuteJavaScriptInIsolatedWorld(
       *kLoadScript, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+
+  for (auto& o : observers_) {
+    o.OnContentsReady();
+  }
 }
 
 void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
@@ -356,6 +398,7 @@ void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 
 void SpeedreaderTabHelper::WebContentsDestroyed() {
   speedreader_service_observation_.Reset();
+  tts_player_observation_.Reset();
   dom_distiller::RemoveObserver(web_contents(), this);
   SetWebContents(nullptr);
   HideSpeedreaderBubble();
@@ -391,6 +434,47 @@ void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
     SendGestureEvent(view, ui::GESTURE_EVENT_TYPE_PINCH_END, time_ms, 0.f);
   }
 #endif
+}
+
+void SpeedreaderTabHelper::OnReadingStart(content::WebContents* web_contents) {
+  if (!speedreader::DistillStates::IsDistilled(distill_state_)) {
+    return;
+  }
+
+  constexpr const char16_t kReading[] =
+      uR"js( speedreaderUtils.setTtsReadingState($1) )js";
+
+  const auto script = base::ReplaceStringPlaceholders(
+      kReading, (web_contents == this->web_contents()) ? u"true" : u"false",
+      nullptr);
+
+  this->web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
+
+void SpeedreaderTabHelper::OnReadingStop(content::WebContents* web_contents) {
+  OnReadingStart(nullptr);
+}
+
+void SpeedreaderTabHelper::OnReadingProgress(content::WebContents* web_contents,
+                                             int paragraph_index,
+                                             int char_index,
+                                             int length) {
+  if (!speedreader::DistillStates::IsDistilled(distill_state_) ||
+      web_contents != this->web_contents()) {
+    return;
+  }
+  constexpr const char16_t kHighlight[] =
+      uR"js( speedreaderUtils.highlightText($1, $2, $3) )js";
+
+  const auto script = base::ReplaceStringPlaceholders(
+      kHighlight,
+      {base::NumberToString16(paragraph_index),
+       base::NumberToString16(char_index), base::NumberToString16(length)},
+      nullptr);
+
+  this->web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void SpeedreaderTabHelper::OnSiteEnableSettingChanged(

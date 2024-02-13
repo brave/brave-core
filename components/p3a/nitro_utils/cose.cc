@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/nitro_utils/cose.h"
 
+#include <optional>
 #include <set>
 #include <string_view>
 
@@ -16,11 +17,11 @@
 #include "crypto/sha2.h"
 #include "crypto/signature_verifier.h"
 #include "net/cert/asn1_util.h"
-#include "net/cert/pki/trust_store.h"
 #include "net/cert/time_conversions.h"
 #include "third_party/boringssl/src/include/openssl/bn.h"
 #include "third_party/boringssl/src/include/openssl/bytestring.h"
 #include "third_party/boringssl/src/include/openssl/ecdsa.h"
+#include "third_party/boringssl/src/pki/trust_store.h"
 
 namespace nitro_utils {
 
@@ -94,7 +95,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
   cbor::Reader::Config cbor_config;
   cbor_config.allow_and_canonicalize_out_of_order_keys = true;
 
-  absl::optional<cbor::Value> decoded_val =
+  std::optional<cbor::Value> decoded_val =
       cbor::Reader::Read(data, cbor_config);
   if (cbor_config.error_code_out != nullptr &&
       *cbor_config.error_code_out !=
@@ -120,7 +121,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
     return false;
   }
 
-  absl::optional<cbor::Value> protected_decoded_val =
+  std::optional<cbor::Value> protected_decoded_val =
       cbor::Reader::Read(protected_encoded_.GetBytestring(), cbor_config);
   if (cbor_config.error_code_out != nullptr &&
       *cbor_config.error_code_out !=
@@ -166,7 +167,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
     return false;
   }
 
-  absl::optional<cbor::Value> payload_dec_val =
+  std::optional<cbor::Value> payload_dec_val =
       cbor::Reader::Read(payload_encoded_.GetBytestring(), cbor_config);
   if (!payload_dec_val.has_value() ||
       (cbor_config.error_code_out != nullptr &&
@@ -188,19 +189,19 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
   return true;
 }
 
-bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
+bool CoseSign1::Verify(const bssl::ParsedCertificateList& cert_chain) {
   CHECK_GT(cert_chain.size(), 1U);
 
-  net::der::GeneralizedTime time_now;
+  bssl::der::GeneralizedTime time_now;
   CHECK(net::EncodeTimeAsGeneralizedTime(base::Time::Now(), &time_now));
 
-  net::CertPathErrors cert_path_errors;
+  bssl::CertPathErrors cert_path_errors;
 
-  net::VerifyCertificateChain(
-      cert_chain, net::CertificateTrust::ForTrustAnchor(), this, time_now,
-      net::KeyPurpose::ANY_EKU, net::InitialExplicitPolicy::kFalse,
-      std::set<net::der::Input>(), net::InitialPolicyMappingInhibit::kFalse,
-      net::InitialAnyPolicyInhibit::kFalse, nullptr, &cert_path_errors);
+  bssl::VerifyCertificateChain(
+      cert_chain, bssl::CertificateTrust::ForTrustAnchor(), this, time_now,
+      bssl::KeyPurpose::ANY_EKU, bssl::InitialExplicitPolicy::kFalse,
+      std::set<bssl::der::Input>(), bssl::InitialPolicyMappingInhibit::kFalse,
+      bssl::InitialAnyPolicyInhibit::kFalse, nullptr, &cert_path_errors);
 
   if (cert_path_errors.ContainsHighSeverityErrors()) {
     LOG(ERROR) << "COSE verification: bad certificate chain: "
@@ -215,7 +216,7 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
   sig_data_vec.push_back(payload_encoded_.Clone());
   cbor::Value sig_data(sig_data_vec);
 
-  absl::optional<std::vector<uint8_t>> encoded_sig_data =
+  std::optional<std::vector<uint8_t>> encoded_sig_data =
       cbor::Writer::Write(sig_data);
   CHECK(encoded_sig_data.has_value());
 
@@ -260,17 +261,17 @@ const cbor::Value& CoseSign1::payload() {
 }
 
 bool CoseSign1::IsSignatureAlgorithmAcceptable(
-    net::SignatureAlgorithm signature_algorithm,
-    net::CertErrors* errors) {
+    bssl::SignatureAlgorithm signature_algorithm,
+    bssl::CertErrors* errors) {
   return true;
 }
 
 bool CoseSign1::IsPublicKeyAcceptable(EVP_PKEY* public_key,
-                                      net::CertErrors* errors) {
+                                      bssl::CertErrors* errors) {
   return true;
 }
 
-net::SignatureVerifyCache* CoseSign1::GetVerifyCache() {
+bssl::SignatureVerifyCache* CoseSign1::GetVerifyCache() {
   return nullptr;
 }
 

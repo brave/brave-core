@@ -1,8 +1,0 @@
-# Copyright 2022 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
-
-# Since CachedFlag that we extend and ChromeFeatureList that we patch are parts of the same
-# component, we have to embed our class to this component. Otherwise we will have cycled
-# dependency.
-brave_flags_java_sources = [ "//brave/browser/flags/android/java/src/org/chromium/chrome/browser/flags/BraveCachedFlag.java" ]

@@ -6,6 +6,7 @@
 #include "brave/components/brave_sync/qr_code_data.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/json/json_reader.h"
@@ -32,11 +33,11 @@ QrCodeData::QrCodeData(const std::string& sync_code_hex,
       not_after(not_after) {}
 
 base::Time QrCodeData::FromEpochSeconds(int64_t seconds_since_epoch) {
-  return base::Time::FromJavaTime(seconds_since_epoch * 1000);
+  return base::Time::FromMillisecondsSinceUnixEpoch(seconds_since_epoch * 1000);
 }
 
 int64_t QrCodeData::ToEpochSeconds(const base::Time& time) {
-  return time.ToJavaTime() / 1000;
+  return time.InMillisecondsSinceUnixEpoch() / 1000;
 }
 
 std::unique_ptr<QrCodeData> QrCodeData::CreateWithActualDate(
@@ -69,7 +70,7 @@ std::unique_ptr<QrCodeData> QrCodeData::FromJson(
     const std::string& json_string) {
   auto qr_data = std::unique_ptr<QrCodeData>(new QrCodeData());
 
-  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
+  std::optional<base::Value> value = base::JSONReader::Read(json_string);
   if (!value) {
     VLOG(1) << "Could not parse string " << json_string;
     return nullptr;

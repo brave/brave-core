@@ -6,6 +6,7 @@
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "base/json/json_reader.h"
@@ -15,7 +16,6 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "extensions/common/url_pattern.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave {
@@ -36,10 +36,10 @@ bool CreateURLPatternSetFromList(const base::Value::List* value,
   return valid;
 }
 
-absl::optional<base::flat_set<std::string>> CreateParamsList(
+std::optional<base::flat_set<std::string>> CreateParamsList(
     const base::Value::List* value) {
   if (!value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   base::flat_set<std::string> result;
   for (const auto& param : *value) {
@@ -73,7 +73,7 @@ base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> ParseFromJson(
       continue;
     }
     auto* params_list = items->FindList("params");
-    absl::optional<base::flat_set<std::string>> params =
+    std::optional<base::flat_set<std::string>> params =
         CreateParamsList(params_list);
     if (!params) {
       continue;

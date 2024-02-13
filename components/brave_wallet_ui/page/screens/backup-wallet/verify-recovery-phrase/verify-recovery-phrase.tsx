@@ -14,7 +14,10 @@ import {
   getWordIndicesToVerfy,
   ORDINALS
 } from '../../../../utils/ordinal-utils'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
+import {
+  useCompleteWalletBackupMutation,
+  useReportOnboardingActionMutation
+} from '../../../../common/slices/api.slice'
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -42,13 +45,15 @@ import { CenteredPageLayout } from '../../../../components/desktop/centered-page
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
 import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../selectors'
-import { OnboardingNewWalletStepsNavigation } from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
+import {
+  OnboardingStepsNavigation //
+} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
 import RecoveryPhrase from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 
 export const VerifyRecoveryPhrase = () => {
-  // custom hooks
-  const { braveWalletP3A } = useApiProxy()
+  // mutations
+  const [report] = useReportOnboardingActionMutation()
 
   // state
   const [nextStepEnabled, setNextStepEnabled] = React.useState(false)
@@ -63,6 +68,9 @@ export const VerifyRecoveryPhrase = () => {
   const { pathname } = useLocation()
   const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
 
+  // mutations
+  const [completeWalletBackup] = useCompleteWalletBackupMutation()
+
   // methods
   const onSelectedWordsUpdated = React.useCallback(
     (words: any[], doesWordOrderMatch: boolean) => {
@@ -72,32 +80,25 @@ export const VerifyRecoveryPhrase = () => {
     []
   )
 
-  const onSkip = React.useCallback(() => {
-    braveWalletP3A.reportOnboardingAction(
-      BraveWallet.OnboardingAction.CompleteRecoverySkipped
-    )
-    dispatch(WalletPageActions.walletSetupComplete(true))
-    history.push(WalletRoutes.OnboardingComplete)
-  }, [braveWalletP3A])
-
   const onSkipBackup = React.useCallback(() => {
-    history.push(WalletRoutes.PortfolioAssets)
-  }, [])
-
-  const onNextStep = React.useCallback(() => {
+    dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     if (isOnboarding) {
-      braveWalletP3A.reportOnboardingAction(
-        BraveWallet.OnboardingAction.Complete
-      )
-      dispatch(WalletPageActions.walletSetupComplete(true))
+      report(BraveWallet.OnboardingAction.CompleteRecoverySkipped)
+      history.push(WalletRoutes.OnboardingComplete)
+      return
     }
-    dispatch(WalletPageActions.walletBackupComplete())
-    history.push(
-      isOnboarding
-        ? WalletRoutes.OnboardingComplete
-        : WalletRoutes.PortfolioAssets
-    )
-  }, [isOnboarding])
+    history.push(WalletRoutes.PortfolioAssets)
+  }, [isOnboarding, report])
+
+  const onNextStep = React.useCallback(async () => {
+    await completeWalletBackup().unwrap()
+    if (isOnboarding) {
+      dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
+      history.push(WalletRoutes.OnboardingComplete)
+      return
+    }
+    history.push(WalletRoutes.PortfolioAssets)
+  }, [isOnboarding, completeWalletBackup])
 
   // memos
   const recoveryPhrase = React.useMemo(() => {
@@ -115,18 +116,16 @@ export const VerifyRecoveryPhrase = () => {
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-          {isOnboarding && (
-            <OnboardingNewWalletStepsNavigation
-              goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
-              currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
-              onSkip={onSkip}
+          {isOnboarding ? (
+            <OnboardingStepsNavigation
+              onSkip={onSkipBackup}
+              preventSkipAhead
             />
-          )}
-          {!isOnboarding && (
+          ) : (
             <StepsNavigation
               steps={WALLET_BACKUP_STEPS}
-              goBackUrl={WalletRoutes.BackupRecoveryPhrase}
               currentStep={WalletRoutes.BackupVerifyRecoveryPhrase}
+              preventSkipAhead
               onSkip={onSkipBackup}
             />
           )}

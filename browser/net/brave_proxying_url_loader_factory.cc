@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -59,7 +60,7 @@ net::RedirectInfo CreateRedirectInfo(
     const network::ResourceRequest& original_request,
     const GURL& new_url,
     int response_code,
-    const absl::optional<std::string>& referrer_policy_header) {
+    const std::optional<std::string>& referrer_policy_header) {
   // Workaround for a bug in Chromium (crbug.com/1097681).
   // download_utils.cc do not set update_first_party_url_on_redirect to true
   // for new ResourceRequests, but we can mitigate it by looking at
@@ -180,7 +181,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
     const std::vector<std::string>& removed_headers,
     const net::HttpRequestHeaders& modified_headers,
     const net::HttpRequestHeaders& modified_cors_exempt_headers,
-    const absl::optional<GURL>& new_url) {
+    const std::optional<GURL>& new_url) {
   if (new_url)
     request_.url = new_url.value();
 
@@ -227,7 +228,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveEarlyHints(
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr head,
     mojo::ScopedDataPipeConsumerHandle body,
-    absl::optional<mojo_base::BigBuffer> cached_metadata) {
+    std::optional<mojo_base::BigBuffer> cached_metadata) {
   current_response_head_ = std::move(head);
   current_response_body_ = std::move(body);
   cached_metadata_ = std::move(cached_metadata);
@@ -293,7 +294,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
   net::RedirectInfo redirect_info =
       CreateRedirectInfo(request_, redirect_url_, kInternalRedirectStatusCode,
-                         absl::nullopt /* referrer_policy_header */);
+                         std::nullopt /* referrer_policy_header */);
 
   network::mojom::URLResponseHeadPtr head =
       network::mojom::URLResponseHead::New();

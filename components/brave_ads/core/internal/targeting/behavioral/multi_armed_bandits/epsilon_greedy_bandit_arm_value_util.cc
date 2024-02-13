@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_value_util.h"
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -18,11 +18,11 @@ constexpr char kSegmentKey[] = "segment";
 constexpr char kValueKey[] = "value";
 constexpr char kPullsKey[] = "pulls";
 
-absl::optional<EpsilonGreedyBanditArmInfo> MaybeGetArmFromDict(
+std::optional<EpsilonGreedyBanditArmInfo> MaybeGetArmFromDict(
     const base::Value::Dict& dict) {
   const std::string* const segment = dict.FindString(kSegmentKey);
   if (!segment || segment->empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   EpsilonGreedyBanditArmInfo arm;
@@ -62,7 +62,7 @@ EpsilonGreedyBanditArmMap EpsilonGreedyBanditArmsFromValue(
       continue;
     }
 
-    const absl::optional<EpsilonGreedyBanditArmInfo> arm =
+    const std::optional<EpsilonGreedyBanditArmInfo> arm =
         MaybeGetArmFromDict(*item_dict);
     if (!arm) {
       found_errors = true;

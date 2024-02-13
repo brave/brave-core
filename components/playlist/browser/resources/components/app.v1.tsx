@@ -7,6 +7,8 @@ import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
+import AlertCenter from '@brave/leo/react/alertCenter'
+
 // Components
 import Header from './header'
 import PlaylistsCatalog from './playlistsCatalog'
@@ -50,6 +52,7 @@ export default function App() {
           <AppContainer isPlaylistPlayerPage={!!playlistId}>
             <StickyArea>
               <StyledHeader playlistId={playlistId} />
+              <AlertCenter />
               <VideoFrame
                 visible={
                   !!lastPlayerState?.currentItem &&

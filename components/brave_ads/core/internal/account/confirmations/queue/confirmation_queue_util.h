@@ -6,8 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_CONFIRMATION_QUEUE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_CONFIRMATION_QUEUE_UTIL_H_
 
-#include "base/functional/callback_forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <optional>
+
+#include "base/functional/callback.h"
 
 namespace brave_ads {
 
@@ -19,7 +20,7 @@ using RebuildConfirmationQueueItemCallback =
 void AddConfirmationQueueItem(const ConfirmationInfo& confirmation);
 void RemoveConfirmationQueueItem(const ConfirmationInfo& confirmation);
 
-absl::optional<ConfirmationInfo> MaybeGetNextConfirmationQueueItem();
+std::optional<ConfirmationInfo> MaybeGetNextConfirmationQueueItem();
 
 void RebuildConfirmationQueueItem(
     const ConfirmationInfo& confirmation,

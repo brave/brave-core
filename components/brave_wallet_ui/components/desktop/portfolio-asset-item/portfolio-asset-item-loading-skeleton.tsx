@@ -10,19 +10,19 @@ import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Styled Components
 import {
-  StyledWrapper,
+  HoverArea,
   NameAndIcon,
   NameColumn,
   Spacer,
   BalanceColumn,
-  ButtonArea
+  Button
 } from './style'
 import { IconsWrapper } from '../../shared/style'
 
 export const PortfolioAssetItemLoadingSkeleton = () => {
   return (
-    <StyledWrapper>
-      <ButtonArea disabled={true}>
+    <HoverArea>
+      <Button disabled={true}>
         <NameAndIcon>
           <IconsWrapper>
             <LoadingSkeleton
@@ -54,7 +54,7 @@ export const PortfolioAssetItemLoadingSkeleton = () => {
             height={18}
           />
         </BalanceColumn>
-      </ButtonArea>
-    </StyledWrapper>
+      </Button>
+    </HoverArea>
   )
 }

@@ -1,4 +1,16 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+
 declare_args() {
   brave_infura_project_id = ""
   brave_zero_ex_api_key = ""
+  enable_bitcoin_by_default = !is_ios && !is_android
+  enable_zcash_by_default =
+      !is_ios && !is_android &&
+      (brave_channel == "nightly" || brave_channel == "development")
 }

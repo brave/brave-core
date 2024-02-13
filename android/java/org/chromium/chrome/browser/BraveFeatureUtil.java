@@ -5,8 +5,8 @@
 
 package org.chromium.chrome.browser;
 
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
 
 @JNINamespace("chrome::android")
 public abstract class BraveFeatureUtil {

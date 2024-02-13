@@ -4,9 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
-#include <memory>
-#include <unordered_map>
 
+#include <memory>
+#include <optional>
+#include <unordered_map>
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
@@ -32,7 +33,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -130,18 +130,16 @@ class FilTxManagerUnitTest : public testing::Test {
   }
 
   void GetTransactionMessageToSign(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
-      absl::optional<std::string> expected_message) {
+      std::optional<std::string> expected_message) {
     base::RunLoop run_loop;
     fil_tx_manager()->GetTransactionMessageToSign(
-        chain_id, tx_meta_id,
+        tx_meta_id,
         base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
           EXPECT_EQ(!!message, expected_message.has_value());
           if (expected_message.has_value()) {
             ASSERT_TRUE(message->is_message_str());
-            absl::optional<std::string> message_str =
-                message->get_message_str();
+            std::optional<std::string> message_str = message->get_message_str();
             EqualJSONs(*message_str, *expected_message);
             EXPECT_EQ(message_str.has_value(), expected_message.has_value());
           }
@@ -161,7 +159,7 @@ class FilTxManagerUnitTest : public testing::Test {
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::FilTxDataPtr tx_data,
                                 const mojom::AccountIdPtr& from,
-                                const absl::optional<url::Origin>& origin,
+                                const std::optional<url::Origin>& origin,
                                 std::string* meta_id) {
     auto tx_data_union = mojom::TxDataUnion::NewFilTxData(std::move(tx_data));
 
@@ -179,14 +177,13 @@ class FilTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void ApproveTransaction(const std::string& chain_id,
-                          const std::string& meta_id,
+  void ApproveTransaction(const std::string& meta_id,
                           bool is_error,
                           mojom::FilecoinProviderError error,
                           const std::string& expected_err_message) {
     base::RunLoop run_loop;
     fil_tx_manager()->ApproveTransaction(
-        chain_id, meta_id,
+        meta_id,
         base::BindLambdaForTesting([&](bool success,
                                        mojom::ProviderErrorUnionPtr error_union,
                                        const std::string& err_message) {
@@ -254,10 +251,9 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id1);
+                           from_account, std::nullopt, &meta_id1);
 
-  auto tx_meta1 =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
+  auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   EXPECT_TRUE(tx_meta1);
   EXPECT_EQ(tx_meta1->chain_id(), mojom::kLocalhostChainId);
 
@@ -269,9 +265,8 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
 
   std::string meta_id2;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id2);
-  auto tx_meta2 =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id2);
+                           from_account, std::nullopt, &meta_id2);
+  auto tx_meta2 = fil_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
   EXPECT_EQ(tx_meta2->chain_id(), mojom::kLocalhostChainId);
   EXPECT_EQ(tx_meta2->from(), from_account);
@@ -292,24 +287,22 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
       }
   })");
 
-  ApproveTransaction(mojom::kLocalhostChainId, meta_id1, false,
-                     mojom::FilecoinProviderError::kSuccess, std::string());
+  ApproveTransaction(meta_id1, false, mojom::FilecoinProviderError::kSuccess,
+                     std::string());
   // Wait for tx to be updated.
   base::RunLoop().RunUntilIdle();
-  tx_meta1 =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
+  tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
   EXPECT_FALSE(tx_meta1->tx_hash().empty());
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Submitted);
 
   // Send another tx.
-  ApproveTransaction(mojom::kLocalhostChainId, meta_id2, false,
-                     mojom::FilecoinProviderError::kSuccess, std::string());
+  ApproveTransaction(meta_id2, false, mojom::FilecoinProviderError::kSuccess,
+                     std::string());
   base::RunLoop().RunUntilIdle();
 
-  tx_meta2 =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id2);
+  tx_meta2 = fil_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
   EXPECT_EQ(tx_meta2->from(), from_account);
   EXPECT_FALSE(tx_meta2->tx_hash().empty());
@@ -327,10 +320,9 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id1);
+                           from_account, std::nullopt, &meta_id1);
 
-  auto tx_meta1 =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
+  auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   EXPECT_TRUE(tx_meta1);
 
   EXPECT_EQ(tx_meta1->tx()->gas_fee_cap(), "100820");
@@ -355,13 +347,12 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
   AddInterceptorResponse("Filecoin.MpoolPush",
                          R"({ "id": 1, "jsonrpc": "2.0", "result":{} })");
 
-  ApproveTransaction(mojom::kLocalhostChainId, meta_id1, true,
+  ApproveTransaction(meta_id1, true,
                      mojom::FilecoinProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
   // Wait for tx to be updated.
   base::RunLoop().RunUntilIdle();
-  tx_meta1 =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
+  tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
   EXPECT_TRUE(tx_meta1->tx_hash().empty());
   EXPECT_EQ(tx_meta1->from(), from_account);
@@ -379,10 +370,9 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, tx_data.Clone(),
-                           from_account, absl::nullopt, &meta_id1);
+                           from_account, std::nullopt, &meta_id1);
 
-  auto tx_meta1 =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
+  auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   EXPECT_TRUE(tx_meta1);
   EXPECT_EQ(tx_meta1->chain_id(), mojom::kLocalhostChainId);
 
@@ -417,12 +407,11 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
         "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
       }
   })");
-  ApproveTransaction(mojom::kLocalhostChainId, meta_id1, false,
-                     mojom::FilecoinProviderError::kSuccess, std::string());
+  ApproveTransaction(meta_id1, false, mojom::FilecoinProviderError::kSuccess,
+                     std::string());
   // Wait for tx to be updated.
   base::RunLoop().RunUntilIdle();
-  tx_meta1 =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id1);
+  tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
   EXPECT_FALSE(tx_meta1->tx_hash().empty());
   EXPECT_EQ(tx_meta1->from(), from_account);
@@ -438,10 +427,9 @@ TEST_F(FilTxManagerUnitTest, WalletOrigin) {
                                        "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                           from_account, absl::nullopt, &meta_id);
+                           from_account, std::nullopt, &meta_id);
 
-  auto tx_meta =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
+  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
 
@@ -460,8 +448,7 @@ TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
       mojom::kLocalhostChainId, std::move(tx_data), from_account,
       url::Origin::Create(GURL("https://some.site.com")), &meta_id);
 
-  auto tx_meta =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
+  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->origin(),
             url::Origin::Create(GURL("https://some.site.com")));
@@ -479,14 +466,13 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
         "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
     std::string meta_id;
     AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                             from_account, absl::nullopt, &meta_id);
-    auto tx_meta =
-        fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
+                             from_account, std::nullopt, &meta_id);
+    auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
     ASSERT_TRUE(tx_meta);
     EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
     EXPECT_EQ(tx_meta->from(), from_account);
     EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-    GetTransactionMessageToSign(mojom::kLocalhostChainId, meta_id, R"(
+    GetTransactionMessageToSign(meta_id, R"(
     {
         "From": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
         "GasFeeCap": "3",
@@ -512,14 +498,13 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
         "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
     std::string meta_id;
     AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                             from_account, absl::nullopt, &meta_id);
-    auto tx_meta =
-        fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
+                             from_account, std::nullopt, &meta_id);
+    auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
     ASSERT_TRUE(tx_meta);
     EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
     EXPECT_EQ(tx_meta->from(), from_account);
     EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-    GetTransactionMessageToSign(mojom::kLocalhostChainId, meta_id, R"(
+    GetTransactionMessageToSign(meta_id, R"(
     {
         "From": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
         "GasFeeCap": "3",
@@ -535,9 +520,8 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
   )");
   }
 
-  GetTransactionMessageToSign(mojom::kLocalhostChainId, "unknown id",
-                              absl::nullopt);
-  GetTransactionMessageToSign(mojom::kLocalhostChainId, "", absl::nullopt);
+  GetTransactionMessageToSign("unknown id", std::nullopt);
+  GetTransactionMessageToSign("", std::nullopt);
 }
 
 TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
@@ -549,9 +533,8 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
       "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                           from_account, absl::nullopt, &meta_id);
-  auto tx_meta =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
+                           from_account, std::nullopt, &meta_id);
+  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
   EXPECT_EQ(tx_meta->from(), from_account);
@@ -592,7 +575,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
 
   base::RunLoop run_loop;
   fil_tx_manager()->ProcessFilHardwareSignature(
-      mojom::kLocalhostChainId, meta_id, signed_message,
+      meta_id, signed_message,
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderErrorUnionPtr error_union,
                                      const std::string& err_message) {
@@ -601,8 +584,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
         ASSERT_EQ(error_union->get_filecoin_provider_error(),
                   mojom::FilecoinProviderError::kSuccess);
         ASSERT_TRUE(err_message.empty());
-        auto fil_tx_meta = fil_tx_manager()->GetTxForTesting(
-            mojom::kLocalhostChainId, meta_id);
+        auto fil_tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
         EXPECT_EQ(fil_tx_meta->status(), mojom::TransactionStatus::Submitted);
         run_loop.Quit();
       }));
@@ -618,9 +600,8 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
       "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kLocalhostChainId, std::move(tx_data),
-                           from_account, absl::nullopt, &meta_id);
-  auto tx_meta =
-      fil_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, meta_id);
+                           from_account, std::nullopt, &meta_id);
+  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
   EXPECT_EQ(tx_meta->from(), from_account);
@@ -631,7 +612,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
                        "data");
   base::RunLoop run_loop;
   fil_tx_manager()->ProcessFilHardwareSignature(
-      mojom::kLocalhostChainId, "fake", signed_message,
+      "fake", signed_message,
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderErrorUnionPtr error_union,
                                      const std::string& err_message) {

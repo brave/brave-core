@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -17,7 +20,6 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
@@ -42,7 +44,6 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_sim.h"
@@ -142,7 +143,7 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
 
   void OnPurchasedStateChanged(
       PurchasedState state,
-      const absl::optional<std::string>& description) override {
+      const std::optional<std::string>& description) override {
     purchased_state_ = state;
     if (purchased_callback_)
       std::move(purchased_callback_).Run();
@@ -176,16 +177,16 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
     purchased_state_.reset();
     connection_state_.reset();
   }
-  absl::optional<PurchasedState> GetPurchasedState() const {
+  std::optional<PurchasedState> GetPurchasedState() const {
     return purchased_state_;
   }
-  absl::optional<ConnectionState> GetConnectionState() const {
+  std::optional<ConnectionState> GetConnectionState() const {
     return connection_state_;
   }
 
  private:
-  absl::optional<PurchasedState> purchased_state_;
-  absl::optional<ConnectionState> connection_state_;
+  std::optional<PurchasedState> purchased_state_;
+  std::optional<ConnectionState> connection_state_;
   base::OnceClosure purchased_callback_;
   base::OnceClosure connection_state_callback_;
   base::OnceClosure selected_region_callback_;
@@ -528,7 +529,7 @@ class BraveVPNServiceTest : public testing::Test {
 TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
   // Give invalid json data as a server response and check sanitized(empty
   // string) result is returned.
-  SetInterceptorResponse("{'a':'b',}");
+  SetInterceptorResponse("{'invalid json':");
   base::RunLoop loop;
   service_->GetAllServerRegions(base::BindOnce(
       [](base::OnceClosure callback, const std::string& region_list,

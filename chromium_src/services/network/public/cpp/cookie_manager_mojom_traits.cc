@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "services/network/public/cpp/cookie_manager_mojom_traits.h"
+#include <optional>
 
+#include "services/network/public/cpp/cookie_manager_mojom_traits.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
 
 #define CookieOptions CookieOptions_ChromiumImpl
@@ -27,7 +28,7 @@ bool StructTraits<network::mojom::CookieOptionsDataView, net::CookieOptions>::
     return false;
   out->set_site_for_cookies(site_for_cookies);
 
-  absl::optional<url::Origin> top_frame_origin;
+  std::optional<url::Origin> top_frame_origin;
   if (!data.ReadTopFrameOrigin(&top_frame_origin))
     return false;
   out->set_top_frame_origin(top_frame_origin);

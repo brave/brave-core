@@ -41,13 +41,10 @@ SegmentList GetSegments(const CatalogInfo& catalog) {
       for (const auto& segment : creative_set.segments) {
         CHECK(!segment.name.empty());
 
-        if (base::Contains(exists, segment.name)) {
-          continue;
+        const auto [_, inserted] = exists.insert(segment.name);
+        if (inserted) {
+          segments.push_back(segment.name);
         }
-
-        segments.push_back(segment.name);
-
-        exists.insert(segment.name);
       }
     }
   }
@@ -99,24 +96,20 @@ bool HasChildSegment(const std::string& segment) {
 bool ShouldFilterSegment(const std::string& segment) {
   CHECK(!segment.empty());
 
+  const std::string parent_segment = GetParentSegment(segment);
+
   const FilteredCategoryList& filtered_segments =
       ClientStateManager::GetInstance().GetFilteredCategories();
-  if (filtered_segments.empty()) {
-    return false;
-  }
-
   const auto iter = base::ranges::find_if(
-      filtered_segments,
-      [&segment](const FilteredCategoryInfo& filtered_segment) {
+      filtered_segments, [&segment, &parent_segment](
+                             const FilteredCategoryInfo& filtered_segment) {
         if (HasChildSegment(filtered_segment.name)) {
-          // Filter against child, i.e. "technology &
-          // computing-linux"
+          // Filter against child, i.e. "technology & computing-linux"
           return segment == filtered_segment.name;
         }
 
         // Filter against parent, i.e. "technology & computing"
-        return GetParentSegment(segment) ==
-               GetParentSegment(filtered_segment.name);
+        return parent_segment == GetParentSegment(filtered_segment.name);
       });
 
   return iter != filtered_segments.cend();

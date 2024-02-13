@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -22,7 +23,6 @@
 #include "components/component_updater/component_installer.h"
 #include "components/prefs/pref_service.h"
 #include "crypto/sha2.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -44,7 +44,7 @@ const char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
 
-absl::optional<base::Version> last_installed_wallet_version;
+std::optional<base::Version> last_installed_wallet_version;
 
 }  // namespace
 
@@ -132,7 +132,7 @@ WalletDataFilesInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
-absl::optional<base::Version> GetLastInstalledWalletVersion() {
+std::optional<base::Version> GetLastInstalledWalletVersion() {
   return last_installed_wallet_version;
 }
 

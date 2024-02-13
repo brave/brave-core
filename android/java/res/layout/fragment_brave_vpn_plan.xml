@@ -9,7 +9,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:contentDescription="@null"
         android:layout_gravity="start"
         android:layout_marginStart="-16dp"
@@ -18,8 +18,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="32dp">
+        android:layout_marginHorizontal="16dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/plan_text_1"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:gravity="center_vertical"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@android:color/white"
             android:drawablePadding="12dp"
             app:drawableStartCompat="@drawable/ic_mask" />
@@ -36,7 +36,7 @@
             android:id="@+id/plan_text_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="20dp"
             android:textSize="18sp"
             android:gravity="center_vertical"
             android:textColor="@android:color/white"

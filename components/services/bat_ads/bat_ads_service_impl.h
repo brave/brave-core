@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -20,8 +19,8 @@ namespace bat_ads {
 
 class BatAdsServiceImpl : public mojom::BatAdsService {
  public:
-  // This constructor assumes the BatAdsServiceImpl will be bound to an
-  // externally owned receiver, such as through |mojo::MakeSelfOwnedReceiver()|.
+  // This constructor assumes the `BatAdsServiceImpl` will be bound to an
+  // externally owned receiver, such as through `mojo::MakeSelfOwnedReceiver()`.
   BatAdsServiceImpl();
 
   explicit BatAdsServiceImpl(

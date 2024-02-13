@@ -21,7 +21,7 @@ class OnionDomainThrottle : public blink::URLLoaderThrottle {
   OnionDomainThrottle& operator=(const OnionDomainThrottle&) = delete;
 
   static std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottle(
-      bool is_tor);
+      bool is_onion_allowed);
 
   // blink::URLLoaderThrottle
   void WillStartRequest(network::ResourceRequest* request,

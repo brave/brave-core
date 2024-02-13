@@ -6,13 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_REQUEST_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_REQUEST_HELPER_H_
 
+#include <optional>
 #include <string>
+
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-absl::optional<std::string> EncodeJupiterTransactionParams(
-    mojom::JupiterSwapParamsPtr params,
+std::optional<std::string> EncodeJupiterTransactionParams(
+    const mojom::JupiterTransactionParams& params,
     bool has_fee);
 
 }  // namespace brave_wallet

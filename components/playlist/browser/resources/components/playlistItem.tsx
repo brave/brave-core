@@ -50,7 +50,7 @@ const ThumbnailStyle = css`
 `
 const StyledThumbnail = styled.div<{ src: string }>`
   ${ThumbnailStyle}
-  background-image: url(${p => p.src});
+  background-image: url(${(p) => p.src});
   background-size: cover;
   background-position: center;
 `
@@ -89,20 +89,20 @@ const PlaylistItemContainer = styled.li<{
   gap: ${spacing.xl};
   user-select: none;
 
-  ${p =>
+  ${(p) =>
     p.shouldBeHidden &&
     css`
       visibility: hidden;
     `}
 
   align-self: stretch;
-  ${p =>
+  ${(p) =>
     p.isActive &&
     css`
       background: ${color.container.interactive};
     `}
 
-  ${p =>
+  ${(p) =>
     p.isHighlighted &&
     css`
       animation: highlightBackground 500ms 4 alternate;
@@ -118,7 +118,7 @@ const ItemInfoContainer = styled.div`
 
 const PlaylistItemName = styled.span`
   color: ${color.text.primary};
-  font: ${font.primary.default.semibold};
+  font: ${font.default.semibold};
   cursor: default;
   max-height: 48px;
   overflow: hidden;
@@ -130,7 +130,7 @@ const ItemDetailsContainer = styled.div`
   gap: 8px;
   align-self: stretch;
   color: ${color.text.tertiary};
-  font: ${font.primary.small.regular};
+  font: ${font.small.regular};
 `
 
 const CachedIcon = styled(Icon)`
@@ -145,8 +145,8 @@ const ProgressCircle = styled.div<{ progress: number }>`
   position: relative;
   background: conic-gradient(
     ${color.icon.default} 0%,
-    ${color.icon.default} ${p => p.progress + '%'},
-    ${color.primary[20]} ${p => p.progress + '%'},
+    ${color.icon.default} ${(p) => p.progress + '%'},
+    ${color.primary[20]} ${(p) => p.progress + '%'},
     ${color.primary[20]} 100%
   );
   clip-path: circle();
@@ -170,35 +170,39 @@ const ProgressCircle = styled.div<{ progress: number }>`
 `
 
 const ColoredSpan = styled.span<{ color: any }>`
-  color: ${p => p.color};
+  color: ${(p) => p.color};
 `
 
 const StyledCheckBox = styled(Icon)<{ checked: boolean }>`
   --leo-icon-size: 16px;
-  color: ${p => (p.checked ? color.icon.interactive : color.icon.default)};
+  color: ${(p) => (p.checked ? color.icon.interactive : color.icon.default)};
 `
 
-function Thumbnail ({
+function Thumbnail({
   thumbnailUrl,
+  isSelected,
   isPlaying,
   duration,
   lastPlayedPosition
 }: {
   thumbnailUrl?: string
+  isSelected: boolean
   isPlaying: boolean
   duration: string
   lastPlayedPosition: number
 }) {
-  const overlay = isPlaying ? (
+  const overlay = (
     <>
-      <BouncingBarsContainer>
-        <BouncingBars />
-      </BouncingBarsContainer>
-      {!!+duration && (
+      {isPlaying && (
+        <BouncingBarsContainer>
+          <BouncingBars />
+        </BouncingBarsContainer>
+      )}
+      {isSelected && !!+duration && (
         <ProgressBar progress={lastPlayedPosition / (+duration / 1e6)} />
       )}
     </>
-  ) : null
+  )
 
   return thumbnailUrl ? (
     <StyledThumbnail src={thumbnailUrl}>{overlay}</StyledThumbnail>
@@ -207,7 +211,7 @@ function Thumbnail ({
   )
 }
 
-export function PlaylistItem ({
+export function PlaylistItem({
   playlist,
   item,
   isEditing,
@@ -231,23 +235,30 @@ export function PlaylistItem ({
   const cachingProgress = useSelector<
     ApplicationState,
     CachingProgress | undefined
-  >(applicationState => applicationState.playlistData?.cachingProgress?.get(id))
+  >((applicationState) =>
+    applicationState.playlistData?.cachingProgress?.get(id)
+  )
 
   const currentItemId = useSelector<ApplicationState, string | undefined>(
-    applicationState =>
+    (applicationState) =>
       applicationState.playlistData?.lastPlayerState?.currentItem?.id
   )
-  const isPlaying = currentItemId === item.id
+  const playing = useSelector<ApplicationState, boolean | undefined>(
+    (applicationState) =>
+      applicationState.playlistData?.lastPlayerState?.playing
+  )
+  const isCurrentItem = currentItemId === item.id
+  const isPlayingItem = isCurrentItem && playing
 
   return (
     <PlaylistItemContainer
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      isActive={(isEditing && isSelected) || isPlaying}
+      isActive={(isEditing && isSelected) || isCurrentItem}
       isHighlighted={isHighlighted}
       shouldBeHidden={shouldBeHidden}
       tabIndex={0}
-      onKeyDown={e => e.key === 'Enter' && onClick(item)}
+      onKeyDown={(e) => e.key === 'Enter' && onClick(item)}
       onClick={() => onClick(item)}
     >
       {isEditing && (
@@ -258,7 +269,8 @@ export function PlaylistItem ({
       )}
       <Thumbnail
         thumbnailUrl={thumbnailUrl}
-        isPlaying={isPlaying}
+        isSelected={isCurrentItem}
+        isPlaying={!!isPlayingItem}
         duration={item.duration}
         lastPlayedPosition={item.lastPlayedPosition}
       />
@@ -340,7 +352,7 @@ export function PlaylistItem ({
 }
 
 export const SortablePlaylistItem = React.forwardRef(
-  function SortablePlaylistItem (
+  function SortablePlaylistItem(
     props: Props,
     forwardedRef?: React.ForwardedRef<HTMLAnchorElement>
   ) {

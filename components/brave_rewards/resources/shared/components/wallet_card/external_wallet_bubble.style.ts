@@ -33,6 +33,7 @@ export const header = styled.div`
   border-bottom: solid 1px var(--brave-palette-neutral200);
   padding-bottom: 7px;
   display: flex;
+  align-items: center;
 
   .brave-theme-dark & {
     border-color: var(--brave-palette-grey700);

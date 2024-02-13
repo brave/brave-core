@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_v2.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -15,12 +16,12 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/new_tab_page_ads/new_tab_page_ad_exclusion_rules.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/priority/priority.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 
 namespace brave_ads {
 
@@ -83,51 +84,75 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
-    const SegmentList& /*segments=*/,
+    const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
+  FilterAndMaybePredictCreativeAd(user_model, creative_ads, ad_events,
+                                  browsing_history, std::move(callback));
+}
+
+void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
+    const UserModelInfo& user_model,
+    const CreativeNewTabPageAdList& creative_ads,
+    const AdEventList& ad_events,
+    const BrowsingHistoryList& browsing_history,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  const CreativeNewTabPageAdList eligible_creative_ads =
-      FilterCreativeAds(creative_ads, ad_events, browsing_history);
-  if (eligible_creative_ads.empty()) {
-    BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-    return std::move(callback).Run(/*eligible_ads=*/{});
+  CreativeNewTabPageAdList eligible_creative_ads = creative_ads;
+  FilterIneligibleCreativeAds(eligible_creative_ads, ad_events,
+                              browsing_history);
+
+  const PrioritizedCreativeAdBuckets<CreativeNewTabPageAdList> buckets =
+      SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
+
+  LogNumberOfCreativeAdsPerBucket(buckets);
+
+  // For each bucket of prioritized ads attempt to predict the most suitable ad
+  // for the user in priority order.
+  for (const auto& [priority, prioritized_eligible_creative_ads] : buckets) {
+    const std::optional<CreativeNewTabPageAdInfo> predicted_creative_ad =
+        MaybePredictCreativeAd(prioritized_eligible_creative_ads, user_model,
+                               ad_events);
+    if (!predicted_creative_ad) {
+      // Could not predict an ad for this bucket, so continue to the next
+      // bucket.
+      continue;
+    }
+
+    BLOG(1, "Predicted ad with creative instance id "
+                << predicted_creative_ad->creative_instance_id
+                << " and a priority of " << priority);
+
+    return std::move(callback).Run({*predicted_creative_ad});
   }
 
-  const absl::optional<CreativeNewTabPageAdInfo> creative_ad =
-      MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events);
-  if (!creative_ad) {
-    BLOG(1, "No eligible ads");
-    return std::move(callback).Run(/*eligible_ads=*/{});
-  }
-
-  std::move(callback).Run({*creative_ad});
+  // Could not predict an ad for any of the buckets.
+  BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+  std::move(callback).Run(/*eligible_ads=*/{});
 }
 
-CreativeNewTabPageAdList EligibleNewTabPageAdsV2::FilterCreativeAds(
-    const CreativeNewTabPageAdList& creative_ads,
+void EligibleNewTabPageAdsV2::FilterIneligibleCreativeAds(
+    CreativeNewTabPageAdList& creative_ads,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history) {
   if (creative_ads.empty()) {
-    return {};
+    return;
   }
 
   NewTabPageAdExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
                                              *anti_targeting_resource_,
                                              browsing_history);
+  ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
-  CreativeNewTabPageAdList eligible_creative_ads =
-      ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
-
-  return PaceCreativeAds(eligible_creative_ads);
+  PaceCreativeAds(creative_ads);
 }
 
 }  // namespace brave_ads

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
@@ -22,12 +23,12 @@ namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
+std::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
     const std::vector<BlindedToken>& blinded_tokens,
     const std::vector<SignedToken>& signed_tokens,
     const SigningKey& signing_key) {
   if (!signing_key.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(challenge_bypass_ristretto::BatchDLEQProof::Create(
@@ -35,20 +36,22 @@ absl::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
       signing_key.get()));
 }
 
-absl::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
+std::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
     const std::string& batch_dleq_proof_base64) {
   if (batch_dleq_proof_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(
       challenge_bypass_ristretto::BatchDLEQProof::decode_base64(
-          batch_dleq_proof_base64));
+          base::as_bytes(base::make_span(batch_dleq_proof_base64))));
 }
 
 std::vector<UnblindedToken> ToUnblindedTokens(
     const std::vector<challenge_bypass_ristretto::UnblindedToken>& raw_tokens) {
   std::vector<UnblindedToken> unblinded_tokens;
+  unblinded_tokens.reserve(raw_tokens.size());
+
   for (const auto& raw_token : raw_tokens) {
     const UnblindedToken unblinded_token(raw_token);
     if (!unblinded_token.has_value()) {
@@ -88,13 +91,13 @@ BatchDLEQProof BatchDLEQProof::DecodeBase64(
   return BatchDLEQProof(batch_dleq_proof_base64);
 }
 
-absl::optional<std::string> BatchDLEQProof::EncodeBase64() const {
+std::optional<std::string> BatchDLEQProof::EncodeBase64() const {
   if (!has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!batch_dleq_proof_) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(batch_dleq_proof_->encode_base64());
@@ -118,14 +121,14 @@ bool BatchDLEQProof::Verify(const std::vector<BlindedToken>& blinded_tokens,
       .value_or(false);
 }
 
-absl::optional<std::vector<UnblindedToken>> BatchDLEQProof::VerifyAndUnblind(
+std::optional<std::vector<UnblindedToken>> BatchDLEQProof::VerifyAndUnblind(
     const std::vector<Token>& tokens,
     const std::vector<BlindedToken>& blinded_tokens,
     const std::vector<SignedToken>& signed_tokens,
     const PublicKey& public_key) {
   if (!batch_dleq_proof_ || !has_value() || tokens.empty() ||
       !public_key.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto raw_unblinded_tokens =
@@ -135,7 +138,7 @@ absl::optional<std::vector<UnblindedToken>> BatchDLEQProof::VerifyAndUnblind(
   if (!raw_unblinded_tokens || tokens.size() != raw_unblinded_tokens->size()) {
     // An exception is not thrown by FFI if there is a public key mismatch, so
     // detect this edge case
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ToUnblindedTokens(std::move(raw_unblinded_tokens).value());

@@ -23,8 +23,7 @@ class OnionLocationNavigationThrottleDelegate
   ~OnionLocationNavigationThrottleDelegate() override;
 
   void OpenInTorWindow(content::WebContents* web_contents,
-                       const GURL& onion_location,
-                       bool renderer_initiated) override;
+                       const GURL& onion_location) override;
 
  private:
   OnionLocationNavigationThrottleDelegate(

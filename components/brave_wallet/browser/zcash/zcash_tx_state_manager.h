@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
@@ -33,8 +32,7 @@ class ZCashTxStateManager : public TxStateManager {
   ZCashTxStateManager(const ZCashTxStateManager&) = delete;
   ZCashTxStateManager operator=(const ZCashTxStateManager&) = delete;
 
-  std::unique_ptr<ZCashTxMeta> GetZCashTx(const std::string& chain_id,
-                                          const std::string& id);
+  std::unique_ptr<ZCashTxMeta> GetZCashTx(const std::string& id);
   std::unique_ptr<ZCashTxMeta> ValueToZCashTxMeta(
       const base::Value::Dict& value);
 
@@ -43,8 +41,6 @@ class ZCashTxStateManager : public TxStateManager {
 
   std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) override;
-  std::string GetTxPrefPathPrefix(
-      const absl::optional<std::string>& chain_id) override;
 };
 
 }  // namespace brave_wallet

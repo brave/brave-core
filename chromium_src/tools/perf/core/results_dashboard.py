@@ -9,7 +9,7 @@ import subprocess
 
 import override_utils
 
-from core import path_util  # pylint: disable=import-error
+from core import path_util
 
 
 def BraveAuthTokenGeneratorCallback():

@@ -123,7 +123,7 @@ class BraveIdentityManagerTest : public testing::Test {
     base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
     cmd_line->AppendSwitch(switches::kClearTokenService);
 
-    primary_account_manager->Initialize(&pref_service_);
+    primary_account_manager->Initialize();
 
     IdentityManager::InitParameters init_params;
 
@@ -156,6 +156,7 @@ class BraveIdentityManagerTest : public testing::Test {
     init_params.gaia_cookie_manager_service =
         std::move(gaia_cookie_manager_service);
     init_params.primary_account_manager = std::move(primary_account_manager);
+    init_params.signin_client = &signin_client_;
     init_params.token_service = std::move(token_service);
 
     identity_manager_ =

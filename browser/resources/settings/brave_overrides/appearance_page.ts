@@ -160,5 +160,17 @@ RegisterPolymerTemplateModifications({
       tabsToLinks.remove()
     }
     // </if>
+
+    // Remove show images on tab hover toggle as we already have a settings for
+    // this in the Tabs settings.
+    const hoverCardImagesTemplate = templateContent.querySelector(
+      'template[is=dom-if][if="[[showHoverCardImagesOption_]]"]')
+    if (!hoverCardImagesTemplate) {
+      console.error(
+        '[Brave Settings Overrides] Appearance Page cannot find hover card' +
+        ' images template')
+    } else {
+      hoverCardImagesTemplate.remove()
+    }
   },
 })

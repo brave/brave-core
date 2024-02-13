@@ -1,8 +1,8 @@
 diff --git a/components/system_media_controls/linux/system_media_controls_linux.cc b/components/system_media_controls/linux/system_media_controls_linux.cc
-index 45e17a2665ffbf96f7e8f47dbdfbf7fe5b841bca..8192772bf33d852c0a415e7e6ebb1e66aedd8c0e 100644
+index c1711d5368000572342ae56631e7e0eb36611e0f..18bc14c6c1528f7460f9c15a044c92cb731c8be8 100644
 --- a/components/system_media_controls/linux/system_media_controls_linux.cc
 +++ b/components/system_media_controls/linux/system_media_controls_linux.cc
-@@ -56,7 +56,7 @@ constexpr base::TimeDelta kUpdatePositionInterval = base::Milliseconds(100);
+@@ -57,7 +57,7 @@ constexpr base::TimeDelta kUpdatePositionInterval = base::Milliseconds(100);
  const char kMprisAPINoTrackPath[] = "/org/mpris/MediaPlayer2/TrackList/NoTrack";
  
  const char kMprisAPICurrentTrackPathFormatString[] =
@@ -11,7 +11,7 @@ index 45e17a2665ffbf96f7e8f47dbdfbf7fe5b841bca..8192772bf33d852c0a415e7e6ebb1e66
  
  // Writes `bitmap` to a new temporary PNG file and returns a a pair of the file
  // path and a managed base::ScopedTempFile bound to this sequence.  This should
-@@ -96,7 +96,7 @@ WriteBitmapToTmpFile(const SkBitmap& bitmap) {
+@@ -97,7 +97,7 @@ WriteBitmapToTmpFile(const SkBitmap& bitmap) {
  }  // namespace
  
  const char kMprisAPIServiceNameFormatString[] =

@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_rewards/core/endpoints/brave/post_connect_uphold.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/common/security_util.h"
+#include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
@@ -21,16 +22,16 @@ PostConnectUphold::PostConnectUphold(RewardsEngineImpl& engine,
 
 PostConnectUphold::~PostConnectUphold() = default;
 
-absl::optional<std::string> PostConnectUphold::Content() const {
+std::optional<std::string> PostConnectUphold::Content() const {
   if (address_.empty()) {
-    BLOG(0, "address_ is empty!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "address_ is empty";
+    return std::nullopt;
   }
 
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Rewards wallet is null!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "Rewards wallet is null";
+    return std::nullopt;
   }
 
   DCHECK(!wallet->recovery_seed.empty());
@@ -45,16 +46,27 @@ absl::optional<std::string> PostConnectUphold::Content() const {
 
   std::string octets;
   if (!base::JSONWriter::Write(body, &octets)) {
-    BLOG(0, "Failed to write octets to JSON!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "Failed to write octets to JSON";
+    return std::nullopt;
   }
 
-  std::string digest = util::Security::DigestValue(octets);
-  std::string signature = util::Security::Sign(
-      {{{"digest", digest}}}, "primary", wallet->recovery_seed);
+  auto signer = RequestSigner::FromRewardsWallet(*wallet);
+  if (!signer) {
+    engine_->LogError(FROM_HERE) << "Unable to sign request";
+    return std::nullopt;
+  }
+
+  std::string digest =
+      RequestSigner::GetDigest(base::as_bytes(base::make_span(octets)));
+
+  signer->set_key_id("primary");
+
+  std::string signature = signer->SignHeaders(
+      std::vector<std::pair<std::string, std::string>>{{"digest", digest}});
+
   if (signature.empty()) {
-    BLOG(0, "Failed to create signature!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "Failed to create signature";
+    return std::nullopt;
   }
 
   base::Value::Dict headers;
@@ -68,8 +80,8 @@ absl::optional<std::string> PostConnectUphold::Content() const {
 
   std::string json_request;
   if (!base::JSONWriter::Write(std::move(request), &json_request)) {
-    BLOG(0, "Failed to write request to JSON!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "Failed to write request to JSON";
+    return std::nullopt;
   }
 
   std::string signedLinkingRequest;
@@ -80,14 +92,14 @@ absl::optional<std::string> PostConnectUphold::Content() const {
 
   std::string json;
   if (!base::JSONWriter::Write(std::move(content), &json)) {
-    BLOG(0, "Failed to write content to JSON!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "Failed to write content to JSON";
+    return std::nullopt;
   }
 
   return json;
 }
 
-absl::optional<std::vector<std::string>> PostConnectUphold::Headers(
+std::optional<std::vector<std::string>> PostConnectUphold::Headers(
     const std::string&) const {
   return std::vector<std::string>{};
 }

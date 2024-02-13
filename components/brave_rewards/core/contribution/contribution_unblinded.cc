@@ -16,13 +16,11 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave_base/random.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
 namespace brave_rewards::internal::contribution {
 
 namespace {
+
+using StatisticalVotingWinners = std::map<std::string, uint32_t>;
 
 // Allocates one "vote" to a publisher. |dart| is a uniform random
 // double in [0,1] "thrown" into the list of publishers to choose a
@@ -101,34 +99,36 @@ Unblinded::~Unblinded() = default;
 
 void Unblinded::Start(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
-                      LegacyResultCallback callback) {
+                      ResultCallback callback) {
   if (contribution_id.empty()) {
-    BLOG(0, "Contribution id is empty");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution id is empty";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  auto get_callback =
-      std::bind(&Unblinded::PrepareTokens, this, _1, _2, types, callback);
-
-  GetContributionInfoAndUnblindedTokens(types, contribution_id, get_callback);
+  GetContributionInfoAndUnblindedTokens(
+      types, contribution_id,
+      base::BindOnce(&Unblinded::PrepareTokens, weak_factory_.GetWeakPtr(),
+                     types, std::move(callback)));
 }
 
 void Unblinded::GetContributionInfoAndUnblindedTokens(
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  auto get_callback = std::bind(&Unblinded::OnUnblindedTokens, this, _1,
-                                contribution_id, callback);
-  engine_->database()->GetSpendableUnblindedTokensByBatchTypes(types,
-                                                               get_callback);
+  engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
+      types,
+      base::BindOnce(&Unblinded::OnUnblindedTokens, weak_factory_.GetWeakPtr(),
+                     contribution_id, std::move(callback)));
 }
 
 void Unblinded::OnUnblindedTokens(
-    std::vector<mojom::UnblindedTokenPtr> unblinded_tokens,
     const std::string& contribution_id,
-    GetContributionInfoAndUnblindedTokensCallback callback) {
-  BLOG_IF(1, unblinded_tokens.empty(), "Token list is empty");
+    GetContributionInfoAndUnblindedTokensCallback callback,
+    std::vector<mojom::UnblindedTokenPtr> unblinded_tokens) {
+  if (unblinded_tokens.empty()) {
+    engine_->Log(FROM_HERE) << "Token list is empty";
+  }
 
   std::vector<mojom::UnblindedToken> converted_list;
   for (const auto& item : unblinded_tokens) {
@@ -144,24 +144,28 @@ void Unblinded::OnUnblindedTokens(
   }
 
   engine_->database()->GetContributionInfo(
-      contribution_id, std::bind(&Unblinded::OnGetContributionInfo, this, _1,
-                                 std::move(converted_list), callback));
+      contribution_id,
+      base::BindOnce(&Unblinded::OnGetContributionInfo,
+                     weak_factory_.GetWeakPtr(), std::move(converted_list),
+                     std::move(callback)));
 }
 
 void Unblinded::GetContributionInfoAndReservedUnblindedTokens(
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  auto get_callback = std::bind(&Unblinded::OnReservedUnblindedTokens, this, _1,
-                                contribution_id, callback);
-  engine_->database()->GetReservedUnblindedTokens(contribution_id,
-                                                  get_callback);
+  engine_->database()->GetReservedUnblindedTokens(
+      contribution_id, base::BindOnce(&Unblinded::OnReservedUnblindedTokens,
+                                      weak_factory_.GetWeakPtr(),
+                                      contribution_id, std::move(callback)));
 }
 
 void Unblinded::OnReservedUnblindedTokens(
-    std::vector<mojom::UnblindedTokenPtr> unblinded_tokens,
     const std::string& contribution_id,
-    GetContributionInfoAndUnblindedTokensCallback callback) {
-  BLOG_IF(1, unblinded_tokens.empty(), "Token list is empty");
+    GetContributionInfoAndUnblindedTokensCallback callback,
+    std::vector<mojom::UnblindedTokenPtr> unblinded_tokens) {
+  if (unblinded_tokens.empty()) {
+    engine_->Log(FROM_HERE) << "Token list is empty";
+  }
 
   std::vector<mojom::UnblindedToken> converted_list;
   for (const auto& item : unblinded_tokens) {
@@ -177,31 +181,33 @@ void Unblinded::OnReservedUnblindedTokens(
   }
 
   engine_->database()->GetContributionInfo(
-      contribution_id, std::bind(&Unblinded::OnGetContributionInfo, this, _1,
-                                 converted_list, callback));
+      contribution_id,
+      base::BindOnce(&Unblinded::OnGetContributionInfo,
+                     weak_factory_.GetWeakPtr(), std::move(converted_list),
+                     std::move(callback)));
 }
 
 void Unblinded::OnGetContributionInfo(
-    mojom::ContributionInfoPtr contribution,
-    const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-    GetContributionInfoAndUnblindedTokensCallback callback) {
-  callback(std::move(contribution), unblinded_tokens);
+    std::vector<mojom::UnblindedToken> unblinded_tokens,
+    GetContributionInfoAndUnblindedTokensCallback callback,
+    mojom::ContributionInfoPtr contribution) {
+  std::move(callback).Run(std::move(contribution), unblinded_tokens);
 }
 
 void Unblinded::PrepareTokens(
+    std::vector<mojom::CredsBatchType> types,
+    ResultCallback callback,
     mojom::ContributionInfoPtr contribution,
-    const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-    const std::vector<mojom::CredsBatchType>& types,
-    LegacyResultCallback callback) {
+    std::vector<mojom::UnblindedToken> unblinded_tokens) {
   if (!contribution) {
-    BLOG(0, "Contribution not found");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution not found";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   if (unblinded_tokens.empty()) {
-    BLOG(0, "Not enough funds");
-    callback(mojom::Result::NOT_ENOUGH_FUNDS);
+    engine_->LogError(FROM_HERE) << "Not enough funds";
+    std::move(callback).Run(mojom::Result::NOT_ENOUGH_FUNDS);
     return;
   }
 
@@ -217,8 +223,8 @@ void Unblinded::PrepareTokens(
   }
 
   if (current_amount < contribution->amount) {
-    callback(mojom::Result::NOT_ENOUGH_FUNDS);
-    BLOG(0, "Not enough funds");
+    std::move(callback).Run(mojom::Result::NOT_ENOUGH_FUNDS);
+    engine_->LogError(FROM_HERE) << "Not enough funds";
     return;
   }
 
@@ -229,46 +235,45 @@ void Unblinded::PrepareTokens(
     token_id_list.push_back(base::NumberToString(item.id));
   }
 
-  auto reserved_callback = std::bind(
-      &Unblinded::OnMarkUnblindedTokensAsReserved, this, _1,
-      std::move(token_list),
-      std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
-      types, callback);
-
   engine_->database()->MarkUnblindedTokensAsReserved(
-      token_id_list, contribution_id, reserved_callback);
+      token_id_list, contribution_id,
+      base::BindOnce(&Unblinded::OnMarkUnblindedTokensAsReserved,
+                     weak_factory_.GetWeakPtr(), std::move(token_list),
+                     std::move(contribution), std::move(types),
+                     std::move(callback)));
 }
 
 void Unblinded::OnMarkUnblindedTokensAsReserved(
-    mojom::Result result,
-    const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-    std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-    const std::vector<mojom::CredsBatchType>& types,
-    LegacyResultCallback callback) {
+    std::vector<mojom::UnblindedToken> unblinded_tokens,
+    mojom::ContributionInfoPtr contribution,
+    std::vector<mojom::CredsBatchType> types,
+    ResultCallback callback,
+    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to reserve unblinded tokens");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Failed to reserve unblinded tokens";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  if (!shared_contribution) {
-    BLOG(0, "Contribution was not converted successfully");
-    callback(mojom::Result::FAILED);
+  if (!contribution) {
+    engine_->LogError(FROM_HERE)
+        << "Contribution was not converted successfully";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  PreparePublishers(unblinded_tokens, std::move(*shared_contribution), types,
-                    callback);
+  PreparePublishers(unblinded_tokens, std::move(contribution), types,
+                    std::move(callback));
 }
 
 void Unblinded::PreparePublishers(
     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
     mojom::ContributionInfoPtr contribution,
     const std::vector<mojom::CredsBatchType>& types,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution not found");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution not found";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -277,45 +282,45 @@ void Unblinded::PreparePublishers(
         PrepareAutoContribution(unblinded_tokens, contribution->Clone());
 
     if (publisher_list.empty()) {
-      BLOG(0, "Publisher list empty");
-      callback(mojom::Result::AC_TABLE_EMPTY);
+      engine_->LogError(FROM_HERE) << "Publisher list empty";
+      std::move(callback).Run(mojom::Result::AC_TABLE_EMPTY);
       return;
     }
 
     contribution->publishers = std::move(publisher_list);
 
-    auto save_callback =
-        std::bind(&Unblinded::OnPrepareAutoContribution, this, _1, types,
-                  contribution->contribution_id, callback);
+    std::string contribution_id = contribution->contribution_id;
 
-    engine_->database()->SaveContributionInfo(contribution->Clone(),
-                                              save_callback);
+    engine_->database()->SaveContributionInfo(
+        std::move(contribution),
+        base::BindOnce(&Unblinded::OnPrepareAutoContribution,
+                       weak_factory_.GetWeakPtr(), std::move(types),
+                       contribution_id, std::move(callback)));
     return;
   }
 
-  auto save_callback = std::bind(&Unblinded::PrepareStepSaved, this, _1, types,
-                                 contribution->contribution_id, callback);
-
   engine_->database()->UpdateContributionInfoStep(
       contribution->contribution_id, mojom::ContributionStep::STEP_PREPARE,
-      save_callback);
+      base::BindOnce(&Unblinded::PrepareStepSaved, weak_factory_.GetWeakPtr(),
+                     std::move(types), contribution->contribution_id,
+                     std::move(callback)));
 }
 
 std::vector<mojom::ContributionPublisherPtr> Unblinded::PrepareAutoContribution(
     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
     mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return {};
   }
 
   if (unblinded_tokens.size() == 0) {
-    BLOG(0, "Token list is empty");
+    engine_->LogError(FROM_HERE) << "Token list is empty";
     return {};
   }
 
   if (contribution->publishers.empty()) {
-    BLOG(0, "Publisher list is empty");
+    engine_->LogError(FROM_HERE) << "Publisher list is empty";
     return {};
   }
 
@@ -340,52 +345,51 @@ std::vector<mojom::ContributionPublisherPtr> Unblinded::PrepareAutoContribution(
 }
 
 void Unblinded::OnPrepareAutoContribution(
-    mojom::Result result,
-    const std::vector<mojom::CredsBatchType>& types,
+    std::vector<mojom::CredsBatchType> types,
     const std::string& contribution_id,
-    LegacyResultCallback callback) {
+    ResultCallback callback,
+    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution not saved");
-    callback(mojom::Result::RETRY);
+    engine_->LogError(FROM_HERE) << "Contribution not saved";
+    std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
-
-  auto save_callback = std::bind(&Unblinded::PrepareStepSaved, this, _1, types,
-                                 contribution_id, callback);
 
   engine_->database()->UpdateContributionInfoStep(
-      contribution_id, mojom::ContributionStep::STEP_PREPARE, save_callback);
+      contribution_id, mojom::ContributionStep::STEP_PREPARE,
+      base::BindOnce(&Unblinded::PrepareStepSaved, weak_factory_.GetWeakPtr(),
+                     std::move(types), contribution_id, std::move(callback)));
 }
 
-void Unblinded::PrepareStepSaved(
-    mojom::Result result,
-    const std::vector<mojom::CredsBatchType>& types,
-    const std::string& contribution_id,
-    LegacyResultCallback callback) {
+void Unblinded::PrepareStepSaved(std::vector<mojom::CredsBatchType> types,
+                                 const std::string& contribution_id,
+                                 ResultCallback callback,
+                                 mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Prepare step was not saved");
-    callback(mojom::Result::RETRY);
+    engine_->LogError(FROM_HERE) << "Prepare step was not saved";
+    std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
 
-  ProcessTokens(types, contribution_id, callback);
+  ProcessTokens(types, contribution_id, std::move(callback));
 }
 
 void Unblinded::ProcessTokens(const std::vector<mojom::CredsBatchType>& types,
                               const std::string& contribution_id,
-                              LegacyResultCallback callback) {
-  auto get_callback =
-      std::bind(&Unblinded::OnProcessTokens, this, _1, _2, callback);
-  GetContributionInfoAndReservedUnblindedTokens(contribution_id, get_callback);
+                              ResultCallback callback) {
+  GetContributionInfoAndReservedUnblindedTokens(
+      contribution_id,
+      base::BindOnce(&Unblinded::OnProcessTokens, weak_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
 void Unblinded::OnProcessTokens(
+    ResultCallback callback,
     mojom::ContributionInfoPtr contribution,
-    const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-    LegacyResultCallback callback) {
+    std::vector<mojom::UnblindedToken> unblinded_tokens) {
   if (!contribution || contribution->publishers.empty()) {
-    BLOG(0, "Contribution not found");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution not found";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -411,9 +415,10 @@ void Unblinded::OnProcessTokens(
       token_list.push_back(item);
     }
 
-    auto redeem_callback = std::bind(
-        &Unblinded::TokenProcessed, this, _1, contribution->contribution_id,
-        (*publisher)->publisher_key, final_publisher, callback);
+    auto redeem_callback = base::BindOnce(
+        &Unblinded::TokenProcessed, weak_factory_.GetWeakPtr(),
+        contribution->contribution_id, (*publisher)->publisher_key,
+        final_publisher, std::move(callback));
 
     credential::CredentialsRedeem redeem;
     redeem.publisher_key = (*publisher)->publisher_key;
@@ -424,54 +429,54 @@ void Unblinded::OnProcessTokens(
 
     if (redeem.processor == mojom::ContributionProcessor::UPHOLD ||
         redeem.processor == mojom::ContributionProcessor::GEMINI) {
-      credentials_sku_.RedeemTokens(redeem, redeem_callback);
+      credentials_sku_.RedeemTokens(redeem, std::move(redeem_callback));
       return;
     }
 
-    credentials_promotion_.RedeemTokens(redeem, redeem_callback);
+    credentials_promotion_.RedeemTokens(redeem, std::move(redeem_callback));
     return;
   }
 
   // we processed all publishers
-  callback(mojom::Result::OK);
+  std::move(callback).Run(mojom::Result::OK);
 }
 
-void Unblinded::TokenProcessed(mojom::Result result,
-                               const std::string& contribution_id,
+void Unblinded::TokenProcessed(const std::string& contribution_id,
                                const std::string& publisher_key,
                                bool final_publisher,
-                               LegacyResultCallback callback) {
+                               ResultCallback callback,
+                               mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Tokens were not processed correctly");
-    callback(mojom::Result::RETRY);
+    engine_->LogError(FROM_HERE) << "Tokens were not processed correctly";
+    std::move(callback).Run(mojom::Result::RETRY);
     return;
   }
-
-  auto save_callback = std::bind(&Unblinded::ContributionAmountSaved, this, _1,
-                                 contribution_id, final_publisher, callback);
 
   engine_->database()->UpdateContributionInfoContributedAmount(
-      contribution_id, publisher_key, save_callback);
+      contribution_id, publisher_key,
+      base::BindOnce(&Unblinded::ContributionAmountSaved,
+                     weak_factory_.GetWeakPtr(), contribution_id,
+                     final_publisher, std::move(callback)));
 }
 
-void Unblinded::ContributionAmountSaved(mojom::Result result,
-                                        const std::string& contribution_id,
+void Unblinded::ContributionAmountSaved(const std::string& contribution_id,
                                         bool final_publisher,
-                                        LegacyResultCallback callback) {
+                                        ResultCallback callback,
+                                        mojom::Result result) {
   if (final_publisher) {
-    callback(result);
+    std::move(callback).Run(result);
     return;
   }
 
-  callback(mojom::Result::RETRY_LONG);
+  std::move(callback).Run(mojom::Result::RETRY_LONG);
 }
 
 void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
                       mojom::ContributionInfoPtr contribution,
-                      LegacyResultCallback callback) {
+                      ResultCallback callback) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Contribution is null";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -483,27 +488,27 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
       contribution->type != mojom::RewardsType::AUTO_CONTRIBUTE;
 
   if (is_not_tokens && is_not_uphold_ac) {
-    BLOG(0, "Retry is not for this func");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Retry is not for this func";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
   switch (contribution->step) {
     case mojom::ContributionStep::STEP_START: {
-      Start(types, contribution->contribution_id, callback);
+      Start(types, contribution->contribution_id, std::move(callback));
       return;
     }
     case mojom::ContributionStep::STEP_PREPARE: {
-      ProcessTokens(types, contribution->contribution_id, callback);
+      ProcessTokens(types, contribution->contribution_id, std::move(callback));
       return;
     }
     case mojom::ContributionStep::STEP_RESERVE: {
-      auto get_callback = std::bind(
-          &Unblinded::OnReservedUnblindedTokensForRetryAttempt, this, _1, types,
-          std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()),
-          callback);
+      std::string contribution_id = contribution->contribution_id;
       engine_->database()->GetReservedUnblindedTokens(
-          contribution->contribution_id, get_callback);
+          contribution_id,
+          base::BindOnce(&Unblinded::OnReservedUnblindedTokensForRetryAttempt,
+                         weak_factory_.GetWeakPtr(), std::move(types),
+                         std::move(contribution), std::move(callback)));
       return;
     }
     case mojom::ContributionStep::STEP_RETRY_COUNT:
@@ -516,7 +521,7 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
     case mojom::ContributionStep::STEP_FAILED:
     case mojom::ContributionStep::STEP_COMPLETED:
     case mojom::ContributionStep::STEP_NO: {
-      BLOG(0, "Step not correct " << contribution->step);
+      engine_->LogError(FROM_HERE) << "Step not correct " << contribution->step;
       NOTREACHED();
       return;
     }
@@ -524,19 +529,20 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
 }
 
 void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
-    const std::vector<mojom::UnblindedTokenPtr>& unblinded_tokens,
-    const std::vector<mojom::CredsBatchType>& types,
-    std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-    LegacyResultCallback callback) {
+    std::vector<mojom::CredsBatchType> types,
+    mojom::ContributionInfoPtr contribution,
+    ResultCallback callback,
+    std::vector<mojom::UnblindedTokenPtr> unblinded_tokens) {
   if (unblinded_tokens.empty()) {
-    BLOG(0, "Token list is empty");
-    callback(mojom::Result::FAILED);
+    engine_->LogError(FROM_HERE) << "Token list is empty";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  if (!shared_contribution) {
-    BLOG(0, "Contribution was not converted successfully");
-    callback(mojom::Result::FAILED);
+  if (!contribution) {
+    engine_->LogError(FROM_HERE)
+        << "Contribution was not converted successfully";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
@@ -553,8 +559,8 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
     converted_list.push_back(new_item);
   }
 
-  PreparePublishers(converted_list, std::move(*shared_contribution), types,
-                    callback);
+  PreparePublishers(converted_list, std::move(contribution), types,
+                    std::move(callback));
 }
 
 std::string Unblinded::GetStatisticalVotingWinnerForTesting(

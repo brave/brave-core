@@ -6,6 +6,8 @@
 #include "brave/components/brave_vpn/common/win/utils.h"
 
 #include <wrl/client.h>
+
+#include <optional>
 #include <string>
 
 #include "base/logging.h"
@@ -27,13 +29,12 @@ bool IsWindowsServiceRunning(const std::wstring& service_name) {
   return status.value() == SERVICE_RUNNING;
 }
 
-absl::optional<DWORD> GetWindowsServiceStatus(
-    const std::wstring& service_name) {
+std::optional<DWORD> GetWindowsServiceStatus(const std::wstring& service_name) {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
   if (!scm.IsValid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: " << service_name
             << ", error: " << std::hex << HRESULTFromLastError();
-    return absl::nullopt;
+    return std::nullopt;
   }
   ScopedScHandle service(
       ::OpenService(scm.Get(), service_name.c_str(), SERVICE_QUERY_STATUS));
@@ -41,11 +42,11 @@ absl::optional<DWORD> GetWindowsServiceStatus(
   // Service registered and has not exceeded the number of auto-configured
   // restarts.
   if (!service.IsValid()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   SERVICE_STATUS service_status = {0};
   if (!::QueryServiceStatus(service.Get(), &service_status)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return service_status.dwCurrentState;
 }

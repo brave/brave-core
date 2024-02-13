@@ -5,17 +5,16 @@
 
 #include "brave/components/brave_rewards/core/endpoint/payment/post_order/post_order.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "net/http/http_status_code.h"
-
-using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 namespace endpoint {
@@ -26,7 +25,10 @@ PostOrder::PostOrder(RewardsEngineImpl& engine) : engine_(engine) {}
 PostOrder::~PostOrder() = default;
 
 std::string PostOrder::GetUrl() {
-  return GetServerUrl("/v1/orders");
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_payment_url()
+      .Resolve("/v1/orders")
+      .spec();
 }
 
 std::string PostOrder::GeneratePayload(
@@ -50,17 +52,17 @@ std::string PostOrder::GeneratePayload(
 
 mojom::Result PostOrder::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
+    engine_->LogError(FROM_HERE) << "Invalid request";
     return mojom::Result::RETRY_SHORT;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
+    engine_->LogError(FROM_HERE) << "Internal server error";
     return mojom::Result::RETRY_SHORT;
   }
 
   if (status_code != net::HTTP_CREATED) {
-    BLOG(0, "Unexpected HTTP status: " << status_code);
+    engine_->LogError(FROM_HERE) << "Unexpected HTTP status: " << status_code;
     return mojom::Result::FAILED;
   }
 
@@ -73,9 +75,9 @@ mojom::Result PostOrder::ParseBody(
     mojom::SKUOrder* order) {
   DCHECK(order);
 
-  absl::optional<base::Value> dictionary = base::JSONReader::Read(body);
+  std::optional<base::Value> dictionary = base::JSONReader::Read(body);
   if (!dictionary || !dictionary->is_dict()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
@@ -87,7 +89,7 @@ mojom::Result PostOrder::ParseBody(
   }
 
   if (order->order_id.empty()) {
-    BLOG(0, "Order id empty");
+    engine_->LogError(FROM_HERE) << "Order id empty";
     return mojom::Result::FAILED;
   }
 
@@ -118,7 +120,7 @@ mojom::Result PostOrder::ParseBody(
   }
 
   if (items->size() != order_items.size()) {
-    BLOG(0, "Invalid JSON");
+    engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
@@ -168,33 +170,33 @@ mojom::Result PostOrder::ParseBody(
 
 void PostOrder::Request(const std::vector<mojom::SKUOrderItem>& items,
                         PostOrderCallback callback) {
-  auto url_callback =
-      std::bind(&PostOrder::OnRequest, this, _1, items, callback);
-
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(items);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  engine_->LoadURL(std::move(request), url_callback);
+
+  engine_->Get<URLLoader>().Load(
+      std::move(request), URLLoader::LogLevel::kDetailed,
+      base::BindOnce(&PostOrder::OnRequest, base::Unretained(this),
+                     std::move(items), std::move(callback)));
 }
 
-void PostOrder::OnRequest(mojom::UrlResponsePtr response,
-                          const std::vector<mojom::SKUOrderItem>& items,
-                          PostOrderCallback callback) {
+void PostOrder::OnRequest(std::vector<mojom::SKUOrderItem> items,
+                          PostOrderCallback callback,
+                          mojom::UrlResponsePtr response) {
   DCHECK(response);
-  LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::OK) {
-    callback(result, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
   auto order = mojom::SKUOrder::New();
   result = ParseBody(response->body, items, order.get());
-  callback(result, std::move(order));
+  std::move(callback).Run(result, std::move(order));
 }
 
 }  // namespace payment

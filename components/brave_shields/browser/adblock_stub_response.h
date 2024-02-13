@@ -6,9 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_ADBLOCK_STUB_RESPONSE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_ADBLOCK_STUB_RESPONSE_H_
 
+#include <optional>
 #include <string>
+
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace network {
 struct ResourceRequest;
@@ -18,7 +19,7 @@ namespace brave_shields {
 
 // Intercepts certain requests and blocks them by silently returning 200 OK
 // and not allowing them to hit the network.
-void MakeStubResponse(const absl::optional<std::string>& data_url,
+void MakeStubResponse(const std::optional<std::string>& data_url,
                       const network::ResourceRequest& request,
                       network::mojom::URLResponseHeadPtr* response,
                       std::string* data);

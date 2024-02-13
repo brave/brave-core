@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -87,7 +86,7 @@ void SidebarControlView::UpdateBackgroundAndBorder() {
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     SetBackground(
         views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
-    if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
       constexpr int kBorderThickness = 1;
       SetBorder(views::CreateSolidSidedBorder(
           gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : kBorderThickness, 0,
@@ -233,17 +232,17 @@ void SidebarControlView::UpdateSettingsButtonState() {
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_NORMAL,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon, kColorSidebarButtonBase,
-                                     SidebarButtonView::kIconSize));
+                                     SidebarButtonView::kDefaultIconSize));
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_PRESSED,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
                                      kColorSidebarButtonPressed,
-                                     SidebarButtonView::kIconSize));
+                                     SidebarButtonView::kDefaultIconSize));
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_DISABLED,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
                                      kColorSidebarAddButtonDisabled,
-                                     SidebarButtonView::kIconSize));
+                                     SidebarButtonView::kDefaultIconSize));
 }
 
 bool SidebarControlView::IsItemReorderingInProgress() const {

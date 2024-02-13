@@ -12,57 +12,51 @@ import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 // options
 import { AllNetworksOption } from './network-filter-options'
 
-// utils
-import { isComponentInStorybook } from '../utils/string-utils'
-
 // icons
 import {
-  ETHIconUrl,
-  SOLIconUrl,
+  ArbIcon,
+  AuroraIcon,
+  BaseIcon,
+  CeloIcon,
+  FtmIcon,
+  NeonIcon,
+  OpIcon,
   AVAXIconUrl,
   BNBIconUrl,
   BTCIconUrl,
-  ZECIconUrl,
-  FILECOINIconUrl
-} from '../stories/mock-data/asset-icons'
-
-const isStorybook = isComponentInStorybook()
+  ETHIconUrl,
+  FILECOINIconUrl,
+  MATICIconUrl,
+  SOLIconUrl,
+  ZECIconUrl
+} from '../assets/network_token_icons/network_token_icons'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
-  if (chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/aurora.png'
-  if (chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/op.png'
-  if (chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/matic.png'
+  if (chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID) return AuroraIcon
+  if (chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID) return OpIcon
+  if (chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) return MATICIconUrl
   if (chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID)
-    return isStorybook ? BNBIconUrl : 'chrome://erc-token-images/bnb.png'
-  if (chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID)
-    return isStorybook ? AVAXIconUrl : 'chrome://erc-token-images/avax.png'
-  if (chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/ftm.png'
-  if (chainId === BraveWallet.CELO_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/celo.png'
-  if (chainId === BraveWallet.ARBITRUM_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/arb.png'
-  if (chainId === BraveWallet.NEON_EVM_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/neon.png'
-  if (chainId === BraveWallet.BASE_MAINNET_CHAIN_ID)
-    return 'chrome://erc-token-images/base.png'
+    return BNBIconUrl
+  if (chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) return AVAXIconUrl
+  if (chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID) return FtmIcon
+  if (chainId === BraveWallet.CELO_MAINNET_CHAIN_ID) return CeloIcon
+  if (chainId === BraveWallet.ARBITRUM_MAINNET_CHAIN_ID) return ArbIcon
+  if (chainId === BraveWallet.NEON_EVM_MAINNET_CHAIN_ID) return NeonIcon
+  if (chainId === BraveWallet.BASE_MAINNET_CHAIN_ID) return BaseIcon
   if (chainId === AllNetworksOption.chainId)
     return AllNetworksOption.iconUrls[0]
 
   switch (symbol.toUpperCase()) {
     case 'SOL':
-      return isStorybook ? SOLIconUrl : 'chrome://erc-token-images/sol.png'
+      return SOLIconUrl
     case 'ETH':
-      return isStorybook ? ETHIconUrl : 'chrome://erc-token-images/eth.png'
+      return ETHIconUrl
     case 'FIL':
-      return isStorybook ? FILECOINIconUrl : 'chrome://erc-token-images/fil.png'
+      return FILECOINIconUrl
     case 'BTC':
-      return isStorybook ? BTCIconUrl : 'chrome://erc-token-images/btc.png'
+      return BTCIconUrl
     case 'ZEC':
-      return isStorybook ? ZECIconUrl : 'chrome://erc-token-images/zec.png'
+      return ZECIconUrl
   }
 
   return ''

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cmath>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <unordered_set>
@@ -48,9 +49,9 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 namespace {
@@ -78,6 +79,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveNewsSources);
   registry->RegisterDictionaryPref(prefs::kBraveNewsChannels);
   registry->RegisterDictionaryPref(prefs::kBraveNewsDirectFeeds);
+  registry->RegisterBooleanPref(prefs::kBraveNewsOpenArticlesInNewTab, true);
 
   p3a::RegisterProfilePrefs(registry);
 }
@@ -118,6 +120,8 @@ BraveNewsController::BraveNewsController(
       publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
+  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
+
   // Set up preference listeners
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
@@ -141,7 +145,9 @@ BraveNewsController::BraveNewsController(
   ConditionallyStartOrStopTimer();
 }
 
-BraveNewsController::~BraveNewsController() = default;
+BraveNewsController::~BraveNewsController() {
+  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
+}
 
 void BraveNewsController::Bind(
     mojo::PendingReceiver<mojom::BraveNewsController> receiver) {
@@ -221,6 +227,14 @@ void BraveNewsController::GetPublisherFeed(const std::string& publisher_id,
   feed_v2_builder_->BuildPublisherFeed(publisher_id, std::move(callback));
 }
 
+void BraveNewsController::EnsureFeedV2IsUpdating() {
+  if (!MaybeInitFeedV2()) {
+    return;
+  }
+
+  feed_v2_builder_->EnsureFeedIsUpdating();
+}
+
 void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
   if (!MaybeInitFeedV2()) {
     std::move(callback).Run(mojom::FeedV2::New());
@@ -298,6 +312,12 @@ void BraveNewsController::SetChannelSubscribed(
     SetChannelSubscribedCallback callback) {
   auto result =
       channels_controller_.SetChannelSubscribed(locale, channel_id, subscribed);
+
+  // When channels are changed, see if it affects the feed.
+  if (MaybeInitFeedV2()) {
+    feed_v2_builder_->RecheckFeedHash();
+  }
+
   std::move(callback).Run(std::move(result));
 }
 
@@ -307,7 +327,7 @@ void BraveNewsController::SubscribeToNewDirectFeed(
   // Verify the url points at a valid feed
   VLOG(1) << "SubscribeToNewDirectFeed: " << feed_url.spec();
   if (!feed_url.is_valid()) {
-    std::move(callback).Run(false, false, absl::nullopt);
+    std::move(callback).Run(false, false, std::nullopt);
     return;
   }
   direct_feed_controller_.VerifyFeedUrl(
@@ -319,13 +339,13 @@ void BraveNewsController::SubscribeToNewDirectFeed(
             VLOG(1) << "Is new feed valid? " << is_valid
                     << " Title: " << feed_title;
             if (!is_valid) {
-              std::move(callback).Run(false, false, absl::nullopt);
+              std::move(callback).Run(false, false, std::nullopt);
               return;
             }
 
             if (!controller->direct_feed_controller_.AddDirectFeedPref(
                     feed_url, feed_title)) {
-              std::move(callback).Run(true, true, absl::nullopt);
+              std::move(callback).Run(true, true, std::nullopt);
               return;
             }
 
@@ -354,7 +374,7 @@ void BraveNewsController::SubscribeToNewDirectFeed(
                        Publishers publishers) {
                       std::move(callback).Run(
                           true, false,
-                          absl::optional<Publishers>(std::move(publishers)));
+                          std::optional<Publishers>(std::move(publishers)));
                     },
                     std::move(callback)),
                 true);
@@ -386,7 +406,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
   // Validate
   VLOG(2) << "getimagedata " << padded_image_url.spec();
   if (!padded_image_url.is_valid()) {
-    absl::optional<std::vector<uint8_t>> args;
+    std::optional<std::vector<uint8_t>> args;
     std::move(callback).Run(std::move(args));
     return;
   }
@@ -397,7 +417,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
   const std::string ending = ".pad";
   if (file_name.length() >= file_name.max_size() - 1 ||
       file_name.length() <= ending.length()) {
-    absl::optional<std::vector<uint8_t>> args;
+    std::optional<std::vector<uint8_t>> args;
     std::move(callback).Run(std::move(args));
     return;
   }
@@ -420,7 +440,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
                  !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
                      &body_payload))) {
               // Byte padding removal failed
-              std::move(callback).Run(absl::nullopt);
+              std::move(callback).Run(std::nullopt);
               return;
             }
             // Download (and optional unpadding) was successful,
@@ -440,7 +460,7 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
         // If the publisher doesn't exist, there's nothing we can do.
         const auto& it = publishers.find(publisher_id);
         if (it == publishers.end()) {
-          std::move(callback).Run(absl::nullopt);
+          std::move(callback).Run(std::nullopt);
           return;
         }
 
@@ -464,7 +484,7 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
                 [](GetFavIconDataCallback callback,
                    const favicon_base::FaviconRawBitmapResult& result) {
                   if (!result.is_valid()) {
-                    std::move(callback).Run(absl::nullopt);
+                    std::move(callback).Run(std::nullopt);
                     return;
                   }
 
@@ -532,7 +552,7 @@ void BraveNewsController::IsFeedUpdateAvailable(
 void BraveNewsController::AddFeedListener(
     mojo::PendingRemote<mojom::FeedListener> listener) {
   if (MaybeInitFeedV2()) {
-    feed_controller_.AddListener(std::move(listener));
+    feed_v2_builder_->AddListener(std::move(listener));
   } else {
     feed_controller_.AddListener(std::move(listener));
   }
@@ -542,6 +562,8 @@ void BraveNewsController::SetConfiguration(
     SetConfigurationCallback callback) {
   prefs_->SetBoolean(prefs::kBraveNewsOptedIn, configuration->isOptedIn);
   prefs_->SetBoolean(prefs::kNewTabPageShowToday, configuration->showOnNTP);
+  prefs_->SetBoolean(prefs::kBraveNewsOpenArticlesInNewTab,
+                     configuration->openArticlesInNewTab);
   std::move(callback).Run();
 }
 
@@ -552,6 +574,8 @@ void BraveNewsController::AddConfigurationListener(
   auto event = mojom::Configuration::New();
   event->isOptedIn = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
   event->showOnNTP = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  event->openArticlesInNewTab =
+      prefs_->GetBoolean(prefs::kBraveNewsOpenArticlesInNewTab);
   configuration_listeners_.Get(id)->Changed(std::move(event));
 }
 
@@ -566,7 +590,7 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
   }
   auto on_ad_received = base::BindOnce(
       [](GetDisplayAdCallback callback, const std::string& dimensions,
-         absl::optional<base::Value::Dict> ad_data) {
+         std::optional<base::Value::Dict> ad_data) {
         if (!ad_data) {
           VLOG(1) << "GetDisplayAd: no ad";
           std::move(callback).Run(nullptr);
@@ -697,6 +721,7 @@ void BraveNewsController::CheckForFeedsUpdate() {
     return;
   }
   feed_controller_.UpdateIfRemoteChanged();
+  EnsureFeedV2IsUpdating();
 }
 
 void BraveNewsController::Prefetch() {
@@ -718,6 +743,8 @@ void BraveNewsController::OnOptInChange() {
   auto event = mojom::Configuration::New();
   event->isOptedIn = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
   event->showOnNTP = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  event->openArticlesInNewTab =
+      prefs_->GetBoolean(prefs::kBraveNewsOpenArticlesInNewTab);
   for (const auto& listener : configuration_listeners_) {
     listener->Changed(event->Clone());
   }
@@ -816,6 +843,17 @@ void BraveNewsController::OnPublishersUpdated(
   for (const auto& observer : publishers_listeners_) {
     observer->Changed(event->Clone());
   }
+}
+
+void BraveNewsController::OnNetworkChanged(
+    net::NetworkChangeNotifier::ConnectionType type) {
+  if (!GetIsEnabled(prefs_)) {
+    return;
+  }
+
+  // Ensure publishers are fetched (this won't do anything if they are). This
+  // handles the case where Brave News is started with no network.
+  publishers_controller_.GetOrFetchPublishers(base::DoNothing());
 }
 
 }  // namespace brave_news

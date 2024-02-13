@@ -5,6 +5,7 @@
 
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -67,7 +68,7 @@ void BodySnifferURLLoader::OnReceiveEarlyHints(
 void BodySnifferURLLoader::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr response_head,
     mojo::ScopedDataPipeConsumerHandle body,
-    absl::optional<mojo_base::BigBuffer> cached_metadata) {
+    std::optional<mojo_base::BigBuffer> cached_metadata) {
   // OnReceiveResponse() shouldn't be called because BodySnifferURLLoader is
   // created by WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
@@ -128,7 +129,7 @@ void BodySnifferURLLoader::FollowRedirect(
     const std::vector<std::string>& removed_headers,
     const net::HttpRequestHeaders& modified_headers,
     const net::HttpRequestHeaders& modified_cors_exempt_headers,
-    const absl::optional<GURL>& new_url) {
+    const std::optional<GURL>& new_url) {
   // BodySnifferURLLoader starts handling the request after
   // OnReceivedResponse(). A redirect response is not expected.
   NOTREACHED();

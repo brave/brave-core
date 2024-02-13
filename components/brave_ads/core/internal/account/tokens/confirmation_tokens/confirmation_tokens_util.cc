@@ -18,9 +18,9 @@ bool HasConfirmationTokens() {
 
 }  // namespace
 
-absl::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken() {
+std::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken() {
   if (!HasConfirmationTokens()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ConfirmationStateManager::GetInstance()
@@ -75,7 +75,7 @@ bool ConfirmationTokensIsEmpty() {
       .IsEmpty();
 }
 
-int ConfirmationTokenCount() {
+size_t ConfirmationTokenCount() {
   return ConfirmationStateManager::GetInstance()
       .GetConfirmationTokens()
       .Count();

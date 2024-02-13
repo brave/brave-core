@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_SIGNED_TOKEN_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_SIGNED_TOKEN_H_
 
+#include <optional>
 #include <ostream>
 #include <string>
 
 #include "base/check.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
-// A |SignedToken| is the result of signing a |BlindedToken|.
+// A `SignedToken` is the result of signing a `BlindedToken`.
 
 class SignedToken {
  public:
@@ -48,10 +48,10 @@ class SignedToken {
   }
 
   static SignedToken DecodeBase64(const std::string& signed_token_base64);
-  absl::optional<std::string> EncodeBase64() const;
+  std::optional<std::string> EncodeBase64() const;
 
  private:
-  absl::optional<challenge_bypass_ristretto::SignedToken> signed_token_;
+  std::optional<challenge_bypass_ristretto::SignedToken> signed_token_;
 };
 
 std::ostream& operator<<(std::ostream& os, const SignedToken& signed_token);

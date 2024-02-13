@@ -48,8 +48,8 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item,
       GURL(static_cast<std::string>(rust_feed_item.image_url)));
   metadata->url =
       GURL(static_cast<std::string>(rust_feed_item.destination_url));
-  metadata->publish_time =
-      base::Time::FromJsTime(rust_feed_item.published_timestamp * 1000);
+  metadata->publish_time = base::Time::FromMillisecondsSinceUnixEpoch(
+      rust_feed_item.published_timestamp * 1000);
   // Get language-specific relative time
   base::TimeDelta relative_time_delta =
       base::Time::Now() - metadata->publish_time;

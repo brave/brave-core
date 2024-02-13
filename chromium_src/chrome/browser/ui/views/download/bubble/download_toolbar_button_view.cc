@@ -8,6 +8,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "components/vector_icons/vector_icons.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 
 namespace gfx {
@@ -110,3 +111,6 @@ bool DownloadToolbarButtonView::HasInsecureDownloads() {
                 download::DownloadItem::InsecureDownloadStatus::WARN);
   });
 }
+
+BEGIN_METADATA(DownloadToolbarButtonView)
+END_METADATA

@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "chrome/browser/extensions/api/identity/identity_get_auth_token_function.h"
 #include "chrome/browser/extensions/api/identity/identity_token_cache.h"
 #include "google_apis/google_api_keys.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // Use the embedded Google OAuth flow only if Google Chrome API key is used.
 // Otherwise, fallback to the web OAuth flow.
@@ -30,7 +31,7 @@
   if (cache_entry.status() ==                                                  \
       IdentityTokenCacheValue::CACHE_STATUS_NOTFOUND) {                        \
     if (type == IdentityMintRequestQueue::MINT_TYPE_INTERACTIVE) {             \
-      absl::optional<api::identity::GetAuthToken::Params> params(              \
+      std::optional<api::identity::GetAuthToken::Params> params(               \
           api::identity::GetAuthToken::Params::Create(args()));                \
       /* Forcing interactive mode if initial caller requested it. */           \
       bool interactive =                                                       \

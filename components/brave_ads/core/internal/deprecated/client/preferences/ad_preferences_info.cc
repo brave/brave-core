@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -145,7 +145,7 @@ std::string AdPreferencesInfo::ToJson() const {
 }
 
 bool AdPreferencesInfo::FromJson(const std::string& json) {
-  const absl::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+  const std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {

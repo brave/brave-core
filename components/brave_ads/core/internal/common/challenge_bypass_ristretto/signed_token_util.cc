@@ -12,6 +12,8 @@ namespace brave_ads::cbr {
 std::vector<challenge_bypass_ristretto::SignedToken> ToRawSignedTokens(
     const std::vector<SignedToken>& tokens) {
   std::vector<challenge_bypass_ristretto::SignedToken> raw_tokens;
+  raw_tokens.reserve(tokens.size());
+
   for (const auto& token : tokens) {
     if (!token.has_value()) {
       return {};

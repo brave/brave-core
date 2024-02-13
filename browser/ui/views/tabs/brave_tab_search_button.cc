@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
+#include "components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/rect.h"
@@ -21,10 +22,12 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/layout/layout_provider.h"
 
-BraveTabSearchButton::BraveTabSearchButton(TabStrip* tab_strip, Edge flat_edge)
-    : TabSearchButton(tab_strip, flat_edge) {
+BraveTabSearchButton::BraveTabSearchButton(
+    TabStripController* tab_strip_controller,
+    Edge flat_edge)
+    : TabSearchButton(tab_strip_controller, flat_edge) {
   tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
-      this, tab_strip->controller()->GetProfile());
+      this, tab_strip_controller->GetProfile());
 
   // Apply toolbar's icon color to search button.
   SetForegroundFrameActiveColorId(kColorToolbarButtonIcon);
@@ -55,10 +58,11 @@ void BraveTabSearchButton::UpdateColors() {
   }
 
   // Use a custom icon for tab search.
-  constexpr int kIconSize = 16;
-  SetImageModel(views::Button::STATE_NORMAL,
-                ui::ImageModel::FromVectorIcon(
-                    kLeoSearchIcon, GetForegroundColor(), kIconSize));
+  constexpr int kIconSize = 18;
+  SetImageModel(
+      views::Button::STATE_NORMAL,
+      ui::ImageModel::FromVectorIcon(vector_icons::kCaretDownIcon,
+                                     GetForegroundColor(), kIconSize));
   SetImageModel(views::Button::STATE_HOVERED, ui::ImageModel());
   SetImageModel(views::Button::STATE_PRESSED, ui::ImageModel());
 

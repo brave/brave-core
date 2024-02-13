@@ -71,6 +71,11 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
       {"bravePlaylistA11YLoopOff", IDS_PLAYLIST_A11Y_LOOP_OFF},
       {"bravePlaylistA11YLoopOne", IDS_PLAYLIST_A11Y_LOOP_ONE},
       {"bravePlaylistA11YLoopAll", IDS_PLAYLIST_A11Y_LOOP_ALL},
+      {"bravePlaylistFailedToPlayTitle", IDS_PLAYLIST_FAILED_TO_PLAY_TITLE},
+      {"bravePlaylistFailedToPlayDescription",
+       IDS_PLAYLIST_FAILED_TO_PLAY_DESCRIPTION},
+      {"bravePlaylistFailedToPlayRecover", IDS_PLAYLIST_FAILED_TO_PLAY_RECOVER},
+      {"bravePlaylistAlertDismiss", IDS_PLAYLIST_ALERT_DISMISS},
   };
 
   for (const auto& [name, id] : kLocalizedStrings) {

@@ -3,11 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
+
 #include <stdint.h>
 
 #include <algorithm>
 #include <cmath>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -17,7 +20,6 @@
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
-#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
@@ -28,10 +30,6 @@
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace brave_rewards::internal {
 
@@ -57,12 +55,13 @@ bool IsRevivedAC(const mojom::ContributionInfo& contribution) {
   }
 
   // ACs that were started over 20 days ago are considered "revived".
-  base::Time created_at = base::Time::FromDoubleT(contribution.created_at);
+  base::Time created_at =
+      base::Time::FromSecondsSinceUnixEpoch(contribution.created_at);
   return base::Time::Now() - created_at > base::Days(20);
 }
 
 mojom::ContributionStep ConvertResultIntoContributionStep(
-    const mojom::Result result) {
+    mojom::Result result) {
   switch (result) {
     case mojom::Result::OK: {
       return mojom::ContributionStep::STEP_COMPLETED;
@@ -131,15 +130,15 @@ void Contribution::Initialize() {
 }
 
 void Contribution::CheckContributionQueue() {
-  base::TimeDelta delay = is_testing
+  base::TimeDelta delay = engine_->options().is_testing
                               ? base::Seconds(1)
                               : util::GetRandomizedDelay(base::Seconds(15));
 
-  BLOG(1, "Queue timer set for " << delay);
+  engine_->Log(FROM_HERE) << "Queue timer set for " << delay;
 
   queue_timer_.Start(FROM_HERE, delay,
                      base::BindOnce(&Contribution::ProcessContributionQueue,
-                                    base::Unretained(this)));
+                                    weak_factory_.GetWeakPtr()));
 }
 
 void Contribution::ProcessContributionQueue() {
@@ -149,9 +148,8 @@ void Contribution::ProcessContributionQueue() {
 
   queue_in_progress_ = true;
 
-  const auto callback =
-      std::bind(&Contribution::OnProcessContributionQueue, this, _1);
-  engine_->database()->GetFirstContributionQueue(callback);
+  engine_->database()->GetFirstContributionQueue(base::BindOnce(
+      &Contribution::OnProcessContributionQueue, weak_factory_.GetWeakPtr()));
 }
 
 void Contribution::OnProcessContributionQueue(
@@ -167,10 +165,8 @@ void Contribution::OnProcessContributionQueue(
 }
 
 void Contribution::CheckNotCompletedContributions() {
-  auto get_callback =
-      std::bind(&Contribution::NotCompletedContributions, this, _1);
-
-  engine_->database()->GetNotCompletedContributions(get_callback);
+  engine_->database()->GetNotCompletedContributions(base::BindOnce(
+      &Contribution::NotCompletedContributions, weak_factory_.GetWeakPtr()));
 }
 
 void Contribution::NotCompletedContributions(
@@ -206,42 +202,48 @@ void Contribution::StartMonthlyContributions(
   monthly_contribution_timer_.Stop();
   monthly_contributions_processing_ = true;
 
-  absl::optional<base::Time> cutoff_time = base::Time::Now();
+  std::optional<base::Time> cutoff_time = base::Time::Now();
 
   // Existing tests expect the ability to trigger all monthly and AC
   // contributions, regardless of their "next contribution dates". If we are
   // triggering all contributions, pass a null cutoff time to the monthly
   // contribution processor so that it will send them all.
   if (options == MonthlyContributionOptions::kSendAllContributions) {
-    cutoff_time = absl::nullopt;
+    cutoff_time = std::nullopt;
   }
 
-  BLOG(1, "Starting monthly contributions");
+  engine_->Log(FROM_HERE) << "Starting monthly contributions";
 
-  monthly_.Process(cutoff_time, [this, options](mojom::Result result) {
-    monthly_contributions_processing_ = false;
+  monthly_.Process(cutoff_time,
+                   base::BindOnce(&Contribution::OnMonthlyContributionsFinished,
+                                  weak_factory_.GetWeakPtr(), options));
+}
 
-    // Only restart the timer on success. If we were unable to advance the
-    // contribution dates and enqueue contributions, then we'll most likely end
-    // up in a failure loop if we retry immediately. The timer will be reset
-    // when the user creates another monthly contribution or restarts.
-    if (result == mojom::Result::OK) {
-      SetMonthlyContributionTimer();
-    }
+void Contribution::OnMonthlyContributionsFinished(
+    MonthlyContributionOptions options,
+    mojom::Result result) {
+  monthly_contributions_processing_ = false;
 
-    // Existing tests expect that, when all contributions are triggered, monthly
-    // contributions will be sent before AC contributions. When testing, we
-    // process contributions in series instead of in parallel.
-    if (options == MonthlyContributionOptions::kSendAllContributions) {
-      StartAutoContribute();
-    }
-  });
+  // Only restart the timer on success. If we were unable to advance the
+  // contribution dates and enqueue contributions, then we'll most likely end
+  // up in a failure loop if we retry immediately. The timer will be reset
+  // when the user creates another monthly contribution or restarts.
+  if (result == mojom::Result::OK) {
+    SetMonthlyContributionTimer();
+  }
+
+  // Existing tests expect that, when all contributions are triggered, monthly
+  // contributions will be sent before AC contributions. When testing, we
+  // process contributions in series instead of in parallel.
+  if (options == MonthlyContributionOptions::kSendAllContributions) {
+    StartAutoContribute();
+  }
 }
 
 void Contribution::StartAutoContribute() {
   uint64_t reconcile_stamp = engine_->state()->GetReconcileStamp();
   ResetReconcileStamp();
-  BLOG(1, "Starting auto-contribute");
+  engine_->Log(FROM_HERE) << "Starting auto-contribute";
   ac_.Process(reconcile_stamp);
 }
 
@@ -249,7 +251,7 @@ void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
                              mojom::BalancePtr balance) {
   if (!balance) {
     queue_in_progress_ = false;
-    BLOG(0, "We couldn't get balance from the server.");
+    engine_->LogError(FROM_HERE) << "We couldn't get balance from the server";
     if (queue->type == mojom::RewardsType::ONE_TIME_TIP) {
       MarkContributionQueueAsComplete(queue->id, false);
     }
@@ -260,8 +262,8 @@ void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
 }
 
 void Contribution::Start(mojom::ContributionQueuePtr info) {
-  auto fetch_callback = base::BindOnce(&Contribution::OnBalance,
-                                       base::Unretained(this), std::move(info));
+  auto fetch_callback = base::BindOnce(
+      &Contribution::OnBalance, weak_factory_.GetWeakPtr(), std::move(info));
   engine_->wallet()->FetchBalance(std::move(fetch_callback));
 }
 
@@ -278,12 +280,12 @@ void Contribution::SetAutoContributeTimer() {
     delay = base::Seconds(next_reconcile_stamp - now);
   }
 
-  BLOG(1, "Auto-contribute timer set for " << delay);
+  engine_->Log(FROM_HERE) << "Auto-contribute timer set for " << delay;
 
   auto_contribute_timer_.Start(
       FROM_HERE, delay,
       base::BindOnce(&Contribution::StartAutoContribute,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void Contribution::SetMonthlyContributionTimer() {
@@ -291,15 +293,15 @@ void Contribution::SetMonthlyContributionTimer() {
   // run soonest.
   engine_->database()->GetNextMonthlyContributionTime(
       base::BindOnce(&Contribution::OnNextMonthlyContributionTimeRead,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void Contribution::OnNextMonthlyContributionTimeRead(
-    absl::optional<base::Time> time) {
+    std::optional<base::Time> time) {
   monthly_contribution_timer_.Stop();
 
   if (!time) {
-    BLOG(1, "No monthly contributions found.");
+    engine_->Log(FROM_HERE) << "No monthly contributions found.";
     return;
   }
 
@@ -308,10 +310,10 @@ void Contribution::OnNextMonthlyContributionTimeRead(
   monthly_contribution_timer_.Start(
       FROM_HERE, delay,
       base::BindOnce(&Contribution::StartMonthlyContributions,
-                     base::Unretained(this),
+                     weak_factory_.GetWeakPtr(),
                      MonthlyContributionOptions::kDefault));
 
-  BLOG(1, "Monthly contribution timer set for " << delay);
+  engine_->Log(FROM_HERE) << "Monthly contribution timer set for " << delay;
 }
 
 void Contribution::SendContribution(const std::string& publisher_id,
@@ -323,12 +325,12 @@ void Contribution::SendContribution(const std::string& publisher_id,
 
   tip_.Process(publisher_id, amount,
                base::BindOnce(&Contribution::OnContributionRequestQueued,
-                              base::Unretained(this), std::move(request)));
+                              weak_factory_.GetWeakPtr(), std::move(request)));
 }
 
 void Contribution::OnContributionRequestQueued(
     ContributionRequest request,
-    absl::optional<std::string> queue_id) {
+    std::optional<std::string> queue_id) {
   if (!queue_id) {
     std::move(request.callback).Run(false);
     return;
@@ -356,7 +358,7 @@ void Contribution::OnContributionRequestCompleted(const std::string& queue_id,
     engine_->database()->SetMonthlyContribution(
         request.publisher_id, request.amount,
         base::BindOnce(&Contribution::OnMonthlyContributionSet,
-                       base::Unretained(this)));
+                       weak_factory_.GetWeakPtr()));
   }
 
   std::move(request.callback).Run(success);
@@ -374,10 +376,10 @@ void Contribution::OnMonthlyContributionSet(bool success) {
 }
 
 void Contribution::ContributionCompleted(
-    const mojom::Result result,
+    mojom::Result result,
     mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return;
   }
 
@@ -391,45 +393,44 @@ void Contribution::ContributionCompleted(
       engine_->database()->SaveBalanceReportInfoItem(
           util::GetCurrentMonth(), util::GetCurrentYear(),
           GetReportTypeFromRewardsType(contribution->type),
-          contribution->amount, [](const mojom::Result) {});
+          contribution->amount, base::DoNothing());
     }
   }
 
-  auto save_callback = std::bind(&Contribution::ContributionCompletedSaved,
-                                 this, _1, contribution->contribution_id);
-
   engine_->database()->UpdateContributionInfoStepAndCount(
       contribution->contribution_id, ConvertResultIntoContributionStep(result),
-      -1, save_callback);
+      -1,
+      base::BindOnce(&Contribution::ContributionCompletedSaved,
+                     weak_factory_.GetWeakPtr(),
+                     contribution->contribution_id));
 }
 
 void Contribution::ContributionCompletedSaved(
-    const mojom::Result result,
-    const std::string& contribution_id) {
+    const std::string& contribution_id,
+    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution step and count failed");
+    engine_->LogError(FROM_HERE) << "Contribution step and count failed";
   }
 
-  auto callback = std::bind(&Contribution::OnMarkUnblindedTokensAsSpendable,
-                            this, _1, contribution_id);
-  engine_->database()->MarkUnblindedTokensAsSpendable(contribution_id,
-                                                      callback);
+  engine_->database()->MarkUnblindedTokensAsSpendable(
+      contribution_id,
+      base::BindOnce(&Contribution::OnMarkUnblindedTokensAsSpendable,
+                     weak_factory_.GetWeakPtr(), contribution_id));
 }
 
 void Contribution::OneTimeTip(const std::string& publisher_key,
                               double amount,
-                              LegacyResultCallback callback) {
-  auto on_added = [](LegacyResultCallback callback,
-                     absl::optional<std::string> queue_id) {
-    callback(mojom::Result::OK);
+                              ResultCallback callback) {
+  auto on_added = [](ResultCallback callback,
+                     std::optional<std::string> queue_id) {
+    std::move(callback).Run(mojom::Result::OK);
   };
 
   tip_.Process(publisher_key, amount,
                base::BindOnce(on_added, std::move(callback)));
 }
 
-void Contribution::OnMarkContributionQueueAsComplete(
-    const mojom::Result result) {
+void Contribution::OnMarkContributionQueueAsComplete(mojom::Result result) {
   queue_in_progress_ = false;
   CheckContributionQueue();
 }
@@ -437,7 +438,7 @@ void Contribution::OnMarkContributionQueueAsComplete(
 void Contribution::MarkContributionQueueAsComplete(const std::string& id,
                                                    bool success) {
   if (id.empty()) {
-    BLOG(0, "Queue id is empty");
+    engine_->LogError(FROM_HERE) << "Queue id is empty";
     return;
   }
 
@@ -447,22 +448,21 @@ void Contribution::MarkContributionQueueAsComplete(const std::string& id,
     OnContributionRequestCompleted(id, false);
   }
 
-  auto callback =
-      std::bind(&Contribution::OnMarkContributionQueueAsComplete, this, _1);
-
-  engine_->database()->MarkContributionQueueAsComplete(id, callback);
+  engine_->database()->MarkContributionQueueAsComplete(
+      id, base::BindOnce(&Contribution::OnMarkContributionQueueAsComplete,
+                         weak_factory_.GetWeakPtr()));
 }
 
 void Contribution::CreateNewEntry(const std::string& wallet_type,
                                   mojom::BalancePtr balance,
                                   mojom::ContributionQueuePtr queue) {
   if (!queue) {
-    BLOG(1, "Queue is null");
+    engine_->Log(FROM_HERE) << "Queue is null";
     return;
   }
 
   if (queue->publishers.empty() || !balance || wallet_type.empty()) {
-    BLOG(0, "Queue data is wrong");
+    engine_->LogError(FROM_HERE) << "Queue data is wrong";
     MarkContributionQueueAsComplete(queue->id, false);
     return;
   }
@@ -471,7 +471,7 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
   const double wallet_balance =
       balance_it != balance->wallets.cend() ? balance_it->second : 0.0;
   if (wallet_balance == 0) {
-    BLOG(1, "Wallet balance is 0 for " << wallet_type);
+    engine_->Log(FROM_HERE) << "Wallet balance is 0 for " << wallet_type;
     CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
                    std::move(queue));
     return;
@@ -479,7 +479,7 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
 
   if (wallet_type == constant::kWalletBitflyer &&
       queue->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-    BLOG(1, "AC is not supported for bitFlyer wallets");
+    engine_->Log(FROM_HERE) << "AC is not supported for bitFlyer wallets";
     CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
                    std::move(queue));
     return;
@@ -510,9 +510,9 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
     queue->amount = 0;
   }
 
-  BLOG(1, "Creating contribution for wallet type "
-              << wallet_type << " (amount: " << contribution->amount
-              << ", type: " << queue->type << ")");
+  engine_->Log(FROM_HERE) << "Creating contribution for wallet type "
+                          << wallet_type << " (amount: " << contribution->amount
+                          << ", type: " << queue->type << ")";
 
   std::vector<mojom::ContributionPublisherPtr> publisher_list;
   for (const auto& item : queue_publishers) {
@@ -527,94 +527,88 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
 
   contribution->publishers = std::move(publisher_list);
 
-  auto shared_queue =
-      std::make_shared<mojom::ContributionQueuePtr>(std::move(queue));
-
-  auto save_callback = std::bind(&Contribution::OnEntrySaved, this, _1,
-                                 contribution->contribution_id, wallet_type,
-                                 *balance, shared_queue);
-
-  engine_->database()->SaveContributionInfo(contribution->Clone(),
-                                            save_callback);
+  engine_->database()->SaveContributionInfo(
+      contribution->Clone(),
+      base::BindOnce(&Contribution::OnEntrySaved, weak_factory_.GetWeakPtr(),
+                     contribution->contribution_id, wallet_type,
+                     std::move(balance), std::move(queue)));
 }
 
-void Contribution::OnEntrySaved(
-    const mojom::Result result,
-    const std::string& contribution_id,
-    const std::string& wallet_type,
-    const mojom::Balance& balance,
-    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue) {
+void Contribution::OnEntrySaved(const std::string& contribution_id,
+                                const std::string& wallet_type,
+                                mojom::BalancePtr balance,
+                                mojom::ContributionQueuePtr queue,
+                                mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution was not saved correctly");
+    engine_->LogError(FROM_HERE) << "Contribution was not saved correctly";
     return;
   }
 
-  if (!shared_queue) {
-    BLOG(0, "Queue is null");
+  if (!queue) {
+    engine_->LogError(FROM_HERE) << "Queue is null";
     return;
   }
 
-  const std::string& queue_id = (*shared_queue)->id;
+  const std::string& queue_id = queue->id;
 
   if (wallet_type == constant::kWalletUnBlinded) {
-    auto result_callback =
-        std::bind(&Contribution::Result, this, _1, queue_id, contribution_id);
-
-    StartUnblinded({mojom::CredsBatchType::PROMOTION}, contribution_id,
-                   result_callback);
+    StartUnblinded(
+        {mojom::CredsBatchType::PROMOTION}, contribution_id,
+        base::BindOnce(&Contribution::Result, weak_factory_.GetWeakPtr(),
+                       queue_id, contribution_id));
   } else if (wallet_type == constant::kWalletUphold ||
              wallet_type == constant::kWalletBitflyer ||
              wallet_type == constant::kWalletGemini) {
-    auto result_callback =
-        std::bind(&Contribution::Result, this, _1, queue_id, contribution_id);
-
-    external_wallet_.Process(contribution_id, result_callback);
+    external_wallet_.Process(
+        contribution_id,
+        base::BindOnce(&Contribution::Result, weak_factory_.GetWeakPtr(),
+                       queue_id, contribution_id));
   }
 
-  if ((*shared_queue)->amount > 0) {
-    auto save_callback = std::bind(&Contribution::OnQueueSaved, this, _1,
-                                   wallet_type, balance, shared_queue);
+  if (queue->amount > 0) {
+    auto save_callback =
+        base::BindOnce(&Contribution::OnQueueSaved, weak_factory_.GetWeakPtr(),
+                       wallet_type, std::move(balance), queue->Clone());
 
-    engine_->database()->SaveContributionQueue((*shared_queue)->Clone(),
-                                               save_callback);
+    engine_->database()->SaveContributionQueue(std::move(queue),
+                                               std::move(save_callback));
   } else {
-    MarkContributionQueueAsComplete((*shared_queue)->id, true);
+    MarkContributionQueueAsComplete(queue->id, true);
   }
 }
 
-void Contribution::OnQueueSaved(
-    const mojom::Result result,
-    const std::string& wallet_type,
-    const mojom::Balance& balance,
-    std::shared_ptr<mojom::ContributionQueuePtr> shared_queue) {
+void Contribution::OnQueueSaved(const std::string& wallet_type,
+                                mojom::BalancePtr balance,
+                                mojom::ContributionQueuePtr queue,
+                                mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Queue was not saved successfully");
+    engine_->LogError(FROM_HERE) << "Queue was not saved successfully";
     return;
   }
 
-  if (!shared_queue) {
-    BLOG(0, "Queue was not converted successfully");
+  if (!queue) {
+    engine_->LogError(FROM_HERE) << "Queue was not converted successfully";
     return;
   }
 
-  CreateNewEntry(GetNextProcessor(wallet_type), mojom::Balance::New(balance),
-                 std::move(*shared_queue));
+  CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
+                 std::move(queue));
 }
 
 void Contribution::Process(mojom::ContributionQueuePtr queue,
                            mojom::BalancePtr balance) {
   if (!queue) {
-    BLOG(0, "Queue is null");
+    engine_->LogError(FROM_HERE) << "Queue is null";
     return;
   }
 
   if (!balance) {
-    BLOG(0, "Balance is null");
+    engine_->LogError(FROM_HERE) << "Balance is null";
     return;
   }
 
   if (queue->amount == 0 || queue->publishers.empty()) {
-    BLOG(0, "Amount/publisher is empty");
+    engine_->LogError(FROM_HERE) << "Amount/publisher is empty";
     MarkContributionQueueAsComplete(queue->id, false);
     return;
   }
@@ -623,94 +617,94 @@ void Contribution::Process(mojom::ContributionQueuePtr queue,
       &queue->amount, queue->partial, balance->total);
 
   if (!have_enough_balance) {
-    BLOG(1, "Not enough balance");
+    engine_->Log(FROM_HERE) << "Not enough balance";
     MarkContributionQueueAsComplete(queue->id, false);
     return;
   }
 
   if (queue->amount == 0) {
-    BLOG(0, "Amount is 0");
+    engine_->LogError(FROM_HERE) << "Amount is 0";
     MarkContributionQueueAsComplete(queue->id, false);
     return;
   }
 
-  CreateNewEntry(GetNextProcessor(""), balance->Clone(), queue->Clone());
+  CreateNewEntry(GetNextProcessor(""), std::move(balance), std::move(queue));
 }
 
 void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
                                  const std::string& destination,
                                  const std::string& wallet_type,
                                  const std::string& contribution_id,
-                                 LegacyResultCallback callback) {
+                                 ResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     engine_->uphold()->TransferFunds(transaction.amount, destination,
-                                     contribution_id, callback);
+                                     contribution_id, std::move(callback));
     return;
   }
 
   if (wallet_type == constant::kWalletBitflyer) {
     engine_->bitflyer()->TransferFunds(transaction.amount, destination,
-                                       contribution_id, callback);
+                                       contribution_id, std::move(callback));
     return;
   }
 
   if (wallet_type == constant::kWalletGemini) {
     engine_->gemini()->TransferFunds(transaction.amount, destination,
-                                     contribution_id, callback);
+                                     contribution_id, std::move(callback));
     return;
   }
 
   if (wallet_type == constant::kWalletUnBlinded) {
-    sku_.Merchant(transaction, callback);
+    sku_.Merchant(transaction, std::move(callback));
     return;
   }
 
   NOTREACHED();
-  BLOG(0, "Wallet type not supported: " << wallet_type);
+  engine_->LogError(FROM_HERE) << "Wallet type not supported";
 }
 
 void Contribution::SKUAutoContribution(const std::string& contribution_id,
                                        const std::string& wallet_type,
-                                       LegacyResultCallback callback) {
-  sku_.AutoContribution(contribution_id, wallet_type, callback);
+                                       ResultCallback callback) {
+  sku_.AutoContribution(contribution_id, wallet_type, std::move(callback));
 }
 
 void Contribution::StartUnblinded(
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
-    LegacyResultCallback callback) {
-  unblinded_.Start(types, contribution_id, callback);
+    ResultCallback callback) {
+  unblinded_.Start(types, contribution_id, std::move(callback));
 }
 
 void Contribution::RetryUnblinded(
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
-    LegacyResultCallback callback) {
-  auto get_callback = std::bind(&Contribution::RetryUnblindedContribution, this,
-                                _1, types, callback);
-
-  engine_->database()->GetContributionInfo(contribution_id, get_callback);
+    ResultCallback callback) {
+  engine_->database()->GetContributionInfo(
+      contribution_id,
+      base::BindOnce(&Contribution::RetryUnblindedContribution,
+                     weak_factory_.GetWeakPtr(), types, std::move(callback)));
 }
 
 void Contribution::RetryUnblindedContribution(
-    mojom::ContributionInfoPtr contribution,
-    const std::vector<mojom::CredsBatchType>& types,
-    LegacyResultCallback callback) {
-  unblinded_.Retry(types, std::move(contribution), callback);
+    std::vector<mojom::CredsBatchType> types,
+    ResultCallback callback,
+    mojom::ContributionInfoPtr contribution) {
+  unblinded_.Retry(types, std::move(contribution), std::move(callback));
 }
 
-void Contribution::Result(const mojom::Result result,
-                          const std::string& queue_id,
-                          const std::string& contribution_id) {
-  auto get_callback =
-      std::bind(&Contribution::OnResult, this, _1, result, queue_id);
-
-  engine_->database()->GetContributionInfo(contribution_id, get_callback);
+void Contribution::Result(const std::string& queue_id,
+                          const std::string& contribution_id,
+                          mojom::Result result) {
+  engine_->database()->GetContributionInfo(
+      contribution_id,
+      base::BindOnce(&Contribution::OnResult, weak_factory_.GetWeakPtr(),
+                     result, queue_id));
 }
 
-void Contribution::OnResult(mojom::ContributionInfoPtr contribution,
-                            const mojom::Result result,
-                            const std::string& queue_id) {
+void Contribution::OnResult(mojom::Result result,
+                            const std::string& queue_id,
+                            mojom::ContributionInfoPtr contribution) {
   // Notify any waiting callbacks that the contribution request has either
   // succeeded or failed. Note that if the contribution was "split" between
   // multiple funding sources, then the callback will only receive the
@@ -724,7 +718,7 @@ void Contribution::OnResult(mojom::ContributionInfoPtr contribution,
                     result == mojom::Result::RETRY_PENDING_TRANSACTION_LONG);
 
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return;
   }
 
@@ -766,118 +760,117 @@ void Contribution::OnResult(mojom::ContributionInfoPtr contribution,
 void Contribution::SetRetryTimer(const std::string& contribution_id,
                                  base::TimeDelta delay) {
   if (contribution_id.empty()) {
-    BLOG(0, "Contribution id is empty");
+    engine_->LogError(FROM_HERE) << "Contribution id is empty";
     return;
   }
 
-  if (retry_interval) {
-    delay = base::Seconds(retry_interval);
+  if (engine_->options().retry_interval) {
+    delay = base::Seconds(engine_->options().retry_interval);
   }
 
-  BLOG(1, "Timer for contribution retry (" << contribution_id
-                                           << ") "
-                                              "set for "
-                                           << delay);
+  engine_->Log(FROM_HERE) << "Timer for contribution retry (" << contribution_id
+                          << ") "
+                             "set for "
+                          << delay;
 
   retry_timers_[contribution_id].Start(
       FROM_HERE, delay,
-      base::BindOnce(&Contribution::OnRetryTimerElapsed, base::Unretained(this),
-                     contribution_id));
+      base::BindOnce(&Contribution::OnRetryTimerElapsed,
+                     weak_factory_.GetWeakPtr(), contribution_id));
 }
 
 void Contribution::OnRetryTimerElapsed(const std::string& contribution_id) {
   retry_timers_.erase(contribution_id);
 
-  auto callback = std::bind(&Contribution::SetRetryCounter, this, _1);
-
-  engine_->database()->GetContributionInfo(contribution_id, callback);
+  engine_->database()->GetContributionInfo(
+      contribution_id, base::BindOnce(&Contribution::SetRetryCounter,
+                                      weak_factory_.GetWeakPtr()));
 }
 
 void Contribution::SetRetryCounter(mojom::ContributionInfoPtr contribution) {
   if (!contribution) {
-    BLOG(0, "Contribution is null");
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return;
   }
 
   if (contribution->retry_count == 5 &&
       contribution->step != mojom::ContributionStep::STEP_PREPARE) {
-    BLOG(0, "Contribution failed after 5 retries");
+    engine_->LogError(FROM_HERE) << "Contribution failed after 5 retries";
     ContributionCompleted(mojom::Result::TOO_MANY_RESULTS,
                           std::move(contribution));
     return;
   }
 
-  auto save_callback = std::bind(
-      &Contribution::Retry, this, _1,
-      std::make_shared<mojom::ContributionInfoPtr>(contribution->Clone()));
-
   engine_->database()->UpdateContributionInfoStepAndCount(
       contribution->contribution_id, contribution->step,
-      contribution->retry_count + 1, save_callback);
+      contribution->retry_count + 1,
+      base::BindOnce(&Contribution::Retry, weak_factory_.GetWeakPtr(),
+                     contribution->Clone()));
 }
 
 void Contribution::OnMarkUnblindedTokensAsSpendable(
-    const mojom::Result result,
-    const std::string& contribution_id) {
-  BLOG_IF(1, result != mojom::Result::OK,
-          "Failed to mark unblinded tokens as unreserved for contribution "
-              << contribution_id);
+    const std::string& contribution_id,
+    mojom::Result result) {
+  if (result != mojom::Result::OK) {
+    engine_->Log(FROM_HERE)
+        << "Failed to mark unblinded tokens as unreserved for contribution "
+        << contribution_id;
+  }
 }
 
-void Contribution::Retry(
-    const mojom::Result result,
-    std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution) {
+void Contribution::Retry(mojom::ContributionInfoPtr contribution,
+                         mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Retry count update failed");
+    engine_->LogError(FROM_HERE) << "Retry count update failed";
     return;
   }
 
-  if (!shared_contribution) {
-    BLOG(0, "Contribution is null");
+  if (!contribution) {
+    engine_->LogError(FROM_HERE) << "Contribution is null";
     return;
   }
 
   // negative steps are final steps, nothing to retry
-  if (static_cast<int>((*shared_contribution)->step) < 0) {
+  if (static_cast<int>(contribution->step) < 0) {
     return;
   }
 
-  if ((*shared_contribution)->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
+  if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
       !engine_->state()->GetAutoContributeEnabled()) {
-    BLOG(1, "AC is disabled, completing contribution");
-    ContributionCompleted(mojom::Result::AC_OFF,
-                          std::move(*shared_contribution));
+    engine_->Log(FROM_HERE) << "AC is disabled, completing contribution";
+    ContributionCompleted(mojom::Result::AC_OFF, std::move(contribution));
     return;
   }
 
-  BLOG(1, "Retrying contribution (" << (*shared_contribution)->contribution_id
-                                    << ") on step "
-                                    << (*shared_contribution)->step);
+  engine_->Log(FROM_HERE) << "Retrying contribution ("
+                          << contribution->contribution_id << ") on step "
+                          << contribution->step;
 
-  auto result_callback = std::bind(&Contribution::Result, this, _1, "",
-                                   (*shared_contribution)->contribution_id);
+  auto result_callback =
+      base::BindOnce(&Contribution::Result, weak_factory_.GetWeakPtr(), "",
+                     contribution->contribution_id);
 
-  switch ((*shared_contribution)->processor) {
+  switch (contribution->processor) {
     case mojom::ContributionProcessor::BRAVE_TOKENS: {
-      RetryUnblindedContribution((*shared_contribution)->Clone(),
-                                 {mojom::CredsBatchType::PROMOTION},
-                                 result_callback);
+      RetryUnblindedContribution({mojom::CredsBatchType::PROMOTION},
+                                 std::move(result_callback),
+                                 std::move(contribution));
       return;
     }
     case mojom::ContributionProcessor::UPHOLD:
     case mojom::ContributionProcessor::BITFLYER:
     case mojom::ContributionProcessor::GEMINI: {
-      if ((*shared_contribution)->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-        sku_.Retry((*shared_contribution)->Clone(), result_callback);
+      if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
+        sku_.Retry(std::move(contribution), std::move(result_callback));
         return;
       }
 
-      external_wallet_.Retry((*shared_contribution)->Clone(), result_callback);
+      external_wallet_.Retry(std::move(contribution),
+                             std::move(result_callback));
       return;
     }
     case mojom::ContributionProcessor::NONE: {
-      Result(mojom::Result::FAILED, "",
-             (*shared_contribution)->contribution_id);
+      Result("", contribution->contribution_id, mojom::Result::FAILED);
       return;
     }
   }
@@ -885,11 +878,17 @@ void Contribution::Retry(
 
 void Contribution::GetRecurringTips(GetRecurringTipsCallback callback) {
   engine_->database()->GetRecurringTips(
-      [this, callback](std::vector<mojom::PublisherInfoPtr> list) {
-        // The publisher status field may be expired. Attempt to refresh
-        // expired publisher status values before executing callback.
-        publisher::RefreshPublisherStatus(*engine_, std::move(list), callback);
-      });
+      base::BindOnce(&Contribution::OnRecurringTipsRead,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void Contribution::OnRecurringTipsRead(
+    GetRecurringTipsCallback callback,
+    std::vector<mojom::PublisherInfoPtr> list) {
+  // The publisher status field may be expired. Attempt to refresh
+  // expired publisher status values before executing callback.
+  publisher::RefreshPublisherStatus(*engine_, std::move(list),
+                                    std::move(callback));
 }
 
 }  // namespace contribution

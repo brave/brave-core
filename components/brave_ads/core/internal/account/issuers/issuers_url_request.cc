@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -22,7 +23,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -43,13 +43,10 @@ IssuersUrlRequest::~IssuersUrlRequest() {
 }
 
 void IssuersUrlRequest::PeriodicallyFetch() {
-  if (is_periodically_fetching_) {
-    return;
+  if (!is_periodically_fetching_) {
+    is_periodically_fetching_ = true;
+    Fetch();
   }
-
-  is_periodically_fetching_ = true;
-
-  Fetch();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -92,7 +89,7 @@ void IssuersUrlRequest::FetchCallback(
   }
 
   BLOG(1, "Parsing issuers");
-  const absl::optional<IssuersInfo> issuers =
+  const std::optional<IssuersInfo> issuers =
       json::reader::ReadIssuers(url_response.body);
   if (!issuers) {
     BLOG(3, "Failed to parse issuers");

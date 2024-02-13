@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 
 #include <map>
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -18,10 +19,9 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -90,7 +90,7 @@ class ClientStateManager final {
   void SaveState();
 
   void LoadCallback(InitializeCallback callback,
-                    const absl::optional<std::string>& json);
+                    const std::optional<std::string>& json);
 
   [[nodiscard]] bool FromJson(const std::string& json);
 

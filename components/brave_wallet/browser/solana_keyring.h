@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_KEYRING_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -29,20 +30,20 @@ class SolanaKeyring : public HDKeyring {
   std::vector<uint8_t> SignMessage(const std::string& address,
                                    const std::vector<uint8_t>& message);
 
-  static absl::optional<std::string> CreateProgramDerivedAddress(
+  static std::optional<std::string> CreateProgramDerivedAddress(
       const std::vector<std::vector<uint8_t>>& seeds,
       const std::string& program_id);
 
-  static absl::optional<std::string> FindProgramDerivedAddress(
+  static std::optional<std::string> FindProgramDerivedAddress(
       const std::vector<std::vector<uint8_t>>& seeds,
       const std::string& program_id,
       uint8_t* bump_seed = nullptr);
 
-  static absl::optional<std::string> GetAssociatedTokenAccount(
+  static std::optional<std::string> GetAssociatedTokenAccount(
       const std::string& spl_token_mint_address,
       const std::string& wallet_address);
 
-  static absl::optional<std::string> GetAssociatedMetadataAccount(
+  static std::optional<std::string> GetAssociatedMetadataAccount(
       const std::string& token_mint_address);
 
  private:

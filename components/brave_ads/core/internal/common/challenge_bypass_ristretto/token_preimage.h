@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_TOKEN_PREIMAGE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_TOKEN_PREIMAGE_H_
 
+#include <optional>
 #include <ostream>
 #include <string>
 
 #include "base/check.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
-// A |TokenPreimage| is a slice of bytes which can be hashed to a ristretto
+// A `TokenPreimage` is a slice of bytes which can be hashed to a ristretto
 // point. The hash function must ensure the discrete log with respect to other
 // points is unknown.
 
@@ -52,10 +52,10 @@ class TokenPreimage {
   }
 
   static TokenPreimage DecodeBase64(const std::string& token_preimage_base64);
-  absl::optional<std::string> EncodeBase64() const;
+  std::optional<std::string> EncodeBase64() const;
 
  private:
-  absl::optional<challenge_bypass_ristretto::TokenPreimage> token_preimage_;
+  std::optional<challenge_bypass_ristretto::TokenPreimage> token_preimage_;
 };
 
 std::ostream& operator<<(std::ostream& os, const TokenPreimage& token_preimage);

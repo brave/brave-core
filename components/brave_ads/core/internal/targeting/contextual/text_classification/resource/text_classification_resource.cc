@@ -74,13 +74,14 @@ void TextClassificationResource::MaybeLoadOrReset() {
 void TextClassificationResource::Load() {
   did_load_ = true;
 
-  LoadFileResource(
+  LoadComponentResource(
       GetResourceId(), GetResourceVersion(),
-      base::BindOnce(&TextClassificationResource::LoadFileResourceCallback,
+      base::BindOnce(&TextClassificationResource::LoadComponentResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
-void TextClassificationResource::LoadFileResourceCallback(base::File file) {
+void TextClassificationResource::LoadComponentResourceCallback(
+    base::File file) {
   if (!file.IsValid()) {
     BLOG(0, "Failed to load invalid resource file");
     return;
@@ -128,7 +129,7 @@ void TextClassificationResource::Reset() {
 }
 
 void TextClassificationResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale=*/) {
+    const std::string& /*locale*/) {
   MaybeLoad();
 }
 

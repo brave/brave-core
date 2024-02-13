@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 
+#include <optional>
+
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -146,12 +148,12 @@ SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
   return SidePanelIdFromSideBarItemType(item.built_in_item_type);
 }
 
-absl::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
-                                                          SidePanelEntryId id) {
+std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
+                                                         SidePanelEntryId id) {
   const auto hidden_default_items =
       GetSidebarService(browser)->GetHiddenDefaultSidebarItems();
   if (hidden_default_items.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   for (const auto& item : hidden_default_items) {
@@ -161,11 +163,11 @@ absl::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
     }
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void SetLastUsedSidePanel(PrefService* prefs,
-                          absl::optional<SidePanelEntryId> id) {
+                          std::optional<SidePanelEntryId> id) {
   BuiltInItemType type = BuiltInItemType::kNone;
   if (id) {
     switch (*id) {
@@ -189,7 +191,7 @@ void SetLastUsedSidePanel(PrefService* prefs,
   prefs->SetInteger(kLastUsedBuiltInItemType, static_cast<int>(type));
 }
 
-absl::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser) {
+std::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser) {
   PrefService* prefs = browser->profile()->GetPrefs();
   BuiltInItemType type =
       static_cast<BuiltInItemType>(prefs->GetInteger(kLastUsedBuiltInItemType));
@@ -198,9 +200,33 @@ absl::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser) {
            ->sidebar_controller()
            ->model()
            ->GetIndexOf(type)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return SidePanelIdFromSideBarItemType(type);
+}
+
+bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+    default:
+      break;
+  }
+  return false;
+}
+
+bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kBookmarks:
+    case SidebarItem::BuiltInItemType::kReadingList:
+    case SidebarItem::BuiltInItemType::kChatUI:
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+    default:
+      break;
+  }
+  return false;
 }
 
 }  // namespace sidebar

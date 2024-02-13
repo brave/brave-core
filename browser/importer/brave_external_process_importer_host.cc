@@ -6,6 +6,7 @@
 #include "brave/browser/importer/brave_external_process_importer_host.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -125,7 +126,7 @@ void BraveExternalProcessImporterHost::ImportExtensions(
 }
 
 void BraveExternalProcessImporterHost::OnGetChromeExtensionsList(
-    absl::optional<std::vector<std::string>> extensions_list) {
+    std::optional<std::vector<std::string>> extensions_list) {
   if (!extensions_list.has_value()) {
     ExternalProcessImporterHost::NotifyImportEnded();
     return;

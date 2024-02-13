@@ -41,9 +41,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Això és una finestra privada amb Tor</translation>
 <translation id="1037341607922068025">Obrir una Finestra Privada amb Tor</translation>
-<translation id="1725356094208762656">Obrir a Tor</translation>
-<translation id="3396347744975515056">Brave Sync s'ha actualitzat i requereix configuració</translation>
-<translation id="7473245612074035141">Comenceu la Configuració</translation>
 <translation id="496896260395129787">Aquest compte de Sincronització de Brave s'ha suprimit d'un altre dispositiu. Si no volíeu desactivar Sincronització,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>torneu a crear el compte</translation>
 <translation id="6965382102122355670">OK</translation>
@@ -82,6 +79,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2638041073279639246">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3425600262621021599">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
 <translation id="3229091547987707389">Importa i comparteix un directori</translation>
+<translation id="2545072023356206691">A partir de l'1 de desembre de 2023, el canal Brave Dev ja no rebrà actualitzacions del navegador. Recomanem als usuaris migrar a les versions Nightly, Beta o Release de Brave.</translation>
 <translation id="474217410105706308">Silenciar la pestanya</translation>
 <translation id="2804710924397009224">Amaga icones Premis de Brave</translation>
 <translation id="5029193871181468990">Amaga la icona Premis de Brave</translation>
@@ -189,6 +187,10 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7109885938715976444">Només aquesta vegada</translation>
 <translation id="7473891865547856676">No, gràcies</translation>
 <translation id="2722425322672922644">Descobrir com afecta la meva privadesa</translation>
+<translation id="5551268135482191097">S'ha produït un error en carregar l'URL IPFS. Voleu que us redirigeixi a l'URL original?</translation>
+<translation id="4756627014339714615">Redirigir</translation>
+<translation id="1338274252864046652">Voleu iniciar sempre un node IPFS en iniciar el navegador?</translation>
+<translation id="3435896845095436175">Activa</translation>
 <translation id="4552520379838695057">Ho sentim, no es pot trobar aquesta pàgina.</translation>
 <translation id="2609895996619941644">Voleu comprocar si hi ha una versió guardadad disponible a la Wayback Machine?</translation>
 <translation id="8053093028263274061">Ho sentim, no hi ha cap versió guardada disponible.</translation>
@@ -289,6 +291,19 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5181358966317519720">Suprimeix de la llista de reproducció</translation>
 <translation id="2377705456080309463">Mostra la pàgina original</translation>
 <translation id="158894735649719362">La diversió comença quan teniu alguna cosa per reproduir. Afegiu el vostre contingut multimèdia preferit i reproduïu-lo en qualsevol moment, fins i tot sense connexió.</translation>
+<translation id="8422349592890097194">Crea una nova carpeta</translation>
+<translation id="2818704116581303039">Obre la configuració de Llista de reproducció de Brave</translation>
+<translation id="6790428901817661496">Reprodueix</translation>
+<translation id="1178581264944972037">Posa en pausa</translation>
+<translation id="4477350412780666475">Pista següent</translation>
+<translation id="3962859241508114581">Pista anterior</translation>
+<translation id="7544853251252956727">Aleatori</translation>
+<translation id="4330722796577425585">Rebobina</translation>
+<translation id="7481312909269577407">Endavant</translation>
+<translation id="2800828306627475693">Repetir apagat</translation>
+<translation id="1748244367114657861">Repetir un</translation>
+<translation id="6421906998825794164">Repetir tot</translation>
+<translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
 <translation id="7179921470347911571">Rellançar Ara</translation>
 <translation id="4472575034687746823">Comença</translation>
@@ -402,10 +417,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="413570371620795359">Obre el panell de recompenses per activar i començar</translation>
 <translation id="1051600834033686945">Obre la configuració completa de Brave Rewards</translation>
 <translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
-<translation id="7483857210736407752">Mostra els botons de propina als llocs web</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Bloqueig de mitjans socials</translation>
 <translation id="863171915776379000">Permet l'inici de sessió i publicacions incrustades de Facebook</translation>
 <translation id="5165042248369837294">Permet tuits incrustats de Twitter</translation>
@@ -574,7 +585,9 @@ Segur que vols continuar?</translation>
 <translation id="6936835573742749135">No es pot sol·licitar un CAPTCHA. Torneu-ho a provar més tard.</translation>
 <translation id="2653659639078652383">Envia</translation>
 <translation id="1369311132025451972">Redirigir automaticament els llocs .onion</translation>
-<translation id="1658670175365815312">Brave canviarà a la versió .onion d'un lloc web quan estigui disponible, i obrirà automàticament tots els dominis .onion en una finestra Tor.</translation>
+<translation id="6214393847480015759">A les finestres Tor, Brave canviarà automàticament a la versió .onion d'un lloc web quan estigui disponible.</translation>
+<translation id="1294350054292274934">Resoldre només direccions .onion a finestres Tor</translation>
+<translation id="1258903596167452221">Els serveis Onion no estaran disponibles fora de les finestres Tor.</translation>
 <translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
 <translation id="5249433283143453448">Utilitza el component Widevine de gestió de drets digitals (DRM) per visualitzar vídeo en streaming protegit i altres continguts al navegador.</translation>
 <translation id="1314131187310290315">Extensions Manifest V2</translation>
@@ -623,6 +636,7 @@ Segur que vols continuar?</translation>
 <translation id="4226543734057230801">Xarxes Ethereum</translation>
 <translation id="3504157706952484145">Xarxes Filecoin</translation>
 <translation id="1561541094377237745">Xarxes Solana</translation>
+<translation id="7141438739990875547">Xarxes Bitcoin</translation>
 <translation id="3159419679550543837">Mostra les xarxes de prova</translation>
 <translation id="3215569562674795548">Edita o afegeix una xarxa nova</translation>
 <translation id="4418993400653250511">La ID de la cadena</translation>
@@ -662,6 +676,7 @@ Segur que vols continuar?</translation>
 <translation id="8425213833346101688">Canvia</translation>
 <translation id="585868419599255817">Tornar a la passarel·la pública IPFS</translation>
 <translation id="2618080188892567155">Tornar automàticament a la passarel·la pública IPFS quan no es pot accedir al node local IPFS Brave.</translation>
+<translation id="8956391206920485238">Iniciar sempre un node IPFS en iniciar el navegador?</translation>
 <translation id="6789104345873307368">Redirigiu les sol·licituds de recursos de la xarxa IPFS automàticament a la passarel·la configurada.</translation>
 <translation id="4138306018048329894">Les sol·licituds de recursos d'IPFS allotjats en passarel·les IPFS de tercers o en recursos DNSLINK s'encaminaran a través de la passarel·la local o remota seleccionada.
     Nota: si se selecciona un node local, el recurs se sol·licitarà directament des del vostre ordinador i és possible que les dades de la memòria cau es proporcionin a la xarxa IFPS durant un temps.</translation>
@@ -713,6 +728,9 @@ se suprimiran també totes les converses anteriors amb Brave
 Leo. Aquesta acció no es pot desfer.</translation>
 <translation id="8157373421434119674">Dades i historial de xat</translation>
 <translation id="614530507403667291">Model predeterminal per a les converses noves</translation>
+<translation id="349846214503465941">Activa la llista de reproducció</translation>
+<translation id="7903608716704052878">Afegir automàticament arxius per a veure'ls sense connexió</translation>
+<translation id="4193768184502613558">Aquesta opció emmagatzemarà automàticament a la memòria cau els arxius multimèdia perquè pugueu reproduir-los sense connexió a Internet.</translation>
 <translation id="6624718837376802990">Avatar Provocador Recompenses</translation>
 <translation id="6617313057407561765">Avatar Provocador Brave</translation>
 <translation id="6754445808455578019">Avatar Provocador Oceà</translation>

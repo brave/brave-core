@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -14,10 +15,12 @@ import { WalletSelectors } from '../../../common/selectors'
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useExplorer } from '../../../common/hooks/explorer'
-import { useGetAddressByteCodeQuery } from '../../../common/slices/api.slice'
 import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
+  useGetAddressByteCodeQuery,
+  useGetDefaultFiatCurrencyQuery
+} from '../../../common/slices/api.slice'
+import {
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
 // Components
@@ -29,10 +32,11 @@ import { TransactionDetailBox } from '../transaction-box/index'
 import EditAllowance from '../edit-allowance'
 import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
-import { Erc20ApproveTransactionInfo } from './erc-twenty-transaction-info'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
-import { Footer } from './common/footer'
+import {
+  PendingTransactionActionsFooter //
+} from './common/pending_tx_actions_footer'
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
@@ -65,11 +69,11 @@ import {
   AccountCircle,
   AddressAndOrb,
   AddressText,
-  URLText,
   WarningBox,
   WarningTitle,
   LearnMoreButton,
-  WarningBoxTitleRow
+  WarningBoxTitleRow,
+  URLText
 } from '../shared-panel-styles'
 import { Column, Row } from '../../shared/style'
 
@@ -92,13 +96,13 @@ const onClickLearnMore = () => {
 export const ConfirmTransactionPanel = () => {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
+
+  // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // custom hooks
   const {
-    foundTokenInfoByContractAddress,
+    erc20ApproveTokenInfo,
     fromAccount,
     fromOrb,
     isERC20Approve,
@@ -122,21 +126,30 @@ export const ConfirmTransactionPanel = () => {
     insufficientFundsForGasError,
     queueNextTransaction,
     transactionQueueNumber,
-    transactionsQueueLength
+    transactionsQueueLength,
+    isSolanaTransaction,
+    isBitcoinTransaction,
+    isZCashTransaction,
+    hasFeeEstimatesError,
+    isLoadingGasFee,
+    rejectAllTransactions,
+    isConfirmButtonDisabled
   } = usePendingTransactions()
 
   // queries
   const { data: byteCode, isLoading } = useGetAddressByteCodeQuery(
-    {
-      address: transactionDetails?.recipient ?? '',
-      coin: transactionDetails?.coinType ?? -1,
-      chainId: transactionDetails?.chainId ?? ''
-    },
-    { skip: !transactionDetails }
+    transactionDetails && isEthereumTransaction
+      ? {
+          address: transactionDetails?.recipient ?? '',
+          coin: transactionDetails?.coinType ?? -1,
+          chainId: transactionDetails?.chainId ?? ''
+        }
+      : skipToken
   )
 
   // computed
-  const isContract = !isLoading && byteCode !== '0x'
+  const isContract =
+    !isLoading && isEthereumTransaction && byteCode && byteCode !== '0x'
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // hooks
@@ -150,6 +163,7 @@ export const ConfirmTransactionPanel = () => {
     React.useState<boolean>(false)
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
+  const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
 
   // methods
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
@@ -222,7 +236,7 @@ export const ConfirmTransactionPanel = () => {
           <PanelTitle>
             {getLocale('braveWalletAllowSpendTitle').replace(
               '$1',
-              foundTokenInfoByContractAddress?.symbol ?? ''
+              erc20ApproveTokenInfo?.symbol ?? ''
             )}
           </PanelTitle>
           <AddressAndOrb>
@@ -240,7 +254,7 @@ export const ConfirmTransactionPanel = () => {
           <Description>
             {getLocale('braveWalletAllowSpendDescription').replace(
               '$1',
-              foundTokenInfoByContractAddress?.symbol ?? ''
+              erc20ApproveTokenInfo?.symbol ?? ''
             )}
           </Description>
 
@@ -271,52 +285,58 @@ export const ConfirmTransactionPanel = () => {
               eTldPlusOne={originInfo.eTldPlusOne}
             />
           </URLText>
+
           <Row
             marginBottom={8}
             maxWidth={isContract ? '90%' : 'unset'}
-            width={'unset'}
+            width={'100%'}
+            gap={'8px'}
+            $wrap
           >
-            <Row
-              maxWidth={isContract ? '70px' : 'unset'}
-              width={'unset'}
+            <Tooltip
+              text={fromAccount.address}
+              isVisible={!!fromAccount.address}
+              isAddress={true}
+              position={'left'}
             >
-              <Tooltip
-                text={fromAccount.address}
-                isAddress={true}
-                position={'left'}
-              >
-                <AccountNameText>{fromAccount.name}</AccountNameText>
-              </Tooltip>
-            </Row>
-            <ArrowIcon />
-            {isContract ? (
-              <Column
-                alignItems={'flex-start'}
-                justifyContent={'flex-start'}
-              >
-                <NetworkText>
-                  {getLocale('braveWalletNFTDetailContractAddress')}
-                </NetworkText>
-                <ContractButton
-                  onClick={onClickViewOnBlockExplorer(
-                    'contract',
-                    `${transactionDetails.recipient}`
+              <AccountNameText>{fromAccount.name}</AccountNameText>
+            </Tooltip>
+
+            {transactionDetails.recipient &&
+              transactionDetails.recipient !== fromAccount.address && (
+                <>
+                  <ArrowIcon />
+                  {isContract ? (
+                    <Column
+                      alignItems={'flex-start'}
+                      justifyContent={'flex-start'}
+                    >
+                      <NetworkText>
+                        {getLocale('braveWalletNFTDetailContractAddress')}
+                      </NetworkText>
+                      <ContractButton
+                        onClick={onClickViewOnBlockExplorer(
+                          'contract',
+                          `${transactionDetails.recipient}`
+                        )}
+                      >
+                        {reduceAddress(transactionDetails.recipient)}{' '}
+                        <ExplorerIcon />
+                      </ContractButton>
+                    </Column>
+                  ) : (
+                    <Tooltip
+                      text={transactionDetails.recipient}
+                      isAddress={true}
+                      position='right'
+                    >
+                      <AccountNameText>
+                        {reduceAddress(transactionDetails.recipient)}
+                      </AccountNameText>
+                    </Tooltip>
                   )}
-                >
-                  {reduceAddress(transactionDetails.recipient)} <ExplorerIcon />
-                </ContractButton>
-              </Column>
-            ) : (
-              <Tooltip
-                text={transactionDetails.recipient}
-                isAddress={true}
-                position='right'
-              >
-                <AccountNameText>
-                  {reduceAddress(transactionDetails.recipient)}
-                </AccountNameText>
-              </Tooltip>
-            )}
+                </>
+              )}
           </Row>
 
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
@@ -346,6 +366,7 @@ export const ConfirmTransactionPanel = () => {
               )}
             </TransactionFiatAmountBig>
           )}
+
           {isAssociatedTokenAccountCreation && (
             <WarningBox warningType={'warning'}>
               <WarningBoxTitleRow>
@@ -379,33 +400,50 @@ export const ConfirmTransactionPanel = () => {
         )}
       </TabRow>
 
-      <MessageBox isDetails={selectedTab === 'details'}>
-        {selectedTab === 'transaction' ? (
-          <>
-            {isERC20Approve && (
-              <Erc20ApproveTransactionInfo
-                onToggleEditGas={onToggleEditGas}
-                isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
-                currentTokenAllowance={currentTokenAllowance}
-                transactionDetails={transactionDetails}
-                transactionsNetwork={transactionsNetwork}
-                gasFee={gasFee}
-                insufficientFundsError={insufficientFundsError}
-                insufficientFundsForGasError={insufficientFundsForGasError}
-              />
-            )}
-            {!isERC20Approve && (
-              <TransactionInfo onToggleEditGas={onToggleEditGas} />
-            )}
-          </>
-        ) : (
-          <TransactionDetailBox transactionInfo={selectedPendingTransaction} />
-        )}
-      </MessageBox>
+      {isWarningCollapsed && (
+        <MessageBox isDetails={selectedTab === 'details'}>
+          {selectedTab === 'transaction' ? (
+            <TransactionInfo
+              onToggleEditGas={
+                isSolanaTransaction || isBitcoinTransaction
+                  ? undefined
+                  : onToggleEditGas
+              }
+              isZCashTransaction={isZCashTransaction}
+              isBitcoinTransaction={isBitcoinTransaction}
+              transactionDetails={transactionDetails}
+              isERC721SafeTransferFrom={isERC721SafeTransferFrom}
+              isERC721TransferFrom={isERC721TransferFrom}
+              transactionsNetwork={transactionsNetwork}
+              hasFeeEstimatesError={Boolean(hasFeeEstimatesError)}
+              isLoadingGasFee={isLoadingGasFee}
+              gasFee={gasFee}
+              insufficientFundsError={insufficientFundsError}
+              insufficientFundsForGasError={insufficientFundsForGasError}
+              isERC20Approve={isERC20Approve}
+              currentTokenAllowance={currentTokenAllowance}
+              isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
+            />
+          ) : (
+            <TransactionDetailBox
+              transactionInfo={selectedPendingTransaction}
+              instructions={transactionDetails.instructions}
+            />
+          )}
+        </MessageBox>
+      )}
 
-      <Footer
+      <PendingTransactionActionsFooter
         onConfirm={onConfirm}
         onReject={onReject}
+        rejectAllTransactions={rejectAllTransactions}
+        isConfirmButtonDisabled={isConfirmButtonDisabled}
+        transactionDetails={transactionDetails}
+        transactionsQueueLength={transactionsQueueLength}
+        insufficientFundsForGasError={insufficientFundsForGasError}
+        insufficientFundsError={insufficientFundsError}
+        isWarningCollapsed={isWarningCollapsed}
+        setIsWarningCollapsed={setIsWarningCollapsed}
       />
     </StyledWrapper>
   )

@@ -25,15 +25,13 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
 
 namespace {
 
-absl::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
-                                       const ConfirmationInfo& confirmation) {
+std::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
+                                      const ConfirmationInfo& confirmation) {
   CHECK(token_generator);
   CHECK(IsValid(confirmation));
   CHECK(UserHasJoinedBraveRewards());
@@ -52,16 +50,16 @@ absl::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
   reward.blinded_token = blinded_tokens.front();
 
   // Confirmation token
-  const absl::optional<ConfirmationTokenInfo> confirmation_token =
+  const std::optional<ConfirmationTokenInfo> confirmation_token =
       MaybeGetConfirmationToken();
   if (!confirmation_token) {
     BLOG(0, "Failed to get confirmation token");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!RemoveConfirmationToken(*confirmation_token)) {
     BLOG(0, "Failed to remove confirmation token");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   reward.unblinded_token = confirmation_token->unblinded_token;
@@ -72,10 +70,10 @@ absl::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
   ConfirmationInfo mutable_confirmation(confirmation);
   mutable_confirmation.reward = reward;
 
-  const absl::optional<std::string> reward_credential_base64url =
+  const std::optional<std::string> reward_credential_base64url =
       BuildRewardCredential(mutable_confirmation);
   if (!reward_credential_base64url) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   reward.credential_base64url = *reward_credential_base64url;
 
@@ -84,15 +82,15 @@ absl::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
 
 }  // namespace
 
-absl::optional<std::string> BuildRewardCredential(
+std::optional<std::string> BuildRewardCredential(
     const ConfirmationInfo& confirmation) {
-  const absl::optional<std::string> reward_credential =
+  const std::optional<std::string> reward_credential =
       json::writer::WriteRewardCredential(
           confirmation.reward,
           json::writer::WriteConfirmationPayload(confirmation));
   if (!reward_credential) {
     BLOG(0, "Failed to create reward credential");
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::string reward_credential_base64url;
@@ -102,7 +100,7 @@ absl::optional<std::string> BuildRewardCredential(
   return reward_credential_base64url;
 }
 
-absl::optional<ConfirmationInfo> BuildRewardConfirmation(
+std::optional<ConfirmationInfo> BuildRewardConfirmation(
     TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
     const UserDataInfo& user_data) {
@@ -118,11 +116,11 @@ absl::optional<ConfirmationInfo> BuildRewardConfirmation(
   confirmation.created_at = transaction.created_at;
   confirmation.user_data = user_data;
 
-  const absl::optional<RewardInfo> reward =
+  const std::optional<RewardInfo> reward =
       BuildReward(token_generator, confirmation);
   if (!reward) {
     BLOG(0, "Failed to create reward");
-    return absl::nullopt;
+    return std::nullopt;
   }
   confirmation.reward = reward;
 

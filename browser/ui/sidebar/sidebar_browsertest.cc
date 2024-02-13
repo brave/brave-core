@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
@@ -129,7 +131,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     auto sidebar_items_contents_view =
         GetSidebarItemsContentsView(controller());
 
-    auto* item = sidebar_items_contents_view->children()[index];
+    auto* item = sidebar_items_contents_view->children()[index].get();
     DCHECK(item);
 
     const gfx::Point origin(0, 0);
@@ -220,7 +222,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   void VerifyTargetDragIndicatorIndexCalc(const gfx::Point& screen_position) {
     auto sidebar_items_contents_view = GetSidebarItemsContentsView(
         static_cast<BraveBrowser*>(browser())->sidebar_controller());
-    EXPECT_NE(absl::nullopt,
+    EXPECT_NE(std::nullopt,
               sidebar_items_contents_view->CalculateTargetDragIndicatorIndex(
                   screen_position));
   }
@@ -228,8 +230,9 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   base::RunLoop* run_loop() const { return run_loop_.get(); }
 
   size_t GetDefaultItemCount() const {
-    auto item_count = std::size(SidebarService::kDefaultBuiltInItemTypes) -
-                      1 /* for history*/;
+    auto item_count =
+        std::size(SidebarServiceFactory::kDefaultBuiltInItemTypes) -
+        1 /* for history*/;
 #if BUILDFLAG(ENABLE_PLAYLIST)
     if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
       item_count -= 1;
@@ -251,7 +254,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Initially, active index is not set.
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   // Check sidebar UI is initalized properly.
   EXPECT_TRUE(!!controller()->sidebar());
@@ -260,13 +263,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
   // Check active index is non-null.
-  EXPECT_THAT(model()->active_index(), Ne(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Ne(std::nullopt));
 
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
   // Check active index is null.
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   auto expected_count = GetDefaultItemCount();
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
@@ -283,9 +286,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   controller()->ActivateItemAt(1);
   EXPECT_THAT(model()->active_index(), Optional(2u));
 
-  // Setting absl::nullopt means deactivate current active tab.
-  controller()->ActivateItemAt(absl::nullopt);
-  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
+  // Setting std::nullopt means deactivate current active tab.
+  controller()->ActivateItemAt(std::nullopt);
+  EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   controller()->ActivateItemAt(2);
 
@@ -541,6 +544,39 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
             sidebar_items_contents_view->children()[lastly_added_item_index]);
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
+  // To prevent item added bubble launching.
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmark_item_index.has_value());
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* scroll_view = GetSidebarItemsScrollView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+
+  // Move bookmark item at zero index to make it hidden.
+  sidebar_service->MoveItem(*bookmark_item_index, 0);
+  bookmark_item_index = 0;
+  AddItemsTillScrollable(scroll_view, sidebar_service);
+
+  // Check bookmarks item is hidden.
+  EXPECT_TRUE(NeedScrollForItemAt(*bookmark_item_index, scroll_view));
+
+  // Open bookmark panel.
+  SidePanelUI::GetSidePanelUIForBrowser(browser())->Show(
+      SidePanelEntryId::kBookmarks);
+
+  // Wait till bookmarks item is visible.
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !NeedScrollForItemAt(*bookmark_item_index, scroll_view);
+  }));
+  EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
+}
+
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
   // To prevent item added bubble launching.
   auto* prefs = browser()->profile()->GetPrefs();
@@ -694,21 +730,27 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTestWithGuestWindow) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   auto* guest_browser = static_cast<BraveBrowser*>(CreateGuestBrowser());
   auto* controller = guest_browser->sidebar_controller();
   auto* model = controller->model();
-  auto sidebar_items_contents_view = GetSidebarItemsContentsView(controller);
   for (const auto& item : model->GetAllSidebarItems()) {
-    auto index = model->GetIndexOf(item);
-    ASSERT_TRUE(index.has_value());
-    auto* item_view = sidebar_items_contents_view->children()[*index];
-    ASSERT_TRUE(item_view);
-    if (IsBuiltInType(item) &&
-        SidebarService::IsDisabledItemForGuest(item.built_in_item_type)) {
-      EXPECT_FALSE(item_view->GetEnabled());
-    } else {
-      EXPECT_TRUE(item_view->GetEnabled());
+    // Check disabled builtin items are not included in guest browser's items
+    // list.
+    if (IsBuiltInType(item)) {
+      EXPECT_FALSE(IsDisabledItemForGuest(item.built_in_item_type));
+    }
+  }
+
+  auto* private_browser =
+      static_cast<BraveBrowser*>(CreateIncognitoBrowser(browser()->profile()));
+  controller = private_browser->sidebar_controller();
+  model = controller->model();
+  for (const auto& item : model->GetAllSidebarItems()) {
+    // Check disabled builtin items are not included in private browser's items
+    // list.
+    if (IsBuiltInType(item)) {
+      EXPECT_FALSE(IsDisabledItemForPrivate(item.built_in_item_type));
     }
   }
 }
@@ -725,23 +767,20 @@ class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   // There should be no crash with incognito.
-  auto* private_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* private_browser =
+      static_cast<BraveBrowser*>(CreateIncognitoBrowser(browser()->profile()));
   ASSERT_TRUE(private_browser);
 
   auto* sidebar_service =
-      SidebarServiceFactory::GetForProfile(browser()->profile());
+      SidebarServiceFactory::GetForProfile(private_browser->profile());
   const auto& items = sidebar_service->items();
   auto iter = base::ranges::find_if(items, [](const auto& item) {
     return item.type == SidebarItem::Type::kTypeBuiltIn &&
            item.built_in_item_type == SidebarItem::BuiltInItemType::kPlaylist;
   });
-  ASSERT_NE(iter, items.end());
 
-  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
-      static_cast<BraveBrowser*>(private_browser)->sidebar_controller());
-  EXPECT_FALSE(sidebar_items_contents_view->children()
-                   .at(std::distance(items.begin(), iter))
-                   ->GetEnabled());
+  // Check playlist item is not included in private window.
+  EXPECT_EQ(iter, items.end());
 
   // Try Adding an item
   sidebar_service->AddItem(sidebar::SidebarItem::Create(

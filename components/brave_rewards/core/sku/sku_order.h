@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
@@ -28,16 +29,17 @@ class SKUOrder {
               SKUOrderCallback callback);
 
  private:
-  void OnCreate(const mojom::Result result,
-                mojom::SKUOrderPtr order,
-                SKUOrderCallback callback);
+  void OnCreate(SKUOrderCallback callback,
+                mojom::Result result,
+                mojom::SKUOrderPtr order);
 
-  void OnCreateSave(const mojom::Result result,
-                    const std::string& order_id,
-                    SKUOrderCallback callback);
+  void OnCreateSave(const std::string& order_id,
+                    SKUOrderCallback callback,
+                    mojom::Result result);
 
   const raw_ref<RewardsEngineImpl> engine_;
   endpoint::PaymentServer payment_server_;
+  base::WeakPtrFactory<SKUOrder> weak_factory_{this};
 };
 
 }  // namespace sku

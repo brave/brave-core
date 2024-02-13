@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index a6cf882ea0f9a6dc76415b656b2324b8f22b4f55..cac80370930540fd35b2bb19eb14b0e1165a1651 100644
+index f32f3408056b91f618e379b217fb161b020d19ca..2de6e5ae5f567be293de5f7f530aa0f8448e48e4 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -87,6 +87,7 @@ static_library("browser") {
+@@ -89,6 +89,7 @@ static_library("browser") {
    }
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]

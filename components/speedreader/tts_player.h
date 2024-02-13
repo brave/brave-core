@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SPEEDREADER_TTS_PLAYER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -17,7 +18,6 @@
 #include "base/values.h"
 #include "content/public/browser/tts_utterance.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class WebContents;
@@ -60,9 +60,9 @@ class TtsPlayer {
    public:
     bool IsPlaying() const;
     bool IsPlayingRequestedWebContents(
-        absl::optional<int> paragraph_index = absl::nullopt) const;
+        std::optional<int> paragraph_index = std::nullopt) const;
 
-    void Play(absl::optional<int> paragraph_index = absl::nullopt);
+    void Play(std::optional<int> paragraph_index = std::nullopt);
     void Pause();
     void Resume();
     void Stop();
@@ -80,7 +80,7 @@ class TtsPlayer {
     void Resume(bool recreate_utterance);
 
     bool HasNextParagraph();
-    const std::string& GetParagraphToRead();
+    std::u16string GetParagraphToRead();
 
     // content::WebContentsObserver:
     void DidStartNavigation(content::NavigationHandle* handle) override;
@@ -94,7 +94,7 @@ class TtsPlayer {
                     const std::string& error_message) override;
 
     void OnContentReady(content::WebContents* web_contents,
-                        absl::optional<int> paragraph_index,
+                        std::optional<int> paragraph_index,
                         base::Value content);
 
     raw_ptr<TtsPlayer> owner_ = nullptr;
@@ -109,6 +109,8 @@ class TtsPlayer {
 
     double current_speed_ = 1.0;
     std::string current_voice_;
+
+    bool continue_next_paragraph_ = false;
   };
 
   ~TtsPlayer();

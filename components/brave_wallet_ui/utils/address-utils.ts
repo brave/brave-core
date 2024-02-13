@@ -7,7 +7,7 @@
 import { getLocale } from '../../common/locale'
 
 // types
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 
 export function isValidFilAddress(value: string): boolean {
   if (
@@ -45,17 +45,29 @@ export function isValidSolanaAddress(value: string): boolean {
 }
 
 export function isValidZecAddress(value: string): boolean {
-  return /^t1[a-km-zA-HJ-NP-Z1-9]{33}$/.test(value)
+  return /^t1[a-km-zA-HJ-NP-Z1-9]{33}$/.test(value) ||
+         /^u1[a-z0-9]+$/.test(value) ||
+         /^utest1[a-z0-9]+$/.test(value)
+}
+
+export function isValidBtcAddress(value: string, testnet: boolean): boolean {
+  if (testnet) {
+    return /^(tb1|[2nm])[a-zA-HJ-NP-Z0-9]{25,59}$/.test(value)
+  } else {
+    return /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,59}$/.test(value)
+  }
 }
 
 export const suggestNewAccountName = (
   accounts: BraveWallet.AccountInfo[],
-  network: BraveWallet.NetworkInfo
+  network: Pick<BraveWallet.NetworkInfo, 'coin' | 'symbolName' | 'chainId'>
 ) => {
   const accountTypeLength =
     accounts.filter((account) => account.accountId.coin === network.coin)
       .length + 1
   return `${network.symbolName} ${getLocale(
-    'braveWalletSubviewAccount'
+    SupportedTestNetworks.includes(network.chainId)
+      ? 'braveWalletTestNetworkAccount'
+      : 'braveWalletSubviewAccount'
   )} ${accountTypeLength}`
 }

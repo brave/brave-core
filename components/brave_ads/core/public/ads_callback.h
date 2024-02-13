@@ -6,14 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CALLBACK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CALLBACK_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
 namespace brave_ads {
 
@@ -21,11 +21,11 @@ using InitializeCallback = base::OnceCallback<void(bool success)>;
 using ShutdownCallback = base::OnceCallback<void(bool success)>;
 
 using MaybeServeNewTabPageAdCallback =
-    base::OnceCallback<void(const absl::optional<NewTabPageAdInfo>& ad)>;
+    base::OnceCallback<void(const std::optional<NewTabPageAdInfo>& ad)>;
 
 using MaybeServeInlineContentAdCallback =
     base::OnceCallback<void(const std::string& dimensions,
-                            const absl::optional<InlineContentAdInfo>& ad)>;
+                            const std::optional<InlineContentAdInfo>& ad)>;
 
 using TriggerAdEventCallback = base::OnceCallback<void(bool success)>;
 
@@ -33,7 +33,7 @@ using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(absl::optional<base::Value::List> diagnostics)>;
+    base::OnceCallback<void(std::optional<base::Value::List> diagnostics)>;
 
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;

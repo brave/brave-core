@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -42,10 +43,9 @@ TxManager::~TxManager() {
   tx_state_manager_->RemoveObserver(this);
 }
 
-void TxManager::GetTransactionInfo(const std::string& chain_id,
-                                   const std::string& tx_meta_id,
+void TxManager::GetTransactionInfo(const std::string& tx_meta_id,
                                    GetTransactionInfoCallback callback) {
-  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(chain_id, tx_meta_id);
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
     std::move(callback).Run(nullptr);
@@ -56,10 +56,10 @@ void TxManager::GetTransactionInfo(const std::string& chain_id,
 }
 
 std::vector<mojom::TransactionInfoPtr> TxManager::GetAllTransactionInfo(
-    const absl::optional<std::string>& chain_id,
-    const absl::optional<mojom::AccountIdPtr>& from) {
+    const std::optional<std::string>& chain_id,
+    const std::optional<mojom::AccountIdPtr>& from) {
   auto metas =
-      tx_state_manager_->GetTransactionsByStatus(chain_id, absl::nullopt, from);
+      tx_state_manager_->GetTransactionsByStatus(chain_id, std::nullopt, from);
 
   // Convert vector of TxMeta to vector of TransactionInfo
   std::vector<mojom::TransactionInfoPtr> tis(metas.size());
@@ -71,10 +71,9 @@ std::vector<mojom::TransactionInfoPtr> TxManager::GetAllTransactionInfo(
   return tis;
 }
 
-void TxManager::RejectTransaction(const std::string& chain_id,
-                                  const std::string& tx_meta_id,
+void TxManager::RejectTransaction(const std::string& tx_meta_id,
                                   RejectTransactionCallback callback) {
-  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(chain_id, tx_meta_id);
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
     std::move(callback).Run(false);
@@ -122,7 +121,7 @@ void TxManager::Locked() {
 }
 
 void TxManager::Unlocked() {
-  UpdatePendingTransactions(absl::nullopt);
+  UpdatePendingTransactions(std::nullopt);
 }
 
 void TxManager::WalletReset() {

@@ -6,7 +6,18 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_SETTINGS_PRIVATE_BRAVE_PREFS_UTIL_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_SETTINGS_PRIVATE_BRAVE_PREFS_UTIL_H_
 
+#include <string>
+
+#define IsPrefTypeURL(...)   \
+  IsPrefTypeURL_NotUsed();   \
+  Profile* profile() const { \
+    return profile_.get();   \
+  }                          \
+  bool IsPrefTypeURL(__VA_ARGS__)
+
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
+
+#undef IsPrefTypeURL
 
 namespace extensions {
 
@@ -17,6 +28,9 @@ class BravePrefsUtil : public PrefsUtil {
   // to prefs that clients of the settingsPrivate API may retrieve and
   // manipulate.
   const PrefsUtil::TypedPrefMap& GetAllowlistedKeys() override;
+
+  absl::optional<api::settings_private::PrefObject> GetPref(
+      const std::string& name) override;
 };
 
 }  // namespace extensions

@@ -4,26 +4,24 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { EntityId } from '@reduxjs/toolkit'
-import { mapLimit } from 'async'
 
 // types
 import { BraveWallet } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import { SetUserAssetVisiblePayloadType } from '../../constants/action_types'
-import type { BaseQueryCache } from '../../async/base-query-cache'
+import {
+  makeTokensRegistry,
+  type BaseQueryCache
+} from '../../async/base-query-cache'
 
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
-import { addChainIdToToken, getAssetIdKey } from '../../../utils/asset-utils'
-import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
+import { getAssetIdKey } from '../../../utils/asset-utils'
 import { cacher } from '../../../utils/query-cache-utils'
-import { addLogoToToken } from '../../async/lib'
 import {
   BlockchainTokenEntityAdaptorState,
-  blockchainTokenEntityAdaptor,
-  blockchainTokenEntityAdaptorInitialState
+  blockchainTokenEntityAdaptor
 } from '../entities/blockchain-token.entity'
-import { networkEntityAdapter } from '../entities/network.entity'
 
 export const TOKEN_TAG_IDS = {
   REGISTRY: 'REGISTRY'
@@ -37,93 +35,13 @@ export const tokenEndpoints = ({
     getTokensRegistry: query<BlockchainTokenEntityAdaptorState, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const {
-            cache,
-            data: { blockchainRegistry }
-          } = baseQuery(undefined)
+          const { cache } = baseQuery(undefined)
 
           const networksRegistry = await cache.getNetworksRegistry()
-          const networksList: BraveWallet.NetworkInfo[] =
-            getEntitiesListFromEntityState(
-              networksRegistry,
-              networksRegistry.visibleIds
-            )
 
-          const tokenIdsByChainId: Record<string, string[]> = {}
-          const tokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> = {}
-
-          const getTokensList = async () => {
-            const tokenListsForNetworks = await mapLimit(
-              networksList,
-              10,
-              async (network: BraveWallet.NetworkInfo) => {
-                const networkId = networkEntityAdapter.selectId(network)
-
-                const { tokens } = await blockchainRegistry.getAllTokens(
-                  network.chainId,
-                  network.coin
-                )
-
-                const fullTokensListForChain: //
-                BraveWallet.BlockchainToken[] = await mapLimit(
-                  tokens,
-                  10,
-                  async (token: BraveWallet.BlockchainToken) => {
-                    return addChainIdToToken(
-                      await addLogoToToken(token),
-                      network.chainId
-                    )
-                  }
-                )
-
-                tokenIdsByChainId[networkId] =
-                  fullTokensListForChain.map(getAssetIdKey)
-
-                tokenIdsByCoinType[network.coin] = (
-                  tokenIdsByCoinType[network.coin] || []
-                ).concat(tokenIdsByChainId[networkId] || [])
-
-                return fullTokensListForChain
-              }
-            )
-
-            const flattenedTokensList = tokenListsForNetworks.flat(1)
-            return flattenedTokensList
-          }
-
-          let flattenedTokensList = await getTokensList()
-
-          // on startup, the tokens list returned from core may be empty
-          const startDate = new Date()
-          const timeoutSeconds = 5
-          const timeoutMilliseconds = timeoutSeconds * 1000
-
-          // retry until we have some tokens or the request takes too
-          // long
-          while (
-            // empty list
-            flattenedTokensList.length < 1 &&
-            // try until timeout reached
-            new Date().getTime() - startDate.getTime() < timeoutMilliseconds
-          ) {
-            flattenedTokensList = await getTokensList()
-          }
-
-          // return an error on timeout, so a retry can be attempted
-          if (flattenedTokensList.length === 0) {
-            throw new Error('No tokens found in tokens registry')
-          }
-
-          const tokensByChainIdRegistry = blockchainTokenEntityAdaptor.setAll(
-            {
-              ...blockchainTokenEntityAdaptorInitialState,
-              idsByChainId: tokenIdsByChainId,
-              idsByCoinType: tokenIdsByCoinType,
-              visibleTokenIds: [],
-              visibleTokenIdsByChainId: {},
-              visibleTokenIdsByCoinType: {}
-            },
-            flattenedTokensList
+          const tokensByChainIdRegistry = await makeTokensRegistry(
+            networksRegistry,
+            'known'
           )
 
           return {
@@ -189,7 +107,10 @@ export const tokenEndpoints = ({
       },
       invalidatesTags: (_, __, tokenArg) => [
         { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
+        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) },
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
       ]
     }),
     removeUserToken: mutation<boolean, BraveWallet.BlockchainToken>({
@@ -270,7 +191,10 @@ export const tokenEndpoints = ({
       },
       invalidatesTags: (_, __, tokenArg) => [
         { type: 'UserBlockchainTokens', id: TOKEN_TAG_IDS.REGISTRY },
-        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) }
+        { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) },
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
       ]
     }),
     updateUserAssetVisible: mutation<boolean, SetUserAssetVisiblePayloadType>({
@@ -292,6 +216,20 @@ export const tokenEndpoints = ({
             token,
             isVisible
           )
+
+          if (!success) {
+            // token is probably not in the core-side assets list,
+            // try adding it to the list
+            const { success: addTokenSuccess } = await addUserToken({
+              braveWalletService,
+              cache,
+              tokenArg: token
+            })
+            if (!addTokenSuccess) {
+              throw new Error('Token could not be updated or added')
+            }
+          }
+
           return { data: success }
         } catch (error) {
           return handleEndpointError(
@@ -337,9 +275,97 @@ export const tokenEndpoints = ({
               {
                 type: 'UserBlockchainTokens',
                 id: TOKEN_TAG_IDS.REGISTRY
-              }
+              },
+              'TokenBalances',
+              'TokenBalancesForChainId',
+              'AccountTokenCurrentBalance'
             ]
           : ['UNKNOWN_ERROR']
+    }),
+    getTokenInfo: query<
+      BraveWallet.BlockchainToken | null,
+      Pick<BraveWallet.BlockchainToken, 'chainId' | 'coin' | 'contractAddress'>
+    >({
+      queryFn: async (
+        { coin, chainId, contractAddress },
+        api,
+        extraOptions,
+        baseQuery
+      ) => {
+        try {
+          if (coin !== BraveWallet.CoinType.ETH) {
+            return {
+              data: null
+            }
+          }
+
+          const { jsonRpcService } = baseQuery(undefined).data
+          const { token, error, errorMessage } =
+            await jsonRpcService.getEthTokenInfo(contractAddress, chainId)
+
+          if (error !== BraveWallet.ProviderError.kSuccess) {
+            throw new Error(errorMessage)
+          }
+
+          return {
+            data: token
+          }
+        } catch (err) {
+          console.error(err)
+          // Typically this means the token does not exist on the chain
+          return {
+            data: null
+          }
+        }
+      },
+      providesTags: (result, err, args) =>
+        err
+          ? ['TokenInfo', 'UNKNOWN_ERROR']
+          : [
+              {
+                type: 'TokenInfo',
+                id: `${args.coin}-${args.chainId}-${args.contractAddress}`
+              }
+            ]
+    }),
+    getERC20Allowance: query<
+      string, // allowance
+      {
+        contractAddress: string
+        ownerAddress: string
+        spenderAddress: string
+        chainId: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const result = await api.jsonRpcService.getERC20TokenAllowance(
+            arg.contractAddress,
+            arg.ownerAddress,
+            arg.spenderAddress,
+            arg.chainId
+          )
+
+          if (result.error !== BraveWallet.ProviderError.kSuccess) {
+            throw new Error(result.errorMessage)
+          }
+
+          return {
+            data: result.allowance
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Failed to get ERC20 allowance for: ${JSON.stringify(
+              arg,
+              undefined,
+              2
+            )}`,
+            error
+          )
+        }
+      }
     })
   }
 }

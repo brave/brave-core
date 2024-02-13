@@ -110,13 +110,14 @@ export const MessageText = styled.span`
   white-space: pre-wrap;
 `
 
-export const ButtonRow = styled.div`
+export const SignPanelButtonRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
   width: 100%;
   margin-bottom: 14px;
+  gap: 8px;
 `
 
 export const WarningTitleRow = styled(WarningBoxTitleRow)`

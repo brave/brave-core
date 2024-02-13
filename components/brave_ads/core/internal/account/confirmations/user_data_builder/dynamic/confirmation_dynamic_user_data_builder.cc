@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/dynamic/diagnostic_id_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/dynamic/system_timestamp_user_data.h"

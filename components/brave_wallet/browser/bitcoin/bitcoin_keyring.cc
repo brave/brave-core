@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_keyring.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -14,12 +15,12 @@ namespace brave_wallet {
 
 BitcoinKeyring::BitcoinKeyring(bool testnet) : testnet_(testnet) {}
 
-absl::optional<std::string> BitcoinKeyring::GetAddress(
+std::optional<std::string> BitcoinKeyring::GetAddress(
     uint32_t account,
     const mojom::BitcoinKeyId& key_id) {
   auto key = DeriveKey(account, key_id);
   if (!key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   HDKey* hd_key = static_cast<HDKey*>(key.get());
@@ -27,24 +28,24 @@ absl::optional<std::string> BitcoinKeyring::GetAddress(
   return hd_key->GetSegwitAddress(testnet_);
 }
 
-absl::optional<std::vector<uint8_t>> BitcoinKeyring::GetPubkey(
+std::optional<std::vector<uint8_t>> BitcoinKeyring::GetPubkey(
     uint32_t account,
     const mojom::BitcoinKeyId& key_id) {
   auto hd_key_base = DeriveKey(account, key_id);
   if (!hd_key_base) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return hd_key_base->GetPublicKeyBytes();
 }
 
-absl::optional<std::vector<uint8_t>> BitcoinKeyring::SignMessage(
+std::optional<std::vector<uint8_t>> BitcoinKeyring::SignMessage(
     uint32_t account,
     const mojom::BitcoinKeyId& key_id,
     base::span<const uint8_t, 32> message) {
   auto hd_key_base = DeriveKey(account, key_id);
   if (!hd_key_base) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto* hd_key = static_cast<HDKey*>(hd_key_base.get());

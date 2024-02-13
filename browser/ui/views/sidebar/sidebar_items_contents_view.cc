@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 
+#include <optional>
 #include <string>
 
 #include "base/check_is_test.h"
@@ -15,6 +16,8 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -55,16 +58,14 @@
 #include "ui/views/layout/box_layout.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 namespace {
 
-constexpr gfx::Size kIconSize(SidebarButtonView::kIconSize,
-                              SidebarButtonView::kIconSize);
+constexpr gfx::Size kIconSize(SidebarButtonView::kExternalIconSize,
+                              SidebarButtonView::kExternalIconSize);
 
 std::string GetFirstCharFromURL(const GURL& url) {
   DCHECK(url.is_valid());
@@ -268,8 +269,8 @@ void SidebarItemsContentsView::OnItemRemoved(int index) {
 }
 
 void SidebarItemsContentsView::OnActiveIndexChanged(
-    absl::optional<size_t> old_index,
-    absl::optional<size_t> new_index) {
+    std::optional<size_t> old_index,
+    std::optional<size_t> new_index) {
   if (old_index) {
     UpdateItemViewStateAt(*old_index, false);
   }
@@ -358,7 +359,7 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount,
                     current_count + 1);
   CHECK_LT(item_added_index, children().size());
-  auto* lastly_added_view = children()[item_added_index];
+  views::View* lastly_added_view = children()[item_added_index];
   ShowItemAddedFeedbackBubble(lastly_added_view);
 }
 
@@ -395,19 +396,20 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
   CHECK_LT(*index, children().size());
 
   SidebarItemView* item_view = GetItemViewAt(*index);
-  item_view->SetImage(
+  item_view->SetImageModel(
       views::Button::STATE_NORMAL,
-      gfx::ImageSkiaOperations::CreateResizedImage(
-          image, skia::ImageOperations::RESIZE_BEST, kIconSize));
+      ui::ImageModel::FromImageSkia(
+          gfx::ImageSkiaOperations::CreateResizedImage(
+              image, skia::ImageOperations::RESIZE_BEST, kIconSize)));
 }
 
 void SidebarItemsContentsView::ClearDragIndicator() {
-  for (auto* view : children()) {
+  for (views::View* view : children()) {
     static_cast<SidebarItemView*>(view)->ClearHorizontalBorder();
   }
 }
 
-absl::optional<size_t>
+std::optional<size_t>
 SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
     const gfx::Point& screen_position) {
   // Find which item view includes this |screen_position|.
@@ -441,10 +443,10 @@ SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
   }
 
   NOTREACHED();
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
+std::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
     views::View* source,
     const gfx::Point& position) {
   auto source_view_index = GetIndexOf(source);
@@ -463,7 +465,7 @@ absl::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
 }
 
 void SidebarItemsContentsView::DoDrawDragIndicator(
-    absl::optional<size_t> index) {
+    std::optional<size_t> index) {
   // Clear current drag indicator.
   ClearDragIndicator();
 
@@ -503,40 +505,6 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
 
       item_view->SetImageModel(
           state, GetImageForBuiltInItems(item.built_in_item_type, color_state));
-    }
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-    if (ai_chat::features::IsAIChatEnabled() &&
-        !brave::IsRegularProfile(browser_->profile())) {
-      auto is_ai_chat = [](const auto& item) {
-        return item.built_in_item_type ==
-               sidebar::SidebarItem::BuiltInItemType::kChatUI;
-      };
-
-      if (is_ai_chat(item) && item_view->GetEnabled()) {
-        item_view->SetEnabled(false);
-      }
-    }
-#endif
-
-    if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-        browser_->profile()->IsOffTheRecord()) {
-      // We don't support Playlist on OTR profile. As SidebarService is shared
-      // regardless of profile type, we should remove it here.
-      // TODO(sko) If we have another item disabled on OTR profile, we should
-      // make a property in SidebarItem.
-      auto is_playlist = [](const auto& item) {
-        return item.built_in_item_type ==
-               sidebar::SidebarItem::BuiltInItemType::kPlaylist;
-      };
-
-      if (is_playlist(item) && item_view->GetEnabled()) {
-        item_view->SetEnabled(false);
-      }
-    }
-
-    if (item.disabled && item_view->GetEnabled()) {
-      item_view->SetEnabled(false);
     }
   }
 }
@@ -585,7 +553,7 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
             : (state == views::Button::STATE_PRESSED
                    ? kColorSidebarButtonPressed
                    : kColorSidebarButtonBase),
-        SidebarButtonView::kIconSize);
+        SidebarButtonView::kDefaultIconSize);
   };
 
   switch (type) {

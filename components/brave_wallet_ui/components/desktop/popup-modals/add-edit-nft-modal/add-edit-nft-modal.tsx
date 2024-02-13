@@ -20,15 +20,9 @@ interface Props {
   nftToken?: BraveWallet.BlockchainToken
   onClose: () => void
   onHideForm: () => void
-  onTokenFound?: (contractAddress: string) => void
 }
 
-export const AddOrEditNftModal = ({
-  nftToken,
-  onClose,
-  onHideForm,
-  onTokenFound
-}: Props) => {
+export const AddOrEditNftModal = ({ nftToken, onClose, onHideForm }: Props) => {
   const [contractAddress, setContractAddress] = React.useState<string>(
     nftToken?.contractAddress || ''
   )
@@ -49,7 +43,6 @@ export const AddOrEditNftModal = ({
           selectedAsset={nftToken}
           contractAddress={contractAddress}
           onHideForm={onHideForm}
-          onTokenFound={onTokenFound}
           onChangeContractAddress={setContractAddress}
         />
       </StyledWrapper>

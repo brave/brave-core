@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -540,7 +541,7 @@ TEST(EthAbiUtilsTest, ExtractBytesFromTuple) {
 
 TEST(EthAbiUtilsTest, ExtractBoolAndBytes) {
   // (true, some data)
-  absl::optional<std::pair<bool, std::vector<uint8_t>>> result =
+  std::optional<std::pair<bool, std::vector<uint8_t>>> result =
       ExtractBoolAndBytes(ToBytes(
           "0000000000000000000000000000000000000000000000000000000000000001"
           "0000000000000000000000000000000000000000000000000000000000000040"
@@ -576,7 +577,7 @@ TEST(EthAbiUtilsTest, ExtractBoolAndBytes) {
 }
 
 TEST(EthAbiUtilsTest, ExtractBoolBytesTupleArray) {
-  absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>> result =
+  std::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>> result =
       ExtractBoolBytesArrayFromTuple(
           ToBytes(
               // offset of start of the (bool, bytes)[] element in the tuple

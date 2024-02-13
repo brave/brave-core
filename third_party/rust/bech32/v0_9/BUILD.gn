@@ -1,0 +1,30 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "bech32"
+  epoch = "0.9"
+  crate_type = "rlib"
+  crate_root = "crate/src/lib.rs"
+  sources = [ "//brave/third_party/rust/bech32/v0_9/crate/src/lib.rs" ]
+  inputs = [ "//brave/third_party/rust/bech32/v0_9/crate/README.md" ]
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "0.9.1"
+  cargo_pkg_authors = "Clark Moody"
+  cargo_pkg_name = "bech32"
+  cargo_pkg_description = "Encodes and decodes the Bech32 format"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  features = [ "std" ]
+}

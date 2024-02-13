@@ -5,11 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 
+#include <cstddef>
+#include <optional>
 #include <vector>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
@@ -21,37 +26,30 @@
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/internal/units/inline_content_ad/inline_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_scoring_util.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/units/search_result_ad/search_result_ad_feature.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
 
 namespace brave_ads {
 
 namespace {
 
-// A one hour constraint for a given permission rule
-constexpr base::TimeDelta kOneHour = base::Hours(1);
+// Ensure the user has at least `kMinimumConfirmationTokenThreshold` tokens
+// before an ad is served.
+constexpr size_t kMinimumConfirmationTokenThreshold = 10;
 
-// A one day constraint for a given permission rule
-constexpr base::TimeDelta kOneDay = base::Days(1);
-
-// The minimum wait time cap for minimum wait permission rules
+// Set a required minimum time gap before the next ad can be displayed.
 constexpr int kMinimumWaitTimeCap = 1;
 
-bool IsAdTypeInTimeRangeAllowed(const AdType& type,
-                                base::TimeDelta time_constraint,
-                                size_t cap) {
+bool IsAdTypeWithinRollingTimeConstraint(const AdType type,
+                                         const base::TimeDelta time_constraint,
+                                         const size_t cap) {
   const std::vector<base::Time> history =
       GetCachedAdEvents(type, ConfirmationType::kServed);
 
-  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint,
-                                                 /*cap=*/cap);
+  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint, cap);
 }
 
 }  // namespace
@@ -60,9 +58,11 @@ bool HasFullScreenModePermission() {
   if (!kShouldOnlyServeAdsInWindowedMode.Get()) {
     return true;
   }
+
   if (PlatformHelper::GetInstance().IsMobile()) {
     return true;
   }
+
   if (!IsBrowserInFullScreenMode()) {
     return true;
   }
@@ -75,6 +75,7 @@ bool HasIssuersPermission() {
   if (!UserHasJoinedBraveRewards()) {
     return true;
   }
+
   if (HasIssuers()) {
     return true;
   }
@@ -85,9 +86,10 @@ bool HasIssuersPermission() {
 
 bool HasCommandLinePermission() {
   if (!IsProductionEnvironment()) {
-    // Always respect cap for staging environment
+    // Always respect cap for staging environment.
     return true;
   }
+
   if (!DidOverrideCommandLine()) {
     return true;
   }
@@ -97,10 +99,10 @@ bool HasCommandLinePermission() {
 }
 
 bool HasConfirmationTokensPermission() {
-  constexpr int kMinimumConfirmationTokenThreshold = 10;
   if (!UserHasJoinedBraveRewards()) {
     return true;
   }
+
   if (ConfirmationTokenCount() >= kMinimumConfirmationTokenThreshold) {
     return true;
   }
@@ -113,9 +115,11 @@ bool HasUserActivityPermission() {
   if (!UserHasJoinedBraveRewards()) {
     return true;
   }
+
   if (PlatformHelper::GetInstance().GetType() == PlatformType::kIOS) {
     return true;
   }
+
   if (WasUserActive()) {
     return true;
   }
@@ -125,90 +129,102 @@ bool HasUserActivityPermission() {
 }
 
 bool HasSearchResultAdsPerDayPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(
-          AdType::kSearchResultAd, kOneDay,
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kSearchResultAd, /*time_constraint=*/base::Days(1),
           /*cap=*/kMaximumSearchResultAdsPerDay.Get())) {
     BLOG(2, "You have exceeded the allowed search result ads per day");
     return false;
   }
+
   return true;
 }
 
 bool HasSearchResultAdsPerHourPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(
-          AdType::kSearchResultAd, kOneHour,
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kSearchResultAd, /*time_constraint=*/base::Hours(1),
           /*cap=*/kMaximumSearchResultAdsPerHour.Get())) {
     BLOG(2, "You have exceeded the allowed search result ads per hour");
     return false;
   }
+
   return true;
 }
 
 bool HasNewTabPageAdsPerDayPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(AdType::kNewTabPageAd, kOneDay,
-                                  /*cap=*/kMaximumNewTabPageAdsPerDay.Get())) {
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kNewTabPageAd, /*time_constraint=*/base::Days(1),
+          /*cap=*/kMaximumNewTabPageAdsPerDay.Get())) {
     BLOG(2, "You have exceeded the allowed new tab page ads per day");
     return false;
   }
+
   return true;
 }
 
 bool HasNewTabPageAdMinimumWaitTimePermission() {
-  if (!IsAdTypeInTimeRangeAllowed(AdType::kNewTabPageAd,
-                                  kNewTabPageAdMinimumWaitTime.Get(),
-                                  /*cap=*/kMinimumWaitTimeCap)) {
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kNewTabPageAd,
+          /*time_constraint=*/kNewTabPageAdMinimumWaitTime.Get(),
+          kMinimumWaitTimeCap)) {
     BLOG(2,
          "New tab page ad cannot be shown as minimum wait time has not passed");
     return false;
   }
+
   return true;
 }
 
 bool HasNewTabPageAdsPerHourPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(AdType::kNewTabPageAd, kOneHour,
-                                  /*cap=*/kMaximumNewTabPageAdsPerHour.Get())) {
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kNewTabPageAd, /*time_constraint=*/base::Hours(1),
+          /*cap=*/kMaximumNewTabPageAdsPerHour.Get())) {
     BLOG(2, "You have exceeded the allowed new tab page ads per hour");
     return false;
   }
+
   return true;
 }
 
 bool HasNotificationAdsPerHourPermission() {
   if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never exceed the
-    // maximum ads per hour
+    // maximum ads per hour.
     return true;
   }
 
-  if (!IsAdTypeInTimeRangeAllowed(AdType::kNotificationAd, kOneHour,
-                                  /*cap=*/GetMaximumNotificationAdsPerHour())) {
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kNotificationAd, /*time_constraint=*/base::Hours(1),
+          /*cap=*/GetMaximumNotificationAdsPerHour())) {
     BLOG(2, "You have exceeded the allowed notification ads per hour");
     return false;
   }
+
   return true;
 }
 
 bool HasNotificationAdsPerDayPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(
-          AdType::kNotificationAd, kOneDay,
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kNotificationAd, /*time_constraint=*/base::Days(1),
           /*cap=*/kMaximumNotificationAdsPerDay.Get())) {
     BLOG(2, "You have exceeded the allowed notification ads per day");
     return false;
   }
+
   return true;
 }
 
 bool HasNotificationAdMinimumWaitTimePermission() {
   if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never be served before
-    // the minimum wait time has passed
+    // the minimum wait time has passed.
     return true;
   }
 
-  if (!IsAdTypeInTimeRangeAllowed(
+  if (!IsAdTypeWithinRollingTimeConstraint(
           AdType::kNotificationAd,
-          /*time_constraint=*/kOneHour / GetMaximumNotificationAdsPerHour(),
-          /*cap=*/kMinimumWaitTimeCap)) {
+          /*time_constraint=*/base::Hours(1) /
+              GetMaximumNotificationAdsPerHour(),
+          kMinimumWaitTimeCap)) {
     BLOG(2,
          "Notification ad cannot be shown as minimum wait time has not passed");
     return false;
@@ -221,6 +237,7 @@ bool HasNetworkConnectionPermission() {
   if (!kShouldOnlyServeAdsWithValidInternetConnection.Get()) {
     return true;
   }
+
   if (IsNetworkConnectionAvailable()) {
     return true;
   }
@@ -233,10 +250,12 @@ bool HasMediaPermission() {
   if (!kShouldOnlyServeAdsIfMediaIsNotPlaying.Get()) {
     return true;
   }
-  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+
+  const std::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
   if (!tab) {
     return true;
   }
+
   if (!TabManager::GetInstance().IsPlayingMedia(tab->id)) {
     return true;
   }
@@ -249,14 +268,14 @@ bool HasDoNotDisturbPermission() {
   if (PlatformHelper::GetInstance().GetType() != PlatformType::kAndroid) {
     return true;
   }
+
   if (BrowserManager::GetInstance().IsActive() &&
       BrowserManager::GetInstance().IsInForeground()) {
     return true;
   }
 
-  const base::Time time = base::Time::Now();
   base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
+  base::Time::Now().LocalExplode(&exploded);
 
   if (exploded.hour >= kDoNotDisturbToHour.Get() &&
       exploded.hour < kDoNotDisturbFromHour.Get()) {
@@ -281,6 +300,7 @@ bool HasCatalogPermission() {
     BLOG(2, "Catalog does not exist");
     return false;
   }
+
   if (HasCatalogExpired()) {
     BLOG(2, "Catalog has expired");
     return false;
@@ -290,8 +310,8 @@ bool HasCatalogPermission() {
 }
 
 bool HasInlineContentAdsPerDayPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(
-          AdType::kInlineContentAd, kOneDay,
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kInlineContentAd, /*time_constraint=*/base::Days(1),
           /*cap=*/kMaximumInlineContentAdsPerDay.Get())) {
     BLOG(2, "You have exceeded the allowed inline content ads per day");
     return false;
@@ -301,8 +321,8 @@ bool HasInlineContentAdsPerDayPermission() {
 }
 
 bool HasInlineContentAdsPerHourPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(
-          AdType::kInlineContentAd, kOneHour,
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kInlineContentAd, /*time_constraint=*/base::Hours(1),
           /*cap=*/kMaximumInlineContentAdsPerHour.Get())) {
     BLOG(2, "You have exceeded the allowed inline content ads per hour");
     return false;
@@ -312,8 +332,8 @@ bool HasInlineContentAdsPerHourPermission() {
 }
 
 bool HasPromotedContentAdsPerDayPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(
-          AdType::kPromotedContentAd, kOneDay,
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kPromotedContentAd, /*time_constraint=*/base::Days(1),
           /*cap=*/kMaximumPromotedContentAdsPerDay.Get())) {
     BLOG(2, "You have exceeded the allowed promoted content ads per day");
     return false;
@@ -323,8 +343,8 @@ bool HasPromotedContentAdsPerDayPermission() {
 }
 
 bool HasPromotedContentAdsPerHourPermission() {
-  if (!IsAdTypeInTimeRangeAllowed(
-          AdType::kPromotedContentAd, kOneHour,
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kPromotedContentAd, /*time_constraint=*/base::Hours(1),
           /*cap=*/kMaximumPromotedContentAdsPerHour.Get())) {
     BLOG(2, "You have exceeded the allowed promoted content ads per hour");
     return false;
@@ -337,6 +357,7 @@ bool HasBrowserIsActivePermission() {
   if (!kShouldOnlyServeAdsIfBrowserIsActive.Get()) {
     return true;
   }
+
   if (BrowserManager::GetInstance().IsActive() &&
       BrowserManager::GetInstance().IsInForeground()) {
     return true;

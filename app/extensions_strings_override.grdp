@@ -37,6 +37,8 @@
   </if>
 <if expr="chromeos_ash">
   </if>
+<if expr="is_chromeos">
+  </if>
 <if expr="is_macosx or chromeos_ash">
   </if>
 <if expr="not is_macosx and not chromeos_ash">

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_util.h"
 
-#include <string_view>
-
 #include "base/containers/contains.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 
@@ -18,8 +16,11 @@ bool ShouldTargetSubdivisionCountryCode(const std::string& country_code) {
 
 bool ShouldTargetSubdivision(const std::string& country_code,
                              const std::string& subdivision) {
-  const auto iter = GetSupportedSubdivisions().find(country_code);
-  if (iter == GetSupportedSubdivisions().cend()) {
+  const SupportedSubdivisionMap& supported_subdivisions =
+      GetSupportedSubdivisions();
+
+  const auto iter = supported_subdivisions.find(country_code);
+  if (iter == supported_subdivisions.cend()) {
     return false;
   }
 

@@ -1,0 +1,17 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_app_billing_sources = [
+  "//brave/android/java/org/chromium/chrome/browser/billing/InAppPurchaseWrapper.java",
+  "//brave/android/java/org/chromium/chrome/browser/billing/PurchaseModel.java",
+]
+
+brave_app_billing_deps =
+    [ "//brave/third_party/android_deps:com_android_billingclient_java" ]
+
+brave_java_base_module_billing_deps = [
+  "//brave/third_party/android_deps:com_google_android_datatransport_transport_backend_cct_java",
+  "//brave/third_party/android_deps:com_google_android_datatransport_transport_runtime_java",
+]

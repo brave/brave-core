@@ -5,6 +5,7 @@
 
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -45,7 +46,7 @@ const char kObservingScriptletEntryPoint[] =
 
 const char kScriptletInitScript[] =
     R"((function() {
-          let text = '(function() {\nconst scriptletGlobals = new Map(%s);\nlet deAmpEnabled = %s;\n' + %s + '})()';
+          let text = '(function() {\nconst scriptletGlobals = (() => {\nconst forwardedMapMethods = ["has", "get", "set"];\nconst handler = {\nget(target, prop) { if (forwardedMapMethods.includes(prop)) { return Map.prototype[prop].bind(target) } return target.get(prop); },\nset(target, prop, value) { if (!forwardedMapMethods.includes(prop)) { target.set(prop, value); } }\n};\nreturn new Proxy(new Map(%s), handler);\n})();\nlet deAmpEnabled = %s;\n' + %s + '})()';
           let script;
           try {
             script = document.createElement('script');
@@ -338,8 +339,8 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
 
 bool CosmeticFiltersJSHandler::ProcessURL(
     const GURL& url,
-    absl::optional<base::OnceClosure> callback) {
-  resources_dict_ = absl::nullopt;
+    std::optional<base::OnceClosure> callback) {
+  resources_dict_ = std::nullopt;
   url_ = url;
   enabled_1st_party_cf_ = false;
 

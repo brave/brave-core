@@ -11,10 +11,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.ArrayList;
 import java.util.Collections;

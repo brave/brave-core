@@ -30,7 +30,7 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
     std::vector<mojom::SKUOrderItemPtr> list) {
   DCHECK(transaction);
   if (list.empty()) {
-    BLOG(1, "List is empty");
+    engine_->Log(FROM_HERE) << "List is empty";
     return;
   }
 
@@ -64,8 +64,8 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
     const std::string& order_id,
     GetSKUOrderItemsCallback callback) {
   if (order_id.empty()) {
-    BLOG(1, "Order id is empty");
-    callback({});
+    engine_->Log(FROM_HERE) << "Order id is empty";
+    std::move(callback).Run({});
     return;
   }
 
@@ -105,8 +105,8 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback({});
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run({});
     return;
   }
 
@@ -130,7 +130,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 }  // namespace database

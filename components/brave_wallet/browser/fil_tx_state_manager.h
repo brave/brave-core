@@ -8,9 +8,7 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
-#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
 class PrefService;
@@ -34,19 +32,14 @@ class FilTxStateManager : public TxStateManager {
   FilTxStateManager(const FilTxStateManager&) = delete;
   FilTxStateManager operator=(const FilTxStateManager&) = delete;
 
-  std::unique_ptr<FilTxMeta> GetFilTx(const std::string& chain_id,
-                                      const std::string& id);
+  std::unique_ptr<FilTxMeta> GetFilTx(const std::string& id);
   std::unique_ptr<FilTxMeta> ValueToFilTxMeta(const base::Value::Dict& value);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(FilTxStateManagerUnitTest, GetTxPrefPathPrefix);
-
   mojom::CoinType GetCoinType() const override;
 
   std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) override;
-  std::string GetTxPrefPathPrefix(
-      const absl::optional<std::string>& chain_id) override;
 };
 
 }  // namespace brave_wallet

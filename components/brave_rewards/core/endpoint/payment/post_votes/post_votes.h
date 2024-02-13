@@ -42,7 +42,7 @@ class RewardsEngineImpl;
 namespace endpoint {
 namespace payment {
 
-using PostVotesCallback = std::function<void(const mojom::Result result)>;
+using PostVotesCallback = base::OnceCallback<void(const mojom::Result result)>;
 
 class PostVotes {
  public:
@@ -59,7 +59,7 @@ class PostVotes {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(mojom::UrlResponsePtr response, PostVotesCallback callback);
+  void OnRequest(PostVotesCallback callback, mojom::UrlResponsePtr response);
 
   const raw_ref<RewardsEngineImpl> engine_;
 };

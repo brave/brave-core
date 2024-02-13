@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 #define BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -18,7 +19,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/version_info/channel.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -43,23 +43,6 @@ class SidebarService : public KeyedService {
     kShowNever,
   };
 
-  // This is the default display order
-  static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
-      SidebarItem::BuiltInItemType::kBraveTalk,
-      SidebarItem::BuiltInItemType::kWallet,
-      SidebarItem::BuiltInItemType::kChatUI,
-      SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kReadingList,
-      SidebarItem::BuiltInItemType::kHistory,
-      SidebarItem::BuiltInItemType::kPlaylist};
-  static_assert(
-      std::size(kDefaultBuiltInItemTypes) ==
-          static_cast<size_t>(SidebarItem::BuiltInItemType::kBuiltInItemLast),
-      "A built-in item in this visual order is missing or you might forget to "
-      "update kBuiltInItemItemLast value. If you want to add a "
-      "new item while keeping that hidden, please visit "
-      "GetBuiltInItemForType() in sidebar_service.cc");
-
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnItemAdded(const SidebarItem& item, size_t index) {}
@@ -77,7 +60,9 @@ class SidebarService : public KeyedService {
   static void RegisterProfilePrefs(PrefRegistrySimple* registry,
                                    version_info::Channel channel);
 
-  explicit SidebarService(PrefService* prefs, bool is_guest = false);
+  SidebarService(
+      PrefService* prefs,
+      const std::vector<SidebarItem::BuiltInItemType>& default_builtin_items);
   ~SidebarService() override;
 
   const std::vector<SidebarItem>& items() const { return items_; }
@@ -100,7 +85,7 @@ class SidebarService : public KeyedService {
   ShowSidebarOption GetSidebarShowOption() const;
   void SetSidebarShowOption(ShowSidebarOption show_options);
 
-  absl::optional<SidebarItem> GetDefaultPanelItem() const;
+  std::optional<SidebarItem> GetDefaultPanelItem() const;
   bool IsEditableItemAt(size_t index) const;
 
   SidebarService(const SidebarService&) = delete;
@@ -125,6 +110,11 @@ class SidebarService : public KeyedService {
   void MigrateSidebarShowOptions();
   void MigratePrefSidebarBuiltInItemsToHidden();
 
+  SidebarItem::BuiltInItemType GetPrevBuiltInItemFor(
+      const SidebarItem::BuiltInItemType& item) const;
+  size_t GetBuiltInItemIndexToInsert(const std::vector<SidebarItem>& items,
+                                     const SidebarItem& item) const;
+
   void AddItemAtForTesting(const SidebarItem& item, size_t index);
 
   raw_ptr<PrefService> prefs_ = nullptr;
@@ -133,7 +123,7 @@ class SidebarService : public KeyedService {
 
   p3a::SidebarP3A sidebar_p3a_;
 
-  bool is_guest_ = false;
+  const std::vector<SidebarItem::BuiltInItemType> default_builtin_items_;
   base::ObserverList<Observer> observers_;
   PrefChangeRegistrar pref_change_registrar_;
 };

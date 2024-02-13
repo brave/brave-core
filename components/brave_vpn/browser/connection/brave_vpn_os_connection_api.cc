@@ -5,17 +5,21 @@
 
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 
+#include <optional>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -23,41 +27,13 @@
 
 namespace brave_vpn {
 
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNIKEv2ConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel);
-
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel);
-
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
-  if (IsBraveVPNWireguardEnabled(local_prefs)) {
-    return CreateBraveVPNWireguardConnectionAPI(url_loader_factory, local_prefs,
-                                                channel);
-  }
-#endif
-#if BUILDFLAG(IS_ANDROID)
-  // Android doesn't use connection api.
-  return nullptr;
-#else
-  return CreateBraveVPNIKEv2ConnectionAPI(url_loader_factory, local_prefs,
-                                          channel);
-#endif
-}
-
 BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
     : local_prefs_(local_prefs),
       url_loader_factory_(url_loader_factory),
-      region_data_manager_(url_loader_factory, local_prefs) {
+      region_data_manager_(url_loader_factory, local_prefs),
+      weak_factory_(this) {
   DCHECK(url_loader_factory_);
   // Safe to use Unretained here because |region_data_manager_| is owned
   // instance.
@@ -208,7 +184,7 @@ void BraveVPNOSConnectionAPI::OnFetchHostnames(const std::string& region,
 
   ResetAPIRequestInstance();
 
-  absl::optional<base::Value> value = base::JSONReader::Read(hostnames);
+  std::optional<base::Value> value = base::JSONReader::Read(hostnames);
   if (value && value->is_list()) {
     ParseAndCacheHostnames(region, value->GetList());
     return;
@@ -262,6 +238,64 @@ void BraveVPNOSConnectionAPI::ToggleConnection() {
       (GetConnectionState() == mojom::ConnectionState::CONNECTED ||
        GetConnectionState() == mojom::ConnectionState::CONNECTING);
   can_disconnect ? Disconnect() : Connect();
+}
+
+void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
+  if (!install_system_service_callback_) {
+    VLOG(2) << __func__ << " : no install system service callback set";
+    return;
+  }
+
+  // Installation should only be called once per session.
+  // It's safe to call more than once because the install itself checks if
+  // the services are already registered before doing anything.
+  if (system_service_installed_event_.is_signaled()) {
+    VLOG(2)
+        << __func__
+        << " : installation has already been performed this session; exiting";
+    return;
+  }
+
+  // This API could be called more than once because BraveVpnService is a
+  // per-profile service. If service install is in-progress now, just return.
+  if (install_in_progress_) {
+    VLOG(2) << __func__ << " : install already in progress; exiting";
+    return;
+  }
+
+#if BUILDFLAG(IS_WIN)
+  install_in_progress_ = true;
+  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE, install_system_service_callback_,
+          base::BindOnce(
+              &BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted,
+              weak_factory_.GetWeakPtr()));
+#endif
+}
+
+void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
+  VLOG(1) << "OnInstallSystemServicesCompleted: success=" << success;
+  if (success) {
+#if BUILDFLAG(IS_WIN)
+    // Update prefs first before signaling the event because the event could
+    // check the prefs.
+    EnableWireguardIfPossible(local_prefs_);
+#endif
+    system_service_installed_event_.Signal();
+  }
+  install_in_progress_ = false;
+}
+
+bool BraveVPNOSConnectionAPI::ScheduleConnectRequestIfNeeded() {
+  if (!install_in_progress_) {
+    return false;
+  }
+
+  system_service_installed_event_.Post(
+      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPI::Connect,
+                                weak_factory_.GetWeakPtr()));
+  return true;
 }
 
 }  // namespace brave_vpn

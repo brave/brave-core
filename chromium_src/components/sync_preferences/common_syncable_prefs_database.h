@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_PREFERENCES_COMMON_SYNCABLE_PREFS_DATABASE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_PREFERENCES_COMMON_SYNCABLE_PREFS_DATABASE_H_
 
+#include <optional>
+
 #include "components/sync_preferences/syncable_prefs_database.h"
 
 // To accommodate ChromeSyncablePrefsDatabase::GetSyncablePrefMetadata having
@@ -15,10 +17,10 @@
 // will become GetSyncablePrefMetadata_ChromiumOriginalImpl.
 #define GetSyncablePrefMetadata                                              \
   GetSyncablePrefMetadata_ChromiumImpl(const std::string& pref_name) const;  \
-  absl::optional<sync_preferences::SyncablePrefMetadata>                     \
+  std::optional<sync_preferences::SyncablePrefMetadata>                      \
   GetSyncablePrefMetadata_ChromiumOriginalImpl(const std::string& pref_name) \
       const;                                                                 \
-  absl::optional<sync_preferences::SyncablePrefMetadata> GetSyncablePrefMetadata
+  std::optional<sync_preferences::SyncablePrefMetadata> GetSyncablePrefMetadata
 
 #include "src/components/sync_preferences/common_syncable_prefs_database.h"  // IWYU pragma: export
 #undef GetSyncablePrefMetadata

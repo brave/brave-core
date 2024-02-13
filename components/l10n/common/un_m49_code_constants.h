@@ -14,8 +14,9 @@ namespace brave_l10n {
 
 // See https://en.wikipedia.org/wiki/UN_M49.
 
-inline constexpr auto kUnM49Codes =
-    base::MakeFixedFlatSetSorted<std::string_view>({
+inline constexpr auto kUnM49Codes = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
         "001",  // World
         "002",  // Africa
         "003",  // North America

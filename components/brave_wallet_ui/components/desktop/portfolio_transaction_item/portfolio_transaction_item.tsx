@@ -88,7 +88,7 @@ import {
   SellIconPlaceholder,
   BuyIconPlaceholder,
   SwapPlaceholderIcon
-} from './portfolio_tranasction_item.style'
+} from './portfolio_transaction_item.style'
 import { Column, Row, VerticalSpace } from '../../shared/style'
 
 const noneTxStatusDisplayTypes = [

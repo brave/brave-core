@@ -70,6 +70,14 @@ bool IsZCashKeyring(mojom::KeyringId keyring_id) {
          keyring_id == mojom::KeyringId::kZCashTestnet;
 }
 
+bool IsZCashMainnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kZCashMainnet;
+}
+
+bool IsZCashTestnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kZCashTestnet;
+}
+
 bool IsBitcoinMainnetKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::KeyringId::kBitcoin84;
 }
@@ -204,6 +212,9 @@ mojom::AccountIdPtr MakeAccountId(mojom::CoinType coin,
                                   mojom::AccountKind kind,
                                   const std::string& address) {
   DCHECK_NE(coin, mojom::CoinType::BTC);
+  DCHECK_NE(coin, mojom::CoinType::ZEC);
+  DCHECK(!IsBitcoinKeyring(keyring_id));
+  DCHECK(!IsZCashKeyring(keyring_id));
 
   std::string unique_key =
       base::JoinString({base::NumberToString(static_cast<int>(coin)),
@@ -246,6 +257,16 @@ std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id) {
   CHECK(account_id);
   CHECK(IsBitcoinAccount(*account_id));
   return GetNetworkForBitcoinKeyring(account_id->keyring_id);
+}
+
+std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id) {
+  if (IsZCashMainnetKeyring(keyring_id)) {
+    return mojom::kZCashMainnet;
+  }
+  if (IsZCashTestnetKeyring(keyring_id)) {
+    return mojom::kZCashTestnet;
+  }
+  NOTREACHED_NORETURN();
 }
 
 mojom::AccountIdPtr MakeZCashAccountId(mojom::CoinType coin,

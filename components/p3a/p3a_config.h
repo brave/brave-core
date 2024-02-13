@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_P3A_P3A_CONFIG_H_
 #define BRAVE_COMPONENTS_P3A_P3A_CONFIG_H_
 
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/metric_log_type.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace p3a {
@@ -24,7 +24,7 @@ struct P3AConfig {
   base::flat_map<MetricLogType, base::TimeDelta> json_rotation_intervals;
 
   // Fake STAR epoch for testing purposes.
-  base::flat_map<MetricLogType, absl::optional<uint8_t>> fake_star_epochs;
+  base::flat_map<MetricLogType, std::optional<uint8_t>> fake_star_epochs;
 
   // Endpoint for uploading P3A metrics in JSON format
   GURL p3a_json_upload_url;

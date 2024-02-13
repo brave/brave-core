@@ -6,10 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -31,19 +32,19 @@ class LinearModel final {
   LinearModel(LinearModel&&) noexcept;
   LinearModel& operator=(LinearModel&&) noexcept;
 
-  ~LinearModel();
+  ~LinearModel() = default;
 
-  absl::optional<PredictionMap> Predict(const VectorData& data) const;
+  std::optional<PredictionMap> Predict(const VectorData& data) const;
 
-  absl::optional<PredictionMap> GetTopPredictions(const VectorData& data) const;
+  std::optional<PredictionMap> GetTopPredictions(const VectorData& data) const;
 
-  absl::optional<PredictionMap> GetTopCountPredictions(const VectorData& data,
-                                                       size_t top_count) const;
+  std::optional<PredictionMap> GetTopCountPredictions(const VectorData& data,
+                                                      size_t top_count) const;
 
  private:
-  absl::optional<PredictionMap> GetTopCountPredictionsImpl(
+  std::optional<PredictionMap> GetTopCountPredictionsImpl(
       const VectorData& data,
-      absl::optional<size_t> top_count) const;
+      std::optional<size_t> top_count) const;
 
   raw_ptr<const linear_text_classification::flat::Model> model_;
 };

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/voting/creative_ad_embedding_based_predictor_voting_util.h"
 
+#include <cstddef>
 #include <iterator>
 #include <limits>
 
@@ -29,7 +30,7 @@ void ComputeCreativeAdVoteRegistryForSimilarityScores(
         std::distance(creative_ad_similarity_scores.cbegin(), iter);
     CHECK_LT(index, creative_ad_vote_registry.size());
 
-    creative_ad_vote_registry[index]++;
+    ++creative_ad_vote_registry[index];
 
     iter = base::ranges::find_if(
         std::next(iter), creative_ad_similarity_scores.cend(),

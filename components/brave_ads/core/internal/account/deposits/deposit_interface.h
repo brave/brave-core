@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 
 namespace brave_ads {
 

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <map>
 #include <utility>
 
@@ -31,7 +32,7 @@
 namespace brave_ads::database::table {
 
 using CreativeNotificationAdMap =
-    std::map</*creative_ad_uuid=*/std::string, CreativeNotificationAdInfo>;
+    std::map</*creative_ad_uuid*/ std::string, CreativeNotificationAdInfo>;
 
 namespace {
 
@@ -88,7 +89,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, creative_ad.title);
     BindString(command, index++, creative_ad.body);
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -216,10 +217,10 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE creative_ad_notifications (creative_instance_id "
-      "TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
-      "creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
-      "title TEXT NOT NULL, body TEXT NOT NULL);";
+      "CREATE TABLE creative_ad_notifications (creative_instance_id TEXT NOT "
+      "NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, creative_set_id TEXT NOT "
+      "NULL, campaign_id TEXT NOT NULL, title TEXT NOT NULL, body TEXT NOT "
+      "NULL);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -303,7 +304,7 @@ void CreativeNotificationAds::GetForSegments(
   int index = 0;
   for (const auto& segment : segments) {
     BindString(&*command, index, segment);
-    index++;
+    ++index;
   }
 
   transaction->commands.push_back(std::move(command));

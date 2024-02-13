@@ -54,7 +54,10 @@ if (enable_speedreader) {
 }
 
 if (enable_ai_chat) {
-  brave_chrome_renderer_deps += [ "//brave/components/ai_chat/renderer" ]
+  brave_chrome_renderer_deps += [
+    "//brave/components/ai_chat/core/common:common",
+    "//brave/components/ai_chat/renderer",
+  ]
 }
 
 if (enable_playlist) {
@@ -63,10 +66,12 @@ if (enable_playlist) {
 
 if (enable_brave_vpn) {
   brave_chrome_renderer_deps += [ "//brave/components/brave_vpn/common" ]
-  if (is_android) {
-    brave_chrome_renderer_deps +=
-        [ "//brave/components/brave_vpn/renderer/android:android" ]
-  }
+}
+
+if (is_android && (enable_brave_vpn || enable_ai_chat)) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/brave_mobile_subscription/renderer/android:android",
+  ]
 }
 
 brave_chrome_renderer_deps += [ "//third_party/widevine/cdm:headers" ]

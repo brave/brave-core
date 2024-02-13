@@ -81,9 +81,7 @@ class CertificateTransparencyBrowserTest : public CertVerifierBrowserTest {
   }
 
   void SetUpCertVerifier() {
-    content::StoragePartition* partition =
-        browser()->profile()->GetDefaultStoragePartition();
-    partition->GetNetworkContext()->SetCTLogListAlwaysTimelyForTesting();
+    SystemNetworkContextManager::GetInstance()->SetCTLogListTimelyForTesting();
 
     ASSERT_TRUE(https_server()->Start());
 

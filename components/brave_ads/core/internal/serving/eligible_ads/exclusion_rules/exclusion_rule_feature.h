@@ -20,16 +20,27 @@ BASE_DECLARE_FEATURE(kExclusionRulesFeature);
 inline constexpr base::FeatureParam<bool> kShouldExcludeAdIfConverted{
     &kExclusionRulesFeature, "should_exclude_ad_if_converted", true};
 
+// Set to 0 to never exclude a dismissed ad.
 inline constexpr base::FeatureParam<base::TimeDelta>
     kShouldExcludeAdIfDismissedWithinTimeWindow{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_dismissed_within_time_window", base::Hours(0)};
 
+// Set to 0 to never exclude a landed ad.
 inline constexpr base::FeatureParam<base::TimeDelta>
-    kShouldExcludeAdIfTransferredWithinTimeWindow{
+    kShouldExcludeAdIfLandedOnPageWithinTimeWindow{
         &kExclusionRulesFeature,
-        "should_exclude_ad_if_transferred_within_time_window", base::Hours(0)};
+        "should_exclude_ad_if_landed_on_page_within_time_window",
+        base::Hours(0)};
 
+// Set to 0 to never exclude a creative instance.
+inline constexpr base::FeatureParam<base::TimeDelta>
+    kShouldExcludeAdIfCreativeInstanceWithinTimeWindow{
+        &kExclusionRulesFeature,
+        "should_exclude_ad_if_creative_instance_within_time_window",
+        base::Hours(1)};
+
+// Set to 0 to never exceed the per hour cap for a creative instance.
 inline constexpr base::FeatureParam<int>
     kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap{
         &kExclusionRulesFeature,

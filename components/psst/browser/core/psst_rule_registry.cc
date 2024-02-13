@@ -21,7 +21,6 @@
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -79,9 +78,10 @@ void PsstRuleRegistry::CheckIfMatch(
                          rule.GetTestScript(), rule.GetPolicyScript(),
                          rule.GetVersion()),
           std::move(cb));
+      // Only ever find one matching rule.
+      return;
     }
   }
-  return;
 }
 
 void PsstRuleRegistry::LoadRules(const base::FilePath& path) {

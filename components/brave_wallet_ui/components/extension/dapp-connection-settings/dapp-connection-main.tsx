@@ -5,12 +5,6 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import { useDispatch } from 'react-redux'
-
-// Actions
-import { PanelActions } from '../../../panel/actions'
-
-import { WalletActions } from '../../../common/actions'
 
 // Selectors
 import {
@@ -20,14 +14,18 @@ import { WalletSelectors } from '../../../common/selectors'
 
 // Types
 import { DAppConnectionOptionsType } from './dapp-connection-settings'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, DAppSupportedCoinTypes } from '../../../constants/types'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery,
+  useRemoveSitePermissionMutation,
+  useRequestSitePermissionMutation,
+  useSetSelectedAccountMutation
 } from '../../../common/slices/api.slice'
 import {
+  useAccountsQuery,
   useSelectedAccountQuery //
 } from '../../../common/slices/api.slice.extra'
 
@@ -73,9 +71,6 @@ export const DAppConnectionMain = (props: Props) => {
     onSelectOption,
     getAccountsFiatValue
   } = props
-  // Redux
-  const dispatch = useDispatch()
-
   // Selectors
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
@@ -83,6 +78,12 @@ export const DAppConnectionMain = (props: Props) => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { accounts } = useAccountsQuery()
+
+  // Mutations
+  const [requestSitePermission] = useRequestSitePermissionMutation()
+  const [removeSitePermission] = useRemoveSitePermissionMutation()
+  const [setSelectedAccount] = useSetSelectedAccountMutation()
 
   // Memos
   const connectionStatusText = React.useMemo((): string => {
@@ -103,26 +104,31 @@ export const DAppConnectionMain = (props: Props) => {
 
   // Methods
   const onClickConnect = React.useCallback(() => {
-    if (!selectedAccount) {
-      return
+    if (selectedAccount) {
+      requestSitePermission(selectedAccount.accountId)
     }
-    dispatch(
-      PanelActions.requestSitePermission({
-        accountId: selectedAccount.accountId
-      })
-    )
-  }, [selectedAccount])
+  }, [selectedAccount, requestSitePermission])
 
-  const onClickDisconnect = React.useCallback(() => {
-    if (!selectedAccount) {
+  const onClickDisconnect = React.useCallback(async () => {
+    if (selectedAccount) {
+      await removeSitePermission(selectedAccount.accountId)
+    }
+  }, [selectedAccount, removeSitePermission])
+
+  React.useEffect(() => {
+    if (!selectedAccount) return
+
+    if (DAppSupportedCoinTypes.includes(selectedAccount.accountId.coin)) {
       return
     }
-    dispatch(
-      WalletActions.removeSitePermission({
-        accountId: selectedAccount.accountId
-      })
+
+    const dappAccount = accounts.find((acc) =>
+      DAppSupportedCoinTypes.includes(acc.accountId.coin)
     )
-  }, [selectedAccount])
+    if (dappAccount) {
+      setSelectedAccount(dappAccount.accountId)
+    }
+  }, [selectedAccount, accounts])
 
   return (
     <>

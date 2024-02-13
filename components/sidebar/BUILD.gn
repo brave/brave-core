@@ -36,7 +36,10 @@ static_library("sidebar") {
   ]
 
   if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/core/common" ]
+    deps += [
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+    ]
   }
 
   if (enable_playlist) {
@@ -51,11 +54,8 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/browser/ui/sidebar",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/sidebar",
-    "//chrome/browser:browser",
-    "//chrome/test:test_support",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",

@@ -1,0 +1,6 @@
+include_rules = [
+  "+components/account_id",
+  "+ios/chrome/browser/ui/policy/user_policy_util.h",
+  "+ios/components/webui",
+  "+mojo/public",
+]

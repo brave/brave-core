@@ -52,6 +52,7 @@
         android:fontFamily="sans-serif"
         android:paddingEnd="32dp"
         android:scrollbars="vertical"
+        android:text="@string/rewards_tip_default_creator_description"
         android:textColor="@color/tipping_details_description_text_color"
         android:textSize="14sp"
         app:layout_constrainedHeight="true"
@@ -59,14 +60,6 @@
         app:layout_constraintHeight_max="262dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tipping_publisher_name" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:background="@drawable/transparent_shadow_background"
-        app:layout_constraintBottom_toBottomOf="@id/tipping_details_description"
-        app:layout_constraintEnd_toEndOf="@+id/tipping_details_description"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/align_other_social"
@@ -242,6 +235,24 @@
         app:layout_constraintTop_toBottomOf="@+id/tipping_details_description"
         app:srcCompat="@drawable/social_youtube_color" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tipping_warning_message_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/tipping_logout_message_background"
+            android:padding="24dp"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/close_it">
+
+            <include layout="@layout/tipping_warning_message_layout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/send_tip_button"
         android:layout_width="wrap_content"
@@ -273,6 +284,5 @@
         app:layout_constraintStart_toEndOf="@+id/link_twitter"
         app:layout_constraintTop_toBottomOf="@+id/tipping_details_description"
         app:srcCompat="@drawable/social_youtube_color" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

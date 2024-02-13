@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_BLOCK_TRACKER_H_
 
 #include <map>
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -14,18 +15,15 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
-#include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
 namespace brave_wallet {
 
-namespace zcash_rpc {
 class ZCashRpc;
-}
 
 class ZCashBlockTracker : public BlockTracker {
  public:
-  explicit ZCashBlockTracker(zcash_rpc::ZCashRpc* zcash_rpc);
+  explicit ZCashBlockTracker(ZCashRpc* zcash_rpc);
   ~ZCashBlockTracker() override;
   ZCashBlockTracker(const ZCashBlockTracker&) = delete;
   ZCashBlockTracker operator=(const ZCashBlockTracker&) = delete;
@@ -40,19 +38,19 @@ class ZCashBlockTracker : public BlockTracker {
   void RemoveObserver(Observer* observer);
 
   void Start(const std::string& chain_id, base::TimeDelta interval) override;
-  absl::optional<uint32_t> GetLatestHeight(const std::string& chain_id) const;
+  std::optional<uint32_t> GetLatestHeight(const std::string& chain_id) const;
 
  private:
   void GetBlockHeight(const std::string& chain_id);
   void OnGetLatestBlockForHeight(
       const std::string& chain_id,
-      base::expected<zcash::BlockID, std::string> latest_height);
+      base::expected<mojom::BlockIDPtr, std::string> latest_height);
 
   // <chain_id, block_height>
   std::map<std::string, uint32_t> latest_height_map_;
   base::ObserverList<Observer> observers_;
 
-  raw_ptr<zcash_rpc::ZCashRpc> zcash_rpc_ = nullptr;
+  raw_ptr<ZCashRpc> zcash_rpc_ = nullptr;
 
   base::WeakPtrFactory<ZCashBlockTracker> weak_ptr_factory_{this};
 };

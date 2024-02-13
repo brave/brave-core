@@ -27,17 +27,21 @@ void OnScheduleWakeup(
 logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
   switch (level) {
     case skus::TracingLevel::Trace:
-      return logging::LOGGING_VERBOSE - 1;
+      // NOTE: since we have release_max_level_debug set this is equivalent to
+      // DVLOG(4)
+      return -4;
     case skus::TracingLevel::Debug:
-      return logging::LOGGING_VERBOSE;
+      return -3;
     case skus::TracingLevel::Info:
-      return logging::LOGGING_INFO;
+      return -2;
     case skus::TracingLevel::Warn:
-      return logging::LOGGING_WARNING;
+      return logging::LOGGING_VERBOSE;
     case skus::TracingLevel::Error:
       return logging::LOGGING_ERROR;
   }
-  return logging::LOGGING_INFO;
+  // this should never happen, set to WARNING level in this case so we notice
+  // since it is otherwise unused
+  return logging::LOGGING_WARNING;
 }
 
 }  // namespace
@@ -62,6 +66,9 @@ RefreshOrderCallbackState::~RefreshOrderCallbackState() = default;
 
 SubmitReceiptCallbackState::SubmitReceiptCallbackState() {}
 SubmitReceiptCallbackState::~SubmitReceiptCallbackState() {}
+
+CreateOrderFromReceiptCallbackState::CreateOrderFromReceiptCallbackState() {}
+CreateOrderFromReceiptCallbackState::~CreateOrderFromReceiptCallbackState() {}
 
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,

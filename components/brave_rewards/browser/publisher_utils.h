@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_UTILS_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_rewards {
@@ -17,11 +17,11 @@ namespace brave_rewards {
 // the publisher ID cannot be statically determined from the URL. For example,
 // a `nullopt` will be returned if the URL points to a configured social media
 // platform where multiple publishers can be registered.
-absl::optional<std::string> GetPublisherIdFromURL(const GURL& url);
+std::optional<std::string> GetPublisherIdFromURL(const GURL& url);
 
 // Returns the publisher domain for the specified URL. For social media
 // platforms, the site domain will be returned (e.g "twitter.com").
-absl::optional<std::string> GetPublisherDomainFromURL(const GURL& url);
+std::optional<std::string> GetPublisherDomainFromURL(const GURL& url);
 
 // Returns a value indicating whether content scripting is used to measure AC.
 bool IsAutoContributeHandledByContentScript(const GURL& url);

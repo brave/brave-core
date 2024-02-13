@@ -10,8 +10,6 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
-using std::placeholders::_1;
-
 namespace {
 
 const char kTableName[] = "server_publisher_banner";
@@ -37,7 +35,7 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
   // or if banner data is empty.
   mojom::PublisherBanner default_banner;
   if (!server_info.banner || server_info.banner->Equals(default_banner)) {
-    BLOG(1, "Empty publisher banner data, skipping insert");
+    engine_->Log(FROM_HERE) << "Empty publisher banner data, skipping insert";
     return;
   }
 
@@ -84,8 +82,8 @@ void DatabaseServerPublisherBanner::GetRecord(
     const std::string& publisher_key,
     GetPublisherBannerCallback callback) {
   if (publisher_key.empty()) {
-    BLOG(1, "Publisher key is empty");
-    callback(nullptr);
+    engine_->Log(FROM_HERE) << "Publisher key is empty";
+    std::move(callback).Run(nullptr);
     return;
   }
   auto transaction = mojom::DBTransaction::New();
@@ -122,20 +120,20 @@ void DatabaseServerPublisherBanner::OnGetRecord(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is wrong");
-    callback(nullptr);
+    engine_->LogError(FROM_HERE) << "Response is wrong";
+    std::move(callback).Run(nullptr);
     return;
   }
 
   if (response->result->get_records().empty()) {
-    BLOG(1, "Server publisher banner not found");
-    callback(nullptr);
+    engine_->Log(FROM_HERE) << "Server publisher banner not found";
+    std::move(callback).Run(nullptr);
     return;
   }
 
   if (response->result->get_records().size() > 1) {
-    BLOG(1, "Record size is not correct: "
-                << response->result->get_records().size());
+    engine_->Log(FROM_HERE) << "Record size is not correct: "
+                            << response->result->get_records().size();
   }
 
   auto* record = response->result->get_records()[0].get();
@@ -149,23 +147,23 @@ void DatabaseServerPublisherBanner::OnGetRecord(
   banner.web3_url = GetStringColumn(record, 4);
 
   // Get links
-  auto links_callback =
-      std::bind(&DatabaseServerPublisherBanner::OnGetRecordLinks, this, _1,
-                banner, callback);
-  links_.GetRecord(publisher_key, links_callback);
+  links_.GetRecord(
+      publisher_key,
+      base::BindOnce(&DatabaseServerPublisherBanner::OnGetRecordLinks,
+                     weak_factory_.GetWeakPtr(), banner, std::move(callback)));
 }
 
 void DatabaseServerPublisherBanner::OnGetRecordLinks(
-    const std::map<std::string, std::string>& links,
     const mojom::PublisherBanner& banner,
-    GetPublisherBannerCallback callback) {
+    GetPublisherBannerCallback callback,
+    const std::map<std::string, std::string>& links) {
   auto banner_pointer = mojom::PublisherBanner::New(banner);
 
   for (const auto& link : links) {
     banner_pointer->links.insert(link);
   }
 
-  callback(std::move(banner_pointer));
+  std::move(callback).Run(std::move(banner_pointer));
 }
 
 }  // namespace database

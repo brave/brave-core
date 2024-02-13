@@ -6,18 +6,19 @@
 package org.chromium.chrome.browser.playlist.settings;
 
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.preference.Preference;
 
+import com.brave.playlist.local_database.PlaylistRepository;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -27,18 +28,8 @@ import org.chromium.playlist.mojom.PlaylistService;
 
 public class BravePlaylistPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
-    private static final String PREF_PLAYLIST_PREFERENCE_SCREEN = "playlist_preference_screen";
-    public static final String PREF_ENABLE_PLAYLIST = "enable_playlist";
-    public static final String PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE = "auto_save_media_for_offline";
-    private static final String PREF_REMEMBER_FILE_PLAYBACK_POSITION =
-            "remember_file_playback_position";
-    private static final String PREF_REMEMBER_LIST_PLAYBACK_POSITION =
-            "remember_list_playback_position";
-    private static final String PREF_CONTINUOUS_LISTENING = "continuous_listening";
-    private static final String PREF_RESET_PLAYLIST = "reset_playlist";
-
     private ChromeSwitchPreference mEnablePlaylistSwitch;
-    private Preference mAutoSaveMediaForOfflinePreference;
+    private ChromeSwitchPreference mAddToPlaylistButtonSwitch;
     private ChromeSwitchPreference mRememberFilePlaybackPositionSwitch;
     private ChromeSwitchPreference mRememberListPlaybackPositionSwitch;
     private ChromeSwitchPreference mContinuousListeningSwitch;
@@ -49,35 +40,56 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mEnablePlaylistSwitch = (ChromeSwitchPreference) findPreference(PREF_ENABLE_PLAYLIST);
+        mEnablePlaylistSwitch =
+                (ChromeSwitchPreference) findPreference(BravePreferenceKeys.PREF_ENABLE_PLAYLIST);
         mEnablePlaylistSwitch.setOnPreferenceChangeListener(this);
 
-        mAutoSaveMediaForOfflinePreference =
-                (Preference) findPreference(PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
-        updateAutoSaveMedia();
+        mAddToPlaylistButtonSwitch =
+                (ChromeSwitchPreference)
+                        findPreference(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON);
+        mAddToPlaylistButtonSwitch.setOnPreferenceChangeListener(this);
 
         mRememberFilePlaybackPositionSwitch =
-                (ChromeSwitchPreference) findPreference(PREF_REMEMBER_FILE_PLAYBACK_POSITION);
+                (ChromeSwitchPreference)
+                        findPreference(BravePreferenceKeys.PREF_REMEMBER_FILE_PLAYBACK_POSITION);
         mRememberListPlaybackPositionSwitch =
-                (ChromeSwitchPreference) findPreference(PREF_REMEMBER_LIST_PLAYBACK_POSITION);
+                (ChromeSwitchPreference)
+                        findPreference(BravePreferenceKeys.PREF_REMEMBER_LIST_PLAYBACK_POSITION);
         mContinuousListeningSwitch =
-                (ChromeSwitchPreference) findPreference(PREF_CONTINUOUS_LISTENING);
+                (ChromeSwitchPreference)
+                        findPreference(BravePreferenceKeys.PREF_CONTINUOUS_LISTENING);
 
-        mResetPlaylist = (BravePlaylistResetPreference) findPreference(PREF_RESET_PLAYLIST);
-        mResetPlaylist.setOnPreferenceClickListener(preference -> {
-            if (mPlaylistService != null) {
-                PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
-                    mPlaylistService.resetAll();
-                    PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
-                    getActivity().runOnUiThread(
-                            (Runnable) () -> BraveRelaunchUtils.askForRelaunch(getActivity()));
+        mResetPlaylist =
+                (BravePlaylistResetPreference)
+                        findPreference(BravePreferenceKeys.PREF_RESET_PLAYLIST);
+        mResetPlaylist.setOnPreferenceClickListener(
+                preference -> {
+                    if (mPlaylistService != null) {
+                        PostTask.postTask(
+                                TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                () -> {
+                                    mPlaylistService.clearAllQueries();
+                                    mPlaylistService.resetAll();
+                                    PlaylistRepository playlistRepository =
+                                            new PlaylistRepository(getActivity());
+                                    playlistRepository.deleteAllLastPlayedPosition();
+                                    playlistRepository.deleteAllHlsContentQueueModel();
+                                    PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
+                                    getActivity()
+                                            .runOnUiThread(
+                                                    (Runnable)
+                                                            () ->
+                                                                    BraveRelaunchUtils
+                                                                            .askForRelaunch(
+                                                                                    getActivity()));
+                                });
+                    }
+                    return true;
                 });
-            }
-            return true;
-        });
 
         updatePlaylistSettingsState(
-                SharedPreferencesManager.getInstance().readBoolean(PREF_ENABLE_PLAYLIST, true));
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true));
     }
 
     @Override
@@ -110,36 +122,9 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        new Handler().post(() -> { updateAutoSaveMedia(); });
-    }
-
-    private void updateAutoSaveMedia() {
-        if (mAutoSaveMediaForOfflinePreference == null) {
-            return;
-        }
-        switch (SharedPreferencesManager.getInstance().readInt(
-                PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
-            case 0:
-                mAutoSaveMediaForOfflinePreference.setSummary(
-                        getActivity().getResources().getString(R.string.on_text));
-                break;
-            case 1:
-                mAutoSaveMediaForOfflinePreference.setSummary(
-                        getActivity().getResources().getString(R.string.off_text));
-                break;
-            case 2:
-                mAutoSaveMediaForOfflinePreference.setSummary(
-                        getActivity().getResources().getString(R.string.wifi_only_text));
-                break;
-        }
-    }
-
-    @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
-        if (PREF_ENABLE_PLAYLIST.equals(key)) {
+        if (BravePreferenceKeys.PREF_ENABLE_PLAYLIST.equals(key)) {
             updatePlaylistSettingsState((boolean) newValue);
         }
 
@@ -148,8 +133,8 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
 
     private void updatePlaylistSettingsState(boolean isPlaylistEnabled) {
         if (isPlaylistEnabled) {
-            if (mAutoSaveMediaForOfflinePreference != null) {
-                getPreferenceScreen().addPreference(mAutoSaveMediaForOfflinePreference);
+            if (mAddToPlaylistButtonSwitch != null) {
+                getPreferenceScreen().addPreference(mAddToPlaylistButtonSwitch);
             }
             if (mRememberFilePlaybackPositionSwitch != null) {
                 getPreferenceScreen().addPreference(mRememberFilePlaybackPositionSwitch);
@@ -164,8 +149,8 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                 getPreferenceScreen().addPreference(mResetPlaylist);
             }
         } else {
-            if (mAutoSaveMediaForOfflinePreference != null) {
-                getPreferenceScreen().removePreference(mAutoSaveMediaForOfflinePreference);
+            if (mAddToPlaylistButtonSwitch != null) {
+                getPreferenceScreen().removePreference(mAddToPlaylistButtonSwitch);
             }
             if (mRememberFilePlaybackPositionSwitch != null) {
                 getPreferenceScreen().removePreference(mRememberFilePlaybackPositionSwitch);

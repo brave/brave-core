@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #import "rewards_client_ios.h"
+
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_database.mojom.h"
 #import "rewards_client_bridge.h"
@@ -41,6 +42,12 @@ void RewardsClientIOS::LoadPublisherState(LoadPublisherStateCallback callback) {
 void RewardsClientIOS::LoadURL(brave_rewards::mojom::UrlRequestPtr request,
                                LoadURLCallback callback) {
   [bridge_ loadUrl:std::move(request) callback:std::move(callback)];
+}
+void RewardsClientIOS::GetSPLTokenAccountBalance(
+    const std::string& solana_address,
+    const std::string& token_mint_address,
+    GetSPLTokenAccountBalanceCallback callback) {
+  std::move(callback).Run(nullptr);
 }
 void RewardsClientIOS::Log(const std::string& file,
                            int32_t line,

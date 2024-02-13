@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/credentials/brave_vpn_wireguard_profile_credentials.h"
 
+#include <optional>
 #include <string>
 
 #include "base/json/json_reader.h"
@@ -38,73 +39,73 @@ WireguardProfileCredentials::WireguardProfileCredentials(
 
 WireguardProfileCredentials::~WireguardProfileCredentials() = default;
 
-absl::optional<WireguardProfileCredentials>
+std::optional<WireguardProfileCredentials>
 WireguardProfileCredentials::FromServerResponse(
     const std::string& server_response,
     const std::string& client_private_key) {
   if (server_response.empty() || client_private_key.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
-  absl::optional<base::Value> value = base::JSONReader::Read(server_response);
+  std::optional<base::Value> value = base::JSONReader::Read(server_response);
   if (!value.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* server_public_key =
       value->GetDict().FindStringByDottedPath("server-public-key");
   if (!server_public_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* mapped_ip4_address =
       value->GetDict().FindStringByDottedPath("mapped-ipv4-address");
   if (!mapped_ip4_address) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* client_id = value->GetDict().FindStringByDottedPath("client-id");
   if (!client_id) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* api_auth_token =
       value->GetDict().FindStringByDottedPath("api-auth-token");
   if (!api_auth_token) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return WireguardProfileCredentials(*server_public_key, client_private_key,
                                      *mapped_ip4_address, *client_id,
                                      *api_auth_token);
 }
 
-absl::optional<WireguardProfileCredentials>
+std::optional<WireguardProfileCredentials>
 WireguardProfileCredentials::FromString(const std::string& credentials) {
   if (credentials.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
-  absl::optional<base::Value> value = base::JSONReader::Read(credentials);
+  std::optional<base::Value> value = base::JSONReader::Read(credentials);
   if (!value.has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* server_public_key =
       value->GetDict().FindStringByDottedPath("server-public-key");
   if (!server_public_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* client_private_key =
       value->GetDict().FindStringByDottedPath("client-private-key");
   if (!client_private_key) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* mapped_ip4_address =
       value->GetDict().FindStringByDottedPath("mapped-ipv4-address");
   if (!mapped_ip4_address) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* client_id = value->GetDict().FindStringByDottedPath("client-id");
   if (!client_id) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   auto* api_auth_token =
       value->GetDict().FindStringByDottedPath("api-auth-token");
   if (!api_auth_token) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return WireguardProfileCredentials(*server_public_key, *client_private_key,
                                      *mapped_ip4_address, *client_id,
@@ -117,9 +118,9 @@ bool WireguardProfileCredentials::IsValid() const {
          !api_auth_token.empty();
 }
 
-absl::optional<std::string> WireguardProfileCredentials::ToString() const {
+std::optional<std::string> WireguardProfileCredentials::ToString() const {
   if (!IsValid()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::Value::Dict data;

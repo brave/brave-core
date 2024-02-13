@@ -31,11 +31,12 @@ class PostCardsTest : public testing::Test {
 };
 
 TEST_F(PostCardsTest, ServerOK) {
+  int status_code = 0;
+
   EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+      .WillRepeatedly([&](mojom::UrlRequestPtr request, auto callback) {
         auto response = mojom::UrlResponse::New();
-        response->status_code = 200;
+        response->status_code = status_code;
         response->url = request->url;
         response->body = R"({
              "CreatedByApplicationId": "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -90,14 +91,27 @@ TEST_F(PostCardsTest, ServerOK) {
         std::move(callback).Run(std::move(response));
       });
 
-  base::MockCallback<PostCardsCallback> callback;
-  EXPECT_CALL(callback,
-              Run(mojom::Result::OK,
-                  std::string("bd91a720-f3f9-42f8-b2f5-19548004f6a7")))
-      .Times(1);
-  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+  {
+    status_code = 200;
+    base::MockCallback<PostCardsCallback> callback;
+    EXPECT_CALL(callback,
+                Run(mojom::Result::OK,
+                    std::string("bd91a720-f3f9-42f8-b2f5-19548004f6a7")))
+        .Times(1);
+    card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+    task_environment_.RunUntilIdle();
+  }
 
-  task_environment_.RunUntilIdle();
+  {
+    status_code = 206;
+    base::MockCallback<PostCardsCallback> callback;
+    EXPECT_CALL(callback,
+                Run(mojom::Result::OK,
+                    std::string("bd91a720-f3f9-42f8-b2f5-19548004f6a7")))
+        .Times(1);
+    card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+    task_environment_.RunUntilIdle();
+  }
 }
 
 TEST_F(PostCardsTest, ServerError401) {

@@ -167,7 +167,7 @@ void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
 }
 
 bool RewardsTabHelper::BrowserHasWebContents(Browser* browser) {
-  return chrome::FindBrowserWithWebContents(&GetWebContents()) == browser;
+  return chrome::FindBrowserWithTab(&GetWebContents()) == browser;
 }
 #endif
 

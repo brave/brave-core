@@ -14,6 +14,7 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
@@ -75,12 +76,10 @@ void UnitTestBase::SetUp(const bool is_integration_test) {
 }
 
 AdsImpl& UnitTestBase::GetAds() const {
-  CHECK(is_integration_test_)
-      << "|GetAds| should only be called if |SetUp| is initialized "
-         "for integration testing";
+  CHECK(is_integration_test_) << "GetAds should only be called if SetUp is "
+                                 "initialized for integration testing";
 
   CHECK(ads_);
-
   return *ads_;
 }
 
@@ -88,10 +87,9 @@ bool UnitTestBase::CopyFileFromTestPathToTempPath(
     const std::string& from_path,
     const std::string& to_path) const {
   CHECK(setup_called_)
-      << "|CopyFileFromTestPathToTempPath| should be called after "
-         "|SetUp|";
+      << "CopyFileFromTestPathToTempPath should be called after SetUp";
 
-  const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
+  const base::FilePath from_test_path = TestDataPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   return base::CopyFile(from_test_path, to_temp_path);
@@ -106,10 +104,9 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
     const std::string& from_path,
     const std::string& to_path) const {
   CHECK(setup_called_)
-      << "|CopyDirectoryFromTestPathToTempPath| should be called after "
-         "|SetUp|";
+      << "CopyDirectoryFromTestPathToTempPath should be called after SetUp";
 
-  const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
+  const base::FilePath from_test_path = TestDataPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   return base::CopyDirectory(from_test_path, to_temp_path,
@@ -197,7 +194,9 @@ void UnitTestBase::MockAdsClient() {
 
   MockSave(ads_client_mock_);
   MockLoad(ads_client_mock_, temp_dir_);
-  MockLoadFileResource(ads_client_mock_, temp_dir_);
+
+  MockLoadComponentResource(ads_client_mock_, temp_dir_);
+
   MockLoadDataResource(ads_client_mock_);
 
   database_ = std::make_unique<Database>(
@@ -256,8 +255,8 @@ void UnitTestBase::SetUpTest() {
 
 void UnitTestBase::SetUpIntegrationTest() {
   CHECK(is_integration_test_)
-      << "|SetUpIntegrationTest| should only be called if |SetUp| is "
-         "initialized for integration testing";
+      << "SetUpIntegrationTest should only be called if SetUp is initialized "
+         "for integration testing";
 
   ads_ = std::make_unique<AdsImpl>(&ads_client_mock_);
 
@@ -278,8 +277,8 @@ void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
 
 void UnitTestBase::SetUpUnitTest() {
   CHECK(!is_integration_test_)
-      << "|SetUpUnitTest| should only be called if |SetUp| is not "
-         "initialized for integration testing";
+      << "SetUpUnitTest should only be called if SetUp is not initialized for "
+         "integration testing";
 
   global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
 
@@ -301,6 +300,8 @@ void UnitTestBase::SetUpUnitTest() {
       }));
 
   task_environment_.FastForwardUntilNoTasksRemain();
+
+  NotifyPendingAdsClientObservers();
 }
 
 }  // namespace brave_ads

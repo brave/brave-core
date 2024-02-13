@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
 namespace brave_ads {
 
@@ -94,8 +94,12 @@ void NewTabPageAdServing::GetEligibleAdsForUserModelCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  ServeAd(BuildNewTabPageAd(ChooseCreativeAd(creative_ads)),
-          std::move(callback));
+  const CreativeNewTabPageAdInfo creative_ad = ChooseCreativeAd(creative_ads);
+  BLOG(1, "Chosen eligible ad with creative instance id "
+              << creative_ad.creative_instance_id << " and a priority of "
+              << creative_ad.priority);
+
+  ServeAd(BuildNewTabPageAd(creative_ad), std::move(callback));
 }
 
 void NewTabPageAdServing::ServeAd(
@@ -123,7 +127,7 @@ void NewTabPageAdServing::FailedToServeAd(
     MaybeServeNewTabPageAdCallback callback) const {
   NotifyFailedToServeNewTabPageAd();
 
-  std::move(callback).Run(/*ad=*/absl::nullopt);
+  std::move(callback).Run(/*ad=*/std::nullopt);
 }
 
 void NewTabPageAdServing::NotifyOpportunityAroseToServeNewTabPageAd() const {

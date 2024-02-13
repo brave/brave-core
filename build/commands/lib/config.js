@@ -59,6 +59,27 @@ const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
+
+    // Show deprecation warning if any brave-related variable is found in .npmrc.
+    for (const key in NpmConfig) {
+      if (typeof key !== 'string') {
+        continue;
+      }
+      if (key.startsWith('bitflyer') ||
+          key.startsWith('brave') ||
+          key.startsWith('gemini') ||
+          key.startsWith('rewards') ||
+          key.startsWith('p3a') ||
+          key.startsWith('rbe') ||
+          key.startsWith('updater') ||
+          key.startsWith('zebpay')) {
+        Log.warn(
+          `Warning: found ${key} in .npmrc. Continued use of .npmrc for Brave-core configuration is highly discouraged and will soon be unsupported. Migrate all configuration to src/brave/.env immediately to avoid potential issues.`
+        )
+        break
+      }
+    }
+
     // Merge in config from `.env` file
     dotenv.config({ processEnv: NpmConfig, override: true })
     for (const [key, value] of Object.entries(NpmConfig)) {
@@ -100,13 +121,27 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
   }
 }
 
+const getBraveVersion = (ignorePatchVersionNumber) => {
+  const braveVersion = packageConfig(['version'])
+  if (!ignorePatchVersionNumber) {
+    return braveVersion
+  }
+
+  const braveVersionParts = braveVersion.split('.')
+  assert(braveVersionParts.length == 3)
+  braveVersionParts[2] = '0'
+  return braveVersionParts.join('.')
+}
+
 const Config = function () {
+  this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
   this.buildTarget = 'brave'
   this.rootDir = rootDir
   this.isUniversalBinary = false
+  this.isChromium = false
   this.scriptDir = path.join(this.rootDir, 'scripts')
   this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
@@ -179,7 +214,9 @@ const Config = function () {
   this.rewardsGrantDevEndpoint = getNPMConfig(['rewards_grant_dev_endpoint']) || ''
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
-  this.braveVersion = packageConfig(['version'])
+  this.ignorePatchVersionNumber = !this.isBraveReleaseBuild() && getNPMConfig(['ignore_patch_version_number'], !this.isCI)
+  this.braveVersion = getBraveVersion(this.ignorePatchVersionNumber)
+  this.braveIOSMarketingPatchVersion = getNPMConfig(['brave_ios_marketing_version_patch']) || ''
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
@@ -193,15 +230,12 @@ const Config = function () {
   this.channel = 'development'
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
-  this.gomaServerHost = getNPMConfig(['goma_server_host']) || ''
-  this.realGomaDir = process.env.GOMA_DIR || path.join(this.depotToolsDir, '.cipd_bin')
   this.rbeService = getNPMConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getNPMConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getNPMConfig(['rbe_tls_client_auth_key']) || ''
   // Make sure "src/" is a part of RBE "exec_root" to allow "src/" files as inputs.
   this.rbeExecRoot = this.rootDir
   this.realRewrapperDir = process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
-  this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
@@ -223,16 +257,14 @@ const Config = function () {
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
-  this.use_goma = getNPMConfig(['brave_use_goma']) || false
   this.useRemoteExec = getNPMConfig(['use_remoteexec']) || false
   this.offline = getNPMConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
   this.enable_dangling_raw_ptr_checks = false
-  this.useBraveHermeticToolchain =
-    this.gomaServerHost.endsWith('.brave.com') ||
-    this.rbeService.includes('.brave.com:') ||
-    this.rbeService.includes('.engflow.com:')
+  this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
+  this.brave_services_key_id = getNPMConfig(['brave_services_key_id']) || ''
+  this.service_key_aichat = getNPMConfig(['service_key_aichat']) || ''
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -398,7 +430,6 @@ Config.prototype.buildArgs = function () {
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
-    use_goma: this.use_goma,
     use_remoteexec: this.useRemoteExec,
     use_libfuzzer: this.use_libfuzzer,
     enable_updater: this.isOfficialBuild(),
@@ -407,15 +438,13 @@ Config.prototype.buildArgs = function () {
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
     enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
+    brave_services_key_id: this.brave_services_key_id,
+    service_key_aichat: this.service_key_aichat,
     ...this.extraGnArgs,
   }
 
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
-
-    // Use dummy LASTCHANGE. When the real LASTCHANGE is used, ~2300 targets
-    // are rebuilt with each version bump.
-    args.use_dummy_lastchange = true
 
     // Don't randomize mojom message ids. When randomization is enabled, all
     // Mojo targets are rebuilt (~23000) on each version bump.
@@ -423,11 +452,19 @@ Config.prototype.buildArgs = function () {
 
     if (process.platform === 'darwin' && args.is_official_build) {
       // Don't create dSYMs in non-true Release builds. dSYMs should be disabled
-      // in order to have relocatable compilation so Goma can share the cache
+      // in order to have relocatable compilation so RBE can share the cache
       // across multiple build directories. Enabled dSYMs enforce absolute
-      // paths, which makes Goma cache unusable.
+      // paths, which makes RBE cache unusable.
       args.enable_dsyms = false
     }
+  }
+
+  if (this.ignorePatchVersionNumber) {
+    assert(!this.isBraveReleaseBuild())
+
+    // Allow dummy LASTCHANGE to be set. When the real LASTCHANGE is used, ~2300
+    // targets are rebuilt with each version bump.
+    args.use_dummy_lastchange = getNPMConfig(['use_dummy_lastchange'], true)
   }
 
   if (this.shouldSign()) {
@@ -448,10 +485,12 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (process.platform === 'win32' && this.build_omaha) {
+  if (this.build_omaha) {
     args.build_omaha = this.build_omaha
     args.tag_ap = this.tag_ap
-    args.tag_installdataindex = this.tag_installdataindex
+    if (this.tag_installdataindex) {
+      args.tag_installdataindex = this.tag_installdataindex
+    }
   }
 
   if ((process.platform === 'win32' || process.platform === 'darwin') && this.build_delta_installer) {
@@ -479,11 +518,7 @@ Config.prototype.buildArgs = function () {
     args.enable_precompiled_headers = false
   }
 
-  if (this.use_goma) {
-    // set goma_dir to the redirect cc output dir which then calls gomacc
-    // through env.CC_WRAPPER
-    args.goma_dir = path.join(this.nativeRedirectCCDir)
-  } else if (this.useRemoteExec) {
+  if (this.useRemoteExec) {
     args.rbe_exec_root = this.rbeExecRoot
     args.rbe_bin_dir = path.join(this.nativeRedirectCCDir)
   } else {
@@ -510,10 +545,6 @@ Config.prototype.buildArgs = function () {
       // https://github.com/brave/brave-browser/issues/1024#issuecomment-1175397914
       args.use_vaapi = true
 
-    }
-    if (this.targetArch === 'arm64') {
-      // We don't yet support Widevine on Arm64 Linux.
-      args.enable_widevine = false
     }
   }
 
@@ -597,6 +628,9 @@ Config.prototype.buildArgs = function () {
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
+    if (this.braveIOSMarketingPatchVersion != '') {
+      args.brave_ios_marketing_version_patch = this.braveIOSMarketingPatchVersion
+    }
     args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
@@ -612,8 +646,8 @@ Config.prototype.buildArgs = function () {
       // When building locally iOS needs dSYMs in order for Xcode to map source
       // files correctly since we are using a framework build
       args.enable_dsyms = true
-      if (args.use_goma || args.use_remoteexec) {
-        // Goma expects relative paths in dSYMs
+      if (args.use_remoteexec) {
+        // RBE expects relative paths in dSYMs
         args.strip_absolute_paths_from_debug_symbols = true
       }
     }
@@ -650,7 +684,6 @@ Config.prototype.buildArgs = function () {
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
-    delete args.brave_stats_api_key
     delete args.brave_stats_updater_url
     delete args.bitflyer_production_client_id
     delete args.bitflyer_production_client_secret
@@ -691,7 +724,6 @@ Config.prototype.buildArgs = function () {
     delete args.webcompat_report_api_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
-    delete args.brave_variations_server_url
     delete args.enable_dangling_raw_ptr_checks
   }
 
@@ -819,20 +851,11 @@ Config.prototype.update = function (options) {
     this.is_asan = false
   }
 
-  if (options.use_goma !== undefined) {
-    this.use_goma = options.use_goma
-  }
-
   if (options.use_remoteexec !== undefined) {
     this.useRemoteExec = options.use_remoteexec
   }
 
-  if (options.offline || options.goma_offline) {
-    if (options.goma_offline) {
-      Log.warn(
-        '--goma_offline is deprecated and will be removed, please use --offline'
-      )
-    }
+  if (options.offline) {
     this.offline = true
   }
 
@@ -1065,9 +1088,19 @@ Config.prototype.update = function (options) {
     this.channel = ''
   }
 
-  if (process.platform === 'win32' && options.build_omaha) {
+  if (options.build_omaha) {
+    assert(process.platform === 'win32')
     this.build_omaha = true
+    assert(options.tag_ap, "--tag_ap is required for --build_omaha")
+  }
+
+  if (options.tag_ap) {
+    assert(options.build_omaha, "--tag_ap requires --build_omaha")
     this.tag_ap = options.tag_ap
+  }
+
+  if (options.tag_installdataindex) {
+    assert(options.build_omaha, "--tag_installdataindex requires --build_omaha")
     this.tag_installdataindex = options.tag_installdataindex
   }
 
@@ -1125,9 +1158,9 @@ Config.prototype.update = function (options) {
     })
   }
 
-  if (this.offline || (!this.use_goma && !this.useRemoteExec)) {
-    // Pass '--offline' also when '--use_goma' is not set to disable goma detect in
-    // autoninja when doing local builds.
+  if (this.offline || !this.useRemoteExec) {
+    // Pass '--offline' also when '--use_remoteexec' is not set to disable RBE
+    // detect in autoninja when doing local builds.
     this.extraNinjaOpts.push('--offline')
   }
 
@@ -1166,7 +1199,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
                                            'rust-toolchain', 'bin'), true)
     env = this.addPathToEnv(env, this.depotToolsDir, true)
     const pythonPaths = [
-      ['brave', 'chromium_src', 'python_modules'],
       ['brave', 'script'],
       ['tools', 'grit', 'grit', 'extern'],
       ['brave', 'vendor', 'requests'],
@@ -1179,6 +1211,13 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env = this.addPythonPathToEnv(env, path.join(this.srcDir, ...p))
     })
     env.PYTHONUNBUFFERED = '1'
+    if (process.platform === 'win32') {
+      // UTF-8 is default on Linux/Mac, but on Windows CP1252 is used in most
+      // cases. This var makes Python use UTF-8 if encoding is not set
+      // explicitly in calls such as `open()`.
+      // https://peps.python.org/pep-0540/
+      env.PYTHONUTF8 = '1'
+    }
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts
     env.RUSTUP_HOME = path.join(this.srcDir, 'third_party', 'rust-toolchain')
     // Fix `gclient runhooks` - broken since depot_tools a7b20b34f85432b5958963b75edcedfef9cf01fd
@@ -1203,7 +1242,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
-    if ((!this.use_goma && !this.useRemoteExec) && this.sccache) {
+    if (!this.useRemoteExec && this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))
       if (path.basename(this.sccache) === 'ccache') {
@@ -1214,18 +1253,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
-    if (this.gomaServerHost) {
-      env.GOMA_SERVER_HOST = this.gomaServerHost
-
-      // Disable HTTP2 proxy. According to EngFlow this has significant
-      // performance impact.
-      env.GOMACTL_USE_PROXY = 0
-
-      // Upload stats about Goma actions to the Goma backend.
-      env.GOMA_PROVIDE_INFO = true
-    }
-
     if (this.rbeService) {
+      // These env vars are required during `sync` stage.
       env.RBE_service = env.RBE_service || this.rbeService
       if (this.rbeTlsClientAuthCert && this.rbeTlsClientAuthKey) {
         env.RBE_tls_client_auth_cert =
@@ -1238,11 +1267,20 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
-    if (this.gomaServerHost || this.rbeService) {
-      // Vars used by autoninja to generate -j value when goma/rbe is enabled,
-      // adjusted for Brave-specific setup.
+    if (this.useRemoteExec) {
+      // These env vars are required during `build` stage.
+
+      // Autoninja generates -j value when RBE is enabled, adjust limits for
+      // Brave-specific setup.
       env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
       env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
+
+      if (this.offline) {
+        // Use all local resources in offline mode. RBE_local_resource_fraction
+        // can be set to a lower value for racing mode, but in offline mode we
+        // want to use all cores.
+        env.RBE_local_resource_fraction = '1.0'
+      }
     }
 
     if (this.isCI) {
@@ -1288,6 +1326,9 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     }
     if (this.targetEnvironment) {
       buildConfigDir = buildConfigDir + "_" + this.targetEnvironment
+    }
+    if (this.isChromium) {
+      buildConfigDir = buildConfigDir + "_chromium"
     }
 
     return path.join(baseDir, buildConfigDir)

@@ -8,7 +8,6 @@
 
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 
-class ChromeBrowserState;
 class PrefService;
 
 namespace p3a {
@@ -18,9 +17,8 @@ class P3AService;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BraveP3AUtils (Private)
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState
-                          localState:(PrefService*)localState
-                          p3aService:(scoped_refptr<p3a::P3AService>)p3aService;
+- (instancetype)initWithLocalState:(PrefService*)localState
+                        p3aService:(scoped_refptr<p3a::P3AService>)p3aService;
 @end
 
 NS_ASSUME_NONNULL_END

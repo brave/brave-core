@@ -1,0 +1,35 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("ui") {
+  sources = [
+    "chrome_webview.h",
+    "chrome_webview.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//components/profile_metrics",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/components/webui:url_constants",
+    "//ios/web/js_messaging:js_messaging",
+    "//ios/web/public/thread",
+    "//ios/web/public/webui",
+    "//ios/web/web_state",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/webui",
+    "//ui/base",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "WebKit.framework",
+  ]
+}

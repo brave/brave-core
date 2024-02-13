@@ -5,21 +5,22 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
 namespace brave_ads::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::VerificationSignature> Create(
+std::optional<challenge_bypass_ristretto::VerificationSignature> Create(
     const std::string& verification_signature_base64) {
   if (verification_signature_base64.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(
       challenge_bypass_ristretto::VerificationSignature::decode_base64(
-          verification_signature_base64));
+          base::as_bytes(base::make_span(verification_signature_base64))));
 }
 
 }  // namespace
@@ -64,9 +65,9 @@ VerificationSignature VerificationSignature::DecodeBase64(
   return VerificationSignature(verification_signature_base64);
 }
 
-absl::optional<std::string> VerificationSignature::EncodeBase64() const {
+std::optional<std::string> VerificationSignature::EncodeBase64() const {
   if (!verification_signature_ || !has_value()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ValueOrLogError(verification_signature_->encode_base64());

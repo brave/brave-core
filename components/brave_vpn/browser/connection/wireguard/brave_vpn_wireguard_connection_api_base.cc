@@ -49,6 +49,10 @@ void BraveVPNWireguardConnectionAPIBase::RequestNewProfileCredentials(
 }
 
 void BraveVPNWireguardConnectionAPIBase::Connect() {
+  if (ScheduleConnectRequestIfNeeded()) {
+    return;
+  }
+
   VLOG(2) << __func__ << " : start connecting!";
   SetLastConnectionError(std::string());
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);

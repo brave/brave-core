@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_PUBLIC_KEY_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_PUBLIC_KEY_H_
 
+#include <optional>
 #include <ostream>
 #include <string>
 
 #include "base/check.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::cbr {
 
-// A |PublicKey| is a commitment by the server to a particular |SigningKey|.
+// A `PublicKey` is a commitment by the server to a particular `SigningKey`.
 
 class PublicKey {
  public:
@@ -47,10 +47,10 @@ class PublicKey {
   }
 
   static PublicKey DecodeBase64(const std::string& public_key_base64);
-  absl::optional<std::string> EncodeBase64() const;
+  std::optional<std::string> EncodeBase64() const;
 
  private:
-  absl::optional<challenge_bypass_ristretto::PublicKey> public_key_;
+  std::optional<challenge_bypass_ristretto::PublicKey> public_key_;
 };
 
 std::ostream& operator<<(std::ostream& os, const PublicKey& public_key);

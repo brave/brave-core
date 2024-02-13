@@ -6,11 +6,14 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_H_
 
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
@@ -32,10 +35,10 @@ class EngineConsumer {
 
   using ConversationHistory = std::vector<mojom::ConversationTurn>;
 
-  EngineConsumer() = default;
+  EngineConsumer();
   EngineConsumer(const EngineConsumer&) = delete;
   EngineConsumer& operator=(const EngineConsumer&) = delete;
-  virtual ~EngineConsumer() = default;
+  virtual ~EngineConsumer();
 
   virtual void GenerateQuestionSuggestions(
       const bool& is_video,
@@ -45,6 +48,7 @@ class EngineConsumer {
   virtual void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
+      std::optional<std::string> selected_text,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
       GenerationDataCallback data_received_callback,
@@ -56,6 +60,20 @@ class EngineConsumer {
   virtual void SanitizeInput(std::string& input) = 0;
 
   virtual void ClearAllQueries() = 0;
+
+  void SetAPIForTesting(
+      std::unique_ptr<RemoteCompletionClient> api_for_testing) {
+    api_ = std::move(api_for_testing);
+  }
+  RemoteCompletionClient* GetAPIForTesting() { return api_.get(); }
+
+  void SetMaxPageContentLengthForTesting(int max_page_content_length) {
+    max_page_content_length_ = max_page_content_length;
+  }
+
+ protected:
+  std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
+  int max_page_content_length_ = 0;
 };
 
 }  // namespace ai_chat

@@ -11,7 +11,6 @@
 namespace blink {
 namespace features {
 
-BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kAllowCertainClientHints);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kFileSystemAccessAPI);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveWebBluetoothAPI);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveWebSerialAPI);
@@ -22,6 +21,10 @@ BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveBlockScreenFingerprinting);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveGlobalPrivacyControl);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveRoundTimeStamps);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kRestrictEventSourcePool);
+
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kMiddleButtonClickAutoscroll);
+#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 
 // Chromium used this function to control Prerender2 feature, but then the
 // feature was permanently enabled and the function was removed. We still want

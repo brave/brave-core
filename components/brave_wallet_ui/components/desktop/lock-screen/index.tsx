@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { useDispatch } from 'react-redux'
 
 import Button from '@brave/leo/react/button'
 
@@ -16,14 +15,12 @@ import {
 import { WalletRoutes } from '../../../constants/types'
 
 // Utils
+import { loadTimeData } from '../../../../common/loadTimeData'
 import { getLocale } from '../../../../common/locale'
 import { openWalletRouteTab } from '../../../utils/routes-utils'
-import { UISelectors, WalletSelectors } from '../../../common/selectors'
-import { WalletActions } from '../../../common/actions'
-import {
-  useSafeUISelector,
-  useSafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { useUnlockWalletMutation } from '../../../common/slices/api.slice'
 
 // Components
 import { PasswordInput } from '../../shared/password-input/password-input-v2'
@@ -42,35 +39,39 @@ import { VerticalSpace, Row } from '../../shared/style'
 
 export const LockScreen = () => {
   // redux
-  const dispatch = useDispatch()
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const hasIncorrectPassword = useSafeWalletSelector(
-    WalletSelectors.hasIncorrectPassword
-  )
 
   // routing
   const history = useHistory()
 
   // state
   const [password, setPassword] = React.useState('')
+  const [hasIncorrectPassword, setHasIncorrectPassword] = React.useState(false)
+
+  // mutations
+  const [attemptUnlockWallet] = useUnlockWalletMutation()
 
   // computed
   const disabled = password === ''
 
   // methods
-  const unlockWallet = React.useCallback(() => {
-    dispatch(WalletActions.unlockWallet({ password: password }))
+  const unlockWallet = React.useCallback(async () => {
+    const success = await attemptUnlockWallet(password).unwrap()
     setPassword('')
-    const sessionRoute = window.localStorage.getItem(
-      LOCAL_STORAGE_KEYS.SESSION_ROUTE
-    )
-    history.push(sessionRoute || WalletRoutes.PortfolioAssets)
-  }, [password])
+    if (success) {
+      const sessionRoute = window.localStorage.getItem(
+        LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE
+      )
+      history.push(sessionRoute || WalletRoutes.PortfolioAssets)
+    } else {
+      setHasIncorrectPassword(true)
+    }
+  }, [password, attemptUnlockWallet])
 
   const handleKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
+    async (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter' && !disabled) {
-        unlockWallet()
+        await unlockWallet()
       }
     },
     [unlockWallet, disabled]
@@ -82,7 +83,7 @@ export const LockScreen = () => {
 
       // clear error
       if (hasIncorrectPassword) {
-        dispatch(WalletActions.hasIncorrectPassword(false))
+        setHasIncorrectPassword(false)
       }
     },
     [hasIncorrectPassword]
@@ -95,6 +96,8 @@ export const LockScreen = () => {
       history.push(WalletRoutes.Restore)
     }
   }, [isPanel])
+
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   // render
   return (
@@ -135,12 +138,14 @@ export const LockScreen = () => {
         >
           {getLocale('braveWalletLockScreenButton')}
         </UnlockButton>
-        <Button
-          onClick={onShowRestore}
-          kind='plain'
-        >
-          {getLocale('braveWalletWelcomeRestoreButton')}
-        </Button>
+        {!isAndroid && (
+          <Button
+            onClick={onShowRestore}
+            kind='plain'
+          >
+            {getLocale('braveWalletWelcomeRestoreButton')}
+          </Button>
+        )}
       </InputColumn>
     </StyledWrapper>
   )

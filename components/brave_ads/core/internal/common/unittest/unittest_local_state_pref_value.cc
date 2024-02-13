@@ -66,7 +66,8 @@ void SetLocalStateListPrefValue(const std::string& path,
   SetLocalStatePrefValue(path, base::Value(std::move(value)));
 }
 
-void SetLocalStateTimePrefValue(const std::string& path, base::Time value) {
+void SetLocalStateTimePrefValue(const std::string& path,
+                                const base::Time value) {
   SetLocalStatePrefValue(path, base::TimeToValue(value));
 }
 

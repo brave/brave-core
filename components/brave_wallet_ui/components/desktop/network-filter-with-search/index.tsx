@@ -27,6 +27,8 @@ interface Props {
   searchAction?: (event: any) => void | undefined
   searchAutoFocus?: boolean
   searchValue?: string
+  networkSelectorDisabled?: boolean
+  networkListSubset?: BraveWallet.NetworkInfo[]
 }
 
 export const NetworkFilterWithSearch = (props: Props) => {
@@ -38,7 +40,9 @@ export const NetworkFilterWithSearch = (props: Props) => {
     searchPlaceholder,
     searchAction,
     searchAutoFocus,
-    searchValue
+    searchValue,
+    networkSelectorDisabled,
+    networkListSubset
   } = props
 
   return (
@@ -49,6 +53,7 @@ export const NetworkFilterWithSearch = (props: Props) => {
         autoFocus={searchAutoFocus}
         value={searchValue}
         useWithFilter={true}
+        isV2={true}
       />
       <HorizontalDivider />
       <SelectNetworkDropdown
@@ -58,6 +63,9 @@ export const NetworkFilterWithSearch = (props: Props) => {
         showNetworkDropDown={showNetworkDropDown}
         useWithSearch={true}
         customNetwork={AllNetworksOption}
+        networkListSubset={networkListSubset}
+        disabled={networkSelectorDisabled}
+        reduceDisplayName={true}
       />
     </StyledWrapper>
   )

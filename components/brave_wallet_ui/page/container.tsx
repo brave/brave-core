@@ -7,13 +7,15 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
+import ProgressRing from '@brave/leo/react/progressRing'
+
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'
-import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import {
   getInitialSessionRoute,
   isPersistableSessionRoute
 } from '../utils/routes-utils'
+import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
@@ -34,10 +36,12 @@ import { useLocationPathName } from '../common/hooks/use-pathname'
 
 // style
 import 'emptykit.css'
-import { SimplePageWrapper } from './screens/page-screen.styles'
+import {
+  FullScreenWrapper,
+  SimplePageWrapper
+} from './screens/page-screen.styles'
 
 // components
-import { CryptoView } from '../components/desktop/views/crypto/index'
 import { LockScreen } from '../components/desktop/lock-screen/index'
 import {
   WalletPageLayout //
@@ -45,26 +49,18 @@ import {
 import {
   WalletSubViewLayout //
 } from '../components/desktop/wallet-sub-view-layout/index'
-import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
-import {
-  BackupWalletRoutes //
-} from './screens/backup-wallet/backup-wallet.routes'
-import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
-import {
-  OnboardingSuccess //
-} from './screens/onboarding/onboarding-success/onboarding-success'
-import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
-import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
-import { Swap } from './screens/swap/swap'
-import { SendScreen } from './screens/send/send_screen/send_screen'
 import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
+import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import {
   WalletPageWrapper //
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import {
-  PageTitleHeader //
-} from '../components/desktop/card-headers/page-title-header'
+  ProtectedRoute //
+} from '../components/shared/protected-routing/protected-route'
+import { UnlockedWalletRoutes } from './router/unlocked_wallet_routes'
+import { Swap } from './screens/swap/swap'
+import { SendScreen } from './screens/send/send_screen/send_screen'
 
 const initialSessionRoute = getInitialSessionRoute()
 
@@ -94,6 +90,11 @@ export const Container = () => {
 
   // computed
   const walletNotYetCreated = !isWalletCreated || setupStillInProgress
+  const defaultRedirect = walletNotYetCreated
+    ? WalletRoutes.OnboardingWelcome
+    : isWalletLocked
+    ? WalletRoutes.Unlock
+    : sessionRoute || WalletRoutes.PortfolioAssets
 
   // effects
   React.useEffect(() => {
@@ -104,12 +105,11 @@ export const Container = () => {
     // so that we can return to that page after unlock
     if (isPersistableSessionRoute(walletLocation)) {
       window.localStorage.setItem(
-        LOCAL_STORAGE_KEYS.SESSION_ROUTE,
+        LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE,
         walletLocation
       )
       setSessionRoute(walletLocation)
     }
-
     // clean recovery phrase if not backing up or onboarding on route change
     if (
       mnemonic &&
@@ -122,131 +122,92 @@ export const Container = () => {
 
   // render
   if (!hasInitialized) {
-    return <Skeleton />
+    return (
+      <FullScreenWrapper>
+        <ProgressRing mode='indeterminate' />
+      </FullScreenWrapper>
+    )
   }
 
   return (
-    <>
-      <Switch>
-        {walletNotYetCreated ? (
-          <WalletPageLayout>
-            <WalletSubViewLayout>
-              <OnboardingRoutes />
-            </WalletSubViewLayout>
-          </WalletPageLayout>
-        ) : (
-          // Post-onboarding flows
-          <Switch>
-            <Route
-              path={WalletRoutes.OnboardingComplete}
-              exact
-            >
-              <WalletPageLayout>
-                <WalletSubViewLayout>
-                  <OnboardingSuccess />
-                </WalletSubViewLayout>
-              </WalletPageLayout>
-            </Route>
+    <Switch>
+      <ProtectedRoute
+        path={WalletRoutes.Onboarding}
+        requirement={walletNotYetCreated}
+        redirectRoute={defaultRedirect}
+      >
+        <OnboardingRoutes />
+      </ProtectedRoute>
 
-            <Route
-              path={WalletRoutes.Restore}
-              exact={true}
-            >
-              <WalletPageLayout>
-                <WalletSubViewLayout>
-                  <SimplePageWrapper>
-                    <RestoreWallet />
-                  </SimplePageWrapper>
-                </WalletSubViewLayout>
-              </WalletPageLayout>
-            </Route>
+      {/* Post-onboarding flows */}
+      <Route
+        path={WalletRoutes.Restore}
+        exact={true}
+      >
+        <WalletPageLayout>
+          <WalletSubViewLayout>
+            <SimplePageWrapper>
+              <RestoreWallet />
+            </SimplePageWrapper>
+          </WalletSubViewLayout>
+        </WalletPageLayout>
+      </Route>
 
-            {isWalletLocked && (
-              <Route
-                path={WalletRoutes.Unlock}
-                exact={true}
-              >
-                <WalletPageWrapper
-                  wrapContentInBox={true}
-                  cardWidth={680}
-                  hideNav={true}
-                  hideHeaderMenu={true}
-                  noBorderRadius={true}
-                >
-                  <LockScreen />
-                </WalletPageWrapper>
-              </Route>
-            )}
+      <ProtectedRoute
+        path={WalletRoutes.Unlock}
+        exact={true}
+        requirement={isWalletLocked}
+        redirectRoute={defaultRedirect}
+      >
+        <WalletPageWrapper
+          wrapContentInBox={true}
+          hideNav={true}
+          hideHeaderMenu={true}
+          noBorderRadius={true}
+        >
+          <LockScreen />
+        </WalletPageWrapper>
+      </ProtectedRoute>
 
-            {!isWalletLocked && (
-              <Route path={WalletRoutes.Backup}>
-                <WalletPageLayout>
-                  <WalletSubViewLayout>
-                    <SimplePageWrapper>
-                      <BackupWalletRoutes />
-                    </SimplePageWrapper>
-                  </WalletSubViewLayout>
-                </WalletPageLayout>
-              </Route>
-            )}
+      <ProtectedRoute
+        path={WalletRoutes.Swap}
+        requirement={!isWalletLocked && !walletNotYetCreated}
+        redirectRoute={defaultRedirect}
+        exact={true}
+      >
+        <Swap />
+      </ProtectedRoute>
 
-            {!isWalletLocked && (
-              <Route path={WalletRoutes.FundWalletPageStart}>
-                <FundWalletScreen />
-              </Route>
-            )}
+      <ProtectedRoute
+        path={WalletRoutes.Send}
+        requirement={!isWalletLocked && !walletNotYetCreated}
+        redirectRoute={defaultRedirect}
+        exact={true}
+      >
+        <SendScreen />
+      </ProtectedRoute>
 
-            {!isWalletLocked && (
-              <Route path={WalletRoutes.DepositFundsPageStart}>
-                <DepositFundsScreen />
-              </Route>
-            )}
+      <ProtectedRoute
+        path={WalletRoutes.CryptoPage}
+        requirement={!isWalletLocked && !walletNotYetCreated}
+        redirectRoute={defaultRedirect}
+      >
+        <UnlockedWalletRoutes sessionRoute={sessionRoute} />
+      </ProtectedRoute>
 
-            {!isWalletLocked && (
-              <Route
-                path={WalletRoutes.Swap}
-                exact={true}
-              >
-                <WalletPageWrapper
-                  hideHeader={true}
-                  hideBackground={true}
-                  cardHeader={<PageTitleHeader title={'braveWalletSwap'} />}
-                >
-                  <Swap />
-                </WalletPageWrapper>
-              </Route>
-            )}
+      <ProtectedRoute
+        path={WalletRoutes.DevBitcoin}
+        exact={true}
+        requirement={
+          !isWalletLocked && !walletNotYetCreated && isBitcoinEnabled
+        }
+        redirectRoute={defaultRedirect}
+      >
+        <DevBitcoin />
+      </ProtectedRoute>
 
-            {isBitcoinEnabled && !isWalletLocked && (
-              <Route
-                path={WalletRoutes.DevBitcoin}
-                exact={true}
-              >
-                <DevBitcoin />
-              </Route>
-            )}
-
-            {!isWalletLocked && (
-              <Route
-                path={WalletRoutes.Send}
-                exact
-              >
-                <SendScreen />
-              </Route>
-            )}
-
-            {!isWalletLocked && (
-              <Route path={WalletRoutes.CryptoPage}>
-                <CryptoView sessionRoute={sessionRoute} />
-              </Route>
-            )}
-
-            {isWalletLocked && <Redirect to={WalletRoutes.Unlock} />}
-            {!isWalletLocked && <Redirect to={WalletRoutes.PortfolioAssets} />}
-          </Switch>
-        )}
-      </Switch>
-    </>
+      <Redirect to={defaultRedirect} />
+    </Switch>
   )
 }
 

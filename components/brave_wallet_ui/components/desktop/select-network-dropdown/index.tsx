@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// Utils
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
+
 // Options
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
@@ -33,6 +36,9 @@ interface Props {
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
   useWithSearch?: boolean
   customNetwork?: BraveWallet.NetworkInfo | undefined
+  networkListSubset?: BraveWallet.NetworkInfo[]
+  disabled?: boolean
+  reduceDisplayName?: boolean
 }
 
 export const SelectNetworkDropdown = (props: Props) => {
@@ -42,14 +48,24 @@ export const SelectNetworkDropdown = (props: Props) => {
     showNetworkDropDown,
     onSelectCustomNetwork,
     useWithSearch,
-    customNetwork
+    customNetwork,
+    networkListSubset,
+    disabled,
+    reduceDisplayName
   } = props
+
+  const networkDisplayName = selectedNetwork?.chainName
+    ? reduceDisplayName && selectedNetwork.chainId !== AllNetworksOption.chainId
+      ? reduceNetworkDisplayName(selectedNetwork.chainName)
+      : selectedNetwork.chainName
+    : getLocale('braveWalletSelectNetwork')
 
   return (
     <StyledWrapper useWithSearch={useWithSearch}>
       <NetworkButton
         onClick={onClick}
         useWithSearch={useWithSearch}
+        disabled={disabled}
       >
         <LeftSide>
           {selectedNetwork &&
@@ -60,10 +76,7 @@ export const SelectNetworkDropdown = (props: Props) => {
                 size='big'
               />
             )}
-          <NetworkText>
-            {selectedNetwork?.chainName ||
-              getLocale('braveWalletSelectNetwork')}
-          </NetworkText>
+          <NetworkText>{networkDisplayName}</NetworkText>
         </LeftSide>
         <DropDownIcon isOpen={showNetworkDropDown} />
       </NetworkButton>
@@ -73,6 +86,7 @@ export const SelectNetworkDropdown = (props: Props) => {
             onSelectCustomNetwork={onSelectCustomNetwork}
             selectedNetwork={selectedNetwork}
             customNetwork={customNetwork}
+            networkListSubset={networkListSubset}
           />
         </DropDown>
       )}

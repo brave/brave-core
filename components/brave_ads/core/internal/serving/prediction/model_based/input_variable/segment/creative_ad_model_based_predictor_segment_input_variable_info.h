@@ -12,6 +12,7 @@ struct CreativeAdModelBasedPredictorSegmentInputVariableInfo final {
   bool operator==(const CreativeAdModelBasedPredictorSegmentInputVariableInfo&)
       const = default;
 
+  // Whether the user segment matches the creative ad.
   bool value = false;
   double weight = 1.0;
 };

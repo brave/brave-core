@@ -22,23 +22,59 @@ const HISTORY = [
   {
     text: 'What is pointer compression?',
     characterType: mojom.CharacterType.HUMAN,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE
+    actionType: mojom.ActionType.QUERY,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory.'
   },
   {
     text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
     characterType: mojom.CharacterType.ASSISTANT,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined
   },
   {
     text: 'What is taylor series?',
     characterType: mojom.CharacterType.HUMAN,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE
+    actionType: mojom.ActionType.QUERY,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined
   },
   {
     text: 'The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.',
     characterType: mojom.CharacterType.ASSISTANT,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE
-  }
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined
+  },
+  {
+    text: 'Write a hello world program in c++',
+    characterType: mojom.CharacterType.HUMAN,
+    actionType: mojom.ActionType.QUERY,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined
+  },
+  {
+    text: "Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!",
+    characterType: mojom.CharacterType.ASSISTANT,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined
+  },
+  {
+    text: 'Summarize this excerpt',
+    characterType: mojom.CharacterType.HUMAN,
+    actionType: mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.'
+  },
+  {
+    text: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
+    characterType: mojom.CharacterType.ASSISTANT,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined
+  },
 ]
 
 const MODELS: mojom.Model[] = [
@@ -49,7 +85,7 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: false,
+    access: mojom.ModelAccess.BASIC,
     maxPageContentLength: 10000,
     longConversationWarningCharacterLimit: 9700
   },
@@ -60,7 +96,18 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: true,
+    access: mojom.ModelAccess.PREMIUM,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
+  },
+  {
+    key: '3',
+    name: 'model-three-freemium',
+    displayName: 'Model Three',
+    displayMaker: 'Company',
+    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+    category: mojom.ModelCategory.CHAT,
+    access: mojom.ModelAccess.BASIC_AND_PREMIUM,
     maxPageContentLength: 10000,
     longConversationWarningCharacterLimit: 9700
   }
@@ -75,7 +122,9 @@ const SAMPLE_QUESTIONS = [
 
 const SITE_INFO = {
   title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
-  isContentTruncated: false
+  isContentTruncated: false,
+  isContentAssociationPossible: true,
+  hasContentAssociated: true
 }
 
 export default {
@@ -88,8 +137,8 @@ export default {
       options: getKeysForMojomEnum(mojom.APIError),
       control: { type: 'select' }
     },
-    suggestedQuestionsPref: {
-      options: getKeysForMojomEnum(mojom.AutoGenerateQuestionsPref),
+    suggestionStatus: {
+      options: getKeysForMojomEnum(mojom.SuggestionGenerationStatus),
       control: { type: 'select' }
     },
     model: {
@@ -101,25 +150,24 @@ export default {
     hasConversation: true,
     hasSuggestedQuestions: true,
     hasSiteInfo: true,
-    showModelIntro: true,
     canShowPremiumPrompt: false,
     hasAcceptedAgreement: true,
     isPremiumModel: false,
     isPremiumUser: true,
     isPremiumUserDisconnected: false,
     currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
-    suggestedQuestionsPref: 'Unset' satisfies keyof typeof mojom.AutoGenerateQuestionsPref,
-    model: MODELS[0].name
+    suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
+    model: MODELS[0].name,
+    showAgreementModal: false,
+    isMobile: false,
   },
   decorators: [
     (Story: any, options: any) => {
       const [isGenerating] = React.useState(false)
-      const [canGenerateQuestions] = React.useState(false)
-      const userAutoGeneratePref: mojom.AutoGenerateQuestionsPref = mojom.AutoGenerateQuestionsPref[options.args.suggestedQuestionsPref]
       const [favIconUrl] = React.useState<string>()
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
-      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : null
+      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
         : siteInfo
@@ -133,15 +181,13 @@ export default {
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
-        showModelIntro: options.args.showModelIntro,
         allModels: MODELS,
         currentModel: MODELS.find(m => m.name === options.args.model),
         conversationHistory: options.args.hasConversation ? HISTORY : [],
         isGenerating,
         isPremiumStatusFetching: false,
         suggestedQuestions,
-        canGenerateQuestions,
-        userAutoGeneratePref,
+        suggestionStatus: mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         siteInfo,
         favIconUrl,
@@ -150,7 +196,9 @@ export default {
         apiHasError,
         shouldDisableUserInput,
         isPremiumUser: options.args.isPremiumUser,
-        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected
+        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
+        showAgreementModal: options.args.showAgreementModal,
+        isMobile: options.args.isMobile,
       }
 
       return (

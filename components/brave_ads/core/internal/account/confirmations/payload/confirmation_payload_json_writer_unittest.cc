@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 
+#include <optional>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
@@ -35,7 +37,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -66,7 +68,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction,
                                  /*user_data=*/{});
   ASSERT_TRUE(confirmation);

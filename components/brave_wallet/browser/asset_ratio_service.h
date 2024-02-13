@@ -51,7 +51,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   // Get sell URL for off-ramps
   void GetSellUrl(mojom::OffRampProvider provider,
                   const std::string& chain_id,
-                  const std::string& address,
                   const std::string& symbol,
                   const std::string& amount,
                   const std::string& currency_code,
@@ -68,10 +67,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                        const std::string& vs_asset,
                        mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback) override;
-  // Note: The is_nft value of the token is not reliable because
-  // it is determined only by whether the token is an ERC721 token.
-  void GetTokenInfo(const std::string& contract_address,
-                    GetTokenInfoCallback callback) override;
   void GetCoinMarkets(const std::string& vs_asset,
                       const uint8_t limit,
                       GetCoinMarketsCallback callback) override;
@@ -89,7 +84,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   static GURL GetPriceHistoryURL(const std::string& asset,
                                  const std::string& vs_asset,
                                  mojom::AssetPriceTimeframe timeframe);
-  static GURL GetTokenInfoURL(const std::string& contract_address);
   static GURL GetCoinMarketsURL(const std::string& vs_asset, uint8_t limit);
 
   static void SetBaseURLForTest(const GURL& base_url_for_test);
@@ -124,9 +118,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                   APIRequestResult api_request_result);
   void OnGetPriceHistory(GetPriceHistoryCallback callback,
                          APIRequestResult api_request_result);
-
-  void OnGetTokenInfo(GetTokenInfoCallback callback,
-                      APIRequestResult api_request_result);
 
   void OnGetCoinMarkets(GetCoinMarketsCallback callback,
                         APIRequestResult api_request_result);

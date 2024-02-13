@@ -32,7 +32,7 @@ export const Button = styled(WalletButton)<{
   cursor: pointer;
   width: 48px;
   height: 48px;
-  border-radius: 100%;
+  border-radius: 16px;
   outline: none;
   border: none;
   background: none;
@@ -51,6 +51,6 @@ export const ButtonText = styled.span`
   font-style: normal;
   font-size: 12px;
   font-weight: 600;
-  line-height: 18px;
+  line-height: 20px;
   color: ${leo.color.text.primary};
 `

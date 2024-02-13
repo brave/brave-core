@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds.*
 

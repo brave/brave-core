@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_EMBEDDING_BASED_SCORING_CREATIVE_AD_EMBEDDING_BASED_PREDICTOR_SCORING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_EMBEDDING_BASED_SCORING_CREATIVE_AD_EMBEDDING_BASED_PREDICTOR_SCORING_H_
 
+#include <algorithm>
+#include <iterator>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
@@ -18,19 +20,19 @@ std::vector<double> ComputeCreativeAdSimilarityScores(
     const std::vector<T>& creative_ads,
     const TextEmbeddingHtmlEventInfo& text_embedding_html_event) {
   std::vector<double> creative_ad_similarity_scores;
+  creative_ad_similarity_scores.reserve(creative_ads.size());
 
   const ml::VectorData text_embedding_html_event_embedding(
       text_embedding_html_event.embedding);
 
-  for (const auto& creative_ad : creative_ads) {
-    const ml::VectorData creative_ad_embedding(creative_ad.embedding);
-
-    const double creative_ad_similarity_score =
-        creative_ad_embedding.ComputeSimilarity(
+  std::transform(
+      creative_ads.cbegin(), creative_ads.cend(),
+      std::back_inserter(creative_ad_similarity_scores),
+      [&text_embedding_html_event_embedding](const T& creative_ad) {
+        const ml::VectorData creative_ad_embedding(creative_ad.embedding);
+        return creative_ad_embedding.ComputeSimilarity(
             text_embedding_html_event_embedding);
-
-    creative_ad_similarity_scores.push_back(creative_ad_similarity_score);
-  }
+      });
 
   return creative_ad_similarity_scores;
 }

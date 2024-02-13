@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_state_manager.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -61,15 +62,18 @@ TEST_F(BitcoinTxStateManagerUnitTest, BitcoinTxMetaAndValue) {
       std::make_unique<BitcoinTransaction>();
   tx->set_amount(200000);
   tx->set_to("tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
-  tx->inputs().emplace_back();
-  tx->inputs().back().utxo_address =
-      "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8";
-  tx->inputs().back().utxo_value = 200000;
-  tx->outputs().emplace_back();
-  tx->outputs().back().address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
-  tx->outputs().back().script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+
+  BitcoinTransaction::TxInput input;
+  input.utxo_address = "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8";
+  input.utxo_value = 200000;
+  tx->AddInput(std::move(input));
+
+  BitcoinTransaction::TxOutput output;
+  output.address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
+  output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
       "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm", true);
-  tx->outputs().back().amount = 200000 - 1000;
+  output.amount = 200000 - 1000;
+  tx->AddOutput(std::move(output));
 
   BitcoinTxMeta meta(btc_account_id, std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
@@ -87,15 +91,6 @@ TEST_F(BitcoinTxStateManagerUnitTest, BitcoinTxMetaAndValue) {
       bitcoin_tx_state_manager_->ValueToBitcoinTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);
   EXPECT_EQ(*meta_from_value, meta);
-}
-
-TEST_F(BitcoinTxStateManagerUnitTest, GetTxPrefPathPrefix) {
-  EXPECT_EQ("bitcoin.mainnet", bitcoin_tx_state_manager_->GetTxPrefPathPrefix(
-                                   mojom::kBitcoinMainnet));
-  EXPECT_EQ("bitcoin.testnet", bitcoin_tx_state_manager_->GetTxPrefPathPrefix(
-                                   mojom::kBitcoinTestnet));
-  EXPECT_EQ("bitcoin",
-            bitcoin_tx_state_manager_->GetTxPrefPathPrefix(absl::nullopt));
 }
 
 }  // namespace brave_wallet

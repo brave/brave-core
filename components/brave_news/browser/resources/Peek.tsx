@@ -3,16 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getLocale } from '$web-common/locale';
 import Icon from '@brave/leo/react/icon';
-import { color, effect, gradient, radius, spacing } from '@brave/leo/tokens/css';
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { NEWS_FEED_CLASS } from './Feed';
+import Variables from './Variables';
 import { MetaInfo } from './feed/ArticleMetaRow';
 import Card, { SmallImage, Title } from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { useUnpaddedImageUrl } from './shared/useUnpaddedImageUrl';
-import Variables from './Variables';
 
 const NewsButton = styled.button`
   cursor: pointer;
@@ -26,10 +27,7 @@ const NewsButton = styled.button`
   backdrop-filter: blur(40px);
 
   color: ${color.white};
-
-  & > leo-icon[name="news-default"] {
-    --leo-icon-color: ${gradient.iconsActive};
-  }
+  font: ${font.default.semibold};
 
   & > leo-icon[name="carat-down"] {
     --leo-icon-color: rgba(255, 255, 255, 0.25);
@@ -97,26 +95,35 @@ const scrollToNews = () => {
 }
 
 export default function Peek() {
-  const { feedV2 } = useBraveNews()
+  const { feedV2, isShowOnNTPPrefEnabled, isOptInPrefEnabled } = useBraveNews()
   const top = feedV2?.items?.find(a => a.article || a.hero)
   const data = (top?.hero ?? top?.article)?.data
   const imageUrl = useUnpaddedImageUrl(data?.image.paddedImageUrl?.url ?? data?.image.imageUrl?.url, undefined, true)
 
-  if (!data) return null
+  // For some reason |createGlobalStyle| doesn't seem to work in Brave Core
+  // To get the background blur effect looking nice, we need to set the body
+  // background to black - unfortunately we can't do this in root HTML file
+  // because we want to avoid the background flash effect.
+  React.useEffect(() => {
+    // Note: This is always black because this doesn't support light mode.
+    document.body.style.backgroundColor = 'black';
+  }, [])
 
-  return <Container>
-    <NewsButton onClick={scrollToNews}>
-      <Icon name='news-default' />
-      News
-      <Icon name='carat-down' />
-    </NewsButton>
-    <PeekingCard onClick={scrollToNews}>
-      <div>
-        <MetaInfo article={data} />
-        <Title>{data.title}</Title>
-      </div>
-      <SmallImage src={imageUrl} />
-    </PeekingCard>
-  </Container>
+  return isShowOnNTPPrefEnabled
+    ? <Container>
+      {(!isOptInPrefEnabled || feedV2) && <NewsButton onClick={scrollToNews}>
+        <Icon name='product-brave-news' />
+        {getLocale('braveNewsNewsPeek')}
+        <Icon name='carat-down' />
+      </NewsButton>}
+      {data && <PeekingCard onClick={scrollToNews}>
+        <div>
+          <MetaInfo article={data} />
+          <Title>{data.title}</Title>
+        </div>
+        <SmallImage src={imageUrl} />
+      </PeekingCard>}
+    </Container>
+    : null
 }
 

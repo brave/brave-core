@@ -6,7 +6,6 @@
 
 import posixpath
 
-# pylint: disable=import-error,too-few-public-methods
 from builddeps import NormalizePath
 
 

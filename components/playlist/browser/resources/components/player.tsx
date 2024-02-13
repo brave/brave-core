@@ -42,7 +42,7 @@ const TimeContainer = styled.div`
   justify-content: space-between;
 
   color: ${color.white};
-  font: ${font.primary.xSmall.regular};
+  font: ${font.xSmall.regular};
 `
 
 const VideoContainer = styled.div`
@@ -213,7 +213,7 @@ const StyledFavicon = styled.img<{ clickable: boolean }>`
 
 const StyledTitle = styled.div<{ clickable: boolean }>`
   color: var(--title-color);
-  font: ${font.primary.large.semibold};
+  font: ${font.large.semibold};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -358,7 +358,13 @@ export default function Player() {
             })
           }}
           onError={() => {
-            // TODO(sko) Show alert when z-index patch is ready.
+            if (currentItem) {
+              notifyEventsToTopFrame({
+                type: PlaylistTypes.PLAYLIST_PLAYER_FAILED_TO_PLAY_ITEM,
+                data: { ...currentItem }
+              })
+            }
+
             if (autoPlayEnabled) getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
 
             setCurrentTime(0)

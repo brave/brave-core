@@ -31,7 +31,8 @@ import {
   useGetVisibleNetworksQuery,
   useGetAccountInfosRegistryQuery,
   useGetTokenSpotPricesQuery,
-  useGetDefaultFiatCurrencyQuery
+  useGetDefaultFiatCurrencyQuery,
+  useGetActiveOriginConnectedAccountIdsQuery
 } from '../../../common/slices/api.slice'
 import {
   useSelectedAccountQuery //
@@ -69,9 +70,8 @@ export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 
 export const DAppConnectionSettings = () => {
   // Selectors
-  const connectedAccounts = useUnsafeWalletSelector(
-    WalletSelectors.connectedAccounts
-  )
+  const { data: connectedAccounts = [] } =
+    useGetActiveOriginConnectedAccountIdsQuery()
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo

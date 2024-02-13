@@ -55,7 +55,7 @@ void BuildUserModel(BuildUserModelCallback callback) {
   user_model.interest.segments = BuildInterestSegments();
 
   // TODO(https://github.com/brave/brave-browser/issues/33200): Decouple to
-  // |BuildInterestSegments|.
+  // `BuildInterestSegments()`.
   BuildTextEmbeddingHtmlEvents(user_model, std::move(callback));
 }
 

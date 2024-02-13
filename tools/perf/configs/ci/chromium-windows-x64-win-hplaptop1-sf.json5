@@ -1,0 +1,46 @@
+{
+  "configurations": [{
+    "dashboard-bot-name": "win11-hp-laptop-typical",
+    "browser-type": "chromium",
+    "profile": "chrome-typical-win",
+    "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
+    "extra-benchmark-args": [],
+  }],
+  "benchmarks": [
+    {
+      "name": "loading.desktop.brave",
+      "pageset-repeat": 10,
+      "stories": [
+        "example.com_cold",
+        "wikipedia.com_cold",
+        "IGN_warm",
+      ]
+    },
+    {
+      "name": "loading.desktop.brave.startup",
+      "pageset-repeat": 10,
+      "stories": [
+        "example.com_cold",
+      ]
+    },
+    {
+      "name": "system_health.memory_desktop",
+      "pageset-repeat": 10,
+      "stories": [
+        "load:chrome:blank",
+        "load:media:youtube:2018",
+      ]
+    },
+    {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 10,
+      "stories": [
+        "load:chrome:blank",
+      ]
+    },
+    {
+      "name": "speedometer2",
+      "pageset-repeat": 10
+    }
+  ]
+}

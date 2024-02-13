@@ -20,6 +20,13 @@ import {
   useSafeUISelector
 } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors, UISelectors } from '../../../../common/selectors'
+import { openWalletSettings } from '../../../../utils/routes-utils'
+import {
+  useGetDefaultEthereumWalletQuery,
+  useGetDefaultSolanaWalletQuery,
+  useGetIsMetaMaskInstalledQuery,
+  useGetIsWalletBackedUpQuery //
+} from '../../../../common/slices/api.slice'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -37,7 +44,7 @@ import {
   EditVisibleAssetsModal //
 } from '../../popup-modals/edit-visible-assets-modal/index'
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
-import { PortfolioAsset } from '../portfolio/portfolio-asset'
+import { PortfolioFungibleAsset } from '../portfolio/portfolio-fungible-asset'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
 import { MarketView } from '../market'
 import { Accounts } from '../accounts/accounts'
@@ -48,7 +55,6 @@ import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
 import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
-
 import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
@@ -56,33 +62,14 @@ import {
   PortfolioOverviewHeader //
 } from '../../card-headers/portfolio-overview-header'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
+import { MarketAsset } from '../market/market_asset'
 
 export interface Props {
   sessionRoute: string | undefined
 }
 
-const openWalletSettings = () => {
-  chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
-    if (chrome.runtime.lastError) {
-      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-    }
-  })
-}
-
 export const CryptoView = ({ sessionRoute }: Props) => {
   // redux
-  const isWalletBackedUp = useSafeWalletSelector(
-    WalletSelectors.isWalletBackedUp
-  )
-  const defaultEthereumWallet = useSafeWalletSelector(
-    WalletSelectors.defaultEthereumWallet
-  )
-  const defaultSolanaWallet = useSafeWalletSelector(
-    WalletSelectors.defaultSolanaWallet
-  )
-  const isMetaMaskInstalled = useSafeWalletSelector(
-    WalletSelectors.isMetaMaskInstalled
-  )
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
   )
@@ -92,12 +79,27 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     ({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab
   )
 
+  // queries
+  const {
+    data: isMetaMaskInstalled,
+    isLoading: isCheckingInstalledExtensions
+  } = useGetIsMetaMaskInstalledQuery()
+  const {
+    data: defaultEthereumWallet,
+    isLoading: isLoadingDefaultEthereumWallet
+  } = useGetDefaultEthereumWalletQuery()
+  const { data: defaultSolanaWallet, isLoading: isLoadingDefaultSolanaWallet } =
+    useGetDefaultSolanaWalletQuery()
+  const {
+    data: isWalletBackedUp = false,
+    isLoading: isCheckingWalletBackupStatus
+  } = useGetIsWalletBackedUpQuery()
+
   // state
-  const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(
-    !isWalletBackedUp
-  )
-  const [showDefaultWalletBanner, setShowDefaultWalletBanner] =
-    React.useState<boolean>(!isWalletBackedUp)
+  const [isBackupWarningDismissed, setDismissBackupWarning] =
+    React.useState<boolean>(isWalletBackedUp)
+  const [isDefaultWalletBannerDismissed, setDismissDefaultWalletBanner] =
+    React.useState<boolean>(false)
 
   // routing
   const history = useHistory()
@@ -131,14 +133,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     }
   }, [])
 
-  const onDismissBackupWarning = React.useCallback(() => {
-    setShowBackupWarning(false)
-  }, [])
-
-  const onDismissDefaultWalletBanner = React.useCallback(() => {
-    setShowDefaultWalletBanner(false)
-  }, [])
-
   const hideVisibleAssetsModal = React.useCallback(
     () => onShowVisibleAssetsModal(false),
     [onShowVisibleAssetsModal]
@@ -156,25 +150,31 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     }
   }, [location.key])
 
-  const showBanner = React.useMemo((): boolean => {
-    return (
-      (defaultEthereumWallet !== BraveWallet.DefaultWallet.BraveWallet ||
-        defaultSolanaWallet !== BraveWallet.DefaultWallet.BraveWallet) &&
-      (defaultEthereumWallet !==
+  // computed
+  const isCheckingWallets =
+    isCheckingInstalledExtensions ||
+    isLoadingDefaultEthereumWallet ||
+    isLoadingDefaultSolanaWallet
+
+  const showBanner =
+    !isCheckingWallets &&
+    (defaultEthereumWallet !== BraveWallet.DefaultWallet.BraveWallet ||
+      defaultSolanaWallet !== BraveWallet.DefaultWallet.BraveWallet) &&
+    (defaultEthereumWallet !==
+      BraveWallet.DefaultWallet.BraveWalletPreferExtension ||
+      defaultSolanaWallet !==
         BraveWallet.DefaultWallet.BraveWalletPreferExtension ||
-        defaultSolanaWallet !==
-          BraveWallet.DefaultWallet.BraveWalletPreferExtension ||
-        (defaultEthereumWallet ===
-          BraveWallet.DefaultWallet.BraveWalletPreferExtension &&
-          isMetaMaskInstalled)) &&
-      showDefaultWalletBanner
-    )
-  }, [
-    defaultEthereumWallet,
-    defaultSolanaWallet,
-    isMetaMaskInstalled,
-    showDefaultWalletBanner
-  ])
+      (defaultEthereumWallet ===
+        BraveWallet.DefaultWallet.BraveWalletPreferExtension &&
+        isMetaMaskInstalled)) &&
+    !isDefaultWalletBannerDismissed
+
+  const noBannerPadding =
+    isPanel &&
+    (!showBanner ||
+      (!isCheckingWalletBackupStatus &&
+        !isWalletBackedUp &&
+        !isBackupWarningDismissed))
 
   // memos
   const banners = React.useMemo(
@@ -182,31 +182,36 @@ export const CryptoView = ({ sessionRoute }: Props) => {
       <>
         {showBanner && (
           <WalletBanner
-            onDismiss={onDismissDefaultWalletBanner}
+            onDismiss={() => {
+              setDismissDefaultWalletBanner(true)
+            }}
             onClick={openWalletSettings}
             bannerType='warning'
             buttonText={getLocale('braveWalletWalletPopupSettings')}
             description={getLocale('braveWalletDefaultWalletBanner')}
           />
         )}
-        {!isWalletBackedUp && showBackupWarning && (
-          <WalletBanner
-            onDismiss={onDismissBackupWarning}
-            onClick={onShowBackup}
-            bannerType='danger'
-            buttonText={getLocale('braveWalletBackupButton')}
-            description={getLocale('braveWalletBackupWarningText')}
-          />
-        )}
+        {!isCheckingWalletBackupStatus &&
+          !isWalletBackedUp &&
+          !isBackupWarningDismissed && (
+            <WalletBanner
+              onDismiss={() => {
+                setDismissBackupWarning(true)
+              }}
+              onClick={onShowBackup}
+              bannerType='danger'
+              buttonText={getLocale('braveWalletBackupButton')}
+              description={getLocale('braveWalletBackupWarningText')}
+            />
+          )}
       </>
     ),
     [
       showBanner,
+      isCheckingWalletBackupStatus,
       isWalletBackedUp,
-      onDismissBackupWarning,
-      onDismissDefaultWalletBanner,
       onShowBackup,
-      showBackupWarning
+      isBackupWarningDismissed
     ]
   )
 
@@ -225,11 +230,12 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
             useDarkBackground={isPanel}
+            hideDivider={true}
           >
             <StyledWrapper>
               <Column
                 fullWidth={true}
-                padding='20px 20px 0px 20px'
+                padding={noBannerPadding ? '0px' : '20px 20px 0px 20px'}
               >
                 {banners}
               </Column>
@@ -249,7 +255,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           path={WalletRoutes.PortfolioAsset}
           exact
         >
-          <PortfolioAsset />
+          <PortfolioFungibleAsset />
         </Route>
 
         <Route path={WalletRoutes.Portfolio}>
@@ -258,11 +264,12 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
             useDarkBackground={isPanel}
+            hideDivider={isPanel}
           >
             <StyledWrapper>
               <Column
                 fullWidth={true}
-                padding='20px 20px 0px 20px'
+                padding={noBannerPadding ? '0px' : '20px 20px 0px 20px'}
               >
                 {banners}
               </Column>
@@ -315,7 +322,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper wrapContentInBox={true}>
             <StyledWrapper>
               {banners}
-              <PortfolioAsset isShowingMarketData={true} />
+              <MarketAsset />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>

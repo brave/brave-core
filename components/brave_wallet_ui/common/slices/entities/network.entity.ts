@@ -12,6 +12,14 @@ import {
 import { BraveWallet } from '../../../constants/types'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
+export const getNetworkId = ({ chainId, coin }: {
+  chainId: string
+  coin: BraveWallet.CoinType
+}): string =>
+chainId === BraveWallet.LOCALHOST_CHAIN_ID
+  ? `${chainId}-${coin}`
+  : chainId
+
 export type NetworkEntityAdaptor = EntityAdapter<BraveWallet.NetworkInfo> & {
   selectId: (network: {
     chainId: string
@@ -21,10 +29,7 @@ export type NetworkEntityAdaptor = EntityAdapter<BraveWallet.NetworkInfo> & {
 
 export const networkEntityAdapter: NetworkEntityAdaptor =
   createEntityAdapter<BraveWallet.NetworkInfo>({
-    selectId: ({ chainId, coin }): string =>
-      chainId === BraveWallet.LOCALHOST_CHAIN_ID
-        ? `${chainId}-${coin}`
-        : chainId
+    selectId: getNetworkId
   })
 
 export type NetworksRegistry = ReturnType<
@@ -68,18 +73,6 @@ export const {
   selectIds: selectNetworkIdsFromQueryResult,
   selectTotal: selectTotalNetworksFromQueryResult
 } = networkEntityAdapter.getSelectors(selectNetworksRegistryFromQueryResult)
-
-export const selectSwapSupportedNetworksFromQueryResult =
-  createDraftSafeSelector(
-    // inputs
-    [
-      selectNetworksRegistryFromQueryResult,
-      (registry, swapSupportedIds: string[]) => swapSupportedIds
-    ],
-    // output
-    (registry, swapSupportedIds) =>
-      getEntitiesListFromEntityState(registry, swapSupportedIds)
-  )
 
 export const selectMainnetNetworksFromQueryResult = createDraftSafeSelector(
   // inputs

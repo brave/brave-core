@@ -29,6 +29,7 @@ import LoadingSkeleton from '../../shared/loading-skeleton/index'
 import { NavButton } from '../buttons/nav-button/index'
 
 // Utils
+import { BraveWallet } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 
@@ -53,8 +54,9 @@ export function AddSuggestedTokenPanel() {
     isFetching: isFetchingSuggestions,
     isLoading: isLoadingSuggestions
   } = useGetPendingTokenSuggestionRequestsQuery()
-  const suggestion = suggestions[0]
-  const { origin, token } = suggestion
+  const suggestion: BraveWallet.AddSuggestTokenRequest | undefined =
+    suggestions[0]
+  const { origin, token } = suggestion || {}
 
   const { data: tokenNetwork, isLoading: isFetchingTokenNetwork } =
     useGetNetworkQuery(token ?? skipToken)
@@ -118,7 +120,7 @@ export function AddSuggestedTokenPanel() {
         </TopRow>
         <Title>{getLocale('braveWalletAddSuggestedTokenTitle')}</Title>
         <URLText>
-          {isFetching ? (
+          {isFetching || !origin ? (
             <LoadingSkeleton
               height={12}
               width={'50px'}

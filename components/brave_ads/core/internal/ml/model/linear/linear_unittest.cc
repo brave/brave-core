@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_test_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -21,7 +20,7 @@ namespace brave_ads::ml {
 
 class BraveAdsLinearTest : public UnitTestBase {
  public:
-  absl::optional<LinearModel> BuildLinearModel(
+  std::optional<LinearModel> BuildLinearModel(
       const std::map<std::string, VectorData>& raw_weights,
       const std::map<std::string, float>& biases) {
     buffer_ = pipeline::LinearPipelineBufferBuilder()
@@ -32,13 +31,13 @@ class BraveAdsLinearTest : public UnitTestBase {
     flatbuffers::Verifier verifier(
         reinterpret_cast<const uint8_t*>(buffer_.data()), buffer_.size());
     if (!linear_text_classification::flat::VerifyModelBuffer(verifier)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const auto* raw_model =
         linear_text_classification::flat::GetModel(buffer_.data());
     if (!raw_model) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     return LinearModel(raw_model);
@@ -58,18 +57,18 @@ TEST_F(BraveAdsLinearTest, ThreeClassesPredictionTest) {
   const std::map<std::string, float> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
 
-  absl::optional<LinearModel> linear(BuildLinearModel(weights, biases));
+  std::optional<LinearModel> linear(BuildLinearModel(weights, biases));
   ASSERT_TRUE(linear);
   const VectorData class_1_vector_data({1.0, 0.0, 0.0});
   const VectorData class_2_vector_data({0.0, 1.0, 0.0});
   const VectorData class_3_vector_data({0.0, 1.0, 2.0});
 
   // Act
-  const absl::optional<PredictionMap> predictions_1 =
+  const std::optional<PredictionMap> predictions_1 =
       linear->Predict(class_1_vector_data);
-  const absl::optional<PredictionMap> predictions_2 =
+  const std::optional<PredictionMap> predictions_2 =
       linear->Predict(class_2_vector_data);
-  const absl::optional<PredictionMap> predictions_3 =
+  const std::optional<PredictionMap> predictions_3 =
       linear->Predict(class_3_vector_data);
 
   // Assert
@@ -95,12 +94,12 @@ TEST_F(BraveAdsLinearTest, BiasesPredictionTest) {
   const std::map<std::string, float> biases = {
       {"class_1", 0.5}, {"class_2", 0.25}, {"class_3", 1.0}};
 
-  absl::optional<LinearModel> linear_biased(BuildLinearModel(weights, biases));
+  std::optional<LinearModel> linear_biased(BuildLinearModel(weights, biases));
   ASSERT_TRUE(linear_biased);
   const VectorData avg_vector({1.0, 1.0, 1.0});
 
   // Act
-  const absl::optional<PredictionMap> predictions =
+  const std::optional<PredictionMap> predictions =
       linear_biased->Predict(avg_vector);
 
   // Assert
@@ -118,15 +117,15 @@ TEST_F(BraveAdsLinearTest, BinaryClassifierPredictionTest) {
 
   const std::map<std::string, float> biases = {{"the_only_class", -0.45}};
 
-  absl::optional<LinearModel> linear(BuildLinearModel(weights, biases));
+  std::optional<LinearModel> linear(BuildLinearModel(weights, biases));
   ASSERT_TRUE(linear);
   const VectorData vector_data_0({1.07, 1.52, 0.91});
   const VectorData vector_data_1({1.11, 1.63, 1.21});
 
   // Act
-  const absl::optional<PredictionMap> predictions_0 =
+  const std::optional<PredictionMap> predictions_0 =
       linear->Predict(vector_data_0);
-  const absl::optional<PredictionMap> predictions_1 =
+  const std::optional<PredictionMap> predictions_1 =
       linear->Predict(vector_data_1);
 
   // Assert
@@ -154,7 +153,7 @@ TEST_F(BraveAdsLinearTest, TopPredictionsTest) {
                                                {"class_4", 0.22},
                                                {"class_5", 0.21}};
 
-  absl::optional<LinearModel> linear_biased(BuildLinearModel(weights, biases));
+  std::optional<LinearModel> linear_biased(BuildLinearModel(weights, biases));
   ASSERT_TRUE(linear_biased);
   const std::vector<float> pt_1 = {1.0, 0.99, 0.98, 0.97, 0.96};
   const std::vector<float> pt_2 = {0.83, 0.79, 0.91, 0.87, 0.82};
@@ -164,11 +163,11 @@ TEST_F(BraveAdsLinearTest, TopPredictionsTest) {
   const VectorData point_3(pt_3);
 
   // Act
-  const absl::optional<PredictionMap> predictions_1 =
+  const std::optional<PredictionMap> predictions_1 =
       linear_biased->GetTopPredictions(point_1);
-  const absl::optional<PredictionMap> predictions_2 =
+  const std::optional<PredictionMap> predictions_2 =
       linear_biased->GetTopCountPredictions(point_2, kPredictionLimits[0]);
-  const absl::optional<PredictionMap> predictions_3 =
+  const std::optional<PredictionMap> predictions_3 =
       linear_biased->GetTopCountPredictions(point_3, kPredictionLimits[1]);
 
   // Assert

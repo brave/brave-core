@@ -11,10 +11,14 @@ import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 
 import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.modelutil.PropertyModel;
 
 public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
+    // Own members.
+    private Profile mProfile;
+
     // To delete in bytecode, members from parent class will be used instead.
     private FeedSurfaceCoordinator mCoordinator;
     private SnapScrollHelper mSnapScrollHelper;
@@ -27,7 +31,8 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
             @FeedSurfaceCoordinator.StreamTabId int openingTabId,
             FeedActionDelegate actionDelegate,
             FeedOptionsCoordinator optionsCoordinator,
-            @Nullable UiConfig uiConfig) {
+            @Nullable UiConfig uiConfig,
+            Profile profile) {
         super(
                 coordinator,
                 context,
@@ -36,16 +41,19 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
                 openingTabId,
                 actionDelegate,
                 optionsCoordinator,
-                uiConfig);
+                uiConfig,
+                profile);
+
+        mProfile = profile;
     }
 
     @Override
     void updateContent() {
-        assert !FeedFeatures.isFeedEnabled() : "Feed should be disabled in Brave!";
-        assert mCoordinator
-                instanceof BraveFeedSurfaceCoordinator : "Wrong feed surface coordinator!";
+        assert !FeedFeatures.isFeedEnabled(mProfile) : "Feed should be disabled in Brave!";
+        assert mCoordinator instanceof BraveFeedSurfaceCoordinator
+                : "Wrong feed surface coordinator!";
 
-        if (FeedFeatures.isFeedEnabled()
+        if (FeedFeatures.isFeedEnabled(mProfile)
                 || !(mCoordinator instanceof BraveFeedSurfaceCoordinator)) {
             super.updateContent();
             return;
@@ -66,7 +74,7 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
 
     @Override
     public void onTemplateURLServiceChanged() {
-        if (!FeedFeatures.isFeedEnabled()) {
+        if (!FeedFeatures.isFeedEnabled(mProfile)) {
             // We don't need any special handling since feed is disabled.
             return;
         }

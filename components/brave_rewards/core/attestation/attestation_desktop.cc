@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
+
+#include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
@@ -25,7 +27,7 @@ mojom::Result AttestationDesktop::ParseClaimSolution(
     std::string* captcha_id) {
   DCHECK(x && y && captcha_id);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(response);
+  std::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return mojom::Result::FAILED;
   }
@@ -33,19 +35,19 @@ mojom::Result AttestationDesktop::ParseClaimSolution(
   const base::Value::Dict& dict = value->GetDict();
   const auto* id = dict.FindString("captchaId");
   if (!id) {
-    BLOG(0, "Captcha id is wrong");
+    engine_->LogError(FROM_HERE) << "Captcha id is wrong";
     return mojom::Result::FAILED;
   }
 
   const auto x_parse = dict.FindInt("x");
   if (!x_parse) {
-    BLOG(0, "X is wrong");
+    engine_->LogError(FROM_HERE) << "X is wrong";
     return mojom::Result::FAILED;
   }
 
   const auto y_parse = dict.FindInt("y");
   if (!y_parse) {
-    BLOG(0, "Y is wrong");
+    engine_->LogError(FROM_HERE) << "Y is wrong";
     return mojom::Result::FAILED;
   }
 
@@ -109,7 +111,7 @@ void AttestationDesktop::Confirm(const std::string& solution,
       ParseClaimSolution(solution, &x, &y, &captcha_id);
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to parse solution");
+    engine_->LogError(FROM_HERE) << "Failed to parse solution";
     std::move(callback).Run(result);
     return;
   }
@@ -125,7 +127,7 @@ void AttestationDesktop::Confirm(const std::string& solution,
 void AttestationDesktop::OnConfirm(ConfirmCallback callback,
                                    mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to confirm attestation");
+    engine_->LogError(FROM_HERE) << "Failed to confirm attestation";
     std::move(callback).Run(result);
     return;
   }

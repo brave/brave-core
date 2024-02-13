@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_STAR_RANDOMNESS_META_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -19,7 +20,6 @@
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "net/base/hash_value.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 class PrefRegistrySimple;
@@ -54,7 +54,7 @@ struct RandomnessServerUpdateState {
   ~RandomnessServerUpdateState();
 
   bool has_used_cached_info = false;
-  absl::optional<uint8_t> last_cached_epoch = absl::nullopt;
+  std::optional<uint8_t> last_cached_epoch = std::nullopt;
 
   base::OneShotTimer rnd_info_retry_timer;
   base::TimeDelta current_backoff_time;
@@ -118,7 +118,7 @@ class StarRandomnessMeta {
 
   const raw_ptr<const P3AConfig> config_;
 
-  absl::optional<net::HashValue> approved_cert_fp_;
+  std::optional<net::HashValue> approved_cert_fp_;
   bool attestation_pending_ = false;
 
   base::WeakPtrFactory<StarRandomnessMeta> weak_ptr_factory_{this};

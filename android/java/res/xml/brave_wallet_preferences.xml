@@ -7,6 +7,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
+    <org.chromium.chrome.browser.settings.BraveDialogPreference
+        android:key="default_ethereum_wallet"
+        android:title="@string/settings_default_ethereum_wallet_label"
+        app:dialog_entries="@array/settingsDefaultWalletTexts"
+        app:dialog_default_index="1"/>
+
+    <org.chromium.chrome.browser.settings.BraveDialogPreference
+        android:key="default_solana_wallet"
+        android:title="@string/settings_default_solana_wallet_label"
+        app:dialog_entries="@array/settingsDefaultWalletTexts"
+        app:dialog_default_index="1"/>
+
     <org.chromium.chrome.browser.settings.BraveWalletAutoLockPreferences
         android:key="pref_brave_wallet_autolock"
         android:title="@string/brave_wallet_settings_autolock_option"

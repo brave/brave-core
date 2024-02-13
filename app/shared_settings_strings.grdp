@@ -102,7 +102,7 @@
     Manage languages
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_MANAGE_LANGUAGES_SUBTITLE" desc="Subtitle for the caption settings section for managing language packs.">
-    Add and remove languages to caption
+    Language packs are used for Live Caption and are stored on your device
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_LIVE_TRANSLATE_TARGET_LANGUAGE" desc="Description of the target language setting for the Live Translate feature.">
     Translate to
@@ -114,6 +114,9 @@
   <!-- Nearby Share -->
   <message name="IDS_SETTINGS_NEARBY_SHARE_TITLE" desc="Name of the settings page for the Nearby Share feature">
     Nearby Share
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_TITLE_PH" desc="Feature name placeholder: Name of the settings page for the sharing feature">
+    <ph name="FEATURE_NAME">$1<ex>Nearby Share</ex></ph>
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_SET_UP_BUTTON_TITLE" desc="Title of the button that lets the user set up and enable the Nearby Share feature for the first time.">
     Set up
@@ -203,7 +206,7 @@
     Save
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DESCRIPTION" desc="A description of nearby share that helps users understand what the feature is used for.">
-    Share files with profiles around you. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Share files and more with nearby devices. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_TITLE" desc="Label for the switch that toggles whether the device is visible to all devices around it for the Nearby Share feature.">
     Visible to everyone
@@ -254,6 +257,9 @@
   </message>
 
   <!-- Sync Accounts page (used by the <settings-sync-account-control> element) -->
+  <message name="IDS_SETTINGS_PEOPLE_SIGNED_IN_TO_ACCOUNT" desc="The text displayed to the user that the profile is currently signed in to a specific account.">
+    Signed in to <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_PEOPLE_SYNCING_TO_ACCOUNT" desc="The text displayed to the user that the profile is currently syncing to a specific account.">
     Syncing to <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
   </message>

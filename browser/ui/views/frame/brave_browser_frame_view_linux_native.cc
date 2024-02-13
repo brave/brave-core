@@ -44,14 +44,12 @@ ui::NavButtonProvider::ButtonState ButtonStateToNavButtonProviderState(
 BraveBrowserFrameViewLinuxNative::BraveBrowserFrameViewLinuxNative(
     BrowserFrame* frame,
     BrowserView* browser_view,
-    BrowserFrameViewLayoutLinux* layout,
-    std::unique_ptr<ui::NavButtonProvider> nav_button_provider,
-    ui::WindowFrameProvider* window_frame_provider)
+    BrowserFrameViewLayoutLinuxNative* layout,
+    std::unique_ptr<ui::NavButtonProvider> nav_button_provider)
     : BrowserFrameViewLinuxNative(frame,
                                   browser_view,
                                   layout,
-                                  std::move(nav_button_provider),
-                                  window_frame_provider) {}
+                                  std::move(nav_button_provider)) {}
 
 BraveBrowserFrameViewLinuxNative::~BraveBrowserFrameViewLinuxNative() = default;
 
@@ -97,10 +95,10 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
       views::Button* button = GetButtonFromDisplayType(type);
       DCHECK_EQ(std::string(views::ImageButton::kViewClassName),
                 button->GetClassName());
-      static_cast<views::ImageButton*>(button)->SetImage(
+      static_cast<views::ImageButton*>(button)->SetImageModel(
           button_state,
-          nav_button_provider_->GetImage(
-              type, ButtonStateToNavButtonProviderState(button_state)));
+          ui::ImageModel::FromImageSkia(nav_button_provider_->GetImage(
+              type, ButtonStateToNavButtonProviderState(button_state))));
     }
   }
 

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <vector>
@@ -51,32 +52,26 @@ class TxManager : public TxStateManager::Observer,
       const std::string& chain_id,
       mojom::TxDataUnionPtr tx_data_union,
       const mojom::AccountIdPtr& from,
-      const absl::optional<url::Origin>& origin,
+      const std::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback) = 0;
-  virtual void ApproveTransaction(const std::string& chain_id,
-                                  const std::string& tx_meta_id,
+  virtual void ApproveTransaction(const std::string& tx_meta_id,
                                   ApproveTransactionCallback) = 0;
-  virtual void RejectTransaction(const std::string& chain_id,
-                                 const std::string& tx_meta_id,
+  virtual void RejectTransaction(const std::string& tx_meta_id,
                                  RejectTransactionCallback);
-  virtual void GetTransactionInfo(const std::string& chain_id,
-                                  const std::string& tx_meta_id,
+  virtual void GetTransactionInfo(const std::string& tx_meta_id,
                                   GetTransactionInfoCallback);
   std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo(
-      const absl::optional<std::string>& chain_id,
-      const absl::optional<mojom::AccountIdPtr>& from);
+      const std::optional<std::string>& chain_id,
+      const std::optional<mojom::AccountIdPtr>& from);
 
   virtual void SpeedupOrCancelTransaction(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) = 0;
-  virtual void RetryTransaction(const std::string& chain_id,
-                                const std::string& tx_meta_id,
+  virtual void RetryTransaction(const std::string& tx_meta_id,
                                 RetryTransactionCallback callback) = 0;
 
   virtual void GetTransactionMessageToSign(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) = 0;
 
@@ -86,7 +81,7 @@ class TxManager : public TxStateManager::Observer,
   void CheckIfBlockTrackerShouldRun(
       const std::set<std::string>& new_pending_chain_ids);
   virtual void UpdatePendingTransactions(
-      const absl::optional<std::string>& chain_id) = 0;
+      const std::optional<std::string>& chain_id) = 0;
 
   std::unique_ptr<TxStateManager> tx_state_manager_;
   std::unique_ptr<BlockTracker> block_tracker_;

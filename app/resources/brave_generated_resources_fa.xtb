@@ -40,9 +40,6 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">این پنجره‌ای خصوصی با Tor است</translation>
 <translation id="1037341607922068025">باز کردن پنجره خصوصی با Tor</translation>
-<translation id="1725356094208762656">باز کردن در Tor</translation>
-<translation id="3396347744975515056">همگام‌سازی Brave ارتقا یافته و نیازمند راه‌اندازی است</translation>
-<translation id="7473245612074035141">شروع راه‌اندازی</translation>
 <translation id="496896260395129787">این حساب «همگام‌سازی Brave» از طریق دستگاه دیگری حذف شده است. اگر شما قصد غیرفعال کردن Sync را نداشتید،<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>حساب را مجدداً بسازید</translation>
 <translation id="6965382102122355670">قبول</translation>
@@ -81,6 +78,7 @@
 <translation id="2638041073279639246">باز کردن پیوند در Window with Tor خصوصی</translation>
 <translation id="3425600262621021599">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
 <translation id="3229091547987707389">وارد کردن و اشتراک‌گذاری یک دایرکتوری</translation>
+<translation id="2545072023356206691">از 1 دسامبر 2023، به‌روزرسانی‌های کانال Brave Dev متوقف می‌شود. ما به کاربران توصیه می‌کنیم که برای ادامه به‌روزرسانی مرورگر، به نسخه‌های Nightly، Beta یا Release Brave بروند.</translation>
 <translation id="474217410105706308">بی‌صدا کردن برگه</translation>
 <translation id="2804710924397009224">نماد جوایز بریو را پنهان کن.</translation>
 <translation id="5029193871181468990">مخفی کردن نماد Brave Rewards</translation>
@@ -188,6 +186,10 @@
 <translation id="7109885938715976444">فقط این بار</translation>
 <translation id="7473891865547856676">نه متشکرم</translation>
 <translation id="2722425322672922644">بیاموزید که چطور این کار بر روی حریم خصوصی من تاثیر می‌گذارد</translation>
+<translation id="5551268135482191097">هنگام بارگیری URL سیستم فایل InterPlanetary خطایی روی داد. آیا می‌خواهید به URL اصلی مراجعه کنید؟</translation>
+<translation id="4756627014339714615">مراجعه کنید</translation>
+<translation id="1338274252864046652">آیا مایل هستید همیشه یک گره سیستم فایل InterPlanetary را در راه‌اندازی مرورگر شروع کنید؟</translation>
+<translation id="3435896845095436175">فعال کنید</translation>
 <translation id="4552520379838695057">متأسفیم، آن صفحه یافت نمی‌شود.</translation>
 <translation id="2609895996619941644">می‌خواهید بررسی کنید که آیا نسخه ذخیره‌شده‌ای در Wayback Machine موجود است؟</translation>
 <translation id="8053093028263274061">متأسفیم، نسخه ذخیره‌شده‌ای موجود نیست.</translation>
@@ -288,6 +290,19 @@
 <translation id="5181358966317519720">برداشتن از فهرست پخش</translation>
 <translation id="2377705456080309463">نمایش صفحه اصلی</translation>
 <translation id="158894735649719362">قسمت جالب وقتی شروع می‌شود که شما چیزی برای پخش کردن داشته باشید. رسانه‌های صوتی و تصویری موردعلاقه‌تان را اضافه کنید و در هر زمان و مکان پخش کنید. حتی زمانی که آفلاین هستید.</translation>
+<translation id="8422349592890097194">ایجاد یک پوشه جدید</translation>
+<translation id="2818704116581303039">باز کردن تنظیمات فهرست پخش</translation>
+<translation id="6790428901817661496">پخش</translation>
+<translation id="1178581264944972037">مکث</translation>
+<translation id="4477350412780666475">آهنگ بعدی</translation>
+<translation id="3962859241508114581">آهنگ قبلی</translation>
+<translation id="7544853251252956727">به‌صورت تصادفی</translation>
+<translation id="4330722796577425585">به عقب رفتن</translation>
+<translation id="7481312909269577407">ارسال کردن</translation>
+<translation id="2800828306627475693">فرایند تکرار را غیرفعال کنید</translation>
+<translation id="1748244367114657861">یک مورد را تکرار کنید</translation>
+<translation id="6421906998825794164">همه موارد را تکرار کنید</translation>
+<translation id="1727684853006449697">پخش‌کننده Brave</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
@@ -401,10 +416,6 @@
 <translation id="413570371620795359">برای فعال‌سازی و شروع، دریچه‌ی جوایز را باز کنید</translation>
 <translation id="1051600834033686945">تنظیمات کامل پاداش‌های Brave را باز کنید</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
-<translation id="7483857210736407752">نمایش دکمه‌های «انعام» در سایت‌ها</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">مسدود کردن رسانه اجتماعی</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
@@ -573,7 +584,9 @@
 <translation id="6936835573742749135">نمی توان CAPTCHA درخواست کرد. بعدا دوباره تلاش کنید.</translation>
 <translation id="2653659639078652383">ارائه</translation>
 <translation id="1369311132025451972">هدایت خودکار سایت‌های ‎Onion</translation>
-<translation id="1658670175365815312">Brave در صورت داشتن دسترسی به نسخه ‎.onion وب‌سایت، به آن تغییر مسیر خواهد داد و به‌طور خودکار تمام دامنه‌های ‎.onion را در پنجره Tor باز خواهد کرد.</translation>
+<translation id="6214393847480015759">در ویندوز Tor، Brave به‌طور خودکار به نسخه .onion یک وب‌سایت در دسترس تغییر می‌کند.</translation>
+<translation id="1294350054292274934">فقط آدرس‌های .onion را در ویندوز Tor به‌روزرسانی کنید</translation>
+<translation id="1258903596167452221">خدمات Onion خارج از ویندوز Tor در دسترس نخواهد بود.</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
 <translation id="5249433283143453448">از مؤلفه مدیریت حقوق دیجیتال (DRM) Widevine برای مشاهده ویدیوی محافظت‌شده در حال پخش جریانی و سایر محتواها در مرورگر استفاده کنید.</translation>
 <translation id="1314131187310290315">افزونه‌های Manifest V2</translation>
@@ -622,6 +635,7 @@
 <translation id="4226543734057230801">شبکه‌های Ethereum</translation>
 <translation id="3504157706952484145">شبکه‌های Filecoin</translation>
 <translation id="1561541094377237745">شبکه‌های Solana</translation>
+<translation id="7141438739990875547">شبکه‌های بیت‌کوین</translation>
 <translation id="3159419679550543837">نمایش شبکه‌های آزمایشی</translation>
 <translation id="3215569562674795548">اصلاح یا افزودن شبکه جدید</translation>
 <translation id="4418993400653250511">شناسه زنجیره</translation>
@@ -661,6 +675,7 @@
 <translation id="8425213833346101688">تغییر</translation>
 <translation id="585868419599255817">بازگشت دروازه عمومی IPFS</translation>
 <translation id="2618080188892567155">اگر دسترسی به گره IPFS محلی Brave ممکن نیست، به‌طور خودکار به درگاه IPFS عمومی برگردانده می‌شوید.</translation>
+<translation id="8956391206920485238">همیشه یک گره سیستم فایل InterPlanetary در راه‌اندازی مرورگر شروع شود؟</translation>
 <translation id="6789104345873307368">به طور خودکار درخواست ها برای منابع شبکه IPFS را به دروازه پیکربندی شده هدایت کنید.</translation>
 <translation id="4138306018048329894">به طور خودکار درخواست ها برای منابع شبکه IPFS را به دروازه پیکربندی شده هدایت کنید. درخواست‌های منابع IPFS میزبانی شده روی دروازه‌های IPFS شخص ثالث یا منابع DNSLINK از طریق دروازه محلی یا راه دور انتخاب‌شده هدایت می‌شوند.
 توجه: اگر گره محلی انتخاب شده باشد، منبع مستقیماً از رایانه شما درخواست می شود و ممکن است داده های کش برای مدتی به شبکه IPFS ارائه شود.</translation>
@@ -712,6 +727,9 @@ Brave Leo را انتخاب کنید و همچنین تاریخچه چت شما 
 Leo حذف خواهد شد. این کار غیرقابل بازگشت است.</translation>
 <translation id="8157373421434119674">داده‌ها و تاریخچه چت</translation>
 <translation id="614530507403667291">مدل پیش‌فرض برای مکالمات جدید</translation>
+<translation id="349846214503465941">لیست پخش را فعال کنید</translation>
+<translation id="7903608716704052878">به‌طور خودکار فایل‌ها را برای مشاهده آفلاین اضافه کنید</translation>
+<translation id="4193768184502613558">این گزینه به‌طور خودکار فایل‌های رسانه‌ای را ذخیره می‌کند تا بتوانید آنها را بدون اتصال به اینترنت پخش کنید.</translation>
 <translation id="6624718837376802990">آواتار پاداش‌های نوآورانه</translation>
 <translation id="6617313057407561765">آواتار نوآورانه Brave</translation>
 <translation id="6754445808455578019">آواتار نوآورانه اقیانوس</translation>

@@ -51,8 +51,7 @@ GURL FixupWaybackQueryURL(const GURL& url) {
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
     std::string key = std::string(it.GetKey());
     url::RawCanonOutputW<1024> canonOutput;
-    url::DecodeURLEscapeSequences(key.c_str(), key.length(),
-                                  url::DecodeURLMode::kUTF8OrIsomorphic,
+    url::DecodeURLEscapeSequences(key, url::DecodeURLMode::kUTF8OrIsomorphic,
                                   &canonOutput);
     const std::string decoded_key = base::UTF16ToUTF8(
         std::u16string_view(canonOutput.data(), canonOutput.length()));

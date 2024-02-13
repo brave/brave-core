@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -90,18 +92,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         }));
   }
 
-  void GetTokenInfo(const std::string& contract_address,
-                    mojom::BlockchainTokenPtr expected_token) {
-    base::RunLoop run_loop;
-    asset_ratio_service_->GetTokenInfo(
-        contract_address,
-        base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-          EXPECT_EQ(token, expected_token);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
-
   void TestGetBuyUrlV1(mojom::OnRampProvider on_ramp_provider,
                        const std::string& chain_id,
                        const std::string& address,
@@ -109,13 +99,13 @@ class AssetRatioServiceUnitTest : public testing::Test {
                        const std::string& amount,
                        const std::string& currency_code,
                        const std::string& expected_url,
-                       absl::optional<std::string> expected_error) {
+                       std::optional<std::string> expected_error) {
     base::RunLoop run_loop;
     asset_ratio_service_->GetBuyUrlV1(
         on_ramp_provider, chain_id, address, symbol, amount, currency_code,
         base::BindLambdaForTesting(
             [&](const std::string& url,
-                const absl::optional<std::string>& error) {
+                const std::optional<std::string>& error) {
               EXPECT_EQ(url, expected_url);
               EXPECT_EQ(error, expected_error);
               run_loop.Quit();
@@ -125,18 +115,17 @@ class AssetRatioServiceUnitTest : public testing::Test {
 
   void TestGetSellUrl(mojom::OffRampProvider off_ramp_provider,
                       const std::string& chain_id,
-                      const std::string& address,
                       const std::string& symbol,
                       const std::string& amount,
                       const std::string& currency_code,
                       const std::string& expected_url,
-                      absl::optional<std::string> expected_error) {
+                      std::optional<std::string> expected_error) {
     base::RunLoop run_loop;
     asset_ratio_service_->GetSellUrl(
-        off_ramp_provider, chain_id, address, symbol, amount, currency_code,
+        off_ramp_provider, chain_id, symbol, amount, currency_code,
         base::BindLambdaForTesting(
             [&](const std::string& url,
-                const absl::optional<std::string>& error) {
+                const std::optional<std::string>& error) {
               EXPECT_EQ(url, expected_url);
               EXPECT_EQ(error, expected_error);
               run_loop.Quit();
@@ -158,10 +147,11 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Ramp) {
   TestGetBuyUrlV1(mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
                   "0xdeadbeef", "USDC", "55000000", "USD",
                   "https://app.ramp.network/"
-                  "?userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
+                  "?enabledFlows=ONRAMP"
+                  "&userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
                   "&fiatCurrency=USD&hostApiKey="
                   "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
-                  absl::nullopt);
+                  std::nullopt);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
@@ -176,7 +166,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
                   "amount=55000000&fiat_currency=USD&client_token=74618e17-"
                   "a537-4f5d-ab4d-9916739560b1&fixed_asset_type=USDC&fixed_"
                   "network=ethereum",
-                  absl::nullopt);
+                  std::nullopt);
 
   // Timeout yields error
   std::string error = "error";
@@ -192,14 +182,14 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
 
 TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
   TestGetSellUrl(mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
-                 "0xdeadbeef", "ETH_BAT", "250", "USD",
+                 "ETH_BAT", "250", "USD",
                  "https://app.ramp.network/"
-                 "?userAddress=0xdeadbeef&enabledFlows=ONRAMP%2COFFRAMP"
-                 "&defaultFlow=OFFRAMP&swapAsset=ETH_BAT&offrampAsset=ETH_BAT"
+                 "?enabledFlows=OFFRAMP"
+                 "&swapAsset=ETH_BAT&offrampAsset=ETH_BAT"
                  "&swapAmount=250"
                  "&fiatCurrency=USD&hostApiKey="
-                 "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
-                 absl::nullopt);
+                 "y57zqta99ohs7o2paf4ak6vpfb7wf8ubj9krwtwe",
+                 std::nullopt);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPrice) {
@@ -415,60 +405,6 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryURL) {
                 .path());
 }
 
-TEST_F(AssetRatioServiceUnitTest, GetTokenInfoURL) {
-  std::string url(GetAssetRatioBaseURL());
-  EXPECT_EQ(url +
-                "/v3/etherscan/"
-                "passthrough?module=token&action=tokeninfo&contractaddress="
-                "0xdac17f958d2ee523a2206206994597c13d831ec7",
-            AssetRatioService::GetTokenInfoURL(
-                "0xdac17f958d2ee523a2206206994597c13d831ec7")
-                .spec());
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetTokenInfo) {
-  SetInterceptor(R"(
-    {
-      "result": [{
-        "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-        "tokenName": "Tether USD",
-        "symbol": "USDT",
-        "divisor": "6",
-        "tokenType": "ERC20",
-        "totalSupply": "39828710009874796",
-        "blueCheckmark": "true",
-        "description": "Tether gives you the joint benefits of open...",
-        "website": "https://tether.to/",
-        "email": "support@tether.to",
-        "blog": "https://tether.to/category/announcements/",
-        "reddit": "",
-        "slack": "",
-        "facebook": "",
-        "twitter": "https://twitter.com/Tether_to",
-        "bitcointalk": "",
-        "github": "",
-        "telegram": "",
-        "wechat": "",
-        "linkedin": "",
-        "discord": "",
-        "whitepaper": "https://path/to/TetherWhitePaper.pdf",
-        "tokenPriceUSD": "1.000000000000000000"
-      }]
-    }
-  )");
-  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7",
-               mojom::BlockchainToken::New(
-                   "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD",
-                   "", true, false, false, false, false, "USDT", 6, true, "",
-                   "", "0x1", mojom::CoinType::ETH));
-
-  SetInterceptor("unexpected response");
-  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);
-
-  SetErrorInterceptor("error");
-  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);
-}
-
 TEST_F(AssetRatioServiceUnitTest, GetCoinMarkets) {
   SetInterceptor(R"({
       "payload": [
@@ -537,7 +473,7 @@ TEST_F(AssetRatioServiceUnitTest, GetStripeBuyURL) {
   TestGetBuyUrlV1(mojom::OnRampProvider::kStripe, mojom::kMainnetChainId,
                   "0xdeadbeef", "USDC", "55000000", "USD",
                   "https://crypto.link.com?session_hash=abcdefgh",
-                  absl::nullopt);
+                  std::nullopt);
 
   // Test with unexpected response
   SetInterceptor("mischief managed");
@@ -563,7 +499,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
       "22USDC%22%5D%2C%22blockchains%22%3A%5B%22ethereum%22%2C%22arbitrum%22%"
       "2C%22optimism%22%2C%22polygon%22%2C%22avalanche-c-chain%22%2C%22celo%22%"
       "5D%7D%5D",
-      absl::nullopt);
+      std::nullopt);
 
   // Sol address
   TestGetBuyUrlV1(
@@ -574,7 +510,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
       "presetFiatAmount=1&destinationWallets=%5B%7B%22address%22%3A%"
       "22FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv%22%2C%22assets%22%3A%5B%"
       "22SOL%22%5D%2C%22blockchains%22%3A%5B%22solana%22%5D%7D%5D",
-      absl::nullopt);
+      std::nullopt);
 }
 
 }  // namespace brave_wallet

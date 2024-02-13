@@ -5,15 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_util.h"
 
-#include <string>
-
+#include "base/check.h"
+#include "base/containers/contains.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 
 namespace brave_ads {
 
-bool MatchDayOfWeek(const CreativeDaypartInfo& daypart,
-                    const char day_of_week) {
-  return daypart.days_of_week.find(day_of_week) != std::string::npos;
+bool MatchDayOfWeek(const CreativeDaypartInfo& daypart, const int day_of_week) {
+  CHECK(day_of_week >= 0 && day_of_week <= 6);
+
+  const char day_of_week_as_char = static_cast<char>('0' + day_of_week);
+  return base::Contains(daypart.days_of_week, day_of_week_as_char);
 }
 
 bool MatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {

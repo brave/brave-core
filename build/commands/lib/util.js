@@ -27,21 +27,25 @@ async function applyPatches() {
   const v8PatchesPath = path.join(patchesPath, 'v8')
   const catapultPatchesPath = path.join(patchesPath, 'third_party', 'catapult')
   const devtoolsFrontendPatchesPath = path.join(patchesPath, 'third_party', 'devtools-frontend', 'src')
+  const ffmpegPatchesPath = path.join(patchesPath, 'third_party', 'ffmpeg')
 
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
   const catapultRepoPath = path.join(chromiumRepoPath, 'third_party', 'catapult')
   const devtoolsFrontendRepoPath = path.join(chromiumRepoPath, 'third_party', 'devtools-frontend', 'src')
+  const ffmpegRepoPath = path.join(chromiumRepoPath, 'third_party', 'ffmpeg')
 
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
   const catapultPatcher = new GitPatcher(catapultPatchesPath, catapultRepoPath)
   const devtoolsFrontendPatcher = new GitPatcher(devtoolsFrontendPatchesPath, devtoolsFrontendRepoPath)
+  const ffmpegPatcher = new GitPatcher(ffmpegPatchesPath, ffmpegRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
   const catapultPatchStatus = await catapultPatcher.applyPatches()
   const devtoolsFrontendPatchStatus = await devtoolsFrontendPatcher.applyPatches()
+  const ffmpegPatchStatus = await ffmpegPatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
@@ -50,7 +54,7 @@ async function applyPatches() {
     s => s.path = path.join('third_party', 'catapult', s.path))
   devtoolsFrontendPatchStatus.forEach(
     s => s.path = path.join('third_party', 'devtools-frontend', 'src', s.path))
-  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus]
+  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus, ...ffmpegPatchStatus]
   Log.allPatchStatus(allPatchStatus, 'Chromium')
 
   const hasPatchError = allPatchStatus.some(p => p.error)
@@ -457,8 +461,8 @@ const util = {
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
       // Only include overridable files.
-      const supported_exts = ['.cc','.h', '.mm', '.mojom', '.py', '.pdl'];
-      return supported_exts.includes(path.extname(file))
+      const supportedExts = ['.cc', '.h', '.json', '.mm', '.mojom', '.py', '.pdl'];
+      return supportedExts.includes(path.extname(file))
     }
 
     const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
@@ -545,11 +549,30 @@ const util = {
   // So, this copying in every build doesn't affect compile performance.
   updateMidlFiles: () => {
     Log.progressScope('update midl files', () => {
-      for (const source of ["google_update", "brave"]) {
-        fs.copySync(
-          path.join(config.braveCoreDir, 'win_build_output', 'midl', source),
-          path.join(config.srcDir,
-                    'third_party', 'win_build_output', 'midl', source))
+      const files = fs.readdirSync(path.join(
+          config.braveCoreDir,
+          'win_build_output', 'midl'))
+      for (const file of files) {
+        const srcFile = path.join(config.braveCoreDir,
+            'win_build_output',
+            'midl', file)
+        const dstFile = path.join(config.srcDir,
+            'third_party',
+            'win_build_output', 'midl', file)
+        try {
+          const stat = fs.lstatSync(srcFile);
+          // only copy the directories here
+          // they each have a structure with x86/x64/arm64 versions of the files
+          if (stat.isDirectory()) {
+            fs.copySync(srcFile, dstFile)
+          }
+        } catch (e) {
+          throw new Error('error copying file \"' +
+              srcFile + "\"  to \"" +
+              dstFile + "\"", {
+                cause: e
+              })
+        }
       }
     })
   },
@@ -568,9 +591,6 @@ const util = {
     Log.progressStart('build redirect_cc')
     gnArgs = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
-      use_goma: config.use_goma,
-      goma_dir: config.realGomaDir,
-      real_gomacc: path.join(config.realGomaDir, 'gomacc'),
       use_remoteexec: config.useRemoteExec,
       rbe_exec_root: config.rbeExecRoot,
       rbe_bin_dir: config.realRewrapperDir,
@@ -639,47 +659,13 @@ const util = {
       ...config.extraNinjaOpts
     ]
 
-    const useGomaOnline = config.use_goma && !config.offline
-    if (useGomaOnline) {
-      if (config.isCI) {
-        Log.progressStart('goma pre build')
-      }
-      assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
-
-      // This skips the auth check and make this call instant if compiler_proxy is already running.
-      // If compiler_proxy is not running, it will fail to start if no valid credentials are found.
-      options.env.GOMACTL_SKIP_AUTH = 1
-      const gomaStartInfo = util.runProcess('goma_ctl', ['ensure_start'], options)
-      delete options.env.GOMACTL_SKIP_AUTH
-
-      if (gomaStartInfo.status !== 0) {
-        const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
-        if (gomaLoginInfo.status !== 0) {
-          console.log('Login required for using Goma. This is only needed once')
-          util.run('goma_auth', ['login'], options)
-        }
-        util.run('goma_ctl', ['ensure_start'], options)
-      }
-
-      if (config.isCI) {
-        util.run('goma_ctl', ['showflags'], options)
-        util.run('goma_ctl', ['stat'], options)
-        Log.progressFinish('goma pre build')
-      }
-    }
-
-    // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
-    // debugging issues (e.g., slowness or remote-failures).
+    // Setting `AUTONINJA_BUILD_ID` allows tracing remote execution which helps
+    // with debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
     Log.progressScope(`ninja ${target} ${config.buildConfig}`, () => {
       util.run('autoninja', ninjaOpts, options)
     })
 
-    if (config.isCI && useGomaOnline) {
-      Log.progressScope('goma post build', () => {
-        util.run('goma_ctl', ['stat'], options)
-      })
-    }
     Log.progressFinish(progressMessage)
   },
 
@@ -698,24 +684,6 @@ const util = {
     ]
 
     util.run('gn', genArgs, options)
-  },
-
-  lint: (options = {}) => {
-    if (!options.base) {
-      options.base = 'origin/master'
-    }
-    let cmd_options = config.defaultOptions
-    cmd_options.cwd = config.braveCoreDir
-    cmd_options = mergeWithDefault(cmd_options)
-    util.run(
-        'vpython3',
-        [
-          '-vpython-spec=' + path.join(config.depotToolsDir, '.vpython3'),
-          path.join(
-              config.braveCoreDir, 'build', 'commands', 'scripts', 'lint.py'),
-          '--project_root=' + config.srcDir, '--base_branch=' + options.base
-        ],
-        cmd_options)
   },
 
   presubmit: (options = {}) => {
@@ -767,6 +735,8 @@ const util = {
       args.push('--no-rust-fmt')
     if (options.swift)
       args.push('--swift-format')
+    else
+      args.push('--no-swift-format')
     util.run(cmd, args, cmd_options)
   },
 
@@ -803,6 +773,8 @@ const util = {
       }
       args += val ? arg + '=' + val + ' ' : arg + ' '
     }
+    // "D:\" should be escaped as \"D:\\\\\".
+    args = args.replace(/(\\+)(")/g,'$1$1$1$1$2')
     return args.replace(/"/g,'\\"')
   },
 

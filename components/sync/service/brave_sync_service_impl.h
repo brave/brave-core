@@ -60,7 +60,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void Initialize() override;
 
-  const brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
+  const brave_sync::Prefs& prefs() const { return brave_sync_prefs_; }
+  brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
 
   void PermanentlyDeleteAccount(
       base::OnceCallback<void(const SyncProtocolError&)> callback);
@@ -77,6 +78,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinActiveOrNewChain);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, HistoryPreconditions);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
+                           P3aForHistoryThroughDelegate);
 
   BraveSyncAuthManager* GetBraveSyncAuthManager();
   SyncServiceCrypto* GetCryptoForTests();

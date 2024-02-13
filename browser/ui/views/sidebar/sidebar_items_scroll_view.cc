@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 
+#include <optional>
 #include <string>
 
 #include "base/functional/bind.h"
@@ -28,6 +29,7 @@
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/compositor/layer_tree_owner.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
@@ -95,12 +97,11 @@ END_METADATA
 SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
     : browser_(browser),
       drag_context_(std::make_unique<SidebarItemDragContext>()),
-      scroll_animator_for_new_item_(
-          std::make_unique<views::BoundsAnimator>(this)),
+      scroll_animator_for_item_(std::make_unique<views::BoundsAnimator>(this)),
       scroll_animator_for_smooth_(
           std::make_unique<views::BoundsAnimator>(this)) {
   model_observed_.Observe(browser->sidebar_controller()->model());
-  bounds_animator_observed_.AddObservation(scroll_animator_for_new_item_.get());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_item_.get());
   bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
       AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
@@ -116,6 +117,11 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
   down_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,
                           base::Unretained(this), down_arrow_));
+
+  // To prevent drawing each item's inkdrop layer.
+  SetPaintToLayer();
+  layer()->SetMasksToBounds(true);
+  layer()->SetFillsBoundsOpaquely(false);
 }
 
 SidebarItemsScrollView::~SidebarItemsScrollView() = default;
@@ -196,12 +202,12 @@ void SidebarItemsScrollView::OnBoundsAnimatorProgressed(
 
 void SidebarItemsScrollView::OnBoundsAnimatorDone(
     views::BoundsAnimator* animator) {
-  if (scroll_animator_for_new_item_.get() == animator) {
-    CHECK(lastly_added_item_index_.has_value());
+  if (scroll_animator_for_item_.get() == animator &&
+      lastly_added_item_index_.has_value()) {
     contents_view_->ShowItemAddedFeedbackBubble(*lastly_added_item_index_);
-    UpdateArrowViewsEnabledState();
-    lastly_added_item_index_ = absl::nullopt;
+    lastly_added_item_index_ = std::nullopt;
   }
+  UpdateArrowViewsEnabledState();
 }
 
 void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
@@ -220,7 +226,7 @@ void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
     // to make it visible.
     if (NeedScrollForItemAt(index)) {
       lastly_added_item_index_ = index;
-      scroll_animator_for_new_item_->AnimateViewTo(
+      scroll_animator_for_item_->AnimateViewTo(
           contents_view_, GetTargetScrollContentsViewRectForItemAt(index));
     } else {
       contents_view_->ShowItemAddedFeedbackBubble(index);
@@ -239,8 +245,13 @@ void SidebarItemsScrollView::OnItemRemoved(size_t index) {
 }
 
 void SidebarItemsScrollView::OnActiveIndexChanged(
-    absl::optional<size_t> old_index,
-    absl::optional<size_t> new_index) {
+    std::optional<size_t> old_index,
+    std::optional<size_t> new_index) {
+  // If activated item is not visible, scroll to show it.
+  if (new_index && NeedScrollForItemAt(*new_index)) {
+    scroll_animator_for_item_->AnimateViewTo(
+        contents_view_, GetTargetScrollContentsViewRectForItemAt(*new_index));
+  }
   contents_view_->OnActiveIndexChanged(old_index, new_index);
 }
 
@@ -263,18 +274,18 @@ void SidebarItemsScrollView::UpdateArrowViewsTheme() {
     const SkColor arrow_disabled =
         color_provider->GetColor(kColorSidebarArrowDisabled);
 
-    up_arrow_->SetImage(
+    up_arrow_->SetImageModel(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarItemsUpArrowIcon, arrow_normal));
-    up_arrow_->SetImage(
-        views::Button::STATE_DISABLED,
-        gfx::CreateVectorIcon(kSidebarItemsUpArrowIcon, arrow_disabled));
-    down_arrow_->SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarItemsDownArrowIcon, arrow_normal));
-    down_arrow_->SetImage(
-        views::Button::STATE_DISABLED,
-        gfx::CreateVectorIcon(kSidebarItemsDownArrowIcon, arrow_disabled));
+        ui::ImageModel::FromVectorIcon(kSidebarItemsUpArrowIcon, arrow_normal));
+    up_arrow_->SetImageModel(views::Button::STATE_DISABLED,
+                             ui::ImageModel::FromVectorIcon(
+                                 kSidebarItemsUpArrowIcon, arrow_disabled));
+    down_arrow_->SetImageModel(views::Button::STATE_NORMAL,
+                               ui::ImageModel::FromVectorIcon(
+                                   kSidebarItemsDownArrowIcon, arrow_normal));
+    down_arrow_->SetImageModel(views::Button::STATE_DISABLED,
+                               ui::ImageModel::FromVectorIcon(
+                                   kSidebarItemsDownArrowIcon, arrow_disabled));
   }
 }
 
@@ -375,7 +386,7 @@ bool SidebarItemsScrollView::NeedScrollForItemAt(size_t index) const {
     return false;
   }
 
-  auto* item_view = contents_view_->children()[index];
+  views::View* item_view = contents_view_->children()[index];
   auto item_view_bounds_per_scroll_view = item_view->GetLocalBounds();
   item_view_bounds_per_scroll_view = views::View::ConvertRectToTarget(
       item_view, this, item_view_bounds_per_scroll_view);
@@ -391,7 +402,7 @@ gfx::Rect SidebarItemsScrollView::GetTargetScrollContentsViewRectForItemAt(
     size_t index) const {
   DCHECK(NeedScrollForItemAt(index));
 
-  auto* item_view = contents_view_->children()[index];
+  views::View* item_view = contents_view_->children()[index];
   auto item_view_bounds_per_scroll_view = item_view->GetLocalBounds();
   item_view_bounds_per_scroll_view = views::View::ConvertRectToTarget(
       item_view, this, item_view_bounds_per_scroll_view);
@@ -476,7 +487,7 @@ void SidebarItemsScrollView::OnDragExited() {
 
 void SidebarItemsScrollView::ClearDragIndicator() {
   contents_view_->ClearDragIndicator();
-  drag_context_->set_drag_indicator_index(absl::nullopt);
+  drag_context_->set_drag_indicator_index(std::nullopt);
 }
 
 int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
@@ -553,7 +564,7 @@ bool SidebarItemsScrollView::CanStartDragForView(views::View* sender,
 }
 
 bool SidebarItemsScrollView::IsItemReorderingInProgress() const {
-  return drag_context_->source_index() != absl::nullopt;
+  return drag_context_->source_index() != std::nullopt;
 }
 
 bool SidebarItemsScrollView::IsBubbleVisible() const {

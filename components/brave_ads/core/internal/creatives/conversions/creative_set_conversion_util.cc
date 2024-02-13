@@ -10,9 +10,9 @@
 
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "url/gurl.h"
 
@@ -61,9 +61,9 @@ CreativeSetConversionList FilterConvertedAndNonMatchingCreativeSetConversions(
   return filtered_creative_set_conversions;
 }
 
-CreativeSetConversionBuckets SortCreativeSetConversionsIntoBuckets(
+CreativeSetConversionBucketMap SortCreativeSetConversionsIntoBuckets(
     const CreativeSetConversionList& creative_set_conversions) {
-  CreativeSetConversionBuckets buckets;
+  CreativeSetConversionBucketMap buckets;
 
   for (const auto& creative_set_conversion : creative_set_conversions) {
     buckets[creative_set_conversion.id].push_back(creative_set_conversion);
@@ -72,7 +72,7 @@ CreativeSetConversionBuckets SortCreativeSetConversionsIntoBuckets(
   return buckets;
 }
 
-absl::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
+std::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventInfo& ad_event) {
   const auto iter = base::ranges::find_if(
@@ -83,7 +83,7 @@ absl::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
       });
 
   if (iter == creative_set_conversions.cend()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *iter;

@@ -14,10 +14,6 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
 namespace {
 
 constexpr int64_t kRetryAfterFailureDelay = 150;
@@ -36,7 +32,7 @@ PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
 void PublisherPrefixListUpdater::StartAutoUpdate(
     PublisherPrefixListUpdatedCallback callback) {
-  on_updated_callback_ = callback;
+  on_updated_callback_ = std::move(callback);
   auto_update_ = true;
   if (!timer_.IsRunning()) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
@@ -44,7 +40,7 @@ void PublisherPrefixListUpdater::StartAutoUpdate(
 }
 
 void PublisherPrefixListUpdater::StopAutoUpdate() {
-  BLOG(1, "Cancelling publisher prefix list update");
+  engine_->Log(FROM_HERE) << "Cancelling publisher prefix list update";
   auto_update_ = false;
   timer_.Stop();
 }
@@ -52,24 +48,25 @@ void PublisherPrefixListUpdater::StopAutoUpdate() {
 void PublisherPrefixListUpdater::StartFetchTimer(
     const base::Location& posted_from,
     base::TimeDelta delay) {
-  BLOG(1, "Scheduling publisher prefix list update in " << delay.InSeconds()
-                                                        << " seconds");
+  engine_->Log(FROM_HERE) << "Scheduling publisher prefix list update in "
+                          << delay.InSeconds() << " seconds";
   timer_.Start(posted_from, delay,
                base::BindOnce(&PublisherPrefixListUpdater::OnFetchTimerElapsed,
                               base::Unretained(this)));
 }
 
 void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
-  BLOG(1, "Fetching publisher prefix list");
-  auto url_callback =
-      std::bind(&PublisherPrefixListUpdater::OnFetchCompleted, this, _1, _2);
-  rewards_server_.get_prefix_list().Request(url_callback);
+  engine_->Log(FROM_HERE) << "Fetching publisher prefix list";
+  rewards_server_.get_prefix_list().Request(
+      base::BindOnce(&PublisherPrefixListUpdater::OnFetchCompleted,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
+void PublisherPrefixListUpdater::OnFetchCompleted(mojom::Result result,
                                                   const std::string& body) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Invalid server response for publisher prefix list");
+    engine_->LogError(FROM_HERE)
+        << "Invalid server response for publisher prefix list";
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
   }
@@ -80,28 +77,29 @@ void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
     // This could be a problem on the client or the server, but
     // optimistically assume that it is a server issue and retry
     // with back-off.
-    BLOG(0, "Failed to parse publisher prefix list: "
-                << static_cast<int>(parse_error));
+    engine_->LogError(FROM_HERE) << "Failed to parse publisher prefix list: "
+                                 << static_cast<int>(parse_error);
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
   }
 
   if (reader.empty()) {
-    BLOG(1, "Publisher prefix list did not contain any values");
+    engine_->Log(FROM_HERE)
+        << "Publisher prefix list did not contain any values";
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
   }
 
   retry_count_ = 0;
 
-  BLOG(1, "Resetting publisher prefix list table");
+  engine_->Log(FROM_HERE) << "Resetting publisher prefix list table";
   engine_->database()->ResetPublisherPrefixList(
       std::move(reader),
-      std::bind(&PublisherPrefixListUpdater::OnPrefixListInserted, this, _1));
+      base::BindOnce(&PublisherPrefixListUpdater::OnPrefixListInserted,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void PublisherPrefixListUpdater::OnPrefixListInserted(
-    const mojom::Result result) {
+void PublisherPrefixListUpdater::OnPrefixListInserted(mojom::Result result) {
   // At this point we have received a valid response from the server
   // and we've attempted to insert it into the database. Store the last
   // successful fetch time for calculation of next refresh interval.
@@ -114,12 +112,13 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
   }
 
   if (result != mojom::Result::OK) {
-    BLOG(0, "Error updating publisher prefix list table: " << result);
+    engine_->LogError(FROM_HERE)
+        << "Error updating publisher prefix list table: " << result;
     return;
   }
 
   if (on_updated_callback_) {
-    on_updated_callback_();
+    on_updated_callback_.Run();
   }
 }
 
@@ -127,14 +126,14 @@ base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
   uint64_t last_fetch_sec = engine_->state()->GetServerPublisherListStamp();
 
   auto now = base::Time::Now();
-  auto fetch_time =
-      base::Time::FromDoubleT(static_cast<double>(last_fetch_sec));
+  auto fetch_time = base::Time::FromSecondsSinceUnixEpoch(
+      static_cast<double>(last_fetch_sec));
 
   if (fetch_time > now) {
     fetch_time = now;
   }
 
-  fetch_time += base::Seconds(kPublisherListRefreshInterval);
+  fetch_time += base::Seconds(kRefreshInterval);
   return fetch_time < now ? base::Seconds(0) : fetch_time - now;
 }
 

@@ -1,5 +1,5 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index 0ad9fc4df71bfa2bd9ff8f45514e8fefb01267b0..1146b3be1186aab3464c6d1474dd6ed1019acd55 100644
+index 1b8352cdef4ab480f81c225e92da8048f36bdc56..08a2cb602279024bfc46e0ab44bff31684cd94ba 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
 @@ -25,6 +25,7 @@ robolectric_toolchain = "//build/toolchain/android:robolectric_$host_cpu"
@@ -8,5 +8,5 @@ index 0ad9fc4df71bfa2bd9ff8f45514e8fefb01267b0..1146b3be1186aab3464c6d1474dd6ed1
  if (is_android || is_chromeos) {
 +  import("//brave/build/android/config.gni")
    import("//build/config/android/channel.gni")
-   import("//build/config/chromecast_build.gni")
+   import("//build/config/cast.gni")
    import("//build/config/clang/clang.gni")

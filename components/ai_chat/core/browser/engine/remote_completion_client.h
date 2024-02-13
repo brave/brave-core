@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_REMOTE_COMPLETION_CLIENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -16,7 +17,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
@@ -30,6 +30,11 @@ using api_request_helper::APIRequestResult;
 
 class RemoteCompletionClient {
  public:
+  using GenerationResult = base::expected<std::string, mojom::APIError>;
+  using GenerationDataCallback = base::RepeatingCallback<void(std::string)>;
+  using GenerationCompletedCallback =
+      base::OnceCallback<void(GenerationResult)>;
+
   RemoteCompletionClient(
       const std::string& model_name,
       const base::flat_set<std::string_view>& stop_sequences,
@@ -38,32 +43,31 @@ class RemoteCompletionClient {
 
   RemoteCompletionClient(const RemoteCompletionClient&) = delete;
   RemoteCompletionClient& operator=(const RemoteCompletionClient&) = delete;
-  ~RemoteCompletionClient();
+  virtual ~RemoteCompletionClient();
 
   // This function queries both types of APIs: SSE and non-SSE.
   // In non-SSE cases, only the data_completed_callback will be triggered.
-  void QueryPrompt(
+  virtual void QueryPrompt(
       const std::string& prompt,
-      const std::vector<std::string> stop_sequences,
-      EngineConsumer::GenerationCompletedCallback data_completed_callback,
-      EngineConsumer::GenerationDataCallback data_received_callback =
-          base::NullCallback());
+      const std::vector<std::string>& stop_sequences,
+      GenerationCompletedCallback data_completed_callback,
+      GenerationDataCallback data_received_callback = base::NullCallback());
   // Clears all in-progress requests
   void ClearAllQueries();
 
  private:
-  void OnQueryDataReceived(EngineConsumer::GenerationDataCallback callback,
+  void OnQueryDataReceived(GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
-  void OnQueryCompleted(absl::optional<CredentialCacheEntry> credential,
-                        EngineConsumer::GenerationCompletedCallback callback,
+  void OnQueryCompleted(std::optional<CredentialCacheEntry> credential,
+                        GenerationCompletedCallback callback,
                         APIRequestResult result);
 
   void OnFetchPremiumCredential(
       const std::string& prompt,
-      const std::vector<std::string> extra_stop_sequences,
-      EngineConsumer::GenerationCompletedCallback data_completed_callback,
-      EngineConsumer::GenerationDataCallback data_received_callback,
-      absl::optional<CredentialCacheEntry> credential);
+      const std::vector<std::string>& extra_stop_sequences,
+      GenerationCompletedCallback data_completed_callback,
+      GenerationDataCallback data_received_callback,
+      std::optional<CredentialCacheEntry> credential);
 
   const std::string model_name_;
   const base::flat_set<std::string_view> stop_sequences_;

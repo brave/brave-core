@@ -12,8 +12,8 @@
 namespace brave_ads {
 
 size_t GetAdsReceivedForDateRange(const TransactionList& transactions,
-                                  base::Time from_time,
-                                  base::Time to_time) {
+                                  const base::Time from_time,
+                                  const base::Time to_time) {
   return base::ranges::count_if(
       transactions, [from_time, to_time](const TransactionInfo& transaction) {
         return transaction.confirmation_type == ConfirmationType::kViewed &&

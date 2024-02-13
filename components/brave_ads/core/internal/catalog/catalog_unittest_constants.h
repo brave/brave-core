@@ -8,6 +8,15 @@
 
 namespace brave_ads {
 
+inline constexpr char kCatalogFilename[] = "catalog.json";
+inline constexpr char kEmptyCatalogFilename[] = "empty_catalog.json";
+inline constexpr char kCatalogWithSingleCampaignFilename[] =
+    "catalog_with_single_campaign.json";
+inline constexpr char kCatalogWithMultipleCampaignsFilename[] =
+    "catalog_with_multiple_campaigns.json";
+
+inline constexpr char kInvalidCatalogJson[] = "INVALID_JSON";
+
 inline constexpr char kCatalogId[] = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
 
 }  // namespace brave_ads

@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
+
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -13,7 +16,6 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
-#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -672,7 +674,7 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
           }));
   run_loop->Run();
 
-  absl::optional<RampTokenListMaps> ramp_token_lists =
+  std::optional<RampTokenListMaps> ramp_token_lists =
       ParseRampTokenListMaps(ramp_token_lists_json);
   ASSERT_TRUE(ramp_token_lists);
   registry->UpdateOnRampTokenLists(std::move(*ramp_token_lists).first);
@@ -717,7 +719,7 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
-  absl::optional<RampTokenListMaps> ramp_token_lists =
+  std::optional<RampTokenListMaps> ramp_token_lists =
       ParseRampTokenListMaps(ramp_token_lists_json);
   ASSERT_TRUE(ramp_token_lists);
   registry->UpdateOnRampTokenLists(std::move(*ramp_token_lists).first);
@@ -779,7 +781,7 @@ TEST(BlockchainRegistryUnitTest, GetSellTokens) {
           }));
   run_loop->Run();
 
-  absl::optional<RampTokenListMaps> ramp_token_lists =
+  std::optional<RampTokenListMaps> ramp_token_lists =
       ParseRampTokenListMaps(ramp_token_lists_json);
   ASSERT_TRUE(ramp_token_lists);
   registry->UpdateOffRampTokenLists(std::move(*ramp_token_lists).second);
@@ -832,7 +834,7 @@ TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
       }));
   run_loop->Run();
 
-  absl::optional<std::vector<mojom::OnRampCurrency>> on_ramp_currency_lists =
+  std::optional<std::vector<mojom::OnRampCurrency>> on_ramp_currency_lists =
       ParseOnRampCurrencyLists(on_ramp_currency_lists_json);
   ASSERT_TRUE(on_ramp_currency_lists);
   registry->UpdateOnRampCurrenciesLists(std::move(*on_ramp_currency_lists));
@@ -899,7 +901,7 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
 TEST(BlockchainRegistryUnitTest, GetTopDapps) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
-  absl::optional<DappListMap> dapp_lists_map = ParseDappLists(dapp_lists_json);
+  std::optional<DappListMap> dapp_lists_map = ParseDappLists(dapp_lists_json);
   ASSERT_TRUE(dapp_lists_map);
   registry->UpdateDappList(std::move(*dapp_lists_map));
 
@@ -977,7 +979,7 @@ TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
 TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
-  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+  std::optional<CoingeckoIdsMap> coingecko_ids_map =
       ParseCoingeckoIdsMap(coingecko_ids_map_json);
   ASSERT_TRUE(coingecko_ids_map);
   registry->UpdateCoingeckoIdsMap(std::move(*coingecko_ids_map));
@@ -995,20 +997,19 @@ TEST(BlockchainRegistryUnitTest, GetCoingeckoId) {
   // Result: ❌
   EXPECT_EQ(
       registry->GetCoingeckoId(mojom::kOptimismMainnetChainId, "0xdeadbeef"),
-      absl::nullopt);
+      std::nullopt);
 
   // Chain: ❌
   // Contract: ✅
   // Result: ❌
   EXPECT_EQ(registry->GetCoingeckoId(
                 "0xdeadbeef", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
-            absl::nullopt);
+            std::nullopt);
 
   // Chain: ❌
   // Contract: ❌
   // Result: ❌
-  EXPECT_EQ(registry->GetCoingeckoId("0xdeadbeef", "0xcafebabe"),
-            absl::nullopt);
+  EXPECT_EQ(registry->GetCoingeckoId("0xdeadbeef", "0xcafebabe"), std::nullopt);
 
   // Chain: ✅ (wrong case)
   // Contract: ✅

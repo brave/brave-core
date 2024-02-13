@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/permission_request_data.h"
+#include <optional>
+
 #include "components/permissions/permission_context_base.h"
+#include "components/permissions/permission_request_data.h"
 
 namespace permissions {
 
-absl::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
+std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
     ContentSettingsType content_settings_type) {
   switch (content_settings_type) {
     case ContentSettingsType::BRAVE_ETHEREUM:

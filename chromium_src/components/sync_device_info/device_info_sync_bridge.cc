@@ -113,7 +113,7 @@ std::vector<std::unique_ptr<BraveDeviceInfo>>
 DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
   std::vector<std::unique_ptr<BraveDeviceInfo>> list;
   for (auto iter = all_data_.begin(); iter != all_data_.end(); ++iter) {
-    list.push_back(BraveSpecificsToModel(*iter->second));
+    list.push_back(BraveSpecificsToModel(iter->second.specifics()));
   }
   return list;
 }

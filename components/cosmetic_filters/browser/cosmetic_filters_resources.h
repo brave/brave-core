@@ -14,7 +14,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class HostContentSettingsMap;
 

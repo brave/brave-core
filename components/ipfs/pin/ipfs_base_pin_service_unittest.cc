@@ -6,6 +6,7 @@
 #include "brave/components/ipfs/pin/ipfs_base_pin_service.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/test/bind.h"
@@ -34,7 +35,7 @@ class MockIpfsService : public IpfsService {
   MOCK_METHOD1(StartDaemonAndLaunch, void(base::OnceCallback<void()>));
   MOCK_METHOD2(GetConnectedPeers,
                void(IpfsService::GetConnectedPeersCallback,
-                    absl::optional<int>));
+                    std::optional<int>));
 };
 
 }  // namespace
@@ -82,13 +83,13 @@ class MockJob : public IpfsBaseJob {
 
 TEST_F(IpfsBasePinServiceTest, TasksExecuted) {
   service()->OnGetConnectedPeersResult(1, true, {});
-  absl::optional<bool> method_called;
+  std::optional<bool> method_called;
   std::unique_ptr<MockJob> first_job = std::make_unique<MockJob>(
       base::BindLambdaForTesting([&method_called]() { method_called = true; }));
   service()->AddJob(std::move(first_job));
   EXPECT_TRUE(method_called.value());
 
-  absl::optional<bool> second_method_called;
+  std::optional<bool> second_method_called;
   std::unique_ptr<MockJob> second_job =
       std::make_unique<MockJob>(base::BindLambdaForTesting(
           [&second_method_called]() { second_method_called = true; }));

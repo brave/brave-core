@@ -6,16 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_WALLET_WALLET_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_WALLET_WALLET_UTIL_H_
 
+#include <optional>
 #include <string>
-
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 struct WalletInfo;
 
-absl::optional<WalletInfo> ToWallet(const std::string& payment_id,
-                                    const std::string& recovery_seed);
+std::optional<WalletInfo> ToWallet(const std::string& payment_id,
+                                   const std::string& recovery_seed);
 
 }  // namespace brave_ads
 

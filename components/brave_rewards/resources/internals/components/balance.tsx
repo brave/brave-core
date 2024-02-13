@@ -12,7 +12,7 @@ import * as mojom from '../../shared/lib/mojom'
 
 interface Props {
   balance: mojom.Balance
-  externalWallet: RewardsInternals.ExternalWallet
+  externalWallet?: RewardsInternals.ExternalWallet
 }
 
 const getWalletName = (walletKey: string) => {
@@ -32,6 +32,9 @@ const getWalletName = (walletKey: string) => {
     case 'zebpay': {
       return getLocale('processorZebPay')
     }
+    case 'solana': {
+      return getLocale('processorSolana')
+    }
   }
 
   return 'Missing wallet'
@@ -39,7 +42,7 @@ const getWalletName = (walletKey: string) => {
 
 const getBalances = (
   balances: Record<string, number>,
-  externalWallet: RewardsInternals.ExternalWallet
+  externalWallet?: RewardsInternals.ExternalWallet
 ) => {
   const walletKeys = Object.keys(balances)
 
@@ -53,7 +56,7 @@ const getBalances = (
 
   let items = []
   items.push(getBalance('blinded'))
-  if (externalWallet.status === mojom.WalletStatus.kConnected) {
+  if (externalWallet?.status === mojom.WalletStatus.kConnected) {
     items.push(getBalance(externalWallet.type))
   }
 

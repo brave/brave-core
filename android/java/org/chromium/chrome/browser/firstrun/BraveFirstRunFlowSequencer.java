@@ -4,16 +4,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.firstrun;
+
 import android.app.Activity;
 
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.components.signin.AccountManagerFacadeProvider;
 
 public abstract class BraveFirstRunFlowSequencer extends FirstRunFlowSequencer {
-    public BraveFirstRunFlowSequencer(Activity activity, OneshotSupplier<Profile> profileSupplier) {
-        super(activity, profileSupplier,
-                new ChildAccountStatusSupplier(AccountManagerFacadeProvider.getInstance(),
+    public BraveFirstRunFlowSequencer(
+            Activity activity, OneshotSupplier<ProfileProvider> profileSupplier) {
+        super(
+                activity,
+                profileSupplier,
+                new ChildAccountStatusSupplier(
+                        AccountManagerFacadeProvider.getInstance(),
                         FirstRunAppRestrictionInfo.takeMaybeInitialized()));
     }
 

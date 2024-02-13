@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/containers/flat_set.h"
@@ -36,7 +37,7 @@ struct ParseListsResult {
   std::vector<std::string> ofac_addresses;
 };
 
-void HandleRampTokenLists(const absl::optional<std::string>& result,
+void HandleRampTokenLists(const std::optional<std::string>& result,
                           ParseListsResult& out) {
   if (!result.has_value()) {
     return;
@@ -60,13 +61,13 @@ void HandleRampTokenLists(const absl::optional<std::string>& result,
   }
 }
 
-void HandleOnRampCurrenciesLists(const absl::optional<std::string>& result,
+void HandleOnRampCurrenciesLists(const std::optional<std::string>& result,
                                  ParseListsResult& out) {
   if (!result.has_value()) {
     return;
   }
 
-  absl::optional<std::vector<mojom::OnRampCurrency>> lists =
+  std::optional<std::vector<mojom::OnRampCurrency>> lists =
       ParseOnRampCurrencyLists(*result);
   if (!lists) {
     VLOG(1) << "Can't parse on ramp supported sell token lists.";
@@ -89,8 +90,8 @@ base::FilePath ResolveAbsolutePath(const base::FilePath& input_path) {
   return output_path;
 }
 
-absl::optional<std::string> ParseJsonFile(base::FilePath path,
-                                          const std::string& filename) {
+std::optional<std::string> ParseJsonFile(base::FilePath path,
+                                         const std::string& filename) {
   // We do not sanitize the result here via JsonSanitizer::Sanitize to optimize
   // the performance because we are processing data from our own CRX downloaded
   // via component updater, hence it is considered as trusted input.
@@ -99,7 +100,7 @@ absl::optional<std::string> ParseJsonFile(base::FilePath path,
   const base::FilePath json_path = path.AppendASCII(filename);
   if (!base::ReadFileToString(json_path, &json_content)) {
     LOG(ERROR) << "Can't read file: " << filename;
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return json_content;
@@ -111,7 +112,7 @@ void DoParseCoingeckoIdsMap(const base::FilePath& dir, ParseListsResult& out) {
     return;
   }
 
-  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+  std::optional<CoingeckoIdsMap> coingecko_ids_map =
       ParseCoingeckoIdsMap(*result);
   if (!coingecko_ids_map) {
     VLOG(1) << "Can't parse coingecko-ids.json";
@@ -175,7 +176,7 @@ void DoParseDappLists(const base::FilePath& dir, ParseListsResult& out) {
     return;
   }
 
-  absl::optional<DappListMap> lists = ParseDappLists(converted_json);
+  std::optional<DappListMap> lists = ParseDappLists(converted_json);
   if (!lists) {
     VLOG(1) << "Can't parse dapp lists.";
     return;
@@ -200,7 +201,7 @@ void DoParseOfacAddressesLists(const base::FilePath& dir,
     return;
   }
 
-  absl::optional<std::vector<std::string>> list =
+  std::optional<std::vector<std::string>> list =
       ParseOfacAddressesList(*result);
   if (!list) {
     VLOG(1) << "Can't parse ofac addresses list.";
@@ -457,7 +458,7 @@ void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
       continue;
     }
 
-    blockchain_sell_tokens.push_back(mojom::BlockchainToken::New(*token));
+    blockchain_sell_tokens.push_back(token->Clone());
   }
 
   std::move(callback).Run(std::move(blockchain_sell_tokens));
@@ -510,14 +511,14 @@ void BlockchainRegistry::GetTopDapps(const std::string& chain_id,
   std::move(callback).Run(std::move(dapps_copy));
 }
 
-absl::optional<std::string> BlockchainRegistry::GetCoingeckoId(
+std::optional<std::string> BlockchainRegistry::GetCoingeckoId(
     const std::string& chain_id,
     const std::string& contract_address) {
   const auto& chain_id_lower = base::ToLowerASCII(chain_id);
   const auto& contract_address_lower = base::ToLowerASCII(contract_address);
 
   if (!coingecko_ids_map_.contains({chain_id_lower, contract_address_lower})) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return coingecko_ids_map_[{chain_id_lower, contract_address_lower}];

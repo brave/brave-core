@@ -45,6 +45,11 @@ class MockRewardsEngineClient : public mojom::RewardsEngineClient {
 
   MOCK_METHOD2(LoadURL, void(mojom::UrlRequestPtr, LoadURLCallback));
 
+  MOCK_METHOD3(GetSPLTokenAccountBalance,
+               void(const std::string&,
+                    const std::string&,
+                    GetSPLTokenAccountBalanceCallback));
+
   MOCK_METHOD1(PublisherListNormalized,
                void(std::vector<mojom::PublisherInfoPtr>));
 

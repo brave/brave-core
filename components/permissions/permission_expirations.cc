@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -303,7 +304,7 @@ PermissionExpirations::ParseExpiringPermissions(
     if (!requesting_origin) {
       continue;
     }
-    absl::optional<int> content_setting = item->FindInt(kContentSettingKey);
+    std::optional<int> content_setting = item->FindInt(kContentSettingKey);
     expiring_permissions.push_back(PermissionOrigins(
         requesting_origin, embedding_origin,
         content_setting.value_or(ContentSetting::CONTENT_SETTING_ALLOW)));

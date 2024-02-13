@@ -27,12 +27,12 @@ namespace brave_ads::ml::pipeline {
 
 namespace {
 
-absl::optional<TransformationPtr> LoadHashedNGramsTransformation(
+std::optional<TransformationPtr> LoadHashedNGramsTransformation(
     const linear_text_classification::flat::HashedNGramsTransformation*
         hashed_ngram_transformation) {
   if (!hashed_ngram_transformation ||
       !hashed_ngram_transformation->ngrams_range()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<uint32_t> subgrams;
@@ -44,21 +44,21 @@ absl::optional<TransformationPtr> LoadHashedNGramsTransformation(
       hashed_ngram_transformation->num_buckets(), std::move(subgrams));
 }
 
-absl::optional<TransformationVector> LoadTransformations(
+std::optional<TransformationVector> LoadTransformations(
     const linear_text_classification::flat::Model* text_classification) {
   CHECK(text_classification);
 
   const auto* transformations = text_classification->transformations();
   if (!transformations) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   TransformationVector transformations_vec;
   for (const auto* transformation_entry : *transformations) {
     if (!transformation_entry) {
-      return absl::nullopt;
+      return std::nullopt;
     }
-    absl::optional<TransformationPtr> transformation_ptr;
+    std::optional<TransformationPtr> transformation_ptr;
     switch (transformation_entry->transformation_type()) {
       case linear_text_classification::flat::TransformationType::
           TransformationType_LowercaseTransformation: {
@@ -83,7 +83,7 @@ absl::optional<TransformationVector> LoadTransformations(
       }
     }
     if (!transformation_ptr) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     transformations_vec.emplace_back(std::move(*transformation_ptr));
   }
@@ -93,17 +93,17 @@ absl::optional<TransformationVector> LoadTransformations(
 
 }  // namespace
 
-absl::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* data,
-                                                const size_t length) {
+std::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* data,
+                                               const size_t length) {
   flatbuffers::Verifier verifier(data, length);
   if (!linear_text_classification::flat::VerifyModelBuffer(verifier)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const linear_text_classification::flat::Model* model =
       linear_text_classification::flat::GetModel(data);
   if (!model) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const std::string default_language_code =
@@ -111,18 +111,18 @@ absl::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* data,
   const auto* locale = model->locale();
   if (!locale ||
       !base::EqualsCaseInsensitiveASCII(locale->str(), default_language_code)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
-  absl::optional<TransformationVector> transformations =
+  std::optional<TransformationVector> transformations =
       LoadTransformations(model);
   if (!transformations) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   LinearModel linear_model(model);
   return PipelineInfo(locale->str(), std::move(*transformations),
-                      std::move(linear_model), absl::nullopt);
+                      std::move(linear_model), std::nullopt);
 }
 
 }  // namespace brave_ads::ml::pipeline

@@ -5,17 +5,33 @@
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 
-#include "base/notreached.h"
+#include <optional>
+
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
+#include "ui/native_theme/native_theme.h"
 
 namespace dark_mode {
 
+namespace {
+std::optional<bool> g_system_dark_mode_prefs;
+}  // namespace
+
+void CacheSystemDarkModePrefs(bool prefer_dark_theme) {
+  g_system_dark_mode_prefs = prefer_dark_theme;
+}
+
+bool HasCachedSystemDarkModeType() {
+  return g_system_dark_mode_prefs.has_value();
+}
+
 void SetSystemDarkMode(BraveDarkModeType type) {
   if (type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT) {
-    // Linux doesn't support system dark theme so there is no chance to set
-    // default type. Default is used for 'Same as Windows/MacOS'.
-    NOTREACHED();
+    if (g_system_dark_mode_prefs.has_value()) {
+      internal::SetSystemDarkModeForNonDefaultMode(*g_system_dark_mode_prefs);
+    }
+    return;
   }
+
   internal::SetSystemDarkModeForNonDefaultMode(
       type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
 }

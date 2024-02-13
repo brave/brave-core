@@ -9,13 +9,13 @@
 #include <vector>
 
 #include "components/cbor/values.h"
-#include "net/cert/pki/verify_certificate_chain.h"
+#include "third_party/boringssl/src/pki/verify_certificate_chain.h"
 
 namespace nitro_utils {
 
 // Class for parsing CoseSign1 structures and verifying their
 // signatures with certificate chains.
-class CoseSign1 : net::VerifyCertificateChainDelegate {
+class CoseSign1 : bssl::VerifyCertificateChainDelegate {
  public:
   CoseSign1();
   ~CoseSign1() override;
@@ -29,7 +29,7 @@ class CoseSign1 : net::VerifyCertificateChainDelegate {
 
   // Verifies the signature with a given certificate chain and
   // returns true upon success.
-  bool Verify(const net::ParsedCertificateList& cert_chain);
+  bool Verify(const bssl::ParsedCertificateList& cert_chain);
 
   // Retrieves value containing headers protected by the signature.
   const cbor::Value& protected_headers();
@@ -40,13 +40,13 @@ class CoseSign1 : net::VerifyCertificateChainDelegate {
 
  private:
   bool IsSignatureAlgorithmAcceptable(
-      net::SignatureAlgorithm signature_algorithm,
-      net::CertErrors* errors) override;
+      bssl::SignatureAlgorithm signature_algorithm,
+      bssl::CertErrors* errors) override;
 
   bool IsPublicKeyAcceptable(EVP_PKEY* public_key,
-                             net::CertErrors* errors) override;
+                             bssl::CertErrors* errors) override;
 
-  net::SignatureVerifyCache* GetVerifyCache() override;
+  bssl::SignatureVerifyCache* GetVerifyCache() override;
 
   cbor::Value protected_headers_;
   cbor::Value unprotected_headers_;

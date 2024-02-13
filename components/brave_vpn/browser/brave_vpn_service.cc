@@ -6,7 +6,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 
 #include <algorithm>
-#include <utility>
+#include <optional>
 
 #include "base/base64.h"
 #include "base/check_is_test.h"
@@ -23,7 +23,6 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/version_info/version_info.h"
@@ -33,13 +32,8 @@
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
-
-#if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
-#endif
 
 namespace brave_vpn {
 
@@ -137,7 +131,9 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " " << state;
 #if BUILDFLAG(IS_WIN)
-  WriteConnectionState(static_cast<int>(state));
+  if (delegate_) {
+    delegate_->WriteConnectionState(state);
+  }
 #endif
   // Ignore connection state change request for non purchased user.
   // This can be happened when user controls vpn via os settings.
@@ -154,7 +150,9 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
 #if BUILDFLAG(IS_WIN)
     // Run tray process each time we establish connection. System tray icon
     // manages self state to be visible/hidden due to settings.
-    wireguard::ShowBraveVpnStatusTrayIcon();
+    if (delegate_) {
+      delegate_->ShowBraveVpnStatusTrayIcon();
+    }
 #endif
     RecordP3A(true);
   }
@@ -409,8 +407,8 @@ void BraveVpnService::AddObserver(
 }
 
 mojom::PurchasedInfo BraveVpnService::GetPurchasedInfoSync() const {
-  return purchased_state_.value_or(mojom::PurchasedInfo(
-      mojom::PurchasedState::NOT_PURCHASED, absl::nullopt));
+  return purchased_state_.value_or(
+      mojom::PurchasedInfo(mojom::PurchasedState::NOT_PURCHASED, std::nullopt));
 }
 
 void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
@@ -497,7 +495,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     return;
   }
 
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
 
   // Early return when summary is invalid or it's empty dict.
@@ -581,8 +579,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
       net::cookie_util::ParseCookieExpirationTime(credential_cookie.Expires());
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
-      encoded_credential.data(), encoded_credential.size(),
-      url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
+      encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
   std::string credential;
   base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
   if (credential.empty()) {
@@ -728,11 +725,12 @@ void BraveVpnService::RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
     return;
   }
   base::Time session_start_time =
-      base::Time::FromJsTime(static_cast<double>(session_start_time_ms))
+      base::Time::FromMillisecondsSinceUnixEpoch(
+          static_cast<double>(session_start_time_ms))
           .LocalMidnight();
-  base::Time session_end_time =
-      base::Time::FromJsTime(static_cast<double>(session_end_time_ms))
-          .LocalMidnight();
+  base::Time session_end_time = base::Time::FromMillisecondsSinceUnixEpoch(
+                                    static_cast<double>(session_end_time_ms))
+                                    .LocalMidnight();
   for (base::Time day = session_start_time; day <= session_end_time;
        day += base::Days(1)) {
     bool is_last_day = day == session_end_time;
@@ -761,7 +759,7 @@ void BraveVpnService::OnP3AInterval() {
 void BraveVpnService::SetPurchasedState(
     const std::string& env,
     PurchasedState state,
-    const absl::optional<std::string>& description) {
+    const std::optional<std::string>& description) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (GetPurchasedInfoSync().state == state || env != GetCurrentEnvironment()) {
     return;
@@ -774,8 +772,12 @@ void BraveVpnService::SetPurchasedState(
     obs->OnPurchasedStateChanged(state, description);
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (state == PurchasedState::PURCHASED)
+  if (state == PurchasedState::PURCHASED) {
     connection_api_->CheckConnection();
+
+    // Some platform needs to install services to run vpn.
+    connection_api_->MaybeInstallSystemServices();
+  }
 #endif
 }
 

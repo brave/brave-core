@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -36,8 +37,8 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(from_account, absl::nullopt, true, true),
-       SolanaAccountMeta(to_account, absl::nullopt, false, true)},
+      {SolanaAccountMeta(from_account, std::nullopt, true, true),
+       SolanaAccountMeta(to_account, std::nullopt, false, true)},
       data);
 
   auto msg = SolanaMessage::CreateLegacyMessage(
@@ -76,11 +77,11 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
       ti->origin_info,
       MakeOriginInfo(url::Origin::Create(GURL("https://test.brave.com/"))));
 
-  EXPECT_EQ(meta.created_time().ToJavaTime(),
+  EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
             ti->created_time.InMilliseconds());
-  EXPECT_EQ(meta.submitted_time().ToJavaTime(),
+  EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
             ti->submitted_time.InMilliseconds());
-  EXPECT_EQ(meta.confirmed_time().ToJavaTime(),
+  EXPECT_EQ(meta.confirmed_time().InMillisecondsSinceUnixEpoch(),
             ti->confirmed_time.InMilliseconds());
 
   EXPECT_EQ(meta.tx()->tx_type(), ti->tx_type);
@@ -102,7 +103,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
       static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
       solana_ins_data_decoder::GetMojomAccountParamsForTesting(
-          mojom::SolanaSystemInstruction::kTransfer, absl::nullopt),
+          mojom::SolanaSystemInstruction::kTransfer, std::nullopt),
       std::move(mojom_params));
   auto mojom_instruction = mojom::SolanaInstruction::New(
       mojom::kSolanaSystemProgramId, std::move(account_metas), data,
@@ -140,8 +141,8 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(from_account, absl::nullopt, true, true),
-       SolanaAccountMeta(to_account, absl::nullopt, false, true)},
+      {SolanaAccountMeta(from_account, std::nullopt, true, true),
+       SolanaAccountMeta(to_account, std::nullopt, false, true)},
       data);
   auto msg = SolanaMessage::CreateLegacyMessage(
       recent_blockhash, last_valid_block_height, from_account,
@@ -173,6 +174,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   base::Value::Dict value = meta.ToValue();
   auto expect_value = base::JSONReader::Read(R"(
     {
+      "coin": 501,
       "chain_id" : "0x66",
       "id": "meta_id",
       "status": 4,

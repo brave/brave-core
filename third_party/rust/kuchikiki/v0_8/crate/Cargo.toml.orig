@@ -1,0 +1,26 @@
+[package]
+name = "kuchikiki"
+version = "0.8.4-speedreader"
+authors = [
+  "Brave Authors",
+  "Ralph Giles <rgiles@brave.com>",
+  "Simon Sapin <simon.sapin@exyr.org>",
+]
+license = "MIT"
+description = "(口利き) HTML tree manipulation library"
+repository = "https://github.com/brave/kuchikiki"
+edition = "2018"
+
+[lib]
+name = "kuchikiki"
+doctest = false
+
+[dependencies]
+cssparser = "0.27"
+matches = "0.1.4"
+html5ever = "0.25.1"
+selectors = "0.22"
+indexmap = { version = "1.9.3", features = [ "std" ] }
+
+[dev-dependencies]
+tempfile = "3"

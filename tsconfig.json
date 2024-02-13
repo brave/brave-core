@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "sourceMap": true,
     "noImplicitAny": true,
     // esnext modules supports import() async webpack modules

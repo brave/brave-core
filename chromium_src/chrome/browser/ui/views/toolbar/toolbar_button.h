@@ -16,17 +16,19 @@
   const gfx::VectorIcon& GetVectorTouchIcon() const;  \
   virtual void SetHighlight
 
-#define UpdateColorsAndInsets virtual UpdateColorsAndInsets
+#define kDefaultIconSize \
+  kDefaultIconSize = 18; \
+  static constexpr int kDefaultIconSize_UnUsed
 #include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"  // IWYU pragma: export
-#undef UpdateColorsAndInsets
+#undef kDefaultIconSize
 #undef SetHighlight
 #undef ToolbarButton
 
 class ToolbarButton : public ToolbarButton_ChromiumImpl,
                       public views::InkDropObserver {
- public:
-  METADATA_HEADER(ToolbarButton);
+  METADATA_HEADER(ToolbarButton, ToolbarButton_ChromiumImpl)
 
+ public:
   using ToolbarButton_ChromiumImpl::ToolbarButton_ChromiumImpl;
   ~ToolbarButton() override;
 

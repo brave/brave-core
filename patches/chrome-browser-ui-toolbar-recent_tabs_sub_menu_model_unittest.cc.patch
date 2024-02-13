@@ -1,32 +1,12 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index b12ca875746ef64c05cbc9a1de0769a8f3c65f47..71da65021b83e37ef478963e3f9c1b654825232f 100644
+index 072804da0d786efc942b55a57d141271b8c439b5..d46ad0acf71e9916a79562fbb24eec8cf87bd6ff 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-@@ -172,6 +172,7 @@ class RecentTabsSubMenuModelTest : public BrowserWithTestWindowTest {
-                              ->GetUnderlyingOpenTabsUIDelegateForTest());
+@@ -177,6 +177,7 @@ class RecentTabsSubMenuModelTest : public BrowserWithTestWindowTest,
+     helper->VerifyExport(session_sync_service_->GetOpenTabsUIDelegate());
    }
  
 +  BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
   private:
    raw_ptr<sync_sessions::SessionSyncService, DanglingUntriaged>
        session_sync_service_;
-@@ -580,8 +581,8 @@ TEST_F(RecentTabsSubMenuModelTest, MaxSessionsAndRecency) {
-   EXPECT_THAT(base::span<const std::u16string>(
-                   recent_tabs_builder.GetTabTitlesSortedByRecency())
-                   .subspan(0, 3),
--              ElementsAre(model.GetLabelAt(5), model.GetLabelAt(8),
--                          model.GetLabelAt(11)));
-+              ElementsAre(model.GetLabelAt(6), model.GetLabelAt(9),
-+                          model.GetLabelAt(12)));
- }
- 
- TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
-@@ -618,6 +619,6 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
-   EXPECT_THAT(base::span<const std::u16string>(
-                   recent_tabs_builder.GetTabTitlesSortedByRecency())
-                   .subspan(0, 4),
--              ElementsAre(model.GetLabelAt(5), model.GetLabelAt(6),
--                          model.GetLabelAt(7), model.GetLabelAt(8)));
-+              ElementsAre(model.GetLabelAt(6), model.GetLabelAt(7),
-+                          model.GetLabelAt(8), model.GetLabelAt(9)));
- }

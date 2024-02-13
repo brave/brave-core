@@ -27,25 +27,23 @@ LinearModel::LinearModel(LinearModel&& other) noexcept = default;
 
 LinearModel& LinearModel::operator=(LinearModel&& other) noexcept = default;
 
-LinearModel::~LinearModel() = default;
-
-absl::optional<PredictionMap> LinearModel::Predict(
+std::optional<PredictionMap> LinearModel::Predict(
     const VectorData& data) const {
   PredictionMap predictions;
   const auto* classifier = model_->classifier();
   if (!classifier || !classifier->biases() ||
       !classifier->segment_weight_vectors()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   for (const auto* segment_weight : *classifier->segment_weight_vectors()) {
     if (!segment_weight || !segment_weight->segment() ||
         !segment_weight->weights()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     const std::string segment = segment_weight->segment()->str();
     if (segment.empty()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     std::vector<float> weights;
     weights.reserve(segment_weight->weights()->size());
@@ -61,23 +59,23 @@ absl::optional<PredictionMap> LinearModel::Predict(
   return predictions;
 }
 
-absl::optional<PredictionMap> LinearModel::GetTopPredictions(
+std::optional<PredictionMap> LinearModel::GetTopPredictions(
     const VectorData& data) const {
-  return GetTopCountPredictionsImpl(data, absl::nullopt);
+  return GetTopCountPredictionsImpl(data, std::nullopt);
 }
 
-absl::optional<PredictionMap> LinearModel::GetTopCountPredictions(
+std::optional<PredictionMap> LinearModel::GetTopCountPredictions(
     const VectorData& data,
     size_t top_count) const {
   return GetTopCountPredictionsImpl(data, top_count);
 }
 
-absl::optional<PredictionMap> LinearModel::GetTopCountPredictionsImpl(
+std::optional<PredictionMap> LinearModel::GetTopCountPredictionsImpl(
     const VectorData& data,
-    absl::optional<size_t> top_count) const {
-  const absl::optional<PredictionMap> predictions = Predict(data);
+    std::optional<size_t> top_count) const {
+  const std::optional<PredictionMap> predictions = Predict(data);
   if (!predictions) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const PredictionMap predictions_softmax = Softmax(*predictions);

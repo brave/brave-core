@@ -5,6 +5,8 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -242,7 +244,7 @@ TEST_F(IpfsTabHelperUnitTest, DNSLinkRecordResolved_AutoRedirectDNSLink) {
   helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
   helper->HostResolvedCallback(GURL("https://brantly.eth/page?query#ref"),
                                GURL("https://brantly.eth/page?query#ref"),
-                               false, absl::nullopt, false, "brantly.eth",
+                               false, std::nullopt, false, "brantly.eth",
                                "/ipns/brantly.eth/");
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
             helper->GetIPFSResolvedURL());

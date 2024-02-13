@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -220,28 +219,33 @@ public class AddAssetActivity extends BraveWalletBaseActivity implements TextWat
         mTokenIdEdit.setEnabled(true);
         mAdd.setEnabled(false);
 
-        AssetRatioService assetRatioService = getAssetRatioService();
-        assert assetRatioService != null;
-        if (!contractAddress.isEmpty() && mNetworkInfo.coin == CoinType.ETH) {
-            assetRatioService.getTokenInfo(contractAddress, token -> {
-                if (token != null) {
-                    mPauseTextWatcher = true;
-                    mTokenNameEdit.setText(token.name, TextView.BufferType.EDITABLE);
-                    mTokenSymbolEdit.setText(token.symbol, TextView.BufferType.EDITABLE);
-                    mTokenDecimalsEdit.setText(
-                            String.valueOf(token.decimals), TextView.BufferType.EDITABLE);
-                    if (!token.isErc721) mTokenIdEdit.setEnabled(false);
-                    mPauseTextWatcher = false;
-                    if (!mNftsOnly
-                            || (token.isErc721 && !mTokenIdEdit.getText().toString().isEmpty())
-                            || !token.isErc721) {
-                        mAdd.setEnabled(true);
-                    }
-                }
-            });
-        }
+        // AssetRatioService::GetTokenInfo has been removed in favour of
+        // JsonRpcService::GetEthTokenInfo, which is a chain-agnostic method
+        // to query EVM token info.
+        //
+        // AssetRatioService assetRatioService = getAssetRatioService();
+        // assert assetRatioService != null;
+        // if (!contractAddress.isEmpty() && mNetworkInfo.coin == CoinType.ETH) {
+        //     assetRatioService.getTokenInfo(contractAddress, token -> {
+        //         if (token != null) {
+        //             mPauseTextWatcher = true;
+        //             mTokenNameEdit.setText(token.name, TextView.BufferType.EDITABLE);
+        //             mTokenSymbolEdit.setText(token.symbol, TextView.BufferType.EDITABLE);
+        //             mTokenDecimalsEdit.setText(
+        //                     String.valueOf(token.decimals), TextView.BufferType.EDITABLE);
+        //             if (!token.isErc721) mTokenIdEdit.setEnabled(false);
+        //             mPauseTextWatcher = false;
+        //             if (!mNftsOnly
+        //                     || (token.isErc721 && !mTokenIdEdit.getText().toString().isEmpty())
+        //                     || !token.isErc721) {
+        //                 mAdd.setEnabled(true);
+        //             }
+        //         }
+        //     });
+        // }
 
-        if (tokenName.isEmpty() || tokenSymbol.isEmpty()
+        if (tokenName.isEmpty()
+                || tokenSymbol.isEmpty()
                 || (mNetworkInfo.coin == CoinType.ETH
                         && ((mNftsOnly && mTokenIdEdit.getText().toString().isEmpty())
                                 || mTokenDecimalsEdit.getText().toString().isEmpty()))) {

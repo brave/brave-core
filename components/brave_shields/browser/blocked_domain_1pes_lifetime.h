@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BLOCKED_DOMAIN_1PES_LIFETIME_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BLOCKED_DOMAIN_1PES_LIFETIME_H_
 
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ephemeral_storage {
@@ -36,9 +36,9 @@ class BlockedDomain1PESLifetime
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       const GURL& url);
 
-  explicit BlockedDomain1PESLifetime(const Key& Key);
+  explicit BlockedDomain1PESLifetime(const Key& key);
 
-  void AddOnReadyCallback(base::OnceCallback<void()> on_ready);
+  void AddOnReadyCallback(base::OnceCallback<void(bool)> on_ready);
 
  private:
   friend class RefCounted<BlockedDomain1PESLifetime>;
@@ -48,8 +48,8 @@ class BlockedDomain1PESLifetime
   void On1PESEnableRequestComplete(bool is_enabled);
 
   const Key key_;
-  std::vector<base::OnceCallback<void()>> on_ready_;
-  absl::optional<bool> is_1pes_enabled_;
+  std::vector<base::OnceCallback<void(bool)>> on_ready_;
+  std::optional<bool> is_1pes_enabled_;
 };
 
 }  // namespace brave_shields

@@ -6,6 +6,7 @@
 #include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -42,11 +43,11 @@ std::string GetPrefNameFromPinningMode(PinningMode mode) {
 }  // namespace
 
 // Splits ipfs:// url to a list of PinData items
-absl::optional<std::vector<PinData>> IpfsLocalPinService::ExtractPinData(
+std::optional<std::vector<PinData>> IpfsLocalPinService::ExtractPinData(
     const std::string& ipfs_url) {
   auto gurl = GURL(ipfs_url);
   if (!gurl.SchemeIs(ipfs::kIPFSScheme)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   // This will just remove ipfs:// scheme
   auto path = gurl.path();
@@ -54,7 +55,7 @@ absl::optional<std::vector<PinData>> IpfsLocalPinService::ExtractPinData(
       base::SplitString(path, "/", base::WhitespaceHandling::KEEP_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
   if (slit.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::vector<PinData> result;
   std::string builder = "/ipfs";
@@ -67,14 +68,14 @@ absl::optional<std::vector<PinData>> IpfsLocalPinService::ExtractPinData(
   return result;
 }
 
-absl::optional<std::vector<ipfs::PinData>>
+std::optional<std::vector<ipfs::PinData>>
 IpfsLocalPinService::ExtractMergedPinData(
     const std::vector<std::string>& ipfs_urls) {
   std::vector<ipfs::PinData> result;
   for (const auto& ipfs_url : ipfs_urls) {
     auto pins_data_for_url = ExtractPinData(ipfs_url);
     if (!pins_data_for_url) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     for (const auto& item : pins_data_for_url.value()) {
       if (!base::Contains(result, item)) {
@@ -99,7 +100,7 @@ AddLocalPinJob::AddLocalPinJob(PrefService* prefs_service,
 AddLocalPinJob::~AddLocalPinJob() = default;
 
 void AddLocalPinJob::Start() {
-  auto callback = base::BarrierCallback<absl::optional<AddPinResult>>(
+  auto callback = base::BarrierCallback<std::optional<AddPinResult>>(
       2, base::BindOnce(&AddLocalPinJob::OnAddPinResult,
                         weak_ptr_factory_.GetWeakPtr()));
 
@@ -125,8 +126,8 @@ void AddLocalPinJob::Start() {
 }
 
 void AddLocalPinJob::Accumulate(
-    base::OnceCallback<void(absl::optional<AddPinResult>)> callback,
-    absl::optional<AddPinResult> result) {
+    base::OnceCallback<void(std::optional<AddPinResult>)> callback,
+    std::optional<AddPinResult> result) {
   if (!result) {
     pinning_failed_ = true;
   }
@@ -135,7 +136,7 @@ void AddLocalPinJob::Accumulate(
 }
 
 void AddLocalPinJob::OnAddPinResult(
-    std::vector<absl::optional<AddPinResult>> result) {
+    std::vector<std::optional<AddPinResult>> result) {
   if (is_canceled_) {
     std::move(callback_).Run(false);
     return;
@@ -228,9 +229,9 @@ void VerifyLocalPinJob::Start() {
                                         weak_ptr_factory_.GetWeakPtr()));
 }
 
-void VerifyLocalPinJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
+void VerifyLocalPinJob::OnGetPinsResult(std::optional<GetPinsResult> result) {
   if (is_canceled_) {
-    std::move(callback_).Run(absl::nullopt);
+    std::move(callback_).Run(std::nullopt);
     return;
   }
 
@@ -253,22 +254,22 @@ GcJob::GcJob(PrefService* prefs_service,
 GcJob::~GcJob() = default;
 
 void GcJob::Start() {
-  auto callback = base::BarrierCallback<absl::optional<GetPinsResult>>(
+  auto callback = base::BarrierCallback<std::optional<GetPinsResult>>(
       2,
       base::BindOnce(&GcJob::OnGetPinsResult, weak_ptr_factory_.GetWeakPtr()));
   ipfs_service_->GetPins(
-      absl::nullopt, GetPrefNameFromPinningMode(PinningMode::RECURSIVE), true,
+      std::nullopt, GetPrefNameFromPinningMode(PinningMode::RECURSIVE), true,
       base::BindOnce(&GcJob::Accumulate, weak_ptr_factory_.GetWeakPtr(),
                      callback));
   ipfs_service_->GetPins(
-      absl::nullopt, GetPrefNameFromPinningMode(PinningMode::DIRECT), true,
+      std::nullopt, GetPrefNameFromPinningMode(PinningMode::DIRECT), true,
       base::BindOnce(&GcJob::Accumulate, weak_ptr_factory_.GetWeakPtr(),
                      callback));
 }
 
 void GcJob::Accumulate(
-    base::OnceCallback<void(absl::optional<GetPinsResult>)> callback,
-    absl::optional<GetPinsResult> result) {
+    base::OnceCallback<void(std::optional<GetPinsResult>)> callback,
+    std::optional<GetPinsResult> result) {
   if (!result) {
     gc_job_failed_ = true;
   }
@@ -276,7 +277,7 @@ void GcJob::Accumulate(
   std::move(callback).Run(std::move(result));
 }
 
-void GcJob::OnGetPinsResult(std::vector<absl::optional<GetPinsResult>> result) {
+void GcJob::OnGetPinsResult(std::vector<std::optional<GetPinsResult>> result) {
   if (is_canceled_) {
     std::move(callback_).Run(false);
     return;
@@ -314,7 +315,7 @@ void GcJob::OnGetPinsResult(std::vector<absl::optional<GetPinsResult>> result) {
   }
 }
 
-void GcJob::OnPinsRemovedResult(absl::optional<RemovePinResult> result) {
+void GcJob::OnPinsRemovedResult(std::optional<RemovePinResult> result) {
   std::move(callback_).Run(result.has_value());
 }
 
@@ -335,7 +336,7 @@ void IpfsLocalPinService::Reset(base::OnceCallback<void(bool)> callback) {
 
 void IpfsLocalPinService::OnLsPinCliResult(
     base::OnceCallback<void(bool)> callback,
-    absl::optional<std::string> result) {
+    std::optional<std::string> result) {
   if (!result) {
     std::move(callback).Run(false);
     return;
@@ -410,7 +411,7 @@ void IpfsLocalPinService::ValidatePins(
   auto pins_data = ExtractMergedPinData(ipfs_urls);
   if (!pins_data) {
     NOTREACHED();
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   ipfs_base_pin_service_->AddJob(std::make_unique<VerifyLocalPinJob>(
@@ -439,7 +440,7 @@ void IpfsLocalPinService::OnAddJobFinished(AddPinCallback callback,
 }
 
 void IpfsLocalPinService::OnValidateJobFinished(ValidatePinsCallback callback,
-                                                absl::optional<bool> status) {
+                                                std::optional<bool> status) {
   std::move(callback).Run(status);
   ipfs_base_pin_service_->OnJobDone(status.value_or(false));
 }

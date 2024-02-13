@@ -25,8 +25,6 @@ using UnspentOutputs = std::vector<UnspentOutput>;
 
 struct QueuedRequestData;
 
-// TODO(apaymyshev): test this class
-// TODO(apaymyshev): consider this being a separate keyed service
 class BitcoinRpc {
  public:
   explicit BitcoinRpc(

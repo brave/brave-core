@@ -14,21 +14,75 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import { IsEip1559Changed } from '../../constants/action_types'
-import { IsEip1559ChangedMutationArg } from '../api.slice'
 import { NetworksRegistry } from '../entities/network.entity'
 import { ACCOUNT_TAG_IDS } from './account.endpoints'
+import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
 export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED',
-  SWAP_SUPPORTED: 'SWAP_SUPPORTED'
+  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
+  CUSTOM_ASSET_SUPPORTED: 'CUSTOM_ASSET_SUPPORTED'
 } as const
+
+interface IsEip1559ChangedMutationArg {
+  id: string
+  isEip1559: boolean
+}
 
 export const networkEndpoints = ({
   mutation,
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
+    // queries
+    /** Gets all networks, regardless of which coin-types are enabled */
+    getAllKnownNetworks: query<BraveWallet.NetworkInfo[], void>({
+      queryFn: async (_arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api, cache } = baseQuery(undefined)
+
+          const { isBitcoinEnabled, isZCashEnabled } =
+            cache.walletInfo || (await cache.getWalletInfo())
+
+          const { networks: ethNetworks } =
+            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
+          const { networks: solNetworks } =
+            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.SOL)
+          const { networks: filNetworks } =
+            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.FIL)
+          const btcNetworks = isBitcoinEnabled
+            ? (
+                await api.jsonRpcService.getAllNetworks(
+                  BraveWallet.CoinType.BTC
+                )
+              ).networks
+            : []
+          const zecNetworks = isZCashEnabled
+            ? (
+                await api.jsonRpcService.getAllNetworks(
+                  BraveWallet.CoinType.ZEC
+                )
+          ).networks : []
+          return {
+            data: [
+              ...ethNetworks,
+              ...solNetworks,
+              ...filNetworks,
+              ...btcNetworks,
+              ...zecNetworks,
+            ]
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable to fetch all known networks',
+            error
+          )
+        }
+      },
+      providesTags: ['Network']
+    }),
     getNetworksRegistry: query<NetworksRegistry, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
@@ -49,7 +103,7 @@ export const networkEndpoints = ({
           ? ['UNKNOWN_ERROR']
           : [{ type: 'Network', id: NETWORK_TAG_IDS.REGISTRY }]
     }),
-    getSwapSupportedNetworkIds: query<string[], void>({
+    getSwapSupportedNetworks: query<BraveWallet.NetworkInfo[], void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const {
@@ -78,7 +132,7 @@ export const networkEndpoints = ({
             .map((net) => net.chainId.toString())
 
           return {
-            data: swapChainIds
+            data: getEntitiesListFromEntityState(networksRegistry, swapChainIds)
           }
         } catch (error) {
           return handleEndpointError(
@@ -117,6 +171,96 @@ export const networkEndpoints = ({
         err
           ? ['UNKNOWN_ERROR']
           : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
+    }),
+    // mutations
+    hideNetworks: mutation<
+      boolean,
+      Array<Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>>
+    >({
+      queryFn: async (chains, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api, cache } = baseQuery(undefined)
+
+          await mapLimit(
+            chains,
+            10,
+            async (
+              chain: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+            ) => {
+              const { success } = await api.jsonRpcService.addHiddenNetwork(
+                chain.coin,
+                chain.chainId
+              )
+
+              if (!success) {
+                throw new Error('jsonRpcService.addHiddenNetwork failed')
+              }
+            }
+          )
+
+          cache.clearNetworksRegistry()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to hide networks: ${chains
+              .map((chain) => chain.chainId)
+              .join()}`,
+            error
+          )
+        }
+      },
+      invalidatesTags: (result, error) => ['Network']
+    }),
+    restoreNetworks: mutation<
+      boolean,
+      Array<Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>>
+    >({
+      queryFn: async (chains, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api, cache } = baseQuery(undefined)
+
+          await mapLimit(
+            chains,
+            10,
+            async (
+              chain: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+            ) => {
+              const { success } = await api.jsonRpcService.removeHiddenNetwork(
+                chain.coin,
+                chain.chainId
+              )
+
+              if (!success) {
+                throw new Error('jsonRpcService.removeHiddenNetwork failed')
+              }
+            }
+          )
+
+          cache.clearNetworksRegistry()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to unhide networks: ${chains
+              .map((chain) => chain.chainId)
+              .join()}`,
+            error
+          )
+        }
+      },
+      invalidatesTags: (result, error) => [
+        'Network',
+        'TokenBalances',
+        'TokenBalances',
+        'AccountTokenCurrentBalance'
+      ]
     }),
     setNetwork: mutation<
       {
@@ -202,7 +346,12 @@ export const networkEndpoints = ({
         }
       },
       // refresh networks & selected network
-      invalidatesTags: ['Network']
+      invalidatesTags: [
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
     })
   }
 }

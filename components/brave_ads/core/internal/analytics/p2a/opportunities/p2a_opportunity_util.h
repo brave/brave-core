@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 

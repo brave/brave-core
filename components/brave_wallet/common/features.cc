@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 
 #include "base/feature_list.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 #include "build/build_config.h"
 
 namespace brave_wallet {
@@ -26,15 +27,25 @@ BASE_FEATURE(kBraveWalletNftPinningFeature,
 
 BASE_FEATURE(kBraveWalletBitcoinFeature,
              "BraveWalletBitcoin",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+#if BUILDFLAG(ENABLE_BITCOIN_BY_DEFAULT)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+);
 const base::FeatureParam<int> kBitcoinRpcThrottle{&kBraveWalletBitcoinFeature,
-                                                  "rpc_throttle", 3};
+                                                  "rpc_throttle", 2};
 const base::FeatureParam<bool> kBitcoinTestnetDiscovery{
     &kBraveWalletBitcoinFeature, "testnet_discovery", false};
 
 BASE_FEATURE(kBraveWalletZCashFeature,
              "BraveWalletZCash",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+#if BUILDFLAG(ENABLE_ZCASH_BY_DEFAULT)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+);
 
 BASE_FEATURE(kBraveWalletAnkrBalancesFeature,
              "BraveWalletAnkrBalances",

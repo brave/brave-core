@@ -7,8 +7,11 @@
 #define BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_
 
 #import <Foundation/Foundation.h>
+
+#include <optional>
 #include <string>
 #include <vector>
+
 #import "brave/components/brave_ads/core/public/client/ads_client.h"
 
 @protocol AdsClientBridge;
@@ -45,9 +48,9 @@ class AdsClientIOS : public brave_ads::AdsClient {
             const std::string& value,
             brave_ads::SaveCallback callback) override;
   void Load(const std::string& name, brave_ads::LoadCallback callback) override;
-  void LoadFileResource(const std::string& id,
-                        const int version,
-                        brave_ads::LoadFileCallback callback) override;
+  void LoadComponentResource(const std::string& id,
+                             const int version,
+                             brave_ads::LoadFileCallback callback) override;
   void GetBrowsingHistory(
       const int max_count,
       const int days_ago,
@@ -65,11 +68,11 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
-  absl::optional<base::Value> GetProfilePref(const std::string& path) override;
+  std::optional<base::Value> GetProfilePref(const std::string& path) override;
   void ClearProfilePref(const std::string& path) override;
   bool HasProfilePrefPath(const std::string& path) const override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
-  absl::optional<base::Value> GetLocalStatePref(
+  std::optional<base::Value> GetLocalStatePref(
       const std::string& path) override;
   void ClearLocalStatePref(const std::string& path) override;
   bool HasLocalStatePrefPath(const std::string& path) const override;

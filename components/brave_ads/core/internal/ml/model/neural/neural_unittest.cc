@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_test_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -20,7 +19,7 @@ namespace brave_ads::ml {
 
 class BraveAdsNeuralTest : public UnitTestBase {
  public:
-  absl::optional<NeuralModel> BuildNeuralModel(
+  std::optional<NeuralModel> BuildNeuralModel(
       const std::vector<std::vector<VectorData>>& raw_matrices,
       const std::vector<std::string>& raw_activation_functions,
       const std::vector<std::string>& raw_segments) {
@@ -33,13 +32,13 @@ class BraveAdsNeuralTest : public UnitTestBase {
     flatbuffers::Verifier verifier(
         reinterpret_cast<const uint8_t*>(buffer_.data()), buffer_.size());
     if (!neural_text_classification::flat::VerifyModelBuffer(verifier)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     const auto* raw_model =
         neural_text_classification::flat::GetModel(buffer_.data());
     if (!raw_model) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     return NeuralModel(raw_model);
@@ -64,13 +63,13 @@ TEST_F(BraveAdsNeuralTest, Prediction) {
 
   std::vector<std::string> segments = {"class_1", "class_2", "class_3"};
 
-  absl::optional<NeuralModel> neural(
+  std::optional<NeuralModel> neural(
       BuildNeuralModel(matrices, activation_functions, segments));
   ASSERT_TRUE(neural);
   const VectorData sample_observation({0.2, 0.65, 0.15});
 
   // Act
-  const absl::optional<PredictionMap> sample_predictions =
+  const std::optional<PredictionMap> sample_predictions =
       neural->Predict(sample_observation);
   ASSERT_TRUE(sample_predictions);
 
@@ -91,13 +90,13 @@ TEST_F(BraveAdsNeuralTest, PredictionNomatrices) {
   std::vector<std::string> activation_functions = {};
   std::vector<std::string> segments = {"class_1", "class_2", "class_3"};
 
-  absl::optional<NeuralModel> neural(
+  std::optional<NeuralModel> neural(
       BuildNeuralModel(matrices, activation_functions, segments));
   ASSERT_TRUE(neural);
   const VectorData sample_observation({0.2, 0.65, 0.15});
 
   // Act
-  const absl::optional<PredictionMap> sample_predictions =
+  const std::optional<PredictionMap> sample_predictions =
       neural->Predict(sample_observation);
   ASSERT_TRUE(sample_predictions);
 
@@ -123,13 +122,13 @@ TEST_F(BraveAdsNeuralTest, PredictionDefaultPostMatrixFunctions) {
 
   std::vector<std::string> segments = {"class_1", "class_2", "class_3"};
 
-  absl::optional<NeuralModel> neural(
+  std::optional<NeuralModel> neural(
       BuildNeuralModel(matrices, activation_functions, segments));
   ASSERT_TRUE(neural);
   const VectorData sample_observation({0.2, 0.65, 0.15});
 
   // Act
-  const absl::optional<PredictionMap> sample_predictions =
+  const std::optional<PredictionMap> sample_predictions =
       neural->Predict(sample_observation);
   ASSERT_TRUE(sample_predictions);
 
@@ -155,16 +154,16 @@ TEST_F(BraveAdsNeuralTest, TopPredictions) {
 
   std::vector<std::string> segments = {"class_1", "class_2", "class_3"};
 
-  absl::optional<NeuralModel> neural(
+  std::optional<NeuralModel> neural(
       BuildNeuralModel(matrices, activation_functions, segments));
   ASSERT_TRUE(neural);
   const VectorData sample_observation({0.2, 0.65, 0.15});
 
   // Act
-  const absl::optional<PredictionMap> sample_predictions =
+  const std::optional<PredictionMap> sample_predictions =
       neural->GetTopPredictions(sample_observation);
   ASSERT_TRUE(sample_predictions);
-  const absl::optional<PredictionMap> sample_predictions_constrained =
+  const std::optional<PredictionMap> sample_predictions_constrained =
       neural->GetTopCountPredictions(sample_observation, 2);
   ASSERT_TRUE(sample_predictions_constrained);
 

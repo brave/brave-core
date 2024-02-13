@@ -17,7 +17,7 @@ import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
 public class BraveSearchEngineUtils {
-    static public void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
+    public static void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
         // There is no point in creating service for OTR profile in advance since they change
         // It will be initialized in SearchEngineTabModelSelectorObserver when called on an OTR
         // profile
@@ -31,25 +31,26 @@ public class BraveSearchEngineUtils {
         initializeBraveSearchEngineStates(profile);
     }
 
-    static public void initializeBraveSearchEngineStates(Profile profile) {
+    public static void initializeBraveSearchEngineStates(Profile profile) {
         final TemplateUrlService templateUrlService =
                 TemplateUrlServiceFactory.getForProfile(profile);
 
         if (!templateUrlService.isLoaded()) {
-            templateUrlService.registerLoadListener(new TemplateUrlService.LoadListener() {
-                @Override
-                public void onTemplateUrlServiceLoaded() {
-                    templateUrlService.unregisterLoadListener(this);
-                    doInitializeBraveSearchEngineStates(profile);
-                }
-            });
+            templateUrlService.registerLoadListener(
+                    new TemplateUrlService.LoadListener() {
+                        @Override
+                        public void onTemplateUrlServiceLoaded() {
+                            templateUrlService.unregisterLoadListener(this);
+                            doInitializeBraveSearchEngineStates(profile, null);
+                        }
+                    });
             templateUrlService.load();
         } else {
-            doInitializeBraveSearchEngineStates(profile);
+            doInitializeBraveSearchEngineStates(profile, templateUrlService);
         }
     }
 
-    static private void initializeDSEPrefs(Profile profile) {
+    private static void initializeDSEPrefs(Profile profile) {
         // At first run, we should set initial default prefs to each standard/private DSE prefs.
         // Those pref values will be used until user change DES options explicitly.
         final String notInitialized = "notInitialized";
@@ -69,17 +70,20 @@ public class BraveSearchEngineUtils {
         }
     }
 
-    static private void doInitializeBraveSearchEngineStates(Profile profile) {
+    private static void doInitializeBraveSearchEngineStates(
+            Profile profile, TemplateUrlService templateUrlServiceArg) {
         final TemplateUrlService templateUrlService =
-                TemplateUrlServiceFactory.getForProfile(profile);
+                templateUrlServiceArg != null
+                        ? templateUrlServiceArg
+                        : TemplateUrlServiceFactory.getForProfile(profile);
         assert templateUrlService.isLoaded();
 
         initializeDSEPrefs(profile);
-        updateActiveDSE(profile);
+        updateActiveDSE(profile, templateUrlService);
         QuickActionSearchAndBookmarkWidgetProvider.initializeDelegate();
     }
 
-    static public void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
+    public static void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
         BraveSearchEngineAdapter.setDSEPrefs(templateUrl, profile);
         if (!profile.isOffTheRecord() && templateUrl != null) {
             QuickActionSearchAndBookmarkWidgetProvider.updateSearchEngine(
@@ -87,15 +91,15 @@ public class BraveSearchEngineUtils {
         }
     }
 
-    static public void updateActiveDSE(Profile profile) {
-        BraveSearchEngineAdapter.updateActiveDSE(profile);
+    public static void updateActiveDSE(Profile profile, TemplateUrlService templateUrlServiceArg) {
+        BraveSearchEngineAdapter.updateActiveDSE(profile, templateUrlServiceArg);
     }
 
-    static public String getDSEShortName(Profile profile, boolean javaOnly) {
-        return BraveSearchEngineAdapter.getDSEShortName(profile, javaOnly);
+    public static String getDSEShortName(Profile profile, boolean javaOnly) {
+        return BraveSearchEngineAdapter.getDSEShortName(profile, javaOnly, null);
     }
 
-    static public TemplateUrl getTemplateUrlByShortName(Profile profile, String name) {
-        return BraveSearchEngineAdapter.getTemplateUrlByShortName(profile, name);
+    public static TemplateUrl getTemplateUrlByShortName(Profile profile, String name) {
+        return BraveSearchEngineAdapter.getTemplateUrlByShortName(profile, name, null);
     }
 }

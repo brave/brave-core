@@ -1,18 +1,18 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const path = require('path')
-const AliasPlugin = require('enhanced-resolve/lib/AliasPlugin')
+const webpack = require('webpack')
+const fs = require('fs')
+const {
+  fallback,
+  provideNodeGlobals
+} = require('../components/webpack/polyfill')
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
-
-// OpenSSL 3 no longer supports the insecure md4 hash, but webpack < 5.54.0
-// hardcodes it. Work around by substituting a supported algorithm.
-// https://github.com/webpack/webpack/issues/13572
-// https://github.com/webpack/webpack/issues/14532
-// TODO(petemill): Remove this patching when webpack > 5.54.0 is being used.
-const crypto = require('crypto')
-const crypto_orig_createHash = crypto.createHash
-crypto.createHash = (algorithm) =>
-  crypto_orig_createHash(algorithm == 'md4' ? 'sha256' : algorithm)
 
 function getBuildOuptutPathList(buildOutputRelativePath) {
   return buildConfigs.flatMap((config) => [
@@ -24,6 +24,94 @@ function getBuildOuptutPathList(buildOutputRelativePath) {
       )
     )
   ])
+}
+
+const genFolder = getBuildOuptutPathList('gen')
+  .filter((a) => fs.existsSync(a))
+  .sort((a, b) => fs.statSync(b).mtime - fs.statSync(a).mtime)[0]
+if (!genFolder) {
+  throw new Error('Failed to find build output folder!')
+}
+
+const basePathMap = require('../components/webpack/path-map')(genFolder)
+
+// Override the path map we use in the browser with some additional mock
+// directories, so that we can replace things in Storybook.
+const pathMap = {
+  ...basePathMap,
+  'chrome://resources': [
+    // As we mock some chrome://resources, insert our mock directory as the first
+    // place to look.
+    path.resolve(__dirname, 'chrome-resources-mock'),
+    basePathMap['chrome://resources']
+  ]
+}
+
+/**
+ * Maps a prefix to a corresponding path. We need this as Webpack5 dropped
+ * support for scheme prefixes (like chrome://)
+ *
+ * Note: This prefixReplacer is slightly different from the one we use in proper
+ * builds, as it takes the first match from any build folder, rather than
+ * specifying one - we don't know what the user built last, so we just see what
+ * we can find.
+ *
+ * This isn't perfect, and in future it'd be good to pass the build folder in
+ * via an environment variable. For now though, this works well.
+ * @param {string} prefix The prefix
+ * @param {string[] | string} replacements The real path options
+ */
+const prefixReplacer = (prefix, replacements) => {
+  if (!Array.isArray(replacements)) replacements = [replacements]
+
+  const regex = new RegExp(`^${prefix}/(.*)`)
+  return new webpack.NormalModuleReplacementPlugin(regex, (resource) => {
+    resource.request = resource.request.replace(regex, (_, subpath) => {
+      if (!subpath) {
+        throw new Error('Subpath is undefined')
+      }
+
+      const match =
+        replacements.find((dir) => fs.existsSync(path.join(dir, subpath))) ??
+        replacements[0]
+      const result = path.join(match, subpath)
+      return result
+    })
+  })
+}
+
+/**
+ * Attempts to use mock implementations of a provided module name
+ * the mocked implementation should live in a `__mocks__` folder adjacent to the
+ * module (`./bridge` -> `./__mocks__/bridge`)
+ *
+ * Names of the modules to use mock implementations for
+ * @param {string[]} moduleNames
+ */
+function useMockedModules(moduleNames) {
+  if (!Array.isArray(moduleNames)) {
+    throw new Error('moduleNames must be an array of strings')
+  }
+
+  const moduleNamesGroup = moduleNames.join('|')
+
+  // Match paths containing any of the module name
+  // but not if they are preceded by "__mocks__/"
+  const moduleRegex = new RegExp(
+    `^(?!.*__mocks__\/(${
+      moduleNamesGroup //
+    })(?:\.ts)?$).*\/(${
+      moduleNamesGroup //
+    })(?:\.ts)?$`
+  )
+
+  return new webpack.NormalModuleReplacementPlugin(moduleRegex, (resource) => {
+    const foldersAndFile = resource.request.split('/')
+    const fileName = foldersAndFile[foldersAndFile.length - 1]
+    const mockedFile = `__mocks__/${fileName}`
+    // Modify the resource path
+    resource.request = resource.request.replace(fileName, mockedFile)
+  })
 }
 
 // Export a function. Accept the base config as the only param.
@@ -70,65 +158,23 @@ module.exports = async ({ config, mode }) => {
           '../components/webpack/webpack-ts-transformers.js'
         )
       }
+    },
+    {
+      test: /\.avif$/,
+      loader: 'file-loader'
     }
   )
-  config.module.rules.push({
-    test: /\.avif$/,
-    loader: 'file-loader'
-  })
-  // Use webpack resolve.alias from v5 whilst still using webpack v4,
-  // so that we can use an array as value
-  config.resolve.plugins = [
-    ...config.resolve.plugins,
-    new AliasPlugin(
-      'described-resolve',
-      [
-        {
-          name: 'brave-ui',
-          alias: path.resolve(__dirname, '../node_modules/@brave/brave-ui')
-        },
-        {
-          // Force same styled-components module for brave-core and brave-ui
-          // which ensure both repos code use the same singletons, e.g. ThemeContext.
-          name: 'styled-components',
-          alias: path.resolve(__dirname, '../node_modules/styled-components')
-        },
-        {
-          name: 'chrome://resources',
-          alias: [
-            // Mock chromium code where possible
-            path.resolve(__dirname, 'chrome-resources-mock'),
-            // TODO(petemill): This is not ideal since if the dev is using a Static
-            // build, but has previously made a Component build, then an outdated
-            // version of a module will be used. Instead, accept a cli argument
-            // or environment variable containing which build target to use.
-            ...getBuildOuptutPathList('gen/ui/webui/resources/tsc')
-          ]
-        },
-        {
-          name: 'gen',
-          alias: [
-            // Mock chromium code where possible
-            path.resolve(__dirname, 'gen-mock'),
-            // TODO(petemill): This is not ideal since if the dev is using a Static
-            // build, but has previously made a Component build, then an outdated
-            // version of a module will be used. Instead, accept a cli argument
-            // or environment variable containing which build target to use.
-            ...getBuildOuptutPathList('gen')
-          ]
-        },
-        {
-          name: '$web-common',
-          alias: [path.resolve(__dirname, '../components/common')]
-        },
-        {
-          name: '$web-components',
-          alias: [path.resolve(__dirname, '../components/web-components')]
-        }
-      ],
-      'resolve'
-    )
-  ]
+
+  config.resolve.alias = pathMap
+  config.resolve.fallback = fallback
+
+  config.plugins.push(
+    provideNodeGlobals,
+    useMockedModules(['bridge', 'brave_rewards_api_proxy']),
+    ...Object.keys(pathMap)
+      .filter((prefix) => prefix.startsWith('chrome://'))
+      .map((prefix) => prefixReplacer(prefix, pathMap[prefix]))
+  )
   config.resolve.extensions.push('.ts', '.tsx', '.scss')
   return config
 }

@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_rewards/core/contribution/contribution_tip.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
@@ -27,16 +27,16 @@ void ContributionTip::Process(const std::string& publisher_id,
                               double amount,
                               ProcessCallback callback) {
   if (publisher_id.empty()) {
-    BLOG(0, "Failed to do tip due to missing publisher key");
-    std::move(callback).Run(absl::nullopt);
+    engine_->LogError(FROM_HERE)
+        << "Failed to do tip due to missing publisher key";
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   engine_->publisher()->GetServerPublisherInfo(
-      publisher_id,
-      ToLegacyCallback(base::BindOnce(&ContributionTip::OnPublisherDataRead,
-                                      base::Unretained(this), publisher_id,
-                                      amount, std::move(callback))));
+      publisher_id, base::BindOnce(&ContributionTip::OnPublisherDataRead,
+                                   weak_factory_.GetWeakPtr(), publisher_id,
+                                   amount, std::move(callback)));
 }
 
 void ContributionTip::OnPublisherDataRead(
@@ -45,7 +45,7 @@ void ContributionTip::OnPublisherDataRead(
     ProcessCallback callback,
     mojom::ServerPublisherInfoPtr server_info) {
   if (!server_info || server_info->address.empty()) {
-    std::move(callback).Run(absl::nullopt);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -66,9 +66,8 @@ void ContributionTip::OnPublisherDataRead(
 
   engine_->database()->SaveContributionQueue(
       std::move(queue),
-      ToLegacyCallback(
-          base::BindOnce(&ContributionTip::OnQueueSaved, base::Unretained(this),
-                         std::move(queue_id), std::move(callback))));
+      base::BindOnce(&ContributionTip::OnQueueSaved, weak_factory_.GetWeakPtr(),
+                     queue_id, std::move(callback)));
 }
 
 void ContributionTip::OnQueueSaved(const std::string& queue_id,
@@ -78,8 +77,8 @@ void ContributionTip::OnQueueSaved(const std::string& queue_id,
     engine_->contribution()->ProcessContributionQueue();
     std::move(callback).Run(queue_id);
   } else {
-    BLOG(0, "Queue was not saved");
-    std::move(callback).Run(absl::nullopt);
+    engine_->LogError(FROM_HERE) << "Queue was not saved";
+    std::move(callback).Run(std::nullopt);
   }
 }
 

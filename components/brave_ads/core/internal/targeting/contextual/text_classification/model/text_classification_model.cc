@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_model.h"
 
+#include <algorithm>
+#include <iterator>
+
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
@@ -40,24 +43,25 @@ SegmentProbabilityMap GetSegmentProbabilities(
 SegmentProbabilityList ToSortedSegmentProbabilityList(
     const SegmentProbabilityMap& segment_probabilities) {
   SegmentProbabilityList list(segment_probabilities.size());
+  list.reserve(segment_probabilities.size());
 
   base::ranges::partial_sort_copy(
       segment_probabilities, list,
-      [](const SegmentProbabilityPair& lhs, const SegmentProbabilityPair& rhs) {
-        return lhs.second > rhs.second;
-      });
+      [](const auto& lhs, const auto& rhs) { return lhs.second > rhs.second; });
 
   return list;
 }
 
 SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   SegmentList segments;
+  segments.reserve(segment_probabilities.size());
 
-  for (const auto& [segment, _] : segment_probabilities) {
-    CHECK(!segment.empty());
-
-    segments.push_back(segment);
-  }
+  std::transform(segment_probabilities.cbegin(), segment_probabilities.cend(),
+                 std::back_inserter(segments),
+                 [](const auto& segment_probability) {
+                   CHECK(!segment_probability.first.empty());
+                   return segment_probability.first;
+                 });
 
   return segments;
 }

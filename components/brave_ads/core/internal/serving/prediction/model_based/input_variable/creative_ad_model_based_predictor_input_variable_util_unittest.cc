@@ -9,9 +9,8 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_segment_input_variables_info.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -198,7 +197,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
   const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
       last_seen_ad_input_variable =
           ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable(
-              creative_ad, ad_events, /*weights=*/{});
+              creative_ad, ad_events, /*weight=*/0.0);
 
   // Act & Assert
   EXPECT_EQ(base::Hours(7), last_seen_ad_input_variable.value);
@@ -213,7 +212,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
   const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
       last_seen_ad_input_variable =
           ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable(
-              creative_ad, /*ad_events=*/{}, /*weights=*/{});
+              creative_ad, /*ad_events=*/{}, /*weight=*/0.0);
 
   // Act & Assert
   EXPECT_FALSE(last_seen_ad_input_variable.value);
@@ -235,7 +234,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
   const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
       last_seen_advertiser_input_variable =
           ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
-              creative_ad, ad_events, /*weights=*/{});
+              creative_ad, ad_events, /*weight=*/0.0);
 
   // Act & Assert
   EXPECT_EQ(base::Hours(3), last_seen_advertiser_input_variable.value);
@@ -251,25 +250,10 @@ TEST_F(
   const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
       last_seen_advertiser_input_variable =
           ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
-              creative_ad, /*ad_events=*/{}, /*weights=*/{});
+              creative_ad, /*ad_events=*/{}, /*weight=*/0.0);
 
   // Act & Assert
   EXPECT_FALSE(last_seen_advertiser_input_variable.value);
-}
-
-TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
-       ComputeCreativeAdModelBasedPredictorPriorityInputVariable) {
-  // Arrange
-  const CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_use_random_uuids=*/true);
-
-  const CreativeAdModelBasedPredictorPriorityInputVariableInfo
-      priority_input_variable =
-          ComputeCreativeAdModelBasedPredictorPriorityInputVariable(
-              creative_ad, /*weights=*/{});
-
-  // Act & Assert
-  EXPECT_EQ(2, priority_input_variable.value);
 }
 
 }  // namespace brave_ads

@@ -77,6 +77,7 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   width: 100%;
   flex-wrap: wrap-reverse;
+  gap: 8px;
 `
 
 export const InfoText = styled.span`

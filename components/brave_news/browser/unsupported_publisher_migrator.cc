@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -56,8 +57,8 @@ void UnsupportedPublisherMigrator::EnsureInitialized() {
         // can try and migrate the sources again next time the browser is
         // launched.
         if (result.Is2XXResponseCode()) {
-          absl::optional<Publishers> publishers =
-              ParseCombinedPublisherList(result.value_body());
+          std::optional<Publishers> publishers =
+              ParseCombinedPublisherList(result.TakeBody());
           if (publishers) {
             migrator->v1_api_publishers_ = std::move(*publishers);
           }

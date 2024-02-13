@@ -55,7 +55,7 @@ base::Value::Dict GetConfirmationsAsDictionary(
 
     if (confirmation.reward) {
       // Token
-      const absl::optional<std::string> token_base64 =
+      const std::optional<std::string> token_base64 =
           confirmation.reward->token.EncodeBase64();
       if (!token_base64) {
         continue;
@@ -63,7 +63,7 @@ base::Value::Dict GetConfirmationsAsDictionary(
       dict.Set("payment_token", *token_base64);
 
       // Blinded token
-      const absl::optional<std::string> blinded_token_base64 =
+      const std::optional<std::string> blinded_token_base64 =
           confirmation.reward->blinded_token.EncodeBase64();
       if (!blinded_token_base64) {
         continue;
@@ -72,14 +72,14 @@ base::Value::Dict GetConfirmationsAsDictionary(
 
       // Unblinded token
       base::Value::Dict unblinded_token;
-      const absl::optional<std::string> unblinded_token_base64 =
+      const std::optional<std::string> unblinded_token_base64 =
           confirmation.reward->unblinded_token.EncodeBase64();
       if (!unblinded_token_base64) {
         continue;
       }
       unblinded_token.Set("unblinded_token", *unblinded_token_base64);
 
-      const absl::optional<std::string> public_key_base64 =
+      const std::optional<std::string> public_key_base64 =
           confirmation.reward->public_key.EncodeBase64();
       if (!public_key_base64) {
         continue;
@@ -104,7 +104,7 @@ base::Value::Dict GetConfirmationsAsDictionary(
       // must create a new credential excluding the dynamic user data.
       ConfirmationInfo mutable_confirmation(confirmation);
       mutable_confirmation.user_data.dynamic = {};
-      const absl::optional<std::string> reward_credential_base64url =
+      const std::optional<std::string> reward_credential_base64url =
           BuildRewardCredential(mutable_confirmation);
       if (!reward_credential_base64url) {
         continue;
@@ -134,7 +134,7 @@ ConfirmationStateManager& ConfirmationStateManager::GetInstance() {
 }
 
 void ConfirmationStateManager::LoadState(
-    const absl::optional<WalletInfo>& wallet,
+    const std::optional<WalletInfo>& wallet,
     InitializeCallback callback) {
   BLOG(3, "Loading confirmation state");
 
@@ -147,7 +147,7 @@ void ConfirmationStateManager::LoadState(
 
 void ConfirmationStateManager::LoadCallback(
     InitializeCallback callback,
-    const absl::optional<std::string>& json) {
+    const std::optional<std::string>& json) {
   if (!json) {
     BLOG(3, "Confirmation state does not exist, creating default state");
 
@@ -187,7 +187,7 @@ void ConfirmationStateManager::SaveState() {
        }));
 }
 
-absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
+std::optional<RewardInfo> ConfirmationStateManager::GetReward(
     const base::Value::Dict& dict) const {
   RewardInfo reward;
 
@@ -195,14 +195,14 @@ absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
   if (const auto* const value = dict.FindString("payment_token")) {
     reward.token = cbr::Token(*value);
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Blinded token
   if (const auto* const value = dict.FindString("blinded_payment_token")) {
     reward.blinded_token = cbr::BlindedToken(*value);
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (const auto* const unblinded_token_dict = dict.FindDict("token_info")) {
@@ -211,7 +211,7 @@ absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
             unblinded_token_dict->FindString("unblinded_token")) {
       reward.unblinded_token = cbr::UnblindedToken(*value);
     } else {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     // Public key
@@ -219,7 +219,7 @@ absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
             unblinded_token_dict->FindString("public_key")) {
       reward.public_key = cbr::PublicKey(*value);
     } else {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     // Signature
@@ -229,19 +229,19 @@ absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
     } else {
       // Legacy migration.
       if (!wallet_) {
-        return absl::nullopt;
+        return std::nullopt;
       }
 
-      const absl::optional<std::string> unblinded_token_base64 =
+      const std::optional<std::string> unblinded_token_base64 =
           reward.unblinded_token.EncodeBase64();
       if (!unblinded_token_base64) {
-        return absl::nullopt;
+        return std::nullopt;
       }
 
-      const absl::optional<std::string> signature =
+      const std::optional<std::string> signature =
           crypto::Sign(*unblinded_token_base64, wallet_->secret_key);
       if (!signature) {
-        return absl::nullopt;
+        return std::nullopt;
       }
 
       reward.signature = *signature;
@@ -252,7 +252,7 @@ absl::optional<RewardInfo> ConfirmationStateManager::GetReward(
   if (const auto* const value = dict.FindString("credential")) {
     reward.credential_base64url = *value;
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return reward;
@@ -304,7 +304,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Type
     if (const auto* const value = item_dict->FindString("type")) {
-      confirmation.type = ParseConfirmationType(*value);
+      confirmation.type = ToConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
       continue;
@@ -312,7 +312,7 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
 
     // Ad type
     if (const auto* const value = item_dict->FindString("ad_type")) {
-      confirmation.ad_type = ParseAdType(*value);
+      confirmation.ad_type = ToAdType(*value);
     } else {
       BLOG(0, "Missing confirmation ad type");
       continue;
@@ -401,7 +401,7 @@ std::string ConfirmationStateManager::ToJson() {
 }
 
 bool ConfirmationStateManager::FromJson(const std::string& json) {
-  const absl::optional<base::Value::Dict> dict =
+  const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
   if (!dict) {
     return false;
@@ -451,7 +451,7 @@ bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
         base::ranges::remove_if(
             filtered_confirmation_tokens,
             [&public_key](const ConfirmationTokenInfo& confirmation_token) {
-              const absl::optional<std::string> unblinded_token_base64 =
+              const std::optional<std::string> unblinded_token_base64 =
                   confirmation_token.unblinded_token.EncodeBase64();
               return !unblinded_token_base64 ||
                      !crypto::Verify(*unblinded_token_base64, public_key,

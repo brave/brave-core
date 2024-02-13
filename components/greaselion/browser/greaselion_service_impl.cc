@@ -6,7 +6,9 @@
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
 
 #include <stddef.h>
+
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -44,7 +46,6 @@
 #include "extensions/common/file_util.h"
 #include "extensions/common/manifest_constants.h"
 #include "extensions/common/mojom/manifest.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using extensions::Extension;
 using extensions::mojom::ManifestLocation;
@@ -65,7 +66,7 @@ bool ShouldComputeHashesForResource(
 // extension that the caller should take ownership of, or nullptr.
 //
 // NOTE: This function does file IO and should not be called on the UI thread.
-absl::optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
+std::optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
 ConvertGreaselionRuleToExtensionOnTaskRunner(
     const greaselion::GreaselionRule& rule,
     const base::FilePath& install_dir) {
@@ -73,13 +74,13 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
       extensions::file_util::GetInstallTempDir(install_dir);
   if (install_temp_dir.empty()) {
     LOG(ERROR) << "Could not get path to profile temp directory";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   base::ScopedTempDir temp_dir;
   if (!temp_dir.CreateUniqueTempDirUnderPath(install_temp_dir)) {
     LOG(ERROR) << "Could not create Greaselion temp directory";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Create the manifest
@@ -155,7 +156,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // files to disk.
   if (!serializer.Serialize(base::Value(std::move(root)))) {
     LOG(ERROR) << "Could not write Greaselion manifest";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Copy the messages directory to our extension directory.
@@ -165,7 +166,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
             temp_dir.GetPath().AppendASCII("_locales"), true)) {
       LOG(ERROR) << "Could not copy Greaselion messages directory at path: "
                  << rule.messages().LossyDisplayName();
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 
@@ -175,7 +176,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
                         temp_dir.GetPath().Append(script.BaseName()))) {
       LOG(ERROR) << "Could not copy Greaselion script at path: "
           << script.LossyDisplayName();
-      return absl::nullopt;
+      return std::nullopt;
     }
   }
 
@@ -186,11 +187,11 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!extension.get()) {
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Calculate and write computed hashes.
-  absl::optional<extensions::ComputedHashes::Data> computed_hashes_data =
+  std::optional<extensions::ComputedHashes::Data> computed_hashes_data =
       extensions::ComputedHashes::Compute(
           extension->path(),
           extension_misc::kContentVerificationDefaultBlockSize,
@@ -226,7 +227,6 @@ GreaselionServiceImpl::GreaselionServiceImpl(
     : download_service_(download_service),
       install_directory_(install_directory),
       extension_system_(extension_system),
-      extension_service_(extension_system->extension_service()),
       extension_registry_(extension_registry),
       all_rules_installed_successfully_(true),
       update_in_progress_(false),
@@ -251,6 +251,13 @@ void GreaselionServiceImpl::Shutdown() {
   extension_registry_->RemoveObserver(this);
   task_runner_->PostTask(FROM_HERE,
                          base::BindOnce(&DeleteExtensionDirs, extension_dirs_));
+}
+
+void GreaselionServiceImpl::SetExtensionService(
+    extensions::ExtensionService* extension_service) {
+  DCHECK(extension_service);
+  DCHECK(!extension_service_);
+  extension_service_ = extension_service;
 }
 
 bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
@@ -332,7 +339,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
 }
 
 void GreaselionServiceImpl::PostConvert(
-    absl::optional<GreaselionConvertedExtension> converted_extension) {
+    std::optional<GreaselionConvertedExtension> converted_extension) {
   if (!converted_extension) {
     all_rules_installed_successfully_ = false;
     pending_installs_ -= 1;

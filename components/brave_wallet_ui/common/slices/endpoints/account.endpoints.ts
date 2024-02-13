@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // constants
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, FilecoinNetwork } from '../../../constants/types'
 import { NETWORK_TAG_IDS } from './network.endpoints'
 
 // types
@@ -44,6 +44,7 @@ export const accountEndpoints = ({
           ? ['UNKNOWN_ERROR']
           : [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }]
     }),
+
     invalidateAccountInfos: mutation<boolean, void>({
       queryFn: (arg, api, extraOptions, baseQuery) => {
         baseQuery(undefined).cache.clearAccountsRegistry()
@@ -51,9 +52,13 @@ export const accountEndpoints = ({
       },
       invalidatesTags: [
         { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }
+        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY },
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
       ]
     }),
+
     invalidateSelectedAccount: mutation<boolean, void>({
       queryFn: (arg, api, extraOptions, baseQuery) => {
         baseQuery(undefined).cache.clearSelectedAccount()
@@ -64,6 +69,7 @@ export const accountEndpoints = ({
         { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
       ]
     }),
+
     setSelectedAccount: mutation<BraveWallet.AccountId, BraveWallet.AccountId>({
       queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
         try {
@@ -91,6 +97,7 @@ export const accountEndpoints = ({
         { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
       ]
     }),
+
     getSelectedAccountId: query<BraveWallet.AccountId | null, void>({
       queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
         return {
@@ -101,6 +108,7 @@ export const accountEndpoints = ({
       },
       providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
     }),
+
     addAccount: mutation<
       BraveWallet.AccountInfo,
       {
@@ -111,9 +119,8 @@ export const accountEndpoints = ({
     >({
       queryFn: async (args, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { accountInfo } = await baseQuery(
-            undefined
-          ).data.keyringService.addAccount(
+          const { cache, data: api } = baseQuery(undefined)
+          const { accountInfo } = await api.keyringService.addAccount(
             args.coin,
             args.keyringId,
             args.accountName
@@ -122,6 +129,8 @@ export const accountEndpoints = ({
           if (!accountInfo) {
             throw new Error('Account info not found')
           }
+
+          cache.clearAccountsRegistry()
 
           return {
             data: accountInfo
@@ -138,7 +147,205 @@ export const accountEndpoints = ({
           )
         }
       },
+      invalidatesTags: [
+        'AccountInfos',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
+    }),
+
+    updateAccountName: mutation<
+      true,
+      {
+        accountId: BraveWallet.AccountId
+        name: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { keyringService } = api
+
+          const result = await keyringService.setAccountName(
+            arg.accountId,
+            arg.name
+          )
+
+          if (!result.success) {
+            throw new Error('Update failed')
+          }
+
+          cache.clearAccountsRegistry()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to update account name',
+            error
+          )
+        }
+      },
       invalidatesTags: ['AccountInfos']
+    }),
+
+    importAccount: mutation<
+      true,
+      {
+        accountName: string
+        privateKey: string
+        coin: BraveWallet.CoinType
+        network?: FilecoinNetwork
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { keyringService } = api
+          const result =
+            arg.coin === BraveWallet.CoinType.FIL && arg.network
+              ? await keyringService.importFilecoinAccount(
+                  arg.accountName,
+                  arg.privateKey,
+                  arg.network
+                )
+              : await keyringService.importAccount(
+                  arg.accountName,
+                  arg.privateKey,
+                  arg.coin
+                )
+
+          if (!result.account) {
+            throw new Error('No result')
+          }
+
+          cache.clearAccountsRegistry()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to import account',
+            error
+          )
+        }
+      },
+      invalidatesTags: [
+        'AccountInfos',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
+    }),
+
+    importAccountFromJson: mutation<
+      true,
+      {
+        accountName: string
+        password: string
+        json: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { keyringService } = api
+          const result = await keyringService.importAccountFromJson(
+            arg.accountName,
+            arg.password,
+            arg.json
+          )
+
+          if (!result.account) {
+            throw new Error('No result')
+          }
+
+          cache.clearAccountsRegistry()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to import account from JSON',
+            error
+          )
+        }
+      },
+      invalidatesTags: [
+        'AccountInfos',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
+    }),
+
+    importHardwareAccounts: mutation<true, BraveWallet.HardwareWalletAccount[]>(
+      {
+        queryFn: async (
+          hardwareAccounts,
+          { endpoint },
+          extraOptions,
+          baseQuery
+        ) => {
+          try {
+            const { cache, data: api } = baseQuery(undefined)
+            api.keyringService.addHardwareAccounts(hardwareAccounts)
+            cache.clearAccountsRegistry()
+            return {
+              data: true
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              'Failed to import hardware accounts',
+              error
+            )
+          }
+        },
+        invalidatesTags: [
+          'AccountInfos',
+          'TokenBalances',
+          'TokenBalancesForChainId',
+          'AccountTokenCurrentBalance'
+        ]
+      }
+    ),
+
+    removeAccount: mutation<
+      true,
+      {
+        accountId: BraveWallet.AccountId
+        password: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { keyringService } = api
+          await keyringService.removeAccount(arg.accountId, arg.password)
+
+          cache.clearAccountsRegistry()
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to remove account',
+            error
+          )
+        }
+      },
+      invalidatesTags: ['AccountInfos', 'Network']
     })
   }
 }

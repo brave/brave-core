@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
 
 #define PERMISSION_UTIL_GET_PERMISSION_STRING           \
@@ -50,7 +52,7 @@
   case PermissionType::BRAVE_SPEEDREADER:               \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
-    return absl::nullopt
+    return std::nullopt
 
 #include "src/third_party/blink/common/permissions/permission_utils.cc"
 

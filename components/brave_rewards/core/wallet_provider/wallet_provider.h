@@ -39,19 +39,23 @@ class WalletProvider {
 
   virtual base::TimeDelta GetDelay() const;
 
+  virtual void AssignWalletLinks(mojom::ExternalWallet& external_wallet) = 0;
+
+  virtual void OnWalletLinked(const std::string& address);
+
   void Initialize();
 
   void StartContribution(const std::string& contribution_id,
                          mojom::ServerPublisherInfoPtr info,
                          double amount,
-                         LegacyResultCallback callback);
+                         ResultCallback callback);
 
   void TransferFunds(double amount,
                      const std::string& address,
                      const std::string& contribution_id,
-                     LegacyResultCallback callback);
+                     ResultCallback callback);
 
-  void BeginLogin(BeginExternalWalletLoginCallback callback);
+  virtual void BeginLogin(BeginExternalWalletLoginCallback callback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
                      ConnectExternalWalletCallback callback);
@@ -71,7 +75,7 @@ class WalletProvider {
                       double available);
 
  private:
-  void ContributionCompleted(LegacyResultCallback callback,
+  void ContributionCompleted(ResultCallback callback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
@@ -94,11 +98,11 @@ class WalletProvider {
   void RemoveTransferFee(const std::string& contribution_id);
 
  protected:
+  const raw_ref<RewardsEngineImpl> engine_;
   std::unique_ptr<ConnectExternalWallet> connect_wallet_;
   std::unique_ptr<Transfer> transfer_;
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 

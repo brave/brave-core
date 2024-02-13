@@ -10,7 +10,8 @@
 
 #import "chrome/browser/app_controller_mac.h"
 
-// Manages logic to switch hotkey between copy and copy clean link item.
+// * Manages logic to switch hotkey between copy and copy clean link item.
+// * Add "New Private Window with Tor" to the dock menu.
 @interface BraveAppController : AppController
 @end
 

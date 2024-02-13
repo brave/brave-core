@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 
 #include <limits>
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -45,7 +46,7 @@ SolanaInstruction::SolanaInstruction(
     const std::string& program_id,
     std::vector<SolanaAccountMeta>&& accounts,
     const std::vector<uint8_t>& data,
-    absl::optional<SolanaInstructionDecodedData> decoded_data)
+    std::optional<SolanaInstructionDecodedData> decoded_data)
     : program_id_(program_id),
       accounts_(std::move(accounts)),
       data_(data),
@@ -92,7 +93,7 @@ bool SolanaInstruction::operator==(const SolanaInstruction& ins) const {
 // https://docs.solana.com/proposals/versioned-transactions#limitations.
 //
 // static
-absl::optional<SolanaInstruction> SolanaInstruction::FromCompiledInstruction(
+std::optional<SolanaInstruction> SolanaInstruction::FromCompiledInstruction(
     const SolanaCompiledInstruction& compiled_instruction,
     const SolanaMessageHeader& message_header,
     const std::vector<SolanaAddress>& static_accounts,
@@ -107,13 +108,13 @@ absl::optional<SolanaInstruction> SolanaInstruction::FromCompiledInstruction(
       message_header.num_readonly_signed_accounts;
   if (num_writable_signed_accounts < 0 ||
       num_writable_unsigned_accounts < 0) {  // invalid message header
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Program ID of compiled_instruction should be in static accounts.
   // https://docs.rs/solana-program/1.14.12/src/solana_program/message/versions/v0/mod.rs.html#72-73
   if (compiled_instruction.program_id_index() >= static_accounts.size()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::string program_id =
       static_accounts[compiled_instruction.program_id_index()].ToBase58();
@@ -121,7 +122,7 @@ absl::optional<SolanaInstruction> SolanaInstruction::FromCompiledInstruction(
   std::vector<SolanaAccountMeta> account_metas;
   for (const auto& account_index : compiled_instruction.account_indexes()) {
     std::string account_key;
-    absl::optional<uint8_t> address_table_lookup_index = absl::nullopt;
+    std::optional<uint8_t> address_table_lookup_index = std::nullopt;
     bool is_signer = false;
     bool is_writable = false;
 
@@ -157,10 +158,10 @@ absl::optional<SolanaInstruction> SolanaInstruction::FromCompiledInstruction(
       }
 
       if (!address_table_lookup_index) {  // not found in table lookups
-        return absl::nullopt;
+        return std::nullopt;
       }
     } else {  // out of bound
-      return absl::nullopt;
+      return std::nullopt;
     }
     account_metas.emplace_back(SolanaAccountMeta(
         account_key, address_table_lookup_index, is_signer, is_writable));
@@ -208,41 +209,41 @@ base::Value::Dict SolanaInstruction::ToValue() const {
 }
 
 // static
-absl::optional<SolanaInstruction> SolanaInstruction::FromValue(
+std::optional<SolanaInstruction> SolanaInstruction::FromValue(
     const base::Value::Dict& value) {
   const std::string* program_id = value.FindString(kProgramId);
   if (!program_id) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const base::Value::List* account_list = value.FindList(kAccounts);
   if (!account_list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::vector<SolanaAccountMeta> accounts;
   for (const auto& account_value : *account_list) {
     if (!account_value.is_dict()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
-    absl::optional<SolanaAccountMeta> account =
+    std::optional<SolanaAccountMeta> account =
         SolanaAccountMeta::FromValue(account_value.GetDict());
     if (!account) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     accounts.push_back(*account);
   }
 
   const std::string* data_base64_encoded = value.FindString(kData);
   if (!data_base64_encoded) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::string data_decoded;
   if (!base::Base64Decode(*data_base64_encoded, &data_decoded)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   std::vector<uint8_t> data(data_decoded.begin(), data_decoded.end());
 
-  absl::optional<SolanaInstructionDecodedData> decoded_data = absl::nullopt;
+  std::optional<SolanaInstructionDecodedData> decoded_data = std::nullopt;
   const base::Value::Dict* decoded_data_dict = value.FindDict(kDecodedData);
   if (decoded_data_dict) {
     decoded_data = SolanaInstructionDecodedData::FromValue(*decoded_data_dict);

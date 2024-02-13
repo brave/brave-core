@@ -12,7 +12,7 @@ namespace brave_ads {
 
 class DescendingHistorySort final : public HistorySortInterface {
  public:
-  HistoryItemList Apply(const HistoryItemList& history) const override;
+  void Apply(HistoryItemList& history) const override;
 };
 
 }  // namespace brave_ads

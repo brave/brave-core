@@ -12,7 +12,7 @@ import {
 
 // Hooks
 import { useExplorer } from '../../../../common/hooks/explorer'
-import { useGetSelectedChainQuery } from '../../../../common/slices/api.slice'
+import { useTransactionsNetwork } from '../../../../common/hooks/use-transactions-network'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -36,11 +36,9 @@ interface Props {
 export const TransactionSubmittedOrSigned = (props: Props) => {
   const { headerTitle, transaction, onClose } = props
 
-  // queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-
   // custom hooks
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const transactionNetwork = useTransactionsNetwork(transaction)
+  const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)
 
   const title =
     transaction.txStatus === BraveWallet.TransactionStatus.Submitted

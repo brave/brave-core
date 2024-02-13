@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
@@ -339,7 +341,7 @@ bool WidevineArm64DllInstaller::AddArm64ArchToManifest() {
     return false;
   }
 
-  absl::optional<base::Value> root = base::JSONReader::Read(json_content);
+  std::optional<base::Value> root = base::JSONReader::Read(json_content);
   if (!root) {
     LOG(ERROR) << "Failed to parse JSON.";
     return false;

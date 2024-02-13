@@ -67,7 +67,8 @@ const StyledPage = styled('div') <PageProps>`
 
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  position: relative;
+  position: fixed;
+  top: 0;
   z-index: 6;
   width: 100%;
   display: grid;
@@ -82,19 +83,20 @@ const StyledPage = styled('div') <PageProps>`
   min-height: 100vh;
   align-items: flex-start;
 
-  /* Fix the main NTP content so, when Brave News is in-view,
-  NTP items remain in the same place, and still allows NTP
-  Page to scroll to the bottom before that starts happening. */
-  z-index: 3;
-  position: fixed;
-  bottom: 0;
+  .${CLASSNAME_PAGE_STUCK} & {
+    /* Fix the main NTP content so, when Brave News is in-view,
+    NTP items remain in the same place, and still allows NTP
+    Page to scroll to the bottom before that starts happening. */
+    z-index: 3;
+  }
+
   /* Blur out the content when Brave News is interacted
-    with. We need the opacity to fade out our background image.
-    We need the background image to overcome the bug
-    where a backdrop-filter element's ancestor which has
-    a filter must also have a background. When this bug is
-    fixed then this element won't need the background.
-  */
+     with. We need the opacity to fade out our background image.
+     We need the background image to overcome the bug
+     where a backdrop-filter element's ancestor which has
+     a filter must also have a background. When this bug is
+     fixed then this element won't need the background.
+   */
   opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
   filter: blur(var(--blur-amount));
   background: var(--default-bg-color);
@@ -313,12 +315,14 @@ function getBackground(p: HasImageProps) {
   }
 
   if (p.hasImage && p.imageSrc) {
+    // Note: We force percent encoding for ( and ) because Chromium seems to be
+    // ignoring the fact that the URL is quoted for these.
     return `linear-gradient(
       rgba(0, 0, 0, 0.8),
       rgba(0, 0, 0, 0) 35%,
       rgba(0, 0, 0, 0) 80%,
       rgba(0, 0, 0, 0.6) 100%
-    ), url("${p.imageSrc}")`
+    ), url("${p.imageSrc.replaceAll('(', '%28').replaceAll(')', '%29')}")`
   }
 
   return ''
@@ -346,6 +350,7 @@ function getPageBackground(p: HasImageProps) {
       right: 0;
       display: block;
       transition: opacity .5s ease-in-out;
+      background: ${getBackground};
       ${p => p.hasImage && p.imageSrc && css`
         opacity: var(--bg-opacity);
         background-size: cover;
@@ -353,7 +358,6 @@ function getPageBackground(p: HasImageProps) {
         background-attachment: fixed;
       `};
       background-position: center center;
-      background-image: ${getBackground};
     }
   `
 }
@@ -375,8 +379,8 @@ export const App = styled('div') <AppProps & HasImageProps>`
       /* The FeedV2 has a semi-transparent white overlay. This is done via a
        * linear-gradient to not break any of the FeedV1 features. */
       --background-color: rgba(0,0,0, calc(0.65 * var(--ntp-extra-content-effect-multiplier)));
-      background: linear-gradient(var(--background-color), var(--background-color)), ${getBackground};
-        filter: blur(calc(var(--ntp-extra-content-effect-multiplier) * 32px));
+      background-image: linear-gradient(var(--background-color), var(--background-color)), ${getBackground};
+      filter: blur(calc(var(--ntp-extra-content-effect-multiplier) * 32px));
     }
   `}
 `

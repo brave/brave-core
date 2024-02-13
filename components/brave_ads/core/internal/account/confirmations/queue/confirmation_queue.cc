@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 
+#include <optional>
+
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
@@ -98,7 +100,7 @@ void ConfirmationQueue::FailedToProcessQueueItem(
 }
 
 void ConfirmationQueue::ProcessNextQueueItem() {
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       MaybeGetNextConfirmationQueueItem();
   if (!confirmation) {
     return NotifyDidExhaustConfirmationQueue();

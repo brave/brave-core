@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -86,7 +87,7 @@ class TxService : public KeyedService,
       mojom::TxDataUnionPtr tx_data_union,
       const std::string& chain_id,
       mojom::AccountIdPtr from,
-      const absl::optional<url::Origin>& origin,
+      const std::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback);
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& chain_id,
@@ -101,7 +102,7 @@ class TxService : public KeyedService,
                           const std::string& tx_meta_id,
                           GetTransactionInfoCallback) override;
   void GetAllTransactionInfo(mojom::CoinType coin_type,
-                             const absl::optional<std::string>& chain_id,
+                             const std::optional<std::string>& chain_id,
                              mojom::AccountIdPtr from,
                              GetAllTransactionInfoCallback) override;
   void GetPendingTransactionsCount(

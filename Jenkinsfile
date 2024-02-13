@@ -1,4 +1,5 @@
 def SKIP_SIGNING_DEFAULT = ! JOB_NAME.contains("windows")
+
 pipeline {
     agent none
     options {
@@ -6,10 +7,10 @@ pipeline {
         timestamps()
     }
     parameters {
-        choice(name: 'CHANNEL', choices: ['nightly', 'dev', 'beta', 'release', 'development'])
+        choice(name: 'CHANNEL', choices: ['nightly', 'beta', 'release'])
         choice(name: 'BUILD_TYPE', choices: ["Static", "Release", "Component", "Debug"])
         booleanParam(name: 'WIPE_WORKSPACE', defaultValue: false)
-        booleanParam(name: 'USE_GOMA', defaultValue: true)
+        booleanParam(name: 'USE_RBE', defaultValue: true)
         booleanParam(name: 'SKIP_SIGNING', defaultValue: SKIP_SIGNING_DEFAULT)
         booleanParam(name: 'DCHECK_ALWAYS_ON', defaultValue: true)
         string(name: 'DEVOPS_BRANCH', defaultValue: 'master')
@@ -57,10 +58,10 @@ pipeline {
                         pipelineJob('${PIPELINE_NAME}') {
                             // this list has to match the parameters in the Jenkinsfile from devops repo
                             parameters {
-                                choiceParam('CHANNEL', ['nightly', 'dev', 'beta', 'release', 'development'])
+                                choiceParam('CHANNEL', ['nightly', 'beta', 'release'])
                                 choiceParam('BUILD_TYPE', ["Static", "Release", "Component", "Debug"])
                                 booleanParam('WIPE_WORKSPACE', false)
-                                booleanParam('USE_GOMA', true)
+                                booleanParam('USE_RBE', true)
                                 booleanParam('SKIP_ALL_LINTERS', false)
                                 booleanParam('SKIP_SIGNING', ${SKIP_SIGNING_DEFAULT})
                                 booleanParam('DCHECK_ALWAYS_ON', true)
@@ -92,9 +93,10 @@ pipeline {
 
                     params = [
                         string(name: 'CHANNEL', value: params.CHANNEL),
+                        // TODO: mihai could pass Debug for migrated iOS
                         string(name: 'BUILD_TYPE', value: PLATFORM == 'android' ? 'Release' : params.BUILD_TYPE),
                         booleanParam(name: 'WIPE_WORKSPACE', value: params.WIPE_WORKSPACE),
-                        booleanParam(name: 'USE_GOMA', value: params.USE_GOMA),
+                        booleanParam(name: 'USE_RBE', value: params.USE_RBE),
                         booleanParam(name: 'SKIP_ALL_LINTERS', value: SKIP_ALL_LINTERS),
                         booleanParam(name: 'SKIP_SIGNING', value: params.SKIP_SIGNING),
                         booleanParam(name: 'DCHECK_ALWAYS_ON', value: params.DCHECK_ALWAYS_ON),

@@ -6,13 +6,15 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
 
+#include <map>
+#include <optional>
 #include <string>
+#include <vector>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace query_filter {
-absl::optional<GURL> ApplyQueryFilter(const GURL& original_url);
+std::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 
 // This function will return a new url stripping known tracking query params.
 // If nothing is to be stripped, a null value is returned.
@@ -24,12 +26,17 @@ absl::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 // specifies where we are navigating to. `request_method` indicates the HTTP
 // method of the request. `internal_redirect` indicates wether or not this is an
 // internal redirect or not. This function returns the url we should redirect to
-// or a `absl::nullopt` value if nothing is changed.
-absl::optional<GURL> MaybeApplyQueryStringFilter(
+// or a `std::nullopt` value if nothing is changed.
+std::optional<GURL> MaybeApplyQueryStringFilter(
     const GURL& initiator_url,
     const GURL& redirect_source_url,
     const GURL& request_url,
     const std::string& request_method,
     const bool internal_redirect);
+
+bool IsScopedTrackerForTesting(
+    const std::string_view param_name,
+    const std::string& spec,
+    const std::map<std::string_view, std::vector<std::string_view>>& trackers);
 }  // namespace query_filter
 #endif  // BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_

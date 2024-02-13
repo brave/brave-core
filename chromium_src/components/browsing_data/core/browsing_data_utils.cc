@@ -5,6 +5,7 @@
 
 #include "brave/chromium_src/components/browsing_data/core/browsing_data_utils.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
@@ -44,7 +45,7 @@ bool GetDeletionPreferenceFromDataType(
       data_type, clear_browsing_data_tab, out_pref);
 }
 
-absl::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
+std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
     const std::string& pref_name) {
   static constexpr auto kPreferenceToDataType =
       base::MakeFixedFlatMap<std::string_view, BrowsingDataType>({

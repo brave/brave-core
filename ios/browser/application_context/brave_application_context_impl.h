@@ -10,6 +10,7 @@
 #include <string>
 
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "ios/chrome/browser/application_context/model/application_context_impl.h"
 
@@ -36,11 +37,11 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
 
   // ApplicationContextImpl
   ukm::UkmRecorder* GetUkmRecorder() override;
-  BrowserPolicyConnectorIOS* GetBrowserPolicyConnector() override;
   gcm::GCMDriver* GetGCMDriver() override;
 
   // BraveApplicationContextImpl
   brave::URLSanitizerComponentInstaller* url_sanitizer_component_installer();
+  debounce::DebounceComponentInstaller* debounce_component_installer();
 
   // Start any services that we may need later
   void StartBraveServices();
@@ -56,6 +57,8 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
       local_data_files_service_;
   std::unique_ptr<brave::URLSanitizerComponentInstaller>
       url_sanitizer_component_installer_;
+  std::unique_ptr<debounce::DebounceComponentInstaller>
+      debounce_component_installer_;
 };
 
 #endif  // BRAVE_IOS_BROWSER_APPLICATION_CONTEXT_BRAVE_APPLICATION_CONTEXT_IMPL_H_

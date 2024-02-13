@@ -39,11 +39,11 @@ struct ClientInfo final {
   HistoryItemList history_items;
   base::flat_map<
       AdType,
-      std::map</*creative_instance_id=*/std::string, /*seen_ad=*/bool>>
+      std::map</*creative_instance_id*/ std::string, /*seen_ad*/ bool>>
       seen_ads;
   base::flat_map<
       AdType,
-      std::map</*advertiser_id=*/std::string, /*seen_advertiser=*/bool>>
+      std::map</*advertiser_id*/ std::string, /*seen_advertiser*/ bool>>
       seen_advertisers;
   TextClassificationProbabilityList text_classification_probabilities;
   PurchaseIntentSignalHistoryMap purchase_intent_signal_history;

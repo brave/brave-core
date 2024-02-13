@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 

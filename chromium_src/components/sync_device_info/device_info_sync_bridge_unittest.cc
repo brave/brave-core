@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include <optional>
 #include <string_view>
 
 #include "base/system/sys_info.h"
@@ -187,7 +188,7 @@ TEST_F(DeviceInfoSyncBridgeTest,
   // An incoming deletion for the local device info should not cause a reupload
   EXPECT_CALL(*processor(), Put(CacheGuidForSuffix(kLocalSuffix), _, _))
       .Times(0);
-  absl::optional<ModelError> error = bridge()->ApplyIncrementalSyncChanges(
+  std::optional<ModelError> error = bridge()->ApplyIncrementalSyncChanges(
       bridge()->CreateMetadataChangeList(), std::move(changes));
   ASSERT_FALSE(error);
 

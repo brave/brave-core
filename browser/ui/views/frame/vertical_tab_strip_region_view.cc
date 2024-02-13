@@ -7,11 +7,11 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -109,6 +109,10 @@ class ToggleButton : public ToolbarButton {
 
 #if DCHECK_IS_ON()
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
+    if (region_view_->is_animating()) {
+      return;
+    }
+
     CHECK_EQ(width(), GetIconWidth());
     CHECK_EQ(height(), GetIconWidth());
   }
@@ -123,44 +127,26 @@ class ToggleButton : public ToolbarButton {
 BEGIN_METADATA(ToggleButton, ToolbarButton)
 END_METADATA
 
-// A custom scroll view to avoid crash on Mac
-// TODO(sko) Remove this once the "sticky pinned tabs" is enabled by default.
-// https://github.com/brave/brave-browser/issues/29935
-class CustomScrollView : public views::ScrollView {
- public:
-  METADATA_HEADER(CustomScrollView);
-
-#if BUILDFLAG(IS_MAC)
-  CustomScrollView()
-      : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {}
-#else
-  CustomScrollView() : views::ScrollView() {}
-#endif
-  ~CustomScrollView() override = default;
-
-  // views::ScrollView:
-  void OnScrollEvent(ui::ScrollEvent* event) override {
-#if !BUILDFLAG(IS_MAC)
-    views::ScrollView::OnScrollEvent(event);
-#endif
-  }
-};
-
-BEGIN_METADATA(CustomScrollView, views::ScrollView)
-END_METADATA
-
 class VerticalTabSearchButton : public BraveTabSearchButton {
  public:
   METADATA_HEADER(VerticalTabSearchButton);
 
-  explicit VerticalTabSearchButton(TabStrip* tab_strip, Edge flat_edge)
-      : BraveTabSearchButton(tab_strip, flat_edge) {
+  VerticalTabSearchButton(VerticalTabStripRegionView* region_view,
+                          TabStripController* tab_strip_controller,
+                          Edge flat_edge)
+      : BraveTabSearchButton(tab_strip_controller, flat_edge) {
     SetPreferredSize(
         gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SEARCH));
     SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SEARCH));
-    SetBubbleArrow(views::BubbleBorder::LEFT_TOP);
     SetBorder(nullptr);
+
+    vertical_tab_on_right_.Init(
+        brave_tabs::kVerticalTabsOnRight,
+        region_view->browser()->profile()->GetPrefs(),
+        base::BindRepeating(&VerticalTabSearchButton::UpdateBubbleArrow,
+                            base::Unretained(this)));
+    UpdateBubbleArrow();
   }
 
   ~VerticalTabSearchButton() override = default;
@@ -206,6 +192,17 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
     BraveTabSearchButton::StateChanged(old_state);
     UpdateColors();
   }
+
+ private:
+  void UpdateBubbleArrow() {
+    if (*vertical_tab_on_right_) {
+      SetBubbleArrow(views::BubbleBorder::RIGHT_TOP);
+    } else {
+      SetBubbleArrow(views::BubbleBorder::LEFT_TOP);
+    }
+  }
+
+  BooleanPrefMember vertical_tab_on_right_;
 };
 
 BEGIN_METADATA(VerticalTabSearchButton, BraveTabSearchButton)
@@ -225,7 +222,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
         region_view_(region_view) {
     // We're going to use flex layout for children of this class. Other children
     // from base classes should be handled out of flex layout.
-    for (auto* child : children()) {
+    for (views::View* child : children()) {
       child->SetProperty(views::kViewIgnoredByLayoutKey, true);
     }
 
@@ -291,16 +288,17 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
   // BraveNewTabButton:
   SkPath GetBorderPath(const gfx::Point& origin,
-                       float scale,
                        bool extend_to_top) const override {
     auto contents_bounds = GetContentsBounds();
-    const float radius = GetCornerRadius() * scale;
     SkPath path;
-    const gfx::Rect path_rect(origin.x(), origin.y(),
-                              contents_bounds.width() * scale,
-                              contents_bounds.height() * scale);
-    path.addRoundRect(RectToSkRect(path_rect), radius, radius);
-    path.close();
+    const auto* widget = GetWidget();
+    if (widget) {
+      const float radius = GetCornerRadius();
+      const gfx::Rect path_rect(origin.x(), origin.y(), contents_bounds.width(),
+                                contents_bounds.height());
+      path.addRoundRect(RectToSkRect(path_rect), radius, radius);
+      path.close();
+    }
     return path;
   }
 
@@ -329,8 +327,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
       cc::PaintFlags flags;
       flags.setAntiAlias(true);
       flags.setColor(cp->GetColor(kColorToolbar));
-      canvas->DrawPath(
-          GetBorderPath(gfx::Point(), canvas->image_scale(), false), flags);
+      canvas->DrawPath(GetBorderPath(gfx::Point(), false), flags);
     }
 
     // Draw split line on the top.
@@ -414,7 +411,7 @@ class ResettableResizeArea : public views::ResizeArea {
   raw_ptr<VerticalTabStripRegionView> region_view_;
 };
 
-BEGIN_METADATA(ResettableResizeArea, ResizeArea)
+BEGIN_METADATA(ResettableResizeArea, views::ResizeArea)
 END_METADATA
 
 }  // namespace
@@ -478,15 +475,20 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     toggle_button_ = AddChildView(std::make_unique<ToggleButton>(
         std::move(toggle_callback), region_view));
 
-    auto* spacer = AddChildView(std::make_unique<views::View>());
-    layout_->SetFlexForView(spacer,
-                            1 /* resize |spacer| to fill the rest of space */);
+    spacer_ = AddChildView(std::make_unique<views::View>());
 
     // We layout the search button at the end, because there's no
     // way to change its bubble arrow from TOP_RIGHT at the moment.
     tab_search_button_ = AddChildView(std::make_unique<VerticalTabSearchButton>(
-        region_view->tab_strip(), Edge::kNone));
+        region_view, region_view->tab_strip()->controller(), Edge::kNone));
     UpdateTabSearchButtonVisibility();
+
+    vertical_tab_on_right_.Init(
+        brave_tabs::kVerticalTabsOnRight,
+        region_view_->browser()->profile()->GetPrefs(),
+        base::BindRepeating(&HeaderView::OnVerticalTabPositionChanged,
+                            base::Unretained(this)));
+    OnVerticalTabPositionChanged();
   }
   ~HeaderView() override = default;
 
@@ -523,11 +525,37 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
   }
 
  private:
+  void OnVerticalTabPositionChanged() {
+    std::vector<views::View*> new_children = {
+        toggle_button_.get(), spacer_.get(), tab_search_button_.get()};
+    if (tabs::utils::IsVerticalTabOnRight(region_view_->browser())) {
+      std::reverse(new_children.begin(), new_children.end());
+    }
+
+    CHECK_EQ(children().size(), new_children.size());
+    if (children().front() == new_children.front()) {
+      // In order to make sure that |spacer_| has flex behavior on start up.
+      layout_->SetFlexForView(
+          spacer_, 1 /* resize |spacer| to fill the rest of space */);
+      return;
+    }
+
+    // View::ReorderChildView() didn't work for us. So remove child views and
+    // add them again.
+    base::ranges::for_each(children(),
+                           [&](views::View* v) { RemoveChildView(v); });
+    base::ranges::for_each(new_children, [&](auto* v) { AddChildView(v); });
+    layout_->SetFlexForView(spacer_,
+                            1 /* resize |spacer| to fill the rest of space */);
+  }
+
   raw_ptr<views::BoxLayout> layout_ = nullptr;
   raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;
   raw_ptr<const TabStrip> tab_strip_ = nullptr;
   raw_ptr<ToggleButton> toggle_button_ = nullptr;
+  raw_ptr<views::View> spacer_ = nullptr;
   raw_ptr<BraveTabSearchButton> tab_search_button_ = nullptr;
+  BooleanPrefMember vertical_tab_on_right_;
 };
 
 BEGIN_METADATA(VerticalTabStripRegionView, HeaderView, views::View)
@@ -641,6 +669,12 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       base::BindRepeating(&VerticalTabStripRegionView::OnFullscreenStateChanged,
                           base::Unretained(this)));
 #endif
+
+  vertical_tab_on_right_.Init(
+      brave_tabs::kVerticalTabsOnRight, browser()->profile()->GetPrefs(),
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnVerticalTabPositionChanged,
+          base::Unretained(this)));
 
   widget_observation_.Observe(browser_view->GetWidget());
 
@@ -877,10 +911,16 @@ void VerticalTabStripRegionView::Layout() {
                                header_view_->y() + header_view_->height()});
   UpdateOriginalTabSearchButtonVisibility();
 
-  // Put resize area on the right side, overlapped with contents.
+  // Put resize area, overlapped with contents.
+  if (vertical_tab_on_right_.GetPrefName().empty()) {
+    // Not initialized yet.
+    return;
+  }
+
   constexpr int kResizeAreaWidth = 4;
-  resize_area_->SetBounds(width() - kResizeAreaWidth, contents_bounds.y(),
-                          kResizeAreaWidth, contents_bounds.height());
+  resize_area_->SetBounds(
+      *vertical_tab_on_right_ ? 0 : width() - kResizeAreaWidth,
+      contents_bounds.y(), kResizeAreaWidth, contents_bounds.height());
 }
 
 void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
@@ -893,6 +933,11 @@ void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   }
 
   UpdateBorder();
+}
+
+void VerticalTabStripRegionView::OnVerticalTabPositionChanged() {
+  UpdateBorder();
+  PreferredSizeChanged();
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
@@ -1062,16 +1107,20 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
   auto cursor_position =
       display::Screen::GetScreen()->GetCursorScreenPoint().x();
   if (!resize_offset_.has_value()) {
-    resize_offset_ = cursor_position - bounds_in_screen.right();
+    resize_offset_ =
+        (*vertical_tab_on_right_ ? bounds_in_screen.x() - cursor_position
+                                 : cursor_position - bounds_in_screen.right());
   }
   // Note that we're not using |resize_amount|. The variable is offset from
   // the initial point, it grows bigger and bigger.
-  auto dest_width = cursor_position - bounds_in_screen.x() - *resize_offset_ -
-                    GetInsets().width();
+  auto dest_width =
+      (*vertical_tab_on_right_ ? bounds_in_screen.right() - cursor_position
+                               : cursor_position - bounds_in_screen.x()) -
+      *resize_offset_ - GetInsets().width();
   dest_width = std::clamp(dest_width, tab_style_->GetPinnedWidth() * 3,
                           tab_style_->GetStandardWidth() * 2);
   if (done_resizing) {
-    resize_offset_ = absl::nullopt;
+    resize_offset_ = std::nullopt;
   }
 
   if (*expanded_width_ == dest_width) {
@@ -1145,7 +1194,7 @@ void VerticalTabStripRegionView::UpdateBorder() {
       return false;
     }
 
-    if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
       return true;
     }
 
@@ -1155,7 +1204,10 @@ void VerticalTabStripRegionView::UpdateBorder() {
            state_ == State::kFloating;
   };
 
-  gfx::Insets border_insets = gfx::Insets::TLBR(0, 0, 0, 1);
+  gfx::Insets border_insets =
+      (!vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_)
+          ? gfx::Insets::TLBR(0, 1, 0, 0)
+          : gfx::Insets::TLBR(0, 0, 0, 1);
 
   if (show_visible_border()) {
     SetBorder(views::CreateSolidSidedBorder(

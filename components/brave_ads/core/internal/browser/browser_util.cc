@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/version_info/version_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -17,7 +18,7 @@ std::string GetBrowserVersionNumber() {
 }
 
 bool WasBrowserUpgraded() {
-  static absl::optional<bool> was_upgraded;
+  static std::optional<bool> was_upgraded;
 
   if (was_upgraded) {
     return *was_upgraded;

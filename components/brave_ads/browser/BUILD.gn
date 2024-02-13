@@ -7,12 +7,17 @@ import("//brave/build/config.gni")
 
 static_library("browser") {
   sources = [
+    "ad_units/notification_ad/custom_notification_ad_constants.h",
+    "ad_units/notification_ad/custom_notification_ad_feature.cc",
+    "ad_units/notification_ad/custom_notification_ad_feature.h",
     "ads_service.cc",
     "ads_service.h",
     "ads_service_observer.h",
     "analytics/p2a/p2a.cc",
     "analytics/p2a/p2a.h",
     "analytics/p2a/p2a_constants.h",
+    "analytics/p3a/notification_ad.cc",
+    "analytics/p3a/notification_ad.h",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
@@ -25,11 +30,8 @@ static_library("browser") {
     "component_updater/resource_info.h",
     "reminder/reminder_util.cc",
     "reminder/reminder_util.h",
-    "units/notification_ad/custom_notification_ad_constants.h",
-    "units/notification_ad/custom_notification_ad_feature.cc",
-    "units/notification_ad/custom_notification_ad_feature.h",
-    "user/user_interaction/ad_events/ad_event_cache_helper.cc",
-    "user/user_interaction/ad_events/ad_event_cache_helper.h",
+    "user_engagement/ad_events/ad_event_cache_helper.cc",
+    "user_engagement/ad_events/ad_event_cache_helper.h",
   ]
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]

@@ -6,12 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_
 
+#include <optional>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;
@@ -24,21 +25,21 @@ class ContributionMonthly {
 
   ~ContributionMonthly();
 
-  void Process(absl::optional<base::Time> cutoff_time,
-               LegacyResultCallback callback);
+  void Process(std::optional<base::Time> cutoff_time, ResultCallback callback);
 
  private:
   void AdvanceContributionDates(
-      absl::optional<base::Time> cutoff_time,
-      LegacyResultCallback callback,
+      std::optional<base::Time> cutoff_time,
+      ResultCallback callback,
       std::vector<mojom::PublisherInfoPtr> publishers);
 
   void OnNextContributionDateAdvanced(
       std::vector<mojom::PublisherInfoPtr> publishers,
-      LegacyResultCallback callback,
+      ResultCallback callback,
       bool success);
 
   const raw_ref<RewardsEngineImpl> engine_;
+  base::WeakPtrFactory<ContributionMonthly> weak_factory_{this};
 };
 
 }  // namespace contribution

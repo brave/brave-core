@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -119,7 +120,7 @@ void BraveImportBulkDataHandler::HandleImportDataBulk(
   }
 }
 
-absl::optional<int> BraveImportBulkDataHandler::GetProfileIndex(
+std::optional<int> BraveImportBulkDataHandler::GetProfileIndex(
     const importer::SourceProfile& source_profile) {
   for (auto index : importing_profiles_) {
     const auto& profile = GetSourceProfileAt(index);
@@ -127,7 +128,7 @@ absl::optional<int> BraveImportBulkDataHandler::GetProfileIndex(
       return index;
     }
   }
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void BraveImportBulkDataHandler::StartImport(

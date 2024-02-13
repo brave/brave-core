@@ -12,7 +12,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_sync {
 

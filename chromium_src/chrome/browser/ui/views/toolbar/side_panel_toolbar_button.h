@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_SIDE_PANEL_TOOLBAR_BUTTON_H_
 
 #include "components/prefs/pref_member.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/models/simple_menu_model.h"
 
 #define SidePanelToolbarButton SidePanelToolbarButton_ChromiumImpl
@@ -16,6 +17,7 @@
 #undef SidePanelToolbarButton
 
 class SidePanelToolbarButton : public SidePanelToolbarButton_ChromiumImpl {
+  METADATA_HEADER(SidePanelToolbarButton, SidePanelToolbarButton_ChromiumImpl)
  public:
   explicit SidePanelToolbarButton(Browser* browser);
 

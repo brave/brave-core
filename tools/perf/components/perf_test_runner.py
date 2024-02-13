@@ -8,7 +8,7 @@ import os
 import shutil
 import time
 from copy import deepcopy
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Set
 from lib.util import scoped_cwd
 
 import components.path_util as path_util
@@ -16,14 +16,14 @@ import components.perf_test_utils as perf_test_utils
 from components.common_options import CommonOptions
 from components.browser_binary_fetcher import BrowserBinary, PrepareBinary
 from components.browser_type import BraveVersion
-from components.perf_config import BenchmarkConfig, ParseTarget, RunnerConfig
+from components.perf_config import (BenchmarkConfig, ParseTarget,
+                                    ProfileRebaseType, RunnerConfig)
 
 
 def ReportToDashboardImpl(
-    dashboard_bot_name: str, tag: BraveVersion, output_dir: str,
-    ci_mode: bool) -> Tuple[bool, List[str], Optional[str]]:
-  revision = f'refs/tags/{tag}'
-  chromium_version = tag.to_chromium_version(ci_mode).__str__()
+    dashboard_bot_name: str, version: BraveVersion,
+    output_dir: str) -> Tuple[bool, List[str], Optional[str]]:
+  chromium_version_str = version.chromium_version.to_string()
 
   args = [
       path_util.GetVpython3Path(),
@@ -33,9 +33,7 @@ def ReportToDashboardImpl(
   args.append(f'--task-output-dir={output_dir}')
   args.append('--output-json=' + os.path.join(output_dir, 'results.json'))
 
-  revision_number, git_hash = perf_test_utils.GetRevisionNumberAndHash(
-      revision, ci_mode)
-  logging.debug('Got revision %s git_hash %s', revision_number, git_hash)
+  logging.debug('Got revision %s', version.revision_number)
 
   build_properties = {}
   build_properties['bot_id'] = 'test_bot'
@@ -53,23 +51,23 @@ def ReportToDashboardImpl(
   build_properties['buildnumber'] = build_number
 
   build_properties[
-      'got_revision_cp'] = 'refs/heads/main@{#%s}' % revision_number
-  build_properties['got_revision'] = git_hash
+      'got_revision_cp'] = 'refs/heads/main@{#%s}' % version.revision_number
+  build_properties['got_revision'] = version.git_hash
 
   # Encode and pass tags as v8/webrtc revisions.
   # Sync the format with the dashboard JavaScript code:
   # chart-container.html (brave/catapult repo)
-  build_properties['got_v8_revision'] = '0.' + f'{tag}'[1:]
-  build_properties['got_webrtc_revision'] = chromium_version
+  build_properties['got_v8_revision'] = '0.' + f'{version.last_tag}'[1:]
+  build_properties['got_webrtc_revision'] = chromium_version_str
 
   build_properties_serialized = json.dumps(build_properties)
   args.append('--build-properties=' + build_properties_serialized)
 
   success, _ = perf_test_utils.GetProcessOutput(args)
   if success:
-    return True, [], revision_number
+    return True, [], version.revision_number
 
-  return False, ['Reporting ' + revision + ' failed'], None
+  return False, ['Reporting ' + version.revision_number + ' failed'], None
 
 
 # pylint: disable=too-many-instance-attributes
@@ -91,34 +89,57 @@ class RunableConfiguration:
     self.binary = binary
     self.out_dir = out_dir
     self.common_options = common_options
+    self.custom_perf_handlers = {'apk_size': self.RunApkSize}
+
 
   def RebaseProfile(self) -> bool:
     assert self.binary is not None
-    if self.binary.profile_dir is None:
+    if (self.binary.profile_dir is None
+        or self.config.profile_rebase == ProfileRebaseType.NONE):
       return True
     start_time = time.time()
     logging.info('Rebasing dir %s using binary %s', self.binary.profile_dir,
                  self.binary)
     rebase_runner_config = deepcopy(self.config)
-    rebase_runner_config.extra_browser_args.extend(
-        ['--update-source-profile', '--enable-brave-features-for-perf-testing'])
 
+    online_rebase = self.config.profile_rebase == ProfileRebaseType.ONLINE
     rebase_benchmark = BenchmarkConfig()
-    rebase_benchmark.name = 'loading.desktop.brave'
-    rebase_benchmark.stories = ['BraveSearch_cold']
-    rebase_benchmark.pageset_repeat = 1
+    rebase_benchmark.name = ('brave_utils.online'
+                             if online_rebase else 'brave_utils.offline')
+    rebase_benchmark.stories = ['UpdateProfile']
 
-    REBASE_TIMEOUT = 120
+    rebase_benchmark.pageset_repeat = 2 if online_rebase else 1
 
-    result = self.RunSingleTest(rebase_runner_config, rebase_benchmark, None,
-                                True, REBASE_TIMEOUT)
+    REBASE_TIMEOUT = 240 * rebase_benchmark.pageset_repeat
+
+    rebase_out_dir = os.path.join(self.out_dir, 'rebase_artifacts')
+    result = self.RunSingleTest(rebase_runner_config, rebase_benchmark,
+                                rebase_out_dir, True, REBASE_TIMEOUT)
     self.status_line += f'Rebase {(time.time() - start_time):.2f}s '
     return result
+
+  def RunApkSize(self, out_dir: str):
+    assert self.binary is not None
+    assert self.binary.binary_path is not None
+    assert out_dir is not None
+    os.makedirs(out_dir, exist_ok=True)
+    args = [
+        path_util.GetVpython3Path(),
+        os.path.join(path_util.GetSrcDir(), 'build', 'android',
+                     'resource_sizes.py'), '--output-format=histograms',
+        '--output-dir', out_dir, self.binary.binary_path
+    ]
+    success, _ = perf_test_utils.GetProcessOutput(args, timeout=120)
+    if success:
+      with scoped_cwd(out_dir):
+        shutil.move('results-chart.json', 'test_results.json')
+
+    return success
 
   def RunSingleTest(self,
                     config: RunnerConfig,
                     benchmark_config: BenchmarkConfig,
-                    out_dir: Optional[str],
+                    out_dir: str,
                     local_run: bool,
                     timeout: Optional[int] = None) -> bool:
     assert self.binary
@@ -130,15 +151,11 @@ class RunableConfiguration:
     args.append(benchmark_name)
 
     if local_run:
-      if out_dir:
-        assert config.label is not None
-        args.append('--results-label=' + config.label)
-        args.append(f'--output-dir={out_dir}')
-      else:
-        args.append('--output-format=none')
+      assert config.label is not None
+      args.append('--results-label=' + config.label)
+      args.append(f'--output-dir={out_dir}')
 
     else:
-      assert out_dir
       # .reference suffix for benchmark folder is used in
       # process_perf_results.py to report the data as reference.
       suffix = '.reference' if config.browser_type.report_as_reference else ''
@@ -150,17 +167,23 @@ class RunableConfiguration:
           '--output-format=histograms'
       ])
 
+    custom_handler = self.custom_perf_handlers.get(benchmark_name)
+    if custom_handler is not None and not local_run:
+      assert bench_out_dir
+      return custom_handler(bench_out_dir)
+
     if self.binary.profile_dir:
       args.append(f'--profile-dir={self.binary.profile_dir}')
 
     assert self.binary
-    if self.binary.binary_path:
-      assert os.path.exists(self.binary.binary_path)
+    if self.binary.telemetry_browser_type is not None:
+      args.append(f'--browser={self.binary.telemetry_browser_type}')
+    elif self.binary.binary_path is not None:
       args.append('--browser=exact')
       args.append(f'--browser-executable={self.binary.binary_path}')
     else:
-      assert self.binary.telemetry_browser_type
-      args.append(f'--browser={self.binary.telemetry_browser_type}')
+      raise RuntimeError('Bad binary spec, no browser to run')
+
     args.append('--pageset-repeat=%d' % benchmark_config.pageset_repeat)
 
     if len(benchmark_config.stories) > 0:
@@ -234,10 +257,10 @@ class RunableConfiguration:
     logging.info('Reporting to dashboard %s...', self.config.label)
     start_time = time.time()
     assert self.config.dashboard_bot_name is not None
-    assert self.config.tag is not None
+    assert self.config.version is not None
     report_success, report_failed_logs, revision_number = ReportToDashboardImpl(
-        self.config.dashboard_bot_name, self.config.tag,
-        os.path.join(self.out_dir, 'results'), self.common_options.ci_mode)
+        self.config.dashboard_bot_name, self.config.version,
+        os.path.join(self.out_dir, 'results'))
     spent_time = time.time() - start_time
     self.status_line += f'Report {spent_time:.2f}s '
     self.status_line += 'OK, ' if report_success else 'FAILURE, '
@@ -276,18 +299,17 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
                                   common_options: CommonOptions
                                   ) -> List[RunableConfiguration]:
   runable_configurations: List[RunableConfiguration] = []
+  all_labels: Set[str] = set()
   for config in configurations:
-    if config.tag == config.label:
-      description = str(config.tag)
-    else:
-      description = f'{config.label}'
-      if config.tag is not None:
-        description += f'[tag_{config.tag}]'
-    assert description
+    assert config.label
+    if config.label in all_labels:
+      raise RuntimeError(f'Duplicated label {config.label}')
+    all_labels.add(config.label)
+
     binary_dir = os.path.join(common_options.working_directory, 'binaries',
-                              description)
+                              config.label)
     artifacts_dir = os.path.join(common_options.working_directory, 'artifacts',
-                                 description)
+                                 config.label)
     binary: Optional[BrowserBinary] = None
 
     if common_options.do_run_tests:
@@ -296,7 +318,7 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
       os.makedirs(binary_dir)
       os.makedirs(artifacts_dir)
       binary = PrepareBinary(binary_dir, artifacts_dir, config, common_options)
-      logging.info('%s binary: %s artifacts: %s', description, binary,
+      logging.info('%s binary: %s artifacts: %s', config.label, binary,
                    artifacts_dir)
     runable_configurations.append(
         RunableConfiguration(config, benchmarks, binary, artifacts_dir,
@@ -310,12 +332,12 @@ def SpawnConfigurationsFromTargetList(target_list: List[str],
   configurations: List[RunnerConfig] = []
   for target_string in target_list:
     config = deepcopy(base_configuration)
-    config.tag, location = ParseTarget(target_string)
+    config.version, location = ParseTarget(target_string)
     if not config.location:
       config.location = location
-    if not config.tag:
-      raise RuntimeError(f'Can get the tag from target {target_string}')
-    config.label = str(config.tag)
+    if not config.version:
+      raise RuntimeError(f'Can get the version from target {target_string}')
+    config.label = config.version.to_string()
     configurations.append(config)
   return configurations
 

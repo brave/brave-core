@@ -7,13 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_funnel_keyword_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_segment_keyword_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_site_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_funnel_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_funnel_keyphrase_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_segment_keyphrase_info.h"
 
 namespace brave_ads {
 
@@ -32,9 +31,9 @@ struct PurchaseIntentInfo final {
       base::Value::Dict dict);
 
   int version = 0;
-  std::vector<PurchaseIntentSiteInfo> sites;
-  std::vector<PurchaseIntentSegmentKeywordInfo> segment_keywords;
-  std::vector<PurchaseIntentFunnelKeywordInfo> funnel_keywords;
+  PurchaseIntentSegmentKeyphraseList segment_keyphrases;
+  PurchaseIntentFunnelKeyphraseList funnel_keyphrases;
+  PurchaseIntentFunnelSiteMap funnel_sites;
 };
 
 }  // namespace brave_ads

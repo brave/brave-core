@@ -34,16 +34,16 @@ class NotificationAdPopupHandler final {
 
   ~NotificationAdPopupHandler();
 
-  // Show the notification popup view for the given |profile| and
-  // |notification_ad|.
+  // Show the notification popup view for the given `profile` and
+  // `notification_ad`.
   static void Show(Profile* profile,
                    const NotificationAd& notification_ad,
                    gfx::NativeWindow browser_native_window,
                    gfx::NativeView browser_native_view);
 
-  // Close the notification popup view for the given |notification_id|.
-  // |by_user| is true if the notification popup was closed by the user,
-  // otherwise false.
+  // Close the notification popup view for the given `notification_id`.
+  // `by_user` is `true` if the notification popup was closed by the user,
+  // otherwise `false`.
   static void Close(const std::string& notification_id, bool by_user);
 };
 

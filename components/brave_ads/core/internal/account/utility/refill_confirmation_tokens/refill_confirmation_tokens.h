@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_H_
 
+#include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -53,13 +54,13 @@ class RefillConfirmationTokens final {
   bool ShouldRequestSignedTokens() const;
   void RequestSignedTokens();
   void RequestSignedTokensCallback(const mojom::UrlResponseInfo& url_response);
-  base::expected<void, std::tuple<std::string, /*should_retry=*/bool>>
+  base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
   HandleRequestSignedTokensUrlResponse(
       const mojom::UrlResponseInfo& url_response);
 
   void GetSignedTokens();
   void GetSignedTokensCallback(const mojom::UrlResponseInfo& url_response);
-  base::expected<void, std::tuple<std::string, /*should_retry=*/bool>>
+  base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
   HandleGetSignedTokensUrlResponse(const mojom::UrlResponseInfo& url_response);
   void ParseAndRequireCaptcha(const base::Value::Dict& dict) const;
 
@@ -87,10 +88,10 @@ class RefillConfirmationTokens final {
 
   WalletInfo wallet_;
 
-  absl::optional<std::string> nonce_;
+  std::optional<std::string> nonce_;
 
-  absl::optional<std::vector<cbr::Token>> tokens_;
-  absl::optional<std::vector<cbr::BlindedToken>> blinded_tokens_;
+  std::optional<std::vector<cbr::Token>> tokens_;
+  std::optional<std::vector<cbr::BlindedToken>> blinded_tokens_;
 
   bool is_processing_ = false;
 

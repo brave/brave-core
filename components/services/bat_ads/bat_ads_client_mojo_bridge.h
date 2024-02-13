@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_CLIENT_MOJO_BRIDGE_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -82,9 +83,11 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
             const std::string& value,
             brave_ads::SaveCallback callback) override;
   void Load(const std::string& name, brave_ads::LoadCallback callback) override;
-  void LoadFileResource(const std::string& id,
-                        int version,
-                        brave_ads::LoadFileCallback callback) override;
+
+  void LoadComponentResource(const std::string& id,
+                             int version,
+                             brave_ads::LoadFileCallback callback) override;
+
   std::string LoadDataResource(const std::string& name) override;
 
   void GetScheduledCaptcha(
@@ -102,12 +105,12 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
       std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
       override;
 
-  absl::optional<base::Value> GetProfilePref(const std::string& path) override;
+  std::optional<base::Value> GetProfilePref(const std::string& path) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
   void ClearProfilePref(const std::string& path) override;
   bool HasProfilePrefPath(const std::string& path) const override;
 
-  absl::optional<base::Value> GetLocalStatePref(
+  std::optional<base::Value> GetLocalStatePref(
       const std::string& path) override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
   void ClearLocalStatePref(const std::string& path) override;
@@ -119,9 +122,9 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
            const std::string& message) override;
 
  private:
-  absl::optional<base::Value> CachedProfilePrefValue(
+  std::optional<base::Value> CachedProfilePrefValue(
       const std::string& path) const;
-  absl::optional<base::Value> CachedLocalStatePrefValue(
+  std::optional<base::Value> CachedLocalStatePrefValue(
       const std::string& path) const;
 
   base::flat_map</*path=*/std::string, /*value=*/base::Value>

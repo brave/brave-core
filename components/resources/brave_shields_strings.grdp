@@ -110,7 +110,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL" desc="Shields panel toggle label that would forget first party website storage when enabled.">
-    Clear session data when a site is closed
+    Forget me when I close this site
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_SUBLABEL" desc="Shields panel toggle sublabel that would forget first party website storage when enabled.">
@@ -200,5 +200,24 @@
 
   <message name="IDS_BRAVE_SHIELDS_NOT_VALID_ADDRESS" desc="Label for link about invalid pattern for content setting page dialog to add a site">
     Wildcards are not allowed for Brave Shields.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Brave Shields blocking company-specific trackers on a website, along with the number of additional trackers blocked.">
+    {BLOCKED_COUNT, plural,
+      =0 {Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> trackers on <ph name="SITE_URL">$2</ph>}
+      =1 {Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> and 1 other tracker on <ph name="SITE_URL">$2</ph>}
+      other {Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> and {BLOCKED_COUNT} other trackers on <ph name="SITE_URL">$2</ph>}
+    }
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Brave Shields blocking number of trackers only.">
+    {BLOCKED_COUNT, plural,
+      =1 {Brave Shields blocked 1 tracker on <ph name="SITE_URL">$1</ph>}
+      other {Brave Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL">$1</ph>}
+    }
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_CLICK_TO_VIEW_LABEL" desc="Label for the onboarding bubble to guide the user to the Shield icon">
+    Click the Brave icon to view Brave Shields.
   </message>
 </grit-part>

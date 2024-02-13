@@ -193,6 +193,11 @@ void DistillPage(const GURL& url,
                                      speedreader_service->GetFontFamilyName(),
                                      speedreader_service->GetFontSizeName(),
                                      speedreader_service->GetColumnWidth());
+  if (!rewriter) {
+    std::move(callback).Run(DistillationResult::kFail, std::move(body),
+                            std::string());
+    return;
+  }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},

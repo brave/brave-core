@@ -23,7 +23,7 @@
 //! In addition, it defines the global callsite registry and per-thread current
 //! dispatcher which other components of the tracing system rely on.
 //!
-//! *Compiler support: [requires `rustc` 1.49+][msrv]*
+//! *Compiler support: [requires `rustc` 1.56+][msrv]*
 //!
 //! [msrv]: #supported-rust-versions
 //!
@@ -92,14 +92,14 @@
 //! ## Supported Rust Versions
 //!
 //! Tracing is built against the latest stable release. The minimum supported
-//! version is 1.49. The current Tracing version is not guaranteed to build on
+//! version is 1.56. The current Tracing version is not guaranteed to build on
 //! Rust versions earlier than the minimum supported version.
 //!
 //! Tracing follows the same compiler support policies as the rest of the Tokio
 //! project. The current stable Rust compiler and the three most recent minor
 //! versions before it will always be supported. For example, if the current
-//! stable compiler version is 1.45, the minimum supported version will not be
-//! increased past 1.42, three minor versions prior. Increasing the minimum
+//! stable compiler version is 1.69, the minimum supported version will not be
+//! increased past 1.66, three minor versions prior. Increasing the minimum
 //! supported compiler version is not considered a semver breaking change as
 //! long as doing so complies with this policy.
 //!
@@ -116,7 +116,6 @@
 //! [`Dispatch`]: dispatcher::Dispatch
 //! [`tokio-rs/tracing`]: https://github.com/tokio-rs/tracing
 //! [`tracing`]: https://crates.io/crates/tracing
-#![doc(html_root_url = "https://docs.rs/tracing-core/0.1.22")]
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png",
     issue_tracker_base_url = "https://github.com/tokio-rs/tracing/issues/"
@@ -129,7 +128,6 @@
     rust_2018_idioms,
     unreachable_pub,
     bad_style,
-    const_err,
     dead_code,
     improper_ctypes,
     non_shorthand_field_patterns,
@@ -245,9 +243,9 @@ macro_rules! metadata {
             $name,
             $target,
             $level,
-            Some(file!()),
-            Some(line!()),
-            Some(module_path!()),
+            ::core::option::Option::Some(file!()),
+            ::core::option::Option::Some(line!()),
+            ::core::option::Option::Some(module_path!()),
             $crate::field::FieldSet::new($fields, $crate::identify_callsite!($callsite)),
             $kind,
         )

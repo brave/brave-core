@@ -519,7 +519,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             }
         });
 
-        mToggleIcon.setColorFilter(mContext.getResources().getColor(R.color.shield_toggle_button_tint));
+        mToggleIcon.setColorFilter(mContext.getColor(R.color.shield_toggle_button_tint));
         mToggleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -529,8 +529,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         ImageView mPrivacyReportIcon = mPrivacyReportLayout.findViewById(R.id.toggle_favicon);
         mPrivacyReportIcon.setImageResource(R.drawable.ic_arrow_forward);
-        mPrivacyReportIcon.setColorFilter(
-                mContext.getResources().getColor(R.color.default_icon_color_baseline));
+        mPrivacyReportIcon.setColorFilter(mContext.getColor(R.color.default_icon_color_baseline));
         TextView mViewPrivacyReportText = mPrivacyReportLayout.findViewById(R.id.toggle_text);
         mViewPrivacyReportText.setText(R.string.view_full_privacy_report);
         mPrivacyReportLayout.setOnClickListener(new View.OnClickListener() {
@@ -679,7 +678,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             ImageView mBlockShieldsIcon = mShieldsLayout.findViewById(R.id.toggle_favicon);
             mBlockShieldsIcon.setImageResource(R.drawable.ic_chevron_right);
             mBlockShieldsIcon.setColorFilter(
-                    mContext.getResources().getColor(R.color.default_icon_color_baseline));
+                    mContext.getColor(R.color.default_icon_color_baseline));
             TextView mBlockShieldsText = mShieldsLayout.findViewById(R.id.toggle_text);
             mBlockShieldsText.setText(titleStringId);
 
@@ -1014,10 +1013,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (0 != mHost.length()) {
+                        if (0 != mUrlSpec.length()) {
                             BraveShieldsContentSettings.setShieldsValue(
                                     mProfile,
-                                    mHost,
+                                    mUrlSpec,
                                     BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
                                     isChecked
                                             ? BraveShieldsContentSettings.DEFAULT
@@ -1039,14 +1038,14 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             // Prevents to fire an event when top shields changed
             braveShieldsFingerprintingSwitch.setOnCheckedChangeListener(null);
         }
-        if (0 != mHost.length()) {
+        if (0 != mUrlSpec.length()) {
             if (BraveShieldsContentSettings.getShields(
                     mProfile,
-                    mHost,
+                    mUrlSpec,
                     BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
                 if (!BraveShieldsContentSettings.getShieldsValue(
                                 mProfile,
-                                mHost,
+                                mUrlSpec,
                                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)
                         .equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
                     braveShieldsFingerprintingSwitch.setChecked(true);

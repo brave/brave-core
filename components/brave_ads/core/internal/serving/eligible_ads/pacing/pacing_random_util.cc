@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing_random_util.h"
 
+#include <optional>
+
 #include "base/rand_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
-absl::optional<double> g_pacing_random_number_for_testing;
+std::optional<double> g_pacing_random_number_for_testing;
 }  // namespace
 
 namespace brave_ads {
@@ -29,7 +30,7 @@ ScopedPacingRandomNumberSetterForTesting::
 
 ScopedPacingRandomNumberSetterForTesting::
     ~ScopedPacingRandomNumberSetterForTesting() {
-  g_pacing_random_number_for_testing = absl::nullopt;
+  g_pacing_random_number_for_testing = std::nullopt;
 }
 
 }  // namespace brave_ads

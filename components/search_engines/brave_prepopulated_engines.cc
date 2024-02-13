@@ -19,8 +19,8 @@ const int kBraveFirstTrackedDataVersion = 6;
 
 namespace {
 
-PrepopulatedEngine MakeBravePrepopulatedEngine(const wchar_t* const name,
-                                               const wchar_t* const keyword,
+PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
+                                               const char16_t* const keyword,
                                                const char* const favicon_url,
                                                const char* const search_url,
                                                const char* const encoding,
@@ -52,8 +52,8 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
 };
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
-                                      const wchar_t* const name,
-                                      const wchar_t* const keyword,
+                                      const char16_t* const name,
+                                      const char16_t* const keyword,
                                       const char* const search_url,
                                       const char* const suggest_url,
                                       const char* const image_url,
@@ -91,8 +91,8 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
 }  // namespace
 
 const PrepopulatedEngine duckduckgo = MakeBravePrepopulatedEngine(
-    L"DuckDuckGo",
-    L":d",
+    u"DuckDuckGo",
+    u":d",
     "https://duckduckgo.com/favicon.ico",
     "https://duckduckgo.com/?q={searchTerms}&t=brave",
     "UTF-8",
@@ -120,8 +120,8 @@ const PrepopulatedEngine duckduckgo_au_nz_ie =
 
 #if BUILDFLAG(IS_ANDROID)
 const PrepopulatedEngine duckduckgo_lite = MakeBravePrepopulatedEngine(
-    L"DuckDuckGo Lite",
-    L":dl",
+    u"DuckDuckGo Lite",
+    u":dl",
     "https://duckduckgo.com/favicon.ico",
     "https://duckduckgo.com/lite/?q={searchTerms}&t=brave",
     "UTF-8",
@@ -133,7 +133,7 @@ const PrepopulatedEngine duckduckgo_lite = MakeBravePrepopulatedEngine(
 const PrepopulatedEngine brave_ecosia =
     ModifyEngineParams(ecosia,
                        nullptr,
-                       L":e",
+                       u":e",
                        "https://www.ecosia.org/search?tt="
 #if BUILDFLAG(IS_ANDROID)
                        "42b8ae98"
@@ -146,8 +146,8 @@ const PrepopulatedEngine brave_ecosia =
                        PREPOPULATED_ENGINE_ID_ECOSIA);
 
 const PrepopulatedEngine qwant = MakeBravePrepopulatedEngine(
-    L"Qwant",
-    L":q",
+    u"Qwant",
+    u":q",
     "https://www.qwant.com/favicon.ico",
     "https://www.qwant.com/?q={searchTerms}&client=brz-brave",
     "UTF-8",
@@ -156,8 +156,8 @@ const PrepopulatedEngine qwant = MakeBravePrepopulatedEngine(
     PREPOPULATED_ENGINE_ID_QWANT);
 
 const PrepopulatedEngine startpage = MakeBravePrepopulatedEngine(
-    L"Startpage",
-    L":sp",
+    u"Startpage",
+    u":sp",
     "https://www.startpage.com/favicon.ico",
     "https://www.startpage.com/do/"
     "search?q={searchTerms}&segment=startpage.brave",
@@ -169,7 +169,7 @@ const PrepopulatedEngine startpage = MakeBravePrepopulatedEngine(
 
 const PrepopulatedEngine brave_yandex =
     ModifyEngineParams(yandex_com,
-                       L"Yandex",
+                       u"Yandex",
                        nullptr,
                        "https://yandex.ru/search/?clid="
 #if BUILDFLAG(IS_ANDROID)
@@ -184,8 +184,8 @@ const PrepopulatedEngine brave_yandex =
                        PREPOPULATED_ENGINE_ID_YANDEX);
 
 const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
-    L"Brave",
-    L":br",
+    u"Brave",
+    u":br",
     "https://cdn.search.brave.com/serp/favicon.ico",
     "https://search.brave.com/search?q={searchTerms}&source="
 #if BUILDFLAG(IS_ANDROID)
@@ -201,7 +201,7 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
 const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
     brave_search,
     nullptr,
-    L":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion",
+    u":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion",
     "https://"
     "search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/"
     "search?q={searchTerms}",

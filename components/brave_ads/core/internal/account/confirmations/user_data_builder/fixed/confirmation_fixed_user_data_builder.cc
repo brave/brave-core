@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/build_channel_user_data.h"

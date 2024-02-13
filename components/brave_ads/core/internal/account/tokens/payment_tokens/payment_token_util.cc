@@ -18,9 +18,9 @@ bool HasPaymentTokens() {
 
 }  // namespace
 
-absl::optional<PaymentTokenInfo> MaybeGetPaymentToken() {
+std::optional<PaymentTokenInfo> MaybeGetPaymentToken() {
   if (!HasPaymentTokens()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return ConfirmationStateManager::GetInstance().GetPaymentTokens().GetToken();

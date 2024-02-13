@@ -6,12 +6,12 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -68,7 +68,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
         command, index++,
         transaction.reconciled_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -85,9 +85,8 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   transaction.creative_instance_id = ColumnString(record, 2);
   transaction.value = ColumnDouble(record, 3);
   transaction.segment = ColumnString(record, 4);
-  transaction.ad_type = ParseAdType(ColumnString(record, 5));
-  transaction.confirmation_type =
-      ParseConfirmationType(ColumnString(record, 6));
+  transaction.ad_type = ToAdType(ColumnString(record, 5));
+  transaction.confirmation_type = ToConfirmationType(ColumnString(record, 6));
   transaction.reconciled_at = base::Time::FromDeltaSinceWindowsEpoch(
       base::Microseconds(ColumnInt64(record, 7)));
 
@@ -121,10 +120,10 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS transactions (id TEXT NOT NULL PRIMARY KEY "
-      "UNIQUE ON CONFLICT REPLACE, created_at TIMESTAMP NOT NULL, "
-      "creative_instance_id TEXT, value DOUBLE NOT NULL, ad_type TEXT NOT "
-      "NULL, confirmation_type TEXT NOT NULL, reconciled_at TIMESTAMP);";
+      "CREATE TABLE transactions (id TEXT NOT NULL PRIMARY KEY UNIQUE ON "
+      "CONFLICT REPLACE, created_at TIMESTAMP NOT NULL, creative_instance_id "
+      "TEXT, value DOUBLE NOT NULL, ad_type TEXT NOT NULL, confirmation_type "
+      "TEXT NOT NULL, reconciled_at TIMESTAMP);";
   transaction->commands.push_back(std::move(command));
 
   CreateTableIndex(transaction, "transactions", "id");
@@ -133,7 +132,7 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
 void MigrateToV26(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  // Create a temporary table with new |segment| column.
+  // Create a temporary table with new `segment` column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -262,7 +261,7 @@ void Transactions::Update(const PaymentTokenList& payment_tokens,
   int index = 0;
   for (const auto& transaction_id : transaction_ids) {
     BindString(&*command, index, transaction_id);
-    index++;
+    ++index;
   }
 
   BindString(&*command, index, rewards::kMigrationUnreconciledTransactionId);

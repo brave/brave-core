@@ -6,13 +6,13 @@
 body {
   background-color: var(--leo-color-container-background);
   color: var(--leo-color-text-primary);
-  font: var(--leo-font-primary-default-regular);
+  font: var(--leo-font-default-regular);
   width: 100%;
   height: 100vh;
 }
 
 button {
-  font: var(--leo-font-primary-default-regular);
+  font: var(--leo-font-default-regular);
 }
 
 #mountPoint {

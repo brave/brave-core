@@ -1,12 +1,12 @@
 diff --git a/content/browser/dom_storage/dom_storage_context_wrapper.cc b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-index 21f00384d1a55298f4e7fb6e92fd1cad8b36c63d..536ad1d80626781e341e6f1d9f34482277c056d4 100644
+index 65bb12f82e4299ff45d23ea6cce3b75a0b978951..13ce7829a9f1d1dc4dc283887c505e59bc9146dd 100644
 --- a/content/browser/dom_storage/dom_storage_context_wrapper.cc
 +++ b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-@@ -310,6 +310,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
+@@ -312,6 +312,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
          break;
        }
      }
 +    BRAVE_DOM_STORAGE_CONTEXT_WRAPPER_IS_REQUEST_VALID
-   }
-   if (!security_policy_handle.CanAccessDataForOrigin(storage_key.origin())) {
-     const std::string type_string =
+     // If the storage keys did not match, but storage access has been granted
+     // and the request was for a first-party storage key on the same origin as
+     // the frame's storage key, we can allow the request to proceed. See:

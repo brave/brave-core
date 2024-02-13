@@ -31,6 +31,10 @@ source_set("renderer") {
     "//third_party/blink/public/strings",
     "//v8",
   ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
 }
 
 source_set("unit_tests") {

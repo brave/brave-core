@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -12,11 +13,11 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "build/build_config.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -39,11 +40,16 @@ base::Value::Dict ClientInfo::ToValue() const {
 
   dict.Set("adsShownHistory", HistoryItemsToValue(history_items));
 
+  const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
+
   base::Value::Dict purchase_intent_signal_history_dict;
   for (const auto& [segment, history] : purchase_intent_signal_history) {
     base::Value::List list;
     for (const auto& item : history) {
-      list.Append(PurchaseIntentSignalHistoryToValue(item));
+      const base::Time decay_signal_at = item.at + time_window;
+      if (base::Time::Now() < decay_signal_at) {
+        list.Append(PurchaseIntentSignalHistoryToValue(item));
+      }
     }
 
     purchase_intent_signal_history_dict.Set(segment, std::move(list));
@@ -140,8 +146,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
 
       for (const auto [creative_instance_id, seen_ad] : ads.GetDict()) {
         CHECK(seen_ad.is_bool());
-        seen_ads[ParseAdType(ad_type)][creative_instance_id] =
-            seen_ad.GetBool();
+        seen_ads[ToAdType(ad_type)][creative_instance_id] = seen_ad.GetBool();
       }
     }
   }
@@ -155,7 +160,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
       for (const auto [advertiser_id, seen_advertiser] :
            advertisers.GetDict()) {
         CHECK(seen_advertiser.is_bool());
-        seen_advertisers[ParseAdType(ad_type)][advertiser_id] =
+        seen_advertisers[ToAdType(ad_type)][advertiser_id] =
             seen_advertiser.GetBool();
       }
     }
@@ -213,7 +218,7 @@ std::string ClientInfo::ToJson() const {
 }
 
 bool ClientInfo::FromJson(const std::string& json) {
-  const absl::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+  const std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {

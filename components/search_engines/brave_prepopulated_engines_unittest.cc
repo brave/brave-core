@@ -10,7 +10,8 @@
 
 TEST(BravePrepopulatedEnginesTest, ModifiedProviderTest) {
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      nullptr, TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
+      nullptr, nullptr,
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
   // Check modified bing provider url.
   EXPECT_EQ(data->url(), "https://www.bing.com/search?q={searchTerms}");
 }

@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_
 
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/views/bookmarks/brave_bookmark_bar_view.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "build/build_config.h"
@@ -19,6 +20,7 @@
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
+#define BookmarkBarView BraveBookmarkBarView
 
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
@@ -51,6 +53,7 @@
 #undef GetTabStripVisible
 #undef UpdateDevToolsForContents
 #undef MaybeShowReadingListInSidePanelIPH
+#undef BookmarkBarView
 #undef SidePanel
 #undef BrowserViewLayout
 #undef BrowserWindow

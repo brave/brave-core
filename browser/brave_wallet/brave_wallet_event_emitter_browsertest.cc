@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 
 #include "base/path_service.h"
 #include "base/test/bind.h"
@@ -169,7 +170,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   auto service = GetJsonRpcService();
   service->SetNetwork(brave_wallet::mojom::kGoerliChainId,
-                      brave_wallet::mojom::CoinType::ETH, absl::nullopt,
+                      brave_wallet::mojom::CoinType::ETH, std::nullopt,
                       base::DoNothing());
 
   auto result_first =

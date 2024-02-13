@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -21,16 +22,13 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -150,7 +148,6 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   const auto add_payment_token_result = MaybeAddPaymentToken(payment_token);
   if (!add_payment_token_result.has_value()) {
     BLOG(1, add_payment_token_result.error());
-
     return redeem_confirmation.FailedToRedeemConfirmation(
         confirmation, /*should_retry=*/false);
   }
@@ -183,7 +180,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                                             /*should_retry=*/true));
   }
 
-  const absl::optional<base::Value::Dict> dict =
+  const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(url_response.body);
   if (!dict) {
     return base::unexpected(std::make_tuple(
@@ -211,7 +208,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                                             /*should_retry=*/false));
   }
 
-  const absl::optional<cbr::PublicKey> public_key =
+  const std::optional<cbr::PublicKey> public_key =
       ParsePublicKey(*payment_token_dict);
   if (!public_key.has_value()) {
     return base::unexpected(std::make_tuple("Failed to parse public key",

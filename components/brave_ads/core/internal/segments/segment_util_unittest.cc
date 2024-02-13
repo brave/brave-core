@@ -5,32 +5,31 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/history/category_content_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-namespace {
-constexpr char kCatalog[] = "catalog_with_multiple_campaigns.json";
-}  // namespace
-
 class BraveAdsSegmentUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
-  const absl::optional<std::string> json =
-      ReadFileFromTestPathToString(kCatalog);
-  ASSERT_TRUE(json);
+  const std::optional<std::string> contents =
+      MaybeReadFileToString(kCatalogWithMultipleCampaignsFilename);
+  ASSERT_TRUE(contents);
 
-  const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
+  const std::optional<CatalogInfo> catalog =
+      json::reader::ReadCatalog(*contents);
   ASSERT_TRUE(catalog);
 
   // Act & Assert

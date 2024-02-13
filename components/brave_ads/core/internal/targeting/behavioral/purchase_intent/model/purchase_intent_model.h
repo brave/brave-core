@@ -10,6 +10,11 @@
 
 namespace brave_ads {
 
+struct PurchaseIntentSignalInfo;
+
+void BuyPurchaseIntentSignal(
+    const PurchaseIntentSignalInfo& purchase_intent_signal);
+
 SegmentList GetPurchaseIntentSegments();
 
 }  // namespace brave_ads

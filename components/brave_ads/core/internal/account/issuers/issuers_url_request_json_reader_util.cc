@@ -16,17 +16,16 @@ constexpr char kIssuersKey[] = "issuers";
 
 }  // namespace
 
-absl::optional<int> ParsePing(const base::Value::Dict& dict) {
+std::optional<int> ParsePing(const base::Value::Dict& dict) {
   return dict.FindInt(kPingKey);
 }
 
-absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& dict) {
-  const auto* const list = dict.FindList(kIssuersKey);
-  if (!list) {
-    return absl::nullopt;
+std::optional<IssuerList> ParseIssuers(const base::Value::Dict& dict) {
+  if (const auto* const list = dict.FindList(kIssuersKey)) {
+    return ValueToIssuers(*list);
   }
 
-  return ValueToIssuers(*list);
+  return std::nullopt;
 }
 
 }  // namespace brave_ads::json::reader

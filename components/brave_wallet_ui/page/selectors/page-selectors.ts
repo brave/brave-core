@@ -13,7 +13,6 @@ export const isFetchingNFTMetadata = ({ page }: State) =>
   page.isFetchingNFTMetadata
 export const mnemonic = ({ page }: State) => page.mnemonic
 export const hasMnemonic = ({ page }: State) => !!page.mnemonic
-export const selectedTimeline = ({ page }: State) => page.selectedTimeline
 export const setupStillInProgress = ({ page }: State) =>
   page.setupStillInProgress
 export const showRecoveryPhrase = ({ page }: State) => page.showRecoveryPhrase
@@ -24,7 +23,4 @@ export const walletTermsAcknowledged = ({ page }: State) =>
 // and lists)
 export const nftMetadata = ({ page }: State) => page.nftMetadata
 export const nftMetadataError = ({ page }: State) => page.nftMetadataError
-
-export const selectedAsset = ({ page }: State) => page?.selectedAsset
 export const pinStatusOverview = ({ page }: State) => page.pinStatusOverview
-export const selectedCoinMarket = ({ page }: State) => page.selectedCoinMarket

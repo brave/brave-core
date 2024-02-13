@@ -17,7 +17,7 @@ import { BraveWallet } from '../../../constants/types'
 // Styled Components
 import {
   LineChartWrapper,
-  PopupButton,
+  LineChartButton,
   PopupButtonText
 } from './wellet-menus.style'
 
@@ -29,15 +29,15 @@ export const LineChartControlsMenu = (props: Props) => {
   const { onClick } = props
 
   return (
-    <LineChartWrapper yPosition={32}>
+    <LineChartWrapper yPosition={38}>
       {ChartTimelineOptions.map((option) => (
-        <PopupButton
+        <LineChartButton
           key={option.id}
           onClick={() => onClick(option.id)}
-          minWidth={130}
+          minWidth={150}
         >
           <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
-        </PopupButton>
+        </LineChartButton>
       ))}
     </LineChartWrapper>
   )

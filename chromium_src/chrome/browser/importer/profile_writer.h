@@ -8,16 +8,16 @@
 
 // Extends ProfileWriter by file overriding instead of subclassing because there
 // are many places that instantiate it.
-#define AddAutofillFormDataEntries                           \
+#define AddAutocompleteFormDataEntries                       \
   AddCreditCard(const std::u16string& name_on_card,          \
                 const std::u16string& expiration_month,      \
                 const std::u16string& expiration_year,       \
                 const std::u16string& decrypted_card_number, \
                 const std::string& origin);                  \
-  virtual void AddAutofillFormDataEntries
+  virtual void AddAutocompleteFormDataEntries
 
 #include "src/chrome/browser/importer/profile_writer.h"  // IWYU pragma: export
 
-#undef AddAutofillFormDataEntries
+#undef AddAutocompleteFormDataEntries
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_PROFILE_WRITER_H_

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 
+#include <optional>
+
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -104,11 +106,16 @@ void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
 SkColor BraveTabGroupHeader::GetGroupColor() const {
   auto group_id = group().value();
 
-  if (!tab_slot_controller_->GetBrowser()
-           ->tab_strip_model()
-           ->group_model()
-           ->ContainsTabGroup(group_id)) {
-    // Can happen in tear-down.
+  auto model_contains_group = [&]() {
+    if (auto* browser = tab_slot_controller_->GetBrowser()) {
+      return browser->tab_strip_model()->group_model()->ContainsTabGroup(
+          group_id);
+    }
+    return false;
+  };
+
+  if (!model_contains_group()) {
+    // Can happen in unit tests or in tear-down.
     return gfx::kPlaceholderColor;
   }
 
@@ -116,7 +123,7 @@ SkColor BraveTabGroupHeader::GetGroupColor() const {
       tab_slot_controller_->GetGroupColorId(group_id));
 }
 
-absl::optional<SkColor> BraveTabGroupHeader::GetChipBackgroundColor() const {
+std::optional<SkColor> BraveTabGroupHeader::GetChipBackgroundColor() const {
   if (ShouldShowVerticalTabs()) {
     return {};
   }

@@ -6,12 +6,12 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
 #include <cinttypes>
+#include <cstddef>
 #include <map>
 #include <utility>
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -31,7 +31,7 @@
 namespace brave_ads::database::table {
 
 using CreativeNewTabPageAdMap =
-    std::map</*creative_ad_uuid=*/std::string, CreativeNewTabPageAdInfo>;
+    std::map</*creative_ad_uuid*/ std::string, CreativeNewTabPageAdInfo>;
 
 namespace {
 
@@ -95,7 +95,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, creative_ad.image_url.spec());
     BindString(command, index++, creative_ad.alt);
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -383,8 +383,7 @@ void CreativeNewTabPageAds::GetForSegments(
 
   int index = 0;
   for (const auto& segment : segments) {
-    BindString(&*command, index, segment);
-    index++;
+    BindString(&*command, index++, segment);
   }
 
   transaction->commands.push_back(std::move(command));

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -284,7 +285,7 @@ void BraveAppMenuModel::BuildBrowserSection() {
   // Bookmarks
   // Downloads
   // Extensions
-  absl::optional<size_t> bookmark_item_index =
+  std::optional<size_t> bookmark_item_index =
       GetIndexOfCommandId(IDC_BOOKMARKS_MENU);
 
   // If bookmark is not used, we don't need to adjust download item.
@@ -296,10 +297,22 @@ void BraveAppMenuModel::BuildBrowserSection() {
                              IDS_SHOW_DOWNLOADS);
   }
 
+  // Use this command's enabled state to not having it in guest window.
+  // It's disabled in guest window. Upstream's guest window has extensions
+  // menu in app menu, but we hide it.
   if (IsCommandIdEnabled(IDC_MANAGE_EXTENSIONS)) {
+    // Upstream enabled extensions submenu by default.
+    CHECK(features::IsExtensionMenuInRootAppMenu());
+
+    // Use IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS instead of
+    // IDC_MANAGE_EXTENSIONS because executing it from private(tor) window
+    // causes crash as LogSafetyHubInteractionMetrics() tries to refer
+    // SafetyHubMenuNotificationService. But it's not instantiated in private
+    // window. Upstream also has this crash if ExtensionsMenuInAppMenu feature
+    // is disabled.
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
-        IDC_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
+        IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
   }
 }
 
@@ -384,19 +397,11 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
   DCHECK(more_tools_model);
 
   // Remove upstream's extensions item. It'll be added into top level third
-  // section.
-  if (base::FeatureList::IsEnabled(features::kExtensionsMenuInAppMenu) ||
-      features::IsChromeRefresh2023()) {
-    // Hide extensions sub menu.
-    DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
-    RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
-  } else {
-    // Hide extensions item from more tools sub menu.
-    DCHECK(more_tools_model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS)
-               .has_value());
-    more_tools_model->RemoveItemAt(
-        more_tools_model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS).value());
-  }
+  // section. Upstream enabled extensions submenu by default.
+  CHECK(features::IsExtensionMenuInRootAppMenu());
+  // Hide extensions sub menu.
+  DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
+  RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
 
   // Remove upstream's cast item. It'll be added into more tools sub menu.
   if (media_router::MediaRouterEnabled(browser()->profile())) {
@@ -439,6 +444,11 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
   if (const auto index = GetIndexOfCommandId(IDC_ABOUT)) {
     RemoveItemAt(*index);
   }
+
+  // Remove upstream's distill menu. It's replaced with speedreader.
+  if (const auto index = GetIndexOfCommandId(IDC_DISTILL_PAGE)) {
+    RemoveItemAt(*index);
+  }
 }
 
 void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
@@ -449,7 +459,7 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
     if (ipfs_command == -1)
       return;
     auto* submenu = ipns_keys_submenu_models_[ipfs_command].get();
-    absl::optional<size_t> command_index = submenu->GetIndexOfCommandId(id);
+    std::optional<size_t> command_index = submenu->GetIndexOfCommandId(id);
     if (!command_index.has_value())
       return;
     auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index.value()));
@@ -489,6 +499,11 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
              IsIpfsServiceLaunched(browser_context);
   }
 #endif
+  if (id == IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS) {
+    // Always returns true as this command id is only added when it could be
+    // used.
+    return true;
+  }
   return AppMenuModel::IsCommandIdEnabled(id);
 }
 
@@ -534,7 +549,7 @@ void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
 
 int BraveAppMenuModel::GetSelectedIPFSCommandId(int id) const {
   for (const auto& it : ipns_keys_submenu_models_) {
-    absl::optional<size_t> index = it.second->GetIndexOfCommandId(id);
+    std::optional<size_t> index = it.second->GetIndexOfCommandId(id);
     if (!index.has_value())
       continue;
     return it.first;
@@ -591,12 +606,12 @@ size_t BraveAppMenuModel::GetNextIndexOfBraveProductsSection() const {
   return last_index_of_second_section + 1;
 }
 
-absl::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
+std::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
     std::vector<int> commands_to_check,
     bool insert_next) const {
   const size_t commands_size = commands_to_check.size();
   for (size_t i = 0; i < commands_size; i++) {
-    absl::optional<size_t> item_index =
+    std::optional<size_t> item_index =
         GetIndexOfCommandId(commands_to_check[i]);
     if (item_index.has_value())
       return insert_next ? item_index.value() + 1 : item_index;
@@ -604,5 +619,5 @@ absl::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
 
   NOTREACHED() << "At least, a menu item for this command should exist: "
                << commands_to_check[commands_size - 1];
-  return absl::nullopt;
+  return std::nullopt;
 }

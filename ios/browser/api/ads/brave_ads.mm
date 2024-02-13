@@ -3,8 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#import "brave/ios/browser/api/ads/brave_ads.h"
+
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
+
+#include <optional>
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
@@ -18,8 +22,11 @@
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
@@ -31,9 +38,7 @@
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/user/user_interaction/ad_events/ad_event_cache.h"
+#include "brave/components/brave_ads/core/public/user_engagement/ad_events/ad_event_cache.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
@@ -43,7 +48,6 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
-#import "brave/ios/browser/api/ads/brave_ads.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
 #import "brave/ios/browser/api/ads/notification_ad_ios.h"
@@ -218,6 +222,10 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (BOOL)isServiceRunning {
   return ads != nil && adsClientNotifier != nil;
+}
+
++ (BOOL)shouldAlwaysRunService {
+  return brave_ads::ShouldAlwaysRunService();
 }
 
 - (BOOL)isEnabled {
@@ -434,8 +442,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& history_item : history_items) {
-    const auto date = [NSDate
-        dateWithTimeIntervalSince1970:history_item.created_at.ToDoubleT()];
+    const auto date =
+        [NSDate dateWithTimeIntervalSince1970:history_item.created_at
+                                                  .InSecondsFSinceUnixEpoch()];
     [dates addObject:date];
   }
 
@@ -1483,15 +1492,15 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     callback:(brave_ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    return std::move(callback).Run(/*value*/ absl::nullopt);
+    return std::move(callback).Run(/*value*/ std::nullopt);
   }
 
   std::move(callback).Run(contents);
 }
 
-- (void)loadFileResource:(const std::string&)id
-                 version:(const int)version
-                callback:(brave_ads::LoadFileCallback)callback {
+- (void)loadComponentResource:(const std::string&)id
+                      version:(const int)version
+                     callback:(brave_ads::LoadFileCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);
   NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
 
@@ -1567,7 +1576,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   // federated learning.
 }
 
-- (absl::optional<base::Value>)getProfilePref:(const std::string&)path {
+- (std::optional<base::Value>)getProfilePref:(const std::string&)path {
   if (path == brave_news::prefs::kBraveNewsOptedIn ||
       path == brave_news::prefs::kNewTabPageShowToday ||
       path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
@@ -1595,7 +1604,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return self.profilePrefService->HasPrefPath(path);
 }
 
-- (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path {
+- (std::optional<base::Value>)getLocalStatePref:(const std::string&)path {
   return self.localStatePrefService->GetValue(path).Clone();
 }
 
@@ -1641,9 +1650,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
         NSDate* nextPaymentDate = nil;
         if (!statement->next_payment_date.is_null()) {
-          nextPaymentDate =
-              [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
-                                                        .ToDoubleT()];
+          nextPaymentDate = [NSDate
+              dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                .InSecondsFSinceUnixEpoch()];
         }
         completion(statement->ads_received_this_month,
                    statement->max_earnings_this_month, nextPaymentDate);
@@ -1661,7 +1670,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       base::SysNSStringToUTF8(dimensionsArg),
       base::BindOnce(
           ^(const std::string& dimensions,
-            const absl::optional<brave_ads::InlineContentAdInfo>& ad) {
+            const std::optional<brave_ads::InlineContentAdInfo>& ad) {
             if (!ad) {
               completion(base::SysUTF8ToNSString(dimensions), nil);
               return;
@@ -1715,7 +1724,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return nil;
   }
 
-  const absl::optional<brave_ads::NotificationAdInfo> ad =
+  const std::optional<brave_ads::NotificationAdInfo> ad =
       ads->MaybeGetNotificationAd(identifier.UTF8String);
   if (!ad) {
     return nil;

@@ -6,6 +6,7 @@
 #include "brave/components/p3a/constellation_log_store.h"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string_view>
 
@@ -26,7 +27,8 @@ namespace {
 
 constexpr char kTypicalPrefName[] = "p3a.constellation_logs";
 constexpr char kSlowPrefName[] = "p3a.constellation_logs_slow";
-constexpr char kExpressPrefName[] = "p3a.constellation_logs_express";
+constexpr char kExpressV1PrefName[] = "p3a.constellation_logs_express";
+constexpr char kExpressV2PrefName[] = "p3a.constellation_logs_express_v2";
 
 }  // namespace
 
@@ -36,7 +38,9 @@ const size_t kExpressMaxEpochsToRetain = 21;
 
 ConstellationLogStore::ConstellationLogStore(PrefService& local_state,
                                              MetricLogType log_type)
-    : local_state_(local_state), log_type_(log_type) {}
+    : local_state_(local_state), log_type_(log_type) {
+  local_state.ClearPref(kExpressV1PrefName);
+}
 
 ConstellationLogStore::~ConstellationLogStore() = default;
 
@@ -49,7 +53,10 @@ bool ConstellationLogStore::LogKeyCompare::operator()(const LogKey& lhs,
 void ConstellationLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kTypicalPrefName);
   registry->RegisterDictionaryPref(kSlowPrefName);
-  registry->RegisterDictionaryPref(kExpressPrefName);
+  registry->RegisterDictionaryPref(kExpressV2PrefName);
+  // Following pref is deprecated, added 12/2023
+  // TODO(djandries): remove by the end of Q1 2024
+  registry->RegisterDictionaryPref(kExpressV1PrefName);
 }
 
 const char* ConstellationLogStore::GetPrefName() const {
@@ -57,7 +64,7 @@ const char* ConstellationLogStore::GetPrefName() const {
     case MetricLogType::kTypical:
       return kTypicalPrefName;
     case MetricLogType::kExpress:
-      return kExpressPrefName;
+      return kExpressV2PrefName;
     case MetricLogType::kSlow:
       return kSlowPrefName;
   }
@@ -127,9 +134,9 @@ const std::string& ConstellationLogStore::staged_log_signature() const {
   return staged_log_signature_;
 }
 
-absl::optional<uint64_t> ConstellationLogStore::staged_log_user_id() const {
+std::optional<uint64_t> ConstellationLogStore::staged_log_user_id() const {
   NOTREACHED();
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void ConstellationLogStore::StageNextLog() {
@@ -214,6 +221,10 @@ void ConstellationLogStore::LoadPersistedUnsentLogs() {
       update->Remove(epoch);
     }
   }
+}
+
+const metrics::LogMetadata ConstellationLogStore::staged_log_metadata() const {
+  return {};
 }
 
 }  // namespace p3a

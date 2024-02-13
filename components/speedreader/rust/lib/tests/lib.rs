@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #![allow(dead_code)]
 extern crate distance;
 extern crate html5ever;
@@ -13,8 +18,8 @@ use url::Url;
 
 use distance::damerau_levenshtein;
 use html5ever::LocalName;
-use kuchiki::NodeData::{Element, Text};
-use kuchiki::NodeRef as Handle;
+use kuchikiki::NodeData::{Element, Text};
+use kuchikiki::NodeRef as Handle;
 use std::vec::Vec;
 
 static SAMPLES_PATH: &str = "data/tests-samples/";
@@ -66,8 +71,8 @@ pub fn extract_text(handle: Handle, text: &mut String) {
     }
 }
 
-// recursively collects values of nodes with a certain tuple (tag_id, attribute_id)
-// into a vector of strings for comparison
+// recursively collects values of nodes with a certain tuple (tag_id,
+// attribute_id) into a vector of strings for comparison
 fn stripped_content(
     handle: Handle,
     tag_name: &str,
@@ -90,8 +95,8 @@ fn stripped_content(
     }
 }
 
-// compares if DOMs keep an approximate (to a factor) number and value of the tuple
-// (tag_name, attr_name)
+// compares if DOMs keep an approximate (to a factor) number and value of the
+// tuple (tag_name, attr_name)
 fn tags_match_approx(
     d1: Handle,
     d2: Handle,
@@ -163,29 +168,22 @@ mod test {
             #[test]
             fn $name() {
                 let url = Url::parse("http://url.com").unwrap();
-                let mut source_f = File::open(format!(
-                    "{}/{}/source.html",
-                    SAMPLES_PATH,
-                    stringify!($name)
-                ))
-                .unwrap();
+                let mut source_f =
+                    File::open(format!("{}/{}/source.html", SAMPLES_PATH, stringify!($name)))
+                        .unwrap();
 
                 // opens and parses the expected final result into a rcdom
                 // (for comparing with the result)
                 let expected_string = load_test_files(stringify!($name));
                 let mut feature_extractor = FeatureExtractorStreamer::try_new(&url).unwrap();
-                feature_extractor
-                    .write(&mut expected_string.as_bytes())
-                    .unwrap();
+                feature_extractor.write(&mut expected_string.as_bytes()).unwrap();
                 let expected = feature_extractor.end();
 
                 // uses the mapper build the mapper based on the source HTML
                 // document
                 let product = extract(&mut source_f, Some(url.as_str())).unwrap();
                 let mut feature_extractor = FeatureExtractorStreamer::try_new(&url).unwrap();
-                feature_extractor
-                    .write(&mut product.content.as_bytes())
-                    .unwrap();
+                feature_extractor.write(&mut product.content.as_bytes()).unwrap();
                 let result = feature_extractor.end();
 
                 // checks full flattened tree for a subset of (tags, attrs)
@@ -208,10 +206,7 @@ mod test {
                     5,
                 );
 
-                assert!(
-                    atags_match,
-                    "Node values of <a href=''> do not approximately match"
-                );
+                assert!(atags_match, "Node values of <a href=''> do not approximately match");
 
                 let imgtags_match = tags_match_approx(
                     expected.rcdom.document_node.clone(),
@@ -221,10 +216,7 @@ mod test {
                     5,
                 );
 
-                assert!(
-                    imgtags_match,
-                    "Node values of <img src=''> do not strictly match"
-                );
+                assert!(imgtags_match, "Node values of <img src=''> do not strictly match");
 
                 // note: now we can define tests similar to tags_match_strict
                 // but that are less strict. e.g. number of nodes in dom of a
@@ -240,7 +232,8 @@ mod test {
                 let strings_approx =
                     strings_match_approx(&text_result, &text_expected, levenstein_threshold);
                 assert!(strings_approx, "Flattened text is not similar enough");
-                //assert_eq!(text_result, text_expected, "Falttened texts in p tags do not match");
+                //assert_eq!(text_result, text_expected, "Falttened texts in p tags do not
+                // match");
             }
         };
     }

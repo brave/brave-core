@@ -38,16 +38,6 @@ export const AddAsset = (props: Props) => {
     [tokenContractAddress]
   )
 
-  const onNftAssetFound = React.useCallback((contractAddress: string) => {
-    setTokenContractAddress(contractAddress)
-    setSelectedTab('nft')
-  }, [])
-
-  const onTokenFound = React.useCallback((contractAddress: string) => {
-    setTokenContractAddress(contractAddress)
-    setSelectedTab('token')
-  }, [])
-
   const onChangeContractAddress = React.useCallback(
     (contractAddress: string) => {
       setTokenContractAddress(contractAddress)
@@ -67,14 +57,12 @@ export const AddAsset = (props: Props) => {
         <AddCustomTokenForm
           contractAddress={tokenContractAddress}
           onHideForm={onHideForm}
-          onNftAssetFound={onNftAssetFound}
           onChangeContractAddress={onChangeContractAddress}
         />
       ) : (
         <AddNftForm
           contractAddress={tokenContractAddress}
           onHideForm={onHideForm}
-          onTokenFound={onTokenFound}
           onChangeContractAddress={onChangeContractAddress}
         />
       )}

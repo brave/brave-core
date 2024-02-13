@@ -51,7 +51,6 @@ inline constexpr char kReferralAttemptTimestamp[] =
     "brave.referral.referral_attempt_timestamp";
 inline constexpr char kReferralAttemptCount[] =
     "brave.referral.referral_attempt_count";
-inline constexpr char kReferralHeaders[] = "brave.referral.headers";
 inline constexpr char kReferralAndroidFirstRunTimestamp[] =
     "brave.referral_android_first_run_timestamp";
 inline constexpr char kNoScriptControlType[] = "brave.no_script_default";
@@ -130,9 +129,6 @@ inline constexpr char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
 
 // deprecated
-inline constexpr char kBraveThemeType[] = "brave.theme.type";
-inline constexpr char kUseOverriddenBraveThemeType[] =
-    "brave.theme.use_overridden_brave_theme_type";
 inline constexpr char kNewTabPageShowTopSites[] =
     "brave.new_tab_page.show_top_sites";
 inline constexpr char kOtherBookmarksMigrated[] =

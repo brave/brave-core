@@ -10,7 +10,10 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -142,33 +145,26 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
 
   ShowLeoAssistantIconVisibleIfNot(service);
   profile_->GetPrefs()->ClearPref(ai_chat::prefs::kLastAcceptedDisclaimer);
-  profile_->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveChatAutoGenerateQuestions, false);
+  g_brave_browser_process->process_misc_metrics()
+      ->ai_chat_metrics()
+      ->RecordReset();
 
   AllowJavascript();
 }
 
 void BraveLeoAssistantHandler::HandleGetModels(const base::Value::List& args) {
-  std::vector<ai_chat::mojom::ModelPtr> models(
-      ai_chat::kAllModelKeysDisplayOrder.size());
-  // Ensure we return only in intended display order
-  std::transform(ai_chat::kAllModelKeysDisplayOrder.cbegin(),
-                 ai_chat::kAllModelKeysDisplayOrder.cend(), models.begin(),
-                 [](auto& model_key) {
-                   auto model_match = ai_chat::kAllModels.find(model_key);
-                   DCHECK(model_match != ai_chat::kAllModels.end());
-                   return model_match->second.Clone();
-                 });
+  auto& models = ai_chat::GetAllModels();
   base::Value::List models_list;
   for (auto& model : models) {
     base::Value::Dict dict;
-    dict.Set("key", model->key);
-    dict.Set("name", model->name);
-    dict.Set("display_name", model->display_name);
-    dict.Set("display_maker", model->display_maker);
-    dict.Set("engine_type", static_cast<int>(model->engine_type));
-    dict.Set("category", static_cast<int>(model->category));
-    dict.Set("is_premium", model->is_premium);
+    dict.Set("key", model.key);
+    dict.Set("name", model.name);
+    dict.Set("display_name", model.display_name);
+    dict.Set("display_maker", model.display_maker);
+    dict.Set("engine_type", static_cast<int>(model.engine_type));
+    dict.Set("category", static_cast<int>(model.category));
+    dict.Set("is_premium",
+             model.access == ai_chat::mojom::ModelAccess::PREMIUM);
     models_list.Append(std::move(dict));
   }
 

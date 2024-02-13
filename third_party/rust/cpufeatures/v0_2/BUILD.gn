@@ -16,9 +16,11 @@ cargo_crate("lib") {
   sources = [
     "//brave/third_party/rust/cpufeatures/v0_2/crate/src/aarch64.rs",
     "//brave/third_party/rust/cpufeatures/v0_2/crate/src/lib.rs",
+    "//brave/third_party/rust/cpufeatures/v0_2/crate/src/loongarch64.rs",
     "//brave/third_party/rust/cpufeatures/v0_2/crate/src/miri.rs",
     "//brave/third_party/rust/cpufeatures/v0_2/crate/src/x86.rs",
     "//brave/third_party/rust/cpufeatures/v0_2/crate/tests/aarch64.rs",
+    "//brave/third_party/rust/cpufeatures/v0_2/crate/tests/loongarch64.rs",
     "//brave/third_party/rust/cpufeatures/v0_2/crate/tests/x86.rs",
   ]
   inputs = [
@@ -29,22 +31,16 @@ cargo_crate("lib") {
   # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.5"
+  cargo_pkg_version = "0.2.11"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "cpufeatures"
-  cargo_pkg_description = "Lightweight runtime CPU feature detection for x86/x86_64 and aarch64 with no_std support and support for mobile targets including Android and iOS"
+  cargo_pkg_description = "Lightweight runtime CPU feature detection for aarch64, loongarch64, and x86/x86_64 targets,  with no_std support and support for mobile targets including Android and iOS"
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = []
-  if (is_android && target_cpu == "arm64") {
-    deps += [ "//third_party/rust/libc/v0_2:lib" ]
-  }
-  if (is_mac && target_cpu == "arm64") {
-    deps += [ "//third_party/rust/libc/v0_2:lib" ]
-  }
-  if (is_linux && target_cpu == "arm64") {
+  if ((is_android || is_apple || is_linux) && target_cpu == "arm64") {
     deps += [ "//third_party/rust/libc/v0_2:lib" ]
   }
 }

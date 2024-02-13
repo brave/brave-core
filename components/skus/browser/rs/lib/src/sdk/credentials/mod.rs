@@ -1,8 +1,13 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 mod fetch;
 mod present;
 
-use chrono::Utc;
-use tracing::{error, instrument};
+use chrono::{NaiveDateTime, Utc};
+use tracing::{debug, instrument, Level};
 
 use crate::errors::{InternalError, SkusError};
 use crate::models::*;
@@ -49,6 +54,7 @@ where
                         .await?
                         .map(|cred| cred.valid_to)
                         .or(expires_at);
+
                     if let Some(creds) = self.matching_time_limited_v2_credential(&item.id).await? {
                         let unblinded_creds =
                             creds.unblinded_creds.ok_or(InternalError::NotFound)?;
@@ -56,15 +62,18 @@ where
                             unblinded_creds.into_iter().filter(|cred| !cred.spent).count();
 
                         let active = remaining_credential_count > 0;
+
+                        let next_active_at = self.next_active_at(&item.id).await?;
                         return Ok(Some(CredentialSummary {
                             order,
                             remaining_credential_count, // number unspent
                             expires_at,
                             active,
+                            next_active_at,
                         }));
                     }
 
-                    error!("No matches found for credential summary.");
+                    debug!("No matches found for credential summary.");
                 }
                 CredentialType::SingleUse => {
                     let wrapped_creds = self.client.get_single_use_item_creds(&item.id).await?;
@@ -82,6 +91,7 @@ where
                             remaining_credential_count,
                             expires_at,
                             active,
+                            next_active_at: None,
                         }));
                     } else {
                         continue;
@@ -100,10 +110,11 @@ where
                             remaining_credential_count: 1,
                             expires_at,
                             active: true,
+                            next_active_at: None,
                         }));
                     }
 
-                    error!("No matches found for credential summary.");
+                    debug!("No matches found for credential summary.");
                 }
             };
         } // for
@@ -120,6 +131,38 @@ where
                 Utc::now().naive_utc() < cred.valid_to && Utc::now().naive_utc() > cred.valid_from
             })
         }))
+    }
+
+    #[instrument]
+    pub async fn next_active_at(&self, item_id: &str) -> Result<Option<NaiveDateTime>, SkusError> {
+        let now = Utc::now().naive_utc();
+        let creds = self.client.get_time_limited_v2_creds(item_id).await?;
+        // Of the TimeLimitedV2Credentials, find the TimeLimitedV2Credential that has
+        // the smallest valid_from that's greater than the current time, and also
+        // has at least one unspent SingleUseCredential.
+        match creds {
+            Some(tlv2_creds) => {
+                // Check if unblinded_creds is present and filter out unspent credentials with
+                // valid_from greater than now
+                let next_valid_from = tlv2_creds
+                    .unblinded_creds
+                    .unwrap_or_default()
+                    .into_iter()
+                    .filter_map(|tlv2_cred| {
+                        tlv2_cred
+                            .unblinded_creds
+                            .unwrap_or_default()
+                            .into_iter()
+                            .filter(|single_cred| !single_cred.spent && tlv2_cred.valid_from > now)
+                            .map(|_| tlv2_cred.valid_from)
+                            .next()
+                    })
+                    .min(); // Find the smallest valid_from among them
+
+                Ok(next_valid_from)
+            }
+            None => Ok(None), // No credentials found for the item
+        }
     }
 
     #[instrument]
@@ -158,7 +201,7 @@ where
             .and_then(|creds| creds.creds.into_iter().last()))
     }
 
-    #[instrument]
+    #[instrument(err(level = Level::WARN), ret)]
     pub async fn matching_credential_summary(
         &self,
         domain: &str,
@@ -184,6 +227,7 @@ where
                                 remaining_credential_count: 0,
                                 expires_at: None,
                                 active: false,
+                                next_active_at: None,
                             }));
                         }
                     }

@@ -50,11 +50,11 @@ TEST(FilTxMeta, ToTransactionInfo) {
   EXPECT_EQ(tx_data->to, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
   EXPECT_EQ(tx_data->value, "6");
 
-  EXPECT_EQ(meta.created_time().ToJavaTime(),
+  EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
             ti->created_time.InMilliseconds());
-  EXPECT_EQ(meta.submitted_time().ToJavaTime(),
+  EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
             ti->submitted_time.InMilliseconds());
-  EXPECT_EQ(meta.confirmed_time().ToJavaTime(),
+  EXPECT_EQ(meta.confirmed_time().InMillisecondsSinceUnixEpoch(),
             ti->confirmed_time.InMilliseconds());
 }
 

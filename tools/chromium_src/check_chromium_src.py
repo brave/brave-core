@@ -456,7 +456,7 @@ class ChromiumSrcOverridesChecker:
             json5_path = os.path.join(CHROMIUM_SRC, 'third_party', 'pyjson5',
                                       'src')
             sys.path.append(json5_path)
-            # pylint: disable=import-outside-toplevel,import-error
+            # pylint: disable=import-outside-toplevel
             import json5
 
             with open(config_path, "r", encoding='utf-8') as exclusions_file:

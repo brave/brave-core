@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "third_party/blink/renderer/platform/loader/fetch/https_state.h"
 
 #define CalculateHttpsState CalculateHttpsState_ChromiumImpl
@@ -14,7 +16,7 @@
 namespace blink {
 
 HttpsState CalculateHttpsState(const SecurityOrigin* security_origin,
-                               absl::optional<HttpsState> parent_https_state) {
+                               std::optional<HttpsState> parent_https_state) {
   if (security_origin && (security_origin->Protocol() == "http" &&
                           security_origin->Host().EndsWith(".onion"))) {
     // MixedContentChecker::ShouldAutoupgrade upgrades resource only on the

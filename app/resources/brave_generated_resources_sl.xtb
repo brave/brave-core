@@ -43,9 +43,6 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">To je zasebno okno s Tor-om</translation>
 <translation id="1037341607922068025">Odprite zasebno okno s Tor-om</translation>
-<translation id="1725356094208762656">Odpri v Tor-u</translation>
-<translation id="3396347744975515056">Sinhronizacija Brave je bila nadgrajena in zahteva nastavitev</translation>
-<translation id="7473245612074035141">Začetek nastavitev</translation>
 <translation id="496896260395129787">Ta račun za sinhronizacijo Brave je bil izbrisan z druge naprave. Če funkcije Sync niste nameravali onemogočiti, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ponovno ustvarite račun</translation>
 <translation id="6965382102122355670">V redu</translation>
@@ -84,6 +81,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo brskalnika Tor</translation>
 <translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo brskalnika Tor</translation>
 <translation id="3229091547987707389">Uvozite imenik in ga dajte v skupno rabo</translation>
+<translation id="2545072023356206691">Od 1. decembra 2023 kanal Brave Dev ne bo več prejemal posodobitev brskalnika. Uporabnikom priporočamo, da se preselijo na Nightly, Beta ali Release različice Brave.</translation>
 <translation id="474217410105706308">Izklop zvoka zavihka</translation>
 <translation id="2804710924397009224">Skrij ikono storitve Brave Rewards</translation>
 <translation id="5029193871181468990">Skrij ikono Brave Rewards</translation>
@@ -191,6 +189,10 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="7109885938715976444">Samo tokrat</translation>
 <translation id="7473891865547856676">Ne, hvala</translation>
 <translation id="2722425322672922644">Preberite, kako to vpliva na vašo zasebnost</translation>
+<translation id="5551268135482191097">Pri nalaganju naslova URL sistema IPFS je prišlo do napake. Ali želite preusmeriti na prvotni naslov URL?</translation>
+<translation id="4756627014339714615">Preusmeri</translation>
+<translation id="1338274252864046652">Želite ob zagonu brskalnika vedno zagnati vozlišče IPFS?</translation>
+<translation id="3435896845095436175">Omogoči</translation>
 <translation id="4552520379838695057">Ta stran manjka.</translation>
 <translation id="2609895996619941644">Želite preveriti, ali je na računalniku Wayback na voljo shranjena različica?</translation>
 <translation id="8053093028263274061">Žal ni na voljo nobene shranjene različice.</translation>
@@ -291,6 +293,19 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="5181358966317519720">Odstrani s seznama predvajanja</translation>
 <translation id="2377705456080309463">Poglej izvirno stran</translation>
 <translation id="158894735649719362">Zabava se začne, ko imate kaj igrati. Dodajte svojo najljubšo predstavnost in predvajajte kadarkoli in kjer koli. Tudi brez povezave.</translation>
+<translation id="8422349592890097194">Ustvari novo mapo</translation>
+<translation id="2818704116581303039">Odprite nastavitve seznama predvajanja</translation>
+<translation id="6790428901817661496">Predvajanje</translation>
+<translation id="1178581264944972037">Prekini</translation>
+<translation id="4477350412780666475">Naslednja skladba</translation>
+<translation id="3962859241508114581">Prejšnja skladba</translation>
+<translation id="7544853251252956727">Naključno predvajanje</translation>
+<translation id="4330722796577425585">Previj nazaj</translation>
+<translation id="7481312909269577407">Naprej</translation>
+<translation id="2800828306627475693">Ponovitev je izklopljena</translation>
+<translation id="1748244367114657861">Ponovi eno</translation>
+<translation id="6421906998825794164">Ponovi vse</translation>
+<translation id="1727684853006449697">Brave predvajalnik</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
@@ -404,10 +419,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="413570371620795359">Odprite ploščo z nagradami in začnite</translation>
 <translation id="1051600834033686945">Odprite celotne nastavitve Brave Nagrade</translation>
 <translation id="6333347122924254968">Pokaži ikono Brave Rewards v naslovni vrstici</translation>
-<translation id="7483857210736407752">Na straneh prikaži gumbe za prispevke</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Blokiranje družbenih medijev</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
@@ -576,7 +587,9 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="6936835573742749135">Ni mogoče zahtevati CAPTCHA. Poskusi znova kasneje.</translation>
 <translation id="2653659639078652383">Pošlji</translation>
 <translation id="1369311132025451972">Samodejno preusmeri spletna mesta .onion</translation>
-<translation id="1658670175365815312">Brave bo preklopil na različico .onion spletnega mesta, ko bo na voljo, in samodejno odprl vse domene .onion v oknu Tor.</translation>
+<translation id="6214393847480015759">Brave bo v oknih Tor samodejno preklopil na različico .onion spletnega mesta, ko bo na voljo.</translation>
+<translation id="1294350054292274934">Samo razreši naslove .onion v oknih Tor</translation>
+<translation id="1258903596167452221">Storitve Onion ne bodo na voljo zunaj oken Tor.</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
 <translation id="5249433283143453448">Za ogled zaščitenega pretočnega videa in druge vsebine v brskalniku uporabite komponento Widevine za upravljanje digitalnih pravic (DRM).</translation>
 <translation id="1314131187310290315">Razširitve Manifest V2</translation>
@@ -625,6 +638,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="4226543734057230801">Omrežja Ethereum</translation>
 <translation id="3504157706952484145">Omrežja Filecoin</translation>
 <translation id="1561541094377237745">Omrežja Solana</translation>
+<translation id="7141438739990875547">Omrežja Bitcoin</translation>
 <translation id="3159419679550543837">Prikaži testna omrežja</translation>
 <translation id="3215569562674795548">Uredi ali dodaj novo omrežje</translation>
 <translation id="4418993400653250511">ID verige</translation>
@@ -664,6 +678,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="8425213833346101688">Spremeni</translation>
 <translation id="585868419599255817">Nadomestni javni prehod IPFS</translation>
 <translation id="2618080188892567155">Samodejno se vrnite nazaj na javni prehod IPFS, če vašega lokalnega vozlišča IPFS Brave ni mogoče doseči.</translation>
+<translation id="8956391206920485238">Vedno zaženi vozlišče IPFS ob zagonu brskalnika?</translation>
 <translation id="6789104345873307368">Samodejno preusmeri zahteve za omrežne vire IPFS na konfigurirani prehod.</translation>
 <translation id="4138306018048329894">Zahteve za vire IPFS, ki gostujejo na prehodih IPFS ali virih DNSLINK tretjih oseb, bodo usmerjene prek izbranega lokalnega ali oddaljenega prehoda.
     Opomba: če je izbrano lokalno vozlišče, bo vir zahtevan neposredno iz vašega računalnika, predpomnjeni podatki pa se lahko nekaj časa posredujejo omrežju IPFS.</translation>
@@ -715,6 +730,9 @@ zgodovina klepetov bo izbrisala vse vaše prejšnje pogovore z Brave
 Leo. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="8157373421434119674">Podatki in zgodovina klepeta</translation>
 <translation id="614530507403667291">Privzeti model za nove pogovore</translation>
+<translation id="349846214503465941">Omogoči seznam predvajanja</translation>
+<translation id="7903608716704052878">Samodejno dodajanje datotek za ogled brez povezave</translation>
+<translation id="4193768184502613558">Ta možnost samodejno shrani medijske datoteke v predpomnilnik, da jih lahko predvajate brez internetne povezave.</translation>
 <translation id="6624718837376802990">Avatar nagrade Edgy</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_GET_PARAMETERS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_GET_PARAMETERS_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
@@ -13,7 +14,6 @@
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // GET /v1/parameters
 //
@@ -72,13 +72,14 @@ struct ResultFor<GetParameters> {
 class GetParameters final : public RequestBuilder,
                             public ResponseHandler<GetParameters> {
  public:
-  static Result ProcessResponse(const mojom::UrlResponse&);
+  static Result ProcessResponse(RewardsEngineImpl& engine,
+                                const mojom::UrlResponse&);
 
   explicit GetParameters(RewardsEngineImpl& engine);
   ~GetParameters() override;
 
  private:
-  absl::optional<std::string> Url() const override;
+  std::optional<std::string> Url() const override;
   mojom::UrlMethod Method() const override;
 };
 

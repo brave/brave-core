@@ -14,6 +14,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
 using PurchasedState = brave_vpn::mojom::PurchasedState;
@@ -96,3 +97,6 @@ void BraveVPNStatusLabel::UpdateState() {
   SetText(brave_l10n::GetLocalizedResourceUTF16String(
       GetStringIdForConnectionState(state)));
 }
+
+BEGIN_METADATA(BraveVPNStatusLabel)
+END_METADATA

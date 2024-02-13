@@ -5,72 +5,33 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 
-#include "base/base_paths.h"
-#include "base/files/file_util.h"
+#include "base/files/file_path.h"
 #include "base/path_service.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.h"
 
 namespace brave_ads {
 
 namespace {
 
-absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
-  std::string content;
-  if (!base::ReadFileToString(path, &content)) {
-    return absl::nullopt;
-  }
-
-  return content;
+base::FilePath TestDataRootPath() {
+  return base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+      .AppendASCII("brave")
+      .AppendASCII("components")
+      .AppendASCII("brave_ads");
 }
 
 }  // namespace
 
-base::FilePath GetTestPath() {
-  base::FilePath path;
-  base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
-  return path.AppendASCII("brave")
-      .AppendASCII("components")
-      .AppendASCII("brave_ads")
-      .AppendASCII("core")
-      .AppendASCII("test")
-      .AppendASCII("data");
+base::FilePath TestDataPath() {
+  return TestDataRootPath().AppendASCII("core").AppendASCII("test").AppendASCII(
+      "data");
 }
 
-absl::optional<std::string> ReadFileFromTestPathToString(
-    const std::string& name) {
-  const base::FilePath path = GetTestPath().AppendASCII(name);
-  return ReadFileToString(path);
+base::FilePath ComponentResourcesTestDataPath() {
+  return TestDataPath().AppendASCII("resources");
 }
 
-absl::optional<std::string> ReadFileFromTestPathAndParseTagsToString(
-    const std::string& name) {
-  absl::optional<std::string> content = ReadFileFromTestPathToString(name);
-  if (!content) {
-    return absl::nullopt;
-  }
-
-  ParseAndReplaceTags(*content);
-
-  return *content;
-}
-
-base::FilePath GetFileResourcePath() {
-  return GetTestPath().AppendASCII("resources");
-}
-
-base::FilePath GetDataResourcePath() {
-  base::FilePath path;
-  base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
-  return path.AppendASCII("brave")
-      .AppendASCII("components")
-      .AppendASCII("brave_ads")
-      .AppendASCII("resources");
-}
-
-absl::optional<std::string> ReadFileFromDataResourcePathToString(
-    const std::string& name) {
-  const base::FilePath path = GetDataResourcePath().AppendASCII(name);
-  return ReadFileToString(path);
+base::FilePath DataResourcesPath() {
+  return TestDataRootPath().AppendASCII("resources");
 }
 
 }  // namespace brave_ads

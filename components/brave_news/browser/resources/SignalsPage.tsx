@@ -88,7 +88,7 @@ export default function SignalsPage(props: Props) {
       <Input placeholder='filter...' value={filter} onInput={e => setFilter(e.detail.value)}>
         Filter
       </Input>
-      <Dropdown value={sort} onChange={e => setSort(e.detail.value)}>
+      <Dropdown value={sort} onChange={e => setSort(e.detail.value as typeof sort)}>
         <div slot="label">Sort by</div>
         <leo-option>name</leo-option>
         <leo-option>subscribed</leo-option>

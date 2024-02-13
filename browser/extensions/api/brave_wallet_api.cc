@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/brave_wallet_api.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/feature_list.h"
@@ -102,7 +103,7 @@ BraveWalletShouldPromptForSetupFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveWalletGetWalletSeedFunction::Run() {
   // make sure the passed in enryption key is 32 bytes.
-  absl::optional<brave_wallet::GetWalletSeed::Params> params =
+  std::optional<brave_wallet::GetWalletSeed::Params> params =
       brave_wallet::GetWalletSeed::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
   if (params->key.size() != 32) {

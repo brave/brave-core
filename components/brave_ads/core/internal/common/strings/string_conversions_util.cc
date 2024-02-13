@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
+#include <algorithm>
+#include <iterator>
+
 #include "base/strings/string_split.h"
 
 namespace brave_ads {
@@ -27,11 +30,14 @@ std::vector<float> DelimitedStringToVector(const std::string& string,
 
   std::vector<float> vector_components;
   vector_components.reserve(string_components.size());
-  for (const auto& string_component : string_components) {
-    double value;
-    CHECK(base::StringToDouble(string_component, &value));
-    vector_components.push_back(static_cast<float>(value));
-  }
+
+  std::transform(string_components.cbegin(), string_components.cend(),
+                 std::back_inserter(vector_components),
+                 [](const std::string& string_component) {
+                   double value;
+                   CHECK(base::StringToDouble(string_component, &value));
+                   return static_cast<float>(value);
+                 });
 
   return vector_components;
 }

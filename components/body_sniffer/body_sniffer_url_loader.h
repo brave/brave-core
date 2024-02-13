@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BODY_SNIFFER_BODY_SNIFFER_URL_LOADER_H_
 #define BRAVE_COMPONENTS_BODY_SNIFFER_BODY_SNIFFER_URL_LOADER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -22,7 +23,6 @@
 #include "services/network/public/mojom/early_hints.mojom-forward.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace net {
@@ -71,7 +71,7 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
   void OnReceiveResponse(
       network::mojom::URLResponseHeadPtr response_head,
       mojo::ScopedDataPipeConsumerHandle body,
-      absl::optional<mojo_base::BigBuffer> cached_metadata) override;
+      std::optional<mojo_base::BigBuffer> cached_metadata) override;
   void OnReceiveRedirect(
       const net::RedirectInfo& redirect_info,
       network::mojom::URLResponseHeadPtr response_head) override;
@@ -87,7 +87,7 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
       const std::vector<std::string>& removed_headers,
       const net::HttpRequestHeaders& modified_headers,
       const net::HttpRequestHeaders& modified_cors_exempt_headers,
-      const absl::optional<GURL>& new_url) override;
+      const std::optional<GURL>& new_url) override;
   void SetPriority(net::RequestPriority priority,
                    int32_t intra_priority_value) override;
   void PauseReadingBodyFromNet() override;
@@ -118,7 +118,7 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
   enum class State { kWaitForBody, kLoading, kSending, kCompleted, kAborted };
   State state_ = State::kWaitForBody;
 
-  absl::optional<network::URLLoaderCompletionStatus> complete_status_;
+  std::optional<network::URLLoaderCompletionStatus> complete_status_;
 
   std::string buffered_body_;
   size_t bytes_remaining_in_buffer_;

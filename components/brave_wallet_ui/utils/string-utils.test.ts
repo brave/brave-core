@@ -4,13 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
+  mockBraveWalletOrigin,
+  mockUniswapOriginInfo
+} from '../stories/mock-data/mock-origin-info'
+import {
   isRemoteImageURL,
   isValidIconExtension,
   formatAsDouble,
   hasUnicode,
   padWithLeadingZeros,
   unicodeCharEscape,
-  removeDoubleSpaces
+  removeDoubleSpaces,
+  getIsBraveWalletOrigin
 } from './string-utils'
 
 describe('Checking URL is remote image or not', () => {
@@ -110,5 +115,17 @@ describe('removeDoubleSpaces', () => {
     expect(removeDoubleSpaces('word  word  word')).toBe('word word word')
     expect(removeDoubleSpaces('word  word')).toBe('word word')
     expect(removeDoubleSpaces('word')).toBe('word')
+  })
+})
+
+describe('getIsBraveWalletOrigin', () => {
+  it('should return `false` if it is not a Brave Wallet origin', () => {
+    expect(getIsBraveWalletOrigin(mockUniswapOriginInfo)).toBe(false)
+    expect(
+      getIsBraveWalletOrigin({ originSpec: 'chrome://wallet@newtab' })
+    ).toBe(false)
+  })
+  it('should return `true` if it is a Brave Wallet origin', () => {
+    expect(getIsBraveWalletOrigin(mockBraveWalletOrigin)).toBe(true)
   })
 })

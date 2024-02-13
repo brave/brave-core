@@ -5,15 +5,22 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
+#include <optional>
+#include <string>
 #include <string_view>
 #include <utility>
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
 namespace {
+
+constexpr uint8_t kZCashSigHashAll = 0x01;
 
 bool ReadStringTo(const base::Value::Dict& dict,
                   std::string_view key,
@@ -118,21 +125,21 @@ base::Value::Dict ZCashTransaction::Outpoint::ToValue() const {
 }
 
 // static
-absl::optional<ZCashTransaction::Outpoint>
-ZCashTransaction::Outpoint::FromValue(const base::Value::Dict& value) {
+std::optional<ZCashTransaction::Outpoint> ZCashTransaction::Outpoint::FromValue(
+    const base::Value::Dict& value) {
   Outpoint result;
 
   auto* txid_hex = value.FindString("txid");
   if (!txid_hex) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   if (!base::HexStringToSpan(*txid_hex, result.txid)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto index_value = value.FindInt("index");
   if (!index_value) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   result.index = *index_value;
 
@@ -147,9 +154,9 @@ ZCashTransaction::TxInput& ZCashTransaction::TxInput::operator=(
 bool ZCashTransaction::TxInput::operator==(
     const ZCashTransaction::TxInput& other) const {
   return std::tie(this->utxo_address, this->utxo_outpoint, this->utxo_value,
-                  this->script_sig, this->witness) ==
+                  this->script_sig, this->script_pub_key) ==
          std::tie(other.utxo_address, other.utxo_outpoint, other.utxo_value,
-                  other.script_sig, other.witness);
+                  other.script_sig, other.script_pub_key);
 }
 bool ZCashTransaction::TxInput::operator!=(
     const ZCashTransaction::TxInput& other) const {
@@ -160,10 +167,10 @@ ZCashTransaction::TxInput ZCashTransaction::TxInput::Clone() const {
   ZCashTransaction::TxInput result;
 
   result.utxo_address = utxo_address;
+  result.script_pub_key = script_pub_key;
   result.utxo_outpoint = utxo_outpoint;
   result.utxo_value = utxo_value;
   result.script_sig = script_sig;
-  result.witness = witness;
 
   return result;
 }
@@ -174,59 +181,62 @@ base::Value::Dict ZCashTransaction::TxInput::ToValue() const {
   dict.Set("utxo_address", utxo_address);
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
   dict.Set("utxo_value", base::NumberToString(utxo_value));
-
+  dict.Set("script_pub_key", base::HexEncode(script_pub_key));
   dict.Set("script_sig", base::HexEncode(script_sig));
-  dict.Set("witness", base::HexEncode(witness));
 
   return dict;
 }
 
 // static
-absl::optional<ZCashTransaction::TxInput> ZCashTransaction::TxInput::FromValue(
+std::optional<ZCashTransaction::TxInput> ZCashTransaction::TxInput::FromValue(
     const base::Value::Dict& value) {
   ZCashTransaction::TxInput result;
 
   if (!ReadStringTo(value, "utxo_address", result.utxo_address)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadDictTo(value, "utxo_outpoint", result.utxo_outpoint)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadUint64StringTo(value, "utxo_value", result.utxo_value)) {
-    return absl::nullopt;
+    return std::nullopt;
+  }
+
+  if (!ReadHexByteArrayTo(value, "script_pub_key", result.script_pub_key)) {
+    return std::nullopt;
   }
 
   if (!ReadHexByteArrayTo(value, "script_sig", result.script_sig)) {
-    return absl::nullopt;
-  }
-
-  if (!ReadHexByteArrayTo(value, "witness", result.witness)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return result;
 }
 
 // static
-absl::optional<ZCashTransaction::TxInput>
-ZCashTransaction::TxInput::FromRpcUtxo(const std::string& address,
-                                       const zcash::ZCashUtxo& utxo) {
+std::optional<ZCashTransaction::TxInput> ZCashTransaction::TxInput::FromRpcUtxo(
+    const std::string& address,
+    const mojom::ZCashUtxo& utxo) {
+  if (address != utxo.address) {
+    return std::nullopt;
+  }
   ZCashTransaction::TxInput result;
-  result.utxo_address = address;
-  // result.utxo_outpoint.txid = utxo.txid();
-  result.utxo_outpoint.index = utxo.index();
-  result.utxo_value = utxo.valuezat();
+  result.utxo_address = utxo.address;
+  result.script_pub_key.insert(result.script_pub_key.begin(),
+                               utxo.script.begin(), utxo.script.end());
+  if (utxo.tx_id.size() != 32) {
+    return std::nullopt;
+  }
+  std::copy_n(utxo.tx_id.begin(), 32, result.utxo_outpoint.txid.begin());
+  result.utxo_outpoint.index = utxo.index;
+  result.utxo_value = utxo.value_zat;
   return result;
 }
 
-uint32_t ZCashTransaction::TxInput::n_sequence() const {
-  return 0xfffffffd;
-}
-
 bool ZCashTransaction::TxInput::IsSigned() const {
-  return !script_sig.empty() || !witness.empty();
+  return !script_sig.empty();
 }
 
 ZCashTransaction::TxOutput::TxOutput() = default;
@@ -237,8 +247,8 @@ ZCashTransaction::TxOutput& ZCashTransaction::TxOutput::operator=(
     ZCashTransaction::TxOutput&& other) = default;
 bool ZCashTransaction::TxOutput::operator==(
     const ZCashTransaction::TxOutput& other) const {
-  return std::tie(this->address, this->amount) ==
-         std::tie(other.address, other.amount);
+  return std::tie(this->address, this->amount, this->script_pubkey) ==
+         std::tie(other.address, other.amount, other.script_pubkey);
 }
 bool ZCashTransaction::TxOutput::operator!=(
     const ZCashTransaction::TxOutput& other) const {
@@ -250,6 +260,7 @@ ZCashTransaction::TxOutput ZCashTransaction::TxOutput::Clone() const {
 
   result.address = address;
   result.amount = amount;
+  result.script_pubkey = script_pubkey;
 
   return result;
 }
@@ -259,20 +270,25 @@ base::Value::Dict ZCashTransaction::TxOutput::ToValue() const {
 
   dict.Set("address", address);
   dict.Set("amount", base::NumberToString(amount));
+  dict.Set("script_pub_key", base::HexEncode(script_pubkey));
 
   return dict;
 }
 
 // static
-absl::optional<ZCashTransaction::TxOutput>
-ZCashTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
+std::optional<ZCashTransaction::TxOutput> ZCashTransaction::TxOutput::FromValue(
+    const base::Value::Dict& value) {
   ZCashTransaction::TxOutput result;
   if (!ReadStringTo(value, "address", result.address)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadUint64StringTo(value, "amount", result.amount)) {
-    return absl::nullopt;
+    return std::nullopt;
+  }
+
+  if (!ReadHexByteArrayTo(value, "script_pub_key", result.script_pubkey)) {
+    return std::nullopt;
   }
 
   return result;
@@ -317,54 +333,54 @@ base::Value::Dict ZCashTransaction::ToValue() const {
 }
 
 // static
-absl::optional<ZCashTransaction> ZCashTransaction::FromValue(
+std::optional<ZCashTransaction> ZCashTransaction::FromValue(
     const base::Value::Dict& value) {
   ZCashTransaction result;
 
   auto* inputs_list = value.FindList("inputs");
   if (!inputs_list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   for (auto& item : *inputs_list) {
     if (!item.is_dict()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     auto input_opt = ZCashTransaction::TxInput::FromValue(item.GetDict());
     if (!input_opt) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     result.inputs_.push_back(std::move(*input_opt));
   }
 
   auto* outputs_list = value.FindList("outputs");
   if (!outputs_list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   for (auto& item : *outputs_list) {
     if (!item.is_dict()) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     auto output_opt = ZCashTransaction::TxOutput::FromValue(item.GetDict());
     if (!output_opt) {
-      return absl::nullopt;
+      return std::nullopt;
     }
     result.outputs_.push_back(std::move(*output_opt));
   }
 
   if (!ReadUint32StringTo(value, "locktime", result.locktime_)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadStringTo(value, "to", result.to_)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadUint64StringTo(value, "amount", result.amount_)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!ReadUint64StringTo(value, "fee", result.fee_)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return result;
@@ -389,8 +405,7 @@ uint64_t ZCashTransaction::TotalInputsAmount() const {
 
 uint8_t ZCashTransaction::sighash_type() const {
   // We always sign all inputs.
-  // return kZCashSigHashAll;
-  return 0;
+  return kZCashSigHashAll;
 }
 
 }  // namespace brave_wallet

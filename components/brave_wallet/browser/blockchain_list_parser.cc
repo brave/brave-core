@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
-#include "brave/components/brave_wallet/browser/blockchain_list_schemas.h"
 
 #include <map>
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -14,6 +14,7 @@
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_schemas.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -33,47 +34,47 @@ bool ParseResultFromDict(const base::Value::Dict* response_dict,
   return true;
 }
 
-absl::optional<double> ParseNullableStringAsDouble(const base::Value& value) {
+std::optional<double> ParseNullableStringAsDouble(const base::Value& value) {
   if (value.is_none()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   double result;
   if (value.is_string()) {
     if (!base::StringToDouble(value.GetString(), &result)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     return result;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<uint32_t> ParseNullableStringAsUint32(const base::Value& value) {
+std::optional<uint32_t> ParseNullableStringAsUint32(const base::Value& value) {
   if (value.is_none()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   uint32_t result;
   if (value.is_string()) {
     if (!base::StringToUint(value.GetString(), &result)) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     return result;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
-absl::optional<base::Value> ParseJsonToDict(const std::string& json) {
-  absl::optional<base::Value> records_v =
+std::optional<base::Value> ParseJsonToDict(const std::string& json) {
+  std::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return absl::nullopt;
+    return std::nullopt;
   }
   return records_v;
 }
@@ -85,7 +86,7 @@ std::string EmptyIfNull(const std::string* str) {
   return "";
 }
 
-absl::optional<mojom::OnRampProvider> ParseProvider(
+std::optional<mojom::OnRampProvider> ParseProvider(
     const std::string& provider_str) {
   if (provider_str == "ramp") {
     return mojom::OnRampProvider::kRamp;
@@ -99,7 +100,7 @@ absl::optional<mojom::OnRampProvider> ParseProvider(
     return mojom::OnRampProvider::kCoinbase;
   }
 
-  return absl::nullopt;
+  return std::nullopt;
 }
 
 void AddDappListToMap(
@@ -128,28 +129,28 @@ void AddDappListToMap(
                                  dapp_from_component.categories.end());
 
     // If any of the metrics fields are null, skip the dapp
-    absl::optional<uint32_t> transactions =
+    std::optional<uint32_t> transactions =
         ParseNullableStringAsUint32(dapp_from_component.metrics.transactions);
     if (!transactions) {
       continue;
     }
     dapp->transactions = *transactions;
 
-    absl::optional<uint32_t> uaw =
+    std::optional<uint32_t> uaw =
         ParseNullableStringAsUint32(dapp_from_component.metrics.uaw);
     if (!uaw) {
       continue;
     }
     dapp->uaw = *uaw;
 
-    absl::optional<double> volume =
+    std::optional<double> volume =
         ParseNullableStringAsDouble(dapp_from_component.metrics.volume);
     if (!volume) {
       continue;
     }
     dapp->volume = *volume;
 
-    absl::optional<double> balance =
+    std::optional<double> balance =
         ParseNullableStringAsDouble(dapp_from_component.metrics.balance);
     if (!balance) {
       continue;
@@ -232,7 +233,7 @@ bool ParseTokenList(const std::string& json,
   //  }
   // }
 
-  absl::optional<base::Value> records_v =
+  std::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v || !records_v->is_dict()) {
@@ -250,21 +251,11 @@ bool ParseTokenList(const std::string& json,
       return false;
     }
 
-    absl::optional<bool> is_erc20_opt =
-        blockchain_token_value->FindBool("erc20");
-    if (is_erc20_opt) {
-      blockchain_token->is_erc20 = *is_erc20_opt;
-    } else {
-      blockchain_token->is_erc20 = false;
-    }
+    blockchain_token->is_erc20 =
+        blockchain_token_value->FindBool("erc20").value_or(false);
 
-    absl::optional<bool> is_erc721_opt =
-        blockchain_token_value->FindBool("erc721");
-    if (is_erc721_opt) {
-      blockchain_token->is_erc721 = *is_erc721_opt;
-    } else {
-      blockchain_token->is_erc721 = false;
-    }
+    blockchain_token->is_erc721 =
+        blockchain_token_value->FindBool("erc721").value_or(false);
 
     blockchain_token->is_nft = blockchain_token->is_erc721;
 
@@ -279,7 +270,7 @@ bool ParseTokenList(const std::string& json,
     ParseResultFromDict(blockchain_token_value, "logo",
                         &blockchain_token->logo);
 
-    absl::optional<int> decimals_opt =
+    std::optional<int> decimals_opt =
         blockchain_token_value->FindInt("decimals");
     if (decimals_opt) {
       blockchain_token->decimals = *decimals_opt;
@@ -299,6 +290,7 @@ bool ParseTokenList(const std::string& json,
                         &blockchain_token->coingecko_id);
 
     blockchain_token->coin = coin;
+    blockchain_token->visible = true;
     (*token_list_map)[GetTokenListKey(coin, blockchain_token->chain_id)]
         .push_back(std::move(blockchain_token));
   }
@@ -306,7 +298,7 @@ bool ParseTokenList(const std::string& json,
   return true;
 }
 
-absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
+std::optional<RampTokenListMaps> ParseRampTokenListMaps(
     const std::string& json) {
   // {
   //   "tokens" : [
@@ -385,9 +377,9 @@ absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
   //   ]
   // }
 
-  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value> records_v = ParseJsonToDict(json);
   if (!records_v) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   OnRampTokensListMap on_ramp_supported_tokens_lists;
@@ -396,7 +388,7 @@ absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
   const auto tokens_list =
       blockchain_lists::OnRampTokenLists::FromValue(records_v->GetDict());
   if (!tokens_list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   for (const auto& token : (*tokens_list).tokens) {
@@ -408,18 +400,18 @@ absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
                            std::move(off_ramp_supported_tokens_lists)};
 }
 
-absl::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
+std::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
     const std::string& json) {
-  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value> records_v = ParseJsonToDict(json);
   if (!records_v) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const auto on_ramp_supported_currencies_from_component =
       blockchain_lists::OnRampCurrencyLists::FromValue(records_v->GetDict());
 
   if (!on_ramp_supported_currencies_from_component) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<mojom::OnRampCurrency> on_ramp_supported_currencies;
@@ -569,7 +561,7 @@ bool ParseChainList(const std::string& json, ChainList* result) {
   return true;
 }
 
-absl::optional<DappListMap> ParseDappLists(const std::string& json) {
+std::optional<DappListMap> ParseDappLists(const std::string& json) {
   // {
   //   "solana": {
   //     "success": true,
@@ -642,15 +634,15 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   //   ...
   // }
 
-  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value> records_v = ParseJsonToDict(json);
   if (!records_v) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto dapp_lists_from_component =
       blockchain_lists::DappLists::FromValue(records_v->GetDict());
   if (!dapp_lists_from_component) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   DappListMap dapp_lists;
@@ -681,7 +673,7 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   return dapp_lists;
 }
 
-absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
+std::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   // {
   //   "0x1": {
   //     "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78": "0chain",
@@ -695,14 +687,14 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   //   }
   // }
 
-  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value> records_v = ParseJsonToDict(json);
   if (!records_v) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   const base::Value::Dict* chain_ids = records_v->GetIfDict();
   if (!chain_ids) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::map<std::pair<std::string, std::string>, std::string> coingecko_ids_map;
@@ -711,7 +703,7 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
 
     const auto* contract_addresses = chain_id_record.second.GetIfDict();
     if (!contract_addresses) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     for (const auto contract_address_record : *contract_addresses) {
@@ -719,7 +711,7 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
           base::ToLowerASCII(contract_address_record.first);
       const auto* coingecko_id = contract_address_record.second.GetIfString();
       if (!coingecko_id) {
-        return absl::nullopt;
+        return std::nullopt;
       }
 
       coingecko_ids_map[{chain_id, contract_address}] = *coingecko_id;
@@ -729,7 +721,7 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   return CoingeckoIdsMap(coingecko_ids_map.begin(), coingecko_ids_map.end());
 }
 
-absl::optional<std::vector<std::string>> ParseOfacAddressesList(
+std::optional<std::vector<std::string>> ParseOfacAddressesList(
     const std::string& json) {
   // {
   //   "addresses": [
@@ -738,15 +730,15 @@ absl::optional<std::vector<std::string>> ParseOfacAddressesList(
   //     ...
   //   ]
   // }
-  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value> records_v = ParseJsonToDict(json);
   if (!records_v) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   auto ofac_list_from_component =
       blockchain_lists::OfacAddressesList::FromValue(records_v->GetDict());
   if (!ofac_list_from_component) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   std::vector<std::string> ofac_list;

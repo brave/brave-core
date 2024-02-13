@@ -14,7 +14,8 @@ namespace blink {
 namespace origin_trials {
 
 BLINK_COMMON_EXPORT bool IsTrialDisabledInBrave(std::string_view trial_name);
-BLINK_COMMON_EXPORT bool IsTrialDisabledInBrave(OriginTrialFeature feature);
+BLINK_COMMON_EXPORT bool IsTrialDisabledInBrave(
+    blink::mojom::OriginTrialFeature feature);
 
 }  // namespace origin_trials
 }  // namespace blink

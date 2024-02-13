@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/api/brave_shields_api.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/browser/brave_browser_process.h"
@@ -22,7 +23,7 @@ namespace api {
 
 ExtensionFunction::ResponseAction
 BraveShieldsAddSiteCosmeticFilterFunction::Run() {
-  absl::optional<brave_shields::AddSiteCosmeticFilter::Params> params =
+  std::optional<brave_shields::AddSiteCosmeticFilter::Params> params =
       brave_shields::AddSiteCosmeticFilter::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 

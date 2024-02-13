@@ -47,6 +47,7 @@
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
+#include "components/language/core/browser/language_prefs.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/test/browser_test.h"
@@ -58,6 +59,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "services/network/public/cpp/network_switches.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
@@ -65,14 +67,16 @@
 
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
-const char kTestPageReadable[] = "/articles/guardian.html";
+const char kTestPageReadable[] = "/speedreader/article/guardian.html";
+const char kTestEsPageReadable[] = "/speedreader/article/es.html";
 const char kTestPageReadableOnUnreadablePath[] =
     "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
-const char kTestXml[] = "/article/rss.xml";
+const char kTestXml[] = "/speedreader/article/rss.xml";
 const char kTestTtsSimple[] = "/speedreader/article/simple.html";
 const char kTestTtsTags[] = "/speedreader/article/tags.html";
 const char kTestTtsStructure[] = "/speedreader/article/structure.html";
+const char kTestErrorPage[] = "/speedreader/article/page_not_reachable.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -130,7 +134,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
-  void TearDownOnMainThread() override { DisableSpeedreader(); }
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        "MAP *:443 " + https_server_.host_port_pair().ToString());
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+  }
 
   content::WebContents* ActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
@@ -220,7 +229,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
       std::string_view path,
       WindowOpenDisposition disposition =
           WindowOpenDisposition::NEW_FOREGROUND_TAB) {
-    const GURL url = https_server_.GetURL(kTestHost, path);
+    const GURL url = GURL("https://a.test").Resolve(path);
     ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, disposition,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
@@ -231,24 +240,17 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, PRE_RestoreSpeedreaderPage) {
   ToggleSpeedreader();
-  NavigateToPageSynchronously(kTestPageReadable);
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
+}
 
-  Profile* profile = browser()->profile();
-
-  ScopedKeepAlive test_keep_alive(KeepAliveOrigin::PANEL_VIEW,
-                                  KeepAliveRestartOption::DISABLED);
-  ScopedProfileKeepAlive test_profile_keep_alive(
-      profile, ProfileKeepAliveOrigin::kBrowserWindow);
-  CloseBrowserSynchronously(browser());
-
-  EXPECT_EQ(0u, BrowserList::GetInstance()->size());
-  chrome::OpenWindowWithRestoredTabs(profile);
-  EXPECT_EQ(1u, BrowserList::GetInstance()->size());
-  SelectFirstBrowser();
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  WaitDistilled();
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
 }
@@ -286,12 +288,27 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   brave_wallet::SetDefaultSolanaWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
+
+  const std::string kGetContentLength = "document.body.innerHTML.length";
+
+  // Check that disabled speedreader doesn't affect the page.
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+  const auto first_load_page_length =
+      content::EvalJs(ActiveWebContents(), kGetContentLength,
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                      ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+          .ExtractInt();
+  EXPECT_LT(83000, first_load_page_length);
+
   ToggleSpeedreader();
+  EXPECT_TRUE(speedreader_service()->IsEnabledForAllSites());
 
   content::WebContentsConsoleObserver console_observer(ActiveWebContents());
   console_observer.SetFilter(base::BindLambdaForTesting(
       [](const content::WebContentsConsoleObserver::Message& message) {
-        return message.log_level != blink::mojom::ConsoleMessageLevel::kVerbose;
+        return message.log_level == blink::mojom::ConsoleMessageLevel::kError;
       }));
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
@@ -301,8 +318,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   const std::string kGetFontsExists =
       "!!(document.getElementById('atkinson_hyperligible_font') && "
       "document.getElementById('open_dyslexic_font'))";
-
-  const std::string kGetContentLength = "document.body.innerHTML.length";
+  const std::string kCheckReferrer =
+      R"js(document.querySelector('meta[name="referrer"]')
+             .getAttribute('content') === 'no-referrer')js";
 
   // Check that the document became much smaller and that non-empty speedreader
   // style is injected.
@@ -314,20 +332,37 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
-  EXPECT_GT(17750, content::EvalJs(ActiveWebContents(), kGetContentLength,
-                                   content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL)
-                       .ExtractInt());
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckReferrer,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                  .ExtractBool());
+
+  const auto speedreaded_length =
+      content::EvalJs(ActiveWebContents(), kGetContentLength,
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                      ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+          .ExtractInt();
+  EXPECT_GT(17750, speedreaded_length);
 
   EXPECT_TRUE(console_observer.messages().empty());
 
-  // Check that disabled speedreader doesn't affect the page.
   ToggleSpeedreader();
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_LT(106000, content::EvalJs(ActiveWebContents(), kGetContentLength,
-                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                    ISOLATED_WORLD_ID_BRAVE_INTERNAL)
-                        .ExtractInt());
+
+  const bool is_correct_web_contents =
+      browser()->tab_strip_model()->GetWebContentsAt(1) == ActiveWebContents();
+  const auto second_load_page_length =
+      content::EvalJs(ActiveWebContents(), kGetContentLength,
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                      ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+          .ExtractInt();
+  EXPECT_LT(83000, second_load_page_length)
+      << " First load length: " << first_load_page_length
+      << " speedreaded length: " << speedreaded_length
+      << " Second load length: " << second_load_page_length
+      << " IsCorrectWebContents: " << is_correct_web_contents;
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
@@ -399,6 +434,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  NavigateToPageSynchronously(kTestEsPageReadable);
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  ClickReaderButton();
+
+  constexpr const char kCheckText[] =
+      R"js( document.querySelector('#par-to-check').innerText.length )js";
+  EXPECT_EQ(92, content::EvalJs(ActiveWebContents(), kCheckText,
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                    .ExtractInt());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
@@ -755,6 +804,23 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   }
 }
 
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
+  language::LanguagePrefs language_prefs(browser()->profile()->GetPrefs());
+  language_prefs.SetUserSelectedLanguagesList(
+      {"en-US", "ja", "en-CA", "fr-CA"});
+
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+
+  auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
+                           ->reader_mode_toolbar_view_.get();
+  auto* toolbar = toolbar_view->GetWebContentsForTesting();
+
+  constexpr const char kGetLang[] = R"js( navigator.languages.toString() )js";
+  EXPECT_EQ("en-US,ja,en-CA,fr-CA",
+            content::EvalJs(toolbar, kGetLang).ExtractString());
+}
+
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestXml);
@@ -785,6 +851,30 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TTS) {
                                  ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                      .ExtractInt());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestErrorPage,
+                              WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(ActiveWebContents()->GetPrimaryMainFrame()->IsErrorDocument());
+  EXPECT_FALSE(GetReaderButton()->GetVisible());
+
+  // Navigate to the non-automatic distillable page.
+  NavigateToPageSynchronously(kTestPageReadableOnUnreadablePath,
+                              WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
+      tab_helper()->PageDistillState()));
+  WaitDistillable(tab_helper());
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+  GoBack(browser());
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+  WaitDistilled();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
 }
 
 class SpeedReaderWithDistillationServiceBrowserTest

@@ -1,0 +1,45 @@
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!DOCTYPE html>
+
+<link rel="import" href="/tracing/metrics/metric_registry.html">
+<link rel="import" href="/brave/tools/perf/metrics/brave_uma_utils.html">
+
+<script>
+  'use strict';
+
+  tr.exportTo('tr.metrics', function () {
+    const SUM_AND_COUNT_HISTOGRAM_LIST = [
+      'Brave.Adblock.MakeEngineWithRules.Default',
+      'Brave.Adblock.MakeEngineWithRules.Additional',
+
+      'Brave.CosmeticFilters.UrlCosmeticResourcesSync',
+      'Brave.CosmeticFilters.ApplyRules',
+
+      'Brave.Adblock.ShouldBlockRequest',
+
+      'Brave.ProxyingURLLoader.TotalRequestTime',
+
+      'Brave.APIRequestHelper.ProcessResultOnUI',
+
+      'ChildProcess.Launched.UtilityProcessHash',
+    ];
+
+    function braveGeneralUmaMetric(histograms, model) {
+      tr.metrics.braveExtendedUmaMetrics(histograms, model, {
+        sumAndCountHistograms: SUM_AND_COUNT_HISTOGRAM_LIST,
+      });
+    }
+
+    tr.metrics.MetricRegistry.register(braveGeneralUmaMetric, {
+      requiredCategories: ['benchmark'],
+    });
+
+    return {
+      braveGeneralUmaMetric,
+    };
+  });
+</script>

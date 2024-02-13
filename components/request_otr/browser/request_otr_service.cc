@@ -11,6 +11,7 @@
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "brave/components/request_otr/browser/request_otr_component_installer.h"
+#include "brave/components/request_otr/browser/request_otr_p3a.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -19,7 +20,16 @@
 
 namespace request_otr {
 
-RequestOTRService::RequestOTRService() {}
+namespace {
+
+constexpr base::TimeDelta kP3AUpdateInterval = base::Days(1);
+
+}  // namespace
+
+RequestOTRService::RequestOTRService(PrefService* profile_prefs)
+    : profile_prefs_(profile_prefs) {
+  UpdateP3AMetrics();
+}
 
 RequestOTRService::~RequestOTRService() = default;
 
@@ -53,10 +63,18 @@ bool RequestOTRService::ShouldBlock(const GURL& url) const {
   return false;
 }
 
+void RequestOTRService::UpdateP3AMetrics() {
+  p3a::UpdateMetrics(profile_prefs_);
+  p3a_timer_.Start(FROM_HERE, base::Time::Now() + kP3AUpdateInterval,
+                   base::BindRepeating(&RequestOTRService::UpdateP3AMetrics,
+                                       base::Unretained(this)));
+}
+
 // static
 void RequestOTRService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kRequestOTRActionOption,
                                 static_cast<int>(RequestOTRActionOption::kAsk));
+  p3a::RegisterProfilePrefs(registry);
 }
 
 }  // namespace request_otr

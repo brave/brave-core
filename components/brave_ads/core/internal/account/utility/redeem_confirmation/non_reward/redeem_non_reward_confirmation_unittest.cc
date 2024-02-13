@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation.h"
 
+#include <optional>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
@@ -47,7 +49,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -72,7 +74,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -98,7 +100,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -124,7 +126,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -150,7 +152,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation =
+  const std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 

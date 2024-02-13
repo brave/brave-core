@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
 
+#include <vector>
+
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
@@ -16,7 +18,7 @@ ConfirmationTokens::ConfirmationTokens() = default;
 ConfirmationTokens::~ConfirmationTokens() = default;
 
 const ConfirmationTokenInfo& ConfirmationTokens::GetToken() const {
-  CHECK_NE(0, Count());
+  CHECK_NE(0U, Count());
 
   return confirmation_tokens_.front();
 }
@@ -32,6 +34,9 @@ void ConfirmationTokens::SetTokens(
 
 void ConfirmationTokens::AddTokens(
     const ConfirmationTokenList& confirmation_tokens) {
+  confirmation_tokens_.reserve(confirmation_tokens_.size() +
+                               confirmation_tokens.size());
+
   for (const auto& confirmation_token : confirmation_tokens) {
     if (!TokenExists(confirmation_token)) {
       confirmation_tokens_.push_back(confirmation_token);
@@ -41,7 +46,8 @@ void ConfirmationTokens::AddTokens(
 
 bool ConfirmationTokens::RemoveToken(
     const ConfirmationTokenInfo& confirmation_token) {
-  auto iter = base::ranges::find(confirmation_tokens_, confirmation_token);
+  const auto iter =
+      base::ranges::find(confirmation_tokens_, confirmation_token);
   if (iter == confirmation_tokens_.cend()) {
     return false;
   }
@@ -53,14 +59,11 @@ bool ConfirmationTokens::RemoveToken(
 
 void ConfirmationTokens::RemoveTokens(
     const ConfirmationTokenList& confirmation_tokens) {
-  confirmation_tokens_.erase(
-      base::ranges::remove_if(
-          confirmation_tokens_,
-          [&confirmation_tokens](
-              const ConfirmationTokenInfo& confirmation_token) {
-            return base::Contains(confirmation_tokens, confirmation_token);
-          }),
-      confirmation_tokens_.cend());
+  std::erase_if(
+      confirmation_tokens_,
+      [&confirmation_tokens](const ConfirmationTokenInfo& confirmation_token) {
+        return base::Contains(confirmation_tokens, confirmation_token);
+      });
 }
 
 void ConfirmationTokens::RemoveAllTokens() {
@@ -72,8 +75,8 @@ bool ConfirmationTokens::TokenExists(
   return base::Contains(confirmation_tokens_, confirmation_token);
 }
 
-int ConfirmationTokens::Count() const {
-  return static_cast<int>(confirmation_tokens_.size());
+size_t ConfirmationTokens::Count() const {
+  return confirmation_tokens_.size();
 }
 
 bool ConfirmationTokens::IsEmpty() const {

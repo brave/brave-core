@@ -18,11 +18,11 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -52,7 +52,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
-  const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
+  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
       &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -75,7 +75,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([=](const UserDataInfo& user_data) {
-    const absl::optional<ConfirmationInfo> confirmation =
+    const std::optional<ConfirmationInfo> confirmation =
         BuildRewardConfirmation(&token_generator_mock_, transaction, user_data);
     ASSERT_TRUE(confirmation);
 

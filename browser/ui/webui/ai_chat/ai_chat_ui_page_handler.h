@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -54,15 +55,20 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
   void SubmitHumanConversationEntry(const std::string& input) override;
+  void SubmitSummarizationRequest() override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void MarkAgreementAccepted() override;
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
   void GenerateQuestions() override;
-  void SetAutoGenerateQuestions(bool can_auto_generate_questions) override;
   void GetSiteInfo(GetSiteInfoCallback callback) override;
   void OpenBraveLeoSettings() override;
   void OpenURL(const GURL& url) override;
-  void DisconnectPageContents() override;
+  void SetShouldSendPageContents(bool should_send) override;
+  void GetShouldSendPageContents(
+      GetShouldSendPageContentsCallback callback) override;
+  void GoPremium() override;
+  void ManagePremium() override;
+  void RefreshPremiumSession() override;
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
@@ -88,21 +94,21 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnModelChanged(const std::string& model_key) override;
   void OnSuggestedQuestionsChanged(
       std::vector<std::string> questions,
-      bool has_generated,
-      mojom::AutoGenerateQuestionsPref auto_generate) override;
+      mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
-  void OnPageHasContent(bool page_contents_is_truncated) override;
+  void OnPageHasContent(mojom::SiteInfoPtr site_info) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
-  absl::optional<mojom::SiteInfo> BuildSiteInfo();
+
+  void OnGetPremiumStatus(GetPremiumStatusCallback callback,
+                          ai_chat::mojom::PremiumStatus status,
+                          ai_chat::mojom::PremiumInfoPtr info);
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
-
-  std::unique_ptr<AIChatFeedbackAPI> feedback_api_ = nullptr;
 
   base::CancelableTaskTracker favicon_task_tracker_;
 

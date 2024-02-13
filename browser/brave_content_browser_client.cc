@@ -6,6 +6,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 
 #include <algorithm>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,6 +28,7 @@
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
@@ -64,7 +66,7 @@
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
-#include "brave/components/debounce/browser/debounce_navigation_throttle.h"
+#include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
@@ -150,8 +152,13 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -233,7 +240,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/browser/playlist_render_frame_browser_client.h"
+#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #endif
@@ -251,6 +258,28 @@ bool HandleURLReverseOverrideRewrite(GURL* url,
     return true;
   }
 
+// For wallet pages, return true to update the displayed URL to react-routed
+// URL rather than showing brave://wallet for everything. This is needed
+// because of a side effect from rewriting brave:// to chrome:// in
+// HandleURLRewrite handler which makes brave://wallet the virtual URL here
+// unless we return true to trigger an update of virtual URL here to the routed
+// URL. For example, we will display brave://wallet/send instead of
+// brave://wallet with this. This is Android only because currently both
+// virtual and real URLs are chrome:// on desktop, so it doesn't have this
+// issue.
+#if BUILDFLAG(IS_ANDROID)
+  if ((url->SchemeIs(content::kBraveUIScheme) ||
+       url->SchemeIs(content::kChromeUIScheme)) &&
+      url->host() == kWalletPageHost) {
+    if (url->SchemeIs(content::kChromeUIScheme)) {
+      GURL::Replacements replacements;
+      replacements.SetSchemeStr(content::kBraveUIScheme);
+      *url = url->ReplaceComponents(replacements);
+    }
+    return true;
+  }
+#endif
+
   return false;
 }
 
@@ -259,6 +288,21 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
                                                           browser_context)) {
     return true;
   }
+
+// For wallet pages, return true so we can handle it in the reverse handler.
+// Also update the real URL from brave:// to chrome://.
+#if BUILDFLAG(IS_ANDROID)
+  if ((url->SchemeIs(content::kBraveUIScheme) ||
+       url->SchemeIs(content::kChromeUIScheme)) &&
+      url->host() == kWalletPageHost) {
+    if (url->SchemeIs(content::kBraveUIScheme)) {
+      GURL::Replacements replacements;
+      replacements.SetSchemeStr(content::kChromeUIScheme);
+      *url = url->ReplaceComponents(replacements);
+    }
+    return true;
+  }
+#endif
 
   return false;
 }
@@ -282,10 +326,9 @@ void BindCosmeticFiltersResources(
 }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-void BindPlaylistRenderFrameBrowserClient(
+void BindPlaylistMediaHandler(
     content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<playlist::mojom::PlaylistRenderFrameBrowserClient>
-        receiver) {
+    mojo::PendingReceiver<playlist::mojom::PlaylistMediaHandler> receiver) {
   auto* playlist_service =
       playlist::PlaylistServiceFactory::GetForBrowserContext(
           frame_host->GetBrowserContext());
@@ -294,7 +337,7 @@ void BindPlaylistRenderFrameBrowserClient(
     return;
   }
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<playlist::PlaylistRenderFrameBrowserClient>(
+      std::make_unique<playlist::PlaylistMediaHandler>(
           frame_host->GetGlobalId(), playlist_service->GetWeakPtr()),
       std::move(receiver));
 }
@@ -447,6 +490,18 @@ void BindBraveSearchDefaultHost(
   }
 }
 
+#if BUILDFLAG(IS_ANDROID)
+void BindIAPSubscription(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<ai_chat::mojom::IAPSubscription> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  auto* profile = Profile::FromBrowserContext(context);
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<ai_chat::AIChatIAPSubscription>(profile->GetPrefs()),
+      std::move(receiver));
+}
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void MaybeBindBraveVpnImpl(
     content::RenderFrameHost* const frame_host,
@@ -578,6 +633,25 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<brave_news::mojom::BraveNewsController>();
   }
 #endif
+}
+
+std::optional<base::UnguessableToken>
+BraveContentBrowserClient::GetEphemeralStorageToken(
+    content::RenderFrameHost* render_frame_host,
+    const url::Origin& origin) {
+  DCHECK(render_frame_host);
+  auto* wc = content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!wc) {
+    return std::nullopt;
+  }
+
+  auto* es_tab_helper =
+      ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(wc);
+  if (!es_tab_helper) {
+    return std::nullopt;
+  }
+
+  return es_tab_helper->GetEphemeralStorageToken(origin);
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
@@ -736,11 +810,19 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled() &&
+  auto* prefs =
+      user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
+  if (ai_chat::IsAIChatEnabled(prefs) &&
       !render_frame_host->GetBrowserContext()->IsTor()) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }
+#if BUILDFLAG(IS_ANDROID)
+  if (ai_chat::IsAIChatEnabled(prefs)) {
+    map->Add<ai_chat::mojom::IAPSubscription>(
+        base::BindRepeating(&BindIAPSubscription));
+  }
+#endif
 #endif
 
 // Brave News
@@ -760,8 +842,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  map->Add<playlist::mojom::PlaylistRenderFrameBrowserClient>(
-      base::BindRepeating(&BindPlaylistRenderFrameBrowserClient));
+  map->Add<playlist::mojom::PlaylistMediaHandler>(
+      base::BindRepeating(&BindPlaylistMediaHandler));
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
@@ -775,10 +857,9 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     network::mojom::WebSandboxFlags sandbox_flags,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    const absl::optional<url::Origin>& initiating_origin,
+    const std::optional<url::Origin>& initiating_origin,
     content::RenderFrameHost* initiator_document,
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
-
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, frame_tree_node_id, navigation_data,
       is_primary_main_frame, is_in_fenced_frame_tree, sandbox_flags,
@@ -831,10 +912,11 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     content::BrowserContext* browser_context,
     const content::WebContents::Getter& wc_getter,
     content::NavigationUIData* navigation_ui_data,
-    int frame_tree_node_id) {
+    int frame_tree_node_id,
+    std::optional<int64_t> navigation_id) {
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
-      frame_tree_node_id);
+      frame_tree_node_id, navigation_id);
   content::WebContents* contents = wc_getter.Run();
 
   if (contents) {
@@ -886,7 +968,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     int render_process_id,
     URLLoaderFactoryType type,
     const url::Origin& request_initiator,
-    absl::optional<int64_t> navigation_id,
+    std::optional<int64_t> navigation_id,
     ukm::SourceIdObj ukm_source_id,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
     mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
@@ -921,7 +1003,7 @@ void BraveContentBrowserClient::CreateWebSocket(
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<std::string>& user_agent,
+    const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {
   auto* proxy = BraveProxyingWebSocket::ProxyWebSocket(
@@ -1169,6 +1251,13 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(request_otr_throttle));
   }
 #endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (auto ai_chat_throttle =
+          ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
+    throttles.push_back(std::move(ai_chat_throttle));
+  }
+#endif  // ENABLE_AI_CHAT
 
   return throttles;
 }

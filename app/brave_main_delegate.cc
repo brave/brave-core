@@ -6,6 +6,7 @@
 #include "brave/app/brave_main_delegate.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_set>
 
@@ -34,6 +35,10 @@
 #include "components/variations/variations_switches.h"
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
+
+#if BUILDFLAG(IS_LINUX)
+#include "base/linux_util.h"
+#endif
 
 namespace {
 
@@ -139,12 +144,18 @@ void BraveMainDelegate::PreSandboxStartup() {
       base::FilePath(FILE_PATH_LITERAL("/etc/brave/policies")), true, false);
 #endif
 
+#if BUILDFLAG(IS_LINUX)
+  // Ensure we have read the Linux distro before the process is sandboxed.
+  // Required for choosing the appropriate anti-fingerprinting font allowlist.
+  base::GetLinuxDistro();
+#endif
+
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
 }
 
-absl::optional<int> BraveMainDelegate::PostEarlyInitialization(
+std::optional<int> BraveMainDelegate::PostEarlyInitialization(
     ChromeMainDelegate::InvokedIn invoked_in) {
   auto result = ChromeMainDelegate::PostEarlyInitialization(invoked_in);
   if (result.has_value()) {

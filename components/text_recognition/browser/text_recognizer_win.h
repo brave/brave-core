@@ -11,6 +11,7 @@
 #include <wrl/client.h>
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
@@ -35,14 +36,15 @@ class TextRecognizerWin {
 
   void Detect(
       const SkBitmap& bitmap,
-      base::OnceCallback<void(const std::vector<std::string>&)> callback);
+      base::OnceCallback<void(const std::pair<bool, std::vector<std::string>>&)>
+          callback);
 
  private:
   Microsoft::WRL::ComPtr<ABI::Windows::Media::Ocr::IOcrEngine> ocr_engine_;
   Microsoft::WRL::ComPtr<
       ABI::Windows::Graphics::Imaging::ISoftwareBitmapStatics>
       bitmap_factory_;
-  base::OnceCallback<void(const std::vector<std::string>&)>
+  base::OnceCallback<void(const std::pair<bool, std::vector<std::string>>&)>
       recognize_text_callback_;
 
   HRESULT BeginDetect(const SkBitmap& bitmap);

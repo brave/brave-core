@@ -1,0 +1,30 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("browser") {
+  sources = [
+    "debounce_component_installer.cc",
+    "debounce_component_installer.h",
+    "debounce_rule.cc",
+    "debounce_rule.h",
+    "debounce_service.cc",
+    "debounce_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/debounce/core/common",
+    "//brave/extensions:common",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/prefs:prefs",
+    "//components/user_prefs",
+    "//net",
+    "//third_party/re2:re2",
+    "//ui/base",
+    "//url",
+  ]
+}

@@ -9,13 +9,30 @@ import logging
 import re
 
 from typing import List, Optional, Dict, Tuple
+from enum import Enum
 
-from components.browser_type import BrowserType, BraveVersion, ParseBrowserType
+from components.browser_type import BrowserType, ParseBrowserType
+from components.version import BraveVersion
 
+
+class ProfileRebaseType(Enum):
+  NONE = 1
+  OFFLINE = 2
+  ONLINE = 3
+
+
+def _ParseProfileRebaseType(rebase_type: str) -> ProfileRebaseType:
+  if rebase_type == 'none':
+    return ProfileRebaseType.NONE
+  if rebase_type == 'offline':
+    return ProfileRebaseType.OFFLINE
+  if rebase_type == 'online':
+    return ProfileRebaseType.ONLINE
+  raise RuntimeError(f'Unknown ProfileRebaseType {rebase_type}')
 
 class RunnerConfig:
   """A description of a browser configuration that is able to run tests."""
-  tag: Optional[BraveVersion] = None
+  version: Optional[BraveVersion] = None
   location: Optional[str] = None
   label: Optional[str] = None
   profile = 'clean'
@@ -23,33 +40,46 @@ class RunnerConfig:
   extra_benchmark_args: List[str] = []
   browser_type: BrowserType
   dashboard_bot_name: Optional[str] = None
-  save_artifacts = False
+  save_artifacts = True
+  profile_rebase = ProfileRebaseType.OFFLINE
 
   def __init__(self, json: Dict[str, str]):
     assert isinstance(json, dict)
     for key in json:
       if key == 'target':
-        self.tag, location = ParseTarget(json[key])
+        self.version, location = ParseTarget(json[key])
         if not 'location' in json:
           self.location = location
         continue
       if key == 'browser-type':
         self.browser_type = ParseBrowserType(json[key])
         continue
+      if key == 'profile-rebase':
+        self.profile_rebase = _ParseProfileRebaseType(json[key])
+        continue
       key_ = key.replace('-', '_')
       if not hasattr(self, key_):
         raise RuntimeError(f'Unexpected {key} in configuration')
       setattr(self, key_, json[key])
 
-
 def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
-  m = re.match(r'^(v\d+\.\d+\.\d+)(?::(.+)|$)', target)
+  """
+  Parse the version and location from the passed string `target`.
+  target = [<version>:][<location>]
+  <version> could be:
+  1. Brave tag (i.e. v1.62.1);
+  2. Git hash;
+  3. empty (for comparing builds when you don't need it).
+  """
+
+  m = re.match(r'^(v\d+\.\d+\.\d+|\w+)(?::(.+)|$)', target)
   if not m:
     return None, target
-  tag = BraveVersion(m.group(1))
+  version = BraveVersion(m.group(1))
   location = m.group(2)
-  logging.debug('Parsed tag: %s, location : %s', tag, location)
-  return tag, location
+  logging.debug('Parsed version: %s, location : %s', version.to_string(),
+                location)
+  return version, location
 
 
 class BenchmarkConfig:
@@ -64,12 +94,11 @@ class BenchmarkConfig:
       return
     assert isinstance(json, dict)
     self.name = json['name']
-    self.pageset_repeat = json['pageset-repeat']
+    if pageset_repeat := json.get('pageset-repeat'):
+      self.pageset_repeat = pageset_repeat
     self.stories = []
-    if 'stories' in json:
-      story_list: List[str] = json['stories']
-      for story in story_list:
-        self.stories.append(story)
+    if story_list := json.get('stories'):
+      self.stories.extend(story_list)
 
 
 class PerfConfig:

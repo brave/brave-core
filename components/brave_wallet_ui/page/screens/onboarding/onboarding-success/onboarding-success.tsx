@@ -9,15 +9,16 @@ import { useDispatch } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { WalletPageActions } from '../../../actions'
+import {
+  useReportOnboardingActionMutation //
+} from '../../../../common/slices/api.slice'
 
 // images
 import WalletAccessSvg from './images/wallet-access.svg'
 
-// routes
-import { WalletRoutes } from '../../../../constants/types'
-
-// actions
-import { WalletPageActions } from '../../../actions'
+// constants
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // components
 import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
@@ -47,6 +48,9 @@ export const OnboardingSuccess = () => {
   // redux
   const dispatch = useDispatch()
 
+  // mutations
+  const [report] = useReportOnboardingActionMutation()
+
   // methods
   const onComplete = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
@@ -62,6 +66,11 @@ export const OnboardingSuccess = () => {
     dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.DepositFundsPageStart)
   }, [])
+
+  // effects
+  React.useEffect(() => {
+    report(BraveWallet.OnboardingAction.Complete)
+  }, [report])
 
   // render
   return (

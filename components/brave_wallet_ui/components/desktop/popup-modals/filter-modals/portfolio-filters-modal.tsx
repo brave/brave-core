@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 
@@ -38,6 +37,9 @@ import {
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
+import {
+  useGetDefaultFiatCurrencyQuery //
+} from '../../../../common/slices/api.slice'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
@@ -57,7 +59,8 @@ import {
   VerticalDivider,
   VerticalSpacer,
   ScrollableColumn,
-  HorizontalSpace
+  HorizontalSpace,
+  LeoSquaredButton
 } from '../../../shared/style'
 import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
 
@@ -74,12 +77,15 @@ export const PortfolioFiltersModal = (props: Props) => {
   // Redux
   const dispatch = useDispatch()
 
+  // queries
+  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
+
   // Selectors
   const filteredOutPortfolioNetworkKeys = useUnsafeWalletSelector(
     WalletSelectors.filteredOutPortfolioNetworkKeys
   )
-  const filteredOutPortfolioAccountAddresses = useUnsafeWalletSelector(
-    WalletSelectors.filteredOutPortfolioAccountAddresses
+  const filteredOutPortfolioAccountIds = useUnsafeWalletSelector(
+    WalletSelectors.filteredOutPortfolioAccountIds
   )
   const selectedAssetFilter = useSafeWalletSelector(
     WalletSelectors.selectedAssetFilter
@@ -90,12 +96,6 @@ export const PortfolioFiltersModal = (props: Props) => {
   const hidePortfolioSmallBalances = useSafeWalletSelector(
     WalletSelectors.hidePortfolioSmallBalances
   )
-  const defaultCurrencies = useUnsafeWalletSelector(
-    WalletSelectors.defaultCurrencies
-  )
-  const selectedPortfolioTimeline = useSafeWalletSelector(
-    WalletSelectors.selectedPortfolioTimeline
-  )
   const showNetworkLogoOnNfts = useSafeWalletSelector(
     WalletSelectors.showNetworkLogoOnNfts
   )
@@ -104,8 +104,9 @@ export const PortfolioFiltersModal = (props: Props) => {
   const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] = React.useState<
     string[]
   >(filteredOutPortfolioNetworkKeys)
-  const [filteredOutAccountAddresses, setFilteredOutAccountAddresses] =
-    React.useState<string[]>(filteredOutPortfolioAccountAddresses)
+  const [filteredOutAccountIds, setFilteredOutAccountIds] = React.useState<
+    string[]
+  >(filteredOutPortfolioAccountIds)
   const [hideSmallBalances, setHideSmallBalances] = React.useState<boolean>(
     hidePortfolioSmallBalances
   )
@@ -154,20 +155,18 @@ export const PortfolioFiltersModal = (props: Props) => {
     )
   }, [filteredOutNetworkKeys])
 
-  const onUpdateFilteredOutAccountAddresses = React.useCallback(() => {
-    // Update Filtered Out Account Addresses in Local Storage
+  const onUpdateFilteredOutAccountIds = React.useCallback(() => {
+    // Update Filtered Out Account Ids in Local Storage
     window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_ADDRESSES,
-      JSON.stringify(filteredOutAccountAddresses)
+      LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS,
+      JSON.stringify(filteredOutAccountIds)
     )
 
-    // Update Filtered Out Account Addresses in Redux
+    // Update Filtered Out Account Ids in Redux
     dispatch(
-      WalletActions.setFilteredOutPortfolioAccountAddresses(
-        filteredOutAccountAddresses
-      )
+      WalletActions.setFilteredOutPortfolioAccountIds(filteredOutAccountIds)
     )
-  }, [filteredOutAccountAddresses])
+  }, [filteredOutAccountIds])
 
   const onUpdateHidePortfolioSmallBalances = React.useCallback(() => {
     // Update Hide Small Portfolio Balances in Local Storage
@@ -182,13 +181,13 @@ export const PortfolioFiltersModal = (props: Props) => {
 
   const hideSmallBalancesDescription = React.useMemo(() => {
     const minAmount = new Amount(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
-      .formatAsFiat(defaultCurrencies.fiat)
+      .formatAsFiat(defaultFiatCurrency)
       .split('.')[0]
     return getLocale('braveWalletHideSmallBalancesDescription').replace(
       '$1',
       minAmount
     )
-  }, [defaultCurrencies.fiat])
+  }, [defaultFiatCurrency])
 
   const showNftFilters = React.useMemo(() => {
     return currentRoute === WalletRoutes.PortfolioNFTs
@@ -210,7 +209,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     onUpdateSelectedGroupAssetsByOption()
     onUpdateSelectedAssetFilterOption()
     onUpdateFilteredOutNetworkKeys()
-    onUpdateFilteredOutAccountAddresses()
+    onUpdateFilteredOutAccountIds()
     onUpdateHidePortfolioSmallBalances()
     onUpdateShowNetworkLogoOnNfts()
     onClose()
@@ -218,10 +217,9 @@ export const PortfolioFiltersModal = (props: Props) => {
     onUpdateSelectedGroupAssetsByOption,
     onUpdateSelectedAssetFilterOption,
     onUpdateFilteredOutNetworkKeys,
-    onUpdateFilteredOutAccountAddresses,
+    onUpdateFilteredOutAccountIds,
     onUpdateHidePortfolioSmallBalances,
     onUpdateShowNetworkLogoOnNfts,
-    selectedPortfolioTimeline,
     onClose
   ])
 
@@ -308,23 +306,23 @@ export const PortfolioFiltersModal = (props: Props) => {
           <VerticalSpacer space={16} />
 
           <FilterAccountsSection
-            filteredOutAccountAddresses={filteredOutAccountAddresses}
-            setFilteredOutAccountAddresses={setFilteredOutAccountAddresses}
+            filteredOutAccountIds={filteredOutAccountIds}
+            setFilteredOutAccountIds={setFilteredOutAccountIds}
           />
         </ContentWrapper>
       </ScrollableColumn>
 
       <ButtonRow>
-        <Button
+        <LeoSquaredButton
           onClick={onClose}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
-        </Button>
+        </LeoSquaredButton>
         <HorizontalSpace space='16px' />
-        <Button onClick={onSaveChanges}>
+        <LeoSquaredButton onClick={onSaveChanges}>
           {getLocale('braveWalletButtonSaveChanges')}
-        </Button>
+        </LeoSquaredButton>
       </ButtonRow>
     </PopupModal>
   )

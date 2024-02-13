@@ -8,12 +8,14 @@
 
 #include "base/functional/callback_forward.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_view_base.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class Browser;
 
 // Gives reading list specific header view with web view.
 class BraveReadLaterSidePanelView : public BraveSidePanelViewBase {
  public:
+  METADATA_HEADER(BraveReadLaterSidePanelView);
   BraveReadLaterSidePanelView(Browser* browser,
                               base::RepeatingClosure close_cb);
   ~BraveReadLaterSidePanelView() override;

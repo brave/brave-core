@@ -11,6 +11,12 @@ import { SignPanel } from './index'
 import { BraveWallet, Url } from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
+import { PanelWrapper } from '../../../panel/style'
+import {
+  LongWrapper,
+  StyledExtensionWrapperLonger
+} from '../../../stories/style'
+import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
 let mockURLPath = new Url()
 let mockIPFSPath = new Url()
@@ -64,17 +70,66 @@ const evilUnicodeSignMessageData = {
 export const _SignPanel = () => {
   return (
     <WalletPageStory>
-      <SignPanel
-        onCancel={() => alert('')}
-        showWarning={true}
-        signMessageData={[evilUnicodeSignMessageData, signMessageData]}
-      />
+      <PanelWrapper isLonger>
+        <LongWrapper>
+          <SignPanel
+            showWarning={true}
+            signMessageData={[evilUnicodeSignMessageData, signMessageData]}
+          />
+        </LongWrapper>
+      </PanelWrapper>
     </WalletPageStory>
   )
 }
 
 _SignPanel.story = {
   name: 'Sign Panel'
+}
+
+export const _SignData = () => {
+  const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [
+    {
+      id: 0,
+      accountId: {
+        coin: BraveWallet.CoinType.ETH,
+        keyringId: BraveWallet.KeyringId.kDefault,
+        kind: BraveWallet.AccountKind.kDerived,
+        address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+        bitcoinAccountIndex: 0,
+        uniqueKey: '0x3f29A1da97149722eB09c526E4eAd698895b426_id'
+      },
+      originInfo: mockOriginInfo,
+      coin: BraveWallet.CoinType.ETH,
+      chainId: BraveWallet.MAINNET_CHAIN_ID,
+      signData: {
+        ethStandardSignData: undefined,
+        ethSignTypedData: {
+          message: 'Sign below to authenticate with CryptoKitties.',
+          domain: '',
+          domainHash: undefined,
+          primaryHash: undefined,
+          meta: undefined
+        },
+        ethSiweData: undefined,
+        solanaSignData: undefined
+      }
+    }
+  ]
+
+  return (
+    <WalletPanelStory>
+      <StyledExtensionWrapperLonger>
+        <SignPanel
+          signMessageData={signMessageDataPayload}
+          showWarning={true}
+        />
+      </StyledExtensionWrapperLonger>
+    </WalletPanelStory>
+  )
+}
+
+_SignData.story = {
+  name: 'Sign Transaction'
 }
 
 export default _SignPanel

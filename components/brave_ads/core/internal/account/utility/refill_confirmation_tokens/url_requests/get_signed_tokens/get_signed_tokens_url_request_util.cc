@@ -20,12 +20,12 @@ namespace {
 
 constexpr char kCaptchaIdKey[] = "captcha_id";
 
-absl::optional<std::string> Sign(const cbr::UnblindedToken& unblinded_token,
-                                 const WalletInfo& wallet) {
-  const absl::optional<std::string> unblinded_token_base64 =
+std::optional<std::string> Sign(const cbr::UnblindedToken& unblinded_token,
+                                const WalletInfo& wallet) {
+  const std::optional<std::string> unblinded_token_base64 =
       unblinded_token.EncodeBase64();
   if (!unblinded_token_base64) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return crypto::Sign(*unblinded_token_base64, wallet.secret_key);
@@ -36,18 +36,13 @@ ConfirmationTokenList BuildConfirmationTokens(
     const cbr::PublicKey& public_key,
     const WalletInfo& wallet) {
   ConfirmationTokenList confirmation_tokens;
+  confirmation_tokens.reserve(unblinded_tokens.size());
 
   for (const cbr::UnblindedToken& unblinded_token : unblinded_tokens) {
-    const absl::optional<std::string> signature = Sign(unblinded_token, wallet);
+    const std::optional<std::string> signature = Sign(unblinded_token, wallet);
     CHECK(signature);
 
-    ConfirmationTokenInfo confirmation_token;
-    confirmation_token.unblinded_token = unblinded_token;
-    confirmation_token.public_key = public_key;
-    confirmation_token.signature = *signature;
-    CHECK(IsValid(confirmation_token));
-
-    confirmation_tokens.push_back(confirmation_token);
+    confirmation_tokens.emplace_back(unblinded_token, public_key, *signature);
   }
 
   return confirmation_tokens;
@@ -55,10 +50,10 @@ ConfirmationTokenList BuildConfirmationTokens(
 
 }  // namespace
 
-absl::optional<std::string> ParseCaptchaId(const base::Value::Dict& dict) {
+std::optional<std::string> ParseCaptchaId(const base::Value::Dict& dict) {
   const std::string* const captcha_id = dict.FindString(kCaptchaIdKey);
   if (!captcha_id || captcha_id->empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return *captcha_id;

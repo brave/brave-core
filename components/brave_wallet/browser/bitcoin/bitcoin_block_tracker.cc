@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -37,10 +38,10 @@ void BitcoinBlockTracker::GetBlockHeight(const std::string& chain_id) {
                                weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
-absl::optional<uint32_t> BitcoinBlockTracker::GetLatestHeight(
+std::optional<uint32_t> BitcoinBlockTracker::GetLatestHeight(
     const std::string& chain_id) const {
   if (!base::Contains(latest_height_map_, chain_id)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   return latest_height_map_.at(chain_id);
 }

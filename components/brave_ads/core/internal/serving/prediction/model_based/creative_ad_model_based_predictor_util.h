@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/creative_ad_model_based_predictor_scoring.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_info.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
 namespace brave_ads {
 
@@ -25,6 +25,7 @@ CreativeAdModelBasedPredictorList<T> ComputeCreativeAdModelBasedPredictors(
     const UserModelInfo& user_model,
     const AdEventList& ad_events) {
   CreativeAdModelBasedPredictorList<T> creative_ad_predictors;
+  creative_ad_predictors.reserve(creative_ads.size());
 
   const CreativeAdModelBasedPredictorWeightsInfo weights =
       BuildCreativeAdModelBasedPredictorWeights(creative_ads);

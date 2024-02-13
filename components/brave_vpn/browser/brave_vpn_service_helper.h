@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_HELPER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -31,7 +31,7 @@ bool IsValidCredentialSummary(const base::Value& summary);
 bool IsValidCredentialSummaryButNeedActivation(const base::Value& summary);
 bool HasSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
-absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs);
+std::optional<base::Time> GetExpirationTime(PrefService* local_prefs);
 void SetSubscriberCredential(PrefService* local_prefs,
                              const std::string& subscriber_credential,
                              const base::Time& expiration_time);

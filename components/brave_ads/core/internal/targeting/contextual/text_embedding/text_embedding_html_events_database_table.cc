@@ -5,16 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
-#include "base/functional/callback.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
@@ -58,7 +59,7 @@ size_t BindParameters(
                VectorToDelimitedString(text_embedding_html_event.embedding,
                                        kDelimiter));
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -105,13 +106,15 @@ void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
 void MigrateToV25(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  DropTable(transaction, "text_embedding_html_events");
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS text_embedding_html_events (id "
-      "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, created_at "
-      "TIMESTAMP NOT NULL, locale TEXT NOT NULL, hashed_text_base64 "
-      "TEXT NOT NULL UNIQUE, embedding TEXT NOT NULL);";
+      "CREATE TABLE text_embedding_html_events (id INTEGER PRIMARY KEY "
+      "AUTOINCREMENT NOT NULL, created_at TIMESTAMP NOT NULL, locale TEXT NOT "
+      "NULL, hashed_text_base64 TEXT NOT NULL UNIQUE, embedding TEXT NOT "
+      "NULL);";
   transaction->commands.push_back(std::move(command));
 }
 

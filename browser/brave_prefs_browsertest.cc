@@ -55,6 +55,8 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
+#include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
@@ -142,6 +144,12 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->HasPrefPath(
       NTPBackgroundPrefs::kDeprecatedPrefName));
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+  EXPECT_EQ(static_cast<int>(side_panel::mojom::ViewType::kCompact),
+            chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
+                bookmarks_webui::prefs::kBookmarksViewType));
 #endif
 }
 

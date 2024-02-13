@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -85,7 +86,7 @@ class BraveAdblockInternalsMessageHandler
     CHECK(!dump->process_dumps().empty());
     const auto& pmd = dump->process_dumps().front();
     for (const auto& metric : kCollectedMemoryMetrics) {
-      absl::optional<uint64_t> value =
+      std::optional<uint64_t> value =
           pmd.GetMetric(metric.dump_name, metric.metric);
 
       if (value) {

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -38,7 +39,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindInt(command, index++, creative_ad.priority);
     BindDouble(command, index++, creative_ad.pass_through_rate);
 
-    count++;
+    ++count;
   }
 
   return count;

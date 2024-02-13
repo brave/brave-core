@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_IPFS_PIN_IPFS_LOCAL_PIN_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,7 +17,6 @@
 #include "base/gtest_prod_util.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pin/ipfs_base_pin_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using ipfs::IpfsService;
 
@@ -31,12 +31,11 @@ struct PinData {
   bool operator==(const PinData&) const;
 };
 
-absl::optional<std::vector<PinData>> ExtractPinData(
-    const std::string& ipfs_url);
+std::optional<std::vector<PinData>> ExtractPinData(const std::string& ipfs_url);
 
 using AddPinCallback = base::OnceCallback<void(bool)>;
 using RemovePinCallback = base::OnceCallback<void(bool)>;
-using ValidatePinsCallback = base::OnceCallback<void(absl::optional<bool>)>;
+using ValidatePinsCallback = base::OnceCallback<void(std::optional<bool>)>;
 using GcCallback = base::OnceCallback<void(bool)>;
 
 /**
@@ -76,9 +75,9 @@ class AddLocalPinJob : public IpfsBaseJob {
 
  private:
   void Accumulate(
-      base::OnceCallback<void(absl::optional<AddPinResult>)> callback,
-      absl::optional<AddPinResult> result);
-  void OnAddPinResult(std::vector<absl::optional<AddPinResult>> result);
+      base::OnceCallback<void(std::optional<AddPinResult>)> callback,
+      std::optional<AddPinResult> result);
+  void OnAddPinResult(std::vector<std::optional<AddPinResult>> result);
 
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
@@ -121,7 +120,7 @@ class VerifyLocalPinJob : public IpfsBaseJob {
   void Start() override;
 
  private:
-  void OnGetPinsResult(absl::optional<GetPinsResult> result);
+  void OnGetPinsResult(std::optional<GetPinsResult> result);
 
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
@@ -143,10 +142,10 @@ class GcJob : public IpfsBaseJob {
 
  private:
   void Accumulate(
-      base::OnceCallback<void(absl::optional<GetPinsResult>)> callback,
-      absl::optional<GetPinsResult> result);
-  void OnGetPinsResult(std::vector<absl::optional<GetPinsResult>> result);
-  void OnPinsRemovedResult(absl::optional<RemovePinResult> result);
+      base::OnceCallback<void(std::optional<GetPinsResult>)> callback,
+      std::optional<GetPinsResult> result);
+  void OnGetPinsResult(std::vector<std::optional<GetPinsResult>> result);
+  void OnPinsRemovedResult(std::optional<RemovePinResult> result);
 
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
@@ -179,23 +178,23 @@ class IpfsLocalPinService : public KeyedService {
 
   void SetIpfsBasePinServiceForTesting(std::unique_ptr<IpfsBasePinService>);
 
-  static absl::optional<std::vector<PinData>> ExtractPinData(
+  static std::optional<std::vector<PinData>> ExtractPinData(
       const std::string& ipfs_url);
-  static absl::optional<std::vector<ipfs::PinData>> ExtractMergedPinData(
+  static std::optional<std::vector<ipfs::PinData>> ExtractMergedPinData(
       const std::vector<std::string>& ipfs_urls);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsLocalPinServiceTest, ResetTest);
 
   void OnLsPinCliResult(base::OnceCallback<void(bool)> callback,
-                        absl::optional<std::string> result);
+                        std::optional<std::string> result);
   void OnRemovePinCliResult(base::OnceCallback<void(bool)> callback,
                             bool result);
   void AddGcTask();
   void OnRemovePinsFinished(RemovePinCallback callback, bool status);
   void OnAddJobFinished(AddPinCallback callback, bool status);
   void OnValidateJobFinished(ValidatePinsCallback callback,
-                             absl::optional<bool> status);
+                             std::optional<bool> status);
   void OnGcFinishedCallback(bool status);
   bool HasJobs();
 

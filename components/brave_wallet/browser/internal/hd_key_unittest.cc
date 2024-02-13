@@ -4,6 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
+
+#include <optional>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -13,7 +16,6 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -71,45 +73,45 @@ TEST(HDKeyUnitTest, TestVector1) {
     const char* path;
     const char* ext_pub;
     const char* ext_pri;
-    absl::optional<int> derive_normal;
-    absl::optional<int> derive_hardened;
+    std::optional<int> derive_normal;
+    std::optional<int> derive_hardened;
   } cases[] = {
       {"m",
        "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ2"
        "9ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8",
        "xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChk"
        "VvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi",
-       absl::nullopt, absl::nullopt},
+       std::nullopt, std::nullopt},
       {"m/0'",
        "xpub68Gmy5EdvgibQVfPdqkBBCHxA5htiqg55crXYuXoQRKfDBFA1WEjWgP6LH"
        "hwBZeNK1VTsfTFUHCdrfp1bgwQ9xv5ski8PX9rL2dZXvgGDnw",
        "xprv9uHRZZhk6KAJC1avXpDAp4MDc3sQKNxDiPvvkX8Br5ngLNv1TxvUxt4cV1"
        "rGL5hj6KCesnDYUhd7oWgT11eZG7XnxHrnYeSvkzY7d2bhkJ7",
-       absl::nullopt, 0},
+       std::nullopt, 0},
       {"m/0'/1",
        "xpub6ASuArnXKPbfEwhqN6e3mwBcDTgzisQN1wXN9BJcM47sSikHjJf3UFHKkN"
        "AWbWMiGj7Wf5uMash7SyYq527Hqck2AxYysAA7xmALppuCkwQ",
        "xprv9wTYmMFdV23N2TdNG573QoEsfRrWKQgWeibmLntzniatZvR9BmLnvSxqu5"
        "3Kw1UmYPxLgboyZQaXwTCg8MSY3H2EU4pWcQDnRnrVA1xe8fs",
-       1, absl::nullopt},
+       1, std::nullopt},
       {"m/0'/1/2'",
        "xpub6D4BDPcP2GT577Vvch3R8wDkScZWzQzMMUm3PWbmWvVJrZwQY4VUNgqFJP"
        "MM3No2dFDFGTsxxpG5uJh7n7epu4trkrX7x7DogT5Uv6fcLW5",
        "xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7"
        "FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM",
-       absl::nullopt, 2},
+       std::nullopt, 2},
       {"m/0'/1/2'/2",
        "xpub6FHa3pjLCk84BayeJxFW2SP4XRrFd1JYnxeLeU8EqN3vDfZmbqBqaGJAyi"
        "LjTAwm6ZLRQUMv1ZACTj37sR62cfN7fe5JnJ7dh8zL4fiyLHV",
        "xprvA2JDeKCSNNZky6uBCviVfJSKyQ1mDYahRjijr5idH2WwLsEd4Hsb2Tyh8R"
        "fQMuPh7f7RtyzTtdrbdqqsunu5Mm3wDvUAKRHSC34sJ7in334",
-       2, absl::nullopt},
+       2, std::nullopt},
       {"m/0'/1/2'/2/1000000000",
        "xpub6H1LXWLaKsWFhvm6RVpEL9P4KfRZSW7abD2ttkWP3SSQvnyA8FSVqNTEcY"
        "FgJS2UaFcxupHiYkro49S8yGasTvXEYBVPamhGW6cFJodrTHy",
        "xprvA41z7zogVVwxVSgdKUHDy1SKmdb533PjDz7J6N6mV6uS3ze1ai8FHa8kmH"
        "ScGpWmj4WggLyQjgPie1rFSruoUihUZREPSL39UNdE3BBDu76",
-       1000000000, absl::nullopt},
+       1000000000, std::nullopt},
   };
 
   std::vector<uint8_t> bytes;
@@ -146,45 +148,45 @@ TEST(HDKeyUnitTest, TestVector2) {
     const char* path;
     const char* ext_pub;
     const char* ext_pri;
-    absl::optional<int> derive_normal;
-    absl::optional<int> derive_hardened;
+    std::optional<int> derive_normal;
+    std::optional<int> derive_hardened;
   } cases[] = {
       {"m",
        "xpub661MyMwAqRbcFW31YEwpkMuc5THy2PSt5bDMsktWQcFF8syAmRUapSCGu8ED9W6oDMS"
        "gv6Zz8idoc4a6mr8BDzTJY47LJhkJ8UB7WEGuduB",
        "xprv9s21ZrQH143K31xYSDQpPDxsXRTUcvj2iNHm5NUtrGiGG5e2DtALGdso3pGz6ssrdK4"
        "PFmM8NSpSBHNqPqm55Qn3LqFtT2emdEXVYsCzC2U",
-       absl::nullopt, absl::nullopt},
+       std::nullopt, std::nullopt},
       {"m/0",
        "xpub69H7F5d8KSRgmmdJg2KhpAK8SR3DjMwAdkxj3ZuxV27CprR9LgpeyGmXUbC6wb7ERfv"
        "rnKZjXoUmmDznezpbZb7ap6r1D3tgFxHmwMkQTPH",
        "xprv9vHkqa6EV4sPZHYqZznhT2NPtPCjKuDKGY38FBWLvgaDx45zo9WQRUT3dKYnjwih2yJ"
        "D9mkrocEZXo1ex8G81dwSM1fwqWpWkeS3v86pgKt",
-       0, absl::nullopt},
+       0, std::nullopt},
       {"m/0/2147483647'",
        "xpub6ASAVgeehLbnwdqV6UKMHVzgqAG8Gr6riv3Fxxpj8ksbH9ebxaEyBLZ85ySDhKiLDBr"
        "QSARLq1uNRts8RuJiHjaDMBU4Zn9h8LZNnBC5y4a",
        "xprv9wSp6B7kry3Vj9m1zSnLvN3xH8RdsPP1Mh7fAaR7aRLcQMKTR2vidYEeEg2mUCTAwCd"
        "6vnxVrcjfy2kRgVsFawNzmjuHc2YmYRmagcEPdU9",
-       absl::nullopt, 2147483647},
+       std::nullopt, 2147483647},
       {"m/0/2147483647'/1",
        "xpub6DF8uhdarytz3FWdA8TvFSvvAh8dP3283MY7p2V4SeE2wyWmG5mg5EwVvmdMVCQcoNJ"
        "xGoWaU9DCWh89LojfZ537wTfunKau47EL2dhHKon",
        "xprv9zFnWC6h2cLgpmSA46vutJzBcfJ8yaJGg8cX1e5StJh45BBciYTRXSd25UEPVuesF9y"
        "og62tGAQtHjXajPPdbRCHuWS6T8XA2ECKADdw4Ef",
-       1, absl::nullopt},
+       1, std::nullopt},
       {"m/0/2147483647'/1/2147483646'",
        "xpub6ERApfZwUNrhLCkDtcHTcxd75RbzS1ed54G1LkBUHQVHQKqhMkhgbmJbZRkrgZw4kox"
        "b5JaHWkY4ALHY2grBGRjaDMzQLcgJvLJuZZvRcEL",
        "xprvA1RpRA33e1JQ7ifknakTFpgNXPmW2YvmhqLQYMmrj4xJXXWYpDPS3xz7iAxn8L39njG"
        "VyuoseXzU6rcxFLJ8HFsTjSyQbLYnMpCqE2VbFWc",
-       absl::nullopt, 2147483646},
+       std::nullopt, 2147483646},
       {"m/0/2147483647'/1/2147483646'/2",
        "xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsA"
        "pME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt",
        "xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38"
        "EGfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j",
-       2, absl::nullopt},
+       2, std::nullopt},
   };
   std::vector<uint8_t> bytes;
   // path: m
@@ -223,21 +225,21 @@ TEST(HDKeyUnitTest, TestVector3) {
     const char* path;
     const char* ext_pub;
     const char* ext_pri;
-    absl::optional<int> derive_normal;
-    absl::optional<int> derive_hardened;
+    std::optional<int> derive_normal;
+    std::optional<int> derive_hardened;
   } cases[] = {
       {"m",
        "xpub661MyMwAqRbcEZVB4dScxMAdx6d4nFc9nvyvH3v4gJL378CSRZiYmhRoP7mBy6gSPSC"
        "Yk6SzXPTf3ND1cZAceL7SfJ1Z3GC8vBgp2epUt13",
        "xprv9s21ZrQH143K25QhxbucbDDuQ4naNntJRi4KUfWT7xo4EKsHt2QJDu7KXp1A3u7Bi1j"
        "8ph3EGsZ9Xvz9dGuVrtHHs7pXeTzjuxBrCmmhgC6",
-       absl::nullopt, absl::nullopt},
+       std::nullopt, std::nullopt},
       {"m/0'",
        "xpub68NZiKmJWnxxS6aaHmn81bvJeTESw724CRDs6HbuccFQN9Ku14VQrADWgqbhhTHBaoh"
        "PX4CjNLf9fq9MYo6oDaPPLPxSb7gwQN3ih19Zm4Y",
        "xprv9uPDJpEQgRQfDcW7BkF7eTya6RPxXeJCqCJGHuCJ4GiRVLzkTXBAJMu2qaMWPrS7AAN"
        "Yqdq6vcBcBUdJCVVFceUvJFjaPdGZ2y9WACViL4L",
-       absl::nullopt, 0},
+       std::nullopt, 0},
   };
   std::vector<uint8_t> bytes;
   // path: m

@@ -7,8 +7,10 @@
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_STAR_VIEW_H_
 
 #include "chrome/browser/ui/views/location_bar/star_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveStarView : public StarView {
+  METADATA_HEADER(BraveStarView, StarView)
  public:
   using StarView::StarView;
 

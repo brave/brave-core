@@ -29,7 +29,7 @@ class COMPONENT_EXPORT(COMMANDER_BROWSER) CommanderFrontendDelegate {
   virtual void RemoveObserver(Observer* observer) = 0;
   virtual void SelectCommand(uint32_t command_index,
                              uint32_t result_set_id) = 0;
-  virtual void UpdateText(bool force = false) = 0;
+  virtual void UpdateText(const std::u16string& text) = 0;
   virtual std::vector<CommandItemModel> GetItems() = 0;
   virtual int GetResultSetId() = 0;
   virtual const std::u16string& GetPrompt() = 0;

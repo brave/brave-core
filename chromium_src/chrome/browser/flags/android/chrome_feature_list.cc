@@ -13,7 +13,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/debounce/common/features.h"
+#include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/features.h"
@@ -37,6 +37,7 @@
     &brave_wallet::features::kNativeBraveWalletFeature,                 \
     &playlist::features::kPlaylist,                                     \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
+    &preferences::features::kBraveZeroDayFlagAndroid,                   \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \
@@ -58,7 +59,6 @@ namespace android {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAddToHomescreenIPH, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kBaselineGM3SurfaceColors, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIncognitoReauthenticationForAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
     {kShowScrollableMVTOnNTPAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
     {kStartSurfaceAndroid, base::FEATURE_DISABLED_BY_DEFAULT},

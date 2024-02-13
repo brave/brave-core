@@ -1,0 +1,9 @@
+Name: curve25519-dalek
+URL: https://crates.io/crates/curve25519-dalek
+Description: A pure-Rust implementation of group operations on ristretto255 and Curve25519
+Version: 4.1.1
+Security Critical: yes
+Shipped: yes
+License: BSD 3-Clause
+License File: 
+Revision: 0cd099a9fb8ff9f6fedc8723d44dbb1c743e9d35

@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_REWARDS_FLAGS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_REWARDS_FLAGS_H_
 
+#include <optional>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards {
 
@@ -21,11 +21,11 @@ struct RewardsFlags {
 
   static const RewardsFlags& ForCurrentProcess();
 
-  absl::optional<Environment> environment;
+  std::optional<Environment> environment;
   bool debug = false;
   bool persist_logs = false;
-  absl::optional<int> reconcile_interval;
-  absl::optional<int> retry_interval;
+  std::optional<int> reconcile_interval;
+  std::optional<int> retry_interval;
 };
 
 }  // namespace brave_rewards

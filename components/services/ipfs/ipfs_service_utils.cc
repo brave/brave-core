@@ -6,6 +6,7 @@
 #include "brave/components/services/ipfs/ipfs_service_utils.h"
 
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -15,7 +16,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace {
@@ -32,7 +32,7 @@ namespace ipfs {
 bool UpdateConfigJSON(const std::string& source,
                       const ipfs::mojom::IpfsConfig* config,
                       std::string* result) {
-  absl::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value> records_v = base::JSONReader::Read(
       source, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                   base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
@@ -43,6 +43,15 @@ bool UpdateConfigJSON(const std::string& source,
   if (!dict) {
     VLOG(1) << "Could not parse JSON, JSON is: " << source;
     return false;
+  }
+  if (config->blessed_extension_list &&
+      !config->blessed_extension_list->empty()) {
+    base::Value::List origins;
+    for (const auto& blessed_item : config->blessed_extension_list.value()) {
+      origins.Append(blessed_item);
+    }
+    dict->SetByDottedPath("API.HTTPHeaders.Access-Control-Allow-Origin",
+                          std::move(origins));
   }
   dict->SetByDottedPath(
       "Addresses.API", base::StrCat({"/ip4/127.0.0.1/tcp/", config->api_port}));

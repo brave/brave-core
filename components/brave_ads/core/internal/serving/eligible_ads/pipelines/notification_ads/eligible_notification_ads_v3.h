@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/history/browsing_history.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
 namespace brave_ads {
 
@@ -49,10 +49,9 @@ class EligibleNotificationAdsV3 final : public EligibleNotificationAdsBase {
       const SegmentList& segments,
       const CreativeNotificationAdList& creative_ads);
 
-  CreativeNotificationAdList FilterCreativeAds(
-      const CreativeNotificationAdList& creative_ads,
-      const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history);
+  void FilterIneligibleCreativeAds(CreativeNotificationAdList& creative_ads,
+                                   const AdEventList& ad_events,
+                                   const BrowsingHistoryList& browsing_history);
 
   base::WeakPtrFactory<EligibleNotificationAdsV3> weak_factory_{this};
 };

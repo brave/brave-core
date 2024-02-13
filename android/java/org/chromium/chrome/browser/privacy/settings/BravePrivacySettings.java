@@ -24,8 +24,8 @@ import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.Pref;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDialog;
@@ -61,6 +61,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
     private static final String PREF_FINGERPRINT_LANGUAGE = "fingerprint_language";
+    private static final String PREF_PRIVACY_SECTION = "privacy_section";
+    private static final String PREF_THIRD_PARTY_COOKIES = "third_party_cookies";
+    private static final String PREF_SECURITY_SECTION = "security_section";
+    private static final String PREF_PRIVACY_GUIDE = "privacy_guide";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -68,7 +72,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_CLEAR_DATA_SECTION = "clear_data_section";
     private static final String PREF_BRAVE_SOCIAL_BLOCKING_SECTION =
             "brave_social_blocking_section";
-    private static final String PREF_YOUTUBE_SECTION = "youtube_section";
     private static final String PREF_OTHER_PRIVACY_SETTINGS_SECTION =
             "other_privacy_settings_section";
 
@@ -91,10 +94,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
             "show_autocomplete_in_address_bar";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
-    private static final String PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT =
-            "hide_youtube_recommended_content";
-    private static final String PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS =
-            "hide_youtube_distracting_elements";
 
     private static final String PREF_SOCIAL_BLOCKING_GOOGLE = "social_blocking_google";
     private static final String PREF_SOCIAL_BLOCKING_FACEBOOK = "social_blocking_facebook";
@@ -139,9 +138,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_SOCIAL_BLOCKING_FACEBOOK,
         PREF_SOCIAL_BLOCKING_TWITTER,
         PREF_SOCIAL_BLOCKING_LINKEDIN,
-        PREF_YOUTUBE_SECTION, // Youtube section
-        PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT,
-        PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS,
         PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
         PREF_APP_LINKS,
         PREF_WEBRTC_POLICY,
@@ -200,8 +196,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mIpfsGatewayPref;
     private ChromeSwitchPreference mBlockCookieConsentNoticesPref;
     private ChromeSwitchPreference mBlockSwitchToAppNoticesPref;
-    private ChromeSwitchPreference mHideYoutubeRecommendedContentPref;
-    private ChromeSwitchPreference mHideYoutubeDistractingElementsPref;
     private PreferenceCategory mSocialBlockingCategory;
     private ChromeSwitchPreference mSocialBlockingGoogle;
     private ChromeSwitchPreference mSocialBlockingFacebook;
@@ -289,14 +283,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mBlockSwitchToAppNoticesPref =
                 (ChromeSwitchPreference) findPreference(PREF_BLOCK_SWITCH_TO_APP_NOTICES);
         mBlockSwitchToAppNoticesPref.setOnPreferenceChangeListener(this);
-
-        mHideYoutubeRecommendedContentPref =
-                (ChromeSwitchPreference) findPreference(PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT);
-        mHideYoutubeRecommendedContentPref.setOnPreferenceChangeListener(this);
-
-        mHideYoutubeDistractingElementsPref =
-                (ChromeSwitchPreference) findPreference(PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS);
-        mHideYoutubeDistractingElementsPref.setOnPreferenceChangeListener(this);
 
         mBlockCrosssiteCookies =
                 (BraveDialogPreference) findPreference(PREF_BLOCK_CROSS_SITE_COOKIES);
@@ -391,7 +377,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mAppLinks.setOnPreferenceChangeListener(this);
 
         boolean isAppLinksAllowed =
-                SharedPreferencesManager.getInstance().readBoolean(PREF_APP_LINKS, true);
+                ChromeSharedPreferences.getInstance().readBoolean(PREF_APP_LINKS, true);
         mAppLinks.setChecked(isAppLinksAllowed);
 
         mWebrtcPolicy = (ChromeBasePreference) findPreference(PREF_WEBRTC_POLICY);
@@ -400,6 +386,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
         removePreferenceIfPresent(PREF_NETWORK_PREDICTIONS);
         removePreferenceIfPresent(PREF_PRIVACY_SANDBOX);
+        removePreferenceIfPresent(PREF_PRIVACY_SECTION);
+        removePreferenceIfPresent(PREF_THIRD_PARTY_COOKIES);
+        removePreferenceIfPresent(PREF_SECURITY_SECTION);
+        removePreferenceIfPresent(PREF_PRIVACY_GUIDE);
+
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING)) {
             removePreferenceIfPresent(PREF_SAFE_BROWSING);
         } else {
@@ -426,7 +417,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     public void onDisplayPreferenceDialog(Preference preference) {
         if (preference instanceof BraveDialogPreference) {
             BravePreferenceDialogFragment dialogFragment =
-                    BravePreferenceDialogFragment.newInstance((BraveDialogPreference) preference);
+                    BravePreferenceDialogFragment.newInstance(preference);
             dialogFragment.setTargetFragment(this, 0);
             if (getFragmentManager() != null) {
                 dialogFragment.show(getFragmentManager(), BravePreferenceDialogFragment.TAG);
@@ -488,18 +479,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             if (mFilterListAndroidHandler != null) {
                 mFilterListAndroidHandler.enableFilter(
                         FilterListConstants.SWITCH_TO_APP_UUID, (boolean) newValue);
-            }
-        } else if (PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT.equals(key)) {
-            if (mFilterListAndroidHandler != null) {
-                mFilterListAndroidHandler.enableFilter(
-                        FilterListConstants.HIDE_YOUTUBE_RECOMMENDED_CONTENT_UUID,
-                        (boolean) newValue);
-            }
-        } else if (PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS.equals(key)) {
-            if (mFilterListAndroidHandler != null) {
-                mFilterListAndroidHandler.enableFilter(
-                        FilterListConstants.HIDE_YOUTUBE_DISTRACTING_ELEMENTS_UUID,
-                        (boolean) newValue);
             }
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
             if (newValue instanceof String) {
@@ -610,8 +589,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, (boolean) newValue);
         } else if (PREF_APP_LINKS.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_APP_LINKS, (boolean) newValue);
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePrivacySettings.PREF_APP_LINKS_RESET, false);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         } else if (PREF_BLOCK_TRACKERS_ADS.equals(key)) {
             if (newValue instanceof String) {
                 final String newStringValue = String.valueOf(newValue);
@@ -778,12 +757,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     isEnabled -> { mBlockCookieConsentNoticesPref.setChecked(isEnabled); });
             mFilterListAndroidHandler.isFilterListEnabled(FilterListConstants.SWITCH_TO_APP_UUID,
                     isEnabled -> { mBlockSwitchToAppNoticesPref.setChecked(isEnabled); });
-            mFilterListAndroidHandler.isFilterListEnabled(
-                    FilterListConstants.HIDE_YOUTUBE_RECOMMENDED_CONTENT_UUID,
-                    isEnabled -> { mHideYoutubeRecommendedContentPref.setChecked(isEnabled); });
-            mFilterListAndroidHandler.isFilterListEnabled(
-                    FilterListConstants.HIDE_YOUTUBE_DISTRACTING_ELEMENTS_UUID,
-                    isEnabled -> { mHideYoutubeDistractingElementsPref.setChecked(isEnabled); });
         }
         // Debounce
         if (mDebouncePref != null) {

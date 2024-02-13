@@ -7,11 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
-import {
-  useSafePageSelector,
-  useSafeUISelector
-} from '../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../page/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
 
 // Utils
@@ -32,7 +28,6 @@ import {
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
-  useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
@@ -47,7 +42,7 @@ import { AssetDetailsMenu } from '../wallet-menus/asset-details-menu'
 
 // Styled Components
 import {
-  CircleButton,
+  MenuButton,
   ButtonIcon,
   MenuWrapper,
   HorizontalDivider
@@ -61,11 +56,12 @@ import {
   UpDownIcon
 } from './asset-details-header.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
+import { Skeleton } from '../../shared/loading-skeleton/styles'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'big',
   marginLeft: 0,
-  marginRight: 8
+  marginRight: 0
 })
 
 interface Props {
@@ -74,6 +70,7 @@ interface Props {
   onClickTokenDetails: () => void
   onClickHideToken: () => void
   isShowingMarketData?: boolean
+  selectedTimeline: BraveWallet.AssetPriceTimeframe
 }
 
 export const AssetDetailsHeader = (props: Props) => {
@@ -82,23 +79,17 @@ export const AssetDetailsHeader = (props: Props) => {
     onBack,
     onClickHideToken,
     onClickTokenDetails,
-    isShowingMarketData
+    isShowingMarketData,
+    selectedTimeline
   } = props
-
-  // selectors
-  const selectedTimeline = useSafePageSelector(PageSelectors.selectedTimeline)
 
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
-  const { data: assetsNetwork } = useGetNetworkQuery(selectedAsset ?? skipToken)
+  const { data: selectedAssetsNetwork, isLoading: isLoadingNetwork } =
+    useGetNetworkQuery(selectedAsset ?? skipToken)
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-
-  const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
-    skip: !!assetsNetwork
-  })
-  const selectedAssetsNetwork = assetsNetwork || selectedNetwork
 
   // state
   const [showAssetDetailsMenu, setShowAssetDetailsMenu] =
@@ -178,7 +169,7 @@ export const AssetDetailsHeader = (props: Props) => {
       justifyContent='space-between'
     >
       <Row width='unset'>
-        <CircleButton
+        <MenuButton
           size={28}
           marginRight={16}
           onClick={onBack}
@@ -187,17 +178,41 @@ export const AssetDetailsHeader = (props: Props) => {
             size={16}
             name='arrow-left'
           />
-        </CircleButton>
-        <Row width='unset'>
-          <AssetIconWithPlaceholder
-            asset={selectedAsset}
-            network={selectedAssetsNetwork}
-          />
+        </MenuButton>
+        <Row
+          width='unset'
+          gap='8px'
+        >
+          {selectedAsset ? (
+            <AssetIconWithPlaceholder
+              asset={selectedAsset}
+              network={selectedAssetsNetwork}
+            />
+          ) : (
+            <Skeleton
+              height={'40px'}
+              width={'40px'}
+            />
+          )}
           <Column alignItems='flex-start'>
-            <AssetNameText>{selectedAsset?.name ?? ''}</AssetNameText>
-            <NetworkDescriptionText>
-              {networkDescription}
-            </NetworkDescriptionText>
+            {selectedAsset ? (
+              <AssetNameText>{selectedAsset?.name ?? ''}</AssetNameText>
+            ) : (
+              <Skeleton
+                height={'18px'}
+                width={'100px'}
+              />
+            )}
+            {!selectedAsset || isLoadingNetwork ? (
+              <Skeleton
+                height={'16px'}
+                width={'150px'}
+              />
+            ) : (
+              <NetworkDescriptionText>
+                {networkDescription}
+              </NetworkDescriptionText>
+            )}
           </Column>
         </Row>
       </Row>
@@ -244,11 +259,11 @@ export const AssetDetailsHeader = (props: Props) => {
               <HorizontalDivider />
               <HorizontalSpace space='16px' />
               <MenuWrapper ref={assetDetailsMenuRef}>
-                <CircleButton
+                <MenuButton
                   onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
                 >
                   <ButtonIcon name='more-vertical' />
-                </CircleButton>
+                </MenuButton>
                 {showAssetDetailsMenu && (
                   <AssetDetailsMenu
                     assetSymbol={selectedAsset?.symbol ?? ''}

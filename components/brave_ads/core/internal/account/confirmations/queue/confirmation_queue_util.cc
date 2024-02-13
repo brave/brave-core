@@ -8,7 +8,6 @@
 #include <string>
 #include <utility>
 
-#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
@@ -28,7 +27,7 @@ void RebuildConfirmationCallback(const ConfirmationInfo& confirmation,
   mutable_confirmation.user_data.dynamic = std::move(user_data);
 
   if (mutable_confirmation.reward) {
-    const absl::optional<std::string> reward_credential_base64url =
+    const std::optional<std::string> reward_credential_base64url =
         BuildRewardCredential(mutable_confirmation);
     CHECK(reward_credential_base64url);
 
@@ -57,11 +56,11 @@ void RemoveConfirmationQueueItem(const ConfirmationInfo& confirmation) {
   ConfirmationStateManager::GetInstance().SaveState();
 }
 
-absl::optional<ConfirmationInfo> MaybeGetNextConfirmationQueueItem() {
+std::optional<ConfirmationInfo> MaybeGetNextConfirmationQueueItem() {
   const ConfirmationList confirmations =
       ConfirmationStateManager::GetInstance().GetConfirmations();
   if (confirmations.empty()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return confirmations.front();

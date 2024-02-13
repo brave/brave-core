@@ -5,10 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
+#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -21,7 +20,7 @@ namespace brave_ads::json::reader {
 
 // TODO(https://github.com/brave/brave-browser/issues/25987): Reduce cognitive
 // complexity.
-absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
+std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -30,7 +29,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
   if (!helper::json::Validate(&document, json_schema)) {
     BLOG(1, helper::json::GetLastError(&document));
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   CatalogInfo catalog;
@@ -39,12 +38,16 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
   catalog.version = document["version"].GetInt();
 
-  const int64_t ping = document["ping"].GetInt64();
+  const int ping = document["ping"].GetInt();
   catalog.ping = base::Milliseconds(ping);
 
   // Campaigns
-  for (const auto& campaign_node : document["campaigns"].GetArray()) {
+  const auto& campaigns_node = document["campaigns"].GetArray();
+  catalog.campaigns.reserve(campaigns_node.Size());
+
+  for (const auto& campaign_node : campaigns_node) {
     CatalogCampaignInfo campaign;
+
     campaign.id = campaign_node["campaignId"].GetString();
     campaign.priority = campaign_node["priority"].GetInt();
     campaign.pass_through_rate = campaign_node["ptr"].GetDouble();
@@ -54,47 +57,57 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
     campaign.advertiser_id = campaign_node["advertiserId"].GetString();
 
     // Geo targets
-    for (const auto& geo_target_node : campaign_node["geoTargets"].GetArray()) {
-      CatalogGeoTargetInfo geo_target;
-      geo_target.code = geo_target_node["code"].GetString();
-      geo_target.name = geo_target_node["name"].GetString();
-      campaign.geo_targets.push_back(geo_target);
+    const auto& geo_targets_node = campaign_node["geoTargets"].GetArray();
+    campaign.geo_targets.reserve(geo_targets_node.Size());
+
+    for (const auto& geo_target_node : geo_targets_node) {
+      campaign.geo_targets.push_back(CatalogGeoTargetInfo{
+          .code = geo_target_node["code"].GetString(),
+          .name = geo_target_node["name"].GetString(),
+      });
     }
 
     // Dayparts
-    for (const auto& daypart_node : campaign_node["dayParts"].GetArray()) {
-      CatalogDaypartInfo daypart;
-      daypart.days_of_week = daypart_node["dow"].GetString();
-      daypart.start_minute = daypart_node["startMinute"].GetInt();
-      daypart.end_minute = daypart_node["endMinute"].GetInt();
-      campaign.dayparts.push_back(daypart);
+    const auto& dayparts_node = campaign_node["dayParts"].GetArray();
+    campaign.dayparts.reserve(dayparts_node.Size());
+
+    for (const auto& daypart_node : dayparts_node) {
+      campaign.dayparts.push_back(CatalogDaypartInfo{
+          .days_of_week = daypart_node["dow"].GetString(),
+          .start_minute = daypart_node["startMinute"].GetInt(),
+          .end_minute = daypart_node["endMinute"].GetInt()});
     }
 
     if (campaign.dayparts.empty()) {
-      const CatalogDaypartInfo daypart;
-      campaign.dayparts.push_back(daypart);
+      campaign.dayparts.push_back(CatalogDaypartInfo{});
     }
 
     // Creative sets
-    for (const auto& creative_set_node :
-         campaign_node["creativeSets"].GetArray()) {
+    const auto& creative_sets_node = campaign_node["creativeSets"].GetArray();
+    campaign.creative_sets.reserve(creative_sets_node.Size());
+
+    for (const auto& creative_set_node : creative_sets_node) {
       CatalogCreativeSetInfo creative_set;
+
       creative_set.id = creative_set_node["creativeSetId"].GetString();
       creative_set.per_day = creative_set_node["perDay"].GetInt();
       creative_set.per_week = creative_set_node["perWeek"].GetInt();
       creative_set.per_month = creative_set_node["perMonth"].GetInt();
       creative_set.total_max = creative_set_node["totalMax"].GetInt();
 
-      const std::string value = creative_set_node["value"].GetString();
+      const char* value = creative_set_node["value"].GetString();
       if (!base::StringToDouble(value, &creative_set.value)) {
         BLOG(1, "Failed to parse creative set value " << value);
         continue;
       }
 
       if (creative_set_node.HasMember("embedding")) {
-        for (const auto& item : creative_set_node["embedding"].GetArray()) {
+        const auto& embedding_nodes = creative_set_node["embedding"].GetArray();
+        creative_set.embedding.reserve(embedding_nodes.Size());
+
+        for (const auto& embedding_node : embedding_nodes) {
           creative_set.embedding.push_back(
-              static_cast<float>(item.GetDouble()));
+              static_cast<float>(embedding_node.GetDouble()));
         }
       }
 
@@ -104,40 +117,45 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       }
 
       // Segments
-      const auto segments_node = creative_set_node["segments"].GetArray();
+      const auto& segments_node = creative_set_node["segments"].GetArray();
       if (segments_node.Size() == 0) {
         continue;
       }
+      creative_set.segments.reserve(segments_node.Size());
 
       for (const auto& segment_node : segments_node) {
-        CatalogSegmentInfo segment;
-        segment.code = segment_node["code"].GetString();
-        if (segment.code.empty()) {
+        const std::string& code = segment_node["code"].GetString();
+        if (code.empty()) {
           BLOG(1, "Failed to parse empty segment code value");
           continue;
         }
 
-        segment.name = segment_node["name"].GetString();
-        if (segment.name.empty()) {
+        const std::string& name = segment_node["name"].GetString();
+        if (name.empty()) {
           BLOG(1, "Failed to parse empty segment name value");
           continue;
         }
 
-        creative_set.segments.push_back(segment);
+        creative_set.segments.push_back(
+            CatalogSegmentInfo{.code = code, .name = name});
       }
 
       // Oses
-      const auto oses_node = creative_set_node["oses"].GetArray();
+      const auto& oses_node = creative_set_node["oses"].GetArray();
+      creative_set.oses.reserve(oses_node.Size());
+
       for (const auto& os_node : oses_node) {
-        CatalogOsInfo os;
-        os.code = os_node["code"].GetString();
-        os.name = os_node["name"].GetString();
-        creative_set.oses.push_back(os);
+        creative_set.oses.push_back(
+            CatalogOsInfo{.code = os_node["code"].GetString(),
+                          .name = os_node["name"].GetString()});
       }
 
       // Conversions
-      const auto conversions = creative_set_node["conversions"].GetArray();
-      for (const auto& conversion_node : conversions) {
+      const auto& conversions_node =
+          creative_set_node["conversions"].GetArray();
+      creative_set.conversions.reserve(conversions_node.Size());
+
+      for (const auto& conversion_node : conversions_node) {
         CatalogConversionInfo conversion;
 
         conversion.creative_set_id = creative_set.id;
@@ -166,15 +184,16 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       // Creatives
       for (const auto& creative_node :
            creative_set_node["creatives"].GetArray()) {
-        const std::string creative_instance_id =
+        const char* creative_instance_id =
             creative_node["creativeInstanceId"].GetString();
 
         // Type
-        const auto type = creative_node["type"].GetObject();
+        const auto& type = creative_node["type"].GetObject();
 
         const std::string code = type["code"].GetString();
         if (code == "notification_all_v1") {
           CatalogCreativeNotificationAdInfo creative;
+
           creative.instance_id = creative_instance_id;
 
           // Type
@@ -184,10 +203,11 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.version = type["version"].GetInt();
 
           // Payload
-          const auto payload = creative_node["payload"].GetObject();
-          creative.payload.body = payload["body"].GetString();
-          creative.payload.title = payload["title"].GetString();
-          creative.payload.target_url = GURL(payload["targetUrl"].GetString());
+          const auto& payload = creative_node["payload"].GetObject();
+          creative.payload = CatalogNotificationAdPayloadInfo{
+              .body = payload["body"].GetString(),
+              .title = payload["title"].GetString(),
+              .target_url = GURL(payload["targetUrl"].GetString())};
           if (!DoesSupportUrl(creative.payload.target_url)) {
             BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);
@@ -197,6 +217,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_notification_ads.push_back(creative);
         } else if (code == "inline_content_all_v1") {
           CatalogCreativeInlineContentAdInfo creative;
+
           creative.instance_id = creative_instance_id;
 
           // Type
@@ -206,7 +227,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.version = type["version"].GetInt();
 
           // Payload
-          const auto payload = creative_node["payload"].GetObject();
+          const auto& payload = creative_node["payload"].GetObject();
           creative.payload.title = payload["title"].GetString();
           creative.payload.description = payload["description"].GetString();
           creative.payload.image_url = GURL(payload["imageUrl"].GetString());
@@ -227,6 +248,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_inline_content_ads.push_back(creative);
         } else if (code == "new_tab_page_all_v1") {
           CatalogCreativeNewTabPageAdInfo creative;
+
           creative.instance_id = creative_instance_id;
 
           // Type
@@ -236,9 +258,8 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.version = type["version"].GetInt();
 
           // Payload
-          const auto payload = creative_node["payload"].GetObject();
-          const auto logo = payload["logo"].GetObject();
-
+          const auto& payload = creative_node["payload"].GetObject();
+          const auto& logo = payload["logo"].GetObject();
           creative.payload.company_name = logo["companyName"].GetString();
           creative.payload.image_url = GURL(logo["imageUrl"].GetString());
           creative.payload.alt = logo["alt"].GetString();
@@ -250,15 +271,14 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
             continue;
           }
 
-          for (const auto& item : payload["wallpapers"].GetArray()) {
-            CatalogNewTabPageAdWallpaperInfo wallpaper;
-            wallpaper.image_url = GURL(item["imageUrl"].GetString());
-
-            const auto focal_point = item["focalPoint"].GetObject();
-            wallpaper.focal_point.x = focal_point["x"].GetInt();
-            wallpaper.focal_point.y = focal_point["y"].GetInt();
-
-            creative.payload.wallpapers.push_back(wallpaper);
+          for (const auto& wallerpaper_node :
+               payload["wallpapers"].GetArray()) {
+            creative.payload.wallpapers.push_back(
+                CatalogNewTabPageAdWallpaperInfo{
+                    .image_url = GURL(wallerpaper_node["imageUrl"].GetString()),
+                    .focal_point = CatalogNewTabPageAdWallpaperFocalPointInfo{
+                        .x = wallerpaper_node["focalPoint"]["x"].GetInt(),
+                        .y = wallerpaper_node["focalPoint"]["y"].GetInt()}});
           }
 
           if (creative.payload.wallpapers.empty()) {
@@ -270,6 +290,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set.creative_new_tab_page_ads.push_back(creative);
         } else if (code == "promoted_content_all_v1") {
           CatalogCreativePromotedContentAdInfo creative;
+
           creative.instance_id = creative_instance_id;
 
           // Type
@@ -279,10 +300,11 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.version = type["version"].GetInt();
 
           // Payload
-          const auto payload = creative_node["payload"].GetObject();
-          creative.payload.title = payload["title"].GetString();
-          creative.payload.description = payload["description"].GetString();
-          creative.payload.target_url = GURL(payload["feed"].GetString());
+          const auto& payload = creative_node["payload"].GetObject();
+          creative.payload = CatalogPromotedContentAdPayloadInfo{
+              .title = payload["title"].GetString(),
+              .description = payload["description"].GetString(),
+              .target_url = GURL(payload["feed"].GetString())};
           if (!DoesSupportUrl(creative.payload.target_url)) {
             BLOG(1, "Failed to parse target URL for creative instance id "
                         << creative_instance_id);

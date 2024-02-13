@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_SYNC_DEVICE_INFO_BRAVE_DEVICE_INFO_H_
 #define BRAVE_COMPONENTS_SYNC_DEVICE_INFO_BRAVE_DEVICE_INFO_H_
 
+#include <optional>
 #include <string>
 
 #include "base/time/time.h"
 #include "components/sync/protocol/sync.pb.h"
 #include "components/sync_device_info/device_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class DictionaryValue;
@@ -34,8 +34,8 @@ class BraveDeviceInfo : public DeviceInfo {
                   base::Time last_updated_timestamp,
                   base::TimeDelta pulse_interval,
                   bool send_tab_to_self_receiving_enabled,
-                  const absl::optional<DeviceInfo::SharingInfo>& sharing_info,
-                  const absl::optional<PhoneAsASecurityKeyInfo>& paask_info,
+                  const std::optional<DeviceInfo::SharingInfo>& sharing_info,
+                  const std::optional<PhoneAsASecurityKeyInfo>& paask_info,
                   const std::string& fcm_registration_token,
                   const ModelTypeSet& interested_data_types,
                   bool is_self_delete_supported);

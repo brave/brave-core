@@ -151,16 +151,16 @@ NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNIKEv2ConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
-    version_info::Channel channel) {
+    base::RepeatingCallback<bool()> service_installer) {
+  // service_installer not currently used on macOS.
   return std::make_unique<BraveVPNOSConnectionAPIMac>(url_loader_factory,
-                                                      local_prefs, channel);
+                                                      local_prefs);
 }
 
 BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    version_info::Channel channel)
-    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs, channel) {
+    PrefService* local_prefs)
+    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {
   ObserveVPNConnectionChange();
 }
 

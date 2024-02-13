@@ -8,8 +8,8 @@
 namespace brave_ads {
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
-    const base::Time created_at,
+    const base::Time at,
     const int weight)
-    : created_at(created_at), weight(weight) {}
+    : at(at), weight(weight) {}
 
 }  // namespace brave_ads

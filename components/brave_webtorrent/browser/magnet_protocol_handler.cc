@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -25,6 +27,8 @@ namespace webtorrent {
 
 namespace {
 
+constexpr char kWebtorrentUsageHistogramName[] = "Brave.WebTorrent.UsageWeekly";
+
 bool IsMagnetProtocol(const GURL& url) {
   return url.SchemeIs(kMagnetScheme);
 }
@@ -34,7 +38,7 @@ void LoadMagnetURL(const GURL& url,
                    ui::PageTransition page_transition,
                    bool has_user_gesture,
                    bool is_in_fenced_frame_tree,
-                   const absl::optional<url::Origin>& initiating_origin,
+                   const std::optional<url::Origin>& initiating_origin,
                    content::WeakDocumentPtr initiator_document) {
   content::WebContents* web_contents = web_contents_getter.Run();
   if (!web_contents) {
@@ -124,7 +128,7 @@ bool HandleMagnetProtocol(const GURL& url,
                           ui::PageTransition page_transition,
                           bool has_user_gesture,
                           bool is_in_fenced_frame_tree,
-                          const absl::optional<url::Origin>& initiating_origin,
+                          const std::optional<url::Origin>& initiating_origin,
                           content::WeakDocumentPtr initiator_document) {
   if (!IsMagnetProtocol(url)) {
     return false;
@@ -140,6 +144,8 @@ bool HandleMagnetProtocol(const GURL& url,
       !IsWebtorrentEnabled(web_contents->GetBrowserContext())) {
     return false;
   }
+
+  UMA_HISTOGRAM_BOOLEAN(kWebtorrentUsageHistogramName, true);
 
   content::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,

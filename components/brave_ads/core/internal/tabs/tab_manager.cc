@@ -47,29 +47,21 @@ bool TabManager::IsVisible(const int32_t tab_id) const {
 }
 
 bool TabManager::IsPlayingMedia(const int32_t tab_id) const {
-  const absl::optional<TabInfo> tab = MaybeGetForId(tab_id);
+  const std::optional<TabInfo> tab = MaybeGetForId(tab_id);
   return tab ? tab->is_playing_media : false;
 }
 
-absl::optional<TabInfo> TabManager::GetVisible() const {
+std::optional<TabInfo> TabManager::GetVisible() const {
   if (!visible_tab_id_) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return MaybeGetForId(*visible_tab_id_);
 }
 
-absl::optional<TabInfo> TabManager::GetLastVisible() const {
-  if (!last_visible_tab_id_) {
-    return absl::nullopt;
-  }
-
-  return MaybeGetForId(*last_visible_tab_id_);
-}
-
-absl::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
+std::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
   if (!base::Contains(tabs_, tab_id)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return tabs_.at(tab_id);
@@ -223,8 +215,6 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
   }
 
   BLOG(2, "Tab id " << tab_id << " is visible");
-
-  last_visible_tab_id_ = visible_tab_id_;
 
   visible_tab_id_ = tab_id;
 

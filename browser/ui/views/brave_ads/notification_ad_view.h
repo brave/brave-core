@@ -31,7 +31,7 @@ class NotificationAdView : public views::View {
 
   ~NotificationAdView() override;
 
-  // Update notification contents to |notification_ad|
+  // Update notification contents to `notification_ad`
   virtual void UpdateContents(const NotificationAd& notification_ad);
 
   void OnCloseButtonPressed();

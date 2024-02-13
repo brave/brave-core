@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -29,7 +28,6 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorTest, PredictCreativeAd) {
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
-
   const UserModelInfo user_model{
       IntentUserModelInfo{}, LatentInterestUserModelInfo{},
       InterestUserModelInfo{/*segments=*/{}, TextEmbeddingHtmlEventList{

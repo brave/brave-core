@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -36,9 +37,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "net/http/http_status_code.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds
 

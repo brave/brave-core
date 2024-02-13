@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -37,6 +38,8 @@ import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
+import org.chromium.chrome.browser.init.ActivityProfileProvider;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 
 import java.lang.ref.WeakReference;
@@ -254,5 +257,10 @@ public class AccountDetailActivity
 
     private NetworkModel getNetworkModel() {
         return mWalletModel.getNetworkModel();
+    }
+
+    @Override
+    protected OneshotSupplier<ProfileProvider> createProfileProvider() {
+        return new ActivityProfileProvider(getLifecycleDispatcher());
     }
 }

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_label_button.h"
 
+#include <utility>
+
 #include "ui/base/cursor/cursor.h"
 
 namespace brave_tooltips {
@@ -12,7 +14,7 @@ namespace brave_tooltips {
 BraveTooltipLabelButton::BraveTooltipLabelButton(PressedCallback callback,
                                                  const std::u16string& text,
                                                  int button_context)
-    : LabelButton(callback, text, button_context) {}
+    : LabelButton(std::move(callback), text, button_context) {}
 
 BraveTooltipLabelButton::~BraveTooltipLabelButton() = default;
 

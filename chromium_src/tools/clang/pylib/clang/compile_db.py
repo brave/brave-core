@@ -9,12 +9,13 @@ import re
 import override_utils
 
 # Remove redirect_cc from the command line.
-GOMACC_PATTERN_TO_REPLACE = (r'gomacc(\.exe)', r'(gomacc|redirect_cc)(\.exe)')
+CMD_PATTERN_TO_REPLACE = (r'rewrapper(\.exe)',
+                          r'(rewrapper|redirect_cc)(\.exe)')
 
-# pylint: disable=used-before-assignment
-assert GOMACC_PATTERN_TO_REPLACE[0] in _CLANG_WRAPPER_CMD_LINE_RE.pattern
+_CLANG_WRAPPER_CMD_LINE_RE: object  # Injected from upstream compile_db.py.
+assert CMD_PATTERN_TO_REPLACE[0] in _CLANG_WRAPPER_CMD_LINE_RE.pattern
 _CLANG_WRAPPER_CMD_LINE_RE = re.compile(
-    _CLANG_WRAPPER_CMD_LINE_RE.pattern.replace(*GOMACC_PATTERN_TO_REPLACE),
+    _CLANG_WRAPPER_CMD_LINE_RE.pattern.replace(*CMD_PATTERN_TO_REPLACE),
     re.VERBOSE)
 
 

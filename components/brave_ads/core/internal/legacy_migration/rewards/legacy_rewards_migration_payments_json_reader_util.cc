@@ -19,20 +19,20 @@ constexpr char kBalanceKey[] = "balance";
 constexpr char kMonthKey[] = "month";
 constexpr char kTransactionCountKey[] = "transaction_count";
 
-absl::optional<PaymentInfo> ParsePayment(const base::Value::Dict& dict) {
+std::optional<PaymentInfo> ParsePayment(const base::Value::Dict& dict) {
   PaymentInfo payment;
 
   // Balance
-  const absl::optional<double> balance = dict.FindDouble(kBalanceKey);
+  const std::optional<double> balance = dict.FindDouble(kBalanceKey);
   if (!balance) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   payment.balance = *balance;
 
   // Month
   const std::string* const month = dict.FindString(kMonthKey);
   if (!month) {
-    return absl::nullopt;
+    return std::nullopt;
   }
   payment.month = *month;
 
@@ -40,28 +40,28 @@ absl::optional<PaymentInfo> ParsePayment(const base::Value::Dict& dict) {
   const std::string* const transaction_count =
       dict.FindString(kTransactionCountKey);
   if (!transaction_count) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   if (!base::StringToInt(*transaction_count, &payment.transaction_count)) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return payment;
 }
 
-absl::optional<PaymentList> GetPaymentsFromList(const base::Value::List& list) {
+std::optional<PaymentList> GetPaymentsFromList(const base::Value::List& list) {
   PaymentList payments;
 
   for (const auto& item : list) {
     const auto* item_dict = item.GetIfDict();
     if (!item_dict) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
-    const absl::optional<PaymentInfo> payment = ParsePayment(*item_dict);
+    const std::optional<PaymentInfo> payment = ParsePayment(*item_dict);
     if (!payment) {
-      return absl::nullopt;
+      return std::nullopt;
     }
 
     payments.push_back(*payment);
@@ -72,7 +72,7 @@ absl::optional<PaymentList> GetPaymentsFromList(const base::Value::List& list) {
 
 }  // namespace
 
-absl::optional<PaymentList> ParsePayments(const base::Value::Dict& dict) {
+std::optional<PaymentList> ParsePayments(const base::Value::Dict& dict) {
   const auto* const ads_rewards_dict = dict.FindDict(kAdsRewardsKey);
   if (!ads_rewards_dict) {
     return PaymentList{};
@@ -80,7 +80,7 @@ absl::optional<PaymentList> ParsePayments(const base::Value::Dict& dict) {
 
   const auto* const list = ads_rewards_dict->FindList(kPaymentListKey);
   if (!list) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   return GetPaymentsFromList(*list);

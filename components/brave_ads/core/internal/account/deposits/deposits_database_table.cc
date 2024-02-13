@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
@@ -14,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -48,7 +50,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindInt64(command, index++,
               creative_ad.end_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
 
-    count++;
+    ++count;
   }
 
   return count;
@@ -78,7 +80,7 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void GetForCreativeInstanceIdCallback(
-    const std::string& /*creative_instance_id=*/,
+    const std::string& /*creative_instance_id*/,
     GetDepositsCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
@@ -86,13 +88,13 @@ void GetForCreativeInstanceIdCallback(
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
     return std::move(callback).Run(/*success=*/false,
-                                   /*deposit=*/absl::nullopt);
+                                   /*deposit=*/std::nullopt);
   }
 
   CHECK(command_response->result);
 
   if (command_response->result->get_records().empty()) {
-    return std::move(callback).Run(/*success=*/true, /*deposit=*/absl::nullopt);
+    return std::move(callback).Run(/*success=*/true, /*deposit=*/std::nullopt);
   }
 
   const mojom::DBRecordInfoPtr record =
@@ -105,13 +107,15 @@ void GetForCreativeInstanceIdCallback(
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  DropTable(transaction, "deposits");
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS deposits (creative_instance_id "
-      "TEXT NOT NULL, value DOUBLE NOT NULL, expire_at TIMESTAMP "
-      "NOT NULL, PRIMARY KEY (creative_instance_id), "
-      "UNIQUE(creative_instance_id) ON CONFLICT REPLACE);";
+      "CREATE TABLE deposits (creative_instance_id TEXT NOT NULL, value DOUBLE "
+      "NOT NULL, expire_at TIMESTAMP NOT NULL, PRIMARY KEY "
+      "(creative_instance_id), UNIQUE(creative_instance_id) ON CONFLICT "
+      "REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -169,7 +173,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                         GetDepositsCallback callback) const {
   if (creative_instance_id.empty()) {
     return std::move(callback).Run(/*success=*/false,
-                                   /*deposit=*/absl::nullopt);
+                                   /*deposit=*/std::nullopt);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();

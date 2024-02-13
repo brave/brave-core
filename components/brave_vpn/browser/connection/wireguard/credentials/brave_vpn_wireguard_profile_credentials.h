@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_CREDENTIALS_BRAVE_VPN_WIREGUARD_PROFILE_CREDENTIALS_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_CREDENTIALS_BRAVE_VPN_WIREGUARD_PROFILE_CREDENTIALS_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
 
@@ -32,13 +32,13 @@ struct WireguardProfileCredentials {
            api_auth_token == other.api_auth_token;
   }
 
-  static absl::optional<WireguardProfileCredentials> FromServerResponse(
+  static std::optional<WireguardProfileCredentials> FromServerResponse(
       const std::string& credentials,
       const std::string& client_private_key);
-  static absl::optional<WireguardProfileCredentials> FromString(
+  static std::optional<WireguardProfileCredentials> FromString(
       const std::string& credentials);
 
-  absl::optional<std::string> ToString() const;
+  std::optional<std::string> ToString() const;
   bool IsValid() const;
 
   std::string server_public_key;

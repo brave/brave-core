@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 #define BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,6 @@
 #include "chrome/browser/importer/external_process_importer_host.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "extensions/buildflags/buildflags.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
  public:
@@ -55,7 +55,7 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   void LaunchExtensionsImport();
   void OnGetChromeExtensionsList(
-      absl::optional<std::vector<std::string>> extensions_list);
+      std::optional<std::vector<std::string>> extensions_list);
 #endif
   bool do_not_launch_import_for_testing_ = false;
   MockedInstallCallback install_extension_callback_for_testing_;

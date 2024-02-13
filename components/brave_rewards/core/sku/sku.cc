@@ -5,14 +5,11 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
-#include "brave/components/brave_rewards/core/sku/sku_util.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
 
 namespace brave_rewards::internal {
 namespace sku {
@@ -25,101 +22,110 @@ void SKU::Process(const std::vector<mojom::SKUOrderItem>& items,
                   const std::string& wallet_type,
                   SKUOrderCallback callback,
                   const std::string& contribution_id) {
-  auto create_callback = std::bind(&SKU::OrderCreated, this, _1, _2,
-                                   wallet_type, contribution_id, callback);
-
-  common_.CreateOrder(items, create_callback);
+  common_.CreateOrder(
+      items, base::BindOnce(&SKU::OrderCreated, weak_factory_.GetWeakPtr(),
+                            wallet_type, contribution_id, std::move(callback)));
 }
 
-void SKU::OrderCreated(const mojom::Result result,
-                       const std::string& order_id,
-                       const std::string& wallet_type,
+void SKU::OrderCreated(const std::string& wallet_type,
                        const std::string& contribution_id,
-                       SKUOrderCallback callback) {
+                       SKUOrderCallback callback,
+                       mojom::Result result,
+                       const std::string& order_id) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Order was not successful");
-    callback(result, "");
+    engine_->LogError(FROM_HERE) << "Order was not successful";
+    std::move(callback).Run(result, "");
     return;
   }
 
-  auto save_callback = std::bind(&SKU::ContributionIdSaved, this, _1, order_id,
-                                 wallet_type, callback);
-
-  engine_->database()->SaveContributionIdForSKUOrder(order_id, contribution_id,
-                                                     save_callback);
+  engine_->database()->SaveContributionIdForSKUOrder(
+      order_id, contribution_id,
+      base::BindOnce(&SKU::ContributionIdSaved, weak_factory_.GetWeakPtr(),
+                     order_id, wallet_type, std::move(callback)));
 }
 
-void SKU::ContributionIdSaved(const mojom::Result result,
-                              const std::string& order_id,
+void SKU::ContributionIdSaved(const std::string& order_id,
                               const std::string& wallet_type,
-                              SKUOrderCallback callback) {
+                              SKUOrderCallback callback,
+                              mojom::Result result) {
   if (result != mojom::Result::OK) {
-    BLOG(0, "Contribution id not saved");
-    callback(result, "");
+    engine_->LogError(FROM_HERE) << "Contribution id not saved";
+    std::move(callback).Run(result, "");
     return;
   }
 
-  auto get_callback =
-      std::bind(&SKU::CreateTransaction, this, _1, wallet_type, callback);
-
-  engine_->database()->GetSKUOrder(order_id, get_callback);
+  engine_->database()->GetSKUOrder(
+      order_id,
+      base::BindOnce(&SKU::CreateTransaction, weak_factory_.GetWeakPtr(),
+                     wallet_type, std::move(callback)));
 }
 
-void SKU::CreateTransaction(mojom::SKUOrderPtr order,
-                            const std::string& wallet_type,
-                            SKUOrderCallback callback) {
+void SKU::CreateTransaction(const std::string& wallet_type,
+                            SKUOrderCallback callback,
+                            mojom::SKUOrderPtr order) {
   if (!order) {
-    BLOG(0, "Order not found");
-    callback(mojom::Result::FAILED, "");
+    engine_->LogError(FROM_HERE) << "Order not found";
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  const std::string destination = GetBraveDestination(wallet_type);
+  std::string destination = [&]() -> std::string {
+    if (wallet_type == constant::kWalletUphold) {
+      return engine_->Get<EnvironmentConfig>().uphold_sku_destination();
+    }
+
+    if (wallet_type == constant::kWalletGemini) {
+      return engine_->Get<EnvironmentConfig>().gemini_sku_destination();
+    }
+
+    NOTREACHED();
+    return "";
+  }();
 
   common_.CreateTransaction(std::move(order), destination, wallet_type,
-                            callback);
+                            std::move(callback));
 }
 
 void SKU::Retry(const std::string& order_id,
                 const std::string& wallet_type,
                 SKUOrderCallback callback) {
   if (order_id.empty()) {
-    BLOG(0, "Order id is empty");
-    callback(mojom::Result::FAILED, "");
+    engine_->LogError(FROM_HERE) << "Order id is empty";
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
-  auto get_callback = std::bind(&SKU::OnOrder, this, _1, wallet_type, callback);
-
-  engine_->database()->GetSKUOrder(order_id, get_callback);
+  engine_->database()->GetSKUOrder(
+      order_id, base::BindOnce(&SKU::OnOrder, weak_factory_.GetWeakPtr(),
+                               wallet_type, std::move(callback)));
 }
 
-void SKU::OnOrder(mojom::SKUOrderPtr order,
-                  const std::string& wallet_type,
-                  SKUOrderCallback callback) {
+void SKU::OnOrder(const std::string& wallet_type,
+                  SKUOrderCallback callback,
+                  mojom::SKUOrderPtr order) {
   if (!order) {
-    BLOG(0, "Order is null");
-    callback(mojom::Result::FAILED, "");
+    engine_->LogError(FROM_HERE) << "Order is null";
+    std::move(callback).Run(mojom::Result::FAILED, "");
     return;
   }
 
   switch (order->status) {
     case mojom::SKUOrderStatus::PENDING: {
-      ContributionIdSaved(mojom::Result::OK, order->order_id, wallet_type,
-                          callback);
+      ContributionIdSaved(order->order_id, wallet_type, std::move(callback),
+                          mojom::Result::OK);
       return;
     }
     case mojom::SKUOrderStatus::PAID: {
-      common_.SendExternalTransaction(order->order_id, callback);
+      common_.SendExternalTransaction(order->order_id, std::move(callback));
       return;
     }
     case mojom::SKUOrderStatus::FULFILLED: {
-      callback(mojom::Result::OK, order->order_id);
+      std::move(callback).Run(mojom::Result::OK, order->order_id);
       return;
     }
     case mojom::SKUOrderStatus::CANCELED:
     case mojom::SKUOrderStatus::NONE: {
-      callback(mojom::Result::FAILED, "");
+      std::move(callback).Run(mojom::Result::FAILED, "");
       return;
     }
   }

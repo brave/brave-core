@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/round_robin_advertisers.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
@@ -29,11 +29,7 @@ T FilterSeenAdvertisersAndRoundRobinIfNeeded(const T& ads, AdType ad_type) {
 
   BLOG(1, "All " << ad_type << " advertisers have been shown, so round robin");
 
-  CreativeAdList creative_ads;
-  for (const auto& ad : ads) {
-    creative_ads.push_back(ad);
-  }
-
+  const CreativeAdList creative_ads{ads.cbegin(), ads.cend()};
   ClientStateManager::GetInstance().ResetSeenAdvertisersForType(creative_ads,
                                                                 ad_type);
 

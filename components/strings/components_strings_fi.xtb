@@ -43,6 +43,7 @@
 <translation id="1074497978438210769">Ei turvallinen</translation>
 <translation id="1075079914415273530">Maa- ja metsätalous</translation>
 <translation id="1075364221219156102">Käytä avainkoodia</translation>
+<translation id="1078033282564106222">Rakennuksen numero ‐vaihtoehto on valittu</translation>
 <translation id="1080116354587839789">Sovita leveyteen</translation>
 <translation id="1081061862829655580">Lokero 19</translation>
 <translation id="1089439967362294234">Vaihda salasana</translation>
@@ -67,6 +68,7 @@
 <translation id="1131264053432022307">Kopioimasi kuva</translation>
 <translation id="1142713751288681188">Paperityyppi</translation>
 <translation id="1147769322402934017">Kuvagalleriat verkossa</translation>
+<translation id="1149617035358809955">vahvista henkilöllisyytesi, jotta maksutietosi voidaan täyttää</translation>
 <translation id="1150565364351027703">Aurinkolasit</translation>
 <translation id="1150979032973867961">Palvelin ei voinut todistaa olevansa <ph name="DOMAIN"/>; tietokoneesi käyttöjärjestelmä ei luota sen suojausvarmenteeseen. Tämä voi johtua määritysvirheestä tai verkkoyhteytesi siepanneesta hyökkääjästä.</translation>
 <translation id="1151972924205500581">Salasana vaaditaan</translation>
@@ -77,6 +79,7 @@
 <translation id="6628439996552631516">Ylläpidä osoitteita ‑painike, aktivoi lisätäksesi ja muuttaaksesi osoitteita Braven asetuksista</translation>
 <translation id="1165039591588034296">Virhe</translation>
 <translation id="1165174597379888365">Sivulla on käyty</translation>
+<translation id="7108524493226474140">{COUNT,plural, =0{Ei yhtään}=1{1 sivustolta (pysyt kirjautuneena Brave-tilillesi)}other{# sivustolta (pysyt kirjautuneena Brave-tilillesi)}}</translation>
 <translation id="1165852471352757509">TV-dokumentit ja tiedesarjat</translation>
 <translation id="1174644974616730562">Kirjekuori kiinalainen #1</translation>
 <translation id="1174723505405632867">Haluatko, että <ph name="EMBEDDED_URL"/> saa käyttää evästeitä ja sivustodataa (<ph name="TOP_LEVEL_URL"/>)?
@@ -85,11 +88,13 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1175364870820465910">Tulo&amp;sta...</translation>
 <translation id="1175393348063009671">Valokuva (matta)</translation>
 <translation id="1175875016430184367">Kolme niittiä oikealla</translation>
+<translation id="1177548198167638471">Älä kysy uudelleen</translation>
 <translation id="1177802847690410663">Verkkoselaimet</translation>
 <translation id="1177863135347784049">Muokattu</translation>
 <translation id="1178581264944972037">Tauko</translation>
 <translation id="1178821169867863726">12 x 16 tuumaa</translation>
 <translation id="1181037720776840403">Poista</translation>
+<translation id="3248691252569103537">Brave estää sivustoja seuraamasta sinua kolmansien osapuolten evästeiden avulla selaamisen aikana. Tee tämä asetuksissa: <ph name="LINK"/>.</translation>
 <translation id="1186201132766001848">Tarkista salasanat</translation>
 <translation id="1190491977647722791">Paperi (paksu)</translation>
 <translation id="1195073053842921378">Osoite poistetaan tältä laitteelta</translation>
@@ -104,12 +109,14 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1206967143813997005">Virheellinen alkuperäinen allekirjoitus</translation>
 <translation id="1209206284964581585">Piilota toistaiseksi</translation>
 <translation id="121201262018556460">Yritit yhdistää verkkotunnukseen <ph name="DOMAIN"/>, mutta palvelin esitti varmenteen, joka käyttää heikkoa avainta. Hakkeri on saattanut murtaa avaimen. Palvelin ei siis välttämättä ole tavoittelemasi palvelin, vaan saatat viestiä hakkerin kanssa.</translation>
+<translation id="1212527389003717329">Lataus aloitettu. Näet sen painamalla pitkään |<ph name="ACCELERATOR"/>|-painiketta.</translation>
 <translation id="1219129156119358924">Järjestelmän suojaus</translation>
 <translation id="1222060260947439312">Oikea lokero</translation>
 <translation id="1224330468394120478">A3 x 6</translation>
 <translation id="1225570101506606926">Biljardi</translation>
 <translation id="2735968720006267833">Brave etsii sinulle alennuksia</translation>
 <translation id="1227224963052638717">Tuntematon käytäntö.</translation>
+<translation id="1227677022489889280">Lisää siirron syy (pakollinen)</translation>
 <translation id="1228893227497259893">Väärä entiteettitunnus</translation>
 <translation id="1230244617745022071"><ph name="SOURCE"/> (automaattisesti tunnistettu)</translation>
 <translation id="1232569758102978740">Nimetön</translation>
@@ -135,6 +142,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1264309058268477500">Vaihtoehtoinen</translation>
 <translation id="1264974993859112054">Urheilu</translation>
 <translation id="1266469291454105242">Laitteen lukituksen avaustapa</translation>
+<translation id="126728463333482584">Kokeilet ensimmäisten joukossa Seurannan estoa, joka rajoittaa sivustojen kolmannen osapuolen evästeiden käyttöä selaamisen seurantaan.</translation>
 <translation id="1268480293435976622">Kirjekuori kiinalainen #7</translation>
 <translation id="53564677632020212">Luo uusi Brave Sites ‑sivusto nopeasti</translation>
 <translation id="1270328905573953738">Muutto ja muuttokuljetukset</translation>
@@ -217,6 +225,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1413809658975081374">Tietosuojavirhe</translation>
 <translation id="1414134146594747368">Esikoulu</translation>
 <translation id="141826476809826269">Poimittu teksti loppuu</translation>
+<translation id="3181333394175596679">Kun Brave päivittää ominaisuutta, sivustot voivat tilapäisesti käyttää kolmannen osapuolen evästeitä, ellet estä niitä asetuksissa.</translation>
 <translation id="5305237486453576422">Ylläpidä latauksia Bravessa ‑painike, aktivoi ylläpitääksesi Bravessa lataamiasi tiedostoja</translation>
 <translation id="1422930527989633628">Saa pyytää lupaa löytää lähellä olevat Bluetooth-laitteet</translation>
 <translation id="1426410128494586442">Kyllä</translation>
@@ -237,10 +246,10 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1446396933673057385">Täsmällisyyden tarkistaminen</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
 <translation id="1452803302401719440">Vanhempasi valitsemat asetukset pitävät sinut nyt turvassa verkossa</translation>
-<translation id="1453974140256777690">Liittämäsi teksti lähetetään Google Cloudiin tai kolmansille osapuolille analysoitavaksi. Se voidaan esimerkiksi skannata arkaluontoisten tietojen varalta.</translation>
 <translation id="1455413310270022028">Pyyhekumi</translation>
 <translation id="1458140305240870199">Alusasut</translation>
 <translation id="1459693405370120464">Sää</translation>
+<translation id="1461041542809785877">Suorituskyky</translation>
 <translation id="1462245070427461050">JIS B9 (45 mm x 64 mm)</translation>
 <translation id="1462951478840426066">käyttää tietokoneesi fontteja, jotta voit luoda tasokasta sisältöä</translation>
 <translation id="1467432559032391204">Vasemmalla</translation>
@@ -264,12 +273,14 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1507780850870535225">Maisemasuunnittelu</translation>
 <translation id="1513706915089223971">Luettelo historiamerkinnöistä</translation>
 <translation id="1516097932025103760">Se salataan ja tallennetaan turvallisesti. CVC:tä ei koskaan tallenneta.</translation>
+<translation id="151720253492607760">Jatka kieltämistä</translation>
 <translation id="1517433312004943670">Puhelinnumero vaaditaan</translation>
 <translation id="1519264250979466059">Koontipäivä</translation>
 <translation id="1521159554480556801">Tekstiilitaide</translation>
 <translation id="5524011986660000129">Brave Sheets</translation>
 <translation id="1524669537550112617">Kalustetut vuokra-asunnot</translation>
 <translation id="1527263332363067270">Odotetaan yhteyttä…</translation>
+<translation id="1528311629279578926">Yhteys on estetty, koska julkinen sivu aloitti yhteyden muodostamisen yksityisessä verkossasi oleviin laitteisiin tai palvelimiin. Salli yhteys päivittämällä tämä sivu.</translation>
 <translation id="1529789484829130889">Lokero 8</translation>
 <translation id="1530707389502320859">Sivusto, jolle yritit juuri siirtyä, ei vaikuta aidolta. Hyökkääjät jäljittelevät joskus sivustoja tekemällä URL-osoitteeseen pieniä muutoksia, joita on vaikea havaita.</translation>
 <translation id="1532118530259321453">Viesti tältä sivulta</translation>
@@ -291,6 +302,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 
           &lt;p&gt;Muokkaa aikaa ja päivämäärää &lt;strong&gt;Asetukset&lt;/strong&gt;‑sovelluksen  &lt;strong&gt;Yleistä&lt;/strong&gt;‑osiossa.&lt;/p&gt;</translation>
 <translation id="1559839503761818503">Jäjestelmänvalvojasi käynnistää laitteen uudelleen <ph name="DATE"/> kello <ph name="TIME"/></translation>
+<translation id="1564634006476980707">Haun URL-osoitteelle suositellaan HTTPS-mallia: <ph name="SEARCH_URL"/></translation>
 <translation id="156703335097561114">Verkkotiedot, kuten osoitteet, käyttöliittymän määritys ja yhteyden laatu</translation>
 <translation id="1567040042588613346">Tämä käytäntö toimii odotetusti, mutta sama arvo on asetettu muualla, ja tämä käytäntö korvaa sen.</translation>
 <translation id="1567405528131216114">Lisää <ph name="TOPIC"/></translation>
@@ -300,6 +312,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1574714699824202614">Maksutapaa vahvistetaan</translation>
 <translation id="1576277203042721907">Shopping-vinkit</translation>
 <translation id="1581080074034554886">CVC</translation>
+<translation id="1581172376168798878">Ei vanhene</translation>
 <translation id="1583429793053364125">Jotain meni pieleen. tätä verkkosivua näytettäessä.</translation>
 <translation id="1584492003828271317">Selaamisen aikana näkemiesi mainosten personointi riippuu tästä asetuksesta, sivuston ehdottamat mainokset ‑ominaisuudesta, evästeasetuksista ja siitä, personoiko katsomasi sivusto mainoksia</translation>
 <translation id="1586541204584340881">Asentamasi laajennukset</translation>
@@ -309,7 +322,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1593359183944365958">270 astetta</translation>
 <translation id="1594030484168838125">Valitse</translation>
 <translation id="1596296697375291157">Trillerit, rikos- ja jännityselokuvat</translation>
-<translation id="1597473228022844713">Seuraat tätä tuotetta. Sivu on tallennettu tänne: <ph name="LAST_BOOKMARKS_FOLDER"/></translation>
 <translation id="1598816256585174656">Avainkoodi Windows Hellosta</translation>
 <translation id="1599199147673445968">Uusi kortti? <ph name="BEGIN_LINK"/>Lisää kortin tiedot<ph name="END_LINK"/></translation>
 <translation id="8523167061098356223">Pelaa Dino Run ‑peliä Bravessa</translation>
@@ -319,6 +331,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1615402009686901181">Järjestelmänvalvojakäytäntö poistaa kuvakaappauksen käytöstä, kun näkyvissä on luottamuksellista sisältöä</translation>
 <translation id="1617276713587758852">Crossover-autot</translation>
 <translation id="1618571384971354160">Hinaus- ja tiepalvelut</translation>
+<translation id="1619007254056372606">Hallinnoi laitepohjaista sivustodataa</translation>
 <translation id="1620510694547887537">Kamera</translation>
 <translation id="1622571349153632031">Kasvisruokavalio</translation>
 <translation id="162285686621567578">Vanhempasi on estänyt tämän verkkosivuston.</translation>
@@ -328,16 +341,17 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1633941398432788136">Juhlien suunnittelu</translation>
 <translation id="1634828734222219955">Yhteensä</translation>
 <translation id="163669211644121865">Veroilmoitusten tekeminen ja verosuunnittelu</translation>
-<translation id="1638780421120290329">Kortin tallennus epäonnistui</translation>
 <translation id="1639239467298939599">Ladataan</translation>
 <translation id="1640180200866533862">Käyttäjäkäytännöt</translation>
 <translation id="1640244768702815859">Kokeile <ph name="BEGIN_LINK"/>siirtyä sivuston etusivulle<ph name="END_LINK"/>.</translation>
 <translation id="1641976391427233992">Viivytä tulostusta kunnes ajankohta on</translation>
 <translation id="164212631332220697">Käytä <ph name="CARD_DETAIL"/> ‑maksutapaa kassalla.</translation>
+<translation id="8088023492467080559">Siirry kohtaan Braven turvatarkistus ‐painike, aktivoi siirtyäksesi Braven turvatarkistussivulle asetuksissa</translation>
 <translation id="1644574205037202324">Historia</translation>
 <translation id="1645368109819982629">Protokollaa ei tueta</translation>
 <translation id="1995056549836388472">Muuta Braven asetuksia</translation>
 <translation id="1652415888492971589">JIS B8 (64 mm x 91 mm)</translation>
+<translation id="3549478477646243075">Jos haluat käyttää Salasanoja macOS-avainnipun kanssa, käynnistä Brave uudelleen ja salli pääsy avainnippuun. Välilehdet avataan uudelleen uudelleenkäynnistyksen jälkeen.</translation>
 <translation id="3848846802033604519">Brave teki sivusta yksinkertaisemman, jotta sen lukeminen olisi helpompaa. Brave nouti alkuperäisen sivun suojatun yhteyden kautta.</translation>
 <translation id="1656489000284462475">Noutoaika</translation>
 <translation id="1658111267661135323">TV ja video</translation>
@@ -356,9 +370,9 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4480331350562494522"><ph name="BEGIN_BOLD"/>Miten voit vaikuttaa dataasi:<ph name="END_BOLD"/> Brave poistaa yli neljä viikkoa vanhat aiheet automaattisesti. Kun jatkat selaamista, aihe voi näkyä listalla uudelleen. Voit myös estää aiheet, joita et halua Braven jakavan sivustoille, ja laittaa mainosaiheet pois päältä Braven asetuksista milloin tahansa.</translation>
 <translation id="1697532407822776718">Kaikki on valmista.</translation>
 <translation id="4030336595318918117">Voit nyt käyttää Brave-tililläsi olevia osoitteita</translation>
+<translation id="1700542542921501212"><ph name="SEARCH_ENGINE_NAME"/> on tarkoitettu verkkohakujen tekemiseen.</translation>
 <translation id="1702815194757674443">ROC 16K</translation>
 <translation id="1703835215927279855">Kirje</translation>
-<translation id="1705644428387053571">Käyttöehdot</translation>
 <translation id="1706625117072057435">Zoomaustasot</translation>
 <translation id="1706954506755087368">{1,plural, =1{Palvelin ei voinut todistaa olevansa <ph name="DOMAIN"/>; sen suojausvarmenne on päivätty huomiselle. Tämä voi johtua määritysvirheestä tai verkkoyhteytesi siepanneesta hyökkääjästä.}other{Palvelin ei voinut todistaa olevansa <ph name="DOMAIN"/>; sen suojausvarmenne on päivätty # päivää tulevaisuuteen. Tämä voi johtua määritysvirheestä tai verkkoyhteytesi siepanneesta hyökkääjästä.}}</translation>
 <translation id="1710259589646384581">Käyttöjärjestelmä</translation>
@@ -391,6 +405,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>Miten käytämme tätä dataa:<ph name="END_BOLD"/> Brave havaitsee sinua kiinnostavia aiheita selaamisen aikana. Aiheiden tunnisteet ovat ennalta määritettyjä, ja niitä ovat esimerkiksi taide ja viihde, ostokset ja urheilu. Avaamasi sivut voivat myöhemmin pyytää Bravelta muutamia aiheita (mutta ei selaushistoriaasi) näkemiesi mainosten personointiin.</translation>
 <translation id="1746113442205726301">Kuvan Y vaihto</translation>
 <translation id="1746531169546376413">0 astetta</translation>
+<translation id="1751544761369730824">Poista <ph name="SITE_NAME"/></translation>
 <translation id="1752021286346845558">Postilaatikko 8</translation>
 <translation id="1753068535428855445">Treffipalvelut ja henkilökohtaista-ilmoitukset</translation>
 <translation id="1753706481035618306">Sivunumero</translation>
@@ -438,6 +453,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1854180393107901205">Lopeta suoratoisto</translation>
 <translation id="1855370856221982654">Nyrkkeily</translation>
 <translation id="1862788842908766795">Johto- ja päällikkötason työpaikat</translation>
+<translation id="7675404561163771060">Seurannan esto on tilapäisesti poissa käytöstä Kun Brave päivittää ominaisuutta, sivustot voivat tilapäisesti käyttää kolmannen osapuolen evästeitä, ellet estä niitä. <ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/></translation>
 <translation id="1863257867908022953">Lokero 12</translation>
 <translation id="1864927262126810325">Lähde: <ph name="SOURCE_NAME"/></translation>
 <translation id="186539747722034544">Kaapeli- ja satelliittipalveluntarjoajat</translation>
@@ -451,10 +467,10 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="85321348617848915">Brave Forms</translation>
 <translation id="1876399092304384674">Päivän mukaan</translation>
 <translation id="187918866476621466">Avaa aloitussivut</translation>
+<translation id="8632214058523487060">Jos haluat maksaa nopeammin ensi kerralla, tallenna kortti, salattu turvakoodi ja laskutusosoite Brave-tilille</translation>
 <translation id="1883255238294161206">Tiivistä luettelo</translation>
 <translation id="1884843295353628214">Jazz</translation>
 <translation id="1890171020361705182">Dino-peli. Pikselöity dinosaurus väistelee kaktuksia ja lentoliskoja juostessaan halki aution maiseman. Kun kuulet äänimerkin, hyppää esteiden yli napauttamalla.</translation>
-<translation id="189035593835762169">Käyttöehdot</translation>
 <translation id="1898423065542865115">Suodatus</translation>
 <translation id="1901443836186977402">{1,plural, =1{Palvelin ei voinut todistaa olevansa <ph name="DOMAIN"/>; sen suojausvarmenne vanheni viimeisen päivän aikana. Tämä voi johtua määritysvirheestä tai yhteytesi siepanneesta hyökkääjästä. Tietokoneesi aika on tällä hetkellä <ph name="CURRENT_DATE"/>. Onko se oikein? Jos ei, korjaa järjestelmän aika ja päivitä sivu.}other{Palvelin ei voinut todistaa olevansa <ph name="DOMAIN"/>; sen suojausvarmenne on vanhentunut # päivää sitten. Tämä voi johtua määritysvirheestä tai yhteytesi siepanneesta hyökkääjästä. Tietokoneesi aika on tällä hetkellä <ph name="CURRENT_DATE"/>. Onko se oikein? Jos ei, päivitä sivu.}}</translation>
 <translation id="1902576642799138955">Voimassaoloaika</translation>
@@ -462,7 +478,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1913037223029790376">Käytä tämän virtuaalikortin CVC:tä</translation>
 <translation id="191374271204266022">Kopioi JSON-tiedostona</translation>
 <translation id="1914326953223720820">Purkupalvelu</translation>
-<translation id="1916770123977586577">Päivitä tämä sivu, niin päivitetyt asetuksesi otetaan käyttöön tällä sivustolla.</translation>
 <translation id="1919367280705858090">Tiettyjen virheiden korjaaminen</translation>
 <translation id="1919526244108283799">400 x 600 mm</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Ei mitään}=1{1 sivusto}other{# sivustoa}}</translation>
@@ -496,8 +511,10 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1997484222658892567"><ph name="URL"/> haluaa tallentaa suuria tietomääriä pysyvästi paikalliselle tietokoneellesi.</translation>
 <translation id="1997774360448418989">Paperi (kevyt)</translation>
 <translation id="2001146170449793414">{COUNT,plural, =1{ja 1 muu}other{ja # muuta}}</translation>
+<translation id="2001469757375372617">Jotain meni pieleen. Muutostasi ei tallennettu.</translation>
 <translation id="2003709556000175978">Pyydä uusi salasana</translation>
 <translation id="2003775180883135320">Neljä reikää yläreunassa</translation>
+<translation id="2004697686368036666">Joidenkin sivustojen ominaisuudet eivät välttämättä toimi</translation>
 <translation id="6855500251167861792">Luo tapahtuma ‑painike, aktivoi luodaksesi uusi tapahtuma nopeasti Brave Kalenterissa</translation>
 <translation id="2342444980304536062">Ylläpidä sivustoille tallennettuja lupia ja dataa Braven asetuksista</translation>
 <translation id="2012276282211112603">Näytettäviä aiheita ei juuri nyt ole</translation>
@@ -511,6 +528,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2025891858974379949">Suojaamaton sisältö</translation>
 <translation id="2027465737841872819">Muovi</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>Tarkista välityspalvelimen ja palomuurin määritykset.<ph name="END_LINK"/></translation>
+<translation id="2033900728810589426">Pikakuvake ei voi olla sama kuin oletushakupalvelun avainsana, jonka <ph name="DEFAULT_SEARCH_PROVIDER_KEYWORD_POLICY_NAME"/> on määrittänyt: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="2034971124472263449">Tallenna silti</translation>
 <translation id="2035400064145347639">Matkaoppaat ja ‑päiväkirjat</translation>
 <translation id="2036514476578229158">Pyysit pääsyä tälle sivustolle. Vanhempasi voivat vastata Family Linkissä.</translation>
@@ -525,6 +543,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="205212645995975601">Grillaus</translation>
 <translation id="2053111141626950936">Kielellä <ph name="LANGUAGE"/> kirjoitettuja sivuja ei käännetä.</translation>
 <translation id="5469355573019315764">Sivustot voivat pyytää Bravelta tietoa personoidakseen näkemiäsi mainoksia.</translation>
+<translation id="2059166748188874810">Paikkakunta</translation>
 <translation id="2059202684901022309">22 x 34 tuumaa</translation>
 <translation id="2064568741209980952">Luotot ja lainanannot</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 ehdotus}other{# ehdotusta}}</translation>
@@ -537,6 +556,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2072275792380684364">Muoti ja tyyli</translation>
 <translation id="2075497153347571252">Järjestelmänvalvoja on estänyt luvan (<ph name="PERMISSION"/>) täällä: <ph name="ORIGIN"/></translation>
 <translation id="2079545284768500474">Kumoa</translation>
+<translation id="2080021694978766903">Käytännössä voi olla korkeintaan <ph name="MAX_ITEMS_LIMIT"/> hakupalvelua.</translation>
 <translation id="20817612488360358">Järjestelmän välityspalvelinasetukset on määritetty käytettäviksi, mutta erilliset välityspalvelimen asetukset on myös määritetty.</translation>
 <translation id="2082238445998314030">Tulos <ph name="RESULT_NUMBER"/>/<ph name="TOTAL_RESULTS"/></translation>
 <translation id="2083256696566019397">Salli jokaisella käynnillä</translation>
@@ -616,8 +636,9 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2225927550500503913">Virtuaalinen kortti on päällä</translation>
 <translation id="2226636330183131181">Wi-Fi-verkkoon <ph name="BEGIN_LINK"/>kirjautuminen<ph name="END_LINK"/></translation>
 <translation id="1271895112771969155">Tämä osoite on tällä hetkellä tallennettu Braveen. Jos haluat käyttää sitä Braven tuotteissa, tallenna se Brave-tilillesi (<ph name="ACCOUNT"/>).</translation>
-<translation id="2228466771983364669"><ph name="EMBEDDED_URL"/> saa tietää, että kävit täällä: <ph name="TOP_LEVEL_URL"/>.</translation>
+<translation id="2229456043301340598">Ohitettu päällekkäinen pikanäppäin: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="2233745931693710080">CD-levy</translation>
+<translation id="2235344399760031203">Kolmannen osapuolen evästeet on estetty</translation>
 <translation id="2239100178324503013">Lähetä nyt</translation>
 <translation id="2241693394036365668">Tiedosto on ladattu</translation>
 <translation id="2246264294482514010">10 x 12 tuumaa</translation>
@@ -632,6 +653,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2262243747453050782">HTTP-virhe</translation>
 <translation id="226481340855943334">Sukujuuret ja sukututkimus</translation>
 <translation id="2265192657948645752">Vähittäiskaupan työpaikat</translation>
+<translation id="2265356434276802347">Käytännössä voi olla korkeintaan <ph name="MAX_ITEMS_LIMIT"/> suositeltua hakupalvelua.</translation>
 <translation id="2267047181501709434">Henkilöllisyyttäsi vahvistetaan…</translation>
 <translation id="2268743667444073169">TV-saippuaoopperat</translation>
 <translation id="2270484714375784793">Puhelinnumero</translation>
@@ -657,7 +679,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2324604504973636700">Kodinkoneet</translation>
 <translation id="2328651992442742497">Sallittu (oletus)</translation>
 <translation id="2328955282645810595">Rakennustarvikkeet ja työkalut</translation>
-<translation id="2329473609445770916">Tämä sivusto päättelee kiinnostuksen kohteitasi, joita muut sivustot voivat käyttää näyttäessään sinulle mainoksia</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, vanhenee <ph name="EXPIRATION_DATE_ABBR"/></translation>
 <translation id="2337852623177822836">Järjestelmänvalvojan hallinnoima asetus</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> haluaa muodostaa laiteparin</translation>
@@ -675,6 +696,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2361263712565360498">275 x 395 mm</translation>
 <translation id="236340516568226369">Muuta valikon kokoa</translation>
 <translation id="2365355378251437925">Lisää <ph name="FIELD"/></translation>
+<translation id="2365382709349300355">Yksi tiedosto estettiin käytännön vuoksi</translation>
 <translation id="2365508935344991784">Ulkokalusteet</translation>
 <translation id="2366689192918515749">Liha ja merenelävät</translation>
 <translation id="2367567093518048410">Taso</translation>
@@ -705,6 +727,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2448295565072560657">Lisälaitteet, jotka ovat liitettynä tähän laitteeseen, kun olet kirjautuneena sisään</translation>
 <translation id="2450021089947420533">Selailu</translation>
 <translation id="2456755709261364512">Akun varauksen on oltava yli <ph name="REQUIRED_BATTERY_PRECENT"/> %</translation>
+<translation id="2462599289530201834">Hae: <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="2463739503403862330">Täytä</translation>
 <translation id="2465688316154986572">Niitti</translation>
 <translation id="4058615531773510267">Ylläpidä Bravessa lataamiasi tiedostoja</translation>
@@ -747,6 +770,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2544546346215446551">Järjestelmänvalvoja käynnisti laitteen uudelleen</translation>
 <translation id="2544644783021658368">Yksittäinen dokumentti</translation>
 <translation id="5342827302598046226">Aseta Brave oletusselaimeksi</translation>
+<translation id="2545721997179863249">Täytä kaikki ‐vaihtoehto on valittu</translation>
 <translation id="2546283357679194313">Evästeet ja sivustotiedot</translation>
 <translation id="2547466893236767989">Verkkosivustojen suunnittelu ja kehittäminen</translation>
 <translation id="254947805923345898">Käytännön arvo ei kelpaa.</translation>
@@ -833,6 +857,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2722622039067384533">Olohuoneen kalusteet</translation>
 <translation id="4054726005361352357">Tee turvatarkistus Braven asetuksissa</translation>
 <translation id="2725492561136085792">Aktivoi toiminto painamalla Enter.</translation>
+<translation id="2725927759457695883">Täytä koko nimi</translation>
 <translation id="2726001110728089263">Sivulokero</translation>
 <translation id="2728127805433021124">Palvelimen varmenne on allekirjoitettu heikolla allekirjoitusalgoritmilla.</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>yhteysdiagnostiikkaa<ph name="END_LINK"/></translation>
@@ -849,6 +874,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2765217105034171413">Pieni</translation>
 <translation id="2770159525358613612">Yritä ladata tiedostot uudelleen</translation>
 <translation id="277133753123645258">Lähetystapa</translation>
+<translation id="7956239349290436105">Brave rajoittaa useimpien sivustojen kolmannen osapuolen evästeiden käyttöä. Kolmannen osapuolen evästeet on kuitenkin sallittu tällä sivustolla, koska se tarvitsee niitä peruspalvelujen tarjoamiseen. Tee tämä asetuksissa: <ph name="LINK"/>.</translation>
 <translation id="277499241957683684">Laitetallenne puuttuu</translation>
 <translation id="2775884851269838147">Ensimmäinen tulostettava sivu</translation>
 <translation id="2781692009645368755">Google Pay</translation>
@@ -866,6 +892,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2814184336982254349">PDF-tiedosto ei ole käytettävissä. Avaa kontekstivalikko painamalla haku + m ja laita päälle "Poimi tekstiä PDF-tiedostosta".</translation>
 <translation id="2818338148457093657">Kauneudenhoitopalvelut ja kylpylät</translation>
 <translation id="2820957248982571256">Etsitään…</translation>
+<translation id="2824549017793319782">Valitse tämä, jos haluat kirjoittaa haun suoraan osoitepalkkiin</translation>
 <translation id="2824775600643448204">Osoite- ja hakupalkki</translation>
 <translation id="2826760142808435982">Yhteys on salattu ja todennettu <ph name="CIPHER"/>:n avulla ja se käyttää menetelmää <ph name="KX"/> avainvaihtomekanismina.</translation>
 <translation id="2835170189407361413">Tyhjennä lomake</translation>
@@ -934,8 +961,10 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, tällä hetkellä valittuna. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Ooppera</translation>
 <translation id="2979424420072875974">Kirjoittajan oppaat</translation>
+<translation id="6172169316494799304">Kortin CVC-koodi salataan ja tallennetaan Brave-tilillesi nopeampaa maksamista varten</translation>
 <translation id="2985398929374701810">Anna kelvollinen osoite.</translation>
 <translation id="2987034854559945715">Ei hakua vastaavia ominaisuuksia</translation>
+<translation id="714850411804317247">Brave rajoittaa tiedon määrää, jolla sivustot voivat seurata sinua selaamisen aikana. Voit valita haluamasi suojaustason asetuksista.</translation>
 <translation id="2989742184762224133">Kaksi niittiä yläreunassa</translation>
 <translation id="2991174974383378012">Jakaminen verkkosivustojen kanssa</translation>
 <translation id="299122504639061328">Hallinnoi oletushakukonetta ja sivustohakua</translation>
@@ -1028,6 +1057,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/>, palvelin: <ph name="SERVER_NAME"/></translation>
 <translation id="3197136577151645743">Saa pyytää luvan tietää, kun käytät tätä laitetta aktiivisesti</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paina sarkainta ja Enter, niin voit valita synkronoitavat tiedot Braven asetuksista</translation>
+<translation id="3203025201812691413">URL-osoite ei voi olla tyhjä</translation>
 <translation id="320323717674993345">Peru maksu</translation>
 <translation id="3203366800380907218">Verkosta</translation>
 <translation id="3207960819495026254">Kirjanmerkeissä</translation>
@@ -1053,7 +1083,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, muokkaa selaimen ulkoasua painamalla sarkainta ja sitten Enter</translation>
 <translation id="3240791268468473923">Suojatun maksun kirjautumistiedot eivät täsmää ‑kirjautumistietotaulukko on avattu</translation>
 <translation id="324180406144491771"><ph name="HOST_NAME"/>‑linkit on estetty</translation>
-<translation id="5195034764845981810">Tämä sivusto päättelee kiinnostuksen kohteitasi, joita muut sivustot voivat käyttää näyttäessään sinulle mainoksia. Sivusto myös saa kiinnostuksen kohteesi Bravesta, jotta voit nähdä osuvampia mainoksia.</translation>
 <translation id="3249151924975132674">Opintolainat ja opintojen rahoittaminen</translation>
 <translation id="3249845759089040423">Svengaava</translation>
 <translation id="3250640885957938546">Mainonta ja markkinointi</translation>
@@ -1067,6 +1096,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3266793032086590337">Arvo (ristiriita)</translation>
 <translation id="3266972086368072861">{NUM_COOKIES,plural, =0{Ei estettyjä sivustoja, mukaan lukien niihin liittyvät sivustot}=1{1 sivusto estetty, mukaan lukien siihen liittyvät sivustot}other{# sivustoa estetty, mukaan lukien niihin liittyvät sivustot}}</translation>
 <translation id="3268451620468152448">Avoimet välilehdet</translation>
+<translation id="3270041629388773465">Voit maksaa nopeammin, kun CVC:t on tallennettu</translation>
 <translation id="3270156322180235608">Lentomatkailu</translation>
 <translation id="3270847123878663523">K&amp;umoa uudelleenjärjestely</translation>
 <translation id="3271648667212143903"><ph name="ORIGIN"/> haluaa muodostaa yhteyden</translation>
@@ -1081,6 +1111,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3293642807462928945">Lisätietoja käytännöstä: <ph name="POLICY_NAME"/></translation>
 <translation id="5894665462526421022">Katso ja hallinnoi salasanojasi Braven asetuksissa</translation>
 <translation id="3299098170013242198">Windows Hello on päällä salasanojen täyttämistä varten</translation>
+<translation id="3299720788264079132">Jotain meni pieleen, kun <ph name="FEATURE_NAME"/> oli käytössä</translation>
 <translation id="3303176609391916566">30 x 42 tuumaa</translation>
 <translation id="3303855915957856445">Ei hakutuloksia</translation>
 <translation id="3304073249511302126">Bluetooth-haku</translation>
@@ -1093,6 +1124,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3325027355611702542">Asuntovaunut ja matkailuautot</translation>
 <translation id="3329013043687509092">Värikylläisyys</translation>
 <translation id="3333762389743153920">Virtuaalista korttia ei saatavilla</translation>
+<translation id="3336044043987989409">Salli päivityspainiketta painamalla yhteys laitteisiin tai palvelimiin, jotka ovat yksityisessä verkossa.</translation>
 <translation id="3338095232262050444">Turvallinen</translation>
 <translation id="333839153442689579">High intensity ‑intervalliharjoittelu</translation>
 <translation id="3339440062908617027">Juoksu ja kävely</translation>
@@ -1100,7 +1132,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3340978935015468852">asetuksissa</translation>
 <translation id="3342018947887487892">Avaamasi sivusto voi myöhemmin pyytää näitä tietoja – joko mainosaiheitasi tai avaamiesi sivustojen ehdottamia mainoksia.</translation>
 <translation id="3342366525167526994">Tatuoinnit ja lävistykset</translation>
-<translation id="3344167530090084176">Jos haluat maksaa nopeammin ensi kerralla, tallenna kortti ja turvakoodi laitteelle</translation>
 <translation id="334438173029876234">Rullalautailuvälineet</translation>
 <translation id="3349952286488694786">SRA2</translation>
 <translation id="3355823806454867987">Muuta välityspalvelimen asetuksia...</translation>
@@ -1142,22 +1173,25 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3427092606871434483">Salli (oletus)</translation>
 <translation id="3427342743765426898">&amp;Toista muokkaus</translation>
 <translation id="3428151540071562330">Yksi tai useampi DnsOverHttpsTemplates-palvelinmallien URI-tunnuksista on virheellinen, eikä niitä käytetä.</translation>
-<translation id="3429817405364886479">Vahvista hakukone</translation>
+<translation id="3428789896412418755">Ryhmittelyhistoria</translation>
 <translation id="3431216045099978607">Voit poistua koko näytön tilasta ja nähdä latauksen painamalla |<ph name="ACCELERATOR"/>|.</translation>
 <translation id="3432601291244612633">Sulje sivu</translation>
 <translation id="3433111389595862568">Yhteiskäyttö- ja konferenssiohjelmistot</translation>
 <translation id="3433144818443565002">Ääni- ja videopuhelut</translation>
+<translation id="343474037147570563">Lähettämäsi tai liittämäsi tiedostot lähetetään Google Cloudiin tai kolmansille osapuolille analysoitaviksi. Ne voidaan esimerkiksi skannata arkaluontoisten tietojen tai haittaohjelmien varalta, tallentaa yrityksen käytäntöjen mukaisesti ja ne voivat näkyä järjestelmänvalvojalle.</translation>
 <translation id="3435557549311968410">Jatkuva (lyhyt)</translation>
 <translation id="3435738964857648380">Suojaus</translation>
 <translation id="4527130811319726464">Käytä Brave-tilillesi tallennettuja salasanoja</translation>
 <translation id="3440783957068352691">neliö</translation>
 <translation id="3441653493275994384">Näyttö</translation>
 <translation id="3443504041532578451">Optinen levy (satiini)</translation>
+<translation id="344449859752187052">Kolmannen osapuolen evästeet estetty</translation>
+<translation id="3447644283769633681">Estä kaikki kolmannen osapuolen evästeet</translation>
 <translation id="3447661539832366887">Tämän laitteen omistaja on poistanut dinosauruspelin käytöstä.</translation>
 <translation id="3447884698081792621">Näytä varmenne (myöntäjä: <ph name="ISSUER"/>)</translation>
+<translation id="3450323514459570273">Saa pyytää lupaa ohjata ja uudelleenohjelmoida MIDI-laitteita</translation>
 <translation id="3452404311384756672">Hakuväli:</translation>
 <translation id="3453962258458347894">Uudelleenyritysten määrä</translation>
-<translation id="3454555520521576458">Kokoa voi muuttaa</translation>
 <translation id="3461266716147554923"><ph name="URL"/> haluaa nähdä leikepöydälle kopioidun tekstin ja kuvat.</translation>
 <translation id="3461824795358126837">Korostus</translation>
 <translation id="3462200631372590220">Piilota lisäasetukset</translation>
@@ -1170,9 +1204,11 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3479552764303398839">Ei nyt</translation>
 <translation id="3484861421501147767">Muistutus: Tallennettu tarjouskoodi käytettävissä</translation>
 <translation id="3487845404393360112">Lokero 4</translation>
+<translation id="3492199565975299728">Katu</translation>
 <translation id="3493660662684070951">Kuorma-autot, pakettiautot ja katumaasturit</translation>
 <translation id="3495081129428749620">Hae sivulta
     <ph name="PAGE_TITLE"/></translation>
+<translation id="3497627066518778351">Tarkista laitepohjainen sivustodata uudessa ikkunassa</translation>
 <translation id="3498215018399854026">Emme tavoittaneet vanhempaasi. Yritä uudelleen.</translation>
 <translation id="350069200438440499">Tiedostonimi:</translation>
 <translation id="3501300228850242680">Metalli (musiikki)</translation>
@@ -1201,6 +1237,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3552297013052089404">Sans Serif ‑fontti</translation>
 <translation id="3558573058928565255">Päiväsaika</translation>
 <translation id="355995771319966853">Kumoa automaattinen täyttö</translation>
+<translation id="3560408312959371419">Seurannan eston ja laitteen sivustodatan vaihtoehdot</translation>
 <translation id="3560824484345057728">Katso aiheeseen liittyviä sivustoja</translation>
 <translation id="3566021033012934673">Yhteytesi ei ole salattu</translation>
 <translation id="3566336457819493938">215 x 315 mm</translation>
@@ -1211,6 +1248,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3574305903863751447"><ph name="CITY"/>, <ph name="STATE"/> <ph name="COUNTRY"/></translation>
 <translation id="3575121482199441727">Salli tällä sivustolla</translation>
 <translation id="3575168918110434329">A4 x 7</translation>
+<translation id="3575589330755445706">Kadun nimi ‐vaihtoehto on valittu</translation>
 <translation id="3576616784287504635">Viesti upotetulta sivulta osoitteessa <ph name="SITE"/></translation>
 <translation id="3577473026931028326">Jotain meni pieleen. Yritä uudelleen.</translation>
 <translation id="3577902790357386792">Voimistelu</translation>
@@ -1259,6 +1297,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="365641980390710834">Vapaa-ajan vaatteet</translation>
 <translation id="3658742229777143148">Päivitetty versio</translation>
 <translation id="3664782872746246217">Avainsanat:</translation>
+<translation id="3665100783276035932">Useimpien sivustojen pitäisi toimia odotetusti</translation>
 <translation id="3667704023705708645">Pääomasijoitus</translation>
 <translation id="3671117652518853176">Jos tämä on pois päältä, vahvistusta saatetaan ajoittain pyytää turvallisuussyistä</translation>
 <translation id="3671540257457995106">Sallitaanko koon muuttaminen?</translation>
@@ -1271,6 +1310,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3678914302246317895">Lisää <ph name="OTP_LENGTH"/>-numeroinen vahvistuskoodi</translation>
 <translation id="3681007416295224113">Varmenteen tiedot</translation>
 <translation id="2659564324969662497">Brave havaitsee viimeaikaisen selaushistoriasi perusteella sinua kiinnostavia aiheita.</translation>
+<translation id="3689867156802445220">Rakennuksen numero</translation>
 <translation id="3693327506115126094">Valitse henkilöllisyytesi vahvistustapa</translation>
 <translation id="974818914962304978">Luo sivusto ‑painike, aktivoi luodaksesi uusi sivusto nopeasti Brave Sitesissa</translation>
 <translation id="3701325639446035885">Tapahtumien lipunmyynti</translation>
@@ -1295,6 +1335,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3723663469265383848">Päivityksen aikana et voi käyttää laitettasi enintään 10 minuuttiin.</translation>
 <translation id="372429172604983730">Tätä virhettä voivat aiheuttaa esimerkiksi virustorjuntaohjelmat, palomuurit ja verkon suodatus- tai välityspalvelinohjelmistot.</translation>
 <translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, luo uusi Brave-esitys nopeasti Slidesissa painamalla sarkainta ja sitten Enter</translation>
+<translation id="8077319455765501118">Jos haluat käyttää Brave Salasanoja macOS-avainnipun kanssa, käynnistä Brave uudelleen ja salli pääsy avainnippuun. Välilehdet avataan uudelleen uudelleenkäynnistyksen jälkeen.</translation>
 <translation id="3733139489341305600">Itseohjautuvat ajoneuvot</translation>
 <translation id="3736520371357197498">Jos ymmärrät käyntiä koskevat turvallisuusriskit, voit <ph name="BEGIN_LINK"/>siirtyä vaarantuneeseen sivustoon<ph name="END_LINK"/> jo ennen haitallisten ohjelmien poistamista.</translation>
 <translation id="3736739313435669994">Olet estänyt sivustoja seuraamasta sinua verkossa kolmansien osapuolten evästeiden avulla. Voit <ph name="LINK"/> asetuksissa.</translation>
@@ -1305,7 +1346,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3743765582345153106">Vahvista aina, kun käytössä on automaattinen täyttö</translation>
 <translation id="3744111561329211289">Taustasynkronointi</translation>
 <translation id="3744212718085287312">Tehdäänkö siitä turvallisempi seuraavaa kertaa varten virtuaalisella kortilla?</translation>
-<translation id="3744286742364977428">Lataamasi tiedostot lähetetään Google Cloudiin tai kolmansille osapuolille analysoitaviksi. Ne voidaan esimerkiksi skannata arkaluontoisten tietojen tai haittaohjelmien varalta ja tallentaa yrityksen käytäntöjen mukaisesti.</translation>
 <translation id="3748009735914587286">Metalli (erittäin kiiltävä)</translation>
 <translation id="3748148204939282805">Sivustolle <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> hyökännyt taho voi yrittää huijata sinua tekemään jotain vaarallista, kuten asentamaan ohjelmia tai paljastamaan henkilötietojasi (esimerkiksi salasanoja, puhelinnumeroita tai luottokorttitietoja). <ph name="BEGIN_LEARN_MORE_LINK"/>Lisätietoja<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3748912308089554501">Lentokoneteollisuus</translation>
@@ -1331,11 +1371,13 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3793574014653384240">Viime aikoina tapahtuneiden kaatumisten määrät ja syyt</translation>
 <translation id="3795344968043407227">Indie- ja vaihtoehtomusiikki</translation>
 <translation id="3799805948399000906">Fonttia pyydetty</translation>
+<translation id="3801265110651850478">Lähetä selaustietojesi mukana Do Not Track ‑pyyntö</translation>
 <translation id="380329542618494757">Nimi</translation>
 <translation id="4435991890010083520">Hyökkääjät sivustolla, jolle yrität siirtyä, voivat yrittää huijata sinua asentamaan ohjelmistoja tai paljastamaan esimerkiksi salasanasi, puhelinnumerosi tai credit-korttisi numeron. Brave suosittelee, että siirryt takaisin turvalliselle sivustolle. <ph name="BEGIN_LEARN_MORE_LINK"/>Lue lisää<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3807270098669886186">Puhelinoperaattorit</translation>
 <translation id="3807366285948165054">Kuvan X vaihto</translation>
 <translation id="3807873520724684969">Haitallinen sisältö estetty</translation>
+<translation id="3810770279996899697">Salasanat tarvitsee pääsyn MacOS-avainnippuun</translation>
 <translation id="3810973564298564668">Hallinnoi</translation>
 <translation id="3812398568375898177">Tämä on tärkeä päivitys, joka parantaa Android-sovellusten toimintaa ChromeOS:llä.</translation>
 <translation id="3815434930383843058">8 x 12 tuumaa</translation>
@@ -1387,7 +1429,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3942048175062210325">Yritä avata tiedostot uudelleen</translation>
 <translation id="3943857333388298514">Liitä</translation>
 <translation id="3946209740501886391">Kysy aina tällä sivustolla</translation>
-<translation id="3947595700203588284">Saa pyytää lupaa yhdistää MIDI-laitteisiin</translation>
 <translation id="3948588869002647271">Sovellus puuttuu tai on vahingoittunut</translation>
 <translation id="3949571496842715403">Palvelin ei voinut todistaa olevansa <ph name="DOMAIN"/>; sen suojausvarmenteessa ei määritetä kohteen vaihtoehtoisia nimiä. Tämä voi johtua määritysvirheestä tai verkkoyhteytesi siepanneesta hyökkääjästä.</translation>
 <translation id="3949601375789751990">Selaushistoriasi näkyy tässä.</translation>
@@ -1416,7 +1457,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="3992684624889376114">Tietoja sivusta</translation>
 <translation id="3995639283717357522">Ota käytäntöjä käyttöön</translation>
 <translation id="4000598935132966791">Lue lisää hallinnoitujen selainten sivustorajoituksista</translation>
-<translation id="4006465311664329701">Maksutavat, tarjoukset ja osoitteet Google Playta käyttäen</translation>
+<translation id="4006465311664329701">Maksutavat, tarjoukset ja osoitteet Google Payta käyttäen</translation>
 <translation id="4010758435855888356">Sallitaanko tallennustilan pääsyoikeudet?</translation>
 <translation id="401170183602135785">Kirjekuori C6</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{PDF-dokumentti, jossa on {COUNT} sivu}other{PDF-dokumentti, jossa on {COUNT} sivua}}</translation>
@@ -1430,6 +1471,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4047351652147966654">18 x 24 tuumaa</translation>
 <translation id="404831776305217138">Päivitysosoite laajennukselle (tunnus "<ph name="EXTENSION_ID"/>") on virheellinen tai sen mallia ei tueta. Tuetut mallit ovat <ph name="HTTP_SCHEME"/>, <ph name="HTTPS_SCHEME"/> ja <ph name="FILE_SCHEME"/>.</translation>
 <translation id="2635033286761217583">Voit käyttää sitä Braven tuotteissa</translation>
+<translation id="336808635693308470">Brave yrittää muokata maksutapoja.</translation>
 <translation id="405399507749852140">Voit saada ilmoituksen, jos hinta laskee jollakin sivustolla</translation>
 <translation id="4056223980640387499">Seepia</translation>
 <translation id="4161619938555288542">Brave voi auttaa sinua löytämään tarjouksia ostoskoriin lisäämistäsi tuotteista</translation>
@@ -1488,7 +1530,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4152318981910038897">{COUNT,plural, =1{Sivu 1}other{Sivu {COUNT}}}</translation>
 <translation id="6923879007831202776">Brave vahvistaa nyt henkilöllisyytesi ennen maksutapojen täyttämistä. Voit muuttaa asetusta milloin tahansa täällä: <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/>.</translation>
 <translation id="4159149286839604525">Tämä tarkoittaa, että useimpien sivuston ominaisuuksien pitäisi toimia, mutta suojaus ei ole niin vahva</translation>
-<translation id="8024248006695962840">Jos haluat maksaa nopeammin ensi kerralla, tallenna kortti, turvakoodi ja laskutusosoite Brave-tilille</translation>
 <translation id="4159784952369912983">Violetti</translation>
 <translation id="4165986682804962316">Sivustoasetukset</translation>
 <translation id="4169535189173047238">Älä salli</translation>
@@ -1503,7 +1544,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4177501066905053472">Mainosten aiheet</translation>
 <translation id="4179515394835346607"><ph name="ROW_NAME"/> <ph name="ROW_CONTENT"/></translation>
 <translation id="4186035307311647330">Lopeta hinnan seuraaminen</translation>
-<translation id="4194250254487269611">Korttia ei voi juuri nyt tallentaa</translation>
 <translation id="9150836098508392713">Katso Braven vinkkejä ‑painike, aktivoi katsoaksesi lisätietoa Braven ominaisuuksista</translation>
 <translation id="4195643157523330669">Avaa uudelle välilehdelle</translation>
 <translation id="4196861286325780578">&amp;Toista siirto</translation>
@@ -1536,6 +1576,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4250716950689692560">A4 x 4</translation>
 <translation id="4250937007454749162">T-paidat</translation>
 <translation id="4253168017788158739">Huomautus</translation>
+<translation id="4255487295905690262">Saat sähköposti-ilmoituksen, jos hinta laskee jollakin sivustolla.</translation>
 <translation id="425582637250725228">Tekemiäsi muutoksia ei välttämättä tallenneta.</translation>
 <translation id="4258748452823770588">Virheellinen allekirjoitus</translation>
 <translation id="4261046003697461417">Suojattuihin asiakirjoihin ei voi tehdä merkintöjä</translation>
@@ -1586,6 +1627,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4331708818696583467">Ei turvallinen</translation>
 <translation id="4333295216031073611">Ostoslista</translation>
 <translation id="4333561522337981382">hallinnoida ikkunoita kaikilla näytöillä</translation>
+<translation id="4336219115486912529">{COUNT,plural, =1{Vanhenee huomenna}other{Vanhenee # päivän kuluttua}}</translation>
 <translation id="5792122559159836842">Brave poisti tämän mainoksen, koska se käytti liian paljon laitteen resursseja.</translation>
 <translation id="4340810192899866471">Tuo JSON-tiedostosta</translation>
 <translation id="6116812392674177288">Havaintojen mukaan tämä tietokone ei ole yrityksen hallinnoima, joten käytäntö voi asentaa automaattisesti vain Brave Web Storessa hostattuja laajennuksia. Brave Web Storen päivitys-URL-osoite on <ph name="CWS_UPDATE_URL"/>.</translation>
@@ -1611,6 +1653,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4386413576162606861">Roolipelit</translation>
 <translation id="4390472908992056574">Reuna</translation>
 <translation id="4393632246160856858">Kynsienhoitotuotteet</translation>
+<translation id="4397059608630092079">Vahvista aina, kun käytössä on automaattinen täyttö</translation>
 <translation id="4406883609789734330">Livetekstitys</translation>
 <translation id="4406896451731180161">hakutulokset</translation>
 <translation id="4408413947728134509">Evästeet <ph name="NUM_COOKIES"/></translation>
@@ -1621,7 +1664,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4415426530740016218">Nouto-osoite</translation>
 <translation id="4425173294238317796">Avainkoodin vahvistussivu</translation>
 <translation id="4425750422187370446">Urheiluvaatteet</translation>
-<translation id="4428065317363009941">Mainosten personointi</translation>
 <translation id="443121186588148776">Sarjaportti</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> ei hyväksynyt kirjautumisvarmennettasi, tai varmennetta ei annettu.</translation>
 <translation id="4432792777822557199">Kielellä <ph name="SOURCE_LANGUAGE"/> kirjoitetut sivut käännetään tästä lähtien kielelle <ph name="TARGET_LANGUAGE"/>.</translation>
@@ -1661,6 +1703,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4521280267704259211">Kirjekuori Monarkki</translation>
 <translation id="4521916730539354575">Vasen lokero</translation>
 <translation id="4522570452068850558">Tiedot</translation>
+<translation id="6221032662362020209">Tallennetaanko IBAN Brave-tilille?</translation>
 <translation id="4523643381056109546">Kyltit</translation>
 <translation id="4524138615196389145">Vahvista kortit jatkossa nopeammin WebAuthn-todennuksella</translation>
 <translation id="45243788195988825">Estä <ph name="TOPIC"/></translation>
@@ -1677,7 +1720,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4558551763791394412">Poista laajennukset käytöstä.</translation>
 <translation id="456043042661026303">Maksutietoja tarkistetaan suojatusti</translation>
 <translation id="4566017918361049074">Ulkoilu</translation>
-<translation id="4568329205873177285">Tarkista evästeet ja sivustodata uudessa ikkunassa</translation>
 <translation id="4569155249847375786">Vahvistettu</translation>
 <translation id="457875822857220463">Toimitus</translation>
 <translation id="4579699065574932398">Pankkipalvelut</translation>
@@ -1771,6 +1813,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4761104368405085019">Käyttää mikrofonia</translation>
 <translation id="4761326898079498987">Katso lisätietoja</translation>
 <translation id="1980929286541331105">Tee Braven turvatarkistus</translation>
+<translation id="4763196677855776703">Käyttöehtojen lähde: <ph name="URL"/></translation>
 <translation id="4764680219299728632">Liedet, keittotasot ja uunit</translation>
 <translation id="4764776831041365478">Osoitteessa <ph name="URL"/> oleva sivu saattaa olla väliaikaisesti pois käytöstä tai se on voitu siirtää pysyvästi uuteen osoitteeseen.</translation>
 <translation id="4766713847338118463">Kaksi niittiä alareunassa</translation>
@@ -1801,9 +1844,10 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, luo uusi Brave-taulukko nopeasti painamalla sarkainta ja sitten Enter</translation>
 <translation id="4825507807291741242">Tehokas</translation>
 <translation id="4826588772550366629">kameraasi ja mikrofoniasi</translation>
+<translation id="4827283332383516812">Poista kortti</translation>
 <translation id="4831993743164297314">Valoladontatulostimen paperi</translation>
 <translation id="483241715238664915">Laita varoitukset päälle</translation>
-<translation id="4834250788637067901">Maksutavat, tarjoukset ja osoitteet Google Playta käyttäen</translation>
+<translation id="4834250788637067901">Maksutavat, tarjoukset ja osoitteet Google Payta käyttäen</translation>
 <translation id="4838327282952368871">Unenomainen</translation>
 <translation id="1923748633297576468">Maksa seuraavalla kerralla nopeammin ja suojaa korttisi Braven alan johtavalla suojauksella.</translation>
 <translation id="246176083348620700">Tarkista Brave-historiasi</translation>
@@ -1820,6 +1864,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4873616204573862158">Optiikkatuotteet</translation>
 <translation id="4876188919622883022">Yksinkertaistettu näkymä</translation>
 <translation id="4876305945144899064">Ei käyttäjänimeä</translation>
+<translation id="4876327226315760474">Tämä tarkoittaa, että sivuston ominaisuuksien pitäisi toimia odotetulla tavalla, mutta selaussuojaus saattaa olla heikompi.</translation>
 <translation id="4877047577339061095">Kodin säilytystuotteet ja hyllyköt</translation>
 <translation id="4877083676943085827">{COUNT,plural, =0{Ei mitään}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">Haku <ph name="TEXT"/></translation>
@@ -1834,6 +1879,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4888600795924685526">Vieraiden kielten opiskelu</translation>
 <translation id="4890070067176768718">Järjestelmänvalvoja on myöntänyt luvan (<ph name="PERMISSION"/>) täällä: <ph name="ORIGIN"/></translation>
 <translation id="4892518386797173871">Takaosa</translation>
+<translation id="4895019427244614047">Poista osoite</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4896809202198625921">Olympialaiset</translation>
 <translation id="4900217275619098670">Yhdeksäs rulla</translation>
@@ -1853,6 +1899,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="4926340098269537727"><ph name="ACTIVE_MATCH"/>/<ph name="TOTAL_MATCHCOUNT"/></translation>
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tee haku painamalla ensin sarkainta ja sitten Enter</translation>
 <translation id="4930153903256238152">Suuri kapasiteetti</translation>
+<translation id="4932035752129140860">Liittämäsi teksti lähetetään Google Cloudiin tai kolmansille osapuolille analysoitavaksi. Ne voidaan esimerkiksi skannata arkaluontoisten tietojen varalta, tallentaa yrityksen käytäntöjen mukaisesti ja ne voivat näkyä järjestelmänvalvojalle.</translation>
 <translation id="4934780484581617878">Ikkunoiden hallinnointi</translation>
 <translation id="4936134414789135531">Lisättyä arvoa (<ph name="VALUE_NAME"/>) ei löytynyt.</translation>
 <translation id="4936675324097895694">Talous</translation>
@@ -1867,6 +1914,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5398999400894437316">Voit muuttaa Brave-mainosten yksityisyysasetuksia</translation>
 <translation id="4960203958361543136">Valitse hakukone</translation>
 <translation id="4964505745997821360">Sairausvakuutus</translation>
+<translation id="4967366744630699583">Muokkaa osoitetta</translation>
 <translation id="4968522289500246572">Sovellus on suunniteltu mobiililaitteille eikä se ehkä näy oikein, jos muutat sen kokoa. Sovellus voi käynnistyä uudelleen tai siinä voi esiintyä ongelmia.</translation>
 <translation id="4968665849807487749">Saa pyytää lupaa hallinnoida ikkunoita kaikilla näytöillä</translation>
 <translation id="4969341057194253438">Poista tallenne</translation>
@@ -1912,6 +1960,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5045550434625856497">Väärä salasana</translation>
 <translation id="5051305769747448211">Live-komedia</translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Jos haluat lähettää tiedoston käyttämällä lähijakamista, vapauta tilaa (<ph name="DISK_SPACE_SIZE"/>) laitteeltasi}other{Jos haluat lähettää tiedostot käyttämällä lähijakamista, vapauta tilaa (<ph name="DISK_SPACE_SIZE"/>) laitteeltasi}}</translation>
+<translation id="505757197798929356">Lisää avaamisen syy (pakollinen)</translation>
 <translation id="5060419232449737386">Tekstitysasetukset</translation>
 <translation id="5060483733937416656">Valitsit vahvistuksen Windows Hellolla verkkosivustoilla, joilla on käytössä <ph name="PROVIDER_ORIGIN"/>. Tämä palveluntarjoaja on saattanut tallentaa maksutapaasi koskevia tietoja, joille voit <ph name="LINK_TEXT"/>.</translation>
 <translation id="5061227663725596739">Tarkoititko: <ph name="LOOKALIKE_DOMAIN"/>?</translation>
@@ -2027,6 +2076,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5288393065350884210">Kirjanpito ja tilintarkastukset</translation>
 <translation id="5289384342738547352">Useiden dokumenttien käsittely</translation>
 <translation id="5291770543968339335">{DAYS_UNTIL_DEADLINE,plural, =1{Päivitettävä tänään}=2{Päivitettävä huomenna}other{Päivitettävä # päivän kuluessa}}</translation>
+<translation id="5292714443869769806">Avaa asetukset: <ph name="OPERATING_SYSTEM"/></translation>
 <translation id="5293919335876685914">Coupe-autot</translation>
 <translation id="5296589789433599000">Ruoanlaitto ja reseptit</translation>
 <translation id="5299298092464848405">Virhe jäsennettäessä käytäntöä</translation>
@@ -2081,7 +2131,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="540969355065856584">Palvelin ei voinut todistaa olevansa <ph name="DOMAIN"/>, sillä sen suojausvarmenne ei tällä hetkellä ole kelvollinen. Tämä voi johtua määritysvirheestä tai verkkoyhteytesi siepanneesta hyökkääjästä.</translation>
 <translation id="5411462078004183575">Edullinen vaihtoehto</translation>
 <translation id="5412040515238827314">Virheellinen muoto: odotettu malliluettelo.</translation>
-<translation id="9079419934310259761">Tämä sivusto saa kiinnostuksen kohteesi Bravesta, jotta voit nähdä osuvampia mainoksia</translation>
 <translation id="5412245327974352290"><ph name="TRADITIONAL_TEXT"/> – <ph name="ADDITIONAL_TEXT"/></translation>
 <translation id="541416427766103491">Pinoaja 4</translation>
 <translation id="5414446060143308245">Tarkasta tiedostot ennen siirtoa</translation>
@@ -2118,6 +2167,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
     <ph name="LINE_BREAK"/>
     Ota yhteyttä järjestelmänvalvojaasi.</translation>
 <translation id="549333378215107354">Koko 3</translation>
+<translation id="550365051221576010">Täytä kaikki</translation>
 <translation id="5509762909502811065">B0</translation>
 <translation id="5509780412636533143">Hallinnoidut kirjanmerkit</translation>
 <translation id="5510481203689988000">Tätä asetusta ylläpidetään evästeasetuksissa.</translation>
@@ -2191,6 +2241,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5633259641094592098">Kultti- ja indie-elokuvat</translation>
 <translation id="563371367637259496">Mobiili</translation>
 <translation id="5635237618724097525">Älypuhelimet</translation>
+<translation id="5635478143789726479">Myyjän käyttöehdot</translation>
 <translation id="5642362243427711530"><ph name="FIRST_STRING"/>. <ph name="SECOND_STRING"/></translation>
 <translation id="5642411781689336699">Stereojärjestelmät ja -komponentit</translation>
 <translation id="5644090287519800334">1. puolen kuvan X vaihto</translation>
@@ -2200,16 +2251,19 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5651323159439184939">Rei'itetty syöte</translation>
 <translation id="5653432653077411130">Vesivarannot ja vedenkäsittely</translation>
 <translation id="5654927323611874862">Lähetetyn virheraportin tunnus:</translation>
+<translation id="5654965123204121933">URL-osoite ei sisällä vaadittua korvaavaa merkkijonoa <ph name="SEARCH_TERMS_REPLACEMENT"/>: <ph name="SEARCH_URL"/></translation>
 <translation id="5659593005791499971">Sähköposti</translation>
 <translation id="5660122698869360728">Uusi älykäs kansio, jonka avulla voit tallentaa kaikki ostossivusi yhteen paikkaan, seurata automaattisesti hintoja, saada hintatilastoja ja paljon muuta.</translation>
 <translation id="5663955426505430495">Laitteen järjestelmänvalvoja on asentanut lisätoimintojen laajennuksia. Laajennuksilla on pääsy osaan datastasi.</translation>
 <translation id="5666606186680807225">Rantoja ja saaria</translation>
 <translation id="5667827081946850877">Äänikirjat</translation>
 <translation id="5675650730144413517">Sivu ei toimi</translation>
+<translation id="5677928146339483299">Estetty</translation>
 <translation id="5678007133659493065">Folio</translation>
 <translation id="568292603005599551">Kuvan X sijainti</translation>
 <translation id="5684277895745049190">Lista</translation>
 <translation id="5684874026226664614">Hups, tätä sivua ei voi kääntää.</translation>
+<translation id="5687340364605915800">Sivustot reagoivat tähän pyyntöön oman harkintansa mukaan</translation>
 <translation id="5688137257686092846">Kosmetologit ja kauneudenhoidon ammattilaiset</translation>
 <translation id="5689199277474810259">Vie JSON-tiedostoon</translation>
 <translation id="5689516760719285838">Sijainti</translation>
@@ -2217,6 +2271,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5691848789297492617">Tallennuskortti avattu koko näytön kokoisena.</translation>
 <translation id="5695542892312572833">Todennetaanko ja viimeistelläänkö ostos Windows Hellolla?</translation>
 <translation id="5699628521141772782">Maitotuotteet ja kananmunat</translation>
+<translation id="5700761515355162635">Kolmannen osapuolen evästeet sallittu</translation>
 <translation id="5701381305118179107">Keskitä</translation>
 <translation id="570530837424789914">Hallinnoi…</translation>
 <translation id="5707154300732650394">Jatka toimintoa</translation>
@@ -2227,7 +2282,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5720705177508910913">Nykyinen käyttäjä</translation>
 <translation id="572328651809341494">Hiljattain suljetut välilehdet</translation>
 <translation id="5723287205918986743">Puolustusteollisuus</translation>
-<translation id="5725567311035061582">Evästeiden ja sivustodatan hallinta</translation>
+<translation id="5725297205162868298">Pikanäppäimen alussa ei voi olla @-merkkiä: "<ph name="SHORTCUT_NAME"/>"</translation>
 <translation id="3006790309890592320">Brave suosittelee salasanan vaihtamista, jos olet käyttänyt sitä myös muilla sivustoilla.</translation>
 <translation id="5732392974455271431">Vanhempasi voivat kumota eston puolestasi.</translation>
 <translation id="5110141686029759199">Luo lomake ‑painike, aktivoi luodaksesi uusi lomake nopeasti Brave Formsissa</translation>
@@ -2258,6 +2313,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5785756445106461925">Tällä sivulla on kuitenkin muita osia, jotka eivät ole suojattuja. Muut voivat tarkastella näitä osia siirron aikana, ja hyökkääjä voi muuttaa sivun ulkoasua muokkaamalla näitä osia.</translation>
 <translation id="5786044859038896871">Täytetäänkö kortin tiedot?</translation>
 <translation id="5789643057113097023">,</translation>
+<translation id="5793317771769868848">Tämä maksutapa poistetaan tältä laitteelta</translation>
 <translation id="5793777472500812427">{COUNT,plural, =0{Ei yhtään}=1{1 tilin kirjautumisdata}other{# tilin kirjautumisdata}}</translation>
 <translation id="5800727402210090597">Matkapuhelimien korjauspalvelut</translation>
 <translation id="580241730938216256">Aloita päivitys</translation>
@@ -2288,15 +2344,16 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5866898949289125849">Katselet kehittäjätyökalut-sivustoa</translation>
 <translation id="5869405914158311789">Sivustoon ei saada yhteyttä</translation>
 <translation id="5869522115854928033">Tallennetut salasanat</translation>
+<translation id="5872318519182427835">Vaikuttaa tässä mainittuihin sivustoihin ja niiden aliverkkotunnuksiin. Jos esimerkiksi lisäät osoitteen "google.com", kolmannen osapuolen evästeet voivat olla aktiivisia myös osoitteessa mail.google.com, koska ne ovat osa google.comia.</translation>
 <translation id="5872692522325383488">IBAN tallennettu</translation>
 <translation id="5873297634595728366">Dieselajoneuvot</translation>
 <translation id="5877831137320480913">Kauneus ja hyvinvointi</translation>
 <translation id="5879989559903563723">Ei sallittu vierastilassa</translation>
+<translation id="8967688963142514142">Siirry Braven turvatarkistukseen</translation>
 <translation id="5883861433316751031">Haluatko ohjata ja uudelleenohjelmoida MIDI-laitteita?</translation>
 <translation id="5884465125445718607">Kirjekuori kiinalainen #6</translation>
 <translation id="5887400589839399685">Kortti tallennettu</translation>
 <translation id="5887687176710214216">Avattu viimeksi eilen</translation>
-<translation id="5888023855665301188">Voit maksaa nopeammin, kun CVC:t on tallennettu. <ph name="LINK_BEGIN"/>Tallennettujen turvakoodien poistaminen<ph name="LINK_END"/></translation>
 <translation id="5895138241574237353">Käynnistä uudelleen</translation>
 <translation id="5895187275912066135">Myönnetty</translation>
 <translation id="5901630391730855834">Keltainen</translation>
@@ -2308,6 +2365,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5911110632211230665">Avaaminen estetty</translation>
 <translation id="59174027418879706">Käytössä</translation>
 <translation id="5918373444239520146">Kannettava elektroniikka</translation>
+<translation id="5918847752193018339">Voit maksaa nopeammin, kun CVC:t on tallennettu. <ph name="LINK_BEGIN"/>Poista tallennetut turvakoodit<ph name="LINK_END"/></translation>
 <translation id="5919090499915321845">B10</translation>
 <translation id="5920262536204764679">{NUM_COOKIES,plural, =1{1 käytössä}other{# käytössä}}</translation>
 <translation id="592031860219554105">Luistelu</translation>
@@ -2325,10 +2383,10 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5938153366081463283">Lisää virtuaalinen kortti</translation>
 <translation id="5938793338444039872">Troy</translation>
 <translation id="5944297261866530437">Kangas (erittäin kiiltävä)</translation>
-<translation id="5947508410139465809">Lähettämäsi tai liittämäsi tiedostot lähetetään Google Cloudiin tai kolmansille osapuolille analysoitaviksi. Ne voidaan esimerkiksi skannata arkaluontoisten tietojen tai haittaohjelmien varalta ja tallentaa yrityksen käytäntöjen mukaisesti.</translation>
 <translation id="5951495562196540101">Liittyminen kuluttajatilillä ei onnistu (pakettilisenssi saatavilla).</translation>
 <translation id="5953516610448771166">Livetekstitys ei ole saatavilla tälle medialle. Jos haluat tekstityksiä, estä <ph name="CONTENT_SETTINGS"/> tällä sivustolla.</translation>
 <translation id="5955063559762970069">Hotellit ja majoitus</translation>
+<translation id="595873925609605681">Jos sivuston ominaisuudet eivät toimi, <ph name="BEGIN_LINK"/>kokeile sallia kolmannen osapuolen evästeet tilapäisesti<ph name="END_LINK"/>.</translation>
 <translation id="5963413905009737549">Osio</translation>
 <translation id="5964247741333118902">Upotettu sisältö</translation>
 <translation id="5967260682280773804">36 x 48 tuumaa</translation>
@@ -2336,6 +2394,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5967867314010545767">Poista historiasta</translation>
 <translation id="5968022600320704045">Ei hakutuloksia</translation>
 <translation id="5969199813874624822">Tallenna ja seuraa hintoja</translation>
+<translation id="5973514677932942122"><ph name="EXPIRATION_DATE"/> | <ph name="SECURITY_CODE"/></translation>
 <translation id="5974052231147553524">Kuudes rulla</translation>
 <translation id="5975083100439434680">Loitonna</translation>
 <translation id="5979084224081478209">Tarkista salasanat</translation>
@@ -2438,8 +2497,10 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6177531123306197852">Kirjekuori C2</translation>
 <translation id="6180316780098470077">Uudelleenyritysten aikaväli</translation>
 <translation id="6182972682129119950">A4 x 5</translation>
+<translation id="1713601041945301465">Brave rajoittaa kolmannen osapuolen evästeet automaattisesti</translation>
 <translation id="61877208875190028">Naisten vaatteet</translation>
 <translation id="6194209731893739467">Katso kaikki seuratut tuotteet täältä</translation>
+<translation id="6195163219142236913">Kolmannen osapuolen evästeitä rajoitettu</translation>
 <translation id="6195371403461054755">Geologia</translation>
 <translation id="6196640612572343990">Estä kolmannen osapuolen evästeet</translation>
 <translation id="6197648101609735209">89 x 89 mm</translation>
@@ -2462,12 +2523,14 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6232271601416750929">Luonnonkosmetiikka</translation>
 <translation id="6234122620015464377">Leikkaa jokaisen dokumentin jälkeen</translation>
 <translation id="6236290670123303279">Määritä asetuksia</translation>
+<translation id="623825323736974198">Valitse sivustot, jotka pysyvät aina aktiivisina ja joilta ei vapauteta muistia</translation>
 <translation id="6240447795304464094">Google Pay ‑logo</translation>
 <translation id="6241121617266208201">Piilota ehdotukset</translation>
 <translation id="624499991300733384">Tulosteiden koontipalvelu</translation>
 <translation id="6251906504834538140">{0,plural, =1{Tiedoston siirtäminen estetty}other{<ph name="FILE_COUNT"/> tiedoston siirtäminen estetty}}</translation>
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ylläpidä Bravessa lataamiasi tiedostoja painamalla sarkainta ja sitten Enter</translation>
 <translation id="6254436959401408446">Muisti ei riitä sivun avaamiseen</translation>
+<translation id="625463612687472648">Estä</translation>
 <translation id="6259156558325130047">&amp;Toista uudelleenjärjestely</translation>
 <translation id="6263376278284652872">Verkkotunnuksen <ph name="DOMAIN"/> kirjanmerkit</translation>
 <translation id="6264376385120300461">Lataa silti</translation>
@@ -2478,6 +2541,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="1300170712564922349">Jatka toimintoa, niin näet oleelliset tapahtumat Brave-historiassasi</translation>
 <translation id="9136010393039243713">Brave-päivitys</translation>
 <translation id="6279183038361895380">Näytä kursori painamalla |<ph name="ACCELERATOR"/>|.</translation>
+<translation id="628016388715774955">Täytä koko osoite ‐vaihtoehto on valittu</translation>
 <translation id="6280223929691119688">Toimitus ei onnistu tähän osoitteeseen. Valitse eri osoite.</translation>
 <translation id="6284292079994426700">26 x 38 tuumaa</translation>
 <translation id="6284517535531159884">Muunnelmien lähdetyyppi</translation>
@@ -2516,6 +2580,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6348220984832452017">Aktiiviset muunnelmat</translation>
 <translation id="6349101878882523185">Asenna <ph name="APP_NAME"/></translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Ei mitään}=1{1 salasana: (<ph name="DOMAIN_LIST"/>, synkronoitu)}=2{2 salasanaa (<ph name="DOMAIN_LIST"/>, synkronoitu)}other{# salasanaa (<ph name="DOMAIN_LIST"/>, synkronoitu)}}</translation>
+<translation id="6358088212770985041">muokkaa maksutapoja</translation>
 <translation id="6358450015545214790">Mitä nämä tarkoittavat?</translation>
 <translation id="6361757823711327522">B7</translation>
 <translation id="6363786367719063276">Katso lokit</translation>
@@ -2545,6 +2610,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6394852772105848029">Sivusto haluaa avata <ph name="APP_NAME"/>-sovelluksen</translation>
 <translation id="6398765197997659313">Poistu koko näytön tilasta</translation>
 <translation id="6401136357288658127">Tämä käytäntö on vanhentunut. Käytä <ph name="NEW_POLICY"/> ‑käytäntöä sen sijaan.</translation>
+<translation id="640163077447496506">Vanhenee tänään</translation>
 <translation id="6402537308870515461">Tarkasta tiedostot ennen siirtoa</translation>
 <translation id="6403167778944553">Makuu- ja kylpyhuone</translation>
 <translation id="6404511346730675251">Muokkaa kirjanmerkkiä</translation>
@@ -2614,6 +2680,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6529602333819889595">&amp;Toista poisto</translation>
 <translation id="6535751101619004418">Valuutat ja valuutanvaihto</translation>
 <translation id="6536221421038631327">Jos poistat Passpoint-tilauksen laitteelta (<ph name="DEVICE_TYPE"/>), siihen liittyvät verkot poistetaan. Jos haluat tehdä muutoksia tilaussopimukseen, ota yhteyttä kumppaniin <ph name="FRIENDLY_NAME"/>. <ph name="LEARN_MORE"/></translation>
+<translation id="6540488083026747005">Olet sallinut kolmannen osapuolen evästeet tällä sivustolla</translation>
 <translation id="6540534463546766581">Sijoitusrahastot</translation>
 <translation id="6545864417968258051">Bluetooth-haku</translation>
 <translation id="6547208576736763147">Kaksi reikää vasemmalla</translation>
@@ -2623,6 +2690,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6556866813142980365">Tee uudelleen</translation>
 <translation id="6557715786897013164">14 x 17 tuumaa</translation>
 <translation id="6560786330438719938">Asennetut tai poistetut sovellukset ja se, miten usein niitä käytetään</translation>
+<translation id="6567084950885568327">MIDI-laitteiden hallinta ja uudelleenohjelmointi</translation>
 <translation id="3720758671413152948">Ylläpidä maksutapoja ‑painike, aktivoi ylläpitääksesi maksu- ja credit-korttitietoja Braven asetuksissa</translation>
 <translation id="6569060085658103619">Tämä on laajennussivu.</translation>
 <translation id="6569366777234823130">Draamaelokuvat</translation>
@@ -2638,12 +2706,13 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6596325263575161958">Salausasetukset</translation>
 <translation id="6597665340361269064">90 astetta</translation>
 <translation id="6599642189720630047">Seuratut tuotteet</translation>
+<translation id="5976895887103591798">Brave estää sivustoja seuraamasta sinua selaamisen aikana kolmansien osapuolten evästeiden avulla.
+            <ph name="NEW_LINE"/>Jos sivuston ominaisuudet eivät toimi, <ph name="START_LINK"/>kokeile sallia kolmannen osapuolen evästeet tilapäisesti<ph name="END_LINK"/>.</translation>
 <translation id="6611723696964473273">Talousuutiset</translation>
 <translation id="6612010098632894193">Verkkovideot</translation>
 <translation id="5887670611153282204">Lue lisää hakukoneesta Bravessa</translation>
 <translation id="6615297766614333076">Pinoaja 2</translation>
 <translation id="6624427990725312378">Yhteystiedot</translation>
-<translation id="6627727261837091711">Näytä mainosten personoinnin tiedot</translation>
 <translation id="6628463337424475685"><ph name="ENGINE"/>-haku</translation>
 <translation id="6629652037942826935">Luksusmatkat</translation>
 <translation id="6630043285902923878">Haetaan USB-laitteita…</translation>
@@ -2717,6 +2786,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6767985426384634228">Päivitetäänkö osoite?</translation>
 <translation id="6770747695101757579">Paperi (puuvilla)</translation>
 <translation id="6775759552199460396">JIS B2 (515 mm x 728 mm)</translation>
+<translation id="4302311572898487420">Brave Salasanat tarvitsee pääsyn MacOS-avainnippuun</translation>
 <translation id="6784045420901191374">Kaupalliset lainat</translation>
 <translation id="8425450156395369987">Voit vaihtaa hakukoneen milloin tahansa Braven asetuksista.</translation>
 <translation id="6786145470008421571">Kirjekuori 152 x 228 mm</translation>
@@ -2729,12 +2799,14 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6793213097893210590">Pahvi</translation>
 <translation id="679355240208270552">Ohitettu, koska oletushaku on poistettu käytöstä käytännön johdosta</translation>
 <translation id="6794951432696553238">Vahvista kortit jatkossa nopeammin Windows Hellolla</translation>
+<translation id="6798066466127540426">Lista ei sisällä hyväksyttävää hakupalvelua.</translation>
 <translation id="6798460514924505775">Kirjekuori Chou 3</translation>
 <translation id="6799145206637008376">Lisää tämän virtuaalikortin CVC</translation>
 <translation id="6805030849054648206">Kirjekuori B6/C4</translation>
 <translation id="6807791860691150411">Koulutus</translation>
 <translation id="681021252041861472">Pakollinen kenttä</translation>
 <translation id="6810899417690483278">Muokkaustunnus</translation>
+<translation id="681459028290894216">Täytä koko osoite</translation>
 <translation id="6816109178681043245">Urheiluvälineet</translation>
 <translation id="6817217109584391709">JavaScript</translation>
 <translation id="6820143000046097424">sarjaportit</translation>
@@ -2765,6 +2837,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6874604403660855544">&amp;Toista lisäys</translation>
 <translation id="6880941331070119097">Kalliimpi vaihtoehto</translation>
 <translation id="5856252669085142737">Luo uusi Brave-dokumentti nopeasti</translation>
+<translation id="6882210908253838664">Jos sivusto ei toimi, voit antaa sille väliaikaisen luvan käyttää kolmannen osapuolen evästeitä. <ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/></translation>
 <translation id="6883221904761970440">Suojatun maksun kirjautumistietojen todennuspaneeli on suljettu</translation>
 <translation id="6884662655240309489">Koko 1</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
@@ -2781,6 +2854,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6907458757809079309">Kuntoilu</translation>
 <translation id="691024665142758461">ladata useita tiedostoja</translation>
 <translation id="6915804003454593391">Käyttäjä:</translation>
+<translation id="6916193791494646625">Ilmoita latauksen syy (pakollinen)</translation>
 <translation id="6916954549222464607">Taloussuunnittelu ja varainhoito</translation>
 <translation id="6917795328362592458">Juuri käyttämäsi salasana on löytynyt tietosuojaloukkauksesta. Tiliesi suojaamiseksi Salasanat suosittelee, että tarkistat tallennetut salasanasi.</translation>
 <translation id="6925267999184670015">Pohjoisamerikkalainen B+</translation>
@@ -2815,6 +2889,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6965382102122355670">OK</translation>
 <translation id="6965978654500191972">Laite</translation>
 <translation id="696703987787944103">Havainnollinen</translation>
+<translation id="6967851206780867018">Yksi tiedosto estettiin sisällön vuoksi</translation>
 <translation id="6970885655016700774">Kangas (arkistointi)</translation>
 <translation id="8485851762575764192">Luo uusi Brave-esitys nopeasti Slidesissa</translation>
 <translation id="6972629891077993081">HID-laitteet</translation>
@@ -2832,7 +2907,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="6999480632062519056">Kuntoiluohjeet ja henkilökohtainen valmennus</translation>
 <translation id="6999969238895751684">Viihdeteollisuus</translation>
 <translation id="7003278537452757231">Matot ja kokolattiamatot</translation>
-<translation id="7003335073762455340">Seuraat tätä tuotetta. Sivu on tallennettu tänne: <ph name="LAST_BOOKMARKS_FOLDER"/>.</translation>
 <translation id="7004499039102548441">Hiljattain suljetut välilehdet</translation>
 <translation id="7004583254764674281">Vahvista kortteja nopeammin Windows Hellolla</translation>
 <translation id="7006930604109697472">Lähetä silti</translation>
@@ -2847,6 +2921,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="7023162328967545559">Varoitus järjestelmänvalvojalta</translation>
 <translation id="7613812024276037086">Bravessa on sisäänrakennettuja turvallisuusominaisuuksia, jotka suojaavat sinua selaamisen aikana. Yksi niistä on Braven selaussuoja. Se <ph name="BEGIN_LINK"/>löysi äskettäin tietojenkalastelua<ph name="END_LINK"/> sivustolta, jolle yrität siirtyä. Tietojenkalastelusivustot yrittävät huijata käyttäjiä tekeytymällä toisiksi sivustoiksi.<ph name="NEW_LINE"/>Myös tavallisesti turvalliset sivustot voivat toisinaan joutua hyökkäyksen kohteiksi. <ph name="BEGIN_ERROR_LINK"/>Kerro meille<ph name="END_ERROR_LINK"/>, jos kyseessä on mielestäsi virhe eikä sivusto ole vaarallinen.</translation>
 <translation id="7029809446516969842">Salasanat</translation>
+<translation id="7030164307377592766">muuta maksutapojen täyttämisen asetuksia</translation>
 <translation id="7030436163253143341">Varmenne ei ole voimassa</translation>
 <translation id="7031646650991750659">Asentamasi Google Play ‑sovellukset</translation>
 <translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paina ensin sarkainta ja sitten Enter, niin voit tarkistaa Brave-tilisi yksityisyysasetukset</translation>
@@ -2867,6 +2942,7 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="70705239631109039">Yhteytesi ei ole täysin suojattu</translation>
 <translation id="7075452647191940183">Pyyntö on liian suuri</translation>
 <translation id="7078665357168027058">RA3</translation>
+<translation id="7079138647457502205">Selaa suojatummin</translation>
 <translation id="7079718277001814089">Tämä sivusto sisältää haittaohjelmia</translation>
 <translation id="7081308185095828845">Ominaisuus ei ole käytettävissä tällä laitteella</translation>
 <translation id="7083258188081898530">Lokero 9</translation>
@@ -2887,7 +2963,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="7108819624672055576">Laajennuksen sallima</translation>
 <translation id="7109510814665441393">Ajo- ja rallipelit</translation>
 <translation id="7110116949943042888">Tilapäis- ja kausityöpaikat</translation>
-<translation id="7110553203952632623">Saat sähköposti-ilmoituksen, jos hinta laskee jollakin sivustolla</translation>
 <translation id="7111012039238467737">(Voimassa)</translation>
 <translation id="7111507312244504964">Kuntotarkastukset ja kiinteistöarviot</translation>
 <translation id="7112327784801341716">Eivätkö tietosi ole ajan tasalla? Ota yhteyttä pankkiin ja päivitä ne.</translation>
@@ -2909,10 +2984,12 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> ja <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> toinen}other{<ph name="PAYMENT_METHOD_PREVIEW"/> ja <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> muuta}}</translation>
 <translation id="7153618581592392745">Laventeli</translation>
 <translation id="7156870133441232244">Palvelin pitäisi päivittää TLS 1.2:een tai uudempaan versioon.</translation>
+<translation id="715996170234243096">{NUM_FILES,plural, =1{Jos haluat, että <ph name="FEATURE_NAME"/> lähettää tiedoston, vapauta tilaa (<ph name="DISK_SPACE_SIZE"/>) laitteelta}other{Jos haluat, että <ph name="FEATURE_NAME"/> lähettää tiedostot, vapauta tilaa (<ph name="DISK_SPACE_SIZE"/>) laitteelta}}</translation>
 <translation id="7160999678034985039">Tallenna työsi ja aloita päivitys, kun olet valmis.</translation>
 <translation id="7163295244162773898">{0,plural, =1{Kopioidaanko luottamuksellinen tiedosto?}other{Kopioidaanko luottamukselliset tiedostot?}}</translation>
 <translation id="717330890047184534">Gaia-tunnus:</translation>
 <translation id="7174545416324379297">Yhdistetty</translation>
+<translation id="7175097078723125014">Muokkaa osoitetta ‐vaihtoehto on valittu</translation>
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> ja <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> toinen}other{<ph name="SHIPPING_OPTION_PREVIEW"/> ja <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> muuta}}</translation>
 <translation id="7179323680825933600">Tallenna ja täytä maksutavat</translation>
 <translation id="7180611975245234373">Päivitä</translation>
@@ -2962,6 +3039,7 @@ Lisätietoja:
 <translation id="725866823122871198">Verkkotunnukseen <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> ei voi muodostaa salattua yhteyttä, koska tietokoneesi aika ja päivämäärä (<ph name="DATE_AND_TIME"/>) ovat virheelliset.</translation>
 <translation id="7260075294900977274">Uusi älykäs kansio, jonka avulla voit tallentaa kaikki ostossivusi yhteen paikkaan, seurata automaattisesti hintoja, saada hintatilastoja ja paljon muuta</translation>
 <translation id="7265608370113700582">Osoite on saatavilla vain tällä laitteella</translation>
+<translation id="7273111226200291353">Lataamasi tiedostot lähetetään Google Cloudiin tai kolmansille osapuolille analysoitaviksi. Ne voidaan esimerkiksi skannata arkaluontoisten tietojen tai haittaohjelmien varalta, tallentaa yrityksen käytäntöjen mukaisesti ja ne voivat näkyä järjestelmänvalvojalle.</translation>
 <translation id="7275334191706090484">Hallinnoidut kirjanmerkit</translation>
 <translation id="7277998515889183784">Meikit ja kosmetiikka</translation>
 <translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, vaihda Brave-tilin salasana painamalla sarkainta ja sitten Enter</translation>
@@ -3039,8 +3117,10 @@ Lisätietoja:
 <translation id="7421067045979951561">protokollien käsittelijät</translation>
 <translation id="7422347648202898039">Etiketit (suojaus)</translation>
 <translation id="4814329941923406129">Ylläpidä evästeitä ‑painike, aktivoi muuttaaksesi evästevalintojasi Braven asetuksista</translation>
+<translation id="7424421098814895617">Poista osoite ‐vaihtoehto on valittu</translation>
 <translation id="7427366580982928791">Lasten turvallisuus internetissä</translation>
 <translation id="7429429656042611765">Executive</translation>
+<translation id="288933326661929857">Vahvistaa henkilöllisyytesi, jotta Brave voi täyttää maksutietosi.</translation>
 <translation id="7437289804838430631">Lisää yhteystieto</translation>
 <translation id="7437490109271760224">Korttipelit</translation>
 <translation id="6591887805206070045">Hyökkääjät sivustolla, jolle yrität siirtyä, voivat yrittää huijata sinua asentamaan haittaohjelmia, jotka vaikuttavat selauskokemukseen. Ne voivat esimerkiksi vaihtaa aloitussivusi tai näyttää ylimääräisiä mainoksia avaamillasi sivustoilla. Brave suosittelee, että siirryt takaisin turvalliselle sivustolle. <ph name="BEGIN_LEARN_MORE_LINK"/>Lue lisää<ph name="END_LEARN_MORE_LINK"/></translation>
@@ -3061,8 +3141,11 @@ Lisätietoja:
 <translation id="745640750744109667">A0 x 3</translation>
 <translation id="7461924472993315131">Kiinnitä</translation>
 <translation id="7463075493919226237">Australialainen jalkapallo</translation>
+<translation id="7465036432780054056"><ph name="EMBEDDED_URL"/> saa tietää, että kävit täällä: <ph name="TOP_LEVEL_URL"/></translation>
 <translation id="7465963048299965912">10 x 13 tuumaa</translation>
 <translation id="7469935732330206581">Lomake ei ole suojattu</translation>
+<translation id="7470854469646445678">Lisää kopioinnin syy (pakollinen)</translation>
+<translation id="7471007961486718967">Lisää siirron syy (pakollinen)</translation>
 <translation id="7473891865547856676">Ei kiitos</translation>
 <translation id="7481312909269577407">Seuraava</translation>
 <translation id="7481603210197454575">Kirjekuori italialainen</translation>
@@ -3096,6 +3179,7 @@ Lisätietoja:
 <translation id="7521825010239864438">Osio "<ph name="SECTION"/>" piilotettu</translation>
 <translation id="8552966873255887118">Voit käyttää sitä Braven tuotteissa</translation>
 <translation id="7523408071729642236">Tuotanto</translation>
+<translation id="7525804896095537619">Nimi ei voi olla tyhjä</translation>
 <translation id="7526934274050461096">Sivustoon muodostamasi yhteys ei ole yksityinen.</translation>
 <translation id="7529884293139707752">Kotiopetus</translation>
 <translation id="7534987659046836932">Kirjekuori C7</translation>
@@ -3109,6 +3193,7 @@ Lisätietoja:
 <translation id="5474381306981932386">Käyttäjänimi laitteella ja käyttäjänimi Bravessa</translation>
 <translation id="7551484245293639699">Matkavakuutus</translation>
 <translation id="7552846755917812628">Kokeile seuraavia keinoja:</translation>
+<translation id="7554242657529665960">Järjestelmänvalvoja: "<ph name="ADMIN_MESSAGE"/>"</translation>
 <translation id="7554475479213504905">Päivitä ja näytä siitä huolimatta</translation>
 <translation id="7554791636758816595">Uusi välilehti</translation>
 <translation id="7555777498260651025">Television perheohjelmat</translation>
@@ -3124,7 +3209,6 @@ Lisätietoja:
 <translation id="7574998639136359461">Talviurheilulajien välineet</translation>
 <translation id="7575207903026901870">Ehdotuksen poistopainike, poista ehdotus painamalla Enter</translation>
 <translation id="7575887283389198269">Matkapuhelimet</translation>
-<translation id="7577900504646297215">Ylläpidä kiinnostuksen kohteita</translation>
 <translation id="405970181812690156">Voit maksaa sivustoilla ja sovelluksissa nopeasti eri laitteillasi käyttämällä Braveen tallennettuja kortteja.</translation>
 <translation id="7579442726219254162">Tuntematon muuttuja "<ph name="VARIABLE"/>" hallinnoidussa määrityksessä: "<ph name="APPLICATION_ID"/>".</translation>
 <translation id="7581199239021537589">2. puolen kuvan Y vaihto</translation>
@@ -3158,6 +3242,7 @@ Lisätietoja:
 <translation id="7631444403134069754">Yleisurheilu</translation>
 <translation id="7631527008834753063">Television tietovisat</translation>
 <translation id="7633909222644580952">Tehokkuusdata ja virheraportit</translation>
+<translation id="7636346903338549690">Sivustot, jotka saavat käyttää kolmannen osapuolen evästeitä</translation>
 <translation id="6386821459680628976">Poistetaanko luottokortti Braveista?</translation>
 <translation id="7637586430889951925">{COUNT,plural, =0{Ei mitään}=1{1 salasana tililläsi (<ph name="DOMAIN_LIST"/>)}other{# salasanaa tililläsi (<ph name="DOMAIN_LIST"/>)}}</translation>
 <translation id="7638605456503525968">Sarjaportit</translation>
@@ -3170,7 +3255,6 @@ Lisätietoja:
 <translation id="765676359832457558">Piilota lisäasetukset...</translation>
 <translation id="7658239707568436148">Peru</translation>
 <translation id="7659327900411729175">Kirjekuori Kaku 8</translation>
-<translation id="7659880963341457291">Vahvista hakukone</translation>
 <translation id="766014026101194726">{0,plural, =1{Järjestelmänvalvojakäytäntö on estänyt tämän tiedoston lataamisen}other{Järjestelmänvalvojakäytäntö on estänyt # tiedoston lataamisen}}</translation>
 <translation id="7662298039739062396">Laajennuksen hallinnoima asetus</translation>
 <translation id="7663736086183791259">Varmenne <ph name="CERTIFICATE_VALIDITY"/></translation>
@@ -3207,6 +3291,7 @@ Lisätietoja:
 <translation id="7706689436519265630">Kopioimasi tai siirtämäsi tiedostot lähetetään Google Cloudiin tai kolmansille osapuolille analysoitaviksi. Ne voidaan esimerkiksi skannata arkaluontoisten tietojen tai haittaohjelmien varalta ja tallentaa yrityksen käytäntöjen mukaisesti.</translation>
 <translation id="7709911732293795808">Vakuutukset</translation>
 <translation id="7714404809393719981">Valokuva (puolikiiltävä)</translation>
+<translation id="7714424966701020172">Täytä koko nimi ‐vaihtoehto on valittu</translation>
 <translation id="7714464543167945231">Varmenne</translation>
 <translation id="7716147886133743102">Järjestelmänvalvojan estämä</translation>
 <translation id="7716375162095500223">Ei vielä lähetetty, tai ohitettu</translation>
@@ -3222,6 +3307,7 @@ Lisätietoja:
 <translation id="7744505202669469867">Tallennetut osoitteet ‑taulukko</translation>
 <translation id="774634243536837715">Vaarallinen sisältö estetty</translation>
 <translation id="7748758200357401411">Suuritehoiset ja jälkimarkkinoitavat auton osat</translation>
+<translation id="7751019142333897329"><ph name="FIRST_STRING"/> <ph name="SECOND_STRING"/></translation>
 <translation id="921286857694606205">Muokkaa fonttien kokoja ja kirjasimia Bravessa</translation>
 <translation id="7752995774971033316">Ei hallinnoida</translation>
 <translation id="1771750053794015966">Brave-välilehdet ja ‐sovellukset suljetaan, kun päivitys alkaa</translation>
@@ -3243,7 +3329,6 @@ Lisätietoja:
 <translation id="7785790577395078482">tämä tabletti</translation>
 <translation id="7786368602962652765">Pakollinen kenttä on tyhjä. Täytä se ennen tallentamista.</translation>
 <translation id="7786432318297177736">Hakukoneet näkyvät satunnaisessa järjestyksessä. Voit vaihtaa oletushakukoneen milloin tahansa asetuksista.</translation>
-<translation id="7786912885126430740">Voit maksaa nopeammin, kun CVC:t on tallennettu</translation>
 <translation id="6865562781710080368">Avaamasi sivustot voivat pyytää Bravelta tietoa mainostulosten mittaamiseksi. Brave sallii sivustojen kerätä rajoitetusti tietyntyyppistä dataa, esimerkiksi kellonajan, jolloin mainos näkyi sinulle.</translation>
 <translation id="7791011319128895129">Julkaisematon</translation>
 <translation id="7791196057686275387">Paali</translation>
@@ -3255,6 +3340,7 @@ Lisätietoja:
 <translation id="7802989406998618639">Lisää <ph name="NUMBER_OF_DIGITS"/>-numeroinen turvakoodi (<ph name="SIDE_OF_CARD"/>). Näin pankkisi voi vahvistaa henkilöllisyytesi</translation>
 <translation id="780301667611848630">Ei kiitos</translation>
 <translation id="7805768142964895445">Tila</translation>
+<translation id="7810410097247356677">Jos haluat maksaa nopeammin ensi kerralla, tallenna kortti ja salattu turvakoodi laitteelle</translation>
 <translation id="7812922009395017822">Mir</translation>
 <translation id="4670564340385807132">Poistetaanko lomake-ehdotus Braven tiedoista?</translation>
 <translation id="781440967107097262">Jaetaanko leikepöytä?</translation>
@@ -3267,6 +3353,7 @@ Lisätietoja:
 <translation id="7831993212387676366">Mikä on ostoslista?</translation>
 <translation id="7840103971441592723">Näytön tallennus on alkanut</translation>
 <translation id="784137052867620416">Shopping-vinkit</translation>
+<translation id="784404208867107517">Ryhmittelyhistoria</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Ei mitään}=1{1 sovellus (<ph name="EXAMPLE_APP_1"/>)}=2{2 sovellusta (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# sovellusta (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}}</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="7162988054835087448">Avaamasi sivustot voivat myöhemmin pyytää Bravelta aiheitasi personoidakseen näkemiäsi mainoksia. Brave jakaa enintään kolme aihetta ja suojaa samalla selaushistoriaasi ja henkilöllisyyttäsi.</translation>
@@ -3275,7 +3362,6 @@ Lisätietoja:
 <translation id="7865448901209910068">Paras nopeus</translation>
 <translation id="7870281855125116701">Alennus löydetty</translation>
 <translation id="7971990257511863579">Vaihda Brave-tilin salasana</translation>
-<translation id="614871537517043877">Tallenna kortin CVC Brave-tilille nopeampaa maksamista varten</translation>
 <translation id="7877007680666472091">suojatun sisällön tunnukset</translation>
 <translation id="7878562273885520351">Salasanasi on saattanut vaarantua.</translation>
 <translation id="7880146494886811634">Tallenna osoite</translation>
@@ -3286,6 +3372,7 @@ Lisätietoja:
 <translation id="7888575728750733395">Tulosteen renderöintitavoite</translation>
 <translation id="7894280532028510793">Jos kirjoitusasu on oikein, <ph name="BEGIN_LINK"/>kokeile verkon diagnostiikkaa<ph name="END_LINK"/>.</translation>
 <translation id="7901831439558593470">Kirjekuori 177 x 228 mm</translation>
+<translation id="3733419689526948053"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, siirry Braven turvatarkistussivulle asetuksista painamalla sarkainta ja sitten Enter</translation>
 <translation id="7916162853251942238">Flexo-pohja</translation>
 <translation id="7927971017714848357">Tontit ja maa-alat</translation>
 <translation id="793209273132572360">Päivitetäänkö osoite?</translation>
@@ -3293,6 +3380,7 @@ Lisätietoja:
 <translation id="79338296614623784">Anna kelvollinen puhelinnumero.</translation>
 <translation id="8329449853370113380"><ph name="URL"/> yrittää toistaa suojattua sisältöä. Brave vahvistaa laitteesi tunnistetiedot.</translation>
 <translation id="7935318582918952113">DOM Distiller</translation>
+<translation id="7937163678541954811">Kortin CVC-koodi salataan ja tallennetaan laitteellesi nopeampaa maksamista varten</translation>
 <translation id="7937554595067888181">Vanhenee <ph name="EXPIRATION_DATE_ABBR"/></translation>
 <translation id="7938958445268990899">Palvelimen varmenne ei ole vielä voimassa.</translation>
 <translation id="7939713744218886332">Ruokalajeja maailmalta</translation>
@@ -3302,13 +3390,16 @@ Lisätietoja:
 <translation id="7942349550061667556">Punainen</translation>
 <translation id="7943397946612013052">Lataus estetty</translation>
 <translation id="7943893128817522649">Saa pyytää lupaa ladata useita tiedostoja automaattisesti</translation>
+<translation id="794567586469801724">MacOS</translation>
 <translation id="7946724693008564269">Havaittu kieli</translation>
 <translation id="7947285636476623132">Tarkista vanhentumisvuosi ja yritä uudelleen.</translation>
 <translation id="3227327027957060968"><ph name="SEE_CHROME_TIPS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, katso lisätietoja Braven ominaisuuksista painamalla sarkainta ja sitten Enter</translation>
 <translation id="1535074845255182168">Muuta evästevalintojasi Braven asetuksista</translation>
 <translation id="7951415247503192394">(32-bittinen)</translation>
 <translation id="7952192831285741665">Eurooppalainen EDP</translation>
+<translation id="7952250633095257243">Pikanäppäin ei voi olla tyhjä</translation>
 <translation id="7952327717479677595">Hallinnoi hakukoneita ‑painike, aktivoi hallinnoidaksesi oletushakukonetta ja sivustohakua</translation>
+<translation id="7953236668995583915">Päivitä tämä sivu, jos haluat ottaa päivitetyt asetukset käyttöön tällä sivustolla</translation>
 <translation id="7953569069500808819">Reunasidonta yläreunassa</translation>
 <translation id="7956713633345437162">Mobiilikirjanmerkit</translation>
 <translation id="7961015016161918242">Ei koskaan</translation>
@@ -3356,6 +3447,7 @@ Lisätietoja:
 <translation id="8041089156583427627">Lähetä palautetta</translation>
 <translation id="8041940743680923270">Käytä yleistä oletusasetusta (kysy)</translation>
 <translation id="8042577181291637092">Käytetäänkö MIDI-laitteita?</translation>
+<translation id="8043255123207491407">Katso myyjän käyttöehdot</translation>
 <translation id="8046360364391076336">Teolliset materiaalit ja tarvikkeet</translation>
 <translation id="8052898407431791827">Kopioitu leikepöydälle</translation>
 <translation id="8055534648776115597">Ammatti- ja jatkokoulutus</translation>
@@ -3363,7 +3455,6 @@ Lisätietoja:
 <translation id="8058009102480785916">Elintarviketuotanto</translation>
 <translation id="8058603697124206642">Ei vaadita</translation>
 <translation id="8063875539456488183">Tallenna ja seuraa hintoja</translation>
-<translation id="8064892030280197386">vahvistaa henkilöllisyytesi, jotta se voi täyttää maksutietosi.</translation>
 <translation id="8066225060526005217">Evästeasetusten ylläpitämä</translation>
 <translation id="5442778523450464826">Lisäsit juuri salasanasi petolliselle sivustolle. Brave voi auttaa. Valitse Suojaa tili, niin voit vaihtaa salasanasi ja Bravelle ilmoitetaan tilin mahdollisesta vaarantumisesta.</translation>
 <translation id="8070439594494267500">Sovelluskuvake</translation>
@@ -3404,7 +3495,6 @@ Lisätietoja:
 <translation id="8131740175452115882">Vahvista</translation>
 <translation id="8134058435519644366">Rekrytointi ja henkilöstön hankinta</translation>
 <translation id="8135546115396015134">vasenta näppäintä</translation>
-<translation id="8144303576836498784">Jotain meni pieleen. Muutosta ei tallennettu</translation>
 <translation id="8148608574971654810">PDF-versio:</translation>
 <translation id="8149426793427495338">Tietokoneesi siirtyi virransäästötilaan.</translation>
 <translation id="8150722005171944719">Tiedosto osoitteessa <ph name="URL"/> ei ole luettavissa. Se on voitu poistaa tai siirtää, tai tiedoston käyttöluvat voivat estää sen käytön.</translation>
@@ -3420,6 +3510,7 @@ Lisätietoja:
 <translation id="8183800802493617952">Perhepelit ja ‑harrastukset</translation>
 <translation id="8184538546369750125">Käytä yleistä oletusasetusta (salli)</translation>
 <translation id="8186706823560132848">Ohjelmisto</translation>
+<translation id="8189557652711717875">Valitsemaasi hakukonetta käytetään esimerkiksi hakujen tekemiseen osoitepalkin kautta ja kuvien etsimiseen verkkosivuilta.</translation>
 <translation id="8190193880870196235">Laajennuksen hallinnoima</translation>
 <translation id="8194412401381329820">Et voi käyttää tätä sivua hallinnoidun tilin kautta tällä hallinnoimattomalla laitteella. Kaikki hallinnoidut tilit lukitaan, jos käytät tätä sivua. Poikkeuksena ovat tilit, joita hallinnoi sama taho kuin tätä laitetta (kumppanitilit).</translation>
 <translation id="8194797478851900357">K&amp;umoa siirto</translation>
@@ -3430,6 +3521,7 @@ Lisätietoja:
 <translation id="8202370299023114387">Ristiriita</translation>
 <translation id="8207625368992715508">Moottoriurheilulajit</translation>
 <translation id="8208363704094329105">300 x 400 mm</translation>
+<translation id="8208629719488976364">Tulostamiesi sivujen sisältö ja tulostimen tiedot lähetetään Google Cloudiin tai kolmansille osapuolille analysoitaviksi. Ne voidaan esimerkiksi skannata arkaluontoisten tietojen varalta, tallentaa yrityksen käytäntöjen mukaisesti ja ne voivat näkyä järjestelmänvalvojalle.</translation>
 <translation id="8210490490377416373">Valitse käytännön nimi</translation>
 <translation id="8210604850413485128">Webhotellit</translation>
 <translation id="8211406090763984747">Yhteys on turvallinen</translation>
@@ -3438,6 +3530,7 @@ Lisätietoja:
 <translation id="8217240300496046857">Sivustot eivät voi seurata sinua verkossa evästeiden avulla Joidenkin sivustojen ominaisuudet saattavat lakata toimimasta.</translation>
 <translation id="8217748145574471584">Henkilöstöhallinto</translation>
 <translation id="8218327578424803826">Määrätty sijainti:</translation>
+<translation id="8220833680085771143">Seurannan esto on tilapäisesti poissa käytöstä</translation>
 <translation id="8228419419708659934">Kahden sivun näkymä</translation>
 <translation id="8228477714872026922"><ph name="ORIGIN"/> haluaa käyttää verkossasi olevaa laitetta:</translation>
 <translation id="8229288958566709448"><ph name="WIDTH"/> x <ph name="HEIGHT"/> mm</translation>
@@ -3498,7 +3591,6 @@ Lisätietoja:
 <translation id="8308653357438598313">Livevideostriimi</translation>
 <translation id="8311895354659782580">Myytävät kiinteistöt</translation>
 <translation id="8316555157357957253">Käytössä nyt</translation>
-<translation id="8317570861267063617">Tallenna kortin CVC laitteelle nopeampaa maksamista varten</translation>
 <translation id="8319269383395457801">Asuntojen myynti</translation>
 <translation id="831997045666694187">Ilta</translation>
 <translation id="8321476692217554900">ilmoitukset</translation>
@@ -3512,8 +3604,8 @@ Lisätietoja:
 <translation id="834457929814110454">Jos ymmärrät käyntiä koskevat turvallisuusriskit, voit <ph name="BEGIN_LINK"/>siirtyä tähän sivustoon<ph name="END_LINK"/> jo ennen haitallisten ohjelmien poistamista.</translation>
 <translation id="8344776605855290140">Virtuaalikortin rekisteröinti avattu koko näytön kokoisena</translation>
 <translation id="8347658365704983341">Etäopiskelu</translation>
+<translation id="8350416046273606058">Pikanäppäimessä ei voi olla välilyöntejä: "<ph name="SHORTCUT_NAME"/>"</translation>
 <translation id="8351131234907093545">Luo muistiinpano</translation>
-<translation id="835203957414790336">Tulostamiesi sivujen sisältö ja tulostimen tiedot lähetetään Google Cloudiin tai kolmansille osapuolille analysoitaviksi. Ne voidaan esimerkiksi skannata arkaluontoisten tietojen varalta.</translation>
 <translation id="8352849934814541340">Laitteen järjestelmänvalvoja on asentanut lisätoimintosovelluksia. Sovelluksilla on pääsy osaan datastasi.</translation>
 <translation id="8355270400102541638">Kaatumisen paikallinen konteksti:</translation>
 <translation id="8363502534493474904">Poista lentokonetila käytöstä.</translation>
@@ -3549,11 +3641,14 @@ Lisätietoja:
 <translation id="8416874502399604126">Mikrofoni sallittu tällä kertaa</translation>
 <translation id="8422228580902424274">Hyökkääjät sivustolla, jolle yrität siirtyä, voivat yrittää huijata sinua asentamaan ohjelmistoja tai paljastamaan esimerkiksi salasanasi, puhelinnumerosi tai credit-korttisi numeron.</translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
+<translation id="8425213833346101688">Vaihda</translation>
 <translation id="8427848540066057481">500 x 750 mm</translation>
 <translation id="8428213095426709021">Asetukset</translation>
 <translation id="8428634594422941299">Selvä</translation>
 <translation id="5808418475906247813"><ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paina sarkainta ja Enter, niin voit muuttaa evästevalintoja Braven asetuksista</translation>
+<translation id="8432419784006585012">Voi pyytää MIDI-laitteidesi käyttölupaa</translation>
 <translation id="8433057134996913067">Sinut kirjataan ulos useimmilta verkkosivustoilta.</translation>
+<translation id="4198850929558436563">Jos haluat maksaa nopeammin ensi kerralla, tallenna IBAN Brave-tilillesi</translation>
 <translation id="8434840396568290395">Lemmikit</translation>
 <translation id="8436623588884785770">Lisää käytäntö</translation>
 <translation id="8437238597147034694">K&amp;umoa siirto</translation>
@@ -3570,6 +3665,7 @@ Lisätietoja:
 <translation id="8460854335417802511">Laita päälle</translation>
 <translation id="8461694314515752532">Salaa synkronoidut tiedot oman synkronoinnin tunnuslauseesi avulla</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{1 luottokortti}other{# luottokorttia}}</translation>
+<translation id="1912557825937556898">Siirry Braven turvatarkistussivulle asetuksissa</translation>
 <translation id="8468358362970107653">Kirjekuori C3</translation>
 <translation id="8473626140772740486">300 x 450 mm</translation>
 <translation id="8473863474539038330">Osoitteet ja muita tietoja</translation>
@@ -3581,6 +3677,7 @@ Lisätietoja:
 <translation id="8490137692873530638">Pinoaja 10</translation>
 <translation id="8493948351860045254">Vapauta tilaa</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> ei vastannut riittävän nopeasti.</translation>
+<translation id="443150778270806272">Sinun on annettava Bravelle pääsyoikeus, jotta <ph name="PERMISSION"/> on käytettävissä tällä sivustolla</translation>
 <translation id="230699814587342492">Brave-salasanat</translation>
 <translation id="8503813439785031346">Käyttäjätunnus</translation>
 <translation id="8504928302600319133">Tietokonelaitteistot</translation>
@@ -3599,6 +3696,7 @@ Lisätietoja:
 <translation id="853246364274116957">Broadway-esitykset ja musiikkiteatteri</translation>
 <translation id="853332391023689529">Avolava-autot</translation>
 <translation id="8533619373899488139">Voit nähdä estetyt URL-osoitteet ja muut järjestelmänvalvojasi määräämät käytännöt osoitteessa &lt;strong&gt;chrome://policy&lt;/strong&gt;.</translation>
+<translation id="5734033364988802986"><ph name="PERMISSION"/> on laitettu pois päältä Bravessa.</translation>
 <translation id="8536234749087605613">Kirjekuori (ikkuna)</translation>
 <translation id="8539500321752640291">Myönnetäänkö 2 lupaa?</translation>
 <translation id="8541158209346794904">Bluetooth-laite</translation>
@@ -3607,8 +3705,10 @@ Lisätietoja:
 <translation id="8542014550340843547">Kolme niittiä alareunassa</translation>
 <translation id="8542617028204211143">SRA0</translation>
 <translation id="8543181531796978784">Voit <ph name="BEGIN_ERROR_LINK"/>ilmoittaa löytyneestä ongelmasta<ph name="END_ERROR_LINK"/> tai <ph name="BEGIN_LINK"/>siirtyä mahdollisesti haitalliselle sivustolle<ph name="END_LINK"/>, jos ymmärrät tietoturvariskit.</translation>
+<translation id="907470742420136113">Brave yrittää muuttaa maksutapojen täytön asetuksia.</translation>
 <translation id="8544303911974837265">Polyesteri</translation>
 <translation id="854548366864113872">Kalliimpi vaihtoehto</translation>
+<translation id="8546254312340305428">Ilmoita latauksen syy (pakollinen)</translation>
 <translation id="8546350655047701518">Eksportoi lokit JSON-muotoon</translation>
 <translation id="8546667245446052521">Paperi (arkistointi)</translation>
 <translation id="854892890027593466">Kirjekuori C6/C5</translation>
@@ -3620,6 +3720,7 @@ Lisätietoja:
 <translation id="8555010941760982128">Käytä kassalla tätä koodia</translation>
 <translation id="8556297087315686325">Verkon valvominen ja hallinta</translation>
 <translation id="8557066899867184262">CVC sijaitsee kortin takapuolella.</translation>
+<translation id="8557412555245662180">Lue lisää Seurannan estosta</translation>
 <translation id="8558347880669160417">Kamera ja mikrofoni sallittu tällä kertaa</translation>
 <translation id="8559762987265718583">Verkkotunnukseen <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> ei voi muodostaa salattua yhteyttä, koska laitteesi aika ja päivämäärä (<ph name="DATE_AND_TIME"/>) ovat virheelliset.</translation>
 <translation id="8564182942834072828">Erilliset dokumentit / Kokoamattomat kopiot</translation>
@@ -3627,7 +3728,7 @@ Lisätietoja:
 <translation id="8576310925653847813">Kotiteatterijärjestelmät</translation>
 <translation id="8577192028579836704">Kaikki vaihtoehdot yleensä <ph name="TYPICAL_PRICE"/></translation>
 <translation id="8577348305244205642">Virtuaalinen kortti ei käytettävissä</translation>
-<translation id="8585615573162100611">Estä <ph name="PERMISSION"/></translation>
+<translation id="8581064022803799721">Sivu on tallennettu tänne: <ph name="LAST_BOOKMARKS_FOLDER"/>.</translation>
 <translation id="8586082901536468629">Squash- ja racquetball-välineet</translation>
 <translation id="858637041960032120">Lisää puh.nro
 </translation>
@@ -3652,6 +3753,7 @@ Lisätietoja:
 <translation id="865032292777205197">liiketunnistimet</translation>
 <translation id="865255447216708819">Filmin takapuolen tulostus</translation>
 <translation id="8654126188050905496">55 x 91 mm</translation>
+<translation id="8655930295668719549">Et aiemmin myöntänyt lupaa (<ph name="PERMISSION"/>) sivustolle <ph name="ORIGIN"/></translation>
 <translation id="8662463432865928030">Liikekiinteistöt</translation>
 <translation id="8663226718884576429">Tilauksen yhteenveto, <ph name="TOTAL_LABEL"/>, lisätietoja</translation>
 <translation id="8663909737634214500">Optinen levy</translation>
@@ -3667,6 +3769,7 @@ Lisätietoja:
 <translation id="8687429322371626002"><ph name="MANAGER"/> ylläpitää laitettasi ja tiliäsi.</translation>
 <translation id="8688672835843460752">Saatavilla</translation>
 <translation id="868922510921656628">Sivuja joukkoa kohti</translation>
+<translation id="8693639060656817812">Lue lisää Seurannan eston saatavuudesta</translation>
 <translation id="869891660844655955">Vanhenemispäivämäärä</translation>
 <translation id="8699041776323235191">HID-laite</translation>
 <translation id="8699985386408839112">Kirjekuori Kaku 1</translation>
@@ -3771,6 +3874,7 @@ Lisätietoja:
 <translation id="8903921497873541725">Lähennä</translation>
 <translation id="890493561996401738">Ehdotuksen poistopainike, poista painamalla Enter, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="8910898109640902752">8 x 10 tuumaa</translation>
+<translation id="4805806622840861220">Käynnistä Brave uudelleen</translation>
 <translation id="8918062451146297192">Virtuaalikortin CVC</translation>
 <translation id="8919740778133505789">Urheiluautot</translation>
 <translation id="8919895429178014996">Piilota kaikki kohteet</translation>
@@ -3781,6 +3885,7 @@ Lisätietoja:
 <translation id="893332455753468063">Lisää nimi</translation>
 <translation id="8942355029279167844"><ph name="APP_NAME"/> kerää järjestelmänvalvojan luvalla diagnostiikkadataa tuotteen käyttökokemuksen parantamiseksi. Katso lisätietoja osoitteesta <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/>.</translation>
 <translation id="8943282376843390568">Lime</translation>
+<translation id="8944485226638699751">Rajoitettu</translation>
 <translation id="8949493680961858543">A1 x 4</translation>
 <translation id="8951415078585015151">Laki ja hallinto</translation>
 <translation id="8954252855949068147">Vaatetus</translation>
@@ -3794,6 +3899,7 @@ Lisätietoja:
 <translation id="8975012916872825179">Sisältää puhelinnumerot, sähköpostiosoitteet ja toimitusosoitteet</translation>
 <translation id="8975263830901772334">Tulostamiesi tiedostojen nimet</translation>
 <translation id="8978053250194585037">Braven selaussuoja havaitsi äskettäin <ph name="BEGIN_LINK"/>tietojenkalasteluyrityksen<ph name="END_LINK"/> sivustolla <ph name="SITE"/>. Tietojenkalastelusivustot yrittävät huijata käyttäjiä tekeytymällä toisiksi sivustoiksi.</translation>
+<translation id="8982884016487650216">PDF ladattu</translation>
 <translation id="8983369100812962543">Voit nyt muuttaa sovelluksen kokoa</translation>
 <translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, katso selaushistoriaasi Bravessa painamalla sarkainta ja sitten Enter</translation>
 <translation id="8987663052629670333">Valokuvien tulostuspalvelut</translation>
@@ -3820,6 +3926,7 @@ Lisätietoja:
 <translation id="9021429684248523859"><ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, jaa tämä välilehti esimerkiksi linkin kautta, luomalla QR-koodi tai striimaamalla painamalla sarkainta ja sitten Enter</translation>
 <translation id="9023536760430404133">Ajoneuvojen pyörät ja renkaat</translation>
 <translation id="9025348182339809926">(Virheellinen)</translation>
+<translation id="902590795160480390">Ladataan PDF-tiedostoa</translation>
 <translation id="9030265603405983977">Yksivärinen</translation>
 <translation id="9035022520814077154">Suojausvirhe</translation>
 <translation id="9035824888276246493">Tallenna turvakoodit</translation>
@@ -3918,6 +4025,7 @@ Lisätietoja:
 <translation id="9207861905230894330">Artikkelin lisääminen epäonnistui.</translation>
 <translation id="9213433120051936369">Muokkaa ulkoasua</translation>
 <translation id="2206050430829841793">Sovellus estää Bravea muodostamasta turvallista yhteyttä tähän sivustoon</translation>
+<translation id="92178312226016010">Seuraat tätä tuotetta.</translation>
 <translation id="9218430445555521422">Aseta oletukseksi</translation>
 <translation id="9219103736887031265">Kuvat</translation>
 <translation id="142389341645668510">Yksilöi Bravea</translation>
@@ -3931,6 +4039,7 @@ Lisätietoja:
 <translation id="939736085109172342">Uusi kansio</translation>
 <translation id="940053046584497293">Matkailu ja liikkuminen</translation>
 <translation id="6588091288231158998">Käytä Brave-tilillesi tallennettuja salasanoja ja avainkoodeja</translation>
+<translation id="5444457503062019851">Brave estää sivustoja seuraamasta sinua kolmansien osapuolten evästeiden avulla selaamisen aikana.</translation>
 <translation id="945855313015696284">Tarkista tiedot alta ja poista virheelliset kortit.</translation>
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, luo sivusto nopeasti Brave Sitesissa painamalla sarkainta ja sitten Enter</translation>
 <translation id="7776043919629791284">{COUNT,plural, =0{Brave rajoittaa evästeet uudelleen tänään}=1{Brave rajoittaa evästeet uudelleen huomenna}other{# päivää ennen kuin Brave rajoittaa evästeet uudelleen}}</translation>
@@ -4016,6 +4125,7 @@ Lisätietoja:
 <translation id="1090109565956608696">Ei sallittu yksityisessä tilassa</translation>
 <translation id="6934396344327597525">Yksityisestä tilasta poistutaan ulkoisessa sovelluksessa maksamisen vuoksi. Haluatko jatkaa?</translation>
 <translation id="2446780203663220049">Profiilit ja &amp; yhteisö</translation>
+<translation id="7244699920401708198">Useimmat sivustot eivät voi käyttää kolmansien osapuolten evästeitä seuratakseen selaustasi, ja sivustot eivät voi käyttää kolmansien osapuolten evästeitä yksityistilassa.</translation>
 <translation id="1426112902089905810">&lt;h4&gt;Vaihe 1: Kirjaudu portaaliin&lt;/h4&gt;
     &lt;p&gt;Kahviloiden, lentokenttien ja joidenkin muiden paikkojen Wi-Fi-verkot voivat edellyttää kirjautumista. Voit avata kirjautumissivun siirtymällä sivulle, jonka osoitteen alkuosa on &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;

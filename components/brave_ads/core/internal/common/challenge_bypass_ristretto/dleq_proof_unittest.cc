@@ -7,10 +7,8 @@
 
 #include <sstream>
 
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token_unittest_util.h"

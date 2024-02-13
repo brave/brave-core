@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_GEOGRAPHICAL_SUBDIVISION_SUBDIVISION_TARGETING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_GEOGRAPHICAL_SUBDIVISION_SUBDIVISION_TARGETING_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -66,8 +66,8 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver,
   // SubdivisionObserver:
   void OnDidUpdateSubdivision(const std::string& subdivision) override;
 
-  mutable absl::optional<std::string> auto_detected_subdivision_;
-  mutable absl::optional<std::string> user_selected_subdivision_;
+  mutable std::optional<std::string> auto_detected_subdivision_;
+  mutable std::optional<std::string> user_selected_subdivision_;
 };
 
 }  // namespace brave_ads

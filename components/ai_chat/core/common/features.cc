@@ -21,8 +21,13 @@ BASE_FEATURE(kAIChat,
              base::FEATURE_DISABLED_BY_DEFAULT
 #endif
 );
-const base::FeatureParam<std::string> kAIModelName{&kAIChat, "ai_model_name",
-                                                   ""};
+const base::FeatureParam<std::string> kAIModelsDefaultKey{
+    &kAIChat, "default_model", "chat-leo-expanded"};
+const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
+    &kAIChat, "default_premium_model", "chat-leo-expanded"};
+const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
+                                                  "is_freemium_available",
+                                                  true);
 const base::FeatureParam<bool> kAIChatSSE{&kAIChat, "ai_chat_sse", true};
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
 

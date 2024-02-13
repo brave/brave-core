@@ -6,13 +6,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/units/ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -98,7 +98,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   creative_set_conversions.push_back(creative_set_conversion_3);
 
   // Act & Assert
-  CreativeSetConversionBuckets expected_buckets;
+  CreativeSetConversionBucketMap expected_buckets;
   expected_buckets.insert(  // Bucket #1
       {kCreativeSetId, {creative_set_conversion_1, creative_set_conversion_3}});
   expected_buckets.insert(  // Bucket #2
@@ -110,7 +110,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
        SortEmptyCreativeSetConversionsIntoBuckets) {
   // Act
-  const CreativeSetConversionBuckets buckets =
+  const CreativeSetConversionBucketMap buckets =
       SortCreativeSetConversionsIntoBuckets({});
 
   // Assert

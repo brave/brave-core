@@ -15,6 +15,7 @@ import androidx.core.widget.ImageViewCompat;
 
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.TintObserver;
+import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
 
 /**
  * Brave's extension of HomeButton.

@@ -4,10 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled from 'styled-components'
+
+// Selectors
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../constants/types'
 
 // Hooks
 import { useSwap } from './hooks/useSwap'
@@ -20,34 +23,20 @@ import { getLocale } from '$web-common/locale'
 import {
   StandardButton //
 } from './components/buttons/standard-button/standard-button'
-import {
-  FlipTokensButton //
-} from './components/buttons/flip-tokens-button/flip-tokens-button'
-import { SwapContainer } from './components/swap/swap-container/swap-container'
-import { FromSection } from './components/swap/from-section/from-section'
-import {
-  ToSection //
-} from './components/swap/to-section/to-section'
-import {
-  SelectTokenModal //
-} from './components/swap/select-token-modal/select-token-modal'
+import { FromAsset } from '../composer_ui/from_asset/from_asset'
+import { ToAsset } from '../composer_ui/to_asset/to_asset'
+import { SelectTokenModal } from '../composer_ui/select_token_modal/select_token_modal'
 import { QuoteInfo } from './components/swap/quote-info/quote-info'
-import { QuoteOptions } from './components/swap/quote-options/quote-options'
 import {
-  SwapSettingsModal //
-} from './components/swap/settings/swap-settings-modal'
+  AdvancedSettingsModal //
+} from '../composer_ui/advanced_settings_modal.style.ts/advanced_settings_modal'
 import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
-
-import { SwapSectionBox } from './components/boxes/swap-section-box'
+import { ComposerControls } from '../composer_ui/composer_controls/composer_controls'
+import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { DefaultPanelHeader } from '../../../components/desktop/card-headers/default-panel-header'
 
 // Styled Components
-import {
-  Row,
-  Text,
-  IconButton,
-  Icon,
-  StyledDiv
-} from './components/shared-swap.styles'
+import { Row } from '../../../components/shared/style'
 
 export const Swap = () => {
   // Hooks
@@ -61,38 +50,35 @@ export const Swap = () => {
     quoteOptions,
     selectedQuoteOptionIndex,
     selectingFromOrTo,
-    fromAssetBalance,
-    fiatValue,
     selectedGasFeeOption,
     slippageTolerance,
-    useDirectRoute,
     gasEstimates,
-    getCachedAssetBalance,
     onSelectFromToken,
     onSelectToToken,
-    onSelectQuoteOption,
     onClickFlipSwapTokens,
     setSelectingFromOrTo,
     handleOnSetFromAmount,
     handleOnSetToAmount,
     setSelectedGasFeeOption,
     setSlippageTolerance,
-    setUseDirectRoute,
     onSubmit,
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
-    getNetworkAssetsList,
     spotPrices,
     selectedNetwork,
     setSelectedNetwork,
     selectedAccount,
-    setSelectedAcount
+    tokenBalancesRegistry,
+    isLoadingBalances
   } = swap
 
   // State
   const [showSwapSettings, setShowSwapSettings] = React.useState<boolean>(false)
   const [showPrivacyModal, setShowPrivacyModal] = React.useState<boolean>(false)
+
+  // Selectors
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // Refs
   const selectTokenModalRef = React.useRef<HTMLDivElement>(null)
@@ -123,74 +109,54 @@ export const Swap = () => {
     showPrivacyModal
   )
 
-  // FIXME(douglashdaniel): this should be computed
-  // if (!isReady) {
-  //   return <SwapSkeleton />
-  // }
-
   // render
   return (
     <>
-      <SwapContainer
-        showPrivacyModal={() => setShowPrivacyModal(true)}
-        selectedNetwork={selectedNetwork}
-        selectedAccount={selectedAccount}
-        setSelectedNetwork={setSelectedNetwork}
-        setSelectedAccount={setSelectedAcount}
+      <WalletPageWrapper
+        wrapContentInBox={true}
+        noCardPadding={true}
+        noMinCardHeight={true}
+        hideDivider={true}
+        cardHeader={
+          isPanel ? (
+            <DefaultPanelHeader
+              title={getLocale('braveWalletSwap')}
+              expandRoute={WalletRoutes.Swap}
+            />
+          ) : undefined
+        }
       >
-        <Row
-          rowWidth='full'
-          horizontalPadding={16}
-          verticalPadding={6}
-          marginBottom={18}
-        >
-          <Text isBold={true}>{getLocale('braveSwap')}</Text>
-          <SettingsWrapper ref={swapSettingsModalRef}>
-            <IconButton onClick={onToggleShowSwapSettings}>
-              <Icon name='tune' />
-            </IconButton>
-            {showSwapSettings && (
-              <SwapSettingsModal
-                selectedGasFeeOption={selectedGasFeeOption}
-                slippageTolerance={slippageTolerance}
-                useDirectRoute={useDirectRoute}
-                setSelectedGasFeeOption={setSelectedGasFeeOption}
-                setSlippageTolerance={setSlippageTolerance}
-                setUseDirectRoute={setUseDirectRoute}
-                gasEstimates={gasEstimates}
-                onClose={() => setShowSwapSettings(false)}
-                selectedNetwork={selectedNetwork}
-              />
-            )}
-          </SettingsWrapper>
-        </Row>
-        <FromSection
+        <FromAsset
           onInputChange={handleOnSetFromAmount}
           inputValue={fromAmount}
           onClickSelectToken={() => setSelectingFromOrTo('from')}
           token={fromToken}
-          tokenBalance={fromAssetBalance}
+          tokenBalancesRegistry={tokenBalancesRegistry}
+          isLoadingBalances={isLoadingBalances}
           hasInputError={
             swapValidationError === 'insufficientBalance' ||
             swapValidationError === 'fromAmountDecimalsOverflow'
           }
-          fiatValue={fiatValue}
-          selectedNetwork={selectedNetwork}
-          selectedAccount={selectedAccount}
+          network={selectedNetwork}
+          account={selectedAccount}
         />
-        <FlipTokensButton onClick={onClickFlipSwapTokens} />
-        <SwapSectionBox boxType='secondary'>
-          <ToSection
-            onClickSelectToken={() => setSelectingFromOrTo('to')}
-            token={toToken}
-            inputValue={toAmount}
-            onInputChange={handleOnSetToAmount}
-            hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
-            isLoading={isFetchingQuote}
-            disabled={selectedNetwork?.coin === BraveWallet.CoinType.SOL}
-            selectedNetwork={selectedNetwork}
-          />
-          {selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
+        <ComposerControls
+          onFlipAssets={onClickFlipSwapTokens}
+          onOpenSettings={onToggleShowSwapSettings}
+        />
+        <ToAsset
+          onInputChange={handleOnSetToAmount}
+          inputValue={toAmount}
+          onClickSelectToken={() => setSelectingFromOrTo('to')}
+          token={toToken}
+          inputDisabled={selectedNetwork?.coin === BraveWallet.CoinType.SOL}
+          hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
+          network={selectedNetwork}
+          selectedSendOption='#token'
+          isFetchingQuote={isFetchingQuote}
+        >
+          {/* TODO: QuoteOptions is currently unused
+          selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
             quoteOptions.length > 0 && (
               <QuoteOptions
                 options={quoteOptions}
@@ -198,19 +164,18 @@ export const Swap = () => {
                 onSelectQuoteOption={onSelectQuoteOption}
                 spotPrices={spotPrices}
               />
-            )}
-        </SwapSectionBox>
-        {quoteOptions.length > 0 && (
-          <>
-            <QuoteInfo
-              selectedQuoteOption={quoteOptions[selectedQuoteOptionIndex]}
-              fromToken={fromToken}
-              toToken={toToken}
-              toAmount={toAmount}
-              spotPrices={spotPrices}
-            />
+          ) */}
+          {quoteOptions.length > 0 && (
+            <>
+              <QuoteInfo
+                selectedQuoteOption={quoteOptions[selectedQuoteOptionIndex]}
+                fromToken={fromToken}
+                toToken={toToken}
+                toAmount={toAmount}
+                spotPrices={spotPrices}
+              />
 
-            {/* TODO: Swap and Send  is currently unavailable
+              {/* TODO: Swap and Send  is currently unavailable
               <SwapAndSend
                 onChangeSwapAndSendSelected={setSwapAndSendSelected}
                 handleOnSetToAnotherAddress={handleOnSetToAnotherAddress}
@@ -223,31 +188,48 @@ export const Swap = () => {
                 toAnotherAddress={toAnotherAddress}
                 userConfirmedAddress={userConfirmedAddress}
             */}
-          </>
+            </>
+          )}
+          <Row
+            width='100%'
+            padding='16px 16px 0px 16px'
+          >
+            <StandardButton
+              onClick={onSubmit}
+              buttonType='primary'
+              buttonWidth='full'
+              disabled={isSubmitButtonDisabled}
+            >
+              {submitButtonText}
+            </StandardButton>
+          </Row>
+        </ToAsset>
+        {showSwapSettings && (
+          <AdvancedSettingsModal
+            selectedGasFeeOption={selectedGasFeeOption}
+            slippageTolerance={slippageTolerance}
+            setSelectedGasFeeOption={setSelectedGasFeeOption}
+            setSlippageTolerance={setSlippageTolerance}
+            gasEstimates={gasEstimates}
+            onClose={() => setShowSwapSettings(false)}
+            selectedNetwork={selectedNetwork}
+            ref={swapSettingsModalRef}
+          />
         )}
-        <StandardButton
-          onClick={onSubmit}
-          buttonType='primary'
-          buttonWidth='full'
-          verticalMargin={16}
-          disabled={isSubmitButtonDisabled}
-        >
-          {submitButtonText}
-        </StandardButton>
-      </SwapContainer>
+      </WalletPageWrapper>
       {selectingFromOrTo && (
         <SelectTokenModal
           ref={selectTokenModalRef}
           onClose={() => setSelectingFromOrTo(undefined)}
-          onSelectToken={
+          onSelectAsset={
             selectingFromOrTo === 'from' ? onSelectFromToken : onSelectToToken
           }
-          disabledToken={selectingFromOrTo === 'from' ? toToken : fromToken}
-          getCachedAssetBalance={getCachedAssetBalance}
-          selectingFromOrTo={selectingFromOrTo}
-          getNetworkAssetsList={getNetworkAssetsList}
+          selectedToken={selectingFromOrTo === 'from' ? toToken : fromToken}
+          selectedSendOption='#token'
           selectedNetwork={selectedNetwork}
           setSelectedNetwork={setSelectedNetwork}
+          showFullFlatTokenList={selectingFromOrTo === 'to'}
+          modalType='swap'
         />
       )}
       {showPrivacyModal && (
@@ -259,8 +241,3 @@ export const Swap = () => {
     </>
   )
 }
-
-const SettingsWrapper = styled(StyledDiv)`
-  display: flex;
-  position: relative;
-`

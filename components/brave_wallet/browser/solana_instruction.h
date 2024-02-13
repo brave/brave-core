@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_INSTRUCTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_INSTRUCTION_H_
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -13,7 +14,6 @@
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_decoded_data.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Value;
@@ -39,7 +39,7 @@ class SolanaInstruction {
   SolanaInstruction(const std::string& program_id,
                     std::vector<SolanaAccountMeta>&& accounts,
                     const std::vector<uint8_t>& data,
-                    absl::optional<SolanaInstructionDecodedData> decoded_data);
+                    std::optional<SolanaInstructionDecodedData> decoded_data);
   ~SolanaInstruction();
 
   SolanaInstruction(const SolanaInstruction&);
@@ -48,7 +48,7 @@ class SolanaInstruction {
   SolanaInstruction& operator=(SolanaInstruction&&);
   bool operator==(const SolanaInstruction&) const;
 
-  static absl::optional<SolanaInstruction> FromCompiledInstruction(
+  static std::optional<SolanaInstruction> FromCompiledInstruction(
       const SolanaCompiledInstruction& compiled_instruction,
       const SolanaMessageHeader& message_header,
       const std::vector<SolanaAddress>& static_accounts,
@@ -68,7 +68,7 @@ class SolanaInstruction {
   static void FromMojomSolanaInstructions(
       const std::vector<mojom::SolanaInstructionPtr>& mojom_instructions,
       std::vector<SolanaInstruction>* instructions);
-  static absl::optional<SolanaInstruction> FromValue(
+  static std::optional<SolanaInstruction> FromValue(
       const base::Value::Dict& value);
 
  private:
@@ -76,7 +76,7 @@ class SolanaInstruction {
   std::vector<SolanaAccountMeta> accounts_;
   std::vector<uint8_t> data_;
 
-  absl::optional<SolanaInstructionDecodedData> decoded_data_;
+  std::optional<SolanaInstructionDecodedData> decoded_data_;
 };
 
 }  // namespace brave_wallet

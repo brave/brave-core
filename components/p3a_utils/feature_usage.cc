@@ -203,7 +203,8 @@ void RecordFeatureDaysInWeekUsed(PrefService* prefs,
 
 void RecordFeatureLastUsageTimeMetric(PrefService* prefs,
                                       const char* last_use_time_pref_name,
-                                      const char* histogram_name) {
+                                      const char* histogram_name,
+                                      bool single_month_only) {
   DCHECK(prefs);
   DCHECK(last_use_time_pref_name);
   DCHECK(histogram_name);
@@ -218,9 +219,19 @@ void RecordFeatureLastUsageTimeMetric(PrefService* prefs,
   if (duration_weeks < 4) {
     answer = duration_weeks + 1;
   } else {
-    int duration_months = duration_days / 30;
-    answer = duration_months < 2 ? 5 : 6;
+    if (single_month_only) {
+      if (duration_days <= 30) {
+        answer = 4;
+      } else {
+        // Do not record if past 30 days.
+        return;
+      }
+    } else {
+      int duration_months = duration_days / 30;
+      answer = duration_months < 2 ? 5 : 6;
+    }
   }
+
   base::UmaHistogramExactLinear(histogram_name, answer, 7);
 }
 

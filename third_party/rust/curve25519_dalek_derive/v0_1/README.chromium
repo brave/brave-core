@@ -1,0 +1,9 @@
+Name: curve25519-dalek-derive
+URL: https://crates.io/crates/curve25519-dalek-derive
+Description: curve25519-dalek Derives
+Version: 0.1.1
+Security Critical: yes
+Shipped: yes
+License: Apache 2.0
+License File: 
+Revision: 72761ca6b4772af985f969db53faf7accbad9b36

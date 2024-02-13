@@ -41,9 +41,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">É unha xanela privada con Tor</translation>
 <translation id="1037341607922068025">Abrir xanela privada con Tor</translation>
-<translation id="1725356094208762656">Abrir en Tor</translation>
-<translation id="3396347744975515056">A sincronización de Brave foi actualizado e require configuración</translation>
-<translation id="7473245612074035141">Comece a configurar</translation>
 <translation id="496896260395129787">Esta conta de Sincronización de Brave eliminouse doutro dispositivo. Se non querías desactivar Sincronización, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>volve crear a conta.</translation>
 <translation id="6965382102122355670">Aceptar</translation>
@@ -82,6 +79,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2638041073279639246">Abrir ligazón nunha xanela privada con Tor</translation>
 <translation id="3425600262621021599">Abrir ligazón nunha xanela privada de Brave con Tor</translation>
 <translation id="3229091547987707389">Importar e compartir un directorio</translation>
+<translation id="2545072023356206691">A partir do 1 de decembro de 2023, a canle de Brave Dev deixará de recibir actualizacións para o navegador. Recomendamos aos usuarios que migren ás versións Nightly, Beta ou Release de Brave.</translation>
 <translation id="474217410105706308">Pestana Silenciar</translation>
 <translation id="2804710924397009224">Agochar a icona de recompensas de Brave</translation>
 <translation id="5029193871181468990">Agochar a icona de Brave Rewards</translation>
@@ -190,6 +188,10 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="7109885938715976444">Só esta vez</translation>
 <translation id="7473891865547856676">Non, grazas</translation>
 <translation id="2722425322672922644">Obter información acerca de como afecta isto á miña privacidade</translation>
+<translation id="5551268135482191097">Produciuse un erro ao cargar o URL de IPFS. Queres redirixir ao URL orixinal?</translation>
+<translation id="4756627014339714615">Redirixir</translation>
+<translation id="1338274252864046652">Gustaríache executar sempre un nodo IPFS ao iniciar o navegador?</translation>
+<translation id="3435896845095436175">Activar</translation>
 <translation id="4552520379838695057">Esta páxina falta.</translation>
 <translation id="2609895996619941644">Quere comprobar se unha versión gardada está dispoñible na máquina Wayback?</translation>
 <translation id="8053093028263274061">Non hai versións dispoñibles gardadas.</translation>
@@ -290,6 +292,19 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="5181358966317519720">Eliminar da lista de reprodución</translation>
 <translation id="2377705456080309463">Ver páxina orixinal</translation>
 <translation id="158894735649719362">A diversión comenza cando ten algo para reproducir. Engada os seus ficheiros multimedia favoritos e reprodúzaos en calquera momento e lugar, mesmo sen conexión.</translation>
+<translation id="8422349592890097194">Crear un cartafol novo</translation>
+<translation id="2818704116581303039">Abrir a configuración de Lista de reprodución</translation>
+<translation id="6790428901817661496">Reproducir</translation>
+<translation id="1178581264944972037">Pausar</translation>
+<translation id="4477350412780666475">Seguinte pista</translation>
+<translation id="3962859241508114581">Pista anterior</translation>
+<translation id="7544853251252956727">Reproducir aleatoriamente</translation>
+<translation id="4330722796577425585">Rebobinar</translation>
+<translation id="7481312909269577407">Adiante</translation>
+<translation id="2800828306627475693">Repetición desactivada</translation>
+<translation id="1748244367114657861">Repetir un</translation>
+<translation id="6421906998825794164">Repetir todo</translation>
+<translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Os cambios aplicaranse a próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzamento agora</translation>
 <translation id="4472575034687746823">Comezar</translation>
@@ -403,10 +418,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="413570371620795359">Abre o panel de recompensas para activalo e comezar</translation>
 <translation id="1051600834033686945">Abrir a configuración completa de Recompensas de Brave</translation>
 <translation id="6333347122924254968">Mostrar a icona de Recompensas de Brave na barra de enderezos</translation>
-<translation id="7483857210736407752">Amosar botóns de dar propina nos sitios</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Bloqueando redes sociais</translation>
 <translation id="863171915776379000">Permitir as conexións e publicacións incrustadas de Facebook</translation>
 <translation id="5165042248369837294">Permitir os chíos incrustados en Twitter</translation>
@@ -575,7 +586,9 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="6936835573742749135">Non se pode solicitar un CAPTCHA. Téntao de novo máis tarde.</translation>
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="1369311132025451972">Redireccionar automaticamente os sitios .onion</translation>
-<translation id="1658670175365815312">Brave cambiará á versión .onion dun sitio web cando estea dispoñible e abrirá automaticamente todos os dominios .onion nunha ventá Tor.</translation>
+<translation id="6214393847480015759">En ventás Tor, Brave cambiará automaticamente á versión .onion dun sitio web cando estea dispoñible.</translation>
+<translation id="1294350054292274934">Resolver só enderezos .onion en ventás Tor</translation>
+<translation id="1258903596167452221">Os servizos Onion non estarán dispoñibles fóra de ventás Tor</translation>
 <translation id="2896916411183256228">Emprega WebTorrent para amosar torrents directamente no navegador. Admite ficheiros de torrent e ligazóns magnéticas.</translation>
 <translation id="5249433283143453448">Emprega a xestión de dereitos dixitais (DRM) de Widevine para ver vídeos de transmisión protexida e demais contido no navegador.</translation>
 <translation id="1314131187310290315">Extensións de Manifest V2</translation>
@@ -624,6 +637,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="4226543734057230801">Redes de Ethereum</translation>
 <translation id="3504157706952484145">Redes de Filecoin</translation>
 <translation id="1561541094377237745">Redes de Solana</translation>
+<translation id="7141438739990875547">Redes de Bitcoin</translation>
 <translation id="3159419679550543837">Amosar redes de proba</translation>
 <translation id="3215569562674795548">Editar ou engadir rede nova</translation>
 <translation id="4418993400653250511">O ID da cadea</translation>
@@ -663,6 +677,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="8425213833346101688">Cambiar</translation>
 <translation id="585868419599255817">Alternativa á pasarela pública IPFS</translation>
 <translation id="2618080188892567155">Volve automaticamente á pasarela IPFS pública se non podes acceder ó teu nó IPFS local de Brave.</translation>
+<translation id="8956391206920485238">Executar sempre un nodo IPFS ao iniciar o navegador?</translation>
 <translation id="6789104345873307368">Redirixir solicitudes automaticamente para recursos de redes IPFS á pasarela configurada.</translation>
 <translation id="4138306018048329894">As solicitudes enviadas a recursos de IPFS que se aloxan en pasarelas de IPFS de terceiros ou recursos DNSLINK dirixiranse a través da pasarela remota ou local seleccionada.
     Nota: No caso de que se seleccione un nó local, o recurso solicitarase directamente desde o seu ordenador, polo que é posible que se envíen algúns datos almacenados na memoria caché á rede de IPFS.</translation>
@@ -714,6 +729,9 @@ historial de chats eliminará todas as súas conversas anteriores con Brave
 Leo. Esta acción non se pode desfacer.</translation>
 <translation id="8157373421434119674">Historial de datos e chat</translation>
 <translation id="614530507403667291">Modelo predeterminado para conversas novas</translation>
+<translation id="349846214503465941">Activar Lista de reprodución</translation>
+<translation id="7903608716704052878">Engadir automaticamente ficheiros para visualizalos sen conexión</translation>
+<translation id="4193768184502613558">Esta opción almacenará automaticamente na memoria caché os ficheiros multimedia para que poidas reproducilos sen conexión a Internet.</translation>
 <translation id="6624718837376802990">Recompensas Avatar Edgy</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Océano Edgy</translation>

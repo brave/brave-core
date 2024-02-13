@@ -5,10 +5,6 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useDispatch } from 'react-redux'
-
-// Actions
-import { PanelActions } from '../../../panel/actions'
 
 // Types
 import {
@@ -63,7 +59,11 @@ import { getLocale } from '../../../../common/locale'
 
 // Hooks
 import { useBalancesFetcher } from '../../../common/hooks/use-balances-fetcher'
-import { useGetVisibleNetworksQuery } from '../../../common/slices/api.slice'
+import {
+  useCancelConnectToSiteMutation,
+  useConnectToSiteMutation,
+  useGetVisibleNetworksQuery
+} from '../../../common/slices/api.slice'
 
 const onClickAddAccount = () => {
   chrome.tabs.create(
@@ -84,9 +84,6 @@ interface Props {
 export const ConnectWithSite = (props: Props) => {
   const { originInfo, accountsToConnect } = props
 
-  // Redux
-  const dispatch = useDispatch()
-
   // State
   const [addressToConnect, setAddressToConnect] = React.useState<string>()
   const [selectedDuration, setSelectedDuration] =
@@ -99,25 +96,24 @@ export const ConnectWithSite = (props: Props) => {
   // Refs
   let scrollRef = React.useRef<HTMLDivElement | null>(null)
 
+  // Mutations
+  const [connectToSite] = useConnectToSiteMutation()
+  const [cancelConnectToSite] = useCancelConnectToSiteMutation()
+
   // Methods
-  const onNext = React.useCallback(() => {
+  const onNext = React.useCallback(async () => {
     if (!isReadyToConnect) {
       setIsReadyToConnect(true)
       return
     }
     if (addressToConnect) {
-      dispatch(
-        PanelActions.connectToSite({
-          addressToConnect: addressToConnect,
-          duration: selectedDuration
-        })
-      )
+      await connectToSite({ addressToConnect, duration: selectedDuration })
     }
-  }, [isReadyToConnect, addressToConnect, selectedDuration])
+  }, [connectToSite, isReadyToConnect, addressToConnect, selectedDuration])
 
-  const onCancel = React.useCallback(() => {
-    dispatch(PanelActions.cancelConnectToSite())
-  }, [])
+  const onCancel = React.useCallback(async () => {
+    await cancelConnectToSite()
+  }, [cancelConnectToSite])
 
   const onSelectAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => () => {

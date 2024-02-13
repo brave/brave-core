@@ -133,6 +133,8 @@ chrome.braveRewards.onCompleteReset.addListener((properties: { success: boolean 
   getActions().onCompleteReset(properties.success)
 })
 
+chrome.braveRewards.onSelfCustodyInviteDismissed.addListener(fetchRewardsData)
+
 chrome.braveRewards.onExternalWalletLoggedOut.addListener(fetchRewardsData)
 
 chrome.braveRewards.onExternalWalletDisconnected.addListener(fetchRewardsData)

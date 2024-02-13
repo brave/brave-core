@@ -6,6 +6,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -33,9 +34,9 @@ MATCHER_P(MatchesAPIRequestResult, request_result, "") {
   return arg == *request_result;
 }
 
-absl::optional<std::string> ConversionCallback(
+std::optional<std::string> ConversionCallback(
     const std::string& expected_raw_response,
-    const absl::optional<std::string>& converted_response,
+    const std::optional<std::string>& converted_response,
     const std::string& raw_response) {
   EXPECT_EQ(expected_raw_response, raw_response);
   return converted_response;
@@ -79,21 +80,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
         }));
   }
 
-  void OnRequestResponse(bool* callback_called,
-                         const std::string& expected_response,
-                         const GURL expected_url,
-                         const int expected_http_code,
-                         const int expected_error_code,
-                         APIRequestResult api_request_result) {
-    *callback_called = true;
-    EXPECT_EQ(expected_http_code, api_request_result.response_code());
-    EXPECT_EQ(expected_response, api_request_result.body());
-    EXPECT_EQ(expected_error_code, api_request_result.error_code());
-    EXPECT_EQ(expected_url, api_request_result.final_url());
-  }
-
   void SendRequest(const std::string& server_raw_response,
-                   const std::string& expected_body,
                    const base::Value& expected_value_body,
                    const int expected_http_code = 200,
                    const int expected_error_code = net::OK,
@@ -103,7 +90,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
     GURL network_url("http://localhost/");
 
     APIRequestResult expected_result(
-        expected_http_code, expected_body, expected_value_body.Clone(),
+        expected_http_code, expected_value_body.Clone(),
         {{"content-type", "text/html"}}, expected_error_code, network_url);
     base::MockCallback<APIRequestHelper::ResultCallback> callback;
     EXPECT_CALL(callback, Run(MatchesAPIRequestResult(&expected_result)));
@@ -111,7 +98,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
     SetInterceptor("POST", network_url, server_raw_response, enable_cache);
     api_request_helper_->Request(
         "POST", network_url, "", "application/json", callback.Get(), {},
-        APIRequestOptions(false, enable_cache, -1u, absl::nullopt),
+        APIRequestOptions(false, enable_cache, -1u, std::nullopt),
         std::move(conversion_callback));
     base::RunLoop().RunUntilIdle();
   }
@@ -144,16 +131,15 @@ TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":1.8446744073709552e+19}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response,
-              ParseJson(expected_sanitized_response));
-  SendRequest("", "", base::Value());
-  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT));
-  SendRequest("{", "", base::Value());
-  SendRequest("0", "", base::Value());
-  SendRequest("a", "", base::Value());
+  SendRequest(server_raw_response, ParseJson(expected_sanitized_response));
+  SendRequest("", base::Value());
+  SendRequest("{}", base::Value(base::Value::Type::DICT));
+  SendRequest("{", base::Value());
+  SendRequest("0", base::Value());
+  SendRequest("a", base::Value());
   // Android's sanitizer doesn't support trailing commas.
 #if !BUILDFLAG(IS_ANDROID)
-  SendRequest("{\"a\":1,}", "{\"a\":1}", ParseJson("{\"a\":1}"));
+  SendRequest("{\"a\":1,}", ParseJson("{\"a\":1}"));
 #endif
 }
 
@@ -162,56 +148,56 @@ TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"18446744073709551615\"}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response,
-              ParseJson(expected_sanitized_response), 200, net::OK,
+  SendRequest(server_raw_response, ParseJson(expected_sanitized_response), 200,
+              net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response,
                              expected_sanitized_response));
 
   // Broken json after conversion
   // expecting empty response body after sanitization
   SendRequest(
-      server_raw_response, "", base::Value(), 200, net::OK,
+      server_raw_response, base::Value(), 200, net::OK,
       base::BindOnce(&ConversionCallback, server_raw_response, "broken json"));
   // Empty json after conversion
   // expecting empty response body after sanitization
-  SendRequest(server_raw_response, "", base::Value(), 200, net::OK,
+  SendRequest(server_raw_response, base::Value(), 200, net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response, ""));
 
-  // Returning absl::nullopt in conversion callback results in empty response
+  // Returning std::nullopt in conversion callback results in empty response
   server_raw_response = "{}";
   SendRequest(
-      server_raw_response, "", base::Value(), 422, net::OK,
-      base::BindOnce(&ConversionCallback, server_raw_response, absl::nullopt));
+      server_raw_response, base::Value(), 422, net::OK,
+      base::BindOnce(&ConversionCallback, server_raw_response, std::nullopt));
 }
 
 TEST_F(ApiRequestHelperUnitTest, Is2XXResponseCode) {
   EXPECT_TRUE(
-      APIRequestResult(200, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(200, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(201, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(201, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(250, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(250, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(299, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(299, {}, {}, net::OK, GURL()).Is2XXResponseCode());
 
   EXPECT_FALSE(
-      APIRequestResult(0, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(0, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(1, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(1, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(-1, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(-1, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(199, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(199, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(300, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(300, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(500, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(500, {}, {}, net::OK, GURL()).Is2XXResponseCode());
 }
 
 TEST_F(ApiRequestHelperUnitTest, EnableCache) {
-  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
+  SendRequest("{}", base::Value(base::Value::Type::DICT), 200, net::OK,
               base::NullCallback(), false);
-  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
+  SendRequest("{}", base::Value(base::Value::Type::DICT), 200, net::OK,
               base::NullCallback(), true);
 }
 

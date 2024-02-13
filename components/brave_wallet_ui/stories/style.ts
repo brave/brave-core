@@ -122,13 +122,3 @@ export const DesktopComponentWrapperRow = styled.div`
   width: 800px;
   padding: 20px;
 `
-
-export const StyledCreateAccountPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 320px;
-  height: 200px;
-  background-color: ${(p) => p.theme.color.background01};
-`

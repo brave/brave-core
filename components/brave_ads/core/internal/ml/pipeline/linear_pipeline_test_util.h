@@ -35,7 +35,7 @@ class LinearPipelineBufferBuilder final {
 
   LinearPipelineBufferBuilder& AddHashedNGramsTransformation(
       int bucket_count,
-      std::vector<uint32_t> subgrams);
+      const std::vector<uint32_t>& subgrams);
 
   std::string Build(const std::string& language);
 

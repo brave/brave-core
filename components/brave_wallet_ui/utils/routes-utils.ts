@@ -8,7 +8,9 @@ import {
   BraveWallet,
   WalletRoutes,
   SendPageTabHashes,
-  WalletOrigin
+  WalletOrigin,
+  WalletCreationMode,
+  WalletImportMode
 } from '../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
@@ -16,9 +18,11 @@ import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
  * Checks the provided route against a list of routes that we are OK with the
  * wallet opening to when the app is unlocked or when the panel is re-opened
  */
-export function isPersistableSessionRoute(route?: string) {
+export function isPersistableSessionRoute(
+  route?: string
+): route is WalletRoutes {
   if (!route) {
-    return
+    return false
   }
   return (
     route.includes(WalletRoutes.Accounts) ||
@@ -37,10 +41,34 @@ export function isPersistableSessionRoute(route?: string) {
   )
 }
 
-export function getInitialSessionRoute(): string | undefined {
+export function getInitialSessionRoute(): WalletRoutes | undefined {
   const route =
-    window.localStorage.getItem(LOCAL_STORAGE_KEYS.SESSION_ROUTE) || ''
+    window.localStorage.getItem(LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE) || ''
   return isPersistableSessionRoute(route) ? route : undefined
+}
+
+export function getOnboardingTypeFromPath(
+  path: WalletRoutes | string
+): WalletCreationMode {
+  if (path.includes(WalletRoutes.OnboardingHardwareWalletStart)) {
+    return 'hardware'
+  }
+  if (path.includes(WalletRoutes.OnboardingImportStart)) {
+    return 'import'
+  }
+  return 'new'
+}
+
+export function getOnboardingImportTypeFromPath(
+  path: WalletRoutes | string
+): WalletImportMode {
+  if (path.includes(WalletRoutes.OnboardingRestoreWallet)) {
+    return 'seed'
+  }
+  if (path.includes(WalletRoutes.OnboardingImportMetaMask)) {
+    return 'metamask'
+  }
+  return 'legacy'
 }
 
 export const makeAccountRoute = (
@@ -70,64 +98,101 @@ export const makeAccountTransactionRoute = (
 }
 
 export const makeFundWalletRoute = (
-  currencyCode?: string,
-  buyAmount?: string,
-  searchText?: string,
-  chainId?: string,
-  coinType?: string
+  assetId: string,
+  options?: {
+    currencyCode?: string
+    buyAmount?: string
+    searchText?: string
+    chainId?: string
+    coinType?: string
+  }
 ) => {
-  const routePartial = WalletRoutes.FundWalletPage.replace(
-    '/:currencyCode?',
-    currencyCode ? `/${currencyCode}` : ''
-  ).replace('/:buyAmount?', currencyCode && buyAmount ? `/${buyAmount}` : '')
+  if (options) {
+    const params = new URLSearchParams()
 
-  const params = new URLSearchParams()
-  if (searchText) {
-    params?.append('search', searchText)
-  }
-  if (chainId) {
-    params?.append('chainId', chainId)
-  }
-  if (coinType) {
-    params?.append('coinType', coinType)
-  }
+    if (options.currencyCode) {
+      params.append('currencyCode', options.currencyCode)
+    }
+    if (options.buyAmount) {
+      params.append('buyAmount', options.buyAmount)
+    }
+    if (options.searchText) {
+      params.append('search', options.searchText)
+    }
+    if (options.chainId) {
+      params.append('chainId', options.chainId)
+    }
+    if (options.coinType) {
+      params.append('coinType', options.coinType)
+    }
 
-  const paramsString = params ? params.toString() : undefined
-
-  return `${routePartial}${paramsString ? `?${paramsString}` : ''}`
+    return `${WalletRoutes.FundWalletPage.replace(
+      ':assetId?',
+      assetId
+    )}?${params.toString()}`
+  }
+  return WalletRoutes.FundWalletPage.replace(':assetId?', assetId)
 }
 
 export const makeFundWalletPurchaseOptionsRoute = (
-  currencyCode: string,
-  buyAmount: string
+  assetId: string,
+  options?: {
+    currencyCode: string
+    buyAmount: string
+  }
 ) => {
+  if (options) {
+    const params = new URLSearchParams()
+    if (options.currencyCode) {
+      params.append('currencyCode', options.currencyCode)
+    }
+    if (options.buyAmount) {
+      params.append('buyAmount', options.buyAmount)
+    }
+
+    return `${WalletRoutes.FundWalletPurchaseOptionsPage.replace(
+      ':assetId',
+      assetId
+    )}?${params.toString()}`
+  }
+
   return WalletRoutes.FundWalletPurchaseOptionsPage.replace(
-    ':currencyCode',
-    currencyCode
-  ).replace(':buyAmount', buyAmount)
+    ':assetId', //
+    assetId
+  )
 }
 
 export const makeDepositFundsRoute = (
-  searchText?: string,
-  chainId?: string,
-  coinType?: string
+  assetId: string,
+  options?: {
+    searchText?: string
+    chainId?: string
+    coinType?: string
+  }
 ) => {
-  const params = new URLSearchParams()
-  if (searchText) {
-    params?.append('search', searchText)
-  }
-  if (chainId) {
-    params?.append('chainId', chainId)
-  }
-  if (coinType) {
-    params?.append('coinType', coinType)
+  if (options) {
+    const params = new URLSearchParams()
+    if (options.searchText) {
+      params.append('search', options.searchText)
+    }
+    if (options.chainId) {
+      params.append('chainId', options.chainId)
+    }
+    if (options.coinType) {
+      params.append('coinType', options.coinType)
+    }
+
+    return `${WalletRoutes.DepositFundsPage.replace(
+      ':assetId?',
+      assetId
+    )}?${params.toString()}`
   }
 
-  const paramsString = params ? params.toString() : undefined
+  return WalletRoutes.DepositFundsPage.replace(':assetId?', assetId)
+}
 
-  return `${WalletRoutes.DepositFundsPage}${
-    paramsString ? `?${paramsString}` : ''
-  }`
+export const makeDepositFundsAccountRoute = (assetId: string) => {
+  return WalletRoutes.DepositFundsAccountPage.replace(':assetId', assetId)
 }
 
 export const makeSendRoute = (
@@ -153,13 +218,36 @@ export const makeSendRoute = (
   return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.token}`
 }
 
+export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {
+  return (
+    isNft ? WalletRoutes.PortfolioNFTAsset : WalletRoutes.PortfolioAsset
+  ).replace(':assetId', assetId)
+}
+
+// Tabs
+export function openTab(url: string) {
+  if (chrome.tabs !== undefined) {
+    chrome.tabs.create({ url }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  } else {
+    // Tabs.create is desktop specific. Using window.open for android.
+    window.open(url, '_blank', 'noopener noreferrer')
+  }
+}
+
+// Wallet Page Tabs
 export const openWalletRouteTab = (route: WalletRoutes) => {
-  chrome.tabs.create({ url: `${WalletOrigin}${route}` }, () => {
-    if (chrome.runtime.lastError) {
-      console.error(
-        'tabs.create failed: ' + //
-          chrome.runtime.lastError.message
-      )
-    }
-  })
+  openTab(`${WalletOrigin}${route}`)
+}
+
+// Settings tabs
+export function openWalletSettings() {
+  openTab('chrome://settings/web3')
+}
+
+export function openNetworkSettings() {
+  openTab('chrome://settings/wallet/networks')
 }

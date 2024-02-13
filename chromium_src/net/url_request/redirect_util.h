@@ -10,10 +10,12 @@
   UpdateHttpRequest_ChromiumImpl(                                      \
       const GURL& original_url, const std::string& original_method,    \
       const RedirectInfo& redirect_info,                               \
-      const absl::optional<std::vector<std::string>>& removed_headers, \
-      const absl::optional<net::HttpRequestHeaders>& modified_headers, \
+      const std::optional<std::vector<std::string>>& removed_headers,  \
+      const std::optional<net::HttpRequestHeaders>& modified_headers,  \
       HttpRequestHeaders* request_headers, bool* should_clear_upload); \
   NET_EXPORT static void UpdateHttpRequest
+
+#include <optional>
 
 #include "src/net/url_request/redirect_util.h"  // IWYU pragma: export
 #undef UpdateHttpRequest

@@ -1,9 +1,7 @@
 import 'emptykit.css'
 import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
-import { addParameters } from '@storybook/react'
 import {setIconBasePath} from '@brave/leo/shared/icon'
-import { initLocale } from 'brave-ui/helpers'
 import '../components/web-components/app.global.scss'
 import { getString } from './locale'
 import ThemeProvider from '../components/common/BraveCoreThemeProvider'
@@ -11,6 +9,7 @@ import ThemeProvider from '../components/common/BraveCoreThemeProvider'
 // Fonts
 import '../ui/webui/resources/fonts/poppins.css'
 import '../ui/webui/resources/fonts/manrope.css'
+import '../ui/webui/resources/fonts/inter.css'
 
 // Icon path
 // The storybook might be hosted at the root, but it might also be hosted

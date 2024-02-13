@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-index 7b934e65236a24891099e2ed2b1d0916653346b2..5af220a535c2c61501e1430aa5514468fc097dd4 100644
+index 8c1b0b74cb2d499ec9fb73c3c434b25666c21c73..9480d5ac3750f263388e7fb6bc1c6f59c3283840 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-@@ -694,7 +694,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {
+@@ -871,7 +871,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {
              NotificationPermissionController.attach(
                      mWindowAndroid, mNotificationPermissionController);
  
--            didTriggerPromo = mNotificationPermissionController.requestPermissionIfNeeded(
-+            if(false) didTriggerPromo = mNotificationPermissionController.requestPermissionIfNeeded(
-                     false /* contextual */);
+-            didTriggerPromo =
++            if(false) didTriggerPromo =
+                     mNotificationPermissionController.requestPermissionIfNeeded(
+                             /* contextual= */ false);
          }
- 

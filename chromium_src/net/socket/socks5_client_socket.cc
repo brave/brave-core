@@ -111,7 +111,7 @@ int SOCKS5ClientSocketAuth::Authenticate(
       case STATE_WRITE:
         DCHECK_EQ(OK, rv);
         DCHECK_LT(0u, buffer_left_);
-        iobuf_ = new IOBuffer(buffer_left_);
+        iobuf_ = base::MakeRefCounted<IOBufferWithSize>(buffer_left_);
         memcpy(iobuf_->data(),
                &buffer_.data()[buffer_.size() - buffer_left_],
                buffer_left_);
@@ -139,14 +139,14 @@ int SOCKS5ClientSocketAuth::Authenticate(
         DCHECK_EQ(OK, rv);
         buffer_.clear();
         buffer_left_ = kSOCKSAuthUsernamePasswordResponseLen;
-        iobuf_ = new IOBuffer(buffer_left_);
+        iobuf_ = base::MakeRefCounted<IOBufferWithSize>(buffer_left_);
         next_state_ = STATE_READ;
         rv = OK;
         break;
 
       case STATE_READ:
         DCHECK_EQ(OK, rv);
-        iobuf_ = new IOBuffer(buffer_left_);
+        iobuf_ = base::MakeRefCounted<IOBufferWithSize>(buffer_left_);
         next_state_ = STATE_READ_COMPLETE;
         net_log.BeginEvent(NetLogEventType::SOCKS5_AUTH_READ);
         rv = transport_socket_->Read(iobuf_.get(), buffer_left_, callback);

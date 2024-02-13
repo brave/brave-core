@@ -5,11 +5,14 @@
 
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth_uphold.h"
 
+#include <optional>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
-#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -18,16 +21,16 @@ using Result = PostOAuthUphold::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
   auto* access_token = value->GetDict().FindString("access_token");
   if (!access_token || access_token->empty()) {
-    BLOG(0, "Failed to parse body!");
+    engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
@@ -37,14 +40,14 @@ Result ParseBody(const std::string& body) {
 }  // namespace
 
 // static
-Result PostOAuthUphold::ProcessResponse(const mojom::UrlResponse& response) {
-  switch (response.status_code) {
-    case net::HTTP_OK:  // HTTP 200
-      return ParseBody(response.body);
-    default:
-      BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
-      return base::unexpected(Error::kUnexpectedStatusCode);
+Result PostOAuthUphold::ProcessResponse(RewardsEngineImpl& engine,
+                                        const mojom::UrlResponse& response) {
+  if (URLLoader::IsSuccessCode(response.status_code)) {
+    return ParseBody(engine, response.body);
   }
+  engine.LogError(FROM_HERE)
+      << "Unexpected status code: " << response.status_code;
+  return base::unexpected(Error::kUnexpectedStatusCode);
 }
 
 PostOAuthUphold::PostOAuthUphold(RewardsEngineImpl& engine,
@@ -53,19 +56,29 @@ PostOAuthUphold::PostOAuthUphold(RewardsEngineImpl& engine,
 
 PostOAuthUphold::~PostOAuthUphold() = default;
 
-absl::optional<std::string> PostOAuthUphold::Url() const {
-  return endpoint::uphold::GetServerUrl("/oauth2/token");
+std::optional<std::string> PostOAuthUphold::Url() const {
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve("/oauth2/token")
+      .spec();
 }
 
-absl::optional<std::vector<std::string>> PostOAuthUphold::Headers(
+std::optional<std::vector<std::string>> PostOAuthUphold::Headers(
     const std::string&) const {
-  return endpoint::uphold::RequestAuthorization();
+  auto& config = engine_->Get<EnvironmentConfig>();
+
+  std::string user;
+  base::Base64Encode(base::StrCat({config.uphold_client_id(), ":",
+                                   config.uphold_client_secret()}),
+                     &user);
+
+  return std::vector<std::string>{"Authorization: Basic " + user};
 }
 
-absl::optional<std::string> PostOAuthUphold::Content() const {
+std::optional<std::string> PostOAuthUphold::Content() const {
   if (code_.empty()) {
-    BLOG(0, "code_ is empty!");
-    return absl::nullopt;
+    engine_->LogError(FROM_HERE) << "code_ is empty";
+    return std::nullopt;
   }
 
   return "code=" + code_ + "&grant_type=authorization_code";

@@ -33,7 +33,7 @@ void DatabaseContributionInfoPublishers::InsertOrUpdate(
   DCHECK(transaction);
 
   if (!info) {
-    BLOG(1, "Info is null");
+    engine_->Log(FROM_HERE) << "Info is null";
     return;
   }
 
@@ -60,8 +60,8 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
     const std::vector<std::string>& contribution_ids,
     ContributionPublisherListCallback callback) {
   if (contribution_ids.empty()) {
-    BLOG(1, "Contribution ids is empty");
-    callback({});
+    engine_->Log(FROM_HERE) << "Contribution ids is empty";
+    std::move(callback).Run({});
     return;
   }
 
@@ -95,8 +95,8 @@ void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
-    callback({});
+    engine_->LogError(FROM_HERE) << "Response is not ok";
+    std::move(callback).Run({});
     return;
   }
 
@@ -113,15 +113,15 @@ void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
     list.push_back(std::move(info));
   }
 
-  callback(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
     const std::vector<std::string>& contribution_ids,
     ContributionPublisherPairListCallback callback) {
   if (contribution_ids.empty()) {
-    BLOG(1, "Contribution ids is empty");
-    callback({});
+    engine_->Log(FROM_HERE) << "Contribution ids is empty";
+    std::move(callback).Run({});
     return;
   }
 
@@ -165,8 +165,8 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Response is not ok");
-    callback({});
+    engine_->LogError(FROM_HERE) << "Response is not ok";
+    std::move(callback).Run({});
     return;
   }
 
@@ -189,16 +189,17 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
                            std::move(publisher));
   }
 
-  callback(std::move(pair_list));
+  std::move(callback).Run(std::move(pair_list));
 }
 
 void DatabaseContributionInfoPublishers::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    LegacyResultCallback callback) {
+    ResultCallback callback) {
   if (contribution_id.empty() || publisher_key.empty()) {
-    BLOG(1, "Data is empty " << contribution_id << "/" << publisher_key);
-    callback(mojom::Result::FAILED);
+    engine_->Log(FROM_HERE)
+        << "Data is empty " << contribution_id << "/" << publisher_key;
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 

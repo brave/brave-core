@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -22,7 +23,6 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "components/prefs/pref_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -64,8 +64,8 @@ struct SubscriptionInfo {
   // updated.
   bool enabled;
 
-  absl::optional<std::string> homepage;
-  absl::optional<std::string> title;
+  std::optional<std::string> homepage;
+  std::optional<std::string> title;
   uint16_t expires = kSubscriptionDefaultExpiresHours;
 
   static void RegisterJSONConverter(
@@ -131,7 +131,7 @@ class AdBlockSubscriptionServiceManager {
                       const adblock::FilterListMetadata& metadata);
 
   // static to enforce locking on `subscriptions_`
-  absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
+  std::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
   void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay,

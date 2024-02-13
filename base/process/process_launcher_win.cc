@@ -5,6 +5,7 @@
 
 #include "brave/base/process/process_launcher.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -19,7 +20,7 @@ ProcessLauncher::ProcessLauncher() = default;
 ProcessLauncher::~ProcessLauncher() = default;
 
 // static
-absl::optional<std::string> ProcessLauncher::ReadAppOutput(
+std::optional<std::string> ProcessLauncher::ReadAppOutput(
     base::CommandLine cmdline,
     base::LaunchOptions options,
     int timeout_sec) {
@@ -35,7 +36,7 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
   // Create the pipe for the child process's STDOUT.
   if (!CreatePipe(&out_read, &out_write, &sa_attr, 0)) {
     NOTREACHED() << "Failed to create pipe";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   // Ensure we don't leak the handles.
@@ -45,7 +46,7 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
   // Ensure the read handles to the pipes are not inherited.
   if (!SetHandleInformation(out_read, HANDLE_FLAG_INHERIT, 0)) {
     NOTREACHED() << "Failed to disabled pipe inheritance";
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   options.stdin_handle = out_read;
@@ -55,7 +56,7 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
 
   base::Process process = base::LaunchProcess(cmdline, options);
   if (!process.IsValid()) {
-    return absl::nullopt;
+    return std::nullopt;
   }
 
   bool exited = false;
@@ -75,7 +76,7 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
   if (exited && !exit_code && read_result) {
     return result;
   } else {
-    return absl::nullopt;
+    return std::nullopt;
   }
 }
 

@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -90,7 +91,7 @@ TEST(EthereumKeyringUnitTest, SignTransaction) {
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-      std::vector<uint8_t>(), false, absl::nullopt));
+      std::vector<uint8_t>(), false, std::nullopt));
   keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", &tx, 0);
   EXPECT_FALSE(tx.IsSigned());
 
@@ -213,7 +214,7 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
-      std::vector<uint8_t>(), false, absl::nullopt));
+      std::vector<uint8_t>(), false, std::nullopt));
   keyring.SignTransaction("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &tx, 0);
   EXPECT_FALSE(tx.IsSigned());
 
@@ -288,7 +289,7 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
   std::vector<uint8_t> ephemeral_public_key(ephemeral_public_key_str.begin(),
                                             ephemeral_public_key_str.end());
 
-  absl::optional<std::vector<uint8_t>> message_bytes;
+  std::optional<std::vector<uint8_t>> message_bytes;
   message_bytes = keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
       "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key, ciphertext,
       keyring.GetAddress(0));
@@ -323,25 +324,25 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
   EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
                 "x25519-xsalsa20-poly1306", nonce, ephemeral_public_key,
                 ciphertext, keyring.GetAddress(0)),
-            absl::nullopt);
+            std::nullopt);
 
   // Empty nonce
   EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
                 "x25519-xsalsa20-poly1305", std::vector<uint8_t>(),
                 ephemeral_public_key, ciphertext, keyring.GetAddress(0)),
-            absl::nullopt);
+            std::nullopt);
 
   // Empty public key
   EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
                 "x25519-xsalsa20-poly1305", nonce, std::vector<uint8_t>(),
                 ciphertext, keyring.GetAddress(0)),
-            absl::nullopt);
+            std::nullopt);
 
   // Empty ciphertext
   EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
                 "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key,
                 std::vector<uint8_t>(), keyring.GetAddress(0)),
-            absl::nullopt);
+            std::nullopt);
 
   // Wrong nonce
   std::vector<uint8_t> bad_nonce = nonce;
@@ -349,7 +350,7 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
   EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
                 "x25519-xsalsa20-poly1305", bad_nonce, ephemeral_public_key,
                 ciphertext, keyring.GetAddress(0)),
-            absl::nullopt);
+            std::nullopt);
 
   // Wrong public key
   std::vector<uint8_t> bad_ephemeral_public_key = ephemeral_public_key;
@@ -357,7 +358,7 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
   EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
                 "x25519-xsalsa20-poly1305", nonce, bad_ephemeral_public_key,
                 ciphertext, keyring.GetAddress(0)),
-            absl::nullopt);
+            std::nullopt);
 
   // Wrong ciphertext
   std::vector<uint8_t> bad_ciphertext = ciphertext;
@@ -365,7 +366,7 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
   EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
                 "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key,
                 bad_ciphertext, keyring.GetAddress(0)),
-            absl::nullopt);
+            std::nullopt);
 }
 
 }  // namespace brave_wallet
