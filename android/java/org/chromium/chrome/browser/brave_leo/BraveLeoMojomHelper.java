@@ -52,7 +52,7 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
         handler.setErrorHandler(this);
     }
 
-    public void destroy() {
+    private void destroy() {
         synchronized (sLock) {
             sInstance = null;
             if (mNativeAIChatCMHelperAndroid == 0 && mAIChatAndroidHelper == null) {
@@ -71,6 +71,31 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
             return;
         }
         mAIChatAndroidHelper.getPremiumStatus(callback);
+    }
+
+    public void createOrderId(AiChatAndroidHelper.CreateOrderId_Response callback) {
+        if (mAIChatAndroidHelper == null) {
+            callback.call("");
+            return;
+        }
+        mAIChatAndroidHelper.createOrderId(callback);
+    }
+
+    public void fetchOrderCredentials(
+            String orderId, AiChatAndroidHelper.FetchOrderCredentials_Response callback) {
+        if (mAIChatAndroidHelper == null) {
+            callback.call("{}");
+            return;
+        }
+        mAIChatAndroidHelper.fetchOrderCredentials(orderId, callback);
+    }
+
+    public void refreshOrder(String orderId, AiChatAndroidHelper.RefreshOrder_Response callback) {
+        if (mAIChatAndroidHelper == null) {
+            callback.call("{}");
+            return;
+        }
+        mAIChatAndroidHelper.refreshOrder(orderId, callback);
     }
 
     public void getModels(AiChatAndroidHelper.GetModelsWithSubtitles_Response callback) {

@@ -32,6 +32,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");
   registry->RegisterStringPref(kBraveChatPackageNameAndroid, "");
   registry->RegisterStringPref(kBraveChatProductIdAndroid, "");
+  registry->RegisterStringPref(kBraveChatOrderIdAndroid, "");
 #endif
 }
 

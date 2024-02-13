@@ -83,9 +83,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
                                !last_accepted_disclaimer.is_null());
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  constexpr bool kIsMobile = false;
-#else
   constexpr bool kIsMobile = true;
+#else
+  constexpr bool kIsMobile = false;
 #endif
 
   untrusted_source->AddBoolean("isMobile", kIsMobile);

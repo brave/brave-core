@@ -9,8 +9,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -299,6 +301,64 @@ void AIChatCredentialManager::PutCredentialInCache(
   base::Value::Dict& dict = update.Get();
   dict.Set(credential.credential, base::TimeToValue(credential.expires_at));
 }
+
+#if BUILDFLAG(IS_ANDROID)
+void AIChatCredentialManager::CreateOrderFromReceipt(
+    const std::string& purchase_token,
+    const std::string& package,
+    const std::string& subscription_id,
+    skus::mojom::SkusService::CreateOrderFromReceiptCallback callback) {
+  if (!EnsureMojoConnected()) {
+    std::move(callback).Run("");
+    return;
+  }
+  const std::string leo_sku_domain =
+      brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
+
+  base::Value::Dict request;
+  request.Set("type", "android");
+  request.Set("raw_receipt", purchase_token);
+  request.Set("package", package);
+  request.Set("subscription_id", subscription_id);
+
+  std::string request_json;
+  base::JSONWriter::Write(request, &request_json);
+
+  std::string encoded_request_json;
+  base::Base64Encode(request_json, &encoded_request_json);
+  skus_service_->CreateOrderFromReceipt(leo_sku_domain, encoded_request_json,
+                                        std::move(callback));
+}
+
+void AIChatCredentialManager::FetchOrderCredentials(
+    const std::string& order_id,
+    skus::mojom::SkusService::FetchOrderCredentialsCallback callback) {
+  if (!EnsureMojoConnected()) {
+    std::move(callback).Run("");
+    return;
+  }
+
+  const std::string leo_sku_domain =
+      brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
+
+  skus_service_->FetchOrderCredentials(leo_sku_domain, order_id,
+                                       std::move(callback));
+}
+
+void AIChatCredentialManager::RefreshOrder(
+    const std::string& order_id,
+    skus::mojom::SkusService::RefreshOrderCallback callback) {
+  if (!EnsureMojoConnected()) {
+    std::move(callback).Run("");
+    return;
+  }
+
+  const std::string leo_sku_domain =
+      brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
+
+  skus_service_->RefreshOrder(leo_sku_domain, order_id, std::move(callback));
+}
+#endif
 
 bool AIChatCredentialManager::EnsureMojoConnected() {
   // Bind if not bound yet

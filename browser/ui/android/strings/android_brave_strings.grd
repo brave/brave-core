@@ -4106,6 +4106,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LEO_DEFAULT_MODEL_PREF_SCREEN" desc="Title for Leo Default Model settings screen.">
       Default model
     </message>
+    <message name="IDS_LEO_GO_PREMIUM_PREF" desc="Title for Leo Go premium settings.">
+      Go Premium
+    </message>
   </messages>
   </release>
 </grit>
