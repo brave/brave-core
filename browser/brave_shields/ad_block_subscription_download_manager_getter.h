@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SUBSCRIPTION_DOWNLOAD_MANAGER_GETTER_H_
 #define BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SUBSCRIPTION_DOWNLOAD_MANAGER_GETTER_H_
 
-#include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 
 brave_shields::AdBlockSubscriptionDownloadManager::DownloadManagerGetter
 AdBlockSubscriptionDownloadManagerGetter();

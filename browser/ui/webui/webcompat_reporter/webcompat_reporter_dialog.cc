@@ -13,7 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
-#include "brave/components/brave_shields/common/brave_shields_panel.mojom-shared.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-shared.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"

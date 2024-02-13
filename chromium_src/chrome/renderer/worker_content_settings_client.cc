@@ -5,7 +5,7 @@
 
 #include <optional>
 
-#include "brave/components/brave_shields/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "chrome/renderer/worker_content_settings_client.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
 #include "net/base/features.h"

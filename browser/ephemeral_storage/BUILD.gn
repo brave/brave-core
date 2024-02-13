@@ -26,9 +26,9 @@ source_set("browser_tests") {
     deps += [
       "//brave/browser",
       "//brave/components/brave_component_updater/browser",
-      "//brave/components/brave_shields/browser",
-      "//brave/components/brave_shields/browser:test_support",
-      "//brave/components/brave_shields/common",
+      "//brave/components/brave_shields/content/browser",
+      "//brave/components/brave_shields/content/test:test_support",
+      "//brave/components/brave_shields/core/common",
       "//brave/components/ephemeral_storage",
       "//chrome/browser",
       "//chrome/browser/ui",

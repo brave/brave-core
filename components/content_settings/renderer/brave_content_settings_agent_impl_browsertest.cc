@@ -8,9 +8,9 @@
 
 #include "base/feature_list.h"
 #include "base/path_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

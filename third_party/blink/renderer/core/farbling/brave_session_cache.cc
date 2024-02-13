@@ -11,7 +11,7 @@
 #include "base/feature_list.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"

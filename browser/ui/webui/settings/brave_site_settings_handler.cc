@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"

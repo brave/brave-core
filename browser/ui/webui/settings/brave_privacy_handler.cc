@@ -7,7 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"

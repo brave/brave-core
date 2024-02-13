@@ -9,9 +9,9 @@
 
 #include "base/metrics/histogram_functions.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 
 CookieListOptInPageHandler::CookieListOptInPageHandler(
     mojo::PendingReceiver<brave_shields::mojom::CookieListOptInPageHandler>

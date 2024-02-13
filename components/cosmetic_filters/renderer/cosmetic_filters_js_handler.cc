@@ -16,7 +16,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"

@@ -12,7 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "url/gurl.h"
 
