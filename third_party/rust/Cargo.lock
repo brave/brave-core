@@ -2717,10 +2717,6 @@ dependencies = [
 ]
 
 [[patch.unused]]
-name = "crc32fast"
-version = "1.3.2"
-
-[[patch.unused]]
 name = "font-types"
 version = "0.4.2"
 

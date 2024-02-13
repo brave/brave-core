@@ -350,10 +350,6 @@ package = "core2"
 path = "cpufeatures/v0_2/crate"
 package = "cpufeatures"
 
-[patch.crates-io.crc32fast_v1]
-path = "crc32fast/v1/crate"
-package = "crc32fast"
-
 [patch.crates-io.crunchy_v0_2]
 path = "crunchy/v0_2/crate"
 package = "crunchy"
