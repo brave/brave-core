@@ -8,6 +8,8 @@
 
 #include "brave/components/widevine/static_buildflags.h"
 
+#include "src/components/update_client/persisted_data.h"  // IWYU pragma: export
+
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
 class PrefService;
@@ -21,7 +23,5 @@ void SetUpstreamHasArm64Widevine(PrefService* prefService);
 }  // namespace update_client
 
 #endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-
-#include "src/components/update_client/persisted_data.h"  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_PERSISTED_DATA_H_

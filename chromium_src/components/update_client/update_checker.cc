@@ -121,7 +121,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     CHECK(!results->list.empty());
     auto r = results->list.begin();
     if (r->extension_id == kWidevineComponentId && fake_architecture.empty()) {
-      if (update_client::UpstreamHasArm64Widevine(config_->GetPrefService())) {
+      if (UpstreamHasArm64Widevine(config_->GetPrefService())) {
         VLOG(1) << "Skipping WIDEVINE_ARM64_DLL_FIX because we already saw "
                    "once that upstream offers Arm64 binaries for Widevine. "
                    "Consider removing our WIDEVINE_ARM64_DLL_FIX.";
@@ -139,7 +139,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
           // us not fall back to x64 in the benign case where we are on the
           // latest version of Arm64 Widevine and are getting a "noupdate"
           // response.
-          update_client::SetUpstreamHasArm64Widevine(config_->GetPrefService());
+          SetUpstreamHasArm64Widevine(config_->GetPrefService());
         }
       }
     }
