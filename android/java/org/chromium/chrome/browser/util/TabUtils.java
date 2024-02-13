@@ -306,4 +306,24 @@ public class TabUtils {
 
         context.startActivity(intent);
     }
+
+    /**
+     * Returns transition for the given tab
+     *
+     * @param tab
+     */
+    public static int getTransition(Tab tab) {
+        if (tab != null
+                && tab.getWebContents() != null
+                && tab.getWebContents().getNavigationController() != null
+                && tab.getWebContents().getNavigationController().getVisibleEntry() != null) {
+            int transition =
+                    tab.getWebContents()
+                            .getNavigationController()
+                            .getVisibleEntry()
+                            .getTransition();
+            return transition;
+        }
+        return 0;
+    }
 }
