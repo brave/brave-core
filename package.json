@@ -168,7 +168,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.4",
-    "@brave/leo": "github:brave/leo#857181f3d314e1c55bb2e19e21924acb0b54c587",
+    "@brave/leo": "github:brave/leo#033a457665879461b5492edc66e11ceaf80e949d",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#775bb8fca9df76679b9b272545e162418127c5de",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "0.0.12",
