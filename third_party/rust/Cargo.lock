@@ -354,7 +354,6 @@ dependencies = [
  "ed25519-dalek-bip32",
  "env_logger",
  "feed-rs",
- "font-types",
  "forest_bigint",
  "futures",
  "futures-retry",
@@ -384,7 +383,6 @@ dependencies = [
  "quote",
  "rand 0.8.5",
  "rand_pcg 0.3.1",
- "read-fonts",
  "regex",
  "rstest",
  "rstest_reuse",
@@ -395,7 +393,6 @@ dependencies = [
  "serde_json",
  "serde_json_lenient",
  "sha2 0.9.9",
- "skrifa",
  "small_ctor",
  "star-constellation",
  "static_assertions",
@@ -834,12 +831,6 @@ checksum = "1676f435fc1dadde4d03e43f5d62b259e1ce5f40bd4ffb21db2b42ebe59c1382"
 [[package]]
 name = "fnv"
 version = "1.0.7"
-
-[[package]]
-name = "font-types"
-version = "0.3.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6978d65d61022aa249fefdd914dc8215757f617f1a697c496ef6b42013366567"
 
 [[package]]
 name = "forest_bigint"
@@ -1785,15 +1776,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "read-fonts"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d384a55473edf0b0ce9e00dadc5f64b0eb6a470466d1297ff9ecde076970e24"
-dependencies = [
- "font-types",
-]
-
-[[package]]
 name = "redox_syscall"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2106,15 +2088,6 @@ version = "1.6.4"
 [[package]]
 name = "siphasher"
 version = "0.3.10"
-
-[[package]]
-name = "skrifa"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d99c8d0757df7a11ddbc1edd0322aca1a00023947b6b52d18ff07aeff0c52422"
-dependencies = [
- "read-fonts",
-]
 
 [[package]]
 name = "slab"
@@ -2717,10 +2690,6 @@ dependencies = [
 ]
 
 [[patch.unused]]
-name = "font-types"
-version = "0.4.2"
-
-[[patch.unused]]
 name = "kuchikiki"
 version = "0.8.4-speedreader"
 
@@ -2731,14 +2700,6 @@ version = "0.6.2"
 [[patch.unused]]
 name = "ppoprf"
 version = "0.3.0"
-
-[[patch.unused]]
-name = "read-fonts"
-version = "0.15.1"
-
-[[patch.unused]]
-name = "skrifa"
-version = "0.15.2"
 
 [[patch.unused]]
 name = "strobe-rng"
