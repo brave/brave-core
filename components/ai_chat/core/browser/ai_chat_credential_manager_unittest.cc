@@ -13,6 +13,7 @@
 #include "base/i18n/time_formatting.h"
 #include "base/json/values_util.h"
 #include "base/strings/stringprintf.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -26,6 +27,7 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/prefs/testing_pref_service.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -160,12 +162,14 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
     auto* registry = prefs_service_.registry();
     prefs::RegisterLocalStatePrefs(registry);
     skus::RegisterLocalStatePrefs(registry);
+
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
         &prefs_service_, url_loader_factory_.GetSafeWeakWrapper(),
-        base::ThreadPool::CreateSequencedTaskRunner({}));
+        base::ThreadPool::CreateSingleThreadTaskRunner({}),
+        content::GetUIThreadTaskRunner({}));
 
     ai_chat_credential_manager_ = std::make_unique<AIChatCredentialManager>(
         base::BindRepeating(&AIChatCredentialManagerUnitTest::GetSkusService,

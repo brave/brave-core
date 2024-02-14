@@ -104,14 +104,12 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
       skus::mojom::SkusService::CreateOrderFromReceiptCallback callback)
       override;
 
-  ::rust::Box<skus::CppSDK>& GetOrCreateSDK(
+  ::rust::Box<skus::CppSDK> CreateSDK(
       const std::string& domain,
       std::unique_ptr<network::PendingSharedURLLoaderFactory>
           pending_url_loader_factory);
 
  private:
-  void CleanupSDK();
-
   void RefreshOrderTask(const std::string& domain,
                         const std::string& order_id,
                         std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
