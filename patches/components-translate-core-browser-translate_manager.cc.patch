@@ -1,0 +1,12 @@
+diff --git a/components/translate/core/browser/translate_manager.cc b/components/translate/core/browser/translate_manager.cc
+index 87d67a5a991abf7bad76224f42759b3f32e50f9b..17c0256969c263eaf0943f8cfaa7497054b5780b 100644
+--- a/components/translate/core/browser/translate_manager.cc
++++ b/components/translate/core/browser/translate_manager.cc
+@@ -474,6 +474,7 @@ void TranslateManager::PageTranslated(const std::string& source_lang,
+     // update the language state with both source and current.
+     language_state_.SetSourceLanguage(source_lang);
+     language_state_.SetCurrentLanguage(target_lang);
++    BRAVE_P3A_RECORD_PAGE_TRANSLATION
+   }
+ 
+   language_state_.set_translation_pending(false);
