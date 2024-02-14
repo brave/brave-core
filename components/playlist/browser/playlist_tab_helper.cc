@@ -21,6 +21,7 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/url_constants.h"
 
 namespace playlist {
 
@@ -190,13 +191,18 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
     return;
   }
 
+  const GURL url = navigation_handle->GetWebContents()->GetVisibleURL();
+  if (url.SchemeIs(url::kAboutScheme)) {
+    return;
+  }
+
   mojo::AssociatedRemote<mojom::PlaylistRenderFrameObserverConfigurator>
       frame_observer_config;
   navigation_handle->GetRenderFrameHost()
       ->GetRemoteAssociatedInterfaces()
       ->GetInterface(&frame_observer_config);
-  frame_observer_config->AddMediaDetector(service_->GetMediaDetectorScript(
-      navigation_handle->GetWebContents()->GetVisibleURL()));
+  frame_observer_config->AddMediaDetector(
+      service_->GetMediaDetectorScript(url));
 }
 
 void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
