@@ -29,7 +29,7 @@
         <org.chromium.ui.widget.ChromeImageButton
             android:id="@+id/bookmark_this_page_id"
             style="@style/OverflowMenuButton"
-            android:src="@drawable/btn_star"
+            android:src="@drawable/star_outline_24dp"
             android:contentDescription="@string/accessibility_menu_bookmark" />
 
         <org.chromium.ui.widget.ChromeImageButton
