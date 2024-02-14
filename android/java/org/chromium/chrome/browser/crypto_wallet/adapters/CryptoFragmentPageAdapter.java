@@ -16,7 +16,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.MarketFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TransactionsFragment;
 
 import java.util.ArrayList;
@@ -34,27 +33,17 @@ public class CryptoFragmentPageAdapter extends FragmentStateAdapter {
 
     private final List<String> mTitles;
 
-    private PortfolioFragment mCurrentPortfolioFragment;
-
     public CryptoFragmentPageAdapter(@NonNull final FragmentActivity activity) {
         super(activity);
         Resources resources = activity.getResources();
-        mTitles = new ArrayList<String>(Arrays.asList(resources.getString(R.string.portfolio),
-                resources.getString(R.string.brave_wallet_activity),
+        mTitles = new ArrayList<String>(Arrays.asList(resources.getString(R.string.brave_wallet_activity),
                 resources.getString(R.string.accounts), resources.getString(R.string.explore)));
-    }
-
-    public PortfolioFragment getCurrentPortfolioFragment() {
-        return mCurrentPortfolioFragment;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case PORTFOLIO_FRAGMENT_POSITION:
-                mCurrentPortfolioFragment = PortfolioFragment.newInstance();
-                return mCurrentPortfolioFragment;
             case TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION:
                 return TransactionsFragment.newInstance();
             case ACCOUNTS_FRAGMENT_POSITION:

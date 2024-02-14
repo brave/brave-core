@@ -2021,9 +2021,6 @@ Are you sure you want to do this?
     <message name="IDS_WALLET_COPY" desc="Brave Wallet onboarding bottom menu text">
       Copy
     </message>
-    <message name="IDS_WALLET" desc="Brave Wallet toolbar title">
-      Wallet
-    </message>
     <message name="IDS_BACKUP_WALLET_BANNER_TEXT" desc="Brave Wallet backup banner text">
       Back up your crypto wallet
     </message>
@@ -2563,9 +2560,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_TRANSACTION_DETAILS" desc="Brave crypto wallet transaction details section">
       Details
-    </message>
-    <message name="IDS_PORTFOLIO" desc="Brave crypto wallet section Portfolio">
-      Portfolio
     </message>
     <message name="IDS_EXPLORE" desc="Brave crypto wallet section Explore">
       Explore
