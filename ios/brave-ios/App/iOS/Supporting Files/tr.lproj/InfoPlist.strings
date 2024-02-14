@@ -1,0 +1,27 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "1Password Dolgu Tarayıcı Eylemi";
+
+/* Privacy - NFC Scan Usage Description */
+"NFCReaderUsageDescription" = "Uygulamanın Yubikey'inizle iletişim kurmak için NFC okumasına erişmesi gerekir.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Bu, fotoğraf çekmenizi ve yüklemenizi sağlar.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Bu işlem, Brave erişiminizin kimliğini doğrular";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "Ziyaret ettiğiniz web siteleri konumunuzu isteyebilir.";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "Bu, Brave kullanırken mikrofonunuzun kullanımına izin verir.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Bu, fotoğrafları kaydetmenizi sağlar.";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Bu izin, Apple Gelişmiş Konuşma Tanıma'yı etkinleştirmek için kullanılır. İzin verilmezse, \"cihazdaki\" tanıma kullanılır ve aramalar tamamen gizli yapılır. Brave, sesli aramalarınızı depolamaz veya paylaşmaz.";
+
+/* (No Comment) */
+"OPML File" = "OPML Dosyası";
+

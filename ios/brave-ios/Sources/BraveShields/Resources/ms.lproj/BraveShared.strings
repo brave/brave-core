@@ -1,0 +1,57 @@
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** ialah tiket anda untuk pengalaman video yang bebas iklan dan tanpa gangguan.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Laraskan Perisai Untuk Saya";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Laman ini sudah mula menyekat beberapa penyekat iklan, bermakna laman mereka mungkin tidak akan berfungsi seperti yang dijangkakan.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Untuk menangani isu ini, Brave boleh melaraskan tetapan perisai anda untuk anda. Setelah dilaraskan, anda boleh cuba menonton kandungan ini dalam Pemain Brave.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Simpan Tetapan Semasa";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Laraskan Tetapan Sekatan Iklan Untuk Laman Ini";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agresif";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Menghalang iklan, halaman timbul dan penjejak daripada dimuatkan.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Dinyahaktif";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standard";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Pemain Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Sentiasa buka video daripada laman ini dengan Pemain Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Cuba";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Bukan Sekarang";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Pemain Brave membolehkan anda menonton video tanpa gangguan.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Tonton Dalam Pemain Brave";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Dayakan API JS Kawalan Privasi Global";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Dayakan Kawalan Privasi Global";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Penjejak & Penyekatan Iklan";
+

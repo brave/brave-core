@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Spårare och annonser blockerade";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Blockerade \nannonser";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Uppskattade data\nsparade";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Uppskattad tid \nsparad";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "d";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "h";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "min";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "s";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Blockerade \nspårare";
+

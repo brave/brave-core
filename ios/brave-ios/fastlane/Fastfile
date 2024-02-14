@@ -1,0 +1,153 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+fastlane_version "2.86.0"
+
+default_platform :ios
+
+platform :ios do
+  desc "Run Unit Tests"
+  lane :test do |options|
+    run_tests(
+      project: "App/Client.xcodeproj",
+      scheme: "Debug",
+      devices: ["iPhone 15"],
+      code_coverage: true,
+      output_types: "junit",
+      output_files: "junit.xml",
+      ensure_devices_found: true,
+      derived_data_path: "../../../out/DerivedData",
+      skip_testing: [
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
+        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
+        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
+        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
+        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
+        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork"
+      ]
+    )
+
+    run_tests(
+      project: "App/Client.xcodeproj",
+      scheme: "Debug",
+      devices: ["iPad (10th generation)"],
+      code_coverage: true,
+      ensure_devices_found: true,
+      output_types: "junit",
+      output_files: "junit-ipad.xml",
+      derived_data_path: "../../../out/DerivedData",
+      skip_testing: [
+        "ClientTests/UserAgentTests"
+      ],
+      xcargs: "-testPlan Brave_iPad"
+    )
+  end
+
+  desc "Creates a Brave Beta build for TestFlight."
+  lane :beta do |options|
+    gymOverrides = {
+      scheme: "Beta",
+      export_method: "app-store",
+      export_options: {
+        manageAppVersionAndBuildNumber: false,
+        provisioningProfiles: {
+          "com.brave.ios.browser.beta" => "Brave iOS Beta",
+          "com.brave.ios.browser.beta.ActionExtension" => "Brave iOS Beta Action Extension",
+          "com.brave.ios.browser.beta.ShareExtension" => "Brave iOS Beta Share Extension",
+          "com.brave.ios.browser.beta.BrowserIntents" => "Brave iOS Beta Intents Extension",
+          "com.brave.ios.browser.beta.BraveWidgetsExtension" => "Brave iOS Beta Widgets Extension",
+          "com.brave.ios.browser.beta.BraveWireGuard" => "Brave iOS Beta Wireguard Extension",
+        },
+      }
+    }
+    testflight_build({gymOverrides: gymOverrides})
+  end
+
+  desc "Creates a Brave Nightly build for TestFlight."
+  lane :nightly do |options|
+    gymOverrides = {
+      scheme: "Nightly",
+      export_method: "app-store",
+      export_options: {
+        manageAppVersionAndBuildNumber: false,
+        provisioningProfiles: {
+          "com.brave.ios.BrowserBeta" => "Brave iOS Nightly",
+          "com.brave.ios.BrowserBeta.ActionExtension" => "Brave iOS Nightly Action Extension",
+          "com.brave.ios.BrowserBeta.ShareExtension" => "Brave iOS Nightly Share Extension",
+          "com.brave.ios.BrowserBeta.BrowserIntents" => "Brave iOS Nightly Intents Extension",
+          "com.brave.ios.BrowserBeta.BraveWidgetsExtension" => "Brave iOS Nightly Widgets Extension",
+          "com.brave.ios.BrowserBeta.BraveWireGuard" => "Brave iOS Nightly Wireguard Extension",
+        },
+      }
+    }
+    testflight_build({gymOverrides: gymOverrides})
+  end
+
+  desc "Create an archive to be uploaded to the App Store"
+  lane :release do |options|
+    ENV["BRAVE_APPSTORE_BUILD"] = "1"
+    gymOverrides = {
+      scheme: "Release (AppStore)",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          "com.brave.ios.browser" => "Brave iOS Release",
+          "com.brave.ios.browser.ActionExtension" => "Brave iOS Release Action Extension",
+          "com.brave.ios.browser.ShareExtension" => "Brave iOS Release Share Extension",
+          "com.brave.ios.browser.BrowserIntents" => "Brave iOS Release Intents Extension",
+          "com.brave.ios.browser.BraveWidgetsExtension" => "Brave iOS Release Widgets Extension",
+          "com.brave.ios.browser.BraveWireGuard" => "Brave iOS Release WireGuard Extension",
+        },
+        manageAppVersionAndBuildNumber: false
+      },
+    }
+    testflight_build({gymOverrides: gymOverrides})
+  end
+
+  desc "Uploads a build to TestFlight"
+  lane :upload do |options|
+    api_key = app_store_connect_api_key()
+    pilotParams = {
+      api_key: api_key,
+      changelog: "Bug fixes & improvements",
+      distribute_external: true,
+      skip_waiting_for_build_processing: false,
+      ipa: "build/Client.ipa",
+      groups: ["Brave Internal"]
+    }
+    if options[:public] && options[:channel].downcase == "beta"
+      pilotParams[:groups] << "Public Beta"
+    end
+    pilot(pilotParams)
+  end
+
+  desc "All Testflight releases use this as the foundation. Pass in `gym` override params."
+  private_lane :testflight_build do |options|
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "App/Client.xcodeproj"
+    )
+    defaultParams = gym_params()
+    gym(defaultParams.merge!(options[:gymOverrides]))
+  end
+
+  # Private helper methods ---------------------------------------
+
+  desc "Returns the parameters that should be used in any fastlane build"
+  lane :gym_params do
+    {
+      project: "App/Client.xcodeproj",
+      sdk: "iphoneos",
+      clean: true,
+      output_directory: "build",
+      derived_data_path: "../../../out/DerivedData",
+    }
+  end
+
+end

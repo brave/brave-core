@@ -32,6 +32,7 @@ patches/**/*.patchinfo
 /third_party/cryptography
 /third_party/macholib
 *.xcodeproj
+!/ios/brave-ios/App/*.xcodeproj
 *.swp
 *.pyc
 *.VC.db
@@ -61,3 +62,4 @@ venv/
 test_get_pkgs
 build/config/gclient_args.gni
 third_party/rust/target
+xcuserdata

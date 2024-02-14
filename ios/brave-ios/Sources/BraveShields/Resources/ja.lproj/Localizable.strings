@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "ブロック済みのトラッカー&広告数";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "ブロック済の\n広告";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "節約できた\nデータ量(推定)";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "節約できた\n時間(推定)";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "日";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "時間";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "分";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "秒";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "ブロック済の\nトラッカー";
+

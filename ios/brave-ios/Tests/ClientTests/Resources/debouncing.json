@@ -1,0 +1,266 @@
+[
+  {
+    "include": [
+      "http://simple.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://base64.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "base64,redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://double.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://double.b.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://quad.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://quad.b.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://quad.c.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://quad.d.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.c.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.d.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "unknown-redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.e.com/?url=*"
+    ],
+    "exclude": [
+      "http://excluded.e.com/*"
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.f.com/?url2=*"
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.g.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url",
+    "source": "this field is unused but its presence should be tolerated"
+  },
+  {
+    "include": [
+      "http://*.h.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://tracker.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://tracker.z.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "<all_urls>"
+    ],
+    "exclude": [
+      "*://*.exclude.com/*"
+    ],
+    "action": "base64,redirect",
+    "param": "_match_all"
+  },
+  {
+    "include": [
+      "*://*.leechall.com/redirect.php?url=*"
+    ],
+    "exclude": [
+      "*://*.leechall.com/exclude.php?url=*"
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "*://*.facebook.com/l.php*",
+      "*://goto.walmart.com/c/*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "u"
+  },
+  {
+    "include": [
+      "*://*.youtube.com/redirect*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "q"
+  },
+  {
+    "include": [
+      "*://*.blogspot.com/*/*/*?url=*",
+      "*://*/descargar/index.php?url=*",
+      "*://*.pixelshost.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "base64,redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "*://brave.com/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path",
+    "param": "^/(.*)$"
+  },
+  {
+    "include": [
+      "*://brave-scheme.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "prepend_scheme": "https",
+    "action": "regex-path",
+    "param": "^/(.*)$"
+  },
+  {
+    "include": [
+      "*://brave-base64.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path,base64",
+    "param": "^/(.*)$"
+  },
+  {
+    "include": [
+      "*://brave-invalid-regex.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path",
+    "param": "^/(.*$"
+  },
+  {
+    "include": [
+      "*://brave-multiple-matchers.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path",
+    "param": "^/(.*)/(.*)$"
+  },
+  {
+    "include": [
+      "http://*.click.example/bounce?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "*://brave-long-regex.example/*"
+    ],
+    "pref": "brave.de_amp.enabled",
+    "exclude": [
+    ],
+    "action": "regex-path",
+    "param": "^/(https:\/\/lorem.example|https:\/\/ipsum.example|https:\/\/dolor.example|https:\/\/sit.example|https:\/\/amet.example|https:\/\/consectetur.example|https:\/\/adipiscing.example|https:\/\/elit.example|https:\/\/donec.example|https:\/\/ornare.example|https:\/\/odio.example|https:\/\/nec.example|https:\/\/ex.example|https:\/\/pulvinar.https:\/\/example|.example|https:\/\/pellentesque.example|https:\/\/diam.example|https:\/\/tristique.example|https:\/\/nullam.example|https:\/\/sollicitudin.example|https:\/\/et.example|https:\/\/arcu.example|https:\/\/feugiat.example|https:\/\/suspendisse.example|https:\/\/turpis.example|https:\/\/odio.example|https:\/\/faucibus.example|https:\/\/vitae.example|https:\/\/blandit.example|https:\/\/vel.example|https:\/\/convallis.example|https:\/\/tincidunt.example|https:\/\/lacus.example|https:\/\/fusce.example|https:\/\/malesuada.example|https:\/\/nunc.example|https:\/\/nec.example|https:\/\/ligula.example|https:\/\/mattis.example|https:\/\/non.example|https:\/\/lacinia.example|https:\/\/sem.example|https:\/\/commodo.example|https:\/\/donec.example|https:\/\/at.example|https:\/\/nunc.example|https:\/\/eu.example|https:\/\/nunc.example|https:\/\/dignissim.example|https:\/\/malesuada.example|https:\/\/ullamcorper.example|https:\/\/et.example|https:\/\/mauris.example|https:\/\/fusce.example|https:\/\/et.example|https:\/\/placerat.example|https:\/\/justo.example|https:\/\/Nulla.example|https:\/\/non.example|https:\/\/gravida.example|https:\/\/risus.example|https:\/\/integer.example|https:\/\/est.example|https:\/\/diam.example|https:\/\/ullamcorper.example|https:\/\/quis.example|https:\/\/sapien.example|https:\/\/at.example|https:\/\/placerat.example|https:\/\/bibendum.example|https:\/\/quisque.example|https:\/\/bibendum.example|https:\/\/mi.example|https:\/\/id.example|https:\/\/dictum.example|https:\/\/imperdiet.example|https:\/\/augue.example|https:\/\/sem.example|https:\/\/gravida.example|https:\/\/quis.example|https:\/\/ullamcorper.example|https:\/\/nulla.example|https:\/\/nisi.example|https:\/\/sed.example|https:\/\/mauris.example)$"
+  }
+]
