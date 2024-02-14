@@ -10,6 +10,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "url/url_constants.h"
 
 namespace playlist {
 
@@ -22,6 +23,11 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
 
   DCHECK(navigation_handle);
   if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
+
+  const GURL url = navigation_handle->GetWebContents()->GetVisibleURL();
+  if (url.SchemeIs(url::kAboutScheme)) {
     return;
   }
 
