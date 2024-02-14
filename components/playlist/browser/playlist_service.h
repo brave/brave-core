@@ -14,7 +14,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
@@ -139,11 +138,15 @@ class PlaylistService : public KeyedService,
 
   base::WeakPtr<PlaylistService> GetWeakPtr();
 
-  using FindMediaFilesFromContentsCallback =
+  // Find media from |contents| using corresponding background web contents.
+  // The background web contents will load the same url as |contents| but
+  // does trick to get plain media urls that we can cache from.
+  using ExtractMediaFromBackgroundWebContentsCallback =
       base::OnceCallback<void(const GURL& target_url,
                               std::vector<mojom::PlaylistItemPtr> items)>;
-  void FindMediaFilesFromContents(content::WebContents* contents,
-                                  FindMediaFilesFromContentsCallback callback);
+  void ExtractMediaFromBackgroundWebContents(
+      content::WebContents* contents,
+      ExtractMediaFromBackgroundWebContentsCallback callback);
 
   // Synchronous versions of mojom::PlaylistService implementations
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
@@ -161,11 +164,10 @@ class PlaylistService : public KeyedService,
   void GetPlaylistItem(const std::string& id,
                        GetPlaylistItemCallback callback) override;
 
-  void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
-                                       const GURL& url,
-                                       bool can_cache) override;
-  void AddMediaFilesFromActiveTabToPlaylist(const std::string& playlist_id,
-                                            bool can_cache) override;
+  void AddMediaFilesFromActiveTabToPlaylist(
+      const std::string& playlist_id,
+      bool can_cache,
+      AddMediaFilesFromActiveTabToPlaylistCallback callback) override;
   void FindMediaFilesFromActiveTab(
       FindMediaFilesFromActiveTabCallback callback) override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
@@ -231,6 +233,13 @@ class PlaylistService : public KeyedService,
   void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
 
+  // Returns true when any of items contains blob: scheme, which we can't cache
+  // media directly from.
+  bool ShouldExtractMediaFromBackgroundWebContents(
+      const std::vector<mojom::PlaylistItemPtr>& items);
+
+  bool playlist_enabled() const { return *enabled_pref_; }
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
@@ -262,9 +271,11 @@ class PlaylistService : public KeyedService,
 
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
-  void AddMediaFilesFromContentsToPlaylist(const std::string& playlist_id,
-                                           content::WebContents* contents,
-                                           bool cache);
+  void AddMediaFilesFromContentsToPlaylist(
+      const std::string& playlist_id,
+      content::WebContents* contents,
+      bool cache,
+      base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> callback);
 
   void AddMediaFilesFromItems(const std::string& playlist_id,
                               bool cache,
@@ -272,9 +283,12 @@ class PlaylistService : public KeyedService,
                               std::vector<mojom::PlaylistItemPtr> items);
 
   // Returns true when we should try getting media from a background web
-  // contents that is different from the given |contents|.
+  // contents that is different from the given |contents|. which means it could
+  // have impact on performance/memory.
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
+  bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
+
   bool ShouldUseFakeUA(const GURL& url) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);

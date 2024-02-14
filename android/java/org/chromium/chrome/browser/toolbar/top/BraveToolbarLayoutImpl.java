@@ -692,7 +692,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 playlistItems.toArray(new PlaylistItem[0]),
                                 ConstantUtils.DEFAULT_PLAYLIST,
                                 true,
-                                addedItems -> {});
+                                addedItems -> {
+                                    if (addedItems.length > 0) {
+                                        showAddedToPlaylistSnackBar();
+                                    }
+                                });
                     } else {
                         showAlreadyAddedToPlaylistSnackBar();
                     }
@@ -704,10 +708,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mPlaylistService == null || currentTab == null) {
             return;
         }
-        org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
-        contentUrl.url = currentTab.getUrl().getSpec();
-        mPlaylistService.addMediaFilesFromPageToPlaylist(
-                ConstantUtils.DEFAULT_PLAYLIST, contentUrl, true);
+        mPlaylistService.addMediaFilesFromActiveTabToPlaylist(
+                ConstantUtils.DEFAULT_PLAYLIST,
+                true,
+                addedItems -> {
+                    if (addedItems.length > 0) {
+                        showAddedToPlaylistSnackBar();
+                    }
+                });
     }
 
     private void showAddedToPlaylistSnackBar() {
@@ -1617,11 +1625,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mRewardsLayout.draw(canvas);
             canvas.restore();
         }
-    }
-
-    @Override
-    public void onItemAddedToList(String playlistId, String itemId) {
-        showAddedToPlaylistSnackBar();
     }
 
     @Override

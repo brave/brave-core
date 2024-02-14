@@ -77,7 +77,7 @@ class FakeDownloadRequestManager : public PlaylistDownloadRequestManager {
  public:
   explicit FakeDownloadRequestManager(
       MediaDetectorComponentManager* component_manager)
-      : PlaylistDownloadRequestManager(nullptr, component_manager) {}
+      : PlaylistDownloadRequestManager(nullptr, nullptr, component_manager) {}
   ~FakeDownloadRequestManager() override = default;
 
   // PlaylistDownloadRequestManager:
@@ -212,7 +212,7 @@ class PlaylistServiceUnitTest : public testing::Test {
 
     detector_manager_ =
         std::make_unique<MediaDetectorComponentManager>(nullptr);
-    detector_manager_->SetUseLocalScriptForTesting();
+    detector_manager_->SetUseLocalScript();
     service_ = std::make_unique<PlaylistService>(profile_.get(), &local_state_,
                                                  detector_manager_.get(),
                                                  nullptr, base::Time::Now());
@@ -1444,6 +1444,29 @@ TEST_F(PlaylistServiceUnitTest, ReorderPlaylist) {
 
   playlist_service()->ResetAll();
   CheckOrder({std::string(kDefaultPlaylistID)});
+}
+
+TEST_F(PlaylistServiceUnitTest, ShouldExtractMediaFromBackgroundWebContents) {
+  std::vector<mojom::PlaylistItemPtr> items;
+  // Empty items - shouldn't use background web contents
+  EXPECT_FALSE(
+      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
+
+  // Add an item with https:// media source - shouldn't use background web
+  // contents
+  items.push_back(mojom::PlaylistItem::New());
+  items.back()->media_source = GURL("https://foo.com/");
+  EXPECT_FALSE(
+      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
+
+  // Items contain an item with MediaSource-backed blob: - should use background
+  // web contents
+  items.push_back(mojom::PlaylistItem::New());
+  items.back()->page_source = GURL("https://youtube.com");
+  items.back()->media_source = GURL("blob:https://youtube.com/123");
+  items.back()->is_blob_from_media_source = true;
+  EXPECT_TRUE(
+      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
 }
 
 class PlaylistServiceWithFakeUAUnitTest : public PlaylistServiceUnitTest {

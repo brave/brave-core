@@ -108,13 +108,11 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
     // Run script and find media files
     ASSERT_FALSE(component_manager_->GetMediaDetectorScript({}).empty());
-    playlist::PlaylistDownloadRequestManager::Request request;
-    request.url_or_contents = active_web_contents->GetWeakPtr();
-    request.callback =
+    request_manager_->GetMedia(
+        active_web_contents,
         base::BindOnce(&PlaylistDownloadRequestManagerBrowserTest::OnGetMedia,
                        base::Unretained(this), test_info->name(), items,
-                       url.is_valid() ? url.host() : destination_url.host());
-    request_manager_->GetMediaFilesFromPage(std::move(request));
+                       url.is_valid() ? url.host() : destination_url.host()));
 
     // Block until result is received from OnGetMedia().
     run_loop_ = std::make_unique<base::RunLoop>();
@@ -139,7 +137,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
     request_manager_ = playlist_service->download_request_manager_.get();
     component_manager_ = request_manager_->media_detector_component_manager();
-    component_manager_->SetUseLocalScriptForTesting();
+    component_manager_->SetUseLocalScript();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -161,8 +159,9 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     request_manager_ = nullptr;
     component_manager_ = nullptr;
 
-    if (https_server()->Started())
+    if (https_server()->Started()) {
       ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
+    }
 
     PlatformBrowserTest::TearDownOnMainThread();
   }
@@ -472,12 +471,16 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                    std::vector<playlist::mojom::PlaylistItemPtr> items) {
         EXPECT_TRUE(items.empty());
       });
+  // This returns cached items that are found so far. They should be empty.
+  playlist_service->FindMediaFilesFromActiveTab(callback.Get());
 
   base::RunLoop run_loop;
-  EXPECT_CALL(observer, OnMediaFilesUpdated(url, _)).WillOnce([&]() {
-    run_loop.Quit();
-  });
+  EXPECT_CALL(observer, OnMediaFilesUpdated(url, _))
+      .WillOnce([&](const GURL& page_url,
+                    std::vector<playlist::mojom::PlaylistItemPtr> items) {
+        EXPECT_FALSE(items.empty());
+        run_loop.Quit();
+      });
 
-  playlist_service->FindMediaFilesFromActiveTab(callback.Get());
   run_loop.Run();
 }

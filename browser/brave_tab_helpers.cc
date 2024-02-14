@@ -96,7 +96,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/browser/playlist/playlist_tab_helper.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -207,8 +208,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  playlist::PlaylistTabHelper::MaybeCreateForWebContents(web_contents);
-#endif
+  playlist::PlaylistTabHelper::MaybeCreateForWebContents(
+      web_contents, playlist::PlaylistServiceFactory::GetForBrowserContext(
+                        web_contents->GetBrowserContext()));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 }  // namespace brave

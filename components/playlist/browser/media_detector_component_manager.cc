@@ -74,6 +74,10 @@ base::flat_map<ScriptName, std::string> ReadScriptsFromComponent(
 MediaDetectorComponentManager::MediaDetectorComponentManager(
     component_updater::ComponentUpdateService* component_update_service)
     : component_update_service_(component_update_service) {
+  // TODO(sko) We have breaking changes and not using scripts from component
+  // updater. But we should use script from the component at some point.
+  SetUseLocalScript();
+
   // TODO(sko) These lists should be dynamically updated from the playlist.
   // Even after we finish the job, we should leave these call so that we can
   // use local resources until the component is updated.
@@ -91,9 +95,19 @@ void MediaDetectorComponentManager::RemoveObserver(Observer* observer) {
   observer_list_.RemoveObserver(observer);
 }
 
+void MediaDetectorComponentManager::MaybeInitScripts() {
+  if (base_script_.empty()) {
+    // In case we have yet to fetch the script, use local script instead. At the
+    // same time, fetch the script from component.
+    RegisterIfNeeded();
+    OnGetScripts(GetLocalScriptMap());
+  }
+}
+
 void MediaDetectorComponentManager::RegisterIfNeeded() {
-  if (register_requested_)
+  if (register_requested_) {
     return;
+  }
 
   register_requested_ = true;
   RegisterMediaDetectorComponent(
@@ -138,11 +152,12 @@ void MediaDetectorComponentManager::OnGetScripts(
     }
   }
 
-  for (auto& observer : observer_list_)
+  for (auto& observer : observer_list_) {
     observer.OnScriptReady(base_script_);
+  }
 }
 
-void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
+void MediaDetectorComponentManager::SetUseLocalScript() {
   register_requested_ = true;
 
   OnGetScripts(GetLocalScriptMap());
@@ -159,17 +174,13 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
 
 std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     const GURL& url) {
-  if (base_script_.empty()) {
-    // In case we have yet to fetch the script, use local script instead. At the
-    // same time, fetch the script from component.
-    RegisterIfNeeded();
-    OnGetScripts(GetLocalScriptMap());
-  }
+  MaybeInitScripts();
 
+  net::SchemefulSite site(url);
   std::string detector_script = base_script_;
   DCHECK(!detector_script.empty());
 
-  if (net::SchemefulSite site(url); site_specific_detectors_.count(site)) {
+  if (site_specific_detectors_.count(site)) {
     constexpr std::string_view kPlaceholder =
         "const siteSpecificDetector = null";
     auto pos = detector_script.find(kPlaceholder);

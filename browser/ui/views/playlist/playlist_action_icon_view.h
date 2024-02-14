@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "base/scoped_observation.h"
-#include "brave/browser/playlist/playlist_tab_helper.h"
-#include "brave/browser/playlist/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 
 class Browser;

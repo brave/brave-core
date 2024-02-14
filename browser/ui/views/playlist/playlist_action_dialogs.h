@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include "brave/browser/playlist/playlist_tab_helper_observer.h"
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
+#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/constrained_window/constrained_window_views.h"
