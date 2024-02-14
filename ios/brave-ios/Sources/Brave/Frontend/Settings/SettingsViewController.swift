@@ -839,8 +839,26 @@ class SettingsViewController: TableViewController {
         Row(
           text: "View Chromium Local State",
           selection: { [unowned self] in
-            let controller = UIHostingController(rootView: LocalStateInspectorView())
-            self.navigationController?.pushViewController(controller, animated: true)
+            let localStateController = ChromeWebViewController(privateBrowsing: false).then {
+              $0.title = "Chromium Local State"
+              $0.loadURL("brave://local-state")
+            }
+            if #available(iOS 16.0, *) {
+              let webView = localStateController.webView
+              webView.isFindInteractionEnabled = true
+              localStateController.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                systemItem: .search,
+                primaryAction: .init { [weak webView] _ in
+                  guard let findInteraction = webView?.findInteraction,
+                        !findInteraction.isFindNavigatorVisible else {
+                    return
+                  }
+                  findInteraction.searchText = ""
+                  findInteraction.presentFindNavigator(showingReplace: false)
+                }
+              )
+            }
+            self.navigationController?.pushViewController(localStateController, animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self
         ),
         Row(
