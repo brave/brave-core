@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -26,7 +25,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.adapters.PortfolioFragmentStateAdapter;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 
 import java.util.List;
@@ -40,7 +38,6 @@ public class PortfolioFragment extends Fragment implements ApprovedTxObserver {
     private TabLayout mTabLayout;
     private ViewPager2 mViewPager;
 
-    private PortfolioFragmentStateAdapter mViewPagerAdapter;
 
     private WalletModel mWalletModel;
     private List<TransactionInfo> mPendingTxs;
@@ -87,12 +84,7 @@ public class PortfolioFragment extends Fragment implements ApprovedTxObserver {
         mTabLayout = view.findViewById(R.id.portfolio_tab_layout);
         mViewPager = view.findViewById(R.id.portfolio_view_pager);
 
-        mViewPagerAdapter = new PortfolioFragmentStateAdapter(this);
-        mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setUserInputEnabled(false);
-        new TabLayoutMediator(mTabLayout, mViewPager,
-                (tab, position) -> tab.setText(mViewPagerAdapter.getPageTitle(position)))
-                .attach();
     }
 
     public void callAnotherApproveDialog() {

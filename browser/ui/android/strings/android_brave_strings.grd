@@ -2256,15 +2256,6 @@ Are you sure you want to do this?
     <message name="IDS_ACCOUNT_DETAILS" desc="Brave wallet accounts text">
       Account Details
     </message>
-    <message name="IDS_EDIT_VISIBLE_ASSETS" desc="Brave wallet edit assets button name">
-      Edit visible assets
-    </message>
-    <message name="IDS_SAVE_ACCOUNT_WATCHLIST" desc="Brave wallet save a watchlist assets button name">
-      Save account watchlist
-    </message>
-    <message name="IDS_SEARCH_TOKENS" desc="Brave wallet search tokens control hint">
-      Search tokens
-    </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
     </message>
@@ -2798,41 +2789,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_POWERED_BY_COIN_GECKO" desc="Disclaimer on assets details page for GoinGecko contract agreement">
       Price data powered by CoinGecko
     </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET" desc="Add custom asset clickable name">
-      Add custom asset
-    </message>
-    <message name="IDS_WALLET_ADD_NFT" desc="Add NFT clickable name">
-      Add NFT
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_ADD_BUTTON" desc="Add custom asset dialog Add button text">
-      Add
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_NAME" desc="Add custom asset dialog Token name field">
-      Token name
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_MINT_ADDRESS" desc="Add custom asset dialog mint address field">
-      Mint address
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_SYMBOL" desc="Add custom asset dialog Token symbol field">
-      Token symbol
-    </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_DECIMALS" desc="Add custom asset dialog Decimals of precision field">
       Decimals of precision
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ID" desc="Add custom asset dialog Token ID">
-      Token ID (only for ERC721)
-    </message>
-    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET" desc="Remove custom asset dialog title">
-      Remove custom asset
-    </message>
-    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_DESC" desc="Remove custom asset dialog description">
-      Do you want to remove <ph name="TOKEN_NAME">%1$s<ex>Custom</ex></ph> (<ph name="TOKEN_SYMBOL">%2$s<ex>CUS</ex></ph>) token?
-    </message>
-    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_YES" desc="Remove custom asset dialog button name">
-      Yes
-    </message>
-    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_NO" desc="Remove custom asset dialog button name">
-      No
     </message>
     <message name="IDS_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">
       The receiving address is your own address
@@ -3569,9 +3527,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SECURITY_RISK_DETECTED" desc="Sign in with Brave Wallet Error Security risk">
       Security risk detected
     </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ADDRESS" desc="Add custom asset dialog Token contract address field for Solana NFT">
-      Token address
-    </message>
     <message name="IDS_LINK_SUBSCRIPTION_TITLE" desc="Brave vpn link subscription settings title text">
       Link purchase to your Brave account
     </message>
@@ -3680,9 +3635,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_TEST" desc="Network filter title for test networks">
       Test Networks
     </message>
-    <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
-      NFTs
-    </message>
     <message name="IDS_VBAT_SUPPORTED_REGION_TITLE" desc="Vbat modal title text for supported region">
       Action required: Connect a custodial account or your vBAT will be lost
     </message>
@@ -3746,9 +3698,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_DESELECT_ALL" desc="Action title for deselect all button">
       Deselect all
     </message>
-    <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_ASSETS" desc="No availible assets title for empty asset list">
-      No available assets
-    </message>
     <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
       Leo
     </message>
@@ -3785,9 +3734,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Leo confirm button text.">
       Confirm
     </message>  
-    <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
-      ...
-    </message>
     <message name="IDS_LINK_SUBSCRIPTION_TITLE_LEO" desc="Brave Leo link subscription settings title text">
       Link purchase to your Brave account
     </message>
