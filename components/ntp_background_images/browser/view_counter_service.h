@@ -81,7 +81,7 @@ class ViewCounterService : public KeyedService,
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaper() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaper() const;
-  std::optional<base::Value::Dict> GetCurrentBrandedWallpaperByAdInfo() const;
+  std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromAdInfo() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromModel() const;
   std::vector<TopSite> GetTopSitesData() const;
 

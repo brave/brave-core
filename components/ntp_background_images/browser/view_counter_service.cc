@@ -224,15 +224,14 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
 
   const bool should_frequency_cap_ads =
       prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
-  if (should_frequency_cap_ads && !images_data->IsSuperReferral()) {
-    return GetCurrentBrandedWallpaperByAdInfo();
-  }
 
-  return GetCurrentBrandedWallpaperFromModel();
+  return should_frequency_cap_ads && !images_data->IsSuperReferral()
+             ? GetCurrentBrandedWallpaperFromAdInfo()
+             : GetCurrentBrandedWallpaperFromModel();
 }
 
 std::optional<base::Value::Dict>
-ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
+ViewCounterService::GetCurrentBrandedWallpaperFromAdInfo() const {
   DCHECK(ads_service_);
 
   const std::optional<brave_ads::NewTabPageAdInfo> ad =
@@ -242,7 +241,7 @@ ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   }
 
   std::optional<base::Value::Dict> branded_wallpaper_data =
-      GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad);
+      GetCurrentBrandedWallpaperData()->GetBackgroundFromAdInfo(*ad);
   if (!branded_wallpaper_data) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);

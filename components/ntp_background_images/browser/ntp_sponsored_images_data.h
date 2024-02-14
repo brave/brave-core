@@ -109,7 +109,7 @@ struct NTPSponsoredImagesData {
 
   std::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
                                                    size_t background_index);
-  std::optional<base::Value::Dict> GetBackgroundByAdInfo(
+  std::optional<base::Value::Dict> GetBackgroundFromAdInfo(
       const brave_ads::NewTabPageAdInfo& ad_info);
 
   bool IsSuperReferral() const;
