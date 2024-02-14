@@ -32,7 +32,7 @@ class PrefService;
 class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
                                   public bat_ads::mojom::BatAdsObserver {
  public:
-  BraveNewTabMessageHandler(Profile* profile, bool was_invisible_and_restored);
+  BraveNewTabMessageHandler(Profile* profile, bool was_restored);
   BraveNewTabMessageHandler(const BraveNewTabMessageHandler&) = delete;
   BraveNewTabMessageHandler& operator=(const BraveNewTabMessageHandler&) =
       delete;
@@ -45,7 +45,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   static BraveNewTabMessageHandler* Create(
       content::WebUIDataSource* html_source,
       Profile* profile,
-      bool was_invisible_and_restored);
+      bool was_restored);
 
  private:
   // WebUIMessageHandler implementation.
@@ -85,7 +85,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};
 
-  bool was_invisible_and_restored_ = false;
+  bool was_restored_ = false;
 
   base::WeakPtrFactory<BraveNewTabMessageHandler> weak_ptr_factory_;
 };

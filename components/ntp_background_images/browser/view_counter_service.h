@@ -77,6 +77,7 @@ class ViewCounterService : public KeyedService,
                                    const std::string& destination_url,
                                    const std::string& wallpaper_id);
 
+  std::optional<base::Value::Dict> GetNextWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaper() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaper() const;

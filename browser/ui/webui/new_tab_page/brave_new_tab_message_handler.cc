@@ -136,7 +136,7 @@ void BraveNewTabMessageHandler::RecordInitialP3AValues(
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     content::WebUIDataSource* source,
     Profile* profile,
-    bool was_invisible_and_restored) {
+    bool was_restored) {
   //
   // Initial Values
   // Should only contain data that is static
@@ -160,15 +160,12 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     source->AddBoolean("isTor", profile->IsTor());
     source->AddBoolean("isQwant", brave::IsRegionForQwant(profile));
   }
-  return new BraveNewTabMessageHandler(profile, was_invisible_and_restored);
+  return new BraveNewTabMessageHandler(profile, was_restored);
 }
 
-BraveNewTabMessageHandler::BraveNewTabMessageHandler(
-    Profile* profile,
-    bool was_invisible_and_restored)
-    : profile_(profile),
-      was_invisible_and_restored_(was_invisible_and_restored),
-      weak_ptr_factory_(this) {
+BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile,
+                                                     bool was_restored)
+    : profile_(profile), was_restored_(was_restored), weak_ptr_factory_(this) {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
@@ -449,9 +446,9 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   AllowJavascript();
 
   // Decrement original value only if there's actual branded content and we are
-  // not restoring invisible (hidden or occluded) browser tabs.
-  if (was_invisible_and_restored_) {
-    was_invisible_and_restored_ = false;
+  // not restoring browser tabs.
+  if (was_restored_) {
+    was_restored_ = false;
     return;
   }
 
@@ -500,7 +497,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   }
 
   std::optional<base::Value::Dict> data =
-      service->GetCurrentWallpaperForDisplay();
+      was_restored_ ? service->GetNextWallpaperForDisplay()
+                    : service->GetCurrentWallpaperForDisplay();
 
   if (!data) {
     ResolveJavascriptCallback(args[0], wallpaper);
