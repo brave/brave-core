@@ -80,7 +80,7 @@ const saveScrollPos = (itemId: React.Key) => () => {
 }
 
 const errors = {
-  [FeedV2Error.ConnectionError]: <NotConnected/>,
+  [FeedV2Error.ConnectionError]: <NotConnected />,
   [FeedV2Error.NoArticles]: <NoArticles />,
   [FeedV2Error.NoFeeds]: <NoFeeds />
 }
@@ -138,14 +138,16 @@ export default function Component({ feed, onSessionStart }: Props) {
       onSessionStart();
     }
     lastViewedCardCount.current = largestCardCount;
+  }, {
+    threshold: 1
   }));
 
-  const registerViewDepthObservation = (element: HTMLElement | null) => {
+  const registerViewDepthObservation = React.useCallback((element: HTMLElement | null) => {
     if (!element) {
       return;
     }
     viewDepthIntersectionObserver.current.observe(element);
-  };
+  }, []);
 
   // Only observe the bottom card
   const setLastCardRef = React.useCallback((el: HTMLElement | null) => {
@@ -157,6 +159,12 @@ export default function Component({ feed, onSessionStart }: Props) {
   const cards = React.useMemo(() => {
     const count = Math.min(feed?.items.length ?? 0, cardCount)
     let currentCardCount = 0;
+    const setRefAtIndex = (index: number) => (element: HTMLElement | null) => {
+      const isLast = index === count - 1
+      if (isLast) setLastCardRef(element)
+      registerViewDepthObservation(element)
+    }
+
     return feed?.items.slice(0, count).map((item, index) => {
       let el: React.ReactNode
 
@@ -185,14 +193,11 @@ export default function Component({ feed, onSessionStart }: Props) {
       }
 
       const key = getKey(item, index)
-      return <>
-        <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} ref={index === count - 1 ? setLastCardRef : undefined}>
-          {el}
-        </div>
-        <div key={`${key}-counter`} {...{ [CARD_COUNT_ATTRIBUTE]: currentCardCount }} ref={registerViewDepthObservation} />
-      </>
+      return <div className={CARD_CLASS} onClickCapture={saveScrollPos(key)} key={key} data-id={key} {...{ [CARD_COUNT_ATTRIBUTE]: currentCardCount }} ref={setRefAtIndex(index)}>
+        {el}
+      </div>
     })
-  }, [cardCount, feed?.items])
+  }, [cardCount, feed?.items, registerViewDepthObservation])
 
   return <FeedContainer className={NEWS_FEED_CLASS}>
     {feed
