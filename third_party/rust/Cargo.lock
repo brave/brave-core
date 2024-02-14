@@ -1616,8 +1616,6 @@ version = "3.2.0"
 [[package]]
 name = "ppoprf"
 version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d97a7a93423a5988e153e29de494b2625528196476213a4401e91140487faf1a"
 dependencies = [
  "base64",
  "bincode",
@@ -2692,10 +2690,6 @@ dependencies = [
 [[patch.unused]]
 name = "kuchikiki"
 version = "0.8.4-speedreader"
-
-[[patch.unused]]
-name = "ppoprf"
-version = "0.3.0"
 
 [[patch.unused]]
 name = "strobe-rng"
