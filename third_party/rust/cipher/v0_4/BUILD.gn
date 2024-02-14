@@ -1,0 +1,54 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "cipher"
+  epoch = "0.4"
+  crate_type = "rlib"
+  crate_root =
+      "//brave/third_party/rust/cipher/v0_4/crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/cipher/v0_4/crate/src/block.rs",
+    "//brave/third_party/rust/cipher/v0_4/crate/src/dev.rs",
+    "//brave/third_party/rust/cipher/v0_4/crate/src/dev/block.rs",
+    "//brave/third_party/rust/cipher/v0_4/crate/src/dev/stream.rs",
+    "//brave/third_party/rust/cipher/v0_4/crate/src/errors.rs",
+    "//brave/third_party/rust/cipher/v0_4/crate/src/lib.rs",
+    "//brave/third_party/rust/cipher/v0_4/crate/src/stream.rs",
+    "//brave/third_party/rust/cipher/v0_4/crate/src/stream_core.rs",
+    "//brave/third_party/rust/cipher/v0_4/crate/src/stream_wrapper.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.4.4"
+  cargo_pkg_authors = "RustCrypto Developers"
+  cargo_pkg_name = "cipher"
+  cargo_pkg_description =
+      "Traits for describing block ciphers and stream ciphers"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/crypto_common/v0_1:lib",
+    "//brave/third_party/rust/inout/v0_1:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+  ]
+  features = [ "zeroize" ]
+
+  # Only for usage from third-party crates. Add the crate to
+  # //brave/third_party/rust/chromium_crates_io/Cargo.toml to use
+  # it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+}
