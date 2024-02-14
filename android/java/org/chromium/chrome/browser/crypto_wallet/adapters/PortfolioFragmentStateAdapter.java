@@ -12,7 +12,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.AssetsFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.NftGridFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +27,6 @@ public class PortfolioFragmentStateAdapter extends FragmentStateAdapter {
     private final ArrayList<String> mTitles;
 
     private AssetsFragment mAssetsFragment;
-    private NftGridFragment mNftGridFragment;
 
     public PortfolioFragmentStateAdapter(@NonNull final Fragment fragment) {
         super(fragment);
@@ -45,11 +43,6 @@ public class PortfolioFragmentStateAdapter extends FragmentStateAdapter {
                     mAssetsFragment = AssetsFragment.newInstance();
                 }
                 return mAssetsFragment;
-            case NFT_GRID_FRAGMENT_POSITION:
-                if (mNftGridFragment == null) {
-                    mNftGridFragment = NftGridFragment.newInstance();
-                }
-                return mNftGridFragment;
             default:
                 throw new IllegalStateException(
                         String.format("No fragment found for position %d.", position));

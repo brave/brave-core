@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.TransactionType;
-import org.chromium.chrome.browser.crypto_wallet.fragments.NftGridFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,7 +76,7 @@ public final class WalletConstants {
 
     // To clear prefs while resetting wallet
     public static final String[] BRAVE_WALLET_PREFS = {
-            PREF_SHOW_BRIDGE_INFO_DIALOG, NftGridFragment.SHOW_NFT_DISCOVERY_DIALOG};
+            PREF_SHOW_BRIDGE_INFO_DIALOG};
 
     public static List<String> SUPPORTED_TOP_LEVEL_CHAIN_IDS =
             Arrays.asList(BraveWalletConstants.MAINNET_CHAIN_ID,

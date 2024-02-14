@@ -2259,9 +2259,6 @@ Are you sure you want to do this?
     <message name="IDS_EDIT_VISIBLE_ASSETS" desc="Brave wallet edit assets button name">
       Edit visible assets
     </message>
-    <message name="IDS_EDIT_VISIBLE_NFTS" desc="Brave wallet edit NFTs button name">
-      Edit visible NFTs
-    </message>
     <message name="IDS_SAVE_ACCOUNT_WATCHLIST" desc="Brave wallet save a watchlist assets button name">
       Save account watchlist
     </message>
@@ -2276,33 +2273,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Title for help center link">
       Help center
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOOLBAR" desc="Title for Brave wallet NFT detail screen toolbar.">
-      NFT Detail
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_DESCRIPTION" desc="Description text for Brave wallet NFT asset detail.">
-      Description
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_BLOCKCHAIN" desc="Blockchain text for Brave wallet NFT asset detail.">
-      Blockchain
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_TOKEN_STANDARD" desc="Token standard text for Brave wallet NFT asset detail.">
-      Token Standard
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_ERC_721" desc="Type of NFT token standard." translateable="false">
-      ERC 721
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_SOL_SPL" desc="Type of NFT token standard adopted by Solana." translateable="false">
-      SPL
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_TOKEN_ID" desc="Token ID text for brave wallet NFT asset detail.">
-      Token ID
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_MINT_ADDRESS" desc="Mint address text for brave wallet NFT asset detail.">
-      Mint Address
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_IMAGE_NOT_AVAILABLE" desc="Text message for image not available when loading NFT image.">
-      Image not available
     </message>
     <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_OPTION" desc="Title for brave wallet automatically lock.">
       Automatically lock Brave Wallet
@@ -3278,12 +3248,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_ACTION_NO" desc="Action text for general negative actions">
       No
     </message>
-    <message name="IDS_BRAVE_ACTION_ENABLE" desc="Action text to enable something">
-      Enable
-    </message>
-    <message name="IDS_BRAVE_ACTION_CANCEL" desc="Action text to cancel something">
-      Cancel
-    </message>
     <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype" translateable="false">
       Ethereum
     </message>
@@ -3719,9 +3683,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
       NFTs
     </message>
-    <message name="IDS_BRAVE_WALLET_HIDDEN" desc="Hidden NFT section">
-      Hidden
-    </message>
     <message name="IDS_VBAT_SUPPORTED_REGION_TITLE" desc="Vbat modal title text for supported region">
       Action required: Connect a custodial account or your vBAT will be lost
     </message>
@@ -3751,19 +3712,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION" desc="Portfolio asset item network description">
       <ph name="SYMBOL"><ex>BAT</ex>%1$s</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>%2$s</ph>
-    </message>
-    
-    <message name="IDS_NO_NFTS" desc="Message shown when there no NFTs in the NFT grid.">
-      No NFTs here yet.
-    </message>
-    <message name="IDS_ADD_NFTS" desc="How to import NFTs in the NFT grid.">
-      Ready to add some? Just click the button below to import.
-    </message>
-    <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER" desc="Enable NFT auto-discovery modal header">
-      Want your NFTs displayed automatically?
-    </message>
-    <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">
-      Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>SimpleHash<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph> to provide this service. <ph name="BEGIN_LINK_2">&lt;LINK_2&gt;</ph>Learn more.<ph name="END_LINK_2">&lt;/LINK_2&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL" desc="The label for enabling NFT discovery">
       Enable NFT discovery
