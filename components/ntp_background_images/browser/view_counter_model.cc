@@ -112,13 +112,6 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
 }
 
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {
-  // NTP BI component is not ready.
-  if (total_image_count_ == 0)
-    return;
-
-  if (!show_wallpaper_)
-    return;
-
   // We don't show NTP BI in SR mode.
   if (always_show_branded_wallpaper_)
     return;
@@ -129,12 +122,10 @@ void ViewCounterModel::RegisterPageViewForBackgroundImages() {
     return;
   }
 
-  // Increase background image index
-  current_wallpaper_image_index_++;
-  current_wallpaper_image_index_ %= total_image_count_;
+  RotateBackgroundWallpaperImageIndex();
 }
 
-void ViewCounterModel::IncreaseBackgroundWallpaperImageIndex() {
+void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
   // NTP BI component is not ready.
   if (total_image_count_ == 0)
     return;
@@ -142,7 +133,6 @@ void ViewCounterModel::IncreaseBackgroundWallpaperImageIndex() {
   if (!show_wallpaper_)
     return;
 
-  // Increase background image index
   current_wallpaper_image_index_++;
   current_wallpaper_image_index_ %= total_image_count_;
 }
