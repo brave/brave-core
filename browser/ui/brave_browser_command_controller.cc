@@ -92,6 +92,8 @@ BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 void BraveBrowserCommandController::TabChangedAt(content::WebContents* contents,
                                                  int index,
                                                  TabChangeType type) {
+  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
+                       brave::HasDuplicateTabs(&*browser_));
   UpdateCommandsForMute();
   UpdateCommandsForSend();
 }
@@ -112,6 +114,8 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
 
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT,
                        brave::CanCloseTabsToLeft(&*browser_));
+  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
+                       brave::HasDuplicateTabs(&*browser_));
   UpdateCommandsForMute();
   UpdateCommandsForSend();
   UpdateCommandsForPin();
@@ -243,7 +247,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_GROUP_TABS_ON_CURRENT_ORIGIN, true);
 
   UpdateCommandEnabled(IDC_MOVE_GROUP_TO_NEW_WINDOW, true);
-  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS, true);
+  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
+                       brave::HasDuplicateTabs(&*browser_));
   UpdateCommandEnabled(IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP, true);
 
   UpdateCommandEnabled(IDC_SCROLL_TAB_TO_TOP, true);

@@ -397,9 +397,6 @@
   <message name="IDS_IDC_MOVE_GROUP_TO_NEW_WINDOW">
     Move group to new window
   </message>
-  <message name="IDS_IDC_CLOSE_DUPLICATE_TABS">
-    Close duplicate tabs
-  </message>
   <message name="IDS_IDC_TOGGLE_VERTICAL_TABS_EXPANDED">
     Toggle vertical tabs expanded
   </message>
