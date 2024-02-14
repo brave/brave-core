@@ -14,7 +14,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TransactionsFragment;
 
 import java.util.ArrayList;
@@ -45,8 +44,6 @@ public class CryptoFragmentPageAdapter extends FragmentStateAdapter {
         switch (position) {
             case TRANSACTIONS_ACTIVITY_FRAGMENT_POSITION:
                 return TransactionsFragment.newInstance();
-            case ACCOUNTS_FRAGMENT_POSITION:
-                return AccountsFragment.newInstance();
             default:
                 throw new IllegalStateException(
                         String.format("No fragment found for position %d.", position));

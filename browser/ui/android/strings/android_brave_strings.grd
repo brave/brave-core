@@ -2087,9 +2087,6 @@ Are you sure you want to do this?
     <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
       Add account
     </message>
-    <message name="IDS_ADD_IMPORT_ACCOUNT" desc="Brave Wallet account dialog button text">
-      Add/Import account
-    </message>
     <message name="IDS_UPDATE_ACCOUNT" desc="Brave Wallet account dialog button text">
       Update account
     </message>
@@ -2219,18 +2216,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_STATS_USAGE_PING_SUMMARY" desc="Description that shows under main toggle setting for usage pings">
       This private ping lets Brave estimate active users.
-    </message>
-    <message name="IDS_BACKUP" desc="Brave wallet accounts text">
-      Backup
-    </message>
-    <message name="IDS_PRIMARY_CRYPTO_ACCOUNTS" desc="Brave wallet accounts text">
-      Primary Crypto Accounts
-    </message>
-    <message name="IDS_SECONDARY_ACCOUNTS" desc="Brave wallet accounts text">
-      Secondary Accounts
-    </message>
-    <message name="IDS_SECONDARY_ACCOUNTS_TEXT" desc="Brave wallet accounts text">
-      These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.
     </message>
     <message name="IDS_ACCOUNT_NAME" desc="Brave wallet accounts text">
       Account Name
