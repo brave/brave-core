@@ -83,7 +83,6 @@ PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 void PlaylistDownloadRequestManager::CreateWebContents(
     bool should_force_fake_ua) {
   content::WebContents::CreateParams create_params(context_, nullptr);
-  create_params.is_never_visible = true;
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetAudioMuted(true);
   PlaylistTabHelper::MaybeCreateForWebContents(web_contents_.get(),
