@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
@@ -57,9 +58,12 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
   }
   skus::MigrateSkusSettings(browser_state->GetPrefs(),
                             GetApplicationContext()->GetLocalState());
-  std::unique_ptr<skus::SkusServiceImpl> sku_service(
-      new skus::SkusServiceImpl(GetApplicationContext()->GetLocalState(),
-                                browser_state->GetSharedURLLoaderFactory()));
+  std::unique_ptr<skus::SkusServiceImpl> sku_service(new skus::SkusServiceImpl(
+      GetApplicationContext()->GetLocalState(),
+      browser_state->GetSharedURLLoaderFactory(),
+      base::ThreadPool::CreateSingleThreadTaskRunner(
+          {base::TaskPriority::USER_BLOCKING}),
+      base::SequencedTaskRunner::GetCurrentDefault()));
   return sku_service;
 }
 
