@@ -8,9 +8,11 @@
 
 #include <string>
 
+#include "base/values.h"
+
 namespace brave_vpn {
 
-std::string ParseSubscriberCredentialFromJson(const std::string& json,
+std::string ParseSubscriberCredentialFromJson(base::Value records_v,
                                               std::string* error);
 
 }  // namespace brave_vpn

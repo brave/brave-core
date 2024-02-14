@@ -249,14 +249,16 @@ void NftMetadataFetcher::OnGetTokenMetadataPayload(
   }
 
   // Invalid JSON becomes an empty string after sanitization
-  if (api_request_result.body().empty()) {
+  if (api_request_result.value_body().is_none()) {
     std::move(callback).Run(
         "", static_cast<int>(mojom::JsonRpcError::kParsingError),
         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
-  std::move(callback).Run(api_request_result.body(), 0, "");  // 0 is kSuccess
+  // TODO(supermassive): Refactor and remove SerializeBodyToString().
+  std::move(callback).Run(api_request_result.SerializeBodyToString(), 0,
+                          "");  // 0 is kSuccess
 }
 
 void NftMetadataFetcher::CompleteGetEthTokenMetadata(

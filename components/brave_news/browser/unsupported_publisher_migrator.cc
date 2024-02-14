@@ -58,7 +58,7 @@ void UnsupportedPublisherMigrator::EnsureInitialized() {
         // launched.
         if (result.Is2XXResponseCode()) {
           std::optional<Publishers> publishers =
-              ParseCombinedPublisherList(result.value_body());
+              ParseCombinedPublisherList(result.TakeBody());
           if (publishers) {
             migrator->v1_api_publishers_ = std::move(*publishers);
           }
