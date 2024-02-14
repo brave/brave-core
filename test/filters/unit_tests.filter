@@ -181,6 +181,11 @@
 -SearchEnginesHandlerTestWithSearchEngineChoiceEnabled.ModifyingSearchEngineSetsSearchEngineChoiceTimestamp
 -SearchEnginesHandlerTestWithSearchEngineChoiceEnabled.RecordingSearchEngineShouldBeDoneAfterSettingDefault
 
+# These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
+# always return false
+-SearchEngineChoiceDialogServiceTest.CanShowDialog
+-SearchEngineChoiceDialogServiceTest.NotifyDialogOpened
+
 # This test crashes because we have kOptimizationHints feature disabled, which
 # causes OptimizationGuideKeyedServiceFactory::GetForProfile return a nullptr.
 -WallpaperSearchHandlerTest.*
