@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_TEST_FILTERS_PROVIDER_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -29,8 +30,7 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
   ~TestFiltersProvider() override;
 
   void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+      base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)>) override;
 
   void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)> cb) override;

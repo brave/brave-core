@@ -7,13 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_FILTERS_PROVIDER_MANAGER_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 
 using brave_component_updater::DATFileDataBuffer;
@@ -43,13 +43,12 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   static AdBlockFiltersProviderManager* GetInstance();
 
   void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+      base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)>) override;
 
-  void LoadFilterSetForEngine(
+  void GetFiltersForEngine(
       bool is_for_default_engine,
       base::OnceCallback<
-          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>);
+          void(std::vector<std::pair<uint8_t, DATFileDataBuffer>>)>);
 
   // AdBlockFiltersProvider::Observer
   void OnChanged(bool is_default_engine) override;
@@ -66,9 +65,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   void FinishCombinating(
       base::OnceCallback<
-          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
-      std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
-          results);
+          void(std::vector<std::pair<uint8_t, DATFileDataBuffer>>)> cb,
+      std::vector<std::pair<uint8_t, DATFileDataBuffer>> results);
 
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;
