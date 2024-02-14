@@ -12,6 +12,7 @@ import Preferences
 class NFTStoreTests: XCTestCase {
   
   private var cancellables: Set<AnyCancellable> = .init()
+  private var isLocked = true
   
   let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
   let ethAccount1: BraveWallet.AccountInfo = .mockEthAccount
@@ -48,9 +49,9 @@ class NFTStoreTests: XCTestCase {
   ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestAssetRatioService, TestableWalletUserAssetManager, BraveWallet.TestTxService) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
-    keyringService._isLocked = { completion in
+    keyringService._isLocked = { [weak self] completion in
       // unlocked would cause `update()` from call in `init` to be called prior to test being setup.g
-      completion(true)
+      completion(self?.isLocked ?? true)
     }
     keyringService._allAccounts = {
       $0(.init(
@@ -164,9 +165,11 @@ class NFTStoreTests: XCTestCase {
   
   override func setUp() {
     resetFilters()
+    isLocked = true
   }
   override func tearDown() {
     resetFilters()
+    isLocked = true
   }
   private func resetFilters() {
     Preferences.Wallet.groupByFilter.reset()
@@ -236,6 +239,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertNil(visibleNFTs[safe: 2]?.nftMetadata)
       }.store(in: &cancellables)
     
+    isLocked = false
     store.update()
     await fulfillment(of: [userVisibleNFTsException], timeout: 1)
     cancellables.removeAll()
@@ -414,6 +418,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(hiddenNFTs[safe: 0]?.nftMetadata?.imageURLString, self.mockERC721Metadata.imageURLString)
         XCTAssertEqual(hiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
       }.store(in: &cancellables)
+    isLocked = false
     store.update()
     await fulfillment(of: [userHiddenNFTsException], timeout: 1)
     cancellables.removeAll()
@@ -433,7 +438,7 @@ class NFTStoreTests: XCTestCase {
       .mockSpdToken.copy(asVisibleAsset: false), // Verify non-visible assets not displayed #6386
       .mockSolanaNFTToken
     ]
-
+    
     // setup test services
     let (keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
@@ -446,7 +451,7 @@ class NFTStoreTests: XCTestCase {
       """
       completion("", metadata, .success, "")
     }
-
+    
     // MARK: Group By: None
     // setup store
     let store = NFTStore(
@@ -459,7 +464,7 @@ class NFTStoreTests: XCTestCase {
       userAssetManager: mockAssetManager,
       txService: txService
     )
-
+    
     // test that `update()` will assign new value to `userNFTs` publisher
     let userSpamNFTsException = expectation(description: "update-userInvisibleNFTs1")
     store.$userNFTGroups
@@ -482,7 +487,8 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.imageURLString, self.mockERC721Metadata.imageURLString)
         XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
       }.store(in: &cancellables)
-
+    
+    isLocked = false
     store.fetchJunkNFTs()
     await fulfillment(of: [userSpamNFTsException], timeout: 1)
     cancellables.removeAll()
@@ -554,6 +560,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(spamNFTs[safe: 1]?.nftMetadata?.name, self.mockERC721Metadata.name)
       }.store(in: &cancellables)
     
+    isLocked = false
     store.fetchJunkNFTs()
     await fulfillment(of: [userSpamNFTsException], timeout: 1)
     cancellables.removeAll()
@@ -623,6 +630,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
       }.store(in: &cancellables)
     
+    isLocked = false
     store.fetchJunkNFTs()
     await fulfillment(of: [userSpamNFTsException], timeout: 1)
     cancellables.removeAll()
@@ -659,7 +667,7 @@ class NFTStoreTests: XCTestCase {
     )
     
     let defaultFilters = store.filters
-
+    
     let groupByAccountVisibleExpectation = expectation(description: "groupByAccountVisibleExpectation")
     store.$userNFTGroups
       .dropFirst()
@@ -686,6 +694,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(groupTwoVisibleNFTs[safe: 0]?.token.symbol, mockEthUserAssets[safe: 2]?.symbol)
         XCTAssertTrue(groupThreeVisibleNFTs.isEmpty)
       }.store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: .accounts,
       sortOrder: defaultFilters.sortOrder,
@@ -780,6 +789,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
         XCTAssertEqual(groupThreeHiddenNFTs.count, 0)
       }.store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: .accounts,
       sortOrder: defaultFilters.sortOrder,
@@ -849,6 +859,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(groupTwoVisibleNFTs.count, 1)
         XCTAssertEqual(groupTwoVisibleNFTs[safe: 0]?.token.symbol, mockEthUserAssets[safe: 2]?.symbol)
       }.store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: .networks,
       sortOrder: defaultFilters.sortOrder,
@@ -937,6 +948,7 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString, self.mockERC721Metadata.imageURLString)
         XCTAssertEqual(groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
       }.store(in: &cancellables)
+    isLocked = false
     store.saveFilters(.init(
       groupBy: .networks,
       sortOrder: defaultFilters.sortOrder,

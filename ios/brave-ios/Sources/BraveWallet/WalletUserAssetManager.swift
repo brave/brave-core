@@ -9,6 +9,13 @@ import BraveCore
 import Preferences
 import CoreData
 
+public protocol WalletUserAssetDataObserver: AnyObject {
+  /// This will be trigger when a balance refresh has been finished
+  func cachedBalanceRefreshed()
+  /// This will be trigger when user asset is updated
+  func userAssetUpdated()
+}
+
 public protocol WalletUserAssetManagerType: AnyObject {
   /// Return all visible or all invisible user assets in form of `NetworkAssets`
   func getAllUserAssetsInNetworkAssetsByVisibility(networks: [BraveWallet.NetworkInfo], visible: Bool) -> [NetworkAssets]
@@ -30,19 +37,84 @@ public protocol WalletUserAssetManagerType: AnyObject {
   func removeGroup(for groupId: String, completion: (() -> Void)?)
   /// Update a `WalletUserAsset`'s `visible`, `isSpam`, and `isDeletedByUser` status
   func updateUserAsset(for asset: BraveWallet.BlockchainToken, visible: Bool, isSpam: Bool, isDeletedByUser: Bool, completion: (() -> Void)?)
+  
+  /// Balance
+  /// Return balance in String of the given asset. Return nil if there no balance stored
+  func getBalances(for asset: BraveWallet.BlockchainToken?, account: String?) -> [WalletUserAssetBalance]?
+  /// Store asset balance if there is none exists. Update asset balance if asset exists in database
+  func updateBalance(for asset: BraveWallet.BlockchainToken, account: String, balance: String, completion: (() -> Void)?)
+  /// Remove a `WalletUserAssetBalance` representation of the given
+  /// `BraveWallet.BlockchainToken` from CoreData
+  func removeBalances(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?)
+  /// Remove a `WalletUserAssetBalance` representation of the given
+  /// `BraveWallet.NetworkInfo` from CoreData
+  func removeBalances(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?)
+  /// Add a user asset data observer
+  func addUserAssetDataObserver(_ observer: WalletUserAssetDataObserver)
+  /// Remove user assets and their cached balance that belongs to given network
+  func removeUserAssetsAndBalance(for network: BraveWallet.NetworkInfo?, completion: (() -> Void)?)
 }
 
-public class WalletUserAssetManager: WalletUserAssetManagerType {
+public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverStore {
   
+  private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
+  private let txService: BraveWalletTxService
+  
+  private var keyringServiceObserver: KeyringServiceObserver?
+  private var txServiceObserver: TxServiceObserver?
+  
+  let dataObservers = NSHashTable<AnyObject>.weakObjects()
+  
+  var isObserving: Bool {
+    keyringServiceObserver != nil && txServiceObserver != nil
+  }
   
   public init(
+    keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
-    walletService: BraveWalletBraveWalletService
+    walletService: BraveWalletBraveWalletService,
+    txService: BraveWalletTxService
   ) {
+    self.keyringService = keyringService
     self.rpcService = rpcService
     self.walletService = walletService
+    self.txService = txService
+    
+    setupObservers()
+    
+    Preferences.Wallet.showTestNetworks.observe(from: self)
+  }
+  
+  public func tearDown() {
+    keyringServiceObserver = nil
+    txServiceObserver = nil
+  }
+  
+  public func setupObservers() {
+    guard !isObserving else { return }
+    
+    self.keyringServiceObserver = KeyringServiceObserver(
+      keyringService: keyringService,
+      _unlocked: { [weak self] in
+        self?.refreshBalances()
+      },
+      _accountsChanged: { [weak self] in
+        self?.refreshBalances()
+      },
+      _accountsAdded: { [weak self] newAccounts in
+        self?.refreshBalances()
+      }
+    )
+    self.txServiceObserver = TxServiceObserver(
+      txService: txService,
+      _onTransactionStatusChanged: { [weak self] txInfo in
+        if txInfo.txStatus == .confirmed || txInfo.txStatus == .error || txInfo.txStatus == .dropped {
+          self?.refreshBalances()
+        }
+      }
+    )
   }
   
   /// Return all user's assets stored in CoreData
@@ -113,18 +185,33 @@ public class WalletUserAssetManager: WalletUserAssetManagerType {
   public func addUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
     if let existedAsset = WalletUserAsset.getUserAsset(asset: asset) {
       if existedAsset.isDeletedByUser { // this asset was added before but user marked as deleted after
-        WalletUserAsset.updateUserAsset(for: asset, visible: true, isSpam: false, isDeletedByUser: false, completion: completion)
+        WalletUserAsset.updateUserAsset(for: asset, visible: true, isSpam: false, isDeletedByUser: false, completion: { [weak self] in
+          self?.refreshBalance(for: asset)
+          self?.retrieveAllDataObserver().forEach { $0.userAssetUpdated() }
+          completion?()
+        })
       } else { // this asset already exists
         completion?()
         return
       }
     } else { // asset does not exist in database
-      WalletUserAsset.addUserAsset(asset: asset, completion: completion)
+      WalletUserAsset.addUserAsset(
+        asset: asset,
+        completion: { [weak self] in
+          self?.refreshBalance(for: asset)
+          self?.retrieveAllDataObserver().forEach { $0.userAssetUpdated() }
+          completion?()
+        }
+      )
     }
   }
   
   public func removeUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
-    WalletUserAsset.removeUserAsset(asset: asset, completion: completion)
+    WalletUserAsset.removeUserAsset(asset: asset, completion: { [weak self] in
+      self?.removeBalances(for: asset, completion: nil)
+      self?.retrieveAllDataObserver().forEach { $0.userAssetUpdated() }
+      completion?()
+    })
   }
   
   public func updateUserAsset(
@@ -139,29 +226,178 @@ public class WalletUserAssetManager: WalletUserAssetManagerType {
       visible: visible,
       isSpam: isSpam,
       isDeletedByUser: isDeletedByUser,
-      completion: completion
+      completion: { [weak self] in
+        if visible {
+          self?.refreshBalance(for: asset)
+        }
+        self?.retrieveAllDataObserver().forEach { observer in
+          observer.userAssetUpdated()
+        }
+        completion?()
+      }
     )
   }
   
   public func removeGroup(for groupId: String, completion: (() -> Void)?) {
-    WalletUserAssetGroup.removeGroup(groupId, completion: completion)
+    WalletUserAssetGroup.removeGroup(
+      groupId,
+      completion: { [weak self] in
+        self?.retrieveAllDataObserver().forEach { $0.userAssetUpdated() }
+        completion?()
+      })
   }
   
   public func migrateUserAssets(completion: (() -> Void)? = nil) {
     Task { @MainActor in
       if !Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value {
-        migrateUserAssets(for: Array(WalletConstants.supportedCoinTypes()), completion: completion)
+        migrateUserAssets(for: Array(WalletConstants.supportedCoinTypes()), completion: { [weak self] in
+          // new wallet created or new wallet restored. finished user asset migration
+          // so we want to fetch user assets balances and cache them
+          self?.refreshBalances()
+          completion?()
+        })
       } else {
         let allNetworks = await rpcService.allNetworksForSupportedCoins(respectTestnetPreference: false)
         DataController.performOnMainContext { context in
           let newCoins = self.allNewCoinsIntroduced(networks: allNetworks, context: context)
           if !newCoins.isEmpty {
-            self.migrateUserAssets(for: newCoins, completion: completion)
+            // new coin type introduced, so we want to fetch user assets balances and cache them after
+            // new coin type assets have been migrated to CD
+            self.migrateUserAssets(for: newCoins, completion: { [weak self] in
+              self?.refreshBalances()
+              completion?()
+            })
           } else {
+            // no migration happens. refreshing user assets balance will happen after unlock
             completion?()
           }
         }
       }
+    }
+  }
+  
+  public func getBalances(for asset: BraveWallet.BlockchainToken?, account: String?) -> [WalletUserAssetBalance]? {
+    WalletUserAssetBalance.getBalances(for: asset, account: account)
+  }
+  
+  public func updateBalance(for asset: BraveWallet.BlockchainToken, account: String, balance: String, completion: (() -> Void)?) {
+    WalletUserAssetBalance.updateBalance(
+      for: asset,
+      balance: balance,
+      account: account,
+      completion: completion
+    )
+  }
+  
+  public func removeBalances(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
+    WalletUserAssetBalance.removeBalances(
+      for: asset,
+      completion: { [weak self] in
+        self?.retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+        completion?()
+      }
+    )
+  }
+  
+  public func removeBalances(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?) {
+    WalletUserAssetBalance.removeBalances(
+      for: network,
+      completion: { [weak self] in
+        self?.retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+        completion?()
+      })
+  }
+  
+  public func addUserAssetDataObserver(_ observer: WalletUserAssetDataObserver) {
+    dataObservers.add(observer)
+  }
+  
+  private var refreshBalanceTask: Task<Void, Never>?
+  public func refreshBalances(_ completion: (() -> Void)? = nil) {
+    refreshBalanceTask?.cancel()
+    refreshBalanceTask = Task { @MainActor in
+      let accounts = await keyringService.allAccounts().accounts
+      let allNetworks = await rpcService.allNetworksForSupportedCoins()
+      let allUserAssets: [NetworkAssets] = self.getAllUserAssetsInNetworkAssets(
+        networks: allNetworks,
+        includingUserDeleted: false
+      )
+      await withTaskGroup(
+        of: Void.self,
+        body: { @MainActor [rpcService] group in
+          for account in accounts {
+            guard !Task.isCancelled else { return }
+            group.addTask { @MainActor in
+              let allTokenBalanceForAccount = await rpcService.fetchBalancesForTokens(account: account, networkAssets: allUserAssets)
+              for tokenBalanceForAccount in allTokenBalanceForAccount {
+                guard !Task.isCancelled else { return }
+                let networkAssets = allUserAssets.first { oneNetworkAssets in
+                  oneNetworkAssets.tokens.contains { asset in
+                    asset.id == tokenBalanceForAccount.key
+                  }
+                }
+                if let token = networkAssets?.tokens.first(where: { $0.id == tokenBalanceForAccount.key }) {
+                  WalletUserAssetBalance.updateBalance(for: token, balance: String(tokenBalanceForAccount.value), account: account.address)
+                }
+              }
+            }
+          }
+        }
+      )
+      retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+      completion?()
+    }
+  }
+  
+  public func removeUserAssetsAndBalance(for network: BraveWallet.NetworkInfo?, completion: (() -> Void)?) {
+    let group = DispatchGroup()
+    if let network {
+      group.enter()
+      WalletUserAssetGroup.removeGroup(network.walletUserAssetGroupId) {
+        group.leave()
+      }
+      group.enter()
+      WalletUserAssetBalance.removeBalances(for: network) {
+        group.leave()
+      }
+    } else {
+      group.enter()
+      WalletUserAssetGroup.removeAllGroup {
+        group.leave()
+      }
+      group.enter()
+      WalletUserAssetBalance.removeBalances {
+        group.leave()
+      }
+    }
+    group.notify(queue: .main) {
+      completion?()
+    }
+  }
+  
+  private func refreshBalance(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)? = nil) {
+    Task { @MainActor in
+      let accounts = await keyringService.allAccounts().accounts.filter { $0.coin == asset.coin }
+      let network = await rpcService.allNetworksForSupportedCoins().first { $0.chainId.lowercased() == asset.chainId.lowercased() }
+      
+      guard let network = network else { return }
+      await withTaskGroup(
+        of: Void.self,
+        body: { @MainActor [rpcService] group in
+          for account in accounts { // for each account
+            group.addTask { @MainActor in
+              let assetBalance = await rpcService.balance(
+                for: asset,
+                in: account,
+                network: network
+              )
+              WalletUserAssetBalance.updateBalance(for: asset, balance: String(assetBalance ?? 0), account: account.address)
+            }
+          }
+        }
+      )
+      retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+      completion?()
     }
   }
   
@@ -190,6 +426,20 @@ public class WalletUserAssetManager: WalletUserAssetManagerType {
       }
     }
   }
+  
+  private func retrieveAllDataObserver() -> [WalletUserAssetDataObserver] {
+    return dataObservers.allObjects as? [WalletUserAssetDataObserver] ?? []
+  }
+}
+
+extension WalletUserAssetManager: PreferencesObserver {
+  public func preferencesDidChange(for key: String) {
+    if key == Preferences.Wallet.showTestNetworks.key {
+      refreshBalances { [weak self] in
+        self?.retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
+      }
+    }
+  }
 }
 
 #if DEBUG
@@ -198,6 +448,7 @@ public class TestableWalletUserAssetManager: WalletUserAssetManagerType {
   public var _getAllUserAssetsInNetworkAssets: ((_ networks: [BraveWallet.NetworkInfo], _ includingUserDeleted: Bool) -> [NetworkAssets])?
   public var _getAllUserNFTs: ((_ networks: [BraveWallet.NetworkInfo], _ spamStatus: Bool) -> [NetworkAssets])?
   public var _getAllUserDeletedNFTs: (() -> [WalletUserAsset])?
+  public var _getBalance: ((_ asset: BraveWallet.BlockchainToken?, _ account: String?) -> [WalletUserAssetBalance]?)?
   
   public init() {}
   
@@ -233,7 +484,7 @@ public class TestableWalletUserAssetManager: WalletUserAssetManagerType {
   
   public func removeUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
   }
-
+  
   public func removeGroup(for groupId: String, completion: (() -> Void)?) {
   }
   
@@ -244,6 +495,29 @@ public class TestableWalletUserAssetManager: WalletUserAssetManagerType {
     isDeletedByUser: Bool,
     completion: (() -> Void)?
   ) {
+  }
+  
+  public func getBalances(for asset: BraveWallet.BlockchainToken?, account: String?) -> [WalletUserAssetBalance]? {
+    _getBalance?(asset, account)
+  }
+  
+  public func updateBalance(for asset: BraveWallet.BlockchainToken, account: String, balance: String, completion: (() -> Void)?) {
+    completion?()
+  }
+  
+  public func removeBalances(for asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
+    completion?()
+  }
+  
+  public func removeBalances(for network: BraveWallet.NetworkInfo, completion: (() -> Void)?) {
+    completion?()
+  }
+  
+  public func addUserAssetDataObserver(_ observer: WalletUserAssetDataObserver) {
+  }
+  
+  public func removeUserAssetsAndBalance(for network: BraveWallet.NetworkInfo?, completion: (() -> Void)?) {
+    completion?()
   }
 }
 #endif

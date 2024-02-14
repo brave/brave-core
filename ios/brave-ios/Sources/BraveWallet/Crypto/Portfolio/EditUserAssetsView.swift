@@ -75,7 +75,6 @@ struct EditUserAssetsView: View {
   var networkStore: NetworkStore
   var keyringStore: KeyringStore
   @ObservedObject var userAssetsStore: UserAssetsStore
-  var assetsUpdated: () -> Void
 
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var query = ""
@@ -173,7 +172,6 @@ struct EditUserAssetsView: View {
         }
         ToolbarItemGroup(placement: .confirmationAction) {
           Button(action: {
-            assetsUpdated()
             presentationMode.dismiss()
           }) {
             Text(Strings.done)
