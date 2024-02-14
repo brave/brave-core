@@ -1046,6 +1046,7 @@ brave_java_resources = [
   "java/res/xml/media_preferences.xml",
   "java/res/xml/qa_preferences.xml",
   "java/res/xml/quick_action_search_and_bookmark_widget_info.xml",
+  "java/res/xml/secure_dns_settings.xml",
   "java/res/xml/sns_preferences.xml",
   "java/res/xml/unstoppable_domains_preferences.xml",
 ]

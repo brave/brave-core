@@ -6,4 +6,5 @@
 brave_net_dns_sources = [
   "//brave/net/dns/secure_dns_counter.cc",
   "//brave/net/dns/secure_dns_counter.h",
+  "//brave/net/dns/secure_dns_endpoints.h",
 ]

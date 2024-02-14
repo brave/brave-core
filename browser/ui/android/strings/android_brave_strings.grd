@@ -4100,6 +4100,20 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LEO_GO_PREMIUM_PREF" desc="Title for Leo Go premium settings.">
       Go Premium
     </message>
+    <!-- Secure DNS settings -->
+    <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_QUAD9_LABEL" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
+      Use your current service provider or Quad9
+    </message>
+    <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_WIKIMEDIA_LABEL" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
+      Use your current service provider or Wikimedia DNS
+    </message>
+    <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_CLOUDFLARE_LABEL" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
+      Use your current service provider or Cloudflare
+    </message>
+    <message name="IDS_SETTINGS_AUTOMATIC_MODE_DESCRIPTION_FALLBACK" desc="Descriptive text that appears below IDS_SETTINGS_AUTOMATIC_MODE_LABEL.">
+      If your current service provider is insecure, Brave uses a secure alternative DNS provider
+    </message>
+    <!-- End of Secure DNS Settings -->
   </messages>
   </release>
 </grit>

@@ -925,6 +925,14 @@
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
       },                                                                       \
       {                                                                        \
+          "fallback-dns-over-https",                                           \
+          "Use a fallback DoH provider",                                       \
+          "In Automatic DoH mode, use a fallback DoH provider if the current " \
+          "provider doesn't offer Secure DNS.",                                \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(net::features::kBraveFallbackDoHProvider),        \
+      },                                                                       \
+      {                                                                        \
           "brave-show-strict-fingerprinting-mode",                             \
           "Show Strict Fingerprinting Mode",                                   \
           "Show Strict (aggressive) option for Fingerprinting Mode in "        \
