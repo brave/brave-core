@@ -1215,6 +1215,7 @@ void PlaylistService::OnMediaDetected(base::Value media,
   }
 
   CHECK(contents);
+  CHECK_NE(contents->GetController().GetLastCommittedEntryIndex(), -1);
 
   NotifyMediaFilesUpdated(
       contents->GetLastCommittedURL(),
