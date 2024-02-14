@@ -2694,10 +2694,6 @@ name = "kuchikiki"
 version = "0.8.4-speedreader"
 
 [[patch.unused]]
-name = "miniz_oxide"
-version = "0.6.2"
-
-[[patch.unused]]
 name = "ppoprf"
 version = "0.3.0"
 

@@ -723,10 +723,6 @@ package = "memoffset"
 path = "mime/v0_3/crate"
 package = "mime"
 
-[patch.crates-io.miniz_oxide_v0_6]
-path = "miniz_oxide/v0_6/crate"
-package = "miniz_oxide"
-
 [patch.crates-io.multibase_v0_9]
 path = "multibase/v0_9/crate"
 package = "multibase"
