@@ -117,18 +117,26 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
                         std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
                         std::unique_ptr<network::PendingSharedURLLoaderFactory>
                             pending_url_loader_factory);
+  void OnRefreshOrder(mojom::SkusService::RefreshOrderCallback callback,
+                      const std::string& order);
   void FetchOrderCredentialsTask(
       const std::string& domain,
       const std::string& order_id,
       std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs,
       std::unique_ptr<network::PendingSharedURLLoaderFactory>
           pending_url_loader_factory);
+  void OnFetchOrderCredentials(
+      mojom::SkusService::FetchOrderCredentialsCallback callback,
+      const std::string& result);
   void PrepareCredentialsPresentationTask(
       const std::string& domain,
       const std::string& path,
       std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState> cbs,
       std::unique_ptr<network::PendingSharedURLLoaderFactory>
           pending_url_loader_factory);
+  void OnPrepareCredentialsPresentation(
+      mojom::SkusService::PrepareCredentialsPresentationCallback callback,
+      const std::string& result);
   void CredentialSummaryTask(
       const std::string& domain,
       std::unique_ptr<skus::CredentialSummaryCallbackState> cbs,
@@ -140,6 +148,8 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
                          std::unique_ptr<skus::SubmitReceiptCallbackState> cbs,
                          std::unique_ptr<network::PendingSharedURLLoaderFactory>
                              pending_url_loader_factory);
+  void OnSubmitReceipt(mojom::SkusService::SubmitReceiptCallback callback,
+                       const std::string& result);
   void CreateOrderFromReceiptTask(
       const std::string& domain,
       const std::string& receipt,
@@ -154,7 +164,7 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
 
   void OnCreateOrderFromReceipt(
       mojom::SkusService::CredentialSummaryCallback callback,
-      const std::string& order_id_string);
+      const std::string& order_id);
 
   raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

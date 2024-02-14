@@ -122,7 +122,9 @@ void SkusServiceImpl::RefreshOrder(
     mojom::SkusService::RefreshOrderCallback callback) {
   std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
       new skus::RefreshOrderCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = base::BindOnce(&SkusServiceImpl::OnRefreshOrder,
+                           weak_factory_.GetWeakPtr(), std::move(callback));
+
   sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::RefreshOrderTask,
                                 base::Unretained(this), domain, order_id,
@@ -136,7 +138,14 @@ void SkusServiceImpl::RefreshOrderTask(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_url_loader_factory) {
   GetOrCreateSDK(domain, std::move(pending_url_loader_factory))
-      ->refresh_order(OnRefreshOrder, std::move(cbs), order_id);
+      ->refresh_order(::OnRefreshOrder, std::move(cbs), order_id);
+}
+
+void SkusServiceImpl::OnRefreshOrder(
+    mojom::SkusService::RefreshOrderCallback callback,
+    const std::string& order) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), order));
 }
 
 void SkusServiceImpl::FetchOrderCredentials(
@@ -145,11 +154,20 @@ void SkusServiceImpl::FetchOrderCredentials(
     mojom::SkusService::FetchOrderCredentialsCallback callback) {
   std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs(
       new skus::FetchOrderCredentialsCallbackState);
-  cbs->cb = std::move(callback);
+
+  cbs->cb = base::BindOnce(&SkusServiceImpl::OnFetchOrderCredentials,
+                           weak_factory_.GetWeakPtr(), std::move(callback));
   sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::FetchOrderCredentialsTask,
                                 base::Unretained(this), domain, order_id,
                                 std::move(cbs), url_loader_factory_->Clone()));
+}
+
+void SkusServiceImpl::OnFetchOrderCredentials(
+    mojom::SkusService::FetchOrderCredentialsCallback callback,
+    const std::string& result) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), result));
 }
 
 void SkusServiceImpl::FetchOrderCredentialsTask(
@@ -159,7 +177,7 @@ void SkusServiceImpl::FetchOrderCredentialsTask(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_url_loader_factory) {
   GetOrCreateSDK(domain, std::move(pending_url_loader_factory))
-      ->fetch_order_credentials(OnFetchOrderCredentials, std::move(cbs),
+      ->fetch_order_credentials(::OnFetchOrderCredentials, std::move(cbs),
                                 order_id);
 }
 
@@ -169,7 +187,8 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
     mojom::SkusService::PrepareCredentialsPresentationCallback callback) {
   std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState> cbs(
       new skus::PrepareCredentialsPresentationCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = base::BindOnce(&SkusServiceImpl::OnPrepareCredentialsPresentation,
+                           weak_factory_.GetWeakPtr(), std::move(callback));
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&SkusServiceImpl::PrepareCredentialsPresentationTask,
@@ -184,8 +203,15 @@ void SkusServiceImpl::PrepareCredentialsPresentationTask(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_url_loader_factory) {
   GetOrCreateSDK(domain, std::move(pending_url_loader_factory))
-      ->prepare_credentials_presentation(OnPrepareCredentialsPresentation,
+      ->prepare_credentials_presentation(::OnPrepareCredentialsPresentation,
                                          std::move(cbs), domain, path);
+}
+
+void SkusServiceImpl::OnPrepareCredentialsPresentation(
+    mojom::SkusService::PrepareCredentialsPresentationCallback callback,
+    const std::string& result) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), result));
 }
 
 ::rust::Box<skus::CppSDK>& SkusServiceImpl::GetOrCreateSDK(
@@ -236,13 +262,15 @@ void SkusServiceImpl::OnCredentialSummary(
     const std::string& summary_string) {
   if (callback) {
     ui_task_runner_->PostTask(
-        FROM_HERE,
-        base::BindOnce(
-            [](mojom::SkusService::CredentialSummaryCallback callback,
-               const std::string& summary) {
-              std::move(callback).Run(summary);
-            },
-            std::move(callback), summary_string));
+        FROM_HERE, base::BindOnce(std::move(callback), summary_string));
+    // ui_task_runner_->PostTask(
+    //     FROM_HERE,
+    //     base::BindOnce(
+    //         [](mojom::SkusService::CredentialSummaryCallback callback,
+    //            const std::string& summary) {
+    //           std::move(callback).Run(summary);
+    //         },
+    //         std::move(callback), summary_string));
   }
 }
 
@@ -253,7 +281,8 @@ void SkusServiceImpl::SubmitReceipt(
     skus::mojom::SkusService::SubmitReceiptCallback callback) {
   std::unique_ptr<skus::SubmitReceiptCallbackState> cbs(
       new skus::SubmitReceiptCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = base::BindOnce(&SkusServiceImpl::OnSubmitReceipt,
+                           weak_factory_.GetWeakPtr(), std::move(callback));
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&SkusServiceImpl::SubmitReceiptTask,
@@ -269,7 +298,14 @@ void SkusServiceImpl::SubmitReceiptTask(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_url_loader_factory) {
   GetOrCreateSDK(domain, std::move(pending_url_loader_factory))
-      ->submit_receipt(OnSubmitReceipt, std::move(cbs), order_id, receipt);
+      ->submit_receipt(::OnSubmitReceipt, std::move(cbs), order_id, receipt);
+}
+
+void SkusServiceImpl::OnSubmitReceipt(
+    mojom::SkusService::SubmitReceiptCallback callback,
+    const std::string& result) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), result));
 }
 
 void SkusServiceImpl::CreateOrderFromReceipt(
@@ -278,7 +314,8 @@ void SkusServiceImpl::CreateOrderFromReceipt(
     skus::mojom::SkusService::CreateOrderFromReceiptCallback callback) {
   std::unique_ptr<skus::CreateOrderFromReceiptCallbackState> cbs(
       new skus::CreateOrderFromReceiptCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = base::BindOnce(&SkusServiceImpl::OnCreateOrderFromReceipt,
+                           weak_factory_.GetWeakPtr(), std::move(callback));
   sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::CreateOrderFromReceiptTask,
                                 base::Unretained(this), domain, receipt,
@@ -294,6 +331,13 @@ void SkusServiceImpl::CreateOrderFromReceiptTask(
   GetOrCreateSDK(domain, std::move(pending_url_loader_factory))
       ->create_order_from_receipt(::OnCreateOrderFromReceipt, std::move(cbs),
                                   receipt);
+}
+
+void SkusServiceImpl::OnCreateOrderFromReceipt(
+    mojom::SkusService::CredentialSummaryCallback callback,
+    const std::string& order_id) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), order_id));
 }
 
 }  // namespace skus
