@@ -78,7 +78,7 @@ const DepositModal = ({ selectedAccount }: DepositModalProps) => {
   const orb = useAccountOrb(selectedAccount)
 
   // queries
-  const receiveAddress = useReceiveAddressQuery(selectedAccount.accountId)
+  const { receiveAddress } = useReceiveAddressQuery(selectedAccount.accountId)
   const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
     receiveAddress || skipToken
   )
