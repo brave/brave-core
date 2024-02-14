@@ -70,13 +70,15 @@ const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/speedreader/article/guardian.html";
 const char kTestEsPageReadable[] = "/speedreader/article/es.html";
 const char kTestPageReadableOnUnreadablePath[] =
-    "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
+    "/speedreader/rewriter/pages/news_pages/abcnews.com/original.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
 const char kTestXml[] = "/speedreader/article/rss.xml";
 const char kTestTtsSimple[] = "/speedreader/article/simple.html";
 const char kTestTtsTags[] = "/speedreader/article/tags.html";
 const char kTestTtsStructure[] = "/speedreader/article/structure.html";
 const char kTestErrorPage[] = "/speedreader/article/page_not_reachable.html";
+const char kTestCSPHtmlPage[] = "/speedreader/article/csp_html.html";
+const char kTestCSPHttpPage[] = "/speedreader/article/csp_http.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -875,6 +877,21 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
+  ToggleSpeedreader();
+
+  for (const auto* page : {kTestCSPHtmlPage, kTestCSPHttpPage}) {
+    content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+    console_observer.SetPattern(
+        "Refused to load the image 'https://a.test/should_fail.png' because it "
+        "violates the following Content Security Policy directive: \"img-src "
+        "'none'\".*");
+    NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
+
+    EXPECT_TRUE(console_observer.Wait());
+  }
 }
 
 class SpeedReaderWithDistillationServiceBrowserTest
