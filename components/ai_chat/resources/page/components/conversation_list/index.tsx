@@ -99,8 +99,8 @@ function ConversationList(props: ConversationListProps) {
 
   const longPressProps = useLongPress({
     onLongPress: (e: React.TouchEvent) => {
-      const target = e.target as HTMLElement
-      const id = target.getAttribute('data-id')
+      const currentTarget = e.currentTarget as HTMLElement
+      const id = currentTarget.getAttribute('data-id')
       if (id === null) return
       showAssistantMenu(parseInt(id))
     },
