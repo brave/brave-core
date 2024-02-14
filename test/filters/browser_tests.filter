@@ -160,7 +160,12 @@
 # No binder found for interface brave_news.mojom.BraveNewsController for the
 # frame/document scope
 -SearchEngineChoiceBrowserTest.DialogNotShownOverSpecificBrowserTypes
--SearchEngineChoiceDialogBrowserTest.DialogIsDisplayedOnEveryGuestSession
+
+# These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
+# always return false
+-SearchEngineChoiceDialogBrowserTest.*
+-SearchEngineChoiceUIPixelTest.InvokeUi_default/ShortSize
+-SearchEngineRepromptBrowserTest.Reprompt/*
 
 # These fail because we disable HATS (Happiness Survey) service from showing any
 # surveys.
