@@ -27,6 +27,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   auto* chat_tab_helper =
       ai_chat::AIChatTabHelper::FromWebContents(web_contents);
   DCHECK(chat_tab_helper);
+  chat_tab_helper->MaybeUnlinkPageContent();
   ai_chat::mojom::ConversationTurn turn = {
       ai_chat::mojom::CharacterType::HUMAN,
       ai_chat::mojom::ConversationTurnVisibility::VISIBLE,

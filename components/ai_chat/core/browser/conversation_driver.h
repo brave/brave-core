@@ -114,6 +114,12 @@ class ConversationDriver {
                     const std::string& rating_id,
                     mojom::PageHandler::SendFeedbackCallback callback);
 
+  // Used to determine whether the page content should be unlinked when
+  // triggering from outside of the side panel, such as context menu or
+  // location bar, and unlink it if so. If the panel is not open and there is
+  // no existing chat history, the page content should not be linked.
+  void MaybeUnlinkPageContent();
+
  protected:
   virtual GURL GetPageURL() const = 0;
   virtual std::u16string GetPageTitle() const = 0;

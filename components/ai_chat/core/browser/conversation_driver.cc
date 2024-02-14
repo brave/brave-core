@@ -504,8 +504,9 @@ std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
 }
 
 void ConversationDriver::SetShouldSendPageContents(bool should_send) {
-  DCHECK(IsContentAssociationPossible());
-  DCHECK(should_send_page_contents_ != should_send);
+  if (should_send_page_contents_ == should_send) {
+    return;
+  }
   should_send_page_contents_ = should_send;
 
   MaybeSeedOrClearSuggestions();
@@ -596,6 +597,14 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
   // Notify observers
   OnSuggestedQuestionsChanged();
   DVLOG(2) << "Got questions:" << base::JoinString(suggestions_, "\n");
+}
+
+void ConversationDriver::MaybeUnlinkPageContent() {
+  // Only unlink if panel is closed and there is no conversation history.
+  // When panel is open or has existing conversation, do not change the state.
+  if (!is_conversation_active_ && chat_history_.empty()) {
+    SetShouldSendPageContents(false);
+  }
 }
 
 void ConversationDriver::SubmitHumanConversationEntry(
