@@ -205,7 +205,7 @@ TEST(TestBraveWalletHandler, AddChain) {
   expected_token->logo = "https://url1.com";
   expected_token->visible = true;
 
-  EXPECT_THAT(brave_wallet::BraveWalletService::GetUserAssets(handler.prefs()),
+  EXPECT_THAT(brave_wallet::GetAllUserAssets(handler.prefs()),
               Not(Contains(Eq(std::ref(expected_token)))));
 
   brave_wallet::mojom::NetworkInfo chain1 =
@@ -224,7 +224,7 @@ TEST(TestBraveWalletHandler, AddChain) {
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 1u);
   EXPECT_EQ(handler.GetAllEthCustomChains()[0], chain1.Clone());
 
-  EXPECT_THAT(brave_wallet::BraveWalletService::GetUserAssets(handler.prefs()),
+  EXPECT_THAT(brave_wallet::GetAllUserAssets(handler.prefs()),
               Contains(Eq(std::ref(expected_token))));
 
   base::Value::List args2;

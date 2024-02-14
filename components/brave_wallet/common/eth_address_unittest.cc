@@ -172,4 +172,33 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
   }
 }
 
+TEST(EthAddressUnitTest, ToEip1191ChecksumAddress) {
+  std::optional<std::string> addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x06012c8cf97bead5deae237070f9587f8e7a266d", "0x1");
+  EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
+
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
+  EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
+
+  addr = EthAddress::ToEip1191ChecksumAddress("", "0x1");
+  EXPECT_EQ(addr.value(), "");
+
+  addr = EthAddress::ToEip1191ChecksumAddress("eth", "0x1");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = EthAddress::ToEip1191ChecksumAddress("ETH", "0x1");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = EthAddress::ToEip1191ChecksumAddress("0x123", "0x1");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = EthAddress::ToEip1191ChecksumAddress("123", "0x1");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = EthAddress::ToEip1191ChecksumAddress(
+      "06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
+  EXPECT_FALSE(addr.has_value());
+}
+
 }  // namespace brave_wallet

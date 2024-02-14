@@ -1407,35 +1407,6 @@ TEST_F(BraveWalletServiceUnitTest, SetAssetSpamStatus) {
   EXPECT_EQ(tokens[1]->visible, false);
 }
 
-TEST_F(BraveWalletServiceUnitTest, GetChecksumAddress) {
-  std::optional<std::string> addr = service_->GetChecksumAddress(
-      "0x06012c8cf97bead5deae237070f9587f8e7a266d", "0x1");
-  EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
-
-  addr = service_->GetChecksumAddress(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
-  EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
-
-  addr = service_->GetChecksumAddress("", "0x1");
-  EXPECT_EQ(addr.value(), "");
-
-  addr = service_->GetChecksumAddress("eth", "0x1");
-  EXPECT_FALSE(addr.has_value());
-
-  addr = service_->GetChecksumAddress("ETH", "0x1");
-  EXPECT_FALSE(addr.has_value());
-
-  addr = service_->GetChecksumAddress("0x123", "0x1");
-  EXPECT_FALSE(addr.has_value());
-
-  addr = service_->GetChecksumAddress("123", "0x1");
-  EXPECT_FALSE(addr.has_value());
-
-  addr = service_->GetChecksumAddress(
-      "06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
-  EXPECT_FALSE(addr.has_value());
-}
-
 TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultEthereumWallet) {
   SetDefaultEthereumWallet(mojom::DefaultWallet::BraveWallet);
   EXPECT_EQ(GetDefaultEthereumWallet(), mojom::DefaultWallet::BraveWallet);
@@ -1919,7 +1890,7 @@ TEST_F(BraveWalletServiceUnitTest, MigrateAssetsPrefToList) {
   ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsList));
 
   EXPECT_THAT(
-      BraveWalletService::GetUserAssets(GetPrefs()),
+      GetAllUserAssets(GetPrefs()),
       ElementsAre(Eq(std::ref(custom_eth_token)), Eq(std::ref(eth_token)),
                   Eq(std::ref(bat_token)), Eq(std::ref(sol_token))));
 }
@@ -2347,41 +2318,6 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 #endif
-}
-
-TEST_F(BraveWalletServiceUnitTest, GetUserAssetAddress) {
-  // Native asset
-  EXPECT_EQ(
-      *BraveWalletService::GetUserAssetAddress("", mojom::CoinType::ETH, "0x1"),
-      "");
-  EXPECT_EQ(*BraveWalletService::GetUserAssetAddress("", mojom::CoinType::SOL,
-                                                     mojom::kSolanaMainnet),
-            "");
-  EXPECT_EQ(
-      *BraveWalletService::GetUserAssetAddress("", mojom::CoinType::FIL, "f"),
-      "");
-
-  // ETH
-  EXPECT_EQ(*BraveWalletService::GetUserAssetAddress(
-                "0x6b175474e89094c44da98b954eedeac495271d0f",
-                mojom::CoinType::ETH, "0x1"),
-            "0x6B175474E89094C44Da98b954EedeAC495271d0F");
-
-  // SOL
-  EXPECT_EQ(*BraveWalletService::GetUserAssetAddress(
-                "AQoKYV7tYpTrFZN6P5oUufbQKAUr9mNYGe1TTJC9wajM",
-                mojom::CoinType::SOL, mojom::kSolanaMainnet),
-            "AQoKYV7tYpTrFZN6P5oUufbQKAUr9mNYGe1TTJC9wajM");
-  EXPECT_EQ(BraveWalletService::GetUserAssetAddress("not_base58_encoded_string",
-                                                    mojom::CoinType::SOL,
-                                                    mojom::kSolanaMainnet),
-            std::nullopt);
-
-  // FIL
-  EXPECT_EQ(BraveWalletService::GetUserAssetAddress(
-                "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-                mojom::CoinType::FIL, "f"),
-            std::nullopt);
 }
 
 TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
