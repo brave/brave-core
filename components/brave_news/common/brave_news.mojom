@@ -326,22 +326,11 @@ interface BraveNewsController {
   // Lets the browser know when a user begins viewing or scrolling
   // through Brave News, for statistics gathering purposes.
   OnInteractionSessionStarted();
-  // Argument should be how many total cards visited in this session.
-  // We need the front-end to give us this since the class
-  // which implements this interface may live longer than the session
-  // or there may be multiple sessions active. This includes if a user visits
-  // a card and then navigates "back" to the same place in Brave News
-  // and visits a subsequent card.
-  OnSessionCardVisitsCountChanged(uint16 total_count);
-  // Arguments should be how many total cards and new cards viewed in this session.
-  // We need the front-end to give us this since the class
-  // which implements this interface may live longer than the session
-  // or there may be multiple sessions active. This includes if a user visits
-  // a card and then navigates "back" to the same place in Brave News
-  // and views subsequent card. In that case,
-  // the UI should provide a number which increments the view count from before
-  // the navigation event.
-  OnSessionCardViewsCountChanged(uint16 total_count, uint16 count_delta);
+
+  OnNewCardsViewed(uint16 card_views);
+  OnCardVisited(uint32 depth);
+  OnSidebarFilterUsage();
+
   OnPromotedItemView(string item_id, string creative_instance_id);
   OnPromotedItemVisit(string item_id, string creative_instance_id);
   OnDisplayAdVisit(string item_id, string creative_instance_id);

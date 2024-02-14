@@ -19,6 +19,7 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
@@ -141,9 +142,11 @@ class BraveNewsController
       mojo::PendingRemote<mojom::ConfigurationListener> listener) override;
   void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
-  void OnSessionCardVisitsCountChanged(uint16_t total_count) override;
-  void OnSessionCardViewsCountChanged(uint16_t total_count,
-                                      uint16_t count_delta) override;
+
+  void OnNewCardsViewed(uint16_t card_views) override;
+  void OnCardVisited(uint32_t depth) override;
+  void OnSidebarFilterUsage() override;
+
   void OnPromotedItemView(const std::string& item_id,
                           const std::string& creative_instance_id) override;
   void OnPromotedItemVisit(const std::string& item_id,
@@ -176,6 +179,8 @@ class BraveNewsController
   brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
   raw_ptr<history::HistoryService> history_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
+  p3a::NewsMetrics news_metrics_;
 
   DirectFeedController direct_feed_controller_;
   UnsupportedPublisherMigrator unsupported_publisher_migrator_;

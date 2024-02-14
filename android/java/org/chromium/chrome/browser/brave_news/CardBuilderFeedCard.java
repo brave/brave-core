@@ -51,7 +51,6 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_news.mojom.Article;
@@ -389,7 +388,7 @@ public class CardBuilderFeedCard {
             switch (type) {
                 case CardType.HEADLINE:
                 case CardType.PROMOTED_ARTICLE:
-                    addElementsToSingleLayout(mLinearLayout, 0, type);
+                    addElementsToSingleLayout(mLinearLayout, 0, type, position);
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
                     break;
@@ -518,9 +517,9 @@ public class CardBuilderFeedCard {
                     layout3.setOrientation(LinearLayout.VERTICAL);
 
                     // adds each of the 3 cards
-                    addElementsToSingleLayout(layout1, 0, type);
-                    addElementsToSingleLayout(layout2, 1, type);
-                    addElementsToSingleLayout(layout3, 2, type);
+                    addElementsToSingleLayout(layout1, 0, type, position);
+                    addElementsToSingleLayout(layout2, 1, type, position);
+                    addElementsToSingleLayout(layout3, 2, type, position);
 
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
@@ -552,16 +551,16 @@ public class CardBuilderFeedCard {
                     topText.setTextColor(mActivity.getColor(R.color.news_text_color));
                     topText.setTypeface(null, Typeface.BOLD);
 
-                    addElementsToSingleLayout(row1, 0, type);
+                    addElementsToSingleLayout(row1, 0, type, position);
 
                     row2.setPadding(5, 5, 5, 5);
-                    addElementsToSingleLayout(row2, 1, type);
+                    addElementsToSingleLayout(row2, 1, type, position);
 
                     TableRow.LayoutParams row3Params = new TableRow.LayoutParams(
                             TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
                     row3Params.bottomMargin = 5 * MARGIN_VERTICAL;
                     row3.setPadding(5, 5, 5, 5);
-                    addElementsToSingleLayout(row3, 2, type);
+                    addElementsToSingleLayout(row3, 2, type, position);
 
                     mLinearLayout.setPadding(30, 10, 40, 10);
                     mLinearLayout.setBackground(
@@ -623,9 +622,9 @@ public class CardBuilderFeedCard {
                     rowTableParams.bottomMargin = 4 * MARGIN_VERTICAL;
                     row3.setLayoutParams(rowTableParams);
 
-                    addElementsToSingleLayout(row1, 0, type);
-                    addElementsToSingleLayout(row2, 1, type);
-                    addElementsToSingleLayout(row3, 2, type);
+                    addElementsToSingleLayout(row1, 0, type, position);
+                    addElementsToSingleLayout(row2, 1, type, position);
+                    addElementsToSingleLayout(row3, 2, type, position);
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
                     break;
@@ -662,7 +661,7 @@ public class CardBuilderFeedCard {
                     mLinearLayout.addView(layoutLeft);
                     layoutLeft.setLayoutParams(cellParams);
                     layoutLeft.setOrientation(LinearLayout.VERTICAL);
-                    addElementsToSingleLayout(layoutLeft, 0, type);
+                    addElementsToSingleLayout(layoutLeft, 0, type, position);
 
                     mLinearLayout.addView(layoutRight);
 
@@ -675,7 +674,7 @@ public class CardBuilderFeedCard {
                     layoutRight.setLayoutParams(cellParams);
                     layoutRight.setOrientation(LinearLayout.VERTICAL);
 
-                    addElementsToSingleLayout(layoutRight, 1, type);
+                    addElementsToSingleLayout(layoutRight, 1, type, position);
                     layoutLeft.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                     layoutRight.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
@@ -738,7 +737,7 @@ public class CardBuilderFeedCard {
         }
     }
 
-    private void addElementsToSingleLayout(ViewGroup view, int index, int itemType) {
+    private void addElementsToSingleLayout(ViewGroup view, int index, int itemType, int position) {
         ImageView image = new ImageView(mActivity);
         ImageView logo = new ImageView(mActivity);
         TextView title = new TextView(mActivity);
@@ -1197,21 +1196,25 @@ public class CardBuilderFeedCard {
 
             final FeedItemMetadata itemData = getItemData(index);
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // @TODO alex refactor this with listener in BraveNewTabPageLayout
-                    openUrlInSameTabAndSavePosition(itemData.url.url);
-                }
-            });
+            view.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // @TODO alex refactor this with listener in BraveNewTabPageLayout
+                            openUrlInSameTabAndSavePosition(itemData.url.url);
+                            mBraveNewsController.onCardVisited(position + 1);
+                        }
+                    });
 
-            title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // @TODO alex refactor this with listener in BraveNewTabPageLayout
-                    openUrlInSameTabAndSavePosition(itemData.url.url);
-                }
-            });
+            title.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // @TODO alex refactor this with listener in BraveNewTabPageLayout
+                            openUrlInSameTabAndSavePosition(itemData.url.url);
+                            mBraveNewsController.onCardVisited(position + 1);
+                        }
+                    });
 
             title.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -1313,22 +1316,6 @@ public class CardBuilderFeedCard {
                                 // Updates the no. of ads cards visited
                                 mBraveNewsController.onDisplayAdVisit(
                                         displayAd.uuid, displayAd.creativeInstanceId);
-                            } else {
-                                // Brave News updates the no. of "normal" cards visited
-                                int visitedNewsCardsCount =
-                                        ChromeSharedPreferences.getInstance()
-                                                .readInt(
-                                                        BravePreferenceKeys
-                                                                .BRAVE_NEWS_CARDS_VISITED);
-                                visitedNewsCardsCount++;
-                                ChromeSharedPreferences.getInstance()
-                                        .writeInt(
-                                                BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED,
-                                                visitedNewsCardsCount);
-                                if (visitedNewsCardsCount > 0) {
-                                    mBraveNewsController.onSessionCardVisitsCountChanged(
-                                            (short) visitedNewsCardsCount);
-                                }
                             }
                         }
                     }

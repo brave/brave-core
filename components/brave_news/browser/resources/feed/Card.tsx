@@ -99,7 +99,20 @@ export const braveNewsCardClickHandler = (href: string | undefined, allowedSchem
   }
 }
 
-export function BraveNewsLink(props: SecureLinkProps) {
-  const { openArticlesInNewTab } = useBraveNews()
-  return <SecureLink {...props} onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} />
+interface BraveNewsLinkProps extends SecureLinkProps {
+  feedDepth?: number
+}
+
+export function BraveNewsLink(props: BraveNewsLinkProps) {
+  const { openArticlesInNewTab, reportVisit } = useBraveNews()
+  return <SecureLink
+    {...props}
+    onClick={e => {
+      e.stopPropagation()
+      if (props.feedDepth !== undefined) {
+        reportVisit(props.feedDepth);
+      }
+    }}
+    target={openArticlesInNewTab ? '_blank' : undefined}
+  />
 }
