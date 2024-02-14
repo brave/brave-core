@@ -1237,10 +1237,6 @@
 # https://github.com/brave/brave-browser/issues/35263
 -PictureInPicturePixelComparisonBrowserTest.VideoPlay
 
-# These tests fail because we disable autofill feedback
--AutofillAcrossIframesTest/*.*/*
--AutofillAcrossIframesTest_*.*
-
 # These tests fail because we disable lens::features::kLensStandalone
 -All/ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame/LinkPreviewDisabled
 -All/ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame/LinkPreviewEnabled
