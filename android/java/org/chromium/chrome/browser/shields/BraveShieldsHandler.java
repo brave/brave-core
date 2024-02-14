@@ -75,6 +75,7 @@ import java.util.Map;
 public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback {
     private static final String TAG = "BraveShieldsHandler";
     private static final int URL_SPEC_MAX_LINES = 3;
+    private static final String CHROME_ERROR = "chrome-error://";
 
     private static class BlockersInfo {
         public BlockersInfo() {
@@ -811,7 +812,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private void setUpReportBrokenSiteLayout() {
         TextView mReportSiteUrlText = mReportBrokenSiteLayout.findViewById(R.id.report_site_url);
         final Uri reportUri = Uri.parse(mUrlSpec).buildUpon().clearQuery().build();
-        mReportSiteUrlText.setText(reportUri.toString());
+        final String host = mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", "");
+        final String siteUrl = mUrlSpec.startsWith(CHROME_ERROR) ? host : reportUri.toString();
+        mReportSiteUrlText.setText(siteUrl);
         mReportSiteUrlText.setMovementMethod(new ScrollingMovementMethod());
 
         Button mCancelButton = mReportBrokenSiteLayout.findViewById(R.id.btn_cancel);
@@ -823,21 +826,22 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         });
 
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Profile.getLastUsedRegularProfile requires to run in UI thread,
-                // so get api key here and pass it to IO worker task
-                String referralApiKey =
-                        NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
-                BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
-                        new BraveShieldsUtils.BraveShieldsWorkerTask(
-                                reportUri.toString(), referralApiKey);
-                mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                mReportBrokenSiteLayout.setVisibility(View.GONE);
-                mThankYouLayout.setVisibility(View.VISIBLE);
-            }
-        });
+        mSubmitButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Profile.getLastUsedRegularProfile requires to run in UI thread,
+                        // so get api key here and pass it to IO worker task
+                        String referralApiKey =
+                                NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
+                        BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
+                                new BraveShieldsUtils.BraveShieldsWorkerTask(
+                                        siteUrl, referralApiKey);
+                        mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        mReportBrokenSiteLayout.setVisibility(View.GONE);
+                        mThankYouLayout.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
     private void setUpMainSwitchLayout(boolean isChecked) {
