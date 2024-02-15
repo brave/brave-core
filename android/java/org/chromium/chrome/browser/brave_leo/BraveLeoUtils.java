@@ -55,9 +55,9 @@ public class BraveLeoUtils {
 
     public static void openLeoQuery(WebContents webContents, String query) {
         try {
+            BraveLeoUtilsJni.get().openLeoQuery(webContents, query);
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.openBraveLeo();
-            BraveLeoUtilsJni.get().openLeoQuery(webContents, query);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "get BraveActivity exception", e);
         }
