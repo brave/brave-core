@@ -12,7 +12,7 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
-#include "chrome/browser/ui/views/bubble/bubble_contents_wrapper.h"
+#include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
 
 class BrowserView;
 class PlaylistSidePanelCoordinator;
@@ -20,7 +20,7 @@ class FullscreenController;
 
 // Implements WebContentsDelegate parts for Playlist features.
 class PlaylistContentsWrapper
-    : public BubbleContentsWrapperT<playlist::PlaylistUI>,
+    : public WebUIContentsWrapperT<playlist::PlaylistUI>,
       public FullscreenObserver {
  public:
   PlaylistContentsWrapper(const GURL& webui_url,
@@ -32,7 +32,7 @@ class PlaylistContentsWrapper
                           PlaylistSidePanelCoordinator* coordinator);
   ~PlaylistContentsWrapper() override;
 
-  // BubbleContentsWrapperT<playlist::PlaylistUI>:
+  // WebUIContentsWrapperT<playlist::PlaylistUI>:
   bool CanEnterFullscreenModeForTab(
       content::RenderFrameHost* requesting_frame,
       const blink::mojom::FullscreenOptions& options) override;
