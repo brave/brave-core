@@ -185,12 +185,12 @@ void PlaylistDownloadRequestManager::GetMedia(
 
   const auto& media_detector_script =
       media_detector_component_manager_->GetMediaDetectorScript(
-          contents->GetVisibleURL());
+          contents->GetLastCommittedURL());
   DCHECK(!media_detector_script.empty());
 
   auto callback = base::BindOnce(
       &PlaylistDownloadRequestManager::OnGetMedia, weak_factory_.GetWeakPtr(),
-      contents->GetWeakPtr(), contents->GetVisibleURL(), std::move(cb));
+      contents->GetWeakPtr(), contents->GetLastCommittedURL(), std::move(cb));
 
 #if BUILDFLAG(IS_ANDROID)
   content::RenderFrameHost::AllowInjectingJavaScript();

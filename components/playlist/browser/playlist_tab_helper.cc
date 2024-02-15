@@ -195,7 +195,7 @@ void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
   DVLOG(2) << __FUNCTION__;
 
   if (auto old_url =
-          std::exchange(target_url_, web_contents()->GetVisibleURL());
+          std::exchange(target_url_, web_contents()->GetLastCommittedURL());
       old_url == target_url_) {
     return;
   }
@@ -209,7 +209,7 @@ void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
   DVLOG(2) << __FUNCTION__ << " " << item->page_source.spec();
-  if (item->page_source != web_contents()->GetVisibleURL()) {
+  if (item->page_source != web_contents()->GetLastCommittedURL()) {
     return;
   }
 
@@ -305,7 +305,7 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
       service_->GetAllPlaylistItems(),
       [this, &should_notify](const auto& item) {
         const auto& current_url =
-            web_contents()->GetVisibleURL().GetWithoutRef();
+            web_contents()->GetLastCommittedURL().GetWithoutRef();
         const GURL page_source_url = GURL(item->page_source).GetWithoutRef();
         if (page_source_url != current_url) {
           return;
@@ -353,7 +353,7 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   }
 
   CHECK(web_contents());
-  if (url != web_contents()->GetVisibleURL()) {
+  if (url != web_contents()->GetLastCommittedURL()) {
     return;
   }
 

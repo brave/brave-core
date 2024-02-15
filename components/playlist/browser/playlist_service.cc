@@ -435,7 +435,7 @@ void PlaylistService::ExtractMediaFromBackgroundWebContents(
   CHECK(*enabled_pref_) << "Playlist pref must be enabled";
   CHECK(source_contents);
 
-  auto current_url = source_contents->GetVisibleURL();
+  auto current_url = source_contents->GetLastCommittedURL();
   PlaylistDownloadRequestManager::Request request;
   request.url = current_url;
   request.should_force_fake_ua = ShouldUseFakeUA(current_url);
@@ -568,7 +568,7 @@ void PlaylistService::FindMediaFilesFromActiveTab(
   std::vector<mojom::PlaylistItemPtr> items;
   base::ranges::transform(tab_helper->found_items(), std::back_inserter(items),
                           &mojom::PlaylistItemPtr::Clone);
-  std::move(callback).Run(contents->GetVisibleURL(), std::move(items));
+  std::move(callback).Run(contents->GetLastCommittedURL(), std::move(items));
 }
 
 void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
@@ -768,7 +768,7 @@ bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
   }
 
   CHECK(contents);
-  const auto& url = contents->GetVisibleURL();
+  const auto& url = contents->GetLastCommittedURL();
   return ShouldGetMediaFromBackgroundWebContents(url);
 }
 
@@ -1213,9 +1213,9 @@ void PlaylistService::OnMediaUpdatedFromContents(
   }
 
   download_request_manager_->GetMedia(
-      contents,
-      base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
-                     weak_factory_.GetWeakPtr(), contents->GetVisibleURL()));
+      contents, base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
+                               weak_factory_.GetWeakPtr(),
+                               contents->GetLastCommittedURL()));
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(
