@@ -87,7 +87,11 @@ namespace skus {
 SkusServiceImpl::SkusServiceImpl(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
+    : prefs_(prefs), url_loader_factory_(url_loader_factory) {
+  sdk_task_runner_ = base::ThreadPool::CreateSingleThreadTaskRunner(
+      {base::TaskPriority::USER_BLOCKING});
+  ui_task_runner_ = base::SequencedTaskRunner::GetCurrentDefault();
+}
 
 SkusServiceImpl::~SkusServiceImpl() = default;
 
@@ -139,15 +143,15 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
 ::rust::Box<skus::CppSDK>& SkusServiceImpl::GetOrCreateSDK(
     const std::string& domain) {
   auto env = GetEnvironmentForDomain(domain);
-  if (sdk_.count(env)) {
-    return sdk_.at(env);
+  if (sdks_.count(env)) {
+    return sdks_.at(env);
   }
 
-  auto sdk = initialize_sdk(
-      std::make_unique<skus::SkusContextImpl>(prefs_, url_loader_factory_),
-      env);
-  sdk_.insert_or_assign(env, std::move(sdk));
-  return sdk_.at(env);
+  auto sdk = initialize_sdk(std::make_unique<skus::SkusContextImpl>(
+                                prefs_, url_loader_factory_->Clone()),
+                            env);
+  sdks_.insert_or_assign(env, std::move(sdk));
+  return sdks_.at(env);
 }
 
 void SkusServiceImpl::CredentialSummary(

@@ -180,13 +180,16 @@ std::unique_ptr<SkusUrlLoader> shim_executeRequest(
 
 SkusContextImpl::SkusContextImpl(
     PrefService* prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(*prefs), url_loader_factory_(url_loader_factory) {}
-
+    std::unique_ptr<network::PendingSharedURLLoaderFactory>
+        pending_url_loader_factory)
+    : prefs_(*prefs),
+      pending_url_loader_factory_(std::move(pending_url_loader_factory)) {}
 SkusContextImpl::~SkusContextImpl() = default;
 
 std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
-  return std::make_unique<SkusUrlLoaderImpl>(url_loader_factory_);
+  return std::make_unique<SkusUrlLoaderImpl>(
+      network::SharedURLLoaderFactory::Create(
+          std::move(pending_url_loader_factory_)));
 }
 
 std::string SkusContextImpl::GetValueFromStore(std::string key) const {

@@ -12,12 +12,9 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefService;
-
-namespace network {
-class SharedURLLoaderFactory;
-}  // namespace network
 
 namespace skus {
 class SkusUrlLoader;
@@ -39,7 +36,8 @@ class SkusContextImpl : public SkusContext {
 
   explicit SkusContextImpl(
       PrefService* prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      std::unique_ptr<network::PendingSharedURLLoaderFactory>
+          pending_url_loader_factory);
   ~SkusContextImpl() override;
 
   std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const override;
@@ -52,7 +50,8 @@ class SkusContextImpl : public SkusContext {
   const raw_ref<PrefService> prefs_;
 
   // used for making requests to SKU server
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  mutable std::unique_ptr<network::PendingSharedURLLoaderFactory>
+      pending_url_loader_factory_;
 };
 
 }  // namespace skus
