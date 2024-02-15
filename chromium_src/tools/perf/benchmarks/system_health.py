@@ -9,7 +9,10 @@ import override_utils
 
 
 def _add_brave_metrics(options):
-    options.ExtendTimelineBasedMetric(['braveNavigationMetric'])
+    cat_filter = options.config.chrome_trace_config.category_filter
+    cat_filter.AddDisabledByDefault('disabled-by-default-histogram_samples')
+    options.ExtendTimelineBasedMetric(
+        ['braveNavigationMetric', 'braveGeneralUmaMetric'])
     return options
 
 
