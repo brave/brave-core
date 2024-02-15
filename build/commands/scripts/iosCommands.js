@@ -35,11 +35,13 @@ const createXCFrameworks = (buildConfig = config.defaultBuildConfig, options = {
 }
 
 const bootstrap = (options = {}) => {
+  const utilConfig = config.defaultOptions
+  utilConfig.cwd = config.braveCoreDir
   const bootstrapArgs = ['script/ios_bootstrap.py']
   if (options.force) {
     bootstrapArgs.push('--force')
   }
-  util.run('python3', bootstrapArgs, config.defaultOptions)
+  util.run('python3', bootstrapArgs, utilConfig)
   if (options.open_xcodeproj) {
     const args = [
       path.join(config.srcDir, 'brave', 'ios', 'brave-ios', 'App', 'Client.xcodeproj')
