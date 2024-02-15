@@ -57,6 +57,9 @@ source_set("svg") {
   sources += skia_svg_public
   sources += skia_svg_sources
 
+  sources -=
+      [ "//third_party/skia/modules/svg/src/SkSVGOpenTypeSVGDecoder.cpp" ]
+
   deps = [
     "//base",
     "//skia",
