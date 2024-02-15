@@ -704,7 +704,7 @@ const util = {
     if (options.all)
       args.push('--all')
     if (options.files)
-      args.push('--files', options.files)
+      args.push('--files', `"${options.files}"`)
     if (options.verbose) {
       args.push(...Array(options.verbose).fill('--verbose'))
     }

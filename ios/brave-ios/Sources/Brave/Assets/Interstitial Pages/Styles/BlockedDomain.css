@@ -116,32 +116,32 @@ button {
     width: 64px;
     height: 64px;
   }
-  
+
   h1 {
     font-size: 28px;
     font-weight: 500;
     line-height: 36px;
     letter-spacing: 0em;
   }
-  
+
   h2 {
     font-size: 16px;
     line-height: 26px;
   }
-  
+
   .description {
     font-size: 14px;
     line-height: 22px;
     letter-spacing: -0.1px;
   }
-  
+
   .domain {
     font-size: 14px;
     font-weight: 400;
     line-height: 22px;
     letter-spacing: 0em;
   }
-  
+
   .content {
     margin: 0;
     position: absolute;
@@ -151,11 +151,11 @@ button {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
-  
+
   .actions {
     flex-direction: row-reverse;
   }
-  
+
   button {
     width: auto;
   }
@@ -166,15 +166,15 @@ button {
   .background {
     background-color: #0D0F14;
   }
-  
+
   h1, h2 {
     color: #F6F7F8;
   }
-  
+
   .description, .domain {
     color: #DBDEE2;
   }
-  
+
   .secondary-action {
     color: #7C91FF;
   }
