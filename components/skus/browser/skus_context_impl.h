@@ -11,6 +11,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"
 
@@ -90,6 +91,7 @@ class SkusContextImpl : public SkusContext {
 
   // used for making requests to SKU server
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  base::WeakPtrFactory<SkusContextImpl> weak_factory_{this};
 };
 
 }  // namespace skus

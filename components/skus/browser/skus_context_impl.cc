@@ -193,10 +193,10 @@ void SkusContextImpl::ScheduleGetValueFromStore(
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const {
   VLOG(1) << "shim_get: `" << key << "`";
-  ui_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&SkusContextImpl::GetValueFromStore,
-                                base::Unretained(this), key, std::move(done),
-                                std::move(st_ctx)));
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(&SkusContextImpl::GetValueFromStore,
+                                           weak_factory_.GetWeakPtr(), key,
+                                           std::move(done), std::move(st_ctx)));
 }
 
 void SkusContextImpl::GetValueFromStore(
@@ -225,7 +225,7 @@ void SkusContextImpl::SchedulePurgeStore(
     rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const {
   ui_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&SkusContextImpl::PurgeStore, base::Unretained(this),
+      base::BindOnce(&SkusContextImpl::PurgeStore, weak_factory_.GetWeakPtr(),
                      std::move(done), std::move(st_ctx)));
 }
 
@@ -249,9 +249,9 @@ void SkusContextImpl::ScheduleUpdateStoreValue(
     rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const {
   VLOG(1) << "shim_set: `" << key << "` = `" << value << "`";
   ui_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&SkusContextImpl::UpdateStoreValue, base::Unretained(this),
-                     key, value, std::move(done), std::move(st_ctx)));
+      FROM_HERE, base::BindOnce(&SkusContextImpl::UpdateStoreValue,
+                                weak_factory_.GetWeakPtr(), key, value,
+                                std::move(done), std::move(st_ctx)));
 }
 
 void SkusContextImpl::UpdateStoreValue(

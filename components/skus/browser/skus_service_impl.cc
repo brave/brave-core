@@ -119,7 +119,7 @@ void SkusServiceImpl::RefreshOrder(
 
   sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::RefreshOrderTask,
-                                base::Unretained(this), domain, order_id,
+                                weak_factory_.GetWeakPtr(), domain, order_id,
                                 std::move(cbs), url_loader_factory_->Clone()));
 }
 
@@ -151,7 +151,7 @@ void SkusServiceImpl::FetchOrderCredentials(
                            weak_factory_.GetWeakPtr(), std::move(callback));
   sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::FetchOrderCredentialsTask,
-                                base::Unretained(this), domain, order_id,
+                                weak_factory_.GetWeakPtr(), domain, order_id,
                                 std::move(cbs), url_loader_factory_->Clone()));
 }
 
@@ -184,7 +184,7 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&SkusServiceImpl::PrepareCredentialsPresentationTask,
-                     base::Unretained(this), domain, path, std::move(cbs),
+                     weak_factory_.GetWeakPtr(), domain, path, std::move(cbs),
                      url_loader_factory_->Clone()));
 }
 
@@ -229,8 +229,8 @@ void SkusServiceImpl::CredentialSummary(
                      weak_factory_.GetWeakPtr(), domain, std::move(callback));
   sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::CredentialSummaryTask,
-                                base::Unretained(this), domain, std::move(cbs),
-                                url_loader_factory_->Clone()));
+                                weak_factory_.GetWeakPtr(), domain,
+                                std::move(cbs), url_loader_factory_->Clone()));
 }
 
 void SkusServiceImpl::CredentialSummaryTask(
@@ -264,7 +264,7 @@ void SkusServiceImpl::SubmitReceipt(
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&SkusServiceImpl::SubmitReceiptTask,
-                     base::Unretained(this), domain, order_id, receipt,
+                     weak_factory_.GetWeakPtr(), domain, order_id, receipt,
                      std::move(cbs), url_loader_factory_->Clone()));
 }
 
@@ -296,7 +296,7 @@ void SkusServiceImpl::CreateOrderFromReceipt(
                            weak_factory_.GetWeakPtr(), std::move(callback));
   sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::CreateOrderFromReceiptTask,
-                                base::Unretained(this), domain, receipt,
+                                weak_factory_.GetWeakPtr(), domain, receipt,
                                 std::move(cbs), url_loader_factory_->Clone()));
 }
 
