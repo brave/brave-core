@@ -79,12 +79,12 @@ class LoadWikipediaStory2023(_BraveLoadingStory):
   TAGS = [story_tags.YEAR_2023]
 
   def _DidLoadDocument(self, action_runner):
-    try:
-      action_runner.WaitForElement(selector='.js-close', timeout_in_seconds=5)
-      action_runner.ClickElement(selector='.js-close')
-    except TimeoutException:
-      # Sometimes the pop up doesn't appear.
-      pass
+    # try:
+    #   action_runner.WaitForElement(selector='.js-close', timeout_in_seconds=5)
+    #   action_runner.ClickElement(selector='.js-close')
+    # except TimeoutException:
+    #   # Sometimes the pop up doesn't appear.
+    #   pass
     super()._DidLoadDocument(action_runner)
 
 
