@@ -82,14 +82,14 @@ class CustomScrollView : public views::ScrollView {
       SetVerticalScrollBarMode(views::ScrollView::ScrollBarMode::kEnabled);
       // We can't use ScrollBarViews on Mac
 #if !BUILDFLAG(IS_MAC)
-      SetVerticalScrollBar(
-          std::make_unique<views::ScrollBarViews>(/* horizontal= */ false));
+      SetVerticalScrollBar(std::make_unique<views::ScrollBarViews>(
+          views::ScrollBar::Orientation::kVertical));
 #endif
     } else {
       SetVerticalScrollBarMode(
           views::ScrollView::ScrollBarMode::kHiddenButEnabled);
-      SetVerticalScrollBar(
-          std::make_unique<views::OverlayScrollBar>(/* horizontal= */ false));
+      SetVerticalScrollBar(std::make_unique<views::OverlayScrollBar>(
+          views::ScrollBar::Orientation::kVertical));
     }
     DeprecatedLayoutImmediately();
   }
