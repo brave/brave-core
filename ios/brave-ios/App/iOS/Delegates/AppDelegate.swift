@@ -49,13 +49,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     self.application = application
     
     // Application Constants must be initialized first
-    #if MOZ_CHANNEL_RELEASE
+    #if BRAVE_CHANNEL_RELEASE
     AppConstants.buildChannel = .release
-    #elseif MOZ_CHANNEL_BETA
+    #elseif BRAVE_CHANNEL_BETA
     AppConstants.buildChannel = .beta
-    #elseif MOZ_CHANNEL_NIGHTLY
+    #elseif BRAVE_CHANNEL_NIGHTLY
     AppConstants.buildChannel = .nightly
-    #elseif MOZ_CHANNEL_DEBUG
+    #elseif BRAVE_CHANNEL_DEBUG
     AppConstants.buildChannel = .debug
     #endif
     

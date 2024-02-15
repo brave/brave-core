@@ -28,5 +28,6 @@ if [[ $RUN_CLANG_STATIC_ANALYZER = "NO" ]]; then
   env -i PATH="$PATH" python3 \
     "${PROJECT_DIR}/../scripts/scheme_preaction.py" \
     --configuration $CONFIGURATION \
-    --platform_name $PLATFORM_NAME
+    --platform_name $PLATFORM_NAME \
+    "$@"
 fi

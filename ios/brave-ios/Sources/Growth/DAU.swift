@@ -18,7 +18,7 @@ public class DAU {
       let domain = AppConstants.buildChannel.isPublic
         ? "https://laptop-updates.brave.com/"
         : "https://laptop-updates.bravesoftware.com/"
-      
+
       return "\(domain)\(apiVersion)/usage/ios?platform=ios"
     }
   }
@@ -32,12 +32,12 @@ public class DAU {
     if let timezone = TimeZone(abbreviation: "GMT") {
       cal.timeZone = timezone
     }
-    
+
     return cal
   }
 
   private var launchTimer: Timer?
-  
+
   /// Whether a current ping attempt is being made
   private var processingPing = false
   private func todayComponents(from date: Date) -> DateComponents {
@@ -53,7 +53,6 @@ public class DAU {
     return formatter
   }()
 
-  private static let apiKeyPlistKey = "STATS_KEY"
   private let apiKey: String?
   private let braveCoreStats: BraveStats?
 
@@ -61,9 +60,9 @@ public class DAU {
     braveCoreStats: BraveStats?
   ) {
     self.braveCoreStats = braveCoreStats
-    apiKey = (Bundle.main.infoDictionary?[Self.apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+    apiKey = kBraveStatsAPIKey
   }
-  
+
   /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
   /// A user needs to be active for a certain amount of time before we ping the server.
   @discardableResult public func sendPingToServer() -> Bool {
@@ -136,7 +135,7 @@ public class DAU {
 
       // This preference is used to calculate whether user used the app in this month and/or day.
       Preferences.DAU.lastLaunchInfo.value = paramsAndPrefs.lastLaunchInfoPreference
-      
+
       DispatchQueue.main.async { [self] in
         braveCoreStats?.notifyPingSent()
       }
@@ -151,7 +150,7 @@ public class DAU {
     let headers: [String: String]
     let lastLaunchInfoPreference: [Int]
   }
-  
+
   func migrateInvalidWeekOfInstallPref() {
     guard let woi = Preferences.DAU.weekOfInstallation.value else { return }
     // Check if the value for the day/month do not include 0
@@ -195,7 +194,7 @@ public class DAU {
       // Must be after setting up the preferences
       weekOfInstallationParam(),
     ]
-    
+
     if let braveCoreStats = braveCoreStats {
       params += braveCoreParams(for: braveCoreStats)
     }
@@ -225,7 +224,7 @@ public class DAU {
 
     return ParamsAndPrefs(queryParams: params, headers: headers, lastLaunchInfoPreference: lastPingTimestamp)
   }
-  
+
   private func retentionMeasureDatePassed(todayDate: Date, installDate: Date) -> Bool {
     guard let referenceDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: installDate),
       let currentDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: todayDate)
@@ -249,7 +248,7 @@ public class DAU {
     // For now we only have wallet params from brave-core
     braveStats.walletParams.map({ URLQueryItem(name: $0.key, value: $0.value) })
   }
-  
+
   func versionParam(for version: String = AppInfo.appVersion) -> URLQueryItem {
     var version = version
     if DAU.shouldAppend0(toVersion: version) {
