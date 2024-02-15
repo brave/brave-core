@@ -3,6 +3,8 @@ include_rules = [
   "+brave/common",
   "+brave/components/ai_chat",
   "+brave/components/constants",
+  "+brave/components/version_info",
+  "+brave/components/webui",
   "+components/component_updater",
   "+components/gcm_driver/gcm_driver.h",
   "+components/history/core/browser",
