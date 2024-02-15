@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/task/single_thread_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
@@ -86,13 +88,12 @@ namespace skus {
 
 SkusServiceImpl::SkusServiceImpl(
     PrefService* prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    scoped_refptr<base::SingleThreadTaskRunner> sdk_task_runner,
-    scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
-    : prefs_(prefs),
-      url_loader_factory_(url_loader_factory),
-      sdk_task_runner_(sdk_task_runner),
-      ui_task_runner_(ui_task_runner) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : prefs_(prefs), url_loader_factory_(url_loader_factory) {
+  sdk_task_runner_ = base::ThreadPool::CreateSingleThreadTaskRunner(
+      {base::TaskPriority::USER_BLOCKING});
+  ui_task_runner_ = base::SequencedTaskRunner::GetCurrentDefault();
+}
 
 SkusServiceImpl::~SkusServiceImpl() = default;
 

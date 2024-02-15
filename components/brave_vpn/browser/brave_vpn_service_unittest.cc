@@ -17,8 +17,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/task/single_thread_task_runner.h"
-#include "base/task/thread_pool.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
@@ -39,7 +37,6 @@
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/mock_network_change_notifier.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -219,9 +216,7 @@ class BraveVPNServiceTest : public testing::Test {
         &BraveVPNServiceTest::Interceptor, base::Unretained(this)));
     // Setup required for SKU (dependency of VPN)
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
-        &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper(),
-        base::ThreadPool::CreateSingleThreadTaskRunner({}),
-        content::GetUIThreadTaskRunner({}));
+        &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
 #if !BUILDFLAG(IS_ANDROID)
     connection_api_ = std::make_unique<BraveVPNOSConnectionAPISim>(
         shared_url_loader_factory_, &local_pref_service_);

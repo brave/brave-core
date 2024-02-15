@@ -11,13 +11,10 @@
 #include "base/json/json_writer.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
-#include "base/task/single_thread_task_runner.h"
-#include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -246,9 +243,7 @@ class SkusServiceTestUnitTest : public testing::Test {
         &SkusServiceTestUnitTest::Interceptor, base::Unretained(this)));
 
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
-        prefs(), url_loader_factory_.GetSafeWeakWrapper(),
-        base::ThreadPool::CreateSingleThreadTaskRunner({}),
-        content::GetUIThreadTaskRunner({}));
+        prefs(), url_loader_factory_.GetSafeWeakWrapper());
   }
 
   std::string GetCredentialsSummary(const std::string& domain) {

@@ -58,12 +58,9 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
   }
   skus::MigrateSkusSettings(browser_state->GetPrefs(),
                             GetApplicationContext()->GetLocalState());
-  std::unique_ptr<skus::SkusServiceImpl> sku_service(new skus::SkusServiceImpl(
-      GetApplicationContext()->GetLocalState(),
-      browser_state->GetSharedURLLoaderFactory(),
-      base::ThreadPool::CreateSingleThreadTaskRunner(
-          {base::TaskPriority::USER_BLOCKING}),
-      base::SequencedTaskRunner::GetCurrentDefault()));
+  std::unique_ptr<skus::SkusServiceImpl> sku_service(
+      new skus::SkusServiceImpl(GetApplicationContext()->GetLocalState(),
+                                browser_state->GetSharedURLLoaderFactory()));
   return sku_service;
 }
 

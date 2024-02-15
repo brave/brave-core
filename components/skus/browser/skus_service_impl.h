@@ -61,9 +61,7 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
  public:
   explicit SkusServiceImpl(
       PrefService* prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      scoped_refptr<base::SingleThreadTaskRunner> sdk_task_runner,
-      scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~SkusServiceImpl() override;
 
   SkusServiceImpl(const SkusServiceImpl&) = delete;

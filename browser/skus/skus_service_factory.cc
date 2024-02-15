@@ -74,10 +74,7 @@ KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
   return new skus::SkusServiceImpl(
       g_browser_process->local_state(),
       context->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess(),
-      base::ThreadPool::CreateSingleThreadTaskRunner(
-          {base::TaskPriority::USER_BLOCKING}),
-      base::SequencedTaskRunner::GetCurrentDefault());
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 void SkusServiceFactory::RegisterProfilePrefs(
