@@ -333,15 +333,15 @@ window.__firefox__.includeOnce("Playlist", function($) {
         });
       }
 
-      /*var document_createElement = document.createElement;
+      /*var documentCreateElement = document.createElement;
       document.createElement = function (tag) {
           if (tag === 'audio' || tag === 'video') {
-              var node = document_createElement.call(this, tag);
+              var node = documentCreateElement.call(this, tag);
               observeNode(node);
               notifyNode(node, tag, true, false);
               return node;
           }
-          return document_createElement.call(this, tag);
+          return documentCreateElement.call(this, tag);
       };*/
 
       function checkPageForVideos(ignoreSource) {
