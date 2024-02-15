@@ -1,0 +1,97 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from brave/third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "orchard"
+  epoch = "0.7"
+  crate_type = "rlib"
+  crate_root =
+      "//brave/third_party/rust/orchard/v0_7/crate/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/orchard/v0_7/crate/src/action.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/address.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/builder.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/bundle.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/bundle/batch.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/bundle/commitments.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/circuit.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/circuit/commit_ivk.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/circuit/gadget.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/circuit/gadget/add_chip.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/circuit/note_commit.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/fixed_bases.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/fixed_bases/commit_ivk_r.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/fixed_bases/note_commit_r.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/fixed_bases/nullifier_k.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/fixed_bases/spend_auth_g.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/fixed_bases/value_commit_r.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/fixed_bases/value_commit_v.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/load.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/sinsemilla.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/constants/util.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/keys.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/lib.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/note.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/note/commitment.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/note/nullifier.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/note_encryption.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/primitives.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/primitives/redpallas.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/spec.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/test_vectors.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/test_vectors/commitment_tree.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/test_vectors/keys.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/test_vectors/merkle_path.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/test_vectors/note_encryption.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/tree.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/value.rs",
+    "//brave/third_party/rust/orchard/v0_7/crate/src/zip32.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.7.0"
+  cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Daira Emma Hopwood <daira@jacaranda.org>, Ying Tong Lai, Kris Nuttycombe <kris@electriccoin.co>"
+  cargo_pkg_name = "orchard"
+  cargo_pkg_description = "The Orchard shielded transaction protocol"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/aes/v0_8:lib",
+    "//brave/third_party/rust/bitvec/v1:lib",
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/fpe/v0_6:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/halo2_gadgets/v0_3:lib",
+    "//brave/third_party/rust/halo2_proofs/v0_3:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
+    "//brave/third_party/rust/nonempty/v0_7:lib",
+    "//brave/third_party/rust/pasta_curves/v0_5:lib",
+    "//brave/third_party/rust/reddsa/v0_5:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+    "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
+    "//brave/third_party/rust/zcash_spec/v0_1:lib",
+    "//brave/third_party/rust/zip32/v0_1:lib",
+    "//third_party/rust/hex/v0_4:lib",
+    "//third_party/rust/lazy_static/v1:lib",
+    "//third_party/rust/rand/v0_8:lib",
+    "//third_party/rust/serde/v1:lib",
+  ]
+  # features = [ "multicore" ]
+}
