@@ -469,10 +469,6 @@ public class AssetDetailActivity
         if (walletListItemModel.getAccountInfo() == null) {
             return;
         }
-
-        Intent intent =
-                AccountDetailActivity.createIntent(this, walletListItemModel.getAccountInfo());
-        startActivityForResult(intent, Utils.ACCOUNT_REQUEST_CODE);
     }
 
     @Override
@@ -502,10 +498,8 @@ public class AssetDetailActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Utils.ACCOUNT_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                setUpAccountList();
-            }
+        if (resultCode == Activity.RESULT_OK) {
+            setUpAccountList();
         }
     }
 

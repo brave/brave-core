@@ -123,7 +123,6 @@ public class Utils {
     public static int ASSET_ITEM = 2;
     public static int TRANSACTION_ITEM = 3;
 
-    public static final int ACCOUNT_REQUEST_CODE = 2;
     public static final int ETH_DEFAULT_DECIMALS = 18;
     public static final int SOL_DEFAULT_DECIMALS = 9;
 
