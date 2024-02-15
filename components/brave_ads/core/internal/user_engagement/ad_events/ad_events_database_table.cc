@@ -275,7 +275,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
       "from creative_ads) AND creative_set_id NOT IN (SELECT creative_set_id "
       "from creative_set_conversions) AND DATETIME((created_at / 1000000) - "
       "11644473600, 'unixepoch') <= DATETIME(($2 / 1000000) - 11644473600, "
-      "'unixepoch', '-3 month');",
+      "'unixepoch', '-3 months');",
       {GetTableName(),
        base::NumberToString(
            base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())},
