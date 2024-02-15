@@ -20,6 +20,31 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "v8/include/v8.h"
 
+namespace gin {
+
+template <>
+struct Converter<base::Value> {
+  static bool FromV8(v8::Isolate* isolate,
+                     v8::Local<v8::Value> v8_value,
+                     base::Value* out) {
+    if (v8_value.IsEmpty()) {
+      return false;
+    }
+
+    std::unique_ptr<base::Value> base_value =
+        content::V8ValueConverter::Create()->FromV8Value(
+            v8_value, isolate->GetCurrentContext());
+    if (!base_value) {
+      return false;
+    }
+
+    *out = std::move(*base_value);
+    return true;
+  }
+};
+
+}  // namespace gin
+
 namespace playlist {
 
 PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
@@ -33,7 +58,6 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
       ->AddInterface<mojom::PlaylistRenderFrameObserverConfigurator>(
           base::BindRepeating(&PlaylistRenderFrameObserver::BindConfigurator,
                               weak_ptr_factory_.GetWeakPtr()));
-  EnsureConnectedToMediaHandler();
 }
 
 PlaylistRenderFrameObserver::~PlaylistRenderFrameObserver() = default;
@@ -69,21 +93,15 @@ void PlaylistRenderFrameObserver::BindConfigurator(
   configurator_receiver_.Bind(std::move(receiver));
 }
 
-bool PlaylistRenderFrameObserver::EnsureConnectedToMediaHandler() {
-  if (!media_handler_.is_bound()) {
+const mojo::Remote<playlist::mojom::PlaylistMediaHandler>&
+PlaylistRenderFrameObserver::GetMediaHandler() {
+  if (!media_handler_) {
     render_frame()->GetBrowserInterfaceBroker()->GetInterface(
         media_handler_.BindNewPipeAndPassReceiver());
-    media_handler_.set_disconnect_handler(
-        base::BindOnce(&PlaylistRenderFrameObserver::OnMediaHandlerDisconnect,
-                       weak_ptr_factory_.GetWeakPtr()));
+    media_handler_.reset_on_disconnect();
   }
 
-  return media_handler_.is_bound();
-}
-
-void PlaylistRenderFrameObserver::OnMediaHandlerDisconnect() {
-  media_handler_.reset();
-  EnsureConnectedToMediaHandler();
+  return media_handler_;
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
@@ -146,26 +164,10 @@ void PlaylistRenderFrameObserver::Inject(
                                args.empty() ? nullptr : args.data());
 }
 
-void PlaylistRenderFrameObserver::OnMediaDetected(gin::Arguments* args) {
+void PlaylistRenderFrameObserver::OnMediaDetected(base::Value media) {
   DVLOG(2) << __FUNCTION__;
 
-  if (!args || args->Length() != 1) {
-    return;
-  }
-
-  v8::Local<v8::Value> value = args->PeekNext();
-  if (value.IsEmpty()) {
-    return;
-  }
-
-  std::unique_ptr<base::Value> media =
-      content::V8ValueConverter::Create()->FromV8Value(
-          value, args->GetHolderCreationContext());
-  if (!media) {
-    return;
-  }
-
-  media_handler_->OnMediaDetected(std::move(*media));
+  GetMediaHandler()->OnMediaDetected(std::move(media));
 }
 
 }  // namespace playlist

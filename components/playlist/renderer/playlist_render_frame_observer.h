@@ -11,10 +11,10 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
-#include "gin/arguments.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -51,13 +51,12 @@ class PlaylistRenderFrameObserver final
       mojo::PendingAssociatedReceiver<
           mojom::PlaylistRenderFrameObserverConfigurator> receiver);
 
-  bool EnsureConnectedToMediaHandler();
-  void OnMediaHandlerDisconnect();
+  const mojo::Remote<playlist::mojom::PlaylistMediaHandler>& GetMediaHandler();
 
   void Inject(const std::string& script_text,
               v8::Local<v8::Context> context,
               std::vector<v8::Local<v8::Value>> args = {}) const;
-  void OnMediaDetected(gin::Arguments* args);
+  void OnMediaDetected(base::Value media);
 
   bool testing_{false};
   int32_t isolated_world_id_;
