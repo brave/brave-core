@@ -16,12 +16,7 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/bech32/v0_9:lib",
     "//brave/third_party/rust/curve25519_dalek/v3:lib",
     "//brave/third_party/rust/ed25519_dalek_bip32/v0_2:lib",
-    "//brave/third_party/rust/aes/v0_8:lib",
-    "//brave/third_party/rust/fpe/v0_6:lib",
-    "//brave/third_party/rust/reddsa/v0_5:lib",
-    "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
-    "//brave/third_party/rust/halo2_gadgets/v0_3:lib",
+    # Testing
     "//brave/third_party/rust/orchard/v0_7:lib",
-
   ]
 }
