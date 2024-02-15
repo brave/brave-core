@@ -1,0 +1,7 @@
+Name: group
+URL: https://crates.io/crates/group
+Description: Elliptic curve group traits and utilities
+Version: 0.12.1
+Security Critical: no
+License: Apache 2.0
+Revision: 3ec0ce7dec5865b2100e266cad82fc7af1b96f71
