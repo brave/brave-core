@@ -17,10 +17,10 @@ class SharedURLLoaderFactory;
 
 namespace brave_vpn {
 
-class BraveVPNOSConnectionAPI;
+class BraveVPNConnectionManager;
 
 std::unique_ptr<ConnectionAPIImpl> CreateConnectionAPIImplMac(
-    BraveVPNOSConnectionAPI* api,
+    BraveVPNConnectionManager* manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
 }  // namespace brave_vpn

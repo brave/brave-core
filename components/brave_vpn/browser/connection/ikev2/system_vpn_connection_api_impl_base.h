@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_RAS_CONNECTION_API_IMPL_BASE_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_RAS_CONNECTION_API_IMPL_BASE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_SYSTEM_VPN_CONNECTION_API_IMPL_BASE_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_SYSTEM_VPN_CONNECTION_API_IMPL_BASE_H_
 
 #include <string>
 
@@ -14,12 +14,12 @@
 
 namespace brave_vpn {
 
-// Base class for IKEv2 RAS connection API implementation.
+// Base class for IKEv2 connection API implementation.
 // Subclass should implement os platform dependent APIs.
-class RasConnectionAPIImplBase : public ConnectionAPIImpl {
+class SystemVPNConnectionAPIImplBase : public ConnectionAPIImpl {
  public:
   using ConnectionAPIImpl::ConnectionAPIImpl;
-  ~RasConnectionAPIImplBase() override;
+  ~SystemVPNConnectionAPIImplBase() override;
 
   // ConnectionAPIImpl overrides:
   void Connect() override;
@@ -34,18 +34,16 @@ class RasConnectionAPIImplBase : public ConnectionAPIImpl {
   Type type() const override;
 
  protected:
-  friend class BraveVPNOSConnectionAPIUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
-                           NeedsConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
-                           ConnectionInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  friend class SystemVPNConnectionAPIUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, NeedsConnectTest);
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest);
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            CancelConnectingTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            ClearLastConnectionErrorWhenNewConnectionStart);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            CreateOSVPNEntryWithValidInfoWhenConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            CreateOSVPNEntryWithInvalidInfoTest);
 
   // Subclass should add platform dependent impls.
@@ -82,4 +80,4 @@ class RasConnectionAPIImplBase : public ConnectionAPIImpl {
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_RAS_CONNECTION_API_IMPL_BASE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_SYSTEM_VPN_CONNECTION_API_IMPL_BASE_H_

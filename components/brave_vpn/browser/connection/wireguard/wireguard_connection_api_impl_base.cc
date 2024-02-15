@@ -6,7 +6,7 @@
 #include "brave/components/brave_vpn/browser/connection/wireguard/wireguard_connection_api_impl_base.h"
 
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
@@ -19,15 +19,15 @@ namespace brave_vpn {
 using ConnectionState = mojom::ConnectionState;
 
 WireguardConnectionAPIImplBase::WireguardConnectionAPIImplBase(
-    BraveVPNOSConnectionAPI* api,
+    BraveVPNConnectionManager* manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : ConnectionAPIImpl(api, url_loader_factory) {}
+    : ConnectionAPIImpl(manager, url_loader_factory) {}
 
 WireguardConnectionAPIImplBase::~WireguardConnectionAPIImplBase() = default;
 
 void WireguardConnectionAPIImplBase::SetSelectedRegion(
     const std::string& name) {
-  api_->GetRegionDataManager().SetSelectedRegion(name);
+  manager_->GetRegionDataManager().SetSelectedRegion(name);
   ResetConnectionInfo();
 }
 
@@ -43,7 +43,9 @@ void WireguardConnectionAPIImplBase::RequestNewProfileCredentials(
   GetAPIRequest()->GetWireguardProfileCredentials(
       base::BindOnce(&WireguardConnectionAPIImplBase::OnGetProfileCredentials,
                      base::Unretained(this), private_key),
-      GetSubscriberCredential(api_->local_prefs()), public_key, GetHostname());
+      GetSubscriberCredential(manager_->local_prefs()),
+      public_key,
+      GetHostname());
 }
 
 void WireguardConnectionAPIImplBase::Connect() {
@@ -58,9 +60,9 @@ void WireguardConnectionAPIImplBase::Connect() {
   }
   // If user doesn't select region explicitely, use default device region.
   std::string target_region_name =
-      api_->GetRegionDataManager().GetSelectedRegion();
+      manager_->GetRegionDataManager().GetSelectedRegion();
   if (target_region_name.empty()) {
-    target_region_name = api_->GetRegionDataManager().GetDeviceRegion();
+    target_region_name = manager_->GetRegionDataManager().GetDeviceRegion();
     VLOG(2) << __func__ << " : start connecting with valid default_region: "
             << target_region_name;
   }
@@ -89,8 +91,8 @@ void WireguardConnectionAPIImplBase::OnGetProfileCredentials(
   }
   auto serialized = parsed_credentials->ToString();
   if (serialized.has_value()) {
-    api_->local_prefs()->SetString(prefs::kBraveVPNWireguardProfileCredentials,
-                                   serialized.value());
+    manager_->local_prefs()->SetString(
+        prefs::kBraveVPNWireguardProfileCredentials, serialized.value());
   }
   PlatformConnectImpl(parsed_credentials.value());
 }
@@ -101,7 +103,7 @@ void WireguardConnectionAPIImplBase::FetchProfileCredentials() {
   }
   auto existing_credentials =
       wireguard::WireguardProfileCredentials::FromString(
-          api_->local_prefs()->GetString(
+          manager_->local_prefs()->GetString(
               prefs::kBraveVPNWireguardProfileCredentials));
   if (!existing_credentials.has_value()) {
     RequestNewProfileCredentials(wireguard::GenerateNewX25519Keypair());
@@ -111,15 +113,15 @@ void WireguardConnectionAPIImplBase::FetchProfileCredentials() {
       base::BindOnce(&WireguardConnectionAPIImplBase::OnVerifyCredentials,
                      weak_factory_.GetWeakPtr()),
       GetHostname(), existing_credentials->client_id,
-      GetSubscriberCredential(api_->local_prefs()),
+      GetSubscriberCredential(manager_->local_prefs()),
       existing_credentials->api_auth_token);
 }
 
 void WireguardConnectionAPIImplBase::ResetConnectionInfo() {
   VLOG(2) << __func__;
   ResetHostname();
-  api_->local_prefs()->SetString(prefs::kBraveVPNWireguardProfileCredentials,
-                                 std::string());
+  manager_->local_prefs()->SetString(
+      prefs::kBraveVPNWireguardProfileCredentials, std::string());
 }
 
 void WireguardConnectionAPIImplBase::OnVerifyCredentials(
@@ -127,7 +129,7 @@ void WireguardConnectionAPIImplBase::OnVerifyCredentials(
     bool success) {
   auto existing_credentials =
       wireguard::WireguardProfileCredentials::FromString(
-          api_->local_prefs()->GetString(
+          manager_->local_prefs()->GetString(
               prefs::kBraveVPNWireguardProfileCredentials));
   if (!success || !existing_credentials.has_value()) {
     VLOG(1) << __func__ << " : credentials verification failed ( " << result

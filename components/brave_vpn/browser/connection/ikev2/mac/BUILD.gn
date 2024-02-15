@@ -10,8 +10,8 @@ assert(is_mac)
 
 source_set("mac") {
   sources = [
-    "ras_connection_api_impl_mac.h",
-    "ras_connection_api_impl_mac.mm",
+    "ikev2_connection_api_impl_mac.h",
+    "ikev2_connection_api_impl_mac.mm",
   ]
 
   deps = [

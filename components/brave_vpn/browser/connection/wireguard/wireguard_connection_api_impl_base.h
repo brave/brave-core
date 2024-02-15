@@ -18,7 +18,7 @@ namespace brave_vpn {
 class WireguardConnectionAPIImplBase : public ConnectionAPIImpl {
  public:
   WireguardConnectionAPIImplBase(
-      BraveVPNOSConnectionAPI* api,
+      BraveVPNConnectionManager* manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~WireguardConnectionAPIImplBase() override;
 

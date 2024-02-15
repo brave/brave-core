@@ -96,7 +96,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -499,15 +499,15 @@ ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-brave_vpn::BraveVPNOSConnectionAPI*
-BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
-  if (brave_vpn_os_connection_api_) {
-    return brave_vpn_os_connection_api_.get();
+brave_vpn::BraveVPNConnectionManager*
+BraveBrowserProcessImpl::brave_vpn_connection_manager() {
+  if (brave_vpn_connection_manager_) {
+    return brave_vpn_connection_manager_.get();
   }
 
-  brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNConnectionAPI(
+  brave_vpn_connection_manager_ = brave_vpn::CreateBraveVPNConnectionManager(
       shared_url_loader_factory(), local_state());
-  return brave_vpn_os_connection_api_.get();
+  return brave_vpn_connection_manager_.get();
 }
 #endif
 

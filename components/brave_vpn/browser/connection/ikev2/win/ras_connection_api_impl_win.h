@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/ras_connection_api_impl_base.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/system_vpn_connection_api_impl_base.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/win/ras/ras_connection_observer.h"
 
@@ -19,16 +19,16 @@ namespace ras {
 enum class CheckConnectionResult;
 }  // namespace ras
 
-class RasConnectionAPIImplWin : public RasConnectionAPIImplBase,
+class RasConnectionAPIImplWin : public SystemVPNConnectionAPIImplBase,
                                 public ras::RasConnectionObserver {
  public:
   RasConnectionAPIImplWin(
-      BraveVPNOSConnectionAPI* api,
+      BraveVPNConnectionManager* manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~RasConnectionAPIImplWin() override;
 
  private:
-  // RasConnectionAPIIplBase overrides:
+  // SystemVPNConnectionAPIIplBase overrides:
   void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) override;
   void ConnectImpl(const std::string& name) override;
   void DisconnectImpl(const std::string& name) override;

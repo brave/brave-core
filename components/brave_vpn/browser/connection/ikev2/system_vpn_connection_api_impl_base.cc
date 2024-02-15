@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/ras_connection_api_impl_base.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/system_vpn_connection_api_impl_base.h"
 
 #include <optional>
 #include <utility>
@@ -12,7 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -21,9 +21,10 @@ namespace brave_vpn {
 
 using ConnectionState = mojom::ConnectionState;
 
-RasConnectionAPIImplBase::~RasConnectionAPIImplBase() = default;
+SystemVPNConnectionAPIImplBase::~SystemVPNConnectionAPIImplBase() = default;
 
-void RasConnectionAPIImplBase::SetSelectedRegion(const std::string& name) {
+void SystemVPNConnectionAPIImplBase::SetSelectedRegion(
+    const std::string& name) {
   // TODO(simonhong): Can remove this when UI block region changes while
   // operation is in-progress.
   // Don't allow region change while operation is in-progress.
@@ -35,24 +36,24 @@ void RasConnectionAPIImplBase::SetSelectedRegion(const std::string& name) {
                "is in-progress";
     // This is workaround to prevent UI changes seleted region.
     // Early return by notify again with current region name.
-    api_->NotifySelectedRegionChanged(
-        api_->GetRegionDataManager().GetSelectedRegion());
+    manager_->NotifySelectedRegionChanged(
+        manager_->GetRegionDataManager().GetSelectedRegion());
     return;
   }
 
-  api_->GetRegionDataManager().SetSelectedRegion(name);
+  manager_->GetRegionDataManager().SetSelectedRegion(name);
 
   // As new selected region is used, |connection_info_| for previous selected
   // should be cleared.
   ResetConnectionInfo();
 }
 
-bool RasConnectionAPIImplBase::IsInProgress() const {
+bool SystemVPNConnectionAPIImplBase::IsInProgress() const {
   return GetConnectionState() == ConnectionState::DISCONNECTING ||
          GetConnectionState() == ConnectionState::CONNECTING;
 }
 
-void RasConnectionAPIImplBase::CreateVPNConnection() {
+void SystemVPNConnectionAPIImplBase::CreateVPNConnection() {
   if (cancel_connecting_) {
     UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
     cancel_connecting_ = false;
@@ -66,11 +67,11 @@ void RasConnectionAPIImplBase::CreateVPNConnection() {
   CreateVPNConnectionImpl(connection_info_);
 }
 
-void RasConnectionAPIImplBase::SetPreventCreationForTesting(bool value) {
+void SystemVPNConnectionAPIImplBase::SetPreventCreationForTesting(bool value) {
   prevent_creation_ = value;
 }
 
-void RasConnectionAPIImplBase::Connect() {
+void SystemVPNConnectionAPIImplBase::Connect() {
   if (IsInProgress()) {
     VLOG(2) << __func__ << ": Current state: " << GetConnectionState()
             << " : prevent connecting while previous operation is in-progress";
@@ -104,9 +105,9 @@ void RasConnectionAPIImplBase::Connect() {
 
   // If user doesn't select region explicitely, use default device region.
   std::string target_region_name =
-      api_->GetRegionDataManager().GetSelectedRegion();
+      manager_->GetRegionDataManager().GetSelectedRegion();
   if (target_region_name.empty()) {
-    target_region_name = api_->GetRegionDataManager().GetDeviceRegion();
+    target_region_name = manager_->GetRegionDataManager().GetDeviceRegion();
     VLOG(2) << __func__ << " : start connecting with valid default_region: "
             << target_region_name;
   }
@@ -114,7 +115,7 @@ void RasConnectionAPIImplBase::Connect() {
   FetchHostnamesForRegion(target_region_name);
 }
 
-void RasConnectionAPIImplBase::Disconnect() {
+void SystemVPNConnectionAPIImplBase::Disconnect() {
   if (GetConnectionState() == ConnectionState::DISCONNECTED) {
     VLOG(2) << __func__ << " : already disconnected";
     return;
@@ -128,7 +129,7 @@ void RasConnectionAPIImplBase::Disconnect() {
   if (GetConnectionState() != ConnectionState::CONNECTING) {
     VLOG(2) << __func__ << " : start disconnecting!";
     UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
-    DisconnectImpl(api_->target_vpn_entry_name());
+    DisconnectImpl(manager_->target_vpn_entry_name());
     return;
   }
 
@@ -143,16 +144,16 @@ void RasConnectionAPIImplBase::Disconnect() {
   }
 }
 
-void RasConnectionAPIImplBase::CheckConnection() {
-  CheckConnectionImpl(api_->target_vpn_entry_name());
+void SystemVPNConnectionAPIImplBase::CheckConnection() {
+  CheckConnectionImpl(manager_->target_vpn_entry_name());
 }
 
-void RasConnectionAPIImplBase::ResetConnectionInfo() {
+void SystemVPNConnectionAPIImplBase::ResetConnectionInfo() {
   VLOG(2) << __func__;
   connection_info_.Reset();
 }
 
-void RasConnectionAPIImplBase::OnCreated() {
+void SystemVPNConnectionAPIImplBase::OnCreated() {
   VLOG(2) << __func__;
 
   if (cancel_connecting_) {
@@ -162,10 +163,10 @@ void RasConnectionAPIImplBase::OnCreated() {
   }
 
   // It's time to ask connecting to os after vpn entry is created.
-  ConnectImpl(api_->target_vpn_entry_name());
+  ConnectImpl(manager_->target_vpn_entry_name());
 }
 
-void RasConnectionAPIImplBase::OnCreateFailed() {
+void SystemVPNConnectionAPIImplBase::OnCreateFailed() {
   VLOG(2) << __func__;
 
   // Clear connecting cancel request.
@@ -176,21 +177,21 @@ void RasConnectionAPIImplBase::OnCreateFailed() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_NOT_ALLOWED);
 }
 
-void RasConnectionAPIImplBase::OnConnected() {
+void SystemVPNConnectionAPIImplBase::OnConnected() {
   VLOG(2) << __func__;
 
   if (cancel_connecting_) {
     // As connect is done, we don't need more for cancelling.
     // Just start normal Disconenct() process.
     cancel_connecting_ = false;
-    DisconnectImpl(api_->target_vpn_entry_name());
+    DisconnectImpl(manager_->target_vpn_entry_name());
     return;
   }
 
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
 }
 
-void RasConnectionAPIImplBase::OnIsConnecting() {
+void SystemVPNConnectionAPIImplBase::OnIsConnecting() {
   VLOG(2) << __func__;
 
   if (!cancel_connecting_) {
@@ -198,7 +199,7 @@ void RasConnectionAPIImplBase::OnIsConnecting() {
   }
 }
 
-void RasConnectionAPIImplBase::OnConnectFailed() {
+void SystemVPNConnectionAPIImplBase::OnConnectFailed() {
   cancel_connecting_ = false;
 
   // Clear previously used connection info if failed.
@@ -207,7 +208,7 @@ void RasConnectionAPIImplBase::OnConnectFailed() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
-bool RasConnectionAPIImplBase::MaybeReconnect() {
+bool SystemVPNConnectionAPIImplBase::MaybeReconnect() {
   VLOG(2) << __func__;
 
   if (!needs_connect_) {
@@ -226,7 +227,7 @@ bool RasConnectionAPIImplBase::MaybeReconnect() {
   return false;
 }
 
-void RasConnectionAPIImplBase::OnNetworkChanged(
+void SystemVPNConnectionAPIImplBase::OnNetworkChanged(
     net::NetworkChangeNotifier::ConnectionType type) {
   if (needs_connect_ && MaybeReconnect()) {
     VLOG(2) << "Network is live, reconnecting";
@@ -235,11 +236,11 @@ void RasConnectionAPIImplBase::OnNetworkChanged(
   ConnectionAPIImpl::OnNetworkChanged(type);
 }
 
-ConnectionAPIImpl::Type RasConnectionAPIImplBase::type() const {
+ConnectionAPIImpl::Type SystemVPNConnectionAPIImplBase::type() const {
   return Type::IKEV2;
 }
 
-void RasConnectionAPIImplBase::OnDisconnected() {
+void SystemVPNConnectionAPIImplBase::OnDisconnected() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
   // Sometimes disconnected event happens before network state restored,
   // we postpone reconnection in this cases.
@@ -248,12 +249,12 @@ void RasConnectionAPIImplBase::OnDisconnected() {
   }
 }
 
-void RasConnectionAPIImplBase::OnIsDisconnecting() {
+void SystemVPNConnectionAPIImplBase::OnIsDisconnecting() {
   VLOG(2) << __func__;
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 }
 
-void RasConnectionAPIImplBase::UpdateAndNotifyConnectionStateChange(
+void SystemVPNConnectionAPIImplBase::UpdateAndNotifyConnectionStateChange(
     ConnectionState state) {
   // this is a simple state machine for handling connection state
   if (GetConnectionState() == state) {
@@ -287,14 +288,14 @@ void RasConnectionAPIImplBase::UpdateAndNotifyConnectionStateChange(
   ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange(state);
 }
 
-void RasConnectionAPIImplBase::FetchProfileCredentials() {
+void SystemVPNConnectionAPIImplBase::FetchProfileCredentials() {
   GetAPIRequest()->GetProfileCredentials(
-      base::BindOnce(&RasConnectionAPIImplBase::OnGetProfileCredentials,
+      base::BindOnce(&SystemVPNConnectionAPIImplBase::OnGetProfileCredentials,
                      base::Unretained(this)),
-      GetSubscriberCredential(api_->local_prefs()), GetHostname());
+      GetSubscriberCredential(manager_->local_prefs()), GetHostname());
 }
 
-void RasConnectionAPIImplBase::OnGetProfileCredentials(
+void SystemVPNConnectionAPIImplBase::OnGetProfileCredentials(
     const std::string& profile_credential,
     bool success) {
   DCHECK(!cancel_connecting_);
@@ -322,7 +323,7 @@ void RasConnectionAPIImplBase::OnGetProfileCredentials(
       return;
     }
 
-    connection_info_.SetConnectionInfo(api_->target_vpn_entry_name(),
+    connection_info_.SetConnectionInfo(manager_->target_vpn_entry_name(),
                                        GetHostname(), *username, *password);
     // Let's create os vpn entry with |connection_info_|.
     CreateVPNConnection();

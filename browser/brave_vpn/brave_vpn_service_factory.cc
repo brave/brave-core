@@ -43,7 +43,7 @@ std::unique_ptr<KeyedService> BuildVpnService(
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (!g_brave_browser_process->brave_vpn_os_connection_api()) {
+  if (!g_brave_browser_process->brave_vpn_connection_manager()) {
     return nullptr;
   }
 #endif
@@ -62,7 +62,7 @@ std::unique_ptr<KeyedService> BuildVpnService(
 
   std::unique_ptr<BraveVpnService> vpn_service =
       std::make_unique<BraveVpnService>(
-          g_brave_browser_process->brave_vpn_os_connection_api(),
+          g_brave_browser_process->brave_vpn_connection_manager(),
           shared_url_loader_factory, local_state,
           user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)

@@ -17,7 +17,7 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 
@@ -44,9 +44,9 @@ RasOperationResult DisconnectEntry(const std::wstring& name) {
 }  // namespace
 
 RasConnectionAPIImplWin::RasConnectionAPIImplWin(
-    BraveVPNOSConnectionAPI* api,
+    BraveVPNConnectionManager* manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : RasConnectionAPIImplBase(api, url_loader_factory) {
+    : SystemVPNConnectionAPIImplBase(manager, url_loader_factory) {
   StartRasConnectionChangeMonitoring();
 }
 
@@ -87,19 +87,19 @@ void RasConnectionAPIImplWin::CheckConnectionImpl(const std::string& name) {
 }
 
 void RasConnectionAPIImplWin::OnRasConnectionStateChanged() {
-  DCHECK(!api_->target_vpn_entry_name().empty());
+  DCHECK(!manager_->target_vpn_entry_name().empty());
 
   // Check connection state for BraveVPN entry again when connected or
   // disconnected events are arrived because we can get both event from any os
   // vpn entry. All other events are sent by our code at utils_win.cc.
-  CheckConnectionImpl(api_->target_vpn_entry_name());
+  CheckConnectionImpl(manager_->target_vpn_entry_name());
 }
 
 void RasConnectionAPIImplWin::OnCheckConnection(const std::string& name,
                                                 CheckConnectionResult result) {
   switch (result) {
     case CheckConnectionResult::CONNECTED:
-      RasConnectionAPIImplBase::OnConnected();
+      SystemVPNConnectionAPIImplBase::OnConnected();
       break;
     case CheckConnectionResult::CONNECTING:
       OnIsConnecting();
@@ -108,7 +108,7 @@ void RasConnectionAPIImplWin::OnCheckConnection(const std::string& name,
       OnConnectFailed();
       break;
     case CheckConnectionResult::DISCONNECTED:
-      RasConnectionAPIImplBase::OnDisconnected();
+      SystemVPNConnectionAPIImplBase::OnDisconnected();
       break;
     case CheckConnectionResult::DISCONNECTING:
       OnIsDisconnecting();
@@ -126,20 +126,20 @@ void RasConnectionAPIImplWin::OnCreated(const std::string& name,
     return;
   }
 
-  RasConnectionAPIImplBase::OnCreated();
+  SystemVPNConnectionAPIImplBase::OnCreated();
 }
 
 void RasConnectionAPIImplWin::OnConnected(const RasOperationResult& result) {
   if (!result.success) {
     SetLastConnectionError(result.error_description);
-    RasConnectionAPIImplBase::OnConnectFailed();
+    SystemVPNConnectionAPIImplBase::OnConnectFailed();
   }
 }
 
 void RasConnectionAPIImplWin::OnDisconnected(const RasOperationResult& result) {
   // TODO(simonhong): Handle disconnect failed state.
   if (result.success) {
-    RasConnectionAPIImplBase::OnDisconnected();
+    SystemVPNConnectionAPIImplBase::OnDisconnected();
     return;
   }
   SetLastConnectionError(result.error_description);

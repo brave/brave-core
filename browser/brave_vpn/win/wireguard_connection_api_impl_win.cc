@@ -24,9 +24,9 @@ constexpr int kWireguardServiceRestartTimeoutSec = 5;
 using ConnectionState = mojom::ConnectionState;
 
 WireguardConnectionAPIImplWin::WireguardConnectionAPIImplWin(
-      BraveVPNOSConnectionAPI* api,
+      BraveVPNConnectionManager* manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : WireguardConnectionAPIImplBase(api, url_loader_factory) {}
+    : WireguardConnectionAPIImplBase(manager, url_loader_factory) {}
 
 WireguardConnectionAPIImplWin::~WireguardConnectionAPIImplWin() = default;
 

@@ -5,16 +5,17 @@
 
 #include "brave/browser/brave_vpn/mac/vpn_utils_mac.h"
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/mac/ras_connection_api_impl_mac.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/mac/ikev2_connection_api_impl_mac.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
 
 std::unique_ptr<ConnectionAPIImpl> CreateConnectionAPIImplMac(
-    BraveVPNOSConnectionAPI* api,
+    BraveVPNConnectionManager* manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   // WIREGUARD is not supported on macOS yet.
-  return std::make_unique<RasConnectionAPIImplMac>(api, url_loader_factory);
+  return std::make_unique<IKEv2ConnectionAPIImplMac>(manager,
+                                                     url_loader_factory);
 }
 
 }  // namespace brave_vpn

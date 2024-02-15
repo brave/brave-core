@@ -21,7 +21,7 @@ class SharedURLLoaderFactory;
 
 namespace brave_vpn {
 
-class BraveVPNOSConnectionAPI;
+class BraveVPNConnectionManager;
 class BraveVpnAPIRequest;
 struct Hostname;
 
@@ -34,7 +34,7 @@ class ConnectionAPIImpl
   };
 
   ConnectionAPIImpl(
-      BraveVPNOSConnectionAPI* api,
+      BraveVPNConnectionManager* manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~ConnectionAPIImpl() override;
 
@@ -74,23 +74,23 @@ class ConnectionAPIImpl
                               const base::Value::List& hostnames_value);
   void ResetHostname();
 
-  const raw_ref<BraveVPNOSConnectionAPI> api_;  // owner
+  const raw_ref<BraveVPNConnectionManager> manager_;  // owner
 
  private:
   friend class BraveVpnButtonUnitTest;
   friend class BraveVPNServiceTest;
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, HostnamesTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, NeedsConnectTest);
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, HostnamesTest);
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest);
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            CancelConnectingTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            IgnoreDisconnectedStateWhileConnecting);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            ClearLastConnectionErrorWhenNewConnectionStart);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            CreateOSVPNEntryWithValidInfoWhenConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
                            CreateOSVPNEntryWithInvalidInfoTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
                            SetSelectedRegion);

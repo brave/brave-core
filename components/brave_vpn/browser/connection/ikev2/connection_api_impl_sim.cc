@@ -11,15 +11,15 @@
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
 
 ConnectionAPIImplSim::ConnectionAPIImplSim(
-    BraveVPNOSConnectionAPI* api,
+    BraveVPNConnectionManager* manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : RasConnectionAPIImplBase(api, url_loader_factory) {}
+    : SystemVPNConnectionAPIImplBase(manager, url_loader_factory) {}
 
 ConnectionAPIImplSim::~ConnectionAPIImplSim() = default;
 
@@ -74,7 +74,7 @@ void ConnectionAPIImplSim::DisconnectImpl(const std::string& name) {
 }
 
 void ConnectionAPIImplSim::Connect() {
-  RasConnectionAPIImplBase::Connect();
+  SystemVPNConnectionAPIImplBase::Connect();
 }
 
 void ConnectionAPIImplSim::CheckConnectionImpl(const std::string& name) {
@@ -87,15 +87,15 @@ void ConnectionAPIImplSim::OnCreated(const std::string& name,
     return;
   }
   connection_created_ = true;
-  RasConnectionAPIImplBase::OnCreated();
+  SystemVPNConnectionAPIImplBase::OnCreated();
 }
 
 void ConnectionAPIImplSim::Disconnect() {
-  RasConnectionAPIImplBase::Disconnect();
+  SystemVPNConnectionAPIImplBase::Disconnect();
 }
 
 void ConnectionAPIImplSim::CheckConnection() {
-  RasConnectionAPIImplBase::CheckConnection();
+  SystemVPNConnectionAPIImplBase::CheckConnection();
 }
 
 bool ConnectionAPIImplSim::IsConnectionCreated() const {
@@ -114,12 +114,12 @@ void ConnectionAPIImplSim::OnConnected(const std::string& name,
     return;
   }
 
-  success ? RasConnectionAPIImplBase::OnConnected()
-          : RasConnectionAPIImplBase::OnConnectFailed();
+  success ? SystemVPNConnectionAPIImplBase::OnConnected()
+          : SystemVPNConnectionAPIImplBase::OnConnectFailed();
 }
 
 void ConnectionAPIImplSim::OnIsConnecting(const std::string& name) {
-  RasConnectionAPIImplBase::OnIsConnecting();
+  SystemVPNConnectionAPIImplBase::OnIsConnecting();
 }
 
 void ConnectionAPIImplSim::OnDisconnected(const std::string& name,
@@ -128,11 +128,11 @@ void ConnectionAPIImplSim::OnDisconnected(const std::string& name,
     return;
   }
 
-  RasConnectionAPIImplBase::OnDisconnected();
+  SystemVPNConnectionAPIImplBase::OnDisconnected();
 }
 
 void ConnectionAPIImplSim::OnIsDisconnecting(const std::string& name) {
-  RasConnectionAPIImplBase::OnIsDisconnecting();
+  SystemVPNConnectionAPIImplBase::OnIsDisconnecting();
 }
 
 void ConnectionAPIImplSim::SetNetworkAvailableForTesting(bool value) {

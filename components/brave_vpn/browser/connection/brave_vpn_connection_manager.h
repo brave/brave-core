@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_BRAVE_VPN_OS_CONNECTION_API_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_BRAVE_VPN_OS_CONNECTION_API_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_BRAVE_VPN_CONNECTION_MANAGER_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_BRAVE_VPN_CONNECTION_MANAGER_H_
 
 #include <memory>
 #include <string>
@@ -33,25 +33,25 @@ namespace brave_vpn {
 
 class BraveVPNRegionDataManager;
 
-// Interface for managing vpn connection & region data managing.
+// Interface for managing vpn connection & region data.
 //   * BraveVPNRegionDataManager: Manages region data.
 //   * ConnectionAPIImpl: Manages connection state.
 // All client should use this class to manage VPN connection.
 // This class will have proper concrete implemention of ConnectionAPIImpl
 // based on current protocol(ikev2/wireguard).
-class BraveVPNOSConnectionAPI {
+class BraveVPNConnectionManager {
  public:
   using ConnectionAPIImplGetter =
       base::RepeatingCallback<std::unique_ptr<ConnectionAPIImpl>(
-          BraveVPNOSConnectionAPI*,
+          BraveVPNConnectionManager*,
           scoped_refptr<network::SharedURLLoaderFactory>,
           bool)>;
 
-  explicit BraveVPNOSConnectionAPI(
+  explicit BraveVPNConnectionManager(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_prefs,
       base::RepeatingCallback<bool()> service_installer);
-  virtual ~BraveVPNOSConnectionAPI();
+  virtual ~BraveVPNConnectionManager();
 
   class Observer : public base::CheckedObserver {
    public:
@@ -103,9 +103,9 @@ class BraveVPNOSConnectionAPI {
 
  private:
   friend class BraveVpnButtonUnitTest;
-  friend class BraveVPNOSConnectionAPIUnitTest;
   friend class BraveVPNServiceTest;
   friend class BraveVPNWireguardConnectionAPIUnitTest;
+  friend class SystemVPNConnectionAPIUnitTest;
   FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
                            SetSelectedRegion);
 
@@ -155,9 +155,9 @@ class BraveVPNOSConnectionAPI {
   // install_system_service_callback_ once per browser open.
   base::OneShotEvent system_service_installed_event_;
 
-  base::WeakPtrFactory<BraveVPNOSConnectionAPI> weak_factory_;
+  base::WeakPtrFactory<BraveVPNConnectionManager> weak_factory_;
 };
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_BRAVE_VPN_OS_CONNECTION_API_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_BRAVE_VPN_CONNECTION_MANAGER_H_

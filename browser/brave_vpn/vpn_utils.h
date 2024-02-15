@@ -22,11 +22,11 @@ class PrefService;
 
 namespace brave_vpn {
 
-class BraveVPNOSConnectionAPI;
+class BraveVPNConnectionManager;
 
 bool IsBraveVPNEnabled(content::BrowserContext* context);
 bool IsAllowedForContext(content::BrowserContext* context);
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
+std::unique_ptr<BraveVPNConnectionManager> CreateBraveVPNConnectionManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs);
 

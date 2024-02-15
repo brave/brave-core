@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 
 #include <optional>
 #include <utility>
@@ -25,7 +25,7 @@
 
 namespace brave_vpn {
 
-BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI(
+BraveVPNConnectionManager::BraveVPNConnectionManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     base::RepeatingCallback<bool()> service_installer)
@@ -39,46 +39,47 @@ BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI(
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   wireguard_enabled_.Init(
       prefs::kBraveVPNWireguardEnabled, local_prefs_,
-      base::BindRepeating(&BraveVPNOSConnectionAPI::UpdateConnectionAPIImpl,
+      base::BindRepeating(&BraveVPNConnectionManager::UpdateConnectionAPIImpl,
                           weak_factory_.GetWeakPtr()));
 #endif
   // Safe to use Unretained here because |region_data_manager_| is owned
   // instance.
-  region_data_manager_.set_selected_region_changed_callback(
-      base::BindRepeating(&BraveVPNOSConnectionAPI::NotifySelectedRegionChanged,
+  region_data_manager_.set_selected_region_changed_callback(base::BindRepeating(
+      &BraveVPNConnectionManager::NotifySelectedRegionChanged,
+      base::Unretained(this)));
+  region_data_manager_.set_region_data_ready_callback(
+      base::BindRepeating(&BraveVPNConnectionManager::NotifyRegionDataReady,
                           base::Unretained(this)));
-  region_data_manager_.set_region_data_ready_callback(base::BindRepeating(
-      &BraveVPNOSConnectionAPI::NotifyRegionDataReady, base::Unretained(this)));
 }
 
-BraveVPNOSConnectionAPI::~BraveVPNOSConnectionAPI() = default;
+BraveVPNConnectionManager::~BraveVPNConnectionManager() = default;
 
-BraveVPNRegionDataManager& BraveVPNOSConnectionAPI::GetRegionDataManager() {
+BraveVPNRegionDataManager& BraveVPNConnectionManager::GetRegionDataManager() {
   return region_data_manager_;
 }
 
-void BraveVPNOSConnectionAPI::AddObserver(Observer* observer) {
+void BraveVPNConnectionManager::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
 
-void BraveVPNOSConnectionAPI::RemoveObserver(Observer* observer) {
+void BraveVPNConnectionManager::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void BraveVPNOSConnectionAPI::NotifyRegionDataReady(bool ready) const {
+void BraveVPNConnectionManager::NotifyRegionDataReady(bool ready) const {
   for (auto& obs : observers_) {
     obs.OnRegionDataReady(ready);
   }
 }
 
-void BraveVPNOSConnectionAPI::NotifySelectedRegionChanged(
+void BraveVPNConnectionManager::NotifySelectedRegionChanged(
     const std::string& name) const {
   for (auto& obs : observers_) {
     obs.OnSelectedRegionChanged(name);
   }
 }
 
-void BraveVPNOSConnectionAPI::UpdateConnectionAPIImpl() {
+void BraveVPNConnectionManager::UpdateConnectionAPIImpl() {
   if (!connection_api_impl_getter_) {
     CHECK_IS_TEST();
     return;
@@ -126,7 +127,7 @@ void BraveVPNOSConnectionAPI::UpdateConnectionAPIImpl() {
       this, url_loader_factory_, wireguard_enabled);
 }
 
-mojom::ConnectionState BraveVPNOSConnectionAPI::GetConnectionState() const {
+mojom::ConnectionState BraveVPNConnectionManager::GetConnectionState() const {
   if (connection_api_impl_) {
     return connection_api_impl_->GetConnectionState();
   }
@@ -134,13 +135,13 @@ mojom::ConnectionState BraveVPNOSConnectionAPI::GetConnectionState() const {
   return mojom::ConnectionState::DISCONNECTED;
 }
 
-void BraveVPNOSConnectionAPI::ResetConnectionState() {
+void BraveVPNConnectionManager::ResetConnectionState() {
   if (connection_api_impl_) {
     connection_api_impl_->ResetConnectionState();
   }
 }
 
-void BraveVPNOSConnectionAPI::Connect() {
+void BraveVPNConnectionManager::Connect() {
   if (ScheduleConnectRequestIfNeeded()) {
     return;
   }
@@ -150,19 +151,19 @@ void BraveVPNOSConnectionAPI::Connect() {
   }
 }
 
-void BraveVPNOSConnectionAPI::Disconnect() {
+void BraveVPNConnectionManager::Disconnect() {
   if (connection_api_impl_) {
     connection_api_impl_->Disconnect();
   }
 }
 
-void BraveVPNOSConnectionAPI::CheckConnection() {
+void BraveVPNConnectionManager::CheckConnection() {
   if (connection_api_impl_) {
     connection_api_impl_->CheckConnection();
   }
 }
 
-void BraveVPNOSConnectionAPI::SetSelectedRegion(const std::string& name) {
+void BraveVPNConnectionManager::SetSelectedRegion(const std::string& name) {
   // TODO(simonhong): This method could be implemented here instead of impl
   // class.
   if (connection_api_impl_) {
@@ -170,7 +171,7 @@ void BraveVPNOSConnectionAPI::SetSelectedRegion(const std::string& name) {
   }
 }
 
-std::string BraveVPNOSConnectionAPI::GetHostname() const {
+std::string BraveVPNConnectionManager::GetHostname() const {
   if (connection_api_impl_) {
     return connection_api_impl_->GetHostname();
   }
@@ -178,7 +179,7 @@ std::string BraveVPNOSConnectionAPI::GetHostname() const {
   return {};
 }
 
-std::string BraveVPNOSConnectionAPI::GetLastConnectionError() const {
+std::string BraveVPNConnectionManager::GetLastConnectionError() const {
   if (connection_api_impl_) {
     return connection_api_impl_->GetLastConnectionError();
   }
@@ -186,17 +187,17 @@ std::string BraveVPNOSConnectionAPI::GetLastConnectionError() const {
   return {};
 }
 
-void BraveVPNOSConnectionAPI::ToggleConnection() {
+void BraveVPNConnectionManager::ToggleConnection() {
   if (connection_api_impl_) {
     connection_api_impl_->ToggleConnection();
   }
 }
 
-std::string BraveVPNOSConnectionAPI::GetCurrentEnvironment() const {
+std::string BraveVPNConnectionManager::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
 
-void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
+void BraveVPNConnectionManager::MaybeInstallSystemServices() {
   if (!install_system_service_callback_) {
     VLOG(2) << __func__ << " : no install system service callback set";
 
@@ -227,12 +228,12 @@ void BraveVPNOSConnectionAPI::MaybeInstallSystemServices() {
       ->PostTaskAndReplyWithResult(
           FROM_HERE, install_system_service_callback_,
           base::BindOnce(
-              &BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted,
+              &BraveVPNConnectionManager::OnInstallSystemServicesCompleted,
               weak_factory_.GetWeakPtr()));
 #endif
 }
 
-void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
+void BraveVPNConnectionManager::OnInstallSystemServicesCompleted(bool success) {
   VLOG(1) << "OnInstallSystemServicesCompleted: success=" << success;
   if (success) {
 #if BUILDFLAG(IS_WIN)
@@ -249,18 +250,18 @@ void BraveVPNOSConnectionAPI::OnInstallSystemServicesCompleted(bool success) {
   install_in_progress_ = false;
 }
 
-bool BraveVPNOSConnectionAPI::ScheduleConnectRequestIfNeeded() {
+bool BraveVPNConnectionManager::ScheduleConnectRequestIfNeeded() {
   if (!install_in_progress_) {
     return false;
   }
 
   system_service_installed_event_.Post(
-      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPI::Connect,
+      FROM_HERE, base::BindOnce(&BraveVPNConnectionManager::Connect,
                                 weak_factory_.GetWeakPtr()));
   return true;
 }
 
-void BraveVPNOSConnectionAPI::NotifyConnectionStateChanged(
+void BraveVPNConnectionManager::NotifyConnectionStateChanged(
     mojom::ConnectionState state) const {
   for (auto& obs : observers_) {
     obs.OnConnectionStateChanged(state);

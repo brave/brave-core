@@ -7,7 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -32,19 +32,19 @@ namespace {
 
 #if !BUILDFLAG(IS_ANDROID)
 std::unique_ptr<ConnectionAPIImpl> CreateConnectionAPIImpl(
-    BraveVPNOSConnectionAPI* api,
+    BraveVPNConnectionManager* manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     bool wireguard_enabled) {
 #if BUILDFLAG(IS_MAC)
-  return CreateConnectionAPIImplMac(api, url_loader_factory);
+  return CreateConnectionAPIImplMac(manager, url_loader_factory);
 #endif
 
 #if BUILDFLAG(IS_WIN)
   if (wireguard_enabled) {
-    return std::make_unique<WireguardConnectionAPIImplWin>(api,
+    return std::make_unique<WireguardConnectionAPIImplWin>(manager,
                                                            url_loader_factory);
   }
-  return std::make_unique<RasConnectionAPIImplWin>(api, url_loader_factory);
+  return std::make_unique<RasConnectionAPIImplWin>(manager, url_loader_factory);
 #endif
 
   // VPN is not supported on other platforms.
@@ -54,7 +54,7 @@ std::unique_ptr<ConnectionAPIImpl> CreateConnectionAPIImpl(
 
 }  // namespace
 
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
+std::unique_ptr<BraveVPNConnectionManager> CreateBraveVPNConnectionManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs) {
 #if BUILDFLAG(IS_ANDROID)
@@ -71,14 +71,14 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
       base::NullCallback();
 #endif
 
-  auto api = std::make_unique<BraveVPNOSConnectionAPI>(
+  auto manager = std::make_unique<BraveVPNConnectionManager>(
       url_loader_factory, local_prefs, service_installer);
-  api->set_target_vpn_entry_name(
+  manager->set_target_vpn_entry_name(
       brave_vpn::GetBraveVPNEntryName(chrome::GetChannel()));
-  api->set_connection_api_impl_getter(
+  manager->set_connection_api_impl_getter(
       base::BindRepeating(&CreateConnectionAPIImpl));
-  api->UpdateConnectionAPIImpl();
-  return api;
+  manager->UpdateConnectionAPIImpl();
+  return manager;
 #endif
 }
 

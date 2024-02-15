@@ -15,7 +15,7 @@ class WireguardConnectionAPIImplMac : public WireguardConnectionAPIImplBase {
   using WireguardConnectionAPIImplBase::WireguardConnectionAPIImplBase;
   ~WireguardConnectionAPIImplMac() override;
 
-  // BraveVPNOSConnectionAPI
+  // WireguardConnectionAPIImplBase
   void Disconnect() override;
   void CheckConnection() override;
 

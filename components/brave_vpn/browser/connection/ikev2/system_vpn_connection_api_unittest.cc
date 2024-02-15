@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-
 #include <memory>
 #include <utility>
 #include <vector>
@@ -12,6 +10,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/connection_api_impl_sim.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
@@ -68,9 +67,9 @@ const char kHostNamesTestData[] = R"([
       ])";
 }  // namespace
 
-class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
+class SystemVPNConnectionAPIUnitTest : public testing::Test {
  public:
-  BraveVPNOSConnectionAPIUnitTest()
+  SystemVPNConnectionAPIUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
@@ -78,20 +77,20 @@ class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
-    connection_api_ = std::make_unique<BraveVPNOSConnectionAPI>(
+    connection_manager_ = std::make_unique<BraveVPNConnectionManager>(
         shared_url_loader_factory_, &local_pref_service_, base::NullCallback());
-    connection_api_->SetConnectionAPIImplForTesting(
-        std::make_unique<ConnectionAPIImplSim>(connection_api_.get(),
+    connection_manager_->SetConnectionAPIImplForTesting(
+        std::make_unique<ConnectionAPIImplSim>(connection_manager_.get(),
                                                shared_url_loader_factory_));
   }
 
   void OnFetchRegionList(const std::string& region_list, bool success) {
-    GetBraveVPNConnectionAPI()->GetRegionDataManager().OnFetchRegionList(
+    GetBraveVPNConnectionManager()->GetRegionDataManager().OnFetchRegionList(
         region_list, success);
   }
 
   void OnFetchTimezones(const std::string& timezones_list, bool success) {
-    GetBraveVPNConnectionAPI()->GetRegionDataManager().OnFetchTimezones(
+    GetBraveVPNConnectionManager()->GetRegionDataManager().OnFetchTimezones(
         timezones_list, success);
   }
 
@@ -208,38 +207,39 @@ class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
       ])";
   }
 
-  BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const {
-    return connection_api_.get();
+  BraveVPNConnectionManager* GetBraveVPNConnectionManager() const {
+    return connection_manager_.get();
   }
 
   void SetFallbackDeviceRegion() {
-    GetBraveVPNConnectionAPI()
+    GetBraveVPNConnectionManager()
         ->GetRegionDataManager()
         .SetFallbackDeviceRegion();
   }
 
   void SetTestTimezone(const std::string& timezone) {
-    GetBraveVPNConnectionAPI()->GetRegionDataManager().test_timezone_ =
+    GetBraveVPNConnectionManager()->GetRegionDataManager().test_timezone_ =
         timezone;
   }
 
   void LoadCachedRegionData() {
-    GetBraveVPNConnectionAPI()->GetRegionDataManager().LoadCachedRegionData();
+    GetBraveVPNConnectionManager()->GetRegionDataManager().
+        LoadCachedRegionData();
   }
 
   void ClearRegions() {
-    GetBraveVPNConnectionAPI()->GetRegionDataManager().regions_.clear();
+    GetBraveVPNConnectionManager()->GetRegionDataManager().regions_.clear();
   }
 
   bool NeedToUpdateRegionData() {
-    return GetBraveVPNConnectionAPI()
+    return GetBraveVPNConnectionManager()
         ->GetRegionDataManager()
         .NeedToUpdateRegionData();
   }
 
   mojom::Region device_region() {
     if (auto region_ptr =
-            GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionAPI()
+            GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionManager()
                                                    ->GetRegionDataManager()
                                                    .GetDeviceRegion(),
                                                regions())) {
@@ -249,27 +249,27 @@ class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
   }
 
   const std::vector<mojom::Region>& regions() {
-    return GetBraveVPNConnectionAPI()->GetRegionDataManager().GetRegions();
+    return GetBraveVPNConnectionManager()->GetRegionDataManager().GetRegions();
   }
 
   PrefService* local_state() { return &local_pref_service_; }
 
   ConnectionAPIImplSim* GetConnectionAPI() {
     return static_cast<ConnectionAPIImplSim*>(
-        connection_api_->connection_api_impl_.get());
+        connection_manager_->connection_api_impl_.get());
   }
 
-  RasConnectionAPIImplBase* GetRasConnectionAPI() {
-    return static_cast<RasConnectionAPIImplBase*>(
-        connection_api_->connection_api_impl_.get());
+  SystemVPNConnectionAPIImplBase* GetSystemVPNConnectionAPI() {
+    return static_cast<SystemVPNConnectionAPIImplBase*>(
+        connection_manager_->connection_api_impl_.get());
   }
 
   BraveVPNConnectionInfo connection_info() {
-    return GetRasConnectionAPI()->connection_info_;
+    return GetSystemVPNConnectionAPI()->connection_info_;
   }
 
   void ResetConnectionInfo() {
-    return GetRasConnectionAPI()->ResetConnectionInfo();
+    return GetSystemVPNConnectionAPI()->ResetConnectionInfo();
   }
 
  protected:
@@ -277,10 +277,10 @@ class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<BraveVPNOSConnectionAPI> connection_api_;
+  std::unique_ptr<BraveVPNConnectionManager> connection_manager_;
 };
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest, LoadRegionDataFromPrefsTest) {
+TEST_F(SystemVPNConnectionAPIUnitTest, LoadRegionDataFromPrefsTest) {
   // Initially, prefs doesn't have region data.
   EXPECT_EQ(mojom::Region(), device_region());
   EXPECT_TRUE(regions().empty());
@@ -303,7 +303,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, LoadRegionDataFromPrefsTest) {
   EXPECT_FALSE(regions().empty());
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest, RegionDataTest) {
+TEST_F(SystemVPNConnectionAPIUnitTest, RegionDataTest) {
   // Initially, prefs doesn't have region data.
   EXPECT_EQ(mojom::Region(), device_region());
   EXPECT_TRUE(regions().empty());
@@ -342,7 +342,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, RegionDataTest) {
   EXPECT_EQ(regions()[0], device_region());
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedToUpdateRegionDataTest) {
+TEST_F(SystemVPNConnectionAPIUnitTest, NeedToUpdateRegionDataTest) {
   // Initially, need to update region data.
   EXPECT_TRUE(NeedToUpdateRegionData());
 
@@ -361,7 +361,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedToUpdateRegionDataTest) {
 
 // Create os vpn entry with cached connection_info when there is cached
 // connection info.
-TEST_F(BraveVPNOSConnectionAPIUnitTest,
+TEST_F(SystemVPNConnectionAPIUnitTest,
        CreateOSVPNEntryWithValidInfoWhenConnectTest) {
   auto* test_api = GetConnectionAPI();
   test_api->CheckConnection();
@@ -379,7 +379,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
   EXPECT_TRUE(test_api->IsConnectionCreated());
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
+TEST_F(SystemVPNConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
   // Prepare region data before asking connect.
   OnFetchRegionList(GetRegionsData(), true);
 
@@ -399,7 +399,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
   EXPECT_FALSE(test_api->IsConnectionCreated());
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
+TEST_F(SystemVPNConnectionAPIUnitTest, NeedsConnectTest) {
   // Prepare region data before asking connect.
   OnFetchRegionList(GetRegionsData(), true);
 
@@ -424,7 +424,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
   EXPECT_TRUE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
-  GetRasConnectionAPI()->OnDisconnected();
+  GetSystemVPNConnectionAPI()->OnDisconnected();
   EXPECT_FALSE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
@@ -434,7 +434,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
   test_api->SetNetworkAvailableForTesting(false);
-  GetRasConnectionAPI()->OnDisconnected();
+  GetSystemVPNConnectionAPI()->OnDisconnected();
   EXPECT_TRUE(test_api->needs_connect_);
   test_api->SetNetworkAvailableForTesting(true);
   test_api->OnNetworkChanged(net::NetworkChangeNotifier::CONNECTION_ETHERNET);
@@ -442,7 +442,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest,
+TEST_F(SystemVPNConnectionAPIUnitTest,
        CheckConnectionStateAfterNetworkStateChanged) {
   auto* test_api = GetConnectionAPI();
   EXPECT_FALSE(test_api->IsConnectionChecked());
@@ -450,7 +450,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
   EXPECT_TRUE(test_api->IsConnectionChecked());
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest, HostnamesTest) {
+TEST_F(SystemVPNConnectionAPIUnitTest, HostnamesTest) {
   auto* test_api = GetConnectionAPI();
   // Set valid hostnames list
   test_api->hostname_.reset();
@@ -464,7 +464,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, HostnamesTest) {
   EXPECT_FALSE(test_api->hostname_);
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest) {
+TEST_F(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest) {
   auto* test_api = GetConnectionAPI();
 
   // Check valid connection info is set when valid hostname and profile
@@ -493,14 +493,14 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest) {
   EXPECT_FALSE(connection_info().IsValid());
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest, CancelConnectingTest) {
+TEST_F(SystemVPNConnectionAPIUnitTest, CancelConnectingTest) {
   auto* test_api = GetConnectionAPI();
 
   GetConnectionAPI()->CheckConnection();
 
   test_api->cancel_connecting_ = true;
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  GetRasConnectionAPI()->OnCreated();
+  GetSystemVPNConnectionAPI()->OnCreated();
   EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
@@ -512,7 +512,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CancelConnectingTest) {
   EXPECT_TRUE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
-  GetRasConnectionAPI()->OnConnected();
+  GetSystemVPNConnectionAPI()->OnConnected();
   EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
@@ -525,7 +525,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CancelConnectingTest) {
             test_api->GetConnectionState());
 
   // Test quick cancelled when |api_request_| is not null.
-  // See the comment of BraveVPNOSConnectionAPIBase::api_request_.
+  // See the comment of ConnectionAPIImpl::api_request_.
   test_api->cancel_connecting_ = false;
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
   // Explicitely create |api_request_|.
@@ -542,8 +542,8 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CancelConnectingTest) {
 }
 
 // Ignore disconnected state change while connected. See the comment at
-// BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange().
-TEST_F(BraveVPNOSConnectionAPIUnitTest,
+// ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange().
+TEST_F(SystemVPNConnectionAPIUnitTest,
        IgnoreDisconnectedStateWhileConnecting) {
   auto* test_api = GetConnectionAPI();
 
@@ -553,7 +553,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
 
-TEST_F(BraveVPNOSConnectionAPIUnitTest,
+TEST_F(SystemVPNConnectionAPIUnitTest,
        ClearLastConnectionErrorWhenNewConnectionStart) {
   auto* test_api = GetConnectionAPI();
 

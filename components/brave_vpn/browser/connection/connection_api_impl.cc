@@ -13,16 +13,16 @@
 #include "base/logging.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
 
 ConnectionAPIImpl::ConnectionAPIImpl(
-    BraveVPNOSConnectionAPI* api,
+    BraveVPNConnectionManager* manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_(*api), url_loader_factory_(url_loader_factory) {
+    : manager_(*manager), url_loader_factory_(url_loader_factory) {
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
@@ -46,7 +46,7 @@ void ConnectionAPIImpl::ResetConnectionState() {
   // and set state directly because we have a logic to ignore disconnected state
   // when connect failed.
   connection_state_ = mojom::ConnectionState::DISCONNECTED;
-  api_->NotifyConnectionStateChanged(connection_state_);
+  manager_->NotifyConnectionStateChanged(connection_state_);
 }
 
 std::string ConnectionAPIImpl::GetLastConnectionError() const {
@@ -178,7 +178,7 @@ void ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange(
   }
 
   connection_state_ = state;
-  api_->NotifyConnectionStateChanged(connection_state_);
+  manager_->NotifyConnectionStateChanged(connection_state_);
 }
 
 void ConnectionAPIImpl::SetConnectionStateForTesting(

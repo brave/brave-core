@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/wireguard_connection_api_impl_base.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -22,9 +22,9 @@ namespace {
 class WireguardConnectionAPISim : public WireguardConnectionAPIImplBase {
  public:
   WireguardConnectionAPISim(
-      BraveVPNOSConnectionAPI* api,
+      BraveVPNConnectionManager* manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-      : WireguardConnectionAPIImplBase(api, url_loader_factory) {}
+      : WireguardConnectionAPIImplBase(manager, url_loader_factory) {}
   ~WireguardConnectionAPISim() override {}
 
   void Disconnect() override {}
@@ -44,16 +44,16 @@ class BraveVPNWireguardConnectionAPIUnitTest : public testing::Test {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
-    connection_api_ = std::make_unique<BraveVPNOSConnectionAPI>(
+    connection_manager_ = std::make_unique<BraveVPNConnectionManager>(
         shared_url_loader_factory_, &local_pref_service_, base::NullCallback());
-    connection_api_->SetConnectionAPIImplForTesting(
+    connection_manager_->SetConnectionAPIImplForTesting(
         std::make_unique<WireguardConnectionAPISim>(
-            connection_api_.get(), shared_url_loader_factory_));
+            connection_manager_.get(), shared_url_loader_factory_));
   }
 
   WireguardConnectionAPISim* GetConnectionAPI() {
     return static_cast<WireguardConnectionAPISim*>(
-        connection_api_->connection_api_impl_.get());
+        connection_manager_->connection_api_impl_.get());
   }
   PrefService* local_state() { return &local_pref_service_; }
 
@@ -62,7 +62,7 @@ class BraveVPNWireguardConnectionAPIUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<BraveVPNOSConnectionAPI> connection_api_;
+  std::unique_ptr<BraveVPNConnectionManager> connection_manager_;
 };
 
 TEST_F(BraveVPNWireguardConnectionAPIUnitTest, SetSelectedRegion) {

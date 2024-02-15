@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/mac/ras_connection_api_impl_mac.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/mac/ikev2_connection_api_impl_mac.h"
 
 #include <memory>
 
@@ -149,21 +149,21 @@ NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
 
 }  // namespace
 
-RasConnectionAPIImplMac::RasConnectionAPIImplMac(
-    BraveVPNOSConnectionAPI* api,
+IKEv2ConnectionAPIImplMac::IKEv2ConnectionAPIImplMac(
+    BraveVPNConnectionManager* manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : RasConnectionAPIImplBase(api, url_loader_factory) {
+    : SystemVPNConnectionAPIImplBase(manager, url_loader_factory) {
   ObserveVPNConnectionChange();
 }
 
-RasConnectionAPIImplMac::~RasConnectionAPIImplMac() {
+IKEv2ConnectionAPIImplMac::~IKEv2ConnectionAPIImplMac() {
   if (vpn_observer_) {
     [[NSNotificationCenter defaultCenter] removeObserver:vpn_observer_];
     vpn_observer_ = nil;
   }
 }
 
-void RasConnectionAPIImplMac::CreateVPNConnectionImpl(
+void IKEv2ConnectionAPIImplMac::CreateVPNConnectionImpl(
     const BraveVPNConnectionInfo& info) {
   std::string store_pwd_error;
   if (StorePassword(base::SysUTF8ToNSString(info.password()),
@@ -231,7 +231,7 @@ void RasConnectionAPIImplMac::CreateVPNConnectionImpl(
   }];
 }
 
-void RasConnectionAPIImplMac::ConnectImpl(const std::string& name) {
+void IKEv2ConnectionAPIImplMac::ConnectImpl(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
@@ -262,7 +262,7 @@ void RasConnectionAPIImplMac::ConnectImpl(const std::string& name) {
   }];
 }
 
-void RasConnectionAPIImplMac::DisconnectImpl(const std::string& name) {
+void IKEv2ConnectionAPIImplMac::DisconnectImpl(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
@@ -282,7 +282,7 @@ void RasConnectionAPIImplMac::DisconnectImpl(const std::string& name) {
   }];
 }
 
-void RasConnectionAPIImplMac::CheckConnectionImpl(const std::string& name) {
+void IKEv2ConnectionAPIImplMac::CheckConnectionImpl(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
@@ -314,7 +314,7 @@ void RasConnectionAPIImplMac::CheckConnectionImpl(const std::string& name) {
   }];
 }
 
-void RasConnectionAPIImplMac::ObserveVPNConnectionChange() {
+void IKEv2ConnectionAPIImplMac::ObserveVPNConnectionChange() {
   vpn_observer_ = [[NSNotificationCenter defaultCenter]
       addObserverForName:NEVPNStatusDidChangeNotification
                   object:nil
@@ -325,7 +325,7 @@ void RasConnectionAPIImplMac::ObserveVPNConnectionChange() {
               }];
 }
 
-bool RasConnectionAPIImplMac::IsPlatformNetworkAvailable() {
+bool IKEv2ConnectionAPIImplMac::IsPlatformNetworkAvailable() {
   // 0.0.0.0 is a special token that causes reachability to monitor the general
   // routing status of the device, both IPv4 and IPv6.
   struct sockaddr_in addr = {0};
