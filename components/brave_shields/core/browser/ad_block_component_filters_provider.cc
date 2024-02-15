@@ -95,6 +95,10 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
   NotifyObservers(engine_is_default_);
 }
 
+bool AdBlockComponentFiltersProvider::IsInitialized() {
+  return !component_path_.empty();
+}
+
 void AdBlockComponentFiltersProvider::LoadFilterSet(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {

@@ -46,6 +46,10 @@ class AdBlockFiltersProvider {
 
   virtual std::string GetNameForDebugging() = 0;
 
+  // Intended to be overridden if the provider implementation is not immediately
+  // ready at creation time.
+  virtual bool IsInitialized();
+
  protected:
   bool engine_is_default_;
 
