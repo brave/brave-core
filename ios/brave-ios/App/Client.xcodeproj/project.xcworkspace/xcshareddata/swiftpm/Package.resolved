@@ -72,6 +72,14 @@
       }
     },
     {
+      "identity" : "static",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/venmo/static",
+      "state" : {
+        "revision" : "622a6804d39515600ead16e6259cb5d5e50f40df"
+      }
+    },
+    {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms",
