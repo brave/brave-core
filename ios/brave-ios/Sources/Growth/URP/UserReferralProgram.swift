@@ -8,6 +8,7 @@ import Preferences
 import WebKit
 import os.log
 import AdServices
+import BraveCore
 
 public class UserReferralProgram {
 
@@ -15,13 +16,11 @@ public class UserReferralProgram {
   private static let urpCookieOnlyDomains = ["coinbase.com"]
   public static let shared = UserReferralProgram()
 
-  private static let apiKeyPlistKey = "STATS_KEY"
-
   struct HostUrl {
     static let staging = "https://laptop-updates.bravesoftware.com"
     static let prod = "https://laptop-updates.brave.com"
   }
-  
+
   let adServicesURLString = "https://api-adservices.apple.com/api/v1/"
   let adReportsURLString = "https://api.searchads.apple.com/api/v4/reports/"
 
@@ -42,8 +41,7 @@ public class UserReferralProgram {
     // This should _probably_ correspond to the baseUrl for NTPDownloader
     let host = AppConstants.buildChannel == .debug ? HostUrl.staging : HostUrl.prod
 
-    let apiKey = Bundle.main.getPlistString(for: UserReferralProgram.apiKeyPlistKey)?
-      .trimmingCharacters(in: .whitespacesAndNewlines) ?? "apikey"
+    let apiKey = kBraveStatsAPIKey
 
     let urpService = UrpService(host: host, apiKey: apiKey, adServicesURL: adServicesURLString, adReportsURL: adReportsURLString)
 
@@ -114,12 +112,12 @@ public class UserReferralProgram {
     //  and not use the passed in referral code.
     service.referralCodeLookup(refCode: refCode, completion: referralBlock)
   }
-  
+
   @MainActor public func adCampaignLookup(isRetryEnabled: Bool = true, timeout: TimeInterval = 60) async throws -> AdAttributionData {
     // Fetching ad attibution token
     do {
       let adAttributionToken = try AAAttribution.attributionToken()
-      
+
       do {
         return try await service.adCampaignTokenLookupQueue(
           adAttributionToken: adAttributionToken,
@@ -152,7 +150,7 @@ public class UserReferralProgram {
       throw SearchAdError.failedReportsKeywordLookup
     }
   }
-  
+
   private func initRetryPingConnection(numberOfTimes: Int32) {
     if AppConstants.buildChannel.isPublic {
       // Adding some time offset to be extra safe.

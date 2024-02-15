@@ -14,7 +14,7 @@ MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).BrowserBeta
 // Flag to indicate if we want to include the debug settings bundle or not
 INCLUDE_SETTINGS_BUNDLE = YES
 
-SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG MOZ_CHANNEL_DEBUG
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG BRAVE_CHANNEL_DEBUG $(brave_swift_active_compliation_conditions)
 
 // Defines Swift Flags, (used as #if/#endif) inside *Swift* code
 // BASE 'inheritence' at end, due to dynamic nature of those flags

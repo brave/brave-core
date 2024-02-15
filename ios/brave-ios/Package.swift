@@ -123,7 +123,7 @@ var package = Package(
       ],
       plugins: ["LoggerPlugin"]
     ),
-    .target(name: "BraveShields", dependencies: ["Strings", "Preferences"], plugins: ["LoggerPlugin"]),
+    .target(name: "BraveShields", dependencies: ["Strings", "Preferences", "BraveCore"], plugins: ["LoggerPlugin"]),
     .target(name: "DesignSystem", plugins: ["LeoAssetsPlugin"]),
     .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
     .binaryTarget(name: "MaterialComponents", path: "../../../out/ios_current_link/MaterialComponents.xcframework"),
