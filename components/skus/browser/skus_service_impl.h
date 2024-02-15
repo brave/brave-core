@@ -102,23 +102,18 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
       skus::mojom::SkusService::CreateOrderFromReceiptCallback callback)
       override;
 
-  ::rust::Box<skus::CppSDK>& GetOrCreateSDK(const std::string& domain);
+  ::rust::Box<skus::CppSDK>* GetOrCreateSDK(const std::string& domain);
 
  private:
-  void OnCredentialSummary(
-      const std::string& domain,
-      mojom::SkusService::CredentialSummaryCallback callback,
-      const std::string& summary_string);
-
-  void OnCreateOrderFromReceipt(
-      mojom::SkusService::CredentialSummaryCallback callback,
-      const std::string& order_id_string);
-
   raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<base::SingleThreadTaskRunner> sdk_task_runner_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
   std::unordered_map<std::string, ::rust::Box<skus::CppSDK>> sdks_;
+  std::unordered_map<
+      std::string,
+      std::unique_ptr<::rust::Box<skus::CppSDK>, base::OnTaskRunnerDeleter>>
+      sdks2_;
   mojo::ReceiverSet<mojom::SkusService> receivers_;
   base::WeakPtrFactory<SkusServiceImpl> weak_factory_{this};
 };
