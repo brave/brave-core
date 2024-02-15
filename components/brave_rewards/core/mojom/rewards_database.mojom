@@ -80,3 +80,8 @@ struct HashPrefixData {
   string prefixes;
   uint32 prefix_size;
 };
+
+interface HashPrefixStore {
+  UpdatePrefixes(HashPrefixData prefix_data) => (bool success);
+  ContainsPrefix(string value) => (bool contains_prefix);
+};
