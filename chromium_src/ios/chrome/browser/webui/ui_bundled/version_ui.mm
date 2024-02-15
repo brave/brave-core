@@ -7,5 +7,5 @@
 #include "components/version_info/version_info.h"
 
 #define GetVersionNumber GetBraveVersionNumberForDisplay
-#include "src/ios/chrome/browser/ui/webui/version_ui.mm"
+#include "src/ios/chrome/browser/webui/ui_bundled/version_ui.mm"
 #undef GetVersionNumber
