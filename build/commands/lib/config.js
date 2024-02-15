@@ -618,6 +618,17 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
+    if (args.target_cpu === 'arm64' &&
+        args.is_official_build) {
+      // Setting is_high_end_android to false also sets chrome_pgo_phase to 0
+      // and disables use_relr_relocations. This is a worakround for crash
+      // on Android 8 arm64 cr122, because use_relr_relocations is supported
+      // starting from Android 9 (API 28+)
+      // TODO(alexeybarabash): revert when we'll have separate solution
+      // for Android 8/8.1
+      args.is_high_end_android = false
+    }
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl
