@@ -10,4 +10,4 @@
     response = brave::ReplaceAboutUIChromeURLs(ChromeURLs()); \
   } else if (false  // NOLINT[readability/braces]
 
-#include "src/ios/chrome/browser/ui/webui/about/about_ui.cc"
+#include "src/ios/chrome/browser/webui/ui_bundled/about/about_ui.cc"
