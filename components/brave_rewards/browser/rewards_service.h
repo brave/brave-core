@@ -132,6 +132,9 @@ class RewardsService : public KeyedService {
   virtual void GetUserType(
       base::OnceCallback<void(mojom::UserType)> callback) = 0;
 
+  // Updates the user's TOS version to the current server-specified TOS version.
+  virtual void UpdateUserTermsOfServiceVersion() = 0;
+
   using GetAvailableCountriesCallback =
       base::OnceCallback<void(std::vector<std::string>)>;
 
@@ -141,6 +144,7 @@ class RewardsService : public KeyedService {
       GetAvailableCountriesCallback callback) const = 0;
 
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
+
   virtual void GetActivityInfoList(const uint32_t start,
                                    const uint32_t limit,
                                    mojom::ActivityInfoFilterPtr filter,

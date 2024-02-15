@@ -145,13 +145,6 @@ enum GetRecipientIDGeminiError {
   kFailedToParseBody
 };
 
-enum GetParametersError {
-  kFailedToCreateRequest,
-  kFailedToGetParameters,               // HTTP 500
-  kUnexpectedStatusCode,                // HTTP xxx
-  kFailedToParseBody
-};
-
 enum GetTransactionStatusUpholdError {
   kFailedToCreateRequest,
   kTransactionPending,                  // HTTP 200

@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "base/task/thread_pool/thread_pool_instance.h"
-#include "brave/components/brave_rewards/core/api/api.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
@@ -21,6 +20,7 @@
 #include "brave/components/brave_rewards/core/initialization_manager.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
@@ -45,6 +45,7 @@ RewardsEngineImpl::RewardsEngineImpl(
                std::make_unique<InitializationManager>(*this),
                std::make_unique<URLLoader>(*this),
                std::make_unique<LinkageChecker>(*this),
+               std::make_unique<RewardsParametersProvider>(*this),
                std::make_unique<SolanaWalletProvider>(*this)),
       promotion_(std::make_unique<promotion::Promotion>(*this)),
       publisher_(std::make_unique<publisher::Publisher>(*this)),
@@ -54,7 +55,6 @@ RewardsEngineImpl::RewardsEngineImpl(
       database_(std::make_unique<database::Database>(*this)),
       report_(std::make_unique<report::Report>(*this)),
       state_(std::make_unique<state::State>(*this)),
-      api_(std::make_unique<api::API>(*this)),
       recovery_(std::make_unique<recovery::Recovery>(*this)),
       bitflyer_(std::make_unique<bitflyer::Bitflyer>(*this)),
       gemini_(std::make_unique<gemini::Gemini>(*this)),
@@ -91,16 +91,7 @@ void RewardsEngineImpl::CreateRewardsWallet(
 void RewardsEngineImpl::GetRewardsParameters(
     GetRewardsParametersCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
-    auto params = state()->GetRewardsParameters();
-    if (params->rate == 0.0) {
-      // A rate of zero indicates that the rewards parameters have
-      // not yet been successfully initialized from the server.
-      Log(FROM_HERE) << "Rewards parameters not set - fetching from server";
-      api()->FetchParameters(std::move(callback));
-      return;
-    }
-
-    std::move(callback).Run(std::move(params));
+    Get<RewardsParametersProvider>().GetParameters(std::move(callback));
   });
 }
 

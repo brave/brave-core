@@ -53,6 +53,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -521,6 +522,8 @@ void RewardsServiceImpl::CreateRewardsWallet(
         prefs->SetString(prefs::kUserVersion, prefs::kCurrentUserVersion);
         prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
 
+        self->UpdateUserTermsOfServiceVersion();
+
         // Fetch the user's balance before turning on AC. We don't want to
         // automatically turn on AC if for some reason the user has a current
         // balance, as this could result in unintentional BAT transfers.
@@ -582,7 +585,10 @@ void RewardsServiceImpl::GetUserType(
       version = base::Version({1});
     }
 
-    if (!prefs->GetBoolean(prefs::kParametersVBatExpired) &&
+    auto params = internal::RewardsParametersProvider::ValueToParameters(
+        prefs->GetValue(prefs::kParameters));
+
+    if (params && !params->vbat_expired &&
         version.CompareTo(base::Version({2, 5})) < 0) {
       std::move(callback).Run(UserType::kLegacyUnconnected);
       return;
@@ -593,6 +599,15 @@ void RewardsServiceImpl::GetUserType(
 
   GetExternalWallet(
       base::BindOnce(on_external_wallet, AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::UpdateUserTermsOfServiceVersion() {
+  auto* prefs = profile_->GetPrefs();
+  auto params = internal::RewardsParametersProvider::ValueToParameters(
+      prefs->GetValue(prefs::kParameters));
+  if (params) {
+    prefs->SetInteger(prefs::kTosVersion, params->tos_version);
+  }
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {

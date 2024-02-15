@@ -102,10 +102,6 @@ static_library("engine") {
   output_name = "brave_rewards_core"
 
   sources = [
-    "api/api.cc",
-    "api/api.h",
-    "api/api_parameters.cc",
-    "api/api_parameters.h",
     "attestation/attestation.cc",
     "attestation/attestation.h",
     "attestation/attestation_androidx.cc",
@@ -345,8 +341,6 @@ static_library("engine") {
     "endpoints/bitflyer/post_commit_transaction_bitflyer.h",
     "endpoints/brave/get_parameters.cc",
     "endpoints/brave/get_parameters.h",
-    "endpoints/brave/get_parameters_utils.cc",
-    "endpoints/brave/get_parameters_utils.h",
     "endpoints/brave/get_wallet.cc",
     "endpoints/brave/get_wallet.h",
     "endpoints/brave/patch_wallets.cc",
@@ -424,6 +418,8 @@ static_library("engine") {
     "logging/event_log_util.cc",
     "logging/event_log_util.h",
     "notifications/notification_keys.h",
+    "parameters/rewards_parameters_provider.cc",
+    "parameters/rewards_parameters_provider.h",
     "promotion/promotion.cc",
     "promotion/promotion.h",
     "promotion/promotion_transfer.cc",

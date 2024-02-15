@@ -54,15 +54,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kInlineTipRedditEnabled, false);
   registry->RegisterBooleanPref(prefs::kInlineTipTwitterEnabled, false);
   registry->RegisterBooleanPref(prefs::kInlineTipGithubEnabled, false);
-  registry->RegisterDoublePref(prefs::kParametersRate, 0.0);
-  registry->RegisterDoublePref(prefs::kParametersAutoContributeChoice, 0.0);
-  registry->RegisterStringPref(prefs::kParametersAutoContributeChoices, "");
-  registry->RegisterStringPref(prefs::kParametersTipChoices, "");
-  registry->RegisterStringPref(prefs::kParametersMonthlyTipChoices, "");
-  registry->RegisterStringPref(prefs::kParametersPayoutStatus, "");
-  registry->RegisterDictionaryPref(prefs::kParametersWalletProviderRegions);
-  registry->RegisterTimePref(prefs::kParametersVBatDeadline, base::Time());
-  registry->RegisterBooleanPref(prefs::kParametersVBatExpired, false);
+  registry->RegisterDictionaryPref(prefs::kParameters);
   registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
   registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
   registry->RegisterStringPref(prefs::kWalletBrave, "");
@@ -73,6 +65,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletSolana, "");
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
   registry->RegisterIntegerPref(prefs::kWalletCreationEnvironment, -1);
+  registry->RegisterIntegerPref(prefs::kTosVersion, 1);
   registry->RegisterListPref(prefs::kRewardsPageViewCount);
 }
 

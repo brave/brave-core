@@ -92,23 +92,7 @@ inline constexpr char kInlineTipTwitterEnabled[] =
     "brave.rewards.inline_tip.twitter";  // DEPRECATED
 inline constexpr char kInlineTipGithubEnabled[] =
     "brave.rewards.inline_tip.github";  // DEPRECATED
-inline constexpr char kParametersRate[] = "brave.rewards.parameters.rate";
-inline constexpr char kParametersAutoContributeChoice[] =
-    "brave.rewards.parameters.ac.choice";
-inline constexpr char kParametersAutoContributeChoices[] =
-    "brave.rewards.parameters.ac.choices";
-inline constexpr char kParametersTipChoices[] =
-    "brave.rewards.parameters.tip.choices";
-inline constexpr char kParametersMonthlyTipChoices[] =
-    "brave.rewards.parameters.tip.monthly_choices";
-inline constexpr char kParametersPayoutStatus[] =
-    "brave.rewards.parameters.payout_status";
-inline constexpr char kParametersWalletProviderRegions[] =
-    "brave.rewards.parameters.wallet_provider_regions";
-inline constexpr char kParametersVBatDeadline[] =
-    "brave.rewards.parameters.vbat_deadline";
-inline constexpr char kParametersVBatExpired[] =
-    "brave.rewards.parameters.vbat_expired";
+inline constexpr char kParameters[] = "brave.rewards.parameters";
 inline constexpr char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";  // DEPRECATED
 inline constexpr char kEmptyBalanceChecked[] =
@@ -121,6 +105,7 @@ inline constexpr char kWalletZebPay[] = "brave.rewards.wallets.zebpay";
 inline constexpr char kWalletSolana[] = "brave.rewards.wallets.solana";
 inline constexpr char kWalletCreationEnvironment[] =
     "brave.rewards.wallet_creation_environment";
+inline constexpr char kTosVersion[] = "brave.rewards.tos_version";
 
 inline constexpr char kRewardsPageViewCount[] =
     "brave.rewards.p3a_page_view_count";

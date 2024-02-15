@@ -28,6 +28,7 @@ namespace brave_rewards::internal {
 class EnvironmentConfig;
 class InitializationManager;
 class URLLoader;
+class RewardsParametersProvider;
 class LinkageChecker;
 class SolanaWalletProvider;
 
@@ -59,10 +60,6 @@ class Report;
 
 namespace state {
 class State;
-}
-
-namespace api {
-class API;
 }
 
 namespace recovery {
@@ -390,8 +387,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   state::State* state() { return state_.get(); }
 
-  api::API* api() { return api_.get(); }
-
   recovery::Recovery* recovery() { return recovery_.get(); }
 
   bitflyer::Bitflyer* bitflyer() { return bitflyer_.get(); }
@@ -432,6 +427,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
              std::unique_ptr<InitializationManager>,
              std::unique_ptr<URLLoader>,
              std::unique_ptr<LinkageChecker>,
+             std::unique_ptr<RewardsParametersProvider>,
              std::unique_ptr<SolanaWalletProvider>>
       helpers_;
 
@@ -443,7 +439,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   std::unique_ptr<database::Database> database_;
   std::unique_ptr<report::Report> report_;
   std::unique_ptr<state::State> state_;
-  std::unique_ptr<api::API> api_;
   std::unique_ptr<recovery::Recovery> recovery_;
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
   std::unique_ptr<gemini::Gemini> gemini_;

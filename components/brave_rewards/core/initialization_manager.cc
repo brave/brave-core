@@ -7,9 +7,9 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/api/api.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
@@ -95,7 +95,7 @@ void InitializationManager::InitializeHelpers() {
   engine().promotion()->Refresh(false);
   engine().contribution()->Initialize();
   engine().promotion()->Initialize();
-  engine().api()->Initialize();
+  engine().Get<RewardsParametersProvider>().StartAutoUpdate();
   engine().recovery()->Check();
   engine().uphold()->CheckEligibility();
   engine().Get<LinkageChecker>().CheckLinkage();

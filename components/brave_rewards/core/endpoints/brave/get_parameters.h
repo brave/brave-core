@@ -9,17 +9,20 @@
 #include <optional>
 #include <string>
 
+#include "base/containers/flat_map.h"
+#include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
-#include "brave/components/brave_rewards/core/endpoints/request_builder.h"
-#include "brave/components/brave_rewards/core/endpoints/response_handler.h"
-#include "brave/components/brave_rewards/core/endpoints/result_for.h"
+#include "brave/components/brave_rewards/core/rewards_engine_helper.h"
+
+namespace brave_rewards::internal::endpoints {
 
 // GET /v1/parameters
 //
 // Request body: -
 //
-// clang-format off
 // Response body:
 // {
 //   "autocontribute": {
@@ -33,11 +36,11 @@
 //       "block": []
 //     },
 //     "gemini": {
-//       "allow": ["AU", "AT", "BE", "CA", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],  // NOLINT
+//       "allow": ["AU", "AT", "BE", "CA", "CO", "GB", "US"],
 //       "block": []
 //     },
 //     "uphold": {
-//       "allow": ["AU", "AT", "BE", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],  // NOLINT
+//       "allow": ["AU", "AT", "BE", "CO", "DK", "FI", "GB", "US"],
 //       "block": []
 //     }
 //   },
@@ -52,38 +55,32 @@
 //     "defaultTipChoices": [1.25, 5, 10.5]
 //   },
 //   "vbatDeadline": "2022-12-24T15:04:45.352584Z",
-//   "vbatExpired": false
+//   "vbatExpired": false,
+//   "tosVersion": 1
 // }
-// clang-format on
-
-namespace brave_rewards::internal {
-class RewardsEngineImpl;
-
-namespace endpoints {
-
-class GetParameters;
-
-template <>
-struct ResultFor<GetParameters> {
-  using Value = mojom::RewardsParametersPtr;
-  using Error = mojom::GetParametersError;
-};
-
-class GetParameters final : public RequestBuilder,
-                            public ResponseHandler<GetParameters> {
+class GetParameters : public RewardsEngineHelper {
  public:
-  static Result ProcessResponse(RewardsEngineImpl& engine,
-                                const mojom::UrlResponse&);
-
   explicit GetParameters(RewardsEngineImpl& engine);
   ~GetParameters() override;
 
+  enum class Error { kFailedToParseBody, kUnexpectedStatusCode };
+
+  using Result = base::expected<mojom::RewardsParametersPtr, Error>;
+  using RequestCallback = base::OnceCallback<void(Result)>;
+
+  virtual void Request(RequestCallback callback);
+
+  static std::optional<base::flat_map<std::string, mojom::RegionsPtr>>
+  ValueToWalletProviderRegions(const base::Value& value);
+
  private:
-  std::optional<std::string> Url() const override;
-  mojom::UrlMethod Method() const override;
+  mojom::UrlRequestPtr CreateRequest();
+  Result MapResponse(const mojom::UrlResponse& response);
+  void OnResponse(RequestCallback callback, mojom::UrlResponsePtr response);
+
+  base::WeakPtrFactory<GetParameters> weak_factory_{this};
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BRAVE_GET_PARAMETERS_H_
