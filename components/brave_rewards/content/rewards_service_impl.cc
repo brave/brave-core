@@ -275,6 +275,7 @@ RewardsServiceImpl::RewardsServiceImpl(
       diagnostic_log_(new DiagnosticLog(profile_path.Append(kDiagnosticLogPath),
                                         kDiagnosticLogMaxFileSize,
                                         kDiagnosticLogKeepNumLines)),
+      rewards_database_(file_task_runner_),
       notification_service_(new RewardsNotificationServiceImpl(prefs)),
       conversion_monitor_(prefs) {
   ready_ = std::make_unique<base::OneShotEvent>();
@@ -383,8 +384,8 @@ void RewardsServiceImpl::StartEngineProcessIfNecessary() {
     return;
   }
 
-  rewards_database_ = base::SequenceBound<internal::RewardsDatabase>(
-      file_task_runner_, publisher_info_db_path_);
+  rewards_database_.BindRemote<internal::RewardsDatabase>(
+      publisher_info_db_path_);
 
   BLOG(1, "Starting engine process");
 
@@ -1091,7 +1092,7 @@ void RewardsServiceImpl::Reset() {
   receiver_.reset();
   engine_factory_.reset();
   ready_ = std::make_unique<base::OneShotEvent>();
-  rewards_database_.Reset();
+  rewards_database_.reset();
   BLOG(1, "Successfully reset rewards service");
 }
 
@@ -2089,18 +2090,8 @@ void RewardsServiceImpl::ReconcileStampReset() {
 
 void RewardsServiceImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
                                           RunDBTransactionCallback callback) {
-  DCHECK(rewards_database_);
-  rewards_database_.AsyncCall(&internal::RewardsDatabase::RunTransaction)
-      .WithArgs(std::move(transaction))
-      .Then(base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
-                           std::move(callback)));
-}
-
-void RewardsServiceImpl::OnRunDBTransaction(
-    RunDBTransactionCallback callback,
-    mojom::DBCommandResponsePtr response) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::move(callback).Run(std::move(response));
+  rewards_database_->RunDBTransaction(std::move(transaction),
+                                      std::move(callback));
 }
 
 void RewardsServiceImpl::ForTestingSetTestResponseCallback(

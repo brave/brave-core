@@ -193,6 +193,11 @@ mojom::DBCommandResponsePtr RewardsDatabase::RunTransaction(
   return command_response;
 }
 
+void RewardsDatabase::RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                       RunDBTransactionCallback callback) {
+  std::move(callback).Run(RunTransaction(std::move(transaction)));
+}
+
 mojom::DBCommandResponse::Status RewardsDatabase::Initialize(
     const int32_t version,
     const int32_t compatible_version,

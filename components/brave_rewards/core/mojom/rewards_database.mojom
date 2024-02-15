@@ -71,3 +71,7 @@ struct DBCommandResponse {
   DBCommandResult? result;
   Status status;
 };
+
+interface RewardsDatabase {
+  RunDBTransaction(DBTransaction transaction) => (DBCommandResponse response);
+};
