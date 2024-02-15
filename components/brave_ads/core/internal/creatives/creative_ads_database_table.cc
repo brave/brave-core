@@ -38,6 +38,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::
           STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
       mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
       mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
@@ -58,6 +59,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.creative_instance_id);
+    BindString(command, index++, creative_ad.creative_set_id);
     BindBool(command, index++, creative_ad.has_conversion);
     BindInt(command, index++, creative_ad.per_day);
     BindInt(command, index++, creative_ad.per_week);
@@ -79,13 +81,14 @@ CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id = ColumnString(record, 0);
-  creative_ad.has_conversion = ColumnBool(record, 1);
-  creative_ad.per_day = ColumnInt(record, 2);
-  creative_ad.per_week = ColumnInt(record, 3);
-  creative_ad.per_month = ColumnInt(record, 4);
-  creative_ad.total_max = ColumnInt(record, 5);
-  creative_ad.value = ColumnDouble(record, 6);
-  creative_ad.target_url = GURL(ColumnString(record, 7));
+  creative_ad.creative_set_id = ColumnString(record, 1);
+  creative_ad.has_conversion = ColumnBool(record, 2);
+  creative_ad.per_day = ColumnInt(record, 3);
+  creative_ad.per_week = ColumnInt(record, 4);
+  creative_ad.per_month = ColumnInt(record, 5);
+  creative_ad.total_max = ColumnInt(record, 6);
+  creative_ad.value = ColumnDouble(record, 7);
+  creative_ad.target_url = GURL(ColumnString(record, 8));
 
   return creative_ad;
 }
@@ -155,7 +158,7 @@ void GetForCreativeInstanceIdCallback(
   std::move(callback).Run(/*success=*/true, creative_instance_id, creative_ad);
 }
 
-void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+void MigrateToV33(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
   DropTable(transaction, "creative_ads");
@@ -164,11 +167,11 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
       "CREATE TABLE creative_ads (creative_instance_id TEXT NOT NULL PRIMARY "
-      "KEY UNIQUE ON CONFLICT REPLACE, conversion INTEGER NOT NULL DEFAULT 0, "
-      "per_day INTEGER NOT NULL DEFAULT 0, per_week INTEGER NOT NULL DEFAULT "
-      "0, per_month INTEGER NOT NULL DEFAULT 0, total_max INTEGER NOT NULL "
-      "DEFAULT 0, value DOUBLE NOT NULL DEFAULT 0, split_test_group TEXT, "
-      "target_url TEXT NOT NULL);";
+      "KEY UNIQUE ON CONFLICT REPLACE, creative_set_id TEXT NOT NULL, "
+      "conversion INTEGER NOT NULL DEFAULT 0, per_day INTEGER NOT NULL DEFAULT "
+      "0, per_week INTEGER NOT NULL DEFAULT 0, per_month INTEGER NOT NULL "
+      "DEFAULT 0, total_max INTEGER NOT NULL DEFAULT 0, value DOUBLE NOT NULL "
+      "DEFAULT 0, split_test_group TEXT, target_url TEXT NOT NULL);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -210,9 +213,9 @@ void CreativeAds::GetForCreativeInstanceId(
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
-      "SELECT creative_instance_id, conversion, per_day, per_week, per_month, "
-      "total_max, value, split_test_group, target_url FROM $1 AS ca WHERE "
-      "ca.creative_instance_id = '$2';",
+      "SELECT creative_instance_id, creative_set_id, conversion, per_day, "
+      "per_week, per_month, total_max, value, split_test_group, target_url "
+      "FROM $1 AS ca WHERE ca.creative_instance_id = '$2';",
       {GetTableName(), creative_instance_id}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
@@ -233,11 +236,11 @@ void CreativeAds::Create(mojom::DBTransactionInfo* transaction) {
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
       "CREATE TABLE creative_ads (creative_instance_id TEXT NOT NULL PRIMARY "
-      "KEY UNIQUE ON CONFLICT REPLACE, conversion INTEGER NOT NULL DEFAULT 0, "
-      "per_day INTEGER NOT NULL DEFAULT 0, per_week INTEGER NOT NULL DEFAULT "
-      "0, per_month INTEGER NOT NULL DEFAULT 0, total_max INTEGER NOT NULL "
-      "DEFAULT 0, value DOUBLE NOT NULL DEFAULT 0, split_test_group TEXT, "
-      "target_url TEXT NOT NULL);";
+      "KEY UNIQUE ON CONFLICT REPLACE, creative_set_id TEXT NOT NULL, "
+      "conversion INTEGER NOT NULL DEFAULT 0, per_day INTEGER NOT NULL DEFAULT "
+      "0, per_week INTEGER NOT NULL DEFAULT 0, per_month INTEGER NOT NULL "
+      "DEFAULT 0, total_max INTEGER NOT NULL DEFAULT 0, value DOUBLE NOT NULL "
+      "DEFAULT 0, split_test_group TEXT, target_url TEXT NOT NULL);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -246,8 +249,8 @@ void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 29: {
-      MigrateToV29(transaction);
+    case 33: {
+      MigrateToV33(transaction);
       break;
     }
   }
@@ -263,11 +266,11 @@ std::string CreativeAds::BuildInsertOrUpdateSql(
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (creative_instance_id, conversion, per_day, "
-      "per_week, per_month, total_max, value, split_test_group, target_url) "
-      "VALUES $2;",
+      "INSERT OR REPLACE INTO $1 (creative_instance_id, creative_set_id, "
+      "conversion, per_day, per_week, per_month, total_max, value, "
+      "split_test_group, target_url) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count=*/9, binded_parameters_count)},
+                           /*parameters_count=*/10, binded_parameters_count)},
       nullptr);
 }
 
