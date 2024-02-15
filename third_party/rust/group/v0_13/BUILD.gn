@@ -39,8 +39,9 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
     "//brave/third_party/rust/subtle/v2:lib",
     "//third_party/rust/rand_core/v0_6:lib",
   ]
-  features = [ "alloc" ]
+  features = [ "alloc", "wnaf-memuse" ]
 }
