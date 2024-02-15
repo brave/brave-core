@@ -96,11 +96,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/brave_vpn/win/vpn_utils_win.h"
-#endif
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -503,29 +499,15 @@ ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-brave_vpn::BraveVPNOSConnectionAPI*
-BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
-  if (brave_vpn_os_connection_api_) {
-    return brave_vpn_os_connection_api_.get();
+brave_vpn::BraveVPNConnectionManager*
+BraveBrowserProcessImpl::brave_vpn_connection_manager() {
+  if (brave_vpn_connection_manager_) {
+    return brave_vpn_connection_manager_.get();
   }
 
-  // Currently, service installer only used on Windows.
-  // Installs registers IKEv2 service (for DNS) and our WireGuard impl.
-  // NOTE: Install only happens if person has purchased the product.
-  auto service_installer =
-#if BUILDFLAG(IS_WIN)
-      base::BindRepeating(&brave_vpn::InstallVpnSystemServices);
-#else
-      base::NullCallback();
-#endif
-
-  brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNConnectionAPI(
-      shared_url_loader_factory(), local_state(), service_installer);
-  if (brave_vpn_os_connection_api_) {
-    brave_vpn_os_connection_api_->set_target_vpn_entry_name(
-        brave_vpn::GetBraveVPNEntryName(chrome::GetChannel()));
-  }
-  return brave_vpn_os_connection_api_.get();
+  brave_vpn_connection_manager_ = brave_vpn::CreateBraveVPNConnectionManager(
+      shared_url_loader_factory(), local_state());
+  return brave_vpn_connection_manager_.get();
 }
 #endif
 

@@ -8,12 +8,14 @@
 #include <memory>
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_sim.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/browser/connection/connection_api_impl.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/connection_api_impl_sim.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -65,10 +67,14 @@ class BraveVpnButtonUnitTest : public testing::Test {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
+    auto manager = std::make_unique<BraveVPNConnectionManager>(
+        shared_url_loader_factory_, testing_local_state_.Get(),
+        base::NullCallback());
+    manager->SetConnectionAPIImplForTesting(
+        std::make_unique<ConnectionAPIImplSim>(manager.get(),
+                                               shared_url_loader_factory_));
     TestingBraveBrowserProcess::GetGlobal()
-        ->SetBraveVPNOSConnectionAPIForTesting(
-            std::make_unique<BraveVPNOSConnectionAPISim>(
-                shared_url_loader_factory_, testing_local_state_.Get()));
+        ->SetBraveVPNConnectionManagerForTesting(std::move(manager));
     ASSERT_TRUE(brave_vpn::BraveVpnServiceFactory::GetForProfile(
         GetBrowser()->profile()));
     ASSERT_TRUE(ThemeServiceFactory::GetForProfile(profile()));
@@ -78,6 +84,12 @@ class BraveVpnButtonUnitTest : public testing::Test {
   void TearDown() override {
     browser_.reset();
     profile_.reset();
+
+    // BraveVPNConnectionManager should be reset after profile is destoryed
+    // and before local_state is gone as it uses local_state.
+    TestingBraveBrowserProcess::GetGlobal()
+        ->SetBraveVPNConnectionManagerForTesting(nullptr);
+
     base::RunLoop().RunUntilIdle();
   }
 
@@ -96,7 +108,9 @@ class BraveVpnButtonUnitTest : public testing::Test {
   }
 
   void SetConnectionState(mojom::ConnectionState state) {
-    button_->service_->connection_api_->SetConnectionStateForTesting(state);
+    ASSERT_TRUE(button_->service_->connection_manager_->connection_api_impl_);
+    button_->service_->connection_manager_->connection_api_impl_
+        ->SetConnectionStateForTesting(state);
   }
 
   bool IsOsVpnConnected() const {

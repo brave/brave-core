@@ -43,7 +43,7 @@ std::unique_ptr<KeyedService> BuildVpnService(
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (!g_brave_browser_process->brave_vpn_os_connection_api()) {
+  if (!g_brave_browser_process->brave_vpn_connection_manager()) {
     return nullptr;
   }
 #endif
@@ -62,25 +62,20 @@ std::unique_ptr<KeyedService> BuildVpnService(
 
   std::unique_ptr<BraveVpnService> vpn_service =
       std::make_unique<BraveVpnService>(
-          g_brave_browser_process->brave_vpn_os_connection_api(),
+          g_brave_browser_process->brave_vpn_connection_manager(),
           shared_url_loader_factory, local_state,
           user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)
   vpn_service->set_delegate(std::make_unique<BraveVPNServiceDelegateWin>());
-  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
-    auto* observer_service =
-        brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
-            ->GetServiceForContext(context);
-    if (observer_service) {
-      observer_service->Observe(vpn_service.get());
-    }
-  } else {
-    auto* observer_service =
-        brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
-            ->GetServiceForContext(context);
-    if (observer_service) {
-      observer_service->Observe(vpn_service.get());
-    }
+  if (auto* wg_observer_service =
+          brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
+              ->GetServiceForContext(context)) {
+    wg_observer_service->Observe(vpn_service.get());
+  }
+  if (auto* dns_observer_service =
+          brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
+              ->GetServiceForContext(context)) {
+    dns_observer_service->Observe(vpn_service.get());
   }
 #endif
 
@@ -118,11 +113,8 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
 #if BUILDFLAG(IS_WIN)
-  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
-    DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
-  } else {
-    DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
-  }
+  DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
+  DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
 #endif
 }
 

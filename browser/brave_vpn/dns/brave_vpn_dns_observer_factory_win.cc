@@ -13,7 +13,6 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -47,8 +46,7 @@ KeyedService* BraveVpnDnsObserverFactory::BuildServiceInstanceFor(
 BraveVpnDnsObserverService* BraveVpnDnsObserverFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!base::FeatureList::IsEnabled(
-          brave_vpn::features::kBraveVPNDnsProtection) ||
-      brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
+          brave_vpn::features::kBraveVPNDnsProtection)) {
     return nullptr;
   }
   DCHECK(brave_vpn::IsAllowedForContext(context));

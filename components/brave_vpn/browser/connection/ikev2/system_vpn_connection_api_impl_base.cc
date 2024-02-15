@@ -1,17 +1,19 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_base.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/system_vpn_connection_api_impl_base.h"
 
 #include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 
@@ -19,14 +21,10 @@ namespace brave_vpn {
 
 using ConnectionState = mojom::ConnectionState;
 
-BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs)
-    : BraveVPNOSConnectionAPI(url_loader_factory, local_prefs) {}
+SystemVPNConnectionAPIImplBase::~SystemVPNConnectionAPIImplBase() = default;
 
-BraveVPNOSConnectionAPIBase::~BraveVPNOSConnectionAPIBase() = default;
-
-void BraveVPNOSConnectionAPIBase::SetSelectedRegion(const std::string& name) {
+void SystemVPNConnectionAPIImplBase::SetSelectedRegion(
+    const std::string& name) {
   // TODO(simonhong): Can remove this when UI block region changes while
   // operation is in-progress.
   // Don't allow region change while operation is in-progress.
@@ -38,23 +36,24 @@ void BraveVPNOSConnectionAPIBase::SetSelectedRegion(const std::string& name) {
                "is in-progress";
     // This is workaround to prevent UI changes seleted region.
     // Early return by notify again with current region name.
-    NotifySelectedRegionChanged(GetRegionDataManager().GetSelectedRegion());
+    manager_->NotifySelectedRegionChanged(
+        manager_->GetRegionDataManager().GetSelectedRegion());
     return;
   }
 
-  GetRegionDataManager().SetSelectedRegion(name);
+  manager_->GetRegionDataManager().SetSelectedRegion(name);
 
   // As new selected region is used, |connection_info_| for previous selected
   // should be cleared.
   ResetConnectionInfo();
 }
 
-bool BraveVPNOSConnectionAPIBase::IsInProgress() const {
+bool SystemVPNConnectionAPIImplBase::IsInProgress() const {
   return GetConnectionState() == ConnectionState::DISCONNECTING ||
          GetConnectionState() == ConnectionState::CONNECTING;
 }
 
-void BraveVPNOSConnectionAPIBase::CreateVPNConnection() {
+void SystemVPNConnectionAPIImplBase::CreateVPNConnection() {
   if (cancel_connecting_) {
     UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
     cancel_connecting_ = false;
@@ -68,11 +67,11 @@ void BraveVPNOSConnectionAPIBase::CreateVPNConnection() {
   CreateVPNConnectionImpl(connection_info_);
 }
 
-void BraveVPNOSConnectionAPIBase::SetPreventCreationForTesting(bool value) {
+void SystemVPNConnectionAPIImplBase::SetPreventCreationForTesting(bool value) {
   prevent_creation_ = value;
 }
 
-void BraveVPNOSConnectionAPIBase::Connect() {
+void SystemVPNConnectionAPIImplBase::Connect() {
   if (IsInProgress()) {
     VLOG(2) << __func__ << ": Current state: " << GetConnectionState()
             << " : prevent connecting while previous operation is in-progress";
@@ -105,9 +104,10 @@ void BraveVPNOSConnectionAPIBase::Connect() {
   }
 
   // If user doesn't select region explicitely, use default device region.
-  std::string target_region_name = GetRegionDataManager().GetSelectedRegion();
+  std::string target_region_name =
+      manager_->GetRegionDataManager().GetSelectedRegion();
   if (target_region_name.empty()) {
-    target_region_name = GetRegionDataManager().GetDeviceRegion();
+    target_region_name = manager_->GetRegionDataManager().GetDeviceRegion();
     VLOG(2) << __func__ << " : start connecting with valid default_region: "
             << target_region_name;
   }
@@ -115,7 +115,7 @@ void BraveVPNOSConnectionAPIBase::Connect() {
   FetchHostnamesForRegion(target_region_name);
 }
 
-void BraveVPNOSConnectionAPIBase::Disconnect() {
+void SystemVPNConnectionAPIImplBase::Disconnect() {
   if (GetConnectionState() == ConnectionState::DISCONNECTED) {
     VLOG(2) << __func__ << " : already disconnected";
     return;
@@ -129,7 +129,7 @@ void BraveVPNOSConnectionAPIBase::Disconnect() {
   if (GetConnectionState() != ConnectionState::CONNECTING) {
     VLOG(2) << __func__ << " : start disconnecting!";
     UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
-    DisconnectImpl(target_vpn_entry_name());
+    DisconnectImpl(manager_->target_vpn_entry_name());
     return;
   }
 
@@ -144,16 +144,16 @@ void BraveVPNOSConnectionAPIBase::Disconnect() {
   }
 }
 
-void BraveVPNOSConnectionAPIBase::CheckConnection() {
-  CheckConnectionImpl(target_vpn_entry_name());
+void SystemVPNConnectionAPIImplBase::CheckConnection() {
+  CheckConnectionImpl(manager_->target_vpn_entry_name());
 }
 
-void BraveVPNOSConnectionAPIBase::ResetConnectionInfo() {
+void SystemVPNConnectionAPIImplBase::ResetConnectionInfo() {
   VLOG(2) << __func__;
   connection_info_.Reset();
 }
 
-void BraveVPNOSConnectionAPIBase::OnCreated() {
+void SystemVPNConnectionAPIImplBase::OnCreated() {
   VLOG(2) << __func__;
 
   if (cancel_connecting_) {
@@ -163,10 +163,10 @@ void BraveVPNOSConnectionAPIBase::OnCreated() {
   }
 
   // It's time to ask connecting to os after vpn entry is created.
-  ConnectImpl(target_vpn_entry_name());
+  ConnectImpl(manager_->target_vpn_entry_name());
 }
 
-void BraveVPNOSConnectionAPIBase::OnCreateFailed() {
+void SystemVPNConnectionAPIImplBase::OnCreateFailed() {
   VLOG(2) << __func__;
 
   // Clear connecting cancel request.
@@ -177,21 +177,21 @@ void BraveVPNOSConnectionAPIBase::OnCreateFailed() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_NOT_ALLOWED);
 }
 
-void BraveVPNOSConnectionAPIBase::OnConnected() {
+void SystemVPNConnectionAPIImplBase::OnConnected() {
   VLOG(2) << __func__;
 
   if (cancel_connecting_) {
     // As connect is done, we don't need more for cancelling.
     // Just start normal Disconenct() process.
     cancel_connecting_ = false;
-    DisconnectImpl(target_vpn_entry_name());
+    DisconnectImpl(manager_->target_vpn_entry_name());
     return;
   }
 
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
 }
 
-void BraveVPNOSConnectionAPIBase::OnIsConnecting() {
+void SystemVPNConnectionAPIImplBase::OnIsConnecting() {
   VLOG(2) << __func__;
 
   if (!cancel_connecting_) {
@@ -199,7 +199,7 @@ void BraveVPNOSConnectionAPIBase::OnIsConnecting() {
   }
 }
 
-void BraveVPNOSConnectionAPIBase::OnConnectFailed() {
+void SystemVPNConnectionAPIImplBase::OnConnectFailed() {
   cancel_connecting_ = false;
 
   // Clear previously used connection info if failed.
@@ -208,7 +208,7 @@ void BraveVPNOSConnectionAPIBase::OnConnectFailed() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
-bool BraveVPNOSConnectionAPIBase::MaybeReconnect() {
+bool SystemVPNConnectionAPIImplBase::MaybeReconnect() {
   VLOG(2) << __func__;
 
   if (!needs_connect_) {
@@ -227,16 +227,20 @@ bool BraveVPNOSConnectionAPIBase::MaybeReconnect() {
   return false;
 }
 
-void BraveVPNOSConnectionAPIBase::OnNetworkChanged(
+void SystemVPNConnectionAPIImplBase::OnNetworkChanged(
     net::NetworkChangeNotifier::ConnectionType type) {
   if (needs_connect_ && MaybeReconnect()) {
     VLOG(2) << "Network is live, reconnecting";
     return;
   }
-  BraveVPNOSConnectionAPI::OnNetworkChanged(type);
+  ConnectionAPIImpl::OnNetworkChanged(type);
 }
 
-void BraveVPNOSConnectionAPIBase::OnDisconnected() {
+ConnectionAPIImpl::Type SystemVPNConnectionAPIImplBase::type() const {
+  return Type::IKEV2;
+}
+
+void SystemVPNConnectionAPIImplBase::OnDisconnected() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
   // Sometimes disconnected event happens before network state restored,
   // we postpone reconnection in this cases.
@@ -245,12 +249,12 @@ void BraveVPNOSConnectionAPIBase::OnDisconnected() {
   }
 }
 
-void BraveVPNOSConnectionAPIBase::OnIsDisconnecting() {
+void SystemVPNConnectionAPIImplBase::OnIsDisconnecting() {
   VLOG(2) << __func__;
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 }
 
-void BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(
+void SystemVPNConnectionAPIImplBase::UpdateAndNotifyConnectionStateChange(
     ConnectionState state) {
   // this is a simple state machine for handling connection state
   if (GetConnectionState() == state) {
@@ -281,17 +285,17 @@ void BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(
   VLOG(2) << __func__ << " : changing from " << GetConnectionState() << " to "
           << state;
 
-  BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange(state);
+  ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange(state);
 }
 
-void BraveVPNOSConnectionAPIBase::FetchProfileCredentials() {
+void SystemVPNConnectionAPIImplBase::FetchProfileCredentials() {
   GetAPIRequest()->GetProfileCredentials(
-      base::BindOnce(&BraveVPNOSConnectionAPIBase::OnGetProfileCredentials,
+      base::BindOnce(&SystemVPNConnectionAPIImplBase::OnGetProfileCredentials,
                      base::Unretained(this)),
-      GetSubscriberCredential(local_prefs()), GetHostname());
+      GetSubscriberCredential(manager_->local_prefs()), GetHostname());
 }
 
-void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
+void SystemVPNConnectionAPIImplBase::OnGetProfileCredentials(
     const std::string& profile_credential,
     bool success) {
   DCHECK(!cancel_connecting_);
@@ -319,8 +323,8 @@ void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
       return;
     }
 
-    connection_info_.SetConnectionInfo(target_vpn_entry_name(), GetHostname(),
-                                       *username, *password);
+    connection_info_.SetConnectionInfo(manager_->target_vpn_entry_name(),
+                                       GetHostname(), *username, *password);
     // Let's create os vpn entry with |connection_info_|.
     CreateVPNConnection();
     return;
@@ -328,11 +332,6 @@ void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
 
   VLOG(2) << __func__ << " : it's invalid profile credential";
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-}
-
-const BraveVPNConnectionInfo& BraveVPNOSConnectionAPIBase::connection_info()
-    const {
-  return connection_info_;
 }
 
 }  // namespace brave_vpn

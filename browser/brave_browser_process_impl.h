@@ -147,7 +147,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       override;
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
+  brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
 #endif
   brave::BraveFarblingService* brave_farbling_service() override;
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
@@ -219,8 +219,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI>
-      brave_vpn_os_connection_api_;
+  std::unique_ptr<brave_vpn::BraveVPNConnectionManager>
+      brave_vpn_connection_manager_;
 #endif
 
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
