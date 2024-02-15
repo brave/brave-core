@@ -25,7 +25,7 @@ constexpr auto kDohFallbackEndpointAddresses{
     })};
 
 std::vector<DnsOverHttpsServerConfig> MaybeAddFallbackDohServer(
-    const std::vector<DnsOverHttpsServerConfig> doh_servers) {
+    std::vector<DnsOverHttpsServerConfig> doh_servers) {
   if (!base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
     return doh_servers;
   }
@@ -37,11 +37,10 @@ std::vector<DnsOverHttpsServerConfig> MaybeAddFallbackDohServer(
   const char* endpointAddress = kDohFallbackEndpointAddresses.at(endpoint);
   auto fallbackDohServer =
       DnsOverHttpsServerConfig::FromString(endpointAddress);
-  std::vector<DnsOverHttpsServerConfig> extended_doh_servers = doh_servers;
   if (fallbackDohServer.has_value()) {
-    extended_doh_servers.push_back(fallbackDohServer.value());
+    doh_servers.push_back(fallbackDohServer.value());
   }
-  return extended_doh_servers;
+  return doh_servers;
 }
 
 }  // namespace
