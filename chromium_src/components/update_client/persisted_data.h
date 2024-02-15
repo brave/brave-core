@@ -8,16 +8,20 @@
 
 #include "brave/components/widevine/static_buildflags.h"
 
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-#define pref_service_ \
-  pref_service_;      \
-  friend class SequentialUpdateChecker
-#endif
-
 #include "src/components/update_client/persisted_data.h"  // IWYU pragma: export
 
 #if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-#undef pref_service_
-#endif
+
+class PrefService;
+
+namespace update_client {
+
+bool UpstreamHasArm64Widevine(PrefService* prefService);
+
+void SetUpstreamHasArm64Widevine(PrefService* prefService);
+
+}  // namespace update_client
+
+#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_PERSISTED_DATA_H_
