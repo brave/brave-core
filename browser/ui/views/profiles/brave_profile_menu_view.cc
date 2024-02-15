@@ -38,6 +38,7 @@ void BraveProfileMenuView::BuildIdentity() {
       profile_attributes->GetProfileThemeColors().profile_highlight_color,
       /*edit_button_params=*/std::nullopt,
       ui::ImageModel::FromImage(profile_attributes->GetAvatarIcon()),
+      ui::ImageModel(),
       /*title=*/profile_attributes->GetName());
 }
 
