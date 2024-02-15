@@ -3,9 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import WebKit
 import BraveCore
+import BraveShared
 import os.log
+import WebKit
 
 class BraveSearchResultAdScriptHandler: TabContentScript {
   private struct SearchResultAdResponse: Decodable {
@@ -29,8 +30,6 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
 
   fileprivate weak var tab: Tab?
 
-  private static let secondsInDay = 24 * 60 * 60
-
   init(tab: Tab) {
     self.tab = tab
   }
@@ -38,7 +37,7 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
   static let scriptName = "BraveSearchResultAdScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
-  static let scriptSandbox: WKContentWorld = .page
+  static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
@@ -74,8 +73,8 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
           let messageData = try? JSONSerialization.data(withJSONObject: message.body, options: []),
           let searchResultAds = try? JSONDecoder().decode(SearchResultAdResponse.self, from: messageData)
     else {
-        Logger.module.error("Failed to parse search result ads response")
-        return
+      Logger.module.error("Failed to parse search result ads response")
+      return
     }
 
     processSearchResultAds(searchResultAds, braveSearchResultAdManager: braveSearchResultAdManager)
@@ -95,11 +94,11 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
       var conversion: BraveAds.ConversionInfo?
       if let conversionUrlPatternValue = ad.conversionUrlPatternValue,
          let conversionObservationWindowValue = ad.conversionObservationWindowValue {
-         let timeInterval = TimeInterval(conversionObservationWindowValue * BraveSearchResultAdScriptHandler.secondsInDay)
+         let timeInterval = TimeInterval(conversionObservationWindowValue) * 1.days
         conversion = .init(
-            urlPattern: conversionUrlPatternValue,
-            verifiableAdvertiserPublicKeyBase64: ad.conversionAdvertiserPublicKeyValue,
-            observationWindow: Date(timeIntervalSince1970: timeInterval)
+          urlPattern: conversionUrlPatternValue,
+          verifiableAdvertiserPublicKeyBase64: ad.conversionAdvertiserPublicKeyValue,
+          observationWindow: Date(timeIntervalSince1970: timeInterval)
         )
       }
 
@@ -117,7 +116,8 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
         conversion: conversion
       )
 
-      braveSearchResultAdManager.triggerSearchResultAdViewedEvent(searchResultAd)
+      braveSearchResultAdManager.triggerSearchResultAdViewedEvent(
+        placementId: ad.placementId, searchResultAd:searchResultAd)
     }
   }
 }

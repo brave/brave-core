@@ -1,7 +1,7 @@
-// Copyright 2024 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 'use strict';
 
@@ -14,8 +14,10 @@ window.__firefox__.includeOnce('BraveSearchResultAdScript', function($) {
   });
 
   let getJsonLdCreatives = () => {
-    const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-    const jsonLdList = Array.from(scripts).map(script => JSON.parse(script.textContent));
+    const scripts =
+      document.querySelectorAll('script[type="application/ld+json"]');
+    const jsonLdList =
+      Array.from(scripts).map(script => JSON.parse(script.textContent));
 
     if (!jsonLdList) {
       return [];
@@ -32,8 +34,10 @@ window.__firefox__.includeOnce('BraveSearchResultAdScript', function($) {
       'data-description': 'description',
       'data-rewards-value': 'rewardsValue',
       'data-conversion-url-pattern-value': 'conversionUrlPatternValue',
-      'data-conversion-advertiser-public-key-value': 'conversionAdvertiserPublicKeyValue',
-      'data-conversion-observation-window-value': 'conversionObservationWindowValue'
+      'data-conversion-advertiser-public-key-value':
+        'conversionAdvertiserPublicKeyValue',
+      'data-conversion-observation-window-value':
+        'conversionObservationWindowValue'
     };
 
     let jsonLdCreatives = [];

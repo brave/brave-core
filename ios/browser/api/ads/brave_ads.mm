@@ -1733,16 +1733,15 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       }));
 }
 
-- (void)triggerSearchResultAdEvent:
-            (BraveAdsSearchResultAdInfo*)searchResultAdInfo
+- (void)triggerSearchResultAdEvent:(BraveAdsSearchResultAdInfo*)searchResultAd
                          eventType:(BraveAdsSearchResultAdEventType)eventType
                         completion:(void (^)(BOOL success))completion {
-  if (![self isServiceRunning] || !searchResultAdInfo) {
+  if (![self isServiceRunning] || !searchResultAd) {
     return;
   }
 
   ads->TriggerSearchResultAdEvent(
-      searchResultAdInfo.cppObjPtr,
+      searchResultAd.cppObjPtr,
       static_cast<brave_ads::mojom::SearchResultAdEventType>(eventType),
       base::BindOnce(^(const bool success) {
         completion(success);

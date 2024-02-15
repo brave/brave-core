@@ -330,8 +330,15 @@ extension BrowserViewController: WKNavigationDelegate {
         tab?.loadRequest(modifiedRequest)
         return (.cancel, preferences)
       }
-
-      tab?.braveSearchResultAdManager = BraveSearchResultAdManager(url: requestURL, rewards: rewards, isPrivateBrowsing: isPrivateBrowsing)
+        
+      if let braveSearchResultAdManager = tab?.braveSearchResultAdManager,
+         braveSearchResultAdManager.isSearchResultAdClickedURL(requestURL),
+         navigationAction.navigationType == .linkActivated {
+        braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(requestURL)
+        tab?.braveSearchResultAdManager = nil
+      } else {
+        tab?.braveSearchResultAdManager = BraveSearchResultAdManager(url: requestURL, rewards: rewards, isPrivateBrowsing: isPrivateBrowsing)
+      }
 
       // We fetch cookies to determine if backup search was enabled on the website.
       let profile = self.profile
