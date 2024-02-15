@@ -145,19 +145,16 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
     const char* url;
     bool is_valid;
   } test_cases[] = {
-      {"https://brave.crypto", true},
-      {"https://brave.x", true},
-      {"https://brave.coin", false},
-      {"https://brave.nft", true},
-      {"https://brave.dao", true},
-      {"https://brave.wallet", true},
-      {"https://brave.888", false},
-      {"https://brave.blockchain", true},
-      {"https://brave.bitcoin", true},
-      {"https://brave.zil", true},
-      {"https://brave", false},
-      {"https://brave.com", false},
-      {"", false},
+      {"https://brave.crypto", true},   {"https://brave.x", true},
+      {"https://brave.coin", false},    {"https://brave.nft", true},
+      {"https://brave.dao", true},      {"https://brave.wallet", true},
+      {"https://brave.888", false},     {"https://brave.blockchain", true},
+      {"https://brave.bitcoin", true},  {"https://brave.zil", true},
+      {"https://brave.altimist", true}, {"https://brave.anime", true},
+      {"https://brave.klever", true},   {"https://brave.manga", true},
+      {"https://brave.polygon", true},  {"https://brave.unstoppable", true},
+      {"https://brave.pudgy", true},    {"https://brave", false},
+      {"https://brave.com", false},     {"", false},
   };
 
   for (const auto& test_case : test_cases) {
