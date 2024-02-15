@@ -132,8 +132,8 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // All Greaselion scripts default to document end.
   content_script.run_at =
       rule.run_at() == kRunAtDocumentStart
-          ? extensions::api::content_scripts::RunAt::kDocumentStart
-          : extensions::api::content_scripts::RunAt::kDocumentEnd;
+          ? extensions::api::extension_types::RunAt::kDocumentStart
+          : extensions::api::extension_types::RunAt::kDocumentEnd;
 
   if (!rule.messages().empty()) {
     root.SetByDottedPath(extensions::manifest_keys::kDefaultLocale, "en_US");
