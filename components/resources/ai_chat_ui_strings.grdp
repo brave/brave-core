@@ -261,4 +261,7 @@
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>
+  <message name="IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL" desc="A checkbox label to opt-in or out for sending current tab's url">
+    Share the hostname of the page you are on (<ph name="HOST_NAME">$1<ex>www.example.com</ex></ph>) to help us make Leo better.
+  </message>
 </grit-part>

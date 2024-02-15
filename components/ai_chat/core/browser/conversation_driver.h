@@ -112,6 +112,7 @@ class ConversationDriver {
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
                     const std::string& rating_id,
+                    bool send_hostname,
                     mojom::PageHandler::SendFeedbackCallback callback);
 
  protected:
