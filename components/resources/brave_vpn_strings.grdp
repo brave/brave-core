@@ -264,7 +264,7 @@ However, we noticed this helper service is not running - and we don't want to le
 <ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
   </message>
   <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_TEXT" desc="A text shown to user when Brave VPN WireGuard is asking for fallback to IKEv2">
-Looks like there are some issues with the WireGuard connection. Want to enable IKEv2 fallback for a reliable VPN? Simply restart your browser.
+Looks like there are some issues with the WireGuard connection. Want to enable IKEv2 fallback for a reliable VPN? Simply change the settings.
 
 Need help with compatibility or configuration? Reach out to our friendly support team.
 You can always revert back to WireGuard on brave://settings/system.
@@ -286,7 +286,7 @@ Let's get you connected!
   </message>
 
   <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_OK_TEXT" desc="A text shown to user on dialog's ok button when Brave VPN WireGuard is asking for fallback to IKEv2">
-    Restart browser
+    Change the settings
   </message>
 
   <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_CANCEL_TEXT" desc="A text shown to user on dialog's cancel button when Brave VPN WireGuard is asking for fallback to IKEv2">

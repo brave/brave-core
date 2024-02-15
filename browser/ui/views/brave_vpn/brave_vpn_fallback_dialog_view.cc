@@ -12,7 +12,6 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -143,7 +142,6 @@ void BraveVpnFallbackDialogView::OnClosing() {
 void BraveVpnFallbackDialogView::OnAccept() {
   g_browser_process->local_state()->SetBoolean(prefs::kBraveVPNWireguardEnabled,
                                                false);
-  chrome::AttemptRestart();
 }
 
 BEGIN_METADATA(BraveVpnFallbackDialogView, views::DialogDelegateView)

@@ -3,44 +3,36 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_BRAVE_VPN_WIREGUARD_CONNECTION_API_BASE_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_BRAVE_VPN_WIREGUARD_CONNECTION_API_BASE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIREGUARD_CONNECTION_API_IMPL_BASE_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIREGUARD_CONNECTION_API_IMPL_BASE_H_
 
 #include <string>
 
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/brave_vpn/browser/connection/connection_api_impl.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/credentials/brave_vpn_wireguard_profile_credentials.h"
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
-class PrefService;
-
 namespace brave_vpn {
 
-class BraveVPNWireguardConnectionAPIBase
-    : public BraveVPNOSConnectionAPI,
-      public BraveVPNOSConnectionAPI::Observer {
+class WireguardConnectionAPIImplBase : public ConnectionAPIImpl {
  public:
-  BraveVPNWireguardConnectionAPIBase(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_prefs);
+  WireguardConnectionAPIImplBase(
+      BraveVPNConnectionManager* manager,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  ~WireguardConnectionAPIImplBase() override;
 
-  BraveVPNWireguardConnectionAPIBase(
-      const BraveVPNWireguardConnectionAPIBase&) = delete;
-  BraveVPNWireguardConnectionAPIBase& operator=(
-      const BraveVPNWireguardConnectionAPIBase&) = delete;
-  ~BraveVPNWireguardConnectionAPIBase() override;
-
-  // BraveVPNOSConnectionAPI
+  // ConnectionAPIImpl overrides:
   void FetchProfileCredentials() override;
   void SetSelectedRegion(const std::string& name) override;
   void Connect() override;
+  void UpdateAndNotifyConnectionStateChange(
+      mojom::ConnectionState state) override;
+  Type type() const override;
 
   // Platform dependent APIs.
   virtual void PlatformConnectImpl(
       const wireguard::WireguardProfileCredentials& credentials) = 0;
-
-  // BraveVPNOSConnectionAPI::Observer
-  void OnConnectionStateChanged(mojom::ConnectionState state) override;
 
  protected:
   void OnDisconnected(bool success);
@@ -54,9 +46,9 @@ class BraveVPNWireguardConnectionAPIBase
  private:
   void ResetConnectionInfo();
 
-  base::WeakPtrFactory<BraveVPNWireguardConnectionAPIBase> weak_factory_{this};
+  base::WeakPtrFactory<WireguardConnectionAPIImplBase> weak_factory_{this};
 };
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_BRAVE_VPN_WIREGUARD_CONNECTION_API_BASE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIREGUARD_CONNECTION_API_IMPL_BASE_H_
