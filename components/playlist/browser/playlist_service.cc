@@ -1215,11 +1215,9 @@ void PlaylistService::OnMediaDetected(base::Value media,
   }
 
   CHECK(contents);
-  CHECK_NE(contents->GetController().GetLastCommittedEntryIndex(), -1);
-
-  NotifyMediaFilesUpdated(
-      contents->GetLastCommittedURL(),
-      download_request_manager_->GetPlaylistItems(std::move(media), contents));
+  const GURL url = contents->GetLastCommittedURL();
+  NotifyMediaFilesUpdated(url, download_request_manager_->GetPlaylistItems(
+                                   std::move(media), contents));
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(
