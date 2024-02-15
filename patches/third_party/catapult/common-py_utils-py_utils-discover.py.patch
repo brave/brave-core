@@ -1,8 +1,8 @@
 diff --git a/common/py_utils/py_utils/discover.py b/common/py_utils/py_utils/discover.py
-index 7eac0c545a85345f972e1de15f2c2306ba43ff75..f719c26d87559066a64eec1a7c261b5f423d80cb 100644
+index d28ec132f5975807910e2aef724d7e3785e3a866..a6324a8edf973e5b9ff94bc0a6c4ebea7b6b08de 100644
 --- a/common/py_utils/py_utils/discover.py
 +++ b/common/py_utils/py_utils/discover.py
-@@ -189,3 +189,4 @@ _COUNTER = [0]
+@@ -188,3 +188,4 @@ _COUNTER = [0]
  def _GetUniqueModuleName():
    _COUNTER[0] += 1
    return "module_" + str(_COUNTER[0])

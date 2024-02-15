@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 03775e99ae3db5b75152ef06f0046701e87f52bb..69e5c180c17020bfab8e2e4aa24c0ce6b563f1f3 100644
+index 485d05957276197dcf38517cb37747a4c68a169a..a32b320aa9ff2ccca744cb979268107cd5a18fde 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -214,6 +214,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+@@ -215,6 +215,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      // TODO(crbug.com/1501130): Add WebUI for Automatic Fullscreen.
      {ContentSettingsType::AUTOMATIC_FULLSCREEN, nullptr},
      {ContentSettingsType::SUB_APP_INSTALLATION_PROMPTS, nullptr},
@@ -10,7 +10,7 @@ index 03775e99ae3db5b75152ef06f0046701e87f52bb..69e5c180c17020bfab8e2e4aa24c0ce6
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -474,6 +475,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -475,6 +476,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/cocoa/main_menu_builder.mm b/chrome/browser/ui/cocoa/main_menu_builder.mm
-index f4526165ca08c4c6dbf22bf16787773639064b3f..142f51ae60e27054c5cb437984b8452b706a8946 100644
+index 2a5365abff6bfc586c8fe9723116f647db9b795f..f7cadca82b9f7f40328b786314d1b1cb79e7bcdf 100644
 --- a/chrome/browser/ui/cocoa/main_menu_builder.mm
 +++ b/chrome/browser/ui/cocoa/main_menu_builder.mm
-@@ -117,6 +117,7 @@ NSMenuItem* BuildFileMenu(NSApplication* nsapp,
+@@ -116,6 +116,7 @@ NSMenuItem* BuildFileMenu(NSApplication* nsapp,
                Item(IDS_NEW_INCOGNITO_WINDOW_MAC)
                    .command_id(IDC_NEW_INCOGNITO_WINDOW)
                    .remove_if(is_pwa),
@@ -10,7 +10,7 @@ index f4526165ca08c4c6dbf22bf16787773639064b3f..142f51ae60e27054c5cb437984b8452b
                Item(IDS_REOPEN_CLOSED_TABS_MAC)
                    .command_id(IDC_RESTORE_TAB)
                    .remove_if(is_pwa),
-@@ -544,6 +545,7 @@ NSMenuItem* BuildHelpMenu(NSApplication* nsapp,
+@@ -540,6 +541,7 @@ NSMenuItem* BuildHelpMenu(NSApplication* nsapp,
                Item(IDS_FEEDBACK_MAC)
                    .command_id(IDC_FEEDBACK),
  #endif

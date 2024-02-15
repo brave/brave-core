@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/context_features/context_feature_settings.h b/third_party/blink/renderer/core/context_features/context_feature_settings.h
-index 7cb0440ef48c7764e966bfa7d8d712d99ec17535..32ddae0260ccb4785b51124d269d775c7d7b00ef 100644
+index 43fd8291ed61df8562ed6199f9cfb7a98f6394aa..0387a51b85f86c587acf5ddafee66d26d10c08a6 100644
 --- a/third_party/blink/renderer/core/context_features/context_feature_settings.h
 +++ b/third_party/blink/renderer/core/context_features/context_feature_settings.h
-@@ -52,6 +52,7 @@ class CORE_EXPORT ContextFeatureSettings final
+@@ -64,6 +64,7 @@ class CORE_EXPORT ContextFeatureSettings final
    }
  
    void Trace(Visitor*) const override;
