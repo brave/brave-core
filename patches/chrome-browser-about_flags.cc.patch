@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index de3be2eec25ccf745d1b8d11e7125803ca16167d..1ba529d913a0b8bdf801aa7a91b767b16d90c407 100644
+index c0ae1a909bcb1d6e3dccea36501a474491b6b30a..c37014aa7c631b1c1188b700022748d6dc9cdc35 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3800,6 +3800,7 @@ const FeatureEntry::FeatureVariation
+@@ -3744,6 +3744,7 @@ const FeatureEntry::Choice kAccountBookmarksAndReadingListBehindOptInChoices[] =
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
@@ -10,7 +10,7 @@ index de3be2eec25ccf745d1b8d11e7125803ca16167d..1ba529d913a0b8bdf801aa7a91b767b1
  // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
  // //tools/flags/generate_unexpire_flags.py.
  #include "build/chromeos_buildflags.h"
-@@ -11259,6 +11260,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
+@@ -11180,6 +11181,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
  
  bool ShouldSkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
                                         const FeatureEntry& entry) {

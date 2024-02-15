@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index c645b805535caa0175651e1d8d683429ab8b56ea..c0ff2e5cacd5ccf7526147e35c8b94c7ed4ec8f3 100644
+index 7109bcc0fc4dd45de05c46248e733095f36b3a79..f1f40331f385190efe89316a90584d2dffadd30b 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -399,6 +399,7 @@ StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
+@@ -408,6 +408,7 @@ StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
    welcome_enabled =
        welcome::IsEnabled(profile_) && welcome::HasModulesToShow(profile_);
  #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)

@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index 86590cfb29a6877bb3559c09bd9722359305084a..ef784aa9bee5943faa49b77ec98e2af2c281feb6 100644
+index 7b91549b79e6ce52fe46e4b3e80a372462dcd7ef..bddb10b5f8559bbc3123f848f7729cf913dcc807 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
-@@ -40,6 +40,7 @@ struct PrefsForManagedContentSettingsMapEntry {
+@@ -38,6 +38,7 @@ struct PrefsForManagedContentSettingsMapEntry {
  
  constexpr PrefsForManagedContentSettingsMapEntry
      kPrefsForManagedContentSettingsMap[] = {
@@ -10,7 +10,7 @@ index 86590cfb29a6877bb3559c09bd9722359305084a..ef784aa9bee5943faa49b77ec98e2af2
          {prefs::kManagedCookiesAllowedForUrls, ContentSettingsType::COOKIES,
           CONTENT_SETTING_ALLOW},
          {prefs::kManagedCookiesBlockedForUrls, ContentSettingsType::COOKIES,
-@@ -124,6 +125,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
+@@ -116,6 +117,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
  };
  
  constexpr const char* kManagedPrefs[] = {

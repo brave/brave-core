@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index b4b2f01a846a744d1df203a3b3e21b82516be035..704cb9a3040a16d305017e16016e91c8fa9ae16a 100644
+index 8cbcd66a27c765646e13a287456686e843e6118d..b40d624b1eb4f70f40f368a9f0d176d0cfa22ca1 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -706,6 +706,7 @@ void LocationBarView::Layout() {
+@@ -707,6 +707,7 @@ void LocationBarView::Layout(PassKey) {
    if (show_overriding_permission_chip)
      text_left += text_overriding_permission_chip_indent;
  
@@ -10,7 +10,7 @@ index b4b2f01a846a744d1df203a3b3e21b82516be035..704cb9a3040a16d305017e16016e91c8
    LocationBarLayout leading_decorations(LocationBarLayout::Position::kLeftEdge,
                                          text_left);
    LocationBarLayout trailing_decorations(
-@@ -785,6 +786,7 @@ void LocationBarView::Layout() {
+@@ -786,6 +787,7 @@ void LocationBarView::Layout(PassKey) {
      }
    };
  
