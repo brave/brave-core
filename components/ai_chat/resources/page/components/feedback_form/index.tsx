@@ -6,6 +6,7 @@
 import * as React from 'react'
 import DropDown from '@brave/leo/react/dropdown'
 import Button from '@brave/leo/react/button'
+import Checkbox from '@brave/leo/react/checkbox'
 import { getLocale } from '$web-common/locale'
 import formatMessage from '$web-common/formatMessage'
 import DataContext from '../../state/context'
@@ -20,7 +21,7 @@ const CATEGORY_OPTIONS = new Map([
 
 interface FeedbackFormProps {
   onCancel?: () => void
-  onSubmit?: (selectedCategory: string, feedbackText: string) => void
+  onSubmit?: (selectedCategory: string, feedbackText: string, shouldSendUrl: boolean) => void
   isDisabled?: boolean
 }
 
@@ -29,6 +30,7 @@ function FeedbackForm(props: FeedbackFormProps) {
   const [category, setCategory] = React.useState('')
   const [feedbackText, setFeedbackText] = React.useState('')
   const context = React.useContext(DataContext)
+  const [shouldSendUrl, setShouldSendUrl] = React.useState(true)
 
   const canSubmit = !!category && !props.isDisabled
 
@@ -37,7 +39,7 @@ function FeedbackForm(props: FeedbackFormProps) {
   }
 
   const handleSubmit = () => {
-    props.onSubmit?.(category, feedbackText)
+    props.onSubmit?.(category, feedbackText, shouldSendUrl)
   }
 
   const handleSelectOnChange = (e: any) => {
@@ -46,6 +48,10 @@ function FeedbackForm(props: FeedbackFormProps) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFeedbackText(e.target.value)
+  }
+
+  const handleCheckboxChange = (e: CustomEvent<{ checked: boolean; }>) => {
+    setShouldSendUrl(e.detail.checked)
   }
 
   React.useEffect(() => {
@@ -86,6 +92,19 @@ function FeedbackForm(props: FeedbackFormProps) {
             />
           </label>
         </fieldset>
+        {context.siteInfo?.hostname && (
+          <fieldset>
+            <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
+              <label>{
+                formatMessage(getLocale('sendSiteHostnameLabel'), {
+                  placeholders: {
+                    $1: context.siteInfo.hostname
+                  }
+                })
+              }</label>
+            </Checkbox>
+          </fieldset>
+        )}
         {!context.isPremiumUser && (
           <div className={styles.premiumNote}>
             {formatMessage(getLocale('feedbackPremiumNote'), {
