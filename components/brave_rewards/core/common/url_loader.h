@@ -16,7 +16,7 @@ namespace brave_rewards::internal {
 
 // Responsible for dispatching URL network requests to the browser, and logging
 // both requests and responses.
-class URLLoader : public RewardsEngineHelper {
+class URLLoader : public RewardsEngineHelper, public WithHelperKey<URLLoader> {
  public:
   explicit URLLoader(RewardsEngineImpl& engine);
   ~URLLoader() override;

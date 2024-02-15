@@ -54,6 +54,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -248,6 +249,15 @@ std::vector<std::string> GetISOCountries() {
     countries.emplace_back(*country_pointer);
   }
   return countries;
+}
+
+mojom::RewardsParametersPtr RewardsParametersFromPrefs(PrefService& prefs) {
+  auto params = internal::RewardsParametersProvider::DictToParameters(
+      prefs.GetDict(prefs::kParameters));
+  if (params) {
+    return params;
+  }
+  return mojom::RewardsParameters::New();
 }
 
 template <typename Callback, typename... Args>
@@ -521,7 +531,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
 
         // Set the user's current ToS version.
         prefs->SetInteger(prefs::kTosVersion,
-                          prefs->GetInteger(prefs::kParametersTosVersion));
+                          RewardsParametersFromPrefs(*prefs)->tos_version);
 
         // Fetch the user's balance before turning on AC. We don't want to
         // automatically turn on AC if for some reason the user has a current
@@ -584,7 +594,7 @@ void RewardsServiceImpl::GetUserType(
       version = base::Version({1});
     }
 
-    if (!prefs->GetBoolean(prefs::kParametersVBatExpired) &&
+    if (!RewardsParametersFromPrefs(*prefs)->vbat_expired &&
         version.CompareTo(base::Version({2, 5})) < 0) {
       std::move(callback).Run(UserType::kLegacyUnconnected);
       return;
@@ -602,7 +612,7 @@ bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {
   if (!prefs->GetBoolean(prefs::kEnabled)) {
     return false;
   }
-  int params_version = prefs->GetInteger(prefs::kParametersTosVersion);
+  int params_version = RewardsParametersFromPrefs(*prefs)->tos_version;
   int user_version = prefs->GetInteger(prefs::kTosVersion);
   return user_version < params_version;
 }
@@ -610,7 +620,7 @@ bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {
 void RewardsServiceImpl::AcceptTermsOfServiceUpdate() {
   if (IsTermsOfServiceUpdateRequired()) {
     auto* prefs = profile_->GetPrefs();
-    int params_version = prefs->GetInteger(prefs::kParametersTosVersion);
+    int params_version = RewardsParametersFromPrefs(*prefs)->tos_version;
     prefs->SetInteger(prefs::kTosVersion, params_version);
     for (auto& observer : observers_) {
       observer.OnTermsOfServiceUpdateAccepted();

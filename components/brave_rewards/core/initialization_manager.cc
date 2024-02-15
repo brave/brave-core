@@ -7,9 +7,9 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/api/api.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
@@ -91,7 +91,7 @@ void InitializationManager::InitializeHelpers() {
   engine().contribution()->SetAutoContributeTimer();
   engine().contribution()->SetMonthlyContributionTimer();
   engine().contribution()->Initialize();
-  engine().api()->Initialize();
+  engine().Get<RewardsParametersProvider>().StartAutoUpdate();
   engine().uphold()->CheckEligibility();
   engine().Get<LinkageChecker>().CheckLinkage();
 }

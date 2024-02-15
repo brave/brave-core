@@ -78,7 +78,7 @@ void SolanaWalletProvider::FetchBalance(
 
 void SolanaWalletProvider::BeginLogin(
     BeginExternalWalletLoginCallback callback) {
-  post_challenges_.Request(
+  Get<endpoints::PostChallenges>().Request(
       base::BindOnce(&SolanaWalletProvider::OnPostChallengesResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }

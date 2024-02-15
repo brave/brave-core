@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_HELPER_H_
 
 #include "base/memory/raw_ref.h"
+#include "base/supports_user_data.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/rewards_log_stream.h"
@@ -15,10 +16,12 @@ namespace brave_rewards::internal {
 
 // Base class for Rewards engine helpers. Provides convenient accessors and
 // utility methods.
-class RewardsEngineHelper {
+class RewardsEngineHelper : public base::SupportsUserData::Data {
+ public:
+  ~RewardsEngineHelper() override;
+
  protected:
   explicit RewardsEngineHelper(RewardsEngineImpl& engine);
-  virtual ~RewardsEngineHelper();
 
   RewardsEngineHelper(const RewardsEngineHelper&) = delete;
   RewardsEngineHelper& operator=(const RewardsEngineHelper&) = delete;
@@ -38,6 +41,16 @@ class RewardsEngineHelper {
 
  private:
   const raw_ref<RewardsEngineImpl> engine_;
+};
+
+// A mixin for exposing a user data key for a `RewardsEngineHelper` class.
+template <typename T>
+class WithHelperKey {
+ public:
+  static const void* GetHelperKey() { return std::addressof(kHelperKey); }
+
+ private:
+  static inline const int kHelperKey = 0;
 };
 
 }  // namespace brave_rewards::internal
