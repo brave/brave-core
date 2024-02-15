@@ -27,8 +27,9 @@ AIChatIAPSubscription::AIChatIAPSubscription(PrefService* prefs)
 
 AIChatIAPSubscription::~AIChatIAPSubscription() = default;
 
-void AIChatIAPSubscription::GetPurchaseToken(
-    GetPurchaseTokenCallback callback) {
+void AIChatIAPSubscription::GetPurchaseTokenOrderId(
+    GetPurchaseTokenOrderIdCallback callback) {
+  std::string order_id_string = "";
   std::string purchase_token_string = "";
   std::string package_string = kDefaultPackage;
   std::string product_id_string = kProductId;
@@ -52,6 +53,11 @@ void AIChatIAPSubscription::GetPurchaseToken(
     product_id_string = prefs_->GetString(prefs::kBraveChatProductIdAndroid);
   }
 
+  auto* order_id = prefs_->FindPreference(prefs::kBraveChatOrderIdAndroid);
+  if (order_id && !product_id->IsDefaultValue()) {
+    order_id_string = prefs_->GetString(prefs::kBraveChatOrderIdAndroid);
+  }
+
   base::Value::Dict response;
   response.Set("type", "android");
   response.Set("raw_receipt", purchase_token_string);
@@ -63,7 +69,7 @@ void AIChatIAPSubscription::GetPurchaseToken(
 
   std::string encoded_response_json;
   base::Base64Encode(response_json, &encoded_response_json);
-  std::move(callback).Run(encoded_response_json);
+  std::move(callback).Run(encoded_response_json, order_id_string);
 }
 
 }  // namespace ai_chat
