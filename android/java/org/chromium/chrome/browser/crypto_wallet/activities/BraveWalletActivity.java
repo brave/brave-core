@@ -14,9 +14,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -28,7 +26,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
-import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingBackupWalletFragment;
@@ -83,7 +80,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private ImageView mOnboardingCloseButton;
     private ImageView mOnboardingBackButton;
     private ViewPager mCryptoWalletOnboardingViewPager;
-    private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter mCryptoWalletOnboardingPagerAdapter;
     private boolean mShowBiometricPrompt;
@@ -181,14 +177,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                             showMainLayout();
                         }
                     });
-        }
-    }
-
-    @Override
-    public void onStartWithNative() {
-        super.onStartWithNative();
-        if (mCryptoFragmentPageAdapter == null) {
-            mCryptoFragmentPageAdapter = new CryptoFragmentPageAdapter(this);
         }
     }
 

@@ -2546,9 +2546,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_TRANSACTION_DETAILS" desc="Brave crypto wallet transaction details section">
       Details
     </message>
-    <message name="IDS_EXPLORE" desc="Brave crypto wallet section Explore">
-      Explore
-    </message>
     <message name="IDS_INFORMATION" desc="Brave crypto wallet information label">
       INFORMATION
     </message>
@@ -3655,9 +3652,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX" desc="Label for Solana Address Lookup Table Index section">
       Address Lookup Table Index:
-    </message>
-    <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">
-      Activity
     </message>
     <message name="IDS_DATE_TEXT" desc="Date text as heading">
       Date
