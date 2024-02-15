@@ -566,9 +566,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ADBLOCK_FILTER_SYNTAX" desc="Text for Adblock filter syntax.">
         Adblock filter syntax
       </message>
-      <message name="IDS_ASSET_PRICE" desc="Text for asset price.">
-        <ph name="ASSET_NAME">%1$s<ex>Ethereum</ex></ph> Price (<ph name="ASSET_SYMBOL">%2$s<ex>ETH</ex></ph>)
-      </message>
       <message name="IDS_ENS_TITLE" desc="Title for ENS settings.">
         Ethereum Name Service
       </message>
@@ -2060,27 +2057,6 @@ Are you sure you want to do this?
     <message name="IDS_YOUR_WALLET_IS_CREATING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet creating. It is not displayed anywhere" translateable="false">
       Your wallet is being created...
     </message>
-    <message name="IDS_LIVE" desc="Brave Wallet graph duration text">
-      1H
-    </message>
-    <message name="IDS_DAY_1" desc="Brave Wallet graph duration text">
-      1D
-    </message>
-    <message name="IDS_WEEK_1" desc="Brave Wallet graph duration text">
-      1W
-    </message>
-    <message name="IDS_MONTH_1" desc="Brave Wallet graph duration text">
-      1M
-    </message>
-    <message name="IDS_MONTH_3" desc="Brave Wallet graph duration text">
-      3M
-    </message>
-    <message name="IDS_YEAR_1" desc="Brave Wallet graph duration text">
-      1Y
-    </message>
-    <message name="IDS_ALL" desc="Brave Wallet graph duration text">
-      ALL
-    </message>
     <message name="IDS_NEW_ACCOUNT_PREFIX" desc="Brave Wallet new account default name prefix">
       <ph name="ACCOUNT_NAME">%1$s<ex>Ethereum</ex></ph> Account <ph name="ACCOUNT_NUMBER">%2$s<ex>2</ex></ph>
     </message>
@@ -2185,30 +2161,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_ACCOUNTS" desc="Brave Wallet section text">
       Accounts
-    </message>
-    <message name="IDS_TRANSACTIONS" desc="Brave Wallet section text">
-      Transactions
-    </message>
-    <message name="IDS_TREND_1H_TEXT" desc="Brave Wallet assets 1 hour trend text">
-      1 Hour
-    </message>
-    <message name="IDS_TREND_1D_TEXT" desc="Brave Wallet assets 1 day trend text">
-      1 Day
-    </message>
-    <message name="IDS_TREND_1W_TEXT" desc="Brave Wallet assets 1 week trend text">
-      1 Week
-    </message>
-    <message name="IDS_TREND_1M_TEXT" desc="Brave Wallet assets 1 month trend text">
-      1 Month
-    </message>
-    <message name="IDS_TREND_3M_TEXT" desc="Brave Wallet assets 3 months trend text">
-      3 Months
-    </message>
-    <message name="IDS_TREND_1Y_TEXT" desc="Brave Wallet assets 1 year trend text">
-      1 Year
-    </message>
-    <message name="IDS_TREND_ALL_TEXT" desc="Brave Wallet assets all time trend text">
-      All time
     </message>
     <!-- Stats -->
     <message name="IDS_BRAVE_STATS_USAGE_PING_TITLE" desc="Description that shows in settings for toggling stats usage pings">
@@ -2543,18 +2495,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_TRANSACTION_DETAILS" desc="Brave crypto wallet transaction details section">
       Details
     </message>
-    <message name="IDS_INFORMATION" desc="Brave crypto wallet information label">
-      INFORMATION
-    </message>
-    <message name="IDS_RANK" desc="Brave crypto wallet rank label">
-      Rank
-    </message>
-    <message name="IDS_VOLUME_24_H" desc="Brave crypto wallet 24-hour volume label">
-      24h Volume
-    </message>
-    <message name="IDS_MARKET_CAP" desc="Brave crypto wallet market cap label">
-      Market Cap
-    </message>
     <!-- <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
       Apps
     </message> -->
@@ -2758,9 +2698,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_FAILED_TO_IMPORT_ACCOUNT" desc="Brave wallet msg that appears when we couldn't import an account">
       Failed to import account, please try again.
-    </message>
-    <message name="IDS_WALLET_POWERED_BY_COIN_GECKO" desc="Disclaimer on assets details page for GoinGecko contract agreement">
-      Price data powered by CoinGecko
     </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_DECIMALS" desc="Add custom asset dialog Decimals of precision field">
       Decimals of precision
@@ -3220,30 +3157,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
       The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
-    </message>
-    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_TITLE" desc="Bridge to Aurora modal title">
-      Open the <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> app?
-    </message>
-    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE" desc="Marketing name for Rainbow Bridge app" translateable="false">
-      Rainbow Bridge
-    </message>
-    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE_LEARN_MORE" desc="Rainbow Bridge walk through link description">
-      <ph name="CLICK_START">%1$s</ph>Learn more about using Rainbow Bridge<ph name="CLICK_END">%2$s</ph>
-    </message>
-    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE_RISKS_LEARN_MORE" desc="Rainbow Bridge security walk-through link description">
-      <ph name="CLICK_START">%1$s</ph>Learn how to reduce risk on Rainbow Bridge<ph name="CLICK_END">%2$s</ph>
-    </message>
-    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_DESCRIPTION" desc="Bridge to Aurora modal description">
-      <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.
-    </message>
-    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT" desc="Bridge to Aurora modal action button text">
-      Open the <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> app
-    </message>
-    <message name="IDS_BRAVE_WALLET_AURORA_BUTTON_TEXT" desc="Bridge to Aurora button text" translateable="false">
-      Bridge to Aurora
-    </message>
-    <message name="IDS_DONT_SHOW_AGAIN" desc="Text for don't show again check ">
-      Don't show again
     </message>
     <message name="IDS_UPDATING_VPN_PROFILE" desc="Message to indicate profile is being update after split tunnel update.">
       Updating VPN Profile ...

@@ -83,7 +83,6 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
-import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
@@ -254,38 +253,6 @@ public class Utils {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "Error while opening wallet tab.", e);
         }
-    }
-
-    public static void openAssetDetailsActivity(
-            @NonNull final Context context, @NonNull final BlockchainToken asset) {
-        assert context != null;
-        Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
-        assetDetailIntent.putExtra(CHAIN_ID, asset.chainId);
-        assetDetailIntent.putExtra(ASSET_SYMBOL, asset.symbol);
-        assetDetailIntent.putExtra(ASSET_NAME, asset.name);
-        assetDetailIntent.putExtra(ASSET_ID, asset.tokenId);
-        assetDetailIntent.putExtra(ASSET_LOGO, asset.logo);
-        assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, asset.contractAddress);
-        assetDetailIntent.putExtra(ASSET_DECIMALS, asset.decimals);
-        assetDetailIntent.putExtra(COIN_TYPE, asset.coin);
-        assetDetailIntent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(assetDetailIntent);
-    }
-
-    public static void openAssetDetailsActivity(
-            @NonNull final Context context, @NonNull final CoinMarket asset) {
-        assert context != null;
-        Intent assetDetailIntent = new Intent(context, AssetDetailActivity.class);
-        assetDetailIntent.putExtra(IS_MARKET_COIN, true);
-        assetDetailIntent.putExtra(MARKET_CAP, asset.marketCap);
-        assetDetailIntent.putExtra(MARKET_CAP_RANK, asset.marketCapRank);
-        assetDetailIntent.putExtra(TOTAL_VOLUME, asset.totalVolume);
-        assetDetailIntent.putExtra(ASSET_ID, asset.id);
-        assetDetailIntent.putExtra(ASSET_SYMBOL, asset.symbol);
-        assetDetailIntent.putExtra(ASSET_NAME, asset.name);
-        assetDetailIntent.putExtra(ASSET_LOGO, asset.image);
-        assetDetailIntent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(assetDetailIntent);
     }
 
     /**
@@ -945,49 +912,6 @@ public class Utils {
         }
 
         return "";
-    }
-
-    public static int getTimeframeFromRadioButtonId(int radioButtonId) {
-        if (radioButtonId == R.id.live_radiobutton) {
-            return AssetPriceTimeframe.LIVE;
-        } else if (radioButtonId == R.id.day_1_radiobutton) {
-            return AssetPriceTimeframe.ONE_DAY;
-        } else if (radioButtonId == R.id.week_1_radiobutton) {
-            return AssetPriceTimeframe.ONE_WEEK;
-        } else if (radioButtonId == R.id.month_1_radiobutton) {
-            return AssetPriceTimeframe.ONE_MONTH;
-        } else if (radioButtonId == R.id.month_3_radiobutton) {
-            return AssetPriceTimeframe.THREE_MONTHS;
-        } else if (radioButtonId == R.id.year_1_radiobutton) {
-            return AssetPriceTimeframe.ONE_YEAR;
-        } else {
-            return AssetPriceTimeframe.ALL;
-        }
-    }
-
-    public static String getTimeframeString(int assetPriceTimeframe) {
-        Resources resources = ContextUtils.getApplicationContext().getResources();
-        assert resources != null;
-
-        switch (assetPriceTimeframe) {
-            case AssetPriceTimeframe.LIVE:
-                return resources.getString(R.string.trend_1h_text);
-            case AssetPriceTimeframe.ONE_DAY:
-                return resources.getString(R.string.trend_1d_text);
-            case AssetPriceTimeframe.ONE_WEEK:
-                return resources.getString(R.string.trend_1w_text);
-            case AssetPriceTimeframe.ONE_MONTH:
-                return resources.getString(R.string.trend_1m_text);
-            case AssetPriceTimeframe.THREE_MONTHS:
-                return resources.getString(R.string.trend_3m_text);
-            case AssetPriceTimeframe.ONE_YEAR:
-                return resources.getString(R.string.trend_1y_text);
-            case AssetPriceTimeframe.ALL:
-                return resources.getString(R.string.trend_all_text);
-            default:
-                assert false;
-                return "N/A";
-        }
     }
 
     /*
