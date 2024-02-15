@@ -279,20 +279,32 @@ source_set("ui") {
 
   if (enable_commander) {
     sources += [
-      "commander/brave_simple_command_source.cc",
-      "commander/brave_simple_command_source.h",
+      "commander/bookmark_command_source.cc",
+      "commander/bookmark_command_source.h",
+      "commander/command_source.cc",
+      "commander/command_source.h",
       "commander/commander_service.cc",
       "commander/commander_service.h",
       "commander/commander_service_factory.cc",
       "commander/commander_service_factory.h",
       "commander/commander_service_factory.h",
+      "commander/entity_match.cc",
+      "commander/entity_match.h",
+      "commander/open_url_command_source.cc",
+      "commander/open_url_command_source.h",
       "commander/ranker.cc",
       "commander/ranker.h",
+      "commander/simple_command_source.cc",
+      "commander/simple_command_source.h",
+      "commander/tab_command_source.cc",
+      "commander/tab_command_source.h",
+      "commander/window_command_source.cc",
+      "commander/window_command_source.h",
     ]
 
     deps += [
+      "//brave/browser/ui/commander:fuzzy_finder",
       "//brave/components/commander/browser",
-      "//chrome/browser/ui/commander:fuzzy_finder",
     ]
   }
 

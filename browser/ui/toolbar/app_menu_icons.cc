@@ -79,7 +79,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           {IDC_SAVE_PAGE, kLeoFileDownloadIcon},
           {IDC_CREATE_SHORTCUT, kLeoShareWindowsIcon},
           {IDC_NAME_WINDOW, kLeoEditBoxIcon},
-          {IDC_TOGGLE_QUICK_COMMANDS, kLeoArrowSmallRightIcon},
+          {IDC_COMMANDER, kLeoArrowSmallRightIcon},
           {IDC_PERFORMANCE, kLeoNetworkSpeedFastIcon},
           {IDC_DEV_TOOLS, kLeoCodeIcon},
           {IDC_TASK_MANAGER, kLeoWindowBinaryCodeIcon},
