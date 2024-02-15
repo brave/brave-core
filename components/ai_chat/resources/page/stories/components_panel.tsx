@@ -134,11 +134,11 @@ const SAMPLE_QUESTIONS = [
   'Why did google executives disregard this character in the company?'
 ]
 
-const SITE_INFO = {
+const SITE_INFO: mojom.SiteInfo = {
   title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
   isContentTruncated: false,
   isContentAssociationPossible: true,
-  hasContentAssociated: true
+  hostname: 'www.example.com'
 }
 
 export default {
