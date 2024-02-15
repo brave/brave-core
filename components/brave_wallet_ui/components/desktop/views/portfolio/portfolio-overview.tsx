@@ -351,12 +351,13 @@ export const PortfolioOverview = () => {
     [visibleAssetOptions]
   )
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiat
-      ? { ids: tokenPriceIds, toCurrency: defaultFiat }
-      : skipToken,
-    querySubscriptionOptions60s
-  )
+  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+    useGetTokenSpotPricesQuery(
+      tokenPriceIds.length && defaultFiat
+        ? { ids: tokenPriceIds, toCurrency: defaultFiat }
+        : skipToken,
+      querySubscriptionOptions60s
+    )
 
   const {
     data: portfolioPriceHistory,
@@ -379,7 +380,7 @@ export const PortfolioOverview = () => {
   const fullPortfolioFiatBalance = React.useMemo((): Amount => {
     if (
       !tokenBalancesRegistry ||
-      !spotPriceRegistry ||
+      isLoadingSpotPrices ||
       isLoadingTokensOrRewards
     ) {
       return Amount.empty()
@@ -411,7 +412,8 @@ export const PortfolioOverview = () => {
     visibleAssetOptions,
     spotPriceRegistry,
     accountsListWithRewards,
-    isLoadingTokensOrRewards
+    isLoadingTokensOrRewards,
+    isLoadingSpotPrices
   ])
 
   const formattedFullPortfolioFiatBalance = React.useMemo(() => {
