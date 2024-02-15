@@ -251,7 +251,7 @@ void GetAllCallback(GetCreativeNewTabPageAdsCallback callback,
   std::move(callback).Run(/*success=*/true, segments, creative_ads);
 }
 
-void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+void MigrateToV33(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
   DropTable(transaction, "creative_new_tab_page_ads");
@@ -446,8 +446,8 @@ void CreativeNewTabPageAds::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 29: {
-      MigrateToV29(transaction);
+    case 33: {
+      MigrateToV33(transaction);
       break;
     }
   }
