@@ -52,7 +52,7 @@ inline DWORD WordSwap(DWORD v) {
 std::wstring HashString(std::wstring_view input_string) {
   auto* input_bytes =
       reinterpret_cast<const unsigned char*>(input_string.data());
-  const int input_byte_count = (input_string.length() + 1) * sizeof(wchar_t);
+  const size_t input_byte_count = (input_string.length() + 1) * sizeof(wchar_t);
 
   constexpr size_t kDWordsPerBlock = 2;
   constexpr size_t kBlockSize = sizeof(DWORD) * kDWordsPerBlock;
@@ -66,7 +66,7 @@ std::wstring HashString(std::wstring_view input_string) {
   // Compute an MD5 hash. md5[0] and md5[1] will be used as constant multipliers
   // in the scramble below.
   base::MD5Digest digest;
-  base::MD5Sum(input_bytes, input_byte_count, &digest);
+  base::MD5Sum(base::span(input_bytes, input_byte_count), &digest);
   auto* md5 = reinterpret_cast<DWORD*>(digest.a);
   // The following loop effectively computes two checksums, scrambled like a
   // hash after every DWORD is added.
