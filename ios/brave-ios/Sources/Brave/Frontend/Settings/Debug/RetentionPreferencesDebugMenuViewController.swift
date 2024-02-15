@@ -80,24 +80,21 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
           toggleValue: Preferences.DebugFlag.skipOnboardingIntro ?? false,
           valueChange: { [unowned self] _ in
             self.presentDebugFlagAlert()
-          },
-          cellReuseId: "SkipOnboardingCell"),
+          }),
         .boolRow(
           title: "Skip Education Pop-ups",
           detailText: "Flag for hide/show education pop-ups. Includes onboarding ad block notifications and cookie consent notice blocking callout",
           toggleValue: Preferences.DebugFlag.skipEduPopups ?? false,
           valueChange: { [unowned self] _ in
             self.presentDebugFlagAlert()
-          },
-          cellReuseId: "SkipEduCell"),
+          }),
         .boolRow(
           title: "Skip NTP Callouts",
           detailText: "Flag for hide/show full screen callouts. Includes Default Browser, Rewards, Sync",
           toggleValue: Preferences.DebugFlag.skipNTPCallouts ?? false,
           valueChange: { [unowned self] _ in
             self.presentDebugFlagAlert()
-          },
-          cellReuseId: "SkipNTPCell"),
+          }),
       ],
       footer: .title("These are the debug flags that enables entire features and set to false for Debug scheme in order to provide faster development.")
     )
@@ -117,8 +114,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.Onboarding.isNewRetentionUser.value = status
             }
-          },
-          cellReuseId: "RetentionUserCell"),
+          }),
         .boolRow(
           title: "NTP Education Shown",
           detailText: "Flag tracking NTP Education should be loaded after onboarding of user.",
@@ -128,8 +124,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.FullScreenCallout.ntpCalloutCompleted.value = status
             }
-          },
-          cellReuseId: "NTPEducationCell"),
+          }),
         .boolRow(
           title: "VPN Callout Shown",
           detailText: "Flag determining if VPN callout is shown to user.",
@@ -139,8 +134,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.FullScreenCallout.vpnPromotionCalloutCompleted.value = status
             }
-          },
-          cellReuseId: "VPNCalloutCell"),
+          }),
         .boolRow(
           title: "Rewards Callout Shown",
           detailText: "Flag determining if Rewards callout is shown to user.",
@@ -150,8 +144,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.FullScreenCallout.rewardsCalloutCompleted.value = status
             }
-          },
-          cellReuseId: "RewardsCalloutCell"),
+          }),
         .boolRow(
           title: "Default Browser Callout Shown",
           detailText: "Flag determining if DefaultBrowser callout is shown to user.",
@@ -161,8 +154,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.DefaultBrowserIntro.completed.value = status
             }
-          },
-          cellReuseId: "DefaultBrowserCalloutCell"),
+          }),
       ],
       footer: .title("These are the preferences that stored in preferences for determining the If certain elements are shown to user.")
     )
