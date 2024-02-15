@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_SERVICE_IMPL_H_
 
 #include "base/gtest_prod_util.h"
+#include "third_party/abseil-cpp/absl/container/inlined_vector.h"
 
 #define BRAVE_SYNC_SERVICE_IMPL_H_                                             \
  private:                                                                      \
