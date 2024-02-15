@@ -133,6 +133,6 @@ class BravePerfUtilsStorySet(story.StorySet):
   See loading_desktop.py for details.
   """
 
-  def __init__(self, delay=10):
+  def __init__(self, delay):
     super().__init__(cloud_storage_bucket=story.PARTNER_BUCKET)
     self.AddStory(_UpdateProfilePage(self, delay))

@@ -28,7 +28,7 @@ class BraveUtilsBenchmark(perf_benchmark.PerfBenchmark):
   """
 
   def CreateStorySet(self, _options):
-    return BravePerfUtilsStorySet(delay=30)
+    return BravePerfUtilsStorySet(delay=90)
 
   @classmethod
   def Name(cls):
