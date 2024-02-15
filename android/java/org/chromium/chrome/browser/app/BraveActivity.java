@@ -1275,38 +1275,46 @@ public abstract class BraveActivity extends ChromeActivity
         View anchorView = (View) findViewById(R.id.toolbar);
         float padding = (float) dpToPx(this, 20);
         boolean isTablet = ConfigurationUtils.isTablet(this);
-        new Handler().postDelayed(() -> {
-            PopupWindowTooltip popupWindowTooltip =
-                    new PopupWindowTooltip.Builder(this)
-                            .anchorView(anchorView)
-                            .arrowColor(getResources().getColor(R.color.onboarding_arrow_color))
-                            .gravity(Gravity.BOTTOM)
-                            .dismissOnOutsideTouch(true)
-                            .dismissOnInsideTouch(false)
-                            .backgroundDimDisabled(true)
-                            .contentArrowAtStart(!isTablet)
-                            .padding(padding)
-                            .parentPaddingHorizontal(dpToPx(this, 10))
-                            .onDismissListener(tooltip -> {
-                                if (viewGroup != null && highlightView != null) {
-                                    viewGroup.removeView(highlightView);
-                                }
-                            })
-                            .modal(true)
-                            .contentView(R.layout.brave_onboarding_searchbox)
-                            .build();
+        new Handler()
+                .postDelayed(
+                        () -> {
+                            PopupWindowTooltip popupWindowTooltip =
+                                    new PopupWindowTooltip.Builder(this)
+                                            .anchorView(anchorView)
+                                            .arrowColor(getColor(R.color.onboarding_arrow_color))
+                                            .gravity(Gravity.BOTTOM)
+                                            .dismissOnOutsideTouch(true)
+                                            .dismissOnInsideTouch(false)
+                                            .backgroundDimDisabled(true)
+                                            .contentArrowAtStart(!isTablet)
+                                            .padding(padding)
+                                            .parentPaddingHorizontal(dpToPx(this, 10))
+                                            .onDismissListener(
+                                                    tooltip -> {
+                                                        if (viewGroup != null
+                                                                && highlightView != null) {
+                                                            viewGroup.removeView(highlightView);
+                                                        }
+                                                    })
+                                            .modal(true)
+                                            .contentView(R.layout.brave_onboarding_searchbox)
+                                            .build();
 
-            String countryCode = Locale.getDefault().getCountry();
-            if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
-                TextView toolTipBody = popupWindowTooltip.findViewById(R.id.tv_tooltip_title);
-                toolTipBody.setText(getResources().getString(R.string.searchbox_onboarding_india));
-            }
-            viewGroup.addView(highlightView);
-            HighlightItem item = new HighlightItem(anchorView);
-            highlightView.setHighlightTransparent(true);
-            highlightView.setHighlightItem(item);
-            popupWindowTooltip.show();
-        }, 500);
+                            String countryCode = Locale.getDefault().getCountry();
+                            if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
+                                TextView toolTipBody =
+                                        popupWindowTooltip.findViewById(R.id.tv_tooltip_title);
+                                toolTipBody.setText(
+                                        getResources()
+                                                .getString(R.string.searchbox_onboarding_india));
+                            }
+                            viewGroup.addView(highlightView);
+                            HighlightItem item = new HighlightItem(anchorView);
+                            highlightView.setHighlightTransparent(true);
+                            highlightView.setHighlightItem(item);
+                            popupWindowTooltip.show();
+                        },
+                        500);
     }
 
     public void setDormantUsersPrefs() {

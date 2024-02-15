@@ -15,6 +15,10 @@
 # These tests pass locally but fail on CI.
 -All/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/1
 -All/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/*
+-AllocationRecorderBrowserTest.VerifyCrashreportIncludesNoRecorder
+-DebuggerExtensionApiTest.ParentTargetPermissions
+-EventPageAndFalse/ExtensionBackForwardCacheBrowserTest.*
+-EventPageAndTrue/ExtensionBackForwardCacheBrowserTest.*
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert

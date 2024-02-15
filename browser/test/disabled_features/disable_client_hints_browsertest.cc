@@ -46,11 +46,7 @@ const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     blink::features::kClientHintsResourceWidth_DEPRECATED,
     blink::features::kClientHintsViewportWidth,
     blink::features::kClientHintsViewportWidth_DEPRECATED,
-    blink::features::kUserAgentClientHint,
     blink::features::kViewportHeightClientHintHeader,
-    // Client hints features
-    blink::features::kClientHintsMetaHTTPEquivAcceptCH,
-    blink::features::kClientHintThirdPartyDelegation,
 };
 
 }  // namespace
@@ -228,10 +224,8 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
               base::FeatureList::IsEnabled(feature));
   }
 
-  const size_t expected_default_client_hints_count =
-      IsClientHintHeaderEnabled() ? 3u : 0u;
-  const size_t expected_allowed_client_hints_count =
-      IsClientHintHeaderEnabled() ? 2u : 0u;
+  const size_t expected_default_client_hints_count = 3u;
+  const size_t expected_allowed_client_hints_count = 2u;
 
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), no_client_hints_headers_url()));

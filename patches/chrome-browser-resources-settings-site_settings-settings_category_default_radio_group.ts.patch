@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts b/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
-index 22b84733c762366e56b3282e198118411a80b3ce..4b43261f2b52c14fd5cdae2f2ccd1a3c6a1fcbaa 100644
+index f711b5fefa0eea0b4e80d0ce4e583f7ff444bcf5..6a9403468aaf8c0fa6323ab28c86745de8aaae36 100644
 --- a/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
 +++ b/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
-@@ -160,6 +160,7 @@ export class SettingsCategoryDefaultRadioGroupElement extends
-       case ContentSettingsTypes.WINDOW_MANAGEMENT:
+@@ -162,6 +162,7 @@ export class SettingsCategoryDefaultRadioGroupElement extends
+       case ContentSettingsTypes.WEB_PRINTING:
          // "Ask" vs "Blocked".
          return ContentSetting.ASK;
 +      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA: case ContentSettingsTypes.GOOGLE_SIGN_IN: case ContentSettingsTypes.LOCALHOST_ACCESS: return ContentSetting.ASK; case ContentSettingsTypes.AUTOPLAY: return ContentSetting.ALLOW;

@@ -228,12 +228,12 @@ inline constexpr char kGoogleAccountDeviceActivityURL[] =
 inline constexpr char kGooglePasswordManagerURL[] = "https://support.brave.com";
 
 // The URL for the "Learn more" link for the High Efficiency Mode.
-inline constexpr char kHighEfficiencyModeLearnMoreUrl[] =
+inline constexpr char kMemorySaverModeLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/13383683902733";
 
 // The URL in the help text for the High Efficiency Mode tab discarding
 // exceptions add dialog.
-inline constexpr char16_t kHighEfficiencyModeTabDiscardingHelpUrl[] =
+inline constexpr char16_t kMemorySaverModeTabDiscardingHelpUrl[] =
     u"https://support.brave.com/";
 
 // The URL to the help center article of Incognito mode.

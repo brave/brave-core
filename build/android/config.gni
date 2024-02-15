@@ -58,7 +58,6 @@ brave_chrome_java_deps = [
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_viewmodel_java",
-  "//third_party/androidx:androidx_room_room_runtime_java",
   "//ui/android:java_enums_srcjar",
   "//url/mojom:url_mojom_origin_java",
 ]

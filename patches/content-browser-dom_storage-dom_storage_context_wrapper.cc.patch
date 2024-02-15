@@ -1,5 +1,5 @@
 diff --git a/content/browser/dom_storage/dom_storage_context_wrapper.cc b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-index 0bb64d3d70dcb65d1f87c11abea5d9ce94fb8b49..5fe50fd1f495c8bf0a179d2f7eee8a2cc5fe27e2 100644
+index 65bb12f82e4299ff45d23ea6cce3b75a0b978951..13ce7829a9f1d1dc4dc283887c505e59bc9146dd 100644
 --- a/content/browser/dom_storage/dom_storage_context_wrapper.cc
 +++ b/content/browser/dom_storage/dom_storage_context_wrapper.cc
 @@ -312,6 +312,7 @@ bool DOMStorageContextWrapper::IsRequestValid(

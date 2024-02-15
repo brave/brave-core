@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 9694346193b43a171f7db2abf1a5bfcbaa844335..8da28af3d9df773a1c8340ea1a99443916ff6c90 100644
+index 44e8cc4556303b463d424170af2f93bed0b9f8d4..fdd6fcc8a69d9dd487849076892e21f657a7555c 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -364,6 +364,7 @@ static_library("browser") {

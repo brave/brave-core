@@ -26,7 +26,9 @@ class BraveSearchConversionTest : public testing::Test {
  public:
   BraveSearchConversionTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        template_url_service_(nullptr, 0) {}
+        template_url_service_(
+            static_cast<TemplateURLService::Initializer*>(nullptr),
+            0u) {}
 
   void SetUp() override {
     RegisterPrefs(pref_service_.registry());

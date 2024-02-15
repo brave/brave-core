@@ -1,20 +1,20 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 56d34d12c48cb90316cc3411dac23b2bae921a67..6b010359e892d3b97569fab5c2b0ca217dc0a06d 100755
+index 01e75f7d3b5e0ffcf016315ecd2a4cebaadff7c5..dff126854b81f95c82c5e0233c32fc353ec137cc 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -676,6 +676,7 @@ def _ParseOptions():
-            'archived, to keep output artifacts deterministic.')
-   parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
-                     default=False)
-+  parser.add_option('--skip_signing', action='store_true', default=False)
+@@ -756,6 +756,7 @@ def _ParseOptions():
+                       action='store_true',
+                       dest='verbose',
+                       default=False)
++    parser.add_option('--skip_signing', action='store_true', default=False)
  
-   options, _ = parser.parse_args()
-   if not options.build_dir:
-@@ -704,6 +705,7 @@ def _ParseOptions():
+     options, _ = parser.parse_args()
+     if not options.build_dir:
+@@ -786,6 +787,7 @@ def _ParseOptions():
  
-   return options
+     return options
  
 +from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/chrome/tools/build/win/create_installer_archive.py", globals(), locals())
  
  if '__main__' == __name__:
-   options = _ParseOptions()
+     options = _ParseOptions()

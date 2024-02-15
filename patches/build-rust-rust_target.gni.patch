@@ -1,8 +1,8 @@
 diff --git a/build/rust/rust_target.gni b/build/rust/rust_target.gni
-index e700d3b256e3a21d89587bf9d9d349d16412df6d..70fff6ab72690f31f356f2132ba17563c07c57aa 100644
+index 48d0cc31cceea8111ae670e3e07b285b06ab5245..04f056ec83471ad9df898eed92c610640c88ea05 100644
 --- a/build/rust/rust_target.gni
 +++ b/build/rust/rust_target.gni
-@@ -173,7 +173,7 @@ template("rust_target") {
+@@ -190,7 +190,7 @@ template("rust_target") {
      _cxx_bindings = invoker.cxx_bindings
    }
    _rustenv = [ "OUT_DIR=" +

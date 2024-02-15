@@ -139,7 +139,7 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
 }
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<TabSlotView*>& views,
+    const std::vector<raw_ptr<TabSlotView, VectorExperimental>>& views,
     TabStrip* tab_strip) {
   const bool is_vertical_tabs_floating =
       static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();

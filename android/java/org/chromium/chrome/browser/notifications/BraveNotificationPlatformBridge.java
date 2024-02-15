@@ -66,25 +66,42 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
     }
 
     @Override
-    protected NotificationBuilderBase prepareNotificationBuilder(String notificationId,
-            @NotificationType int notificationType, String origin, String scopeUrl,
-            String profileId, boolean incognito, boolean vibrateEnabled, String title, String body,
-            Bitmap image, Bitmap icon, Bitmap badge, int[] vibrationPattern, long timestamp,
-            boolean renotify, boolean silent, ActionInfo[] actions, String webApkPackage) {
-        mNotificationType = notificationType;
+    protected NotificationBuilderBase prepareNotificationBuilder(
+            NotificationIdentifyingAttributes identifyingAttributes,
+            boolean vibrateEnabled,
+            String title,
+            String body,
+            Bitmap image,
+            Bitmap icon,
+            Bitmap badge,
+            int[] vibrationPattern,
+            long timestamp,
+            boolean renotify,
+            boolean silent,
+            ActionInfo[] actions) {
+        mNotificationType = identifyingAttributes.notificationType;
 
-        if (notificationType == NotificationType.BRAVE_ADS) {
+        if (mNotificationType == NotificationType.BRAVE_ADS) {
             vibrationPattern = EMPTY_VIBRATION_PATTERN;
         }
 
         NotificationBuilderBase result =
-                super.prepareNotificationBuilder(notificationId, notificationType, origin, scopeUrl,
-                        profileId, incognito, vibrateEnabled, title, body, image, icon, badge,
-                        vibrationPattern, timestamp, renotify, silent, actions, webApkPackage);
+                super.prepareNotificationBuilder(
+                        identifyingAttributes,
+                        vibrateEnabled,
+                        title,
+                        body,
+                        image,
+                        icon,
+                        badge,
+                        vibrationPattern,
+                        timestamp,
+                        renotify,
+                        silent,
+                        actions);
 
-        assert result
-                instanceof BraveNotificationBuilder
-            : "Bytecode changes for BraveNotificationBuilder were not applied!";
+        assert result instanceof BraveNotificationBuilder
+                : "Bytecode changes for BraveNotificationBuilder were not applied!";
         if (result instanceof BraveNotificationBuilder) {
             ((BraveNotificationBuilder) result)
                     .setIsBraveNotification(mNotificationType == NotificationType.BRAVE_ADS);

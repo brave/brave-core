@@ -61,7 +61,7 @@ TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
                             NetLogWithSource::Make(NetLogSourceType::NONE));
   EXPECT_THAT(rv, IsOk());
 
-  ProxyServer server = info.proxy_chain().proxy_server();
+  ProxyServer server = info.proxy_chain().GetProxyServer(/*chain_index=*/0);
   HostPortPair host_port = server.host_port_pair();
   EXPECT_TRUE(server.scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port.host(), "127.0.0.1");

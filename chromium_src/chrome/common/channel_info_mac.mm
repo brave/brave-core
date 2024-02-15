@@ -73,4 +73,8 @@ bool IsExtendedStableChannel() {
   return false;
 }
 
+bool IsSideBySideCapable() {
+  return true;
+}
+
 }  // namespace chrome

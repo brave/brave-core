@@ -46,14 +46,6 @@ void OpenTabsSessionListenerIOS::OnSyncCycleCompleted(
   }
 }
 
-void OpenTabsSessionListenerIOS::OnSyncConfigurationCompleted(
-    syncer::SyncService* sync) {
-  if ([observer_
-          respondsToSelector:@selector(openTabsSyncConfigurationCompleted)]) {
-    [observer_ openTabsSyncConfigurationCompleted];
-  }
-}
-
 void OpenTabsSessionListenerIOS::OnSyncShutdown(syncer::SyncService* sync) {
   if ([observer_ respondsToSelector:@selector(openTabsSyncShutdown)]) {
     [observer_ openTabsSyncShutdown];

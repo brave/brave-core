@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "ios/chrome/browser/web/chrome_web_client.h"
+#include "ios/chrome/browser/web/model/chrome_web_client.h"
 
 class BraveWebClient : public ChromeWebClient {
  public:

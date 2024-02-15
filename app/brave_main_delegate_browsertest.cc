@@ -11,7 +11,6 @@
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/preloading/preloading_features.h"
-#include "chrome/browser/promos/promos_features.h"
 #include "chrome/browser/signin/signin_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
@@ -30,6 +29,7 @@
 #include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/language/core/common/language_experiments.h"
 #include "components/lens/lens_features.h"
+#include "components/manta/features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
@@ -134,11 +134,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
       &blink::features::kClientHintsFormFactor,
-      &blink::features::kClientHintsMetaEquivDelegateCH,
       &blink::features::kComputePressure,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kEventTimingReportAllEarlyEntriesOnPaintedPresentation,
       &blink::features::kFencedFrames,
+      &blink::features::kFencedFramesM120FeaturesPart2,
       &blink::features::kFledge,
       &blink::features::kFledgeBiddingAndAuctionServer,
       &blink::features::kFledgeConsiderKAnonymity,
@@ -191,7 +191,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kDIPS,
       &features::kFedCm,
       &features::kFedCmWithoutThirdPartyCookies,
-      &features::kFirstPartySets,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kHaTSWebUI,
 #endif
@@ -254,8 +253,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if BUILDFLAG(ENABLE_MIRROR)
       &kVerifyRequestInitiatorForMirrorHeaders,
 #endif
-      &lens::features::kEnableLensPing,
       &lens::features::kLensStandalone,
+      &manta::features::kMantaService,
       &media::kLiveCaption,
       &metrics::structured::kEnabledStructuredMetricsService,
       &metrics::structured::kNearbyShareMetrics,
@@ -275,7 +274,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &ntp_features::kNtpBackgroundImageErrorDetection,
       &ntp_features::kNtpChromeCartModule,
       &ntp_features::kNtpHistoryClustersModule,
-      &ntp_features::kNtpHistoryClustersModuleDiscounts,
       &ntp_features::kNtpHistoryClustersModuleLoad,
       &omnibox::kDocumentProviderNoSetting,
       &omnibox::kDocumentProviderNoSyncRequirement,
@@ -302,7 +300,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
       &privacy_sandbox::kPrivacySandboxProactiveTopicsBlocking,
       &privacy_sandbox::kPrivacySandboxSettings4,
-      &promos_features::kIOSPromoPasswordBubble,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
       &safe_browsing::kExtensionTelemetryTabsApiSignal,
       &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,

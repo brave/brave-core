@@ -407,6 +407,12 @@ Additional details:
   <message name="IDS_POLICY_SITE_SEARCH_SETTINGS_URL_NOT_HTTPS" desc="The text displayed in the status column of the SiteSearchSettings policy when a URL scheme is not HTTPS.">
     HTTPS scheme recommended for search URL: <ph name="SEARCH_URL">$1<ex>https://www.example.com</ex></ph>
   </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_MUTUALLY_EXCLUSIVE_KEYS" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains incoherent values">
+    Keys "<ph name="DATA_CONTROLS_KEYS">$1<ex>"and", "or"</ex></ph>" cannot be set in the same dictionary
+  </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_MUTUALLY_EXCLUSIVE_KEY_SETS" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains incoherent values">
+    Keys "<ph name="DATA_CONTROLS_FIRST_KEY_SET">$1<ex>"destinations", "sources"</ex></ph>" cannot be set in the same dictionary as the "<ph name="DATA_CONTROLS_SECOND_KEY_SET">$2<ex>"and", "or"</ex></ph>" keys
+  </message>
 
   <!-- chrome://policy -->
   <message name="IDS_POLICY_TITLE" desc="Page title and the title of the section that lists policies.">
@@ -418,23 +424,26 @@ Additional details:
   <message name="IDS_POLICY_RELOAD_POLICIES" desc="Label for the button that reloads policies.">
     Reload policies
   </message>
-  <message name="IDS_POLICY_LOADING_POLICIES" desc="Screen reader message indicates policies are being loaded.">
-    Loading policies
+  <message name="IDS_POLICY_RELOADING_POLICIES" desc="Toast notification message indicating policies are being loaded.">
+    Reloading policies
   </message>
-  <message name="IDS_POLICY_LOAD_POLICIES_DONE" desc="Screen reader message indicates policies have been loaded.">
-    Policies is loaded
+  <message name="IDS_POLICY_RELOAD_POLICIES_DONE" desc="Toast notification message indicating policies have been reloaded.">
+    Policies reloaded
   </message>
   <message name="IDS_EXPORT_POLICIES_JSON" desc="Label for the button that exports policies in JSON format.">
     Export to JSON
   </message>
+  <message name="IDS_EXPORT_POLICIES_JSON_DONE" desc="Toast notification message indicating policies are exported.">
+    Exported
+  </message>
   <message name="IDS_UPLOAD_REPORT" desc="Label for the button that uplaod Brave usage report">
     Upload Report
   </message>
-  <message name="IDS_REPORT_UPLOADING" desc="Screen reader message indicates report is being uploaded">
-    Upload Report
+  <message name="IDS_REPORT_UPLOADING" desc="Toast notification message indicating data is being sent to admin console.">
+    Sending data to admin console
   </message>
-  <message name="IDS_REPORT_UPLOADED" desc="Screen reader message indicates report has been uploaded">
-    Report is uploaded
+  <message name="IDS_REPORT_UPLOADED" desc="Toast notification message indicating data has been sent to admin console.">
+    Data sent to admin console
   </message>
   <message name="IDS_POLICY_STATUS" desc="Title of the status section.">
     Status
@@ -764,6 +773,9 @@ Additional details:
   </message>
   <message name="IDS_COPY_POLICIES_JSON" desc="Label for the button that copies policies in JSON format.">
     Copy as JSON
+  </message>
+  <message name="IDS_COPY_POLICIES_DONE" desc="Toast notification message indicating policies are copied to clipboard.">
+    Copied to clipboard
   </message>
   <message name="IDS_VIEW_POLICY_LOGS" desc="Label for the button that redirects from chrome://policy to chrome://policy/logs.">
     View logs
@@ -1191,6 +1203,18 @@ Additional details:
   <message name="IDS_POLICY_DLP_FILES_OPEN_TIMEOUT_MESSAGE" desc="The message for notification shown after a DLP files warning times out.">
     Try opening your files again
   </message>
+ <message name="IDS_POLICY_DLP_FILES_LEARN_MORE_ABOUT_DATA_CONTROLS_ACCESSIBLE_NAME" desc="The message is read to ChromeVox users when they focus a generic learn more link related to data controls.">
+    Learn more about Data Controls
+  </message>
+ <message name="IDS_POLICY_DLP_FILES_LEARN_MORE_ABOUT_MALWARE_PROTECTION_ACCESSIBLE_NAME" desc="The message is read to ChromeVox users when they focus a generic learn more link related to enterprise connector's malware protection.">
+    Learn more about Malware protection
+  </message>
+ <message name="IDS_POLICY_DLP_FILES_LEARN_MORE_ABOUT_SENSITIVE_DATA_PROTECTION_ACCESSIBLE_NAME" desc="The message is read to ChromeVox users when they focus a generic learn more link related to enterprise connector's sensitive data protection.">
+    Learn more about Sensitive Data protection
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_JUSTIFICATION_TEXTAREA_ACCESSIBLE_DESCRIPTION" desc="The message is read to ChromeVox users when they focus the justification text area.">
+    Please enter a justification message having at most <ph name="MAX_CHAR_COUNT">$2<ex>280</ex></ph> characters. Used <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph> out of <ph name="MAX_CHAR_COUNT">$2<ex>280</ex></ph> characters.
+  </message>
   <message name="IDS_POLICY_DEVICE_SCHEDULED_REBOOT_TITLE" desc="The title for notification informing the user that the device will restart soon.">
     Device will restart very soon
   </message>
@@ -1219,5 +1243,8 @@ Additional details:
   </message>
   <message name="IDS_POLICY_BROWSING_DATA_DEPENDENCY_APPLIED_INFO" desc="The text displayed in the status column when a browsing data policy is applied for types for which sync will be automatically disabled.">
     This policy automatically disables syncing across devices for: <ph name="ACTION_LIST">$1<ex>passwords, autofill</ex></ph>.
+  </message>
+  <message name="IDS_POLICY_NOT_SUPPORTED_AS_USER_POLICY_ON_IOS" desc="The text displayed in the status column when a policy is not supported as a user policy on ios.">
+    This policy is not yet supported as a user policy on iOS.
   </message>
 </grit-part>

@@ -12,11 +12,7 @@
 namespace search_engines {
 
 bool IsChoiceScreenFlagEnabled(ChoicePromo promo) {
-#if BUILDFLAG(ENABLE_SEARCH_ENGINE_CHOICE)
-  return IsChoiceScreenFlagEnabled_ChromiumImpl(promo);
-#else
   return false;
-#endif  // BUILDFLAG(ENABLE_SEARCH_ENGINE_CHOICE)
 }
 
 }  // namespace search_engines

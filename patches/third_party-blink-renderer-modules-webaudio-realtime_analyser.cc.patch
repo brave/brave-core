@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-index 256ea358bc7010210826ba6efc35dd25f8f4276d..8b0b01960ec481c729f597e5e861f882678e9260 100644
+index 164959580691a6c6d9465d6ef12fb4bcc6f63013..483cb24c641fa0bcb56b5fb3ff57e6905b2e2975 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-@@ -148,6 +148,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
+@@ -149,6 +149,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
  
      unsigned write_index = GetWriteIndex();
  
@@ -10,7 +10,7 @@ index 256ea358bc7010210826ba6efc35dd25f8f4276d..8b0b01960ec481c729f597e5e861f882
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
        float value =
-@@ -175,6 +176,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
+@@ -176,6 +177,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
  
      unsigned write_index = GetWriteIndex();
  
@@ -18,7 +18,7 @@ index 256ea358bc7010210826ba6efc35dd25f8f4276d..8b0b01960ec481c729f597e5e861f882
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
        float value =
-@@ -291,6 +293,7 @@ void RealtimeAnalyser::ConvertToByteData(DOMUint8Array* destination_array) {
+@@ -292,6 +294,7 @@ void RealtimeAnalyser::ConvertToByteData(DOMUint8Array* destination_array) {
      const float* source = MagnitudeBuffer().Data();
      unsigned char* destination = destination_array->Data();
  
@@ -26,7 +26,7 @@ index 256ea358bc7010210826ba6efc35dd25f8f4276d..8b0b01960ec481c729f597e5e861f882
      for (unsigned i = 0; i < len; ++i) {
        float linear_value = source[i];
        double db_mag = audio_utilities::LinearToDecibels(linear_value);
-@@ -315,6 +318,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {
+@@ -316,6 +319,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {
      const float* source = MagnitudeBuffer().Data();
      float* destination = destination_array->Data();
  

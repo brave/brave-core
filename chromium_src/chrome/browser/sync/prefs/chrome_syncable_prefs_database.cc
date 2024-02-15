@@ -36,114 +36,167 @@ enum {
   kProfileDefaultContentSettingValuesFingerprintingV2 = 300017,
   kProfileDefaultContentSettingValuesBraveShields = 300018,
   kProfileDefaultContentSettingValuesBraveSpeedreader = 300019,
+  kProfileContentSettingsPartitionedExceptionsShieldsAds = 300020,
+  kProfileContentSettingsPartitionedExceptionsTrackers = 300021,
+  kProfileContentSettingsPartitionedExceptionsHttpsUpgrades = 300022,
+  kProfileContentSettingsPartitionedExceptionsHttpUpgradableResources = 300023,
+  kProfileContentSettingsPartitionedExceptionsReferrers = 300024,
+  kProfileContentSettingsPartitionedExceptionsShieldsCookiesV3 = 300025,
+  kProfileContentSettingsPartitionedExceptionsCosmeticFiltering = 300026,
+  kProfileContentSettingsPartitionedExceptionsFingerprintingV2 = 300027,
+  kProfileContentSettingsPartitionedExceptionsBraveShields = 300028,
+  kProfileContentSettingsPartitionedExceptionsBraveSpeedreader = 300029,
 };
 }  // namespace brave_syncable_prefs_ids
 
 const auto& BraveSyncablePreferences() {
   static const auto kBraveSyncablePrefsAllowList = base::MakeFixedFlatMap<
-      std::string_view, sync_preferences::SyncablePrefMetadata>(
-      base::sorted_unique,
-      {
-          {"profile.content_settings.exceptions.braveShields",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsBraveShields,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.braveSpeedreader",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsBraveSpeedreader,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.cosmeticFiltering",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsCosmeticFiltering,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.fingerprintingV2",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsFingerprintingV2,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.httpUpgradableResources",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsHttpUpgradableResources,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.httpsUpgrades",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsHttpsUpgrades,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.referrers",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsReferrers,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.shieldsAds",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsShieldsAds,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.shieldsCookiesV3",
-           {brave_syncable_prefs_ids::
-                kProfileContentSettingsExceptionsShieldsCookiesV3,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.content_settings.exceptions.trackers",
-           {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsTrackers,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kMergeableDict}},
-          {"profile.default_content_setting_values.braveShields",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesBraveShields,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.braveSpeedreader",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesBraveSpeedreader,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.cosmeticFiltering",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesCosmeticFiltering,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.fingerprintingV2",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesFingerprintingV2,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.httpUpgradableResources",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesHttpUpgradableResources,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.httpsUpgrades",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesHttpsUpgrades,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.referrers",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesReferrers,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.shieldsAds",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesShieldsAds,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.shieldsCookiesV3",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesShieldsCookiesV3,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-          {"profile.default_content_setting_values.trackers",
-           {brave_syncable_prefs_ids::
-                kProfileDefaultContentSettingValuesTrackers,
-            syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-            sync_preferences::MergeBehavior::kNone}},
-      });
+      std::string_view, sync_preferences::SyncablePrefMetadata>({
+      {"profile.content_settings.exceptions.braveShields",
+       {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsBraveShields,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.braveSpeedreader",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsBraveSpeedreader,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.cosmeticFiltering",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsCosmeticFiltering,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.fingerprintingV2",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsFingerprintingV2,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.httpUpgradableResources",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsHttpUpgradableResources,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.httpsUpgrades",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsHttpsUpgrades,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.referrers",
+       {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsReferrers,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.shieldsAds",
+       {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsShieldsAds,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.shieldsCookiesV3",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsShieldsCookiesV3,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.trackers",
+       {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsTrackers,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.default_content_setting_values.braveShields",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesBraveShields,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.braveSpeedreader",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesBraveSpeedreader,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.cosmeticFiltering",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesCosmeticFiltering,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.fingerprintingV2",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesFingerprintingV2,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.httpUpgradableResources",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesHttpUpgradableResources,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.httpsUpgrades",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesHttpsUpgrades,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.referrers",
+       {brave_syncable_prefs_ids::kProfileDefaultContentSettingValuesReferrers,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.shieldsAds",
+       {brave_syncable_prefs_ids::kProfileDefaultContentSettingValuesShieldsAds,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.shieldsCookiesV3",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesShieldsCookiesV3,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.trackers",
+       {brave_syncable_prefs_ids::kProfileDefaultContentSettingValuesTrackers,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.content_settings.partitioned_exceptions.braveShields",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsBraveShields,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.braveSpeedreader",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsBraveSpeedreader,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.cosmeticFiltering",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsCosmeticFiltering,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.fingerprintingV2",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsFingerprintingV2,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions."
+       "httpUpgradableResources",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsHttpUpgradableResources,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.httpsUpgrades",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsHttpsUpgrades,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.referrers",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsReferrers,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.shieldsAds",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsShieldsAds,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.shieldsCookiesV3",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsShieldsCookiesV3,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.trackers",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsTrackers,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+  });
   return kBraveSyncablePrefsAllowList;
 }
 }  // namespace

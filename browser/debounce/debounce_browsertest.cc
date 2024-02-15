@@ -98,11 +98,12 @@ class SpyContentBrowserClient : public BraveContentBrowserClient {
       content::BrowserContext* browser_context,
       const base::RepeatingCallback<content::WebContents*()>& wc_getter,
       content::NavigationUIData* navigation_ui_data,
-      int frame_tree_node_id) override {
+      int frame_tree_node_id,
+      std::optional<int64_t> navigation_id) override {
     std::vector<std::unique_ptr<blink::URLLoaderThrottle>> throttles =
         BraveContentBrowserClient::CreateURLLoaderThrottles(
             request, browser_context, wc_getter, navigation_ui_data,
-            frame_tree_node_id);
+            frame_tree_node_id, navigation_id);
     throttles.push_back(std::make_unique<SpyThrottle>());
     return throttles;
   }

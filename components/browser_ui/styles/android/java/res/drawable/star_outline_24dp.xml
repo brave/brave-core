@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) 2024 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M4.7,4.85C4.7,3.304 5.954,2.05 7.5,2.05H16.5C18.046,2.05 19.3,3.304 19.3,4.85L19.3,20.083C19.3,21.54 17.659,22.393 16.466,21.556L12.115,18.504C12.046,18.456 11.954,18.456 11.885,18.504L7.534,21.556C6.341,22.393 4.7,21.54 4.7,20.083L4.7,4.85ZM7.5,3.65C6.837,3.65 6.3,4.187 6.3,4.85L6.3,20.083C6.3,20.245 6.482,20.339 6.615,20.246L10.966,17.194C11.587,16.759 12.413,16.759 13.034,17.194L17.385,20.246C17.518,20.339 17.7,20.245 17.7,20.083L17.7,4.85C17.7,4.187 17.163,3.65 16.5,3.65H7.5Z"
+      android:fillColor="#62757E"
+      android:fillType="evenOdd"/>
+</vector>

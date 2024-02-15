@@ -14,15 +14,53 @@
 #include "brave/components/tor/renderer/onion_domain_throttle.h"
 #endif
 
-BraveURLLoaderThrottleProviderImpl::BraveURLLoaderThrottleProviderImpl(
-    blink::ThreadSafeBrowserInterfaceBrokerProxy* broker,
+// static
+std::unique_ptr<blink::URLLoaderThrottleProvider>
+BraveURLLoaderThrottleProviderImpl::Create(
     blink::URLLoaderThrottleProviderType type,
-    ChromeContentRendererClient* chrome_content_renderer_client)
-    : URLLoaderThrottleProviderImpl(broker,
-                                    type,
-                                    chrome_content_renderer_client),
+    ChromeContentRendererClient* chrome_content_renderer_client,
+    blink::ThreadSafeBrowserInterfaceBrokerProxy* broker) {
+  mojo::PendingRemote<safe_browsing::mojom::SafeBrowsing> pending_safe_browsing;
+  broker->GetInterface(pending_safe_browsing.InitWithNewPipeAndPassReceiver());
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  mojo::PendingRemote<safe_browsing::mojom::ExtensionWebRequestReporter>
+      pending_extension_web_request_reporter;
+  broker->GetInterface(
+      pending_extension_web_request_reporter.InitWithNewPipeAndPassReceiver());
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+
+  return std::make_unique<BraveURLLoaderThrottleProviderImpl>(
+      type, chrome_content_renderer_client, std::move(pending_safe_browsing),
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+      std::move(pending_extension_web_request_reporter),
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+      /*main_thread_task_runner=*/
+      content::RenderThread::IsMainThread()
+          ? base::SequencedTaskRunner::GetCurrentDefault()
+          : nullptr);
+}
+BraveURLLoaderThrottleProviderImpl::BraveURLLoaderThrottleProviderImpl(
+    blink::URLLoaderThrottleProviderType type,
+    ChromeContentRendererClient* chrome_content_renderer_client,
+    mojo::PendingRemote<safe_browsing::mojom::SafeBrowsing>
+        pending_safe_browsing,
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    mojo::PendingRemote<safe_browsing::mojom::ExtensionWebRequestReporter>
+        pending_extension_web_request_reporter,
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+    scoped_refptr<base::SequencedTaskRunner> main_thread_task_runner)
+    : URLLoaderThrottleProviderImpl(
+          type,
+          chrome_content_renderer_client,
+          std::move(pending_safe_browsing),
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+          std::move(pending_extension_web_request_reporter),
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+          std::move(main_thread_task_runner),
+          GetPassKey()),
       brave_content_renderer_client_(static_cast<BraveContentRendererClient*>(
-          chrome_content_renderer_client)) {}
+          chrome_content_renderer_client)) {
+}
 
 BraveURLLoaderThrottleProviderImpl::~BraveURLLoaderThrottleProviderImpl() =
     default;
@@ -30,7 +68,7 @@ BraveURLLoaderThrottleProviderImpl::~BraveURLLoaderThrottleProviderImpl() =
 blink::WebVector<std::unique_ptr<blink::URLLoaderThrottle>>
 BraveURLLoaderThrottleProviderImpl::CreateThrottles(
     base::optional_ref<const blink::LocalFrameToken> local_frame_token,
-    const blink::WebURLRequest& request) {
+    const network::ResourceRequest& request) {
   auto throttles = URLLoaderThrottleProviderImpl::CreateThrottles(
       local_frame_token, request);
 #if BUILDFLAG(ENABLE_TOR)

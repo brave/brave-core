@@ -146,7 +146,8 @@ void SharedPinnedTabService::CacheWebContentsIfNeeded(
   }
 
   for (auto& detached_web_contents : web_contents) {
-    if (!detached_web_contents->owned_contents) {
+    if (!detached_web_contents->tab ||
+        !detached_web_contents->tab->contents()) {
       // Could be already cached by another component.
       continue;
     }
@@ -156,7 +157,7 @@ void SharedPinnedTabService::CacheWebContentsIfNeeded(
     }
 
     cached_shared_contentses_from_closing_browser_.insert(
-        std::move(detached_web_contents->owned_contents));
+        detached_web_contents->tab->ReplaceContents(nullptr));
     detached_web_contents->remove_reason =
         TabStripModelChange::RemoveReason::kCached;
   }

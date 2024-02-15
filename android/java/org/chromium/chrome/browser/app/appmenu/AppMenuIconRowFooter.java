@@ -121,7 +121,7 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
                     AppCompatResources.getColorStateList(
                             getContext(), R.color.default_icon_color_accent1_tint_list));
         } else {
-            mBookmarkButton.setImageResource(R.drawable.btn_star);
+            mBookmarkButton.setImageResource(R.drawable.star_outline_24dp);
             mBookmarkButton.setContentDescription(
                     getContext().getString(R.string.accessibility_menu_bookmark));
         }

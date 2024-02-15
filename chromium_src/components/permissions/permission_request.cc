@@ -18,6 +18,18 @@
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
+#if BUILDFLAG(IS_ANDROID)
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH                              \
+  case RequestType::kBraveEthereum:                              \
+  case RequestType::kBraveSolana:                                \
+    NOTREACHED();                                                \
+    return permissions::PermissionRequest::AnnotatedMessageText( \
+        std::u16string(), {});                                   \
+  case RequestType::kWidevine:                                   \
+    NOTREACHED();                                                \
+    return permissions::PermissionRequest::AnnotatedMessageText( \
+        std::u16string(), {});
+#else
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
@@ -26,6 +38,7 @@
   case RequestType::kWidevine:      \
     NOTREACHED();                   \
     return std::u16string();
+#endif
 
 // For permission strings that we also need on Android, we need to use
 // a string that has a placeholder ($1) in it.
@@ -98,10 +111,12 @@ PermissionRequest::PermissionRequest(
 PermissionRequest::PermissionRequest(
     PermissionRequestData request_data,
     PermissionDecidedCallback permission_decided_callback,
-    base::OnceClosure delete_callback)
+    base::OnceClosure delete_callback,
+    bool uses_automatic_embargo)
     : PermissionRequest_ChromiumImpl(std::move(request_data),
                                      std::move(permission_decided_callback),
-                                     std::move(delete_callback)) {}
+                                     std::move(delete_callback),
+                                     uses_automatic_embargo) {}
 
 PermissionRequest::~PermissionRequest() = default;
 

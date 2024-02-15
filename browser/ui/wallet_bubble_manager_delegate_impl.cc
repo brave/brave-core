@@ -40,7 +40,7 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
       const std::optional<gfx::Rect>& anchor_rect = std::nullopt,
       views::BubbleBorder::Arrow arrow = views::BubbleBorder::TOP_RIGHT)
       : WebUIBubbleDialogView(anchor_view,
-                              contents_wrapper,
+                              contents_wrapper->GetWeakPtr(),
                               anchor_rect,
                               arrow) {}
   WalletWebUIBubbleDialogView(const WalletWebUIBubbleDialogView&) = delete;
@@ -86,7 +86,7 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
       widget->CloseNow();
     }
     auto* contents_wrapper = cached_contents_wrapper();
-    DCHECK(contents_wrapper);
+    CHECK(contents_wrapper);
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
         anchor_view_, contents_wrapper, anchor, arrow);
     BraveWebUIBubbleManager::CustomizeBubbleDialogView(*bubble_view);
