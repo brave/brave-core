@@ -735,8 +735,6 @@ const util = {
       args.push('--no-rust-fmt')
     if (options.swift)
       args.push('--swift-format')
-    else
-      args.push('--no-swift-format')
     util.run(cmd, args, cmd_options)
   },
 
