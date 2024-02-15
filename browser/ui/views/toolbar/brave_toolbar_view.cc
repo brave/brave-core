@@ -351,7 +351,7 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
   if (bookmark_ && bookmark_->GetVisible())
     anchor_view = bookmark_;
 
-  std::unique_ptr<BubbleSyncPromoDelegate> delegate;
+  std::unique_ptr<BubbleSignInPromoDelegate> delegate;
   delegate =
       std::make_unique<BookmarkBubbleSignInDelegate>(browser()->profile());
   BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
