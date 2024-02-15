@@ -109,10 +109,14 @@ void BraveWalletPermissionContext::RequestPermission(
   if (addr_queue.empty()) {
     request_address_queues_.erase(addr_queue_it);
   }
-  PermissionContextBase::RequestPermission(
+  auto data =
       PermissionRequestData(this, request_data.id, request_data.user_gesture,
-                            sub_request_origin.GetURL()),
-      std::move(callback));
+                            sub_request_origin.GetURL());
+  // This will prevent PermissionRequestManager from reprioritize the request
+  // queue.
+  data.embedded_permission_element_initiated = true;
+  PermissionContextBase::RequestPermission(std::move(data),
+                                           std::move(callback));
 }
 
 // static
