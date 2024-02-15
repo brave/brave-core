@@ -13,15 +13,16 @@
 #include "base/files/file_path.h"
 #include "base/files/memory_mapped_file.h"
 #include "base/sequence_checker.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_database.mojom.h"
 
 namespace brave_rewards::internal {
 
 // Responsible for storage and retrieval of a sorted hash prefix list. The
 // operations of this class will block the current thread on IO.
-class HashPrefixStore {
+class HashPrefixStore : public mojom::HashPrefixStore {
  public:
   explicit HashPrefixStore(base::FilePath path);
-  ~HashPrefixStore();
+  ~HashPrefixStore() override;
 
   HashPrefixStore(const HashPrefixStore&) = delete;
   HashPrefixStore& operator=(const HashPrefixStore&) = delete;
@@ -38,6 +39,13 @@ class HashPrefixStore {
   // Returns a value indicating if the specified value exists in the prefix
   // list. Opens the file if not already open.
   bool ContainsPrefix(const std::string& value);
+
+  // mojom::HashPrefixStore:
+  void UpdatePrefixes(mojom::HashPrefixDataPtr prefix_data,
+                      UpdatePrefixesCallback callback) override;
+
+  void ContainsPrefix(const std::string& value,
+                      ContainsPrefixCallback callback) override;
 
  private:
   const base::FilePath file_path_;
