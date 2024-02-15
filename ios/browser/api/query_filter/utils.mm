@@ -7,7 +7,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/query_filter/utils.h"
-#import "net/base/mac/url_conversions.h"
+#import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
