@@ -80,17 +80,20 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
 
   void FetchPageContent(const base::Location& location,
                         const std::string& expected_text,
-                        bool expected_is_video) {
+                        bool expected_is_video,
+                        bool trim_whitespace = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     ai_chat::FetchPageContent(
         browser()->tab_strip_model()->GetActiveWebContents(), "",
         base::BindLambdaForTesting([&run_loop, &expected_text,
-                                    &expected_is_video](
+                                    &expected_is_video, &trim_whitespace](
                                        std::string text, bool is_video,
                                        std::string invalidation_token) {
-          EXPECT_EQ(expected_text, base::TrimWhitespaceASCII(
-                                       text, base::TrimPositions::TRIM_ALL));
+          EXPECT_EQ(expected_text,
+                    trim_whitespace ? base::TrimWhitespaceASCII(
+                                          text, base::TrimPositions::TRIM_ALL)
+                                    : text);
           EXPECT_EQ(expected_is_video, is_video);
           run_loop.Quit();
         }));
@@ -137,7 +140,8 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
   auto run_loop = std::make_unique<base::RunLoop>();
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
       base::BindLambdaForTesting([this, &run_loop]() {
-        FetchPageContent(FROM_HERE, "Dummy PDF file", false);
+        FetchPageContent(FROM_HERE, "This is the way\nI have spoken", false,
+                         false);
         run_loop->Quit();
       }));
   NavigateURL(https_server_.GetURL("a.com", "/dummy.pdf"));
@@ -146,7 +150,7 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
   run_loop = std::make_unique<base::RunLoop>();
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
       base::BindLambdaForTesting([this, &run_loop]() {
-        FetchPageContent(FROM_HERE, "", false);
+        FetchPageContent(FROM_HERE, "", false, false);
         run_loop->Quit();
       }));
   NavigateURL(https_server_.GetURL("a.com", "/empty_pdf.pdf"));
