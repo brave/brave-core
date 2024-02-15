@@ -29,12 +29,13 @@ export default function useLongPress(props: LongPressProps) {
 
   const handleTouchStart = React.useCallback(
     (e: React.TouchEvent) => {
-      // The TouchEvent `e` gets nullified and is not available to the caller
-      // We must persist it
-      // https://legacy.reactjs.org/docs/legacy-event-pooling.html
-      e.persist()
+    // The TouchEvent `e` gets nullified and is unavailable to the caller.
+    // Persisting it (e.persist) would lose the reference by the time it reaches the caller.
+    // Instead, we create a copy of it to pass along.
+    // TODO(nullhook): might not need this from React 17 onwards
+      const eventCopy = {...e}
       touchTimer.current = setTimeout(
-        () => props.onLongPress(e),
+        () => props.onLongPress(eventCopy),
         props.delay === undefined ? DEFAULT_THRESHOLD : props.delay
       )
     },
