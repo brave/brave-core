@@ -166,7 +166,7 @@
 # These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
 # always return false
 -SearchEngineChoiceDialogBrowserTest.*
--SearchEngineChoiceUIPixelTest.InvokeUi_default/ShortSize
+-SearchEngineChoiceUIPixelTest.*
 -SearchEngineRepromptBrowserTest.Reprompt/*
 
 # These fail because we disable HATS (Happiness Survey) service from showing any
