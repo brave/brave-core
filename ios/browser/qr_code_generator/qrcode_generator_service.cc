@@ -273,16 +273,14 @@ std::unique_ptr<GenerateQRCodeResponse> QRCodeGeneratorService::generateQRCode(
   }
   input[data_size - 1] = 0;
 
-  qr_code_generator::QRCodeGenerator qr;
   // The QR version (i.e. size) must be >= 5 because otherwise the dino painted
   // over the middle covers too much of the code to be decodable.
   constexpr int kMinimumQRVersion = 5;
-  std::optional<qr_code_generator::QRCodeGenerator::GeneratedCode> qr_data =
-      qr.Generate(
-          base::span<const std::uint8_t>(
-              reinterpret_cast<const std::uint8_t*>(request->data.data()),
-              request->data.size()),
-          kMinimumQRVersion);
+  auto qr_data = qr_code_generator::Generate(
+      base::span<const std::uint8_t>(
+          reinterpret_cast<const std::uint8_t*>(request->data.data()),
+          request->data.size()),
+      kMinimumQRVersion);
   if (!qr_data || qr_data->data.data() == nullptr ||
       qr_data->data.size() == 0) {
     // The above check should have caught the too-long-URL case.
