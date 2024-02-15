@@ -133,7 +133,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/SolanaTxDetailsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/SwapBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/TransactionDetailsSheetFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/TransactionsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/TwoLineItemBottomSheetFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/TwoLineItemFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/TxDetailsFragment.java",

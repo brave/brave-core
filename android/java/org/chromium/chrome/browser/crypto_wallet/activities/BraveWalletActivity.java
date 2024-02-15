@@ -86,7 +86,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter mCryptoWalletOnboardingPagerAdapter;
-    private ViewPager2 mViewPager;
     private boolean mShowBiometricPrompt;
     private boolean mIsFromDapps;
     private WalletModel mWalletModel;
@@ -131,10 +130,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     getIntent().getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, false);
         }
         mShowBiometricPrompt = true;
-        mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setOverflowIcon(
-                ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
-        setSupportActionBar(mToolbar);
 
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
@@ -169,9 +164,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mModalDialogManager = new ModalDialogManager(
                 new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
 
-        mViewPager = findViewById(R.id.navigation_view_pager);
-        mViewPager.setUserInputEnabled(false);
-
         onInitialLayoutInflationComplete();
     }
 
@@ -197,8 +189,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         super.onStartWithNative();
         if (mCryptoFragmentPageAdapter == null) {
             mCryptoFragmentPageAdapter = new CryptoFragmentPageAdapter(this);
-            mViewPager.setAdapter(mCryptoFragmentPageAdapter);
-            mViewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getItemCount() - 1);
         }
     }
 
