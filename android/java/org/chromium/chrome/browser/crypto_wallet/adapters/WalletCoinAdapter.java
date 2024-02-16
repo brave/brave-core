@@ -26,7 +26,6 @@ import com.bumptech.glide.Glide;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -188,26 +187,6 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 Utils.setBitmapResource(mExecutor, mHandler, context,
                         walletListItemModel.getIconPath(), walletListItemModel.getIcon(),
                         holder.iconImg, null, true);
-            } else {
-                PortfolioModel.NftDataModel nftDataModel = walletListItemModel.getNftDataModel();
-                if (walletListItemModel.hasNftImageLink()
-                        && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
-                    String url = nftDataModel.nftMetadata.mImageUrl;
-                    ImageLoader.downloadImage(url, Glide.with(context), false,
-                            WalletConstants.RECT_ROUNDED_CORNERS_DP, holder.iconImg, null);
-                } else {
-                    Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
-                            walletListItemModel.getBlockchainToken().contractAddress,
-                            walletListItemModel.getBlockchainToken().symbol,
-                            context.getResources().getDisplayMetrics().density, null, context,
-                            false, (float) 0.9, true);
-                }
-                if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
-                    onWalletListItemClick.onMaybeShowTrashButton(
-                            walletListItemModel, holder.iconTrash);
-                    holder.iconTrash.setOnClickListener(
-                            v -> onWalletListItemClick.onTrashIconClick(walletListItemModel));
-                }
             }
         } else {
             holder.iconImg.setImageResource(android.R.color.transparent);

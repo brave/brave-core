@@ -12,7 +12,6 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -34,7 +33,6 @@ public class WalletListItemModel {
     private TransactionInfo mTxInfo;
     private String mChainSymbol;
     private int mChainDecimals;
-    private PortfolioModel.NftDataModel mNftDataModel;
     private NetworkInfo mAssetNetwork;
     private String mBrowserResPath;
 
@@ -73,11 +71,6 @@ public class WalletListItemModel {
 
     public boolean isNft() {
         return mBlockchainToken.isNft || mBlockchainToken.isErc721;
-    }
-
-    public boolean hasNftImageLink() {
-        return isNft() && mNftDataModel != null && mNftDataModel.nftMetadata != null
-                && !TextUtils.isEmpty(mNftDataModel.nftMetadata.mImageUrl);
     }
 
     public void setTransactionInfo(TransactionInfo txInfo) {
@@ -207,14 +200,6 @@ public class WalletListItemModel {
 
     public boolean isAccount() {
         return mAccountInfo != null;
-    }
-
-    public PortfolioModel.NftDataModel getNftDataModel() {
-        return mNftDataModel;
-    }
-
-    public void setNftDataModel(PortfolioModel.NftDataModel mNftDataModel) {
-        this.mNftDataModel = mNftDataModel;
     }
 
     public NetworkInfo getAssetNetwork() {

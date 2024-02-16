@@ -57,7 +57,6 @@ public class CryptoModel {
     private Context mContext;
 
     private NetworkModel mNetworkModel;
-    private PortfolioModel mPortfolioModel;
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
     private TransactionsModel mTransactionsModel;
@@ -82,9 +81,6 @@ public class CryptoModel {
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel = new NetworkModel(
                 mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions, context);
-        mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
-                mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
-                mBraveWalletService, mAssetRatioService, mSharedData);
     }
 
     public void resetServices(Context context, TxService mTxService, KeyringService mKeyringService,
@@ -103,9 +99,6 @@ public class CryptoModel {
             this.mAssetRatioService = mAssetRatioService;
             mPendingTxHelper.setTxService(mTxService);
             mNetworkModel.resetServices(mBraveWalletService, mJsonRpcService);
-            mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
-                    mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
-                    mAssetRatioService);
             if (mTransactionsModel != null) {
                 mTransactionsModel.resetServices(mContext, mTxService, mKeyringService,
                         mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy,
@@ -207,10 +200,6 @@ public class CryptoModel {
 
     public NetworkModel getNetworkModel() {
         return mNetworkModel;
-    }
-
-    public PortfolioModel getPortfolioModel() {
-        return mPortfolioModel;
     }
 
     public TransactionsModel createTransactionModel() {
