@@ -59,7 +59,7 @@ class CreativeNewTabPageAds final : public TableInterface {
   void GetForSegments(const SegmentList& segments,
                       GetCreativeNewTabPageAdsCallback callback) const;
 
-  void GetAll(GetCreativeNewTabPageAdsCallback callback) const;
+  void GetForActiveCampaigns(GetCreativeNewTabPageAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     CHECK_GT(batch_size, 0);

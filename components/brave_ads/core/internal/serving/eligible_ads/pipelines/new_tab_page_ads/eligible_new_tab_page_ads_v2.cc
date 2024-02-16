@@ -72,7 +72,7 @@ void EligibleNewTabPageAdsV2::GetEligibleAds(
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeNewTabPageAds database_table;
-  database_table.GetAll(
+  database_table.GetForActiveCampaigns(
       base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));

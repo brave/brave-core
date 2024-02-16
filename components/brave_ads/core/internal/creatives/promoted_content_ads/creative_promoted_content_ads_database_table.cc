@@ -365,7 +365,7 @@ void CreativePromotedContentAds::GetForSegments(
       base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
 
-void CreativePromotedContentAds::GetAll(
+void CreativePromotedContentAds::GetForActiveCampaigns(
     GetCreativePromotedContentAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
