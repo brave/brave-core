@@ -135,9 +135,15 @@ void SkusServiceImpl::RefreshOrder(
     const std::string& domain,
     const std::string& order_id,
     mojom::SkusService::RefreshOrderCallback callback) {
+  auto context_impl = std::make_unique<skus::SkusContextImpl>(
+      url_loader_factory_->Clone(), ui_task_runner_,
+      weak_factory_.GetWeakPtr());
+  auto internal_callback =
+      base::BindOnce(&SkusContextImpl::OnRefreshOrder,
+                     base::Owned(std::move(context_impl)), std::move(callback));
   std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
       new skus::RefreshOrderCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = std::move(internal_callback);
   sdk_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(
                      [](::rust::Box<skus::CppSDK>* sdk,
@@ -153,9 +159,15 @@ void SkusServiceImpl::FetchOrderCredentials(
     const std::string& domain,
     const std::string& order_id,
     mojom::SkusService::FetchOrderCredentialsCallback callback) {
+  auto context_impl = std::make_unique<skus::SkusContextImpl>(
+      url_loader_factory_->Clone(), ui_task_runner_,
+      weak_factory_.GetWeakPtr());
+  auto internal_callback =
+      base::BindOnce(&SkusContextImpl::OnFetchOrderCredentials,
+                     base::Owned(std::move(context_impl)), std::move(callback));
   std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs(
       new skus::FetchOrderCredentialsCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = std::move(internal_callback);
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(
@@ -172,9 +184,15 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& path,
     mojom::SkusService::PrepareCredentialsPresentationCallback callback) {
+  auto context_impl = std::make_unique<skus::SkusContextImpl>(
+      url_loader_factory_->Clone(), ui_task_runner_,
+      weak_factory_.GetWeakPtr());
+  auto internal_callback =
+      base::BindOnce(&SkusContextImpl::OnPrepareCredentialsPresentation,
+                     base::Owned(std::move(context_impl)), std::move(callback));
   std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState> cbs(
       new skus::PrepareCredentialsPresentationCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = std::move(internal_callback);
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(
@@ -239,9 +257,16 @@ void SkusServiceImpl::SubmitReceipt(
     const std::string& order_id,
     const std::string& receipt,
     skus::mojom::SkusService::SubmitReceiptCallback callback) {
+  auto context_impl = std::make_unique<skus::SkusContextImpl>(
+      url_loader_factory_->Clone(), ui_task_runner_,
+      weak_factory_.GetWeakPtr());
+  auto internal_callback =
+      base::BindOnce(&SkusContextImpl::OnSubmitReceipt,
+                     base::Owned(std::move(context_impl)), std::move(callback));
+
   std::unique_ptr<skus::SubmitReceiptCallbackState> cbs(
       new skus::SubmitReceiptCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = std::move(internal_callback);
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(
@@ -258,9 +283,15 @@ void SkusServiceImpl::CreateOrderFromReceipt(
     const std::string& domain,
     const std::string& receipt,
     skus::mojom::SkusService::CreateOrderFromReceiptCallback callback) {
+  auto context_impl = std::make_unique<skus::SkusContextImpl>(
+      url_loader_factory_->Clone(), ui_task_runner_,
+      weak_factory_.GetWeakPtr());
+  auto internal_callback =
+      base::BindOnce(&SkusContextImpl::OnCreateOrderFromReceipt,
+                     base::Owned(std::move(context_impl)), std::move(callback));
   std::unique_ptr<skus::CreateOrderFromReceiptCallbackState> cbs(
       new skus::CreateOrderFromReceiptCallbackState);
-  cbs->cb = std::move(callback);
+  cbs->cb = std::move(internal_callback);
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(

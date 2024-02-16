@@ -195,6 +195,26 @@ void SkusContextImpl::UpdateStoreValue(
                      value, std::move(done), std::move(st_ctx)));
 }
 
+void SkusContextImpl::OnRefreshOrder(
+    mojom::SkusService::RefreshOrderCallback callback,
+    const std::string& order) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), order));
+}
+void SkusContextImpl::OnFetchOrderCredentials(
+    mojom::SkusService::FetchOrderCredentialsCallback callback,
+    const std::string& result) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), result));
+}
+
+void SkusContextImpl::OnPrepareCredentialsPresentation(
+    mojom::SkusService::PrepareCredentialsPresentationCallback callback,
+    const std::string& result) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), result));
+}
+
 void SkusContextImpl::OnCredentialSummary(
     const std::string& domain,
     mojom::SkusService::CredentialSummaryCallback callback,
@@ -203,6 +223,22 @@ void SkusContextImpl::OnCredentialSummary(
     ui_task_runner_->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback), summary_string));
   }
+}
+
+void SkusContextImpl::OnSubmitReceipt(
+    mojom::SkusService::SubmitReceiptCallback callback,
+    const std::string& receipt) {
+  if (callback) {
+    ui_task_runner_->PostTask(FROM_HERE,
+                              base::BindOnce(std::move(callback), receipt));
+  }
+}
+
+void SkusContextImpl::OnCreateOrderFromReceipt(
+    mojom::SkusService::CredentialSummaryCallback callback,
+    const std::string& order_id) {
+  ui_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(std::move(callback), order_id));
 }
 
 }  // namespace skus

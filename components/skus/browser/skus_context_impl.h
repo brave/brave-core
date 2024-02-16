@@ -15,8 +15,6 @@
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-class PrefService;
-
 namespace skus {
 class SkusUrlLoader;
 }  // namespace skus
@@ -60,10 +58,23 @@ class SkusContextImpl : public SkusContext {
       rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                                 bool success)> done,
       rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const override;
+  void OnRefreshOrder(mojom::SkusService::RefreshOrderCallback callback,
+                      const std::string& order);
+  void OnFetchOrderCredentials(
+      mojom::SkusService::FetchOrderCredentialsCallback callback,
+      const std::string& result);
+  void OnPrepareCredentialsPresentation(
+      mojom::SkusService::PrepareCredentialsPresentationCallback callback,
+      const std::string& result);
   void OnCredentialSummary(
       const std::string& domain,
       mojom::SkusService::CredentialSummaryCallback callback,
       const std::string& summary_string);
+  void OnSubmitReceipt(mojom::SkusService::SubmitReceiptCallback callback,
+                       const std::string& summary_string);
+  void OnCreateOrderFromReceipt(
+      mojom::SkusService::CredentialSummaryCallback callback,
+      const std::string& order_id);
 
  private:
   // used for making requests to SKU server
