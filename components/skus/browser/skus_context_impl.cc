@@ -13,8 +13,6 @@
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
-#include "components/prefs/pref_service.h"
-#include "components/prefs/scoped_user_pref_update.h"
 
 namespace {
 
@@ -147,13 +145,11 @@ std::unique_ptr<SkusUrlLoader> shim_executeRequest(
 }
 
 SkusContextImpl::SkusContextImpl(
-    PrefService* prefs,
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_url_loader_factory,
     scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
     base::WeakPtr<SkusServiceImpl> skus_service)
-    : prefs_(*prefs),
-      pending_url_loader_factory_(std::move(pending_url_loader_factory)),
+    : pending_url_loader_factory_(std::move(pending_url_loader_factory)),
       ui_task_runner_(ui_task_runner),
       skus_service_(skus_service) {}
 SkusContextImpl::~SkusContextImpl() = default;
@@ -165,7 +161,7 @@ std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
 }
 
 void SkusContextImpl::GetValueFromStore(
-    std::string key,
+    const std::string& key,
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
                               rust::String value,
                               bool success)> done,
@@ -187,8 +183,8 @@ void SkusContextImpl::PurgeStore(
 }
 
 void SkusContextImpl::UpdateStoreValue(
-    std::string key,
-    std::string value,
+    const std::string& key,
+    const std::string& value,
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const {

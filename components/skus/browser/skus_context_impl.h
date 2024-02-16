@@ -36,17 +36,15 @@ class SkusContextImpl : public SkusContext {
   SkusContextImpl& operator=(const SkusContextImpl&) = delete;
 
   explicit SkusContextImpl(
-      PrefService* prefs,
       std::unique_ptr<network::PendingSharedURLLoaderFactory>
           pending_url_loader_factory,
       scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-      // SkusServiceImpl* skus_service);
       base::WeakPtr<SkusServiceImpl>);
   ~SkusContextImpl() override;
 
   std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const override;
   void GetValueFromStore(
-      std::string key,
+      const std::string& key,
       rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
                                 rust::String value,
                                 bool success)> done,
@@ -57,8 +55,8 @@ class SkusContextImpl : public SkusContext {
           done,
       rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const override;
   void UpdateStoreValue(
-      std::string key,
-      std::string value,
+      const std::string& key,
+      const std::string& value,
       rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                                 bool success)> done,
       rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const override;
@@ -68,15 +66,11 @@ class SkusContextImpl : public SkusContext {
       const std::string& summary_string);
 
  private:
-  // used to store the credential
-  const raw_ref<PrefService> prefs_;
-
   // used for making requests to SKU server
   mutable std::unique_ptr<network::PendingSharedURLLoaderFactory>
       pending_url_loader_factory_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
   base::WeakPtr<SkusServiceImpl> skus_service_;
-  // raw_ptr<SkusServiceImpl> skus_service_;
 };
 
 }  // namespace skus

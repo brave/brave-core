@@ -197,7 +197,7 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
 
   auto sdk_raw =
       initialize_sdk(std::make_unique<skus::SkusContextImpl>(
-                         prefs_, url_loader_factory_->Clone(), ui_task_runner_,
+                         url_loader_factory_->Clone(), ui_task_runner_,
                          weak_factory_.GetWeakPtr()),
                      env);
 
@@ -216,7 +216,7 @@ void SkusServiceImpl::CredentialSummary(
   std::unique_ptr<skus::CredentialSummaryCallbackState> cbs(
       new skus::CredentialSummaryCallbackState);
   auto context_impl = std::make_unique<skus::SkusContextImpl>(
-      prefs_, url_loader_factory_->Clone(), ui_task_runner_,
+      url_loader_factory_->Clone(), ui_task_runner_,
       weak_factory_.GetWeakPtr());
   auto internal_callback = base::BindOnce(&SkusContextImpl::OnCredentialSummary,
                                           base::Owned(std::move(context_impl)),
