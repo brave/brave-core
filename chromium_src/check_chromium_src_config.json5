@@ -25,6 +25,7 @@
         "chrome/browser/shell_integration_unittest_mac.cc",
         "chrome/browser/signin/account_consistency_disabled_unittest.cc",
         "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc",
+        "chrome/browser/ui/webui/help/version_updater_mac.h",
         "chrome/common/chrome_constants_unittest_mac.cc",
         "chrome/installer/mini_installer/brave_mini_installer_unittest.cc",
         "chrome/installer/setup/brave_behaviors.cc",
