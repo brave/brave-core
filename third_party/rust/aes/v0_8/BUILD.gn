@@ -12,8 +12,7 @@ cargo_crate("lib") {
   crate_name = "aes"
   epoch = "0.8"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/aes/v0_8/crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/aes/v0_8/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/aes/v0_8/crate/src/armv8.rs",
     "//brave/third_party/rust/aes/v0_8/crate/src/armv8/encdec.rs",
@@ -50,9 +49,9 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//third_party/rust/cfg_if/v1:lib",
-    "//brave/third_party/rust/cpufeatures/v0_2:lib",
     "//brave/third_party/rust/cipher/v0_4:lib",
+    "//brave/third_party/rust/cpufeatures/v0_2:lib",
+    "//third_party/rust/cfg_if/v1:lib",
   ]
 
   # Only for usage from third-party crates. Add the crate to

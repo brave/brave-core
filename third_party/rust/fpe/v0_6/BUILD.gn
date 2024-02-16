@@ -12,8 +12,7 @@ cargo_crate("lib") {
   crate_name = "fpe"
   epoch = "0.6"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/fpe/v0_6/crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/fpe/v0_6/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/fpe/v0_6/crate/src/ff1.rs",
     "//brave/third_party/rust/fpe/v0_6/crate/src/ff1/alloc.rs",

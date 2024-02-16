@@ -12,7 +12,8 @@ cargo_crate("lib") {
   crate_name = "halo2_legacy_pdqsort"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/halo2_legacy_pdqsort/v0_1/crate/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/halo2_legacy_pdqsort/v0_1/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/halo2_legacy_pdqsort/v0_1/crate/src/lib.rs",
     "//brave/third_party/rust/halo2_legacy_pdqsort/v0_1/crate/src/rust_slice.rs",

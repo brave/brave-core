@@ -12,8 +12,7 @@ cargo_crate("lib") {
   crate_name = "jubjub"
   epoch = "0.10"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/jubjub/v0_10/crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/jubjub/v0_10/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/jubjub/v0_10/crate/src/fr.rs",
     "//brave/third_party/rust/jubjub/v0_10/crate/src/lib.rs",
@@ -38,8 +37,8 @@ cargo_crate("lib") {
     "//brave/third_party/rust/bls12_381/v0_8:lib",
     "//brave/third_party/rust/ff/v0_13:lib",
     "//brave/third_party/rust/group/v0_13:lib",
-    "//third_party/rust/rand_core/v0_6:lib",
     "//brave/third_party/rust/subtle/v2:lib",
+    "//third_party/rust/rand_core/v0_6:lib",
   ]
 
   # Only for usage from third-party crates. Add the crate to

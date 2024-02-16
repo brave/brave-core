@@ -12,8 +12,7 @@ cargo_crate("lib") {
   crate_name = "cipher"
   epoch = "0.4"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/cipher/v0_4/crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/cipher/v0_4/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/cipher/v0_4/crate/src/block.rs",
     "//brave/third_party/rust/cipher/v0_4/crate/src/dev.rs",

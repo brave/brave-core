@@ -12,8 +12,7 @@ cargo_crate("lib") {
   crate_name = "memuse"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/memuse/v0_2/crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/memuse/v0_2/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/memuse/v0_2/crate/src/hash.rs",
     "//brave/third_party/rust/memuse/v0_2/crate/src/lib.rs",

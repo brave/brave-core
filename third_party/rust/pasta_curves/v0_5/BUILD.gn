@@ -47,10 +47,10 @@ cargo_crate("lib") {
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/ff/v0_13:lib",
     "//brave/third_party/rust/group/v0_13:lib",
-    "//third_party/rust/static_assertions/v1:lib",
     "//brave/third_party/rust/subtle/v2:lib",
     "//third_party/rust/lazy_static/v1:lib",
     "//third_party/rust/rand/v0_8:lib",
+    "//third_party/rust/static_assertions/v1:lib",
   ]
   features = [
     "alloc",
