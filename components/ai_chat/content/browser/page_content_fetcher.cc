@@ -14,6 +14,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/single_thread_task_runner.h"
@@ -329,6 +330,24 @@ ui::AXNode* FindPdfRoot(const ui::AXNode* start_node) {
   return nullptr;
 }
 
+std::string ExtractPdfContent(const ui::AXNode* pdf_root) {
+  // Skip status subtree and get text from region siblings
+  if (!pdf_root || pdf_root->GetChildCount() < 2 ||
+      pdf_root->GetChildAtIndex(0)->GetRole() != ax::mojom::Role::kBanner) {
+    return std::string();
+  }
+  std::string pdf_content;
+  const auto& children = pdf_root->GetAllChildren();
+  for (auto it = children.cbegin() + 1; it != children.cend(); ++it) {
+    const ui::AXNode* node = *it;
+    if (node->GetRole() == ax::mojom::Role::kRegion) {
+      base::StrAppend(&pdf_content, {node->GetTextContentUTF8(),
+                                     it == children.cend() - 1 ? "" : "\n"});
+    }
+  }
+  return pdf_content;
+}
+
 }  // namespace
 
 void FetchPageContent(content::WebContents* web_contents,
@@ -348,35 +367,26 @@ void FetchPageContent(content::WebContents* web_contents,
   }
 
   if (web_contents->GetContentsMimeType() == "application/pdf") {
-    ui::AXTreeID ax_tree_id;
+    ui::AXTreeManager* ax_tree_manager = nullptr;
     // FindPdfChildFrame
     primary_rfh->ForEachRenderFrameHost(
-        [&ax_tree_id](content::RenderFrameHost* rfh) {
+        [&ax_tree_manager](content::RenderFrameHost* rfh) {
           if (!rfh->GetProcess()->IsPdf()) {
             return;
           }
-          ax_tree_id = rfh->GetAXTreeID();
-        });
-    if (ax_tree_id.type() != ax::mojom::AXTreeIDType::kUnknown) {
-      auto* ax_tree_manager = ui::AXTreeManager::FromID(ax_tree_id);
-      if (ax_tree_manager) {
-        auto* pdf_root = FindPdfRoot(ax_tree_manager->GetRoot());
-        // Skip status subtree and get text from region sibling
-        if (pdf_root && pdf_root->GetChildCount() == 2 &&
-            pdf_root->GetChildAtIndex(0)->GetRole() ==
-                ax::mojom::Role::kBanner &&
-            pdf_root->GetChildAtIndex(1)->GetRole() ==
-                ax::mojom::Role::kRegion) {
-          auto pdf_content = pdf_root->GetChildAtIndex(1)->GetTextContentUTF8();
-          if (!pdf_content.empty()) {
-            std::move(callback).Run(pdf_content, false, "");
+          ui::AXTreeID ax_tree_id = rfh->GetAXTreeID();
+          if (ax_tree_id.type() == ax::mojom::AXTreeIDType::kUnknown) {
             return;
           }
-        }
-      }
+          ax_tree_manager = ui::AXTreeManager::FromID(ax_tree_id);
+        });
+    std::string pdf_content;
+    if (ax_tree_manager) {
+      pdf_content = ExtractPdfContent(FindPdfRoot(ax_tree_manager->GetRoot()));
     }
+
     // No need to proceed renderer content fetching because we won't get any.
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run(pdf_content, false, "");
     return;
   }
 
