@@ -110,10 +110,10 @@ function ContextMenuAssistant_(
     setIsFormVisible(false)
   }
 
-  const handleOnSubmit = (selectedCategory: string, feedbackText: string) => {
+  const handleOnSubmit = (selectedCategory: string, feedbackText: string, shouldSendUrl: boolean) => {
     if (feedbackId) {
       getPageHandlerInstance()
-        .pageHandler.sendFeedback(selectedCategory, feedbackText, feedbackId)
+        .pageHandler.sendFeedback(selectedCategory, feedbackText, feedbackId, shouldSendUrl)
         .then((resp) => {
           if (!resp.isSuccess) {
             showAlert({

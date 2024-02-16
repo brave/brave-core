@@ -284,9 +284,10 @@ void AIChatUIPageHandler::RateMessage(bool is_liked,
 void AIChatUIPageHandler::SendFeedback(const std::string& category,
                                        const std::string& feedback,
                                        const std::string& rating_id,
+                                       bool send_hostname,
                                        SendFeedbackCallback callback) {
   active_chat_tab_helper_->SendFeedback(category, feedback, rating_id,
-                                        std::move(callback));
+                                        send_hostname, std::move(callback));
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {

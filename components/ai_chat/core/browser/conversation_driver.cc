@@ -834,6 +834,12 @@ mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
   site_info->title = base::UTF16ToUTF8(GetPageTitle());
   site_info->is_content_truncated = IsPageContentsTruncated();
   site_info->is_content_association_possible = IsContentAssociationPossible();
+  const GURL url = GetPageURL();
+
+  if (url.SchemeIsHTTPOrHTTPS()) {
+    site_info->hostname = url.host();
+  }
+
   return site_info;
 }
 
@@ -950,6 +956,7 @@ void ConversationDriver::SendFeedback(
     const std::string& category,
     const std::string& feedback,
     const std::string& rating_id,
+    bool send_hostname,
     mojom::PageHandler::SendFeedbackCallback callback) {
   auto on_complete = base::BindOnce(
       [](mojom::PageHandler::SendFeedbackCallback callback,
@@ -963,7 +970,12 @@ void ConversationDriver::SendFeedback(
       },
       std::move(callback));
 
+  const GURL page_url = GetPageURL();
+
   feedback_api_->SendFeedback(category, feedback, rating_id,
+                              (send_hostname && page_url.SchemeIsHTTPOrHTTPS())
+                                  ? std::optional<std::string>(page_url.host())
+                                  : std::nullopt,
                               std::move(on_complete));
 }
 
