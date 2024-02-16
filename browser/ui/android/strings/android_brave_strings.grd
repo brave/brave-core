@@ -2358,26 +2358,11 @@ Are you sure you want to do this?
     <message name="IDS_VPN_SETTINGS_CALLOUT_TEXT" desc="Vpn settings callout text">
         Upgrade to a VPN to protect your connection and block invasive trackers everywhere.
     </message>
-    <message name="IDS_ENABLE" desc="VPN callout text">
-      Enable
-    </message>
     <message name="IDS_ENABLED" desc="VPN settings toggle text">
       Enabled
     </message>
     <message name="IDS_POWERED_BY" desc="VPN text">
       Powered by
-    </message>
-    <message name="IDS_VPN_MODAL_TEXT_1" desc="VPN modal text">
-      Block ads &amp; trackers across all apps
-    </message>
-    <message name="IDS_VPN_MODAL_TEXT_2" desc="VPN modal text">
-      Secures all connections
-    </message>
-    <message name="IDS_VPN_MODAL_TEXT_3" desc="VPN modal text">
-      Fast and unlimited up to 100 Mbps
-    </message>
-    <message name="IDS_VPN_MODAL_TEXT_4" desc="VPN modal text">
-      24/7 support
     </message>
     <message name="IDS_PLAN_TEXT_1" desc="Brave VPN plan text">
       Protect every app &amp; your whole device

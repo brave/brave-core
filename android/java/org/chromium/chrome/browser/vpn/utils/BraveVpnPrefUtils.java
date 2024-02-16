@@ -20,7 +20,6 @@ import java.util.Set;
 
 public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
-    private static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
     private static final String PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE =
             "brave_vpn_subscription_purchase";
     private static final String PREF_BRAVE_VPN_PAYMENT_STATE = "brave_vpn_payment_state";
@@ -88,16 +87,6 @@ public class BraveVpnPrefUtils {
 
     public static void setCallout(boolean newValue) {
         ChromeSharedPreferences.getInstance().writeBoolean(PREF_BRAVE_VPN_CALLOUT, newValue);
-    }
-
-    public static boolean shouldShowCalloutSettings() {
-        return ChromeSharedPreferences.getInstance()
-                .readBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, true);
-    }
-
-    public static void setCalloutSettings(boolean newValue) {
-        ChromeSharedPreferences.getInstance()
-                .writeBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, newValue);
     }
 
     public static boolean isSubscriptionPurchase() {
