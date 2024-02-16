@@ -37,8 +37,6 @@ import java.util.stream.Collectors;
 
 public class WalletUtils {
     private static final String ACCOUNT_INFO = "accountInfo";
-    private static final String BLOCKCHAIN_TOKEN = "blockchainToken";
-    private static final String NETWORK_INFO = "networkInfo";
     private static final String TAG = "WalletUtils";
 
     private static String getNewAccountPrefixForCoin(@CoinType.EnumType int coinType) {
@@ -85,24 +83,6 @@ public class WalletUtils {
         return accountIdsEqual(left.accountId, right.accountId);
     }
 
-    public static int getSelectedAccountIndex(
-            AccountInfo accountInfo, List<AccountInfo> accountInfos) {
-        if (accountInfo == null || accountInfos.size() == 0) return -1;
-        for (int i = 0; i < accountInfos.size(); i++) {
-            AccountInfo account = accountInfos.get(i);
-            if (accountIdsEqual(account, accountInfo)) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    public static TxDataUnion toTxDataUnion(SolanaTxData solanaTxData) {
-        TxDataUnion txDataUnion = new TxDataUnion();
-        txDataUnion.setSolanaTxData(solanaTxData);
-        return txDataUnion;
-    }
-
     public static void addAccountInfoToIntent(
             @NonNull final Intent intent, @NonNull final AccountInfo accountInfo) {
         ByteBuffer bb = accountInfo.serialize();
@@ -119,42 +99,6 @@ public class WalletUtils {
             return null;
         }
         return AccountInfo.deserialize(ByteBuffer.wrap(bytes));
-    }
-
-    public static void addBlockchainTokenToIntent(
-            @NonNull final Intent intent, @NonNull final BlockchainToken blockchainToken) {
-        ByteBuffer bb = blockchainToken.serialize();
-        byte[] bytes = new byte[bb.remaining()];
-        bb.get(bytes);
-
-        intent.putExtra(BLOCKCHAIN_TOKEN, bytes);
-    }
-
-    @Nullable
-    public static BlockchainToken getBlockchainTokenFromIntent(@NonNull final Intent intent) {
-        byte[] bytes = intent.getByteArrayExtra(BLOCKCHAIN_TOKEN);
-        if (bytes == null) {
-            return null;
-        }
-        return BlockchainToken.deserialize(ByteBuffer.wrap(bytes));
-    }
-
-    public static void addNetworkInfoToIntent(
-            @NonNull final Intent intent, @NonNull final NetworkInfo networkInfo) {
-        ByteBuffer bb = networkInfo.serialize();
-        byte[] bytes = new byte[bb.remaining()];
-        bb.get(bytes);
-
-        intent.putExtra(NETWORK_INFO, bytes);
-    }
-
-    @Nullable
-    public static NetworkInfo getNetworkInfoFromIntent(@NonNull final Intent intent) {
-        byte[] bytes = intent.getByteArrayExtra(NETWORK_INFO);
-        if (bytes == null) {
-            return null;
-        }
-        return NetworkInfo.deserialize(ByteBuffer.wrap(bytes));
     }
 
     public static void openWebWallet() {
