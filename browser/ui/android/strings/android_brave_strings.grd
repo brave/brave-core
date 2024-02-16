@@ -2135,12 +2135,6 @@ Are you sure you want to do this?
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Ethereum Mainnet
     </message>
-    <message name="IDS_ADDRESS_MISSING_CHECKSUM_WARNING" desc="Brave Wallet send address missing checksum warning text">
-      Missing checksum information
-    </message>
-    <message name="IDS_ADDRESS_NOT_VALID_CHECKSUM_ERROR" desc="Brave Wallet send address invalid checksum error text">
-      Invalid checksum information
-    </message>
     <message name="IDS_ACCOUNTS" desc="Brave Wallet section text">
       Accounts
     </message>
@@ -2681,15 +2675,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_DECIMALS" desc="Add custom asset dialog Decimals of precision field">
       Decimals of precision
     </message>
-    <message name="IDS_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">
-      The receiving address is your own address
-    </message>
-    <message name="IDS_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">
-      Not a valid ETH address
-    </message>
-    <message name="IDS_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">
-      The receiving address is a token's contract address
-    </message>
     <message name="IDS_REWARDS_SUMMARY" desc="Text for `Rewards Summary` button in Brave rewards panel">
       Rewards Summary
     </message>
@@ -3127,12 +3112,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SPLIT_TUNNELING" desc="Vpn splittunnel text">
       Split Tunneling
-    </message>
-    <message name="IDS_INVALID_SOL_ADDRESS" desc="Message to indicate invalid Solana address">
-      Not a valid SOL address
-    </message>
-        <message name="IDS_INVALID_FIL_ADDRESS" desc="Message to indicate invalid Filecoin address">
-      Not a valid FIL address
     </message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
       The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
