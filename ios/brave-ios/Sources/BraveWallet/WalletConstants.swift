@@ -100,7 +100,11 @@ public struct WalletConstants {
   /// The supported Solana Name Service (SNS) extensions
   static let supportedSNSExtensions = [".sol"]
   /// The supported Unstoppable Domain (UD) extensions
-  public static let supportedUDExtensions = [".crypto", ".x", ".nft", ".dao", ".wallet", ".blockchain", ".bitcoin", ".zil"]
+  public static let supportedUDExtensions = [
+    ".crypto", ".x", ".nft", ".dao", ".wallet",
+    ".blockchain", ".bitcoin", ".zil", ".altimist", ".anime",
+    ".klever", ".manga", ".polygon", ".unstoppable", ".pudgy"
+  ]
   
   /// The supported IPFS schemes
   static let supportedIPFSSchemes = ["ipfs", "ipns"]
