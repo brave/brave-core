@@ -66,7 +66,7 @@ void Conversions::GetCreativeSetConversions(
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   const database::table::CreativeSetConversions database_table;
-  database_table.GetAll(
+  database_table.GetUnexpired(
       base::BindOnce(&Conversions::GetCreativeSetConversionsCallback,
                      weak_factory_.GetWeakPtr(), redirect_chain, html));
 }

@@ -252,7 +252,8 @@ void CreativeSetConversions::Save(
   RunTransaction(std::move(transaction), std::move(callback));
 }
 
-void CreativeSetConversions::GetAll(GetConversionsCallback callback) const {
+void CreativeSetConversions::GetUnexpired(
+    GetConversionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
