@@ -239,8 +239,15 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT ae.placement_id, ae.type, ae.confirmation_type, ae.campaign_id, "
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
-      "ae.segment, ae.created_at FROM $1 AS ae ORDER BY created_at DESC;",
-      {GetTableName()}, nullptr);
+      "ae.segment, ae.created_at FROM $1 AS ae WHERE creative_set_id IN "
+      "(SELECT creative_set_id from creative_set_conversions) OR "
+      "DATETIME((created_at / 1000000) - 11644473600, 'unixepoch') > "
+      "DATETIME(($2 / 1000000) - 11644473600, 'unixepoch', '-3 month') ORDER "
+      "BY created_at DESC;",
+      {GetTableName(),
+       base::NumberToString(
+           base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())},
+      nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
