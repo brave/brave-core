@@ -28,43 +28,42 @@ BraveSimpleCommandSource::~BraveSimpleCommandSource() = default;
 CommandSource::CommandResults BraveSimpleCommandSource::GetCommands(
     const std::u16string& input,
     Browser* browser) const {
-  // auto commands = commands::GetCommands();
+  auto commands = commands::GetCommands();
   CommandSource::CommandResults results;
-  // FuzzyFinder finder(input);
-  // std::vector<gfx::Range> ranges;
+  FuzzyFinder finder(input);
+  std::vector<gfx::Range> ranges;
 
-  // for (const int command_id : commands) {
-  //   if (!chrome::IsCommandEnabled(browser, command_id)) {
-  //     continue;
-  //   }
+  for (const int command_id : commands) {
+    if (!chrome::IsCommandEnabled(browser, command_id)) {
+      continue;
+    }
 
-  //   std::u16string name =
-  //       base::UTF8ToUTF16(commands::GetCommandName(command_id));
+    std::u16string name =
+        base::UTF8ToUTF16(commands::GetCommandName(command_id));
 
-  //   double score = finder.Find(name, &ranges);
-  //   if (score == 0) {
-  //     continue;
-  //   }
+    double score = finder.Find(name, &ranges);
+    if (score == 0) {
+      continue;
+    }
 
-  //   auto item = std::make_unique<CommandItem>(name, score, ranges);
-  //   ui::Accelerator accelerator;
-  //   ui::AcceleratorProvider* provider =
-  //       chrome::AcceleratorProviderForBrowser(browser);
-  //   if (provider->GetAcceleratorForCommandId(command_id, &accelerator)) {
-  //     item->annotation = accelerator.GetShortcutText();
-  //   }
+    auto item = std::make_unique<CommandItem>(name, score, ranges);
+    ui::Accelerator accelerator;
+    ui::AcceleratorProvider* provider =
+        chrome::AcceleratorProviderForBrowser(browser);
+    if (provider->GetAcceleratorForCommandId(command_id, &accelerator)) {
+      item->annotation = accelerator.GetShortcutText();
+    }
 
-  //   item->command = base::BindOnce(
-  //       [](Browser* browser, int command_id) {
-  //         chrome::ExecuteCommand(browser, command_id);
-  //       },
-  //       // Unretained is safe here, as the commands will be reset if the
-  //       browser
-  //       // is closed.
-  //       base::Unretained(browser), command_id);
+    item->command = base::BindOnce(
+        [](Browser* browser, int command_id) {
+          chrome::ExecuteCommand(browser, command_id);
+        },
+        // Unretained is safe here, as the commands will be reset if the browser
+        // is closed.
+        base::Unretained(browser), command_id);
 
-  //   results.push_back(std::move(item));
-  // }
+    results.push_back(std::move(item));
+  }
 
   return results;
 }

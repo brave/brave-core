@@ -4,5 +4,5 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  enable_commander = false
+  enable_commander = !is_android && !is_ios
 }

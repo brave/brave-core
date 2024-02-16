@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/commander/fuzzy_finder.cc b/chrome/browser/ui/commander/fuzzy_finder.cc
+index 5166bb5d043880ce14e8afb930a9d6e9469494a1..532eaac446e845d2b08b5085d81f7df05863d204 100644
+--- a/chrome/browser/ui/commander/fuzzy_finder.cc
++++ b/chrome/browser/ui/commander/fuzzy_finder.cc
+@@ -236,7 +236,7 @@ FuzzyFinder::~FuzzyFinder() = default;
+ double FuzzyFinder::Find(const std::u16string& haystack,
+                          std::vector<gfx::Range>* matched_ranges) {
+   matched_ranges->clear();
+-  if (needle_.size() == 0)
++  if (needle_.size() == 0 BRAVE_FUZZY_FINDER_NEEDLE_SIZE_CHECK)
+     return 0;
+   const std::u16string& folded = base::i18n::FoldCase(haystack);
+   size_t m = needle_.size();

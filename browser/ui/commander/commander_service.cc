@@ -52,9 +52,9 @@ CommandItemModel FromCommand(const std::unique_ptr<CommandItem>& item) {
 CommanderService::CommanderService(Profile* profile)
     : profile_(profile), ranker_(profile->GetPrefs()) {
   command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
-  // command_sources_.push_back(std::make_unique<BraveBookmarkCommandSource>());
-  // command_sources_.push_back(std::make_unique<BraveWindowCommandSource>());
-  // command_sources_.push_back(std::make_unique<BraveTabCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveBookmarkCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveWindowCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveTabCommandSource>());
 }
 
 CommanderService::~CommanderService() = default;
@@ -90,15 +90,15 @@ void CommanderService::SelectCommand(uint32_t command_index,
   // Record that we selected this command to increase it's rank next time.
   ranker_.Visit(*item);
 
-  // if (item->GetType() == CommandItem::Type::kOneShot) {
-  //   std::move(absl::get<base::OnceClosure>(item->command)).Run();
-  //   Hide();
-  // } else {
-  //   auto composite_command =
-  //       absl::get<CommandItem::CompositeCommand>(item->command);
-  //   std::tie(prompt_, composite_command_provider_) = composite_command;
-  //   Show();
-  // }
+  if (item->GetType() == CommandItem::Type::kOneShot) {
+    std::move(absl::get<base::OnceClosure>(item->command)).Run();
+    Hide();
+  } else {
+    auto composite_command =
+        absl::get<CommandItem::CompositeCommand>(item->command);
+    std::tie(prompt_, composite_command_provider_) = composite_command;
+    Show();
+  }
 }
 
 std::vector<CommandItemModel> CommanderService::GetItems() {
