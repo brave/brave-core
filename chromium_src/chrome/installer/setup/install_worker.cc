@@ -75,8 +75,6 @@ void AddUninstallVpnServiceWorkItems() {
 // See https://github.com/brave/brave-browser/issues/33726 for more info
 void AddUninstallWireguardServiceWorkItems(WorkItemList* list) {
   DCHECK(::IsUserAnAdmin());
-  list->AddCallbackWorkItem(base::BindOnce(&UninstallBraveVPNWireguardService),
-                            base::NullCallback());
 }
 
 }  // namespace
