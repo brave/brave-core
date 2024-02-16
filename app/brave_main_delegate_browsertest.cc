@@ -119,7 +119,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &android_webview::features::kWebViewServerSideSampling,
       &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
-      &attribution_reporting::features::kAttributionReportingTriggerConfig,
       &attribution_reporting::features::kAttributionReportingTriggerContextId,
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
