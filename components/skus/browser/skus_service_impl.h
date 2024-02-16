@@ -101,6 +101,10 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
       const std::string& receipt,
       skus::mojom::SkusService::CreateOrderFromReceiptCallback callback)
       override;
+  void PurgeStore(rust::cxxbridge1::Fn<
+                      void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                           bool success)> done,
+                  rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx);
   void GetValueFromStore(
       const std::string& key,
       rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,

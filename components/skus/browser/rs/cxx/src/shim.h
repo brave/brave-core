@@ -91,7 +91,11 @@ class SkusContext {
                                 rust::String value,
                                 bool success)> done,
       rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const = 0;
-  virtual void PurgeStore() const = 0;
+  virtual void PurgeStore(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
+          done,
+      rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const = 0;
   virtual void UpdateStoreValue(std::string key, std::string value) const = 0;
 };
 

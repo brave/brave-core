@@ -14,6 +14,7 @@
 #include "brave/components/skus/browser/skus_context_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
@@ -78,6 +79,13 @@ void OnCreateOrderFromReceipt(
     std::move(callback_state->cb).Run(static_cast<std::string>(order_id));
   }
   delete callback_state;
+}
+
+void OnShimPurge(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> ctx) {
+  done(std::move(ctx), true);
 }
 
 void OnShimGet(
@@ -274,6 +282,18 @@ void SkusServiceImpl::GetValueFromStore(
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&OnShimGet, std::move(done), std::move(ctx), result));
+}
+
+void SkusServiceImpl::PurgeStore(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
+  ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
+  state->clear();
+
+  sdk_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
 }
 
 }  // namespace skus

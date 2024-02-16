@@ -24,13 +24,6 @@ void OnScheduleWakeup(
   done(std::move(ctx));
 }
 
-void OnShimPurge(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
-                              bool)> done,
-    rust::cxxbridge1::Box<skus::StoragePurgeContext> ctx) {
-  done(std::move(ctx), true);
-}
-
 void OnShimSet(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                               bool)> done,
@@ -110,10 +103,7 @@ void shim_purge(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
-  ctx.PurgeStore();
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
+  ctx.PurgeStore(std::move(done), std::move(st_ctx));
 }
 
 void shim_set(
@@ -195,10 +185,14 @@ void SkusContextImpl::GetValueFromStore(
                      std::move(done), std::move(st_ctx)));
 }
 
-void SkusContextImpl::PurgeStore() const {
+void SkusContextImpl::PurgeStore(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const {
   VLOG(1) << "shim_purge";
-  ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
-  state->clear();
+  ui_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&SkusServiceImpl::PurgeStore, skus_service_,
+                                std::move(done), std::move(st_ctx)));
 }
 
 void SkusContextImpl::UpdateStoreValue(std::string key,
