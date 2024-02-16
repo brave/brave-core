@@ -9,8 +9,9 @@
   margin-top: 16px;
   max-width: 500px;
   font: var(--leo-control-font);
-  border: 1px solid var(--leo-color-divider-subtle);
+  background: var(--leo-color-blue-10);
   border-radius: 8px;
+  display: inline-block;
 
   h4 {
     padding: 24px 16px;
@@ -61,8 +62,9 @@
 }
 
 .premiumNote {
+  font: var(--leo-font-default-regular);
   margin: 0 16px 16px 16px;
   padding: 16px;
   border-radius: 8px;
-  background: linear-gradient(91.61deg, rgba(248, 190, 218, 0.1) 18.42%, rgba(173, 153, 255, 0.1) 85.72%);
+  background: var(--leo-color-blue-20);
 }
