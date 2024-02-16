@@ -42,12 +42,6 @@
 
 namespace {
 
-// delete `BraveVpnWireguardService` from services and remove the tray icon.
-bool UninstallBraveVPNWireguardService(const CallbackWorkItem&) {
-  return brave_vpn::UninstallBraveWireguardService() &&
-         brave_vpn::UninstallStatusTrayIcon();
-}
-
 // Brave 1.50.114+ would register `BraveVpnService` for system level installs.
 //
 // This change removes the service if it exists. We'll be updating the browser
