@@ -466,8 +466,7 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void ConversionQueue::GetUnprocessed(
-    GetConversionQueueCallback callback) const {
+void ConversionQueue::GetNext(GetConversionQueueCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;

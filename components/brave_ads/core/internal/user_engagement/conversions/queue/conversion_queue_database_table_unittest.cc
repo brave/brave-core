@@ -140,8 +140,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
       conversion_queue_item_2.conversion.creative_instance_id, callback.Get());
 }
 
-TEST_F(BraveAdsConversionQueueDatabaseTableTest,
-       GetUnprocessedConversionQueueItems) {
+TEST_F(BraveAdsConversionQueueDatabaseTableTest, GetNextConversionQueueItem) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
@@ -173,7 +172,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   base::MockCallback<GetConversionQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             ConversionQueueItemList{conversion_queue_item_2}));
-  database_table_.GetUnprocessed(callback.Get());
+  database_table_.GetNext(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
