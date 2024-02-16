@@ -13,9 +13,7 @@ cargo_crate("lib") {
   epoch = "0.1"
   crate_type = "rlib"
   crate_root = "//brave/third_party/rust/maybe_rayon/v0_1/crate/src/lib.rs"
-  sources = [
-    "//brave/third_party/rust/maybe_rayon/v0_1/crate/src/lib.rs",
-  ]
+  sources = [ "//brave/third_party/rust/maybe_rayon/v0_1/crate/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false

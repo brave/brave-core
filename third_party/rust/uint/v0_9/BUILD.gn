@@ -12,8 +12,7 @@ cargo_crate("lib") {
   crate_name = "uint"
   epoch = "0.9"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/uint/v0_9/crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/uint/v0_9/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/uint/v0_9/crate/src/lib.rs",
     "//brave/third_party/rust/uint/v0_9/crate/src/uint.rs",

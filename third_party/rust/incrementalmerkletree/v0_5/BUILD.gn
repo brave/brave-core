@@ -12,7 +12,8 @@ cargo_crate("lib") {
   crate_name = "incrementalmerkletree"
   epoch = "0.5"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/incrementalmerkletree/v0_5/crate/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/incrementalmerkletree/v0_5/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/incrementalmerkletree/v0_5/crate/src/frontier.rs",
     "//brave/third_party/rust/incrementalmerkletree/v0_5/crate/src/lib.rs",

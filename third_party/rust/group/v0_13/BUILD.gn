@@ -43,5 +43,8 @@ cargo_crate("lib") {
     "//brave/third_party/rust/subtle/v2:lib",
     "//third_party/rust/rand_core/v0_6:lib",
   ]
-  features = [ "alloc", "wnaf-memuse" ]
+  features = [
+    "alloc",
+    "wnaf-memuse",
+  ]
 }

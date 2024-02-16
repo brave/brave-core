@@ -12,8 +12,7 @@ cargo_crate("lib") {
   crate_name = "reddsa"
   epoch = "0.5"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/reddsa/v0_5/crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/reddsa/v0_5/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/reddsa/v0_5/crate/src/batch.rs",
     "//brave/third_party/rust/reddsa/v0_5/crate/src/constants.rs",

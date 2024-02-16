@@ -12,8 +12,7 @@ cargo_crate("lib") {
   crate_name = "orchard"
   epoch = "0.7"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/orchard/v0_7/crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/orchard/v0_7/crate/src/lib.rs"
   sources = [
     "//brave/third_party/rust/orchard/v0_7/crate/src/action.rs",
     "//brave/third_party/rust/orchard/v0_7/crate/src/address.rs",
@@ -93,5 +92,6 @@ cargo_crate("lib") {
     "//third_party/rust/rand/v0_8:lib",
     "//third_party/rust/serde/v1:lib",
   ]
+
   # features = [ "multicore" ]
 }
