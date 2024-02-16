@@ -148,6 +148,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &blink::features::kPrivacySandboxAdsAPIs,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kPrivateAggregationApiMultipleCloudProviders,
+      &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
       &blink::features::kSharedStorageAPIM118,
       &blink::features::kSharedStorageSelectURLLimit,
