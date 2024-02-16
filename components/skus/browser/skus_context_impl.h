@@ -53,6 +53,10 @@ class SkusContextImpl : public SkusContext {
       rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const override;
   void PurgeStore() const override;
   void UpdateStoreValue(std::string key, std::string value) const override;
+  void OnCredentialSummary(
+      const std::string& domain,
+      mojom::SkusService::CredentialSummaryCallback callback,
+      const std::string& summary_string);
 
  private:
   // used to store the credential

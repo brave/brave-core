@@ -200,7 +200,13 @@ void SkusServiceImpl::CredentialSummary(
     mojom::SkusService::CredentialSummaryCallback callback) {
   std::unique_ptr<skus::CredentialSummaryCallbackState> cbs(
       new skus::CredentialSummaryCallbackState);
-  cbs->cb = std::move(callback);
+  auto context_impl = std::make_unique<skus::SkusContextImpl>(
+      prefs_, url_loader_factory_->Clone(), ui_task_runner_,
+      weak_factory_.GetWeakPtr());
+  auto internal_callback = base::BindOnce(&SkusContextImpl::OnCredentialSummary,
+                                          base::Owned(std::move(context_impl)),
+                                          domain, std::move(callback));
+  cbs->cb = std::move(internal_callback);
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(

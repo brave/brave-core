@@ -208,4 +208,14 @@ void SkusContextImpl::UpdateStoreValue(std::string key,
   state->Set(key, value);
 }
 
+void SkusContextImpl::OnCredentialSummary(
+    const std::string& domain,
+    mojom::SkusService::CredentialSummaryCallback callback,
+    const std::string& summary_string) {
+  if (callback) {
+    ui_task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), summary_string));
+  }
+}
+
 }  // namespace skus
