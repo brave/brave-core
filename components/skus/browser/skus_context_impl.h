@@ -12,6 +12,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"
+#include "brave/components/skus/browser/skus_service_impl.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefService;
@@ -37,11 +38,19 @@ class SkusContextImpl : public SkusContext {
   explicit SkusContextImpl(
       PrefService* prefs,
       std::unique_ptr<network::PendingSharedURLLoaderFactory>
-          pending_url_loader_factory);
+          pending_url_loader_factory,
+      scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
+      // SkusServiceImpl* skus_service);
+      base::WeakPtr<SkusServiceImpl>);
   ~SkusContextImpl() override;
 
   std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const override;
-  std::string GetValueFromStore(std::string key) const override;
+  void GetValueFromStore(
+      std::string key,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                                rust::String value,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const override;
   void PurgeStore() const override;
   void UpdateStoreValue(std::string key, std::string value) const override;
 
@@ -52,6 +61,9 @@ class SkusContextImpl : public SkusContext {
   // used for making requests to SKU server
   mutable std::unique_ptr<network::PendingSharedURLLoaderFactory>
       pending_url_loader_factory_;
+  scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
+  base::WeakPtr<SkusServiceImpl> skus_service_;
+  // raw_ptr<SkusServiceImpl> skus_service_;
 };
 
 }  // namespace skus

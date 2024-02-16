@@ -101,6 +101,12 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
       const std::string& receipt,
       skus::mojom::SkusService::CreateOrderFromReceiptCallback callback)
       override;
+  void GetValueFromStore(
+      const std::string& key,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                                rust::String,
+                                bool)> done,
+      rust::cxxbridge1::Box<skus::StorageGetContext> ctx);
 
   ::rust::Box<skus::CppSDK>* GetOrCreateSDK(const std::string& domain);
 

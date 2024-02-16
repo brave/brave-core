@@ -80,6 +80,15 @@ void OnCreateOrderFromReceipt(
   delete callback_state;
 }
 
+void OnShimGet(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String,
+                              bool)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> ctx,
+    std::string value) {
+  done(std::move(ctx), ::rust::String(value), true);
+}
+
 }  // namespace
 
 namespace skus {
@@ -171,9 +180,11 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
     return sdks2_.at(env).get();
   }
 
-  auto sdk_raw = initialize_sdk(std::make_unique<skus::SkusContextImpl>(
-                                    prefs_, url_loader_factory_->Clone()),
-                                env);
+  auto sdk_raw =
+      initialize_sdk(std::make_unique<skus::SkusContextImpl>(
+                         prefs_, url_loader_factory_->Clone(), ui_task_runner_,
+                         weak_factory_.GetWeakPtr()),
+                     env);
 
   auto sdk =
       std::unique_ptr<::rust::Box<skus::CppSDK>, base::OnTaskRunnerDeleter>(
@@ -239,6 +250,24 @@ void SkusServiceImpl::CreateOrderFromReceipt(
                                               std::move(cbs), receipt);
           },
           GetOrCreateSDK(domain), std::move(cbs), receipt));
+}
+
+void SkusServiceImpl::GetValueFromStore(
+    const std::string& key,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String,
+                              bool)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> ctx) {
+  const auto& state = prefs_->GetDict(prefs::kSkusState);
+  const base::Value* value = state.Find(key);
+  std::string result;
+  if (value) {
+    result = value->GetString();
+  }
+
+  sdk_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimGet, std::move(done), std::move(ctx), result));
 }
 
 }  // namespace skus

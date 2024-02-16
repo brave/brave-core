@@ -38,15 +38,6 @@ void OnShimSet(
   done(std::move(ctx), true);
 }
 
-void OnShimGet(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
-                              rust::String,
-                              bool)> done,
-    rust::String value,
-    rust::cxxbridge1::Box<skus::StorageGetContext> ctx) {
-  done(std::move(ctx), std::move(value), true);
-}
-
 logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
   switch (level) {
     case skus::TracingLevel::Trace:
@@ -146,12 +137,8 @@ void shim_get(
                               rust::String value,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &OnShimGet, std::move(done),
-          ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key))),
-          std::move(st_ctx)));
+  ctx.GetValueFromStore(static_cast<std::string>(key), std::move(done),
+                        std::move(st_ctx));
 }
 
 void shim_scheduleWakeup(
@@ -181,9 +168,13 @@ std::unique_ptr<SkusUrlLoader> shim_executeRequest(
 SkusContextImpl::SkusContextImpl(
     PrefService* prefs,
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
-        pending_url_loader_factory)
+        pending_url_loader_factory,
+    scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
+    base::WeakPtr<SkusServiceImpl> skus_service)
     : prefs_(*prefs),
-      pending_url_loader_factory_(std::move(pending_url_loader_factory)) {}
+      pending_url_loader_factory_(std::move(pending_url_loader_factory)),
+      ui_task_runner_(ui_task_runner),
+      skus_service_(skus_service) {}
 SkusContextImpl::~SkusContextImpl() = default;
 
 std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
@@ -192,14 +183,16 @@ std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
           std::move(pending_url_loader_factory_)));
 }
 
-std::string SkusContextImpl::GetValueFromStore(std::string key) const {
-  VLOG(1) << "shim_get: `" << key << "`";
-  const auto& state = prefs_->GetDict(prefs::kSkusState);
-  const base::Value* value = state.Find(key);
-  if (value) {
-    return value->GetString();
-  }
-  return "";
+void SkusContextImpl::GetValueFromStore(
+    std::string key,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                              rust::String value,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const {
+  ui_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&SkusServiceImpl::GetValueFromStore, skus_service_, key,
+                     std::move(done), std::move(st_ctx)));
 }
 
 void SkusContextImpl::PurgeStore() const {
