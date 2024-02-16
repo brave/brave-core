@@ -433,6 +433,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/LiveDataUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/ProfileUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TouchDelegateComposite.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/Triple.java",

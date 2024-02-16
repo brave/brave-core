@@ -64,10 +64,13 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
 
     @Override
     public void onConnectionError(MojoException e) {
+        if (mPlaylistService != null) {
+            mPlaylistService.close();
+            mPlaylistService = null;
+        }
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
-            mPlaylistService = null;
             initPlaylistService();
         }
     }
@@ -329,7 +332,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                 playlistId,
                 playlist -> {
                     if (playlist == null) {
-                        Log.d(TAG, "PlaylistHostActivity.loadPlaylist is null from service");
+                        Log.d(TAG, "loadPlaylist is null from service");
                         return;
                     }
                     List<PlaylistItemModel> playlistItems = new ArrayList();
@@ -505,6 +508,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     public void onDestroy() {
         if (mPlaylistService != null) {
             mPlaylistService.close();
+            mPlaylistService = null;
         }
         if (mPlaylistServiceObserver != null) {
             mPlaylistServiceObserver.close();

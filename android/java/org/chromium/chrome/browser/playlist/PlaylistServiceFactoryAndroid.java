@@ -8,8 +8,8 @@ package org.chromium.chrome.browser.playlist;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.util.ProfileUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -34,7 +34,7 @@ public class PlaylistServiceFactoryAndroid {
     private PlaylistServiceFactoryAndroid() {}
 
     public PlaylistService getPlaylistService(ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = Utils.getProfile(false); // Always use regular profile
+        Profile profile = ProfileUtils.getProfile(); // Always use regular profile
         if (profile == null) {
             return null;
         }

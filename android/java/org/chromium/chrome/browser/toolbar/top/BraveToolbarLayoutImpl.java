@@ -119,7 +119,6 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
@@ -719,7 +718,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 });
     }
 
-    private void showAddedToPlaylistSnackBar(Playlist playlist) {
+    private void showAddedToPlaylistSnackBar() {
         SnackBarActionModel snackBarActionModel =
                 new SnackBarActionModel(
                         getContext().getResources().getString(R.string.view_action),
@@ -728,9 +727,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             public void onClick(View v) {
                                 try {
                                     BraveActivity.getBraveActivity()
-                                            .openPlaylistActivity(getContext(), playlist.id);
+                                            .openPlaylistActivity(
+                                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
                                 } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                    Log.e(TAG, "showAddedToPlaylistSnackBar onClick " + e);
+                                    Log.e(TAG, "showAddedToPlaylistSnackBar onClick ", e);
                                 }
                             }
                         });
@@ -739,9 +739,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                             android.R.id.content);
             String playlistName =
-                    (playlist.id.equals(ConstantUtils.DEFAULT_PLAYLIST))
-                            ? getContext().getResources().getString(R.string.playlist_play_later)
-                            : playlist.name;
+                    getContext().getResources().getString(R.string.playlist_play_later);
             PlaylistViewUtils.showSnackBarWithActions(
                     viewGroup,
                     String.format(
@@ -749,7 +747,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             playlistName),
                     snackBarActionModel);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showAddedToPlaylistSnackBar " + e);
+            Log.e(TAG, "showAddedToPlaylistSnackBar ", e);
         }
     }
 

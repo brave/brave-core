@@ -206,6 +206,10 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
 
     @Override
     public void onConnectionError(MojoException e) {
+        if (mPlaylistService != null) {
+            mPlaylistService.close();
+            mPlaylistService = null;
+        }
         if (ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
             mPlaylistService = null;
@@ -226,6 +230,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
     public void onDestroy() {
         if (mPlaylistService != null) {
             mPlaylistService.close();
+            mPlaylistService = null;
         }
         super.onDestroy();
     }
