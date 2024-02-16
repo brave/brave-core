@@ -5,25 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import android.content.res.Resources;
-
-import androidx.annotation.NonNull;
-
-import org.chromium.base.Callbacks;
-import org.chromium.base.ContextUtils;
-import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BlockchainRegistry;
-import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.chrome.R;
-
-import java.util.HashSet;
-import java.util.Locale;
-
 public class Validations {
     public static boolean hasUnicode(String str) {
         for (int i = 0; i < str.length(); i++) {

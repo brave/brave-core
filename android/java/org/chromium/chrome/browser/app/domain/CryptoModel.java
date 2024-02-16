@@ -28,7 +28,6 @@ import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 

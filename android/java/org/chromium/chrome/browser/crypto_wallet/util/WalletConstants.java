@@ -11,7 +11,6 @@ import org.chromium.brave_wallet.mojom.TransactionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -63,8 +62,7 @@ public final class WalletConstants {
     public static final String PREF_SHOW_BRIDGE_INFO_DIALOG = "pref_show_bridge_info_dialog";
 
     // To clear prefs while resetting wallet
-    public static final String[] BRAVE_WALLET_PREFS = {
-            PREF_SHOW_BRIDGE_INFO_DIALOG};
+    public static final String[] BRAVE_WALLET_PREFS = {PREF_SHOW_BRIDGE_INFO_DIALOG};
 
     public static List<String> SUPPORTED_TOP_LEVEL_CHAIN_IDS =
             Arrays.asList(BraveWalletConstants.MAINNET_CHAIN_ID,

@@ -6,24 +6,19 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.annotation.SuppressLint;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import org.chromium.base.Callback;
 import org.chromium.base.Callbacks;
-import org.chromium.base.Callbacks.Callback1;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OnRampProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 

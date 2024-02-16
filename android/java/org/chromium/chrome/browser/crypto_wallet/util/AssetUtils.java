@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import static java.util.stream.Collectors.toMap;
-
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
@@ -17,15 +15,12 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringId;
-import org.chromium.brave_wallet.mojom.NetworkInfo;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.IntStream;
 
 public class AssetUtils {
     private static final String TAG = "AssetUtils";
