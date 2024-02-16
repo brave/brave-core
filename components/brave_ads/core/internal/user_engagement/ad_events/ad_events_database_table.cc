@@ -242,7 +242,7 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
       "ae.segment, ae.created_at FROM $1 AS ae WHERE creative_set_id IN "
       "(SELECT creative_set_id from creative_set_conversions) OR "
       "DATETIME((created_at / 1000000) - 11644473600, 'unixepoch') > "
-      "DATETIME(($2 / 1000000) - 11644473600, 'unixepoch', '-3 month') ORDER "
+      "DATETIME(($2 / 1000000) - 11644473600, 'unixepoch', '-3 months') ORDER "
       "BY created_at DESC;",
       {GetTableName(),
        base::NumberToString(
@@ -263,9 +263,15 @@ void AdEvents::GetUnexpiredForType(const mojom::AdType ad_type,
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT ae.placement_id, ae.type, ae.confirmation_type, ae.campaign_id, "
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
-      "ae.segment, ae.created_at FROM $1 AS ae WHERE type = '$2' ORDER BY "
-      "created_at DESC;",
-      {GetTableName(), ToString(static_cast<AdType>(ad_type))}, nullptr);
+      "ae.segment, ae.created_at FROM $1 AS ae WHERE type = '$2' AND "
+      "(creative_set_id IN (SELECT creative_set_id from "
+      "creative_set_conversions) OR DATETIME((created_at / 1000000) - "
+      "11644473600, 'unixepoch') > DATETIME(($3 / 1000000) - 11644473600, "
+      "'unixepoch', '-3 months')) ORDER BY created_at DESC;",
+      {GetTableName(), ToString(static_cast<AdType>(ad_type)),
+       base::NumberToString(
+           base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())},
+      nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
