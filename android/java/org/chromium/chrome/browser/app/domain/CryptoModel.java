@@ -59,7 +59,6 @@ public class CryptoModel {
     private NetworkModel mNetworkModel;
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
-    private TransactionsModel mTransactionsModel;
 
     public CryptoModel(Context context, TxService txService, KeyringService keyringService,
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
@@ -99,11 +98,6 @@ public class CryptoModel {
             this.mAssetRatioService = mAssetRatioService;
             mPendingTxHelper.setTxService(mTxService);
             mNetworkModel.resetServices(mBraveWalletService, mJsonRpcService);
-            if (mTransactionsModel != null) {
-                mTransactionsModel.resetServices(mContext, mTxService, mKeyringService,
-                        mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy,
-                        mSolanaTxManagerProxy, mBraveWalletService, mAssetRatioService);
-            }
         }
         init();
     }
@@ -200,15 +194,6 @@ public class CryptoModel {
 
     public NetworkModel getNetworkModel() {
         return mNetworkModel;
-    }
-
-    public TransactionsModel createTransactionModel() {
-        if (mTransactionsModel == null) {
-            mTransactionsModel = new TransactionsModel(mContext, mTxService, mKeyringService,
-                    mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
-                    mBraveWalletService, mAssetRatioService, mSharedData);
-        }
-        return mTransactionsModel;
     }
 
     public void updateCoinType() {
