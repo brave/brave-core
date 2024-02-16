@@ -1,0 +1,7 @@
+Name: jubjub
+URL: https://crates.io/crates/jubjub
+Description: Implementation of the Jubjub elliptic curve group
+Version: 0.10.0
+Security Critical: no
+License: Apache2/MIT licensed
+Revision: 47dfe5181ccf39166c0c479c35c0644d708f4294
