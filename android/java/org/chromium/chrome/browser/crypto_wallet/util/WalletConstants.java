@@ -106,9 +106,4 @@ public final class WalletConstants {
 
     public static final List<String> KNOWN_TEST_CHAIN_IDS =
             new ArrayList<>(KNOWN_TEST_CHAINS_MAP.keySet());
-
-    public static final List<Integer> SEND_TRANSACTION_TYPES = Arrays.asList(
-            TransactionType.ETH_SEND, TransactionType.ERC20_TRANSFER,
-            TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
-            TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION);
 }

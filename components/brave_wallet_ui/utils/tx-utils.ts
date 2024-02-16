@@ -10,8 +10,6 @@ import { EntityState } from '@reduxjs/toolkit'
 // types
 import {
   BraveWallet,
-  P3ASendTransactionTypes,
-  SupportedTestNetworks,
   SerializableTransactionInfo,
   TimeDelta,
   SerializableTimeDelta,
@@ -29,7 +27,6 @@ import { SwapExchangeProxy } from '../common/constants/registry'
 
 // utils
 import { getLocale } from '../../common/locale'
-import { loadTimeData } from '../../common/loadTimeData'
 import {
   getSolInstructionAccountParamsObj,
   getSolInstructionParamsObj,
@@ -246,27 +243,6 @@ export function isEthereumTransaction(
     tx.txDataUnion.ethTxData !== undefined ||
     tx.txDataUnion.ethTxData1559 !== undefined
   )
-}
-
-export function shouldReportTransactionP3A({
-  txInfo
-}: {
-  txInfo: Pick<
-    BraveWallet.TransactionInfo | SerializableTransactionInfo,
-    'txType' | 'chainId'
-  > & { coinType: BraveWallet.CoinType }
-}) {
-  if (
-    P3ASendTransactionTypes.includes(txInfo.txType) ||
-    (txInfo.coinType === BraveWallet.CoinType.FIL &&
-      txInfo.txType === BraveWallet.TransactionType.Other)
-  ) {
-    const countTestNetworks = loadTimeData.getBoolean(
-      BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY
-    )
-    return countTestNetworks || !SupportedTestNetworks.includes(txInfo.chainId)
-  }
-  return false
 }
 
 export const getTransactionNonce = (tx: TransactionInfo): string => {

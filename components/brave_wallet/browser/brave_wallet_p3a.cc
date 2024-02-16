@@ -22,6 +22,8 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
+#include "base/command_line.h"
+
 namespace brave_wallet {
 
 namespace {
@@ -47,10 +49,12 @@ void RecordKeyringCreated(bool created) {
 
 BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
                                KeyringService* keyring_service,
+                               TxService* tx_service,
                                PrefService* profile_prefs,
                                PrefService* local_state)
     : wallet_service_(wallet_service),
       keyring_service_(keyring_service),
+      tx_service_(tx_service),
       profile_prefs_(profile_prefs),
       local_state_(local_state) {
   DCHECK(profile_prefs);
@@ -88,6 +92,8 @@ BraveWalletP3A::~BraveWalletP3A() = default;
 void BraveWalletP3A::AddObservers() {
   keyring_service_->AddObserver(
       keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
+  tx_service_->AddObserver(
+      tx_service_observer_receiver_.BindNewPipeAndPassRemote());
   update_timer_.Start(FROM_HERE, base::Hours(kRefreshP3AFrequencyHours), this,
                       &BraveWalletP3A::OnUpdateTimerFired);
   OnUpdateTimerFired();  // Also call on startup
@@ -404,6 +410,53 @@ void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
 // KeyringServiceObserver
 void BraveWalletP3A::WalletCreated() {
   RecordKeyringCreated(keyring_service_->IsWalletCreatedSync());
+}
+
+void BraveWalletP3A::OnTransactionStatusChanged(
+    mojom::TransactionInfoPtr tx_info) {
+  auto is_eth_tx = tx_info->tx_data_union->is_eth_tx_data() ||
+                   tx_info->tx_data_union->is_eth_tx_data_1559();
+  auto is_sol_tx = tx_info->tx_data_union->is_solana_tx_data();
+  auto is_fil_tx = tx_info->tx_data_union->is_fil_tx_data();
+  if (!is_eth_tx && !is_sol_tx && !is_fil_tx) {
+    /// Currently only tracking sent Ethereum, Solana, and Filecoin transactions
+    return;
+  }
+
+  auto tx_status = tx_info->tx_status;
+  if (tx_status == mojom::TransactionStatus::Approved) {
+    auto tx_type = tx_info->tx_type;
+    if ((tx_type == mojom::TransactionType::ETHSend ||
+         tx_type == mojom::TransactionType::ERC20Transfer ||
+         tx_type == mojom::TransactionType::SolanaSystemTransfer ||
+         tx_type == mojom::TransactionType::SolanaSPLTokenTransfer ||
+         tx_type ==
+             mojom::TransactionType::
+                 SolanaSPLTokenTransferWithAssociatedTokenAccountCreation) ||
+        (tx_type == mojom::TransactionType::Other && is_fil_tx)) {
+      auto count_test_networks =
+          base::CommandLine::ForCurrentProcess()->HasSwitch(
+              brave_wallet::mojom::kP3ACountTestNetworksSwitch);
+      auto chain_id = tx_info->chain_id;
+      auto is_test_network =
+          chain_id == mojom::kGoerliChainId ||
+          chain_id == mojom::kSepoliaChainId ||
+          chain_id == mojom::kLocalhostChainId ||
+          chain_id == mojom::kFilecoinEthereumTestnetChainId ||
+          chain_id == mojom::kSolanaTestnet ||
+          chain_id == mojom::kSolanaDevnet ||
+          chain_id == mojom::kFilecoinTestnet;
+      if (!count_test_networks && is_test_network) {
+        // Enable `--p3a-count-wallet-test-networks` flag for test network
+        // support
+        return;
+      }
+      auto tx_coin = is_eth_tx   ? mojom::CoinType::ETH
+                     : is_sol_tx ? mojom::CoinType::SOL
+                                 : mojom::CoinType::FIL;
+      ReportTransactionSent(tx_coin, true);
+    }
+  }
 }
 
 }  // namespace brave_wallet

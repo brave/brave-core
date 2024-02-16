@@ -39,7 +39,6 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -178,15 +177,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         if (activity instanceof BraveWalletBaseActivity) {
             return ((BraveWalletBaseActivity) activity).getKeyringService();
         }
-        return null;
-    }
-
-    private BraveWalletP3a getBraveWalletP3A() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getBraveWalletP3A();
-        }
-
         return null;
     }
 
@@ -514,29 +504,12 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                 "approveTransaction", providerError, errorMessage);
                         return;
                     }
-                    reportTransactionForP3A();
                     mApproved = true;
                     if (mTransactionConfirmationListener != null) {
                         mTransactionConfirmationListener.onApproveTransaction();
                     }
                     dismiss();
                 });
-    }
-
-    private void reportTransactionForP3A() {
-        if (!WalletConstants.SEND_TRANSACTION_TYPES.contains(mTxInfo.txType)
-                && !(mCoinType == CoinType.FIL && mTxInfo.txType == TransactionType.OTHER)) {
-            return;
-        }
-        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-        assert braveWalletP3A != null;
-
-        boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
-                BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
-        if (countTestNetworks
-                || !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(mTxNetwork.chainId)) {
-            braveWalletP3A.reportTransactionSent(mCoinType, true);
-        }
     }
 
     private boolean canUpdateUi() {
