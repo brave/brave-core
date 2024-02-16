@@ -24,21 +24,21 @@ const HISTORY: mojom.ConversationTurn[] = [
     characterType: mojom.CharacterType.HUMAN,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     actionType: mojom.ActionType.UNSPECIFIED,
-    selectedText: ''
+    selectedText: undefined
   },
   {
     text: 'Hi, How are you?',
     characterType: mojom.CharacterType.ASSISTANT,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     actionType: mojom.ActionType.UNSPECIFIED,
-    selectedText: ''
+    selectedText: undefined
   },
   {
     text: 'What is pointer compression?',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory.'
+    selectedText: undefined
   },
   {
     text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
@@ -89,6 +89,20 @@ const HISTORY: mojom.ConversationTurn[] = [
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined
   },
+  {
+    text: 'Shorten this selected text',
+    characterType: mojom.CharacterType.HUMAN,
+    actionType: mojom.ActionType.SHORTEN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.'
+  },
+  {
+    text: 'Pointer compression is a memory optimization technique.',
+    characterType: mojom.CharacterType.ASSISTANT,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined
+  }
 ]
 
 const MODELS: mojom.Model[] = [

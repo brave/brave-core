@@ -18,21 +18,21 @@ Here are some important rules for the interaction:
 </message>
 
 <message name="IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART2" translateable="false">
-Here is the user's question:
-&lt;question&gt;
+Here is the user's request:
+&lt;request&gt;
 <ph name="QUESTION">$1</ph>
-&lt;/question&gt;
+&lt;/request&gt;
 </message>
 
 <message name="IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART2_WITH_EXCERPT" translateable="false">
-Here is the user's question about the excerpt:
-&lt;question&gt;
+Here is the user's request about the excerpt:
+&lt;request&gt;
 <ph name="QUESTION">$1</ph>
-&lt;/question&gt;
+&lt;/request&gt;
 </message>
 
 <message name="IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART3" translateable="false">
-How do you respond to the user's question? Put your response in &lt;response&gt;&lt;/response&gt; tags.</message>
+How do you respond to the user's request? Put your response in &lt;response&gt;&lt;/response&gt; tags.</message>
 
 <message name="IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT" translateable="false">Here is the text of a web page in &lt;page&gt; tags:
 &lt;page&gt;
@@ -57,7 +57,7 @@ The user selects this excerpt from the page content.
   A user is watching this video.</message>
 
 <message name="IDS_AI_CHAT_CLAUDE_HISTORY_PROMPT_SEGMENT" translateable="false">
-Here is the conversational history (between the user and you) prior to the question.
+Here is the conversational history (between the user and you) prior to the request.
 &lt;history&gt;
 <ph name="HISTORY">$1</ph>
 &lt;/history&gt;</message>
@@ -66,8 +66,21 @@ Here is the conversational history (between the user and you) prior to the quest
 Propose up to 3 very short questions that a reader may ask about the content. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". End the question list with a &lt;/response&gt; tag.</message>
 
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE" translateable="false">Provide a concise list of up to 6 bullets on the most important points of the page.</message>
-<message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT" translateable="false">Summarize the excerpt</message>
+<message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT" translateable="false">Generate a summary of the excerpt.</message>
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO" translateable="false">Provide a concise list of up to 6 bullets of the most important points of the video.</message>
+<message name="IDS_AI_CHAT_QUESTION_EXPLAIN" translateable="false">Explain the excerpt in simple terms. Expand on concepts that might not be familiar to the user.</message>
+<message name="IDS_AI_CHAT_QUESTION_PARAPHRASE" translateable="false">Rewrite the excerpt by paraphrasing. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_CREATE_TAGLINE" translateable="false">Use the excerpt to generate a tagline.</message>
+<message name="IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_SHORT" translateable="false">Use the excerpt to generate a post that could be used on social platforms like Twitter.</message>
+<message name="IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_LONG" translateable="false">Use the excerpt to generate a post that could be used on social platforms like Reddit.</message>
+<message name="IDS_AI_CHAT_QUESTION_IMPROVE" translateable="false">Improve the language of the excerpt. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_SIMPLIFY" translateable="false">Rewrite the excerpt in simpler terms so that it is easier to understand for a general audience. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_ACADEMICIZE" translateable="false">Rewrite the excerpt in an academic tone. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_PROFESSIONALIZE" translateable="false">Rewrite the excerpt in a professional tone. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_CASUALIZE" translateable="false">Rewrite the excerpt in a casual tone. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_FUNNY_TONE" translateable="false">Rewrite the excerpt in a funny tone. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_SHORTEN" translateable="false">Generate a shortened version of the excerpt in paragraph format by removing unnecessary details and refining the language for brevity. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_EXPAND" translateable="false">Generate a lengthened version of the excerpt in paragraph format by expanding on the details provided and adding more descriptive information where applicable. Include only the rewritten version in your response.</message>
 
 <message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC" translateable="false">
 The current time and date is <ph name="DATE">$1</ph>
@@ -83,15 +96,17 @@ Use unicode symbols for formatting where appropriate. Use backticks (`) to wrap 
 Here is your response:</message>
 
 <message name="IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT" translateable="false">
-This is an excerpt of the page content in &lt;excerpt&gt; tags:
-
-&lt;excerpt&gt; <ph name="EXCERPT">$1</ph> &lt;/excerpt&gt;
+This is an excerpt of the page content:
+&lt;excerpt&gt;
+<ph name="EXCERPT">$1</ph>
+&lt;/excerpt&gt;
 </message>
 
 <message name="IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT" translateable="false">
-This is the text of a web page within &lt;page&gt; tags:
-
-&lt;page&gt; <ph name="ARTICLE">$1</ph> &lt;/page&gt;
+This is the text of a web page:
+&lt;page&gt;
+<ph name="ARTICLE">$1</ph>
+&lt;/page&gt;
 
 <ph name= "USER_PROMPT">$2</ph>
 </message>
