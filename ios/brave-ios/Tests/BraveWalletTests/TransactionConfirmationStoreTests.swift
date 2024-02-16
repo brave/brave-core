@@ -131,7 +131,6 @@ import Preferences
       keyringService: keyringService,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: TestIpfsAPI(),
-      walletP3A: TestBraveWalletP3A(),
       userAssetManager: mockAssetManager
     )
   }
