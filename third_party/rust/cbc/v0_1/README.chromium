@@ -1,0 +1,7 @@
+Name: cbc
+URL: https://crates.io/crates/cbc
+Description: Cipher Block Chaining (CBC) block cipher mode of operation
+Version: 0.1.2
+Security Critical: yes
+License: Apache2/MIT licensed
+Revision: 5781d3f8d8667426fedc21d74f45f92b371bce2c

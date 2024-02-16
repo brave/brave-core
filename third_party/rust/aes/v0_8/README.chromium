@@ -1,0 +1,7 @@
+Name: aes
+URL: https://crates.io/crates/aes
+Description: Pure Rust implementation of the Advanced Encryption Standard (a.k.a. Rijndael).
+Version: 0.8.3
+Security Critical: yes
+License: Apache2/MIT licensed
+Revision: 1849105094b206fc1677001af07476b3ca80ec51
