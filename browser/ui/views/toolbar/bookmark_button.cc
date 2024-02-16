@@ -27,10 +27,6 @@ BraveBookmarkButton::BraveBookmarkButton(PressedCallback callback)
 
 BraveBookmarkButton::~BraveBookmarkButton() = default;
 
-const char* BraveBookmarkButton::GetClassName() const {
-  return "BraveBookmarkButton";
-}
-
 void BraveBookmarkButton::SetToggled(bool on) {
   active_ = on;
   UpdateImageAndText();

@@ -20,9 +20,6 @@ class BraveBookmarkButton : public ToolbarButton {
   void SetToggled(bool on);
   void UpdateImageAndText();
 
-  // ToolbarButton:
-  const char* GetClassName() const override;
-
  private:
   bool active_ = false;
 };

@@ -93,10 +93,6 @@ void BookmarkBarInstructionsView::Layout(PassKey) {
   }
 }
 
-const char* BookmarkBarInstructionsView::GetClassName() const {
-  return "BookmarkBarInstructionsView";
-}
-
 void BookmarkBarInstructionsView::OnThemeChanged() {
   View::OnThemeChanged();
   UpdateColors();
