@@ -55,19 +55,38 @@ export const getBalance = (
   }
 
   const accountBalances =
-    tokenBalancesRegistry[getAccountBalancesKey(accountId)]
+    tokenBalancesRegistry.accounts[getAccountBalancesKey(accountId)]
   if (!accountBalances) {
     return '0'
   }
 
-  const chainIdBalances =
-    accountBalances[asset.chainId] ?? accountBalances[asset.chainId.toString()]
+  const chainIdBalances = accountBalances.chains[asset.chainId]
   if (!chainIdBalances) {
     return '0'
   }
 
   const balance =
-    chainIdBalances[asset.contractAddress] ??
-    chainIdBalances[asset.contractAddress.toLowerCase()]
+    chainIdBalances.tokenBalances[asset.contractAddress.toLowerCase()]
   return balance || '0'
+}
+
+export function setBalance(
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>,
+  chainId: string,
+  contractAddress: string,
+  balance: string,
+  tokenBalancesRegistry: TokenBalancesRegistry
+) {
+  const accountBalanceKey = getAccountBalancesKey(accountId)
+  if (!tokenBalancesRegistry.accounts[accountBalanceKey]) {
+    tokenBalancesRegistry.accounts[accountBalanceKey] = { chains: {} }
+  }
+
+  const accountBalances = tokenBalancesRegistry.accounts[accountBalanceKey]
+  if (!accountBalances.chains[chainId]) {
+    accountBalances.chains[chainId] = { tokenBalances: {} }
+  }
+
+  const chainBalances = accountBalances.chains[chainId]
+  chainBalances.tokenBalances[contractAddress.toLowerCase()] = balance
 }

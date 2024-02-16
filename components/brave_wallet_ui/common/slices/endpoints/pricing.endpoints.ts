@@ -12,7 +12,7 @@ import {
 } from '../../../constants/types'
 import {
   TokenBalancesRegistry,
-  TokenBalancesForChainId
+  ChainBalances
 } from '../entities/token-balance.entity'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
@@ -268,32 +268,30 @@ export const pricingEndpoints = ({
             }
           )
 
-          const aggregatedBalances: Record<string, TokenBalancesForChainId> = {}
-          for (const chainIds of Object.values(tokenBalancesRegistry)) {
+          const aggregatedBalances: Record<string, ChainBalances> = {}
+          for (const chainIds of Object.values(
+            tokenBalancesRegistry.accounts
+          )) {
             for (const [chainId, tokenBalancesForChainId] of Object.entries(
-              chainIds
+              chainIds.chains
             )) {
               if (!aggregatedBalances[chainId]) {
-                aggregatedBalances[chainId] = {}
+                aggregatedBalances[chainId] = { tokenBalances: {} }
               }
 
+              const chainBalances = aggregatedBalances[chainId]
+
               for (const [contractAddress, tokenBalance] of Object.entries(
-                tokenBalancesForChainId
+                tokenBalancesForChainId.tokenBalances
               )) {
-                if (
-                  !aggregatedBalances[chainId][contractAddress.toLowerCase()]
-                ) {
-                  aggregatedBalances[chainId][contractAddress.toLowerCase()] =
-                    tokenBalance
+                if (!chainBalances[contractAddress.toLowerCase()]) {
+                  chainBalances[contractAddress.toLowerCase()] = tokenBalance
                 } else {
-                  aggregatedBalances[chainId][contractAddress.toLowerCase()] =
-                    new Amount(tokenBalance)
-                      .plus(
-                        aggregatedBalances[chainId][
-                          contractAddress.toLowerCase()
-                        ]
-                      )
-                      .format()
+                  chainBalances[contractAddress.toLowerCase()] = new Amount(
+                    tokenBalance
+                  )
+                    .plus(chainBalances[contractAddress.toLowerCase()])
+                    .format()
                 }
               }
             }
@@ -301,7 +299,7 @@ export const pricingEndpoints = ({
 
           const jointHistory = Object.entries(aggregatedBalances)
             .map(([chainId, tokenBalancesForChainId]) => {
-              return Object.entries(tokenBalancesForChainId).map(
+              return Object.entries(tokenBalancesForChainId.tokenBalances).map(
                 ([contractAddress, balance]) => {
                   const token = tokens.find(
                     (t) =>
