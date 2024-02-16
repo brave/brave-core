@@ -181,6 +181,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
       &features::kChromeRefresh2023,
+      &features::kChromeRefresh2023NTB,
+      &features::kChromeRefreshSecondary2023,
+      &features::kChromeWebuiRefresh2023,
       &features::kCookieDeprecationFacilitatedTesting,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kDesktopPWAsLinkCapturing,
