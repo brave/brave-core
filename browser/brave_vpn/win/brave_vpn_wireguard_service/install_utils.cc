@@ -216,7 +216,8 @@ bool UninstallBraveWireguardService() {
           {}, {})) {
     LOG(WARNING) << "Failed to delete "
                  << brave_vpn::GetBraveVpnWireguardServiceName();
-    return false;
+    // No need to `return false` because we can also reach here when the service
+    // didn't exist.
   }
   return true;
 }
