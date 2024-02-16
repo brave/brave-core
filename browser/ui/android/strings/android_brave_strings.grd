@@ -1790,9 +1790,6 @@ Are you sure you want to do this?
       <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
         Privacy Stats
       </message>
-      <message name="IDS_BUY" desc="Buy section text.">
-        Buy
-      </message>
       <message name="IDS_SUMMARY" desc="Summary section text">
         Summary
       </message>
@@ -1964,9 +1961,6 @@ Are you sure you want to do this?
     <message name="IDS_SWAP" desc="Brave Wallet swap button text">
       Swap
     </message>
-    <message name="IDS_DEPOSIT" desc="Brave Wallet deposit text">
-      Deposit
-    </message>
     <message name="IDS_DEFI_SECURE_STORAGE" desc="Brave Wallet onboarding text">
       Browser native.\nSelf-custody.\nAnd multi-chain.
     </message>
@@ -2020,18 +2014,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BACKUP_WALLET_BANNER_TEXT" desc="Brave Wallet backup banner text">
       Back up your crypto wallet
-    </message>
-    <message name="IDS_BUY_SWAP_TEXT" desc="Brave Wallet buy bottomsheet text">
-      Buy crypto with credit or debit card.
-    </message>
-    <message name="IDS_SEND_SWAP_TEXT" desc="Brave Wallet send bottomsheet text">
-      Send crypto or transfer from one account to another.
-    </message>
-    <message name="IDS_SWAP_TEXT" desc="Brave Wallet swap bottomsheet text">
-      Swap tokens and assets.
-    </message>
-    <message name="IDS_DEPOSIT_DESCRIPTION" desc="Brave Wallet deposit description">
-      Deposit crypto to Brave Wallet.
     </message>
     <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
       Secure your crypto with a password
