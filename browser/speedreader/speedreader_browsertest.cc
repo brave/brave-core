@@ -70,7 +70,7 @@ const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/speedreader/article/guardian.html";
 const char kTestEsPageReadable[] = "/speedreader/article/es.html";
 const char kTestPageReadableOnUnreadablePath[] =
-    "/speedreader/rewriter/pages/news_pages/abcnews.com/original.html";
+    "/speedreader/pages/simple.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
 const char kTestXml[] = "/speedreader/article/rss.xml";
 const char kTestTtsSimple[] = "/speedreader/article/simple.html";
