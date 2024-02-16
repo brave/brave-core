@@ -2184,9 +2184,6 @@ Are you sure you want to do this?
     <message name="IDS_DETAILS" desc="Brave wallet accounts text">
       Details
     </message>
-    <message name="IDS_ACCOUNT_DETAILS" desc="Brave wallet accounts text">
-      Account Details
-    </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
     </message>

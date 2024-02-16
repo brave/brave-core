@@ -59,11 +59,6 @@
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
 
-<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailsWithQrActivity"
-    android:theme="@style/Theme.Chromium.Activity"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
-
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
