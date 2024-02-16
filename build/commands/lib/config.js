@@ -68,13 +68,19 @@ const getNPMConfig = (key, default_value = undefined) => {
       if (key.startsWith('bitflyer') ||
           key.startsWith('brave') ||
           key.startsWith('gemini') ||
+          key.startsWith('google') ||
           key.startsWith('rewards') ||
           key.startsWith('p3a') ||
           key.startsWith('rbe') ||
+          key.startsWith('sardine') ||
           key.startsWith('updater') ||
+          key.startsWith('uphold') ||
           key.startsWith('zebpay')) {
         Log.warn(
-          `Warning: found ${key} in .npmrc. Continued use of .npmrc for Brave-core configuration is highly discouraged and will soon be unsupported. Migrate all configuration to src/brave/.env immediately to avoid potential issues.`
+          `Warning: found ${key.replace(/-/g, '_')} in .npmrc. Continued use of .npmrc for Brave-core configuration is highly discouraged and will soon be unsupported. Migrate all Brave-core configuration to src/brave/.env immediately to avoid potential issues.\n` +
+          'Internal wiki: https://github.com/brave/devops/wiki/%60.env%60-config-for-Brave-Developers\n' +
+          'Public wiki: https://github.com/brave/brave-browser/wiki/Build-configuration\n' +
+          'If the found variable is not related to Brave-core, please ignore this warning.'
         )
         break
       }
