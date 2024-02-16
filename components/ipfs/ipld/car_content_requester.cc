@@ -23,6 +23,20 @@ constexpr char kGatewayUrlDagScopeParamVal[] = "entity";
 constexpr char kGatewayUrlEntityBytesParamName[] = "entity-bytes";
 constexpr char kGatewayUrlEntityBytesOnlyStructParamVal[] = "0:0";
 
+constexpr char kGatewayUrlBlockOrderParamName[] = "order";
+constexpr char kGatewayUrlBlockOrderParamVal[] = "dfs";
+
+void ApplyRequestParameters(GURL& car_request_url) {
+  car_request_url = net::AppendQueryParameter(
+      car_request_url, kGatewayUrlFormatParamName, kGatewayUrlFormatParamVal);
+  car_request_url =
+      net::AppendQueryParameter(car_request_url, kGatewayUrlDagScopeParamName,
+                                kGatewayUrlDagScopeParamVal);
+  car_request_url =
+      net::AppendQueryParameter(car_request_url, kGatewayUrlBlockOrderParamName,
+                                kGatewayUrlBlockOrderParamVal);
+}
+
 }  // namespace
 
 namespace ipfs::ipld {
@@ -31,27 +45,22 @@ CarContentRequester::CarContentRequester(
     const GURL& url,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs,
-    const bool only_structure)
+    const bool only_metadata)
     : ContentRequester(url, url_loader_factory, prefs),
-      only_structure_(only_structure) {}
+      only_metadata_(only_metadata) {}
 
 CarContentRequester::~CarContentRequester() = default;
 
 const GURL CarContentRequester::GetGatewayRequestUrl() const {
   auto car_request_url = ContentRequester::GetGatewayRequestUrl();
+  ApplyRequestParameters(car_request_url);
 
-  car_request_url = net::AppendQueryParameter(
-      car_request_url, kGatewayUrlFormatParamName, kGatewayUrlFormatParamVal);
-  car_request_url =
-      net::AppendQueryParameter(car_request_url, kGatewayUrlDagScopeParamName,
-                                kGatewayUrlDagScopeParamVal);
-
-  if (only_structure_) {
+  if (only_metadata_) {
     car_request_url = net::AppendQueryParameter(
         car_request_url, kGatewayUrlEntityBytesParamName,
         kGatewayUrlEntityBytesOnlyStructParamVal);
   }
-
+LOG(INFO) << "[IPFS] GetGatewayRequestUrl() car_request_url:" << car_request_url;
   return car_request_url;
 }
 

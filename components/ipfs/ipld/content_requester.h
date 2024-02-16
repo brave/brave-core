@@ -19,30 +19,21 @@ class SimpleURLLoader;
 }  // namespace network
 
 namespace ipfs::ipld {
-
-using ContentRequestBufferCallback =
+class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
+ public:
+ using ContentRequestBufferCallback =
     base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool)>;
 
-class IContentRequester {
- public:
-  virtual ~IContentRequester() = default;
-
-  virtual void Request(ContentRequestBufferCallback callback) = 0;
-  virtual bool IsStarted() const = 0;
-};
-
-class ContentRequester : public IContentRequester,
-                         network::SimpleURLLoaderStreamConsumer {
- public:
-  void Request(ContentRequestBufferCallback callback) override;
-  bool IsStarted() const override;
+  ~ContentRequester() override;
+  
+  virtual void Request(ContentRequestBufferCallback callback);
+  virtual bool IsStarted() const;
 
  protected:
   explicit ContentRequester(
       const GURL& url,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs);
-  ~ContentRequester() override;
 
   virtual const GURL GetGatewayRequestUrl() const;
   virtual std::unique_ptr<network::SimpleURLLoader> CreateLoader() const = 0;
@@ -75,7 +66,7 @@ class ContentReaderFactory {
   ContentReaderFactory& operator=(const ContentReaderFactory&) = delete;
   ContentReaderFactory& operator=(ContentReaderFactory&&) = delete;
 
-  std::unique_ptr<IContentRequester> CreateCarContentRequester(
+  std::unique_ptr<ContentRequester> CreateCarContentRequester(
       const GURL& url,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs,

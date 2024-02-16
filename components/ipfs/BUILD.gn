@@ -43,6 +43,12 @@ static_library("ipfs") {
     "ipld/content_requester.h",
     "ipld/car_content_requester.cc",
     "ipld/car_content_requester.h",
+    "ipld/block_reader.cc",
+    "ipld/block_reader.h",
+    "ipld/block.cc",
+    "ipld/block.h",
+    "ipld/car_block_reader.cc",
+    "ipld/car_block_reader.h",
   ]
 
   deps = [

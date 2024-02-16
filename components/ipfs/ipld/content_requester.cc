@@ -31,7 +31,7 @@ bool IsPublicGatewayLink(const GURL& ipfs_url, PrefService* prefs) {
 
 namespace ipfs::ipld {
 
-std::unique_ptr<IContentRequester> ContentReaderFactory::CreateCarContentRequester(const GURL& url,
+std::unique_ptr<ContentRequester> ContentReaderFactory::CreateCarContentRequester(const GURL& url,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs,
       const bool only_structure) {
@@ -51,6 +51,7 @@ bool ContentRequester::IsStarted() const {
 }
 
 void ContentRequester::Request(ContentRequestBufferCallback callback) {
+  LOG(INFO) << "[IPFS] ContentRequester::Request";
   if (GetGatewayRequestUrl().is_empty()) {
     return;
   }
@@ -80,10 +81,11 @@ const GURL ContentRequester::GetGatewayRequestUrl() const {
 
 void ContentRequester::OnDataReceived(base::StringPiece string_piece,
                                       base::OnceClosure resume) {
-LOG(INFO) << "[IPFS] !!!"                                        ;
   data_->insert(data_->end(), string_piece.begin(), string_piece.end());
 
-  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data_->size();
+  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data_->size() << " string_piece.size:" << string_piece.size();
+
+  //TODO process every chunk here, dont wait for final complete
 
   // Continue to read data.
   std::move(resume).Run();
@@ -96,7 +98,7 @@ void ContentRequester::OnComplete(bool success) {
             << "  bytes_received_:" << data_->size();
   
   if (buffer_ready_callback_) {
-    buffer_ready_callback_.Run(std::move(data_), true);
+    buffer_ready_callback_.Run(std::move(data_), success);
   }
 
   data_ = std::make_unique<std::vector<uint8_t>>();

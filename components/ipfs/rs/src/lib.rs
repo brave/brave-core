@@ -74,6 +74,7 @@ mod ffi {
         data_offset: usize,
         cid: String,
         data: Vec<u8>,
+        verified: bool,
         error: ErrorData
     }
 }

@@ -25,7 +25,7 @@ class CarContentRequester : public ContentRequester {
 
   private:
     friend class CarContentRequesterUnitTest;
-    bool only_structure_;
+    bool only_metadata_;
 };
 
 }  // namespace ipfs::ipld

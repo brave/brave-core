@@ -24,7 +24,7 @@
 
 namespace {
 
-constexpr char kDefaultIpfsUrl [] = "ipfs://bafybeiakou6e7hnx4ms2yangplzl6viapsoyo6phlee6bwrg4j2xt37m3q";
+constexpr char kDefaultIpfsUrl [] = "ipfs://QmWiTTxzmTwHPoRsWczWJeNt8u5n3YzJBaWaUAwgmUxAEM";//"ipfs://bafybeiakou6e7hnx4ms2yangplzl6viapsoyo6phlee6bwrg4j2xt37m3q";
 
 }  // namespace
 
@@ -57,7 +57,7 @@ class CarContentRequesterUnitTest : public testing::Test {
 
 TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
     {
-        auto request_callback = base::BindLambdaForTesting([&](std::unique_ptr<std::vector<uint8_t>> buffer, const bool is_completed){
+        auto request_callback = base::BindLambdaForTesting([&](std::unique_ptr<std::vector<uint8_t>> buffer, const bool is_success){
             EXPECT_TRUE(false) << "request_callback must not be called";
         });
         auto ccr = std::make_unique<ipfs::ipld::CarContentRequester>(GURL(""), 
@@ -73,7 +73,7 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
         for(uint64_t i=0; i < content_size; i++) { content_data.push_back('%'); }
         auto request_callback_counter = 0;
         auto request_callback = base::BindLambdaForTesting([&](std::unique_ptr<std::vector<uint8_t>> buffer, const bool is_success){
-            LOG(INFO) << "[IPFS] request_callback is_success:" << is_success;
+            LOG(INFO) << "[IPFS] request_callback is_success:" << is_success << " buffer.size:" << buffer->size();
             request_callback_counter++;
             if(is_success){
                 for(char ch : *buffer) { EXPECT_EQ(ch, '%'); }
@@ -95,7 +95,7 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
                 response_head->headers->SetHeader("Content-Type", "application/vnd.ipld.car; version=1; order=dfs; dups=n");
                 response_head->headers->ReplaceStatusLine("HTTP/1.1 200 OK");
                 url_loader_factory()->AddResponse(
-                     request.url, std::move(response_head), std::string(content_data.data(), content_data.size() - 1),
+                     request.url, std::move(response_head), std::string(content_data.data(), content_data.size()),
                      network::URLLoaderCompletionStatus(net::OK));
         }));
         GURL url(kDefaultIpfsUrl);
