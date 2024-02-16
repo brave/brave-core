@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/hex/v0_4/BUILD.gn b/third_party/rust/hex/v0_4/BUILD.gn
+index 01f9a8648b86f570c9ff4d52ecb99827a7b70d13..d1e0752692f3a9e9276ff62607f97f3fa3c38451 100644
+--- a/third_party/rust/hex/v0_4/BUILD.gn
++++ b/third_party/rust/hex/v0_4/BUILD.gn
+@@ -38,5 +38,6 @@ cargo_crate("lib") {
+     "alloc",
+     "std",
+   ]
+-  testonly = true
++  # Disabled since it is needed for the Brave Orchard crate
++  # testonly = true
+ }
