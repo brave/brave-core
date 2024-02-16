@@ -155,9 +155,10 @@ SkusContextImpl::SkusContextImpl(
 SkusContextImpl::~SkusContextImpl() = default;
 
 std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
-  return std::make_unique<SkusUrlLoaderImpl>(
-      network::SharedURLLoaderFactory::Create(
-          std::move(pending_url_loader_factory_)));
+  auto url_loader_factory = network::SharedURLLoaderFactory::Create(
+      std::move(pending_url_loader_factory_));
+  pending_url_loader_factory_ = url_loader_factory->Clone();
+  return std::make_unique<SkusUrlLoaderImpl>(url_loader_factory);
 }
 
 void SkusContextImpl::GetValueFromStore(
