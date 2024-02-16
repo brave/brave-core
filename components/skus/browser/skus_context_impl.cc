@@ -24,13 +24,6 @@ void OnScheduleWakeup(
   done(std::move(ctx));
 }
 
-void OnShimSet(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
-                              bool)> done,
-    rust::cxxbridge1::Box<skus::StorageSetContext> ctx) {
-  done(std::move(ctx), true);
-}
-
 logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
   switch (level) {
     case skus::TracingLevel::Trace:
@@ -114,10 +107,8 @@ void shim_set(
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) {
   ctx.UpdateStoreValue(static_cast<std::string>(key),
-                       static_cast<std::string>(value));
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&OnShimSet, std::move(done), std::move(st_ctx)));
+                       static_cast<std::string>(value), std::move(done),
+                       std::move(st_ctx));
 }
 
 void shim_get(
@@ -195,11 +186,17 @@ void SkusContextImpl::PurgeStore(
                                 std::move(done), std::move(st_ctx)));
 }
 
-void SkusContextImpl::UpdateStoreValue(std::string key,
-                                       std::string value) const {
+void SkusContextImpl::UpdateStoreValue(
+    std::string key,
+    std::string value,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const {
   VLOG(1) << "shim_set: `" << key << "` = `" << value << "`";
-  ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
-  state->Set(key, value);
+  ui_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&SkusServiceImpl::UpdateStoreValue, skus_service_, key,
+                     value, std::move(done), std::move(st_ctx)));
 }
 
 void SkusContextImpl::OnCredentialSummary(

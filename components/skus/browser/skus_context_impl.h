@@ -56,7 +56,12 @@ class SkusContextImpl : public SkusContext {
           void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
           done,
       rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const override;
-  void UpdateStoreValue(std::string key, std::string value) const override;
+  void UpdateStoreValue(
+      std::string key,
+      std::string value,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const override;
   void OnCredentialSummary(
       const std::string& domain,
       mojom::SkusService::CredentialSummaryCallback callback,

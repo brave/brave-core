@@ -111,6 +111,12 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
                                 rust::String,
                                 bool)> done,
       rust::cxxbridge1::Box<skus::StorageGetContext> ctx);
+  void UpdateStoreValue(
+      const std::string& key,
+      const std::string& value,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx);
 
   ::rust::Box<skus::CppSDK>* GetOrCreateSDK(const std::string& domain);
 

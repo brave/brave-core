@@ -97,6 +97,13 @@ void OnShimGet(
   done(std::move(ctx), ::rust::String(value), true);
 }
 
+void OnShimSet(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                              bool)> done,
+    rust::cxxbridge1::Box<skus::StorageSetContext> ctx) {
+  done(std::move(ctx), true);
+}
+
 }  // namespace
 
 namespace skus {
@@ -266,6 +273,18 @@ void SkusServiceImpl::CreateOrderFromReceipt(
           GetOrCreateSDK(domain), std::move(cbs), receipt));
 }
 
+void SkusServiceImpl::PurgeStore(
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+                              bool success)> done,
+    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
+  ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
+  state->clear();
+
+  sdk_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
+}
+
 void SkusServiceImpl::GetValueFromStore(
     const std::string& key,
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
@@ -284,16 +303,17 @@ void SkusServiceImpl::GetValueFromStore(
       base::BindOnce(&OnShimGet, std::move(done), std::move(ctx), result));
 }
 
-void SkusServiceImpl::PurgeStore(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
+void SkusServiceImpl::UpdateStoreValue(
+    const std::string& key,
+    const std::string& value,
+    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                               bool success)> done,
-    rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
+    rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) {
   ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
-  state->clear();
-
+  state->Set(key, value);
   sdk_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
+      base::BindOnce(&OnShimSet, std::move(done), std::move(st_ctx)));
 }
 
 }  // namespace skus
