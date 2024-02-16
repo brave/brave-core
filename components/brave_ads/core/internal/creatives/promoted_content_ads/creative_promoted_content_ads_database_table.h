@@ -61,7 +61,8 @@ class CreativePromotedContentAds final : public TableInterface {
   void GetForSegments(const SegmentList& segments,
                       GetCreativePromotedContentAdsCallback callback) const;
 
-  void GetAll(GetCreativePromotedContentAdsCallback callback) const;
+  void GetForActiveCampaigns(
+      GetCreativePromotedContentAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     CHECK_GT(batch_size, 0);

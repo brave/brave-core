@@ -126,7 +126,7 @@ void ConversionQueue::FailedToProcessQueueItem(
 
 void ConversionQueue::ProcessNextQueueItem() {
   const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(
+  database_table.GetNext(
       base::BindOnce(&ConversionQueue::ProcessNextQueueItemCallback,
                      weak_factory_.GetWeakPtr()));
 }

@@ -314,7 +314,7 @@ void CreativeNotificationAds::GetForSegments(
       base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
 
-void CreativeNotificationAds::GetAll(
+void CreativeNotificationAds::GetForActiveCampaigns(
     GetCreativeNotificationAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();

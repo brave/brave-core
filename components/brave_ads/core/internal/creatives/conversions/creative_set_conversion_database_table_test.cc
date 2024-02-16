@@ -36,7 +36,7 @@ TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*creative_set_conversions=*/::testing::SizeIs(2)));
-  database_table.GetAll(callback.Get());
+  database_table.GetUnexpired(callback.Get());
 }
 
 }  // namespace brave_ads

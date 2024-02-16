@@ -434,7 +434,7 @@ void CreativeInlineContentAds::GetForDimensions(
       base::BindOnce(&GetForDimensionsCallback, std::move(callback)));
 }
 
-void CreativeInlineContentAds::GetAll(
+void CreativeInlineContentAds::GetForActiveCampaigns(
     GetCreativeInlineContentAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();

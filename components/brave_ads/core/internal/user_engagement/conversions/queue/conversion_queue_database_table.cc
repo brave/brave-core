@@ -466,8 +466,7 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void ConversionQueue::GetUnprocessed(
-    GetConversionQueueCallback callback) const {
+void ConversionQueue::GetNext(GetConversionQueueCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -476,7 +475,7 @@ void ConversionQueue::GetUnprocessed(
       "cq.creative_instance_id, cq.advertiser_id, cq.segment, cq.type, "
       "cq.verifiable_conversion_id, cq.verifiable_advertiser_public_key, "
       "cq.process_at, cq.was_processed FROM $1 AS cq WHERE was_processed == 0 "
-      "ORDER BY process_at ASC;",
+      "ORDER BY process_at ASC LIMIT 1;",
       {GetTableName()}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));

@@ -40,7 +40,7 @@ void EligibleNotificationAdsV2::GetForUserModel(
   BLOG(1, "Get eligible notification ads");
 
   const database::table::AdEvents database_table;
-  database_table.GetForType(
+  database_table.GetUnexpiredForType(
       mojom::AdType::kNotificationAd,
       base::BindOnce(
           &EligibleNotificationAdsV2::GetEligibleAdsForUserModelCallback,
@@ -73,7 +73,7 @@ void EligibleNotificationAdsV2::GetEligibleAds(
     EligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeNotificationAds database_table;
-  database_table.GetAll(
+  database_table.GetForActiveCampaigns(
       base::BindOnce(&EligibleNotificationAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));

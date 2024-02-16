@@ -232,15 +232,22 @@ void AdEvents::RecordEvent(const AdEventInfo& ad_event,
   RunTransaction(std::move(transaction), std::move(callback));
 }
 
-void AdEvents::GetAll(GetAdEventsCallback callback) const {
+void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT ae.placement_id, ae.type, ae.confirmation_type, ae.campaign_id, "
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
-      "ae.segment, ae.created_at FROM $1 AS ae ORDER BY created_at DESC;",
-      {GetTableName()}, nullptr);
+      "ae.segment, ae.created_at FROM $1 AS ae WHERE creative_set_id IN "
+      "(SELECT creative_set_id from creative_set_conversions) OR "
+      "DATETIME((created_at / 1000000) - 11644473600, 'unixepoch') > "
+      "DATETIME(($2 / 1000000) - 11644473600, 'unixepoch', '-3 months') ORDER "
+      "BY created_at DESC;",
+      {GetTableName(),
+       base::NumberToString(
+           base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())},
+      nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
@@ -248,17 +255,23 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void AdEvents::GetForType(const mojom::AdType ad_type,
-                          GetAdEventsCallback callback) const {
+void AdEvents::GetUnexpiredForType(const mojom::AdType ad_type,
+                                   GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT ae.placement_id, ae.type, ae.confirmation_type, ae.campaign_id, "
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
-      "ae.segment, ae.created_at FROM $1 AS ae WHERE type = '$2' ORDER BY "
-      "created_at DESC;",
-      {GetTableName(), ToString(static_cast<AdType>(ad_type))}, nullptr);
+      "ae.segment, ae.created_at FROM $1 AS ae WHERE type = '$2' AND "
+      "(creative_set_id IN (SELECT creative_set_id from "
+      "creative_set_conversions) OR DATETIME((created_at / 1000000) - "
+      "11644473600, 'unixepoch') > DATETIME(($3 / 1000000) - 11644473600, "
+      "'unixepoch', '-3 months')) ORDER BY created_at DESC;",
+      {GetTableName(), ToString(static_cast<AdType>(ad_type)),
+       base::NumberToString(
+           base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())},
+      nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 

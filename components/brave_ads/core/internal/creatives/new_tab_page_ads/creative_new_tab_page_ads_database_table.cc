@@ -393,7 +393,7 @@ void CreativeNewTabPageAds::GetForSegments(
       base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
 
-void CreativeNewTabPageAds::GetAll(
+void CreativeNewTabPageAds::GetForActiveCampaigns(
     GetCreativeNewTabPageAdsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
