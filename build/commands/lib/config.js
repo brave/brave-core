@@ -595,6 +595,9 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
+    // This optimization causes crash on Android 8 and Android 8.1 arm64 devices.
+    args.use_relr_relocations = false
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl
