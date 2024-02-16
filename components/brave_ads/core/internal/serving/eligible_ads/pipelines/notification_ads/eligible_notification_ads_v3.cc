@@ -39,7 +39,7 @@ void EligibleNotificationAdsV3::GetForUserModel(
   BLOG(1, "Get eligible notification ads");
 
   database::table::AdEvents database_table;
-  database_table.GetForType(
+  database_table.GetUnexpiredForType(
       mojom::AdType::kNotificationAd,
       base::BindOnce(
           &EligibleNotificationAdsV3::GetEligibleAdsForUserModelCallback,

@@ -41,7 +41,7 @@ void EligibleNewTabPageAdsV1::GetForUserModel(
   BLOG(1, "Get eligible new tab page ads");
 
   const database::table::AdEvents database_table;
-  database_table.GetForType(
+  database_table.GetUnexpiredForType(
       mojom::AdType::kNewTabPageAd,
       base::BindOnce(
           &EligibleNewTabPageAdsV1::GetEligibleAdsForUserModelCallback,

@@ -255,8 +255,8 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void AdEvents::GetForType(const mojom::AdType ad_type,
-                          GetAdEventsCallback callback) const {
+void AdEvents::GetUnexpiredForType(const mojom::AdType ad_type,
+                                   GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;

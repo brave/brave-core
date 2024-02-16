@@ -85,7 +85,7 @@ void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
       BuildPromotedContentAd(creative_ad, placement_id);
 
   const database::table::AdEvents database_table;
-  database_table.GetForType(
+  database_table.GetUnexpiredForType(
       mojom::AdType::kPromotedContentAd,
       base::BindOnce(&PromotedContentAdEventHandler::GetForTypeCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type,
