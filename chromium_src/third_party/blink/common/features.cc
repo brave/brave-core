@@ -41,6 +41,10 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrivateAggregationApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivateAggregationApiMultipleCloudProviders,
      base::FEATURE_DISABLED_BY_DEFAULT},
+    // This feature uses shared memory to reduce IPCs to access cookies, but
+    // Ephemeral Storage can switch cookie storage backend at runtime, so we
+    // can't use it.
+    {kReduceCookieIPCs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSharedStorageAPIM118, base::FEATURE_DISABLED_BY_DEFAULT},
