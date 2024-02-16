@@ -9,8 +9,9 @@
 namespace decentralized_dns {
 
 inline constexpr const char* kUnstoppableDomains[] = {
-    ".crypto", ".x",          ".nft",     ".dao",
-    ".wallet", ".blockchain", ".bitcoin", ".zil"};
+    ".crypto",     ".x",       ".nft",     ".dao",         ".wallet",
+    ".blockchain", ".bitcoin", ".zil",     ".altimist",    ".anime",
+    ".klever",     ".manga",   ".polygon", ".unstoppable", ".pudgy"};
 
 inline constexpr char kEthDomain[] = ".eth";
 inline constexpr char kDNSForEthDomain[] = ".eth.link";
