@@ -222,11 +222,6 @@ public class CryptoModel {
         return mTransactionsModel;
     }
 
-    public UserAssetModel createUserAssetModel(WalletCoinAdapter.AdapterType type) {
-        return new UserAssetModel(
-                mBraveWalletService, mJsonRpcService, mBlockchainRegistry, mSharedData, type);
-    }
-
     public void updateCoinType() {
         updateCoinType(null, null);
     }
