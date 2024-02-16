@@ -196,9 +196,7 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
-      "DELETE FROM $1 WHERE DATETIME(($2 / 1000000) - 11644473600, "
-      "'unixepoch') >= DATETIME((expire_at / 1000000) - 11644473600, "
-      "'unixepoch');",
+      "DELETE FROM $1 WHERE $2 >= expire_at;",
       {GetTableName(),
        base::NumberToString(
            base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds())},
