@@ -1,0 +1,10 @@
+diff --git a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.ts b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.ts
+index 9a8bb2b497b53fc55431c77ae12d44527b4c1964..8760ada3dfd8414f95fd4033adaee33450f1664c 100644
+--- a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.ts
++++ b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.ts
+@@ -149,4 +149,4 @@ declare global {
+   }
+ }
+ 
+-customElements.define(CrToolbarElement.is, CrToolbarElement);
++// customElements.define(CrToolbarElement.is, CrToolbarElement); // We specify our own toolbar
