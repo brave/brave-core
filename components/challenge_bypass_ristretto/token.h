@@ -13,7 +13,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
 #include "brave/components/challenge_bypass_ristretto/blinded_token.h"
-#include "brave/third_party/rust/challenge_bypass_ristretto_cxx/src/lib.rs.h"
+#include "brave/components/challenge_bypass_ristretto/rust/cxx/src/lib.rs.h"
 
 namespace challenge_bypass_ristretto {
 

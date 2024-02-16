@@ -30,13 +30,10 @@ component("challenge_bypass_ristretto") {
     "verification_signature.h",
   ]
 
-  deps = [
-    "//base",
-    "//build/rust:cxx_cppdeps",
-  ]
+  deps = [ "//base" ]
 
   public_deps =
-      [ "//brave/third_party/rust/challenge_bypass_ristretto_cxx:rust_lib" ]
+      [ "//brave/components/challenge_bypass_ristretto/rust/cxx:rust_lib" ]
 }
 
 source_set("unit_tests") {
