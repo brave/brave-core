@@ -41,8 +41,7 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
                 && !mIsResetting) {
             Tab parentTab = TabModelUtils.getTabById(getTabModel(), tab.getParentId());
             if (parentTab != null) {
-                return (int) BraveReflectionUtil.InvokeMethod(
-                        TabGroupModelFilter.class, this, "getRootId", Tab.class, parentTab);
+                return parentTab.getRootId();
             }
         }
         // Otherwise just call parent.

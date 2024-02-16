@@ -700,9 +700,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
                         "getParentId", true, int.class, Tab.class));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
-                        "getRootId", true, int.class, Tab.class));
 
         Assert.assertTrue(
                 methodExists(
