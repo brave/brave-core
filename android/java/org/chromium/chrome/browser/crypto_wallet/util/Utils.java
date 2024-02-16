@@ -88,7 +88,6 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -228,31 +227,6 @@ public class Utils {
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         View focusedView = activity.getCurrentFocus();
         if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
-    }
-
-    public static void openBuySendSwapActivity(
-            @NonNull final Activity activity, @NonNull final WebUiActivityType webUiActivityType) {
-        String webWalletUrl;
-        switch (webUiActivityType) {
-            case SWAP:
-                webWalletUrl = BraveActivity.BRAVE_SWAP_URL;
-                break;
-            case SEND:
-                webWalletUrl = BraveActivity.BRAVE_SEND_URL;
-                break;
-            case BUY:
-                webWalletUrl = BraveActivity.BRAVE_BUY_URL;
-                break;
-            default:
-                throw new IllegalStateException(
-                        String.format("Activity not found for type %s.", webUiActivityType));
-        }
-        try {
-            BraveActivity.getBraveActivity().openNewOrSelectExistingTab(webWalletUrl, true);
-            TabUtils.bringChromeTabbedActivityToTheTop(activity);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "Error while opening wallet tab.", e);
-        }
     }
 
     /**

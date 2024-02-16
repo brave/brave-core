@@ -32,7 +32,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
-import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.url.internal.mojom.Origin;
@@ -400,18 +399,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     public void clearCreateAccountState() {
         _mNeedToCreateAccountForNetwork.postValue(null);
-    }
-
-    public List<NetworkInfo> stripNoBuyNetworks(
-            List<NetworkInfo> networkInfos, WebUiActivityType type) {
-        List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
-        for (NetworkInfo networkInfo : networkInfos) {
-            if (type == WebUiActivityType.BUY && Utils.allowBuy(networkInfo.chainId)) {
-                networkInfosFiltered.add(networkInfo);
-            }
-        }
-
-        return networkInfosFiltered;
     }
 
     public NetworkInfo getNetwork(String chainId) {
