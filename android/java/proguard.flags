@@ -54,5 +54,4 @@
 
 -keep class org.chromium.chrome.browser.tasks.tab_groups.TabGroupModelFilter {
     *** getParentId(...);
-    *** getRootId(...);
 }
