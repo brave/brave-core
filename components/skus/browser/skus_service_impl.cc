@@ -209,8 +209,8 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
 ::rust::Box<skus::CppSDK>* SkusServiceImpl::GetOrCreateSDK(
     const std::string& domain) {
   auto env = GetEnvironmentForDomain(domain);
-  if (sdks2_.count(env)) {
-    return sdks2_.at(env).get();
+  if (sdks_.count(env)) {
+    return sdks_.at(env).get();
   }
 
   auto sdk_raw =
@@ -224,8 +224,8 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
           new ::rust::Box<skus::CppSDK>(std::move(sdk_raw)),
           base::OnTaskRunnerDeleter(sdk_task_runner_));
 
-  sdks2_.insert_or_assign(env, std::move(sdk));
-  return sdks2_.at(env).get();
+  sdks_.insert_or_assign(env, std::move(sdk));
+  return sdks_.at(env).get();
 }
 
 void SkusServiceImpl::CredentialSummary(
@@ -345,6 +345,48 @@ void SkusServiceImpl::UpdateStoreValue(
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&OnShimSet, std::move(done), std::move(st_ctx)));
+}
+
+void SkusServiceImpl::PostTaskWithSDK(
+    const std::string& domain,
+    base::OnceCallback<void(::rust::Box<skus::CppSDK>* sdk)> cb) {
+  auto env = GetEnvironmentForDomain(domain);
+  if (sdks_.count(env)) {
+    auto* sdk = sdks_.at(env).get();
+    sdk_task_runner_->PostTask(FROM_HERE, base::BindOnce(std::move(cb), sdk));
+  }
+
+  sdk_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(
+          [](const std::string& env,
+             base::WeakPtr<SkusServiceImpl> skus_service,
+             std::unique_ptr<network::PendingSharedURLLoaderFactory>
+                 pending_url_loader_factory,
+             scoped_refptr<base::SequencedTaskRunner> ui_task_runner) {
+            auto sdk = initialize_sdk(std::make_unique<skus::SkusContextImpl>(
+                                          std::move(pending_url_loader_factory),
+                                          ui_task_runner, skus_service),
+                                      env);
+            return sdk;
+          },
+          env, weak_factory_.GetWeakPtr(), url_loader_factory_->Clone(),
+          ui_task_runner_),
+      base::BindOnce(&SkusServiceImpl::OnSDKInitialized,
+                     weak_factory_.GetWeakPtr(), env, std::move(cb)));
+}
+
+void SkusServiceImpl::OnSDKInitialized(
+    const std::string& env,
+    base::OnceCallback<void(::rust::Box<skus::CppSDK>* sdk)> cb,
+    ::rust::Box<skus::CppSDK> cpp_sdk) {
+  auto sdk =
+      std::unique_ptr<::rust::Box<skus::CppSDK>, base::OnTaskRunnerDeleter>(
+          new ::rust::Box<skus::CppSDK>(std::move(cpp_sdk)),
+          base::OnTaskRunnerDeleter(sdk_task_runner_));
+  sdks_.insert_or_assign(env, std::move(sdk));
+  sdk_task_runner_->PostTask(FROM_HERE,
+                             base::BindOnce(std::move(cb), sdk.get()));
 }
 
 }  // namespace skus

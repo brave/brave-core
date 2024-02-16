@@ -118,6 +118,15 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
                                 bool success)> done,
       rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx);
 
+  void PostTaskWithSDK(
+      const std::string& domain,
+      base::OnceCallback<void(::rust::Box<skus::CppSDK>* sdk)> cb);
+
+  void OnSDKInitialized(
+      const std::string& env,
+      base::OnceCallback<void(::rust::Box<skus::CppSDK>* sdk)> cb,
+      ::rust::Box<skus::CppSDK> cpp_sdk);
+
   ::rust::Box<skus::CppSDK>* GetOrCreateSDK(const std::string& domain);
 
  private:
@@ -125,11 +134,10 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<base::SingleThreadTaskRunner> sdk_task_runner_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
-  std::unordered_map<std::string, ::rust::Box<skus::CppSDK>> sdks_;
   std::unordered_map<
       std::string,
       std::unique_ptr<::rust::Box<skus::CppSDK>, base::OnTaskRunnerDeleter>>
-      sdks2_;
+      sdks_;
   mojo::ReceiverSet<mojom::SkusService> receivers_;
   base::WeakPtrFactory<SkusServiceImpl> weak_factory_{this};
 };
