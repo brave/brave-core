@@ -92,7 +92,7 @@ void Conversions::GetAdEvents(
     const std::string& html,
     const CreativeSetConversionList& creative_set_conversions) {
   const database::table::AdEvents database_table;
-  database_table.GetAll(base::BindOnce(
+  database_table.GetUnexpired(base::BindOnce(
       &Conversions::GetAdEventsCallback, weak_factory_.GetWeakPtr(),
       redirect_chain, html, creative_set_conversions));
 }

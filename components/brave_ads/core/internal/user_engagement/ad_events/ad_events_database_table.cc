@@ -232,7 +232,7 @@ void AdEvents::RecordEvent(const AdEventInfo& ad_event,
   RunTransaction(std::move(transaction), std::move(callback));
 }
 
-void AdEvents::GetAll(GetAdEventsCallback callback) const {
+void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;

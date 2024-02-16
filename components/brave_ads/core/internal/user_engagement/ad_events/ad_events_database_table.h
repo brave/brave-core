@@ -24,7 +24,7 @@ class AdEvents final : public TableInterface {
  public:
   void RecordEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
-  void GetAll(GetAdEventsCallback callback) const;
+  void GetUnexpired(GetAdEventsCallback callback) const;
 
   void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback) const;
 

@@ -39,7 +39,7 @@ TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
   base::MockCallback<database::table::GetAdEventsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event}));
   const database::table::AdEvents database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetUnexpired(callback.Get());
 }
 
 TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
@@ -109,7 +109,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
                             ::testing::UnorderedElementsAreArray(
                                 AdEventList{{ad_event_3, ad_event_4}})));
   const database::table::AdEvents database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetUnexpired(callback.Get());
 }
 
 TEST_F(BraveAdsAdEventsTest, DoNotPurgeAdEventsOnTheCuspOfExpiry) {
@@ -143,7 +143,7 @@ TEST_F(BraveAdsAdEventsTest, DoNotPurgeAdEventsOnTheCuspOfExpiry) {
   base::MockCallback<database::table::GetAdEventsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{{ad_event}}));
   const database::table::AdEvents database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetUnexpired(callback.Get());
 }
 
 TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
@@ -190,7 +190,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
               Run(/*success=*/true,
                   AdEventList{{ad_event_2a, ad_event_2b, ad_event_3}}));
   const database::table::AdEvents database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetUnexpired(callback.Get());
 }
 
 }  // namespace brave_ads
