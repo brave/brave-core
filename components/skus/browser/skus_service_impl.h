@@ -130,6 +130,7 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
   ::rust::Box<skus::CppSDK>* GetOrCreateSDK(const std::string& domain);
 
  private:
+  SEQUENCE_CHECKER(sequence_checker_);
   raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<base::SingleThreadTaskRunner> sdk_task_runner_;

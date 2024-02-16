@@ -135,24 +135,26 @@ void SkusServiceImpl::RefreshOrder(
     const std::string& domain,
     const std::string& order_id,
     mojom::SkusService::RefreshOrderCallback callback) {
-  auto context_impl = std::make_unique<skus::SkusContextImpl>(
-      url_loader_factory_->Clone(), ui_task_runner_,
-      weak_factory_.GetWeakPtr());
-  auto internal_callback =
-      base::BindOnce(&SkusContextImpl::OnRefreshOrder,
-                     base::Owned(std::move(context_impl)), std::move(callback));
   std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
       new skus::RefreshOrderCallbackState);
-  cbs->cb = std::move(internal_callback);
-  sdk_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](::rust::Box<skus::CppSDK>* sdk,
-                        std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
-                        const std::string& order_id) {
-                       (*sdk)->refresh_order(OnRefreshOrder, std::move(cbs),
-                                             order_id);
-                     },
-                     GetOrCreateSDK(domain), std::move(cbs), order_id));
+
+  cbs->cb = base::BindOnce(
+      [](mojom::SkusService::RefreshOrderCallback cb,
+         scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
+         const std::string& result) {
+        ui_task_runner->PostTask(FROM_HERE,
+                                 base::BindOnce(std::move(cb), result));
+      },
+      std::move(callback), ui_task_runner_);
+
+  PostTaskWithSDK(
+      domain,
+      base::BindOnce(
+          [](std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
+             const std::string& order_id, ::rust::Box<skus::CppSDK>* sdk) {
+            (*sdk)->refresh_order(OnRefreshOrder, std::move(cbs), order_id);
+          },
+          std::move(cbs), order_id));
 }
 
 void SkusServiceImpl::FetchOrderCredentials(
@@ -233,23 +235,26 @@ void SkusServiceImpl::CredentialSummary(
     mojom::SkusService::CredentialSummaryCallback callback) {
   std::unique_ptr<skus::CredentialSummaryCallbackState> cbs(
       new skus::CredentialSummaryCallbackState);
-  auto context_impl = std::make_unique<skus::SkusContextImpl>(
-      url_loader_factory_->Clone(), ui_task_runner_,
-      weak_factory_.GetWeakPtr());
-  auto internal_callback = base::BindOnce(&SkusContextImpl::OnCredentialSummary,
-                                          base::Owned(std::move(context_impl)),
-                                          domain, std::move(callback));
-  cbs->cb = std::move(internal_callback);
-  sdk_task_runner_->PostTask(
-      FROM_HERE,
+
+  cbs->cb = base::BindOnce(
+      [](mojom::SkusService::CredentialSummaryCallback cb,
+         scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
+         const std::string& result) {
+        ui_task_runner->PostTask(FROM_HERE,
+                                 base::BindOnce(std::move(cb), result));
+      },
+      std::move(callback), ui_task_runner_);
+
+  PostTaskWithSDK(
+      domain,
       base::BindOnce(
-          [](::rust::Box<skus::CppSDK>* sdk,
-             std::unique_ptr<skus::CredentialSummaryCallbackState> cbs,
-             const std::string& domain) {
+          [](std::unique_ptr<skus::CredentialSummaryCallbackState> cbs,
+             const std::string& domain, ::rust::Box<skus::CppSDK>* sdk) {
+            DCHECK(sdk);
             (*sdk)->credential_summary(OnCredentialSummary, std::move(cbs),
                                        domain);
           },
-          GetOrCreateSDK(domain), std::move(cbs), domain));
+          std::move(cbs), domain));
 }
 
 void SkusServiceImpl::SubmitReceipt(
@@ -384,9 +389,11 @@ void SkusServiceImpl::OnSDKInitialized(
       std::unique_ptr<::rust::Box<skus::CppSDK>, base::OnTaskRunnerDeleter>(
           new ::rust::Box<skus::CppSDK>(std::move(cpp_sdk)),
           base::OnTaskRunnerDeleter(sdk_task_runner_));
+  // sdks_.insert_or_assign(env, std::move(sdk));
   sdks_.insert_or_assign(env, std::move(sdk));
-  sdk_task_runner_->PostTask(FROM_HERE,
-                             base::BindOnce(std::move(cb), sdk.get()));
+  DCHECK(sdks_.at(env).get());
+  sdk_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(std::move(cb), sdks_.at(env).get()));
 }
 
 }  // namespace skus

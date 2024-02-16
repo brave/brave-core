@@ -80,6 +80,7 @@ class SkusContextImpl : public SkusContext {
   // used for making requests to SKU server
   mutable std::unique_ptr<network::PendingSharedURLLoaderFactory>
       pending_url_loader_factory_;
+  SEQUENCE_CHECKER(sequence_checker_);
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
   base::WeakPtr<SkusServiceImpl> skus_service_;
 };
