@@ -52,7 +52,8 @@ class PlaylistRenderFrameObserver final
       mojo::PendingAssociatedReceiver<
           mojom::PlaylistRenderFrameObserverConfigurator> receiver);
 
-  const mojo::AssociatedRemote<playlist::mojom::PlaylistTabHelper>& GetTabHelper();
+  const mojo::AssociatedRemote<playlist::mojom::PlaylistTabHelper>&
+  GetTabHelper();
 
   void Inject(const std::string& script_text,
               v8::Local<v8::Context> context,

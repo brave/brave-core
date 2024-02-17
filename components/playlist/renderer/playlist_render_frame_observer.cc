@@ -96,8 +96,7 @@ void PlaylistRenderFrameObserver::BindConfigurator(
 const mojo::AssociatedRemote<playlist::mojom::PlaylistTabHelper>&
 PlaylistRenderFrameObserver::GetTabHelper() {
   if (!tab_helper_) {
-    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
-        &tab_helper_);
+    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(&tab_helper_);
     tab_helper_.reset_on_disconnect();
   }
 
