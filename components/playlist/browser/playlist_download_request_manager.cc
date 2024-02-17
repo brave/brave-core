@@ -32,7 +32,9 @@
 
 namespace playlist {
 
-PlaylistDownloadRequestManager::Request::Request() = default;
+PlaylistDownloadRequestManager::Request::Request(
+    base::WeakPtr<PlaylistTabHelper> tab_helper)
+    : tab_helper(std::move(tab_helper)) {}
 PlaylistDownloadRequestManager::Request&
 PlaylistDownloadRequestManager::Request::operator=(
     PlaylistDownloadRequestManager::Request&&) noexcept = default;
@@ -51,12 +53,14 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents(const Request& request) {
+  CHECK(request.tab_helper);
+
   content::WebContents::CreateParams create_params(context_, nullptr);
   create_params.is_never_visible = true;
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetAudioMuted(true);
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      web_contents_.get(),
+      web_contents_.get(), request.tab_helper,
       media_detector_component_manager_->GetMediaSourceAPISuppressorScript(),
       media_detector_component_manager_->GetMediaDetectorScript(request.url));
   if (request.should_force_fake_ua ||
@@ -336,10 +340,7 @@ void PlaylistDownloadRequestManager::ResetRequests() {
 
 content::WebContents*
 PlaylistDownloadRequestManager::GetBackgroundWebContentsForTesting() {
-  if (!web_contents_) {
-    CreateWebContents();
-  }
-
+  CHECK(web_contents_);
   return web_contents_.get();
 }
 

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
@@ -51,7 +52,13 @@ void PlaylistTabHelper::BindRenderFrameHostReceiver(
     return;
   }
 
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
+  // If `web_contents` is a background WebContents, we want to route the Mojom
+  // calls to the PlaylistTabHelper it belongs to.
+  auto* background_web_contents_helper =
+      PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents);
+  auto* tab_helper = background_web_contents_helper
+                         ? background_web_contents_helper->GetTabHelper()
+                         : PlaylistTabHelper::FromWebContents(web_contents);
   if (!tab_helper) {
     return;
   }
@@ -240,11 +247,26 @@ void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
 }
 
 void PlaylistTabHelper::OnMediaDetected(base::Value media) {
-  DVLOG(2)
-      << __FUNCTION__ << " "
-      << render_frame_host_receivers_.GetCurrentTargetFrame()->GetGlobalId();
+  const auto render_frame_host_id =
+      render_frame_host_receivers_.GetCurrentTargetFrame()->GetGlobalId();
+  DVLOG(2) << __FUNCTION__ << " " << render_frame_host_id;
 
-  service_->OnMediaDetected(std::move(media), web_contents());
+  auto* render_frame_host =
+      content::RenderFrameHost::FromID(render_frame_host_id);
+  if (!render_frame_host) {
+    return;
+  }
+
+  // Note that we have to go the GlobalRenderFrameHostId ==> RenderFrameHost ==>
+  // WebContents route, as it works for background WebContents, too (whereas
+  // just calling web_contents() does not).
+  auto* web_contents =
+      content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!web_contents) {
+    return;
+  }
+
+  service_->OnMediaDetected(std::move(media), web_contents);
 }
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {

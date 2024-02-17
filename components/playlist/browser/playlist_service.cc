@@ -431,9 +431,11 @@ void PlaylistService::ExtractMediaFromBackgroundWebContents(
     ExtractMediaFromBackgroundWebContentsCallback callback) {
   CHECK(*enabled_pref_) << "Playlist pref must be enabled";
   CHECK(source_contents);
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(source_contents);
+  CHECK(tab_helper);
 
   auto current_url = source_contents->GetLastCommittedURL();
-  PlaylistDownloadRequestManager::Request request;
+  PlaylistDownloadRequestManager::Request request(tab_helper->GetWeakPtr());
   request.url = current_url;
   request.should_force_fake_ua = ShouldUseFakeUA(current_url);
   request.callback = base::BindOnce(std::move(callback), current_url);
@@ -591,7 +593,8 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
       // could reach here. Also we're assuming that
       // * all |items| will be matched to what we'll get from refetching.
       // * all |items| are from the same source page.
-      PlaylistDownloadRequestManager::Request request;
+      PlaylistDownloadRequestManager::Request request(
+          nullptr);  // TODO(sszaloki)
       request.url = GURL(item->page_source);
       request.should_force_fake_ua = ShouldUseFakeUA(request.url);
       request.callback = std::move(add_to_playlist);
@@ -989,7 +992,7 @@ void PlaylistService::RecoverLocalDataForItem(
       },
       weak_factory_.GetWeakPtr(), item->Clone(), std::move(callback));
 
-  PlaylistDownloadRequestManager::Request request;
+  PlaylistDownloadRequestManager::Request request(nullptr);  // TODO(sszaloki)
   DCHECK(!item->page_source.spec().empty());
   request.url = item->page_source;
   request.should_force_fake_ua = ShouldUseFakeUA(item->page_source);

@@ -30,6 +30,7 @@ class BrowserContext;
 namespace playlist {
 
 class PlaylistService;
+class PlaylistTabHelper;
 
 // This class finds media files and their thumbnails and title from a page
 // by injecting media detector script to dedicated WebContents.
@@ -39,17 +40,16 @@ class PlaylistDownloadRequestManager {
     using Callback =
         base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)>;
 
-    Request();
+    explicit Request(base::WeakPtr<PlaylistTabHelper> tab_helper);
     Request& operator=(const Request&) = delete;
     Request(const Request&) = delete;
     Request& operator=(Request&&) noexcept;
     Request(Request&&) noexcept;
     ~Request();
 
+    base::WeakPtr<PlaylistTabHelper> tab_helper;
     GURL url;
-
     bool should_force_fake_ua = false;
-
     Callback callback = base::NullCallback();
   };
 
@@ -101,7 +101,7 @@ class PlaylistDownloadRequestManager {
   void RunMediaDetector(Request request);
 
   bool ReadyToRunMediaDetectorScript() const;
-  void CreateWebContents(const Request& request = {});
+  void CreateWebContents(const Request& request);
 
   // Pop a task from queue and detect media from the page if any.
   void FetchPendingRequest();
