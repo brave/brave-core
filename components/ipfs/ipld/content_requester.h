@@ -35,7 +35,7 @@ class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs);
 
-  virtual const GURL GetGatewayRequestUrl() const;
+  virtual GURL GetGatewayRequestUrl() const;
   virtual std::unique_ptr<network::SimpleURLLoader> CreateLoader() const = 0;
 
  private:

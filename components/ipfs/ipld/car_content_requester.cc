@@ -6,7 +6,6 @@
 #include "brave/components/ipfs/ipld/car_content_requester.h"
 #include <string>
 
-#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "net/base/url_util.h"
@@ -51,7 +50,7 @@ CarContentRequester::CarContentRequester(
 
 CarContentRequester::~CarContentRequester() = default;
 
-const GURL CarContentRequester::GetGatewayRequestUrl() const {
+GURL CarContentRequester::GetGatewayRequestUrl() const {
   auto car_request_url = ContentRequester::GetGatewayRequestUrl();
   ApplyRequestParameters(car_request_url);
 
@@ -60,7 +59,7 @@ const GURL CarContentRequester::GetGatewayRequestUrl() const {
         car_request_url, kGatewayUrlEntityBytesParamName,
         kGatewayUrlEntityBytesOnlyStructParamVal);
   }
-LOG(INFO) << "[IPFS] GetGatewayRequestUrl() car_request_url:" << car_request_url;
+//LOG(INFO) << "[IPFS] GetGatewayRequestUrl() car_request_url:" << car_request_url;
   return car_request_url;
 }
 

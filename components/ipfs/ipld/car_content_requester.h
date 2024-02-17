@@ -19,7 +19,7 @@ class CarContentRequester : public ContentRequester {
       const bool only_structure = true);
   ~CarContentRequester() override;
 
-  const GURL GetGatewayRequestUrl() const override;
+  GURL GetGatewayRequestUrl() const override;
 
   std::unique_ptr<network::SimpleURLLoader> CreateLoader() const override;
 

@@ -61,7 +61,7 @@ void CarBlockReader::OnRequestDataReceived(
                // case we will have several data parts received
 
   while (!buffer_span.empty()) {
-    uint32_t received_buffer_size = buffer_span.size();
+    uint64_t received_buffer_size = buffer_span.size();
     if (received_buffer_size < sizeof(uint64_t)) {
       //   LOG(INFO) << "[IPFS] Need more bytes for block length field !!!";
       return;
@@ -75,7 +75,7 @@ void CarBlockReader::OnRequestDataReceived(
     }
 
     base::span block_span = buffer_span;
-    if (current_block_size < buffer_span.size()) {
+    if (current_block_size <= buffer_span.size()) {
       block_span = buffer_span.subspan(0, current_block_size);
       buffer_span = buffer_span.subspan(current_block_size);
     } else {
@@ -98,7 +98,7 @@ void CarBlockReader::OnRequestDataReceived(
       LOG(INFO) << "[IPFS] Roots[0]:"
                 << carv1_header_result.data.roots[0].c_str();
       is_header_retrieved_ = true;
-      current_block_size = 0;  // reset block length counter
+//      current_block_size = 0;  // reset block length counter
 
       base::Value::List roots_items;
       base::ranges::for_each(
@@ -109,45 +109,45 @@ void CarBlockReader::OnRequestDataReceived(
 
       callback.Run(GetBlockFactory()->CreateCarBlock(
           "", base::Value(std::move(roots_dict)), nullptr, absl::nullopt));
-    } else {
-      auto block_info_result = DecodeBlockInfo(0, vec);
-      if (block_info_result.error.error_code != 0) {
-        // LOG(INFO) << "[IPFS] Could not decode block!!! error:"
-        //           << block_info_result.error.error.c_str();
-        return;
-      }
-
-      if (!block_info_result.is_content) {
-        auto json_value = ParseJsonHelper(block_info_result.data.c_str(),
-                                          base::Value::Type::DICT);
-        // LOG(INFO) << "[IPFS] block_info:" << block_info_result.data.c_str()
-        // << " \r\njson_value:" << json_value->DebugString();
-        callback.Run(GetBlockFactory()->CreateCarBlock(
-            block_info_result.cid.c_str(), std::move(json_value), nullptr, absl::nullopt));
-        continue;
-      }
-
-      auto block_content = DecodeBlockContent(0, vec);
-
-      if (block_content.error.error_code != 0) {
-        // LOG(INFO) << "[IPFS] Could not decode block!!! error:"
-        //           << block_info_result.error.error.c_str();
-        return;
-      }
-      const auto verified = absl::make_optional<bool>(block_content.verified);
-      LOG(INFO) << "pass ver has val:" << verified.has_value();
-      LOG(INFO) << "pass ver val:" << verified.value();
-      callback.Run(GetBlockFactory()->CreateCarBlock(
-          block_content.cid.c_str(), base::Value(),
-          std::make_unique<std::vector<uint8_t>>(block_content.data.begin(),
-                                                 block_content.data.end()),
-          std::move(verified)));
-
-      // std::stringstream ss;
-      // base::ranges::for_each(block_content.data,
-      //                        [&](const uint8_t& item) { ss << (char)item; });
-      // LOG(INFO) << "[IPFS] block_content:" << ss.str();
+      
+      continue;
+    } 
+    
+    auto block_info_result = DecodeBlockInfo(0, vec);
+    if (block_info_result.error.error_code != 0) {
+      LOG(INFO) << "[IPFS] Could not decode block!!! error:"
+                << block_info_result.error.error.c_str();
+      return;
     }
+
+    if (!block_info_result.is_content) {
+      auto json_value = ParseJsonHelper(block_info_result.data.c_str(),
+                                        base::Value::Type::DICT);
+      // LOG(INFO) << "[IPFS] block_info:" << block_info_result.data.c_str()
+      // << " \r\njson_value:" << json_value->DebugString();
+      callback.Run(GetBlockFactory()->CreateCarBlock(
+          block_info_result.cid.c_str(), std::move(json_value), nullptr, absl::nullopt));
+      continue;
+    }
+
+    auto block_content = DecodeBlockContent(0, vec);
+
+    if (block_content.error.error_code != 0) {
+      LOG(INFO) << "[IPFS] Could not decode block!!! error:"
+                << block_info_result.error.error.c_str();
+      return;
+    }
+    const auto verified = absl::make_optional<bool>(block_content.verified);
+    callback.Run(GetBlockFactory()->CreateCarBlock(
+        block_content.cid.c_str(), base::Value(),
+        std::make_unique<std::vector<uint8_t>>(block_content.data.begin(),
+                                                block_content.data.end()),
+        verified));
+
+    // std::stringstream ss;
+    // base::ranges::for_each(block_content.data,
+    //                        [&](const uint8_t& item) { ss << (char)item; });
+    // LOG(INFO) << "[IPFS] block_content:" << ss.str();
   }
 }
 

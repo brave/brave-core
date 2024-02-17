@@ -121,7 +121,6 @@ pub fn decode_block_content(offset: usize, data: &CxxVector<u8>) -> BlockContent
         }
     };
 
-    println!("cid_hash_code:{:?}", block_cid.unwrap().hash().code());
     let block_digest = match block_cid.unwrap().hash().code() {
         CODE_IDENTITY => decoded.to_vec(),
         CODE_SHA2_256 => Code::Sha2_256.digest(&decoded).digest().to_vec(),
@@ -141,19 +140,6 @@ pub fn decode_block_content(offset: usize, data: &CxxVector<u8>) -> BlockContent
             };
         }
     };
-
-    fn to_hex_lower(s: impl AsRef<[u8]>) -> String {
-        s.as_ref()
-            .iter()
-            .map(|i| format!("{i:02x}"))
-            .collect::<Vec<_>>()
-            .as_slice()
-            .join("")
-    }
-
-    println!("block_cid_digest:{}", to_hex_lower(block_cid.unwrap().hash().digest()));
-    println!("block_digest:{}", to_hex_lower(&block_digest));
-    println!("verification:{}", block_digest == block_cid.unwrap().hash().digest());
 
     BlockContentDecodeResult {
         data_offset: offset + data.len(),

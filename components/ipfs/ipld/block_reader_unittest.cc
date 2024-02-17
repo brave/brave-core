@@ -201,22 +201,31 @@ const std::vector<unsigned char> kCarvData = {
 };
 
 const struct {
-    std::string cid;
-    bool is_root;
-    bool is_content;
-    bool is_meta;
-  } kBlockCases[] = {
-    { "bafkreifst3pqztuvj57lycamoi7z34b4emf7gawxs74nwrc2c7jncmpaqm",false, true, false },
-    { "bafkreicll3huefkc3qnrzeony7zcfo7cr3nbx64hnxrqzsixpceg332fhe",false, true, false },
-    { "bafkreigu7buvm3cfunb35766dn7tmqyh2um62zcio63en2btvxuybgcpue",false, true, false },
-    { "bafkreih4ephajybraj6wnxsbwjwa77fukurtpl7oj7t7pfq545duhot7cq",false, true, false },
-    { "bafkreie5noke3mb7hqxukzcy73nl23k6lxszxi5w3dtmuwz62wnvkpsscm",false, true, false },
-    { "bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",false, false, true },
-    { "bafkreifjjcie6lypi6ny7amxnfftagclbuxndqonfipmb64f2km2devei4",false, true, false },
-    { "bafkreifkam6ns4aoolg3wedr4uzrs3kvq66p4pecirz6y2vlrngla62mxm",false, true, false },
-    { "bafybeicnmple4ehlz3ostv2sbojz3zhh5q7tz5r2qkfdpqfilgggeen7xm",false, false, true },
-    { "bafybeidh6k2vzukelqtrjsmd4p52cpmltd2ufqrdtdg6yigi73in672fwu",false, false, true }
- };
+  std::string cid;
+  bool is_root;
+  bool is_content;
+  bool is_meta;
+} kBlockCases[] = {
+    {"bafkreifst3pqztuvj57lycamoi7z34b4emf7gawxs74nwrc2c7jncmpaqm", false, true,
+     false},
+    {"bafkreicll3huefkc3qnrzeony7zcfo7cr3nbx64hnxrqzsixpceg332fhe", false, true,
+     false},
+    {"bafkreigu7buvm3cfunb35766dn7tmqyh2um62zcio63en2btvxuybgcpue", false, true,
+     false},
+    {"bafkreih4ephajybraj6wnxsbwjwa77fukurtpl7oj7t7pfq545duhot7cq", false, true,
+     false},
+    {"bafkreie5noke3mb7hqxukzcy73nl23k6lxszxi5w3dtmuwz62wnvkpsscm", false, true,
+     false},
+    {"bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa", false,
+     false, true},
+    {"bafkreifjjcie6lypi6ny7amxnfftagclbuxndqonfipmb64f2km2devei4", false, true,
+     false},
+    {"bafkreifkam6ns4aoolg3wedr4uzrs3kvq66p4pecirz6y2vlrngla62mxm", false, true,
+     false},
+    {"bafybeicnmple4ehlz3ostv2sbojz3zhh5q7tz5r2qkfdpqfilgggeen7xm", false,
+     false, true},
+    {"bafybeidh6k2vzukelqtrjsmd4p52cpmltd2ufqrdtdg6yigi73in672fwu", false,
+     false, true}};
 
 constexpr char kDefaultIpfsUrl[] =
     "ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa";
@@ -230,6 +239,7 @@ void EnumerateCarBlocks(
 
   while (current != nullptr || !blocks_stack.empty()) {
     if (current) {
+      DCHECK(current != nullptr);
       blocks_stack.push(current);
     }
 
@@ -241,35 +251,41 @@ void EnumerateCarBlocks(
 
       for (const auto& item : *current->GetLinks()) {
         current = all_blocks[item.hash].get();
+        DCHECK(current != nullptr);
         blocks_stack.push(current);
-      };
+      }
     }
 
     current = blocks_stack.top();
     blocks_stack.pop();
 
-    const auto* block_case = base::ranges::find_if(kBlockCases, [current](const auto& item_case){
-        return item_case.cid == current->Cid();
-    });
+    const auto* block_case =
+        base::ranges::find_if(kBlockCases, [current](const auto& item_case) {
+          return item_case.cid == current->Cid();
+        });
     EXPECT_NE(block_case, base::ranges::end(kBlockCases));
     EXPECT_EQ(current->IsRoot(), block_case->is_root);
     EXPECT_EQ(current->IsContent(), block_case->is_content);
     EXPECT_EQ(current->IsMetadata(), block_case->is_meta);
-    if(current->IsContent()) {
+    if (current->IsContent()) {
       EXPECT_GT(current->GetContentData()->size(), 0UL);
-      LOG(INFO) << "VERIFICATION CID: " << current->Cid().c_str();
       EXPECT_TRUE(current->IsVerified().has_value());
       EXPECT_TRUE(current->IsVerified().value());
     } else {
       EXPECT_FALSE(current->IsVerified().has_value());
     }
 
-    LOG(INFO) << "Processing:" << current->Cid().c_str()
-              << " is_root:" << current->IsRoot()
-              << " is_content:" << current->IsContent()
-              << " is_meta:" << current->IsMetadata()
-              << " content_data_size:" << (current->IsContent()? current->GetContentData()->size():0)
-              ;
+    LOG(INFO) << "Processing:"
+              << "\r\nCID:        " << current->Cid().c_str()
+              << "\r\nis_root:    " << current->IsRoot()
+              << "\r\nis_content: " << current->IsContent()
+              << "\r\nis_meta:    " << current->IsMetadata()
+              << "\r\ncontent_data_size:"
+              << (current->IsContent() ? current->GetContentData()->size() : 0)
+              << "\r\nverified:   "
+              << (current->IsVerified().has_value()
+                      ? (current->IsVerified().value() ? "YES" : "NO")
+                      : "N/A");
 
     current = nullptr;
   }
@@ -288,7 +304,6 @@ void TestBlockExisting(
   EXPECT_EQ(root_cids->GetList().size(), 1UL);
   EXPECT_EQ(root_cids->GetList()[0].GetString(),
             "bafybeidh6k2vzukelqtrjsmd4p52cpmltd2ufqrdtdg6yigi73in672fwu");
-
 
   base::ranges::for_each(root_cids->GetList(),
                          [&all_blocks](const base::Value& item) {
@@ -333,14 +348,13 @@ TEST_F(BlockReaderUnitTest, BasicTestSteps) {
   }
   std::unordered_map<std::string, std::unique_ptr<ipfs::ipld::Block>>
       all_blocks;
-  // auto request_callback_counter = 0;
   auto request_callback =
-      base::BindLambdaForTesting([&](std::unique_ptr<ipfs::ipld::Block> block) {
+      base::BindLambdaForTesting([&all_blocks](std::unique_ptr<ipfs::ipld::Block> block) {
         LOG(INFO) << "[IPFS] request_callback block.cid:" << block->Cid()
                   << " is_root:" << block->IsRoot()
                   << " is_meta:" << block->IsMetadata()
                   << " is_content:" << block->IsContent();
-        all_blocks.emplace(block->Cid(), std::move(block));
+        all_blocks.try_emplace(block->Cid(), std::move(block));
       });
   url_loader_factory()->SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
@@ -375,6 +389,7 @@ TEST_F(BlockReaderUnitTest, BasicTestSteps) {
           GetPrefs()));
   br->Read(request_callback);
   task_environment()->RunUntilIdle();
-
+  LOG(INFO) << "count:" << all_blocks.size();
+  EXPECT_GT(all_blocks.size(), 0UL);
   TestBlockExisting(all_blocks);
 }

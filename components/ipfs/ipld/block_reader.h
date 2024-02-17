@@ -24,20 +24,21 @@ class BlockReader {
   using BlockReaderCallback =
       base::RepeatingCallback<void(std::unique_ptr<Block>)>;
 
+  virtual ~BlockReader(); 
+
   virtual void Read(BlockReaderCallback callback);
 
   base::raw_ptr<BlockFactory> GetBlockFactory();
 
  protected:
   explicit BlockReader(std::unique_ptr<ContentRequester> content_requester);
-  virtual ~BlockReader();
 
   virtual void OnRequestDataReceived(BlockReaderCallback callback,
                                      std::unique_ptr<std::vector<uint8_t>> data,
                                      const bool is_success) = 0;
 
  private:
-  std::unique_ptr<BlockFactory> block_factory_;
+  std::unique_ptr<BlockFactory> block_factory_{std::make_unique<BlockFactory>()};
   std::unique_ptr<ContentRequester> content_requester_;
   base::WeakPtrFactory<BlockReader> weak_ptr_factory_{this};
 };

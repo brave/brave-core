@@ -51,7 +51,6 @@ bool ContentRequester::IsStarted() const {
 }
 
 void ContentRequester::Request(ContentRequestBufferCallback callback) {
-  LOG(INFO) << "[IPFS] ContentRequester::Request";
   if (GetGatewayRequestUrl().is_empty()) {
     return;
   }
@@ -62,7 +61,7 @@ void ContentRequester::Request(ContentRequestBufferCallback callback) {
   is_started_ = true;
 }
 
-const GURL ContentRequester::GetGatewayRequestUrl() const {
+GURL ContentRequester::GetGatewayRequestUrl() const {
   if (url_.is_empty()) {
     return {};
   }
@@ -74,8 +73,8 @@ const GURL ContentRequester::GetGatewayRequestUrl() const {
     url_res = ipfs::ToPublicGatewayURL(url_, prefs_);
   }
 
-  LOG(INFO) << "[IPFS] ContentRequester::GetGatewayRequestUrl() url_res:"
-            << url_res;
+  // LOG(INFO) << "[IPFS] ContentRequester::GetGatewayRequestUrl() url_res:"
+  //           << url_res;
   return url_res;
 }
 
@@ -91,7 +90,9 @@ void ContentRequester::OnDataReceived(base::StringPiece string_piece,
   std::move(resume).Run();
 }
 
-void ContentRequester::OnRetry(base::OnceClosure start_retry) {}
+void ContentRequester::OnRetry(base::OnceClosure start_retry) {
+  //TODO Decide should we use retry or no
+}
 
 void ContentRequester::OnComplete(bool success) {
   LOG(INFO) << "[IPFS] OnComplete success:" << success

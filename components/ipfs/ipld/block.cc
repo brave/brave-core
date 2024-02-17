@@ -10,8 +10,6 @@
 #include <utility>
 
 #include "absl/types/optional.h"
-#include "base/debug/stack_trace.h"
-#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace {
@@ -113,11 +111,11 @@ Block::Block(const std::string& cid,
       data_(std::move(data)),
       djlinks_(std::move(djlinks)),
       djdata_(std::move(djdata)),
-      verified_(std::move(verified)) {}
+      verified_(verified) {}
 
 Block::~Block() = default;
 
-const std::string Block::Cid() const {
+std::string Block::Cid() const {
   return cid_;
 }
 
@@ -158,18 +156,18 @@ std::unique_ptr<Block> BlockFactory::CreateCarBlock(
     const std::string& cid,
     absl::optional<base::Value> metadata,
     std::unique_ptr<std::vector<uint8_t>> data,
-    const absl::optional<bool> verified) {
+    const absl::optional<bool>& verified) {
   if (!metadata.has_value() || !metadata->is_dict()) {
-    return std::make_unique<Block>(cid, base::Value::Dict(), std::move(data),
-                                   nullptr, nullptr, std::move(verified));
+    return std::unique_ptr<Block>(new Block(cid, base::Value::Dict(), std::move(data),
+                                   nullptr, nullptr, verified));
   }
 
   auto dj_links = ParseLinksFromMeta(metadata->GetDict());
   auto dj_data = ParseDataFromMeta(metadata->GetDict());
 
-  return std::make_unique<Block>(cid, std::move(metadata->GetDict()),
+  return std::unique_ptr<Block>(new Block(cid, std::move(metadata->GetDict()),
                                  std::move(data), std::move(dj_links),
-                                 std::move(dj_data), std::move(verified));
+                                 std::move(dj_data), verified));
 }
 
 }  // namespace ipfs::ipld

@@ -21,17 +21,14 @@ struct DJLink {
   uint64_t size;
 };
 
+class BlockFactory;
+
 class Block {
  public:
-  explicit Block(const std::string& cid,
-                 base::Value::Dict metadata,
-                 std::unique_ptr<std::vector<uint8_t>> data,
-                 std::unique_ptr<std::vector<DJLink>> djlinks,
-                 std::unique_ptr<std::vector<uint8_t>> djdata,
-                 const absl::optional<bool>& verified);
+  Block() = delete;
   ~Block();
 
-  const std::string Cid() const;
+  std::string Cid() const;
 
   bool IsRoot() const;
   bool IsMetadata() const;
@@ -45,6 +42,14 @@ class Block {
   const std::vector<uint8_t>* GetData() const;
 
  private:
+ friend class BlockFactory;
+  explicit Block(const std::string& cid,
+                 base::Value::Dict metadata,
+                 std::unique_ptr<std::vector<uint8_t>> data,
+                 std::unique_ptr<std::vector<DJLink>> djlinks,
+                 std::unique_ptr<std::vector<uint8_t>> djdata,
+                 const absl::optional<bool>& verified);
+
   std::string cid_;  
   base::Value::Dict metadata_;
   std::unique_ptr<std::vector<uint8_t>> data_;
@@ -62,7 +67,7 @@ class BlockFactory {
       const std::string& cid,
       absl::optional<base::Value> metadata,
       std::unique_ptr<std::vector<uint8_t>> data,
-      const absl::optional<bool> verified);
+      const absl::optional<bool>& verified);
 };
 
 }  // namespace ipfs::ipld
