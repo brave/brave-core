@@ -890,6 +890,14 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
         "'none'\".*");
     NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
+    constexpr const char kCheckBaseTag[] = R"js(
+      document.head.getElementsByTagName('base')[0].outerHTML
+    )js";
+    EXPECT_EQ(R"(<base href="https://a.test/">)",
+              content::EvalJs(ActiveWebContents(), kCheckBaseTag,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+
     EXPECT_TRUE(console_observer.Wait());
   }
 }

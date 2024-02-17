@@ -31,10 +31,12 @@ function getShadowRoot(e) {
 
 async function showReport(val) {
   const original = await loadDocument(val, 'original.html', 'document')
+  original.body.hidden = false
   const originalNode = document.getElementById('original')
   getShadowRoot(originalNode).replaceChildren(original.firstChild)
 
   const changed = await loadDocument(val, 'changed.html', 'document')
+  changed.body.hidden = false
   const changedNode = document.getElementById('changed')
   getShadowRoot(changedNode).replaceChildren(changed.firstChild)
 

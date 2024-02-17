@@ -305,6 +305,13 @@ pub fn extract_dom(
         }
     }
 
+    if let Some(head) = dom::document_head(&dom) {
+        let base_nodes = dom::find_nodes_with_tag(&head, &["base"]);
+        for base in base_nodes {
+            content = base.to_string() + &content;
+        }
+    }
+
     if let Some(ref charset) = meta.charset {
         // Since we strip out the entire head, we need to include charset if one
         // was provided. Otherwise the browser will use the default encoding,
