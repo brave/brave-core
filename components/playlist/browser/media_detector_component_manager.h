@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_MEDIA_DETECTOR_COMPONENT_MANAGER_H_
 
 #include <string>
-#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
@@ -53,12 +52,6 @@ class MediaDetectorComponentManager {
 
   void SetUseLocalScript();
 
-  bool ShouldHideMediaSrcAPI(const GURL& url) const;
-  void SetUseLocalListToHideMediaSrcAPI();
-
-  bool ShouldUseFakeUA(const GURL& url) const;
-  void SetUseLocalListToUseFakeUA();
-
  private:
   FRIEND_TEST_ALL_PREFIXES(MediaDetectorComponentManagerTest,
                            SitesThatNeedsURLRuleForMediaPage);
@@ -76,9 +69,6 @@ class MediaDetectorComponentManager {
 
   std::string media_source_api_suppressor_;
   std::string base_script_;
-
-  std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;
-  std::vector<net::SchemefulSite> sites_to_use_fake_ua_;
 
   base::flat_map<net::SchemefulSite, std::string> site_specific_detectors_;
 

@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
 
-#include <string>
-
+#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -18,31 +17,42 @@ class WebContents;
 
 namespace playlist {
 
+class PlaylistService;
+
+// `PlaylistBackgroundWebContentsHelper` is attached to background `WebContents`
+// (see `PlaylistBackgroundWebContents`). It's responsible for setting up the
+// `PlaylistMediaHandler` for the background `WebContents`, and initializing
+// renderer-side state (i.e. the scripts that `PlaylistRenderFrameObserver`
+// injects into the page) via `WebContentsObserver::ReadyToCommitNavigation()`.
 class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
       public content::WebContentsObserver {
  public:
+  static void CreateForWebContents(
+      content::WebContents* web_contents,
+      PlaylistService* service,
+      PlaylistMediaHandler::OnceCallback on_media_detected_callback);
+
   PlaylistBackgroundWebContentsHelper(
       const PlaylistBackgroundWebContentsHelper&) = delete;
   PlaylistBackgroundWebContentsHelper& operator=(
       const PlaylistBackgroundWebContentsHelper&) = delete;
   ~PlaylistBackgroundWebContentsHelper() override;
 
+ private:
+  friend class content::WebContentsUserData<
+      PlaylistBackgroundWebContentsHelper>;
+  using content::WebContentsUserData<
+      PlaylistBackgroundWebContentsHelper>::CreateForWebContents;
+
+  PlaylistBackgroundWebContentsHelper(content::WebContents* web_contents,
+                                      PlaylistService* service);
+
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
 
- private:
-  friend class content::WebContentsUserData<
-      PlaylistBackgroundWebContentsHelper>;
-
-  PlaylistBackgroundWebContentsHelper(
-      content::WebContents* web_contents,
-      const std::string& media_source_api_suppressor,
-      const std::string& media_detector);
-
-  std::string media_source_api_suppressor_;
-  std::string media_detector_;
+  raw_ptr<PlaylistService> service_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
