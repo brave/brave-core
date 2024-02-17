@@ -30,6 +30,7 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
 #include "pdf/buildflags.h"
+#include "ui/accessibility/ax_mode.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
@@ -151,11 +152,22 @@ void AIChatTabHelper::InnerWebContentsAttached(
   // Setting a11y mode for PDF process which is dedicated for each
   // PDF so we don't have to unset it.
   if (content::WebContents::FromRenderFrameHost(render_frame_host)
-              ->GetContentsMimeType() == "application/pdf" &&
-      HasUserOptedIn()) {
+          ->GetContentsMimeType() == "application/pdf") {
     // We need `AXMode::kNativeAPIs` for accessing pdf a11y info and
     // `AXMode::kWebContents` for observing a11y events from WebContents.
-    inner_web_contents->SetAccessibilityMode(ui::AXMode(ui::kAXModeBasic));
+    bool mode_change_needed = false;
+    auto current_mode = inner_web_contents->GetAccessibilityMode();
+    if (!current_mode.has_mode(ui::AXMode::kNativeAPIs)) {
+      current_mode |= ui::AXMode::kNativeAPIs;
+      mode_change_needed = true;
+    }
+    if (!current_mode.has_mode(ui::AXMode::kWebContents)) {
+      current_mode |= ui::AXMode::kWebContents;
+      mode_change_needed = true;
+    }
+    if (mode_change_needed) {
+      inner_web_contents->SetAccessibilityMode(current_mode);
+    }
     pdf_load_observer_ =
         std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents, this);
     is_pdf_a11y_info_loaded_ = false;
