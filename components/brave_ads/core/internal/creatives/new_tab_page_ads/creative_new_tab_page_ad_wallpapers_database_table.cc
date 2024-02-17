@@ -43,19 +43,24 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV33(mojom::DBTransactionInfo* transaction) {
+void MigrateToV34(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  // Recreate table as it will be repopulated after downloading the catalog.
   DropTable(transaction, "creative_new_tab_page_ad_wallpapers");
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE creative_new_tab_page_ad_wallpapers (creative_instance_id "
-      "TEXT NOT NULL, image_url TEXT NOT NULL, focal_point_x INT NOT NULL, "
-      "focal_point_y INT NOT NULL, PRIMARY KEY (creative_instance_id, "
-      "image_url, focal_point_x, focal_point_y), UNIQUE(creative_instance_id, "
-      "image_url, focal_point_x, focal_point_y) ON CONFLICT REPLACE);";
+      R"(
+          CREATE TABLE creative_new_tab_page_ad_wallpapers (
+            creative_instance_id TEXT NOT NULL,
+            image_url TEXT NOT NULL,
+            focal_point_x INT NOT NULL,
+            focal_point_y INT NOT NULL,
+            PRIMARY KEY (creative_instance_id, image_url, focal_point_x, focal_point_y),
+            UNIQUE(creative_instance_id, image_url, focal_point_x, focal_point_y) ON CONFLICT REPLACE
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -101,11 +106,15 @@ void CreativeNewTabPageAdWallpapers::Create(
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE creative_new_tab_page_ad_wallpapers (creative_instance_id "
-      "TEXT NOT NULL, image_url TEXT NOT NULL, focal_point_x INT NOT NULL, "
-      "focal_point_y INT NOT NULL, PRIMARY KEY (creative_instance_id, "
-      "image_url, focal_point_x, focal_point_y), UNIQUE(creative_instance_id, "
-      "image_url, focal_point_x, focal_point_y) ON CONFLICT REPLACE);";
+      R"(
+          CREATE TABLE creative_new_tab_page_ad_wallpapers (
+            creative_instance_id TEXT NOT NULL,
+            image_url TEXT NOT NULL,
+            focal_point_x INT NOT NULL,
+            focal_point_y INT NOT NULL,
+            PRIMARY KEY (creative_instance_id, image_url, focal_point_x, focal_point_y),
+            UNIQUE(creative_instance_id, image_url, focal_point_x, focal_point_y) ON CONFLICT REPLACE
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -115,8 +124,8 @@ void CreativeNewTabPageAdWallpapers::Migrate(
   CHECK(transaction);
 
   switch (to_version) {
-    case 33: {
-      MigrateToV33(transaction);
+    case 34: {
+      MigrateToV34(transaction);
       break;
     }
   }
@@ -132,8 +141,13 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateSql(
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (creative_instance_id, image_url, "
-      "focal_point_x, focal_point_y) VALUES $2;",
+      R"(
+          INSERT OR REPLACE INTO $1 (
+            creative_instance_id,
+            image_url,
+            focal_point_x,
+            focal_point_y
+          ) VALUES $2;)",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count=*/4, binded_parameters_count)},
       nullptr);

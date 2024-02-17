@@ -39,17 +39,22 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV33(mojom::DBTransactionInfo* transaction) {
+void MigrateToV34(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  // Recreate table as it will be repopulated after downloading the catalog.
   DropTable(transaction, "geo_targets");
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE geo_targets (campaign_id TEXT NOT NULL, geo_target TEXT "
-      "NOT NULL, PRIMARY KEY (campaign_id, geo_target), UNIQUE(campaign_id, "
-      "geo_target) ON CONFLICT REPLACE);";
+      R"(
+          CREATE TABLE geo_targets (
+            campaign_id TEXT NOT NULL,
+            geo_target TEXT NOT NULL,
+            PRIMARY KEY (campaign_id, geo_target),
+            UNIQUE(campaign_id, geo_target) ON CONFLICT REPLACE
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -87,9 +92,13 @@ void GeoTargets::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE geo_targets (campaign_id TEXT NOT NULL, geo_target TEXT "
-      "NOT NULL, PRIMARY KEY (campaign_id, geo_target), UNIQUE(campaign_id, "
-      "geo_target) ON CONFLICT REPLACE);";
+      R"(
+          CREATE TABLE geo_targets (
+            campaign_id TEXT NOT NULL,
+            geo_target TEXT NOT NULL,
+            PRIMARY KEY (campaign_id, geo_target),
+            UNIQUE(campaign_id, geo_target) ON CONFLICT REPLACE
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -98,8 +107,8 @@ void GeoTargets::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 33: {
-      MigrateToV33(transaction);
+    case 34: {
+      MigrateToV34(transaction);
       break;
     }
   }
@@ -115,7 +124,11 @@ std::string GeoTargets::BuildInsertOrUpdateSql(
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (campaign_id, geo_target) VALUES $2;",
+      R"(
+          INSERT OR REPLACE INTO $1 (
+            campaign_id,
+            geo_target
+          ) VALUES $2;)",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count=*/2, binded_parameters_count)},
       nullptr);

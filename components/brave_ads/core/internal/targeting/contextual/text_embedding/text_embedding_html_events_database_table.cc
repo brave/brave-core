@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
+#include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -51,8 +52,7 @@ size_t BindParameters(
   int index = 0;
   for (const auto& text_embedding_html_event : text_embedding_html_events) {
     BindInt64(command, index++,
-              text_embedding_html_event.created_at.ToDeltaSinceWindowsEpoch()
-                  .InMicroseconds());
+              ToChromeTimestampFromTime(text_embedding_html_event.created_at));
     BindString(command, index++, text_embedding_html_event.locale);
     BindString(command, index++, text_embedding_html_event.hashed_text_base64);
     BindString(command, index++,
@@ -70,8 +70,8 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
   TextEmbeddingHtmlEventInfo text_embedding_html_event;
 
-  text_embedding_html_event.created_at = base::Time::FromDeltaSinceWindowsEpoch(
-      base::Microseconds(ColumnInt64(record, 0)));
+  text_embedding_html_event.created_at =
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 0));
   text_embedding_html_event.locale = ColumnString(record, 1);
   text_embedding_html_event.hashed_text_base64 = ColumnString(record, 2);
   text_embedding_html_event.embedding =
@@ -106,26 +106,38 @@ void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
 void MigrateToV25(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  // Recreate table to address a migration problem from older versions.
   DropTable(transaction, "text_embedding_html_events");
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE text_embedding_html_events (id INTEGER PRIMARY KEY "
-      "AUTOINCREMENT NOT NULL, created_at TIMESTAMP NOT NULL, locale TEXT NOT "
-      "NULL, hashed_text_base64 TEXT NOT NULL UNIQUE, embedding TEXT NOT "
-      "NULL);";
+      R"(
+          CREATE TABLE text_embedding_html_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            created_at TIMESTAMP NOT NULL,
+            locale TEXT NOT NULL,
+            hashed_text_base64 TEXT NOT NULL UNIQUE,
+            embedding TEXT NOT NULL
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
 void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  // Migrate `created_at` column from a UNIX timestamp to a WebKit/Chrome
+  // timestamp.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "UPDATE text_embedding_html_events SET created_at = (CAST(created_at AS "
-      "INT64) + 11644473600) * 1000000;";
+      R"(
+          UPDATE
+            text_embedding_html_events
+          SET
+            created_at = (
+              CAST(created_at AS INT64) + 11644473600
+            ) * 1000000;)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -147,8 +159,16 @@ void TextEmbeddingHtmlEvents::GetAll(
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
-      "SELECT tehe.created_at, tehe.locale, tehe.hashed_text_base64, "
-      "tehe.embedding FROM $1 AS tehe ORDER BY created_at DESC;",
+      R"(
+          SELECT
+            created_at,
+            locale,
+            hashed_text_base64,
+            embedding
+          FROM
+            $1
+          ORDER BY
+            created_at DESC;)",
       {GetTableName()}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
@@ -162,8 +182,20 @@ void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::StringPrintf(
-      "DELETE FROM %s WHERE id NOT IN (SELECT id from %s ORDER BY created_at "
-      "DESC LIMIT %d);",
+      R"(
+          DELETE FROM
+            %s
+          WHERE
+            id NOT IN (
+              SELECT
+                id
+              FROM
+                %s
+              ORDER BY
+                created_at DESC
+              LIMIT
+                %d
+            );)",
       GetTableName().c_str(), GetTableName().c_str(),
       kTextEmbeddingHistorySize.Get());
   transaction->commands.push_back(std::move(command));
@@ -181,10 +213,14 @@ void TextEmbeddingHtmlEvents::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE text_embedding_html_events (id INTEGER PRIMARY KEY "
-      "AUTOINCREMENT NOT NULL, created_at TIMESTAMP NOT NULL, locale TEXT NOT "
-      "NULL, hashed_text_base64 TEXT NOT NULL UNIQUE, embedding TEXT NOT "
-      "NULL);";
+      R"(
+          CREATE TABLE text_embedding_html_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            created_at TIMESTAMP NOT NULL,
+            locale TEXT NOT NULL,
+            hashed_text_base64 TEXT NOT NULL UNIQUE,
+            embedding TEXT NOT NULL
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -232,8 +268,13 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateSql(
       BindParameters(command, text_embedding_html_events);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (created_at, locale, hashed_text_base64, "
-      "embedding) VALUES $2;",
+      R"(
+          INSERT OR REPLACE INTO $1 (
+            created_at,
+            locale,
+            hashed_text_base64,
+            embedding
+          ) VALUES $2;)",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count=*/4, binded_parameters_count)},
       nullptr);
