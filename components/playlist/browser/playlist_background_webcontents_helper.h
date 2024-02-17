@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -17,6 +18,8 @@ class WebContents;
 }  // namespace content
 
 namespace playlist {
+
+class PlaylistTabHelper;
 
 class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
@@ -32,17 +35,25 @@ class PlaylistBackgroundWebContentsHelper final
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
 
+  PlaylistTabHelper* GetTabHelper() const;
+
+  base::OnceCallback<void(bool)> GetSuccessCallback() &&;
+
  private:
   friend class content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>;
 
   PlaylistBackgroundWebContentsHelper(
       content::WebContents* web_contents,
+      base::WeakPtr<PlaylistTabHelper> tab_helper,
       const std::string& media_source_api_suppressor,
-      const std::string& media_detector);
+      const std::string& media_detector,
+      base::OnceCallback<void(bool)> success_callback);
 
+  base::WeakPtr<PlaylistTabHelper> tab_helper_;
   std::string media_source_api_suppressor_;
   std::string media_detector_;
+  base::OnceCallback<void(bool)> success_callback_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

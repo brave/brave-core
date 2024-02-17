@@ -16,7 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/playlist/browser/playlist_download_request_manager.h"
+#include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_streaming.h"
@@ -138,16 +138,6 @@ class PlaylistService : public KeyedService,
 
   base::WeakPtr<PlaylistService> GetWeakPtr();
 
-  // Find media from |contents| using corresponding background web contents.
-  // The background web contents will load the same url as |contents| but
-  // does trick to get plain media urls that we can cache from.
-  using ExtractMediaFromBackgroundWebContentsCallback =
-      base::OnceCallback<void(const GURL& target_url,
-                              std::vector<mojom::PlaylistItemPtr> items)>;
-  void ExtractMediaFromBackgroundWebContents(
-      content::WebContents* contents,
-      ExtractMediaFromBackgroundWebContentsCallback callback);
-
   // Synchronous versions of mojom::PlaylistService implementations
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
   mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
@@ -239,7 +229,10 @@ class PlaylistService : public KeyedService,
 
   bool playlist_enabled() const { return *enabled_pref_; }
 
+  const std::string& GetMediaSourceAPISuppressorScript() const;
   std::string GetMediaDetectorScript(const GURL& url) const;
+
+  bool ShouldUseFakeUA(const GURL& url) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -270,6 +263,14 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
 
+  std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(base::Value value,
+                                                       GURL page_url);
+
+  bool CanCacheMedia(const mojom::PlaylistItemPtr& item) const;
+
+  bool ShouldExtractMediaFromBackgroundWebContents(
+      const mojom::PlaylistItemPtr& item) const;
+
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
   void AddMediaFilesFromContentsToPlaylist(
@@ -289,8 +290,6 @@ class PlaylistService : public KeyedService,
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
   bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
-
-  bool ShouldUseFakeUA(const GURL& url) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
@@ -332,8 +331,6 @@ class PlaylistService : public KeyedService,
   //         it is notified.
 
   void OnGetMetadata(base::Value value);
-
-  content::WebContents* GetBackgroundWebContentsForTesting();
 
   std::string GetDefaultSaveTargetListID();
 
@@ -412,7 +409,7 @@ class PlaylistService : public KeyedService,
 
   std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
-  std::unique_ptr<PlaylistDownloadRequestManager> download_request_manager_;
+  raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
 
   PlaylistP3A playlist_p3a_;
 

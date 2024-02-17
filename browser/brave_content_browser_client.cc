@@ -240,8 +240,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #endif
 
@@ -324,24 +324,6 @@ void BindCosmeticFiltersResources(
       FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
                                 std::move(receiver)));
 }
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-void BindPlaylistMediaHandler(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<playlist::mojom::PlaylistMediaHandler> receiver) {
-  auto* playlist_service =
-      playlist::PlaylistServiceFactory::GetForBrowserContext(
-          frame_host->GetBrowserContext());
-  if (!playlist_service) {
-    // We don't support playlist on OTR profile.
-    return;
-  }
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<playlist::PlaylistMediaHandler>(
-          frame_host->GetGlobalId(), playlist_service->GetWeakPtr()),
-      std::move(receiver));
-}
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 void MaybeBindWalletP3A(
     content::RenderFrameHost* const frame_host,
@@ -594,6 +576,18 @@ void BraveContentBrowserClient::
           &render_frame_host));
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
+      base::BindRepeating(
+          [](content::RenderFrameHost* render_frame_host,
+             mojo::PendingAssociatedReceiver<
+                 playlist::mojom::PlaylistMediaResponder> receiver) {
+            playlist::PlaylistTabHelper::BindMediaResponderReceiver(
+                std::move(receiver), render_frame_host);
+          },
+          &render_frame_host));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
                                                            associated_registry);
@@ -840,11 +834,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-  map->Add<playlist::mojom::PlaylistMediaHandler>(
-      base::BindRepeating(&BindPlaylistMediaHandler));
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
