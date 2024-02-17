@@ -91,7 +91,7 @@ extension BrowserViewController: WKNavigationDelegate {
     // are going to a about:reader page. Then we keep it on screen: it will change status
     // (orange color) as soon as the page has loaded.
     if let url = webView.url {
-      if !url.isReaderModeURL {
+      if !url.isInternalURL(for: .readermode) {
         topToolbar.updateReaderModeState(ReaderModeState.unavailable)
         hideReaderModeBar(animated: false)
       }
@@ -147,7 +147,6 @@ extension BrowserViewController: WKNavigationDelegate {
     decidePolicyFor navigationAction: WKNavigationAction,
     preferences: WKWebpagePreferences
   ) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
-
     guard var requestURL = navigationAction.request.url else {
       return (.cancel, preferences)
     }
@@ -432,16 +431,10 @@ extension BrowserViewController: WKNavigationDelegate {
             isAggressiveMode: domain.blockAdsAndTrackingLevel.isAggressive
           )
 
-          if shouldBlock, let escapingURL = requestURL.absoluteString.escape() {
-            var components = URLComponents(string: InternalURL.baseUrl)
-            components?.path = "/\(InternalURL.Path.blocked.rawValue)"
-            components?.queryItems = [URLQueryItem(name: "url", value: escapingURL)]
-
-            if let url = components?.url {
-              let request = PrivilegedRequest(url: url) as URLRequest
-              tab?.loadRequest(request)
-              return (.cancel, preferences)
-            }
+          if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
+            let request = PrivilegedRequest(url: url) as URLRequest
+            tab?.loadRequest(request)
+            return (.cancel, preferences)
           }
         }
       }

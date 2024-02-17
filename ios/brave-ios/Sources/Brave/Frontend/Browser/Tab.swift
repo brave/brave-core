@@ -232,7 +232,7 @@ class Tab: NSObject {
 
       // Setting URL in SyncTab is adding pending item to navigation manager on brave-core side
       if let url = url, !isPrivate, !url.isLocal, !InternalURL.isValid(url: url),
-        !url.isReaderModeURL
+        !url.isInternalURL(for: .readermode)
       {
         syncTab?.setURL(url)
       }

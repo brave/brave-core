@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Shared
 import Storage
 import WebKit
@@ -149,9 +150,7 @@ extension BrowserViewController {
     let forwardList = webView.backForwardList.forwardList
 
     guard let currentURL = webView.backForwardList.currentItem?.url,
-      let readerModeURL = currentURL.encodeReaderModeURL(
-        "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)"
-      )
+      let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode)
     else { return }
 
     recordTimeBasedNumberReaderModeUsedP3A(activated: true)
@@ -194,7 +193,7 @@ extension BrowserViewController {
       let forwardList = webView.backForwardList.forwardList
 
       if let currentURL = webView.backForwardList.currentItem?.url {
-        if let originalURL = currentURL.decodeReaderModeURL {
+        if let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode) {
           if backList.count > 1 && backList.last?.url == originalURL {
             let playlistItem = tab.playlistItem
             webView.go(to: backList.last!)

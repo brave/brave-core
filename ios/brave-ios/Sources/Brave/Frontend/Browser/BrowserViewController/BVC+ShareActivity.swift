@@ -23,7 +23,7 @@ extension BrowserViewController {
     var activities = [UIActivity]()
 
     // Copy Clean URL Activity
-    if !url.isLocal, !InternalURL.isValid(url: url), !url.isReaderModeURL {
+    if !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode) {
       let cleanedURL =
         URLSanitizerServiceFactory.get(
           privateMode: tab?.isPrivate ?? true
@@ -42,7 +42,7 @@ extension BrowserViewController {
 
     // Send Tab To Self Activity - Show device selection screen
     if braveCore.syncAPI.isSendTabToSelfVisible, !privateBrowsingManager.isPrivateBrowsing,
-      !url.isLocal, !InternalURL.isValid(url: url), !url.isReaderModeURL
+      !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode)
     {
       activities.append(
         BasicMenuActivity(

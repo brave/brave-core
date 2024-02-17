@@ -139,40 +139,6 @@ extension URL {
     }
   }
 
-  public var displayURL: URL? {
-    if self.absoluteString.starts(with: "blob:") {
-      return self.havingRemovedAuthorisationComponents()
-    }
-
-    if self.isFileURL {
-      return URL(string: "file://\(self.lastPathComponent)")
-    }
-
-    if self.isReaderModeURL {
-      return self.decodeReaderModeURL?.havingRemovedAuthorisationComponents()
-    }
-
-    if let internalUrl = InternalURL(self), internalUrl.isErrorPage {
-      return internalUrl.originalURLFromErrorPage?.displayURL
-    }
-
-    if let internalUrl = InternalURL(self),
-      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isBlockedPage
-    {
-      return internalUrl.extractedUrlParam?.displayURL
-    }
-
-    if !InternalURL.isValid(url: self) {
-      let url = self.havingRemovedAuthorisationComponents()
-      if let internalUrl = InternalURL(url), internalUrl.isErrorPage {
-        return internalUrl.originalURLFromErrorPage?.displayURL
-      }
-      return url
-    }
-
-    return nil
-  }
-
   // Obtain a schemeless absolute string
   public var schemelessAbsoluteString: String {
     guard let scheme = self.scheme else { return absoluteString }
@@ -325,43 +291,6 @@ extension URL {
       return url
     }
     return self
-  }
-}
-
-// Extensions to deal with ReaderMode URLs
-
-extension URL {
-  public var isReaderModeURL: Bool {
-    let scheme = self.scheme
-    let host = self.host
-    let path = self.path
-    return scheme == InternalURL.scheme && host == InternalURL.host
-      && path == "/\(InternalURL.Path.readermode.rawValue)"
-  }
-
-  public var decodeReaderModeURL: URL? {
-    if self.isReaderModeURL {
-      if let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
-        let queryItems = components.queryItems
-      {
-        if let queryItem = queryItems.first(where: { $0.name == "url" }),
-          let value = queryItem.value
-        {
-          return URL(string: value)
-        }
-      }
-    }
-    return nil
-  }
-
-  public func encodeReaderModeURL(_ baseReaderModeURL: String) -> URL? {
-    if let encodedURL = absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
-    {
-      if let aboutReaderURL = URL(string: "\(baseReaderModeURL)?url=\(encodedURL)") {
-        return aboutReaderURL
-      }
-    }
-    return nil
   }
 }
 

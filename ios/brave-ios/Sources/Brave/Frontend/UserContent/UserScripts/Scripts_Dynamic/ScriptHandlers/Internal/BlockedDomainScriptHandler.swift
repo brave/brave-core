@@ -50,7 +50,7 @@ class BlockedDomainScriptHandler: TabContentScript {
   }
 
   private func blockedDomainDidProceed() {
-    guard let url = tab?.url?.stippedInternalURL, let etldP1 = url.baseDomain else {
+    guard let url = tab?.url?.strippedInternalURL, let etldP1 = url.baseDomain else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"
       )
@@ -63,7 +63,7 @@ class BlockedDomainScriptHandler: TabContentScript {
   }
 
   private func blockedDomainDidGoBack() {
-    guard let url = tab?.url?.stippedInternalURL else {
+    guard let url = tab?.url?.strippedInternalURL else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"
       )

@@ -103,7 +103,8 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidLongPressReloadButton(_ topToolbar: TopToolbarView, from button: UIButton) {
-    guard let tab = tabManager.selectedTab, let url = tab.url, !url.isLocal, !url.isReaderModeURL
+    guard let tab = tabManager.selectedTab, let url = tab.url, !url.isLocal,
+      !url.isInternalURL(for: .readermode)
     else { return }
 
     let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -841,12 +842,12 @@ extension BrowserViewController: TopToolbarDelegate {
   func openAddBookmark() {
     guard let selectedTab = tabManager.selectedTab,
       let selectedUrl = selectedTab.url,
-      !(selectedUrl.isLocal || selectedUrl.isReaderModeURL)
+      !(selectedUrl.isLocal || selectedUrl.isInternalURL(for: .readermode))
     else {
       return
     }
 
-    let bookmarkUrl = selectedUrl.decodeReaderModeURL ?? selectedUrl
+    let bookmarkUrl = selectedUrl.decodeEmbeddedInternalURL(for: .readermode) ?? selectedUrl
 
     let mode = BookmarkEditMode.addBookmark(
       title: selectedTab.displayTitle,
