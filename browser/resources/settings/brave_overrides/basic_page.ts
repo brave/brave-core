@@ -347,6 +347,12 @@ RegisterPolymerTemplateModifications({
         batteryTemplate.remove()
       }
 
+      const speedTemplate = actualTemplate.content.querySelector(
+        'template[if="[[showSpeedPage_(pageVisibility.performance)]]"]')
+      if (speedTemplate) {
+        speedTemplate.remove()
+      }
+
       // Get Started at top
       let last = basicPageEl.insertAdjacentElement('afterbegin',
         sectionGetStarted)
