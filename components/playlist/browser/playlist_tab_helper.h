@@ -17,6 +17,11 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
+namespace content {
+class NavigationHandle;
+class WebContents;
+}  // namespace content
+
 namespace playlist {
 
 class PlaylistService;
@@ -27,8 +32,8 @@ class PlaylistTabHelper
       public content::WebContentsObserver,
       public mojom::PlaylistServiceObserver {
  public:
-  static void MaybeCreateForWebContents(content::WebContents* contents,
-                                        playlist::PlaylistService* service);
+  static void CreateForWebContents(content::WebContents* web_contents,
+                                   PlaylistService* service);
 
   ~PlaylistTabHelper() override;
 
@@ -61,12 +66,6 @@ class PlaylistTabHelper
 
   std::u16string GetSavedFolderName();
 
-  // |found_items| contains items with blob: url pointing at MediaSource Object.
-  bool ShouldExtractMediaFromBackgroundWebContents() const;
-  bool IsExtractingMediaFromBackgroundWebContents() const;
-  void ExtractMediaFromBackgroundWebContents(
-      base::OnceCallback<void(bool)> extracted_callback);
-
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -96,36 +95,20 @@ class PlaylistTabHelper
                            std::vector<mojom::PlaylistItemPtr> items) override;
 
  private:
-  friend WebContentsUserData;
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
-
-  // Hide factory function to enforce use MaybeCreateForWebContents()
-  template <typename... Args>
-  static void CreateForWebContents(content::WebContents*, Args&&...);
+  friend class content::WebContentsUserData<PlaylistTabHelper>;
+  using content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents;
 
   PlaylistTabHelper(content::WebContents* contents, PlaylistService* service);
 
   void ResetData();
   void UpdateSavedItemFromCurrentContents();
-  void ExtractMediaFromBackgroundContents();
-  void OnFoundMediaFromContents(const GURL& url,
-                                std::vector<mojom::PlaylistItemPtr> items);
-  void OnMediaExtractionFromBackgroundWebContentsTimeout();
   void OnAddedItems(std::vector<mojom::PlaylistItemPtr> items);
 
   void OnPlaylistEnabledPrefChanged();
 
   raw_ptr<PlaylistService> service_;
 
-  GURL target_url_;
-  bool sent_extract_media_request_ = false;
-
   bool is_adding_items_ = false;
-
-  base::OnceCallback<void(bool)>
-      media_extracted_from_background_web_contents_callback_;
-  base::OneShotTimer media_extraction_from_background_web_contents_timer_;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;
@@ -138,6 +121,8 @@ class PlaylistTabHelper
   BooleanPrefMember playlist_enabled_pref_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
+
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace playlist

@@ -5,16 +5,43 @@
 
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 
+#include <utility>
+
 #include "base/logging.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/web_contents.h"
+#include "content/public/browser/render_frame_host.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
+// static
+void PlaylistBackgroundWebContentsHelper::CreateForWebContents(
+    content::WebContents* web_contents,
+    PlaylistService* service,
+    PlaylistMediaHandler::OnceCallback on_media_detected_callback) {
+  content::WebContentsUserData<
+      PlaylistBackgroundWebContentsHelper>::CreateForWebContents(web_contents,
+                                                                 service);
+  PlaylistMediaHandler::CreateForWebContents(
+      web_contents, std::move(on_media_detected_callback));
+}
+
 PlaylistBackgroundWebContentsHelper::~PlaylistBackgroundWebContentsHelper() =
     default;
+
+PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
+    content::WebContents* web_contents,
+    PlaylistService* service)
+    : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
+          *web_contents),
+      content::WebContentsObserver(web_contents),
+      service_(service) {
+  CHECK(service_);
+}
 
 void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -36,19 +63,10 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
       ->GetRemoteAssociatedInterfaces()
       ->GetInterface(&frame_observer_config);
   frame_observer_config->AddMediaSourceAPISuppressor(
-      media_source_api_suppressor_);
-  frame_observer_config->AddMediaDetector(media_detector_);
+      service_->GetMediaSourceAPISuppressorScript());
+  frame_observer_config->AddMediaDetector(
+      service_->GetMediaDetectorScript(url));
 }
-
-PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
-    content::WebContents* web_contents,
-    const std::string& media_source_api_suppressor,
-    const std::string& media_detector)
-    : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
-          *web_contents),
-      content::WebContentsObserver(web_contents),
-      media_source_api_suppressor_(media_source_api_suppressor),
-      media_detector_(media_detector) {}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);
 

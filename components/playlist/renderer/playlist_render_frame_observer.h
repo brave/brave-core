@@ -16,8 +16,8 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
-#include "mojo/public/cpp/bindings/remote.h"
 
 namespace playlist {
 
@@ -51,17 +51,18 @@ class PlaylistRenderFrameObserver final
       mojo::PendingAssociatedReceiver<
           mojom::PlaylistRenderFrameObserverConfigurator> receiver);
 
-  const mojo::Remote<playlist::mojom::PlaylistMediaHandler>& GetMediaHandler();
+  const mojo::AssociatedRemote<mojom::PlaylistMediaResponder>&
+  GetMediaResponder();
 
   void Inject(const std::string& script_text,
               v8::Local<v8::Context> context,
               std::vector<v8::Local<v8::Value>> args = {}) const;
-  void OnMediaDetected(base::Value media);
+  void OnMediaDetected(base::Value::List media);
 
   int32_t isolated_world_id_;
   mojo::AssociatedReceiver<mojom::PlaylistRenderFrameObserverConfigurator>
       configurator_receiver_{this};
-  mojo::Remote<playlist::mojom::PlaylistMediaHandler> media_handler_;
+  mojo::AssociatedRemote<mojom::PlaylistMediaResponder> media_responder_;
   std::optional<std::string> media_source_api_suppressor_;
   std::optional<std::string> media_detector_;
   base::WeakPtrFactory<PlaylistRenderFrameObserver> weak_ptr_factory_{this};
