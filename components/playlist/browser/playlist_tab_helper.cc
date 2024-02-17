@@ -9,6 +9,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
@@ -18,6 +19,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
@@ -43,9 +45,43 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
       contents, service);
 }
 
+// static
+void PlaylistTabHelper::BindMediaResponderReceiver(
+    mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
+    content::RenderFrameHost* rfh) {
+  // TODO(sszaloki): do we have to do a service check here?
+  // auto* playlist_service =
+  //     playlist::PlaylistServiceFactory::GetForBrowserContext(
+  //         rfh->GetBrowserContext());
+  // if (!playlist_service) {
+  //   // We don't support playlist on OTR profile.
+  //   return;
+  // }
+
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  if (!web_contents) {
+    return;
+  }
+
+  // If `web_contents` is a background WebContents, we want to route the Mojom
+  // calls to the PlaylistTabHelper it belongs to.
+  auto* background_web_contents_helper =
+      PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents);
+  auto* tab_helper = background_web_contents_helper
+                         ? background_web_contents_helper->GetTabHelper()
+                         : PlaylistTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return;
+  }
+
+  tab_helper->media_responder_receivers_.Bind(rfh, std::move(receiver));
+}
+
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
-    : WebContentsUserData(*contents), service_(service) {
+    : WebContentsUserData(*contents),
+      service_(service),
+      media_responder_receivers_(contents, this) {
   Observe(contents);
   CHECK(service_);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
@@ -162,25 +198,63 @@ bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
   return service_->ShouldExtractMediaFromBackgroundWebContents(found_items());
 }
 
-bool PlaylistTabHelper::IsExtractingMediaFromBackgroundWebContents() const {
-  return !!media_extracted_from_background_web_contents_callback_;
-}
-
-void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
-    base::OnceCallback<void(bool)> extracted_callback) {
+void PlaylistTabHelper::MaybeExtractMediaFromBackgroundWebContents(
+    base::OnceCallback<void(bool)> callback) {
   if (!ShouldExtractMediaFromBackgroundWebContents()) {
-    std::move(extracted_callback).Run(true);
+    std::move(callback).Run(true);
     return;
   }
 
-  media_extracted_from_background_web_contents_callback_ =
-      std::move(extracted_callback);
+  if (background_web_contents_) {
+    // in progress...
+    return;
+  }
+
+  const GURL url = web_contents()->GetLastCommittedURL();
+
+  content::WebContents::CreateParams create_params(
+      web_contents()->GetBrowserContext(), nullptr);
+  create_params.is_never_visible = true;
+  background_web_contents_ = content::WebContents::Create(create_params);
+  background_web_contents_->SetAudioMuted(true);
+  PlaylistBackgroundWebContentsHelper::CreateForWebContents(
+      background_web_contents_.get(), GetWeakPtr(),
+      service_->GetMediaSourceAPISuppressorScript(),
+      service_->GetMediaDetectorScript(url), std::move(callback));
+  auto load_url_params = content::NavigationController::LoadURLParams(url);
+
+  if (service_->ShouldUseFakeUA(url) ||
+      base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    DVLOG(2) << __func__ << " Faked UA to detect media files";
+
+    blink::UserAgentOverride user_agent(
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
+        "Mobile/15E148 "
+        "Safari/604.1",
+        /* user_agent_metadata */ {});
+    background_web_contents_->SetUserAgentOverride(
+        user_agent,
+        /* override_in_new_tabs= */ true);
+    load_url_params.override_user_agent =
+        content::NavigationController::UA_OVERRIDE_TRUE;
+  }
+
+  content::NavigationController& controller =
+      background_web_contents_->GetController();
+  controller.LoadURLWithParams(load_url_params);
+
+  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    for (int i = 0; i < controller.GetEntryCount(); ++i) {
+      controller.GetEntryAtIndex(i)->SetIsOverridingUserAgent(true);
+    }
+  }
+
   media_extraction_from_background_web_contents_timer_.Start(
       FROM_HERE, base::Seconds(10),
       base::BindOnce(
           &PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout,
           weak_ptr_factory_.GetWeakPtr()));
-  ExtractMediaFromBackgroundContents();
 }
 
 void PlaylistTabHelper::ReadyToCommitNavigation(
@@ -205,8 +279,13 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
       service_->GetMediaDetectorScript(url));
 }
 
-void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
+void PlaylistTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
+
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
 
   if (auto old_url =
           std::exchange(target_url_, web_contents()->GetLastCommittedURL());
@@ -219,6 +298,46 @@ void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
   ResetData();
 
   UpdateSavedItemFromCurrentContents();
+}
+
+void PlaylistTabHelper::OnMediaDetected(base::Value media) {
+  const auto render_frame_host_id =
+      media_responder_receivers_.GetCurrentTargetFrame()->GetGlobalId();
+  DVLOG(2) << __FUNCTION__ << " " << render_frame_host_id;
+
+  auto* render_frame_host =
+      content::RenderFrameHost::FromID(render_frame_host_id);
+  if (!render_frame_host) {
+    return;
+  }
+
+  // Note that we have to go the GlobalRenderFrameHostId ==> RenderFrameHost ==>
+  // WebContents route, as it works for background WebContents, too (whereas
+  // just calling web_contents() does not).
+  auto* web_contents =
+      content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!web_contents) {
+    return;
+  }
+
+  DVLOG(2) << "Media:\n" << media;
+
+  service_->OnMediaDetected(std::move(media), web_contents);
+
+  if (web_contents == background_web_contents_.get()) {
+    DVLOG(2) << "Media: from background";
+    auto* background_webcontents_helper =
+        PlaylistBackgroundWebContentsHelper::FromWebContents(
+            background_web_contents_.get());
+    CHECK(background_webcontents_helper);
+    // TODO(sszaloki): bloah...
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            std::move(*background_webcontents_helper).GetSuccessCallback(),
+            true));
+    background_web_contents_.reset();
+  }
 }
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
@@ -300,11 +419,9 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
 }
 
 void PlaylistTabHelper::ResetData() {
+  background_web_contents_.reset();
   saved_items_.clear();
   found_items_.clear();
-  sent_extract_media_request_ = false;
-  media_extracted_from_background_web_contents_callback_.Reset();
-  media_extraction_from_background_web_contents_timer_.Stop();
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
@@ -344,25 +461,6 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   }
 }
 
-void PlaylistTabHelper::ExtractMediaFromBackgroundContents() {
-  if (!*playlist_enabled_pref_) {
-    return;
-  }
-
-  if (sent_extract_media_request_) {
-    return;
-  }
-
-  CHECK(service_);
-
-  service_->ExtractMediaFromBackgroundWebContents(
-      web_contents(),
-      base::BindOnce(&PlaylistTabHelper::OnFoundMediaFromContents,
-                     weak_ptr_factory_.GetWeakPtr()));
-
-  sent_extract_media_request_ = true;
-}
-
 void PlaylistTabHelper::OnFoundMediaFromContents(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
@@ -375,20 +473,17 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     return;
   }
 
-  if (!items.empty() &&
-      service_->ShouldExtractMediaFromBackgroundWebContents(items)) {
-    if (IsExtractingMediaFromBackgroundWebContents()) {
-      // We don't have to update found items with |items| as they're going to
-      // be replaced.
-      return;
-    }
+  DVLOG(2) << __FUNCTION__ << " items.size(): " << items.size();
 
-    if (found_items_.size() &&
-        !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
-      // We don't want to override |found_items_| with |items| as it results in
-      // refetching.
-      return;
-    }
+  // There's no good heuristics on how to match an
+  // `is_blob_from_media_source == false` item (in `items`) against an
+  // `is_blob_from_media_source == true` item (in `found_items_`).
+  // Curently, we empty `found_items_` if it contains
+  // an `is_blob_from_media_source == true` item.
+  if (base::ranges::find(found_items_, true,
+                         &mojom::PlaylistItem::is_blob_from_media_source) !=
+      found_items_.cend()) {
+    decltype(found_items_)().swap(found_items_);
   }
 
   DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
@@ -413,29 +508,25 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     }
   }
 
+  DVLOG(2) << __FUNCTION__ << " found_items_.size(): " << found_items_.size();
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
   }
-
-  if (found_items_.size() &&
-      !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
-    // Wait until we find media or timeout. Some pages might not have media
-    // initially but update media later.
-    if (media_extracted_from_background_web_contents_callback_) {
-      std::move(media_extracted_from_background_web_contents_callback_)
-          .Run(true);
-    }
-    media_extraction_from_background_web_contents_timer_.Stop();
-  }
-  sent_extract_media_request_ = false;
 }
 
 void PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout() {
-  // Media extraction failed. Found items is blob: that we can't cache from.
-  // Thus, clear them.
+  if (!background_web_contents_) {
+    return;
+  }
+
+  auto* background_webcontents_helper =
+      PlaylistBackgroundWebContentsHelper::FromWebContents(
+          background_web_contents_.get());
+  CHECK(background_webcontents_helper);
+  std::move(*background_webcontents_helper).GetSuccessCallback().Run(false);
+  background_web_contents_.reset();
+
   found_items_.clear();
-  CHECK(media_extracted_from_background_web_contents_callback_);
-  std::move(media_extracted_from_background_web_contents_callback_).Run(false);
 
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);

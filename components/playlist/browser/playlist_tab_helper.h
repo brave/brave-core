@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_TAB_HELPER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -13,6 +14,7 @@
 #include "base/observer_list.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/prefs/pref_member.h"
+#include "content/public/browser/render_frame_host_receiver_set.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -25,10 +27,15 @@ class PlaylistTabHelperObserver;
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
+      public mojom::PlaylistMediaResponder,
       public mojom::PlaylistServiceObserver {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents,
                                         playlist::PlaylistService* service);
+
+  static void BindMediaResponderReceiver(
+      mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
+      content::RenderFrameHost* rfh);
 
   ~PlaylistTabHelper() override;
 
@@ -63,14 +70,17 @@ class PlaylistTabHelper
 
   // |found_items| contains items with blob: url pointing at MediaSource Object.
   bool ShouldExtractMediaFromBackgroundWebContents() const;
-  bool IsExtractingMediaFromBackgroundWebContents() const;
-  void ExtractMediaFromBackgroundWebContents(
-      base::OnceCallback<void(bool)> extracted_callback);
+  void MaybeExtractMediaFromBackgroundWebContents(
+      base::OnceCallback<void(bool)> callback);
 
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void PrimaryPageChanged(content::Page& page) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
+
+  // mojom::PlaylistMediaResponder
+  void OnMediaDetected(base::Value media) override;
 
   // mojom::PlaylistServiceObserver:
   void OnEvent(mojom::PlaylistEvent event,
@@ -107,7 +117,6 @@ class PlaylistTabHelper
 
   void ResetData();
   void UpdateSavedItemFromCurrentContents();
-  void ExtractMediaFromBackgroundContents();
   void OnFoundMediaFromContents(const GURL& url,
                                 std::vector<mojom::PlaylistItemPtr> items);
   void OnMediaExtractionFromBackgroundWebContentsTimeout();
@@ -118,12 +127,9 @@ class PlaylistTabHelper
   raw_ptr<PlaylistService> service_;
 
   GURL target_url_;
-  bool sent_extract_media_request_ = false;
 
   bool is_adding_items_ = false;
 
-  base::OnceCallback<void(bool)>
-      media_extracted_from_background_web_contents_callback_;
   base::OneShotTimer media_extraction_from_background_web_contents_timer_;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;
@@ -135,6 +141,11 @@ class PlaylistTabHelper
       this};
 
   BooleanPrefMember playlist_enabled_pref_;
+
+  content::RenderFrameHostReceiverSet<mojom::PlaylistMediaResponder>
+      media_responder_receivers_;
+
+  std::unique_ptr<content::WebContents> background_web_contents_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };

@@ -14,8 +14,8 @@
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/converter.h"
 #include "gin/function_template.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "v8/include/v8.h"
@@ -89,15 +89,15 @@ void PlaylistRenderFrameObserver::BindConfigurator(
   configurator_receiver_.Bind(std::move(receiver));
 }
 
-const mojo::Remote<playlist::mojom::PlaylistMediaHandler>&
-PlaylistRenderFrameObserver::GetMediaHandler() {
-  if (!media_handler_) {
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
-        media_handler_.BindNewPipeAndPassReceiver());
-    media_handler_.reset_on_disconnect();
+const mojo::AssociatedRemote<playlist::mojom::PlaylistMediaResponder>&
+PlaylistRenderFrameObserver::GetMediaResponder() {
+  if (!media_responder_) {
+    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
+        &media_responder_);
+    media_responder_.reset_on_disconnect();
   }
 
-  return media_handler_;
+  return media_responder_;
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
@@ -159,7 +159,7 @@ void PlaylistRenderFrameObserver::Inject(
 void PlaylistRenderFrameObserver::OnMediaDetected(base::Value media) {
   DVLOG(2) << __FUNCTION__;
 
-  GetMediaHandler()->OnMediaDetected(std::move(media));
+  GetMediaResponder()->OnMediaDetected(std::move(media));
 }
 
 }  // namespace playlist

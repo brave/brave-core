@@ -189,12 +189,6 @@ interface PlaylistServiceObserver {
       array<PlaylistItem> items);
 };
 
-// Interface that is used to notify that found media from renderer process to
-// browser process.
-interface PlaylistMediaHandler {
-  OnMediaDetected(mojo_base.mojom.Value media);
-};
-
 interface PlaylistStreamingObserver {
   OnResponseStarted(string url, int64 content_length);
   OnDataReceived(array<uint8> data_received);
@@ -204,4 +198,8 @@ interface PlaylistStreamingObserver {
 interface PlaylistRenderFrameObserverConfigurator {
   AddMediaSourceAPISuppressor(string media_source_api_suppressor);
   AddMediaDetector(string media_detector);
+};
+
+interface PlaylistMediaResponder {
+  OnMediaDetected(mojo_base.mojom.Value media);
 };
