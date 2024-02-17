@@ -14,8 +14,7 @@ source_set("browser_tests") {
   sources = [
     "mock_playlist_service_observer.cc",
     "mock_playlist_service_observer.h",
-    "playlist_download_request_manager_browsertests.cc",
-    "playlist_render_frame_observer_browsertest.cc",
+    "playlist_media_discovery_browsertests.cc",
   ]
 
   if (enable_playlist_webui) {
@@ -53,11 +52,17 @@ source_set("unit_tests") {
 
   sources = [
     "mime_util_unittest.cc",
+    "mock_playlist_render_frame_observer_configurator.cc",
+    "mock_playlist_render_frame_observer_configurator.h",
     "mock_playlist_service_observer.cc",
     "mock_playlist_service_observer.h",
-    "playlist_download_requset_manager_unittest.cc",
+    "playlist_background_web_contents_helper_unittest.cc",
+    "playlist_background_web_contents_unittest.cc",
+    "playlist_media_handler_unittest.cc",
     "playlist_p3a_unittest.cc",
     "playlist_service_unittest.cc",
+    "playlist_unittest_base.cc",
+    "playlist_unittest_base.h",
   ]
 
   deps = [

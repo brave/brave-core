@@ -1,14 +1,13 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-#include "brave/components/playlist/browser/playlist_download_request_manager.h"
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/ranges/algorithm.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/playlist/test/mock_playlist_service_observer.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
@@ -31,7 +30,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
-class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
+class PlaylistMediaDiscoveryBrowserTest : public PlatformBrowserTest {
  public:
   struct ExpectedData {
     std::string name;
@@ -40,14 +39,13 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     std::string duration;
   };
 
-  PlaylistDownloadRequestManagerBrowserTest() {
+  PlaylistMediaDiscoveryBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
   }
 
-  ~PlaylistDownloadRequestManagerBrowserTest() override = default;
+  ~PlaylistMediaDiscoveryBrowserTest() override = default;
 
   auto* https_server() { return https_server_.get(); }
-  auto* request_manager() { return request_manager_.get(); }
 
   playlist::mojom::PlaylistItemPtr CreateItem(const ExpectedData& data) {
     auto item = playlist::mojom::PlaylistItem::New();
@@ -71,9 +69,8 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
         ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
       }
 
-      https_server()->RegisterRequestHandler(
-          base::BindRepeating(&PlaylistDownloadRequestManagerBrowserTest::Serve,
-                              https_server(), html));
+      https_server()->RegisterRequestHandler(base::BindRepeating(
+          &PlaylistMediaDiscoveryBrowserTest::Serve, https_server(), html));
       ASSERT_TRUE(https_server()->Start());
     })();
 
@@ -128,10 +125,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
         playlist::PlaylistServiceFactory::GetForBrowserContext(
             chrome_test_utils::GetProfile(this));
     ASSERT_TRUE(playlist_service);
-
-    request_manager_ = playlist_service->download_request_manager_.get();
-    component_manager_ = request_manager_->media_detector_component_manager();
-    component_manager_->SetUseLocalScript();
+    playlist_service->SetUpForTesting();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -150,9 +144,6 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   }
 
   void TearDownOnMainThread() override {
-    request_manager_ = nullptr;
-    component_manager_ = nullptr;
-
     if (https_server()->Started()) {
       ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
     }
@@ -212,24 +203,29 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
   base::test::ScopedFeatureList scoped_feature_list_;
 
-  raw_ptr<playlist::MediaDetectorComponentManager> component_manager_;
-  raw_ptr<playlist::PlaylistDownloadRequestManager> request_manager_;
-
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest, NoMedia) {
-  LoadHTMLAndCheckResult(
-      R"html(
-        <html><body>
-        </body></html>
-      )html",
-      {});
+IN_PROC_BROWSER_TEST_F(PlaylistMediaDiscoveryBrowserTest, NoMedia) {
+  auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
+      chrome_test_utils::GetProfile(this));
+  ASSERT_TRUE(service);
+  testing::NiceMock<MockPlaylistServiceObserver> observer;
+  EXPECT_CALL(observer, OnMediaFilesUpdated(testing::_, testing::_)).Times(0);
+  service->AddObserver(observer.GetRemote());
+
+  auto* web_contents = chrome_test_utils::GetActiveWebContents(this);
+  const auto url = set_up_https_server("<html><body></body></html>");
+  ASSERT_TRUE(content::NavigateToURL(web_contents, url));
+
+  base::RunLoop run_loop;
+  base::OneShotTimer timer;
+  timer.Start(FROM_HERE, base::Seconds(3), run_loop.QuitClosure());
+  run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
-                       SrcAttributeTest) {
+IN_PROC_BROWSER_TEST_F(PlaylistMediaDiscoveryBrowserTest, SrcAttributeTest) {
   LoadHTMLAndCheckResult(
       R"html(
         <html><body>
@@ -242,8 +238,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
         .duration = ""}});
 }
 
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
-                       SrcElementTest) {
+IN_PROC_BROWSER_TEST_F(PlaylistMediaDiscoveryBrowserTest, SrcElementTest) {
   LoadHTMLAndCheckResult(
       R"html(
         <html><body>
@@ -263,7 +258,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
         .duration = ""}});
 }
 
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+IN_PROC_BROWSER_TEST_F(PlaylistMediaDiscoveryBrowserTest,
                        DISABLED_NonHTTPSMedia) {
   // These should be ignored
   LoadHTMLAndCheckResult(
@@ -284,7 +279,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
 #define MAYBE_YouTubeSpecificRetriever DISABLED_YouTubeSpecificRetriever
 #endif
 
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+IN_PROC_BROWSER_TEST_F(PlaylistMediaDiscoveryBrowserTest,
                        MAYBE_YouTubeSpecificRetriever) {
   // Pre-conditions to decide site specific script
   ASSERT_EQ(net::SchemefulSite(GURL("https://m.youtube.com")),
@@ -347,29 +342,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
             net::SchemefulSite(https_server()->GetURL("m.youtube.com", "/")));
 }
 
-class PlaylistDownloadRequestManagerWithFakeUABrowserTest
-    : public PlaylistDownloadRequestManagerBrowserTest {
- public:
-  PlaylistDownloadRequestManagerWithFakeUABrowserTest()
-      : scoped_feature_list_(playlist::features::kPlaylistFakeUA) {}
-  ~PlaylistDownloadRequestManagerWithFakeUABrowserTest() override = default;
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerWithFakeUABrowserTest,
-                       FakeUAStringContainsIPhone) {
-  const auto user_agent_string = request_manager()
-                                     ->GetBackgroundWebContentsForTesting()
-                                     ->GetUserAgentOverride()
-                                     .ua_string_override;
-
-  EXPECT_TRUE(base::Contains(user_agent_string, "iPhone"));
-  EXPECT_FALSE(base::Contains(user_agent_string, "Chrome"));
-}
-
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+IN_PROC_BROWSER_TEST_F(PlaylistMediaDiscoveryBrowserTest,
                        OGTagImageWithAbsolutePath) {
   LoadHTMLAndCheckResult(
       R"html(
@@ -389,7 +362,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
       });
 }
 
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+IN_PROC_BROWSER_TEST_F(PlaylistMediaDiscoveryBrowserTest,
                        OGTagImageWithRelativePath) {
   LoadHTMLAndCheckResult(
       R"html(
@@ -409,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
       });
 }
 
-IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+IN_PROC_BROWSER_TEST_F(PlaylistMediaDiscoveryBrowserTest,
                        DynamicallyAddedMedia) {
   auto* playlist_service =
       playlist::PlaylistServiceFactory::GetForBrowserContext(
@@ -433,22 +406,16 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
               let videoElement = document.createElement('video');
               videoElement.src = 'test1.mp4';
               document.body.appendChild(videoElement);
-            }, 5000);
+            }, 3000);
           });
         </script>
         </html>
       )html");
 
   base::RunLoop run_loop;
-  testing::InSequence in_sequence;
-  EXPECT_CALL(observer, OnMediaFilesUpdated(url, testing::IsEmpty()))
-      .Times(testing::AtLeast(1));
   EXPECT_CALL(observer,
               OnMediaFilesUpdated(url, testing::Not(testing::IsEmpty())))
-      .WillOnce(
-          [&](const GURL&, std::vector<playlist::mojom::PlaylistItemPtr>) {
-            run_loop.Quit();
-          });
+      .WillOnce([&] { run_loop.Quit(); });
 
   auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
   ASSERT_TRUE(content::NavigateToURL(active_web_contents, url));

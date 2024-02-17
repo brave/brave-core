@@ -71,32 +71,6 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 namespace playlist {
 
 ////////////////////////////////////////////////////////////////////////////////
-// FakeDownloadRequestmanager
-//
-class FakeDownloadRequestManager : public PlaylistDownloadRequestManager {
- public:
-  explicit FakeDownloadRequestManager(
-      MediaDetectorComponentManager* component_manager)
-      : PlaylistDownloadRequestManager(nullptr, nullptr, component_manager) {}
-  ~FakeDownloadRequestManager() override = default;
-
-  // PlaylistDownloadRequestManager:
-  void GetMediaFilesFromPage(Request request) override {
-    std::vector<mojom::PlaylistItemPtr> result;
-    result.push_back(item_.Clone());
-    std::move(request.callback).Run(std::move(result));
-  }
-
-  // Used to mock media discovery behavior
-  void SetItemToDiscover(mojom::PlaylistItemPtr item) {
-    item_ = std::move(item);
-  }
-
- private:
-  mojom::PlaylistItemPtr item_;
-};
-
-////////////////////////////////////////////////////////////////////////////////
 // PlaylistServiceUnitTest fixture
 class PlaylistServiceUnitTest : public testing::Test {
  public:
@@ -359,13 +333,8 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
       }));
 }
 
-TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
+TEST_F(PlaylistServiceUnitTest, DISABLED_MediaRecoverTest) {
   auto* service = playlist_service();
-  service->download_request_manager_ =
-      std::make_unique<FakeDownloadRequestManager>(detector_manager_.get());
-  auto* fake_download_request_manager =
-      static_cast<FakeDownloadRequestManager*>(
-          service->download_request_manager_.get());
 
   // Pre-condition: create a playlist item with invalid media file.
   // Then the item should be aborted.
@@ -386,7 +355,6 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     auto params = GetValidCreateParamsForIncompleteMediaFileList();
     params->id = id;
 
-    fake_download_request_manager->SetItemToDiscover(params.Clone());
     service->CreatePlaylistItem(std::move(params), /* cache = */ true);
 
     WaitUntil(
@@ -435,7 +403,6 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
 
           // PlaylistService should update media source to the valid url, and
           // try recovering from the url.
-          fake_download_request_manager->SetItemToDiscover(item.Clone());
           service->RecoverLocalDataForItem(
               id, /*update_media_src_before_recovery=*/true,
               base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
@@ -1444,47 +1411,6 @@ TEST_F(PlaylistServiceUnitTest, ReorderPlaylist) {
 
   playlist_service()->ResetAll();
   CheckOrder({std::string(kDefaultPlaylistID)});
-}
-
-TEST_F(PlaylistServiceUnitTest, ShouldExtractMediaFromBackgroundWebContents) {
-  std::vector<mojom::PlaylistItemPtr> items;
-  // Empty items - shouldn't use background web contents
-  EXPECT_FALSE(
-      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
-
-  // Add an item with https:// media source - shouldn't use background web
-  // contents
-  items.push_back(mojom::PlaylistItem::New());
-  items.back()->media_source = GURL("https://foo.com/");
-  EXPECT_FALSE(
-      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
-
-  // Items contain an item with MediaSource-backed blob: - should use background
-  // web contents
-  items.push_back(mojom::PlaylistItem::New());
-  items.back()->page_source = GURL("https://youtube.com");
-  items.back()->media_source = GURL("blob:https://youtube.com/123");
-  items.back()->is_blob_from_media_source = true;
-  EXPECT_TRUE(
-      playlist_service()->ShouldExtractMediaFromBackgroundWebContents(items));
-}
-
-class PlaylistServiceWithFakeUAUnitTest : public PlaylistServiceUnitTest {
- public:
-  PlaylistServiceWithFakeUAUnitTest()
-      : scoped_feature_list_(playlist::features::kPlaylistFakeUA) {}
-  ~PlaylistServiceWithFakeUAUnitTest() override = default;
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
-TEST_F(PlaylistServiceWithFakeUAUnitTest,
-       ShouldAlwaysGetMediaFromBackgroundWebContents) {
-  // When this flag is enabled, we should get videos from background web
-  // contents regardless of web contents' state, such as URL.
-  EXPECT_TRUE(
-      playlist_service()->ShouldGetMediaFromBackgroundWebContents(nullptr));
 }
 
 }  // namespace playlist

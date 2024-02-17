@@ -245,9 +245,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
-#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #endif
 
@@ -330,24 +329,6 @@ void BindCosmeticFiltersResources(
       FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
                                 std::move(receiver)));
 }
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-void BindPlaylistMediaHandler(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<playlist::mojom::PlaylistMediaHandler> receiver) {
-  auto* playlist_service =
-      playlist::PlaylistServiceFactory::GetForBrowserContext(
-          frame_host->GetBrowserContext());
-  if (!playlist_service) {
-    // We don't support playlist on OTR profile.
-    return;
-  }
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<playlist::PlaylistMediaHandler>(
-          frame_host->GetGlobalId(), playlist_service->GetWeakPtr()),
-      std::move(receiver));
-}
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 void MaybeBindWalletP3A(
     content::RenderFrameHost* const frame_host,
@@ -618,6 +599,13 @@ void BraveContentBrowserClient::
           &render_frame_host));
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
+      base::BindRepeating(
+          &playlist::PlaylistMediaHandler::BindMediaResponderReceiver,
+          &render_frame_host));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
                                                            associated_registry);
@@ -867,11 +855,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       speedreader::mojom::ToolbarFactory, SpeedreaderToolbarUI>(map);
 #endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-  map->Add<playlist::mojom::PlaylistMediaHandler>(
-      base::BindRepeating(&BindPlaylistMediaHandler));
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
@@ -1346,11 +1329,9 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   web_prefs->allow_non_empty_navigator_plugins = true;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (auto* playlist_service =
-          playlist::PlaylistServiceFactory::GetForBrowserContext(
-              web_contents->GetBrowserContext())) {
-    playlist_service->ConfigureWebPrefsForBackgroundWebContents(web_contents,
-                                                                web_prefs);
+  if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
+          web_contents)) {
+    web_prefs->force_cosmetic_filtering = true;
   }
 #endif
 }
