@@ -84,8 +84,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
 namespace {
 
-// TODO(tmancey): Decouple |RunDBTransactionOnFileTaskRunner| from
-// |ads_service_impl| and remove code duplication.
+// TODO(tmancey): Decouple `RunDBTransactionOnFileTaskRunner` from
+// `ads_service_impl` and remove code duplication.
 brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     brave_ads::mojom::DBTransactionInfoPtr transaction,
     brave_ads::Database* database) {
