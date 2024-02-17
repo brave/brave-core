@@ -42,9 +42,28 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
       contents, service);
 }
 
+// static
+void PlaylistTabHelper::BindRenderFrameHostReceiver(
+    mojo::PendingAssociatedReceiver<mojom::PlaylistTabHelper> receiver,
+    content::RenderFrameHost* rfh) {
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  if (!web_contents) {
+    return;
+  }
+
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return;
+  }
+
+  tab_helper->render_frame_host_receivers_.Bind(rfh, std::move(receiver));
+}
+
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
-    : WebContentsUserData(*contents), service_(service) {
+    : WebContentsUserData(*contents),
+      service_(service),
+      render_frame_host_receivers_(contents, this) {
   Observe(contents);
   CHECK(service_);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
@@ -218,6 +237,14 @@ void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
   ResetData();
 
   UpdateSavedItemFromCurrentContents();
+}
+
+void PlaylistTabHelper::OnMediaDetected(base::Value media) {
+  DVLOG(2)
+      << __FUNCTION__ << " "
+      << render_frame_host_receivers_.GetCurrentTargetFrame()->GetGlobalId();
+
+  service_->OnMediaDetected(std::move(media), web_contents());
 }
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {

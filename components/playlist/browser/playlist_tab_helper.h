@@ -13,6 +13,7 @@
 #include "base/observer_list.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/prefs/pref_member.h"
+#include "content/public/browser/render_frame_host_receiver_set.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -25,10 +26,15 @@ class PlaylistTabHelperObserver;
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
+      public mojom::PlaylistTabHelper,
       public mojom::PlaylistServiceObserver {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents,
                                         playlist::PlaylistService* service);
+
+  static void BindRenderFrameHostReceiver(
+      mojo::PendingAssociatedReceiver<mojom::PlaylistTabHelper> receiver,
+      content::RenderFrameHost* rfh);
 
   ~PlaylistTabHelper() override;
 
@@ -71,6 +77,9 @@ class PlaylistTabHelper
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
   void PrimaryPageChanged(content::Page& page) override;
+
+  // mojom::PlaylistTabHelper
+  void OnMediaDetected(base::Value media) override;
 
   // mojom::PlaylistServiceObserver:
   void OnEvent(mojom::PlaylistEvent event,
@@ -135,6 +144,9 @@ class PlaylistTabHelper
       this};
 
   BooleanPrefMember playlist_enabled_pref_;
+
+  content::RenderFrameHostReceiverSet<mojom::PlaylistTabHelper>
+      render_frame_host_receivers_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };
