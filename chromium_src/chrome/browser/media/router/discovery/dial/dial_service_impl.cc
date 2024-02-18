@@ -8,7 +8,7 @@
 #include "components/version_info/version_info.h"
 
 namespace version_info {
-constexpr base::StringPiece GetProductNameForChrome() {
+constexpr std::string_view GetProductNameForChrome() {
   return "Google Chrome";
 }
 }  // namespace version_info
