@@ -577,12 +577,12 @@ void BraveContentBrowserClient::
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  associated_registry.AddInterface<playlist::mojom::PlaylistTabHelper>(
+  associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
       base::BindRepeating(
           [](content::RenderFrameHost* render_frame_host,
-             mojo::PendingAssociatedReceiver<playlist::mojom::PlaylistTabHelper>
-                 receiver) {
-            playlist::PlaylistTabHelper::BindRenderFrameHostReceiver(
+             mojo::PendingAssociatedReceiver<
+                 playlist::mojom::PlaylistMediaResponder> receiver) {
+            playlist::PlaylistTabHelper::BindMediaResponderReceiver(
                 std::move(receiver), render_frame_host);
           },
           &render_frame_host));

@@ -27,14 +27,14 @@ class PlaylistTabHelperObserver;
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
-      public mojom::PlaylistTabHelper,
+      public mojom::PlaylistMediaResponder,
       public mojom::PlaylistServiceObserver {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents,
                                         playlist::PlaylistService* service);
 
-  static void BindRenderFrameHostReceiver(
-      mojo::PendingAssociatedReceiver<mojom::PlaylistTabHelper> receiver,
+  static void BindMediaResponderReceiver(
+      mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
       content::RenderFrameHost* rfh);
 
   ~PlaylistTabHelper() override;
@@ -79,7 +79,7 @@ class PlaylistTabHelper
       content::NavigationHandle* navigation_handle) override;
   void PrimaryPageChanged(content::Page& page) override;
 
-  // mojom::PlaylistTabHelper
+  // mojom::PlaylistMediaResponder
   void OnMediaDetected(base::Value media) override;
 
   // mojom::PlaylistServiceObserver:
@@ -148,8 +148,8 @@ class PlaylistTabHelper
 
   BooleanPrefMember playlist_enabled_pref_;
 
-  content::RenderFrameHostReceiverSet<mojom::PlaylistTabHelper>
-      render_frame_host_receivers_;
+  content::RenderFrameHostReceiverSet<mojom::PlaylistMediaResponder>
+      media_responder_receivers_;
 
   std::unique_ptr<content::WebContents> background_web_contents_;
 
