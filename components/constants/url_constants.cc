@@ -6,7 +6,7 @@
 #include "brave/components/constants/url_constants.h"
 
 const char kChromeExtensionScheme[] = "chrome-extension";
-const char kBraveUIScheme[] = "brave";
+const char kBraveUIScheme[] = "ping";
 const char kMagnetScheme[] = "magnet";
 const char kWidevineTOS[] = "https://policies.google.com/terms";
 const char kRewardsUpholdSupport[] = "https://uphold.com/en/brave/support";
