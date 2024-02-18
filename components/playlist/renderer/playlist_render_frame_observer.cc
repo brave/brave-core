@@ -93,14 +93,15 @@ void PlaylistRenderFrameObserver::BindConfigurator(
   configurator_receiver_.Bind(std::move(receiver));
 }
 
-const mojo::AssociatedRemote<playlist::mojom::PlaylistTabHelper>&
-PlaylistRenderFrameObserver::GetTabHelper() {
-  if (!tab_helper_) {
-    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(&tab_helper_);
-    tab_helper_.reset_on_disconnect();
+const mojo::AssociatedRemote<playlist::mojom::PlaylistMediaResponder>&
+PlaylistRenderFrameObserver::GetMediaResponder() {
+  if (!media_responder_) {
+    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
+        &media_responder_);
+    media_responder_.reset_on_disconnect();
   }
 
-  return tab_helper_;
+  return media_responder_;
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
@@ -166,7 +167,7 @@ void PlaylistRenderFrameObserver::Inject(
 void PlaylistRenderFrameObserver::OnMediaDetected(base::Value media) {
   DVLOG(2) << __FUNCTION__;
 
-  GetTabHelper()->OnMediaDetected(std::move(media));
+  GetMediaResponder()->OnMediaDetected(std::move(media));
 }
 
 }  // namespace playlist

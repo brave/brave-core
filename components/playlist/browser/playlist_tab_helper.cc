@@ -45,8 +45,8 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
 }
 
 // static
-void PlaylistTabHelper::BindRenderFrameHostReceiver(
-    mojo::PendingAssociatedReceiver<mojom::PlaylistTabHelper> receiver,
+void PlaylistTabHelper::BindMediaResponderReceiver(
+    mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
     content::RenderFrameHost* rfh) {
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   if (!web_contents) {
@@ -64,14 +64,14 @@ void PlaylistTabHelper::BindRenderFrameHostReceiver(
     return;
   }
 
-  tab_helper->render_frame_host_receivers_.Bind(rfh, std::move(receiver));
+  tab_helper->media_responder_receivers_.Bind(rfh, std::move(receiver));
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
     : WebContentsUserData(*contents),
       service_(service),
-      render_frame_host_receivers_(contents, this) {
+      media_responder_receivers_(contents, this) {
   Observe(contents);
   CHECK(service_);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
@@ -249,7 +249,7 @@ void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
 
 void PlaylistTabHelper::OnMediaDetected(base::Value media) {
   const auto render_frame_host_id =
-      render_frame_host_receivers_.GetCurrentTargetFrame()->GetGlobalId();
+      media_responder_receivers_.GetCurrentTargetFrame()->GetGlobalId();
   DVLOG(2) << __FUNCTION__ << " " << render_frame_host_id;
 
   auto* render_frame_host =

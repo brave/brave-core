@@ -202,6 +202,6 @@ interface PlaylistRenderFrameObserverConfigurator {
   SetUpForTesting();
 };
 
-interface PlaylistTabHelper {
+interface PlaylistMediaResponder {
   OnMediaDetected(mojo_base.mojom.Value media);
 };

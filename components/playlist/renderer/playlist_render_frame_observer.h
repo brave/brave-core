@@ -52,8 +52,8 @@ class PlaylistRenderFrameObserver final
       mojo::PendingAssociatedReceiver<
           mojom::PlaylistRenderFrameObserverConfigurator> receiver);
 
-  const mojo::AssociatedRemote<playlist::mojom::PlaylistTabHelper>&
-  GetTabHelper();
+  const mojo::AssociatedRemote<playlist::mojom::PlaylistMediaResponder>&
+  GetMediaResponder();
 
   void Inject(const std::string& script_text,
               v8::Local<v8::Context> context,
@@ -64,7 +64,8 @@ class PlaylistRenderFrameObserver final
   int32_t isolated_world_id_;
   mojo::AssociatedReceiver<mojom::PlaylistRenderFrameObserverConfigurator>
       configurator_receiver_{this};
-  mojo::AssociatedRemote<playlist::mojom::PlaylistTabHelper> tab_helper_;
+  mojo::AssociatedRemote<playlist::mojom::PlaylistMediaResponder>
+      media_responder_;
   std::optional<std::string> media_source_api_suppressor_;
   std::optional<std::string> media_detector_;
   base::WeakPtrFactory<PlaylistRenderFrameObserver> weak_ptr_factory_{this};
