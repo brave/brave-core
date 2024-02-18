@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_TAB_HELPER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -103,6 +104,8 @@ class PlaylistTabHelper
   void OnMediaFilesUpdated(const GURL& url,
                            std::vector<mojom::PlaylistItemPtr> items) override;
 
+  void ExtractMediaFromBackgroundWebContents(bool should_force_fake_ua);
+
  private:
   friend WebContentsUserData;
 
@@ -147,6 +150,8 @@ class PlaylistTabHelper
 
   content::RenderFrameHostReceiverSet<mojom::PlaylistTabHelper>
       render_frame_host_receivers_;
+
+  std::unique_ptr<content::WebContents> background_web_contents_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };

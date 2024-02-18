@@ -145,7 +145,7 @@ class PlaylistService : public KeyedService,
       base::OnceCallback<void(const GURL& target_url,
                               std::vector<mojom::PlaylistItemPtr> items)>;
   void ExtractMediaFromBackgroundWebContents(
-      content::WebContents* contents,
+      content::WebContents* web_contents,
       ExtractMediaFromBackgroundWebContentsCallback callback);
 
   // Synchronous versions of mojom::PlaylistService implementations
@@ -240,6 +240,7 @@ class PlaylistService : public KeyedService,
 
   bool playlist_enabled() const { return *enabled_pref_; }
 
+  const std::string& GetMediaSourceAPISuppressorScript() const;
   std::string GetMediaDetectorScript(const GURL& url) const;
 
  private:

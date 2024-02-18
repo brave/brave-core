@@ -427,19 +427,15 @@ base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
 }
 
 void PlaylistService::ExtractMediaFromBackgroundWebContents(
-    content::WebContents* source_contents,
+    content::WebContents* web_contents,
     ExtractMediaFromBackgroundWebContentsCallback callback) {
   CHECK(*enabled_pref_) << "Playlist pref must be enabled";
-  CHECK(source_contents);
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(source_contents);
+  CHECK(web_contents);
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
   CHECK(tab_helper);
 
-  auto current_url = source_contents->GetLastCommittedURL();
-  PlaylistDownloadRequestManager::Request request(tab_helper->GetWeakPtr());
-  request.url = current_url;
-  request.should_force_fake_ua = ShouldUseFakeUA(current_url);
-  request.callback = base::BindOnce(std::move(callback), current_url);
-  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+  tab_helper->ExtractMediaFromBackgroundWebContents(
+      ShouldUseFakeUA(web_contents->GetLastCommittedURL()));
 }
 
 void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
@@ -529,6 +525,11 @@ bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
     return download_request_manager_
         ->ShouldExtractMediaFromBackgroundWebContents(item);
   });
+}
+
+const std::string& PlaylistService::GetMediaSourceAPISuppressorScript() const {
+  return download_request_manager_->media_detector_component_manager()
+      ->GetMediaSourceAPISuppressorScript();
 }
 
 std::string PlaylistService::GetMediaDetectorScript(const GURL& url) const {
