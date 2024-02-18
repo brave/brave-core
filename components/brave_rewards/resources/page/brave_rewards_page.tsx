@@ -3,27 +3,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+import { initLocale } from 'brave-ui'
+import Theme from 'brave-ui/theme/brave-default'
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { initLocale } from 'brave-ui'
+import { bindActionCreators, createStore } from 'redux'
 import { ThemeProvider } from 'styled-components'
-import Theme from 'brave-ui/theme/brave-default'
-import { setIconBasePath } from '@brave/leo/react/icon'
-import { createStore, bindActionCreators } from 'redux'
 
 import { loadTimeData } from '../../../common/loadTimeData'
+import { WithThemeVariables } from '../shared/components/with_theme_variables'
 import { LocaleContext } from '../shared/lib/locale_context'
 import { createLocaleContextForWebUI } from '../shared/lib/webui_locale_context'
+import * as rewardsActions from './actions/rewards_actions'
 import { PlatformContext } from './lib/platform_context'
-import { WithThemeVariables } from '../shared/components/with_theme_variables'
 import { createReducer } from './reducers'
 import { getCurrentBalanceReport } from './reducers/utils'
-import * as rewardsActions from './actions/rewards_actions'
 
-import { App } from './components/app'
 import * as mojom from '../shared/lib/mojom'
 
+import { App } from './components/app'
 import * as Rewards from './lib/types'
 
 const store = createStore(createReducer())
@@ -53,6 +53,7 @@ function initialize () {
           <PlatformContext.Provider value={platformInfo}>
             <WithThemeVariables>
               <App />
+              {/* <></> */}
             </WithThemeVariables>
           </PlatformContext.Provider>
         </LocaleContext.Provider>

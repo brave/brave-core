@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_CONSTANTS_URL_CONSTANTS_H_
 
 inline constexpr char kChromeExtensionScheme[] = "chrome-extension";
-inline constexpr char kBraveUIScheme[] = "brave";
+inline constexpr char kBraveUIScheme[] = "ping";
 inline constexpr char kMagnetScheme[] = "magnet";
 inline constexpr char kWidevineTOS[] = "https://policies.google.com/terms";
 inline constexpr char kRewardsUpholdSupport[] =

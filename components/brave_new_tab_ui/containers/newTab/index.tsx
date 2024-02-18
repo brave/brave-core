@@ -13,7 +13,7 @@ import {
   BraveTalkWidget as BraveTalk, Clock, EditCards, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-import BraveNews, { GetDisplayAdContent } from '../../components/default/braveNews'
+import { GetDisplayAdContent } from '../../components/default/braveNews'
 import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
@@ -31,7 +31,7 @@ import { BraveNewsState } from '../../reducers/today'
 
 // NTP features
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
-import Settings, { TabType as SettingsTabType } from './settings'
+import { TabType as SettingsTabType } from './settings'
 
 import { BraveNewsContextProvider } from '../../../brave_news/browser/resources/shared/Context'
 import BraveNewsModal from '../../components/default/braveNews/customize/Modal'
@@ -42,8 +42,8 @@ import GridWidget from './gridWidget'
 import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
-import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
+import * as style from './style'
 
 const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 
@@ -568,7 +568,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   render () {
     const { newTabData, gridSitesData, actions } = this.props
-    const { showSettingsMenu, showEditTopSite, targetTopSiteForEditing, forceToHideWidget } = this.state
+    const {  showEditTopSite, targetTopSiteForEditing, forceToHideWidget } = this.state
 
     if (!newTabData) {
       return null
@@ -591,8 +591,8 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     // Allow background customization if Super Referrals is not activated.
-    const isSuperReferral = newTabData.brandedWallpaper && !newTabData.brandedWallpaper.isSponsored
-    const allowBackgroundCustomization = !isSuperReferral
+    // const isSuperReferral = newTabData.brandedWallpaper && !newTabData.brandedWallpaper.isSponsored
+    // const allowBackgroundCustomization = !isSuperReferral
 
     if (forceToHideWidget) {
       showTopSites = false
@@ -705,7 +705,7 @@ class NewTabPage extends React.Component<Props, State> {
               </Page.GridItemNavigationBraveNews>
             }
           </Page.Page>
-        { newTabData.showToday &&
+        {/* { newTabData.showToday &&
         <BraveNews
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
@@ -728,8 +728,8 @@ class NewTabPage extends React.Component<Props, State> {
           onVisitDisplayAd={this.props.actions.today.visitDisplayAd}
           getDisplayAd={this.props.getBraveNewsDisplayAd}
         />
-        }
-        <Settings
+        } */}
+        {/* <Settings
           actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
@@ -763,7 +763,7 @@ class NewTabPage extends React.Component<Props, State> {
           toggleCards={this.props.saveSetAllStackWidgets}
           newTabData={this.props.newTabData}
           onEnableRewards={this.startRewards}
-        />
+        /> */}
         {
           showEditTopSite
             ? <EditTopSite
