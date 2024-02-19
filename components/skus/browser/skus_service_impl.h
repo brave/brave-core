@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/threading/sequence_bound.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -118,28 +119,28 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
                                 bool success)> done,
       rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx);
 
-  void PostTaskWithSDK(
-      const std::string& domain,
-      base::OnceCallback<void(::rust::Box<skus::CppSDK>* sdk)> cb);
-
-  void OnSDKInitialized(
-      const std::string& env,
-      base::OnceCallback<void(::rust::Box<skus::CppSDK>* sdk)> cb,
-      ::rust::Box<skus::CppSDK> cpp_sdk);
-
-  ::rust::Box<skus::CppSDK>* GetOrCreateSDK(const std::string& domain);
-
  private:
+  void PostTaskWithSDK(const std::string& domain,
+                       base::OnceCallback<void(skus::CppSDK* sdk)> cb);
+
+  void OnSDKInitialized(const std::string& env,
+                        base::OnceCallback<void(skus::CppSDK* sdk)> cb,
+                        ::rust::Box<skus::CppSDK> cpp_sdk);
+
+  // TODO(bridiver) remove
+  skus::CppSDK* GetOrCreateSDK(const std::string& domain);
+
   SEQUENCE_CHECKER(sequence_checker_);
-  raw_ptr<PrefService> prefs_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  raw_ptr<PrefService> prefs_ GUARDED_BY_CONTEXT(sequence_checker_);
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   scoped_refptr<base::SingleThreadTaskRunner> sdk_task_runner_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
-  std::unordered_map<
-      std::string,
-      std::unique_ptr<::rust::Box<skus::CppSDK>, base::OnTaskRunnerDeleter>>
-      sdks_;
+  std::unordered_map<std::string, ::rust::Box<skus::CppSDK>> sdks_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   mojo::ReceiverSet<mojom::SkusService> receivers_;
+  // TODO(bridiver) remove
+  raw_ptr<::rust::Box<skus::CppSDK>> sdk_;
   base::WeakPtrFactory<SkusServiceImpl> weak_factory_{this};
 };
 

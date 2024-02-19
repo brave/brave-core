@@ -119,7 +119,16 @@ SkusServiceImpl::SkusServiceImpl(
 
 SkusServiceImpl::~SkusServiceImpl() = default;
 
-void SkusServiceImpl::Shutdown() {}
+void SkusServiceImpl::Shutdown() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  for (auto it = sdks_.begin(); it != sdks_.end();) {
+    // CppSDK must be destroyed on the sdk task runner.
+    sdk_task_runner_->PostTask(
+        FROM_HERE, base::BindOnce([](::rust::Box<skus::CppSDK> sdk) {},
+                                  std::move(sdks_.extract(it++).mapped())));
+  }
+}
 
 mojo::PendingRemote<mojom::SkusService> SkusServiceImpl::MakeRemote() {
   mojo::PendingRemote<mojom::SkusService> remote;
@@ -135,6 +144,7 @@ void SkusServiceImpl::RefreshOrder(
     const std::string& domain,
     const std::string& order_id,
     mojom::SkusService::RefreshOrderCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
       new skus::RefreshOrderCallbackState);
 
@@ -147,20 +157,21 @@ void SkusServiceImpl::RefreshOrder(
       },
       std::move(callback), ui_task_runner_);
 
-  PostTaskWithSDK(
-      domain,
-      base::BindOnce(
-          [](std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
-             const std::string& order_id, ::rust::Box<skus::CppSDK>* sdk) {
-            (*sdk)->refresh_order(OnRefreshOrder, std::move(cbs), order_id);
-          },
-          std::move(cbs), order_id));
+  PostTaskWithSDK(domain,
+                  base::BindOnce(
+                      [](std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
+                         const std::string& order_id, skus::CppSDK* sdk) {
+                        sdk->refresh_order(OnRefreshOrder, std::move(cbs),
+                                           order_id);
+                      },
+                      std::move(cbs), order_id));
 }
 
 void SkusServiceImpl::FetchOrderCredentials(
     const std::string& domain,
     const std::string& order_id,
     mojom::SkusService::FetchOrderCredentialsCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto context_impl = std::make_unique<skus::SkusContextImpl>(
       url_loader_factory_->Clone(), ui_task_runner_,
       weak_factory_.GetWeakPtr());
@@ -173,19 +184,20 @@ void SkusServiceImpl::FetchOrderCredentials(
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(
-          [](::rust::Box<skus::CppSDK>* sdk,
+          [](skus::CppSDK* sdk,
              std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs,
              const std::string& order_id) {
-            (*sdk)->fetch_order_credentials(OnFetchOrderCredentials,
-                                            std::move(cbs), order_id);
+            sdk->fetch_order_credentials(OnFetchOrderCredentials,
+                                         std::move(cbs), order_id);
           },
-          GetOrCreateSDK(domain), std::move(cbs), order_id));
+          base::OwnedRef(GetOrCreateSDK(domain)), std::move(cbs), order_id));
 }
 
 void SkusServiceImpl::PrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& path,
     mojom::SkusService::PrepareCredentialsPresentationCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto context_impl = std::make_unique<skus::SkusContextImpl>(
       url_loader_factory_->Clone(), ui_task_runner_,
       weak_factory_.GetWeakPtr());
@@ -198,41 +210,35 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(
-          [](::rust::Box<skus::CppSDK>* sdk,
+          [](skus::CppSDK* sdk,
              std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState>
                  cbs,
              const std::string& domain, const std::string& path) {
-            (*sdk)->prepare_credentials_presentation(
+            sdk->prepare_credentials_presentation(
                 OnPrepareCredentialsPresentation, std::move(cbs), domain, path);
           },
-          GetOrCreateSDK(domain), std::move(cbs), domain, path));
+          base::OwnedRef(GetOrCreateSDK(domain)), std::move(cbs), domain,
+          path));
 }
 
-::rust::Box<skus::CppSDK>* SkusServiceImpl::GetOrCreateSDK(
-    const std::string& domain) {
+skus::CppSDK* SkusServiceImpl::GetOrCreateSDK(const std::string& domain) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto env = GetEnvironmentForDomain(domain);
-  if (sdks_.count(env)) {
-    return sdks_.at(env).get();
-  }
 
-  auto sdk_raw =
-      initialize_sdk(std::make_unique<skus::SkusContextImpl>(
-                         url_loader_factory_->Clone(), ui_task_runner_,
-                         weak_factory_.GetWeakPtr()),
-                     env);
-
-  auto sdk =
-      std::unique_ptr<::rust::Box<skus::CppSDK>, base::OnTaskRunnerDeleter>(
-          new ::rust::Box<skus::CppSDK>(std::move(sdk_raw)),
-          base::OnTaskRunnerDeleter(sdk_task_runner_));
-
-  sdks_.insert_or_assign(env, std::move(sdk));
-  return sdks_.at(env).get();
+  // Garbage just to make it work until everything is migrated to PostTask. This
+  // is not safe
+  auto sdk = initialize_sdk(std::make_unique<skus::SkusContextImpl>(
+                                url_loader_factory_->Clone(), ui_task_runner_,
+                                weak_factory_.GetWeakPtr()),
+                            env);
+  sdk_ = &sdk;
+  return &(**sdk_);
 }
 
 void SkusServiceImpl::CredentialSummary(
     const std::string& domain,
     mojom::SkusService::CredentialSummaryCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::unique_ptr<skus::CredentialSummaryCallbackState> cbs(
       new skus::CredentialSummaryCallbackState);
 
@@ -246,15 +252,13 @@ void SkusServiceImpl::CredentialSummary(
       std::move(callback), ui_task_runner_);
 
   PostTaskWithSDK(
-      domain,
-      base::BindOnce(
-          [](std::unique_ptr<skus::CredentialSummaryCallbackState> cbs,
-             const std::string& domain, ::rust::Box<skus::CppSDK>* sdk) {
-            DCHECK(sdk);
-            (*sdk)->credential_summary(OnCredentialSummary, std::move(cbs),
-                                       domain);
-          },
-          std::move(cbs), domain));
+      domain, base::BindOnce(
+                  [](std::unique_ptr<skus::CredentialSummaryCallbackState> cbs,
+                     const std::string& domain, skus::CppSDK* sdk) {
+                    sdk->credential_summary(OnCredentialSummary, std::move(cbs),
+                                            domain);
+                  },
+                  std::move(cbs), domain));
 }
 
 void SkusServiceImpl::SubmitReceipt(
@@ -262,6 +266,7 @@ void SkusServiceImpl::SubmitReceipt(
     const std::string& order_id,
     const std::string& receipt,
     skus::mojom::SkusService::SubmitReceiptCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto context_impl = std::make_unique<skus::SkusContextImpl>(
       url_loader_factory_->Clone(), ui_task_runner_,
       weak_factory_.GetWeakPtr());
@@ -275,19 +280,21 @@ void SkusServiceImpl::SubmitReceipt(
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(
-          [](::rust::Box<skus::CppSDK>* sdk,
+          [](skus::CppSDK* sdk,
              std::unique_ptr<skus::SubmitReceiptCallbackState> cbs,
              const std::string& order_id, const std::string& receipt) {
-            (*sdk)->submit_receipt(OnSubmitReceipt, std::move(cbs), order_id,
-                                   receipt);
+            sdk->submit_receipt(OnSubmitReceipt, std::move(cbs), order_id,
+                                receipt);
           },
-          GetOrCreateSDK(domain), std::move(cbs), order_id, receipt));
+          base::OwnedRef(GetOrCreateSDK(domain)), std::move(cbs), order_id,
+          receipt));
 }
 
 void SkusServiceImpl::CreateOrderFromReceipt(
     const std::string& domain,
     const std::string& receipt,
     skus::mojom::SkusService::CreateOrderFromReceiptCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto context_impl = std::make_unique<skus::SkusContextImpl>(
       url_loader_factory_->Clone(), ui_task_runner_,
       weak_factory_.GetWeakPtr());
@@ -300,19 +307,20 @@ void SkusServiceImpl::CreateOrderFromReceipt(
   sdk_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(
-          [](::rust::Box<skus::CppSDK>* sdk,
+          [](skus::CppSDK* sdk,
              std::unique_ptr<skus::CreateOrderFromReceiptCallbackState> cbs,
              const std::string& receipt) {
-            (*sdk)->create_order_from_receipt(OnCreateOrderFromReceipt,
-                                              std::move(cbs), receipt);
+            sdk->create_order_from_receipt(OnCreateOrderFromReceipt,
+                                           std::move(cbs), receipt);
           },
-          GetOrCreateSDK(domain), std::move(cbs), receipt));
+          base::OwnedRef(GetOrCreateSDK(domain)), std::move(cbs), receipt));
 }
 
 void SkusServiceImpl::PurgeStore(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->clear();
 
@@ -327,6 +335,7 @@ void SkusServiceImpl::GetValueFromStore(
                               rust::String,
                               bool)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> ctx) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const auto& state = prefs_->GetDict(prefs::kSkusState);
   const base::Value* value = state.Find(key);
   std::string result;
@@ -345,6 +354,7 @@ void SkusServiceImpl::UpdateStoreValue(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->Set(key, value);
   sdk_task_runner_->PostTask(
@@ -354,13 +364,11 @@ void SkusServiceImpl::UpdateStoreValue(
 
 void SkusServiceImpl::PostTaskWithSDK(
     const std::string& domain,
-    base::OnceCallback<void(::rust::Box<skus::CppSDK>* sdk)> cb) {
+    base::OnceCallback<void(skus::CppSDK* sdk)> cb) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto env = GetEnvironmentForDomain(domain);
-  if (sdks_.count(env)) {
-    auto* sdk = sdks_.at(env).get();
-    sdk_task_runner_->PostTask(FROM_HERE, base::BindOnce(std::move(cb), sdk));
-  }
-
+  // Do not skip OnSDKInitialized if the SDK is already initialized because it
+  // could result in out of order execution of callbacks.
   sdk_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
@@ -383,17 +391,14 @@ void SkusServiceImpl::PostTaskWithSDK(
 
 void SkusServiceImpl::OnSDKInitialized(
     const std::string& env,
-    base::OnceCallback<void(::rust::Box<skus::CppSDK>* sdk)> cb,
-    ::rust::Box<skus::CppSDK> cpp_sdk) {
-  auto sdk =
-      std::unique_ptr<::rust::Box<skus::CppSDK>, base::OnTaskRunnerDeleter>(
-          new ::rust::Box<skus::CppSDK>(std::move(cpp_sdk)),
-          base::OnTaskRunnerDeleter(sdk_task_runner_));
-  // sdks_.insert_or_assign(env, std::move(sdk));
-  sdks_.insert_or_assign(env, std::move(sdk));
-  DCHECK(sdks_.at(env).get());
-  sdk_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb), sdks_.at(env).get()));
+    base::OnceCallback<void(skus::CppSDK* sdk)> cb,
+    ::rust::Box<skus::CppSDK> sdk) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!sdks_.count(env)) {
+    sdks_.insert_or_assign(env, std::move(sdk));
+  }
+  sdk_task_runner_->PostTask(FROM_HERE,
+                             base::BindOnce(std::move(cb), &*(sdks_.at(env))));
 }
 
 }  // namespace skus
