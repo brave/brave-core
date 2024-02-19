@@ -79,6 +79,10 @@ class ZCashWalletService : public KeyedService,
                                  bool change,
                                  DiscoverNextUnusedAddressCallback callback);
 
+  void ValidateZCashAddress(const std::string& addr,
+                            bool testnet,
+                            ValidateZCashAddressCallback callback) override;
+
   void GetUtxos(const std::string& chain_id,
                 mojom::AccountIdPtr account_id,
                 GetUtxosCallback);
