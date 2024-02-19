@@ -1456,10 +1456,14 @@ enum ZCashAddressValidationResult {
 };
 
 interface ZCashWalletService {
-  GetBalance(string network_id, AccountId account_id) => (ZCashBalance? balance, string? error_message);
-  GetReceiverAddress(AccountId account_id) => (ZCashAddress? address, string? error_message);
-  GetZCashAccountInfo(AccountId account_id) => (ZCashAccountInfo? account_info);
-  ValidateZCashAddress(string addr, bool testnet) => (ZCashAddressValidationResult result);
+  GetBalance(string network_id, AccountId account_id) =>
+      (ZCashBalance? balance, string? error_message);
+  GetReceiverAddress(AccountId account_id) =>
+      (ZCashAddress? address, string? error_message);
+  GetZCashAccountInfo(AccountId account_id) =>
+      (ZCashAccountInfo? account_info);
+  ValidateZCashAddress(string addr, bool testnet) =>
+      (ZCashAddressValidationResult result);
 };
 
 enum TransactionStatus {

@@ -1054,13 +1054,16 @@ const processEthereumAddress = (
 const processZCashAddress = (
     addressOrUrl: string,
     zecAddressValidationResult: BraveWallet.ZCashAddressValidationResult) => {
-  if (zecAddressValidationResult === BraveWallet.ZCashAddressValidationResult.Unknown) {
+  if (zecAddressValidationResult ===
+        BraveWallet.ZCashAddressValidationResult.Unknown) {
     return undefined
   }
-  if (zecAddressValidationResult === BraveWallet.ZCashAddressValidationResult.InvalidUnified) {
+  if (zecAddressValidationResult ===
+        BraveWallet.ZCashAddressValidationResult.InvalidUnified) {
     return 'braveWalletInvalidZcashUnifiedRecipientAddress'
   }
-  if (zecAddressValidationResult !== BraveWallet.ZCashAddressValidationResult.Success) {
+  if (zecAddressValidationResult !==
+        BraveWallet.ZCashAddressValidationResult.Success) {
     return 'braveWalletInvalidRecipientAddress'
   }
   return undefined
