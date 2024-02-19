@@ -71,9 +71,6 @@ class PlaylistDownloadRequestManager {
     return web_contents_.get();
   }
 
-  // This will create or get web contents
-  content::WebContents* GetBackgroundWebContentsForTesting();
-
   const MediaDetectorComponentManager* media_detector_component_manager()
       const {
     return media_detector_component_manager_;

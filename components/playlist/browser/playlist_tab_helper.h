@@ -72,7 +72,7 @@ class PlaylistTabHelper
   bool ShouldExtractMediaFromBackgroundWebContents() const;
   bool IsExtractingMediaFromBackgroundWebContents() const;
   void ExtractMediaFromBackgroundWebContents(
-      base::OnceCallback<void(bool)> extracted_callback);
+      base::OnceCallback<void(bool)> callback);
 
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
@@ -104,8 +104,6 @@ class PlaylistTabHelper
   void OnMediaFilesUpdated(const GURL& url,
                            std::vector<mojom::PlaylistItemPtr> items) override;
 
-  void ExtractMediaFromBackgroundWebContents(bool should_force_fake_ua);
-
  private:
   friend WebContentsUserData;
 
@@ -119,7 +117,6 @@ class PlaylistTabHelper
 
   void ResetData();
   void UpdateSavedItemFromCurrentContents();
-  void ExtractMediaFromBackgroundContents();
   void OnFoundMediaFromContents(const GURL& url,
                                 std::vector<mojom::PlaylistItemPtr> items);
   void OnMediaExtractionFromBackgroundWebContentsTimeout();
@@ -130,12 +127,9 @@ class PlaylistTabHelper
   raw_ptr<PlaylistService> service_;
 
   GURL target_url_;
-  bool sent_extract_media_request_ = false;
 
   bool is_adding_items_ = false;
 
-  base::OnceCallback<void(bool)>
-      media_extracted_from_background_web_contents_callback_;
   base::OneShotTimer media_extraction_from_background_web_contents_timer_;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;

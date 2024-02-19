@@ -47,17 +47,25 @@ PlaylistTabHelper* PlaylistBackgroundWebContentsHelper::GetTabHelper() const {
   return tab_helper_ ? tab_helper_.get() : nullptr;
 }
 
+base::OnceCallback<void(bool)>
+PlaylistBackgroundWebContentsHelper::GetSuccessCallback() && {
+  CHECK(success_callback_);
+  return std::move(success_callback_);
+}
+
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
     base::WeakPtr<PlaylistTabHelper> tab_helper,
     const std::string& media_source_api_suppressor,
-    const std::string& media_detector)
+    const std::string& media_detector,
+    base::OnceCallback<void(bool)> success_callback)
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
       tab_helper_(std::move(tab_helper)),
       media_source_api_suppressor_(media_source_api_suppressor),
-      media_detector_(media_detector) {}
+      media_detector_(media_detector),
+      success_callback_(std::move(success_callback)) {}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);
 

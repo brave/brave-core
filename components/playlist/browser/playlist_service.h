@@ -138,16 +138,6 @@ class PlaylistService : public KeyedService,
 
   base::WeakPtr<PlaylistService> GetWeakPtr();
 
-  // Find media from |contents| using corresponding background web contents.
-  // The background web contents will load the same url as |contents| but
-  // does trick to get plain media urls that we can cache from.
-  using ExtractMediaFromBackgroundWebContentsCallback =
-      base::OnceCallback<void(const GURL& target_url,
-                              std::vector<mojom::PlaylistItemPtr> items)>;
-  void ExtractMediaFromBackgroundWebContents(
-      content::WebContents* web_contents,
-      ExtractMediaFromBackgroundWebContentsCallback callback);
-
   // Synchronous versions of mojom::PlaylistService implementations
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
   mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
@@ -243,6 +233,8 @@ class PlaylistService : public KeyedService,
   const std::string& GetMediaSourceAPISuppressorScript() const;
   std::string GetMediaDetectorScript(const GURL& url) const;
 
+  bool ShouldUseFakeUA(const GURL& url) const;
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
@@ -292,8 +284,6 @@ class PlaylistService : public KeyedService,
       content::WebContents* contents) const;
   bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
 
-  bool ShouldUseFakeUA(const GURL& url) const;
-
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
 
@@ -334,8 +324,6 @@ class PlaylistService : public KeyedService,
   //         it is notified.
 
   void OnGetMetadata(base::Value value);
-
-  content::WebContents* GetBackgroundWebContentsForTesting();
 
   std::string GetDefaultSaveTargetListID();
 
