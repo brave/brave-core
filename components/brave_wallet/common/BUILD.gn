@@ -153,6 +153,7 @@ source_set("unit_tests") {
     "common_utils_unittest.cc",
     "encoding_utils_unittest.cc",
     "eth_abi_utils_unittest.cc",
+    "eth_address_unittest.cc",
     "eth_request_helper_unittest.cc",
     "eth_sign_typed_data_helper_unittest.cc",
     "f4_jumble_unittest.cc",

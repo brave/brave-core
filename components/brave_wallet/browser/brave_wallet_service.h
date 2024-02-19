@@ -92,20 +92,6 @@ class BraveWalletService : public KeyedService,
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateAssetsPrefToList(PrefService* prefs);
 
-  static mojom::BlockchainTokenPtr AddUserAsset(mojom::BlockchainTokenPtr token,
-                                                PrefService* profile_prefs);
-  static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
-      const std::string& chain_id,
-      mojom::CoinType coin,
-      PrefService* profile_prefs);
-  static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
-      PrefService* profile_prefs);
-  static base::Value::List GetDefaultEthereumAssets();
-  static base::Value::List GetDefaultSolanaAssets();
-  static base::Value::List GetDefaultFilecoinAssets();
-  static base::Value::List GetDefaultBitcoinAssets();
-  static base::Value::List GetDefaultZCashAssets();
-
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
                        observer) override;
@@ -315,12 +301,9 @@ class BraveWalletService : public KeyedService,
   friend class SolanaProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, AddSuggestToken);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAsset);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAssetAddress);
 
   bool HasPendingDecryptRequestForOrigin(const url::Origin& origin) const;
   bool HasPendingGetEncryptionPublicKeyRequestForOrigin(
@@ -341,15 +324,6 @@ class BraveWalletService : public KeyedService,
   void OnGenerateZecReceiveAddress(
       GenerateReceiveAddressCallback callback,
       base::expected<mojom::ZCashAddressPtr, std::string> result);
-
-  static std::optional<std::string> GetChecksumAddress(
-      const std::string& contract_address,
-      const std::string& chain_id);
-  static std::optional<std::string> GetUserAssetAddress(
-      const std::string& address,
-      mojom::CoinType coin,
-      const std::string& chain_id);
-  static bool ValidateAndFixAssetAddress(mojom::BlockchainTokenPtr& token);
 
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
 

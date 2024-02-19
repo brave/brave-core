@@ -25,6 +25,9 @@ class EthAddress {
   static EthAddress FromBytes(base::span<const uint8_t> bytes);
   static EthAddress ZeroAddress();
   static bool IsValidAddress(const std::string& input);
+  static std::optional<std::string> ToEip1191ChecksumAddress(
+      const std::string& address,
+      const std::string& chain_id);
 
   EthAddress();
   EthAddress(const EthAddress& other);

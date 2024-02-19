@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -186,7 +187,7 @@ void AssetDiscoveryTask::MergeDiscoveredAnkrTokens(
   for (const auto& discovered_assets_result : discovered_assets_results) {
     for (const auto& balance : discovered_assets_result) {
       DCHECK(balance->asset->visible);
-      if (!BraveWalletService::AddUserAsset(balance->asset.Clone(), prefs_)) {
+      if (!AddUserAsset(prefs_, balance->asset.Clone())) {
         continue;
       }
       discovered_tokens.push_back(balance->asset.Clone());
@@ -205,8 +206,7 @@ void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
     return;
   }
 
-  std::vector<mojom::BlockchainTokenPtr> user_assets =
-      BraveWalletService::GetUserAssets(prefs_);
+  std::vector<mojom::BlockchainTokenPtr> user_assets = GetAllUserAssets(prefs_);
   TokenListMap token_list_map =
       BlockchainRegistry::GetInstance()->GetEthTokenListMap(chain_ids);
 
@@ -337,7 +337,7 @@ void AssetDiscoveryTask::MergeDiscoveredERC20s(
         }
 
         DCHECK(token->visible);
-        if (BraveWalletService::AddUserAsset(token.Clone(), prefs_)) {
+        if (AddUserAsset(prefs_, token.Clone())) {
           discovered_tokens.push_back(std::move(token));
         }
       }
@@ -453,7 +453,7 @@ void AssetDiscoveryTask::OnGetSolanaTokenRegistry(
   for (const auto& token : sol_token_registry) {
     if (discovered_mint_addresses.contains(token->contract_address)) {
       DCHECK(token->visible);
-      if (!BraveWalletService::AddUserAsset(token.Clone(), prefs_)) {
+      if (!AddUserAsset(prefs_, token.Clone())) {
         continue;
       }
       discovered_tokens.push_back(token.Clone());
@@ -515,7 +515,7 @@ void AssetDiscoveryTask::MergeDiscoveredNFTs(
 
       // Add the NFT to the user's assets
       DCHECK(nft->visible);
-      if (BraveWalletService::AddUserAsset(nft.Clone(), prefs_)) {
+      if (AddUserAsset(prefs_, nft.Clone())) {
         discovered_nfts.push_back(nft.Clone());
       }
     }
