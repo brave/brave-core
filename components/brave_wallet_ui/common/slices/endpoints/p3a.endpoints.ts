@@ -15,6 +15,7 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // Utils
 import { loadTimeData } from '../../../../common/loadTimeData'
 import { handleEndpointError } from '../../../utils/api-utils'
+import { getAccountBalancesKey } from '../../../utils/balance-utils'
 
 export const p3aEndpoints = ({
   mutation,
@@ -42,9 +43,10 @@ export const p3aEndpoints = ({
             BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY
           )
 
-          for (const address of Object.keys(registry)) {
+          for (const uniqueKey of Object.keys(registry)) {
             const account = accounts.find(
-              (account) => account.accountId.address === address
+              (account) =>
+                getAccountBalancesKey(account.accountId) === uniqueKey
             )
 
             if (!account) {
@@ -60,18 +62,19 @@ export const p3aEndpoints = ({
             if (activeWalletCount[coin] === undefined) {
               activeWalletCount[coin] = 0
             }
+            const chainIds = Object.keys(registry[uniqueKey])
 
-            if (
-              countTestNetworks &&
-              Object.keys(registry[address]).some((chainId) =>
-                SupportedTestNetworks.includes(chainId)
-              )
-            ) {
+            const hasMainnetBalance = chainIds.some(
+              (chainId) => !SupportedTestNetworks.includes(chainId)
+            )
+            const hasTestnetBalance = chainIds.some((chainId) =>
+              SupportedTestNetworks.includes(chainId)
+            )
+
+            if (hasMainnetBalance || (countTestNetworks && hasTestnetBalance)) {
               activeWalletCount[coin] += 1
               continue
             }
-
-            activeWalletCount[coin] += 1
           }
 
           for (const [coin, count] of Object.entries(activeWalletCount)) {
