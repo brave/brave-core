@@ -214,6 +214,10 @@ inline constexpr char kGoogleAccountActivityControlsURL[] =
 inline constexpr char kGoogleAccountActivityControlsURLInPrivacyGuide[] =
     "https://support.brave.com/";
 
+// URL of the 'Linked services' section of the privacy settings page.
+inline constexpr char kGoogleAccountLinkedServicesURL[] =
+    "https://support.brave.com/";
+
 // URL of the Google Account.
 inline constexpr char kGoogleAccountURL[] = "https://support.brave.com/";
 
