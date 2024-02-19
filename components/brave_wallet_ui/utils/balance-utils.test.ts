@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getBalance, getPercentAmount } from './balance-utils'
+import { getBalance, getPercentAmount, setBalance } from './balance-utils'
 
 // mocks
 import { mockAccount } from '../common/constants/mocks'
@@ -12,53 +12,82 @@ import {
   mockBinanceCoinErc20Token,
   mockERC20Token
 } from '../stories/mock-data/mock-asset-options'
+import { EmptyTokenBalancesRegistry } from '../common/slices/entities/token-balance.entity'
 
 describe('getBalance', () => {
   it('gets a balance of a token for a given account', () => {
+    const tokenBalancesRegistry = EmptyTokenBalancesRegistry
+    setBalance(
+      mockAccount.accountId,
+      mockBasicAttentionToken.chainId,
+      mockBasicAttentionToken.contractAddress.toLowerCase(),
+      '123',
+      tokenBalancesRegistry
+    )
+
     expect(
-      getBalance(mockAccount.accountId, mockBasicAttentionToken, {
-        [mockAccount.accountId.uniqueKey]: {
-          [mockBasicAttentionToken.chainId]: {
-            [mockBasicAttentionToken.contractAddress.toLowerCase()]: '123'
-          }
-        }
-      })
+      getBalance(
+        mockAccount.accountId,
+        mockBasicAttentionToken,
+        tokenBalancesRegistry
+      )
     ).toBe('123')
   })
 
   it('returns zero balance if address is unknown', () => {
+    const tokenBalancesRegistry = EmptyTokenBalancesRegistry
+    setBalance(
+      { uniqueKey: '0xdeadbeef' },
+      mockBasicAttentionToken.chainId,
+      mockBasicAttentionToken.contractAddress.toLowerCase(),
+      '123',
+      tokenBalancesRegistry
+    )
+
     expect(
-      getBalance(mockAccount.accountId, mockBinanceCoinErc20Token, {
-        '0xdeadbeef': {
-          [mockBinanceCoinErc20Token.chainId]: {
-            [mockBinanceCoinErc20Token.contractAddress.toLowerCase()]: '123'
-          }
-        }
-      })
+      getBalance(
+        mockAccount.accountId,
+        mockBinanceCoinErc20Token,
+        tokenBalancesRegistry
+      )
     ).toBe('0')
   })
 
   it('returns zero balance if chainId is unknown', () => {
+    const tokenBalancesRegistry = EmptyTokenBalancesRegistry
+    setBalance(
+      mockAccount.accountId,
+      '0xdeadbeef',
+      mockBasicAttentionToken.contractAddress.toLowerCase(),
+      '123',
+      tokenBalancesRegistry
+    )
+
     expect(
-      getBalance(mockAccount.accountId, mockBinanceCoinErc20Token, {
-        [mockAccount.accountId.uniqueKey]: {
-          '0xdeadbeef': {
-            [mockBinanceCoinErc20Token.contractAddress.toLowerCase()]: '123'
-          }
-        }
-      })
+      getBalance(
+        mockAccount.accountId,
+        mockBinanceCoinErc20Token,
+        tokenBalancesRegistry
+      )
     ).toBe('0')
   })
 
   it('returns zero balance if token contract is unknown', () => {
+    const tokenBalancesRegistry = EmptyTokenBalancesRegistry
+    setBalance(
+      mockAccount.accountId,
+      mockBasicAttentionToken.chainId,
+      '0xdeadbeef',
+      '123',
+      tokenBalancesRegistry
+    )
+
     expect(
-      getBalance(mockAccount.accountId, mockBinanceCoinErc20Token, {
-        [mockAccount.accountId.uniqueKey]: {
-          [mockBinanceCoinErc20Token.chainId]: {
-            '0xdeadbeef': '123'
-          }
-        }
-      })
+      getBalance(
+        mockAccount.accountId,
+        mockBinanceCoinErc20Token,
+        tokenBalancesRegistry
+      )
     ).toBe('0')
   })
 
@@ -86,14 +115,22 @@ describe('getPercentAmount', () => {
   ])(
     'should compute %s correctly',
     (_, balance: string, percent, expected: string) => {
+      const tokenBalancesRegistry = EmptyTokenBalancesRegistry
+      setBalance(
+        mockAccount.accountId,
+        mockERC20Token.chainId,
+        mockERC20Token.contractAddress,
+        balance,
+        tokenBalancesRegistry
+      )
+
       expect(
-        getPercentAmount(mockERC20Token, mockAccount.accountId, percent, {
-          [mockAccount.accountId.uniqueKey]: {
-            [mockERC20Token.chainId]: {
-              [mockERC20Token.contractAddress.toLowerCase()]: balance
-            }
-          }
-        })
+        getPercentAmount(
+          mockERC20Token,
+          mockAccount.accountId,
+          percent,
+          tokenBalancesRegistry
+        )
       ).toBe(expected)
     }
   )

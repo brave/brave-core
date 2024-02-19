@@ -11,6 +11,7 @@ import {
   PanelTypes
 } from '../constants/types'
 import {
+  EmptyTokenBalancesRegistry,
   TokenBalancesRegistry //
 } from '../common/slices/entities/token-balance.entity'
 
@@ -129,7 +130,7 @@ export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
     )
   } catch (error) {
     console.error(error)
-    return {}
+    return EmptyTokenBalancesRegistry
   }
 }
 
