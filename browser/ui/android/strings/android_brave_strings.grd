@@ -2012,9 +2012,6 @@ Are you sure you want to do this?
     <message name="IDS_WALLET_COPY" desc="Brave Wallet onboarding bottom menu text">
       Copy
     </message>
-    <message name="IDS_BACKUP_WALLET_BANNER_TEXT" desc="Brave Wallet backup banner text">
-      Back up your crypto wallet
-    </message>
     <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
       Secure your crypto with a password
     </message>
@@ -2512,18 +2509,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_CHOOSE_A_FILE" desc="Brave wallet accounts text">
       Choose a file
-    </message>
-    <message name="IDS_PRIVATE_KEY" desc="Wallet account private key text">
-      Private Key
-    </message>
-    <message name="IDS_SHOW_PRIVATE_KEY" desc="Wallet account private key text">
-      Show Private Key
-    </message>
-    <message name="IDS_HIDE_PRIVATE_KEY" desc="Wallet account private key text">
-      Hide Private Key
-    </message>
-    <message name="IDS_PRIVATE_KEY_WARNING_TEXT" desc="Wallet account private key warning text">
-      Warning: Never disclose this key. Anyone with this private key can steal any assets held in your account.
     </message>
     <message name="IDS_ACTIVATE_ERC20" desc="A button to activate an ERC20 token">
       Activate <ph name="TOKEN">%1$s<ex>BAT</ex></ph>
