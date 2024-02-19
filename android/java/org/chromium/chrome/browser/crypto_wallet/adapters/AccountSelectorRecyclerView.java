@@ -46,19 +46,22 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
     public @NonNull ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View accountSelectorViewHolder = inflater.inflate(R.layout.view_holder_account_selector, parent, false);
+        View accountSelectorViewHolder =
+                inflater.inflate(R.layout.view_holder_account_selector, parent, false);
         return new ViewHolder(accountSelectorViewHolder);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AccountSelectorItemModel accountSelectorItemModel = accountSelectorItemModelList.get(position);
+        AccountSelectorItemModel accountSelectorItemModel =
+                accountSelectorItemModelList.get(position);
         // When ViewHolder is re-used, it has the observers which are fired when
         // we modifying checkbox. This may cause unwanted modifying of the model.
         holder.resetObservers();
 
         holder.titleText.setText(accountSelectorItemModel.getTitle());
-        holder.subTitleText.setText(Utils.stripAccountAddress(accountSelectorItemModel.getSubTitle()));
+        holder.subTitleText.setText(
+                Utils.stripAccountAddress(accountSelectorItemModel.getSubTitle()));
         if (accountSelectorItemModel.getText1() != null) {
             holder.text1Text.setVisibility(View.VISIBLE);
             holder.text1Text.setText(accountSelectorItemModel.getText1());
@@ -69,22 +72,31 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
             holder.text2Text.setText(accountSelectorItemModel.getText2());
         }
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.itemView.setOnClickListener(
+                v -> {
                     accountSelectorItemListener.onAccountClick(accountSelectorItemModel);
                     updateSelectedNetwork(holder.getLayoutPosition());
                 });
 
         holder.iconImg.setImageResource(android.R.color.transparent);
         if (accountSelectorItemModel.getAccountInfo() != null) {
-            Utils.setBlockiesBitmapResourceFromAccount(mExecutor, mHandler, holder.iconImg,
-                    accountSelectorItemModel.getAccountInfo(), true);
+            Utils.setBlockiesBitmapResourceFromAccount(
+                    mExecutor,
+                    mHandler,
+                    holder.iconImg,
+                    accountSelectorItemModel.getAccountInfo(),
+                    true);
         }
-        holder.itemView.setOnLongClickListener(v -> {
-            Utils.saveTextToClipboard(context, accountSelectorItemModel.getSubTitle(),
-                    R.string.address_has_been_copied, false);
+        holder.itemView.setOnLongClickListener(
+                v -> {
+                    Utils.saveTextToClipboard(
+                            context,
+                            accountSelectorItemModel.getSubTitle(),
+                            R.string.address_has_been_copied,
+                            false);
 
-            return true;
-        });
+                    return true;
+                });
         holder.selected.setVisibility(
                 accountSelectorItemModel.isSelected() ? View.VISIBLE : View.INVISIBLE);
     }
@@ -94,16 +106,19 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
         return accountSelectorItemModelList.size();
     }
 
-    public void setWalletListItemModelList(List<AccountSelectorItemModel> accountSelectorItemModelList) {
+    public void setWalletListItemModelList(
+            List<AccountSelectorItemModel> accountSelectorItemModelList) {
         this.accountSelectorItemModelList = accountSelectorItemModelList;
     }
 
-    public void setAccountSelectorItemListener(AccountSelectorItemListener accountSelectorItemListener) {
+    public void setAccountSelectorItemListener(
+            AccountSelectorItemListener accountSelectorItemListener) {
         this.accountSelectorItemListener = accountSelectorItemListener;
     }
 
     /**
      * Update the list's selection icon to the passed account
+     *
      * @param title is the account name
      * @param subTitle is the account address
      */
