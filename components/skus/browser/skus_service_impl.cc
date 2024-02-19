@@ -122,6 +122,9 @@ SkusServiceImpl::~SkusServiceImpl() = default;
 void SkusServiceImpl::Shutdown() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  // Disconnect remotes so we ignore any new calls.
+  receivers_.Clear();
+
   for (auto it = sdks_.begin(); it != sdks_.end();) {
     // CppSDK must be destroyed on the sdk task runner.
     sdk_task_runner_->PostTask(
@@ -183,15 +186,15 @@ void SkusServiceImpl::FetchOrderCredentials(
       },
       std::move(callback), ui_task_runner_);
 
-  PostTaskWithSDK(domain,
-                  base::BindOnce(
-                      [](std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs,
-                         const std::string& order_id,
-                         skus::CppSDK* sdk) {
-                        sdk->fetch_order_credentials(OnFetchOrderCredentials, std::move(cbs),
-                                           order_id);
-                      },
-                      std::move(cbs), order_id));
+  PostTaskWithSDK(
+      domain,
+      base::BindOnce(
+          [](std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs,
+             const std::string& order_id, skus::CppSDK* sdk) {
+            sdk->fetch_order_credentials(OnFetchOrderCredentials,
+                                         std::move(cbs), order_id);
+          },
+          std::move(cbs), order_id));
 }
 
 void SkusServiceImpl::PrepareCredentialsPresentation(
@@ -211,15 +214,17 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
       },
       std::move(callback), ui_task_runner_);
 
-  PostTaskWithSDK(domain,
-                  base::BindOnce(
-                      [](std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState> cbs,
-                         const std::string& domain, const std::string& path,
-                         skus::CppSDK* sdk) {
-                        sdk->prepare_credentials_presentation(OnPrepareCredentialsPresentation,
-                                                              std::move(cbs), domain, path);
-                      },
-                      std::move(cbs), domain, path));
+  PostTaskWithSDK(
+      domain,
+      base::BindOnce(
+          [](std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState>
+                 cbs,
+             const std::string& domain, const std::string& path,
+             skus::CppSDK* sdk) {
+            sdk->prepare_credentials_presentation(
+                OnPrepareCredentialsPresentation, std::move(cbs), domain, path);
+          },
+          std::move(cbs), domain, path));
 }
 
 void SkusServiceImpl::CredentialSummary(
@@ -266,14 +271,15 @@ void SkusServiceImpl::SubmitReceipt(
       },
       std::move(callback), ui_task_runner_);
 
-  PostTaskWithSDK(domain,
-                  base::BindOnce(
-                      [](std::unique_ptr<skus::SubmitReceiptCallbackState> cbs,
-                         const std::string& order_id, const std::string& receipt,
-                         skus::CppSDK* sdk) {
-                        sdk->submit_receipt(OnSubmitReceipt, std::move(cbs), order_id, receipt);
-                      },
-                      std::move(cbs), order_id, receipt));
+  PostTaskWithSDK(
+      domain, base::BindOnce(
+                  [](std::unique_ptr<skus::SubmitReceiptCallbackState> cbs,
+                     const std::string& order_id, const std::string& receipt,
+                     skus::CppSDK* sdk) {
+                    sdk->submit_receipt(OnSubmitReceipt, std::move(cbs),
+                                        order_id, receipt);
+                  },
+                  std::move(cbs), order_id, receipt));
 }
 
 void SkusServiceImpl::CreateOrderFromReceipt(
@@ -293,13 +299,15 @@ void SkusServiceImpl::CreateOrderFromReceipt(
       },
       std::move(callback), ui_task_runner_);
 
-  PostTaskWithSDK(domain,
-                  base::BindOnce(
-                      [](std::unique_ptr<skus::CreateOrderFromReceiptCallbackState> cbs,
-                         const std::string& receipt, skus::CppSDK* sdk) {
-                        sdk->create_order_from_receipt(OnCreateOrderFromReceipt, std::move(cbs), receipt);
-                      },
-                      std::move(cbs), receipt));
+  PostTaskWithSDK(
+      domain,
+      base::BindOnce(
+          [](std::unique_ptr<skus::CreateOrderFromReceiptCallbackState> cbs,
+             const std::string& receipt, skus::CppSDK* sdk) {
+            sdk->create_order_from_receipt(OnCreateOrderFromReceipt,
+                                           std::move(cbs), receipt);
+          },
+          std::move(cbs), receipt));
 }
 
 void SkusServiceImpl::PurgeStore(
