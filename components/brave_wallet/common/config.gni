@@ -13,4 +13,6 @@ declare_args() {
   enable_zcash_by_default =
       !is_ios && !is_android &&
       (brave_channel == "nightly" || brave_channel == "development")
+  enable_orchard_crate =
+      brave_channel == "nightly" || brave_channel == "development"
 }
