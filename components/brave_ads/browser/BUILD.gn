@@ -97,7 +97,7 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "//brave/components/brave_ads/browser/analytics/p3a/notification_ad_unittest.cc" ]
+  sources = [ "analytics/p3a/notification_ad_unittest.cc" ]
 
   deps = [
     "//base",
