@@ -32,7 +32,7 @@ export const SettingDescription = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 22px;
-  wrap: nowrap;
+  white-space: nowrap;
   color: ${leo.color.text.primary};
 `
 

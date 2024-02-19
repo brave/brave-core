@@ -43,7 +43,7 @@ export const PhraseInput = ({
         </FormLabel>
       </FormInput>
       {showError ? (
-        <ErrorAlert {...{ '--leo-alert-center-width': '100%' }}>
+        <ErrorAlert>
           Recovery phrase doesn’t match.
           <div
             slot='actions'

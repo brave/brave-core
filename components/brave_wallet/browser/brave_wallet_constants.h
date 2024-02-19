@@ -1111,6 +1111,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK_SEED_INSTRUCTIONS},
     {"braveWalletCreateWalletInsteadLink",
      IDS_BRAVE_WALLET_CREATE_WALLET_INSTEAD_LINK},
+     {"braveWalletRestoreAlternateLength", IDS_BRAVE_WALLET_RESTORE_ALTERNATE_LENGTH},
+     {"braveWalletRestoreWalletError", IDS_BRAVE_WALLET_RESTORE_WALLET_ERROR},
     {"braveWalletImportPasswordError", IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR},
     {"braveWalletMetaMaskExtensionDetected",
      IDS_BRAVE_WALLET_METAMASK_EXTENSION_DETECTED},

@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingRestoreFromExtension } from './restore-from-extension'
-import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase'
+import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase-v3'
 
 export const _OnboardingRestoreFromRecoveryPhrase = () => {
   return (

@@ -48,6 +48,7 @@ export const ErrorAlert = styled(Alert).attrs({
   mode: 'simple'
 })`
   --leo-alert-center-position: 'center';
+  --leo-alert-center-width: '100%';
   width: 100%;
 `
 

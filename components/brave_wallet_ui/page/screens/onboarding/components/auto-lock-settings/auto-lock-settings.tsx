@@ -35,7 +35,7 @@ export const AutoLockSettings = ({ options, value, onChange }: Props) => {
       justifyContent='justify-between'
       alignItems='center'
       padding='0 23px 0'
-      gap='8px'
+      gap='12px'
       width='100%'
     >
       <LockIconContainer>
@@ -46,7 +46,7 @@ export const AutoLockSettings = ({ options, value, onChange }: Props) => {
       </SettingDescription>
       <DurationDropdown
         mode='filled'
-        value={selectedOption?.value.toString()}
+        value={selectedOption?.value?.toString()}
         onChange={(e) => onChange(parseInt(e.detail.value, 10))}
       >
         <div slot='value'>{selectedOption?.label}</div>

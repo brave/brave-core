@@ -200,13 +200,15 @@ provideStrings({
     'To connect a wallet you already have, ' +
     'you may need to enter your recovery phrase. At this time we support ' +
     'restoring / importing from Ethereum and Solana wallets.',
-  braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
+  braveWalletRestoreMyBraveWallet: 'Import an existing wallet',
   braveWalletRestoreMyBraveWalletDescription: '12-24 words',
   braveWalletImportFromMetaMask: 'Import from MetaMask',
   braveWalletImportFromMetaMaskDescription:
     'Use your MetaMask password to import your seed phrase',
   braveWalletImportFromLegacy: 'Import from legacy Brave crypto wallets',
   braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
+  braveWalletRestoreAlternateLength: 'I have a $1-word recovery phrase',
+  braveWalletRestoreWalletError: 'Check you recovery phrase and try again.',
 
   // onboarding import wallet screen
   braveWalletImportPasswordError: 'Password is not correct',
@@ -218,7 +220,7 @@ provideStrings({
   braveWalletMetaMaskExtensionImportDescription:
     'Enter your MetaMask wallet password to easily import to Brave Wallet.',
   braveWalletRestoreMyBraveWalletInstructions:
-    'Type your Brave Wallet 12-24 word recovery phrase.',
+    'You can paste your entire recovery phrase into any field.',
   braveWalletRecoveryPhraseLengthError:
     'Recovery phrase must be 12, 15, 18, 21, or 24 words long',
   braveWalletInvalidMnemonicError:

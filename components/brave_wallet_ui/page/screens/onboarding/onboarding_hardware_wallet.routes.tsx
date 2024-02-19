@@ -31,6 +31,7 @@ import {
 import {
   OnboardingCreatePassword //
 } from './create-password/onboarding-create-password'
+import { OnboardingImportWalletType } from './components/onboarding-import-wallet-type/onboarding-import-wallet-type'
 
 export const OnboardingHardwareWalletRoutes = () => {
   // routing
@@ -45,6 +46,12 @@ export const OnboardingHardwareWalletRoutes = () => {
   // render
   return (
     <Switch>
+      <Route
+        path={WalletRoutes.OnboardingImportSelectWalletType}
+        exact
+      >
+        <OnboardingImportWalletType />
+      </Route>
       <Route
         path={WalletRoutes.OnboardingHardwareWalletTerms}
         exact

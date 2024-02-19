@@ -528,6 +528,7 @@ export enum WalletRoutes {
 
   // onboarding (import & restore)
   OnboardingImportStart = '/crypto/onboarding/import',
+  OnboardingImportSelectWalletType = '/crypto/onboarding/import/select',
   OnboardingImportTerms = '/crypto/onboarding/import/terms',
   OnboardingImportOrRestore = '/crypto/onboarding/import/choose',
   OnboardingImportNetworkSelection = '/crypto/onboarding/import/networks',

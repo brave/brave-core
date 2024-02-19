@@ -271,7 +271,7 @@ export const OnboardingNetworkSelection = () => {
       onboardingType === 'hardware'
         ? WalletRoutes.OnboardingHardwareWalletCreatePassword
         : onboardingType === 'import'
-        ? WalletRoutes.OnboardingImportOrRestore
+        ? WalletRoutes.OnboardingRestoreWallet
         : WalletRoutes.OnboardingNewWalletCreatePassword
     )
   }, [

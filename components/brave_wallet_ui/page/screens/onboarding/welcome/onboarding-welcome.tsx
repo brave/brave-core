@@ -104,7 +104,7 @@ export const OnboardingWelcome = () => {
               iconName='import-arrow'
               walletIcons={walletIcons}
               onSelect={() =>
-                history.push(WalletRoutes.OnboardingHardwareWalletTerms)
+                history.push(WalletRoutes.OnboardingImportSelectWalletType)
               }
             />
           </ActionsContainer>

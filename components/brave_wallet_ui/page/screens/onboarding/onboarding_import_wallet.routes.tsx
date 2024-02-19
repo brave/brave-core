@@ -27,13 +27,14 @@ import {
 } from './import-or-restore-wallet/import-or-restore-wallet'
 import {
   OnboardingRestoreFromRecoveryPhrase //
-} from './restore-from-recovery-phrase/restore-from-recovery-phrase'
+} from './restore-from-recovery-phrase/restore-from-recovery-phrase-v3'
 import {
   OnboardingNetworkSelection //
 } from './network_selection/onboarding_network_selection'
 import {
   OnboardingRestoreFromExtension //
 } from './restore-from-recovery-phrase/restore-from-extension'
+import { OnboardingImportWalletType } from './components/onboarding-import-wallet-type/onboarding-import-wallet-type'
 
 export const OnboardingImportWalletRoutes = () => {
   // redux
@@ -45,6 +46,12 @@ export const OnboardingImportWalletRoutes = () => {
   // render
   return (
     <Switch>
+      <Route
+        path={WalletRoutes.OnboardingImportSelectWalletType}
+        exact
+      >
+        <OnboardingImportWalletType />
+      </Route>
       <Route
         path={WalletRoutes.OnboardingImportTerms}
         exact
