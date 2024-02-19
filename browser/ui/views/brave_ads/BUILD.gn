@@ -59,6 +59,21 @@ static_library("brave_ads") {
   ]
 }
 
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "bounds_util_unittest.cc",
+    "color_util_unittest.cc",
+  ]
+
+  deps = [
+    ":brave_ads",
+    "//testing/gtest",
+    "//ui/gfx",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
 
