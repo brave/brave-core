@@ -7,9 +7,14 @@
 #include "chrome/browser/performance_manager/metrics/page_resource_monitor.h"
 
 namespace performance_manager::metrics {
+namespace {
 class StubGraphOwnedDefaultImpl : public GraphOwnedDefaultImpl {};
+}  // namespace
 }  // namespace performance_manager::metrics
 
+// Both PageResourceMonitor and MemoryPressureMetrics collect data only to send
+// UMA/UKM. It means they do nothing in Brave, but the collection is
+// CPU-intensive. Disable it to save CPU during startup.
 #define PageResourceMonitor StubGraphOwnedDefaultImpl
 #define MemoryPressureMetrics StubGraphOwnedDefaultImpl
 #include "src/chrome/browser/performance_manager/chrome_browser_main_extra_parts_performance_manager.cc"
