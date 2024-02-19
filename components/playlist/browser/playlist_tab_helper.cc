@@ -48,6 +48,15 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
 void PlaylistTabHelper::BindMediaResponderReceiver(
     mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
     content::RenderFrameHost* rfh) {
+  // TODO(sszaloki): do we have to do a service check here?
+  // auto* playlist_service =
+  //     playlist::PlaylistServiceFactory::GetForBrowserContext(
+  //         rfh->GetBrowserContext());
+  // if (!playlist_service) {
+  //   // We don't support playlist on OTR profile.
+  //   return;
+  // }
+
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   if (!web_contents) {
     return;
@@ -189,24 +198,63 @@ bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
 }
 
 bool PlaylistTabHelper::IsExtractingMediaFromBackgroundWebContents() const {
-  return !!media_extracted_from_background_web_contents_callback_;
+  return background_web_contents_.get();
 }
 
 void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
-    base::OnceCallback<void(bool)> extracted_callback) {
+    base::OnceCallback<void(bool)> callback) {
   if (!ShouldExtractMediaFromBackgroundWebContents()) {
-    std::move(extracted_callback).Run(true);
+    std::move(callback).Run(true);
     return;
   }
 
-  media_extracted_from_background_web_contents_callback_ =
-      std::move(extracted_callback);
+  CHECK(!background_web_contents_);
+
+  const GURL url = web_contents()->GetLastCommittedURL();
+
+  content::WebContents::CreateParams create_params(
+      web_contents()->GetBrowserContext(), nullptr);
+  create_params.is_never_visible = true;
+  background_web_contents_ = content::WebContents::Create(create_params);
+  background_web_contents_->SetAudioMuted(true);
+  PlaylistBackgroundWebContentsHelper::CreateForWebContents(
+      background_web_contents_.get(), GetWeakPtr(),
+      service_->GetMediaSourceAPISuppressorScript(),
+      service_->GetMediaDetectorScript(url), std::move(callback));
+  auto load_url_params = content::NavigationController::LoadURLParams(url);
+
+  if (service_->ShouldUseFakeUA(url) ||
+      base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    DVLOG(2) << __func__ << " Faked UA to detect media files";
+
+    blink::UserAgentOverride user_agent(
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
+        "Mobile/15E148 "
+        "Safari/604.1",
+        /* user_agent_metadata */ {});
+    background_web_contents_->SetUserAgentOverride(
+        user_agent,
+        /* override_in_new_tabs= */ true);
+    load_url_params.override_user_agent =
+        content::NavigationController::UA_OVERRIDE_TRUE;
+  }
+
+  content::NavigationController& controller =
+      background_web_contents_->GetController();
+  controller.LoadURLWithParams(load_url_params);
+
+  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    for (int i = 0; i < controller.GetEntryCount(); ++i) {
+      controller.GetEntryAtIndex(i)->SetIsOverridingUserAgent(true);
+    }
+  }
+
   media_extraction_from_background_web_contents_timer_.Start(
       FROM_HERE, base::Seconds(10),
       base::BindOnce(
           &PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout,
           weak_ptr_factory_.GetWeakPtr()));
-  ExtractMediaFromBackgroundContents();
 }
 
 void PlaylistTabHelper::ReadyToCommitNavigation(
@@ -267,7 +315,24 @@ void PlaylistTabHelper::OnMediaDetected(base::Value media) {
     return;
   }
 
+  DVLOG(2) << "Lofasz:\n" << media;
+
   service_->OnMediaDetected(std::move(media), web_contents);
+
+  if (web_contents == background_web_contents_.get()) {
+    DVLOG(2) << "Lofasz: background";
+    auto* background_webcontents_helper =
+        PlaylistBackgroundWebContentsHelper::FromWebContents(
+            background_web_contents_.get());
+    CHECK(background_webcontents_helper);
+    // TODO(sszaloki): bloah...
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            std::move(*background_webcontents_helper).GetSuccessCallback(),
+            true));
+    background_web_contents_.reset();
+  }
 }
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
@@ -348,57 +413,10 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
   OnFoundMediaFromContents(url, std::move(items));
 }
 
-void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
-    bool should_force_fake_ua) {
-  CHECK(!background_web_contents_);
-
-  const GURL url = web_contents()->GetLastCommittedURL();
-
-  content::WebContents::CreateParams create_params(
-      web_contents()->GetBrowserContext(), nullptr);
-  create_params.is_never_visible = true;
-  background_web_contents_ = content::WebContents::Create(create_params);
-  background_web_contents_->SetAudioMuted(true);
-  PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      background_web_contents_.get(), GetWeakPtr(),
-      service_->GetMediaSourceAPISuppressorScript(),
-      service_->GetMediaDetectorScript(url));
-  auto load_url_params = content::NavigationController::LoadURLParams(url);
-
-  if (should_force_fake_ua ||
-      base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    DVLOG(2) << __func__ << " Faked UA to detect media files";
-
-    blink::UserAgentOverride user_agent(
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
-        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
-        "Mobile/15E148 "
-        "Safari/604.1",
-        /* user_agent_metadata */ {});
-    background_web_contents_->SetUserAgentOverride(
-        user_agent,
-        /* override_in_new_tabs= */ true);
-    load_url_params.override_user_agent =
-        content::NavigationController::UA_OVERRIDE_TRUE;
-  }
-
-  content::NavigationController& controller =
-      background_web_contents_->GetController();
-  controller.LoadURLWithParams(load_url_params);
-
-  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    for (int i = 0; i < controller.GetEntryCount(); ++i) {
-      controller.GetEntryAtIndex(i)->SetIsOverridingUserAgent(true);
-    }
-  }
-}
-
 void PlaylistTabHelper::ResetData() {
+  background_web_contents_.reset();
   saved_items_.clear();
   found_items_.clear();
-  sent_extract_media_request_ = false;
-  media_extracted_from_background_web_contents_callback_.Reset();
-  media_extraction_from_background_web_contents_timer_.Stop();
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
@@ -436,25 +454,6 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
   }
-}
-
-void PlaylistTabHelper::ExtractMediaFromBackgroundContents() {
-  if (!*playlist_enabled_pref_) {
-    return;
-  }
-
-  if (sent_extract_media_request_) {
-    return;
-  }
-
-  CHECK(service_);
-
-  service_->ExtractMediaFromBackgroundWebContents(
-      web_contents(),
-      base::BindOnce(&PlaylistTabHelper::OnFoundMediaFromContents,
-                     weak_ptr_factory_.GetWeakPtr()));
-
-  sent_extract_media_request_ = true;
 }
 
 void PlaylistTabHelper::OnFoundMediaFromContents(
@@ -513,23 +512,23 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
 
   if (found_items_.size() &&
       !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
-    // Wait until we find media or timeout. Some pages might not have media
-    // initially but update media later.
-    if (media_extracted_from_background_web_contents_callback_) {
-      std::move(media_extracted_from_background_web_contents_callback_)
-          .Run(true);
-    }
     media_extraction_from_background_web_contents_timer_.Stop();
   }
-  sent_extract_media_request_ = false;
 }
 
 void PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout() {
-  // Media extraction failed. Found items is blob: that we can't cache from.
-  // Thus, clear them.
+  if (!background_web_contents_) {
+    return;
+  }
+
+  auto* background_webcontents_helper =
+      PlaylistBackgroundWebContentsHelper::FromWebContents(
+          background_web_contents_.get());
+  CHECK(background_webcontents_helper);
+  std::move(*background_webcontents_helper).GetSuccessCallback().Run(false);
+  background_web_contents_.reset();
+
   found_items_.clear();
-  CHECK(media_extracted_from_background_web_contents_callback_);
-  std::move(media_extracted_from_background_web_contents_callback_).Run(false);
 
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);

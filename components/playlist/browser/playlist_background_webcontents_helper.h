@@ -37,6 +37,8 @@ class PlaylistBackgroundWebContentsHelper final
 
   PlaylistTabHelper* GetTabHelper() const;
 
+  base::OnceCallback<void(bool)> GetSuccessCallback() &&;
+
  private:
   friend class content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>;
@@ -45,11 +47,13 @@ class PlaylistBackgroundWebContentsHelper final
       content::WebContents* web_contents,
       base::WeakPtr<PlaylistTabHelper> tab_helper,
       const std::string& media_source_api_suppressor,
-      const std::string& media_detector);
+      const std::string& media_detector,
+      base::OnceCallback<void(bool)> success_callback);
 
   base::WeakPtr<PlaylistTabHelper> tab_helper_;
   std::string media_source_api_suppressor_;
   std::string media_detector_;
+  base::OnceCallback<void(bool)> success_callback_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

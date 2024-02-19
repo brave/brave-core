@@ -426,18 +426,6 @@ base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PlaylistService::ExtractMediaFromBackgroundWebContents(
-    content::WebContents* web_contents,
-    ExtractMediaFromBackgroundWebContentsCallback callback) {
-  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
-  CHECK(web_contents);
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
-  CHECK(tab_helper);
-
-  tab_helper->ExtractMediaFromBackgroundWebContents(
-      ShouldUseFakeUA(web_contents->GetLastCommittedURL()));
-}
-
 void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
   std::move(callback).Run(GetAllPlaylists());
 }
@@ -587,22 +575,22 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                          prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
                      std::move(callback));
 
-  for (const auto& item : items) {
-    if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
-            item)) {
-      // TODO(sko) Maybe we don't want this to happen. But for now, Android
-      // could reach here. Also we're assuming that
-      // * all |items| will be matched to what we'll get from refetching.
-      // * all |items| are from the same source page.
-      PlaylistDownloadRequestManager::Request request(
-          nullptr);  // TODO(sszaloki)
-      request.url = GURL(item->page_source);
-      request.should_force_fake_ua = ShouldUseFakeUA(request.url);
-      request.callback = std::move(add_to_playlist);
-      download_request_manager_->GetMediaFilesFromPage(std::move(request));
-      return;
-    }
-  }
+  // for (const auto& item : items) {
+  //   if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
+  //           item)) {
+  //     // TODO(sko) Maybe we don't want this to happen. But for now, Android
+  //     // could reach here. Also we're assuming that
+  //     // * all |items| will be matched to what we'll get from refetching.
+  //     // * all |items| are from the same source page.
+  //     PlaylistDownloadRequestManager::Request request(
+  //         nullptr);  // TODO(sszaloki)
+  //     request.url = GURL(item->page_source);
+  //     request.should_force_fake_ua = ShouldUseFakeUA(request.url);
+  //     request.callback = std::move(add_to_playlist);
+  //     download_request_manager_->GetMediaFilesFromPage(std::move(request));
+  //     return;
+  //   }
+  // }
 
   std::move(add_to_playlist).Run(std::move(items));
 }
@@ -702,11 +690,6 @@ void PlaylistService::ReorderPlaylist(const std::string& playlist_id,
   }
 
   std::move(callback).Run(true);
-}
-
-content::WebContents* PlaylistService::GetBackgroundWebContentsForTesting() {
-  return download_request_manager_
-      ->GetBackgroundWebContentsForTesting();  // IN-TEST
 }
 
 std::string PlaylistService::GetDefaultSaveTargetListID() {
@@ -1224,8 +1207,8 @@ void PlaylistService::OnMediaDetected(base::Value media,
       download_request_manager_->GetPlaylistItems(std::move(media), url);
   NotifyMediaFilesUpdated(url, items);
 
-  download_request_manager_->MaybeResetBackgroundWebContentsAndFetchNextRequest(
-      items, contents);
+  // download_request_manager_->MaybeResetBackgroundWebContentsAndFetchNextRequest(
+  //     items, contents);
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(

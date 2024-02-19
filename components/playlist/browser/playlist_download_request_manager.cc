@@ -52,30 +52,30 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
-void PlaylistDownloadRequestManager::CreateWebContents(const Request& request) {
-  CHECK(request.tab_helper);
+// void PlaylistDownloadRequestManager::CreateWebContents(const Request& request) {
+//   CHECK(request.tab_helper);
 
-  content::WebContents::CreateParams create_params(context_, nullptr);
-  create_params.is_never_visible = true;
-  web_contents_ = content::WebContents::Create(create_params);
-  web_contents_->SetAudioMuted(true);
-  PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      web_contents_.get(), request.tab_helper,
-      media_detector_component_manager_->GetMediaSourceAPISuppressorScript(),
-      media_detector_component_manager_->GetMediaDetectorScript(request.url));
-  if (request.should_force_fake_ua ||
-      base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    DVLOG(2) << __func__ << " Faked UA to detect media files";
-    blink::UserAgentOverride user_agent(
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
-        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
-        "Mobile/15E148 "
-        "Safari/604.1",
-        /* user_agent_metadata */ {});
-    web_contents_->SetUserAgentOverride(user_agent,
-                                        /* override_in_new_tabs= */ true);
-  }
-}
+//   content::WebContents::CreateParams create_params(context_, nullptr);
+//   create_params.is_never_visible = true;
+//   web_contents_ = content::WebContents::Create(create_params);
+//   web_contents_->SetAudioMuted(true);
+//   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
+//       web_contents_.get(), request.tab_helper,
+//       media_detector_component_manager_->GetMediaSourceAPISuppressorScript(),
+//       media_detector_component_manager_->GetMediaDetectorScript(request.url));
+//   if (request.should_force_fake_ua ||
+//       base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+//     DVLOG(2) << __func__ << " Faked UA to detect media files";
+//     blink::UserAgentOverride user_agent(
+//         "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
+//         "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
+//         "Mobile/15E148 "
+//         "Safari/604.1",
+//         /* user_agent_metadata */ {});
+//     web_contents_->SetUserAgentOverride(user_agent,
+//                                         /* override_in_new_tabs= */ true);
+//   }
+// }
 
 void PlaylistDownloadRequestManager::GetMediaFilesFromPage(Request request) {
   DVLOG(2) << __func__;
@@ -124,7 +124,7 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
 
   // Start to request on clean slate, so that result won't be affected by
   // previous page.
-  CreateWebContents(request);
+  // CreateWebContents(request);
 
   DCHECK(request.url.is_valid());
   DCHECK(web_contents_);
@@ -336,12 +336,6 @@ void PlaylistDownloadRequestManager::ResetRequests() {
   request_start_time_ = {};
   in_progress_urls_count_ = 0;
   callback_for_current_request_ = base::NullCallback();
-}
-
-content::WebContents*
-PlaylistDownloadRequestManager::GetBackgroundWebContentsForTesting() {
-  CHECK(web_contents_);
-  return web_contents_.get();
 }
 
 }  // namespace playlist
