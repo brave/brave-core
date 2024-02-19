@@ -8,8 +8,6 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
-#include "ui/events/event_constants.h"
-#include "ui/events/keycodes/keyboard_codes_posix.h"
 
 #define GetAcceleratorList GetAcceleratorList_ChromiumImpl
 #include "src/chrome/browser/ui/views/accelerator_table.cc"
