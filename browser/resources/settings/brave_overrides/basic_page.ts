@@ -341,12 +341,6 @@ RegisterPolymerTemplateModifications({
         performanceTemplate.remove()
       }
 
-      const speedTemplate = actualTemplate.content.querySelector(
-        'template[if="[[showSpeedPage_(pageVisibility.performance)]]"]')
-      if (speedTemplate) {
-        speedTemplate.remove()
-      }
-
       const batteryTemplate = actualTemplate.content.querySelector(
         'template[if="[[showBatteryPage_(pageVisibility.performance)]]"]')
       if (batteryTemplate) {
