@@ -263,15 +263,15 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
       BrowserListFactory::GetForBrowserState(_otr_browser->GetBrowserState());
   [_otr_browser->GetCommandDispatcher() prepareForShutdown];
   _otr_browserList->RemoveBrowser(_otr_browser.get());
-  _otr_browser->GetWebStateList()->CloseAllWebStates(
-      WebStateList::CLOSE_NO_FLAGS);
+  CloseAllWebStates(*_otr_browser->GetWebStateList(),
+                    WebStateList::CLOSE_NO_FLAGS);
   _otr_browser.reset();
 
   _browserList =
       BrowserListFactory::GetForBrowserState(_browser->GetBrowserState());
   [_browser->GetCommandDispatcher() prepareForShutdown];
   _browserList->RemoveBrowser(_browser.get());
-  _browser->GetWebStateList()->CloseAllWebStates(WebStateList::CLOSE_NO_FLAGS);
+  CloseAllWebStates(*_browser->GetWebStateList(), WebStateList::CLOSE_NO_FLAGS);
   _browser.reset();
 
   _mainBrowserState = nullptr;
