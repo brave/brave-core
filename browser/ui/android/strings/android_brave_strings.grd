@@ -2582,9 +2582,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_TX_STATUS_ERROR" desc="Brave wallet tx status is error">
       Error
     </message>
-    <message name="IDS_WALLET_TX_FEE" desc="Brave wallet tx fee">
-      Fee: <ph name="VALUE">%1$s<ex>0.000123</ex></ph> <ph name="CHAIN_ASSET">%2$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%3$s<ex>101.22</ex></ph>)
-    </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_1" desc="Dormant users engagement notification text">
       Are you using the fastest web browser?
     </message>

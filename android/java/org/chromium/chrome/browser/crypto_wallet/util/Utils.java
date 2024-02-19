@@ -70,7 +70,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -99,10 +99,6 @@ import java.util.stream.Collectors;
 
 public class Utils {
     private static final String TAG = "Utils";
-
-    public static int ACCOUNT_ITEM = 1;
-    public static int ASSET_ITEM = 2;
-    public static int TRANSACTION_ITEM = 3;
 
     public static final int ETH_DEFAULT_DECIMALS = 18;
     public static final int SOL_DEFAULT_DECIMALS = 9;
@@ -941,13 +937,13 @@ public class Utils {
     }
 
     public static void updateWalletCoinTransactionItem(
-            WalletListItemModel item, TransactionInfo txInfo, Context context) {
+            AccountSelectorItemModel item, TransactionInfo txInfo, Context context) {
         item.setTransactionInfo(txInfo);
         updateWalletCoinTransactionStatus(item, context, txInfo);
     }
 
     public static void updateWalletCoinTransactionStatus(
-            WalletListItemModel itemModel, Context context, TransactionInfo txInfo) {
+            AccountSelectorItemModel itemModel, Context context, TransactionInfo txInfo) {
         String txStatus = context.getResources().getString(R.string.wallet_tx_status_unapproved);
         Bitmap txStatusBitmap = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(txStatusBitmap);

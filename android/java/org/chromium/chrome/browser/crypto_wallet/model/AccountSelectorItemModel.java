@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.model;
 
 import android.graphics.Bitmap;
-import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -15,7 +14,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
-public class WalletListItemModel {
+public class AccountSelectorItemModel {
     private int mIcon;
     private String mIconPath;
     private String mTitle;
@@ -26,20 +25,14 @@ public class WalletListItemModel {
     private String mText2;
     private BlockchainToken mBlockchainToken;
     private AccountInfo mAccountInfo;
-    private boolean mVisible;
-    private double mTotalGas;
-    private double mTotalGasFiat;
-    private String[] mAddressesForBitmap;
+    private boolean mSelected;
     private TransactionInfo mTxInfo;
-    private String mChainSymbol;
-    private int mChainDecimals;
     private NetworkInfo mAssetNetwork;
-    private String mBrowserResPath;
 
     public String mId;
     private ParsedTransaction mParsedTx;
 
-    public WalletListItemModel(
+    public AccountSelectorItemModel(
             int icon, String title, String subTitle, String id, String text1, String text2) {
         mIcon = icon;
         mTitle = title;
@@ -49,11 +42,11 @@ public class WalletListItemModel {
         mText2 = text2;
     }
 
-    private WalletListItemModel() {}
+    private AccountSelectorItemModel() {}
 
-    public static WalletListItemModel makeForAccountInfoWithBalances(
+    public static AccountSelectorItemModel makeForAccountInfoWithBalances(
             AccountInfo accountInfo, String fiatBalanceString, String cryptoBalanceString) {
-        WalletListItemModel result = new WalletListItemModel();
+        AccountSelectorItemModel result = new AccountSelectorItemModel();
         result.mIcon = Utils.getCoinIcon(accountInfo.accountId.coin);
         result.mTitle = accountInfo.name;
         // TODO(apaymyshev): handle bitcoin account.
@@ -65,12 +58,8 @@ public class WalletListItemModel {
         return result;
     }
 
-    public static WalletListItemModel makeForAccountInfo(AccountInfo accountInfo) {
+    public static AccountSelectorItemModel makeForAccountInfo(AccountInfo accountInfo) {
         return makeForAccountInfoWithBalances(accountInfo, null, null);
-    }
-
-    public boolean isNft() {
-        return mBlockchainToken.isNft || mBlockchainToken.isErc721;
     }
 
     public void setTransactionInfo(TransactionInfo txInfo) {
@@ -81,54 +70,12 @@ public class WalletListItemModel {
         return mTxInfo;
     }
 
-    public void setAddressesForBitmap(String addressFrom, String addressTo) {
-        mAddressesForBitmap = new String[2];
-        mAddressesForBitmap[0] = addressFrom;
-        mAddressesForBitmap[1] = addressTo;
-    }
-
-    public String[] getAddressesForBitmap() {
-        return mAddressesForBitmap;
-    }
-
     public void setIconPath(String iconPath) {
         mIconPath = iconPath;
     }
 
     public String getIconPath() {
         return mIconPath;
-    }
-
-    public void setTotalGas(double totalGas) {
-        mTotalGas = totalGas;
-    }
-
-    public double getTotalGas() {
-        return mTotalGas;
-    }
-
-    public void setTotalGasFiat(double totalGasFiat) {
-        mTotalGasFiat = totalGasFiat;
-    }
-
-    public double getTotalGasFiat() {
-        return mTotalGasFiat;
-    }
-
-    public void setChainSymbol(String chainSymbol) {
-        mChainSymbol = chainSymbol;
-    }
-
-    public String getChainSymbol() {
-        return mChainSymbol;
-    }
-
-    public void setChainDecimals(int chainDecimals) {
-        mChainDecimals = chainDecimals;
-    }
-
-    public int getChainDecimals() {
-        return mChainDecimals;
     }
 
     public void setTxStatus(String txStatus) {
@@ -186,12 +133,12 @@ public class WalletListItemModel {
         return mText2;
     }
 
-    public boolean isVisible() {
-        return mVisible;
+    public boolean isSelected() {
+        return mSelected;
     }
 
-    public void isVisible(final boolean visible) {
-        mVisible = visible;
+    public void isSelected(final boolean selected) {
+        mSelected = selected;
     }
 
     public boolean isErc721() {
@@ -208,24 +155,6 @@ public class WalletListItemModel {
 
     public void setAssetNetwork(NetworkInfo mAssetNetwork) {
         this.mAssetNetwork = mAssetNetwork;
-    }
-
-    public void setBrowserResourcePath(String resPath) {
-        mBrowserResPath = resPath;
-    }
-
-    public String getBrowserResourcePath() {
-        return mBrowserResPath;
-    }
-
-    public boolean isNativeAsset() {
-        if (mAssetNetwork == null || mBlockchainToken == null) return false;
-        return Utils.isNativeToken(mAssetNetwork, mBlockchainToken);
-    }
-
-    public String getNetworkIcon() {
-        if (mAssetNetwork == null || TextUtils.isEmpty(getBrowserResourcePath())) return "";
-        return "file://" + getBrowserResourcePath() + "/" + Utils.getNetworkIconName(mAssetNetwork);
     }
 
     public ParsedTransaction getParsedTx() {
