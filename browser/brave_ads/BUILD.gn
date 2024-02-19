@@ -33,5 +33,6 @@ source_set("browser_tests") {
     "//net",
     "//testing/gmock",
   ]
+
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
