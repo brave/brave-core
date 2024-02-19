@@ -14,6 +14,7 @@ source_set("qr_code_generator") {
   deps = [
     "//base",
     "//components/qr_code_generator",
+    "//components/qr_code_generator:bitmap_generator",
     "//mojo/public/cpp/bindings",
     "//net",
     "//ui/gfx",

@@ -13,8 +13,6 @@
 #include "base/scoped_observation.h"
 #include "base/values.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
-#include "chrome/services/qrcode_generator/public/cpp/qrcode_generator_service.h"
-#include "chrome/services/qrcode_generator/public/mojom/qrcode_generator.mojom.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
@@ -62,16 +60,6 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   syncer::BraveSyncServiceImpl* GetSyncService() const;
   syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
   syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;
-
-  // Callback for the request to the OOP service to generate a new image.
-  void OnCodeGeneratorResponse(
-      base::Value callback_id,
-      const qrcode_generator::mojom::GenerateQRCodeResponsePtr response);
-
-  // TODO(https://crbug.com/1431991): Remove this field once there is no
-  // internal state (e.g. no `mojo::Remote`) that needs to be maintained by the
-  // `QRImageGenerator` class.
-  std::unique_ptr<qrcode_generator::QRImageGenerator> qrcode_service_;
 
   raw_ptr<Profile> profile_ = nullptr;
 

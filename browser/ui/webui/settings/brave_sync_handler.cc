@@ -12,6 +12,7 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/qr_code_data.h"
@@ -23,6 +24,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/sync_service_factory.h"
+#include "components/qr_code_generator/bitmap_generator.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_user_settings.h"
 #include "components/sync_device_info/device_info_sync_service.h"
@@ -181,24 +183,22 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   const std::string qr_code_string =
       brave_sync::QrCodeData::CreateWithActualDate(sync_code_hex)->ToJson();
 
-  base::Value callback_id_disconnect(args[0].Clone());
-  base::Value callback_id_arg(args[0].Clone());
+  auto qr_image = qr_code_generator::GenerateBitmap(
+      base::as_byte_span(qr_code_string),
+      qr_code_generator::ModuleStyle::kCircles,
+      qr_code_generator::LocatorStyle::kRounded,
+      qr_code_generator::CenterImage::kDino);
 
-  qrcode_service_ = std::make_unique<qrcode_generator::QRImageGenerator>();
+  if (!qr_image.has_value()) {
+    VLOG(1) << "QR code generator failure: "
+            << base::to_underlying(qr_image.error());
+    ResolveJavascriptCallback(args[0].Clone(), base::Value(false));
+    return;
+  }
 
-  qrcode_generator::mojom::GenerateQRCodeRequestPtr request =
-      qrcode_generator::mojom::GenerateQRCodeRequest::New();
-  request->data = qr_code_string;
-  request->center_image = qrcode_generator::mojom::CenterImage::CHROME_DINO;
-  request->render_module_style = qrcode_generator::mojom::ModuleStyle::CIRCLES;
-  request->render_locator_style =
-      qrcode_generator::mojom::LocatorStyle::ROUNDED;
-
-  qrcode_service_->GenerateQRCode(
-      std::move(request),
-      base::BindOnce(&BraveSyncHandler::OnCodeGeneratorResponse,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     std::move(callback_id_arg)));
+  const std::string data_url = webui::GetBitmapDataUrl(qr_image->bitmap);
+  VLOG(1) << "QR code data url: " << data_url;
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(data_url));
 }
 
 void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
@@ -392,20 +392,4 @@ base::Value::List BraveSyncHandler::GetSyncDeviceList() {
   }
 
   return device_list;
-}
-
-void BraveSyncHandler::OnCodeGeneratorResponse(
-    base::Value callback_id,
-    const qrcode_generator::mojom::GenerateQRCodeResponsePtr response) {
-  if (!response || response->error_code !=
-                       qrcode_generator::mojom::QRCodeGeneratorError::NONE) {
-    VLOG(1) << "QR code generator failure: " << response->error_code;
-    ResolveJavascriptCallback(callback_id, base::Value(false));
-    return;
-  }
-
-  const std::string data_url = webui::GetBitmapDataUrl(response->bitmap);
-  VLOG(1) << "QR code data url: " << data_url;
-
-  ResolveJavascriptCallback(callback_id, base::Value(data_url));
 }
