@@ -1,9 +1,15 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
 // Copyright 2020 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef CHROME_BROWSER_UI_COMMANDER_FUZZY_FINDER_H_
-#define CHROME_BROWSER_UI_COMMANDER_FUZZY_FINDER_H_
+#ifndef BRAVE_BROWSER_UI_COMMANDER_FUZZY_FINDER_H_
+#define BRAVE_BROWSER_UI_COMMANDER_FUZZY_FINDER_H_
 
 #include <string>
 #include <vector>
@@ -50,4 +56,4 @@ class FuzzyFinder {
 
 }  // namespace commander
 
-#endif  // CHROME_BROWSER_UI_COMMANDER_FUZZY_FINDER_H_
+#endif  // BRAVE_BROWSER_UI_COMMANDER_FUZZY_FINDER_H_

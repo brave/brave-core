@@ -1,9 +1,15 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
 // Copyright 2021 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef CHROME_BROWSER_UI_COMMANDER_ENTITY_MATCH_H_
-#define CHROME_BROWSER_UI_COMMANDER_ENTITY_MATCH_H_
+#ifndef BRAVE_BROWSER_UI_COMMANDER_ENTITY_MATCH_H_
+#define BRAVE_BROWSER_UI_COMMANDER_ENTITY_MATCH_H_
 
 #include <memory>
 #include <string>
@@ -93,7 +99,7 @@ std::vector<WindowMatch> WindowsMatchingInput(const Browser* browser_to_exclude,
 std::vector<GroupMatch> GroupsMatchingInput(
     const Browser* browser,
     const std::u16string& input,
-    absl::optional<tab_groups::TabGroupId> group_to_exclude = absl::nullopt);
+    std::optional<tab_groups::TabGroupId> group_to_exclude = std::nullopt);
 
 // Options for narrowing results from `TabsMatchingInput`.
 struct TabSearchOptions {
@@ -109,10 +115,10 @@ struct TabSearchOptions {
   bool only_muted = false;
   // Exclude tabs that belong to this group. Explicitly setting this to the
   // same value as `only_tab_group` is invalid.
-  absl::optional<tab_groups::TabGroupId> exclude_tab_group = absl::nullopt;
+  std::optional<tab_groups::TabGroupId> exclude_tab_group = std::nullopt;
   // Exclude tabs that do not belong to this group. Explicitly setting this to
   // the same value as `exclude_tab_group` is invalid.
-  absl::optional<tab_groups::TabGroupId> only_tab_group = absl::nullopt;
+  std::optional<tab_groups::TabGroupId> only_tab_group = std::nullopt;
 };
 
 // Returns tabs in `browser` whose titles fuzzy match `input`. If input is
@@ -123,4 +129,4 @@ std::vector<TabMatch> TabsMatchingInput(const Browser* browser,
 
 }  // namespace commander
 
-#endif  // CHROME_BROWSER_UI_COMMANDER_ENTITY_MATCH_H_
+#endif  // BRAVE_BROWSER_UI_COMMANDER_ENTITY_MATCH_H_

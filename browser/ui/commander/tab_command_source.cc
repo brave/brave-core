@@ -1,11 +1,20 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
 // Copyright 2021 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "brave/browser/ui/commander/tab_command_source.h"
 
+#include <memory>
 #include <numeric>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
@@ -48,9 +57,9 @@ std::unique_ptr<CommandItem> ItemForTitle(const std::u16string& title,
 // In practice, this is the tab group that *all* selected tabs belong to, if
 // any. In the common special case of single selection, this will return that
 // tab's group if it has one.
-absl::optional<tab_groups::TabGroupId> IneligibleGroupForSelected(
+std::optional<tab_groups::TabGroupId> IneligibleGroupForSelected(
     TabStripModel* tab_strip_model) {
-  absl::optional<tab_groups::TabGroupId> excluded_group = absl::nullopt;
+  std::optional<tab_groups::TabGroupId> excluded_group = std::nullopt;
   for (int index : tab_strip_model->selection_model().selected_indices()) {
     auto group = tab_strip_model->GetTabGroupForTab(index);
     if (group.has_value()) {
@@ -58,7 +67,7 @@ absl::optional<tab_groups::TabGroupId> IneligibleGroupForSelected(
         excluded_group = group;
       } else if (group != excluded_group) {
         // More than one group in the selection, so don't exclude anything.
-        return absl::nullopt;
+        return std::nullopt;
       }
     }
   }

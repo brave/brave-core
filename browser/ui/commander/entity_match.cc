@@ -1,8 +1,16 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
 // Copyright 2021 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "brave/browser/ui/commander/entity_match.h"
+
+#include <utility>
 
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "chrome/browser/ui/browser.h"
@@ -154,7 +162,7 @@ std::vector<WindowMatch> WindowsMatchingInput(const Browser* browser_to_exclude,
 std::vector<GroupMatch> GroupsMatchingInput(
     const Browser* browser,
     const std::u16string& input,
-    absl::optional<tab_groups::TabGroupId> group_to_exclude) {
+    std::optional<tab_groups::TabGroupId> group_to_exclude) {
   DCHECK(browser);
   std::vector<GroupMatch> results;
   FuzzyFinder finder(input);

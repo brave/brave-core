@@ -1,9 +1,18 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
 // Copyright 2020 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef CHROME_BROWSER_UI_COMMANDER_OPEN_URL_COMMAND_SOURCE_H_
-#define CHROME_BROWSER_UI_COMMANDER_OPEN_URL_COMMAND_SOURCE_H_
+#ifndef BRAVE_BROWSER_UI_COMMANDER_OPEN_URL_COMMAND_SOURCE_H_
+#define BRAVE_BROWSER_UI_COMMANDER_OPEN_URL_COMMAND_SOURCE_H_
+
+#include <utility>
+#include <vector>
 
 #include "brave/browser/ui/commander/command_source.h"
 #include "url/gurl.h"
@@ -30,4 +39,4 @@ class OpenURLCommandSource : public CommandSource {
 
 }  // namespace commander
 
-#endif  // CHROME_BROWSER_UI_COMMANDER_OPEN_URL_COMMAND_SOURCE_H_
+#endif  // BRAVE_BROWSER_UI_COMMANDER_OPEN_URL_COMMAND_SOURCE_H_

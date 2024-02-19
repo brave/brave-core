@@ -1,8 +1,18 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
 // Copyright 2020 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "brave/browser/ui/commander/open_url_command_source.h"
+
+#include <memory>
+#include <utility>
+#include <vector>
 
 #include "base/i18n/case_conversion.h"
 #include "base/strings/utf_string_conversions.h"
@@ -59,9 +69,8 @@ CommandSource::CommandResults OpenURLCommandSource::GetCommands(
     auto item = std::make_unique<CommandItem>(title, score, ranges);
     // base::Unretained is safe because commands are reset when a browser is
     // closed.
-    item->command =
-        base::BindOnce(&chrome::AddTabAt, base::Unretained(browser),
-                       command_spec.second, -1, true, absl::nullopt);
+    item->command = base::BindOnce(&chrome::AddTabAt, base::Unretained(browser),
+                                   command_spec.second, -1, true, std::nullopt);
     results.push_back(std::move(item));
   }
   return results;

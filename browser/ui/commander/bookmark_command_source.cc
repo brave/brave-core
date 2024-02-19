@@ -1,8 +1,19 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
 // Copyright 2020 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "brave/browser/ui/commander/bookmark_command_source.h"
+
+#include <memory>
+#include <optional>
+#include <utility>
+#include <vector>
 
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
@@ -27,7 +38,7 @@ std::unique_ptr<CommandItem> CreateOpenBookmarkItem(
   // base::Unretained is safe because commands are reset when a browser is
   // closed.
   item->command = base::BindOnce(&chrome::AddTabAt, base::Unretained(browser),
-                                 GURL(bookmark.url), -1, true, absl::nullopt);
+                                 GURL(bookmark.url), -1, true, std::nullopt);
   return item;
 }
 
