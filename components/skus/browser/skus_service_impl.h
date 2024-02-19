@@ -127,9 +127,6 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
                         base::OnceCallback<void(skus::CppSDK* sdk)> cb,
                         ::rust::Box<skus::CppSDK> cpp_sdk);
 
-  // TODO(bridiver) remove
-  skus::CppSDK* GetOrCreateSDK(const std::string& domain);
-
   SEQUENCE_CHECKER(sequence_checker_);
   raw_ptr<PrefService> prefs_ GUARDED_BY_CONTEXT(sequence_checker_);
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_
@@ -139,8 +136,6 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
   std::unordered_map<std::string, ::rust::Box<skus::CppSDK>> sdks_
       GUARDED_BY_CONTEXT(sequence_checker_);
   mojo::ReceiverSet<mojom::SkusService> receivers_;
-  // TODO(bridiver) remove
-  raw_ptr<::rust::Box<skus::CppSDK>> sdk_;
   base::WeakPtrFactory<SkusServiceImpl> weak_factory_{this};
 };
 
