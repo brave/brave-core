@@ -87,7 +87,6 @@ where
     async fn set_state(&mut self, state: &KVState) -> Result<(), InternalError> {
         let key = key_from_environment(self.env());
         event!(Level::DEBUG, "set state");
-        event!(Level::TRACE, state = %format!("{:#?}", state), "set state",);
         self.set(&key, &serde_json::to_string(state)?).await
     }
 }
