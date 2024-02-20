@@ -28,7 +28,6 @@ import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 
@@ -57,10 +56,8 @@ public class CryptoModel {
     private Context mContext;
 
     private NetworkModel mNetworkModel;
-    private PortfolioModel mPortfolioModel;
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
-    private TransactionsModel mTransactionsModel;
 
     public CryptoModel(Context context, TxService txService, KeyringService keyringService,
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
@@ -82,9 +79,6 @@ public class CryptoModel {
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel = new NetworkModel(
                 mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions, context);
-        mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
-                mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
-                mBraveWalletService, mAssetRatioService, mSharedData);
     }
 
     public void resetServices(Context context, TxService mTxService, KeyringService mKeyringService,
@@ -103,14 +97,6 @@ public class CryptoModel {
             this.mAssetRatioService = mAssetRatioService;
             mPendingTxHelper.setTxService(mTxService);
             mNetworkModel.resetServices(mBraveWalletService, mJsonRpcService);
-            mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
-                    mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
-                    mAssetRatioService);
-            if (mTransactionsModel != null) {
-                mTransactionsModel.resetServices(mContext, mTxService, mKeyringService,
-                        mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy,
-                        mSolanaTxManagerProxy, mBraveWalletService, mAssetRatioService);
-            }
         }
         init();
     }
@@ -207,24 +193,6 @@ public class CryptoModel {
 
     public NetworkModel getNetworkModel() {
         return mNetworkModel;
-    }
-
-    public PortfolioModel getPortfolioModel() {
-        return mPortfolioModel;
-    }
-
-    public TransactionsModel createTransactionModel() {
-        if (mTransactionsModel == null) {
-            mTransactionsModel = new TransactionsModel(mContext, mTxService, mKeyringService,
-                    mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
-                    mBraveWalletService, mAssetRatioService, mSharedData);
-        }
-        return mTransactionsModel;
-    }
-
-    public UserAssetModel createUserAssetModel(WalletCoinAdapter.AdapterType type) {
-        return new UserAssetModel(
-                mBraveWalletService, mJsonRpcService, mBlockchainRegistry, mSharedData, type);
     }
 
     public void updateCoinType() {

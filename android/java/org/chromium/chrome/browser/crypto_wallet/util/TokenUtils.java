@@ -6,24 +6,19 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.annotation.SuppressLint;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import org.chromium.base.Callback;
 import org.chromium.base.Callbacks;
-import org.chromium.base.Callbacks.Callback1;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OnRampProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -140,38 +135,6 @@ public class TokenUtils {
     }
 
     /**
-     * Gets all tokens from each network and filters out tokens different from a given type.
-     * @param blockchainRegistry BraveChainRegistry to retrieve all tokens from core.
-     * @param networks Network list whose tokens will get retrieved and filtered.
-     * @param tokenType Token type used for filtering.
-     * @param callback Callback containing a filtered array of tokens for each network.
-     * <b>Note:</b>: It does not add user assets.
-     */
-    public static void getAllTokensFiltered(BlockchainRegistry blockchainRegistry,
-            List<NetworkInfo> networks, TokenType tokenType,
-            Callbacks.Callback1<BlockchainToken[]> callback) {
-        AsyncUtils.MultiResponseHandler allNetworkTokenCollector =
-                new AsyncUtils.MultiResponseHandler(networks.size());
-        ArrayList<AsyncUtils.GetNetworkAllTokensContext> allTokenContexts = new ArrayList<>();
-
-        for (NetworkInfo networkInfo : networks) {
-            AsyncUtils.GetNetworkAllTokensContext context =
-                    new AsyncUtils.GetNetworkAllTokensContext(
-                            allNetworkTokenCollector.singleResponseComplete, networkInfo);
-            getAllTokens(blockchainRegistry, networkInfo.chainId, networkInfo.coin, context);
-            allTokenContexts.add(context);
-        }
-        allNetworkTokenCollector.setWhenAllCompletedAction(
-                ()
-                        -> callback.call(allTokenContexts.stream()
-                                                 .map(context
-                                                         -> filterTokens(context.networkInfo,
-                                                                 context.tokens, tokenType, false))
-                                                 .flatMap(Arrays::stream)
-                                                 .toArray(BlockchainToken[] ::new)));
-    }
-
-    /**
      * Gets all tokens from a given single network, includes user assets and filters out tokens
      * different from a given type.
      * @param braveWalletService BraveWalletService to retrieve user asset from core.
@@ -194,34 +157,6 @@ public class TokenUtils {
                         }));
     }
 
-    /**
-     * Retrieves user tokens and all tokens of a given type for a selected network.
-     *
-     * @param braveWalletService BraveWalletService instance used to get the user tokens.
-     * @param blockchainRegistry BlockchainRegistry instance used to get all the tokens.
-     * @param selectedNetwork Selected network used to retrieve the tokens.
-     * @param coinType Coin type of the selected network.
-     * @param tokenType Token type used for filtering.
-     * @param callback Callback returning two arrays: all tokens, and user tokens.
-     * <b>Note:</b>: the first array containing all the tokens will include the user tokens.
-     */
-    public static void getUserAndAllTokensFiltered(BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, int coinType,
-            TokenType tokenType,
-            Callbacks.Callback2<BlockchainToken[], BlockchainToken[]> callback) {
-        getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType,
-                tokens
-                -> braveWalletService.getUserAssets(
-                        selectedNetwork.chainId, coinType, userTokens -> {
-                            BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
-                                    distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
-                                    false);
-                            BlockchainToken[] filteredUserTokens =
-                                    filterTokens(selectedNetwork, userTokens, tokenType, true);
-                            callback.call(filteredTokens, filteredUserTokens);
-                        }));
-    }
-
     public static void getUserOrAllTokensFiltered(BraveWalletService braveWalletService,
             BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, int coinType,
             TokenType tokenType, boolean userAssetsOnly,
@@ -233,67 +168,6 @@ public class TokenUtils {
         else
             getAllTokensFiltered(
                     braveWalletService, blockchainRegistry, selectedNetwork, tokenType, callback);
-    }
-
-    private static final int[] SUPPORTED_RAMP_PROVIDERS = {
-            OnRampProvider.RAMP, OnRampProvider.SARDINE, OnRampProvider.TRANSAK};
-
-    public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork, Callbacks.Callback1<BlockchainToken[]> callback) {
-        int[] rampProviders = SUPPORTED_RAMP_PROVIDERS;
-        blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
-            // blockchainRegistry.getProvidersBuyTokens returns a full list of tokens that are
-            // allowed to buy by given rampProviders. We just need to check on native assets logo
-            // and fill them if they are empty.
-            for (BlockchainToken tokenFromAll : tokens) {
-                if (tokenFromAll.logo.isEmpty()) {
-                    tokenFromAll.logo =
-                            Utils.getNetworkIconName(tokenFromAll.chainId, tokenFromAll.coin);
-                }
-            }
-            Arrays.sort(tokens, blockchainTokenComparatorPerGasOrBatType);
-            callback.call(removeDuplicates(tokens));
-        });
-    }
-
-    public static void isBuySupported(BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork, String assetSymbol, String contractAddress, String chainId,
-            Callback1<Boolean> callback) {
-        getBuyTokensFiltered(
-                blockchainRegistry, selectedNetwork, tokens -> {
-                    callback.call(JavaUtils.includes(tokens,
-                            iToken
-                            -> AssetUtils.Filters.isSameToken(
-                                    iToken, assetSymbol, contractAddress, chainId)));
-                });
-    }
-
-    public static void isCustomToken(@NonNull BlockchainRegistry blockchainRegistry,
-            @NonNull NetworkInfo selectedNetwork, int coinType, @NonNull BlockchainToken token,
-            Callbacks.Callback1<Boolean> callback) {
-        assert !JavaUtils.anyNull(token, selectedNetwork) : "Token or network should not be null";
-        if (JavaUtils.anyNull(token, selectedNetwork)) return;
-
-        if (TextUtils.isEmpty(token.contractAddress)) {
-            callback.call(false);
-            return;
-        }
-        // Any token with a token ID should be considered a custom token
-        if (!TextUtils.isEmpty(token.tokenId)) {
-            callback.call(true);
-            return;
-        }
-        getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType, tokens -> {
-            boolean isCustom = true;
-            tokens = filterTokens(selectedNetwork, tokens, TokenType.ALL, false);
-            for (BlockchainToken tokenFromAll : tokens) {
-                if (token.contractAddress.equals(tokenFromAll.contractAddress)) {
-                    isCustom = false;
-                    break;
-                }
-            }
-            callback.call(isCustom);
-        });
     }
 
     /**
@@ -342,70 +216,4 @@ public class TokenUtils {
                 && token1.contractAddress.equalsIgnoreCase(token2.contractAddress);
     }
 
-    public static void getExactUserAsset(BraveWalletService braveWalletService,
-            NetworkInfo selectedNetwork, int coinType, String assetSymbol, String assetName,
-            String assetId, String contractAddress, int assetDecimals,
-            Callback<BlockchainToken> callback) {
-        getVisibleUserAssetsFiltered(
-                braveWalletService, selectedNetwork, coinType, TokenType.ALL, userAssets -> {
-                    BlockchainToken resultToken = null;
-                    for (BlockchainToken userAsset : userAssets) {
-                        if (selectedNetwork.chainId.equals(userAsset.chainId)
-                                && assetSymbol.equals(userAsset.symbol)
-                                && assetName.equals(userAsset.name)
-                                && (assetId.isEmpty() || assetId.equals(userAsset.tokenId))
-                                && contractAddress.equals(userAsset.contractAddress)
-                                && assetDecimals == userAsset.decimals) {
-                            resultToken = userAsset;
-                        }
-                    }
-
-                    callback.onResult(resultToken);
-                });
-    }
-
-    private static final Comparator<BlockchainToken> blockchainTokenComparatorPerGasOrBatType =
-            (token1, token2) -> {
-        boolean isNativeToken1 = AssetUtils.isNativeToken(token1);
-        boolean isNativeToken2 = AssetUtils.isNativeToken(token2);
-        boolean isBatToken1 = AssetUtils.isBatToken(token1);
-        boolean isBatToken2 = AssetUtils.isBatToken(token2);
-        if (isNativeToken1 && !isNativeToken2)
-            return -1;
-        else if (!isNativeToken1 && isNativeToken2)
-            return 1;
-        else if (isBatToken1 && !isBatToken2)
-            return -1;
-        else if (!isBatToken1 && isBatToken2)
-            return 1;
-        else
-            return token1.symbol.compareTo(token2.symbol);
-    };
-
-    // Returns an array of available assets <b>per ramp provider</b> and removes duplicates with the
-    // same contract address using case insensitive contractAddress comparison.
-    // The `getProvidersBuyTokens` API can return a merged list containing the available assets
-    // <b>per ramp provider</b>. It's not unusual to have the same asset multiple times with the
-    // same contract address all upper case from a ramp provider and all lower case from another
-    // one. Thus it's important to compare the contract addresses ignoring case.
-    private static BlockchainToken[] removeDuplicates(BlockchainToken[] tokens) {
-        List<BlockchainToken> result = new ArrayList<>();
-        for (BlockchainToken item : tokens) {
-            String contractAddress = item.contractAddress;
-            boolean duplicate = false;
-            for (BlockchainToken itemResult : result) {
-                // IMPORTANT: use `equalsIgnoreCase` to detect two contract addresses with different
-                // capitalization.
-                if (contractAddress.equalsIgnoreCase(itemResult.contractAddress)) {
-                    duplicate = true;
-                    break;
-                }
-            }
-            // Do not add duplicated item.
-            if (!duplicate) {
-                result.add(item);
-            }
-        }
-        return result.toArray(new BlockchainToken[0]);
-    }
 }
