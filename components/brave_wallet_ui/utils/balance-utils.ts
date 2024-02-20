@@ -4,7 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import { TokenBalancesRegistry } from '../common/slices/entities/token-balance.entity'
+import {
+  EmptyTokenBalancesRegistry,
+  TokenBalancesRegistry
+} from '../common/slices/entities/token-balance.entity'
 import { BraveWallet } from '../constants/types'
 
 // utils
@@ -89,4 +92,8 @@ export function setBalance(
 
   const chainBalances = accountBalances.chains[chainId]
   chainBalances.tokenBalances[contractAddress.toLowerCase()] = balance
+}
+
+export function CreateEmptyTokenBalancesRegistry() {
+  return structuredClone(EmptyTokenBalancesRegistry)
 }
