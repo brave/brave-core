@@ -30,6 +30,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -169,6 +170,15 @@ class KeyringServiceUnitTest : public testing::Test {
   content::BrowserContext* browser_context() { return profile_.get(); }
 
   JsonRpcService* json_rpc_service() { return json_rpc_service_; }
+
+  std::unique_ptr<TxService> tx_service(KeyringService* service) {
+    return std::make_unique<TxService>(
+        json_rpc_service(),
+        nullptr,  // BitcoinWalletService
+        nullptr,  // ZCashWalletService
+        service, GetPrefs(), browser_context()->GetPath(),
+        base::SequencedTaskRunner::GetCurrentDefault());
+  }
 
   network::TestURLLoaderFactory& url_loader_factory() {
     return url_loader_factory_;
@@ -1967,7 +1977,8 @@ TEST_F(KeyringServiceUnitTest, RestoreLegacyBraveWallet) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      tx_service(&service).get(), nullptr, nullptr, GetPrefs(), GetLocalState(),
+      false);
   auto verify_restore_wallet = base::BindLambdaForTesting(
       [&service](const char* mnemonic, const char* address, bool is_legacy,
                  bool expect_result) {
@@ -3543,7 +3554,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      tx_service(&service).get(), nullptr, nullptr, GetPrefs(), GetLocalState(),
+      false);
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3581,7 +3593,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      tx_service(&service).get(), nullptr, nullptr, GetPrefs(), GetLocalState(),
+      false);
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3621,7 +3634,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      tx_service(&service).get(), nullptr, nullptr, GetPrefs(), GetLocalState(),
+      false);
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3666,10 +3680,10 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
   BitcoinWalletService bitcoin_wallet_service(
       &service, GetPrefs(), bitcoin_test_rpc_server.GetURLLoaderFactory());
 
-  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
-                                          &service, json_rpc_service(), nullptr,
-                                          &bitcoin_wallet_service, nullptr,
-                                          GetPrefs(), GetLocalState(), false);
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
+      tx_service(&service).get(), &bitcoin_wallet_service, nullptr, GetPrefs(),
+      GetLocalState(), false);
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc({});
   BitcoinKeyring keyring_84(false);
@@ -3748,7 +3762,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      tx_service(&service).get(), nullptr, nullptr, GetPrefs(), GetLocalState(),
+      false);
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3788,7 +3803,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      tx_service(&service).get(), nullptr, nullptr, GetPrefs(), GetLocalState(),
+      false);
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3849,7 +3865,8 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      tx_service(&service).get(), nullptr, nullptr, GetPrefs(), GetLocalState(),
+      false);
 
   std::vector<std::string> requested_addresses;
   bool first_restore = true;
