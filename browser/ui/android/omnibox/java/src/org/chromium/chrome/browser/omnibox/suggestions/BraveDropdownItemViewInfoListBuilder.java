@@ -128,18 +128,24 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
             final PropertyModel leoModel = mBraveLeoSuggestionProcessor.createModel();
             mBraveLeoSuggestionProcessor.populateModel(leoModel);
             var newMatches = autocompleteResult.getSuggestionsList();
-            GroupConfig config = GroupConfig.getDefaultInstance();
-            if (newMatches.size() > 0) {
-                int currentGroupId = newMatches.get(newMatches.size() - 1).getGroupId();
-                config =
-                        autocompleteResult
-                                .getGroupsInfo()
-                                .getGroupConfigsOrDefault(
-                                        currentGroupId, GroupConfig.getDefaultInstance());
+
+            GroupConfig config;
+            int tileNavSuggestPosition = getTileNavSuggestPosition(viewInfoList);
+
+            // We would like to get Leo position above the most visited tiles
+            // and get into the same group as the item right above, if any exists.
+            // This way we will have a rounded corners around all the group
+            // including the suggestion
+            if (tileNavSuggestPosition > 0) {
+                DropdownItemViewInfo itemAbove = viewInfoList.get(tileNavSuggestPosition - 1);
+                config = itemAbove.groupConfig;
+            } else {
+                // There is no any item above nav suggest tiles, so use the default
+                config = GroupConfig.getDefaultInstance();
             }
 
             viewInfoList.add(
-                    getTileNavSuggestPosition(viewInfoList),
+                    tileNavSuggestPosition,
                     new DropdownItemViewInfo(mBraveLeoSuggestionProcessor, leoModel, config));
         }
         if (isBraveSearchPromoBanner()) {
