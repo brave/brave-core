@@ -75,14 +75,14 @@ class RunableConfiguration:
   common_options: CommonOptions
   benchmarks: List[BenchmarkConfig]
   config: RunnerConfig
-  binary: Optional[BrowserBinary] = None
+  binary: BrowserBinary
   out_dir: str
 
   status_line: str = ''
   logs: List[str] = []
 
   def __init__(self, config: RunnerConfig, benchmarks: List[BenchmarkConfig],
-               binary: Optional[BrowserBinary], out_dir: str,
+               binary: BrowserBinary, out_dir: str,
                common_options: CommonOptions):
     self.config = config
     self.benchmarks = benchmarks
@@ -91,9 +91,17 @@ class RunableConfiguration:
     self.common_options = common_options
     self.custom_perf_handlers = {'apk_size': self.RunApkSize}
 
+  def Install(self):
+    if self.common_options.is_android and self.binary.binary_path is not None:
+      if self.config.version is not None:
+        expected_version = None
+        if self.config.browser_type.is_brave:
+          expected_version = self.config.version.last_tag
+        else:
+          expected_version = self.config.version.chromium_version.to_string()
+        self.binary.install_apk(expected_version)
 
   def RebaseProfile(self) -> bool:
-    assert self.binary is not None
     if (self.binary.profile_dir is None
         or self.config.profile_rebase == ProfileRebaseType.NONE):
       return True
@@ -119,7 +127,6 @@ class RunableConfiguration:
     return result
 
   def RunApkSize(self, out_dir: str):
-    assert self.binary is not None
     assert self.binary.binary_path is not None
     assert out_dir is not None
     os.makedirs(out_dir, exist_ok=True)
@@ -142,7 +149,6 @@ class RunableConfiguration:
                     out_dir: str,
                     local_run: bool,
                     timeout: Optional[int] = None) -> bool:
-    assert self.binary
     args = [path_util.GetVpython3Path()]
     args.append(os.path.join(path_util.GetChromiumPerfDir(), 'run_benchmark'))
 
@@ -175,9 +181,8 @@ class RunableConfiguration:
     if self.binary.profile_dir:
       args.append(f'--profile-dir={self.binary.profile_dir}')
 
-    assert self.binary
-    if self.binary.telemetry_browser_type is not None:
-      args.append(f'--browser={self.binary.telemetry_browser_type}')
+    if self.binary.telemetry_browser_type() is not None:
+      args.append(f'--browser={self.binary.telemetry_browser_type()}')
     elif self.binary.binary_path is not None:
       args.append('--browser=exact')
       args.append(f'--browser-executable={self.binary.binary_path}')
@@ -226,7 +231,6 @@ class RunableConfiguration:
     return status_line
 
   def RunTests(self) -> bool:
-    assert self.binary is not None
     has_failure = False
 
     if not self.RebaseProfile():
@@ -282,8 +286,9 @@ class RunableConfiguration:
     run_tests_ok = True
     report_ok = True
 
-    if self.common_options.do_run_tests:
-      run_tests_ok = self.RunTests()
+    self.Install()
+
+    run_tests_ok = self.RunTests()
     if self.common_options.do_report:
       if run_tests_ok or self.common_options.report_on_failure:
         report_ok = self.ReportToDashboard()
@@ -310,16 +315,14 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
                               config.label)
     artifacts_dir = os.path.join(common_options.working_directory, 'artifacts',
                                  config.label)
-    binary: Optional[BrowserBinary] = None
 
-    if common_options.do_run_tests:
-      shutil.rmtree(binary_dir, True)
-      shutil.rmtree(artifacts_dir, True)
-      os.makedirs(binary_dir)
-      os.makedirs(artifacts_dir)
-      binary = PrepareBinary(binary_dir, artifacts_dir, config, common_options)
-      logging.info('%s binary: %s artifacts: %s', config.label, binary,
-                   artifacts_dir)
+    shutil.rmtree(binary_dir, True)
+    shutil.rmtree(artifacts_dir, True)
+    os.makedirs(binary_dir)
+    os.makedirs(artifacts_dir)
+    binary = PrepareBinary(binary_dir, artifacts_dir, config, common_options)
+    logging.info('%s binary: %s artifacts: %s', config.label, binary,
+                 artifacts_dir)
     runable_configurations.append(
         RunableConfiguration(config, benchmarks, binary, artifacts_dir,
                              common_options))
