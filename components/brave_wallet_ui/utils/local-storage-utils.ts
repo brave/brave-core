@@ -11,13 +11,13 @@ import {
   PanelTypes
 } from '../constants/types'
 import {
-  EmptyTokenBalancesRegistry,
   TokenBalancesRegistry //
 } from '../common/slices/entities/token-balance.entity'
 
 // utils
 import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
+import { createEmptyTokenBalancesRegistry } from './balance-utils'
 
 export const parseJSONFromLocalStorage = <T = any>(
   storageString: keyof typeof LOCAL_STORAGE_KEYS,
@@ -130,7 +130,7 @@ export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
     )
   } catch (error) {
     console.error(error)
-    return EmptyTokenBalancesRegistry
+    return createEmptyTokenBalancesRegistry()
   }
 }
 

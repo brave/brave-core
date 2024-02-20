@@ -90,3 +90,9 @@ export function setBalance(
   const chainBalances = accountBalances.chains[chainId]
   chainBalances.tokenBalances[contractAddress.toLowerCase()] = balance
 }
+
+export function createEmptyTokenBalancesRegistry(): TokenBalancesRegistry {
+  return {
+    accounts: {}
+  }
+}

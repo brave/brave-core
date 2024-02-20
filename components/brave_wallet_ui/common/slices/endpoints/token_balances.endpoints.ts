@@ -25,15 +25,16 @@ import {
   isNativeAsset
 } from '../../../utils/asset-utils'
 import { handleEndpointError } from '../../../utils/api-utils'
-import { getAccountBalancesKey, setBalance } from '../../../utils/balance-utils'
+import {
+  createEmptyTokenBalancesRegistry,
+  getAccountBalancesKey,
+  setBalance
+} from '../../../utils/balance-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import { cacher } from '../../../utils/query-cache-utils'
 import { networkEntityAdapter } from '../entities/network.entity'
-import {
-  EmptyTokenBalancesRegistry,
-  TokenBalancesRegistry
-} from '../entities/token-balance.entity'
+import { TokenBalancesRegistry } from '../entities/token-balance.entity'
 import { baseQueryFunction } from '../../async/base-query-cache'
 import {
   getPersistedPortfolioTokenBalances,
@@ -222,7 +223,7 @@ export const tokenBalancesEndpoints = ({
           zcashWalletService
         } = api
 
-        const tokenBalancesRegistry = EmptyTokenBalancesRegistry
+        const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
         const includeRewardsBalance = arg.networks.some(getIsRewardsNetwork)
 
@@ -882,7 +883,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
     balance: string
   ) => void | Promise<void>
 }): Promise<TokenBalancesRegistry> {
-  const tokenBalancesRegistry = EmptyTokenBalancesRegistry
+  const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
   await eachLimit(args, 1, async (arg: GetTokenBalancesForChainIdArg) => {
     await fetchAccountTokenBalanceRegistryForChainId({
