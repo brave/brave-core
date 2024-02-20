@@ -70,7 +70,7 @@ class PlaylistTabHelper
 
   // |found_items| contains items with blob: url pointing at MediaSource Object.
   bool ShouldExtractMediaFromBackgroundWebContents() const;
-  void ExtractMediaFromBackgroundWebContents(
+  void MaybeExtractMediaFromBackgroundWebContents(
       base::OnceCallback<void(bool)> callback);
 
   // content::WebContentsObserver:
