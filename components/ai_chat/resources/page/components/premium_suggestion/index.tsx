@@ -42,12 +42,18 @@ const featuresList = [
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
   const context = React.useContext(DataContext)
+  const buttonRef = React.useRef<HTMLButtonElement>()
 
   const pricingInfo = formatMessage(getLocale('premiumPricing'), {
     placeholders: {
       $1: <data>15</data>
     }
   })
+
+  React.useEffect(() => {
+    if (buttonRef.current === undefined) return
+    buttonRef.current.scrollIntoView({ behavior: 'smooth' })
+  }, [])
 
   return (
     <div className={styles.boxPremium}>
@@ -84,7 +90,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
         </div>
       )}
       <div className={styles.actions}>
-        <Button onClick={context.goPremium}>
+        <Button onClick={context.goPremium} ref={buttonRef}>
           {getLocale('upgradeButtonLabel')}
         </Button>
         {props.secondaryActionButton}
