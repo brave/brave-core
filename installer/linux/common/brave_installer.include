@@ -13,4 +13,9 @@ brave_stage_install_common() {
   cp -a "${OUTPUTDIR}/resources/brave_extension/_locales" "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension"
   find "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension/_locales" -type f -exec chmod 644 '{}' \;
   find "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension/_locales" -type d -exec chmod 755 '{}' \;
+
+  # bundle adblock list catalog
+  install -d -m 755 "${STAGEDIR}/${INSTALLDIR}/gkboaolpopklhgplhaaiboijnklogmbc"
+  install -m 644 "${OUTPUTDIR}/gkboaolpopklhgplhaaiboijnklogmbc/list_catalog.json" "${STAGEDIR}/${INSTALLDIR}/gkboaolpopklhgplhaaiboijnklogmbc/list_catalog.json"
+  install -m 644 "${OUTPUTDIR}/gkboaolpopklhgplhaaiboijnklogmbc/manifest.json" "${STAGEDIR}/${INSTALLDIR}/gkboaolpopklhgplhaaiboijnklogmbc/manifest.json"
 }

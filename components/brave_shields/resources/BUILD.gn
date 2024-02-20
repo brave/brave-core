@@ -30,3 +30,24 @@ bundle_js("bundle_js_domain_block_interstitial") {
     "//ui/webui/resources/js:build_ts",
   ]
 }
+
+copy("resources") {
+  sources = [
+    "//brave/third_party/adblock-resources/src/filter_lists/list_catalog.json",
+    "//brave/third_party/adblock-resources/src/filter_lists/manifest.json",
+  ]
+
+  outputs =
+      [ "$root_out_dir/gkboaolpopklhgplhaaiboijnklogmbc/{{source_file_part}}" ]
+}
+
+if (is_mac) {
+  bundle_data("bundle_mac_resources") {
+    public_deps = [ ":resources" ]
+    sources = [
+      "$root_out_dir/gkboaolpopklhgplhaaiboijnklogmbc/list_catalog.json",
+      "$root_out_dir/gkboaolpopklhgplhaaiboijnklogmbc/manifest.json",
+    ]
+    outputs = [ "{{bundle_contents_dir}}/Libraries/gkboaolpopklhgplhaaiboijnklogmbc/{{source_file_part}}" ]
+  }
+}

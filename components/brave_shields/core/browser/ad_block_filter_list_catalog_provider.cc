@@ -11,6 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
+#include "components/component_updater/component_updater_service.h"
 
 constexpr char kListCatalogFile[] = "list_catalog.json";
 
