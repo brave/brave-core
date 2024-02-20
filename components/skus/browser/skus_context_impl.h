@@ -12,12 +12,8 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"
-
-class PrefService;
-
-namespace network {
-class SharedURLLoaderFactory;
-}  // namespace network
+#include "brave/components/skus/browser/skus_service_impl.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace skus {
 class SkusUrlLoader;
@@ -38,21 +34,38 @@ class SkusContextImpl : public SkusContext {
   SkusContextImpl& operator=(const SkusContextImpl&) = delete;
 
   explicit SkusContextImpl(
-      PrefService* prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      std::unique_ptr<network::PendingSharedURLLoaderFactory>
+          pending_url_loader_factory,
+      scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
+      base::WeakPtr<SkusServiceImpl>);
   ~SkusContextImpl() override;
 
   std::unique_ptr<skus::SkusUrlLoader> CreateFetcher() const override;
-  std::string GetValueFromStore(std::string key) const override;
-  void PurgeStore() const override;
-  void UpdateStoreValue(std::string key, std::string value) const override;
+  void GetValueFromStore(
+      const std::string& key,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
+                                rust::String value,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const override;
+  void PurgeStore(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool success)>
+          done,
+      rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const override;
+  void UpdateStoreValue(
+      const std::string& key,
+      const std::string& value,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
+                                bool success)> done,
+      rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const override;
 
  private:
-  // used to store the credential
-  const raw_ref<PrefService> prefs_;
-
+  SEQUENCE_CHECKER(sequence_checker_);
   // used for making requests to SKU server
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  mutable std::unique_ptr<network::PendingSharedURLLoaderFactory>
+      pending_url_loader_factory_ GUARDED_BY_CONTEXT(sequence_checker_);
+  scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
+  base::WeakPtr<SkusServiceImpl> skus_service_;
 };
 
 }  // namespace skus
