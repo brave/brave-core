@@ -207,6 +207,8 @@ pub enum MimeType {
     TextHtml,
     /// `"application/javascript"`
     ApplicationJavascript,
+    /// `"application/json"`
+    ApplicationJson,
     /// `"audio/mp3"`
     AudioMp3,
     /// `"video/mp4"`
@@ -234,6 +236,7 @@ impl MimeType {
                 "gif" => MimeType::ImageGif,
                 "html" => MimeType::TextHtml,
                 "js" => MimeType::ApplicationJavascript,
+                "json" => MimeType::ApplicationJson,
                 "mp3" => MimeType::AudioMp3,
                 "mp4" => MimeType::VideoMp4,
                 "png" => MimeType::ImagePng,
@@ -256,6 +259,7 @@ impl MimeType {
             self,
             Self::ApplicationJavascript
                 | Self::FnJavascript
+                | Self::ApplicationJson
                 | Self::TextCss
                 | Self::TextPlain
                 | Self::TextHtml
@@ -276,6 +280,7 @@ impl From<&str> for MimeType {
             "image/gif" => MimeType::ImageGif,
             "text/html" => MimeType::TextHtml,
             "application/javascript" => MimeType::ApplicationJavascript,
+            "application/json" => MimeType::ApplicationJson,
             "audio/mp3" => MimeType::AudioMp3,
             "video/mp4" => MimeType::VideoMp4,
             "image/png" => MimeType::ImagePng,
@@ -294,6 +299,7 @@ impl From<&MimeType> for &str {
             MimeType::ImageGif => "image/gif",
             MimeType::TextHtml => "text/html",
             MimeType::ApplicationJavascript => "application/javascript",
+            MimeType::ApplicationJson => "application/json",
             MimeType::AudioMp3 => "audio/mp3",
             MimeType::VideoMp4 => "video/mp4",
             MimeType::ImagePng => "image/png",
