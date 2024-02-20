@@ -194,8 +194,11 @@ if (is_android) {
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/website_loads_faster.json",
       "//brave/android/java/org/chromium/chrome/browser/shields/disconnect_entitylist.json",
       "//brave/android/java/org/chromium/chrome/browser/vpn/brave_vpn_confirm.json",
+      "$root_out_dir/gkboaolpopklhgplhaaiboijnklogmbc/list_catalog.json",
     ]
     disable_compression = false
+
+    deps = [ "//brave/components/brave_shields/resources:resources" ]
   }
 
   android_assets("brave_pak_assets") {
@@ -212,6 +215,7 @@ if (is_android) {
 if (is_mac) {
   group("framework_bundle_data") {
     deps = [
+      "components/brave_shields/resources:bundle_mac_resources",
       "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data",
       "//brave/build/rust:framework_exports",
     ]
