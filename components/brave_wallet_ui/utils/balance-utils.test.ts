@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
-  CreateEmptyTokenBalancesRegistry,
+  createEmptyTokenBalancesRegistry,
   getBalance,
   getPercentAmount,
   setBalance
@@ -20,7 +20,7 @@ import {
 
 describe('getBalance', () => {
   it('gets a balance of a token for a given account', () => {
-    const tokenBalancesRegistry = CreateEmptyTokenBalancesRegistry()
+    const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
     setBalance(
       mockAccount.accountId,
       mockBasicAttentionToken.chainId,
@@ -39,7 +39,7 @@ describe('getBalance', () => {
   })
 
   it('returns zero balance if address is unknown', () => {
-    const tokenBalancesRegistry = CreateEmptyTokenBalancesRegistry()
+    const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
     setBalance(
       { uniqueKey: '0xdeadbeef' },
       mockBasicAttentionToken.chainId,
@@ -58,7 +58,7 @@ describe('getBalance', () => {
   })
 
   it('returns zero balance if chainId is unknown', () => {
-    const tokenBalancesRegistry = CreateEmptyTokenBalancesRegistry()
+    const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
     setBalance(
       mockAccount.accountId,
       '0xdeadbeef',
@@ -77,7 +77,7 @@ describe('getBalance', () => {
   })
 
   it('returns zero balance if token contract is unknown', () => {
-    const tokenBalancesRegistry = CreateEmptyTokenBalancesRegistry()
+    const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
     setBalance(
       mockAccount.accountId,
       mockBasicAttentionToken.chainId,
@@ -119,7 +119,7 @@ describe('getPercentAmount', () => {
   ])(
     'should compute %s correctly',
     (_, balance: string, percent, expected: string) => {
-      const tokenBalancesRegistry = CreateEmptyTokenBalancesRegistry()
+      const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
       setBalance(
         mockAccount.accountId,
         mockERC20Token.chainId,

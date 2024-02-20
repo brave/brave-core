@@ -26,7 +26,7 @@ import {
 } from '../../../utils/asset-utils'
 import { handleEndpointError } from '../../../utils/api-utils'
 import {
-  CreateEmptyTokenBalancesRegistry,
+  createEmptyTokenBalancesRegistry,
   getAccountBalancesKey,
   setBalance
 } from '../../../utils/balance-utils'
@@ -223,7 +223,7 @@ export const tokenBalancesEndpoints = ({
           zcashWalletService
         } = api
 
-        const tokenBalancesRegistry = CreateEmptyTokenBalancesRegistry()
+        const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
         const includeRewardsBalance = arg.networks.some(getIsRewardsNetwork)
 
@@ -883,7 +883,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
     balance: string
   ) => void | Promise<void>
 }): Promise<TokenBalancesRegistry> {
-  const tokenBalancesRegistry = CreateEmptyTokenBalancesRegistry()
+  const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
   await eachLimit(args, 1, async (arg: GetTokenBalancesForChainIdArg) => {
     await fetchAccountTokenBalanceRegistryForChainId({

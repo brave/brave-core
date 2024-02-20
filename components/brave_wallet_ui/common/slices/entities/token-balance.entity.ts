@@ -14,8 +14,3 @@ export type AccountBalances = {
 export type TokenBalancesRegistry = {
   accounts: Record<string, AccountBalances> // key = uniqueKey
 }
-
-export const EmptyTokenBalancesRegistry: TokenBalancesRegistry = {
-  accounts: {}
-}
-
