@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/component_updater/mock_component_updater_service.h"
@@ -98,11 +99,18 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     json_rpc_service_ = std::make_unique<brave_wallet::JsonRpcService>(
         shared_url_loader_factory_, &prefs_);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    tx_service_ = std::make_unique<TxService>(
+        json_rpc_service_.get(),
+        nullptr,  // BitcoinWalletService
+        nullptr,  // ZCashWalletService
+        keyring_service_.get(), &prefs_, temp_dir_.GetPath(),
+        base::SequencedTaskRunner::GetCurrentDefault());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         std::make_unique<MockBraveWalletServiceDelegateImpl>(),
-        keyring_service_.get(), json_rpc_service_.get(), nullptr, nullptr,
-        nullptr, &prefs_, &local_state_, false);
+        keyring_service_.get(), json_rpc_service_.get(), tx_service_.get(),
+        nullptr, nullptr, &prefs_, &local_state_, false);
 
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
     installer().SetDelegate(
@@ -227,9 +235,11 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
+  std::unique_ptr<TxService> tx_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
   base::ScopedTempDir install_dir_;
+  base::ScopedTempDir temp_dir_;
 };
 
 TEST_F(WalletDataFilesInstallerUnitTest,
