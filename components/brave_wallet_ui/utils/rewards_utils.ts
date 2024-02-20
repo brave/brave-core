@@ -26,11 +26,15 @@ export const getRewardsProviderName = (provider?: string) => {
 
   const capitalized = provider.charAt(0).toUpperCase() + provider.slice(1)
   const localeString = `braveWallet${capitalized}`
-  const foundLocale = getLocale(localeString)
-  // If getLocale returns the string it was passed, that means
-  // no localization string was found. So we return the
-  // provider in that case.
-  return foundLocale === localeString ? provider : foundLocale
+  try {
+    const foundLocale = getLocale(localeString)
+    // If getLocale returns the string it was passed, that means
+    // no localization string was found. So we return the
+    // provider in that case.
+    return foundLocale === localeString ? provider : foundLocale
+  } catch (error) {
+    return provider
+  }
 }
 
 export const getRewardsAccountName = (provider?: string) => {
