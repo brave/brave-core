@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/rotating_hash_user_data_util.h"
 
-#include <cinttypes>
 #include <cstdint>
+#include <vector>
 
 #include "base/base64.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
@@ -25,12 +26,13 @@ std::optional<std::string> BuildRotatingHash(
     return std::nullopt;
   }
 
-  const int64_t timestamp_in_hours =
-      base::Time::Now().ToDeltaSinceWindowsEpoch().InHours();
+  const std::string hours = base::NumberToString(
+      base::Time::Now().ToDeltaSinceWindowsEpoch().InHours());
 
-  return base::Base64Encode(crypto::Sha256(base::StringPrintf(
-      "%s%s%" PRId64, device_id.c_str(),
-      transaction.creative_instance_id.c_str(), timestamp_in_hours)));
+  const std::vector<uint8_t> rotating_hash = crypto::Sha256(
+      base::StrCat({device_id, transaction.creative_instance_id, hours}));
+
+  return base::Base64Encode(rotating_hash);
 }
 
 }  // namespace brave_ads

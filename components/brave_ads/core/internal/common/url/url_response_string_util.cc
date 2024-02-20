@@ -26,8 +26,8 @@ std::string HeadersToString(
   const std::string spaces(indent, ' ');
 
   for (const auto& [header, value] : headers) {
-    formatted_headers.push_back(base::StringPrintf(
-        "%s%s: %s", spaces.c_str(), header.c_str(), value.c_str()));
+    formatted_headers.push_back(base::ReplaceStringPlaceholders(
+        "$1$2: $3", {spaces, header, value}, nullptr));
   }
 
   return base::JoinString(formatted_headers, "\n");
