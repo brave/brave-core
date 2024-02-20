@@ -198,14 +198,17 @@ bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
   return service_->ShouldExtractMediaFromBackgroundWebContents(found_items());
 }
 
-void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
+void PlaylistTabHelper::MaybeExtractMediaFromBackgroundWebContents(
     base::OnceCallback<void(bool)> callback) {
   if (!ShouldExtractMediaFromBackgroundWebContents()) {
     std::move(callback).Run(true);
     return;
   }
 
-  CHECK(!background_web_contents_);
+  if (background_web_contents_) {
+    // in progress...
+    return;
+  }
 
   const GURL url = web_contents()->GetLastCommittedURL();
 
