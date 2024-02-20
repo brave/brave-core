@@ -170,6 +170,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
+  private let walletP3A: BraveWalletBraveWalletP3A
   private var cancellable: AnyCancellable?
   private let keychain: KeychainType
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -183,11 +184,13 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     keyringService: BraveWalletKeyringService,
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
+    walletP3A: BraveWalletBraveWalletP3A,
     keychain: KeychainType = Keychain()
   ) {
     self.keyringService = keyringService
     self.walletService = walletService
     self.rpcService = rpcService
+    self.walletP3A = walletP3A
     self.keychain = keychain
 
     setupObservers()
@@ -338,7 +341,12 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   func markOnboardingCompleted() {
     self.isOnboarding = false
     self.isOnboardingVisible = false
+    reportP3AOnboarding(action: .complete)
     updateInfo()
+  }
+
+  func reportP3AOnboarding(action: BraveWallet.OnboardingAction) {
+    walletP3A.report(action)
   }
 
   func notifyWalletBackupComplete() {

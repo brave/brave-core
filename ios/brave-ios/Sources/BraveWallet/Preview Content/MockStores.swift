@@ -22,7 +22,8 @@ extension WalletStore {
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A()
     )
   }
 }
@@ -39,7 +40,8 @@ extension CryptoStore {
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A()
     )
   }
 }
@@ -91,13 +93,15 @@ extension NetworkStore {
 
 extension KeyringStore {
   static var previewStore: KeyringStore {
-    .init(keyringService: MockKeyringService(),
-          walletService: MockBraveWalletService(),
-          rpcService: MockJsonRpcService()
+    .init(
+      keyringService: MockKeyringService(),
+      walletService: MockBraveWalletService(),
+      rpcService: MockJsonRpcService(),
+      walletP3A: TestBraveWalletP3A()
     )
   }
   static var previewStoreWithWalletCreated: KeyringStore {
-    let store = KeyringStore(keyringService: MockKeyringService(), walletService: MockBraveWalletService(), rpcService: MockJsonRpcService())
+    let store = KeyringStore.previewStore
     store.createWallet(password: "password")
     return store
   }

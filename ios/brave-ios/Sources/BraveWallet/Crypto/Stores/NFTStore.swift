@@ -132,7 +132,15 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   /// Current group to display
   @Published var displayType: NFTDisplayType = .visible
   /// View model for all NFT include visible, hidden and spams
-  @Published private(set) var userNFTGroups: [NFTGroupViewModel] = []
+  @Published private(set) var userNFTGroups: [NFTGroupViewModel] = [] {
+    didSet {
+      if nftGalleryViewed, // only if user has viewed NFT gallery
+         oldValue.flatMap(\.assets).count != userNFTGroups.flatMap(\.assets).count {
+        // record NFT count change
+        recordNFTGalleryView()
+      }
+    }
+  }
   /// showing shimmering loading state when the view is fetching non-fungible tokens without fetching its metadata or balance
   @Published var isLoadingJunkNFTs: Bool = false
   
@@ -142,6 +150,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ipfsApi: IpfsAPI
+  private let walletP3A: BraveWalletBraveWalletP3A
   private let assetManager: WalletUserAssetManagerType
   private let txService: BraveWalletTxService
   private var rpcServiceObserver: JsonRpcServiceObserver?
@@ -175,6 +184,11 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     displayNFTGroups.reduce(0) { $0 + $1.assets.count }
   }
   
+  /// We record NFT gallery views with NFT count to `BraveWalletP3A`, and we also need to
+  /// update when new NFTs are added (either via auto-discovery or manual add). But we may see
+  /// list changes before user has viewed the gallery, we don't want to count those updates as a view.
+  private var nftGalleryViewed: Bool = false
+  
   public init(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
@@ -182,6 +196,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     ipfsApi: IpfsAPI,
+    walletP3A: BraveWalletBraveWalletP3A,
     userAssetManager: WalletUserAssetManagerType,
     txService: BraveWalletTxService
   ) {
@@ -191,6 +206,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
     self.ipfsApi = ipfsApi
+    self.walletP3A = walletP3A
     self.assetManager = userAssetManager
     self.txService = txService
     
@@ -612,6 +628,12 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   
   func enableNFTDiscovery() {
     walletService.setNftDiscoveryEnabled(true)
+  }
+  
+  func recordNFTGalleryView() {
+    nftGalleryViewed = true
+    let nftCount = userNFTGroups.flatMap(\.assets).count
+    walletP3A.recordNftGalleryView(Int32(nftCount))
   }
   
   func updateNFTStatus(

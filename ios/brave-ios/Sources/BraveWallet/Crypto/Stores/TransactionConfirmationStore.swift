@@ -8,6 +8,7 @@ import BraveCore
 import BigNumber
 import Strings
 import Combine
+import Preferences
 
 public class TransactionConfirmationStore: ObservableObject, WalletObserverStore {
   /// The value that are being sent/swapped/approved in this transaction
@@ -699,6 +700,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       } else if error.tag == .solanaProviderError {
         self?.transactionProviderErrorRegistry[transaction.id] = TransactionProviderError(code: error.solanaProviderError.rawValue, message: message)
       }
+      
       completion(success ? nil : message)
     }
   }
