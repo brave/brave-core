@@ -324,10 +324,10 @@ void SkusServiceImpl::GetValueFromStore(
                             rust::cxxbridge1::Box<skus::StorageGetContext>,
                             rust::String, bool)> done,
                         rust::cxxbridge1::Box<skus::StorageGetContext> ctx,
-                        std::string value, bool success) {
-                       done(std::move(ctx), ::rust::String(value), success);
+                        std::string value) {
+                       done(std::move(ctx), ::rust::String(value), true);
                      },
-                     std::move(done), std::move(ctx), result, value));
+                     std::move(done), std::move(ctx), result));
 }
 
 void SkusServiceImpl::UpdateStoreValue(
