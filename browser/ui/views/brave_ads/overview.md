@@ -22,7 +22,7 @@ For more details about the Chromium UI Platform, see [overview.md].
 
 **NotificationAdView** is a base class for layout, rendering and mouse events of notification ads.
 
-Different **NotificationAdView** subclasses are responsible for implementing their own design. i.e, see [text_notification_ad_view.h](./text_ad_notification_view.h).
+Different **NotificationAdView** subclasses are responsible for implementing their own design. i.e, see [text_notification_ad_view.h](./text_notification_ad_view.h).
 
 ## Notification Ad Background Painter
 
