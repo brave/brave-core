@@ -134,10 +134,10 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
     }
 
     private void updateSelectedNetwork(final int selectedAccountPosition) {
-        accountSelectorItemModelList.get(mPreviousSelectedIndex).isSelected(false);
+        accountSelectorItemModelList.get(mPreviousSelectedIndex).setSelected(false);
         notifyItemChanged(mPreviousSelectedIndex);
 
-        accountSelectorItemModelList.get(selectedAccountPosition).isSelected(true);
+        accountSelectorItemModelList.get(selectedAccountPosition).setSelected(true);
         mPreviousSelectedIndex = selectedAccountPosition;
         notifyItemChanged(selectedAccountPosition);
     }

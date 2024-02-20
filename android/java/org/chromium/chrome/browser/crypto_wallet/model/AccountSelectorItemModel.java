@@ -137,7 +137,7 @@ public class AccountSelectorItemModel {
         return mSelected;
     }
 
-    public void isSelected(final boolean selected) {
+    public void setSelected(final boolean selected) {
         mSelected = selected;
     }
 
