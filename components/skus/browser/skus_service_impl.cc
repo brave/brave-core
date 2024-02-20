@@ -98,7 +98,7 @@ void SkusServiceImpl::Shutdown() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // Disconnect remotes.
-  receivers_.Clear();
+  receivers_.ClearWithReason(0, "Shutting down");
 
   for (auto it = sdks_.begin(); it != sdks_.end();) {
     // CppSDK must be destroyed on the sdk task runner.
@@ -324,10 +324,10 @@ void SkusServiceImpl::GetValueFromStore(
                             rust::cxxbridge1::Box<skus::StorageGetContext>,
                             rust::String, bool)> done,
                         rust::cxxbridge1::Box<skus::StorageGetContext> ctx,
-                        std::string value) {
-                       done(std::move(ctx), ::rust::String(value), true);
+                        std::string value, bool success) {
+                       done(std::move(ctx), ::rust::String(value), success);
                      },
-                     std::move(done), std::move(ctx), result));
+                     std::move(done), std::move(ctx), result, value));
 }
 
 void SkusServiceImpl::UpdateStoreValue(
