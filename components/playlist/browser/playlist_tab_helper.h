@@ -70,14 +70,14 @@ class PlaylistTabHelper
 
   // |found_items| contains items with blob: url pointing at MediaSource Object.
   bool ShouldExtractMediaFromBackgroundWebContents() const;
-  bool IsExtractingMediaFromBackgroundWebContents() const;
   void ExtractMediaFromBackgroundWebContents(
       base::OnceCallback<void(bool)> callback);
 
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void PrimaryPageChanged(content::Page& page) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   // mojom::PlaylistMediaResponder
   void OnMediaDetected(base::Value media) override;

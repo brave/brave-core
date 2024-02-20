@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
@@ -197,10 +198,6 @@ bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
   return service_->ShouldExtractMediaFromBackgroundWebContents(found_items());
 }
 
-bool PlaylistTabHelper::IsExtractingMediaFromBackgroundWebContents() const {
-  return background_web_contents_.get();
-}
-
 void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
     base::OnceCallback<void(bool)> callback) {
   if (!ShouldExtractMediaFromBackgroundWebContents()) {
@@ -279,8 +276,13 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
       service_->GetMediaDetectorScript(url));
 }
 
-void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
+void PlaylistTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
+
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
 
   if (auto old_url =
           std::exchange(target_url_, web_contents()->GetLastCommittedURL());
@@ -468,51 +470,36 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     return;
   }
 
-  if (!items.empty() &&
-      service_->ShouldExtractMediaFromBackgroundWebContents(items)) {
-    if (IsExtractingMediaFromBackgroundWebContents()) {
-      // We don't have to update found items with |items| as they're going to
-      // be replaced.
-      return;
-    }
+  DVLOG(2) << __FUNCTION__ << " items.size(): " << items.size();
 
-    if (found_items_.size() &&
-        !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
-      // We don't want to override |found_items_| with |items| as it results in
-      // refetching.
-      return;
-    }
+  // There's no good heuristics on how to match an
+  // `is_blob_from_media_source == false` item (in `items`) against an
+  // `is_blob_from_media_source == true` item (in `found_items_`).
+  // Curently, we empty `found_items_` if it contains
+  // an `is_blob_from_media_source == true` item.
+  if (base::ranges::find(found_items_, true,
+                         &mojom::PlaylistItem::is_blob_from_media_source) !=
+      found_items_.cend()) {
+    decltype(found_items_)().swap(found_items_);
   }
 
-  DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
-
-  base::flat_map<std::string, mojom::PlaylistItemPtr*> already_found_items;
-  if (IsExtractingMediaFromBackgroundWebContents()) {
-    found_items_.clear();
-  } else {
-    for (auto& item : found_items_) {
-      already_found_items.insert({item->media_source.spec(), &item});
-    }
-  }
-
-  for (auto& new_item : items) {
-    const auto media_source = new_item->media_source.spec();
-    if (base::Contains(already_found_items, media_source)) {
-      DVLOG(2) << "The media source with url (" << media_source
-               << ") already exists so update the data";
-      (*already_found_items.at(media_source)) = std::move(new_item);
+  for (auto& item : items) {
+    const auto it = base::ranges::find_if(
+        found_items_,
+        [&](const auto& media_source) {
+          return item->media_source == media_source;
+        },
+        &mojom::PlaylistItem::media_source);
+    if (it != found_items_.cend()) {
+      *it = std::move(item);
     } else {
-      found_items_.push_back(std::move(new_item));
+      found_items_.push_back(std::move(item));
     }
   }
 
+  DVLOG(2) << __FUNCTION__ << " found_items_.size(): " << found_items_.size();
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
-  }
-
-  if (found_items_.size() &&
-      !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
-    media_extraction_from_background_web_contents_timer_.Stop();
   }
 }
 
