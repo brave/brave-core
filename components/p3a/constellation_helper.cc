@@ -12,14 +12,15 @@
 #include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_message.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -27,7 +28,23 @@ namespace p3a {
 
 namespace {
 
-constexpr std::size_t kP3AConstellationCurrentThreshold = 50;
+constexpr double kNebulaParticipationRate = 0.105;
+constexpr double kNebulaScramblingRate = 0.05;
+
+bool CheckParticipationAndScrambleForNebula(std::vector<std::string>* layers) {
+  bool should_participate = base::RandDouble() < kNebulaParticipationRate;
+  if (!should_participate) {
+    return false;
+  }
+  bool should_scramble = base::RandDouble() < kNebulaScramblingRate;
+  if (should_scramble) {
+    std::vector<uint8_t> random_buffer(30);
+    base::RandBytes(random_buffer);
+
+    (*layers)[0] = base::Base64Encode(random_buffer);
+  }
+  return true;
+}
 
 }  // namespace
 
@@ -43,13 +60,11 @@ ConstellationHelper::ConstellationHelper(
                          config),
       rand_points_manager_(
           url_loader_factory,
-          base::BindRepeating(&ConstellationHelper::HandleRandomnessData,
-                              base::Unretained(this)),
           config),
       message_callback_(message_callback),
       null_public_key_(constellation::get_ppoprf_null_public_key()) {}
 
-ConstellationHelper::~ConstellationHelper() {}
+ConstellationHelper::~ConstellationHelper() = default;
 
 void ConstellationHelper::RegisterPrefs(PrefRegistrySimple* registry) {
   StarRandomnessMeta::RegisterPrefs(registry);
@@ -61,7 +76,8 @@ void ConstellationHelper::UpdateRandomnessServerInfo(MetricLogType log_type) {
 
 bool ConstellationHelper::StartMessagePreparation(std::string histogram_name,
                                                   MetricLogType log_type,
-                                                  std::string serialized_log) {
+                                                  std::string serialized_log,
+                                                  bool is_nebula) {
   auto* rnd_server_info =
       rand_meta_manager_.GetCachedRandomnessServerInfo(log_type);
   if (rnd_server_info == nullptr) {
@@ -69,12 +85,21 @@ bool ConstellationHelper::StartMessagePreparation(std::string histogram_name,
                   "unavailable server info";
     return false;
   }
+
+  uint8_t epoch = rnd_server_info->current_epoch;
+
   std::vector<std::string> layers =
       base::SplitString(serialized_log, kP3AMessageConstellationLayerSeparator,
                         base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
 
-  uint8_t epoch = rnd_server_info->current_epoch;
+  if (!CheckParticipationAndScrambleForNebula(&layers)) {
+    // Do not send measurement since client is unable to participate,
+    // but mark the request as successful so the client does not retry
+    // transmission.
+    message_callback_.Run(histogram_name, log_type, epoch, true, nullptr);
+    return true;
+  }
 
   auto prepare_res = constellation::prepare_measurement(layers, epoch);
   if (!prepare_res.error.empty()) {
@@ -86,8 +111,11 @@ bool ConstellationHelper::StartMessagePreparation(std::string histogram_name,
   auto req = constellation::construct_randomness_request(*prepare_res.state);
 
   rand_points_manager_.SendRandomnessRequest(
-      histogram_name, log_type, rnd_server_info->current_epoch,
-      &rand_meta_manager_, std::move(prepare_res.state), req);
+      log_type, epoch, &rand_meta_manager_, req,
+      base::BindOnce(&ConstellationHelper::HandleRandomnessData,
+                     base::Unretained(this), histogram_name, log_type,
+                     rnd_server_info->current_epoch, is_nebula,
+                     std::move(prepare_res.state)));
 
   return true;
 }
@@ -96,32 +124,38 @@ void ConstellationHelper::HandleRandomnessData(
     std::string histogram_name,
     MetricLogType log_type,
     uint8_t epoch,
+    bool is_nebula,
     ::rust::Box<constellation::RandomnessRequestStateWrapper>
         randomness_request_state,
     std::unique_ptr<rust::Vec<constellation::VecU8>> resp_points,
     std::unique_ptr<rust::Vec<constellation::VecU8>> resp_proofs) {
   if (resp_points == nullptr || resp_proofs == nullptr) {
-    message_callback_.Run(histogram_name, log_type, epoch, nullptr);
+    message_callback_.Run(histogram_name, log_type, epoch, false, nullptr);
     return;
   }
   if (resp_points->empty()) {
     LOG(ERROR) << "ConstellationHelper: no points for randomness request";
-    message_callback_.Run(histogram_name, log_type, epoch, nullptr);
-    return;
-  }
-  std::string final_msg;
-  if (!ConstructFinalMessage(log_type, randomness_request_state, *resp_points,
-                             *resp_proofs, &final_msg)) {
-    message_callback_.Run(histogram_name, log_type, epoch, nullptr);
+    message_callback_.Run(histogram_name, log_type, epoch, false, nullptr);
     return;
   }
 
-  message_callback_.Run(histogram_name, log_type, epoch,
+  size_t threshold =
+      is_nebula ? kNebulaThreshold : kConstellationDefaultThreshold;
+
+  std::string final_msg;
+  if (!ConstructFinalMessage(log_type, threshold, randomness_request_state,
+                             *resp_points, *resp_proofs, &final_msg)) {
+    message_callback_.Run(histogram_name, log_type, epoch, false, nullptr);
+    return;
+  }
+
+  message_callback_.Run(histogram_name, log_type, epoch, true,
                         std::make_unique<std::string>(final_msg));
 }
 
 bool ConstellationHelper::ConstructFinalMessage(
     MetricLogType log_type,
+    size_t threshold,
     rust::Box<constellation::RandomnessRequestStateWrapper>&
         randomness_request_state,
     const rust::Vec<constellation::VecU8>& resp_points,
