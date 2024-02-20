@@ -57,7 +57,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.components.embedder_support.util.BraveUrlConstants;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -124,54 +123,55 @@ public class BraveWalletPanel implements DialogInterface {
         mContext = mAnchorViewHost.getContext();
         mActivity = BraveActivity.getChromeTabbedActivity();
 
-        mDefaultNetworkObserver = networkInfo -> {
-            mSelectedNetwork = networkInfo;
-            mBtnSelectedNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
+        mDefaultNetworkObserver =
+                networkInfo -> {
+                    mSelectedNetwork = networkInfo;
+                    mBtnSelectedNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
 
-            BlockchainToken asset = Utils.makeNetworkAsset(mSelectedNetwork);
-            final AssetRatioService assetRatioService = mWalletModel.getAssetRatioService();
-            final JsonRpcService jsonRpcService = mWalletModel.getJsonRpcService();
-            if (assetRatioService == null || jsonRpcService == null) {
-                return;
-            }
-            AssetsPricesHelper.fetchPrices(
-                    assetRatioService,
-                    new BlockchainToken[] {asset},
-                    assetPrices ->
-                            BalanceHelper.getNativeAssetsBalances(
-                                    jsonRpcService,
-                                    mSelectedNetwork,
-                                    new AccountInfo[] {mSelectedAccount},
-                                    (coinType, nativeAssetsBalances) -> {
-                                        double price =
-                                                Utils.getOrDefault(
-                                                        assetPrices,
-                                                        asset.symbol.toLowerCase(
-                                                                Locale.getDefault()),
-                                                        0.0d);
-                                        double balance =
-                                                Utils.getOrDefault(
-                                                        nativeAssetsBalances,
-                                                        mSelectedAccount.address
-                                                                .toLowerCase(
-                                                                        Locale
-                                                                                .getDefault()),
-                                                        0.0d);
-                                        String fiatBalanceString =
-                                                String.format(
-                                                        Locale.getDefault(),
-                                                        "$%,.2f",
-                                                        balance * price);
-                                        String cryptoBalanceString =
-                                                String.format(
-                                                        Locale.getDefault(),
-                                                        "%.4f %s",
-                                                        balance,
-                                                        mSelectedNetwork.symbol);
-                                        mAmountAsset.setText(cryptoBalanceString);
-                                        mAmountFiat.setText(fiatBalanceString);
-                                    }));
-        };
+                    BlockchainToken asset = Utils.makeNetworkAsset(mSelectedNetwork);
+                    final AssetRatioService assetRatioService = mWalletModel.getAssetRatioService();
+                    final JsonRpcService jsonRpcService = mWalletModel.getJsonRpcService();
+                    if (assetRatioService == null || jsonRpcService == null) {
+                        return;
+                    }
+                    AssetsPricesHelper.fetchPrices(
+                            assetRatioService,
+                            new BlockchainToken[] {asset},
+                            assetPrices ->
+                                    BalanceHelper.getNativeAssetsBalances(
+                                            jsonRpcService,
+                                            mSelectedNetwork,
+                                            new AccountInfo[] {mSelectedAccount},
+                                            (coinType, nativeAssetsBalances) -> {
+                                                double price =
+                                                        Utils.getOrDefault(
+                                                                assetPrices,
+                                                                asset.symbol.toLowerCase(
+                                                                        Locale.getDefault()),
+                                                                0.0d);
+                                                double balance =
+                                                        Utils.getOrDefault(
+                                                                nativeAssetsBalances,
+                                                                mSelectedAccount.address
+                                                                        .toLowerCase(
+                                                                                Locale
+                                                                                        .getDefault()),
+                                                                0.0d);
+                                                String fiatBalanceString =
+                                                        String.format(
+                                                                Locale.getDefault(),
+                                                                "$%,.2f",
+                                                                balance * price);
+                                                String cryptoBalanceString =
+                                                        String.format(
+                                                                Locale.getDefault(),
+                                                                "%.4f %s",
+                                                                balance,
+                                                                mSelectedNetwork.symbol);
+                                                mAmountAsset.setText(cryptoBalanceString);
+                                                mAmountFiat.setText(fiatBalanceString);
+                                            }));
+                };
 
         mAllAccountsInfoObserver =
                 allAccountsInfo -> {
