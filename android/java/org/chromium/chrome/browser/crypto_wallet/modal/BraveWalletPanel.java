@@ -127,6 +127,50 @@ public class BraveWalletPanel implements DialogInterface {
         mDefaultNetworkObserver = networkInfo -> {
             mSelectedNetwork = networkInfo;
             mBtnSelectedNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
+
+                BlockchainToken asset = Utils.makeNetworkAsset(mSelectedNetwork);
+                final AssetRatioService assetRatioService = mWalletModel.getAssetRatioService();
+                final JsonRpcService jsonRpcService = mWalletModel.getJsonRpcService();
+                if (assetRatioService == null || jsonRpcService == null) {
+                    return;
+                }
+                AssetsPricesHelper.fetchPrices(
+                        assetRatioService,
+                        new BlockchainToken[] {asset},
+                        assetPrices ->
+                                BalanceHelper.getNativeAssetsBalances(
+                                        jsonRpcService,
+                                        mSelectedNetwork,
+                                        new AccountInfo[] {mSelectedAccount},
+                                        (coinType, nativeAssetsBalances) -> {
+                                            double price =
+                                                    Utils.getOrDefault(
+                                                            assetPrices,
+                                                            asset.symbol.toLowerCase(
+                                                                    Locale.getDefault()),
+                                                            0.0d);
+                                            double balance =
+                                                    Utils.getOrDefault(
+                                                            nativeAssetsBalances,
+                                                            mSelectedAccount.address
+                                                                    .toLowerCase(
+                                                                            Locale
+                                                                                    .getDefault()),
+                                                            0.0d);
+                                            String fiatBalanceString =
+                                                    String.format(
+                                                            Locale.getDefault(),
+                                                            "$%,.2f",
+                                                            balance * price);
+                                            String cryptoBalanceString =
+                                                    String.format(
+                                                            Locale.getDefault(),
+                                                            "%.4f %s",
+                                                            balance,
+                                                            mSelectedNetwork.symbol);
+                                            mAmountAsset.setText(cryptoBalanceString);
+                                            mAmountFiat.setText(fiatBalanceString);
+                                        }));
         };
 
         mAllAccountsInfoObserver =
@@ -285,7 +329,6 @@ public class BraveWalletPanel implements DialogInterface {
                 mExecutor, mHandler, mContainerConstraintLayout, mSelectedAccount.address, true);
         mAccountName.setText(mSelectedAccount.name);
         mAccountAddress.setText(Utils.stripAccountAddress(mSelectedAccount.address));
-        updateSelectedAccountBalance();
         updateSelectedAccountConnectionState();
     }
 
@@ -366,56 +409,6 @@ public class BraveWalletPanel implements DialogInterface {
                 Log.e(TAG, "updateConnectedState " + e);
             }
         }
-    }
-
-    private void updateSelectedAccountBalance() {
-        LiveDataUtil.observeOnce(
-                getNetworkModel().mDefaultNetwork,
-                selectedNetwork -> {
-                    BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
-                    final AssetRatioService assetRatioService = mWalletModel.getAssetRatioService();
-                    final JsonRpcService jsonRpcService = mWalletModel.getJsonRpcService();
-                    if (assetRatioService == null || jsonRpcService == null) {
-                        return;
-                    }
-                    AssetsPricesHelper.fetchPrices(
-                            assetRatioService,
-                            new BlockchainToken[] {asset},
-                            assetPrices ->
-                                    BalanceHelper.getNativeAssetsBalances(
-                                            jsonRpcService,
-                                            selectedNetwork,
-                                            new AccountInfo[] {mSelectedAccount},
-                                            (coinType, nativeAssetsBalances) -> {
-                                                double price =
-                                                        Utils.getOrDefault(
-                                                                assetPrices,
-                                                                asset.symbol.toLowerCase(
-                                                                        Locale.getDefault()),
-                                                                0.0d);
-                                                double balance =
-                                                        Utils.getOrDefault(
-                                                                nativeAssetsBalances,
-                                                                mSelectedAccount.address
-                                                                        .toLowerCase(
-                                                                                Locale
-                                                                                        .getDefault()),
-                                                                0.0d);
-                                                String fiatBalanceString =
-                                                        String.format(
-                                                                Locale.getDefault(),
-                                                                "$%,.2f",
-                                                                balance * price);
-                                                String cryptoBalanceString =
-                                                        String.format(
-                                                                Locale.getDefault(),
-                                                                "%.4f %s",
-                                                                balance,
-                                                                selectedNetwork.symbol);
-                                                mAmountAsset.setText(cryptoBalanceString);
-                                                mAmountFiat.setText(fiatBalanceString);
-                                            }));
-                });
     }
 
     private void setUpViews() {
