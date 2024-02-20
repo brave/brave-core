@@ -39,6 +39,8 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
+#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
+#endif
 
 namespace {
 
@@ -144,10 +146,45 @@ bool OneTimeVpnServiceCleanup(const base::FilePath& target_path,
   return true;
 }
 
+// Adds work items to register brave vpn helper service for Windows. Only for
+// system level installs.
+void AddBraveVPNHelperServiceWorkItems(WorkItemList* list) {
+  DCHECK(::IsUserAnAdmin());
+  list->AddWorkItem(CreateWorkItemForVpnHelperServiceInstall(service_cmd));
+}
+
+// Adds work items to register brave vpn wireguard service for Windows. Only for
+// system level installs.
+void AddBraveVPNWireguardServiceWorkItems(WorkItemList* list) {
+  DCHECK(::IsUserAnAdmin());
+  list->AddWorkItem(
+      brave_vpn::CreateWorkItemForWireguardServiceInstall(service_cmd));
+}
+
+void UpdateBraveVpn(const base::FilePath& target_path,
+                    const base::Version& new_version,
+                    WorkItemList* install_list) {
+  // When one time cleanup happens, we don't want to install the services.
+  // Service will be installed at the time of purchase.
+  if (OneTimeVpnServiceCleanup(target_path, new_version, install_list, false)) {
+    return;
+  }
+
+  // If the VPN service is installed, we should update installed services to
+  // make it have latest executable path.
+  if (brave_vpn::IsBraveVPNHelperServiceInstalled()) {
+    AddBraveVPNHelperServiceWorkItems(install_list);
+  }
+
+  if (brave_vpn::wireguard::IsWireguardServiceInstalled()) {
+    AddBraveVPNWireguardServiceWorkItems(install_list);
+  }
+}
+
 }  // namespace installer
 
-#define AddUpdateDowngradeVersionItem                               \
-  OneTimeVpnServiceCleanup(target_path, new_version, install_list); \
+#define AddUpdateDowngradeVersionItem                     \
+  UpdateBraveVpn(target_path, new_version, install_list); \
   AddUpdateDowngradeVersionItem
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)

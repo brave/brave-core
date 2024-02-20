@@ -11,6 +11,8 @@
 #include <winsvc.h>
 #include <winuser.h>
 
+#include <memory>
+
 #include <ios>
 
 #include "base/base_paths.h"
@@ -137,12 +139,12 @@ bool ConfigureServiceAutoRestart(const std::wstring& service_name,
   return true;
 }
 
+}  // namespace
+
 base::FilePath GetBraveVpnHelperServicePath() {
   base::FilePath asset_dir = base::PathService::CheckedGet(base::DIR_ASSETS);
   return asset_dir.Append(brave_vpn::kBraveVPNHelperExecutable);
 }
-
-}  // namespace
 
 bool ConfigureBraveWireguardService(const std::wstring& service_name) {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
@@ -174,16 +176,9 @@ bool ConfigureBraveWireguardService(const std::wstring& service_name) {
 // config.
 bool InstallBraveWireguardService() {
   base::CommandLine service_cmd(GetBraveVPNWireguardServiceExecutablePath());
-  installer::InstallServiceWorkItem install_service_work_item(
-      brave_vpn::GetBraveVpnWireguardServiceName(),
-      brave_vpn::GetBraveVpnWireguardServiceDisplayName(), SERVICE_DEMAND_START,
-      service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
-      brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(),
-      {brave_vpn::GetBraveVpnWireguardServiceClsid()},
-      {brave_vpn::GetBraveVpnWireguardServiceIid()});
-  install_service_work_item.set_best_effort(true);
-  install_service_work_item.set_rollback_enabled(false);
-  if (install_service_work_item.Do()) {
+  std::unique_ptr<WorkItem> work_item(
+      CreateWorkItemForWireguardServiceInstall(service_cmd));
+  if (work_item->Do()) {
     auto success = brave_vpn::ConfigureBraveWireguardService(
         brave_vpn::GetBraveVpnWireguardServiceName());
     if (success) {
@@ -234,20 +229,41 @@ bool UninstallStatusTrayIcon() {
 
 bool InstallBraveVPNHelperService() {
   base::CommandLine service_cmd(GetBraveVpnHelperServicePath());
-  installer::InstallServiceWorkItem install_service_work_item(
-      brave_vpn::GetBraveVpnHelperServiceName(),
-      brave_vpn::GetBraveVpnHelperServiceDisplayName(), SERVICE_DEMAND_START,
-      service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
-      GetBraveVpnHelperRegistryStoragePath(), {}, {});
-  install_service_work_item.set_best_effort(true);
-  install_service_work_item.set_rollback_enabled(false);
-  if (install_service_work_item.Do()) {
+  std::unique_ptr<WorkItem> work_item(
+      CreateWorkItemForVpnHelperServiceInstall(service_cmd));
+  if (work_item->Do()) {
     auto success =
         ConfigureServiceAutoRestart(brave_vpn::GetBraveVpnHelperServiceName(),
                                     brave_vpn::GetBraveVPNConnectionName());
     return success;
   }
   return false;
+}
+
+WorkItem* CreateWorkItemForWireguardServiceInstall(
+    const base::CommandLine& service_cmd) {
+  WorkItem* work_item = new installer::InstallServiceWorkItem(
+      brave_vpn::GetBraveVpnWireguardServiceName(),
+      brave_vpn::GetBraveVpnWireguardServiceDisplayName(), SERVICE_DEMAND_START,
+      service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
+      brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(),
+      {brave_vpn::GetBraveVpnWireguardServiceClsid()},
+      {brave_vpn::GetBraveVpnWireguardServiceIid()});
+  work_item->set_best_effort(true);
+  work_item->set_rollback_enabled(false);
+  return work_item;
+}
+
+WorkItem* CreateWorkItemForVpnHelperServiceInstall(
+    const base::CommandLine& service_cmd) {
+  WorkItem* work_item = new installer::InstallServiceWorkItem(
+      brave_vpn::GetBraveVpnHelperServiceName(),
+      brave_vpn::GetBraveVpnHelperServiceDisplayName(), SERVICE_DEMAND_START,
+      service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
+      GetBraveVpnHelperRegistryStoragePath(), {}, {});
+  work_item->set_best_effort(true);
+  work_item->set_rollback_enabled(false);
+  return work_item;
 }
 
 }  // namespace brave_vpn
