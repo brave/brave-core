@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADDED_FEEDBACK_BUBBLE_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADDED_FEEDBACK_BUBBLE_H_
 
-#include <memory>
-
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "ui/gfx/animation/animation_delegate.h"
@@ -23,8 +21,9 @@
 class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
                                        public views::ViewObserver,
                                        public gfx::AnimationDelegate {
+  METADATA_HEADER(SidebarItemAddedFeedbackBubble,
+                  views::BubbleDialogDelegateView)
  public:
-  METADATA_HEADER(SidebarItemAddedFeedbackBubble);
 
   static views::Widget* Create(views::View* anchor_view,
                                views::View* items_contents_view);

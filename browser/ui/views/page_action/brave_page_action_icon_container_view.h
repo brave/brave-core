@@ -9,8 +9,8 @@
 #include "chrome/browser/ui/views/page_action/page_action_icon_container.h"
 
 class BravePageActionIconContainerView : public PageActionIconContainerView {
+  METADATA_HEADER(BravePageActionIconContainerView, PageActionIconContainerView)
  public:
-  METADATA_HEADER(BravePageActionIconContainerView);
 
   // Unfortunately, |PageActionIconParams| can't not be copied or moved. So drop
   // const qualifier to modify |param| for Brave.

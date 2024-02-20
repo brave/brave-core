@@ -67,5 +67,5 @@ void BraveNewsFeedsContainerView::OnThemeChanged() {
       1, 12, is_dark ? kBorderColorDark : kBorderColorLight));
 }
 
-BEGIN_METADATA(BraveNewsFeedsContainerView, views::View)
+BEGIN_METADATA(BraveNewsFeedsContainerView)
 END_METADATA

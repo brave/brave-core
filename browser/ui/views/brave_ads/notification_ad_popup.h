@@ -46,8 +46,8 @@ class NotificationAdPopup : public views::WidgetDelegateView,
                             public views::WidgetObserver,
                             public gfx::AnimationDelegate,
                             public display::DisplayObserver {
+  METADATA_HEADER(NotificationAdPopup, views::WidgetDelegateView)
  public:
-  METADATA_HEADER(NotificationAdPopup);
 
   NotificationAdPopup(Profile* profile,
                       const NotificationAd& notification_ad,

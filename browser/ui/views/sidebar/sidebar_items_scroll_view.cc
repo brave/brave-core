@@ -45,8 +45,8 @@ constexpr char kSidebarItemDragType[] = "brave/sidebar-item";
 constexpr int kArrowHeight = 24;
 
 class SidebarItemsArrowView : public views::ImageButton {
+  METADATA_HEADER(SidebarItemsArrowView, views::ImageButton)
  public:
-  METADATA_HEADER(SidebarItemsArrowView);
   explicit SidebarItemsArrowView(const std::u16string& accessible_name) {
     SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
@@ -89,7 +89,7 @@ class SidebarItemsArrowView : public views::ImageButton {
   }
 };
 
-BEGIN_METADATA(SidebarItemsArrowView, views::ImageButton)
+BEGIN_METADATA(SidebarItemsArrowView)
 END_METADATA
 
 }  // namespace
@@ -575,5 +575,5 @@ void SidebarItemsScrollView::Update() {
   contents_view_->Update();
 }
 
-BEGIN_METADATA(SidebarItemsScrollView, views::View)
+BEGIN_METADATA(SidebarItemsScrollView)
 END_METADATA

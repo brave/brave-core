@@ -32,5 +32,5 @@ void BraveTabStripRegionView::UpdateBraveTabStripMargins() {
   }
 }
 
-BEGIN_METADATA(BraveTabStripRegionView, TabStripRegionView)
+BEGIN_METADATA(BraveTabStripRegionView)
 END_METADATA

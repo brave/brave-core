@@ -97,26 +97,26 @@ bool IsUnsupportedCommand(int command_id, Browser* browser) {
 // A control separator that is displayed when the sidebar is displayed adjacent
 // to the tabstrip in vertical tabs mode.
 class SidebarSeparator : public views::View {
+  METADATA_HEADER(SidebarSeparator, views::View)
  public:
-  METADATA_HEADER(SidebarSeparator);
   SidebarSeparator() {
     SetBackground(
         views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
   }
 };
-BEGIN_METADATA(SidebarSeparator, views::View)
+BEGIN_METADATA(SidebarSeparator)
 END_METADATA
 
 // A view that paints a background under the content area of the browser view so
 // that the web content area can be displayed with rounded corners and a shadow.
 class ContentsBackground : public views::View {
+  METADATA_HEADER(ContentsBackground, views::View)
  public:
-  METADATA_HEADER(ContentsBackground);
   ContentsBackground() {
     SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
   }
 };
-BEGIN_METADATA(ContentsBackground, views::View)
+BEGIN_METADATA(ContentsBackground)
 END_METADATA
 
 }  // namespace

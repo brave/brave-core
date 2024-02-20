@@ -144,7 +144,7 @@ void BraveVpnFallbackDialogView::OnAccept() {
                                                false);
 }
 
-BEGIN_METADATA(BraveVpnFallbackDialogView, views::DialogDelegateView)
+BEGIN_METADATA(BraveVpnFallbackDialogView)
 END_METADATA
 
 }  // namespace brave_vpn

@@ -55,8 +55,8 @@ class ContentsView : public views::View {
 //    In order to avoid that, attach overlay scroll bar which doesn't take
 //    space.
 class CustomScrollView : public views::ScrollView {
+  METADATA_HEADER(CustomScrollView, views::ScrollView)
  public:
-  METADATA_HEADER(CustomScrollView);
 
   explicit CustomScrollView(PrefService* prefs)
       : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
@@ -97,7 +97,7 @@ class CustomScrollView : public views::ScrollView {
   BooleanPrefMember should_show_scroll_bar_;
 };
 
-BEGIN_METADATA(CustomScrollView, views::ScrollView)
+BEGIN_METADATA(CustomScrollView)
 END_METADATA
 
 }  // namespace
@@ -549,5 +549,5 @@ int BraveCompoundTabContainer::GetAvailableWidthConsideringScrollBar() {
   return width();
 }
 
-BEGIN_METADATA(BraveCompoundTabContainer, CompoundTabContainer)
+BEGIN_METADATA(BraveCompoundTabContainer)
 END_METADATA

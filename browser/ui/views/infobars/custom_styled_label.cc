@@ -73,5 +73,5 @@ std::unique_ptr<views::Label> CustomStyledLabel::CreateLabel(
   return result;
 }
 
-BEGIN_METADATA(CustomStyledLabel, views::StyledLabel)
+BEGIN_METADATA(CustomStyledLabel)
 END_METADATA

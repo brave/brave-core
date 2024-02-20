@@ -38,8 +38,8 @@ FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
 class BraveLocationBarView : public LocationBarView {
+  METADATA_HEADER(BraveLocationBarView, LocationBarView)
  public:
-  METADATA_HEADER(BraveLocationBarView);
   BraveLocationBarView(Browser* browser,
                        Profile* profile,
                        CommandUpdater* command_updater,

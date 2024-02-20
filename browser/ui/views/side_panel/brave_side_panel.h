@@ -31,6 +31,7 @@ class SidebarBrowserTest;
 class BraveSidePanel : public views::View,
                        public views::ViewObserver,
                        public views::ResizeAreaDelegate {
+  METADATA_HEADER(BraveSidePanel, views::View)
  public:
   // Determines the side from which the side panel will appear.
   // LTR / RTL conversions are handled in
@@ -38,7 +39,6 @@ class BraveSidePanel : public views::View,
   // left side of the browser regardless of LTR / RTL mode.
   enum HorizontalAlignment { kHorizontalAlignLeft = 0, kHorizontalAlignRight };
 
-  METADATA_HEADER(BraveSidePanel);
   // Same signature as chromium SidePanel
   explicit BraveSidePanel(BrowserView* browser_view,
                           HorizontalAlignment horizontal_alignment =

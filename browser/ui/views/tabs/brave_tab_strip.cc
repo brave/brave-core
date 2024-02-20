@@ -404,5 +404,5 @@ void BraveTabStrip::Layout(PassKey) {
   LayoutSuperclass<TabStrip>(this);
 }
 
-BEGIN_METADATA(BraveTabStrip, TabStrip)
+BEGIN_METADATA(BraveTabStrip)
 END_METADATA

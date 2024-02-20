@@ -51,8 +51,8 @@ constexpr int kInfoBarLabelTextColor = kColorBookmarkBarForeground;
 
 // Subclass for custom font.
 class DontAskAgainCheckbox : public views::Checkbox {
+  METADATA_HEADER(DontAskAgainCheckbox, views::Checkbox)
  public:
-  METADATA_HEADER(DontAskAgainCheckbox);
 
   using views::Checkbox::Checkbox;
   ~DontAskAgainCheckbox() override = default;
@@ -62,7 +62,7 @@ class DontAskAgainCheckbox : public views::Checkbox {
   }
 };
 
-BEGIN_METADATA(DontAskAgainCheckbox, views::Checkbox)
+BEGIN_METADATA(DontAskAgainCheckbox)
 END_METADATA
 }  // namespace
 
@@ -272,5 +272,5 @@ void BraveWaybackMachineInfoBarContentsView::LoadURL(const GURL& url) {
                                      std::string());
 }
 
-BEGIN_METADATA(BraveWaybackMachineInfoBarContentsView, views::View)
+BEGIN_METADATA(BraveWaybackMachineInfoBarContentsView)
 END_METADATA

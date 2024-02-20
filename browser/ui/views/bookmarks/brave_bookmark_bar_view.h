@@ -12,8 +12,8 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveBookmarkBarView : public BookmarkBarView {
+  METADATA_HEADER(BraveBookmarkBarView, BookmarkBarView)
  public:
-  METADATA_HEADER(BraveBookmarkBarView);
 
   BraveBookmarkBarView(Browser* browser, BrowserView* browser_view);
   ~BraveBookmarkBarView() override;

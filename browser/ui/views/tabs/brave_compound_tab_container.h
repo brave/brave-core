@@ -16,8 +16,8 @@ class ScrollView;
 }  // namespace views
 
 class BraveCompoundTabContainer : public CompoundTabContainer {
+  METADATA_HEADER(BraveCompoundTabContainer, CompoundTabContainer)
  public:
-  METADATA_HEADER(BraveCompoundTabContainer);
 
   BraveCompoundTabContainer(TabContainerController& controller,
                             TabHoverCardController* hover_card_controller,

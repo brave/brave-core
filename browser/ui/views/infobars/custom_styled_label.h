@@ -17,8 +17,8 @@
 // StyledLabel doesn't allow using custom font for link style.
 // Use for setting custom font for link.
 class CustomStyledLabel : public views::StyledLabel {
+  METADATA_HEADER(CustomStyledLabel, views::StyledLabel)
  public:
-  METADATA_HEADER(CustomStyledLabel);
   using StyledLabel::StyledLabel;
   CustomStyledLabel(const CustomStyledLabel&) = delete;
   CustomStyledLabel& operator=(const CustomStyledLabel&) = delete;

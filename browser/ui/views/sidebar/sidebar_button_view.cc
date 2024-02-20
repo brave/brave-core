@@ -55,5 +55,5 @@ std::u16string SidebarButtonView::GetTooltipText(const gfx::Point& p) const {
   return GetAccessibleName();
 }
 
-BEGIN_METADATA(SidebarButtonView, views::ImageButton)
+BEGIN_METADATA(SidebarButtonView)
 END_METADATA

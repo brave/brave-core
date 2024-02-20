@@ -42,8 +42,8 @@ class SidebarItemsScrollView : public views::View,
                                public views::BoundsAnimatorObserver,
                                public views::DragController,
                                public sidebar::SidebarModel::Observer {
+  METADATA_HEADER(SidebarItemsScrollView, views::View)
  public:
-  METADATA_HEADER(SidebarItemsScrollView);
   explicit SidebarItemsScrollView(BraveBrowser* browser);
   ~SidebarItemsScrollView() override;
 

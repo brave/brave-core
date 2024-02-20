@@ -15,8 +15,8 @@
 class WebDiscoveryInfoBarDelegate;
 
 class WebDiscoveryInfoBarView : public InfoBarView {
+  METADATA_HEADER(WebDiscoveryInfoBarView, InfoBarView)
  public:
-  METADATA_HEADER(WebDiscoveryInfoBarView);
 
   explicit WebDiscoveryInfoBarView(
       std::unique_ptr<WebDiscoveryInfoBarDelegate> delegate);

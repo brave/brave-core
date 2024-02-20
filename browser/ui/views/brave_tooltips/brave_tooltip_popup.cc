@@ -443,7 +443,7 @@ bool BraveTooltipPopup::IsWidgetValid() const {
   return GetWidget() && !GetWidget()->IsClosed();
 }
 
-BEGIN_METADATA(BraveTooltipPopup, views::WidgetDelegateView)
+BEGIN_METADATA(BraveTooltipPopup)
 END_METADATA
 
 }  // namespace brave_tooltips

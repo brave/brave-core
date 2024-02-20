@@ -57,5 +57,5 @@ void BraveRoundedOmniboxResultsFrame::UpdateShadowBorder() {
   SetBorder(std::move(border));
 }
 
-BEGIN_METADATA(BraveRoundedOmniboxResultsFrame, RoundedOmniboxResultsFrame)
+BEGIN_METADATA(BraveRoundedOmniboxResultsFrame)
 END_METADATA

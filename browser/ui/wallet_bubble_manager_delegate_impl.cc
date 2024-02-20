@@ -31,9 +31,8 @@
 namespace brave_wallet {
 
 class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
+  METADATA_HEADER(WalletWebUIBubbleDialogView, WebUIBubbleDialogView)
  public:
-  METADATA_HEADER(WalletWebUIBubbleDialogView);
-
   WalletWebUIBubbleDialogView(
       views::View* anchor_view,
       WebUIContentsWrapper* contents_wrapper,
@@ -56,7 +55,7 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
   }
 };
 
-BEGIN_METADATA(WalletWebUIBubbleDialogView, WebUIBubbleDialogView)
+BEGIN_METADATA(WalletWebUIBubbleDialogView)
 END_METADATA
 
 class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,

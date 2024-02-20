@@ -18,8 +18,8 @@ class Point;
 namespace brave_ads {
 
 class NotificationAdView : public views::View {
+  METADATA_HEADER(NotificationAdView, views::View)
  public:
-  METADATA_HEADER(NotificationAdView);
 
   explicit NotificationAdView(const NotificationAd& notification_ad);
 

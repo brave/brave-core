@@ -394,5 +394,5 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   return content_setting_views_[idx];
 }
 
-BEGIN_METADATA(BraveLocationBarView, LocationBarView)
+BEGIN_METADATA(BraveLocationBarView)
 END_METADATA

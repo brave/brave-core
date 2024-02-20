@@ -886,5 +886,5 @@ void SidebarContainerView::StartObservingContextualSidePanelRegistry(
   }
 }
 
-BEGIN_METADATA(SidebarContainerView, views::View)
+BEGIN_METADATA(SidebarContainerView)
 END_METADATA

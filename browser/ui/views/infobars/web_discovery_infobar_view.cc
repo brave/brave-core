@@ -46,5 +46,5 @@ void WebDiscoveryInfoBarView::ChildPreferredSizeChanged(views::View* child) {
   }
 }
 
-BEGIN_METADATA(WebDiscoveryInfoBarView, views::View)
+BEGIN_METADATA(WebDiscoveryInfoBarView)
 END_METADATA

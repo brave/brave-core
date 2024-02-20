@@ -154,5 +154,5 @@ std::optional<SkColor> BraveTabGroupHeader::GetChipBackgroundColor() const {
   return color_utils::AlphaBlend(GetGroupColor(), blend_background, alpha);
 }
 
-BEGIN_METADATA(BraveTabGroupHeader, TabGroupHeader)
+BEGIN_METADATA(BraveTabGroupHeader)
 END_METADATA

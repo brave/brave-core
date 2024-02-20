@@ -118,7 +118,7 @@ void NotificationAdControlButtonsView::UpdateCloseButton() {
   close_button_->AdjustBorderInsetToFitHeight(kMinimumButtonHeight);
 }
 
-BEGIN_METADATA(NotificationAdControlButtonsView, views::View)
+BEGIN_METADATA(NotificationAdControlButtonsView)
 END_METADATA
 
 }  // namespace brave_ads

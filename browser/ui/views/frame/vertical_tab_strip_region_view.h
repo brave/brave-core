@@ -38,8 +38,8 @@ class VerticalTabStripRegionView : public views::View,
                                    public views::WidgetObserver,
                                    public FullscreenObserver,
                                    public BrowserListObserver {
+  METADATA_HEADER(VerticalTabStripRegionView, views::View)
  public:
-  METADATA_HEADER(VerticalTabStripRegionView);
 
   // We have a state machine which cycles like:
   //
@@ -121,10 +121,10 @@ class VerticalTabStripRegionView : public views::View,
   // FullscreenObserver:
   void OnFullscreenStateChanged() override;
 
- private:
-  class MouseWatcher;
   class HeaderView;
+  class MouseWatcher;
 
+ private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            OriginalTabSearchButton);

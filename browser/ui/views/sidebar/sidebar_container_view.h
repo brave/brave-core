@@ -59,8 +59,8 @@ class SidebarContainerView
       public SidePanelEntryObserver,
       public SidePanelRegistryObserver,
       public TabStripModelObserver {
+  METADATA_HEADER(SidebarContainerView, views::View)
  public:
-  METADATA_HEADER(SidebarContainerView);
   SidebarContainerView(BraveBrowser* browser,
                        SidePanelCoordinator* side_panel_coordinator,
                        std::unique_ptr<BraveSidePanel> side_panel);

@@ -251,5 +251,5 @@ void VerticalTabStripWidgetDelegateView::UpdateClip() {
 }
 #endif
 
-BEGIN_METADATA(VerticalTabStripWidgetDelegateView, views::View)
+BEGIN_METADATA(VerticalTabStripWidgetDelegateView)
 END_METADATA

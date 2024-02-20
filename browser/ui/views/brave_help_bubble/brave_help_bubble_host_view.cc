@@ -231,5 +231,5 @@ void BraveHelpBubbleHostView::OnTrackedElementActivated(
   Hide();
 }
 
-BEGIN_METADATA(BraveHelpBubbleHostView, views::View)
+BEGIN_METADATA(BraveHelpBubbleHostView)
 END_METADATA

@@ -588,5 +588,5 @@ void BraveTabContainer::SetDropArrow(
   drop_arrow_->SetWindowBounds(drop_bounds);
 }
 
-BEGIN_METADATA(BraveTabContainer, TabContainerImpl)
+BEGIN_METADATA(BraveTabContainer)
 END_METADATA

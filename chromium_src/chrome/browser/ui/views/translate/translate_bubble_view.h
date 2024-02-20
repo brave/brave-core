@@ -23,8 +23,8 @@ using BraveTranslateBubbleView = TranslateBubbleView;
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
 class TranslateBubbleView : public TranslateBubbleView_ChromiumImpl {
+  METADATA_HEADER(TranslateBubbleView, TranslateBubbleView_ChromiumImpl)
  public:
-  METADATA_HEADER(TranslateBubbleView);
 
   template <class... Args>
   explicit TranslateBubbleView(Args&&... args)

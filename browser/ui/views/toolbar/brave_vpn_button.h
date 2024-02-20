@@ -29,8 +29,8 @@ class Browser;
 
 class BraveVPNButton : public ToolbarButton,
                        public brave_vpn::BraveVPNServiceObserver {
+  METADATA_HEADER(BraveVPNButton, ToolbarButton)
  public:
-  METADATA_HEADER(BraveVPNButton);
 
   explicit BraveVPNButton(Browser* browser);
   ~BraveVPNButton() override;

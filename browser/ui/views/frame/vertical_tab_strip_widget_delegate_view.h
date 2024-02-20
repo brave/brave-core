@@ -36,8 +36,8 @@ class VerticalTabStripRegionView;
 class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
                                            public views::ViewObserver,
                                            public views::WidgetObserver {
+  METADATA_HEADER(VerticalTabStripWidgetDelegateView, views::WidgetDelegateView)
  public:
-  METADATA_HEADER(VerticalTabStripWidgetDelegateView);
 
   static VerticalTabStripWidgetDelegateView* Create(BrowserView* browser_view,
                                                     views::View* host_view);

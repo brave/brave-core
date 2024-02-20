@@ -28,8 +28,8 @@ class ImageView;
 class ThumbnailView;
 
 class SelectableView : public views::Button {
+  METADATA_HEADER(SelectableView, views::Button)
  public:
-  METADATA_HEADER(SelectableView);
   using OnPressedCallback = base::RepeatingCallback<void(SelectableView&)>;
 
   SelectableView(const std::string& id,

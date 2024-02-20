@@ -269,5 +269,5 @@ void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
   UpdateBackgroundAndBorder();
 }
 
-BEGIN_METADATA(SidebarControlView, views::View)
+BEGIN_METADATA(SidebarControlView)
 END_METADATA

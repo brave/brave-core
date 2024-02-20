@@ -67,8 +67,8 @@ constexpr int kHeaderInset = tabs::kMarginForVerticalTabContainers;
 
 // Use toolbar button's ink drop effect.
 class ToggleButton : public ToolbarButton {
+  METADATA_HEADER(ToggleButton, ToolbarButton)
  public:
-  METADATA_HEADER(ToggleButton);
 
   ToggleButton(PressedCallback callback,
                VerticalTabStripRegionView* region_view)
@@ -124,12 +124,12 @@ class ToggleButton : public ToolbarButton {
   raw_ref<VerticalTabStripRegionView> region_view_;
 };
 
-BEGIN_METADATA(ToggleButton, ToolbarButton)
+BEGIN_METADATA(ToggleButton)
 END_METADATA
 
 class VerticalTabSearchButton : public BraveTabSearchButton {
+  METADATA_HEADER(VerticalTabSearchButton, BraveTabSearchButton)
  public:
-  METADATA_HEADER(VerticalTabSearchButton);
 
   VerticalTabSearchButton(VerticalTabStripRegionView* region_view,
                           TabStripController* tab_strip_controller,
@@ -205,12 +205,12 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
   BooleanPrefMember vertical_tab_on_right_;
 };
 
-BEGIN_METADATA(VerticalTabSearchButton, BraveTabSearchButton)
+BEGIN_METADATA(VerticalTabSearchButton)
 END_METADATA
 
 class VerticalTabNewTabButton : public BraveNewTabButton {
+  METADATA_HEADER(VerticalTabNewTabButton, BraveNewTabButton)
  public:
-  METADATA_HEADER(VerticalTabNewTabButton);
 
   static constexpr int kHeight = 50;
 
@@ -387,12 +387,12 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
   raw_ptr<views::Label> shortcut_text_ = nullptr;
 };
 
-BEGIN_METADATA(VerticalTabNewTabButton, BraveNewTabButton)
+BEGIN_METADATA(VerticalTabNewTabButton)
 END_METADATA
 
 class ResettableResizeArea : public views::ResizeArea {
+  METADATA_HEADER(ResettableResizeArea, views::ResizeArea)
  public:
-  METADATA_HEADER(ResettableResizeArea);
 
   explicit ResettableResizeArea(VerticalTabStripRegionView* region_view)
       : ResizeArea(region_view), region_view_(region_view) {}
@@ -411,14 +411,14 @@ class ResettableResizeArea : public views::ResizeArea {
   raw_ptr<VerticalTabStripRegionView> region_view_;
 };
 
-BEGIN_METADATA(ResettableResizeArea, views::ResizeArea)
+BEGIN_METADATA(ResettableResizeArea)
 END_METADATA
 
 }  // namespace
 
 class VerticalTabStripScrollContentsView : public views::View {
+  METADATA_HEADER(VerticalTabStripScrollContentsView, views::View)
  public:
-  METADATA_HEADER(VerticalTabStripScrollContentsView);
 
   VerticalTabStripScrollContentsView(VerticalTabStripRegionView* container,
                                      TabStrip* tab_strip)
@@ -455,12 +455,12 @@ class VerticalTabStripScrollContentsView : public views::View {
   bool in_preferred_size_changed_ = false;
 };
 
-BEGIN_METADATA(VerticalTabStripScrollContentsView, views::View)
+BEGIN_METADATA(VerticalTabStripScrollContentsView)
 END_METADATA
 
 class VerticalTabStripRegionView::HeaderView : public views::View {
+  METADATA_HEADER(HeaderView, views::View)
  public:
-  METADATA_HEADER(HeaderView);
 
   HeaderView(views::Button::PressedCallback toggle_callback,
              VerticalTabStripRegionView* region_view)
@@ -558,7 +558,8 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
   BooleanPrefMember vertical_tab_on_right_;
 };
 
-BEGIN_METADATA(VerticalTabStripRegionView, HeaderView, views::View)
+using HeaderView = VerticalTabStripRegionView::HeaderView;
+BEGIN_METADATA(HeaderView)
 END_METADATA
 
 // Double checks mouse hovered state. When there's border around the region view
@@ -1343,5 +1344,5 @@ std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
 }
 #endif
 
-BEGIN_METADATA(VerticalTabStripRegionView, views::View)
+BEGIN_METADATA(VerticalTabStripRegionView)
 END_METADATA
