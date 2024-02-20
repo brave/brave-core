@@ -68,7 +68,7 @@ import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
-import org.chromium.chrome.browser.share.qrcode.QRCodeGenerationRequest;
+import org.chromium.chrome.browser.share.qrcode.QRCodeGenerator;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
@@ -1266,119 +1266,129 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
-  private void setJoinExistingChainLayout() {
-      if (null != mScrollViewSyncInitial) {
-          mScrollViewSyncInitial.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewEnterCodeWords) {
-          mScrollViewEnterCodeWords.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddMobileDevice) {
-          mScrollViewAddMobileDevice.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddLaptop) {
-          mScrollViewAddLaptop.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewSyncStartChain) {
-          mScrollViewSyncStartChain.setVisibility(View.GONE);
-      }
+    private void setJoinExistingChainLayout() {
+        if (null != mScrollViewSyncInitial) {
+            mScrollViewSyncInitial.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewEnterCodeWords) {
+            mScrollViewEnterCodeWords.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddMobileDevice) {
+            mScrollViewAddMobileDevice.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddLaptop) {
+            mScrollViewAddLaptop.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewSyncStartChain) {
+            mScrollViewSyncStartChain.setVisibility(View.GONE);
+        }
 
-      if (ensureCameraPermission()) {
-          createCameraSource(true, false);
-      }
+        if (ensureCameraPermission()) {
+            createCameraSource(true, false);
+        }
 
-      setQRCodeText();
-      getActivity().setTitle(R.string.brave_sync_scan_chain_code);
-      if (null != mScrollViewSyncChainCode) {
-          mScrollViewSyncChainCode.setVisibility(View.VISIBLE);
-      }
+        setQRCodeText();
+        getActivity().setTitle(R.string.brave_sync_scan_chain_code);
+        if (null != mScrollViewSyncChainCode) {
+            mScrollViewSyncChainCode.setVisibility(View.VISIBLE);
+        }
 
-      synchronized (mQrInProcessingOrFinalizedLock) {
-          mQrInProcessingOrFinalized = false;
-      }
+        synchronized (mQrInProcessingOrFinalizedLock) {
+            mQrInProcessingOrFinalized = false;
+        }
 
-      if (null != mCameraSourcePreview) {
-          int rc = ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA);
-          if (rc == PackageManager.PERMISSION_GRANTED) {
-              try {
-                startCameraSource();
-              } catch (SecurityException exc) {
-              }
-          }
-      }
-  }
+        if (null != mCameraSourcePreview) {
+            int rc =
+                    ActivityCompat.checkSelfPermission(
+                            getActivity().getApplicationContext(), Manifest.permission.CAMERA);
+            if (rc == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    startCameraSource();
+                } catch (SecurityException exc) {
+                }
+            }
+        }
+    }
 
-  private void setNewChainLayout() {
-      getActivity().setTitle(R.string.brave_sync_start_new_chain);
-      if (null != mScrollViewSyncInitial) {
-          mScrollViewSyncInitial.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewEnterCodeWords) {
-          mScrollViewEnterCodeWords.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddMobileDevice) {
-          mScrollViewAddMobileDevice.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddLaptop) {
-          mScrollViewAddLaptop.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewSyncStartChain) {
-          mScrollViewSyncStartChain.setVisibility(View.VISIBLE);
-      }
-      if (null != mScrollViewSyncDone) {
-          mScrollViewSyncDone.setVisibility(View.GONE);
-      }
-      adjustImageButtons(getActivity().getApplicationContext().getResources().getConfiguration().orientation);
-  }
+    private void setNewChainLayout() {
+        getActivity().setTitle(R.string.brave_sync_start_new_chain);
+        if (null != mScrollViewSyncInitial) {
+            mScrollViewSyncInitial.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewEnterCodeWords) {
+            mScrollViewEnterCodeWords.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddMobileDevice) {
+            mScrollViewAddMobileDevice.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddLaptop) {
+            mScrollViewAddLaptop.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewSyncStartChain) {
+            mScrollViewSyncStartChain.setVisibility(View.VISIBLE);
+        }
+        if (null != mScrollViewSyncDone) {
+            mScrollViewSyncDone.setVisibility(View.GONE);
+        }
+        adjustImageButtons(
+                getActivity()
+                        .getApplicationContext()
+                        .getResources()
+                        .getConfiguration()
+                        .orientation);
+    }
 
-  private String mCodephrase;
+    private String mCodephrase;
 
     public String getPureWords() {
-      if (mCodephrase == null || mCodephrase.isEmpty()) {
+        if (mCodephrase == null || mCodephrase.isEmpty()) {
             mCodephrase = getBraveSyncWorker().getPureWords();
-      }
-      return mCodephrase;
-  }
+        }
+        return mCodephrase;
+    }
 
     public void invalidateCodephrase() {
-      mCodephrase = null;
-  }
+        mCodephrase = null;
+    }
 
-  private void setAddMobileDeviceLayout() {
-      getActivity().setTitle(R.string.brave_sync_btn_mobile);
-      if (null != mBraveSyncTextViewAddMobileDevice) {
-          setSyncText(getResources().getString(R.string.brave_sync_scan_sync_code),
-                  getResources().getString(R.string.brave_sync_add_mobile_device_text_part_1)
-                          + "\n\n"
-                          + getResources().getString(
-                                  R.string.brave_sync_add_mobile_device_text_part_2)
-                          + "\n",
-                  mBraveSyncTextViewAddMobileDevice);
-      }
-      if (null != mBraveSyncWarningTextViewAddMobileDevice) {
-        String braveSyncCodeWarning = getResources().getString(R.string.brave_sync_code_warning);
-        SpannableString braveSyncCodeWarningSpanned = new SpannableString(braveSyncCodeWarning);
+    private void setAddMobileDeviceLayout() {
+        getActivity().setTitle(R.string.brave_sync_btn_mobile);
+        if (null != mBraveSyncTextViewAddMobileDevice) {
+            setSyncText(
+                    getResources().getString(R.string.brave_sync_scan_sync_code),
+                    getResources().getString(R.string.brave_sync_add_mobile_device_text_part_1)
+                            + "\n\n"
+                            + getResources()
+                                    .getString(R.string.brave_sync_add_mobile_device_text_part_2)
+                            + "\n",
+                    mBraveSyncTextViewAddMobileDevice);
+        }
+        if (null != mBraveSyncWarningTextViewAddMobileDevice) {
+            String braveSyncCodeWarning =
+                    getResources().getString(R.string.brave_sync_code_warning);
+            SpannableString braveSyncCodeWarningSpanned = new SpannableString(braveSyncCodeWarning);
 
             ForegroundColorSpan foregroundSpan =
                     new ForegroundColorSpan(getContext().getColor(R.color.default_red));
-        braveSyncCodeWarningSpanned.setSpan(foregroundSpan, 0, braveSyncCodeWarningSpanned.length()-1, 0);
-        mBraveSyncWarningTextViewAddMobileDevice.setText(braveSyncCodeWarningSpanned);
-      }
-      if (null != mScrollViewSyncInitial) {
-          mScrollViewSyncInitial.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewEnterCodeWords) {
-          mScrollViewEnterCodeWords.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddMobileDevice) {
-          mScrollViewAddMobileDevice.setVisibility(View.VISIBLE);
-      }
-      if (null != mScrollViewAddLaptop) {
-          mScrollViewAddLaptop.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewSyncStartChain) {
-          mScrollViewSyncStartChain.setVisibility(View.GONE);
-      }
+            braveSyncCodeWarningSpanned.setSpan(
+                    foregroundSpan, 0, braveSyncCodeWarningSpanned.length() - 1, 0);
+            mBraveSyncWarningTextViewAddMobileDevice.setText(braveSyncCodeWarningSpanned);
+        }
+        if (null != mScrollViewSyncInitial) {
+            mScrollViewSyncInitial.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewEnterCodeWords) {
+            mScrollViewEnterCodeWords.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddMobileDevice) {
+            mScrollViewAddMobileDevice.setVisibility(View.VISIBLE);
+        }
+        if (null != mScrollViewAddLaptop) {
+            mScrollViewAddLaptop.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewSyncStartChain) {
+            mScrollViewSyncStartChain.setVisibility(View.GONE);
+        }
         getActivity()
                 .runOnUiThread(
                         new Runnable() {
@@ -1413,30 +1423,17 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                 }
                             }
                         });
-  }
+    }
 
-  private void fillQrCode(String qrDataFinal) {
-      QRCodeGenerationRequest.QRCodeServiceCallback callback =
-              new QRCodeGenerationRequest.QRCodeServiceCallback() {
-                  @Override
-                  public void onQRCodeAvailable(Bitmap bitmap) {
-                      if (bitmap != null) {
-                          getActivity().runOnUiThread(new Runnable() {
-                              @Override
-                              public void run() {
-                                  mQRCodeImage.setImageBitmap(bitmap);
-                                  mQRCodeImage.invalidate();
-                              }
-                          });
-                      }
-                  }
-              };
-      new QRCodeGenerationRequest(qrDataFinal, callback);
-  }
+    private void fillQrCode(String qrDataFinal) {
+        Bitmap bitmap = QRCodeGenerator.generateBitmap(qrDataFinal);
+        mQRCodeImage.setImageBitmap(bitmap);
+        mQRCodeImage.invalidate();
+    }
 
-  private void setAddLaptopLayout() {
-      getActivity().setTitle(R.string.brave_sync_btn_laptop);
-      if (null != mBraveSyncTextViewAddLaptop) {
+    private void setAddLaptopLayout() {
+        getActivity().setTitle(R.string.brave_sync_btn_laptop);
+        if (null != mBraveSyncTextViewAddLaptop) {
             setSyncText(
                     getResources().getString(R.string.brave_sync_add_laptop_text_title),
                     getResources().getString(R.string.brave_sync_add_laptop_text_part_1)
@@ -1445,33 +1442,35 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                     .getString(R.string.brave_sync_add_laptop_text_part_2_new)
                             + "\n",
                     mBraveSyncTextViewAddLaptop);
-      }
+        }
 
-      if (null != mBraveSyncWarningTextViewAddLaptop) {
-        String braveSyncCodeWarning = getResources().getString(R.string.brave_sync_code_warning);
-        SpannableString braveSyncCodeWarningSpanned = new SpannableString(braveSyncCodeWarning);
+        if (null != mBraveSyncWarningTextViewAddLaptop) {
+            String braveSyncCodeWarning =
+                    getResources().getString(R.string.brave_sync_code_warning);
+            SpannableString braveSyncCodeWarningSpanned = new SpannableString(braveSyncCodeWarning);
 
             ForegroundColorSpan foregroundSpan =
                     new ForegroundColorSpan(getContext().getColor(R.color.default_red));
-        braveSyncCodeWarningSpanned.setSpan(foregroundSpan, 0, braveSyncCodeWarningSpanned.length()-1, 0);
-        mBraveSyncWarningTextViewAddLaptop.setText(braveSyncCodeWarningSpanned);
-      }
+            braveSyncCodeWarningSpanned.setSpan(
+                    foregroundSpan, 0, braveSyncCodeWarningSpanned.length() - 1, 0);
+            mBraveSyncWarningTextViewAddLaptop.setText(braveSyncCodeWarningSpanned);
+        }
 
-      if (null != mScrollViewSyncInitial) {
-          mScrollViewSyncInitial.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewEnterCodeWords) {
-          mScrollViewEnterCodeWords.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddMobileDevice) {
-          mScrollViewAddMobileDevice.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddLaptop) {
-          mScrollViewAddLaptop.setVisibility(View.VISIBLE);
-      }
-      if (null != mScrollViewSyncStartChain) {
-          mScrollViewSyncStartChain.setVisibility(View.GONE);
-      }
+        if (null != mScrollViewSyncInitial) {
+            mScrollViewSyncInitial.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewEnterCodeWords) {
+            mScrollViewEnterCodeWords.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddMobileDevice) {
+            mScrollViewAddMobileDevice.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddLaptop) {
+            mScrollViewAddLaptop.setVisibility(View.VISIBLE);
+        }
+        if (null != mScrollViewSyncStartChain) {
+            mScrollViewSyncStartChain.setVisibility(View.GONE);
+        }
         getActivity()
                 .runOnUiThread(
                         new Runnable() {
@@ -1486,116 +1485,120 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                 mBraveSyncAddDeviceCodeWords.setText(timeLimitedWords);
                             }
                         });
-  }
+    }
 
-  private void setSyncDoneLayout() {
+    private void setSyncDoneLayout() {
         if (!mDeviceInfoObserverSet) {
-          BraveSyncDevices.get().addDeviceInfoChangedListener(this);
+            BraveSyncDevices.get().addDeviceInfoChangedListener(this);
             mDeviceInfoObserverSet = true;
-      }
+        }
 
-      getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-      getActivity().setTitle(R.string.sync_category_title);
-      if (null != mCameraSourcePreview) {
-          mCameraSourcePreview.stop();
-      }
-      if (null != mScrollViewSyncInitial) {
-          mScrollViewSyncInitial.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewSyncChainCode) {
-          mScrollViewSyncChainCode.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewEnterCodeWords) {
-          mScrollViewEnterCodeWords.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddMobileDevice) {
-          mScrollViewAddMobileDevice.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewAddLaptop) {
-          mScrollViewAddLaptop.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewSyncStartChain) {
-          mScrollViewSyncStartChain.setVisibility(View.GONE);
-      }
-      if (null != mScrollViewSyncDone) {
-          mScrollViewSyncDone.setVisibility(View.VISIBLE);
-      }
+        getActivity()
+                .getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getActivity().setTitle(R.string.sync_category_title);
+        if (null != mCameraSourcePreview) {
+            mCameraSourcePreview.stop();
+        }
+        if (null != mScrollViewSyncInitial) {
+            mScrollViewSyncInitial.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewSyncChainCode) {
+            mScrollViewSyncChainCode.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewEnterCodeWords) {
+            mScrollViewEnterCodeWords.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddMobileDevice) {
+            mScrollViewAddMobileDevice.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewAddLaptop) {
+            mScrollViewAddLaptop.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewSyncStartChain) {
+            mScrollViewSyncStartChain.setVisibility(View.GONE);
+        }
+        if (null != mScrollViewSyncDone) {
+            mScrollViewSyncDone.setVisibility(View.VISIBLE);
+        }
 
-      try {
-          BraveActivity mainActivity = BraveActivity.getBraveActivity();
-          mBraveSyncTextDevicesTitle.setText(
-                  getResources().getString(R.string.brave_sync_loading_devices_title));
-      } catch (BraveActivity.BraveActivityNotFoundException e) {
-          Log.e(TAG, "setSyncDoneLayout " + e);
-      }
+        try {
+            BraveActivity mainActivity = BraveActivity.getBraveActivity();
+            mBraveSyncTextDevicesTitle.setText(
+                    getResources().getString(R.string.brave_sync_loading_devices_title));
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "setSyncDoneLayout " + e);
+        }
 
-      onDevicesAvailable();
-      resumeSyncStateChangedObserver();
-  }
+        onDevicesAvailable();
+        resumeSyncStateChangedObserver();
+    }
 
-  private void adjustWidth(View view, int orientation) {
-      if (orientation != Configuration.ORIENTATION_LANDSCAPE && DeviceFormFactor.isTablet()) {
-          DisplayMetrics metrics = new DisplayMetrics();
-          getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-          LayoutParams params = view.getLayoutParams();
-          params.width = metrics.widthPixels * 3 / 5;
-          params.height = metrics.heightPixels * 3 / 5;
-          view.setLayoutParams(params);
-      }
-  }
+    private void adjustWidth(View view, int orientation) {
+        if (orientation != Configuration.ORIENTATION_LANDSCAPE && DeviceFormFactor.isTablet()) {
+            DisplayMetrics metrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            LayoutParams params = view.getLayoutParams();
+            params.width = metrics.widthPixels * 3 / 5;
+            params.height = metrics.heightPixels * 3 / 5;
+            view.setLayoutParams(params);
+        }
+    }
 
-  private void adjustImageButtons(int orientation) {
-      if ((null != mLayoutSyncStartChain) && (null != mScrollViewSyncStartChain)
-              && (View.VISIBLE == mScrollViewSyncStartChain.getVisibility())) {
-          adjustWidth(mScrollViewSyncStartChain, orientation);
-          LayoutParams params = mLayoutMobile.getLayoutParams();
-          if (orientation == Configuration.ORIENTATION_LANDSCAPE && !DeviceFormFactor.isTablet()) {
-              mLayoutSyncStartChain.setOrientation(LinearLayout.HORIZONTAL);
-              params.width = 0;
-              params.height = LayoutParams.MATCH_PARENT;
-          } else {
-              mLayoutSyncStartChain.setOrientation(LinearLayout.VERTICAL);
-              params.width = LayoutParams.MATCH_PARENT;
-              params.height = 0;
-          }
-          mLayoutMobile.setLayoutParams(params);
-          mLayoutLaptop.setLayoutParams(params);
-      }
-  }
+    private void adjustImageButtons(int orientation) {
+        if ((null != mLayoutSyncStartChain)
+                && (null != mScrollViewSyncStartChain)
+                && (View.VISIBLE == mScrollViewSyncStartChain.getVisibility())) {
+            adjustWidth(mScrollViewSyncStartChain, orientation);
+            LayoutParams params = mLayoutMobile.getLayoutParams();
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE
+                    && !DeviceFormFactor.isTablet()) {
+                mLayoutSyncStartChain.setOrientation(LinearLayout.HORIZONTAL);
+                params.width = 0;
+                params.height = LayoutParams.MATCH_PARENT;
+            } else {
+                mLayoutSyncStartChain.setOrientation(LinearLayout.VERTICAL);
+                params.width = LayoutParams.MATCH_PARENT;
+                params.height = 0;
+            }
+            mLayoutMobile.setLayoutParams(params);
+            mLayoutLaptop.setLayoutParams(params);
+        }
+    }
 
-  private void clearBackground(View view) {
-      if (null != view) {
-          view.setBackgroundColor(Color.TRANSPARENT);
-      }
-  }
+    private void clearBackground(View view) {
+        if (null != view) {
+            view.setBackgroundColor(Color.TRANSPARENT);
+        }
+    }
 
-  private Context getBaseApplicationContext() {
-      Context context = ContextUtils.getApplicationContext();
-      if (context instanceof ContextWrapper) {
-          return ((ContextWrapper) context).getBaseContext();
-      } else {
-          return context;
-      }
-  }
+    private Context getBaseApplicationContext() {
+        Context context = ContextUtils.getApplicationContext();
+        if (context instanceof ContextWrapper) {
+            return ((ContextWrapper) context).getBaseContext();
+        } else {
+            return context;
+        }
+    }
 
-  // Handles 'Back' button. Returns true if it is handled, false otherwise.
-  @Override
-  public boolean onBackPressed() {
-      if ((View.VISIBLE == mScrollViewSyncChainCode.getVisibility())
-      || (View.VISIBLE == mScrollViewSyncStartChain.getVisibility())) {
-          setAppropriateView();
-          return true;
-      } else if ((View.VISIBLE == mScrollViewAddMobileDevice.getVisibility())
-      || (View.VISIBLE == mScrollViewAddLaptop.getVisibility())) {
-          setNewChainLayout();
-          return true;
-      } else if (View.VISIBLE == mScrollViewEnterCodeWords.getVisibility()) {
-          setJoinExistingChainLayout();
-          return true;
-      }
-      return false;
-  }
+    // Handles 'Back' button. Returns true if it is handled, false otherwise.
+    @Override
+    public boolean onBackPressed() {
+        if ((View.VISIBLE == mScrollViewSyncChainCode.getVisibility())
+                || (View.VISIBLE == mScrollViewSyncStartChain.getVisibility())) {
+            setAppropriateView();
+            return true;
+        } else if ((View.VISIBLE == mScrollViewAddMobileDevice.getVisibility())
+                || (View.VISIBLE == mScrollViewAddLaptop.getVisibility())) {
+            setNewChainLayout();
+            return true;
+        } else if (View.VISIBLE == mScrollViewEnterCodeWords.getVisibility()) {
+            setJoinExistingChainLayout();
+            return true;
+        }
+        return false;
+    }
 
-  @Override
-  public void onCreatePreferences(Bundle bundle, String s) {} /**/
+    @Override
+    public void onCreatePreferences(Bundle bundle, String s) {} /**/
 }
