@@ -431,18 +431,10 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2394961582378297792">Atsijungta</translation>
 <translation id="5308380583665731573">Prisijungti</translation>
 <translation id="3368922792935385530">Prijungta</translation>
-<translation id="8673913984316081937">Piniginės patvirtinimas neprivalomas</translation>
-<translation id="8558636200953226885">Tačiau patvirtinę galite...</translation>
-<translation id="8697510149346635496">Išmokėti BAT, kuriuos pelnėte už privatumą gerbiančių reklamų peržiūrą</translation>
-<translation id="1481480653609649134">Įsigyti papildomų BAT, sumokant kreditine kortele ir iš kitų šaltinių</translation>
-<translation id="9096003370755878766">Išmokėti BAT, kuriuos anksčiau pridėjote į savo „Brave Rewards“ piniginę</translation>
-<translation id="1554282356558968486">Mūsų piniginės paslaugą teikia</translation>
 <translation id="6569877533335686968">„Uphold“</translation>
 <translation id="3439853736976204026">„bitFlyer“</translation>
 <translation id="8533411848724153701">„Gemini“</translation>
 <translation id="6011108706830742093">„ZebPay“</translation>
-<translation id="8465442795593991224">Atsižvelgiant į prašomas paslaugas, „Uphold“ gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
-<translation id="3200197118442451932">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate <ph name="WALLET_PROVIDER"/>, kai ten susikuriate paskyrą.</translation>
 <translation id="1665118090708049096">Eiti į mano <ph name="WALLET_PROVIDER"/> paskyrą</translation>
 <translation id="4858636682078269312">Prisijunkite prie savo <ph name="WALLET_PROVIDER"/> paskyros</translation>
 <translation id="8874184842967597500">Neprisijungta</translation>
@@ -529,7 +521,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2225863440766607138">Sekikliai</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Per pastarąsias 3 valandas „Brave“ naršyklėje užblokavote tiek sekiklių ir reklamų: <ph name="COUNT"/>.</translation>
-<translation id="3621193901658023971">Su „Brave“ užblokuokite sekiklius bei reklamas ir pagrindinėse naujienų svetainėse naršykite iki 6 kartų greičiau.</translation>
+<translation id="5005713153542196658">Iki 6 kartų greičiau naršykite svarbiausiose naujienų svetainėse naudodamiesi „Brave“ ir blokuodami sekiklius &amp; reklamas.</translation>
 <translation id="7427567994475794038">Įjunkite privatumo ataskaitas ir matykite, kiek sekiklių ir reklamų užblokavote per pastarąsias 3 valandas.</translation>
 <translation id="2053891538879944400">Naudodami „Brave“ naršyklę sutaupėte <ph name="DATA"/> <ph name="DATA_TEXT"/> duomenų.</translation>
 <translation id="8640064498452534195">Įjunkite privatumo ataskaitas ir matykite, kiek duomenų sutaupėte.</translation>
@@ -594,6 +586,10 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8622329973403382303">Žinioms apie veikimą atnaujinti peržiūrėkite trumpą apžvalgą ir tapkite „Rewards“ žvaigžde!</translation>
 <translation id="3479552764303398839">Ne dabar</translation>
 <translation id="7138272885617540195">Leisti programėlių nuorodoms atsidaryti kitose programėlėse, o ne „Brave“</translation>
+<translation id="4954512758656527938">Numatytoji „Ethereum“ piniginė</translation>
+<translation id="7701023802820268122">Numatytoji „Solana“ piniginė</translation>
+<translation id="7701040980221191251">Nieko</translation>
+<translation id="8488282162676695335">„Brave“ piniginė</translation>
 <translation id="8792121506918889955">„WebRTC“ IP tvarkymo politika</translation>
 <translation id="8798099450830957504">Numatytasis</translation>
 <translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
@@ -689,7 +685,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8475984867371585028">Redaguoti matomus NFT</translation>
 <translation id="5050890334032852465">Įrašyti sąskaitos stebėjimo sąrašą</translation>
 <translation id="7755766175599167100">Ieškoti žetonų</translation>
-<translation id="8488282162676695335">„Brave“ piniginė</translation>
 <translation id="3784455785234192852">Užrakinti</translation>
 <translation id="4412698727486357573">Pagalbos centras</translation>
 <translation id="8796429300536029044">NFT informacija</translation>
@@ -721,12 +716,12 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8272917646984397798">Apsaugo visus ryšius</translation>
 <translation id="1751947227857853925">Spartus ir neribotas, iki 100 Mb/s</translation>
 <translation id="1400240082805528049">Palaikymas visą parą, kiekvieną dieną</translation>
-<translation id="5051030058817632680">Užblokuoja nepageidaujamus tinklo ryšius</translation>
+<translation id="5892534145504632332">Apsaugokite visas programas &amp; visą savo įrenginį</translation>
+<translation id="7195416926059527505">Saugesnis namų ir viešasis „Wi-Fi“</translation>
+<translation id="1354700000739359839">Žaibiškas greitis iki 100 Mbps</translation>
 <translation id="3510283489391432976">Parenka vietą pagal jūsų geografinę / šalies vietovę</translation>
-<translation id="4390800080658195654">Užtikrina jūsų anonimiškumą naršant internete</translation>
-<translation id="639981156979733813">Palaiko iki 100 Mb/s spartą</translation>
-<translation id="765343799669302337">Naudoja „Wireguard“ saugų užšifruotą VPN tunelį</translation>
-<translation id="1571230671455380494">Niekada nebendriname ir neparduodame informacijos apie jus</translation>
+<translation id="7695158478627528928">„Brave“ niekada neregistruoja jūsų veiklos</translation>
+<translation id="4575683170451975058">Apsaugokite 5 įrenginius įsigiję 1 prenumeratą</translation>
 <translation id="276866628038850725">Visiems planams taikomas 7 dienų nemokamos bandomosios versijos laikotarpis!</translation>
 <translation id="1532536259167115948">Mėnesinė prenumerata <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Metinė prenumerata <ph name="TRIAL_TEXT"/></translation>
@@ -737,6 +732,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / m.</translation>
 <translation id="2655185358771731232">Išbandykite nemokamai 7 dienas. Vėliau būsite apmokestinti pagal atitinkamo plano kainą. Visos prenumeratos atnaujinamos automatiškai, tačiau prieš atnaujinant galima atšaukti.</translation>
 <translation id="6053992191006521518">Išbandykite NEMOKAMAI</translation>
+<translation id="3990956504562716932">Išbandykite nemokamai 7 dienas</translation>
 <translation id="721747358270435486">Įdiegti VPN</translation>
 <translation id="836074276610740314">Įdiegti VPN profilį</translation>
 <translation id="8021842065465097929">Dabar „Brave“ įdiegs VPN profilį.</translation>
@@ -967,7 +963,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6458565248779152483">„Brave“ VPN išjungimas</translation>
 <translation id="9080536793704001825">Pristabdyti 15 minučių</translation>
 <translation id="803706420145725977">Pristabdyti 1 valandai</translation>
-<translation id="4394049700291259645">Neleisti</translation>
+<translation id="4394049700291259645">Išjungti</translation>
 <translation id="7733890291091968191">Rodyti „Web3“ pranešimus</translation>
 <translation id="1371627247679035769">\n\n\n\n#### „Brave“ jūsų neseka ir nežino, kaip naudojate mūsų programą, todėl neturime informacijos apie tai, kaip sukonfigūravote VPN. Papasakokite mums apie problemą, su kuria susidūrėte, ir mes visomis išgalėmis pasistengsime ją kuo greičiau išspręsti. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN pagrindinio kompiuterio vardas\n <ph name="VALUE"/></translation>
@@ -1121,71 +1117,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="591648995518106347">Automatiškai įkelia tinkamus straipsnius skaitytuvo režimu</translation>
 <translation id="1295796122927221823">Peržiūrėti skaitymo režime</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/>, esantis <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">„Brave“ grojaraštis</translation>
-<translation id="4850886885716139402">Žiūrėti</translation>
-<translation id="7392941176393379100">Įtraukta į „<ph name="PLAYLIST_NAME"/>“</translation>
-<translation id="8289472222022674331">Jūsų grojaraščio duomenų tvarkymas</translation>
-<translation id="7650602357673790368">Pagal numatytąsias nuostatas grojaraštis automatiškai įrašys turinį į jūsų įrenginį, kad būtų galima atkutyi neprisijungus (abiejuose privačiuose &amp; bendrinamuose grojaraščiuose). Jei nesate prisijungę prie „Wi-Fi“, automatinio įrašymo funkcija naudos jūsų mobiliojo ryšio duomenis.\n\nKad pakeistumėte šią numatytąją vertę, naudokite nuostatas.</translation>
-<translation id="5900576657906675258">Įtraukti elementą į grojaraštį</translation>
-<translation id="349846214503465941">Įjungti grojaraštį</translation>
-<translation id="1309636029062006520">Kurkite mėgstamų garso ir vaizdo įrašų grojaraščius ir leiskite juos bet kada ir bet kur.</translation>
-<translation id="3561815498111282415">Automatiškai įrašyti neprisijungus</translation>
-<translation id="1832424694374124654">Automatiškai įrašo naujus grojaraščio elementus į jūsų įrenginį, kad galėtumėte leisti be interneto ryšio.</translation>
-<translation id="8103022210423023846">Automatinio įrašymo funkcija ĮJUNGTA</translation>
-<translation id="3926329432879804185">Automatinio įrašymo funkcija IŠJUNGTA</translation>
-<translation id="7768812595186089508">Automatiškai įrašyti tik prisijungus prie „Wi-Fi“</translation>
-<translation id="5939518447894949180">Nustatyti iš naujo</translation>
-<translation id="8199028711686989861">Pašalinkite visus vaizdo įrašus iš grojaraščio, įskaitant autonominio režimo saugyklą.</translation>
-<translation id="5916664084637901428">Įjungta</translation>
-<translation id="5860033963881614850">Išjungta</translation>
-<translation id="2920568868625746681">Tik „Wi-Fi“</translation>
-<translation id="4590997608186539865">Grojaraštis</translation>
-<translation id="7525067979554623046">Sukurti</translation>
-<translation id="5491049004699827548">Susikurkite pirmąjį grojaraštį</translation>
-<translation id="5319108110887582146">Susikurkite mėgstamų garso ir vaizdo įrašų grojaraštį ir leiskite jį bet kada ir bet kur. Net neprisijungę.</translation>
-<translation id="6802849415466883498">Kurti grojaraštį</translation>
-<translation id="8525248723479742219">Leisti vėliau</translation>
-<translation id="7453007860684252933">Naršyti ir įtraukti</translation>
-<translation id="9014883386413828317">Įtraukite savo mėgstamą turinį. Apatinėje dešiniojoje savo ekrano dalyje ieškokite mygtuko („+“).</translation>
-<translation id="5928669500312007783">Naršyti mediją</translation>
-<translation id="8152485753254079984">Naujas grojaraštis</translation>
-<translation id="9130105487623071247">Grojaraščio pavadinimas</translation>
-<translation id="726581235416249619">Grojaraštis be pavadinimo</translation>
-<translation id="1456254983411148628">Šalinti duomenis</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> Pasirinkta elementų:</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/></translation>
-<translation id="2317629745818459803">Leisti viską</translation>
-<translation id="7544853251252956727">Maišyti</translation>
-<translation id="2881339830231736485">Vėliausiai atkurta</translation>
-<translation id="7636458383879257005">Bakstelėkite, paspauskite ir ilgiau palaikykite arba vilkite</translation>
-<translation id="8120600068258956006">Įtraukti į grojaraštį</translation>
-<translation id="39991094779686024">Grojaraščiai</translation>
-<translation id="1710072605877822603">Įtraukti mediją</translation>
-<translation id="3874252678044305931">Įtraukite vaizdo įrašų į „Brave“ grojaraštį. Atkurkite bet kada, net neprisijungę.</translation>
-<translation id="8973629800378391099">Sudarykite mėgstamiausio turinio grojaraščius. Taupykite mobiliuosius duomenis. Atkurkite be reklamų.</translation>
-<translation id="4936812987266342401">Tiesiog bakstelėkite mygtuką ir įdėkite vaizdo įrašus į grojaraštį.</translation>
-<translation id="6263657785571415306">Nepameskite srauto: pridėkite vaizdo įrašus naršydami, peržiūrėkite vėliau.</translation>
-<translation id="2839555636100404687">Atkūrimas grojaraštyje geresnis</translation>
-<translation id="9079526681359439081">Leiskite fone. Valdykite užrakinimo ekrane. Ir dar daugiau...</translation>
-<translation id="3620862810055853183">Atidaryti grojaraštį</translation>
-<translation id="3861012838874771868">Atidaryti grojaraščio nuostatas</translation>
-<translation id="5220099266891491416">Slėpti grojaraščio mygtuką</translation>
-<translation id="7416347631175891923">Išbandykite jį!</translation>
-<translation id="1173894706177603556">Pervadinti</translation>
-<translation id="1620612903815671893">Šalinti grojaraščio autonominius duomenis</translation>
-<translation id="3261711068865275261">Šalinti visus autonominius duomenis</translation>
-<translation id="6653691766801349738">Palikti grojaraštį naudoti neprisijungus</translation>
-<translation id="8708086574143054053">Palikti visus grojaraščius naudoti neprisijungus</translation>
-<translation id="3596306474342941843">Naikinti grojaraštį</translation>
-<translation id="7765158879357617694">Perkelti</translation>
-<translation id="3803384303807438047">Naikinti autonominius elemento duomenis</translation>
-<translation id="4195643157523330669">Atidaryti naujame skirtuke</translation>
-<translation id="4243710787042215766">Atidaryti inkognito skirtuke</translation>
-<translation id="8261506727792406068">Ištrinti</translation>
-<translation id="377872456482681602">Pirmiausia pasirinkite elementus</translation>
-<translation id="6172429305139364624">Grojaraščio elemento nėra talpykloje.\nĮrašykite elementą į talpyklą, kad galėtumėte leisti autonominiu režimu.</translation>
-<translation id="3631131732607750008">Baigėsi turinio galiojimo laikas. Po kelių sekundžių bandykite dar kartą.</translation>
-<translation id="286472539388773794">Įveskite galiojantį grojaraščio pavadinimą</translation>
 <translation id="9085765419770918643">NFT duomenų šiuo metu nėra.</translation>
 <translation id="8445532667841598737">Norite pridėti duomenis? Spauskite toliau esantį mygtuką ir importuokite NFT.</translation>
 <translation id="5925465310724910998">Ar norite, kad jūsų NFT būtų rodomi automatiškai?</translation>
@@ -1194,12 +1125,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="622372328961630111">Automatiškai į piniginę pridėkite savo NFT, naudodamiesi trečiųjų šalių API. <ph name="BEGIN_LINK_1"/> Sužinoti daugiau. <ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Adresų paieškos lentelės paskyra:</translation>
 <translation id="7659483790930268440">Adresų paieškos lentelės sąrašas:</translation>
-<translation id="7322560193401221004">Prisiminti failo atkūrimo poziciją</translation>
-<translation id="7505951907514709271">Atskirų failų atkūrimą tęskite nuo paskutinės pauzės taško</translation>
-<translation id="6835165453349969605">Prisiminti sąrašo atkūrimo padėtį</translation>
-<translation id="6344103698928069918">Grojaraštyje atkūrimą tęskite nuo paskutinės pauzės taško.</translation>
-<translation id="8141583471142904652">Nuolatinis klausymasis</translation>
-<translation id="851432578283946230">Automatiškai paleidžia tolesnius grojaraščio elementus</translation>
 <translation id="7853202427316060426">Veikla</translation>
 <translation id="4932733599132424254">Data</translation>
 <translation id="346505172740911461">Rinkos kaina</translation>
@@ -1216,6 +1141,80 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2471230424465522689">Ne anksčiau nei</translation>
 <translation id="4841860051609590575">Užklausos ID</translation>
 <translation id="1179407411385015942">„Leo“ yra dirbtinio intelekto pagrindu veikiantis išmanusis asistentas, integruotas tiesiai naršyklėje</translation>
+<translation id="4109670531935487117">Adreso juostoje rodyti automatinio užbaigimo pasiūlymus</translation>
 <translation id="1250335737108905610">Atkurti ir išvalyti „Leo“ duomenis</translation>
 <translation id="6165101586663336913">Iš naujo nustatę „Leo“ asistentą, ateityje turėsite pasirinkti, kad norite naudoti „Leo“, taip pat bus išvalyta jūsų pokalbių istorija. Išvalius jūsų pokalbių istoriją, bus pašalinti visi ankstesni jūsų pokalbiai su „Leo“. Šio veiksmo atšaukti negalima.</translation>
+<translation id="3692772534525889713">Susiekite savo „Play Store“ pirkinį su savo „Brave“ paskyra, kad galėtumėte naudotis „Brave Leo“ kitais įrenginiais.</translation>
+<translation id="73236265316873967">„Leo Premium“</translation>
+<translation id="1166682575529520472">Kas mėnesį</translation>
+<translation id="451189393813405346">Klausti „Leo“</translation>
+<translation id="7322560193401221004">Prisiminti failo atkūrimo poziciją</translation>
+<translation id="7505951907514709271">Atskirų failų atkūrimą tęskite nuo paskutinės pauzės taško</translation>
+<translation id="6835165453349969605">Prisiminti sąrašo atkūrimo padėtį</translation>
+<translation id="6344103698928069918">Grojaraštyje atkūrimą tęskite nuo paskutinės pauzės taško.</translation>
+<translation id="8141583471142904652">Nuolatinis klausymasis</translation>
+<translation id="851432578283946230">Automatiškai paleidžia tolesnius grojaraščio elementus</translation>
+<translation id="295620834661738195">„Brave“ grojaraštis</translation>
+<translation id="4850886885716139402">Žiūrėti</translation>
+<translation id="7392941176393379100">Įtraukta į „<ph name="PLAYLIST_NAME"/>“</translation>
+<translation id="349846214503465941">Įjungti grojaraštį</translation>
+<translation id="1309636029062006520">Kurkite mėgstamų garso ir vaizdo įrašų grojaraščius ir leiskite juos bet kada ir bet kur.</translation>
+<translation id="7899390017499980820">Mygtukas „Įtraukti į grojaraštį“</translation>
+<translation id="6901152954398668317">Rodykite arba slėpkite mygtuką „Įtraukti į grojaraštį“, kad greitai pasiektumėte ir įtrauktumėte arba pašalintumėte mediją.</translation>
+<translation id="5939518447894949180">Nustatyti iš naujo</translation>
+<translation id="8199028711686989861">Pašalinkite visus vaizdo įrašus iš grojaraščio, įskaitant autonominio režimo saugyklą.</translation>
+<translation id="4590997608186539865">Grojaraštis</translation>
+<translation id="7525067979554623046">Sukurti</translation>
+<translation id="8525248723479742219">Leisti vėliau</translation>
+<translation id="7453007860684252933">Naršyti ir įtraukti</translation>
+<translation id="9014883386413828317">Įtraukite savo mėgstamą turinį. Apatinėje dešiniojoje savo ekrano dalyje ieškokite mygtuko („+“).</translation>
+<translation id="5928669500312007783">Naršyti mediją</translation>
+<translation id="8152485753254079984">Naujas grojaraštis</translation>
+<translation id="9130105487623071247">Grojaraščio pavadinimas</translation>
+<translation id="726581235416249619">Grojaraštis be pavadinimo</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> Pasirinkta elementų:</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/></translation>
+<translation id="2317629745818459803">Leisti viską</translation>
+<translation id="7544853251252956727">Maišyti</translation>
+<translation id="2881339830231736485">Vėliausiai atkurta</translation>
+<translation id="8120600068258956006">Įtraukti į grojaraštį</translation>
+<translation id="39991094779686024">Grojaraščiai</translation>
+<translation id="1710072605877822603">Įtraukti mediją</translation>
+<translation id="3874252678044305931">Įtraukite vaizdo įrašų į „Brave“ grojaraštį. Atkurkite bet kada, net neprisijungę.</translation>
+<translation id="8973629800378391099">Sudarykite mėgstamiausio turinio grojaraščius. Taupykite mobiliuosius duomenis. Atkurkite be reklamų.</translation>
+<translation id="4936812987266342401">Tiesiog bakstelėkite mygtuką ir įdėkite vaizdo įrašus į grojaraštį.</translation>
+<translation id="6263657785571415306">Nepameskite srauto: pridėkite vaizdo įrašus naršydami, peržiūrėkite vėliau.</translation>
+<translation id="2839555636100404687">Atkūrimas grojaraštyje geresnis</translation>
+<translation id="9079526681359439081">Leiskite fone. Valdykite užrakinimo ekrane. Ir dar daugiau...</translation>
+<translation id="3620862810055853183">Atidaryti grojaraštį</translation>
+<translation id="3861012838874771868">Atidaryti grojaraščio nuostatas</translation>
+<translation id="5220099266891491416">Slėpti grojaraščio mygtuką</translation>
+<translation id="7416347631175891923">Išbandykite jį!</translation>
+<translation id="1173894706177603556">Pervadinti</translation>
+<translation id="3596306474342941843">Naikinti grojaraštį</translation>
+<translation id="7765158879357617694">Perkelti</translation>
+<translation id="3803384303807438047">Naikinti autonominius elemento duomenis</translation>
+<translation id="4195643157523330669">Atidaryti naujame skirtuke</translation>
+<translation id="4243710787042215766">Atidaryti inkognito skirtuke</translation>
+<translation id="8261506727792406068">Ištrinti</translation>
+<translation id="377872456482681602">Pirmiausia pasirinkite elementus</translation>
+<translation id="286472539388773794">Įveskite galiojantį grojaraščio pavadinimą</translation>
+<translation id="2824489375399072491">Bendrinti su:</translation>
+<translation id="5319532905552885478">Medijų turinys jau įtrauktas į numatytąjį grojaraštį</translation>
+<translation id="4802584673094436231">Rengiama…</translation>
+<translation id="481455355267255546">Toliau</translation>
+<translation id="5474757891469990756">Atskleiskite visas „Leo“ galimybes naudodamiesi „Premium“:</translation>
+<translation id="4173478269537830374">Susipažinkite su skirtingais DI modeliais</translation>
+<translation id="3453542753968940696">Pirmenybinė prieiga prie veiksmingų modelių naudojantis skirtingais įgūdžiais.</translation>
+<translation id="3245401959451976966">Atraskite savo kūrybines galias</translation>
+<translation id="5031778211368112461">Naudokitės geriau pritaikytais modeliais kūrybinėms užduotims atlikti ir turiniui generuoti.</translation>
+<translation id="4165928407303989823">Žinokite aktualijas</translation>
+<translation id="298783097210745222">Gaukite tikslesnius detalesnių pokalbių atsakymus</translation>
+<translation id="2389665228467129817">Kalbėkitės ilgiau</translation>
+<translation id="4314705522985583059">Gaukite didesnius tarifų limitus ilgesniems pokalbiams.</translation>
+<translation id="6365289557497555234">Visos prenumeratos atnaujinamos automatiškai, bet jas galima bet kada nutraukti iki atnaujinimo.</translation>
+<translation id="6637015365469044269">Naujinkite dabar</translation>
+<translation id="614530507403667291">Numatytasis naujų pokalbių modelis</translation>
+<translation id="4071849832011229600">Numatytasis modelis</translation>
+<translation id="7557539689487606886">Užsisakyti „Premium“</translation>
 </translationbundle>

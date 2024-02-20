@@ -253,6 +253,8 @@
 <translation id="480565261566115689">تب‌ها را به حداقل برسانید</translation>
 <translation id="7194343495483122559">تب‌ها را گسترش دهید</translation>
 <translation id="1199054713803577378">تب‌ها را به حداقل برسانید</translation>
+<translation id="1337946268962884806">سفارش دلخواه</translation>
+<translation id="8373664339577369248">سفارش دلخواه</translation>
 <translation id="8120600068258956006">به لیست پخش اضافه کنید</translation>
 <translation id="650694591627983430">رسانه‌های یافت‌شده در این صفحه</translation>
 <translation id="8525248723479742219">بعداً پخش کنید</translation>
@@ -302,6 +304,9 @@
 <translation id="2800828306627475693">فرایند تکرار را غیرفعال کنید</translation>
 <translation id="1748244367114657861">یک مورد را تکرار کنید</translation>
 <translation id="6421906998825794164">همه موارد را تکرار کنید</translation>
+<translation id="6453210454707928697">مورد پخش نشد</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] ممکن است منقضی شده باشد. آیا می‌خواهید آن را بازیابی کنید؟</translation>
+<translation id="6155018868740116868">بازیابی</translation>
 <translation id="1727684853006449697">پخش‌کننده Brave</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
@@ -324,6 +329,8 @@
 <translation id="5860254591544742609">نمایش نوار عنوان</translation>
 <translation id="5371926069408837914">گسترده کردن پانل زبانه‌های عمودی با نگه داشتن نشانگر، پس از جمع شدن</translation>
 <translation id="3367129510799209147">حالت شناور برگه</translation>
+<translation id="515949045075831661">در سمت راست نشان داده شود</translation>
+<translation id="3725395376319291415">در سمت چپ نشان داده شود</translation>
 <translation id="2113977810652731515">کارت</translation>
 <translation id="4096343215397759358">کارت با پیش نمایش</translation>
 <translation id="5297085818601043899">راهنمای ابزار</translation>
@@ -360,7 +367,7 @@
 <translation id="4057614912106618659">Brave از قبل در نوار ابزار است</translation>
 <translation id="3195845168740336657">تنظیمات سپر امنیتی</translation>
 <translation id="754769152790647708">وضعیت سپر امنیتی</translation>
-<translation id="3615717588724840230">سایت‌ها با استفاده از سپر امنیتی قادر به مسدودسازی ردیاب‌ها، آگهی‌ها و انگشت‌نگاری خواهند بود.</translation>
+<translation id="4868109105992358853">محافظ‌ها می‌توانند ردیاب‌ها، آگهی‌ها و انگشت‌نگاری را مسدود کنند</translation>
 <translation id="5690973901138662477">روشن کردن سپر امنیتی</translation>
 <translation id="4697275813919189958">خاموش کردن سپر امنیتی</translation>
 <translation id="6303294677342628402">سپر ایمنی</translation>
@@ -415,7 +422,7 @@
 <translation id="5567412479632285879">پاداش‌های Brave غیرفعال است</translation>
 <translation id="413570371620795359">برای فعال‌سازی و شروع، دریچه‌ی جوایز را باز کنید</translation>
 <translation id="1051600834033686945">تنظیمات کامل پاداش‌های Brave را باز کنید</translation>
-<translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
+<translation id="8826461509529116322">نمایش دکمه «پاداش‌های Brave»</translation>
 <translation id="9185018653595759199">مسدود کردن رسانه اجتماعی</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
@@ -725,6 +732,7 @@
 Brave Leo را انتخاب کنید و همچنین تاریخچه چت شما پاک خواهد شد.
 با پاک کردن تاریخچه چت تمامی مکالمات قبلی‌تان با Brave
 Leo حذف خواهد شد. این کار غیرقابل بازگشت است.</translation>
+<translation id="5574059574002819179">پیشنهادهای تکمیل خودکار را تنظیم کنید</translation>
 <translation id="8157373421434119674">داده‌ها و تاریخچه چت</translation>
 <translation id="614530507403667291">مدل پیش‌فرض برای مکالمات جدید</translation>
 <translation id="349846214503465941">لیست پخش را فعال کنید</translation>

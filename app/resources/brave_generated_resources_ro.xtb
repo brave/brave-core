@@ -254,6 +254,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="480565261566115689">Minimizați filele</translation>
 <translation id="7194343495483122559">Extindeți filele</translation>
 <translation id="1199054713803577378">Minimizați filele</translation>
+<translation id="1337946268962884806">Comandă personalizată</translation>
+<translation id="8373664339577369248">comandă personalizată</translation>
 <translation id="8120600068258956006">Adăugați la Lista de redare</translation>
 <translation id="650694591627983430">Fișiere media identificate în această pagină</translation>
 <translation id="8525248723479742219">Redați mai târziu</translation>
@@ -303,6 +305,9 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2800828306627475693">Repetare oprită</translation>
 <translation id="1748244367114657861">Repetare una</translation>
 <translation id="6421906998825794164">Repetare toate</translation>
+<translation id="6453210454707928697">Eșec la redarea elementului</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] ar putea fi expirat. Doriți să-l recuperați?</translation>
+<translation id="6155018868740116868">Recuperați</translation>
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="7179921470347911571">Relansare acum</translation>
@@ -325,6 +330,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5860254591544742609">Afișați bara de titlu</translation>
 <translation id="5371926069408837914">Extindeți panoul de file vertical când treceți cu mouse-ul deasupra atunci când este restrâns</translation>
 <translation id="3367129510799209147">Modul de trecere a filei</translation>
+<translation id="515949045075831661">Afișați pe partea dreaptă</translation>
+<translation id="3725395376319291415">Afișați pe partea stângă</translation>
 <translation id="2113977810652731515">Card</translation>
 <translation id="4096343215397759358">Card cu previzualizare</translation>
 <translation id="5297085818601043899">Sfat ecran</translation>
@@ -361,7 +368,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4057614912106618659">Brave este deja în Dock</translation>
 <translation id="3195845168740336657">Setări scut</translation>
 <translation id="754769152790647708">Starea scuturilor</translation>
-<translation id="3615717588724840230">Site-urile pot bloca modulele de urmărire, anunțurile și urmele lăsate de browsing cu ajutorul scuturilor.</translation>
+<translation id="4868109105992358853">Scuturile pot bloca trackere, anunțuri și urmele lăsate de browser</translation>
 <translation id="5690973901138662477">Scuturile sunt active</translation>
 <translation id="4697275813919189958">Scuturile sunt inactive</translation>
 <translation id="6303294677342628402">Scuturi</translation>
@@ -416,7 +423,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5567412479632285879">Opțiunea Recompense Brave este dezactivată</translation>
 <translation id="413570371620795359">Accesați panoul Brave Rewards, pentru a activa opțiunea și a începe utilizarea</translation>
 <translation id="1051600834033686945">Deschideți setările integrale Recompense Brave</translation>
-<translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
+<translation id="8826461509529116322">Afișați butonul de recompense Brave</translation>
 <translation id="9185018653595759199">Blocare pe rețelele de socializare</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
 <translation id="5165042248369837294">Permite tweet-uri încorporate Twitter</translation>
@@ -726,6 +733,7 @@ Notă: Dacă se selectează nodul local, resursa va fi solicitată direct de pe 
 Leo în viitor și va șterge istoricul de chat. Prin ștergerea
 istoricului de chat se vor șterge toate conversațiile anterioare cu Brave
 Leo. Această acțiune nu poate fi anulată.</translation>
+<translation id="5574059574002819179">Ajustați sugestiile de completare automată</translation>
 <translation id="8157373421434119674">Istoric de date și chat</translation>
 <translation id="614530507403667291">Model implicit pentru conversații noi</translation>
 <translation id="349846214503465941">Activați Lista de redare</translation>

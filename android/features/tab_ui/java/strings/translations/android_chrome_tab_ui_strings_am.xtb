@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">የድሮ ትሮችን መዝጋት ይፈልጋሉ?</translation>
 <translation id="1215127405478249895">ትሮችን ይገምግሙ</translation>
 <translation id="125153950246128346">ሌላ ትር ለመመልከት መታ ያድርጉ</translation>
+<translation id="1326271443836399892">የአሁኖቹን የተዝረከረኩትን የማስተካከል ቅንብሮች ይገምግሙ።</translation>
 <translation id="1657719826150349398">ትርን ወደ ታች ያንቀሳቅሱ</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ትር}one{<ph name="TABS_COUNT_MANY"/> ትሮች}other{<ph name="TABS_COUNT_MANY"/> ትሮች}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{የዕልባት <ph name="TABS_COUNT_ONE"/> የተመረጠ ትር}one{የዕልባት <ph name="TABS_COUNT_MANY"/> የተመረጠ ትር}other{የዕልባት <ph name="TABS_COUNT_MANY"/> የተመረጡ ትሮች}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">ከቡድን አስወግድ</translation>
 <translation id="3008554597174452548">ምርቱን መከታተል አቁም</translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> ላይ የ<ph name="PRICE_DROP"/> ዋጋ ቅናሽ</translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> በማህደር የተቀመጠ ትር አልዎት}one{<ph name="TABS_COUNT_MANY"/> በማህደር የተቀመጠ ትር አልዎት}other{<ph name="TABS_COUNT_MANY"/> በማህደር የተቀመጡ ትሮች አልዎት}}</translation>
 <translation id="3194464645767632461">የተሰጡ ደረጃዎች</translation>
 <translation id="3291470810748040983">በክፍት ትር ውስጥ ዝቅተኛ ዋጋ ሲኖር ማንቂያ ይደርስዎታል</translation>
 <translation id="3328308545011660196">የአስተያየት ጥቆማ፦ <ph name="NUMBER_OF_TABS"/> ትሮች የሚዛመዱ ይመስላሉ። ይቦደኑ?</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">ማሳወቂያ ይድረሰዎት</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> ትሮች የሚዛመዱ ይመስላሉ ይቦደኑ?</translation>
 <translation id="4212246570487010370">ማሰሱን ይቀጥሉ</translation>
+<translation id="427987768447457592">አዲስ የትር ቡድን</translation>
 <translation id="4648718555153979859">የእርስዎ ትሮች እዚህ አብረው ይቦደናሉ</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> ግምገማ)}one{(<ph name="REVIEWS_COUNT_MANY"/> ግምገማዎች)}other{(<ph name="REVIEWS_COUNT_MANY"/> ግምገማዎች)}}</translation>
 <translation id="4850886885716139402">አሳይ</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">የሙሉ ማያ ፍርግርግን ደብቅ</translation>
 <translation id="5076161749301278626">የመደብር ግምገማዎችን ይመለከታሉ?</translation>
 <translation id="5082793167783849073">ስብስብ በመፍጠር በፍጥነት ገጾችን ያነጻጽሩ። ለመጀመር አንድ አገናኝን ነክተው ይያዙ።</translation>
+<translation id="5161254044473106830">ርዕስ ያስፈልጋል</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{በቅርቡ ጥቅም ላይ ያላዋሉት <ph name="TABS_COUNT_ONE"/> ትር አለዎት}one{በቅርቡ ጥቅም ላይ ያላዋሉት <ph name="TABS_COUNT_MANY"/> ትር አለዎት}other{በቅርቡ ጥቅም ላይ ያላዋሏቸው <ph name="TABS_COUNT_MANY"/> ትሮች አሉዎት}}</translation>
 <translation id="5339733443032484186">የእርስዎ የመጨረሻ ትር</translation>
 <translation id="5490235265819901748">የትር ቡድን ተዘርግቷል</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">ቅርን ወደ ቀኝ አንቀሳቅስ</translation>
 <translation id="7966321538264951561">ጥቆማ ሐሳቦችን ያሰናብቱ።</translation>
 <translation id="8029301326595421733">ስለዚህ መደብር መረጃ በሙሉ ቁመት ተከፍቷል</translation>
-<translation id="814503310257431685">ሁሉንም አሳይ</translation>
 <translation id="8205266828577616993">ትርን ወደ ላይ አንቀሳቅስ</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{የተመረጠ <ph name="TABS_COUNT_ONE"/> ትር ዝጋ}one{የተመረጡ <ph name="TABS_COUNT_MANY"/> ትሮችን ዝጋ}other{የተመረጡ <ph name="TABS_COUNT_MANY"/> ትሮችን ዝጋ}}</translation>
 <translation id="8398929769197326728">አዲስ አቃፊ - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">ስለዚህ መደብር መረጃ ተዘግቷል</translation>
 <translation id="9150694013019234766">ከማያው ግርጌ አጠገብ በትር ቡድንዎ ውስጥ ባሉ ትሮች መካከይ ይቀያይሩ</translation>
 <translation id="9169594135889675189">አዲስ ትር ወደ ቡድን አክል</translation>
+<translation id="955558140275419384">ይህንን አርታዒ በማስገባት የተዝረከረኩትን ለማስተካከል ሁሉንም በማህደር የተቀመጡ ትሮችን ይገምግሙ።</translation>
 <translation id="959682366969460160">ይደራጁ</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
         =1 {የተዘጉ ትሮችዎን በBrave ዋና ምናሌ ስር በቅርብ ጊዜ ትሮች ውስጥ ማግኘት ይችላሉ። የእርስዎ የግል ትር አይገኝም።}

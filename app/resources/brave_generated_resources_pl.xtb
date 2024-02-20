@@ -253,6 +253,8 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="480565261566115689">Minimalizuj karty</translation>
 <translation id="7194343495483122559">Rozwiń karty</translation>
 <translation id="1199054713803577378">Minimalizuj karty</translation>
+<translation id="1337946268962884806">Zamówienie niestandardowe</translation>
+<translation id="8373664339577369248">zamówienie niestandardowe</translation>
 <translation id="8120600068258956006">Dodaj do listy odtwarzania</translation>
 <translation id="650694591627983430">Pliki multimedialne dostępne na tej stronie</translation>
 <translation id="8525248723479742219">Odtwórz później</translation>
@@ -302,6 +304,9 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2800828306627475693">Powtarzanie wył.</translation>
 <translation id="1748244367114657861">Powtarzaj jeden</translation>
 <translation id="6421906998825794164">Powtarzaj wszystkie</translation>
+<translation id="6453210454707928697">Nie udało się odtworzyć elementu</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] mógł wygasnąć. Czy chcesz go odzyskać?</translation>
+<translation id="6155018868740116868">Odzyskaj</translation>
 <translation id="1727684853006449697">Odtwarzacz Brave</translation>
 <translation id="9156965752763025780">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave.</translation>
 <translation id="7179921470347911571">Uruchom ponownie teraz</translation>
@@ -324,6 +329,8 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5860254591544742609">Pokaż pasek tytułu</translation>
 <translation id="5371926069408837914">Gdy pionowy panel zakładek jest zwinięty, możesz go rozwinąć po najechaniu myszką</translation>
 <translation id="3367129510799209147">Tryb najechania myszką na kartę</translation>
+<translation id="515949045075831661">Pokaż po prawej stronie</translation>
+<translation id="3725395376319291415">Pokaż po lewej stronie</translation>
 <translation id="2113977810652731515">Karta</translation>
 <translation id="4096343215397759358">Karta z podglądem</translation>
 <translation id="5297085818601043899">Tooltip</translation>
@@ -360,7 +367,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4057614912106618659">Przeglądarka Brave jest już w Docku</translation>
 <translation id="3195845168740336657">Ustawienia sekcji Tarcze</translation>
 <translation id="754769152790647708">Status Tarcz</translation>
-<translation id="3615717588724840230">Strony mogą blokować skrypty śledzące, reklamy i rozpoznawanie urządzenia przy wykorzystaniu Tarcz</translation>
+<translation id="4868109105992358853">Tarcze mogą blokować skrypty śledzące, reklamy i logowanie odciskiem palca</translation>
 <translation id="5690973901138662477">Tarcze włączone</translation>
 <translation id="4697275813919189958">Tarcze wyłączone</translation>
 <translation id="6303294677342628402">Tarcze</translation>
@@ -415,7 +422,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5567412479632285879">Nagrody Brave są wyłączone</translation>
 <translation id="413570371620795359">Otwórz panel z nagrodami i zacznij</translation>
 <translation id="1051600834033686945">Otwórz pełne ustawienia nagród Brave</translation>
-<translation id="6333347122924254968">Pokaż ikonę Nagród Brave w pasku adresu</translation>
+<translation id="8826461509529116322">Pokaż przycisk nagród Brave</translation>
 <translation id="9185018653595759199">Zablokuj sieci społecznościowe</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
@@ -725,6 +732,7 @@ Uwaga: Jeśli wybrano węzeł lokalny, dostęp do zasobu będzie wymagany bezpo�
 korzystanie z Brave Leo w przyszłości, a także spowoduje wyczyszczenie
 historii czatu. Wyczyszczenie historii czatu oznacza usunięcie wszystkich
 poprzednich rozmów z Brave Leo. Tej czynności nie można cofnąć.</translation>
+<translation id="5574059574002819179">Dostosuj sugestie autouzupełniania</translation>
 <translation id="8157373421434119674">Dane i historia czatu</translation>
 <translation id="614530507403667291">Domyślny model dla nowych rozmów</translation>
 <translation id="349846214503465941">Włącz listę odtwarzania</translation>

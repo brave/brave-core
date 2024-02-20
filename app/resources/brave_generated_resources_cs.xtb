@@ -254,6 +254,8 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="480565261566115689">Minimalizovat karty</translation>
 <translation id="7194343495483122559">Rozbalit karty</translation>
 <translation id="1199054713803577378">Minimalizovat karty</translation>
+<translation id="1337946268962884806">Vlastní řazení</translation>
+<translation id="8373664339577369248">vlastní řazení</translation>
 <translation id="8120600068258956006">Přidat do seznamu stop</translation>
 <translation id="650694591627983430">Média nalezená na této stránce</translation>
 <translation id="8525248723479742219">Přehrát později</translation>
@@ -303,6 +305,9 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2800828306627475693">Opakování vypnuto</translation>
 <translation id="1748244367114657861">Opakovat jednu</translation>
 <translation id="6421906998825794164">Opakovat vše</translation>
+<translation id="6453210454707928697">Položku se nepodařilo přehrát</translation>
+<translation id="8741852840789907931">Platnost položky [<ph name="ITEM_NAME"/>] pravděpodobně vypršela. Chcete ji obnovit?</translation>
+<translation id="6155018868740116868">Obnovit</translation>
 <translation id="1727684853006449697">Přehrávač Brave</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
@@ -325,6 +330,8 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5860254591544742609">Zobrazit lištu s názvem</translation>
 <translation id="5371926069408837914">Když je vertikální panel karet sbalený, rozbalit najetím myší</translation>
 <translation id="3367129510799209147">Režim Najetí na kartu</translation>
+<translation id="515949045075831661">Zobrazit vpravo</translation>
+<translation id="3725395376319291415">Zobrazit vlevo</translation>
 <translation id="2113977810652731515">Karta</translation>
 <translation id="4096343215397759358">Karta s náhledem</translation>
 <translation id="5297085818601043899">Nápověda</translation>
@@ -361,7 +368,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4057614912106618659">Brave již v Docku je</translation>
 <translation id="3195845168740336657">Nastavení štítů</translation>
 <translation id="754769152790647708">Stav štítů</translation>
-<translation id="3615717588724840230">Stránky mohou pomocí štítů blokovat sledovací zařízení, reklamy a snímání otisků prstů</translation>
+<translation id="4868109105992358853">Štíty mohou blokovat trackery, reklamy a získávání otisků</translation>
 <translation id="5690973901138662477">Štíty aktivní</translation>
 <translation id="4697275813919189958">Štíty neaktivní</translation>
 <translation id="6303294677342628402">Štíty</translation>
@@ -416,7 +423,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5567412479632285879">Odměny Brave jsou vypnuté</translation>
 <translation id="413570371620795359">Otevřete panel Odměny pro aktivaci a začněte</translation>
 <translation id="1051600834033686945">Otevřít kompletní nastavení odměn Brave</translation>
-<translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
+<translation id="8826461509529116322">Zobrazit tlačítko Odměny Brave</translation>
 <translation id="9185018653595759199">Blokování sociálních médií</translation>
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="5165042248369837294">Povolit sdílení zpráv z Twitteru</translation>
@@ -726,6 +733,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 Leo v budoucnu a také vymaže historii chatu. Vymazání
 chatu odstraní všechny vaše předchozí konverzace s Brave
 Leo. Tuto akci nelze vrátit zpět.</translation>
+<translation id="5574059574002819179">Úprava návrhů automatického dokončování</translation>
 <translation id="8157373421434119674">Historie dat a chatu</translation>
 <translation id="614530507403667291">Výchozí model pro konverzace</translation>
 <translation id="349846214503465941">Aktivovat seznam stop</translation>

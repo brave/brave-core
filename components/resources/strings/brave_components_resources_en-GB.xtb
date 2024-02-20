@@ -258,10 +258,18 @@
 <translation id="8167256685618982116">By turning on <ph name="TITLE"/>, you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="8817096698141999876">Custodial accounts (requires ID verification)</translation>
 <translation id="1539433155512862005">Custodial accounts are accounts with trusted third-party services that hold your BATs for you.</translation>
+<translation id="6834831484510296932">Self-custody</translation>
+<translation id="4208917415153655958">Self-custody gives you exclusive control over your BATs, along with complete responsibility for their security.</translation>
+<translation id="1953496742859481929">By choosing a self-custody wallet, Rewards will be paid out as SPL-BATs on the Solana network.</translation>
 <translation id="6751803821780922506">Choose where you'd like to receive BATs</translation>
-<translation id="1233129511866436960">Learn more about regions and support</translation>
+<translation id="3162035476318501831">Learn more about regions and support.</translation>
 <translation id="7329170127335794328">Currently not available in your region</translation>
 <translation id="966956302643313970">To begin earning Basic Attention Token (BAT) rewards, connect an account. BATs you earn will be automatically transferred to your account every month.</translation>
+<translation id="4009439571146350519">Or other wallet that supports Solana</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Terms of Use<ph name="TOS_LINK_END"/> and <ph name="PP_LINK_BEGIN"/>Privacy Policy<ph name="PP_LINK_END"/>.</translation>
+<translation id="1692293127547800972">Something went wrong. Please try again</translation>
+<translation id="756341217015623253">Log in or sign up</translation>
+<translation id="2653844658857826081">NEW</translation>
 <translation id="1892970806832316900">Pending until <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Oops! Your browser cannot receive Brave Private Ads.</translation>
 <translation id="5177429570315095022">Your browser needs to be updated to continue seeing ads.</translation>
@@ -411,6 +419,7 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6011108706830742093">ZebPay</translation>
+<translation id="5390923430722428146">Solana</translation>
 <translation id="6354568176665589146">Recurring</translation>
 <translation id="2799223571221894425">Relaunch</translation>
 <translation id="1110535155349301542">remove</translation>
@@ -473,7 +482,7 @@
 <translation id="326118736933420687">You're viewing a WebTorrent page</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Enable support of Unstoppable Domains in Brave?</translation>
-<translation id="3647533686160055812">Brave will be using Infura to resolve .crypto (and also .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="9156229987230762013">Brave will be using Infura to resolve .crypto (and also .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Enable support of Ethereum Name Service (ENS) in Brave?</translation>
 <translation id="4609973808011229683">Brave will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
@@ -683,6 +692,9 @@
 <translation id="4214852687527104244">Don’t worry.</translation>
 <translation id="5027616819996705541">You can still browse privately!</translation>
 <translation id="1886682615222609631">Earnings so far</translation>
+<translation id="3479552764303398839">Not now</translation>
+<translation id="4185473179105062442">Receive BATs directly to a self-custody crypto address</translation>
+<translation id="5802986777701714573">We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.</translation>
 <translation id="86107454835395919">Set as monthly contribution</translation>
 <translation id="6621880242105464352">Brave collects <ph name="FEE_PCT"/> of the sent amount as a processing fee.</translation>
 <translation id="1420756770787071946">Support this creator</translation>
@@ -713,6 +725,11 @@
 <translation id="1950340257946519340">An unexpected error has occurred</translation>
 <translation id="2605703631071131439">Please reopen the contribution panel to try again.</translation>
 <translation id="8855543392451028706">Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.</translation>
+<translation id="8015040694844000835">Support your favourite creators</translation>
+<translation id="3184314123468325238">Show your love and send a token of your gratitude</translation>
+<translation id="1053740665683265460">Use your Web3 wallet to send a one time contribution to this creator and show them your appreciation</translation>
+<translation id="6859705040495339375">Send with Web3 wallet</translation>
+<translation id="7615852194054434287">It looks like this creator isn't set up to receive contributions via Web3 wallets yet.</translation>
 <translation id="7090992647511817643">account</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">domain</translation>
@@ -783,14 +800,11 @@
 <translation id="5061574358754621254">Price data powered by CoinGecko</translation>
 <translation id="223536150967420869">Buy</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="6810855196544084176">Bridge</translation>
 <translation id="3488255243387417752">Sell</translation>
 <translation id="5223034545851554347">You don’t have enough <ph name="TOKEN_SYMBOL"/> in this account.</translation>
-<translation id="9113988219764868805">Send token</translation>
-<translation id="4254256922305105713">Send NFT</translation>
-<translation id="3453833142586986467">Select token</translation>
-<translation id="554732459168975059">Select NFT</translation>
-<translation id="5313430503143128212">Select a token to send</translation>
-<translation id="5784485862926111563">Select an NFT to send</translation>
+<translation id="6585419509320235293">Choose asset to send</translation>
+<translation id="1018742998826182079">Choose asset to swap</translation>
 <translation id="2791691551852500015">Enter recipient address</translation>
 <translation id="570080709303714420">HALF</translation>
 <translation id="2784548701748328827">MAX</translation>
@@ -799,13 +813,17 @@
 <translation id="8530071505111489657">No available tokens</translation>
 <translation id="615791330696335475">Search token by name</translation>
 <translation id="5009335307032488349">Search NFT by name, id</translation>
+<translation id="8667560635828712526">Choose asset</translation>
+<translation id="4853960199138416955">Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTCs from an address that has ordinals may result in its ordinals being transferred inadvertently.</translation>
 <translation id="9209024278910716955">Buy not supported for selected network</translation>
 <translation id="4982630604810554641">Searching for domain ...</translation>
 <translation id="5467044307473123584">Brave supports using off-chain gateways to resolve .eth domains.</translation>
 <translation id="4896417414446851895">It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.</translation>
 <translation id="8646078615727397565">Use ENS domain</translation>
 <translation id="1191686659164947414">Transaction may be frontrun</translation>
+<translation id="8914256532272191486">Your swap will execute within the maximum amount of slippage you define here. For example, 1% slippage means you’re willing to accept up to 1% less due to market conditions.</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
+<translation id="2493281414634883751">Enter a value between 0.5% and 99%</translation>
 <translation id="4500473291496079954">Expires in</translation>
 <translation id="2236833281018938257">Wallet address or URL</translation>
 <translation id="928500657730628112">Wallet address</translation>
@@ -1470,10 +1488,14 @@
 <translation id="3356580495013324916">Enter your Brave Wallet password to start backing up wallet.</translation>
 <translation id="7545441766078366279">Approve <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Insufficient <ph name="TOKEN"/> balance</translation>
+<translation id="3453833142586986467">Select token</translation>
 <translation id="4937657825850660613">Half</translation>
 <translation id="7639814793732182496">Max</translation>
 <translation id="6584782231358487640">Enter an amount</translation>
-<translation id="2335903728876796191">Finding the best price for you</translation>
+<translation id="821928941440539212">Finding the best quote ...</translation>
+<translation id="5450317966495183014">Receive (est.)</translation>
+<translation id="8747614139273050577">From token</translation>
+<translation id="1726158192333401896">To token</translation>
 <translation id="3835223348537121988">Balance:</translation>
 <translation id="5709875713144853427">Select a token to swap</translation>
 <translation id="720404198240859011">Show tokens with no balance</translation>
@@ -1497,7 +1519,6 @@
 <translation id="8044899503464538266">Slow</translation>
 <translation id="3569512916300900704">Average</translation>
 <translation id="7019805045859631636">Fast</translation>
-<translation id="1826671530876539299">Swap settings</translation>
 <translation id="6778140392042462129">Exchanges</translation>
 <translation id="6173494033320397682">Direct route only</translation>
 <translation id="2440960581098655899">It insures only direct routing and also disables split-trade trading</translation>
@@ -1579,6 +1600,28 @@
 <translation id="4611292653554630842">Log in</translation>
 <translation id="1132794822159463424">View on <ph name="PROVIDER"/></translation>
 <translation id="7875005109025196005">Platforms</translation>
+<translation id="7549266998497332690">Continue with <ph name="HOW_MANY"/> <ph name="ITEM_NAME_MAYBE_PLURAL"/></translation>
+<translation id="4204268048253692928">You can add networks anytime in Settings.</translation>
+<translation id="4303748097351941030">Supported networks</translation>
+<translation id="6937275455070754004">Choose which blockchains to use in your wallet.</translation>
+<translation id="1164748583090434571">Show testnets</translation>
+<translation id="1531836666020185856">Featured</translation>
+<translation id="3225021799163709119">Popular</translation>
+<translation id="6854651431635060919">Test network account</translation>
+<translation id="3800173541008902040">Enable enhanced transaction details to:</translation>
+<translation id="1215089823252478557">See estimated balance change</translation>
+<translation id="2761574758015819991">Identify potentially malicious transactions</translation>
+<translation id="168533464844528463">Help detect phishing attempts</translation>
+<translation id="780301667611848630">No, thanks</translation>
+<translation id="3435896845095436175">Enable</translation>
+<translation id="7269757150305059881">Brave works with a partner to provide this service. By enabling, you agree to share unsigned transactions and their DApp URLs with our partner.</translation>
+<translation id="7790932700072432983">Change anytime in <ph name="TAG_BEFORE"/>Settings<ph name="TAG_AFTER"/>.</translation>
+<translation id="8688672835843460752">Available</translation>
+<translation id="5296640085393149413">Funds available for you to use.</translation>
+<translation id="3248185426436836442">Pending</translation>
+<translation id="2515906149804238711">A pending change in your wallet balance.</translation>
+<translation id="7700365440186054030">Your available funds plus any not-yet-confirmed transactions.</translation>
+<translation id="4118601537508887039">Some balances may be unavailable</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">General info</translation>
 <translation id="4045404575593562245">Tor control events</translation>
@@ -1591,7 +1634,6 @@
 <translation id="7758665172236842395">Follow your favourite sources, in a single feed. Just open a tab in Brave, scroll down, and … voila!</translation>
 <translation id="2376542729617592331">Brave News is ad-supported with private, anonymised ads. <ph name="LINK_START"/>Learn more.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Turn on Brave News</translation>
-<translation id="780301667611848630">No, thanks</translation>
 <translation id="6265592479622441247">Back to <ph name="BEGIN_BOLD"/>dashboard<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Search for site, topic or RSS feed</translation>
 <translation id="1498364270401875204">Channels</translation>
@@ -1608,7 +1650,6 @@
 <translation id="6727452620418483718">Direct results</translation>
 <translation id="7697251281928908970">Keep typing to search sources</translation>
 <translation id="4750394297954878236">Suggestions</translation>
-<translation id="3225021799163709119">Popular</translation>
 <translation id="7436846601026966360">Some sources you might like. Suggestions are anonymous and matched only on your device.</translation>
 <translation id="7950715913905993008">Oops …</translation>
 <translation id="7158100730468448581">Brave News was unable to fetch content.</translation>
@@ -1833,14 +1874,12 @@
 <translation id="5872363163901278000">Increase the playback speed</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">The summariser feature is currently available only for select articles and other long-form web pages.</translation>
-<translation id="2346991295632453064">Accept and begin</translation>
 <translation id="1223498995510244364">Summarise</translation>
 <translation id="7491773233732232424">About Leo</translation>
-<translation id="70442873931504163">Brave Leo is an AI smart assistant that can summarise web pages, transcribe videos and answer questions. Brave Leo Premium uses advanced <ph name="LINK_BEFORE"/>AI models<ph name="LINK_AFTER"/> for even more nuanced replies and gives early access to new features.</translation>
-<translation id="3055739528128372229">The accuracy of responses is not guaranteed and may include inaccurate, misleading or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety or similar.</translation>
-<translation id="7297681068636289435">Leo does not collect identifiers such as your IP address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers.</translation>
+<translation id="5208096220706490232">Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the <ph name="LINK_BEFORE"/>Brave Wiki<ph name="LINK_AFTER"/> for more details.</translation>
+<translation id="7189603330209995455">By default, when you ask Leo a question, it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety or similar. You can adjust Leo’s options in Settings any time. Go to Settings &gt; Leo.</translation>
+<translation id="3038772045018370764">Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE"/>privacy policy<ph name="LINK_AFTER"/> for more information.</translation>
 <translation id="7839853125981164613">Enter a prompt here</translation>
-<translation id="334325425115922031">Suggested follow-ups</translation>
 <translation id="4524675003624341892">Suggest questions …</translation>
 <translation id="4567071417854988869">Summarise this video</translation>
 <translation id="7921782882718083488">Summarise this page</translation>
@@ -1848,23 +1887,30 @@
 <translation id="1167803637855350748">There was a network issue connecting to Leo. Check your connection and try again.</translation>
 <translation id="5095201428204952524">Leo is too busy right now. Please try again in a few minutes.</translation>
 <translation id="7144878232160441200">Retry</translation>
-<translation id="7202619923031933110">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 7B, a model created by Mistral AI to handle advanced tasks.</translation>
+<translation id="2505565639170795978">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases.</translation>
+<translation id="8030558642460377506">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks.</translation>
 <translation id="2489317965865266353">Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> by <ph name="COMPANY_NAME"/></translation>
+<translation id="8944485226638699751">Limited</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="2961040541145689181">New chat</translation>
 <translation id="7557539689487606886">Go Premium</translation>
 <translation id="1691256669639196606">Manage subscription</translation>
 <translation id="3037594989275592390">Language models</translation>
+<translation id="6637015365469044269">Upgrade now</translation>
 <translation id="849535826888024304">Response rate limit reached</translation>
-<translation id="3834321271158315162">Unlock a higher response rate by subscribing to Premium, or try again
-        later</translation>
-<translation id="1239767708151339890">Access to industry-leading LLMs</translation>
-<translation id="8021579987620496265">Higher rate limits</translation>
+<translation id="6149863263423821329">Unlock a higher response rate by subscribing to Premium. You can also switch to our less powerful Llama2 13b free model to continue.</translation>
+<translation id="4173478269537830374">Explore different AI models</translation>
+<translation id="3245401959451976966">Unlock your creativity</translation>
+<translation id="4165928407303989823">Stay on topic</translation>
+<translation id="2389665228467129817">Chat for longer</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /month</translation>
-<translation id="377376641316998425">Unlock the full potential of Leo</translation>
-<translation id="8363148882096737034">Anthropic Claude + more coming soon</translation>
-<translation id="886527905046308697">Priority access and increased response limits</translation>
+<translation id="5151923271944811339">Switch to the free model</translation>
+<translation id="5474757891469990756">Unleash Leo's full powers with Premium:</translation>
+<translation id="5552332211527367850">Priority access to powerful models with different skills</translation>
+<translation id="5031778211368112461">Access models better suited for creative tasks and content generation.</translation>
+<translation id="298783097210745222">Get more accurate answers for more nuanced conversations.</translation>
+<translation id="4314705522985583059">Get higher rate limits for longer conversations.</translation>
 <translation id="1068954060985569277">Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.</translation>
 <translation id="94736968936709953">Feedback sent successfully</translation>
 <translation id="9109355817507033196">Answer disliked</translation>
@@ -1888,6 +1934,7 @@
 <translation id="7494736170250048402">Send message to Leo</translation>
 <translation id="4110772752544684964">The page is too long for Leo. Some context could be missing from the conversation.</translation>
 <translation id="4370698775470316661">This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.</translation>
+<translation id="6291843235651817590">General purpose chat</translation>
 <translation id="8193130769524604031">Advanced chat tasks</translation>
 <translation id="3185367320601718531">Conversation and text generation</translation>
 <translation id="3965507912994218570">Leo settings</translation>
@@ -1898,9 +1945,10 @@
 <translation id="861953757568623294">I can help you summarising articles, expanding on a site's content and much more. Not sure where to start? Try this:</translation>
 <translation id="5642775487085641191">Just want to chat?</translation>
 <translation id="8857222718794549840">Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.</translation>
-<translation id="989329677470075843">Privacy agreement</translation>
+<translation id="9051226419897869406">Chat Privately with Brave Leo</translation>
 <translation id="1173570303649278801">Use page context for response</translation>
 <translation id="8599503173207256429">Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.</translation>
+<translation id="318819763888864209">All subscriptions are auto-renewed but can be cancelled at any time before renewal.</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="8458987127502506209">Enable Brave Shields</translation>
 <translation id="7509914170164691086">Shields are UP <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
@@ -1948,6 +1996,16 @@
 <translation id="4986297793092101884">Brave already blocks third-party cookies. We can block cookie consent notices, too.</translation>
 <translation id="535688588637568715">Yes, block cookie consent notices</translation>
 <translation id="2808175374672429053">Wildcards are not allowed for Brave Shields.</translation>
+<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
+      =0 {Brave Shields blocked <ph name="COMPANY_LIST"/> trackers on <ph name="SITE_URL"/>}
+      =1 {Brave Shields blocked <ph name="COMPANY_LIST"/> and 1 other tracker on <ph name="SITE_URL"/>}
+      other {Brave Shields blocked <ph name="COMPANY_LIST"/> and {BLOCKED_COUNT} other trackers on <ph name="SITE_URL"/>}
+    }</translation>
+<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
+      =1 {Brave Shields blocked 1 tracker on <ph name="SITE_URL"/>}
+      other {Brave Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL"/>}
+    }</translation>
+<translation id="2540598191934725677">Click the Brave icon to view Brave Shields.</translation>
 <translation id="6294662480095808915">Privacy. By default.</translation>
 <translation id="4366423156486478559">Get Brave protection on every link you click. Just set Brave as default and browse. Privately.</translation>
 <translation id="3830912418080848377">Import Settings</translation>
