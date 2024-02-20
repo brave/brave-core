@@ -10,7 +10,6 @@
 
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
 
@@ -125,8 +124,6 @@ void shim_scheduleWakeup(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
     rust::cxxbridge1::Box<skus::WakeupContext> ctx) {
   int buffer_ms = 10;
-  VLOG(1) << "shim_scheduleWakeup " << (delay_ms + buffer_ms) << " ("
-          << delay_ms << "ms plus " << buffer_ms << "ms buffer)";
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&OnScheduleWakeup, std::move(done), std::move(ctx)),
@@ -155,6 +152,7 @@ SkusContextImpl::SkusContextImpl(
 SkusContextImpl::~SkusContextImpl() = default;
 
 std::unique_ptr<skus::SkusUrlLoader> SkusContextImpl::CreateFetcher() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto url_loader_factory = network::SharedURLLoaderFactory::Create(
       std::move(pending_url_loader_factory_));
   pending_url_loader_factory_ = url_loader_factory->Clone();
@@ -167,6 +165,7 @@ void SkusContextImpl::GetValueFromStore(
                               rust::String value,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageGetContext> st_ctx) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ui_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&SkusServiceImpl::GetValueFromStore, skus_service_, key,
@@ -177,7 +176,7 @@ void SkusContextImpl::PurgeStore(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StoragePurgeContext> st_ctx) const {
-  VLOG(1) << "shim_purge";
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ui_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&SkusServiceImpl::PurgeStore, skus_service_,
                                 std::move(done), std::move(st_ctx)));
@@ -189,57 +188,11 @@ void SkusContextImpl::UpdateStoreValue(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                               bool success)> done,
     rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const {
-  VLOG(1) << "shim_set: `" << key << "` = `" << value << "`";
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ui_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&SkusServiceImpl::UpdateStoreValue, skus_service_, key,
                      value, std::move(done), std::move(st_ctx)));
-}
-
-void SkusContextImpl::OnRefreshOrder(
-    mojom::SkusService::RefreshOrderCallback callback,
-    const std::string& order) {
-  ui_task_runner_->PostTask(FROM_HERE,
-                            base::BindOnce(std::move(callback), order));
-}
-void SkusContextImpl::OnFetchOrderCredentials(
-    mojom::SkusService::FetchOrderCredentialsCallback callback,
-    const std::string& result) {
-  ui_task_runner_->PostTask(FROM_HERE,
-                            base::BindOnce(std::move(callback), result));
-}
-
-void SkusContextImpl::OnPrepareCredentialsPresentation(
-    mojom::SkusService::PrepareCredentialsPresentationCallback callback,
-    const std::string& result) {
-  ui_task_runner_->PostTask(FROM_HERE,
-                            base::BindOnce(std::move(callback), result));
-}
-
-void SkusContextImpl::OnCredentialSummary(
-    const std::string& domain,
-    mojom::SkusService::CredentialSummaryCallback callback,
-    const std::string& summary_string) {
-  if (callback) {
-    ui_task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback), summary_string));
-  }
-}
-
-void SkusContextImpl::OnSubmitReceipt(
-    mojom::SkusService::SubmitReceiptCallback callback,
-    const std::string& receipt) {
-  if (callback) {
-    ui_task_runner_->PostTask(FROM_HERE,
-                              base::BindOnce(std::move(callback), receipt));
-  }
-}
-
-void SkusContextImpl::OnCreateOrderFromReceipt(
-    mojom::SkusService::CredentialSummaryCallback callback,
-    const std::string& order_id) {
-  ui_task_runner_->PostTask(FROM_HERE,
-                            base::BindOnce(std::move(callback), order_id));
 }
 
 }  // namespace skus

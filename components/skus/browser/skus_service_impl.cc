@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
@@ -22,9 +21,8 @@ namespace {
 void OnRefreshOrder(skus::RefreshOrderCallbackState* callback_state,
                     skus::SkusResult result,
                     rust::cxxbridge1::Str order) {
-  std::string order_str = static_cast<std::string>(order);
   if (callback_state->cb) {
-    std::move(callback_state->cb).Run(order_str);
+    std::move(callback_state->cb).Run(static_cast<std::string>(order));
   }
   delete callback_state;
 }
@@ -81,29 +79,6 @@ void OnCreateOrderFromReceipt(
   delete callback_state;
 }
 
-void OnShimPurge(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StoragePurgeContext>,
-                              bool)> done,
-    rust::cxxbridge1::Box<skus::StoragePurgeContext> ctx) {
-  done(std::move(ctx), true);
-}
-
-void OnShimGet(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageGetContext>,
-                              rust::String,
-                              bool)> done,
-    rust::cxxbridge1::Box<skus::StorageGetContext> ctx,
-    std::string value) {
-  done(std::move(ctx), ::rust::String(value), true);
-}
-
-void OnShimSet(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
-                              bool)> done,
-    rust::cxxbridge1::Box<skus::StorageSetContext> ctx) {
-  done(std::move(ctx), true);
-}
-
 }  // namespace
 
 namespace skus {
@@ -122,7 +97,7 @@ SkusServiceImpl::~SkusServiceImpl() = default;
 void SkusServiceImpl::Shutdown() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  // Disconnect remotes so we ignore any new calls.
+  // Disconnect remotes.
   receivers_.Clear();
 
   for (auto it = sdks_.begin(); it != sdks_.end();) {
@@ -320,7 +295,13 @@ void SkusServiceImpl::PurgeStore(
 
   sdk_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&OnShimPurge, std::move(done), std::move(st_ctx)));
+      base::BindOnce(
+          [](rust::cxxbridge1::Fn<void(
+                 rust::cxxbridge1::Box<skus::StoragePurgeContext>, bool)> done,
+             rust::cxxbridge1::Box<skus::StoragePurgeContext> ctx) {
+            done(std::move(ctx), true);
+          },
+          std::move(done), std::move(st_ctx)));
 }
 
 void SkusServiceImpl::GetValueFromStore(
@@ -338,8 +319,15 @@ void SkusServiceImpl::GetValueFromStore(
   }
 
   sdk_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&OnShimGet, std::move(done), std::move(ctx), result));
+      FROM_HERE, base::BindOnce(
+                     [](rust::cxxbridge1::Fn<void(
+                            rust::cxxbridge1::Box<skus::StorageGetContext>,
+                            rust::String, bool)> done,
+                        rust::cxxbridge1::Box<skus::StorageGetContext> ctx,
+                        std::string value) {
+                       done(std::move(ctx), ::rust::String(value), true);
+                     },
+                     std::move(done), std::move(ctx), result));
 }
 
 void SkusServiceImpl::UpdateStoreValue(
@@ -353,7 +341,13 @@ void SkusServiceImpl::UpdateStoreValue(
   state->Set(key, value);
   sdk_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&OnShimSet, std::move(done), std::move(st_ctx)));
+      base::BindOnce(
+          [](rust::cxxbridge1::Fn<void(
+                 rust::cxxbridge1::Box<skus::StorageSetContext>, bool)> done,
+             rust::cxxbridge1::Box<skus::StorageSetContext> ctx) {
+            done(std::move(ctx), true);
+          },
+          std::move(done), std::move(st_ctx)));
 }
 
 void SkusServiceImpl::PostTaskWithSDK(

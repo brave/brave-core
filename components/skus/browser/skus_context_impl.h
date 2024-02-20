@@ -58,29 +58,12 @@ class SkusContextImpl : public SkusContext {
       rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::StorageSetContext>,
                                 bool success)> done,
       rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const override;
-  void OnRefreshOrder(mojom::SkusService::RefreshOrderCallback callback,
-                      const std::string& order);
-  void OnFetchOrderCredentials(
-      mojom::SkusService::FetchOrderCredentialsCallback callback,
-      const std::string& result);
-  void OnPrepareCredentialsPresentation(
-      mojom::SkusService::PrepareCredentialsPresentationCallback callback,
-      const std::string& result);
-  void OnCredentialSummary(
-      const std::string& domain,
-      mojom::SkusService::CredentialSummaryCallback callback,
-      const std::string& summary_string);
-  void OnSubmitReceipt(mojom::SkusService::SubmitReceiptCallback callback,
-                       const std::string& summary_string);
-  void OnCreateOrderFromReceipt(
-      mojom::SkusService::CredentialSummaryCallback callback,
-      const std::string& order_id);
 
  private:
+  SEQUENCE_CHECKER(sequence_checker_);
   // used for making requests to SKU server
   mutable std::unique_ptr<network::PendingSharedURLLoaderFactory>
-      pending_url_loader_factory_;
-  SEQUENCE_CHECKER(sequence_checker_);
+      pending_url_loader_factory_ GUARDED_BY_CONTEXT(sequence_checker_);
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
   base::WeakPtr<SkusServiceImpl> skus_service_;
 };
