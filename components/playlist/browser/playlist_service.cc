@@ -68,7 +68,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   thumbnail_downloader_ =
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   download_request_manager_ =
-      std::make_unique<PlaylistDownloadRequestManager>(this, context, manager);
+      std::make_unique<PlaylistDownloadRequestManager>(manager);
   playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
 
   enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
@@ -568,31 +568,10 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                                     const std::string& playlist_id,
                                     bool can_cache,
                                     AddMediaFilesCallback callback) {
-  auto add_to_playlist =
-      base::BindOnce(&PlaylistService::AddMediaFilesFromItems,
-                     weak_factory_.GetWeakPtr(), playlist_id,
-                     /* cache= */ can_cache &&
-                         prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-                     std::move(callback));
-
-  // for (const auto& item : items) {
-  //   if (download_request_manager_->ShouldExtractMediaFromBackgroundWebContents(
-  //           item)) {
-  //     // TODO(sko) Maybe we don't want this to happen. But for now, Android
-  //     // could reach here. Also we're assuming that
-  //     // * all |items| will be matched to what we'll get from refetching.
-  //     // * all |items| are from the same source page.
-  //     PlaylistDownloadRequestManager::Request request(
-  //         nullptr);  // TODO(sszaloki)
-  //     request.url = GURL(item->page_source);
-  //     request.should_force_fake_ua = ShouldUseFakeUA(request.url);
-  //     request.callback = std::move(add_to_playlist);
-  //     download_request_manager_->GetMediaFilesFromPage(std::move(request));
-  //     return;
-  //   }
-  // }
-
-  std::move(add_to_playlist).Run(std::move(items));
+  AddMediaFilesFromItems(
+      playlist_id,
+      can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
+      std::move(callback), std::move(items));
 }
 
 void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,
@@ -976,12 +955,13 @@ void PlaylistService::RecoverLocalDataForItem(
       },
       weak_factory_.GetWeakPtr(), item->Clone(), std::move(callback));
 
-  PlaylistDownloadRequestManager::Request request(nullptr);  // TODO(sszaloki)
-  DCHECK(!item->page_source.spec().empty());
-  request.url = item->page_source;
-  request.should_force_fake_ua = ShouldUseFakeUA(item->page_source);
-  request.callback = std::move(update_media_src_and_recover);
-  download_request_manager_->GetMediaFilesFromPage(std::move(request));
+  // TODO(sszaloki)
+  // PlaylistDownloadRequestManager::Request request(nullptr);
+  // DCHECK(!item->page_source.spec().empty());
+  // request.url = item->page_source;
+  // request.should_force_fake_ua = ShouldUseFakeUA(item->page_source);
+  // request.callback = std::move(update_media_src_and_recover);
+  // download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
 void PlaylistService::RemoveLocalDataForItemsInPlaylist(
@@ -1163,7 +1143,6 @@ void PlaylistService::OnMediaFileDownloadFinished(
 
 void PlaylistService::OnEnabledPrefChanged() {
   if (!*enabled_pref_) {
-    download_request_manager_->ResetRequests();
     thumbnail_downloader_->CancelAllDownloadRequests();
     media_file_download_manager_->CancelAllDownloadRequests();
   }
@@ -1206,9 +1185,6 @@ void PlaylistService::OnMediaDetected(base::Value media,
   const auto items =
       download_request_manager_->GetPlaylistItems(std::move(media), url);
   NotifyMediaFilesUpdated(url, items);
-
-  // download_request_manager_->MaybeResetBackgroundWebContentsAndFetchNextRequest(
-  //     items, contents);
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(

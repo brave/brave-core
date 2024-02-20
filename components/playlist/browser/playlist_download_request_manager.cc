@@ -7,174 +7,18 @@
 
 #include <utility>
 
-#include "base/check_is_test.h"
-#include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/notreached.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "base/timer/timer.h"
-#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
-#include "brave/components/playlist/browser/playlist_service.h"
-#include "brave/components/playlist/browser/playlist_tab_helper.h"
-#include "brave/components/playlist/common/features.h"
-#include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/navigation_entry.h"
-#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/common/isolated_world_ids.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
-#include "third_party/blink/public/common/web_preferences/web_preferences.h"
-#include "third_party/re2/src/re2/re2.h"
-#include "ui/base/page_transition_types.h"
 
 namespace playlist {
 
-PlaylistDownloadRequestManager::Request::Request(
-    base::WeakPtr<PlaylistTabHelper> tab_helper)
-    : tab_helper(std::move(tab_helper)) {}
-PlaylistDownloadRequestManager::Request&
-PlaylistDownloadRequestManager::Request::operator=(
-    PlaylistDownloadRequestManager::Request&&) noexcept = default;
-PlaylistDownloadRequestManager::Request::Request(
-    PlaylistDownloadRequestManager::Request&&) noexcept = default;
-PlaylistDownloadRequestManager::Request::~Request() = default;
-
 PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
-    PlaylistService* service,
-    content::BrowserContext* context,
     MediaDetectorComponentManager* manager)
-    : service_(service),
-      context_(context),
-      media_detector_component_manager_(manager) {}
+    : media_detector_component_manager_(manager) {}
 
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
-
-// void PlaylistDownloadRequestManager::CreateWebContents(const Request& request) {
-//   CHECK(request.tab_helper);
-
-//   content::WebContents::CreateParams create_params(context_, nullptr);
-//   create_params.is_never_visible = true;
-//   web_contents_ = content::WebContents::Create(create_params);
-//   web_contents_->SetAudioMuted(true);
-//   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-//       web_contents_.get(), request.tab_helper,
-//       media_detector_component_manager_->GetMediaSourceAPISuppressorScript(),
-//       media_detector_component_manager_->GetMediaDetectorScript(request.url));
-//   if (request.should_force_fake_ua ||
-//       base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-//     DVLOG(2) << __func__ << " Faked UA to detect media files";
-//     blink::UserAgentOverride user_agent(
-//         "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
-//         "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
-//         "Mobile/15E148 "
-//         "Safari/604.1",
-//         /* user_agent_metadata */ {});
-//     web_contents_->SetUserAgentOverride(user_agent,
-//                                         /* override_in_new_tabs= */ true);
-//   }
-// }
-
-void PlaylistDownloadRequestManager::GetMediaFilesFromPage(Request request) {
-  DVLOG(2) << __func__;
-  if (!ReadyToRunMediaDetectorScript()) {
-    if (!request_start_time_.is_null()) {
-      // See if the last job is stuck.
-#if DCHECK_IS_ON()
-      DCHECK(base::Time::Now() - request_start_time_ <= base::Minutes(1));
-#else
-      if (base::Time::Now() - request_start_time_ > base::Minutes(1)) {
-        LOG(ERROR) << "The previous job is pending longer than 1 min";
-      }
-#endif
-    }
-
-    pending_requests_.push_back(std::move(request));
-    DVLOG(2) << "Queued request";
-    return;
-  }
-
-  RunMediaDetector(std::move(request));
-}
-
-void PlaylistDownloadRequestManager::FetchPendingRequest() {
-  if (pending_requests_.empty() || !ReadyToRunMediaDetectorScript()) {
-    return;
-  }
-
-  auto request = std::move(pending_requests_.front());
-  pending_requests_.pop_front();
-  RunMediaDetector(std::move(request));
-}
-
-void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
-  DVLOG(2) << __func__;
-
-  DCHECK_GE(in_progress_urls_count_, 0);
-  in_progress_urls_count_++;
-
-  DCHECK(callback_for_current_request_.is_null());
-
-  callback_for_current_request_ = std::move(request.callback);
-  DCHECK(callback_for_current_request_)
-      << "Empty callback shouldn't be requested";
-  request_start_time_ = base::Time::Now();
-
-  // Start to request on clean slate, so that result won't be affected by
-  // previous page.
-  // CreateWebContents(request);
-
-  DCHECK(request.url.is_valid());
-  DCHECK(web_contents_);
-  DVLOG(2) << "Load URL to detect media files: " << request.url.spec();
-  auto load_url_params =
-      content::NavigationController::LoadURLParams(request.url);
-  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA) ||
-      request.should_force_fake_ua) {
-    load_url_params.override_user_agent =
-        content::NavigationController::UA_OVERRIDE_TRUE;
-  }
-
-  content::NavigationController& controller = web_contents_->GetController();
-  controller.LoadURLWithParams(load_url_params);
-
-  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    for (int i = 0; i < controller.GetEntryCount(); ++i) {
-      controller.GetEntryAtIndex(i)->SetIsOverridingUserAgent(true);
-    }
-  }
-}
-
-bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
-  return in_progress_urls_count_ == 0;
-}
-
-void PlaylistDownloadRequestManager::
-    MaybeResetBackgroundWebContentsAndFetchNextRequest(
-        const std::vector<mojom::PlaylistItemPtr>& items,
-        content::WebContents* contents) {
-  DVLOG(2) << __func__;
-  CHECK(contents);
-
-  if (contents == background_contents() && items.size()) {
-    CHECK(!callback_for_current_request_.is_null()) << " callback already ran";
-    auto callback = std::move(callback_for_current_request_);
-
-    DCHECK_GT(in_progress_urls_count_, 0);
-    in_progress_urls_count_--;
-
-    std::vector<mojom::PlaylistItemPtr> cloned_items;
-    base::ranges::transform(items, std::back_inserter(cloned_items),
-                            &mojom::PlaylistItemPtr::Clone);
-    std::move(callback).Run(std::move(cloned_items));
-
-    web_contents_.reset();
-  }
-
-  FetchPendingRequest();
-}
 
 std::vector<mojom::PlaylistItemPtr>
 PlaylistDownloadRequestManager::GetPlaylistItems(base::Value value,
@@ -325,17 +169,6 @@ bool PlaylistDownloadRequestManager::
 
   NOTREACHED_NORETURN()
       << "CanCacheMedia() should be true when this method is called";
-}
-
-void PlaylistDownloadRequestManager::ResetRequests() {
-  if (web_contents_) {
-    web_contents_.reset();
-  }
-
-  pending_requests_.clear();
-  request_start_time_ = {};
-  in_progress_urls_count_ = 0;
-  callback_for_current_request_ = base::NullCallback();
 }
 
 }  // namespace playlist
