@@ -172,7 +172,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // TODO: Refactor to accept a UIWindowScene
     // Then store the `windowProtection` in the `BrowserViewController` directly.
     // As each instance should have its own protection?
-    self.windowProtection = WindowProtection(window: window)
+    self.windowProtection = WindowProtection(windowScene: windowScene)
     window.makeKeyAndVisible()
     
     // Open shared URLs on launch if there are any
