@@ -409,6 +409,15 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
     ai_chat::mojom::PremiumStatus status,
     ai_chat::mojom::PremiumInfoPtr info) {
   if (page_.is_bound()) {
+#if BUILDFLAG(IS_ANDROID)
+    // There is no UI for android to "refresh" with an iAP - we are likely still
+    // authenticating after first iAP, so we should show as active.
+    if (status == mojom::PremiumStatus::ActiveDisconnected &&
+        profile_->GetPrefs()->GetBoolean(
+            prefs::kBraveChatSubscriptionActiveAndroid)) {
+      status = mojom::PremiumStatus::Active;
+    }
+#endif
     std::move(callback).Run(status, std::move(info));
   }
 }
