@@ -80,9 +80,9 @@ HostPortPair::HostPortPair(std::string_view username,
                            std::string_view password,
                            std::string_view in_host,
                            uint16_t in_port)
-    : username_(username), password_(password) {
-  set_host(std::string(in_host));
-  set_port(in_port);
+    : HostPortPair_ChromiumImpl(in_host, in_port) {
+  set_username(std::string(username));
+  set_password(std::string(password));
 }
 
 // static
