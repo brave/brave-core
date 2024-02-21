@@ -48,6 +48,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/base/ui_base_features.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/point.h"
@@ -753,6 +754,32 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
       EXPECT_FALSE(IsDisabledItemForPrivate(item.built_in_item_type));
     }
   }
+}
+
+class SidebarBrowserTestWithChromeRefresh2023 : public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithChromeRefresh2023() = default;
+  ~SidebarBrowserTestWithChromeRefresh2023() override = default;
+
+  void SetUp() override {
+    SidebarBrowserTest::SetUp();
+
+    feature_list_.InitAndEnableFeature(features::kChromeRefresh2023);
+  }
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// To check enabling kChromeRefresh2023 doesn't make crash with sidebar opening.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithChromeRefresh2023,
+                       SidebarOpeningTest) {
+  // Open side panel to check it doesn't make crash.
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  panel_ui->Toggle();
+
+  // Wait till panel UI opens.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
 }
 
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
