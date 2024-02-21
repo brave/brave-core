@@ -12,22 +12,31 @@
 
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle_delegate.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "content/public/renderer/render_frame_observer_tracker.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace ai_chat {
 
-class PageContentExtractor : public ai_chat::mojom::PageContentExtractor,
-                             public content::RenderFrameObserver {
+class PageContentExtractor
+    : public ai_chat::mojom::PageContentExtractor,
+      public content::RenderFrameObserver,
+      public content::RenderFrameObserverTracker<PageContentExtractor>,
+      public AIChatResourceSnifferThrottleDelegate {
  public:
-  explicit PageContentExtractor(content::RenderFrame* render_frame,
-                                service_manager::BinderRegistry* registry,
-                                int32_t global_world_id,
-                                int32_t isolated_world_id);
+  PageContentExtractor(content::RenderFrame* render_frame,
+                       service_manager::BinderRegistry* registry,
+                       int32_t global_world_id,
+                       int32_t isolated_world_id);
+
   PageContentExtractor(const PageContentExtractor&) = delete;
   PageContentExtractor& operator=(const PageContentExtractor&) = delete;
   ~PageContentExtractor() override;
+
+  base::WeakPtr<PageContentExtractor> GetWeakPtr();
 
  private:
   void OnJSTranscriptUrlResult(
@@ -46,6 +55,10 @@ class PageContentExtractor : public ai_chat::mojom::PageContentExtractor,
   void ExtractPageContent(
       mojom::PageContentExtractor::ExtractPageContentCallback callback)
       override;
+
+  // AIChatResourceSnifferThrottleDelegate
+  void OnInterceptedPageContentChanged(
+      mojom::PageContentPtr content_update) override;
 
   void BindReceiver(
       mojo::PendingReceiver<mojom::PageContentExtractor> receiver);

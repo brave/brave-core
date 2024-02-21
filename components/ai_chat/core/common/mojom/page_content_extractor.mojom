@@ -29,3 +29,9 @@ struct PageContent {
 interface PageContentExtractor {
   ExtractPageContent() => (PageContent? page_content);
 };
+
+// Allows the renderer to notify the browser process of meaningful changes to
+// the content.
+interface PageContentExtractorHost {
+  OnInterceptedPageContentChanged(PageContent page_content);
+};

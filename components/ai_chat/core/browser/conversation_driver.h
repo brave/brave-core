@@ -146,9 +146,24 @@ class ConversationDriver {
 
   virtual void OnFaviconImageDataChanged();
 
+  // Implementer should call this when the content is updated in a way that
+  // will not be detected by the on-demand techniquesused by GetPageContent.
+  // For example for sites where GetPageContent does not read the live DOM but
+  // reads static JS from HTML that doesn't change for same-page navigation and
+  // we need to intercept new JS data from subresource loads.
+  void OnPageContentUpdated(std::string content,
+                            bool is_video,
+                            std::string invalidation_token);
+
   // To be called when a page navigation is detected and a new conversation
   // is expected.
   void OnNewPage(int64_t navigation_id);
+
+  // Set the flag to indicate that the page content can not be fetched on-demand
+  // and is dependent on intercepted subresources.
+  void SetIsContentSubresourceDependent(bool is_content_subresource_dependent) {
+    is_content_subresource_dependent_ = is_content_subresource_dependent;
+  }
 
  private:
   void InitEngine();
@@ -211,6 +226,7 @@ class ConversationDriver {
   std::string article_text_;
   std::string content_invalidation_token_;
   bool is_page_text_fetch_in_progress_ = false;
+  bool is_content_subresource_dependent_ = false;
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_;
 
   bool is_request_in_progress_ = false;
