@@ -237,6 +237,7 @@ SolanaTransaction::GetSerializedMessage() const {
 std::optional<std::vector<uint8_t>>
 SolanaTransaction::GetSignedTransactionBytes(
     KeyringService* keyring_service,
+    const mojom::AccountIdPtr& selected_account,
     const std::vector<uint8_t>* selected_account_signature) const {
   if (!keyring_service && !selected_account_signature) {
     return std::nullopt;
@@ -261,11 +262,6 @@ SolanaTransaction::GetSignedTransactionBytes(
   }
   CompactU16Encode(signers.size(), &transaction_bytes);
 
-  const auto selected_account = keyring_service->GetSelectedSolanaDappAccount();
-  if (!selected_account) {
-    return std::nullopt;
-  }
-
   // Assign selected account's signature, and keep signatures for other signers
   // from dApp transaction if exists. Fill empty signatures for
   // non-selected-account signers if their signatures aren't passed by dApp
@@ -283,8 +279,8 @@ SolanaTransaction::GetSignedTransactionBytes(
                                  selected_account_signature->end());
       } else {
         std::vector<uint8_t> signature =
-            keyring_service->SignMessageBySolanaKeyring(
-                *selected_account->account_id, message_bytes);
+            keyring_service->SignMessageBySolanaKeyring(selected_account,
+                                                        message_bytes);
         transaction_bytes.insert(transaction_bytes.end(), signature.begin(),
                                  signature.end());
       }
@@ -324,8 +320,10 @@ SolanaTransaction::GetSignedTransactionBytes(
 }
 
 std::string SolanaTransaction::GetSignedTransaction(
-    KeyringService* keyring_service) const {
-  auto transaction_bytes = GetSignedTransactionBytes(keyring_service);
+    KeyringService* keyring_service,
+    const mojom::AccountIdPtr& account_id) const {
+  auto transaction_bytes =
+      GetSignedTransactionBytes(keyring_service, account_id);
   if (!transaction_bytes) {
     return "";
   }
