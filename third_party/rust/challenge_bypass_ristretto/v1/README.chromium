@@ -1,7 +1,7 @@
 Name: challenge-bypass-ristretto
 URL: https://crates.io/crates/challenge-bypass-ristretto
 Description: A rust implemention of the privacy pass cryptographic protocol using the Ristretto group (WIP)
-Version: 1.0.1
+Version: 1.0.2
 Security Critical: yes
 License: MPL 2.0
 Revision: a1da4641734adc8312215b38a8221962d2c8e045

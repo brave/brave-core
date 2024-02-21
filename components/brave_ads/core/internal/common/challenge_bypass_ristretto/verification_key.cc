@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
 
-#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 
@@ -19,7 +18,7 @@ std::optional<VerificationSignature> VerificationKey::Sign(
     const std::string& message) {
   return ValueOrLogError<challenge_bypass_ristretto::VerificationSignature,
                          VerificationSignature>(
-      verification_key_.sign(base::as_bytes(base::make_span(message))));
+      verification_key_.Sign(message));
 }
 
 bool VerificationKey::Verify(
@@ -29,9 +28,7 @@ bool VerificationKey::Verify(
     return false;
   }
 
-  return verification_key_
-      .verify(verification_signature.get(),
-              base::as_bytes(base::make_span(message)))
+  return verification_key_.Verify(verification_signature.get(), message)
       .value_or(false);
 }
 

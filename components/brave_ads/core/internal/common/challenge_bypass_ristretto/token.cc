@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 
-#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
@@ -19,14 +18,13 @@ std::optional<challenge_bypass_ristretto::Token> Create(
     return std::nullopt;
   }
 
-  return ValueOrLogError(challenge_bypass_ristretto::Token::decode_base64(
-      base::as_bytes(base::make_span(token_base64))));
+  return ValueOrLogError(
+      challenge_bypass_ristretto::Token::DecodeBase64(token_base64));
 }
 
 }  // namespace
 
-Token::Token()
-    : token_(ValueOrLogError(challenge_bypass_ristretto::Token::random())) {}
+Token::Token() : token_(challenge_bypass_ristretto::Token::Random()) {}
 
 Token::Token(const std::string& token_base64) : token_(Create(token_base64)) {}
 
@@ -57,7 +55,7 @@ std::optional<std::string> Token::EncodeBase64() const {
     return std::nullopt;
   }
 
-  return ValueOrLogError(token_->encode_base64());
+  return token_->EncodeBase64();
 }
 
 std::optional<BlindedToken> Token::Blind() {
@@ -66,7 +64,7 @@ std::optional<BlindedToken> Token::Blind() {
   }
 
   return ValueOrLogError<challenge_bypass_ristretto::BlindedToken,
-                         BlindedToken>(token_->blind());
+                         BlindedToken>(token_->Blind());
 }
 
 std::ostream& operator<<(std::ostream& os, const Token& token) {
