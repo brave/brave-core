@@ -279,7 +279,7 @@ export const pricingEndpoints = ({
                 aggregatedBalances[chainId] = { tokenBalances: {} }
               }
 
-              const chainBalances = aggregatedBalances[chainId]
+              const chainBalances = aggregatedBalances[chainId].tokenBalances
 
               for (const [contractAddress, tokenBalance] of Object.entries(
                 tokenBalancesForChainId.tokenBalances
