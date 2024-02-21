@@ -15,7 +15,6 @@ blake2b_simd = "1"
 cargo-platform = "0.1"
 cargo_metadata = "0.14"
 cfg-if = "1"
-clap = "4"
 cxxbridge-cmd = "1"
 data-encoding = "2"
 ed25519-dalek-bip32 = "0.2"
@@ -314,6 +313,10 @@ package = "chrono"
 [patch.crates-io.cid_v0_8]
 path = "cid/v0_8/crate"
 package = "cid"
+
+[patch.crates-io.clap_builder_v4]
+path = "../../../third_party/rust/chromium_crates_io/vendor/clap_builder-4.4.8"
+package = "clap_builder"
 
 [patch.crates-io.clap_lex_v0_6]
 path = "../../../third_party/rust/chromium_crates_io/vendor/clap_lex-0.6.0"
