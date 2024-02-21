@@ -511,14 +511,16 @@ public class BraveRewardsPanel
 
     private void showSummarySection() {
         mTextTip.setTextAppearance(R.style.BraveRewardsSecondaryTextColor);
-        mImgTip.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color),
-                PorterDuff.Mode.SRC_IN));
+        mImgTip.setColorFilter(
+                new PorterDuffColorFilter(
+                        ContextCompat.getColor(mActivity, R.color.rewards_panel_secondary_text_color),
+                        PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextAppearance(R.style.BraveRewardsActionColor);
-        mImgSummary.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_panel_action_color),
-                PorterDuff.Mode.SRC_IN));
+        mImgSummary.setColorFilter(
+                new PorterDuffColorFilter(
+                        ContextCompat.getColor(mActivity, R.color.rewards_panel_action_color),
+                        PorterDuff.Mode.SRC_IN));
 
         int rewardsSummaryVisibility = View.VISIBLE;
         if (mExternalWallet != null
@@ -531,14 +533,16 @@ public class BraveRewardsPanel
 
     private void showTipSection() {
         mTextTip.setTextAppearance(R.style.BraveRewardsActionColor);
-        mImgTip.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_panel_action_color),
-                PorterDuff.Mode.SRC_IN));
+        mImgTip.setColorFilter(
+                new PorterDuffColorFilter(
+                        ContextCompat.getColor(mActivity, R.color.rewards_panel_action_color),
+                        PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextAppearance(R.style.BraveRewardsSecondaryTextColor);
-        mImgSummary.setColorFilter(new PorterDuffColorFilter(
-                mActivity.getResources().getColor(R.color.rewards_panel_secondary_text_color),
-                PorterDuff.Mode.SRC_IN));
+        mImgSummary.setColorFilter(
+                new PorterDuffColorFilter(
+                        ContextCompat.getColor(mActivity, R.color.rewards_panel_secondary_text_color),
+                        PorterDuff.Mode.SRC_IN));
         mRewardsSummaryDetailLayout.setVisibility(View.GONE);
         mRewardsTipLayout.setVisibility(View.VISIBLE);
     }

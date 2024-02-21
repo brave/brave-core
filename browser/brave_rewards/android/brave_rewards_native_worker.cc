@@ -113,27 +113,33 @@ bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
 }
 
 bool BraveRewardsNativeWorker::ShouldShowSelfCustodyInvite(JNIEnv* env) {
-  if (base::FeatureList::IsEnabled(
-          brave_rewards::features::kAllowSelfCustodyProvidersFeature)) {
-    auto& self_custody_dict =
-        ProfileManager::GetActiveUserProfile()
-            ->GetOriginalProfile()
-            ->GetPrefs()
-            ->GetDict(brave_rewards::prefs::kSelfCustodyAvailable);
-
-    bool isSelfCustodyInviteDismissed =
-        ProfileManager::GetActiveUserProfile()
-            ->GetOriginalProfile()
-            ->GetPrefs()
-            ->GetBoolean(brave_rewards::prefs::kSelfCustodyInviteDismissed);
-
-    if (auto solana_entry = self_custody_dict.FindBool(
-            brave_rewards::internal::constant::kWalletSolana);
-        solana_entry && *solana_entry && !isSelfCustodyInviteDismissed) {
-      return true;
-    }
+  bool isSelfCustodyInviteDismissed =
+      ProfileManager::GetActiveUserProfile()
+          ->GetOriginalProfile()
+          ->GetPrefs()
+          ->GetBoolean(brave_rewards::prefs::kSelfCustodyInviteDismissed);
+  std::string country_code = brave_rewards_service_->GetCountryCode();
+  const std::vector<std::string> providers =
+      brave_rewards_service_->GetExternalWalletProviders();
+  if (!base::Contains(providers,
+                      brave_rewards::internal::constant::kWalletSolana)) {
+    return false;
   }
-  return false;
+
+  const auto& regions = parameters_->wallet_provider_regions.at(
+      brave_rewards::internal::constant::kWalletSolana);
+  if (!regions) {
+    return false;
+  }
+
+  const auto& [allow, block] = *regions;
+  if (allow.empty() && block.empty()) {
+    return true;
+  }
+
+  return !isSelfCustodyInviteDismissed &&
+         (base::Contains(allow, country_code) ||
+          (!block.empty() && !base::Contains(block, country_code)));
 }
 
 void BraveRewardsNativeWorker::CreateRewardsWallet(
