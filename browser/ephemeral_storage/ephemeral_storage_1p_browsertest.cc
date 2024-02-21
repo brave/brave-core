@@ -578,6 +578,16 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ExpectValuesFromFramesAreEmpty(FROM_HERE,
                                  GetValuesFromFrames(first_party_tab));
 
+  SetValuesInFrame(first_party_tab->GetPrimaryMainFrame(), "ephemeral-a.com",
+                   "from=ephemeral-a.com");
+  {
+    ValuesFromFrame first_party_values =
+        GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
+    EXPECT_EQ("ephemeral-a.com", first_party_values.local_storage);
+    EXPECT_EQ("ephemeral-a.com", first_party_values.session_storage);
+    EXPECT_EQ("from=ephemeral-a.com", first_party_values.cookies);
+  }
+
   // Disable 1p Ephemeral Storage mode.
   SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_DEFAULT);
 
@@ -592,6 +602,22 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
     EXPECT_EQ("a.com", first_party_values.local_storage);
     EXPECT_EQ("a.com", first_party_values.session_storage);
     EXPECT_EQ("from=a.com", first_party_values.cookies);
+  }
+
+  // Re-enable 1p Ephemeral Storage mode.
+  SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+
+  // Reload the page.
+  first_party_tab->GetController().Reload(content::ReloadType::NORMAL, true);
+  WaitForLoadStop(first_party_tab);
+
+  // Data should be read from Ephemeral Storage.
+  {
+    ValuesFromFrame first_party_values =
+        GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
+    EXPECT_EQ("ephemeral-a.com", first_party_values.local_storage);
+    EXPECT_EQ("ephemeral-a.com", first_party_values.session_storage);
+    EXPECT_EQ("from=ephemeral-a.com", first_party_values.cookies);
   }
 }
 
