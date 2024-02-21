@@ -94,6 +94,23 @@ static_library("browser") {
   ]
 }
 
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "analytics/p3a/notification_ad_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
+
 source_set("test_support") {
   testonly = true
 

@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("brave_ads") {
+static_library("brave_ads") {
   sources = [
     "bounds_util.cc",
     "bounds_util.h",
@@ -57,4 +57,40 @@ source_set("brave_ads") {
     "//ui/native_theme",
     "//ui/views",
   ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "bounds_util_unittest.cc",
+    "color_util_unittest.cc",
+  ]
+
+  deps = [
+    ":brave_ads",
+    "//testing/gtest",
+    "//ui/gfx",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "notification_ad_popup_browsertest.cc" ]
+
+  deps = [
+    ":brave_ads",
+    "//brave/browser/themes",
+    "//brave/browser/ui/brave_ads",
+    "//brave/components/brave_ads/browser",
+    "//brave/test/views/snapshot",
+    "//chrome/browser",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
