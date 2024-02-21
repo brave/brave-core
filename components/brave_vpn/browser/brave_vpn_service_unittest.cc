@@ -521,7 +521,7 @@ class BraveVPNServiceTest : public testing::Test {
                                         PurchasedState state) {
     observer->ResetStates();
     SetPurchasedState(env, state);
-    task_environment_.RunUntilIdle();
+    base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(observer->GetPurchasedState().has_value());
     EXPECT_EQ(observer->GetPurchasedState().value(), state);
   }
@@ -803,7 +803,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
 
   LoadPurchasedState(development);
-  task_environment_.RunUntilIdle();
+  base::RunLoop().RunUntilIdle();
   // Successfully set purchased state for dev env.
   EXPECT_TRUE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
@@ -817,7 +817,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // no order found for staging.
   LoadPurchasedState(staging);
-  task_environment_.RunUntilIdle();
+  base::RunLoop().RunUntilIdle();
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
@@ -830,7 +830,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   // No region data for staging.
   SetInterceptorResponse("");
   LoadPurchasedState(staging);
-  task_environment_.RunUntilIdle();
+  base::RunLoop().RunUntilIdle();
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
@@ -987,7 +987,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
     EXPECT_TRUE(observer.GetPurchasedState().has_value());
     EXPECT_EQ(PurchasedState::LOADING, observer.GetPurchasedState().value());
   }
-  task_environment_.RunUntilIdle();
+  base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
   // Observer called when state will be changed.
@@ -1004,7 +1004,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnv) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   LoadPurchasedState(development);
-  task_environment_.RunUntilIdle();
+  base::RunLoop().RunUntilIdle();
   // Successfully set purchased state for dev env.
   EXPECT_TRUE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
@@ -1015,7 +1015,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnv) {
   EXPECT_EQ(skus::GetEnvironmentForDomain(staging), skus::kEnvStaging);
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   LoadPurchasedState(staging);
-  task_environment_.RunUntilIdle();
+  base::RunLoop().RunUntilIdle();
   // Successfully changed purchased state for dev env.
   EXPECT_TRUE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
