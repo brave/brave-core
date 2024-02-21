@@ -12,7 +12,7 @@ Audit your dependencies for crates with security vulnerabilities reported to the
 
 ## Requirements
 
-`cargo audit` requires Rust **1.65** or later.
+`cargo audit` requires Rust **1.70** or later.
 
 ## Installation
 

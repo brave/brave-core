@@ -42,10 +42,24 @@ pub fn load_deps_from_binary(binary_path: &Path) -> rustsec::Result<(BinaryForma
             // The error handling boilerplate is in here instead of the `rustsec` crate because as of this writing
             // the public APIs of the crates involved are still somewhat unstable,
             // and this way we don't expose the error types in any public APIs
-            Io(_) => Err(Error::new(ErrorKind::Io, &e.to_string())),
+            Io(_) => Err(Error::with_source(
+                ErrorKind::Io,
+                format!(
+                    "could not extract dependencies from binary {}",
+                    binary_path.display()
+                ),
+                e,
+            )),
             // Everything else is just Parse, but we enumerate them explicitly in case variant list changes
             InputLimitExceeded | OutputLimitExceeded | BinaryParsing(_) | Decompression(_)
-            | Json(_) | Utf8(_) => Err(Error::new(ErrorKind::Parse, &e.to_string())),
+            | Json(_) | Utf8(_) => Err(Error::with_source(
+                ErrorKind::Parse,
+                format!(
+                    "could not extract dependencies from binary {}",
+                    binary_path.display()
+                ),
+                e,
+            )),
         },
     }
 }

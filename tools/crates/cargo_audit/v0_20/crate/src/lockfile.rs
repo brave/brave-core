@@ -26,12 +26,16 @@ pub fn locate_or_generate(maybe_lockfile_path: Option<&Path>) -> rustsec::Result
 
 /// Run `cargo generate-lockfile`
 pub fn generate() -> rustsec::Result<()> {
-    let status = Command::new("cargo").arg("generate-lockfile").status();
+    let status = Command::new("cargo")
+        .arg("update")
+        .arg("--workspace")
+        .status();
 
     if let Err(e) = status {
-        return Err(Error::new(
+        return Err(Error::with_source(
             ErrorKind::Io,
-            &format!("couldn't run `cargo generate-lockfile`: {}", e),
+            "couldn't run `cargo update --workspace` to generate a lockfile".to_string(),
+            e,
         ));
     }
     let status = status.unwrap();
@@ -39,10 +43,10 @@ pub fn generate() -> rustsec::Result<()> {
     if !status.success() {
         let msg = match status.code() {
             Some(code) => format!(
-                "non-zero exit status running `cargo generate-lockfile`: {}",
+                "non-zero exit status running `cargo update --workspace`: {}",
                 code
             ),
-            _ => "no exit status running `cargo generate-lockfile`!".to_string(),
+            _ => "no exit status running `cargo update --workspace`!".to_string(),
         };
 
         return Err(Error::new(ErrorKind::Io, &msg));
