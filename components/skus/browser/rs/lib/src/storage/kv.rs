@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use std::cell::RefMut;
+use std::ops::DerefMut;
 use std::collections::HashMap;
 use std::fmt::Debug;
 
@@ -41,18 +41,17 @@ struct KVState {
 }
 
 #[async_trait(?Send)]
-trait KVStoreHelpers<T: KVStore> {
+trait KVStoreHelpers<C> {
     async fn get_state(&mut self) -> Result<KVState, InternalError>;
     async fn set_state(&mut self, state: &KVState) -> Result<(), InternalError>;
 }
 
+#[async_trait(?Send)]
 pub trait KVClient {
-    type Store;
+    type Store: KVStore;
+    type StoreRef<'a>: DerefMut<Target=Self::Store> where Self: 'a;
 
-    #[allow(clippy::needless_lifetimes)]
-    fn get_store<'a>(&'a self) -> Result<RefMut<'a, Self::Store>, InternalError>
-    where
-        Self::Store: KVStore;
+    async fn get_store<'a>(&'a self) -> Result<Self::StoreRef<'a>, InternalError>;
 }
 
 #[async_trait(?Send)]
@@ -95,17 +94,16 @@ where
 impl<C> StorageClient for C
 where
     C: KVClient + Debug,
-    <C as KVClient>::Store: KVStore,
 {
     #[instrument]
     async fn clear(&self) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         store.purge().await
     }
 
     #[instrument]
     async fn insert_wallet(&self, wallet: &Wallet) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if state.wallet.is_none() {
@@ -117,7 +115,7 @@ where
 
     #[instrument]
     async fn replace_promotions(&self, promotions: &[Promotion]) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         state.promotions = Some(promotions.to_vec());
@@ -127,7 +125,7 @@ where
 
     #[instrument]
     async fn get_orders(&self) -> Result<Option<Vec<Order>>, InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let state: KVState = store.get_state().await?;
         let orders = state.orders.map(|os| os.into_values().collect());
         event!(Level::DEBUG, orders = ?orders, "got orders");
@@ -136,7 +134,7 @@ where
 
     #[instrument]
     async fn get_order(&self, order_id: &str) -> Result<Option<Order>, InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let state: KVState = store.get_state().await?;
         let order = state.orders.and_then(|mut orders| orders.remove(order_id));
         event!(Level::DEBUG, order = ?order, "got order");
@@ -146,7 +144,7 @@ where
     #[instrument]
     async fn has_credentials(&self, order_id: &str) -> Result<bool, InternalError> {
         let mut result: bool = false;
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let state: KVState = store.get_state().await?;
         event!(Level::DEBUG, has_credentials = ?!state.credentials.is_none(), "does order have credentials");
 
@@ -167,7 +165,7 @@ where
 
     #[instrument]
     async fn upsert_order(&self, order: &Order) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if state.orders.is_none() {
@@ -184,7 +182,7 @@ where
     #[instrument]
     #[cfg(feature = "e2e_test")]
     async fn delete_n_item_creds(&self, item_id: &str, n: usize) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if let Some(mut credentials) = state.credentials {
@@ -228,7 +226,7 @@ where
 
     #[instrument]
     async fn delete_item_creds(&self, item_id: &str) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if let Some(mut credentials) = state.credentials {
@@ -244,7 +242,7 @@ where
         &self,
         item_id: &str,
     ) -> Result<Option<TimeLimitedV2Credentials>, InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
@@ -276,7 +274,7 @@ where
         &self,
         item_id: &str,
     ) -> Result<Option<SingleUseCredentials>, InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let state: KVState = store.get_state().await?;
         let credentials = state.credentials.and_then(|mut credentials| {
             if let Some(Credentials::SingleUse(credentials)) = credentials.items.remove(item_id) {
@@ -296,7 +294,7 @@ where
         request_id: &str,
         creds: Vec<Token>,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
@@ -344,7 +342,7 @@ where
         item_id: &str,
         request_id: &str,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
@@ -374,7 +372,7 @@ where
         item_id: &str,
         creds: Vec<Token>,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
@@ -409,7 +407,7 @@ where
     ) -> Result<(), InternalError> {
         // each time this function is run, we are going to append a credential
 
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -467,7 +465,7 @@ where
         issuer_id: &str,
         unblinded_creds: Vec<UnblindedToken>,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -503,7 +501,7 @@ where
         item_id: &str,
         index: usize,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -544,7 +542,7 @@ where
         item_id: &str,
         index: usize,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -573,7 +571,7 @@ where
         &self,
         item_id: &str,
     ) -> Result<Option<TimeLimitedCredentials>, InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
@@ -606,7 +604,7 @@ where
         item_id: &str,
         creds: Vec<TimeLimitedCredential>,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
+        let mut store = self.get_store().await?;
         let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
