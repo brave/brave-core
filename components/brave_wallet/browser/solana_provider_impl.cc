@@ -307,10 +307,11 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
 
   std::optional<std::vector<uint8_t>> signed_tx;
   if (account->account_id->kind != mojom::AccountKind::kHardware) {
-    signed_tx = tx->GetSignedTransactionBytes(keyring_service_);
+    signed_tx =
+        tx->GetSignedTransactionBytes(keyring_service_, account->account_id);
   } else if (signature && signature->is_bytes()) {  // hardware
-    signed_tx = tx->GetSignedTransactionBytes(keyring_service_,
-                                              &signature->get_bytes());
+    signed_tx = tx->GetSignedTransactionBytes(
+        keyring_service_, account->account_id, &signature->get_bytes());
   }
 
   if (!signed_tx || signed_tx->empty()) {
@@ -466,10 +467,12 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
   for (size_t i = 0; i < txs.size(); ++i) {
     std::optional<std::vector<uint8_t>> signed_tx;
     if (!is_hardware_account) {
-      signed_tx = txs[i]->GetSignedTransactionBytes(keyring_service_);
+      signed_tx = txs[i]->GetSignedTransactionBytes(keyring_service_,
+                                                    account->account_id);
     } else if (signatures->at(i) && signatures->at(i)->is_bytes()) {
       signed_tx = txs[i]->GetSignedTransactionBytes(
-          keyring_service_, &signatures->at(i)->get_bytes());
+          keyring_service_, account->account_id,
+          &signatures->at(i)->get_bytes());
     }
 
     if (!signed_tx || signed_tx->empty()) {
@@ -837,7 +840,7 @@ void SolanaProviderImpl::OnSignMessageRequestProcessed(
   std::optional<std::vector<uint8_t>> sig_bytes;
   if (account->account_id->kind != mojom::AccountKind::kHardware) {
     sig_bytes = keyring_service_->SignMessageBySolanaKeyring(
-        *account->account_id, blob_msg);
+        account->account_id, blob_msg);
   } else if (signature && signature->is_bytes()) {
     sig_bytes = signature->get_bytes();
   }
