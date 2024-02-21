@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-#include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_types.h"

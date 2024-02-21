@@ -10,7 +10,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_handler.h"

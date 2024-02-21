@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_OBSERVER_MOCK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_OBSERVER_MOCK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_APPLICATION_STATE_BROWSER_MANAGER_OBSERVER_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_APPLICATION_STATE_BROWSER_MANAGER_OBSERVER_MOCK_H_
 
-#include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
@@ -36,4 +36,4 @@ class BrowserManagerObserverMock : public BrowserManagerObserver {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_OBSERVER_MOCK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_APPLICATION_STATE_BROWSER_MANAGER_OBSERVER_MOCK_H_
