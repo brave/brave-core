@@ -61,7 +61,6 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.back_press.BackPressHelper;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
@@ -179,7 +178,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        SyncServiceFactory.get().addSyncStateChangedListener(this);
+        SyncServiceFactory.getForProfile(getProfile()).addSyncStateChangedListener(this);
 
         invalidateCodephrase();
 
@@ -984,7 +983,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCameraSourcePreview.release();
         }
 
-        SyncServiceFactory.get().removeSyncStateChangedListener(this);
+        SyncServiceFactory.getForProfile(getProfile()).removeSyncStateChangedListener(this);
 
         if (mDeviceInfoObserverSet) {
             BraveSyncDevices.get().removeDeviceInfoChangedListener(this);
@@ -1256,7 +1255,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (isSyncStateChangedObserverPaused()) {
             return;
         }
-        if (!SyncServiceFactory.get().isInitialSyncFeatureSetupComplete()) {
+        if (!SyncServiceFactory.getForProfile(getProfile()).isInitialSyncFeatureSetupComplete()) {
             if (mLeaveSyncChainInProgress) {
                 leaveSyncChainComplete();
             } else {
@@ -1522,13 +1521,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mScrollViewSyncDone.setVisibility(View.VISIBLE);
         }
 
-        try {
-            BraveActivity mainActivity = BraveActivity.getBraveActivity();
-            mBraveSyncTextDevicesTitle.setText(
-                    getResources().getString(R.string.brave_sync_loading_devices_title));
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "setSyncDoneLayout " + e);
-        }
+        mBraveSyncTextDevicesTitle.setText(
+                getResources().getString(R.string.brave_sync_loading_devices_title));
 
         onDevicesAvailable();
         resumeSyncStateChangedObserver();
