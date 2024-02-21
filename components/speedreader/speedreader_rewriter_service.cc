@@ -46,7 +46,6 @@ std::string WrapStylesheetWithCSP(const std::string& stylesheet,
                script-src 'none';
                img-src *;
                font-src 'none';
-               base-uri 'none';
                form-action 'none';
                upgrade-insecure-requests;"
     >)html";
