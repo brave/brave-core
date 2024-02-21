@@ -18,6 +18,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
@@ -82,26 +83,6 @@ static const int kComponentUpdaterManifestSchemaVersion = 1;
 static NSString* const kComponentUpdaterMetadataPrefKey =
     @"BraveAdsComponentUpdaterMetadata";
 
-namespace {
-
-// TODO(tmancey): Decouple `RunDBTransactionOnFileTaskRunner` from
-// `ads_service_impl` and remove code duplication.
-brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
-    brave_ads::mojom::DBTransactionInfoPtr transaction,
-    brave_ads::Database* database) {
-  auto response = brave_ads::mojom::DBCommandResponseInfo::New();
-  if (!database) {
-    response->status =
-        brave_ads::mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
-  } else {
-    database->RunTransaction(std::move(transaction), response.get());
-  }
-
-  return response;
-}
-
-}  // namespace
-
 @interface NotificationAdIOS ()
 - (instancetype)initWithNotificationInfo:
     (const brave_ads::NotificationAdInfo&)info;
@@ -116,9 +97,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   AdsClientIOS* adsClient;
   brave_ads::AdsClientNotifier* adsClientNotifier;
   brave_ads::Ads* ads;
-  brave_ads::Database* adsDatabase;
   brave_ads::AdEventCache* adEventCache;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
+  base::SequenceBound<brave_ads::Database> adsDatabase;
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
 }
@@ -176,8 +157,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   [self stopComponentUpdaterTimer];
 
   [self stopNetworkMonitor];
-
-  [self shutdownDatabase];
 
   [self deallocAds];
   [self deallocAdsClientNotifier];
@@ -291,15 +270,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
             [self deallocAdEventCache];
 
-            if (self->adsDatabase != nil) {
-              self->databaseQueue->PostTask(
-                  FROM_HERE,
-                  base::BindOnce(
-                      [](brave_ads::Database* database) { delete database; },
-                      self->adsDatabase));
-              self->adsDatabase = nil;
-            }
-
             if (completion) {
               completion();
             }
@@ -353,13 +323,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
-  adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
-}
-
-- (void)shutdownDatabase {
-  if (adsDatabase) {
-    databaseQueue->DeleteSoon(FROM_HERE, adsDatabase);
-  }
+  adsDatabase = base::SequenceBound<brave_ads::Database>(
+      databaseQueue, base::FilePath(dbPath));
 }
 
 #pragma mark - Network
@@ -1549,11 +1514,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(brave_ads::RunDBTransactionCallback)completion {
   __weak BraveAds* weakSelf = self;
-  databaseQueue->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
-                     adsDatabase),
-      base::BindOnce(
+  adsDatabase.AsyncCall(&brave_ads::Database::RunTransaction)
+      .WithArgs(std::move(transaction))
+      .Then(base::BindOnce(
           ^(brave_ads::RunDBTransactionCallback callback,
             brave_ads::mojom::DBCommandResponseInfoPtr response) {
             const auto strongSelf = weakSelf;
