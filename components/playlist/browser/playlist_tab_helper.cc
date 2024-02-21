@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -375,21 +376,21 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
 
   DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
 
-  base::flat_map<std::string, mojom::PlaylistItemPtr*> already_found_items;
   if (IsExtractingMediaFromBackgroundWebContents()) {
     found_items_.clear();
-  } else {
-    for (auto& item : found_items_) {
-      already_found_items.insert({item->media_source.spec(), &item});
-    }
   }
 
   for (auto& new_item : items) {
-    const auto media_source = new_item->media_source.spec();
-    if (base::Contains(already_found_items, media_source)) {
-      DVLOG(2) << "The media source with url (" << media_source
+    const auto it = base::ranges::find_if(
+        found_items_,
+        [&](const auto& media_source) {
+          return media_source == new_item->media_source;
+        },
+        &mojom::PlaylistItem::media_source);
+    if (it != found_items_.cend()) {
+      DVLOG(2) << "The media source with url (" << (*it)->media_source
                << ") already exists so update the data";
-      (*already_found_items.at(media_source)) = std::move(new_item);
+      *it = std::move(new_item);
     } else {
       found_items_.push_back(std::move(new_item));
     }
