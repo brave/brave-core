@@ -6,10 +6,11 @@
 import Foundation
 import Shared
 import os.log
+import BraveCore
 
 public class WebcompatReporter {
   static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "WebcompatReporter")
-  
+
   /// The raw values of the web-report.
   public struct Report {
     /// The URL of the broken site.
@@ -29,11 +30,11 @@ public class WebcompatReporter {
     let adBlockListTitles: [String]
     /// If VPN is currently enabled
     let isVPNEnabled: Bool
-    
+
     var domain: String? {
       return cleanedURL.normalizedHost() != nil ? cleanedURL.domainURL.absoluteString : cleanedURL.baseDomain
     }
-    
+
     public init(
       cleanedURL: URL, additionalDetails: String? = nil, contactInfo: String? = nil,
       areShieldsEnabled: Bool, adBlockLevel: ShieldLevel, fingerprintProtectionLevel: ShieldLevel,
@@ -49,19 +50,19 @@ public class WebcompatReporter {
       self.isVPNEnabled = isVPNEnabled
     }
   }
-  
+
   private struct Payload: Encodable {
     let report: Report
     let apiKey: String?
     let languageCode: String?
-    
+
     enum CodingKeys: String, CodingKey {
       case url
       case domain
       case additionalDetails
       case contactInfo
       case apiKey = "api_key"
-      
+
       case fpBlockSetting
       case adBlockSetting
       case adBlockLists
@@ -70,7 +71,7 @@ public class WebcompatReporter {
       case languageFarblingEnabled
       case braveVPNEnabled
     }
-    
+
     public func encode(to encoder: Encoder) throws {
       // We want to ensure that the URL _can_ be normalized, since `domainURL` will return itself
       // (the full URL) if the URL can't be normalized. If the URL can't be normalized, send only
@@ -80,13 +81,13 @@ public class WebcompatReporter {
           codingPath: encoder.codingPath, debugDescription: "Cannot extract `domain` from url"
         ))
       }
-      
+
       guard let apiKey = apiKey else {
         throw EncodingError.invalidValue(CodingKeys.apiKey, EncodingError.Context(
           codingPath: encoder.codingPath, debugDescription: "Missing api_key"
         ))
       }
-      
+
       var container: KeyedEncodingContainer<CodingKeys> = encoder.container(keyedBy: CodingKeys.self)
       try container.encode(domain, forKey: .domain)
       try container.encode(report.cleanedURL.absoluteString, forKey: .url)
@@ -102,7 +103,7 @@ public class WebcompatReporter {
       try container.encode(apiKey, forKey: .apiKey)
     }
   }
-  
+
   private static var baseHost: String {
     if AppConstants.buildChannel == .debug {
       return "laptop-updates.bravesoftware.com"
@@ -111,12 +112,11 @@ public class WebcompatReporter {
     }
   }
 
-  private static let apiKeyPlistKey = "STATS_KEY"
   private static let version = "1"
 
   /// A custom user agent to send along with reports
   public static var userAgent: String?
-  
+
   /// Get the user's language code
   private static var currentLanguageCode: String? {
     if #available(iOS 16, *) {
@@ -131,7 +131,7 @@ public class WebcompatReporter {
   /// - Returns: A deferred boolean on whether or not it reported successfully (default queue: main)
   @discardableResult
   public static func send(report: Report) async -> Bool {
-    let apiKey = (Bundle.main.infoDictionary?[apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+    let apiKey = kBraveStatsAPIKey
     let payload = Payload(report: report, apiKey: apiKey, languageCode: currentLanguageCode)
 
     var components = URLComponents()
@@ -150,21 +150,21 @@ public class WebcompatReporter {
       request.httpMethod = "POST"
       request.addValue("application/json", forHTTPHeaderField: "Content-Type")
       request.httpBody = try encoder.encode(payload)
-      
+
       if let userAgent = userAgent {
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
       }
-      
+
       let session = URLSession(configuration: .ephemeral)
       let result = try await session.data(for: request)
-      
+
       if let response = result.1 as? HTTPURLResponse {
         let success = response.statusCode >= 200 && response.statusCode < 300
-        
+
         if !success {
           log.error("Failed to report webcompat issue: Status Code \(response.statusCode)")
         }
-        
+
         return success
       } else {
         return false

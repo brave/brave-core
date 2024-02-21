@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>STATS_KEY</key>
-	<string>$(brave_stats_api_key)</string>
 	<key>AppIdentifierPrefix</key>
 	<string>$(APP_IDENTIFIER_PREFIX)</string>
 	<key>BRAVE_URL_SCHEME</key>
@@ -91,8 +89,6 @@
 		<string>com.brave.ios.browsing</string>
 		<string>com.brave.ios.browser-scene</string>
 	</array>
-	<key>SERVICES_KEY</key>
-	<string>$(brave_services_key)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

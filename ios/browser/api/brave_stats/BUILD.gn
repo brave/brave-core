@@ -12,6 +12,7 @@ source_set("brave_stats") {
   deps = [
     "//base",
     "//brave/components/brave_stats/browser",
+    "//brave/components/brave_stats/browser:buildflags",
     "//brave/components/brave_wallet/browser:pref_names",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/application_context",

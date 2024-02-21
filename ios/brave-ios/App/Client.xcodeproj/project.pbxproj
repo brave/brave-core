@@ -19,6 +19,7 @@
 		27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */ = {isa = PBXBuildFile; productRef = 27466BB0288EDB9C00584C90 /* RuntimeWarnings */; };
 		2759468D29CCB62F0094BDDE /* GRDWireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2759468C29CCB62F0094BDDE /* GRDWireGuardKit */; };
 		2759468F29CCB6350094BDDE /* GRDWireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2759468E29CCB6350094BDDE /* GRDWireGuardKit */; };
+		2787B06A2B7ED260004796F8 /* BraveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2787B0692B7ED260004796F8 /* BraveCore */; };
 		278852E42ACDC26B005395CF /* Playlist in Frameworks */ = {isa = PBXBuildFile; productRef = 278852E32ACDC26B005395CF /* Playlist */; };
 		278852E62ACDE795005395CF /* UserAgent in Frameworks */ = {isa = PBXBuildFile; productRef = 278852E52ACDE795005395CF /* UserAgent */; };
 		278BB9FF297B0A1E00690BE3 /* TopNewsListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278BB9FE297B0A1E00690BE3 /* TopNewsListWidget.swift */; };
@@ -418,6 +419,7 @@
 				279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */,
 				CA0391B6271E1023000EB13C /* SwiftUI.framework in Frameworks */,
 				CA986FB2298C1249000C6DD8 /* BraveWidgetsModels in Frameworks */,
+				2787B06A2B7ED260004796F8 /* BraveCore in Frameworks */,
 				27D5907129B7BA1B00AE9989 /* Preferences in Frameworks */,
 				CA0391B4271E1023000EB13C /* WidgetKit.framework in Frameworks */,
 			);
@@ -764,6 +766,7 @@
 				27D5907029B7BA1B00AE9989 /* Preferences */,
 				27D7FF5429BA69E50096DD93 /* BraveShields */,
 				27462BE929DF39EE00715268 /* OrderedCollections */,
+				2787B0692B7ED260004796F8 /* BraveCore */,
 			);
 			productName = BraveWidgetsExtension;
 			productReference = CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */;
@@ -3048,6 +3051,10 @@
 		2759468E29CCB6350094BDDE /* GRDWireGuardKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GRDWireGuardKit;
+		};
+		2787B0692B7ED260004796F8 /* BraveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveCore;
 		};
 		278852E32ACDC26B005395CF /* Playlist */ = {
 			isa = XCSwiftPackageProductDependency;
