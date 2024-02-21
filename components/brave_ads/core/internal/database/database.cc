@@ -25,7 +25,13 @@ namespace brave_ads {
 namespace {
 
 constexpr char kGetTablesCountSql[] =
-    "SELECT COUNT(*) FROM sqlite_schema WHERE type='table'";
+    R"(
+        SELECT
+          COUNT(*)
+        FROM
+          sqlite_schema
+        WHERE
+          type = 'table';)";
 
 }  // namespace
 

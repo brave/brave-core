@@ -27,7 +27,12 @@ std::string BuildInsertSql(const std::string& from,
   CHECK_EQ(from_columns.size(), to_columns.size());
 
   return base::ReplaceStringPlaceholders(
-      "INSERT INTO $1 ($2) SELECT $3 FROM $4;",
+      R"(
+          INSERT INTO $1 ($2)
+          SELECT
+            $3
+          FROM
+            $4;)",
       {to, base::JoinString(to_columns, ", "),
        base::JoinString(from_columns, ", "), from},
       nullptr);
@@ -57,8 +62,11 @@ void DropTable(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql = base::ReplaceStringPlaceholders("DROP TABLE IF EXISTS $1;",
-                                                 {table_name}, nullptr);
+  command->sql = base::ReplaceStringPlaceholders(
+      R"(
+          DROP
+            TABLE IF EXISTS $1;)",
+      {table_name}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -69,8 +77,11 @@ void DeleteTable(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      base::ReplaceStringPlaceholders("DELETE FROM $1;", {table_name}, nullptr);
+  command->sql = base::ReplaceStringPlaceholders(
+      R"(
+          DELETE
+            FROM $1;)",
+      {table_name}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -116,8 +127,11 @@ void RenameTable(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql = base::ReplaceStringPlaceholders("ALTER TABLE $1 RENAME TO $2;",
-                                                 {from, to}, nullptr);
+  command->sql = base::ReplaceStringPlaceholders(
+      R"(
+          ALTER TABLE
+            $1 RENAME TO $2;)",
+      {from, to}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 

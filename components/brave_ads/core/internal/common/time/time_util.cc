@@ -86,6 +86,14 @@ base::Time CalculateEndOfMonth(const base::Time time) {
 
 }  // namespace
 
+int64_t ToChromeTimestampFromTime(const base::Time time) {
+  return time.ToDeltaSinceWindowsEpoch().InMicroseconds();
+}
+
+base::Time ToTimeFromChromeTimestamp(const int64_t timestamp) {
+  return base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(timestamp));
+}
+
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
 base::Time GetLocalMidnight(const base::Time time) {

@@ -43,14 +43,17 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 void MigrateToV27(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
+  // Recreate table to address a migration problem from older versions.
   DropTable(transaction, "embeddings");
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE embeddings (creative_set_id TEXT NOT NULL, embedding TEXT "
-      "NOT NULL, PRIMARY KEY (creative_set_id), UNIQUE(creative_set_id) ON "
-      "CONFLICT REPLACE);";
+      R"(
+          CREATE TABLE embeddings (
+            creative_set_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            embedding TEXT NOT NULL
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -88,9 +91,11 @@ void Embeddings::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE embeddings (creative_set_id TEXT NOT NULL, embedding TEXT "
-      "NOT NULL, PRIMARY KEY (creative_set_id), UNIQUE(creative_set_id) ON "
-      "CONFLICT REPLACE);";
+      R"(
+          CREATE TABLE embeddings (
+            creative_set_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            embedding TEXT NOT NULL
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -116,7 +121,11 @@ std::string Embeddings::BuildInsertOrUpdateSql(
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (creative_set_id, embedding) VALUES $2;",
+      R"(
+          INSERT OR REPLACE INTO $1 (
+            creative_set_id,
+            embedding
+          ) VALUES $2;)",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count=*/2, binded_parameters_count)},
       nullptr);
