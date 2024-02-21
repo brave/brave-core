@@ -12,6 +12,13 @@
     return top;                                        \
   }
 
+// The top frame border thickness is smaller when using updated horizontal tabs.
+#define BRAVE_BROWSER_FRAME_VIEW_WIN_FRAME_TOP_BORDER_THICKNESS \
+  if (tabs::features::HorizontalTabsUpdateEnabled()) {          \
+    return 2;                                                   \
+  }
+
 #include "src/chrome/browser/ui/views/frame/browser_frame_view_win.cc"  // IWYU pragma: export
 
+#undef BRAVE_BROWSER_FRAME_VIEW_WIN_FRAME_TOP_BORDER_THICKNESS
 #undef BRAVE_BROWSER_FRAME_VIEW_WIN_TOP_AREA_HEIGHT
