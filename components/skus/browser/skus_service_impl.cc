@@ -355,26 +355,30 @@ void SkusServiceImpl::PostTaskWithSDK(
     base::OnceCallback<void(skus::CppSDK* sdk)> cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto env = GetEnvironmentForDomain(domain);
-  // Do not skip OnSDKInitialized if the SDK is already initialized because it
-  // could result in out of order execution of callbacks.
-  sdk_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          [](const std::string& env,
-             base::WeakPtr<SkusServiceImpl> skus_service,
-             std::unique_ptr<network::PendingSharedURLLoaderFactory>
-                 pending_url_loader_factory,
-             scoped_refptr<base::SequencedTaskRunner> ui_task_runner) {
-            auto sdk = initialize_sdk(std::make_unique<skus::SkusContextImpl>(
-                                          std::move(pending_url_loader_factory),
-                                          ui_task_runner, skus_service),
-                                      env);
-            return sdk;
-          },
-          env, weak_factory_.GetWeakPtr(), url_loader_factory_->Clone(),
-          ui_task_runner_),
-      base::BindOnce(&SkusServiceImpl::OnSDKInitialized,
-                     weak_factory_.GetWeakPtr(), env, std::move(cb)));
+  if (sdks_.count(env)) {
+    sdk_task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(std::move(cb), &*(sdks_.at(env))));
+  } else {
+    sdk_task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(
+            [](const std::string& env,
+               base::WeakPtr<SkusServiceImpl> skus_service,
+               std::unique_ptr<network::PendingSharedURLLoaderFactory>
+                   pending_url_loader_factory,
+               scoped_refptr<base::SequencedTaskRunner> ui_task_runner) {
+              auto sdk =
+                  initialize_sdk(std::make_unique<skus::SkusContextImpl>(
+                                     std::move(pending_url_loader_factory),
+                                     ui_task_runner, skus_service),
+                                 env);
+              return sdk;
+            },
+            env, weak_factory_.GetWeakPtr(), url_loader_factory_->Clone(),
+            ui_task_runner_),
+        base::BindOnce(&SkusServiceImpl::OnSDKInitialized,
+                       weak_factory_.GetWeakPtr(), env, std::move(cb)));
+  }
 }
 
 void SkusServiceImpl::OnSDKInitialized(
