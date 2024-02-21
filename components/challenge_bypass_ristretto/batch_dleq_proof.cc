@@ -224,7 +224,7 @@ base::expected<BatchDLEQProof, std::string> BatchDLEQProof::DecodeBase64(
       cbr_cxx::decode_base64_batch_dleq_proof(encoded));
 
   if (!raw_proof_result->is_ok()) {
-    return base::unexpected(raw_proof_result->error().msg.data());
+    return base::unexpected<std::string>("Failed to decode batch DLEQ proof");
   }
 
   return BatchDLEQProof(raw_proof_result->unwrap());
