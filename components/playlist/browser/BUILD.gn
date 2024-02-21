@@ -19,8 +19,6 @@ static_library("browser") {
     "playlist_background_webcontents_helper.cc",
     "playlist_background_webcontents_helper.h",
     "playlist_constants.h",
-    "playlist_download_request_manager.cc",
-    "playlist_download_request_manager.h",
     "playlist_media_file_download_manager.cc",
     "playlist_media_file_download_manager.h",
     "playlist_media_file_downloader.cc",

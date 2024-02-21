@@ -16,7 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/playlist/browser/playlist_download_request_manager.h"
+#include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_streaming.h"
@@ -264,6 +264,14 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
 
+  std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(base::Value value,
+                                                       GURL page_url);
+
+  bool CanCacheMedia(const mojom::PlaylistItemPtr& item) const;
+
+  bool ShouldExtractMediaFromBackgroundWebContents(
+      const mojom::PlaylistItemPtr& item) const;
+
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
   void AddMediaFilesFromContentsToPlaylist(
@@ -402,7 +410,7 @@ class PlaylistService : public KeyedService,
 
   std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
-  std::unique_ptr<PlaylistDownloadRequestManager> download_request_manager_;
+  raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
 
   PlaylistP3A playlist_p3a_;
 
