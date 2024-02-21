@@ -513,7 +513,8 @@ public class BraveRewardsPanel
         mTextTip.setTextAppearance(R.style.BraveRewardsSecondaryTextColor);
         mImgTip.setColorFilter(
                 new PorterDuffColorFilter(
-                        ContextCompat.getColor(mActivity, R.color.rewards_panel_secondary_text_color),
+                        ContextCompat.getColor(
+                                mActivity, R.color.rewards_panel_secondary_text_color),
                         PorterDuff.Mode.SRC_IN));
 
         mTextSummary.setTextAppearance(R.style.BraveRewardsActionColor);
@@ -541,7 +542,8 @@ public class BraveRewardsPanel
         mTextSummary.setTextAppearance(R.style.BraveRewardsSecondaryTextColor);
         mImgSummary.setColorFilter(
                 new PorterDuffColorFilter(
-                        ContextCompat.getColor(mActivity, R.color.rewards_panel_secondary_text_color),
+                        ContextCompat.getColor(
+                                mActivity, R.color.rewards_panel_secondary_text_color),
                         PorterDuff.Mode.SRC_IN));
         mRewardsSummaryDetailLayout.setVisibility(View.GONE);
         mRewardsTipLayout.setVisibility(View.VISIBLE);
