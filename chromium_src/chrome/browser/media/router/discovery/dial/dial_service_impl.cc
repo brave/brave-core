@@ -5,8 +5,8 @@
 
 #include "chrome/browser/media/router/discovery/dial/dial_service_impl.h"
 
-#include "components/version_info/version_info.h"
 #include "brave/components/version_info/version_info.h"
+#include "components/version_info/version_info.h"
 
 namespace version_info {
 constexpr std::string_view GetProductNameForChrome() {
