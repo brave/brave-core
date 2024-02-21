@@ -7,7 +7,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_util.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 

@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_APPLICATION_STATE_BROWSER_MANAGER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_APPLICATION_STATE_BROWSER_MANAGER_H_
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
@@ -58,4 +58,4 @@ class BrowserManager final : public AdsClientNotifierObserver {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_APPLICATION_STATE_BROWSER_MANAGER_H_

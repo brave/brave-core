@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_util.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
