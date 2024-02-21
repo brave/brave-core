@@ -1,62 +1,93 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "No es pot obrir ${websiteURL} en una pestanya nova.";
 
-"1QT5y6" = "Open a website in a new Tab";
+/* (No Comment) */
+"1n1yx4" = "No es pot obrir ${websiteURL} en una pestanya nova.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Obre un lloc web en una pestanya nova";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Obre un lloc web en una pestanya nova";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "URL del lloc web";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Obre un lloc web de les adreces d'interès";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "Obre ${websiteURL}en una pestanya nova";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "No es pot obrir ${websiteURL} en una pestanya nova.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Això obrirà ${websiteURL} des de l'historial.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Obre un lloc web de l'historial";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "URL del lloc web";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "URL del lloc web";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Obre el lloc web de l'historial";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL} from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "Això obrirà ${websiteURL} en una pestanya nova.";
 
-"pvi3Ug" = "This will open ${websiteURL}from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"MISOeA" = "Obre des de l'historial";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "No es pot obrir ${websiteURL} en una pestanya nova.";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"Paq749" = "URL del lloc web";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"pvi3Ug" = "Això obrirà ${websiteURL}des de les adreces d'interès.";
+
+/* (No Comment) */
+"t7aARA" = "No es pot obrir ${websiteURL} en una pestanya nova.";
+
+/* (No Comment) */
+"UmKnv3" = "No es pot obrir ${websiteURL} en una pestanya nova.";
+
+/* (No Comment) */
+"uT0Oi7" = "Això obrirà ${websiteURL} en una pestanya nova.";
+
+/* (No Comment) */
+"VgH3NH" = "Obre el lloc web de les adreces d'interès";
+
+/* (No Comment) */
+"Wh3wb1" = "Obre el lloc web";
+
+/* (No Comment) */
+"WiB0aJ" = "URL del lloc web";
+
+/* (No Comment) */
+"wZqW4o" = "Això obrirà ${websiteURL} des de l'historial.";
+
+/* (No Comment) */
+"Xx8bbW" = "URL del lloc web";
+
+/* (No Comment) */
+"ycaNZf" = "Obre des de les adreces d'interès";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "Això obrirà ${websiteURL} des de les adreces d'interès.";
 
