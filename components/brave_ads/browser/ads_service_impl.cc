@@ -1823,6 +1823,8 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(
     bat_ads_client_notifier_remote_->NotifyDidUpdateResourceComponent(
         manifest_version, id);
   }
+
+  PrefetchNewTabPageAd();
 }
 
 void AdsServiceImpl::OnDidUnregisterResourceComponent(const std::string& id) {

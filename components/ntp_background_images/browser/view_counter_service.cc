@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/check_is_test.h"
-#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -21,7 +20,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -169,21 +167,26 @@ NTPSponsoredImagesData* ViewCounterService::GetCurrentBrandedWallpaperData()
 }
 
 std::optional<base::Value::Dict>
+ViewCounterService::GetNextWallpaperForDisplay() {
+  model_.RotateBackgroundWallpaperImageIndex();
+  return GetCurrentWallpaper();
+}
+
+std::optional<base::Value::Dict>
 ViewCounterService::GetCurrentWallpaperForDisplay() {
-  if (ShouldShowBrandedWallpaper()) {
-    std::optional<base::Value::Dict> branded_wallpaper =
-        GetCurrentBrandedWallpaper();
-    if (branded_wallpaper) {
-      return branded_wallpaper;
-    }
-    // Failed to get branded wallpaper as it was frequency capped by ads
-    // service. In this case next background wallpaper should be shown on NTP.
-    // To do this we need to increment background wallpaper index as it wasn't
-    // incremented during the last RegisterPageView() call.
-    model_.IncreaseBackgroundWallpaperImageIndex();
+  if (!ShouldShowBrandedWallpaper()) {
+    return GetCurrentWallpaper();
   }
 
-  return GetCurrentWallpaper();
+  if (std::optional<base::Value::Dict> branded_wallpaper =
+          GetCurrentBrandedWallpaper()) {
+    return branded_wallpaper;
+  }
+
+  // The retrieval of `branded_wallpaper` failed due to frequency capping. In
+  // such instances, we need to ensure the next wallpaper is displayed because
+  // it would not have been incremented during the last `RegisterPageView` call.
+  return GetNextWallpaperForDisplay();
 }
 
 std::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
@@ -221,15 +224,14 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
 
   const bool should_frequency_cap_ads =
       prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
-  if (should_frequency_cap_ads && !images_data->IsSuperReferral()) {
-    return GetCurrentBrandedWallpaperByAdInfo();
-  }
 
-  return GetCurrentBrandedWallpaperFromModel();
+  return should_frequency_cap_ads && !images_data->IsSuperReferral()
+             ? GetCurrentBrandedWallpaperFromAdInfo()
+             : GetCurrentBrandedWallpaperFromModel();
 }
 
 std::optional<base::Value::Dict>
-ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
+ViewCounterService::GetCurrentBrandedWallpaperFromAdInfo() const {
   DCHECK(ads_service_);
 
   const std::optional<brave_ads::NewTabPageAdInfo> ad =
@@ -239,7 +241,7 @@ ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   }
 
   std::optional<base::Value::Dict> branded_wallpaper_data =
-      GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad);
+      GetCurrentBrandedWallpaperData()->GetBackgroundFromAdInfo(*ad);
   if (!branded_wallpaper_data) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);
